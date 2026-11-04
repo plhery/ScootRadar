@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-muenster',
   topic: 'munster',
-  name: 'E-Scooter Münster: Anbieter, Parkzonen, Regeln',
-  title: 'E-Scooter Münster 2026: Anbieter, Parkzonen, Promenade',
-  description: 'E-Scooter Münster: die vier Anbieter, wo du in der Innenstadt parkst, ob du auf der Promenade fahren darfst, was im Bus gilt und die Mobilitätsgarantie.',
-  headline: 'E-Scooter Münster: Anbieter, Parkzonen und was auf der Promenade gilt',
-  lede: 'Einen E-Scooter in Münster leihst du ohne Führerschein bei Dott (früher TIER), Bolt, Voi oder Qick; Mindestalter und Preis zeigt dir die App vor dem Entsperren. Innerhalb der Promenade, am Ring und an den grossen Ausfallstrassen beendest du die Fahrt nur in einer der 433 ausgewiesenen Parkzonen, sonst zahlst du weiter. Auf der Promenade musst du bis Ende Februar 2027 wohl schieben, und in die Stadtbusse darf kein E-Scooter, auch kein zusammengeklappter.',
+  name: 'E-Scooter Münster: Anbieter, Preise, Parken',
+  title: 'E-Scooter Münster 2026: Anbieter, Preise, Parkzonen',
+  description: 'E-Scooter Münster: die vier Anbieter, was zehn Minuten kosten, wo du in der Innenstadt parkst, ob du auf der Promenade fahren darfst und was im Bus gilt.',
+  headline: 'E-Scooter Münster: Anbieter, Preise, Parkzonen und was auf der Promenade gilt',
+  lede: 'Einen E-Scooter in Münster leihst du ohne Führerschein bei Dott (früher TIER), Bolt, Voi oder Qick; Dott, Bolt und Qick vermieten ab 18. Zehn Minuten kosten (Stand November 2026) bei Voi 2,50 € und bei Dott 4 €, bei Bolt und Qick zeigt die App den Preis. Innerhalb der Promenade, am Ring und an den grossen Ausfallstrassen beendest du die Fahrt nur in einer der 433 ausgewiesenen Parkzonen, sonst zahlst du weiter. Auf der Promenade musst du bis Ende Februar 2027 wohl schieben, und in die Stadtbusse darf kein E-Scooter, auch kein zusammengeklappter.',
   published: '2026-10-14',
   updated: '2026-10-25',
   city: 'de:Münster',
@@ -16,16 +16,34 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Münster?',
       blocks: [
-        'Laut Stadt vermieten vier Anbieter in Münster E-Scooter: **Dott**, **Bolt**, **Voi** und **Qick**. Dott hiess früher TIER, Qick kommt aus Schweden. Lime hat sich laut Stadt zurückgezogen.',
-        'Du leihst den Scooter in der App des Anbieters. Das Gesetz erlaubt eigene E-Scooter ab 14; das Mindestalter fürs Leihen und den Preis zeigt dir die App vor dem Entsperren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'Laut Stadt vermieten vier Anbieter in Münster E-Scooter: **Dott**, **Bolt**, **Voi** und **Qick**. Dott hiess früher TIER; wer TIER fuhr, nutzt heute die Dott-App. Qick kommt aus Schweden.',
+        'Du leihst den Scooter in der App des Anbieters, bei Dott, Bolt und Qick laut ihren Bedingungen ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Vois Mindestalter zeigt dir die App vor dem Entsperren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, standen rund um Münster kurz nach 15 Uhr rund 1300 Dott- und 1050 Voi-Scooter, die zu diesem Zeitpunkt frei waren, kurz nach Mitternacht rund 1750 Qick-Scooter und am Sonntag kurz vor 14 Uhr rund 1000 von Bolt. Wo gerade einer steht, siehst du auf der [Karte rund um Münster](map:de:Münster).',
+        'Handorf, Wolbeck, Roxel und Amelsbüren liegen ausserhalb von Dotts Gebiet: Dort beginnst und beendest du keine Dott-Fahrt.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Münster?',
+      blocks: [
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Münster (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
+            rows: [
+              ['Voi', '0,00 €', '0,25 €', '2,50 €', '5,00 €'],
+              ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
+              ['Bolt, Qick', 'in der App', 'in der App', 'in der App', 'in der App'],
+            ],
+          },
+        },
+        'Eine Viertelstunde kostet damit 3,75 € bei Voi und 5,50 € bei Dott. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
       heading: 'Wo darf man in Münster mit dem E-Scooter fahren?',
       blocks: [
         'Laut Stadt fährst du nur auf Radwegen, Radfahrstreifen und Fahrradstrassen und, wo es nichts davon gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu.',
-        '**Altstadt:** Ludgeristrasse, Salzstrasse, Windthorststrasse, Stubengasse und Teile der Rothenburg sind laut OpenStreetMap Fussgängerzone: absteigen und schieben. Die nächtliche Freigabe für Fahrräder in Ludgeri- und Salzstrasse (laut OpenStreetMap 20 bis 9 Uhr) gilt für E-Scooter erst ab 1. März 2027, dann im Schritttempo.',
+        '**Altstadt:** Ludgeristrasse, Salzstrasse, Windthorststrasse, Stubengasse und Teile der Rothenburg sind laut OpenStreetMap Fussgängerzone: absteigen und schieben. Die nächtliche Freigabe für Fahrräder in Ludgeri- und Salzstrasse (laut OpenStreetMap 20 bis 9 Uhr) gilt für E-Scooter erst ab 1. März 2027, dann im Schritttempo. Die Dott-App bremst dich dort nicht: Ans Absteigen musst du selbst denken.',
         '**Domplatz:** Mittwochs und samstags von 7 bis 14:30 Uhr ist Wochenmarkt; Fahrräder sind dort laut Stadt nicht erlaubt. Lass auch den Scooter draussen.',
         '**Radwege:** 77 Prozent der Münsteraner fahren laut Stadt täglich oder mehrmals pro Woche Rad. Lass schnellere Radfahrer überholen, und fahr bis Ende Februar 2027 nicht nebeneinander: Das kostet 15 bis 30 €.',
       ],
@@ -52,14 +70,15 @@ const guide: Guide = {
         'Alle anderen öffentlichen Flächen dort sind Parkverbotszone: Die App lässt dich die Fahrt nicht beenden, und laut Stadt «läuft die Kostenrechnung solange weiter». Die Zonenkarte der Stadt zeigt 433 Parkzonen (Stand 9. Oktober 2026); du siehst sie auch in der App.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (Zonenkarte der Stadt, Stand 9. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (Zonenkarte der Stadt, Stand 9. Oktober 2026; Dott: Stand November 2026)',
             head: ['Ort', 'Fahrt beenden'],
             rows: [
-              ['Prinzipalmarkt, Rathaus, Lamberti, Domplatz, Kiepenkerl, Ludgeri- und Salzstrasse', 'Nur in einer Parkzone'],
-              ['Hauptbahnhof (Berliner Platz und Bremer Platz)', 'Nur in einer Parkzone'],
+              ['Prinzipalmarkt, Rathaus, Lamberti, Domplatz, Kiepenkerl, Ludgeri- und Salzstrasse', 'Nur in einer Parkzone; eine liegt direkt an der Bushaltestelle Domplatz'],
+              ['Hauptbahnhof (Berliner Platz und Bremer Platz)', 'Nur in einer Parkzone; Dotts Zone «HBF» liegt rund 50 m vom Eingang am Berliner Platz'],
               ['Schlossplatz, Botanischer Garten, Aaseeterrassen, Preussenstadion, Uniklinik', 'Nur in einer Parkzone'],
               ['Hafenweg und Kreativkai', 'Gar nicht'],
               ['Kreuzviertel, Hafenmarkt, Leonardo-Campus, Halle Münsterland, Bahnhof Hiltrup', 'Ja, wenn niemand behindert wird'],
+              ['Handorf, Wolbeck, Flughafen FMO', 'Bei Dott gar nicht: ausserhalb des Gebiets'],
             ],
           },
         },
@@ -67,13 +86,13 @@ const guide: Guide = {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Parkverbotszone oder neben statt in der Parkzone. Fahr zur nächsten Parkzone, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
         'Ausserhalb dieser Bereiche stellst du den Scooter laut Stadt wie ein Fahrrad auf dem Gehweg ab, so dass niemand behindert wird. Grünanlagen wie Schlossgarten, Aasee, Südpark und Wienburgpark sind Parkverbotszone, ebenso die Kanalpromenade.',
-        'Wer behindernd parkt, zahlt 20 €, wer andere gefährdet, 30 €. Steht dir ein Scooter im Weg, melde ihn dem Anbieter; die Kontakte nennt die Stadt auf ihrer E-Scooter-Seite.',
+        'Wer behindernd parkt, zahlt 20 €, wer andere gefährdet, 30 €. Entfernt die Stadt einen falsch geparkten Qick, darf Qick laut seinen Bedingungen bis zu 150 € von dir verlangen. Steht dir ein Scooter im Weg, melde ihn dem Anbieter; die Kontakte nennt die Stadt auf ihrer E-Scooter-Seite.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Münster: Bussgelder, Alkohol, Unfälle',
       blocks: [
-        'In Münster gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Münster gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter von Dott, Bolt und Qick ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -102,9 +121,9 @@ const guide: Guide = {
             caption: 'Grosse Termine in Münster (laut Stadt und Spielplan) und wo du die Fahrt beendest',
             head: ['Veranstaltung', 'Nächster Termin', 'Fahrt beenden'],
             rows: [
-              ['Herbstsend, Schlossplatz', '24. Oktober bis 1. November 2026, Feuerwerk am 30. Oktober von 21 bis 21:30 Uhr', 'Nur in einer Parkzone'],
+              ['Herbstsend, Schlossplatz', '24. Oktober bis 1. November 2026, Feuerwerk am 30. Oktober von 21 bis 21:30 Uhr', 'Nur in einer Parkzone; Dott hat welche am Ostrand des Platzes, an der Strasse Schlossplatz'],
               ['Sechs Weihnachtsmärkte, vom Rathausinnenhof bis zum Harsewinkelplatz', '23. November bis 23. Dezember 2026', 'Nur in einer Parkzone'],
-              ['Heimspiele von Preussen Münster (3. Liga), Preussenstadion', 'Sonntag, 25. Oktober 2026, 16:30 Uhr, gegen Fortuna Köln, mitten im Herbstsend', 'Nur in einer Parkzone'],
+              ['Heimspiele von Preussen Münster (3. Liga), Preussenstadion', 'Sonntag, 25. Oktober 2026, 16:30 Uhr, gegen Fortuna Köln, mitten im Herbstsend', 'Nur in einer Parkzone; Dott hat welche direkt an der Haltestelle LVM-Preussenstadion an der Hammer Strasse'],
             ],
           },
         },
@@ -123,8 +142,8 @@ const guide: Guide = {
             'Bei Streik, Unwetter, Naturgewalten oder Bombendrohung gilt die Garantie nicht.',
           ],
         },
-        '**Flughafen Münster/Osnabrück (FMO):** Zum Hauptbahnhof fahren die Busse S50 (Schnellbus) und R51.',
-        '**Leihräder:** Räder, E-Bikes und Lastenräder verleiht die Radstation am Hauptbahnhof.',
+        '**Flughafen Münster/Osnabrück (FMO):** Er liegt rund 15 km ausserhalb von Dotts Gebiet. Zum Hauptbahnhof fahren die Busse S50 (Schnellbus) und R51.',
+        '**Leihräder:** Räder, E-Bikes und Lastenräder verleiht die Radstation am Hauptbahnhof, E-Bikes auch Bolt.',
       ],
     },
     {
@@ -146,6 +165,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
+            '**Rund 2,2 Hektar zum Abstellen.** So viel messen die Parkzonen der Stadt zusammen; die Parkverbotsflächen um sie herum sind rund 20 km² gross.',
             '**Kaum ein Hügel.** Ganz Münster liegt zwischen 44 m an der Ems und 97 m am Mühlenberg.',
             '**Wieder Fahrradstadt Nummer eins.** Im ADFC-Fahrradklima-Test 2024 lag Münster unter den Städten über 200 000 Einwohnern vorn, vor Freiburg und Karlsruhe.',
           ],
@@ -157,6 +177,10 @@ const guide: Guide = {
     {
       question: 'Welche E-Scooter-App brauche ich in Münster?',
       answer: 'Die von Dott (früher TIER), Bolt, Voi oder Qick, den vier Anbietern laut Stadt. Wo gerade ein freier Scooter steht, zeigt die [Live-Karte von Münster](map:de:Münster).',
+    },
+    {
+      question: 'Wie viel kosten zehn Minuten E-Scooter in Münster?',
+      answer: 'Bei Voi 2,50 € (0,25 € pro Minute, Entsperren gratis), bei Dott 4 € (1 € Entsperren plus 0,30 € pro Minute), Stand November 2026. Bolt und Qick zeigen ihren Preis in der App.',
     },
     {
       question: 'Warum kann ich meine Fahrt in der Innenstadt nicht beenden?',
@@ -176,6 +200,12 @@ const guide: Guide = {
     { title: 'Stadt Münster: Karte der Park- und Parkverbotszonen für E-Scooter', url: 'https://geo.stadt-muenster.de/sperrzonen_emobility/' },
     { title: 'Stadt Münster, Vorlage V/0031/2024: Digitales Parkraummanagement für E-Scooter (PDF)', url: 'https://oparl.stadt-muenster.de/bodies/0001/downloadfiles/00541103.pdf' },
     { title: 'Stadt Münster: Gebühren für Sondernutzungen', url: 'https://www.stadt-muenster.de/recht/ortsrecht/satzungen/detailansicht/satzungsnummer/66.05' },
+    { title: 'Dott: offener Datenfeed für Münster (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munster/gbfs.json' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Voi: Tarif für Münster in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/290/netex.xml' },
+    { title: 'Bolt in Münster', url: 'https://bolt.eu/de-de/cities/munster/' },
+    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Qick: Nutzungsbedingungen Deutschland', url: 'https://qickscooters.com/de/terms' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 12', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Stadtwerke Münster: Fragen rund um Mobilität', url: 'https://www.stadtwerke-muenster.de/hilfe/mobilitaet/faq-rund-um-mobilitaet' },
     { title: 'Beförderungsbedingungen Nahverkehr NRW ab 1. Januar 2026, Mobilitätsgarantie (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
