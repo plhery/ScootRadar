@@ -141,13 +141,13 @@ async function appCollector(provider) {
 const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount ||
   system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity ||
   system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.alpacaAppMap || system.dartAppMap ||
-  system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea;
+  system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea || system.rydeAppArea;
 
 // A system's feeds in the scooter cache: itself, or a Lime market's refresh groups, `${id}_000` and on
 // (limeGridGroups in src/lib/limeGrid.ts).
 function cachedFeeds(system) {
   const id = `${sources[system.country]}:${system.id}`;
-  if (!system.limeMapGrid) return cacheFeeds.byId.has(id) ? [cacheFeeds.byId.get(id)] : [];
+  if (!system.limeMapGrid && !system.rydeMapGrid) return cacheFeeds.byId.has(id) ? [cacheFeeds.byId.get(id)] : [];
   return [...cacheFeeds.byId.values()].filter(feed => feed.id.startsWith(`${id}_`) && /^\d{3}$/.test(feed.id.slice(id.length + 1)));
 }
 

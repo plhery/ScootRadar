@@ -56,6 +56,17 @@ describe('the live catalog check', () => {
     expect(systems.lime_jp_app_naha.ageSeconds).toBeGreaterThanOrEqual(300);
   });
 
+  it('reads Ryde markets from their private collector groups instead of fetching their native endpoint',()=>{
+    const now=Date.now();
+    const {status,stdout}=runWithFeeds([
+      {id:'finland:ryde_app_fi_helsinki_000',state:'ok',vehicles:3,observedAt:now-60000},
+      {id:'finland:ryde_app_fi_helsinki_001',state:'ok',vehicles:5,observedAt:now-30000},
+    ],'--countries=FI','--apps=cache','--fail-on=gone','--json');
+    expect(status).toBe(0);
+    const helsinki=JSON.parse(stdout).systems.find(s=>s.system==='ryde_app_fi_helsinki');
+    expect(helsinki).toMatchObject({state:'ok',availableScooters:8,version:'app-map (cache)'});
+  });
+
   it('refuses an --apps= mode it does not know', () => {
     const { status, stderr } = run('--countries=DE', '--apps=nope');
     expect(status).toBe(2);
