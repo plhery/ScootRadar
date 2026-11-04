@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-braunschweig',
   topic: 'braunschweig',
-  name: 'E-Scooter Braunschweig: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Braunschweig 2026: Anbieter, Parken, Bus und Tram',
-  description: 'E-Scooter Braunschweig: die vier Anbieter, Stationen in der Okerumflut, Fahren im Park, Parkverbotszonen und die Mitnahme in Bus und Tram.',
-  headline: 'E-Scooter Braunschweig: Anbieter, Regeln und warum du in der Innenstadt nur an Stationen parkst',
-  lede: 'E-Scooter in Braunschweig leihst du ohne Führerschein bei Bolt, Dott, Ryde oder Voi; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone; auf den Wegen der städtischen Parks erlaubt die Parksatzung E-Scooter ausdrücklich, Fussgänger haben dort Vorrang. Innerhalb der Okerumflut stellst du den Scooter nur an markierten Stationen ab. Zusammengeklappt fährt dein eigener Scooter kostenlos in Bus und Tram mit.',
+  name: 'E-Scooter Braunschweig: Anbieter, Preise, Parken',
+  title: 'E-Scooter Braunschweig 2026: Anbieter, Preise, Parken',
+  description: 'E-Scooter Braunschweig: die vier Anbieter, was eine Fahrt kostet, Stationen in der Okerumflut, Fahren im Park und die Mitnahme in Bus und Tram.',
+  headline: 'E-Scooter Braunschweig: Anbieter, Preise und warum du in der Innenstadt nur an Stationen parkst',
+  lede: 'E-Scooter in Braunschweig leihst du ohne Führerschein bei Bolt, Dott, Ryde oder Voi; Bolt, Dott und Ryde vermieten ab 18. Bei Voi kostet die Minute 0,22 € ohne Entsperrgebühr, zehn Minuten also 2,20 € (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone; auf den Wegen der städtischen Parks erlaubt die Parksatzung E-Scooter ausdrücklich, Fussgänger haben dort Vorrang. Innerhalb der Okerumflut stellst du den Scooter nur an markierten Stationen ab. Zusammengeklappt fährt dein eigener Scooter kostenlos in Bus und Tram mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Braunschweig',
@@ -16,10 +16,29 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Braunschweig?',
       blocks: [
-        'Laut Stadt Braunschweig (undatierte Seite, gelesen am 25. Oktober 2026) sind vier Verleiher im Stadtgebiet tätig: **Bolt**, **Ryde**, **TIER**, das heute Dott heisst, und **Voi**. 2022 zählte die Stadt rund 2000 Leih-Scooter von drei Anbietern.',
-        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'Laut Stadt Braunschweig (undatierte Seite, gelesen am 25. Oktober 2026) sind vier Verleiher im Stadtgebiet tätig: **Bolt**, **Ryde**, **TIER**, das heute Dott heisst, und **Voi**. Bolt, Dott und Ryde führen Braunschweig auch auf ihren eigenen Seiten. 2022 zählte die Stadt rund 2000 Leih-Scooter von drei Anbietern; Voi kam laut seiner Mitteilung vom März 2025 am 1. April 2025 mit rund 800 Scootern dazu, «bis in die Aussenbezirke».',
+        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; Bolt, Dott und Ryde vermieten laut ihren Bedingungen ab 18. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Braunschweig](map:de:Braunschweig) rund 600 Dott- und gut 550 Voi-Scooter, die zu diesem Zeitpunkt frei waren. Zoomst du hinein, zeigt sie auch die Abstellflächen und Parkverbotszonen der Stadt und die Okerumflut, in der du nur an den markierten Stationen abstellst.',
         'Eine Genehmigung der Stadt braucht ein Verleih laut Stadt grundsätzlich nicht. Stattdessen sollen Anbieter und Stadt eine Qualitätsvereinbarung unterzeichnen (Vorlage von Dezember 2021), laut ihrem § 12 «für keine Partei verbindlich». Sie sieht höchstens 100 Scooter je Anbieter innerhalb der Okerumflut (Zone A1) vor und höchstens fünf je Standort (100 m Umkreis), wenn der Anbieter sie aufstellt. Liegen seine Scooter ein Jahr lang unter 2 bis 3 Fahrten am Tag, soll er ihre Zahl anpassen.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Braunschweig?',
+      blocks: [
+        'Bei Voi kostet das Entsperren nichts und jede Minute 0,22 €: zehn Minuten kosten 2,20 €, eine Viertelstunde 3,30 € (Stand November 2026). Bolt nennt einen bundesweiten Ab-Preis, bei Dott und Ryde siehst du den Preis in der App vor dem Entsperren.',
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Braunschweig (Stand November 2026)',
+            head: ['Anbieter', 'Preis', 'Pässe'],
+            rows: [
+              ['Voi', 'Entsperren 0,00 €, dann 0,22 € pro Minute; 10 Minuten 2,20 €', 'Zum Start 2025 nannte Voi Tages-, Wochen- und Monatspässe ab 3,49 €'],
+              ['Bolt', 'Kleine Freischaltgebühr plus ab 0,15 € pro Minute, bundesweit, je nach Standort verschieden', 'Wochen- und Monatspässe; unbegrenzt Freischalten ab 0,99 € im Monat'],
+              ['Dott', 'In der App', 'In einigen Städten Prepaid-Pässe, Preis in der App'],
+              ['Ryde', 'In der App; angefangene Minuten zählen voll', 'Gilt nur in der Stadt, in der du ihn kaufst'],
+            ],
+          },
+        },
+        'Teuer wird Falschparken. Bolt verlangt laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 € Parkgebühr, wenn der Scooter falsch steht und kein deutliches Foto am Fahrtende das Gegenteil belegt, und bis zu 100 € Abholgebühr ausserhalb des zulässigen Parkbereichs. Dott kann laut AGB vom September 2025 bis zu 300 € für die Rückholung berechnen, wenn du seine Park- und Sperranweisungen nicht befolgst; wo eine Gemeinde Parkplätze ausweist, parkst du nur dort. Bei Ryde trägst du laut AGB die Kosten, wenn dein Parkfoto fehlt und eine Behörde Ryde dafür ein Verwarnungs- oder Bussgeld auferlegt; bringst du den Scooter aus dem Betriebsgebiet, kann Ryde bis zu 50 € verlangen.',
       ],
     },
     {
@@ -63,7 +82,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Braunschweig: Bussgelder und Alkohol',
       blocks: [
-        'In Braunschweig gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Braunschweig gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Bolt, Dott und Ryde ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -79,7 +98,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Auf dem Scooter gelten die Promillegrenzen fürs Auto. Wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar, ab 1,1 Promille in jedem Fall; der Führerschein ist dann in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0.',
+        'Auf dem Scooter gelten die Promillegrenzen fürs Auto. Wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar, ab 1,1 Promille in jedem Fall; der Führerschein ist dann in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0 Promille; auf einem Bolt-Scooter gilt das laut Bolts Bedingungen für alle.',
         'Ab 1. März 2027 gilt: Stellt ein Anbieter seine Leih-Scooter auf, ist das kein Parken; stellst du einen nach der Fahrt ab, schon. Alles Weitere steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
@@ -110,7 +129,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Braunschweig?',
-      answer: 'Laut Stadt Bolt, Ryde, Dott (früher TIER) und Voi. Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
+      answer: 'Laut Stadt Bolt, Ryde, Dott (früher TIER) und Voi. Einen Führerschein brauchst du nicht; Bolt, Dott und Ryde vermieten ab 18, das Mindestalter bei Voi zeigt dir die App.',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Braunschweig?',
+      answer: 'Bei Voi 0,22 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,20 € (Stand November 2026). Bolt wirbt bundesweit mit «ab 0,15 €» pro Minute plus Freischaltgebühr, je nach Standort verschieden; bei Dott und Ryde zeigt die App den Preis vor dem Entsperren.',
     },
     {
       question: 'Wo stelle ich den E-Scooter am Hauptbahnhof ab?',
@@ -145,6 +168,15 @@ const guide: Guide = {
     { title: 'VRB: Beförderungsbedingungen, Stand 1. Juli 2026 (PDF)', url: 'https://www.vrb-online.de/files/media/tickets/tarifbestimmungen-befoerderungsbedingungen/vrb-befoerderungsbedingungen.pdf' },
     { title: 'VRB: Fahrradtageskarte', url: 'https://www.vrb-online.de/de/tickets/ticketuebersicht/details/fahrradtageskarte' },
     { title: 'BSVG: Häufige Fragen', url: 'https://www.bsvg.net/faq' },
+    { title: 'Voi: Start in Braunschweig (27. März 2025, PDF)', url: 'https://storage.mfn.se/b4f30dee-4cbc-4ca6-bee9-f80beae58514/e-scooter-anbieter-voi-startet-in-braunschweig.pdf' },
+    { title: 'Voi: Tarif und Zonen für Braunschweig (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/364/netex.xml' },
+    { title: 'Bolt in Braunschweig', url: 'https://bolt.eu/de-de/cities/braunschweig/' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Ryde: Standorte', url: 'https://www.ryde-technology.com/Locations' },
+    { title: 'Ryde: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://www.ryde-technology.com/terms-conditions-germany' },
     { title: 'VELOLEO (nextbike): Tarife', url: 'https://www.nextbike.de/veloleo/de/' },
     { title: 'VELOLEO: CAMPUSbike', url: 'https://www.nextbike.de/veloleo/de/campusbike/' },
   ],
