@@ -26,6 +26,8 @@ class FlatMarkerMap(
     /** The bars over the foot and sides: the safe area's there, unless a cutout's is in it. */
     override val bars: MapInsets = MapInsets(top = 0.0, left = safeLeft, bottom = safeBottom, right = safeRight),
     override val cutouts: List<ScreenRect> = emptyList(),
+    /** The way the camera faces, which turns the plane the dots are spread in; the map itself is drawn north up. */
+    override val heading: Double = 0.0,
 ) : MarkerMap, ScooterMapProjection {
     override val safeArea = MapInsets(top = safeTop, left = safeLeft, bottom = safeBottom, right = safeRight)
 
@@ -34,7 +36,6 @@ class FlatMarkerMap(
     private val middle = MapPoint(centre)
 
     override val projection: ScooterMapProjection get() = this
-    override val heading: Double = 0.0
     override val bounds = ScreenRect(0.0, 0.0, width, height)
     override val centerCoordinate: GeoPoint get() = centre
     override val visibleMapRect = MapRect(middle.x - width / 2 * perPoint, middle.y - height / 2 * perPoint, width * perPoint, height * perPoint)
