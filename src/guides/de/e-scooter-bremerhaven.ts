@@ -79,8 +79,9 @@ const guide: Guide = {
         },
         '**Hauptbahnhof und Hochschule:** Züge der Deutschen Bahn und der EVB fahren laut Hochschule Bremerhaven regelmässig von Bremen und Hamburg nach Bremerhaven. Vom Hauptbahnhof fahren mehrere Buslinien in 3 bis 5 Minuten zur Hochschule, An der Karlstadt 8. Einen eigenen E-Scooter nimmst du in diese Busse nicht mit.',
         '**Leih-Scooter** lassen sich nicht zusammenklappen: Beende die Fahrt vor der Haltestelle und miete am Ziel einen neuen.',
-        '**Weserfähre nach Nordenham:** Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif (Stand April 2026) die Preisstufe B; den Preis für die Fähre zahlst du laut VBN zusätzlich. Anleger, Fahrplan und ob dein eigener E-Scooter mit darf, erfragst du vor der Fahrt beim Betreiber der Fähre.',
+        '**Weserfähre nach Nordenham:** Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif (Stand April 2026) die Preisstufe B; den Preis für die Fähre zahlst du laut VBN zusätzlich. Über den Winter legt die Fähre laut ihrem Betreiber seit 2. November 2026 in Bremerhaven am Schlepperpier auf Höhe des Lohmanndeichs an; sie fährt dort zur vollen Stunde ab, in Blexen zur halben, und nimmt nur Fussgänger und Radfahrer mit. Ob dein eigener E-Scooter mit auf die Fähre darf, frag vor der Fahrt nach.',
         'Mit einem Leih-Scooter bleibst du in Dotts Gebiet, das die App auf ihrer Karte zeigt: Verlässt du es, kann Dott ihn abschalten.',
+        '**Fernzüge:** In ICE, IC und den anderen Fernzügen nimmt die Deutsche Bahn laut ihren FAQ (Stand November 2026) einen E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; aufgeklappt gilt er als Traglast und darf nur mit, wenn er sicher untergebracht ist. Den eingebauten Akku darfst du unterwegs weder ausbauen noch laden noch als Powerbank nutzen.',
       ],
     },
     {
@@ -139,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem E-Scooter auf die Weserfähre nach Nordenham?',
-      answer: 'Ob ein eigener mitdarf und wo die Fähre anlegt, frag vor der Fahrt beim Betreiber nach. Mit einem Leih-Scooter bleibst du in Dotts Gebiet aus der App: Verlässt du es, kann Dott ihn abschalten. Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif die Preisstufe B, den Fährpreis zahlst du zusätzlich.',
+      answer: 'Ob ein eigener mitdarf, frag vor der Fahrt nach: Derzeit nimmt die Fähre laut Betreiber nur Fussgänger und Radfahrer mit, und in Bremerhaven legt sie über den Winter am Schlepperpier auf Höhe des Lohmanndeichs an. Mit einem Leih-Scooter bleibst du in Dotts Gebiet aus der App: Verlässt du es, kann Dott ihn abschalten. Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif die Preisstufe B, den Fährpreis zahlst du zusätzlich.',
     },
   ],
   sources: [
@@ -147,11 +148,13 @@ const guide: Guide = {
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'VBN: Tarifbestimmungen und Beförderungsbedingungen, gültig ab 1. Januar 2026, Stand 23. April 2026 (PDF)', url: 'https://www.vbn.de/fileadmin/content/_Tickets/Tarifbestimmungen/Tarifbestimmungen_und_Befoerderungsbedingungen_2026.pdf' },
     { title: 'Hochschule Bremerhaven: Kontakt, Campusplan und Anreise (2. November 2026)', url: 'https://www.hs-bremerhaven.de/kontakt' },
+    { title: 'Weserfähre: Umzug des Anlegers in Bremerhaven und Sonderfahrplan (ab 2. November 2026)', url: 'https://weserfaehre.de/startseite' },
     { title: 'Landesamt GeoInformation Bremen: WFS ATKIS Verwaltungsgrenzen Land Bremen, Ortsteile Bremerhaven (CC BY 4.0)', url: 'https://geodienste.bremen.de/wfs_verwaltungsgrenzen' },
     { title: 'BKG: WFS Verwaltungsgebiete 1:250 000. © BKG (2026) dl-de/by-2-0, Datenquellen: https://sg.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg_nuts.pdf', url: 'https://sg.geodatenzentrum.de/wfs_vg250' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV)', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Bussgeldkatalog-Verordnung, Anlage', url: 'https://www.gesetze-im-internet.de/bkatv_2013/anlage.html' },
     { title: 'Kraftfahrt-Bundesamt: Bundeseinheitlicher Tatbestandskatalog (Datenbank, Stand 8. Oktober 2026)', url: 'https://www.kba.de/DE/Themen/ZentraleRegister/FAER/BT_KAT_OWI/btkat_node.html' },
+    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],
 };
 
