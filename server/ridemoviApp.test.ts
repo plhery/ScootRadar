@@ -6,7 +6,7 @@ import areas from '../data/ridemovi-areas.json';
 import { haversineM, boundsContainPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
-import { collectRidemoviArea, parseRidemoviReply, RIDEMOVI_FORBIDDEN_RETRY_MS, RidemoviClient, withRidemoviAppCollectors } from './ridemoviApp';
+import { collectRidemoviArea, parseRidemoviReply, RIDEMOVI_FORBIDDEN_RETRY_MS, RIDEMOVI_PAGE, RidemoviClient, withRidemoviAppCollectors } from './ridemoviApp';
 
 const lat = 51.0504, lng = 13.7373;
 const bike = (id = 1, offset = 0.01) => ({ id, lat: lat + offset, lon: lng, cityId: 86, bikeType: 'SN1',
@@ -18,19 +18,30 @@ const directories: string[] = [];
 afterEach(async () => { await Promise.all(directories.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
 
 describe('RideMovi response coverage', () => {
-  it('keeps position, battery and range, and certifies only up to the last scooter even below the cap', () => {
+  it('keeps position, battery and range, and certifies the 2 km radius below a full page', () => {
     const result = parseRidemoviReply(reply(), 86, lat, lng);
     expect(result.scooters).toEqual([{ id: '1', lat: lat + 0.01, lng, battery: 73, range_m: 18256 }]);
-    expect(result.completeM).toBeCloseTo(bike().distance * 0.99 - 5);
-    expect(result.completeM).toBeLessThan(1200);
+    expect(result.completeM).toBe(1_975);
     expect(JSON.stringify(result)).not.toContain('private');
+  });
+
+  it('certifies a full page only up to its last scooter, and never beyond the radius', () => {
+    const page = (step: number) => reply(Array.from({ length: RIDEMOVI_PAGE }, (_, i) => bike(i + 1, (i + 1) * step)));
+    const near = parseRidemoviReply(page(0.0002), 86, lat, lng);
+    expect(near.completeM).toBeCloseTo(haversineM(lat, lng, lat + 0.006, lng) * 0.99 - 5);
+    expect(parseRidemoviReply(page(0.001), 86, lat, lng).completeM).toBe(1_975);
+  });
+
+  it('reads a hidden, empty list as no scooter within the radius (SCOOTRADAR-CACHE-69)', () => {
+    expect(parseRidemoviReply({ code: 1000, data: { showNearbyBikes: false, nearbyBikes: [] } }, 86, lat, lng))
+      .toEqual({ scooters: [], completeM: 1_975 });
   });
 
   it.each([
     { code: 15000, data: {} }, reply([]), { code: 1000, data: { nearbyBikes: [bike()] } },
-    { code: 1000, data: { showNearbyBikes: false, nearbyBikes: [] } },
+    { code: 1000, data: { showNearbyBikes: false, nearbyBikes: [bike()] } }, { code: 1000, data: { showNearbyBikes: false } },
     reply(Array.from({ length: 31 }, (_, i) => bike(i + 1, (i + 1) / 1000))),
-  ])('rejects auth, hidden, empty and oversized maps instead of publishing an empty city', value => {
+  ])('rejects auth, contradictory, missing and oversized maps', value => {
     expect(() => parseRidemoviReply(value, 86, lat, lng)).toThrow();
   });
 
@@ -44,7 +55,7 @@ describe('RideMovi response coverage', () => {
   it('rejects unsorted lists and duplicate identities, and does not turn a pile into complete coverage', () => {
     expect(() => parseRidemoviReply(reply([bike(1, 0.02), bike(2)]), 86, lat, lng)).toThrow('nearest first');
     expect(() => parseRidemoviReply(reply([bike(), bike()]), 86, lat, lng)).toThrow('repeats');
-    expect(() => parseRidemoviReply(reply([bike(1, 0)]), 86, lat, lng)).toThrow('clustered');
+    expect(() => parseRidemoviReply(reply(Array.from({ length: RIDEMOVI_PAGE }, (_, i) => bike(i + 1, 0))), 86, lat, lng)).toThrow('clustered');
   });
 
   it('leaves missing or implausible battery and range unknown', () => {
@@ -184,6 +195,8 @@ describe('RideMovi collector registration', () => {
       range_m: 18000, deep_link: null, distance_m: null }]);
     expect(result.observedAt).toBeLessThanOrEqual(Date.now());
     expect(nearest.mock.calls[0][0]).toBe(86);
+    nearest.mockResolvedValue({ completeM: 100_000, scooters: [] });
+    await expect(collectRidemoviArea(system, [], { nearest })).rejects.toThrow('no scooter anywhere');
     nearest.mockRejectedValue(new Error('expired login'));
     await expect(collectRidemoviArea(system, [], { nearest })).rejects.toThrow('expired login');
   });

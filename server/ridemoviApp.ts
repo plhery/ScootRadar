@@ -12,6 +12,7 @@ import { Pacer, SweepProgress } from './sweeps';
 const ORIGIN = 'https://api.ridemoviapp.com';
 const PATH = '/bike/nearby?ridingStatus=0&vehicleType=escooter&areaLimit=1';
 export const RIDEMOVI_PAGE = 30;
+export const RIDEMOVI_RADIUS_M = 2_000;
 const RETRY_MS = 60_000;
 // After two production sweeps (68 and 59 reads), the map alone returned an AWS HTML 403,
 // while the same session still worked from the Mac and public metadata worked from Netcup.
@@ -26,14 +27,20 @@ const object = (value: unknown): Record<string, unknown> | undefined =>
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
 
 /**
- * The nearest scooters, including replies of 29: fewer than 30 does NOT establish a search
- * radius. Only the distance to the last returned scooter certifies coverage. An empty reply
- * cannot certify any area and fails the sweep, preserving the previous snapshot.
+ * The nearest scooters, at most 30 and none farther than 2 km (RideMovi's distance). A full page
+ * vouches for every scooter nearer than its last one; fewer than 30, or none, for the whole 2 km.
+ * On 5 November 2026 a scooter 1,990 m from the point asked was listed and at 2,010 m it was not,
+ * every underfilled reply of a grid over Dresden ended between 1,915 and 1,997 m, and a point with
+ * no scooter within 2 km got `showNearbyBikes: false` and an empty list, as one far outside the
+ * city did. That empty reply had failed every sweep since about 09:30 UTC: Dresden's eastern
+ * edge had no scooter left within 2 km of it (SCOOTRADAR-CACHE-69).
  */
 export function parseRidemoviReply(payload: unknown, cityId: number, lat: number, lng: number) {
   const envelope = object(payload), data = object(envelope?.data), bikes = data?.nearbyBikes;
-  if (envelope?.code !== 1000 || data?.showNearbyBikes !== true || !Array.isArray(bikes) ||
-    !bikes.length || bikes.length > RIDEMOVI_PAGE) throw new Error('RideMovi map cannot establish nearby coverage');
+  // Hidden with an empty list is RideMovi's answer where no scooter is within its radius.
+  const none = data?.showNearbyBikes === false && Array.isArray(bikes) && !bikes.length;
+  if (envelope?.code !== 1000 || !Array.isArray(bikes) || bikes.length > RIDEMOVI_PAGE ||
+    !none && (data?.showNearbyBikes !== true || !bikes.length)) throw new Error('RideMovi map cannot establish nearby coverage');
   const scooters: RidemoviScooter[] = [], ids = new Set<number>();
   let farthest = 0;
   for (const entry of bikes) {
@@ -55,9 +62,9 @@ export function parseRidemoviReply(payload: unknown, cityId: number, lat: number
       battery: finite(battery) && battery >= 0 && battery <= 100 ? battery : null,
       range_m: finite(range) && range >= 0 && range <= 200 ? Math.round(range * 1000) : null });
   }
-  // Distances differ from haversine by about 0.3%. Keep a margin, and never certify more than
-  // 5 km even if a sparse reply reaches farther. Tied piles cannot establish complete coverage.
-  const completeM = Math.max(0, Math.min(farthest, 5_000) * 0.99 - 5);
+  // Distances differ from haversine by about 0.3%: keep a margin. Tied piles cannot establish coverage.
+  const reach = bikes.length < RIDEMOVI_PAGE ? RIDEMOVI_RADIUS_M : Math.min(farthest, RIDEMOVI_RADIUS_M);
+  const completeM = Math.max(0, reach * 0.99 - 5);
   if (!completeM) throw new Error('RideMovi scooters are too tightly clustered to certify coverage');
   return { scooters, completeM };
 }
@@ -154,7 +161,8 @@ export class RidemoviClient {
   }
 }
 
-const MAP: NearestMap = { name: 'RideMovi', page: RIDEMOVI_PAGE, reachM: 5_000, cellM: 3_000 };
+// A first cell's middle reaches its corners: half its 2.5 km diagonal is 1.77 km, within the 1.975 km a reply vouches for.
+const MAP: NearestMap = { name: 'RideMovi', page: RIDEMOVI_PAGE, reachM: RIDEMOVI_RADIUS_M, cellM: 2_500 };
 const AREAS = new Map(areaCatalog.areas.map(area => [area.id, { cityId: area.cityId, rings: area.rings as Ring[] }]));
 const LIMITS: SweepLimits = { requests: 300, milliseconds: 15 * 60_000, retryMs: 3_000 };
 type Position = { lat: number; lng: number };
@@ -173,6 +181,8 @@ export async function collectRidemoviArea(system: RegionalScooterSystem, previou
   const sweep = await sweepNearestArea(MAP, { nearest: (lat, lng) => api.nearest(area.cityId, lat, lng) },
     area.rings, previous, limits, found, part => progress.done(part));
   if (sweep.piles) throw new Error('RideMovi sweep has unresolved scooter clusters');
+  // Empty replies cover their radius, so a map hidden everywhere would read as an empty city.
+  if (!found.size) throw new Error('RideMovi sweep found no scooter anywhere');
   console.log(JSON.stringify({ event: 'ridemovi_sweep', system: system.id, scooters: sweep.scooters.length,
     requests: sweep.requests, planned: sweep.planned, seconds: Math.round((Date.now() - sweep.startedAt) / 1000) }));
   return { observedAt: sweep.startedAt, stale: false, vehicles: published(sweep.scooters) };

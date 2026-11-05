@@ -51,14 +51,27 @@ and Worker configuration. Replacing the file recovers without a restart.
 `X-Vivi-Longitude`. Successful envelopes use code `1000` and
 `data.showNearbyBikes: true`. The array is `data.nearbyBikes`.
 
-The endpoint returns at most **30 nearest scooters**. Changing `areaLimit`
-from 1 through 100 to 1000 left those scooters unchanged: that parameter
-controls parking/restriction arrays. A western view held 29 scooters while
-other scooters existed nearby, so **an underfilled reply is not a complete
-city or evidence of a fixed search radius**. Each reply certifies only as far
-as its last scooter, with a 1% plus 5 m margin and an upper bound of 5 km.
-An empty, hidden, malformed, unsorted, wrong-city or unresolved clustered
-reply fails the sweep, rather than establishing an empty city.
+The endpoint returns at most **30 nearest scooters**, none farther than
+**2 km**. Changing `areaLimit` from 1 through 100 to 1000 left those scooters
+unchanged: that parameter controls parking/restriction arrays. On 5 November
+2026 a scooter 1,990 m from the point asked was listed and at 2,010 m it was
+not, and every underfilled reply of a 3 km grid over Dresden ended between
+1,915 and 1,997 m. A point with no scooter within 2 km gets code `1000`,
+`showNearbyBikes: false` and an empty `nearbyBikes`, as a point far outside
+the city does. A full page certifies only as far as its last scooter; a reply
+of fewer than 30, or that empty one, certifies the whole radius. Both keep a
+1% plus 5 m margin (1,975 m at most). A hidden reply that still lists
+scooters, a visible empty one, a malformed, unsorted, wrong-city or
+unresolved clustered reply fails the sweep, and so does a sweep that finds
+no scooter at all, so a map hidden everywhere cannot publish an empty city.
+
+Until that day the collector read every reply as certifying only up to its
+last scooter and failed on an empty one. From about 09:30 UTC Dresden's
+eastern edge (51.031, 13.843) had no scooter within 2 km, every sweep failed
+there, and the feed expired at 11:45 (SCOOTRADAR-CACHE-69). Sweeps start from
+2.5 km cells, whose middles reach their corners within the certified radius.
+Replayed on the last good sweep's 691 positions, a cold sweep takes 66
+requests and a warm one 53.
 
 The reviewed outline is `Dresden_OPS`, area `1286`, city `86`. Its polygon was
 returned anonymously by
