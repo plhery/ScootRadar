@@ -63,6 +63,7 @@ import com.plhery.scootradar.map.ScooterMapView
 import com.plhery.scootradar.map.testController
 import com.plhery.scootradar.map.zurichStart
 import com.plhery.scootradar.ui.dock.DOCK_TAG
+import com.plhery.scootradar.ui.search.SEARCH_BAR_TAG
 import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import java.io.File
@@ -131,8 +132,9 @@ class SearchAndLanguageTest {
         compose.waitUntil(10_000) { controller.viewport.value.contains(bern) }
         compose.waitForIdle()
         assertEquals("Bahnhofplatz", controller.searchedDestination.value?.title)
-        // The bar says where the map is now.
-        compose.onNodeWithText("Bahnhofplatz", useUnmergedTree = true).assertExists()
+        // The bar says where the map is now: the place's name drawn in it. The bar has that name as its own text too,
+        // for Voice Access (ae392468), so the drawn one is the one inside it.
+        compose.onNode(hasText("Bahnhofplatz") and hasAnyAncestor(hasTestTag(SEARCH_BAR_TAG)), useUnmergedTree = true).assertExists()
         screenshot("search-chosen")
     }
 
