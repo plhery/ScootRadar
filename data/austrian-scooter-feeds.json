@@ -240,6 +240,25 @@
       ]
     },
     {
+      "id": "bird_at_app_innsbruck",
+      "country": "AT",
+      "provider": "bird",
+      "city": "Innsbruck",
+      "timeZone": "Europe/Vienna",
+      "center": [
+        47.2651,
+        11.3988
+      ],
+      "bounds": {
+        "south": 47.24627,
+        "north": 47.2905,
+        "west": 11.3238,
+        "east": 11.44797
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "3061996e-a695-43d1-ba1e-d9e240fc9d3a"
+    },
+    {
       "id": "lime_at_app_innsbruck",
       "provider": "lime",
       "city": "Innsbruck",

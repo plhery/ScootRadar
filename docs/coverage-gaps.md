@@ -595,6 +595,10 @@ regions. The [Voi rider map](voi-app-map.md) now supplies Vienna and Innsbruck w
 and Lime's [rider map](lime-app-map.md) Vienna, Linz, Innsbruck, Klagenfurt and Wels
 since 25 October 2026, and Feldkirchen bei Graz, Klosterneuburg and Korneuburg
 since 28 October; Lime's Salzburg region held no scooter on 25 October.
+Bird publishes no feed in Austria: its scooters in Innsbruck, about 180, come
+from its [rider map](bird-app-map.md#the-rest-of-the-world-november-2026)
+since 5 November 2026, while its 31 in Vienna stood still for 6.4 hours that
+day and stay off the map.
 
 Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.

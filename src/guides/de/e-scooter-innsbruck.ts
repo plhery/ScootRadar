@@ -6,23 +6,23 @@ const guide: Guide = {
   topic: 'innsbruck',
   name: 'E-Scooter Innsbruck: Anbieter, Abstellen, Regeln',
   title: 'E-Scooter Innsbruck 2026: Anbieter, Abstellen, Regeln',
-  description: 'E-Scooter Innsbruck: Dott, Lime und Voi, was eine Fahrt kostet, die 34 Abstellflächen in der Sperrzone und was im Hofgarten, in Tram und Bus gilt.',
-  headline: 'E-Scooter Innsbruck: Dott, Lime und Voi, Preise, die Sperrzone mit 34 Abstellflächen und die Regeln seit Mai 2026',
-  lede: 'Einen E-Scooter in Innsbruck leihst du im Oktober 2026 bei Dott, Lime oder Voi. Voi verlangt 0,25 € pro Minute und nichts fürs Entsperren (Stand November 2026). In der Innenstadt und in Teilen von Wilten und Pradl beendest du die Fahrt seit September 2024 nur an einer gekennzeichneten Abstellfläche; im Juli 2024 nannte die Stadt 34. Gefahren wird wie mit dem Rad, nie auf dem Gehsteig, und laut Vereinbarung mit der Stadt fahren Leih-Scooter höchstens 20 km/h, in Fussgängerzonen, die für Räder offen sind, 8 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
+  description: 'E-Scooter Innsbruck: Bird, Dott, Lime und Voi, was eine Fahrt kostet, die 34 Abstellflächen in der Sperrzone und was im Hofgarten, in Tram und Bus gilt.',
+  headline: 'E-Scooter Innsbruck: Bird, Dott, Lime und Voi, Preise, die Sperrzone mit 34 Abstellflächen und die Regeln seit Mai 2026',
+  lede: 'Einen E-Scooter in Innsbruck leihst du im November 2026 bei Bird, Dott, Lime oder Voi. Voi verlangt 0,25 € pro Minute und nichts fürs Entsperren (Stand November 2026). In der Innenstadt und in Teilen von Wilten und Pradl beendest du die Fahrt seit September 2024 nur an einer gekennzeichneten Abstellfläche; im Juli 2024 nannte die Stadt 34. Gefahren wird wie mit dem Rad, nie auf dem Gehsteig, und laut Vereinbarung mit der Stadt fahren Leih-Scooter höchstens 20 km/h, in Fussgängerzonen, die für Räder offen sind, 8 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-10-28',
-  updated: '2026-10-28',
+  updated: '2026-11-05',
   city: 'at:Innsbruck',
   sections: [
     {
-      heading: 'E-Scooter mieten in Innsbruck: Dott, Lime und Voi',
+      heading: 'E-Scooter mieten in Innsbruck: Bird, Dott, Lime und Voi',
       blocks: [
         'Die Regeln für Leih-Scooter stehen in einer Vereinbarung der Stadt mit den Betreibern, nicht in einem Gesetz. Der Stadtsenat hat sie einstimmig beschlossen (Presseaussendung vom 17. Juli 2024); sie gilt laut Stadt auch für neue Anbieter. Schon im September 2020 schrieb die Stadt, ihre damalige Vereinbarung sei freiwillig, «da die Stadt Innsbruck den Betrieb nicht verbieten kann».',
-        'Lime, «Dott (ehemals Tier)» und Voi äusserten sich am 19. Oktober 2026 in MeinBezirk zu ihren Scootern in Innsbruck. Dott führt auf seiner Seite neben Innsbruck auch Völs und Thaur; Bolt bietet in Innsbruck laut eigener Seite nur Autofahrten an (beides Stand November 2026). Höchstens 225 Scooter je Betreiber erlaubt der Stadtsenat seit Mai 2021; laut MeinBezirk (Juli 2024) und ORF Tirol (August 2024) gilt die Grenze auch in der Vereinbarung von 2024.',
-        'Am Mittwoch, 28. Oktober 2026, gegen 19.50 Uhr waren in und um Innsbruck rund 170 Scooter von Dott und 180 von Voi frei, dazu rund 270 von Lime nach der letzten Zählung. Wo gerade einer steht, siehst du auf der [Karte von Innsbruck](map:at:Innsbruck).',
+        'Lime, «Dott (ehemals Tier)» und Voi äusserten sich am 19. Oktober 2026 in MeinBezirk zu ihren Scootern in Innsbruck. Auch Bird vermietet Scooter in der Stadt: rund 180 zeigte Birds App am 5. November 2026, und in sechseinhalb Stunden wechselte ein Viertel davon den Platz. Dott führt auf seiner Seite neben Innsbruck auch Völs und Thaur; Bolt bietet in Innsbruck laut eigener Seite nur Autofahrten an (beides Stand November 2026). Höchstens 225 Scooter je Betreiber erlaubt der Stadtsenat seit Mai 2021; laut MeinBezirk (Juli 2024) und ORF Tirol (August 2024) gilt die Grenze auch in der Vereinbarung von 2024.',
+        'Am Mittwoch, 28. Oktober 2026, gegen 19.50 Uhr waren in und um Innsbruck rund 170 Scooter von Dott und 180 von Voi frei, dazu rund 270 von Lime nach der letzten Zählung. Birds Scooter zeigt die Karte seit dem 5. November 2026. Wo gerade einer steht, siehst du auf der [Karte von Innsbruck](map:at:Innsbruck).',
         {
           steps: [
-            'Den nächsten Scooter auf der [Live-Karte von Innsbruck](map:at:Innsbruck) suchen und die App von Dott, Lime oder Voi öffnen.',
-            'Registrieren und ein Zahlungsmittel hinterlegen. Bei Dott musst du laut seinen österreichischen Bedingungen mindestens 18 sein; was bei Lime und Voi gilt, steht in ihrer App.',
+            'Den nächsten Scooter auf der [Live-Karte von Innsbruck](map:at:Innsbruck) suchen und die App von Bird, Dott, Lime oder Voi öffnen.',
+            'Registrieren und ein Zahlungsmittel hinterlegen. Bei Dott musst du laut seinen österreichischen Bedingungen mindestens 18 sein; was bei Bird, Lime und Voi gilt, steht in ihrer App.',
             'QR-Code scannen, losfahren und die Fahrt in der Sperrzone an einer Abstellfläche beenden. Jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
           ],
         },
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Innsbruck?',
       blocks: [
-        'Voi verlangt in Innsbruck 0,25 € pro Minute und nichts fürs Entsperren; zehn Minuten kosten also 2,50 € (Stand November 2026). Bei Dott und Lime siehst du den Preis in der App vor dem Start; laut Dotts österreichischen Bedingungen (Stand 23. September 2025) kann zur Gebühr nach Fahrzeit eine Entsperrgebühr kommen.',
+        'Voi verlangt in Innsbruck 0,25 € pro Minute und nichts fürs Entsperren; zehn Minuten kosten also 2,50 € (Stand November 2026). Bei Bird, Dott und Lime siehst du den Preis in der App vor dem Start; laut Dotts österreichischen Bedingungen (Stand 23. September 2025) kann zur Gebühr nach Fahrzeit eine Entsperrgebühr kommen.',
         'Teuer wird falsches Abstellen. Hältst du dich nicht an Dotts Abstellregeln, darf Dott laut seinen Bedingungen bis zu 300 € fürs Holen des Scooters verlangen; zahlt Dott eine Strafe für dich, kommen 50 € Bearbeitungsgebühr dazu.',
       ],
     },
@@ -109,7 +109,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Innsbruck?',
-      answer: 'Dott (früher Tier), Lime und Voi: Alle drei äusserten sich im Oktober 2026 in MeinBezirk zu ihren Scootern in Innsbruck. Laut ORF Tirol (August 2024) darf jeder höchstens 225 Scooter anbieten. Bolt bietet in Innsbruck nur Autofahrten an.',
+      answer: 'Dott (früher Tier), Lime und Voi: Alle drei äusserten sich im Oktober 2026 in MeinBezirk zu ihren Scootern in Innsbruck. Dazu kommt Bird, dessen App am 5. November 2026 rund 180 Scooter in der Stadt zeigte. Laut ORF Tirol (August 2024) darf jeder höchstens 225 Scooter anbieten. Bolt bietet in Innsbruck nur Autofahrten an.',
     },
     {
       question: 'Wo darf ich in der Innsbrucker Innenstadt einen Leih-Scooter abstellen?',

@@ -2,7 +2,7 @@
 
 Since 28 October 2026 the Node cache reads Bird's rider map, signed in, where
 Bird or Spin publishes no feed ([`server/birdApp.ts`](../server/birdApp.ts)),
-43 areas since 5 November. Bird's scooters in the United States: Austin,
+44 areas since 5 November. Bird's scooters in the United States: Austin,
 Bloomington, IN, Charlotte, Coral Gables, Harrisonburg, Jacksonville,
 Knoxville, Long Beach, Mankato, Mesa, Ogden, Sacramento, Scottsdale, Wilmington, NC,
 Winona and Yonkers. Spin's: Auburn, AL, Baton Rouge, Canton, OH, Greeley,
@@ -11,7 +11,7 @@ Santa Monica. Bird's in Canada:
 Brampton, Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat,
 Mississauga, Okotoks, Oshawa, Penticton, Pickering, Spruce Grove (with
 Stony Plain), St. Albert and Vernon. Bird's in Spain: Getafe and Oviedo.
-Bird's in Portugal: Covilhã.
+Bird's in Portugal: Covilhã. Bird's in Austria: Innsbruck.
 The user asked for it on 27
 October 2026, after [the research reader](../scripts/bird-app-map.mjs) had
 shown the map's decoys could be told from real replies. Everything Bird
@@ -55,7 +55,7 @@ about half what it took. An area nobody looks at is swept once a day
 (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
 ten minutes after a day without a sweep. A request keeps an area watched for
 three minutes, and a watched area is swept again as soon as its sweep ends.
-The 43 areas took about 300 requests, so a day's round of them all takes
+The 44 areas took about 300 requests, so a day's round of them all takes
 about 150 of the client's 1,440 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
 cache waits two minutes, while the cache it replaces may still be sweeping.
@@ -111,8 +111,9 @@ session the cache holds.
 | Getafe | 190 | 4 | 120 s | 15:07 UTC, 4 November |
 | Long Beach | 974 | 18 | 510 s | 21:59 UTC, 4 November |
 | Covilhã | 184 | 1 | 30 s | 22:01 UTC, 4 November |
+| Innsbruck | 178 | 2 | 30 s | 17:33 UTC, 5 November |
 
-The last twenty-one were swept with the production code on the research
+The last twenty-two were swept with the production code on the research
 account, a request every 30 seconds, in the ride checks below. The others were swept with the production code on 27 October 2026, the first four a
 request every six seconds, the others at the production pace after Bird's map
 had answered real scooters again at 22:04 UTC: 165 requests in 87 minutes
@@ -360,6 +361,48 @@ candidates were swept whole twice, from 08:30 and 14:55 UTC on 4 November
   feed lists the ridden ones: read at 21:58 and 22:00 UTC, it had 17 of the
   32 scooters that arrived since 15:09, against 86 of the 250 that stayed,
   so the 179 it left out barely moved (15 arrived). Vichy keeps its feed.
+
+### The rest of the world, November 2026
+
+On 5 November 2026 the research account read the area list the same way at
+212 towns in 56 other countries, the three or six largest of each, its
+capital and a few towns where Bird or Spin ran, from 03:33 to 05:27 UTC, and
+then at every town of 50,000 people or more in 26 European countries, from
+Turkey and Britain to Cyprus and Luxembourg, 1,236 towns, from 08:53 to
+17:19 UTC: 1,057 reads, the other towns within 8 km of a point already
+read. They listed 119 new operating areas, 62
+of them more than minor. Two held more than a scooter within 5 km of their
+centres, and were swept whole twice:
+
+| Area | Scooters | Left | Arrived over 150 m away | Added |
+| --- | ---: | ---: | ---: | --- |
+| Innsbruck | 178 → 178 | 45 (25%) | 24 | yes |
+| Vienna | 31 → 31 | 0 | 0 | no |
+
+- **Innsbruck:** Bird's area, unnamed and about 9 km from west to east,
+  holds the city; it was swept at 11:01 and 17:33 UTC (6.5 hours). Bird
+  publishes no feed there. Its scooters are not another operator's under
+  Bird's name: 33 of the 178 stood within 5 m of one of Dott's or Voi's, as
+  scooters sharing the city's marked parking places do, where 8% of Voi's
+  stood that near one of Dott's.
+- **Vienna:** 31 scooters spread one by one across the city, swept at 08:03
+  and 14:26 UTC (6.4 hours), and none moved. The City's 2023 tender went to
+  Bird among others, but by February 2024 only Lime and Voi were left, the
+  [Vienna guide](../src/guides/de/e-scooter-wien.ts) says.
+
+Espoo's and Vantaa's areas held one scooter each. The others held none
+within 5 km of their centres: Munich, Würzburg and Reutlingen, Antwerp,
+Brno (YoYoWay's), Tallinn (Prime's), Budapest (Bird Fly's), Bucharest,
+Helsinki and Leppävaara, ten Finnish towns' areas, most called "Fake Ops
+Area", Nicosia, Limassol, Larnaca, Rhodes (Nemo Scooters'), Istanbul,
+İzmir, Antalya and Adana (Seven Group's), Mexico City, Tijuana, Seoul,
+Riyadh, Jeddah, Doha and its Asian Cup stadiums, San Juan and Skootel's
+Puerto Rico areas, and test areas in Liverpool and Newcastle. London's area
+lists vehicles within 5 km of its centre, but no scooter. A centre read clears 5 km only: unlike the American search, the
+areas larger than that were not swept whole. In Békéscsaba a read listed a
+brand the reader did not know (`9b2c8a73…`): the search stopped for 15
+minutes, as it should, and the research reader accepts the brand since, as
+it does those of two Bird partners, though the cache does not.
 
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.
