@@ -205,7 +205,14 @@ code included, and South Korea was added as a country. Building them showed:
 - **Swing** returns scooters only with `VEHICLE=SCOOTER` and
   `selectedOnly=true` together. Its server reads a box four times as tall and
   as wide as asked, so one request reads a whole town, and asks for a pause
-  between requests in `meta.throttleMs`.
+  between requests in `meta.throttleMs`. It does not compress its answer, even
+  when asked for gzip.
+- **Slow route:** on 5 November 2026 at 06:40 UTC, netcup's route to Swing's
+  servers in Seoul carried about 15 KB a second while the Mac's carried 250, so
+  a town's 500 to 640 KB took 35 to 55 seconds from the cache and 2.5 from the
+  Mac. A request gets 30 seconds for its headers and 90 more for its body; with
+  30 for both, about half the reads failed from 05:30 UTC, as they had from
+  01:06 to 01:38 (SCOOTRADAR-CACHE-67).
 - **Fleet sizes:** a sweep around midnight Korea time found 58,741 Swing
   scooters, 57,338 GCOO, 18,924 Xingxing and 11,365 Kickgoing. Seoul's GCOO
   and Swing fleets are mostly bikes there.

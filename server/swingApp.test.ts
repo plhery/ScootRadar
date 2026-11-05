@@ -151,6 +151,47 @@ describe('Swing client', () => {
     expect(fetch).toHaveBeenCalledTimes(3);
   });
 
+  it('gives the body its own 90 seconds once the headers are in, and says when it ran out', async () => {
+    vi.useFakeTimers({ now });
+    try {
+      const bytes = new TextEncoder().encode(JSON.stringify(payload([vehicle('860000000000001')])));
+      let cancelled = false;
+      const streamed = (stall: boolean) => new Response(new ReadableStream<Uint8Array>({
+        start(stream) {
+          stream.enqueue(bytes.slice(0, 10));
+          if (!stall) setTimeout(() => { stream.enqueue(bytes.slice(10)); stream.close(); }, 60_000);
+        },
+        cancel() { cancelled = true; },
+      }));
+      const fetch = vi.fn<typeof globalThis.fetch>(async () => streamed(false));
+      const client = new SwingClient({ secret, fetch, now: Date.now, intervalMs: 0 });
+      // A minute of body, as netcup's route to Seoul took on 5 November 2026, is read.
+      const slow = client.scooters(bounds);
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect((await slow).scooters).toHaveLength(1);
+
+      fetch.mockImplementationOnce(async () => streamed(true));
+      let settled = false;
+      const stalled = client.scooters({ ...bounds, east: 129.3 }).finally(() => { settled = true; });
+      stalled.catch(() => undefined);
+      await vi.advanceTimersByTimeAsync(89_999);
+      expect(settled).toBe(false);
+      await vi.advanceTimersByTimeAsync(1);
+      await expect(stalled).rejects.toThrow('Swing response timed out');
+      expect(cancelled).toBe(true);
+
+      // The headers keep their 30 seconds.
+      fetch.mockImplementationOnce((_, init) => new Promise((_, reject) =>
+        init?.signal?.addEventListener('abort', () => reject(new Error('aborted')))));
+      const late = client.scooters({ ...bounds, east: 129.4 });
+      late.catch(() => undefined);
+      await vi.advanceTimersByTimeAsync(30_000);
+      await expect(late).rejects.toThrow('Swing request failed or timed out');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('backs off after a 429 and sanitizes failures', async () => {
     let clock = now;
     const fetch = vi.fn<typeof globalThis.fetch>(async () => new Response(null, { status: 429, headers: { 'Retry-After': '300' } }));

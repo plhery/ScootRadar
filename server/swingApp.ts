@@ -19,16 +19,20 @@ const object = (value: unknown): Record<string, unknown> | undefined =>
 
 interface SwingScooter { id: string; vendor: string | null; lat: number; lng: number }
 type TimedScooters = { scooters: SwingScooter[]; at: number };
-interface ClientOptions { secret?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number }
+interface ClientOptions { secret?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; bodyTimeoutMs?: number }
 
-async function jsonBody(response: Response, maxBytes: number): Promise<unknown> {
+/** The body, read until the signal aborts, whether or not the response is tied to it. */
+async function jsonBody(response: Response, maxBytes: number, signal: AbortSignal): Promise<unknown> {
   const reader = response.body?.getReader();
   if (!reader) throw new Error('Swing returned an empty response');
+  const aborted = new Promise<never>((_, reject) => signal.addEventListener('abort', () => reject(signal.reason), { once: true }));
+  aborted.catch(() => undefined);
   const chunks: Uint8Array[] = [];
   let size = 0;
   try {
     for (;;) {
-      const { done, value } = await reader.read();
+      if (signal.aborted) throw signal.reason;
+      const { done, value } = await Promise.race([reader.read(), aborted]);
       if (done) break;
       size += value.byteLength;
       if (size > maxBytes) throw new Error('Swing response exceeds the size limit');
@@ -36,7 +40,7 @@ async function jsonBody(response: Response, maxBytes: number): Promise<unknown> 
     }
   } catch (error) {
     await reader.cancel().catch(() => undefined);
-    throw error;
+    throw signal.aborted ? new Error('Swing response timed out') : error;
   }
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); }
   catch { throw new Error('Swing returned invalid JSON'); }
@@ -100,6 +104,7 @@ export class SwingClient {
   private readonly now: () => number;
   private readonly intervalMs: number;
   private readonly timeoutMs: number;
+  private readonly bodyTimeoutMs: number;
   private nextStart = 0;
   private blockedUntil = 0;
   private readonly cache = new Map<string, { at: number; scooters: Promise<TimedScooters & { read: MapBounds }> }>();
@@ -110,6 +115,10 @@ export class SwingClient {
     this.now = options.now ?? Date.now;
     this.intervalMs = options.intervalMs ?? 1000;
     this.timeoutMs = options.timeoutMs ?? 30_000;
+    // The body has its own time once the headers are in. On 5 November 2026, from 05:30 UTC, netcup's route
+    // to Swing's servers in Seoul carried about 15 KB a second while the Mac's carried 250: a town's
+    // 500 to 640 KB took 35 to 55 seconds, and one 30-second budget for both failed about half the reads (SCOOTRADAR-CACHE-67).
+    this.bodyTimeoutMs = options.bodyTimeoutMs ?? 90_000;
   }
 
   private key(): Buffer {
@@ -149,6 +158,8 @@ export class SwingClient {
     if (this.now() < this.blockedUntil) throw new Error('Swing is temporarily rate limited');
     swingMapRequests.status++;
     const at = this.now();
+    const controller = new AbortController();
+    let timer = setTimeout(() => controller.abort(), this.timeoutMs);
     let response: Response;
     try {
       response = await this.fetch(url, { headers: {
@@ -157,8 +168,9 @@ export class SwingClient {
         'X-SW-APP-VERSION': APP_VERSION, 'X-SW-APP-BUILD-NUMBER': APP_BUILD, 'X-SW-APP-LANGUAGE': 'ko',
         'X-SW-OS-LANGUAGE': 'ko', 'User-Agent': `SWING/${APP_VERSION}`, 'X-SW-APP-TS': String(at),
         'X-SW-OS-FSAN': swingOneTimeCode(key, at), Accept: 'application/json',
-      }, redirect: 'error', signal: AbortSignal.timeout(this.timeoutMs) });
+      }, redirect: 'error', signal: controller.signal });
     } catch { throw new Error('Swing request failed or timed out'); }
+    finally { clearTimeout(timer); }
     if (response.status === 429) {
       const retry = response.headers.get('retry-after');
       const delay = retry && /^\d+$/.test(retry) ? Number(retry) * 1000 : retry ? Date.parse(retry) - this.now() : RETRY_MS;
@@ -168,7 +180,11 @@ export class SwingClient {
       await response.body?.cancel();
       throw new Error(`Swing map HTTP ${response.status}`);
     }
-    const { scooters, read, throttleMs } = parseSwingScooters(await jsonBody(response, 32 * 1024 * 1024), key);
+    timer = setTimeout(() => controller.abort(), this.bodyTimeoutMs);
+    let body: unknown;
+    try { body = await jsonBody(response, 32 * 1024 * 1024, controller.signal); }
+    finally { clearTimeout(timer); }
+    const { scooters, read, throttleMs } = parseSwingScooters(body, key);
     // The next request waits as long after this one as the server asks, up to a minute.
     this.nextStart = Math.max(this.nextStart, at + Math.min(throttleMs, 60_000));
     return { scooters, read, at };
