@@ -349,3 +349,19 @@ remains the dedicated broker token. Startup jobs that expired before the worker
 connected were rejected without refreshing snapshots. The background fill and
 normal client-driven refreshes continue in production; the separate shadow
 sampler and its auto-start have been removed.
+
+## Ryde refused the Mac, 5 November
+
+Ryde's load balancer for `api.ryde.vip` has answered every request from the
+Mac's connection with `403 Forbidden` (`server: awselb/2.0`) since about
+01:07 UTC on 5 November. That includes a plain unauthenticated `GET /`, which
+the cache server gets a 200 for from the same address. Before that, the first
+round had read about 550 maps an hour since 22:00, with one app launch and its
+fence reads for each map. The app now stops on "Please check your network
+connection", so every job expired and the groups it reached (Hannover's) were
+reported (SCOOTRADAR-CACHE-66). Nothing was done to get past the refusal. At
+02:41 UTC the worker LaunchAgent was booted out to pause production, as above.
+The proxy, the native session and `producer/` are untouched. Before resuming
+with `python3 scripts/ryde-bridge/install.py --worker`, confirm that a plain
+request from the Mac is no longer refused, and decide on a lower pace: a
+reawakened first round would read at the same rate.
