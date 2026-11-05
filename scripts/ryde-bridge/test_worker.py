@@ -1,13 +1,16 @@
 """Regression for the quit/claim race, with all app control mocked."""
+import io
 import json
 import os
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+import uuid
 from unittest.mock import patch
-from worker import relaunch,save,wait_interval,query
+from worker import relaunch,save,wait_interval,query,serve
 import time
+import urllib.error
 
 class WorkerTests(unittest.TestCase):
     def test_long_idle_backoff_yields_to_an_operator_stop(self):
@@ -67,5 +70,54 @@ class WorkerTests(unittest.TestCase):
             with patch('worker.subprocess.run',side_effect=run),patch('worker.time.sleep'):
                 relaunch(root,arm)
             self.assertEqual(order,['quit','armed','open'])
+
+def http_error(code):
+    return urllib.error.HTTPError('https://cache.test/internal/ryde/job',code,'',{},io.BytesIO())
+
+class ServeTests(unittest.TestCase):
+    """The worker's loop against a scripted broker and app, on a fake clock."""
+    def run_serve(self, replies, queries, waits_before_stop):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name);(base/'results').mkdir();self.base=base
+            clock=[1000.0];waits=[];self.held=[]
+            def call(config,method,path,value=None):
+                reply=replies.pop(0)
+                if isinstance(reply,Exception):raise reply
+                if reply=='job':return {'version':1,'id':uuid.uuid4().hex,'cityId':43,'latitude':59.744,'longitude':10.205,'radius':1,'expiresAt':clock[0]+120}
+                return reply
+            def run_query(job):
+                outcome=queries.pop(0)
+                if outcome=='refused':
+                    save(base/'upstream-refused.json',{'at':clock[0]+1,'httpStatus':403});raise TimeoutError('No fresh native map within job deadline')
+                if isinstance(outcome,Exception):raise outcome
+                return {'version':1,'id':job['id'],'query':job,'observedAt':clock[0],'coverage':'unknown','scooters':[]}
+            def wait(seconds,stop):
+                status=json.loads((base/'worker-status.json').read_text())
+                if status.get('until'):self.held.append(status['reason'])
+                waits.append(round(seconds));clock[0]+=seconds
+                if len(waits)==waits_before_stop:stop.write_text('{}')
+            with patch('worker.call',side_effect=call),patch('worker.query',side_effect=run_query),patch('worker.relaunch'),\
+                 patch('worker.wait_interval',side_effect=wait),patch('worker.time.time',side_effect=lambda:clock[0]):
+                serve({'url':'https://cache.test','token':'t'*32},base)
+            self.assertEqual(replies,[]);self.assertEqual(queries,[])
+            return waits
+
+    def test_a_deploy_costs_seconds_not_minutes(self):
+        # The job leased before the deploy is unknown to the new cache (400); then the cache does not
+        # answer for a while, and a proxy in between says 502 and 404.
+        replies=['job',http_error(400),urllib.error.URLError('Connection refused'),http_error(502),http_error(404),'job',None]
+        self.assertEqual(self.run_serve(replies,['ok','ok'],5),[0,5,10,20,0])
+
+    def test_a_refusal_holds_the_worker_off_ryde_for_15_minutes_then_30(self):
+        replies=['job',None,'job',None,'job',None]
+        waits=self.run_serve(replies,['refused','refused','ok'],5)
+        # Each refused launch: the failure's minute, then the rest of the hold from the refusal.
+        self.assertEqual(waits,[60,841,60,1741,0]);self.assertEqual(self.held,['RydeRefused','RydeRefused'])
+
+    def test_three_failed_launches_in_a_row_hold_it_as_a_refusal_does(self):
+        timeout=TimeoutError('No fresh native map within job deadline')
+        replies=['job',None,'job',None,'job',None,'job',None]
+        waits=self.run_serve(replies,[timeout,timeout,timeout,'ok'],5)
+        self.assertEqual(waits,[60,60,60,840,0]);self.assertEqual(self.held,['AppFailing'])
 
 if __name__=='__main__':unittest.main()

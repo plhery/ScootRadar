@@ -8,11 +8,25 @@ import subprocess
 import time
 import urllib.request
 import urllib.error
+import http.client
 import uuid
 import math
 import re
 
 ROOT=Path.home()/'.local/share/scootradar/ryde-bridge'
+# Once Ryde refuses the app, or the app fails to bring a map FAILURES_BEFORE_HOLD times in a row, the
+# worker leaves Ryde alone for HOLD, doubling up to HOLD_MAX while it goes on. From 01:07 UTC on
+# 5 November 2026 Ryde's load balancer answered every request from the Mac with 403, the app stopped
+# on "Please check your network connection", and the worker relaunched it every minute or so until
+# it was paused at 02:41.
+HOLD=15*60
+HOLD_MAX=4*3600
+FAILURES_BEFORE_HOLD=3
+# The cache not answering, as while a deploy replaces its container: asked again after BROKER_RETRY,
+# doubling up to BROKER_RETRY_MAX. A flat minute's wait after each failure left the worker idle for
+# two minutes after each deploy.
+BROKER_RETRY=5
+BROKER_RETRY_MAX=60
 
 def save(path, value):
     temp=path.with_suffix('.tmp')
@@ -113,6 +127,76 @@ def call(config, method, path, value=None):
         if len(raw)>4*1024*1024: raise ValueError('Oversized broker reply')
         return json.loads(raw) if raw else None
 
+class BrokerError(Exception):
+    """The cache did not take a request: unreachable, as while a deploy replaces its container, or refusing
+    it. Nothing to do with Ryde or the app, so it never holds the worker off Ryde."""
+    def __init__(self, detail, code=None):
+        super().__init__(detail);self.code=code
+
+def broker(config, method, path, value=None):
+    try: return call(config,method,path,value)
+    except urllib.error.HTTPError as error: raise BrokerError(f'HTTP {error.code}',error.code) from error
+    except (OSError,ValueError,http.client.HTTPException) as error: raise BrokerError(type(error).__name__) from error
+
+def submit(config, result):
+    """Hand the broker a result. It answers 400 for a job it no longer holds, one that expired or was leased
+    before a deploy restarted the cache: the next job is asked for at once, not after a held minute."""
+    try: broker(config,'POST','/internal/ryde/result',result)
+    except BrokerError as error:
+        if error.code!=400: raise
+
+def hold_for(holds):
+    """How long the worker leaves Ryde alone the `holds`-th time in a row: HOLD, doubling up to HOLD_MAX."""
+    return min(HOLD*2**(holds-1),HOLD_MAX)
+
+def refused_after(base, since):
+    """When the producer last saw Ryde refuse the app (producer_addon.note_refusal), if after `since`."""
+    try: at=json.loads((base/'upstream-refused.json').read_text())['at']
+    except (FileNotFoundError,ValueError,KeyError,TypeError): return None
+    return at if type(at) in (int,float) and at>since else None
+
+def serve(config, base):
+    """Takes the broker's jobs until an operator stop."""
+    stop=base/'stop.json'
+    started=last_trigger=time.time()
+    hold_until=0;holds=0;failures=0;retry=BROKER_RETRY;reason=None
+    while not stop.exists():
+        # A refusal counts once its hold is over: one launch's several refused requests are one refusal.
+        refused=refused_after(base,max(hold_until,started))
+        if refused:
+            holds+=1;failures=0;hold_until=refused+hold_for(holds);reason='RydeRefused'
+        if time.time()<hold_until:
+            save(base/'worker-status.json',{'state':'held','reason':reason,'until':hold_until,'at':time.time()})
+            wait_interval(hold_until-time.time(),stop);continue
+        try:
+            job=broker(config,'GET','/internal/ryde/job')
+            retry=BROKER_RETRY
+            if job:
+                validate_job(job)
+                # Result remains private on disk, so a rejected submission can be retried without a new Ryde request.
+                path=base/'results'/f"{job['id']}.json"
+                try:
+                    result=json.loads(path.read_text()) if path.exists() else query(job)
+                    if 'error' in result:raise RuntimeError('Cached native map failed')
+                except Exception:
+                    submit(config,{'version':1,'id':job['id'],'query':job,'error':'worker_failed'})
+                    raise
+                submit(config,result)
+                last_trigger=time.time();failures=0;holds=0
+            elif time.time()-last_trigger>90:
+                relaunch();last_trigger=time.time() # allow due native key renewals
+            save(base/'worker-status.json',{'state':'ready','at':time.time()})
+            wait_interval(0 if job else 2,stop)
+        except BrokerError as error:
+            save(base/'worker-status.json',{'state':'held','reason':'BrokerError','detail':str(error),'at':time.time()})
+            wait_interval(retry,stop);retry=min(retry*2,BROKER_RETRY_MAX)
+        except Exception as error:
+            failures+=1
+            if failures>=FAILURES_BEFORE_HOLD:
+                holds+=1;failures=0;hold_until=time.time()+hold_for(holds);reason='AppFailing'
+            save(base/'worker-status.json',{'state':'held','reason':type(error).__name__,'at':time.time()})
+            wait_interval(60,stop)
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--once',action='store_true');p.add_argument('--stop',action='store_true');p.add_argument('--arm',action='store_true')
     p.add_argument('--city',type=int,default=43);p.add_argument('--lat',type=float,default=59.744);p.add_argument('--lng',type=float,default=10.205);p.add_argument('--radius',type=float,default=10)
@@ -148,29 +232,6 @@ def main():
     if config_path.stat().st_mode & 0o077: raise SystemExit('Worker config must be 0600')
     config=json.loads(config_path.read_text())
     if not config['url'].startswith('https://') or len(config['token'])<32: raise SystemExit('HTTPS and a dedicated token required')
-    last_trigger=time.time()
-    while True:
-        if (base/'stop.json').exists(): return
-        try:
-            job=call(config,'GET','/internal/ryde/job')
-            if job:
-                validate_job(job)
-                # Result remains private on disk, so a rejected submission can be retried without a new Ryde request.
-                path=base/'results'/f"{job['id']}.json"
-                try:
-                    result=json.loads(path.read_text()) if path.exists() else query(job)
-                    if 'error' in result:raise RuntimeError('Cached native map failed')
-                except Exception:
-                    call(config,'POST','/internal/ryde/result',{'version':1,'id':job['id'],'query':job,'error':'worker_failed'})
-                    raise
-                call(config,'POST','/internal/ryde/result',result)
-                last_trigger=time.time()
-            elif time.time()-last_trigger>90:
-                relaunch();last_trigger=time.time() # allow due native key renewals
-            save(base/'worker-status.json',{'state':'ready','at':time.time()})
-            wait_interval(0 if job else 2,base/'stop.json')
-        except Exception as error:
-            save(base/'worker-status.json',{'state':'held','reason':type(error).__name__,'at':time.time()})
-            wait_interval(60,base/'stop.json')
+    serve(config,base)
 
 if __name__=='__main__': main()

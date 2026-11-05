@@ -5,7 +5,7 @@ import json
 import os
 import time
 from pathlib import Path
-from urllib.parse import urlencode, parse_qsl
+from urllib.parse import urlencode, parse_qsl, urlsplit
 from cryptography.hazmat.primitives import serialization
 from native_protocol import LOGIN, READS, BridgeTrial, MAP, ROTATE, origin_path, private_json, verified_form, success
 from bridge_crypto import decrypt_envelope, thumbprint, public_key
@@ -13,6 +13,8 @@ from bridge_crypto import decrypt_envelope, thumbprint, public_key
 ROOT = Path(os.environ['RYDE_PRODUCER_ROOT'])
 FENCES = {'/appRyde/getCityFences', '/appRyde/getFencesInfo'}
 READS.update(FENCES)
+# Ryde's load balancer refusing the app's connection, whatever it asked.
+REFUSED = {403, 429}
 
 class Producer(BridgeTrial):
     def status(self, phase=None):
@@ -150,7 +152,17 @@ class Producer(BridgeTrial):
             if self.pending==job['id']: self.pending=None
             self.paused=True;self.event('native-transport-failed')
 
+    def note_refusal(self, flow):
+        """Kept for the worker, which then leaves Ryde alone instead of relaunching the app every minute
+        (worker.refused_after). From 01:07 UTC on 5 November 2026 Ryde's load balancer answered every
+        request from the Mac with 403, and the app stopped on its network error."""
+        if flow.response is None or flow.response.status_code not in REFUSED: return
+        if urlsplit(flow.request.url).hostname!='api.ryde.vip': return
+        private_json(ROOT/'upstream-refused.json',{'at':time.time(),'httpStatus':flow.response.status_code},replace=True)
+        self.event('upstream-refused',httpStatus=flow.response.status_code,path=urlsplit(flow.request.url).path[:80])
+
     def response(self, flow):
+        self.note_refusal(flow)
         if origin_path(flow)==LOGIN and self.stage in {'needs-sign-in','native-restored'}:
             reply=json.loads(flow.response.content)
             if success(flow,reply):

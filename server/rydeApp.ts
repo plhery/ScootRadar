@@ -136,7 +136,7 @@ export function withRydeAppCollectors(feeds: CollectableScooterFeed[], broker: R
     const system=regions.get(feed.id);if(!system || (!selected.has('*') && !selected.has(system.rydeAppArea!)))return feed;
     const area=byArea.get(system.rydeAppArea!);if(!area)throw new Error('Missing Ryde market geometry');
     const excludeBounds=systems.filter(s=>s.country===area.country && s.provider==='ryde' && !s.rydeAppArea).flatMap(s=>s.areas?.map(a=>a.bounds) ?? [s.bounds]);
-    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs,watchMs:2*60_000,
+    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs,watchMs:2*60_000,worker:broker,
       collect:()=>collectRydeArea({...area,tiles:system.rydeMapTiles,excludeBounds},broker,productionPilot)};
   });
 }

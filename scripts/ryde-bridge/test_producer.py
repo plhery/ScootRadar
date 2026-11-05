@@ -120,4 +120,15 @@ class ProducerTests(unittest.TestCase):
         self.producer.request(f);f.response=Response.make(200,json.dumps({'status':200,'key':json.dumps(encrypt_envelope(native.public_key(),b'{}'))}).encode());self.producer.response(f)
         self.assertEqual(self.producer.stage,'needs-sign-in');self.assertFalse(self.producer.bound)
 
+    def test_a_refused_connection_is_kept_for_the_worker_without_holding_the_session(self):
+        f=self.flow('/appRyde/getAppKeyInfo')
+        f.response=Response.make(403,b'<html><head><title>403 Forbidden</title></head></html>',{'server':'awselb/2.0','content-type':'text/html'})
+        self.producer.response(f)
+        refused=json.loads((self.root/'upstream-refused.json').read_text())
+        self.assertEqual(set(refused),{'at','httpStatus'});self.assertEqual(refused['httpStatus'],403)
+        self.assertAlmostEqual(refused['at'],time.time(),delta=5);self.assertFalse(self.producer.paused)
+        (self.root/'upstream-refused.json').unlink()
+        self.producer.response(self.flow('/appRyde/getUserInfo'))
+        self.assertFalse((self.root/'upstream-refused.json').exists())
+
 if __name__=='__main__':unittest.main()

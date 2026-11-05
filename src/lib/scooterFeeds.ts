@@ -278,6 +278,11 @@ export interface CollectableScooterFeed {
   nightEnds?: (time: number) => number | undefined;
   /** Its GBFS documents, or GCOO's area file, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
+  /**
+   * The worker it is collected through, as the Ryde bridge's on a Mac: while that has stopped asking
+   * for jobs, one report of its silence stands for its feeds' expiries (scooter-cache.ts).
+   */
+  worker?: { silentSince(now?: number): number | undefined };
 }
 
 // The persistent collector refreshes each system independently. A failing

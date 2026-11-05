@@ -10,7 +10,7 @@ vi.mock('@sentry/node', () => ({
   withScope: (callback: (value: typeof scope) => void) => callback(scope),
 }));
 const Sentry = await import('@sentry/node');
-const { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired } = await import('./errorReporting');
+const { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired, reportWorkerSilent } = await import('./errorReporting');
 
 beforeEach(() => vi.clearAllMocks());
 
@@ -126,4 +126,17 @@ it('says when an expired feed is out of the catalog, which nothing collects', ()
   expect(scope.setContext).toHaveBeenCalledWith('feed', { ...change, lastError: 'none: the feed is not in the catalog, so nothing collects it' });
   expect(scope.setContext).toHaveBeenCalledWith('host', { host: 'unknown', alsoExpired: ['national:dott_basel'] });
   expect(Sentry.captureMessage).toHaveBeenCalledWith('Feeds stopped being served from unknown');
+});
+
+it('reports a worker that stopped asking for jobs once for each silence, whatever its feeds do meanwhile', () => {
+  const since = Date.UTC(2026, 10, 5, 2, 41);
+  reportWorkerSilent('Ryde bridge', since, { total: 2356, expired: 14 }, since + 10 * 60_000);
+  reportWorkerSilent('Ryde bridge', since, { total: 2356, expired: 30 }, since + 3 * 3600_000);
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(1);
+  expect(Sentry.captureMessage).toHaveBeenCalledWith('The Ryde bridge worker stopped asking for jobs');
+  expect(scope.setFingerprint).toHaveBeenCalledWith(['worker-silent', 'Ryde bridge']);
+  expect(scope.setContext).toHaveBeenCalledWith('worker', { silentSince: '2026-11-05T02:41:00.000Z', minutesSilent: 10, feeds: 2356, expiredFeeds: 14 });
+  // It asked again, then went quiet again: another silence.
+  reportWorkerSilent('Ryde bridge', since + 4 * 3600_000, { total: 2356, expired: 0 }, since + 5 * 3600_000);
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(2);
 });

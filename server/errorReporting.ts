@@ -6,6 +6,7 @@ import type { FeedStateChange } from './feedStateLog';
 const REPORT_INTERVAL_MS = 3600_000;
 const DISCOVERY_REPORT_AFTER_MS = 15 * 60_000;
 const lastReportedAt = new Map<string, number>();
+const reportedSilence = new Map<string, number>();
 
 /**
  * Sentry, enabled only with SENTRY_DSN. A failing request keeps its method and
@@ -158,5 +159,26 @@ export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, l
         : feed.failed ? lastError ?? 'unknown' : 'none: the last collection succeeded, and its data has since passed the age limit' });
     scope.setContext('host', { host: from, alsoExpired: alsoExpired.length ? alsoExpired : 'none' });
     Sentry.captureMessage(`Feeds stopped being served from ${from}`);
+  });
+}
+
+/**
+ * A worker feeds are collected through that has stopped asking for jobs (`silentSince`, see
+ * RydeBroker.silentSince): paused, holding off after a refusal, or gone. Its feeds expire one after
+ * another meanwhile, and this one event stands for them (scooter-cache.ts), once for each silence.
+ * On 5 November 2026, with the Ryde bridge's worker paused after Ryde refused the Mac, they were
+ * some ten events an hour (SCOOTRADAR-CACHE-66).
+ */
+export function reportWorkerSilent(worker: string, silentSince: number, feeds: { total: number; expired: number },
+  now = Date.now()) {
+  if (reportedSilence.get(worker) === silentSince) return;
+  reportedSilence.set(worker, silentSince);
+  Sentry.withScope(scope => {
+    scope.setLevel('warning');
+    scope.setFingerprint(['worker-silent', worker]);
+    scope.setTags({ worker });
+    scope.setContext('worker', { silentSince: new Date(silentSince).toISOString(),
+      minutesSilent: Math.floor((now - silentSince) / 60_000), feeds: feeds.total, expiredFeeds: feeds.expired });
+    Sentry.captureMessage(`The ${worker} worker stopped asking for jobs`);
   });
 }

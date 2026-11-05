@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { RydeBroker, type RydeJob } from './rydeBridge';
+import { RYDE_WORKER_SILENT_MS, RydeBroker, type RydeJob } from './rydeBridge';
 const brokers: RydeBroker[]=[];
 const broker=(...args: ConstructorParameters<typeof RydeBroker>)=>{const b=new RydeBroker(...args);brokers.push(b);return b;};
 const q={cityId:43,latitude:59.744,longitude:10.205,radius:1};
@@ -35,6 +35,14 @@ describe('Ryde account broker',()=>{
     for(let n=0;n<5;n++){const job=b.lease()!;order.push(job.cityId);b.accept({version:1,id:job.id,query:job,coverage:'unknown',observedAt:100,scooters:[]});}
     expect(order).toEqual([43,6,43,43,43]);await Promise.all(promises);
   });
+});
+
+it('counts the worker gone once it has not asked for a job for ten minutes, from the broker\'s start or its last request',()=>{
+  let now=1_000_000;const b=broker('x'.repeat(32),()=>now,0);
+  now+=RYDE_WORKER_SILENT_MS-1;expect(b.silentSince()).toBeUndefined();
+  now++;expect(b.silentSince()).toBe(1_000_000);
+  b.lease();const asked=now;expect(b.silentSince()).toBeUndefined();
+  now+=RYDE_WORKER_SILENT_MS;expect(b.silentSince()).toBe(asked);
 });
 
 describe('worker HTTP boundary',()=>{

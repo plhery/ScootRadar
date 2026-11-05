@@ -65,7 +65,7 @@ it('enables only catalogued groups through an explicit production pilot and leav
   expect(new Set(groups.map(s=>s.rydeAppArea)).size).toBe(64);
   for(const system of groups){
     const feed=wrapped.find(f=>f.id.endsWith(':'+system.id))!;
-    expect(feed.paced).toBe(true);expect(feed.keepsIdleTurns).toBe(true);
+    expect(feed.paced).toBe(true);expect(feed.keepsIdleTurns).toBe(true);expect(feed.worker).toBeDefined();
     expect(feed.idleIntervalMs).toBeGreaterThanOrEqual(2*60*60_000);
     expect(system.rydeMapTiles!.length).toBeLessThanOrEqual(2);
   }

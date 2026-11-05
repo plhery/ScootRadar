@@ -21,6 +21,13 @@ export function validateRydeQuery(q: RydeQuery): void {
 const sameQuery = (a: RydeJob, b: RydeJob) =>
   ['version', 'id', 'expiresAt', 'cityId', 'latitude', 'longitude', 'radius'].every(k => a[k as keyof RydeJob] === b[k as keyof RydeJob]);
 
+/**
+ * How long the worker may go without asking for a job before the broker counts it gone. It asks
+ * every few seconds between reads, a read takes two minutes at most, and it waits a minute at most
+ * when the cache does not answer; it holds off for 15 minutes or more once Ryde refuses it.
+ */
+export const RYDE_WORKER_SILENT_MS = 10 * 60_000;
+
 /** One account, one outstanding native read. All city collectors share this broker. */
 export class RydeBroker {
   private entries: Entry[] = [];
@@ -28,11 +35,21 @@ export class RydeBroker {
   private urgentTurns = 0;
   private nextAt = 0;
   private readonly hash: Buffer;
+  private readonly startedAt: number;
   readonly stats = { queued: 0, completed: 0, expired: 0, failed: 0, rejected: 0, lastWorkerAt: 0 };
   constructor(token: string, private readonly now = Date.now, private readonly intervalMs = 5_000,
     private readonly deadlineMs = 120_000, private readonly maxQueue = 64) {
     if (token.length < 32) throw new Error('RYDE_BRIDGE_TOKEN must have at least 32 characters');
     this.hash = createHash('sha256').update(`Bearer ${token}`).digest();
+    this.startedAt = now();
+  }
+  /**
+   * Since when no worker has asked for a job, counting from the broker's start, once that has
+   * lasted RYDE_WORKER_SILENT_MS: undefined while one asks.
+   */
+  silentSince(now = this.now()): number | undefined {
+    const since = Math.max(this.stats.lastWorkerAt, this.startedAt);
+    return now - since >= RYDE_WORKER_SILENT_MS ? since : undefined;
   }
   query(q: RydeQuery, urgent = currentCollection()?.urgent() ?? false): Promise<RydeResult> {
     validateRydeQuery(q);

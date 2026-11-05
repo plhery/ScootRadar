@@ -365,3 +365,16 @@ The proxy, the native session and `producer/` are untouched. Before resuming
 with `python3 scripts/ryde-bridge/install.py --worker`, confirm that a plain
 request from the Mac is no longer refused, and decide on a lower pace: a
 reawakened first round would read at the same rate.
+
+Since then the worker holds itself off Ryde. When the producer sees Ryde refuse
+the app (403 or 429 from `api.ryde.vip`, kept in `producer/upstream-refused.json`),
+or the app fails to bring a map three times in a row, it makes no request for
+15 minutes. The hold doubles each time it goes on, up to 4 hours, and
+`worker-status.json` gives the reason and when it ends. The producer only reads
+refusals after its proxy restarts (`install.py --restart`). The worker's other
+holds work as soon as `install.py --worker` installs it. Failures to reach the
+cache are not counted. They are retried after 5 seconds, doubling up to a
+minute, and a result for a job the cache no longer has is dropped. A deploy
+used to cost the worker two minutes of held waits. While the worker asks for no
+jobs for 10 minutes, paused or holding, the cache reports that once ("The Ryde
+bridge worker stopped asking for jobs") instead of each group's expiry.

@@ -21,7 +21,7 @@ import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
-import { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired } from './errorReporting';
+import { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired, reportWorkerSilent } from './errorReporting';
 import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
@@ -424,6 +424,9 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     // the log still says it did.
     const now = Date.now();
     if (snapshotPaused(feed, now)) return;
+    // Collected through a worker that has stopped asking for jobs, as the Ryde bridge's paused on its
+    // Mac: the report of its silence stands for its feeds (reportRydeWorkerSilent).
+    if (collectable.find(definition => definition.id === feed.id)?.worker?.silentSince(now) !== undefined) return;
     const hostOf = new Map(collectable.map(definition => [definition.id, definition.host]));
     // Without one, the feed is out of the catalog, and so are the others listed with it.
     const host = hostOf.get(feed.id);
@@ -440,9 +443,19 @@ const persistenceTimer = setInterval(() => {
     const overview = cityOverview(snapshot.feeds, now);
     if (overview !== snapshot.overview) snapshot = { ...snapshot, overview };
     logFeedStates(snapshot.feeds);
+    reportRydeWorkerSilent(now);
   }
   void persist();
 }, TICK_MS);
+/** Once the Ryde bridge's worker has stopped asking for jobs, one event for each silence (reportWorkerSilent). */
+function reportRydeWorkerSilent(now: number) {
+  const silentSince = rydeBridge?.silentSince(now);
+  if (silentSince === undefined || !snapshot) return;
+  const viaWorker = new Set(collectable.filter(definition => definition.worker === rydeBridge).map(definition => definition.id));
+  const feeds = snapshot.feeds.filter(feed => viaWorker.has(feed.id));
+  reportWorkerSilent('Ryde bridge', silentSince, { total: feeds.length,
+    expired: feeds.filter(feed => expiredBeside(feed, now, cadence)).length }, now);
+}
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));
 function shutDown() {
   if (stopping) return;
