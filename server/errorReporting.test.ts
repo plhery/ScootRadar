@@ -10,7 +10,8 @@ vi.mock('@sentry/node', () => ({
   withScope: (callback: (value: typeof scope) => void) => callback(scope),
 }));
 const Sentry = await import('@sentry/node');
-const { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired, reportWorkerSilent } = await import('./errorReporting');
+const { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
+  restoreWorkerSilence } = await import('./errorReporting');
 
 beforeEach(() => vi.clearAllMocks());
 
@@ -139,4 +140,15 @@ it('reports a worker that stopped asking for jobs once for each silence, whateve
   // It asked again, then went quiet again: another silence.
   reportWorkerSilent('Ryde bridge', since + 4 * 3600_000, { total: 2356, expired: 0 }, since + 5 * 3600_000);
   expect(Sentry.captureMessage).toHaveBeenCalledTimes(2);
+});
+
+it('does not report again a silence Sentry heard of before a restart, and says which one it heard of', () => {
+  const since = Date.UTC(2026, 10, 5, 3, 12);
+  restoreWorkerSilence('Mac bridge', since);
+  expect(reportedWorkerSilence('Mac bridge')).toBe(since);
+  reportWorkerSilent('Mac bridge', since, { total: 2356, expired: 30 }, since + 3 * 3600_000);
+  expect(Sentry.captureMessage).not.toHaveBeenCalled();
+  reportWorkerSilent('Mac bridge', since + 4 * 3600_000, { total: 2356, expired: 0 }, since + 5 * 3600_000);
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(1);
+  expect(reportedWorkerSilence('Mac bridge')).toBe(since + 4 * 3600_000);
 });

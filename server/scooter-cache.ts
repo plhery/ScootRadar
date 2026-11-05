@@ -21,7 +21,8 @@ import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
-import { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired, reportWorkerSilent } from './errorReporting';
+import { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
+  restoreWorkerSilence } from './errorReporting';
 import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
@@ -49,6 +50,12 @@ import { readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps } fro
 
 const rydeConfig=loadRydeRuntimeConfig();
 const rydeBridge=rydeConfig ? new RydeBroker(rydeConfig.token) : undefined;
+const RYDE_WORKER = 'Ryde bridge';
+/** The Ryde bridge worker's silence once Sentry has heard of it, saved with the feed states for a restart to go on with. */
+function workerSilences(now: number): Record<string, number> | undefined {
+  const since = rydeBridge?.silentSince(now);
+  return since !== undefined && reportedWorkerSilence(RYDE_WORKER) === since ? { [RYDE_WORKER]: since } : undefined;
+}
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
   withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
@@ -187,9 +194,17 @@ try {
     restoredFeedStates = saved.feeds;
     discoveredAt = saved.discoveredAt;
     if (discoveredAt) metrics.recordDiscovery(discoveredAt);
+    // The Ryde bridge's worker, silent and reported before the restart, is silent still until it asks:
+    // its groups are not reported one by one, nor its silence again (workerSilences).
+    const silence = saved.workerSilences?.[RYDE_WORKER];
+    if (silence !== undefined && rydeBridge) {
+      rydeBridge.restoreSilence(silence);
+      restoreWorkerSilence(RYDE_WORKER, silence);
+    }
     console.log(JSON.stringify({ event: 'feed_states_restored', feeds: Object.keys(saved.feeds).length,
       ageSeconds: Math.round(saved.ageMs / 1000),
-      discoveryAgeSeconds: discoveredAt ? Math.round((Date.now() - discoveredAt) / 1000) : null }));
+      discoveryAgeSeconds: discoveredAt ? Math.round((Date.now() - discoveredAt) / 1000) : null,
+      rydeWorkerSilentSince: silence !== undefined && rydeBridge ? new Date(silence).toISOString() : null }));
   }
 } catch (error) {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
@@ -352,7 +367,7 @@ async function persist(final = false) {
   // which a restart builds again from what it holds.
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
-  const states = logFeedStates.saved(), discovered = discoveredAt;
+  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now);
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, 'scooters', path => writeSnapshot(path, saved));
@@ -362,7 +377,7 @@ async function persist(final = false) {
       reportError('persist', error);
     }
     try {
-      await saveAtomically(feedStatesPath, 'feed-states', path => writeFeedStates(path, states, now, discovered));
+      await saveAtomically(feedStatesPath, 'feed-states', path => writeFeedStates(path, states, now, discovered, silences));
     } catch (error) {
       console.error('Feed state persistence failed', error);
       reportError('persist:feed-states', error);
@@ -453,7 +468,7 @@ function reportRydeWorkerSilent(now: number) {
   if (silentSince === undefined || !snapshot) return;
   const viaWorker = new Set(collectable.filter(definition => definition.worker === rydeBridge).map(definition => definition.id));
   const feeds = snapshot.feeds.filter(feed => viaWorker.has(feed.id));
-  reportWorkerSilent('Ryde bridge', silentSince, { total: feeds.length,
+  reportWorkerSilent(RYDE_WORKER, silentSince, { total: feeds.length,
     expired: feeds.filter(feed => expiredBeside(feed, now, cadence)).length }, now);
 }
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));

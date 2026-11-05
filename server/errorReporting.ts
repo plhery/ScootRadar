@@ -162,6 +162,12 @@ export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, l
   });
 }
 
+/** The worker's silence Sentry last heard of, saved with the feed states. */
+export function reportedWorkerSilence(worker: string): number | undefined { return reportedSilence.get(worker); }
+
+/** A silence Sentry heard of before a restart, which the restart does not end: not reported again. */
+export function restoreWorkerSilence(worker: string, silentSince: number) { reportedSilence.set(worker, silentSince); }
+
 /**
  * A worker feeds are collected through that has stopped asking for jobs (`silentSince`, see
  * RydeBroker.silentSince): paused, holding off after a refusal, or gone. Its feeds expire one after

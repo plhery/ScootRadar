@@ -43,12 +43,19 @@ export class RydeBroker {
     this.hash = createHash('sha256').update(`Bearer ${token}`).digest();
     this.startedAt = now();
   }
+  private restoredSilence?: number;
   /**
-   * Since when no worker has asked for a job, counting from the broker's start, once that has
-   * lasted RYDE_WORKER_SILENT_MS: undefined while one asks.
+   * Goes on with a silence saved before a restart, from when it began, until the worker asks: a
+   * paused worker stays paused across a deploy, and counting from the restart reported its groups
+   * one by one for ten minutes, then the silence again (SCOOTRADAR-CACHE-66).
+   */
+  restoreSilence(since: number) { if (since < this.startedAt) this.restoredSilence = since; }
+  /**
+   * Since when no worker has asked for a job, counting from the broker's start or a silence it
+   * restored, once that has lasted RYDE_WORKER_SILENT_MS: undefined while one asks.
    */
   silentSince(now = this.now()): number | undefined {
-    const since = Math.max(this.stats.lastWorkerAt, this.startedAt);
+    const since = Math.max(this.stats.lastWorkerAt, this.restoredSilence ?? this.startedAt);
     return now - since >= RYDE_WORKER_SILENT_MS ? since : undefined;
   }
   query(q: RydeQuery, urgent = currentCollection()?.urgent() ?? false): Promise<RydeResult> {

@@ -377,4 +377,7 @@ cache are not counted. They are retried after 5 seconds, doubling up to a
 minute, and a result for a job the cache no longer has is dropped. A deploy
 used to cost the worker two minutes of held waits. While the worker asks for no
 jobs for 10 minutes, paused or holding, the cache reports that once ("The Ryde
-bridge worker stopped asking for jobs") instead of each group's expiry.
+bridge worker stopped asking for jobs") instead of each group's expiry. It saves
+when that silence began with its feed states, so a restart goes on with it
+until the worker asks again; counting from the restart reported the groups one
+by one for 10 minutes after each deploy, then the silence again.

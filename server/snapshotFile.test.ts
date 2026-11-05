@@ -120,6 +120,20 @@ describe('the saved feed states', () => {
     expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
   });
 
+  it("keep since when a worker has been silent however old they are, and leave a time that can't be one", async () => {
+    const path = join(directory, 'feed-states.json');
+    // The Ryde bridge's worker was paused at 02:41 UTC on 5 November 2026, and each deploy after
+    // counted its silence from the restart (SCOOTRADAR-CACHE-66).
+    const silentSince = now - 4 * 3600_000;
+    await writeFeedStates(path, states, now - 3600_000, undefined, { 'Ryde bridge': silentSince });
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 3600_000, workerSilences: { 'Ryde bridge': silentSince }, feeds: {} });
+    await writeFile(path, JSON.stringify({ version: 1, savedAt: now, workerSilences: { 'Ryde bridge': now + 1, other: 'yesterday' },
+      feeds: states }));
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
+    await writeFile(path, JSON.stringify({ version: 1, savedAt: now, workerSilences: [silentSince], feeds: states }));
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
+  });
+
   it('are refused when missing, cut short or not JSON, left when of another version, and keep only entries of their shape', async () => {
     const path = join(directory, 'feed-states.json');
     await expect(readFeedStates(path, now)).rejects.toMatchObject({ code: 'ENOENT' });

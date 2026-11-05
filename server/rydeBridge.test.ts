@@ -45,6 +45,16 @@ it('counts the worker gone once it has not asked for a job for ten minutes, from
   now+=RYDE_WORKER_SILENT_MS;expect(b.silentSince()).toBe(asked);
 });
 
+it('goes on with a silence saved before a restart until the worker asks, and not with one after its start',()=>{
+  let now=Date.UTC(2026,10,5,7);const b=broker('x'.repeat(32),()=>now,0);
+  const paused=now-4*3600_000;b.restoreSilence(paused);
+  expect(b.silentSince()).toBe(paused);
+  now+=60_000;b.lease();expect(b.silentSince()).toBeUndefined();
+  const c=broker('x'.repeat(32),()=>now,0);c.restoreSilence(now+1);
+  expect(c.silentSince()).toBeUndefined();
+  now+=RYDE_WORKER_SILENT_MS;expect(c.silentSince()).toBe(now-RYDE_WORKER_SILENT_MS);
+});
+
 describe('worker HTTP boundary',()=>{
   it('requires its own token and accepts one normalized result through the snapshot server',async()=>{
     const {createSnapshotServer}=await import('./snapshotServer');
