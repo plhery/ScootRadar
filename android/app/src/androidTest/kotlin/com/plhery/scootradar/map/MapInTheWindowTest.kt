@@ -593,9 +593,9 @@ class MapInTheWindowTest {
 
     /**
      * The credits seen whole and cut by no control, as above, with the chrome the rider opens over the map: nothing (the
-     * zones off), a scooter's card in the dock or the panel, the zones' legend listing their kinds, and the card, the
-     * legend and a notice under the search bar together. A window as short as a phone's or a folded Fold's held
-     * sideways leaves the least room over the dock (review-app-v finding 2).
+     * zones off, Zürich's own rules alone in the legend), a scooter's card in the dock or the panel, the zones' legend
+     * listing their kinds, and the card, the legend and a notice under the search bar together. A window as short as a
+     * phone's or a folded Fold's held sideways leaves the least room over the dock (review-app-v finding 2).
      */
     @Test
     fun theCreditsAreSeenWithNothingOpen() = creditsWith("nothing")
@@ -629,7 +629,10 @@ class MapInTheWindowTest {
         if (notice) onMain { controller.locationFailed(ScooterLocationError.LocationUnknown) }
         // The card and the notice at their full heights.
         Thread.sleep(2_500)
-        assertEquals("the zones' legend", legend, device.findObject(By.res(ZONE_LEGEND_TAG)) != null)
+        // The legend shows with the operators' zones on, and with them off where the city has its own rules or zones,
+        // as Zürich has here (ZoneLegendOverTheMap; the iPhone's legend names them too).
+        val cityRules = onMain { controller.mapRuleZones.value.isNotEmpty() || controller.mapZoneNotices.value.isNotEmpty() }
+        assertEquals("the zones' legend", legend || cityRules, device.findObject(By.res(ZONE_LEGEND_TAG)) != null)
         assertEquals("the notice", notice, device.findObject(By.res(LOCATION_CARD_TAG)) != null)
         assertEquals("the card", card, onMain { controller.selectedScooterID.value } == scooter.id)
         val bounds = onMain { projection.bounds }
