@@ -62,6 +62,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -75,6 +76,7 @@ import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.log2
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
@@ -101,6 +103,9 @@ class FoldBesideTheMapTest {
     private var scenario: ActivityScenario<ComponentActivity>? = null
     private val application = ApplicationProvider.getApplicationContext<Application>()
     private var recreations: Application.ActivityLifecycleCallbacks? = null
+
+    /** Whether the screen is large enough for these tests, which turn it and then give it back. */
+    private var largeScreen = false
     private lateinit var activity: ComponentActivity
     private lateinit var controller: ScooterMapController
     private lateinit var mapView: ScooterMapView
@@ -115,6 +120,11 @@ class FoldBesideTheMapTest {
     fun setUp() {
         Locale.setDefault(Locale.UK)
         ScooterLanguage.current = ScooterLanguage.En
+        // A large screen's, as the class says: a phone's window has no fold to be beside, and Phone_Min's never
+        // turned across for these.
+        val size = device.displaySizeDp
+        assumeTrue("a large screen, not $size dp", min(size.x, size.y) >= 600)
+        largeScreen = true
         device.setOrientationLandscape()
         assertTrue("turned", waitFor(10_000) { device.displayWidth > device.displayHeight })
     }
@@ -124,8 +134,10 @@ class FoldBesideTheMapTest {
         scenario?.close()
         recreations?.let(application::unregisterActivityLifecycleCallbacks)
         scope.cancel()
-        device.setOrientationNatural()
-        device.unfreezeRotation()
+        if (largeScreen) {
+            device.setOrientationNatural()
+            device.unfreezeRotation()
+        }
         ScooterLanguage.current = language
         Locale.setDefault(locale)
     }

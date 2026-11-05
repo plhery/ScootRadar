@@ -77,6 +77,7 @@ import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.log2
+import kotlin.math.min
 
 /**
  * The map beside a large window's panel, on the live map and edge to edge as MainActivity has it, as the iPad's
@@ -100,6 +101,9 @@ class PanelBesideTheMapTest {
     private var scenario: ActivityScenario<ComponentActivity>? = null
     private val application = ApplicationProvider.getApplicationContext<Application>()
     private var recreations: Application.ActivityLifecycleCallbacks? = null
+
+    /** Whether the screen is large enough for these tests, which turn it and then give it back. */
+    private var largeScreen = false
     private lateinit var activity: ComponentActivity
     private lateinit var controller: ScooterMapController
     private lateinit var mapView: ScooterMapView
@@ -121,6 +125,11 @@ class PanelBesideTheMapTest {
     fun setUp() {
         Locale.setDefault(Locale.UK)
         ScooterLanguage.current = ScooterLanguage.En
+        // A large screen's, as the class says: a phone's window has no panel, and Phone_Min's never turned across
+        // for these.
+        val size = device.displaySizeDp
+        assumeTrue("a large screen, not $size dp", min(size.x, size.y) >= 600)
+        largeScreen = true
         turn(upright = false)
     }
 
@@ -129,8 +138,10 @@ class PanelBesideTheMapTest {
         scenario?.close()
         recreations?.let(application::unregisterActivityLifecycleCallbacks)
         scope.cancel()
-        device.setOrientationNatural()
-        device.unfreezeRotation()
+        if (largeScreen) {
+            device.setOrientationNatural()
+            device.unfreezeRotation()
+        }
         ScooterLanguage.current = language
         Locale.setDefault(locale)
     }
