@@ -25,8 +25,11 @@ jobs:
       # are only in the log. The app maps' states, and those of NRW.Mobidrom's feeds, come from the
       # scooter cache's /feeds (--apps=cache): only the cache holds the app sessions, which rotate on
       # renewal, and Mobidrom's OAuth token, so this job runs no app map client. A failing one is
-      # only logged, as the cache's own alerts already report it.
+      # only logged, as the cache's own alerts already report it. The cache shows /feeds only to its
+      # metrics token, the one Prometheus scrapes it with.
       - run: npm run check:catalogs -- --fail-on=gone --apps=cache
+        env:
+          METRICS_TOKEN: ${{ secrets.METRICS_TOKEN }}
       # Fails when a hand-kept price of data/listed-prices.json is due a recheck, or its page is gone.
       - if: ${{ !cancelled() }}
         run: npm run check:listed-prices -- --fail-on=stale

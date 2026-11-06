@@ -2,7 +2,8 @@ import type { RydeBroker } from './rydeBridge';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
-import { parseScooterQuery } from '../src/lib/scooterQuery';
+import { clientNetwork } from '../src/lib/clientNetwork';
+import { parseScooterQuery, scooterAnswerZoom } from '../src/lib/scooterQuery';
 import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
@@ -13,6 +14,7 @@ import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
 import type { SnapshotMetrics } from './metrics';
+import type { VisitorLedger } from './visitorLedger';
 import { reportError } from './errorReporting';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedStateLog';
 
@@ -50,8 +52,16 @@ interface ServerOptions {
   production?: boolean;
   version?: string;
   metrics?: SnapshotMetrics;
-  /** Opens /metrics to this bearer token; it answers 404 without one. */
+  /**
+   * Opens /metrics to this bearer token; it answers 404 without one. It also opens /feeds and the detail of
+   * /health and /ready, which are otherwise only for a request from inside the container (operator()).
+   */
   metricsToken?: string;
+  /**
+   * Counts each visitor's requests and areas, and says whether a request may keep its view's feeds
+   * collected (visitorLedger.ts). Without it every request may.
+   */
+  visitors?: VisitorLedger;
   /** How often each feed is meant to be collected, which /ready judges it by. */
   cadence?: FeedCadence;
   refresher?: FeedRefresher;
@@ -94,9 +104,16 @@ export function createSnapshotServer(options: ServerOptions) {
   let activeResponses = 0;
   const cadence = options.cadence ?? ALWAYS_FAST;
   const paused = options.paused ?? snapshotPaused;
+  const loopback = (request: IncomingMessage) => ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress ?? '');
   const fromWorker = (request: IncomingMessage) => tokenHash
     ? timingSafeEqual(tokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())
-    : ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress ?? '');
+    : loopback(request);
+  const hasMetricsToken = (request: IncomingMessage) => !!metricsTokenHash &&
+    timingSafeEqual(metricsTokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest());
+  // The feeds' list and states, which name the operators' apps the cache reads: for the metrics token, or from
+  // inside the container (Coolify's health check, `docker exec … wget`), which no proxy has passed on.
+  const operator = (request: IncomingMessage) => hasMetricsToken(request) ||
+    (loopback(request) && !request.headers['x-forwarded-for'] && !request.headers['cf-connecting-ip']);
   async function handle(request: IncomingMessage, response: ServerResponse) {
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
     response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -130,6 +147,11 @@ export function createSnapshotServer(options: ServerOptions) {
       const ready = live && usable.length > 0;
       const draining = options.draining?.() ?? false;
       response.writeHead(!draining && (url.pathname === '/health' ? live : ready) ? 200 : 503);
+      // To anyone else, the state alone: the feeds failing and warming name what the cache reads.
+      if (!operator(request)) {
+        response.end(JSON.stringify({ live, ready, draining, updatedAt: snapshot?.updatedAt, version: options.version ?? 'local' }));
+        return;
+      }
       response.end(JSON.stringify({ live, ready, draining, updatedAt: snapshot?.updatedAt, feeds: snapshot?.feeds.length ?? 0,
         usableFeeds: usable.length,
         // Positions recent enough to show without collecting again.
@@ -148,6 +170,7 @@ export function createSnapshotServer(options: ServerOptions) {
     if (url.pathname === '/feeds') {
       // Each feed's state and scooters, which the weekly catalog check reads for the app maps
       // (--apps=cache): only the cache holds their sessions. No error text, which can name a key.
+      if (!operator(request)) { response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return; }
       response.writeHead(snapshot ? 200 : 503);
       response.end(JSON.stringify({ updatedAt: snapshot?.updatedAt, feeds: (snapshot?.feeds ?? []).map(feed => ({
         id: feed.id,
@@ -159,7 +182,7 @@ export function createSnapshotServer(options: ServerOptions) {
       return;
     }
     if (url.pathname === '/metrics' && metricsTokenHash && options.metrics) {
-      if (!timingSafeEqual(metricsTokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())) {
+      if (!hasMetricsToken(request)) {
         response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return;
       }
       response.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4; charset=utf-8' });
@@ -171,8 +194,8 @@ export function createSnapshotServer(options: ServerOptions) {
     if (!fromWorker(request)) { response.writeHead(401); response.end('{}'); return; }
     // Only an authenticated Worker may supply a client IP. It replaces any incoming header.
     const forwarded = request.headers['x-scooter-client-ip'];
-    const key = tokenHash && typeof forwarded === 'string' && isIP(forwarded)
-      ? forwarded : request.socket.remoteAddress ?? 'unknown';
+    const key = clientNetwork(tokenHash && typeof forwarded === 'string' && isIP(forwarded)
+      ? forwarded : request.socket.remoteAddress ?? 'unknown');
     for (const [ip, entry] of clients) if (entry.resetAt <= now) clients.delete(ip);
     const client = clients.get(key) ?? { count: 0, resetAt: now + 60_000 };
     if (client.count >= 60 || activeResponses >= 32 || (!clients.has(key) && clients.size >= 10_000)) {
@@ -194,6 +217,11 @@ export function createSnapshotServer(options: ServerOptions) {
       return;
     }
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
+    // A box no screen shows at its zoom is answered as the view it could be: clusters, or the city totals.
+    const zoom = scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
+    if (zoom !== parsed.zoom) options.metrics?.recordLoweredZoom();
+    // A visitor past their areas of the quarter hour, as a sweep of a country, collects nothing more.
+    const watches = options.visitors?.record(key, parsed.query.bounds, zoom, now) ?? true;
     let refreshing: Set<string> | undefined;
     let idleInView: Set<string> | undefined;
     let comingSoon: Set<string> | undefined;
@@ -201,8 +229,8 @@ export function createSnapshotServer(options: ServerOptions) {
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
       // all but the Lime groups past the few nearest the middle of the view, which Lime's pace could not keep up.
-      const inView = feedsForQuery(snapshot, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
-      const watched = demandedFeeds(inView, parsed.query.bounds);
+      const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
+      const watched = watches ? demandedFeeds(inView, parsed.query.bounds) : [];
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
       const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds));
@@ -227,9 +255,9 @@ export function createSnapshotServer(options: ServerOptions) {
       comingSoon = new Set(quick.filter(id => refreshing!.has(id)));
     }
     const answeredAt = Date.now();
-    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, answeredAt, { refreshing, idleInView, comingSoon,
+    const body = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
       lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
-    const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, parsed.zoom, answeredAt, options.retention);
+    const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, zoom, answeredAt, options.retention);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps
     // an answer holding a capped feed's data no longer than X-Scooter-Keep-Seconds (0: not at all).
     response.writeHead(200, { ...scooterResponseHeaders(body), 'Cache-Control': 'private, no-store',

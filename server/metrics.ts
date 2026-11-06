@@ -7,6 +7,7 @@ import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence, type FeedState } from './feedStateLog';
 import type { CollectionReason, FeedCadenceMode } from './feedScheduler';
+import type { VisitorCounts } from './visitorLedger';
 
 interface FeedLabels { id: string; source: string; provider: string }
 type Labels = Record<string, string>;
@@ -42,6 +43,8 @@ interface MetricsSources {
   paused?: (feedId: string, now: number) => boolean;
   /** Whether a night ban holds at every service area of the feed; feedCurfewed by default. */
   curfewed?: (feedId: string, now: number) => boolean;
+  /** The visitors of the closed quarter hours by requests and areas (visitorLedger.ts). */
+  visitors?: (now: number) => VisitorCounts;
 }
 
 /**
@@ -61,6 +64,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
   const requests = new Map<string, { labels: Labels; count: number }>();
   const requestSeconds = new Map<string, { count: number; seconds: number }>();
   let geoapifyRequests = 0;
+  let loweredZooms = 0;
   let discoveredAt = 0;
   const eventLoop = monitorEventLoopDelay({ resolution: EVENT_LOOP_RESOLUTION_MS });
   eventLoop.enable();
@@ -109,6 +113,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     recordWait(collected: boolean) { waits[collected ? 'collected' : 'timeout']++; },
     /** Requests an address search on the Worker sent to Geoapify. */
     recordGeoapifyRequests(count: number) { geoapifyRequests += count; },
+    /** A request for scooters whose box was too large for its zoom, answered at a lower one (scooterAnswerZoom). */
+    recordLoweredZoom() { loweredZooms++; },
     /** A visitor's request (`client`, its address) set off the refresh of `count` Lime rider-map feeds. */
     recordLimeWakes(client: string, count: number, now = Date.now()) {
       if (!count) return;
@@ -223,6 +229,27 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       metric('scootradar_lime_wakes_total', 'counter',
         'The Lime rider-map refreshes those visitors set off, by the same buckets.',
         [...limeWakes].map(([refreshes, count]) => [{ refreshes }, count]));
+      metric('scootradar_scooter_zoom_lowered_total', 'counter',
+        'Requests for scooters whose box no screen shows at their zoom, answered at the highest zoom it fits: clusters or the city totals instead of every scooter.',
+        [[{}, loweredZooms]]);
+      if (sources.visitors) {
+        const visitors = sources.visitors(now);
+        metric('scootradar_visitors_total', 'counter',
+          'Visitors of each closed UTC quarter hour, told apart by a hash of their address salted by each process and kept only that quarter hour (an IPv6 one by its /64), by the requests for scooters they made in it.',
+          visitors.byRequests.map(([requests, count]) => [{ requests }, count]));
+        metric('scootradar_visitor_areas_total', 'counter',
+          'The same visitors, by the areas (cells of half a degree) their requests at a zoom past the city totals asked for. A map is looked at in one or a few; a scraper sweeping a country asks for dozens.',
+          visitors.byAreas.map(([areas, count]) => [{ areas }, count]));
+        metric('scootradar_unwatched_requests_total', 'counter',
+          'Requests for scooters answered from what the cache holds without collecting their view again: their visitor had already asked for 32 other areas that quarter hour.',
+          [[{}, visitors.unwatched]]);
+        if (!countersOnly) {
+          metric('scootradar_visitor_max_requests', 'gauge', 'The most requests for scooters one visitor made in the last closed quarter hour.',
+            [[{}, visitors.lastWindow.requests]]);
+          metric('scootradar_visitor_max_areas', 'gauge', 'The most areas one visitor asked for in the last closed quarter hour, up to 64.',
+            [[{}, visitors.lastWindow.areas]]);
+        }
+      }
       // By build: during a deploy the old and the new container both answer for a minute,
       // and one count read from each in turn would look reset again and again.
       metric('scootradar_geoapify_requests_total', 'counter',

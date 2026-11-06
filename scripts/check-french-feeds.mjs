@@ -12,7 +12,7 @@ const usage = `Usage: node scripts/check-french-feeds.mjs [--countries=CODES] [-
 Reads each catalog feed live, France's unless --countries= names others: country codes (FR,DE), a continent
 (${[...new Set(countries.map(country => country.continent))].join(', ')}) or all. --apps=cache reads the app maps' states,
 and those of the feeds that need the cache's tokens, from the scooter cache instead of collecting them here, as the
-weekly workflow does.`;
+weekly workflow does; it needs the cache's METRICS_TOKEN in the environment.`;
 const args = process.argv.slice(2);
 if (args.some(arg => arg === '--help' || arg === '-h')) {
   console.log(usage);
@@ -60,7 +60,7 @@ const MOBIDATA_BW = 'https://api.mobidata-bw.de';
 const TOKEN_HOSTS = new Set(['www.mobilitaetsdaten.nrw']);
 const behindToken = system => TOKEN_HOSTS.has(new URL(system.discoveryUrl).hostname);
 // The scooter cache's origin (SCOOTER_SNAPSHOT_API_URL in wrangler.jsonc), whose /feeds gives each feed's
-// state, as `${country source}:${system id}`.
+// state, as `${country source}:${system id}`, to the cache's METRICS_TOKEN (a GitHub secret of the same name).
 const CACHE = 'https://scooter-data.plhery.com';
 const sources = Object.fromEntries(countries.map(country => [country.code, country.source]));
 
@@ -268,7 +268,9 @@ const listings = Object.fromEntries(await Promise.all(dottCountries.map(async co
 
 const cacheFeeds = apps === 'cache' && catalog.systems.some(system => isAppMap(system) || behindToken(system)) ? await (async () => {
   try {
-    const response = await fetch(`${CACHE}/feeds`, { headers, signal: AbortSignal.timeout(30_000) });
+    if (!process.env.METRICS_TOKEN) throw new Error('METRICS_TOKEN is not set: the cache shows its feeds only to it');
+    const response = await fetch(`${CACHE}/feeds`, { headers: { ...headers, Authorization: `Bearer ${process.env.METRICS_TOKEN}` },
+      signal: AbortSignal.timeout(30_000) });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return { byId: new Map((await response.json()).feeds.map(feed => [feed.id, feed])) };
   } catch (error) {

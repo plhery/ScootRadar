@@ -1,5 +1,6 @@
 import { expect, it } from 'vitest';
 import { createSnapshotMetrics } from './metrics';
+import { createVisitorLedger } from './visitorLedger';
 import { buildCityOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 
 const now = 1_800_000_000_000;
@@ -121,6 +122,28 @@ it('buckets visitors by the Lime refreshes they set off in each quarter hour', (
   const later = metrics.render(undefined, start + 2 * quarter, true);
   expect(sample(later, 'scootradar_lime_wake_clients_total{refreshes="16+"}')).toBe('1');
   expect(sample(later, 'scootradar_lime_wakes_total{refreshes="16+"}')).toBe('20');
+});
+
+it('exports the visitors by requests and areas, counters to each container and the last quarter hour as gauges', () => {
+  const visitors = createVisitorLedger();
+  const metrics = createSnapshotMetrics('abc123', { visitors: at => visitors.counts(at) });
+  const quarter = 15 * 60_000;
+  const start = Math.floor(now / quarter) * quarter;
+  const view = (index: number) => ({ south: 47.36, west: 8.53 + index, north: 47.38, east: 8.56 + index });
+  for (let index = 0; index < 40; index++) visitors.record('192.0.2.1', view(index), 16, start);
+  visitors.record('192.0.2.2', view(0), 16, start);
+  metrics.recordLoweredZoom();
+  const counters = metrics.render(undefined, start + quarter, true);
+  expect(sample(counters, 'scootradar_visitors_total{requests="16-60"}')).toBe('1');
+  expect(sample(counters, 'scootradar_visitors_total{requests="1-15"}')).toBe('1');
+  expect(sample(counters, 'scootradar_visitor_areas_total{areas="32-63"}')).toBe('1');
+  expect(sample(counters, 'scootradar_visitor_areas_total{areas="1"}')).toBe('1');
+  expect(sample(counters, 'scootradar_unwatched_requests_total')).toBe('8');
+  expect(sample(counters, 'scootradar_scooter_zoom_lowered_total')).toBe('1');
+  expect(counters).not.toContain('scootradar_visitor_max_');
+  const gauges = metrics.render(undefined, start + quarter);
+  expect(sample(gauges, 'scootradar_visitor_max_requests')).toBe('40');
+  expect(sample(gauges, 'scootradar_visitor_max_areas')).toBe('40');
 });
 
 it('counts collections from zero by outcome, and requests by route and status', () => {

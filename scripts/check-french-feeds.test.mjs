@@ -6,12 +6,15 @@ import { describe, expect, it } from 'vitest';
 const script = fileURLToPath(new URL('./check-french-feeds.mjs', import.meta.url));
 const run = (...args) => spawnSync(process.execPath, [script, ...args], { encoding: 'utf8', timeout: 10_000 });
 // The check with the scooter cache's /feeds answered from FEEDS, and any other request refused.
-const STUB = `data:text/javascript,globalThis.fetch = async url => {
-  if (String(url) === 'https://scooter-data.plhery.com/feeds') return new Response(process.env.FEEDS);
+const STUB = `data:text/javascript,globalThis.fetch = async (url, init) => {
+  if (String(url) === 'https://scooter-data.plhery.com/feeds') {
+    return init.headers.Authorization === 'Bearer test-metrics-token' ? new Response(process.env.FEEDS) : new Response('{}', { status: 401 });
+  }
   throw new Error('No request outside the stub');
 };`;
 const runWithFeeds = (feeds, ...args) => spawnSync(process.execPath, ['--import', STUB, script, ...args],
-  { encoding: 'utf8', timeout: 10_000, env: { ...process.env, FEEDS: JSON.stringify({ updatedAt: Date.now(), feeds }) } });
+  { encoding: 'utf8', timeout: 10_000, env: { ...process.env, METRICS_TOKEN: 'test-metrics-token',
+    FEEDS: JSON.stringify({ updatedAt: Date.now(), feeds }) } });
 
 // Both answer before the first request, so neither reads a feed.
 describe('the live catalog check', () => {

@@ -76,6 +76,10 @@ it('fails closed without an origin credential and forwards only a trusted client
   expect(fetcher).toHaveBeenCalledWith(expect.any(URL), expect.objectContaining({
     redirect: 'manual', headers: { Accept: 'application/json', Authorization: 'Bearer test-service-token', 'X-Scooter-Client-IP': '192.0.2.1' },
   }));
+  // An IPv6 client as its /64, which the cache's limits and count of visitors go by.
+  await proxyScooterSnapshot(new Request(request(), { headers: { 'cf-connecting-ip': '2001:db8:12:3400:a1b2:c3d4:e5f6:1' } }), env);
+  expect(fetcher).toHaveBeenLastCalledWith(expect.any(URL), expect.objectContaining({
+    headers: expect.objectContaining({ 'X-Scooter-Client-IP': '2001:db8:12:3400::' }) }));
 });
 
 it('rejects an origin redirect without forwarding it to clients or following it with the credential', async () => {

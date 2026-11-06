@@ -4,7 +4,7 @@ import {
   ScooterFeedsUnavailableError,
 } from '@/lib/scooterFeeds';
 import { rateLimitAllows } from '@/lib/rateLimit';
-import { parseScooterQuery } from '@/lib/scooterQuery';
+import { parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
 import { scooterResponse, scooterResponseHeaders } from '@/lib/scooterResponse';
 import { skippedSources } from '@/lib/scooterSources';
 
@@ -30,9 +30,11 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // As the cache: a box no screen shows at its zoom is answered as the view it could be.
+  const zoom = scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
   try {
     const result = await fetchScooters(parsed.query);
-    const body = scooterResponse(result, parsed.zoom);
+    const body = scooterResponse(result, zoom);
     return NextResponse.json(body, { headers: scooterResponseHeaders(body) });
   } catch (error) {
     if (error instanceof ScooterFeedsUnavailableError) {
@@ -46,7 +48,7 @@ export async function GET(request: NextRequest) {
       const body = scooterResponse({
         vehicles: [],
         meta: { partial: true, stale: false, failedSources: error.failedSources, sources },
-      }, parsed.zoom);
+      }, zoom);
       return NextResponse.json(body, { headers: scooterResponseHeaders(body) });
     }
 

@@ -20,6 +20,7 @@ import { readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
+import { createVisitorLedger } from './visitorLedger';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
   restoreWorkerSilence } from './errorReporting';
@@ -153,7 +154,9 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
   ? schedule.idleIntervalMs : schedule.activeIntervalMs, undefined, id => retentionCap(id) === undefined);
 // City totals count the feeds collected on time, whatever the age of their positions.
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
-const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
+// Each visitor's requests and areas of the quarter hour, by a salted hash: metrics, and a limit on a sweep.
+const visitors = createVisitorLedger();
+const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visitors: now => visitors.counts(now),
   paused: (feedId, now) => feedPaused(feedId, now) || workerSilent(feedId, now),
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
@@ -168,7 +171,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ rydeBridge, snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
-  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
+  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors,
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
   // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
   lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining,

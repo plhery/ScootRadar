@@ -5,6 +5,8 @@ import type { Server } from 'node:http';
 import { createSnapshotServer } from './snapshotServer';
 import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
+import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger } from './visitorLedger';
+import { boundsCenter } from '../src/lib/geo';
 import { buildCityOverview, LIME_GROUPS_PER_REQUEST, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
@@ -90,6 +92,34 @@ describe('snapshot origin boundary', () => {
     expect((await fetch(`http://127.0.0.1:${empty}/feeds`)).status).toBe(503);
   });
 
+  it('shows the feeds and their states only from inside the container or to the metrics token', async () => {
+    const now = Date.now();
+    const feed = { source: 'france' as const, provider: 'dott' as const, coverage: [], vehicles: [],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false };
+    const feeds = [{ ...feed, id: 'france:dott_fr_lyon' },
+      { ...feed, id: 'france:dott_fr_paris', observedAt: 0, attemptedAt: 0, stale: true, failed: true }];
+    const metricsToken = 'a-test-metrics-token-with-at-least-32-characters';
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview([], now) },
+      { metrics: createSnapshotMetrics('abc123'), metricsToken, version: 'abc123' });
+    // Through the tunnel, whose proxy passes on the visitor's address.
+    const outside = { 'X-Forwarded-For': '203.0.113.9' };
+    const feedsList = await fetch(`http://127.0.0.1:${port}/feeds`, { headers: outside });
+    expect(feedsList.status).toBe(401);
+    expect(await feedsList.text()).not.toContain('dott');
+    expect((await fetch(`http://127.0.0.1:${port}/feeds`, { headers: { 'cf-connecting-ip': '203.0.113.9' } })).status).toBe(401);
+    expect((await fetch(`http://127.0.0.1:${port}/feeds`, { headers: { ...outside, Authorization: `Bearer ${token}` } })).status).toBe(401);
+    expect((await fetch(`http://127.0.0.1:${port}/feeds`, { headers: { ...outside, Authorization: `Bearer ${metricsToken}` } })).status)
+      .toBe(200);
+    for (const path of ['/health', '/ready']) {
+      const response = await fetch(`http://127.0.0.1:${port}${path}`, { headers: outside });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ live: true, ready: true, draining: false, updatedAt: now, version: 'abc123' });
+      const detail = await (await fetch(`http://127.0.0.1:${port}${path}`, { headers: { ...outside, Authorization: `Bearer ${metricsToken}` } }))
+        .json() as Record<string, unknown>;
+      expect(detail).toMatchObject({ warmingFeeds: ['france:dott_fr_paris'] });
+    }
+  });
+
   it('answers a view across the 180° line with the scooters on its west side', async () => {
     const now = Date.now();
     const scooter = (id: string, lng: number) => ({ vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70,
@@ -100,7 +130,8 @@ describe('snapshot origin boundary', () => {
     const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) });
     const headers = { Authorization: `Bearer ${token}` };
     const view = (zoom: number) => `http://127.0.0.1:${port}/api/scooters?south=-47.06&west=159.9&north=-25.98&east=-157.1&zoom=${zoom}`;
-    const street = await fetch(view(16), { headers });
+    // A street in Tauranga to past the line: a screen's width once cut at the east of what is covered.
+    const street = await fetch(`http://127.0.0.1:${port}/api/scooters?south=-37.72&west=176.1&north=-37.66&east=-179.9&zoom=16`, { headers });
     expect(street.status).toBe(200);
     expect(((await street.json()) as ScooterResponse).vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['a', 'b']);
     const totals = (await (await fetch(view(6), { headers })).json()) as ScooterResponse;
@@ -262,6 +293,60 @@ describe('collection on demand', () => {
       refresher: { demand: ids => { demanded.push(ids); return []; }, refreshing: () => false, wait: async () => true } });
     for (const extra of ['&zoom=16', '&zoom=8', '&zoom=16&provider=voi']) await (await fetch(lyonUrl(port, extra), { headers })).text();
     expect(demanded).toEqual([['france:dott_fr_lyon'], [], []]);
+  });
+
+  it('answers a box no screen shows at its zoom as the view it could be, collecting only what that view would', async () => {
+    const now = Date.now();
+    const feeds = [feed('france:dott_fr_lyon', lyon, now), feed('france:dott_fr_paris', paris, now)];
+    const demanded: string[][] = [];
+    const metrics = createSnapshotMetrics();
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, {
+      metrics, refresher: { demand: ids => { demanded.push(ids); return []; }, refreshing: () => false, wait: async () => true } });
+    // France at the zoom of a street: the city totals, which collect nothing.
+    const france = await (await fetch(`http://127.0.0.1:${port}/api/scooters?south=42&west=-5&north=51&east=8&zoom=16`, { headers }))
+      .json() as ScooterResponse;
+    expect(france.meta).toMatchObject({ mode: 'clusters', overview: true });
+    expect(france.vehicles).toEqual([]);
+    // Without a zoom: every scooter only where the box fits at the first zoom without clusters.
+    const all = await (await fetch(`http://127.0.0.1:${port}/api/scooters?south=42&west=-5&north=51&east=8`, { headers }))
+      .json() as ScooterResponse;
+    expect(all.vehicles).toEqual([]);
+    expect(demanded).toEqual([[], []]);
+    // A street is answered as it asks.
+    const street = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
+    expect(street.vehicles.map(item => item.vehicle_id)).toEqual(['france:dott_fr_lyon-old']);
+    expect(demanded[2]).toEqual(['france:dott_fr_lyon']);
+    expect(metrics.render(undefined, now)).toContain('scootradar_scooter_zoom_lowered_total 2');
+  });
+
+  it("stops collecting the views of a visitor who has looked at more areas in a quarter hour than a map does", async () => {
+    const now = Date.now();
+    // Towns of the catalog, each in an area of its own.
+    const towns = [...new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => serviceAreas(system)[0].bounds)
+      .map(area => [areaOf(area), boundsCenter(area)] as const)).values()]
+      .slice(0, AREAS_WATCHED_PER_WINDOW + 2);
+    const feeds = towns.map(([lat, lng], index) => feed(`france:dott_fr_${index}`,
+      { south: lat - 0.01, west: lng - 0.01, north: lat + 0.01, east: lng + 0.01 }, now,
+      { vehicles: [{ ...vehicle(`town-${index}`), lat, lng }] }));
+    const demanded: string[] = [];
+    const visitors = createVisitorLedger();
+    const metrics = createSnapshotMetrics('local', { visitors: at => visitors.counts(at) });
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, {
+      metrics, visitors, refresher: { demand: ids => { demanded.push(...ids); return []; }, refreshing: () => false, wait: async () => true } });
+    const town = (index: number) => { const [lat, lng] = towns[index];
+      return `http://127.0.0.1:${port}/api/scooters?south=${lat - 0.005}&west=${lng - 0.005}&north=${lat + 0.005}&east=${lng + 0.005}&zoom=16`; };
+    for (const index of towns.keys()) {
+      const response = await fetch(town(index), { headers });
+      expect(response.status).toBe(200);
+      // Each is still answered, from what the cache holds.
+      expect(((await response.json()) as ScooterResponse).vehicles).toHaveLength(1);
+    }
+    expect(demanded).toHaveLength(AREAS_WATCHED_PER_WINDOW);
+    expect(demanded).not.toContain(`france:dott_fr_${AREAS_WATCHED_PER_WINDOW}`);
+    // Another visitor's view of the same town is collected.
+    await (await fetch(town(AREAS_WATCHED_PER_WINDOW), { headers: { ...headers, 'X-Scooter-Client-IP': '192.0.2.2' } })).text();
+    expect(demanded.at(-1)).toBe(`france:dott_fr_${AREAS_WATCHED_PER_WINDOW}`);
+    expect(metrics.render(undefined, now)).toContain('scootradar_unwatched_requests_total 2');
   });
 
   it('asks for the Lime groups nearest the middle of a wide view, and shows the others where last seen', async () => {

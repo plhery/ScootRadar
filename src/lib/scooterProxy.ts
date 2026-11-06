@@ -1,3 +1,4 @@
+import { clientNetwork } from '@/lib/clientNetwork';
 import { parseScooterQuery } from '@/lib/scooterQuery';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
 import { VEHICLE_MAX_AGE_MS } from '@/lib/dataFreshness';
@@ -65,7 +66,9 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
       { status: 503, headers: { ...headers, 'Retry-After': '30' } });
   };
   try {
-    const allowed = await env.SCOOTER_API_RATE_LIMITER.limit({ key: request.headers.get('cf-connecting-ip') ?? 'unknown' });
+    // An IPv6 visitor by its /64, here and at the cache (clientNetwork).
+    const client = clientNetwork(request.headers.get('cf-connecting-ip') ?? 'unknown');
+    const allowed = await env.SCOOTER_API_RATE_LIMITER.limit({ key: client });
     if (!allowed.success) return Response.json({ error: 'Too many scooter requests. Please try again shortly.' },
       { status: 429, headers: { ...headers, 'Retry-After': '60' } });
     const url = new URL(request.url);
@@ -91,7 +94,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
     const response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
-      'X-Scooter-Client-IP': request.headers.get('cf-connecting-ip') ?? 'unknown' }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
+      'X-Scooter-Client-IP': client }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
     // Workers support manual redirects; never forward the service credential to a redirect target.
     if ((response.status >= 300 && response.status < 400) || response.status >= 500 || response.status === 401 || response.status === 403) {
       return await unavailable({ status: response.status });

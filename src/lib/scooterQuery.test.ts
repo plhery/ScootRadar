@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SUPPORTED_MOBILITY_BOUNDS } from '@/lib/feedCoverage';
-import { parseScooterQuery } from '@/lib/scooterQuery';
+import { MAX_VIEW_PIXELS, parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
 
 describe('parseScooterQuery', () => {
   it('parses valid bounds and known providers', () => {
@@ -112,3 +112,41 @@ describe('parseScooterQuery', () => {
     });
   });
 });
+
+describe('scooterAnswerZoom', () => {
+  // A box `pixels` wide (and a little less tall) at `zoom`, around Zürich.
+  const box = (pixels: number, zoom: number) => {
+    const span = pixels * 360 / (256 * 2 ** zoom);
+    return { south: 47.37 - span * 0.33, west: 8.54 - span / 2, north: 47.37 + span * 0.33, east: 8.54 + span / 2 };
+  };
+
+  it("answers a screen's view at the zoom it asks for, however large the screen", () => {
+    for (const zoom of [11, 13, 16, 19]) {
+      expect(scooterAnswerZoom(zoom, box(430, zoom))).toBe(zoom);
+      // A 4K screen turned at 45°: its bounds enclose the diagonal.
+      expect(scooterAnswerZoom(zoom, box(4_243, zoom))).toBe(zoom);
+      expect(scooterAnswerZoom(zoom, box(MAX_VIEW_PIXELS - 1, zoom))).toBe(zoom);
+    }
+    expect(scooterAnswerZoom(null, box(1_920, 16))).toBeNull();
+  });
+
+  it('answers a box no screen shows at its zoom at the highest zoom it fits', () => {
+    expect(scooterAnswerZoom(16, box(MAX_VIEW_PIXELS * 1.5, 16))).toBe(15);
+    expect(scooterAnswerZoom(16, box(MAX_VIEW_PIXELS * 64, 16))).toBe(10);
+    // The whole supported envelope at street zoom: the city totals.
+    expect(scooterAnswerZoom(16, SUPPORTED_MOBILITY_BOUNDS)).toBeLessThanOrEqual(6);
+    // Without a zoom, every scooter only for a box that fits past the clusters' zooms.
+    expect(scooterAnswerZoom(null, box(MAX_VIEW_PIXELS * 2, 16))).toBe(15);
+    expect(scooterAnswerZoom(null, SUPPORTED_MOBILITY_BOUNDS)).toBeLessThanOrEqual(6);
+  });
+
+  it('measures a tall box by its height on the map, and a box across the 180° line by its width', () => {
+    // Narrow but 2° tall at 60°N: 23,000 pixels at zoom 13 on the map, twice as many as at the equator.
+    const tall = { south: 59, west: 10.7, north: 61, east: 10.75 };
+    expect(scooterAnswerZoom(12, tall)).toBe(12);
+    expect(scooterAnswerZoom(13, tall)).toBe(12);
+    const acrossTheLine = { south: -37, west: 179.9, north: -36.9, east: -179.9 };
+    expect(scooterAnswerZoom(16, acrossTheLine)).toBe(16);
+  });
+});
+

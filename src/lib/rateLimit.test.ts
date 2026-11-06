@@ -39,6 +39,15 @@ describe('rateLimitAllows', () => {
     expect(limit).toHaveBeenCalledWith({ key: '203.0.113.10' });
   });
 
+  it('counts an IPv6 client by its /64, whose every address is the same home or phone', async () => {
+    const limit = vi.fn().mockResolvedValue({ success: true });
+    getCloudflareContext.mockResolvedValue({ env: { SCOOTER_API_RATE_LIMITER: { limit } } });
+    for (const ip of ['2001:db8:12:3400:a1b2:c3d4:e5f6:1', '2001:DB8:12:3400::9']) {
+      await rateLimitAllows(new Request('https://example.com/api/scooters', { headers: { 'cf-connecting-ip': ip } }), 'SCOOTER_API_RATE_LIMITER');
+    }
+    expect(limit.mock.calls).toEqual([[{ key: '2001:db8:12:3400::' }], [{ key: '2001:db8:12:3400::' }]]);
+  });
+
   it('counts against the key given instead of the client, for a limit all clients share', async () => {
     const limit = vi.fn().mockResolvedValue({ success: false });
     getCloudflareContext.mockResolvedValue({

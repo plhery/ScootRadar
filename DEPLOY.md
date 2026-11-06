@@ -32,7 +32,16 @@ Worker secrets if future features require them.
 
 The cache also reads `METRICS_TOKEN` (at least 32 characters in production), which
 opens `/metrics` to Prometheus, and `SENTRY_DSN`, which turns on Sentry. Both are
-optional Coolify secrets; see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
+optional Coolify secrets; see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md). Since
+6 November 2026 `METRICS_TOKEN` also opens `/feeds` and the detail of `/health` and
+`/ready`, which name the feeds and so the operators' apps the cache reads: without
+it they answer only from inside the container (no proxy header, as Coolify's health
+check). `/feeds` answers 401 to anyone else, and `/health` and `/ready` keep their
+status code but say only `live`, `ready`, `draining`, `updatedAt` and `version`.
+The weekly catalog check sends the token from the GitHub secret `METRICS_TOKEN`, the
+same value as Prometheus's in its `prometheus.yml`. To read them by hand, either
+send it, or ask from inside the container:
+`ssh netcup 'sudo -n docker exec $(sudo -n docker ps -q --filter name=mouc13tsnvylg0v9ee9wp5v5 | head -1) wget -q -O - http://127.0.0.1:3001/feeds'`.
 
 The authenticated rider adapters use private files beside the snapshot:
 `voi-session.json` and `lime-session.json` by default, overridden with
@@ -86,15 +95,20 @@ For the first release requiring authenticated origin access, use this order:
    requests to the public origin without it must return 401, while requests through
    `https://scootradar.com/api/scooters` must succeed.
 4. Check `/health` for collector liveness and `/ready` for usable live feeds.
-   `/feeds` lists each feed's state and scooters, without errors; the weekly
-   catalog check reads the app maps and NRW.Mobidrom's feeds there (`--apps=cache`).
+   `/feeds` lists each feed's state and scooters, without errors, to the metrics
+   token (see above); the weekly catalog check reads the app maps and NRW.Mobidrom's
+   feeds there (`--apps=cache`).
    Grafana alerts on the cache's metrics (see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md)).
    Keep the container's restart health check on `/health` so operator outages do
    not cause a restart loop.
 
 The origin also limits authenticated clients to 60 requests/minute and bounds
 open API responses. The Worker overwrites the forwarded client IP using
-Cloudflare's trusted header. Origin responses are private/no-store; only the
+Cloudflare's trusted header, an IPv6 one as its /64 (`src/lib/clientNetwork.ts`),
+so a client cannot change addresses within its network to pass the limits. A box
+too large for its zoom is answered at the zoom it fits, and a visitor who has asked
+for 32 areas in a quarter hour no longer keeps feeds collected; see
+[Scraping](docs/OBSERVABILITY.md#scraping). Origin responses are private/no-store; only the
 Worker publishes the public response cache policy.
 
 After this one-time migration, keep both sides on the same secret during normal

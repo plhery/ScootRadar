@@ -1,4 +1,5 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { clientNetwork } from '@/lib/clientNetwork';
 
 interface RateLimitBinding {
   limit(options: { key: string }): Promise<{ success: boolean }>;
@@ -10,10 +11,11 @@ type RateLimitBindingName =
   | 'WALK_API_RATE_LIMITER'
   | 'WALK_UPSTREAM_RATE_LIMITER';
 
+// An IPv6 client counts by its /64 (clientNetwork), so that changing addresses within it does not reset its count.
 function clientKey(request: Request): string {
-  return request.headers.get('cf-connecting-ip') ??
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    'local-development';
+  const address = request.headers.get('cf-connecting-ip') ??
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+  return address ? clientNetwork(address) : 'local-development';
 }
 
 function failOpenInLocalDevelopment(): boolean {
