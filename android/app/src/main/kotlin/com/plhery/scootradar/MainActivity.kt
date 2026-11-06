@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.KeyboardShortcutGroup
 import android.view.Menu
+import android.view.MotionEvent
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -125,6 +126,23 @@ class MainActivity : AppCompatActivity() {
             shortcuts = shortcuts,
             screenState = model.screen,
         )
+    }
+
+    /**
+     * A touch or a key anywhere in the window: a map that stopped refreshing itself half an hour after the last
+     * one refreshes at once, and goes on (ScooterRefreshPolicy.idlePause).
+     */
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        model.controller.noteInteraction()
+    }
+
+    /** So does a mouse's wheel, or TalkBack's finger finding its way over the screen, which come as hover events. */
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (event.actionMasked == MotionEvent.ACTION_SCROLL || event.actionMasked == MotionEvent.ACTION_HOVER_ENTER) {
+            model.controller.noteInteraction()
+        }
+        return super.dispatchGenericMotionEvent(event)
     }
 
     override fun onNewIntent(intent: Intent) {

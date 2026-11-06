@@ -377,6 +377,14 @@ class ScooterMapController(
     private var isTrackingHeading = false
     private var isSceneActive = true
 
+    /** When the map was last touched, a key pressed or the app brought back to the front. */
+    private var lastInteractionAt: Instant = now()
+
+    private val _isPausedForIdle = MutableStateFlow(false)
+
+    /** Automatic refreshes stopped, `refreshPolicy.idlePause` after the last touch, until the next one: said under the search bar. */
+    val isPausedForIdle: StateFlow<Boolean> = _isPausedForIdle.asStateFlow()
+
     /** The route being found, and the number of the latest request: an answer to an earlier one is not wanted any more. */
     internal var routeTask: Job? = null
     internal var routeRequests = 0
@@ -752,6 +760,9 @@ class ScooterMapController(
 
     fun becameActive() {
         isSceneActive = true
+        // Coming back to the app counts as a touch.
+        lastInteractionAt = clock()
+        _isPausedForIdle.value = false
         if (hasStarted) startHeadingUpdates()
         expireParkingIfNeeded()
         noteReturnFromRide()
@@ -838,10 +849,25 @@ class ScooterMapController(
             )
         }
         if (clock() >= due) {
-            refresh()
+            // Nobody has touched the map for a while: it stops asking until someone does.
+            if (clock().timeIntervalSince(lastInteractionAt) >= refreshPolicy.idlePause) {
+                _isPausedForIdle.value = true
+                refreshTimerTask?.cancel()
+                refreshTimerTask = null
+            } else {
+                refresh()
+            }
         } else {
             scheduleAutomaticRefresh()
         }
+    }
+
+    /** A touch anywhere in the window, or a key: a paused map refreshes at once if its data is due, and the automatic refreshes start again. */
+    fun noteInteraction() {
+        lastInteractionAt = clock()
+        if (!_isPausedForIdle.value) return
+        _isPausedForIdle.value = false
+        refreshIfDue(respectingAttemptGap = false)
     }
 
     private fun scheduleAutomaticRefresh() {

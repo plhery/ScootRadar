@@ -26,6 +26,12 @@ data class ScooterRefreshPolicy(
      * requests should it not.
      */
     val minimumFollowUp: Double = 0.2,
+    /**
+     * Automatic refreshes stop this long after the last touch, key or return to the app, until the next one.
+     * A map left open where nobody looked asked for the same view every minute, as one on Berlin from 3 to 6
+     * November 2026 did for three days (Desk [316]).
+     */
+    val idlePause: Double = 30.0 * 60,
 ) {
     /**
      * The gap before the follow-up a refreshing response asks for with `followUpMs`, which also takes the

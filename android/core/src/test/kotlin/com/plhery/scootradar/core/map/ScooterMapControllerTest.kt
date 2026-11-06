@@ -1239,6 +1239,75 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun automaticRefreshPausesHalfAnHourAfterTheLastTouchUntilTheNext() = runTest {
+        val clock = TestClock()
+        val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        val model = makeController(api, clock = clock)
+        model.refresh()
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+
+        // A refresh a minute while someone was there in the last half hour.
+        for (minute in 1..29) {
+            clock.advance(60.0)
+            api.setResponse(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+            model.autoRefreshIfNeeded()
+            val refreshed = waitUntil { api.calls == minute + 1 && !model.isLoading.value }
+            assertTrue(refreshed)
+        }
+        assertFalse(model.isPausedForIdle.value)
+
+        // Half an hour after the last touch the map stops asking, however long it stays open.
+        clock.advance(60.0)
+        model.autoRefreshIfNeeded()
+        settle()
+        assertTrue(model.isPausedForIdle.value)
+        clock.advance(3 * 3600.0)
+        model.autoRefreshIfNeeded()
+        settle()
+        assertEquals(30, api.calls)
+
+        // The next touch refreshes at once, and the minute's refresh starts again.
+        api.setResponse(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        model.noteInteraction()
+        assertFalse(model.isPausedForIdle.value)
+        val refreshedOnTouch = waitUntil { api.calls == 31 && !model.isLoading.value }
+        assertTrue(refreshedOnTouch)
+        clock.advance(60.0)
+        api.setResponse(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        model.autoRefreshIfNeeded()
+        val refreshedAfterTouch = waitUntil { api.calls == 32 && !model.isLoading.value }
+        assertTrue(refreshedAfterTouch)
+
+        // A touch while the map refreshes itself asks for nothing more.
+        model.noteInteraction()
+        settle()
+        assertEquals(32, api.calls)
+    }
+
+    @Test
+    fun returningToTheAppEndsThePause() = runTest {
+        val clock = TestClock()
+        val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        val model = makeController(api, clock = clock)
+        model.refresh()
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+
+        clock.advance(31 * 60.0)
+        model.autoRefreshIfNeeded()
+        settle()
+        assertTrue(model.isPausedForIdle.value)
+
+        model.becameInactive()
+        clock.advance(3600.0)
+        model.becameActive()
+        assertFalse(model.isPausedForIdle.value)
+        val refreshedOnReturn = waitUntil { api.calls == 2 && !model.isLoading.value }
+        assertTrue(refreshedOnReturn)
+    }
+
+    @Test
     fun automaticRetriesKeepTenSecondsBetweenAttempts() = runTest {
         val clock = TestClock()
         val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))

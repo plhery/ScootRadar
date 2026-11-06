@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
@@ -89,14 +90,16 @@ const val LOCATION_CARD_TAG = "locationCard"
  * button. From xLarge text up the button goes under the sentence, which is never cut short. A reason that changes
  * while the banner shows fades into the new one in [animation], the notices' (ScooterMapScreen.swift:247), the banner's
  * height easing to the new one's; at once without one (Reduce Motion). [onRestingHeight] hears the height it comes to
- * rest at (easedHeight).
+ * rest at (easedHeight). Without [actionTitle] and [onAction], a line with [symbol] in [tint], as a paused map's.
  */
 @Composable
 fun MapStatusBanner(
     message: String,
-    actionTitle: String,
-    onAction: () -> Unit,
     modifier: Modifier = Modifier,
+    actionTitle: String? = null,
+    onAction: (() -> Unit)? = null,
+    symbol: ImageVector = Symbols.warningFill,
+    tint: Color? = null,
     isBusy: Boolean = false,
     animation: FiniteAnimationSpec<Float>? = null,
     onRestingHeight: (Int) -> Unit = {},
@@ -104,36 +107,39 @@ fun MapStatusBanner(
     val colors = scootColors
     val stacks = TextSize.isXLargeOrMore
     val shape = if (stacks) SquircleShape(22.dp) else CapsuleShape
-    val indicator = @Composable { SymbolIcon(Symbols.warningFill, textSymbolSize(17f), colors.critical) }
+    val indicator = @Composable { SymbolIcon(symbol, textSymbolSize(17f), tint ?: colors.critical) }
     val text = @Composable { textModifier: Modifier ->
         CrossFade(message, animation, textModifier) {
             Text(it, style = ScootType.caption.weight(FontWeight.SemiBold), color = colors.label)
         }
     }
+    val hasAction = actionTitle != null && onAction != null
     val action = @Composable { actionModifier: Modifier ->
-        // The pill stays small; its target is 44 points high.
-        Box(
-            actionModifier
-                .plainButton(enabled = !isBusy, label = actionTitle, onClick = onAction)
-                .heightIn(min = 44.dp),
-            contentAlignment = Alignment.Center,
-        ) {
+        if (actionTitle != null && onAction != null) {
+            // The pill stays small; its target is 44 points high.
             Box(
-                Modifier
-                    .clip(CapsuleShape)
-                    .background(colors.criticalFill)
-                    .heightIn(min = 34.dp)
-                    .padding(horizontal = 14.dp),
+                actionModifier
+                    .plainButton(enabled = !isBusy, label = actionTitle, onClick = onAction)
+                    .heightIn(min = 44.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    actionTitle,
-                    style = ScootType.caption.weight(FontWeight.Bold),
-                    color = Color.White,
-                    maxLines = 1,
-                    modifier = Modifier.alpha(if (isBusy) 0f else 1f),
-                )
-                if (isBusy) Spinner(SpinnerSize.Small, Color.White)
+                Box(
+                    Modifier
+                        .clip(CapsuleShape)
+                        .background(colors.criticalFill)
+                        .heightIn(min = 34.dp)
+                        .padding(horizontal = 14.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        actionTitle,
+                        style = ScootType.caption.weight(FontWeight.Bold),
+                        color = Color.White,
+                        maxLines = 1,
+                        modifier = Modifier.alpha(if (isBusy) 0f else 1f),
+                    )
+                    if (isBusy) Spinner(SpinnerSize.Small, Color.White)
+                }
             }
         }
     }
@@ -146,7 +152,7 @@ fun MapStatusBanner(
             .chromeGlass(shape)
             .overTheMap()
             .easedHeight(message, animation, onRestingHeight, centred = true)
-            .padding(start = 14.dp, end = if (stacks) 14.dp else 5.dp, top = if (stacks) 10.dp else 2.dp, bottom = if (stacks) 10.dp else 2.dp),
+            .padding(start = 14.dp, end = if (stacks || !hasAction) 14.dp else 5.dp, top = if (stacks) 10.dp else 2.dp, bottom = if (stacks) 10.dp else 2.dp),
     ) {
         if (stacks) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -154,10 +160,15 @@ fun MapStatusBanner(
                     indicator()
                     text(Modifier.weight(1f))
                 }
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { action(Modifier) }
+                if (hasAction) Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { action(Modifier) }
             }
         } else {
-            Row(horizontalArrangement = Arrangement.spacedBy(9.dp), verticalAlignment = Alignment.CenterVertically) {
+            // As tall without the button as with it.
+            Row(
+                Modifier.heightIn(min = 44.dp),
+                horizontalArrangement = Arrangement.spacedBy(9.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 indicator()
                 text(Modifier.weight(1f))
                 action(Modifier)
