@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'liege',
   name: 'Louer une trottinette électrique à Liège',
   title: 'Trottinette électrique Liège : Dott, Pony, Bolt, prix',
-  description: 'Trottinette électrique à Liège : Dott, Pony et Bolt, prix, Smartparking, piétonnier au pas, Boverie, Sart-Tilman, Guillemins et règles belges.',
+  description: 'Trottinette électrique à Liège : Dott, Pony et Bolt, prix en novembre 2026, comment louer, Smartparking, piétonnier au pas, Sart-Tilman, règles belges.',
   headline: 'Trottinette électrique à Liège : Dott, Pony et Bolt, prix, stationnement et zones lentes en 2026',
-  lede: 'Pour louer une trottinette électrique à Liège, vous avez **Dott**, **Pony** et **Bolt**. Le 25 octobre 2026, Dott publiait 1 € au déverrouillage et 0,35 € la minute, Pony 1 € et 0,26 € ; Bolt donne ses prix dans son app. Dans le centre (zone « Smartparking »), vous garez la trottinette à un emplacement dédié ou près d’arceaux vélos ; dans le piétonnier, vous roulez au pas.',
+  lede: 'Pour louer une trottinette électrique à Liège, vous avez **Dott**, **Pony** et **Bolt** : Dott et Bolt louent dès 18 ans, Pony dès 16 ans. Repérez une trottinette sur la [carte de Liège](map:be:Liège) ou dans l’app de l’opérateur, ajoutez un moyen de paiement et scannez le QR code. En novembre 2026, Dott demande 1 € au déverrouillage et 0,35 € la minute, Pony 1 € et 0,26 € : Pony est le moins cher, 3,60 € les 10 minutes contre 4,50 € chez Dott ; Bolt affiche son prix dans l’app avant le déverrouillage. Dans le centre (zone « Smartparking »), vous garez la trottinette à un emplacement dédié ou près d’arceaux vélos ; dans le piétonnier, vous roulez au pas.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'be:Liège',
@@ -28,7 +28,7 @@ const guide: Guide = {
         'Dott et Pony publient leurs tarifs dans leurs données ouvertes :',
         {
           table: {
-            caption: 'Prix publiés le 25 octobre 2026, hors pass et promotions',
+            caption: 'Prix en novembre 2026, hors pass et promotions',
             head: ['Opérateur', 'Déverrouillage', 'Par minute', '10 minutes', '20 minutes'],
             rows: [
               ['Dott', '1,00 €', '0,35 €', '4,50 €', '8,00 €'],
@@ -36,7 +36,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bolt affiche son prix dans l’app. Chez les trois, seul compte le prix affiché avant le déverrouillage.',
+        '**Le moins cher :** Pony, à 3,60 € les 10 minutes et 6,20 € les 20 minutes.',
         'La loi autorise la trottinette dès 16 ans, mais Dott et Bolt ne louent qu’à partir de **18 ans** en Belgique. Pony, selon ses conditions belges du 21 août 2025, loue dès **16 ans**.',
         'Gardez de la batterie pour les montées : le règlement de la Ville rappelle les fortes pentes entre la Meuse et les quartiers hauts, et les pavés fréquents.',
       ],
@@ -133,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'Combien coûte une trottinette électrique à Liège ?',
-      answer: 'Selon les tarifs publiés le 25 octobre 2026, 20 minutes coûtaient 8,00 € chez Dott (1 € puis 0,35 € la minute) et 6,20 € chez Pony (1 € puis 0,26 € la minute), hors pass et promotions. Bolt affiche ses prix dans son app.',
+      answer: 'En novembre 2026, 20 minutes coûtent 8,00 € chez Dott (1 € puis 0,35 € la minute) et 6,20 € chez Pony (1 € puis 0,26 € la minute), hors pass et promotions.',
     },
     {
       question: 'Peut-on rouler en trottinette dans le piétonnier de Liège ?',
@@ -162,6 +162,7 @@ const guide: Guide = {
     { title: 'Ville de Liège, données ouvertes : zones de restriction et limitations', url: 'https://opendata.liege.be/explore/dataset/micromobilite-zones-de-restriction-et-limitations/' },
     { title: 'ULiège : mobilité électrique au Sart-Tilman (14 octobre 2022)', url: 'https://www.campus.uliege.be/cms/c_16984088/fr/mobilite-electrique' },
     { title: 'SPW Mobilité : trottinettes électriques, nouvelles règles (5 juillet 2022)', url: 'https://mobilite.wallonie.be/news/trottinettes-electriques--nouvelles-regles-en-vigueur' },
+    { title: 'Dott : flux de données public (GBFS) de Liège', url: 'https://gbfs.api.ridedott.com/public/v2/liege/gbfs.json' },
     { title: 'Dott : conditions générales Belgique (23 septembre 2025)', url: 'https://ridedott.com/fr/conditions-generales/belgique/' },
     { title: 'Pony : conditions générales de location Belgique (21 août 2025)', url: 'https://ponybikes.notion.site/Conditions-g-n-rales-de-location-BELGIQUE-9dc071de4f354cdea559e02cfa6abf14' },
   ],

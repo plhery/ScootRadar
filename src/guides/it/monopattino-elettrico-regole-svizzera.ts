@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'swiss-rules',
   name: 'Regole del monopattino elettrico in Svizzera',
   title: 'Monopattino elettrico in Svizzera: regole 2026, età e multe',
-  description: 'Le regole del monopattino elettrico in Svizzera nel 2026: età e licenza M, casco, alcol, marciapiede, pista ciclabile, multe, treno FFS, sharing e Ticino.',
+  description: 'Le regole del monopattino elettrico in Svizzera a novembre 2026: età e licenza M, pista ciclabile e marciapiede, casco, alcol, multe, treno FFS, sharing.',
   headline: 'Monopattino elettrico in Svizzera: le regole del 2026, dall’età alle multe',
-  lede: 'Le regole del monopattino elettrico in Svizzera sono quelle di un ciclomotore leggero: un motore da 0,5 kW al massimo, che non spinge oltre i 20 km/h, e su strada le norme dei ciclisti. Puoi guidarlo da 14 anni con la licenza di condurre categoria M e senza licenza da 16; per lo sharing servono 18 anni. Il casco non è obbligatorio, le luci invece vanno accese anche di giorno. Vietati il marciapiede (40 franchi di multa), i passeggeri e un tasso alcolemico dello 0,5‰ o più.',
+  lede: 'In Svizzera il monopattino elettrico è un ciclomotore leggero: il motore lo spinge fino a 20 km/h, con 0,5 kW al massimo, non ha targa né assicurazione obbligatoria, e su strada segui le regole dei ciclisti. Puoi guidarlo da 16 anni senza licenza, o da 14 con la licenza di condurre categoria M, sulla pista o corsia ciclabile, altrimenti sulla carreggiata, mai sul marciapiede (40 franchi); per noleggiarlo in sharing gli operatori chiedono 18 anni. A novembre 2026 il casco non è obbligatorio, le luci vanno accese anche di giorno, i passeggeri sono vietati e il limite di alcol è 0,5‰. Passare con il rosso costa 60 franchi, usare il telefono senza vivavoce 40.',
   published: '2026-10-12',
   updated: '2026-10-12',
   sections: [
@@ -36,7 +36,7 @@ const guide: Guide = {
     {
       heading: 'Casco, luci e passeggeri: cosa è obbligatorio',
       blocks: [
-        '**Il casco non è obbligatorio** (art. 3b ONC), ma l’UPI lo raccomanda con forza. Nelle sue condizioni, però, Voi elenca il casco tra le misure di sicurezza richieste, e Dott avverte che senza casco le ferite alla testa potrebbero non essere coperte.',
+        '**Il casco non è obbligatorio** (art. 3b ONC), ma l’UPI lo raccomanda con forza, e Dott avverte che senza casco le ferite alla testa potrebbero non essere coperte.',
         {
           list: [
             '**Luci sempre accese**, di giorno e di notte, dal 1° aprile 2022: bianca fissa davanti, rossa fissa dietro. Senza luci di giorno la multa è di 20 franchi.',
@@ -44,8 +44,8 @@ const guide: Guide = {
             '**Due freni** indipendenti.',
           ],
         },
-        'Secondo il TCS, due terzi di chi va in monopattino elettrico non accende le luci di giorno. Eppure è la multa più facile da evitare.',
-        '**Niente passeggeri, mai**, nemmeno un bambino. Dal 1° luglio 2025 l’ordinanza lo dice chiaro: «Su velocipedi e ciclomotori senza sella per il conducente non è consentito trasportare persone» (art. 63 ONC). La stampa parla di una multa di 20 franchi, ma l’elenco ufficiale delle multe non prevede ancora chiaramente questo caso.',
+        'In un conteggio pubblicato dal TCS a giugno 2023, solo il 32% di chi andava in monopattino elettrico aveva le luci accese di giorno. Eppure è la multa più facile da evitare.',
+        '**Niente passeggeri, mai**, nemmeno un bambino. Dal 1° luglio 2025 l’ordinanza lo dice chiaro: «Su velocipedi e ciclomotori senza sella per il conducente non è consentito trasportare persone» (art. 63 ONC).',
       ],
     },
     {
@@ -69,7 +69,7 @@ const guide: Guide = {
     {
       heading: 'Alcol: il limite è 0,5‰',
       blocks: [
-        'Il limite è **0,5‰** nel sangue (0,25 mg/l nell’aria espirata). **Non esiste una regola speciale per chi ha meno di 21 anni**, anche se alcune guide online la citano. E lo 0,1‰ della licenza in prova non vale: l’ordinanza lo esclude «durante le corse con veicoli delle categorie speciali F, G e M».',
+        'Il limite è **0,5‰** nel sangue (0,25 mg/l nell’aria espirata). **Non esiste una regola speciale per chi ha meno di 21 anni**. E lo 0,1‰ della licenza in prova non vale: l’ordinanza lo esclude «durante le corse con veicoli delle categorie speciali F, G e M».',
         'Per le droghe (THC, cocaina, anfetamine…) vale la tolleranza zero, salvo prescrizione medica.',
         {
           list: [
@@ -86,7 +86,7 @@ const guide: Guide = {
         'Le fissa la Confederazione: gli importi sono uguali in tutta la Svizzera e non sono cambiati dal 2024.',
         {
           table: {
-            caption: 'Multe disciplinari per chi guida un monopattino elettrico, in vigore a ottobre 2026',
+            caption: 'Multe disciplinari per chi guida un monopattino elettrico, in vigore a novembre 2026',
             head: ['Infrazione', 'Multa'],
             rows: [
               ['Circolare sul marciapiede', '40 franchi'],
@@ -122,15 +122,15 @@ const guide: Guide = {
         'L’assicurazione di responsabilità civile inclusa viene **dopo la tua**: con Lime, Bolt e Voi è sussidiaria alla tua RC privata e, secondo l’ultimo certificato pubblicato da Dott (valido fino al 30 giugno 2026), la sua copertura pagava solo a complemento della tua. PubliBike non include nessuna assicurazione. I passeggeri non sono mai coperti.',
         'L’app ti mostra dove puoi chiudere la corsa e dove il monopattino rallenta o si spegne. Le spese dell’operatore si aggiungono alle multe: Voi può addebitare 25 franchi per un parcheggio sbagliato, dopo alcuni avvisi, e Bolt fino a 100 franchi per recuperare un monopattino lasciato fuori zona.',
         'Per trovare il più vicino, di qualunque operatore, apri [la mappa](/map): un pulsante apre poi l’app dell’operatore, dove sblocchi e paghi.',
-        '**Turisti:** da 16 anni non serve nessuna licenza, qualunque sia la tua nazionalità. A 14 e 15 anni serve la licenza svizzera categoria M; non abbiamo potuto verificare se basti una licenza estera, quindi meglio rinunciare. Le condizioni degli operatori non chiedono di abitare in Svizzera.',
+        '**Turisti:** da 16 anni non serve nessuna licenza, qualunque sia la tua nazionalità. A 14 e 15 anni serve una licenza di categoria M. Le condizioni degli operatori non chiedono di abitare in Svizzera.',
       ],
     },
     {
       heading: 'Monopattino elettrico in Ticino: sharing e frontalieri',
       blocks: [
         'In Ticino valgono le stesse regole federali del resto della Svizzera, dall’età alle multe.',
-        'I monopattini in sharing di PubliBike in Ticino funzionano **a stazioni**: li prendi e li riconsegni in una stazione, e il motore spinge solo fino a **15 km/h** (20 km/h a Bienne). Non è inclusa nessuna assicurazione e, per un monopattino rubato o chiuso male, PubliBike addebita un danno minimo di 1200 franchi.',
-        'Il 12 ottobre 2026 ScootRadar mostrava poco più di 60 mezzi PubliBike, bici comprese, intorno a [Locarno](map:ch:locarno), e nessun veicolo intorno a Lugano, dove a luglio 2026 la SRF segnalava una prova di monopattini PubliBike. Altri operatori possono essere attivi in Ticino senza pubblicare i loro dati.',
+        'I monopattini in sharing di PubliBike in Ticino, che sblocchi con l’app PubliBike Velospot, funzionano **a stazioni**: li prendi e li riconsegni in una stazione, e il motore spinge solo fino a **15 km/h** (20 km/h a Bienne). Servono 18 anni. L’assicurazione è a carico tuo e, se un monopattino chiuso male viene rubato, PubliBike addebita un danno minimo di 1200 franchi.',
+        'Il 12 ottobre 2026 ScootRadar mostrava poco più di 60 mezzi PubliBike, bici comprese, intorno a [Locarno](map:ch:locarno).',
         '**Frontalieri:** oltre il confine le regole cambiano. Contrassegno (la cosiddetta «targa»), assicurazione obbligatoria e casco per tutti sono regole italiane, non svizzere. Prima di guidare a Como o a Varese, leggi le [regole del monopattino elettrico in Italia](guide:italian-rules).',
       ],
     },
@@ -146,11 +146,11 @@ const guide: Guide = {
             'si può parcheggiare nelle zone d’incontro e nelle zone pedonali.',
           ],
         },
-        '**Al 12 ottobre 2026, quest’anno non è entrata in vigore nessuna nuova regola federale** per i monopattini. Il dibattito però va avanti:',
+        '**Dal 1° luglio 2026** circolare a sinistra di un’isola spartitraffico, di una superficie vietata al traffico o di un ostacolo al centro della carreggiata costa 30 franchi. Il dibattito però va avanti:',
         {
           list: [
-            '**Casco:** il 30 aprile 2026 il Consiglio nazionale ha respinto, con 122 voti contro 33, una mozione che voleva casco e licenza obbligatori per gli scooter elettrici e i veicoli di tendenza analoghi. Il 19 agosto 2026 il Consiglio federale si è detto pronto a mettere in consultazione, alla prossima modifica dell’ordinanza, l’obbligo del casco per i monopattini elettrici, ma per ora senza progetto né data.',
-            '**Immatricolazione e assicurazione:** la mozione 26.3637 vuole renderle obbligatorie. Il 19 agosto 2026 il Consiglio federale ha proposto di respingerla; il Parlamento non ha ancora votato.',
+            '**Casco:** il 30 aprile 2026 il Consiglio nazionale ha respinto, con 122 voti contro 33, una mozione che voleva casco e licenza obbligatori per gli scooter elettrici e i veicoli di tendenza analoghi. Il 19 agosto 2026 il Consiglio federale si è detto pronto a mettere in discussione l’obbligo del casco per i monopattini elettrici nella consultazione su una prossima modifica di ordinanza. Una consultazione sulla revisione parziale di sette ordinanze in materia di circolazione stradale, tra cui l’ONC e l’OAC, è prevista dal 1° dicembre 2026 al 1° marzo 2027 (a novembre 2026).',
+            '**Immatricolazione e assicurazione:** la mozione 26.3637 vuole renderle obbligatorie. Il 19 agosto 2026 il Consiglio federale ha proposto di respingerla; è ancora pendente al Consiglio nazionale (a novembre 2026).',
             '**Monopattini truccati:** il Consiglio federale vuole precisare le regole.',
             '**Treno:** il personale dei treni del sindacato SEV vorrebbe regole più chiare per bici e monopattini (giugno 2026).',
           ],
@@ -165,7 +165,7 @@ const guide: Guide = {
     },
     {
       question: 'Il casco per il monopattino è obbligatorio in Svizzera?',
-      answer: 'No, è solo raccomandato. Ad agosto 2026 il Consiglio federale si è detto pronto a mettere in consultazione un obbligo per i monopattini elettrici, ma non ci sono ancora né un progetto né una data.',
+      answer: 'No, è solo raccomandato. Ad agosto 2026 il Consiglio federale si è detto pronto a mettere in discussione un obbligo per i monopattini elettrici a una prossima modifica di ordinanza; una consultazione su sette ordinanze della circolazione stradale è prevista da dicembre 2026 a marzo 2027.',
     },
     {
       question: 'Serve la targa o l’assicurazione per il monopattino elettrico in Svizzera?',
@@ -177,7 +177,7 @@ const guide: Guide = {
     },
     {
       question: 'Quali sono le nuove regole per i monopattini nel 2026?',
-      answer: 'In Svizzera, al 12 ottobre 2026, nessuna: l’ultimo cambiamento risale al 1° luglio 2025. Le notizie sulle nuove regole 2026 riguardano soprattutto l’Italia e altri Paesi vicini.',
+      answer: 'In Svizzera nessuna grande riforma: l’ultimo grande cambiamento risale al 1° luglio 2025. Dal 1° luglio 2026 circolare a sinistra di un’isola spartitraffico costa 30 franchi. Le notizie sulle nuove regole 2026 riguardano soprattutto l’Italia e altri Paesi vicini.',
     },
     {
       question: 'Cosa succede se ti ferma la polizia con il monopattino?',
@@ -194,9 +194,12 @@ const guide: Guide = {
     { title: 'Alliance SwissPass: tariffa T600, disposizioni accessorie comuni di tariffa, cifre 6 e 7 (edizione del 1° giugno 2026, PDF)', url: 'https://www.allianceswisspass.ch/it/asp/Downloads?download=2666' },
     { title: 'Nau.ch: le FFS regalano biscotti a chi spinge la bici in stazione (20 agosto 2022, in tedesco)', url: 'https://www.nau.ch/news/good-news/sbb-verteilt-kekse-an-vorzeige-velofahrer-66245670' },
     { title: 'SEV: personale treno sotto pressione, assemblea dei delegati del 10 giugno 2026', url: 'https://sev-online.ch/it/aktuell/kontakt.sev/2026/personale-trenosotto-pressione-202608-146425/' },
-    { title: 'Parlamento: mozione 26.3637, immatricolazione e assicurazione obbligatorie per i monopattini elettrici', url: 'https://www.parlament.ch/it/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
+    { title: 'Parlamento: mozione 26.3637, immatricolazione e assicurazione obbligatorie per i monopattini elettrici, con il parere del Consiglio federale', url: 'https://www.parlament.ch/it/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
     { title: 'Parlamento: mozione 26.3010, casco e licenza per scooter elettrici e veicoli di tendenza', url: 'https://www.parlament.ch/it/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263010' },
     { title: 'PubliBike: i monopattini elettrici (pagina in tedesco)', url: 'https://www.publibike.ch/de/e-scooter' },
+    { title: 'PubliBike: condizioni generali (in tedesco)', url: 'https://www.publibike.ch/de/agb' },
+    { title: 'Fedlex: consultazione prevista sulla revisione parziale di sette ordinanze in materia di circolazione stradale', url: 'https://www.fedlex.admin.ch/eli/dl/proj/2026/81/cons_1/it' },
+    { title: 'TCS: conteggio, due terzi dei monopattini senza luci di giorno (22 giugno 2023, in francese)', url: 'https://www.tcs.ch/fr/le-tcs/presse/communiques-de-presse-2023/deux-roues-lumieres.php' },
   ],
 };
 

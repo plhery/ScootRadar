@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Würzburg 2026: Preise, Parken, Altstadt',
   description: 'E-Scooter Würzburg: was Zeus und Voi pro Minute kosten, wo du in Altstadt, am Main und an der Residenz nicht fährst oder parkst und ob er in die Tram darf.',
   headline: 'E-Scooter Würzburg: Preise, Fahrverbot in der Fussgängerzone und was an Main, Residenz und Uni gilt',
-  lede: 'Einen E-Scooter in Würzburg leihst du ohne Führerschein bei Zeus oder Voi, bei Zeus ab 18. Zeus nimmt 1 € fürs Entsperren und 0,25 € pro Minute, Voi 0,49 € und 0,24 € pro Minute (Stand November 2026); zehn Minuten kosten also 3,50 € oder 2,89 €. Du fährst auf dem Radweg oder der Fahrbahn, nie durch die Fussgängerzone der Altstadt, über die Alte Mainbrücke, auf Gehwegen oder auf Wegen in Parks. Abstellen darfst du wie ein Fahrrad, aber nicht in der Fussgängerzone, in Grünanlagen und an Haltestellen; bei Zeus endet die Fahrt zudem nicht am Mainufer, am Residenzplatz und im Hofgarten. In Bus und Strassenbahn darf kein E-Scooter mit.',
+  lede: 'Einen E-Scooter in Würzburg leihst du ohne Führerschein bei Zeus oder Voi, bei Zeus ab 18: App laden, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Zeus nimmt 1 € fürs Entsperren und 0,25 € pro Minute, Voi 0,49 € und 0,24 € pro Minute (Stand November 2026); zehn Minuten kosten also 3,50 € bei Zeus und 2,89 € bei Voi, das damit günstiger ist. Du fährst auf dem Radweg oder der Fahrbahn, nie durch die Fussgängerzone der Altstadt, über die Alte Mainbrücke, auf Gehwegen oder auf Wegen in Parks. Abstellen darfst du wie ein Fahrrad, aber nicht in der Fussgängerzone, in Grünanlagen und an Haltestellen; bei Zeus endet die Fahrt zudem nicht am Mainufer, am Residenzplatz und im Hofgarten. In Bus und Strassenbahn darf kein E-Scooter mit.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'de:Würzburg',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Würzburg?',
       blocks: [
-        'Auf ihrer undatierten E-Scooter-Seite nennt die Stadt zwei Anbieter, die ihre Selbstverpflichtung unterschrieben haben: **Zeus** und **Voi**. Voi meldete seinen Start in Würzburg zum 28. März 2025. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Auf ihrer E-Scooter-Seite nennt die Stadt zwei Anbieter, die ihre Selbstverpflichtung unterschrieben haben: **Zeus** und **Voi** (Stand November 2026). Voi meldete seinen Start in Würzburg zum 28. März 2025. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Würzburg](map:de:Würzburg) rund 170 Zeus- und 230 Voi-Scooter, die zu diesem Zeitpunkt frei waren.',
         'Im November 2025 meldete ein Stadtrat Beschwerden über herumstehende Roller eines insolventen Anbieters. Im März und April 2026 sagte Bürgermeisterin Vorlová, die ungenutzten grünen Roller würden nach und nach weggeräumt, von einer anderen Firma als dem Anbieter.',
       ],
@@ -24,7 +24,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Würzburg?',
       blocks: [
-        'Zeus nimmt in Würzburg 1 € fürs Entsperren und 0,25 € pro Minute und berechnet für eine Fahrt höchstens 42 €. Voi nimmt 0,49 € fürs Entsperren und 0,24 € pro Minute. Beides gilt Stand November 2026.',
+        'Zeus nimmt in Würzburg 1 € fürs Entsperren und 0,25 € pro Minute und berechnet für eine Fahrt höchstens 42 €. Voi nimmt 0,49 € fürs Entsperren und 0,24 € pro Minute. Beides gilt Stand November 2026, laut den offenen Daten der Anbieter. Am günstigsten ist Voi: Für zehn Minuten zahlst du 2,89 € statt 3,50 € bei Zeus, für 20 Minuten 5,29 € statt 6,00 €.',
         {
           table: {
             caption: 'E-Scooter-Preise in Würzburg (Stand November 2026)',
@@ -37,7 +37,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Vom Hauptbahnhof zur Residenz ist es gut 1 km, zur Mensa am Hubland rund 4 km: Rechne grob mit 5 und 15 Minuten. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Vom Hauptbahnhof zur Residenz ist es gut 1 km, zur Mensa am Hubland rund 4 km: Rechne grob mit 5 und 15 Minuten.',
       ],
     },
     {
@@ -139,7 +139,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Was kostet ein E-Scooter in Würzburg?',
-      answer: 'Bei Zeus 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €; bei Voi 0,49 € und 0,24 € pro Minute, zehn Minuten 2,89 € (Stand November 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+      answer: 'Bei Zeus 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €; bei Voi 0,49 € und 0,24 € pro Minute, zehn Minuten 2,89 € (Stand November 2026). Voi ist damit am günstigsten, auch für 20 Minuten (5,29 € statt 6,00 €).',
     },
     {
       question: 'Wo darf ich in Würzburg einen Leih-Scooter nicht abstellen?',
@@ -163,11 +163,11 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-App brauche ich in Würzburg?',
-      answer: 'Die von Zeus oder Voi, den beiden Anbietern, die die Stadt nennt. Einen Führerschein brauchst du nicht; Zeus vermietet ab 18, das Mindestalter bei Voi zeigt dir die App.',
+      answer: 'Die von Zeus oder Voi, den beiden Anbietern, die die Stadt nennt. Einen Führerschein brauchst du nicht; Zeus vermietet ab 18.',
     },
   ],
   sources: [
-    { title: 'Stadt Würzburg: Elektrifizierung der Mobilität, E-Scooter (abgerufen 23. Oktober 2026)', url: 'https://www.wuerzburg.de/themen/verkehr--mobilitaet/saubermobil/elektrifizierung-der-mobilitaet' },
+    { title: 'Stadt Würzburg: Elektrifizierung der Mobilität, E-Scooter (Stand November 2026)', url: 'https://www.wuerzburg.de/themen/verkehr--mobilitaet/saubermobil/elektrifizierung-der-mobilitaet' },
     { title: 'Stadt Würzburg: Freiwillige Selbstverpflichtung für Mietroller (Stand September 2020)', url: 'https://www.wuerzburg.de/m_567845_dl' },
     { title: 'Stadt Würzburg: Fussgängerzonensatzung (Stadtrat, 16. April 2026)', url: 'https://www.wuerzburg.sitzung-online.de/BI/vo020.asp?VOLFDNR=23804' },
     { title: 'Stadt Würzburg: Änderung der Sondernutzungsgebührensatzung (Stadtrat, 23. März 2023)', url: 'https://www.wuerzburg.sitzung-online.de/BI/vo020.asp?VOLFDNR=20227' },

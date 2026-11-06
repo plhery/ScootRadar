@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'leeds',
   name: 'E-scooter hire in Leeds',
   title: 'E-scooter Leeds 2026: Beryl prices, hours, where to ride',
-  description: 'E-scooter hire in Leeds with Beryl: £1 to unlock and 22p a minute, no night stop, the £8 Day Pass, who can ride, the zone, the bays and the campus rules.',
+  description: 'E-scooter hire in Leeds with Beryl: £1 to unlock and 22p a minute (November 2026), no night stop, the £8 Day Pass, who can ride, the zone and the bays.',
   headline: 'E-scooter hire in Leeds: Beryl’s prices, hours, zone and the rules for students',
-  lede: 'You can hire an e-scooter in Leeds from Beryl, the only operator, in a government trial that opened on 19 March 2026; the national trials are due to run until May 2028. It costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and there is no night stop: Beryl’s page on hire hours lists restrictions only in Bournemouth, Christchurch and Poole and in Brighton. You must be 18 or over with a driving licence, ride only where bikes may go, and end every ride in a Beryl bay.',
+  lede: 'You can hire an e-scooter in Leeds from Beryl, the only operator, in a government trial that opened on 19 March 2026; the national trials are due to run until May 2028. Hire one in the Beryl app, which checks your driving licence and a selfie before your first ride. As of November 2026 it costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and there is no night stop. You must be 18 or over with a driving licence, ride only where bikes may go, and end every ride in a Beryl bay.',
   published: '2026-10-23',
   updated: '2026-10-23',
   city: 'gb:Leeds',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Leeds e-scooter hire: Beryl, since March 2026',
       blocks: [
-        'One company, **Beryl**, rents e-scooters in Leeds, alongside its e-bikes, in a scheme run with Leeds City Council and branded **LNER Beryl**: the train company sponsors it through to 2027, the council says. The e-scooters joined on 19 March 2026 as part of the Department for Transport’s trial, 100 at first, using the bays the e-bike scheme already had. Like the other UK trials, it is due to run until May 2028. Beryl’s e-bikes cost £1 to unlock and 17p a minute, from age 16.',
+        'One company, **Beryl**, rents e-scooters in Leeds, alongside its e-bikes, in a scheme run with Leeds City Council and branded **LNER Beryl**: the train company sponsors it through to 2027, the council says. The e-scooters joined on 19 March 2026 as part of the Department for Transport’s trial, 100 at first, using the bays the e-bike scheme already had. Like the other UK trials, it is due to run until May 2028. As of November 2026 Beryl’s e-bikes cost £1 to unlock and 17p a minute, from age 16.',
         'At 9.18am on 23 October 2026 the [map of Leeds](map:gb:Leeds) showed about 310 Beryl e-scooters: a snapshot, not the fleet size.',
         '**When do the scooters stop?** They don’t: Leeds has no night stop. Beryl’s page on hire hours (July 2026) lists restrictions only in Bournemouth, Christchurch and Poole (10pm to 5am) and in Brighton (midnight to 5am).',
       ],
@@ -24,10 +24,10 @@ const guide: Guide = {
     {
       heading: 'How much does a Beryl e-scooter cost in Leeds?',
       blocks: [
-        'Beryl charges **£1 to unlock and 22p a minute** for its e-scooters in Leeds: its Leeds page, its pricing guide (July 2026) and its data on 23 October 2026 agree. Bundles and passes work on e-bikes and e-scooters alike, and the app shows what you pay.',
+        'As of November 2026 Beryl charges **£1 to unlock and 22p a minute** for its e-scooters in Leeds, on its Leeds page and in its open data. Bundles and passes work on e-bikes and e-scooters alike, and the app shows what you pay.',
         {
           table: {
-            caption: 'Beryl e-scooter prices in Leeds, 23 October 2026',
+            caption: 'Beryl e-scooter prices in Leeds, as of November 2026',
             head: ['Option', 'Price', 'What you get'],
             rows: [
               ['Pay as you ride', '£1 unlock + 22p a minute', '10 minutes £3.20, 15 minutes £4.30, 30 minutes £7.60'],
@@ -142,7 +142,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much is a Beryl e-scooter per minute in Leeds?',
-      answer: '22p a minute, plus £1 to unlock, so 15 minutes cost £4.30. The £8 Day Pass gives 100 minutes in 24 hours, 8p a minute, and the minute bundles start at £8 for 50 minutes.',
+      answer: 'As of November 2026, 22p a minute, plus £1 to unlock, so 15 minutes cost £4.30. The £8 Day Pass gives 100 minutes in 24 hours, 8p a minute, and the minute bundles start at £8 for 50 minutes.',
     },
     {
       question: 'What time do Beryl e-scooters stop in Leeds?',

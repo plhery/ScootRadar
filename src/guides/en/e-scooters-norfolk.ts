@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Norfolk, VA 2026: Lime, rules and parking',
   description: 'E-scooters in Norfolk, Virginia: Lime, the 25 mph street rule, the sidewalk ban, parking, HRT and the ferry, ODU, NSU and the Navy base.',
   headline: 'E-scooters in Norfolk, Virginia: Lime, the rules, and where you can ride',
-  lede: 'E-scooters in Norfolk, Virginia, come from Lime, the one operator in the City’s programme, and the app shows the price before you unlock. You must be 18, may ride at up to 20 mph on streets posted 25 mph or less, and the City’s scooter rules keep you off the sidewalks. Lime runs through the night, but shared scooters can’t go on Hampton Roads Transit’s buses, the Tide or the ferry to Portsmouth.',
+  lede: 'E-scooters in Norfolk, Virginia, come from Lime, the one operator in the City’s programme. To rent one, find it on the [map of Norfolk](map:us:va:Norfolk) or in the Lime app, sign up and scan the QR code on the handlebar; the app shows the price before you unlock. You must be 18, may ride at up to 20 mph on streets posted 25 mph or less, and the City’s scooter rules keep you off the sidewalks. Lime runs through the night, but shared scooters can’t go on Hampton Roads Transit’s buses, the Tide or the ferry to Portsmouth.',
   published: '2026-10-17',
   updated: '2026-10-23',
   city: 'us:va:Norfolk',
@@ -16,15 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which scooter app works in Norfolk?',
       blocks: [
-        'The City of Norfolk’s Micro-Mobility Program names one company: **Lime**, with stand-up scooters since June 2019 and e-bikes since June 2021, all in the same app. Lime was still running in October 2026, and it sponsored the City’s Bike Month in May 2026.',
+        'The City of Norfolk’s Micro-Mobility Program names one company: **Lime**, with stand-up scooters since June 2019 and e-bikes since June 2021, all in the same app. Lime sponsored the City’s Bike Month in May 2026.',
         'At 1:25 pm on 17 October 2026 the [map of Norfolk](map:us:va:Norfolk) showed about 2,880 Lime scooters: what was on the map at that moment, not the fleet. Lime’s open data that afternoon showed large clusters around Old Dominion University, Ghent and Downtown.',
         '**New in town?** You need a smartphone with data to unlock and end a ride. The City’s Lime FAQ adds that you can unlock by text message, pay in cash through PayNearMe and get discounted rides through Lime Access. For the basics, see [how to rent an e-scooter](guide:how-to-rent).',
-      ],
-    },
-    {
-      heading: 'How much does a Lime scooter cost in Norfolk?',
-      blocks: [
-        'The app shows the price before you unlock. Old Dominion University’s scooter page, last updated in December 2023, gives $1 to unlock and $0.41 a minute: treat that as a rough guide only.',
       ],
     },
     {
@@ -119,7 +113,7 @@ const guide: Guide = {
           list: [
             '**Riding is booming.** Norfolk riders took 1,004,605 Lime scooter trips in 2025, and by 16 October 2026 they had already taken 1,053,782 that year, the City’s open data shows. The average 2026 trip lasted about 10 minutes and covered 1.3 miles.',
             '**Sailors crash too.** By its own unofficial count, the Naval Safety Command logged 16 Navy and Marine Corps e-scooter mishaps in fiscal 2025. In one, at a base it doesn’t name, a Sailor’s wheel caught in the train tracks in front of the piers.',
-            '**The rules may change.** A state work group led by the DMV must report on e-bike and e-scooter safety to state lawmakers by 1 November 2026.',
+            '**The rules may change.** A state work group led by the DMV was due to report to state lawmakers by 1 November 2026 on e-bike and e-scooter safety, and on whether new rules are needed.',
           ],
         },
       ],

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in St. Paul 2026: Lime, Spin, rules, season',
   description: 'E-scooters in St. Paul, MN: Lime and Spin, the season to mid-November, no sidewalks, boulevard parking, Spin’s no-parking zones, parks and light rail.',
   headline: 'E-scooters in St. Paul: Lime and Spin, the rules, the season and where to park',
-  lede: 'E-scooters in St. Paul come from Lime and Spin, the two companies the City Council approved for the 2026 season. The app shows the price before you unlock. The season typically runs from mid-April to mid-November; Minnesota law keeps scooters off sidewalks, and you park in the boulevard, the strip between the sidewalk and the curb.',
+  lede: 'E-scooters in St. Paul come from Lime and Spin, the two companies the City Council approved for the 2026 season. To rent one, find it on the [St. Paul map](map:us:mn:St. Paul) or in the Lime or Spin app, sign up with a card and scan the QR code on the handlebar; the app shows the price before you unlock, and Spin rents only to riders 18 or over. The 2026 season ends on or around 15 November, the City’s agreements say, though the City may let a company with a winter plan run to 31 December. Minnesota law keeps scooters off sidewalks, and you park in the boulevard, the strip between the sidewalk and the curb.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:mn:St. Paul',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in St. Paul?',
       blocks: [
-        'Electric scooter rental in St. Paul runs on yearly agreements with the City, which its Legislative Code requires (§ 141.02). On 6 May 2026 the City Council approved agreements with **Lime** and **Spin** for e-scooters and e-bikes for the 2026 season, with two optional one-year renewals. The City’s scooters page, last edited in April 2025, names the same two companies for 2025. Spin’s open data names Bird Rides, Inc. as its operator.',
+        'Electric scooter rental in St. Paul runs on yearly agreements with the City, which its Legislative Code requires (§ 141.02). On 6 May 2026 the City Council approved agreements with **Lime** and **Spin** for e-scooters and e-bikes for the 2026 season, with two optional one-year renewals. Spin’s open data names Bird Rides, Inc. as its operator.',
         'The agreements set a floor and a ceiling for each company in the city: 500 to 1,100 scooters for Lime, 300 to 1,000 for Spin, and 200 to 600 e-bikes each. At least 30% of each fleet must be spread through lower-income census tracts.',
         'At 4:13 p.m. on Monday 26 October 2026 the [St. Paul map](map:us:mn:St. Paul) showed about 940 scooters: roughly 40 Spin as they stood at that moment, and 900 Lime as last counted. That is a snapshot, not the fleets.',
         '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
@@ -26,7 +26,7 @@ const guide: Guide = {
     {
       heading: 'How much does a Lime or Spin scooter cost in St. Paul?',
       blocks: [
-        'The Lime or Spin app shows the price before you unlock. “The city does not regulate rental rates,” the City says, and “if the scooter or bike trip starts or ends in a park there could be an additional fee.” Under the 2026 agreements each company pays the City $0.15 for every trip that starts or ends in the city, and $0.27 more when a trip starts or ends on parkland.',
+        '“The city does not regulate rental rates,” the City says, and “if the scooter or bike trip starts or ends in a park there could be an additional fee.” Under the 2026 agreements each company pays the City $0.15 for every trip that starts or ends in the city, and $0.27 more when a trip starts or ends on parkland.',
         'Riders with limited incomes may get cheaper rides through each company’s Access programme, the City says. **Spin Access** gives discounted fares once you send documents showing your status, and approved riders without a smartphone can unlock by text message.',
       ],
     },
@@ -36,7 +36,7 @@ const guide: Guide = {
         'Minnesota law (Statutes § 169.225) gives a scooter rider the rights and duties of a cyclist, with a few rules of its own. The state rules below are as the City of St. Paul, the neighbouring City of South St. Paul and the Mankato Free Press (15 September 2024) set them out. The City adds that scooters and bikes are “ONLY permitted on city streets, bike lanes, and bike trails”.',
         {
           table: {
-            caption: 'E-scooter rules in St. Paul, and who sets them (checked on 26 October 2026)',
+            caption: 'E-scooter rules in St. Paul, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Season', 'Estimated from about 15 April to about 15 November; with a winter plan, the City may let a company run to 31 December', 'City agreements 2026, § 3; City page'],
@@ -124,10 +124,6 @@ const guide: Guide = {
     },
   ],
   faq: [
-    {
-      question: 'How much does an electric scooter rental cost in St. Paul, MN?',
-      answer: 'The Lime or Spin app shows the price before you unlock. The City doesn’t regulate rates, and says a trip that starts or ends in a park could cost extra.',
-    },
     {
       question: 'Can you ride a Lime or Spin scooter in St. Paul in winter?',
       answer: 'Only until the season ends. The City’s 2026 agreements estimate the end on or around 15 November, and the City may let a company that sent it a winter plan by 1 November run to 31 December.',

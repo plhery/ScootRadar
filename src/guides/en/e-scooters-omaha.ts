@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'omaha',
   name: 'E-scooters in Omaha, Nebraska',
   title: 'E-scooters in Omaha 2026: Lime, rules, where to ride',
-  description: 'E-scooters in Omaha: renting Lime, the price, Nebraska and City rules, sidewalks, the RiverFront, the Bob Kerrey bridge, Council Bluffs and Metro.',
+  description: 'E-scooters in Omaha: how to rent Lime, the age, sidewalk and 35 mph rules, the $100 fine, the RiverFront, the Bob Kerrey bridge, Council Bluffs and Metro.',
   headline: 'E-scooters in Omaha: Lime, the rules, the riverfront and Council Bluffs',
-  lede: 'You can rent e-scooters in Omaha from Lime, whose area reaches into Iowa: Carter Lake and, across the Missouri River, Council Bluffs. Check the price in the Lime app before you unlock. As Omaha Police and the local press reported the City’s rules in 2019–2021, you must be 18, may not ride on sidewalks or on roads with a speed limit over 35 mph, and can be fined $100.',
+  lede: 'You can rent e-scooters in Omaha from Lime, whose area reaches into Iowa: Carter Lake and, across the Missouri River, Council Bluffs. Find a scooter on the [Omaha map](map:us:ne:Omaha) or in the Lime app, sign up, add a card and scan the QR code to unlock; the app shows the unlock fee and the price per minute before you start. As Omaha Police and the local press reported the City’s rules in 2019–2021, you must be 18, ride in the street or a bike lane, never on a sidewalk or a road with a speed limit over 35 mph, and can be fined $100; in 2020 rides were allowed from 5 a.m. to 10:30 p.m.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'us:ne:Omaha',
@@ -19,12 +19,6 @@ const guide: Guide = {
         'Electric scooter rental in Omaha means **Lime**. After pilots in 2019 and 2020, the City Council voted unanimously in May 2021 to keep Lime and Spin for a year, with the option of four more, WOWT reported. On 22 October 2024 the Council’s agenda held a vote on an agreement between Omaha, Council Bluffs and Lime to extend the programme another year, with a 10-year option, WOWT reported. Lime is the only company the item named.',
         'At 9:27 p.m. on Thursday 29 October 2026 the [Omaha map](map:us:ne:Omaha) showed about 700 Lime scooters inside the city line as last counted, so some may have moved since: the map’s count, not Lime’s fleet. Lime’s area runs on into Iowa, to Carter Lake and, across the Missouri River, Council Bluffs; the map counts a few more scooters there.',
         'The map draws the City of Omaha’s no-ride zones: the City allows neither riding nor parking in them, and a scooter that enters one shuts off and must be walked out before the ride goes on, the City’s New Mobility Hub says. Lime’s own zones are in its app. Lime also rents e-bikes in Omaha, WOWT reported on 23 October 2026. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-      ],
-    },
-    {
-      heading: 'How much does a Lime scooter cost in Omaha?',
-      blocks: [
-        'The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts.',
       ],
     },
     {
@@ -121,10 +115,6 @@ const guide: Guide = {
     {
       question: 'Which scooter companies operate in Omaha?',
       answer: 'Lime. In October 2024 the City Council’s agenda held an agreement between Omaha, Council Bluffs and Lime to extend the City’s scooter programme, WOWT reported. Find a Lime scooter on the [Omaha map](map:us:ne:Omaha).',
-    },
-    {
-      question: 'How much is a Lime scooter in Omaha?',
-      answer: 'The Lime app shows the unlock fee and the rate per minute before you ride.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Omaha?',

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'saarbruecken',
   name: 'E-Scooter Saarbrücken: Anbieter, Preise, Parken',
   title: 'E-Scooter Saarbrücken 2026: Dott, Preise, Parken, Verbote',
-  description: 'E-Scooter Saarbrücken: warum nur Dott fährt, was eine Fahrt kostet, wo du fährst und parkst und was nachts, in den Parks und in der Saarbahn gilt.',
+  description: 'E-Scooter Saarbrücken: warum nur Dott fährt, wie du mietest, wo du fährst und parkst und was nachts, in den Parks und in der Saarbahn gilt.',
   headline: 'E-Scooter Saarbrücken: Anbieter, Preise, Parken und Verbote',
-  lede: 'E-Scooter in Saarbrücken leihst du bei Dott, laut Stadt dem einzigen Anbieter, ab 18 und ohne Führerschein: Bird hat sich zurückgezogen, Voi hat seinen Start verschoben (Stand Juni 2026). Den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone mit Bahnhofstrasse und St. Johanner Markt. Die Grünanlagensatzung verbietet Kraftfahrzeuge in städtischen Parks, und ein E-Scooter ist rechtlich ein Kraftfahrzeug. Zwischen 0 und 6 Uhr sind die Roller laut Stadt gesperrt; ob du einen entsperren kannst, zeigt die Dott-App.',
+  lede: 'E-Scooter in Saarbrücken leihst du bei Dott, laut Stadt dem einzigen Anbieter, ab 18 und ohne Führerschein: Dott-App laden, Konto anlegen, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Den Preis zeigt die App vor dem Entsperren. Bird hat sich zurückgezogen, Voi seinen Start verschoben (Stand Juni 2026). Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone mit Bahnhofstrasse und St. Johanner Markt. Die Grünanlagensatzung verbietet Kraftfahrzeuge in städtischen Parks, und ein E-Scooter ist rechtlich ein Kraftfahrzeug. Zwischen 0 und 6 Uhr sind die Roller laut Stadt gesperrt; ob du einen entsperren kannst, zeigt die Dott-App.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Saarbrücken',
@@ -16,22 +16,21 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Saarbrücken?',
       blocks: [
-        'In Saarbrücken verleiht laut Stadt nur **Dott** E-Scooter. «Derzeit ist in Saarbrücken lediglich ein Betreiber tätig, die Firma Dott», schrieb die Verwaltung am 3. Juni 2026 dem Verkehrsausschuss, und auch ihre Scooter-Seite nennt nur Dott. Dott führt Saarbrücken auf seiner Standortseite (Stand 25. Oktober 2026). Ein FDP-Antrag vom September 2024 sprach noch von Scootern der Firma Tier; Dotts Bedingungen nennen heute die TIER Mobility SE als Vertragspartner. Gemietet wird in der Dott-App, laut Dotts Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Saarbrücken verleiht laut Stadt nur **Dott** E-Scooter. «Derzeit ist in Saarbrücken lediglich ein Betreiber tätig, die Firma Dott», schrieb die Verwaltung am 3. Juni 2026 dem Verkehrsausschuss, und auch ihre Scooter-Seite nennt nur Dott. Dott führt Saarbrücken auf seiner Standortseite (Stand November 2026). Ein FDP-Antrag vom September 2024 sprach noch von Scootern der Firma Tier; Dotts Bedingungen nennen heute die TIER Mobility SE als Vertragspartner. Gemietet wird in der Dott-App, laut Dotts Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Zwei andere Anbieter waren da oder wollten kommen, so die Verwaltung im Juni 2026. **Bird** fuhr früher mit einer vergleichsweise kleinen Flotte, die ein zwischengeschalteter Dienstleister betreute; nach vielen Problemen bestand die Verwaltung auf ihren Regeln, und Bird zog sich zurück. **Voi** hatte den Markteintritt angekündigt und ihn verschoben, nachdem die Verwaltung keine Bereitschaft zeigte, ihre Rahmenvereinbarung anzupassen. Diese Vereinbarung muss jeder neue Anbieter unterschreiben. Laut Verwaltung legt sie für den Innenstadt- und Kernbereich verbindliche Abstellflächen, Nutzungszeiten und Verbotszonen fest, etwa Fussgängerzonen, und begrenzt dort die Zahl der Scooter.',
         'Die [Karte von Saarbrücken](map:de:Saarbrücken) zeigt, wo freie Dott-Scooter stehen: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1860. Das ist eine Momentaufnahme der Scooter, die Dott als verfügbar meldete, keine Flottengrösse. In der Nacht darauf, gegen 0:45 Uhr, standen rund 1820 innerhalb der Stadtgrenze, drei von vier im Bezirk Mitte.',
-        'Dott verleiht laut Stadt auch E-Bikes. Preise, Verbotszonen und Abstellflächen zeigt dir die Dott-App.',
+        'Dott verleiht laut Stadt auch E-Bikes.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Saarbrücken?',
       blocks: [
-        '«In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif pro Sekunde, Minute oder Stunde, eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
+        'Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif pro Sekunde, Minute oder Stunde, eventuell plus Freischaltgebühr. Was sonst noch kosten kann:',
         {
           table: {
             caption: 'Dott in Deutschland: Gebühren laut Bedingungen (letzte Aktualisierung 23. September 2025)',
             head: ['Fall', 'Was Dott verlangt'],
             rows: [
-              ['Fahrt', 'Preis in der App, nach Dauer, je nach Tarif mit Freischaltgebühr'],
               ['Scooter falsch geparkt oder nicht richtig gesperrt', 'bis zu 300 € Rückholkosten'],
               ['Bussgeld, das Dott für dich zahlt', 'das Bussgeld plus 50 € Verwaltungsgebühr'],
               ['Verstoss gegen die Bedingungen', 'Dott kann 50 € verlangen'],
@@ -85,7 +84,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter nachts: Sperre von 0 bis 6 Uhr laut Stadt',
       blocks: [
-        '«Zwischen 0 und 6 Uhr sind die Roller der oben genannten Anbieter gesperrt», schreibt die Stadt auf ihrer Scooter-Seite (Stand 25. Oktober 2026), und der einzige genannte Anbieter ist Dott. Die Antwort der Verwaltung vom Juni 2026 nennt für den Innenstadt- und Kernbereich vereinbarte «Nutzungszeiten» und eine nächtliche Räumung der Innenstadt.',
+        '«Zwischen 0 und 6 Uhr sind die Roller der oben genannten Anbieter gesperrt», schreibt die Stadt auf ihrer Scooter-Seite (Stand November 2026), und der einzige genannte Anbieter ist Dott. Die Antwort der Verwaltung vom Juni 2026 nennt für den Innenstadt- und Kernbereich vereinbarte «Nutzungszeiten» und eine nächtliche Räumung der Innenstadt.',
         'Dott meldete in der Nacht zum 25. Oktober 2026 gegen 0:45 Uhr trotzdem rund 1820 verfügbare Scooter. Willst du nach Mitternacht fahren, prüf vorher in der App, ob sich einer entsperren lässt.',
       ],
     },
@@ -110,7 +109,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Saarbahn und Bus: was der saarVV erlaubt',
       blocks: [
         'Saarbahn, Busse und Regionalzüge fahren im saarVV, und dessen Beförderungsbedingungen (Stand 1. Januar 2026) sagen in § 12: E-Tretroller unter 15 kg und kürzer als 115 cm «gelten im zusammengeklappten Zustand als Handgepäck» und fahren kostenlos mit. Schwerere und längere nimmst du wie ein Fahrrad mit: montags bis freitags ab 9 Uhr, samstags, sonntags und an Feiertagen ganztags kostenlos, sonst mit einem Einzelfahrschein Rad. Einen Anspruch hast du nicht, im Einzelfall entscheidet das Personal.',
-        '«Über die grundsätzliche Mitnahme oder das Verbot von E-Tretrollern entscheiden die Verkehrsunternehmen vor Ort», heisst es dort weiter. Die Saarbahn nennt in ihren häufigen Fragen dieselbe Regel (Stand 25. Oktober 2026).',
+        '«Über die grundsätzliche Mitnahme oder das Verbot von E-Tretrollern entscheiden die Verkehrsunternehmen vor Ort», heisst es dort weiter. Die Saarbahn nennt in ihren häufigen Fragen dieselbe Regel (Stand November 2026).',
         'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor der Haltestelle und miete am Ziel neu.',
       ],
     },
@@ -134,11 +133,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Saarbrücken?',
-      answer: 'Nur Dott, laut Stadt (Juni 2026). Bird hat sich zurückgezogen, und Voi hat seinen Start verschoben. Du mietest in der Dott-App, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt die freien Dott-Scooter.',
-    },
-    {
-      question: 'Was kostet ein E-Scooter in Saarbrücken?',
-      answer: 'Verbindlich ist der Preis, den die Dott-App vor dem Entsperren zeigt. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten.',
+      answer: 'Nur Dott, laut Stadt (Stand November 2026). Bird hat sich zurückgezogen, und Voi hat seinen Start verschoben. Du mietest in der Dott-App, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt die freien Dott-Scooter.',
     },
     {
       question: 'Kann ich in Saarbrücken nachts einen E-Scooter mieten?',
@@ -171,7 +166,6 @@ const guide: Guide = {
     { title: 'Saarbahn: Häufige Fragen', url: 'https://www.saarbahn.de/faq' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
-    { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
   ],
 };
 

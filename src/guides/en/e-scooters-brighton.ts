@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'brighton',
   name: 'E-scooter hire in Brighton',
   title: 'E-scooter Brighton 2026: Beryl prices, hours and rules',
-  description: 'E-scooter hire in Brighton and Hove with Beryl: £1 + 20p a minute on weekdays, 22p at weekends, no hires midnight–5am, the no-go zones and the bays.',
+  description: 'E-scooter hire in Brighton and Hove with Beryl: £1 + 20p a minute on weekdays, 22p at weekends (November 2026), no hires midnight–5am, no-go zones, bays.',
   headline: 'E-scooter hire in Brighton and Hove: Beryl’s prices, hours and where you can ride',
-  lede: 'You can hire an e-scooter in Brighton and Hove from Beryl, in a council trial that began on 24 July 2026. It costs £1 to unlock and 20p a minute on weekdays or 22p at weekends, so 15 minutes cost £4.00 or £4.30. You can’t start a hire between midnight and 5am, any night of the week. You must be 18 or over with a driving licence, keep off the pavements and the promenades, and end every ride in a Beryl bay.',
+  lede: 'You can hire an e-scooter in Brighton and Hove from Beryl, in a council trial that began on 24 July 2026. Hire one in the Beryl app, which checks your driving licence and a selfie before your first ride. As of November 2026 it costs £1 to unlock and 20p a minute on weekdays or 22p at weekends, so 15 minutes cost £4.00 or £4.30. You can’t start a hire between midnight and 5am, any night of the week. You must be 18 or over with a driving licence, keep off the pavements and the promenades, and end every ride in a Beryl bay.',
   published: '2026-10-23',
   updated: '2026-11-03',
   city: 'gb:Brighton',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'One company, **Beryl**, runs the hire e-scooters for Brighton & Hove City Council, alongside the pedal bikes and e-bikes of its Beryl BTN Bikes scheme. The first 100 went out on Friday 24 July 2026, on the seafront, in the city centre and at Brighton and Hove stations, and more were to follow in phases, from 34 hubs in all.',
         'The council’s cabinet approved the trial on 23 April 2026, working to the national trials’ end date of **May 2028**.',
-        'At 9.18am on Friday 23 October 2026 the [map of Brighton](map:gb:Brighton) showed about 270 Beryl e-scooters: a snapshot, not the fleet size. The map shows e-scooters only, not Beryl’s bikes.',
+        'At 9.18am on Friday 23 October 2026 the [map of Brighton](map:gb:Brighton) showed about 270 Beryl e-scooters: a snapshot, not the fleet size.',
       ],
     },
     {
@@ -27,7 +27,7 @@ const guide: Guide = {
         'Beryl charges **£1 to unlock, then 20p a minute from Monday to Friday and 22p a minute on Saturdays and Sundays**, according to its Brighton page and pricing guide.',
         {
           table: {
-            caption: 'Beryl e-scooter prices in Brighton and Hove, October 2026',
+            caption: 'Beryl e-scooter prices in Brighton and Hove, as of November 2026',
             head: ['Option', 'Price', 'What you get'],
             rows: [
               ['Pay as you ride, weekdays', '£1 unlock + 20p a minute', '10 minutes £3.00, 15 minutes £4.00, 30 minutes £7.00'],
@@ -39,14 +39,14 @@ const guide: Guide = {
         },
         'Beryl’s Brighton page says bundles carry no unlock fee, but its Brighton pricing guide says the £1 unlock fee still applies to e-scooters, so check the app before you buy. If your bundle runs out mid-ride, the rest of the ride is charged at pay-as-you-ride rates.',
         'Beryl’s £20 Weekend Pass covers pedal bikes and e-bikes only, its pages say. **Students** get 25% off bundles, not pay-as-you-ride, with the code **STUDENT26** and an academic email until 31 July 2027. Jobseekers and people on Universal Credit can get free minutes, the council’s transport lead said at the launch.',
-        'Beryl’s open data gives the 20p rate at weekends too, so maps built on it, ours included, show weekend prices 2p a minute too low. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'What time do Beryl scooters turn off? No hires from midnight to 5am',
       blocks: [
         'Across Brighton and Hove, Beryl’s e-scooters **can’t be unlocked or hired from midnight to 5am, every day of the week**. Beryl says the restriction is part of the scheme’s operating requirements, and its app applies it: once you lock a scooter after midnight, you can’t take another until 5am.',
-        'Beryl’s data doesn’t list the scooters in those hours, so the [Brighton map](map:gb:Brighton) shows none: at 2.28am on Saturday 17 October 2026 it showed zero. Beryl’s pedal bikes and e-bikes aren’t affected.',
+        'At 2.28am on Saturday 17 October 2026 the [Brighton map](map:gb:Brighton) showed no Beryl e-scooters. Beryl’s pedal bikes and e-bikes aren’t affected.',
       ],
     },
     {
@@ -98,7 +98,7 @@ const guide: Guide = {
           },
         },
         'The council also planned to test no-go zones in parts of The Lanes and in Kensington Gardens, and to review every zone after the first summer.',
-        'Our [Brighton map](map:gb:Brighton) draws four zones as no-riding bands from zoom 14, credited to the council, along OpenStreetMap’s ways: Cranbourne Street, Kensington Gardens, the Undercliff Walk from the Marina to Saltdean, and Hove Promenade from Hove Lagoon to Medina Terrace. It draws the skateparks at The Level, Hollingdean, Woodingdean and Saltdean Oval, and a small skate area in Woodingdean Central Park, as no-riding areas on OpenStreetMap’s outlines. The rest, Hove Lawns’ stretch of the promenade among them, are in the app alone: Beryl’s open data outlines them without saying what each allows. So is the skatepark and pump track by Hove Lagoon, which OpenStreetMap marks only as a point.',
+        'Our [Brighton map](map:gb:Brighton) draws four zones as no-riding bands from zoom 14, credited to the council, along OpenStreetMap’s ways: Cranbourne Street, Kensington Gardens, the Undercliff Walk from the Marina to Saltdean, and Hove Promenade from Hove Lagoon to Medina Terrace. It draws the skateparks at The Level, Hollingdean, Woodingdean and Saltdean Oval, and a small skate area in Woodingdean Central Park, as no-riding areas on OpenStreetMap’s outlines.',
       ],
     },
     {
@@ -157,7 +157,7 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Beryl scooter in Brighton per minute?',
-      answer: '20p a minute from Monday to Friday and 22p at weekends, plus £1 to unlock: a 15-minute ride costs £4.00 on a weekday and £4.30 at the weekend. Bundles bring it down to 16p a minute (50 minutes for £8) or 15p (100 minutes for £15); check the app for any unlock fee.',
+      answer: 'As of November 2026, 20p a minute from Monday to Friday and 22p at weekends, plus £1 to unlock: a 15-minute ride costs £4.00 on a weekday and £4.30 at the weekend. Bundles bring it down to 16p a minute (50 minutes for £8) or 15p (100 minutes for £15); check the app for any unlock fee.',
     },
     {
       question: 'Can you ride an e-scooter on Brighton seafront?',

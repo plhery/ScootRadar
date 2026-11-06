@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'cleveland',
   name: 'E-scooters in Cleveland',
   title: 'E-scooters in Cleveland 2026: Bird, Veo, prices, rules',
-  description: 'E-scooters in Cleveland: Bird and Veo, what a ride costs, the City rules, hub-only parking downtown and in University Circle, the Towpath and the RTA.',
+  description: 'Rent a Bird or Veo e-scooter in Cleveland: Veo is $1 + $0.39 a minute (November 2026). How to rent, the rules, hub-only parking downtown, the Towpath.',
   headline: 'E-scooters in Cleveland: Bird and Veo, what a ride costs, the rules and where to park',
-  lede: 'E-scooters in Cleveland come from Bird and Veo, the two companies the City lists as permit holders (26 October 2026). A Veo costs $1 to unlock and $0.39 a minute plus tax; Bird’s app shows its price before you unlock. You must be 18 to ride a Bird, the City tells riders to keep off the sidewalk, and downtown, in Ohio City and in University Circle you must end your ride at a hub.',
+  lede: 'E-scooters in Cleveland come from Bird and Veo, the two companies with City permits. To rent one, find it on the [Cleveland map](map:us:oh:Cleveland) or in the Bird or Veo app, sign up with a card and scan the QR code on the handlebar. As of November 2026 a Veo costs $1 to unlock and $0.39 a minute plus tax; Bird’s app shows its price before you unlock. You must be 18 to ride a Bird, the City tells riders to keep off the sidewalk, and downtown, in Ohio City and in University Circle you must end your ride at a hub. After more than two inches of snow, the companies must take every scooter off the street within 24 hours.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:oh:Cleveland',
@@ -25,10 +25,10 @@ const guide: Guide = {
     {
       heading: 'How much does a Bird or Veo scooter cost in Cleveland?',
       blocks: [
-        'On 26 October 2026 Veo’s open data gave one rate for scooters and e-bikes: $1 to unlock and $0.39 a minute, plus tax. Bird’s app shows its price before you unlock. The City’s page says most rides cost $1 to start and then $0.40 to $0.50 a minute.',
+        'As of November 2026 Veo’s open data gives one rate for scooters and e-bikes: $1 to unlock and $0.39 a minute, plus tax. The City’s page says most rides cost $1 to start and then $0.40 to $0.50 a minute.',
         {
           table: {
-            caption: 'What a Veo ride costs in Cleveland, before tax (Veo’s published rate, 26 October 2026)',
+            caption: 'What a Veo ride costs in Cleveland, before tax (Veo’s open data, as of November 2026)',
             head: ['Ride', 'Veo'],
             rows: [
               ['10 minutes', '$4.90'],
@@ -46,11 +46,11 @@ const guide: Guide = {
         'Cleveland’s riding rules are in Chapter 473 of its Codified Ordinances, which treats e-scooters as “mobility devices”, like bicycles; riding on a banned sidewalk or parking badly is a minor misdemeanour. The vendor rules set what the companies must do.',
         {
           table: {
-            caption: 'E-scooter rules in Cleveland, and who sets them (as published on 26 October 2026)',
+            caption: 'E-scooter rules in Cleveland, and who sets them (as of November 2026)',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Age', '18 to ride a Bird, checked in the app; Cleveland State’s campus rules say 18 too. Check Veo’s terms in its app', 'Bird; Cleveland State'],
-              ['Hours', 'Rentals allowed 24 hours a day under the rules in force since 3 April 2026; the City’s page, read on 26 October 2026, still says 3 a.m. to midnight. Check the app', 'Vendor rules, VIII(c); City page'],
+              ['Hours', 'Rentals allowed 24 hours a day under the vendor rules in force since 3 April 2026; the City’s Shared Mobility page gives scooters 3 a.m. to midnight. Check the app', 'Vendor rules, VIII(c); City page'],
               ['Speed', '15 mph at most on a scooter; shared e-bikes are held to 20 mph', 'City Code § 473.02(b)(6); vendor rules, VIII(d)'],
               ['Fast streets', 'The Code says you should not ride on streets posted over 35 mph, unless in a bike lane or on a shared-use path', 'City Code § 473.02(b)(5)'],
               ['Sidewalks', 'Banned in business districts and where signs say so; the City asks riders to stay off all sidewalks', 'City Code § 473.09; City page'],
@@ -62,7 +62,7 @@ const guide: Guide = {
           },
         },
         { note: '**Downtown, ride in the street.** The City Code bans sidewalk riding in business districts.' },
-        '**Statewide rules are only proposed.** On 7 October 2026 13abc reported a bill just introduced in the Ohio Senate, not yet in the House. It would require helmets, bar under-14s from riding e-bikes or scooters and under-18s from using a rented one, and charge owners $25 to register a device. It isn’t law.',
+        '**Statewide rules are only proposed.** A bill introduced in the Ohio Senate on 7 October 2026 would require helmets, bar under-14s from riding e-bikes or scooters and under-18s from using a rented one, and charge owners $25 to register a device, 13abc reported. It isn’t law.',
       ],
     },
     {
@@ -88,7 +88,7 @@ const guide: Guide = {
         {
           list: [
             '**Case Western Reserve.** Since autumn 2023 no bikes or scooters may be ridden on the Quad, and Mather Quad joined it in autumn 2025: walk your wheels to a bike rack. The university says the City’s scooters “will throttle down” as they approach both quads. Park at or next to a CWRU bike rack, never in a building, and don’t charge a scooter on campus.',
-            '**Cleveland State.** Its 2019 scooter rules, still linked in October 2026, keep scooters off sidewalks, lawns, the Student Center Plaza and garages; riders must be 18, with no passengers or headphones, and park at a bike rack or marked scooter zone. At 11:58 a.m. on 26 October about 18 scooters stood on its campus.',
+            '**Cleveland State.** Its 2019 scooter rules keep scooters off sidewalks, lawns, the Student Center Plaza and garages; riders must be 18, with no passengers or headphones, and park at a bike rack or marked scooter zone. At 11:58 a.m. on 26 October about 18 scooters stood on its campus.',
           ],
         },
       ],
@@ -130,20 +130,16 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'How much does an electric scooter rental cost in Cleveland?',
-      answer: 'On 26 October 2026 Veo’s open data gave $1 to unlock and $0.39 a minute, plus tax: $4.90 for 10 minutes. Bird’s app shows its price before you unlock.',
-    },
-    {
       question: 'Can you ride a scooter on the sidewalk in Cleveland?',
       answer: 'Not in a business district or where signs forbid it: the City Code makes that a minor misdemeanour, and the City asks riders to keep off sidewalks everywhere. Cleveland Heights’ 2021 ordinance allows sidewalk riding unless a sign says otherwise.',
     },
     {
       question: 'Can you ride a Bird or Veo scooter at night in Cleveland?',
-      answer: 'The vendor rules in force since 3 April 2026 let companies rent scooters 24 hours a day, but the City’s Shared Mobility page, read on 26 October 2026, still says 3 a.m. to midnight, so check the app.',
+      answer: 'The vendor rules in force since 3 April 2026 let companies rent scooters 24 hours a day, but the City’s Shared Mobility page gives scooters 3 a.m. to midnight, so check the app before a late ride.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Cleveland?',
-      answer: '18 to ride a Bird, which checks your age in the app; check Veo’s terms in its app. An Ohio Senate bill reported by 13abc on 7 October 2026 would bar under-18s from rented devices statewide, but it is only a proposal.',
+      answer: '18 to ride a Bird, which checks your age in the app; check Veo’s terms in its app. A bill introduced in the Ohio Senate on 7 October 2026 would bar under-18s from rented devices statewide; it isn’t law.',
     },
     {
       question: 'Where can you park a scooter in University Circle?',

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Solingen 2026: Dott, Bolt, Preise, Parken',
   description: 'E-Scooter Solingen: Dott und Bolt verleihen E-Roller. Was Falschparken kostet, was an Wupper und Schloss Burg gilt und was in Bus, S-Bahn und ICE.',
   headline: 'E-Scooter in Solingen: Dott, Bolt, Preise, Parkregeln, Schloss Burg und was in Bus und Bahn gilt',
-  lede: 'Einen E-Scooter in Solingen leihst du ab 18 und ohne Führerschein bei Dott oder Bolt; den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch Fussgängerzonen. Abstellen darfst du dort, wo die App das Fahrtende erlaubt, und so, dass niemand behindert wird; Parks, Wälder, Friedhöfe und Ufer sind nach der Strassenordnung der Stadt für Kraftfahrzeuge tabu. In die Busse der Stadtwerke Solingen darf ein eigener Scooter zusammengeklappt als Handgepäck mit, in die Fernzüge der Bahn ebenso.',
+  lede: 'Einen E-Scooter in Solingen leihst du ab 18 und ohne Führerschein bei Dott oder Bolt: App laden, Konto anlegen, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch Fussgängerzonen. Abstellen darfst du dort, wo die App das Fahrtende erlaubt, und so, dass niemand behindert wird; Parks, Wälder, Friedhöfe und Ufer sind nach der Strassenordnung der Stadt für Kraftfahrzeuge tabu. In die Busse der Stadtwerke Solingen darf ein eigener Scooter zusammengeklappt als Handgepäck mit, in die Fernzüge der Bahn ebenso.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Solingen',
@@ -16,14 +16,14 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Solingen?',
       blocks: [
-        'In Solingen verleihen **Dott** (früher Tier) und **Bolt** E-Scooter, auch E-Roller genannt. Dott führt Solingen auf seiner Website unter seinen Standorten, und Bolts Seite «Bolt in Solingen» nennt E-Scooter als verfügbare Kategorie (beides Stand November 2026). Du leihst in der Dott- oder der Bolt-App; beide verlangen laut ihren Bedingungen, dass du mindestens 18 bist. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Solingen verleihen **Dott** (früher Tier) und **Bolt** E-Scooter, auch E-Roller genannt. Dott führt Solingen auf seiner Website unter seinen Standorten, und Bolts Seite «Bolt in Solingen» nennt E-Scooter als verfügbare Kategorie (beides Stand November 2026). Beide verlangen laut ihren Bedingungen, dass du mindestens 18 bist. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Montag, 26. Oktober 2026, zeigte die [Karte von Solingen](map:de:Solingen) gegen 17.30 Uhr rund 280 Dott- und 110 Bolt-Scooter, die zu diesem Zeitpunkt frei waren.',
       ],
     },
     {
       heading: 'E-Scooter mieten in Solingen: Was kostet die Fahrt?',
       blocks: [
-        'Den Preis zeigen Dott und Bolt in der App, bevor du losfährst. Bei Dott werden die Gebühren laut seinen Bedingungen «in Ihrem Benutzerkonto … angezeigt, bevor Sie ein Fahrzeug freischalten»; bei Bolt gehört «die geltende Gebührentabelle, wie sie in der App angezeigt wird» zum Vertrag. Für Deutschland nennt Bolt einen Standardtarif ab 0,15 € pro Minute, ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat und Pässe (Stand November 2026). Teuer wird es, wenn du falsch abstellst:',
+        'Für Deutschland nennt Bolt einen Standardtarif ab 0,15 € pro Minute, ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat und Pässe (Stand November 2026). Teuer wird es, wenn du falsch abstellst:',
         {
           table: {
             caption: 'Gebühren laut den Bedingungen der Anbieter (Stand November 2026)',
@@ -104,14 +104,14 @@ const guide: Guide = {
           ],
         },
         'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Miete in der Nähe der Haltestelle, ohne den Zugang zu versperren, und leih dir am Ziel einen neuen.',
-        '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters (Stand Oktober 2026). Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, online über mobil.nrw.',
+        '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters (Stand November 2026). Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, online über mobil.nrw.',
       ],
     },
     {
       heading: 'Ausflüge und Nachbarstädte: Schloss Burg, Müngsten, Hilden und Wuppertal',
       blocks: [
         '**Schloss Burg:** Vom Parkplatz Burg Brücke in Unterburg führt laut Schloss Burg eine etwa 20-minütige Wanderung auf gewundenen Waldpfaden hinauf; Waldungen zählen nach der Strassenordnung zu den Anlagen, in denen du mit Kraftfahrzeugen weder fahren noch parken darfst: Beende die Fahrt unten in Unterburg. Bequemer ist die Seilbahn von Unterburg nach Oberburg, etwa fünf Minuten. Busse: die Linie 683 hält an «Burg Seilbahn» und «Burg Brücke»; unter der Woche verbinden die Linie 266 ab «Burger Bahnhof» und die Linie 689 ab «Burg Brücke» Unterburg mit Oberburg, am Wochenende pendelt die Freizeitlinie 687 von 12 bis 19 Uhr stündlich vom Müngstener Brückenpark zum Schloss.',
-        '**Hilden und Langenfeld:** Am 26. Oktober gegen 17.30 Uhr zeigte die [Karte von Hilden](map:de:Hilden) rund 80 Bolt- und 60 Dott-Scooter, die zu diesem Zeitpunkt frei waren, die [Karte von Langenfeld](map:de:Langenfeld) rund 150 von Dott und einen von Bolt. Am Sonntag, 25. Oktober, gegen Mittag kamen rund 70 Lime-Scooter in Hilden und 200 in Langenfeld dazu, nach der letzten Zählung. Ob du eine Fahrt aus Solingen dort beenden darfst, zeigt dir die App.',
+        '**Hilden und Langenfeld:** Am 26. Oktober gegen 17.30 Uhr zeigte die [Karte von Hilden](map:de:Hilden) rund 80 Bolt- und 60 Dott-Scooter, die zu diesem Zeitpunkt frei waren, die [Karte von Langenfeld](map:de:Langenfeld) rund 150 von Dott und einen von Bolt. Am Sonntag, 25. Oktober, gegen Mittag kamen rund 70 Lime-Scooter in Hilden und 200 in Langenfeld dazu.',
         '**Wuppertal:** Wer in Wuppertal verleiht und was in Bus und Schwebebahn gilt, steht in [E-Scooter in Wuppertal](guide:wuppertal); freie Scooter zeigt die [Karte von Wuppertal](map:de:Wuppertal).',
       ],
     },
@@ -123,7 +123,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Solingen?',
-      answer: 'Den Preis zeigen Dott und Bolt in der App vor dem Entsperren; für Deutschland nennt Bolt einen Standardtarif ab 0,15 € pro Minute (Stand November 2026). Teuer wird Falschparken: bei Bolt 15 € ohne deutliches Abstellfoto und bis zu 100 € Abholgebühr, bei Dott bis zu 300 € Rückholkosten.',
+      answer: 'Für Deutschland nennt Bolt einen Standardtarif ab 0,15 € pro Minute (Stand November 2026). Teuer wird Falschparken: bei Bolt 15 € ohne deutliches Abstellfoto und bis zu 100 € Abholgebühr, bei Dott bis zu 300 € Rückholkosten.',
     },
     {
       question: 'Darf ich mit dem E-Scooter an der Wupper oder im Wald fahren?',
@@ -139,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'Komme ich mit dem E-Scooter zu Schloss Burg?',
-      answer: 'Ob du eine Fahrt in Burg beenden darfst, zeigt dir die App. Den Waldpfad von Unterburg zum Schloss fährst du laut Strassenordnung nicht: Waldungen zählen zu den Anlagen, in denen Kraftfahrzeuge verboten sind. Nimm ab Unterburg die Seilbahn oder einen Bus, etwa die Linie 683 oder am Wochenende die Freizeitlinie 687.',
+      answer: 'Den Waldpfad von Unterburg zum Schloss fährst du laut Strassenordnung nicht: Waldungen zählen zu den Anlagen, in denen Kraftfahrzeuge verboten sind. Nimm ab Unterburg die Seilbahn oder einen Bus, etwa die Linie 683 oder am Wochenende die Freizeitlinie 687.',
     },
   ],
   sources: [

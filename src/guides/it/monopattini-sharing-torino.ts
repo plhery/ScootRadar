@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'turin',
   name: 'Monopattini sharing a Torino',
   title: 'Monopattini sharing Torino 2026: operatori, prezzi, sosta',
-  description: 'Monopattini sharing a Torino nel 2026: Bird e Lime in proroga, Dott e Voi nel nuovo servizio, prezzi, dove parcheggiare, Valentino, GTT, treni e multe.',
+  description: 'Monopattini sharing a Torino nel 2026: Bird e Lime in proroga, Dott e Voi nel nuovo servizio, come noleggiare, dove parcheggiare, Valentino, GTT, treni e multe.',
   headline: 'Monopattini sharing a Torino: operatori, prezzi, parcheggio, GTT e multe nel 2026',
-  lede: 'I monopattini sharing a Torino, a ottobre 2026, sono in proroga: Bird, Dott, Lime e Voi, autorizzati dal Comune nel 2024, restano fino all’avvio del nuovo servizio della Città metropolitana, che per tre anni autorizza solo Dott e Voi. Servono 18 anni e un documento d’identità, e il casco lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app. Si guida su strada e sulle piste ciclabili, mai sul marciapiede, e la corsa si chiude nelle aree di sosta del Comune o dove l’app lo consente.',
+  lede: 'I monopattini sharing a Torino sono in proroga: Bird, Dott, Lime e Voi, autorizzati dal Comune nel 2024 e ancora elencati sulla sua pagina a novembre 2026, restano fino all’avvio del nuovo servizio della Città metropolitana, che per tre anni autorizza solo Dott e Voi. Scarichi l’app dell’operatore, ti iscrivi con una carta e, prima del primo noleggio, l’operatore controlla il tuo documento d’identità, come chiede il Comune; servono 18 anni, e il casco lo porti tu. Poi inquadri il QR code e parti. Il prezzo, sblocco più minuti, lo vedi nell’app prima di sbloccare. Si guida su strada e sulle piste ciclabili, mai sul marciapiede, e la corsa si chiude nelle aree di sosta del Comune o dove l’app lo consente.',
   published: '2026-10-24',
   updated: '2026-10-26',
   city: 'it:Torino',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Quali monopattini in sharing ci sono a Torino',
       blocks: [
-        'Dal 16 aprile 2024 il Comune autorizza quattro operatori di monopattini, **Bird**, **Dott**, **Lime** e **Voi**, con al massimo 750 mezzi ciascuno (determinazione 1635/2024), e la sua pagina, aggiornata al 10 febbraio 2026, li elenca ancora. Le autorizzazioni sono scadute il 31 ottobre 2025 e sono state prorogate alle stesse condizioni fino all’avvio del nuovo servizio (determinazione 6850/2025).',
+        'Dal 16 aprile 2024 il Comune autorizza quattro operatori di monopattini, **Bird**, **Dott**, **Lime** e **Voi**, con al massimo 750 mezzi ciascuno (determinazione 1635/2024), e la sua pagina, aggiornata al 10 febbraio 2026, li elenca ancora a novembre 2026. Le autorizzazioni sono scadute il 31 ottobre 2025 e sono state prorogate alle stesse condizioni fino all’avvio del nuovo servizio (determinazione 6850/2025).',
         'Il nuovo servizio della Città metropolitana copre Torino e altri 15 Comuni per 36 mesi: il 7 agosto 2026 ha autorizzato per i monopattini i primi due in graduatoria, EM Transit, cioè Dott, e Voi; Lime e Bird, terzo e quarto, restano fuori. Il suo disciplinare prevede 3.000 monopattini a Torino e 1.580 negli altri Comuni, metà per operatore: 2.290 a testa. Ogni operatore deve partire entro 90 giorni, con date concordate Comune per Comune.',
-        'Lunedì 26 ottobre 2026 alle 9:37 la [mappa di Torino](map:it:Torino) mostrava circa 1.370 monopattini Dott nel Comune. Altri 690 circa erano nei Comuni della cintura: [Collegno](map:it:Collegno) 130, [Moncalieri](map:it:Moncalieri) 130, Settimo Torinese e Nichelino 120 ciascuno, Rivoli 70, Grugliasco 60 e Borgaro Torinese 50. È una fotografia di quel momento, non la flotta. Da domenica 25 ottobre la mappa mostra anche i Lime: quel giorno verso le 16:20 erano circa 1.400, sulla zona di Lime. Voi e Bird li trovi nelle loro app.',
+        'Lunedì 26 ottobre 2026 alle 9:37 la [mappa di Torino](map:it:Torino) mostrava circa 1.370 monopattini Dott nel Comune. Altri 690 circa erano nei Comuni della cintura: [Collegno](map:it:Collegno) 130, [Moncalieri](map:it:Moncalieri) 130, Settimo Torinese e Nichelino 120 ciascuno, Rivoli 70, Grugliasco 60 e Borgaro Torinese 50. È una fotografia di quel momento, non la flotta. Da domenica 25 ottobre la mappa mostra anche i Lime: quel giorno verso le 16:20 erano circa 1.400, sulla zona di Lime.',
         {
           table: {
             caption: 'Gli operatori di monopattini a Torino, a ottobre 2026',
             head: ['Operatore', 'Situazione'],
             rows: [
               ['Dott (EM Transit)', 'In proroga; primo in graduatoria per monopattini e bici, già partito in alcuni Comuni della cintura; sulla mappa'],
-              ['Voi', 'In proroga; secondo in graduatoria per i monopattini; nella sua app'],
+              ['Voi', 'In proroga; secondo in graduatoria per i monopattini'],
               ['Lime e Bird', 'In proroga; terzo e quarto in graduatoria, non autorizzati per il nuovo servizio; Lime sulla mappa dal 25 ottobre 2026'],
               ['RideMovi, Yego, Cooltra', 'Nel nuovo servizio solo per bici (RideMovi) e scooter elettrici (Yego, Cooltra)'],
             ],
@@ -38,7 +38,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Trova il Dott o il Lime più vicino sulla [mappa di Torino](map:it:Torino); Voi e Bird li vedi nelle loro app.',
+            'Scarica l’app dell’operatore e trova il monopattino più vicino; Dott e Lime li vedi anche sulla [mappa di Torino](map:it:Torino).',
             'Iscriviti nell’app con una carta: gli operatori chiedono **18 anni**, non la patente. Prima del primo noleggio l’operatore deve controllare la tua identità con carta d’identità, patente o passaporto: lo chiedono i disciplinari del Comune e del nuovo servizio.',
             'Metti il casco: al contrassegno, sui mezzi in sharing, ci pensa l’operatore.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',
@@ -52,10 +52,9 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattino a Torino: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto, e ogni operatore ti mostra il prezzo nella sua app prima di sbloccare il mezzo.',
-        'Il centro assistenza di Dott (25 agosto 2026) dà una forbice valida per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, più lo sblocco.',
+        'Paghi uno sblocco più una tariffa al minuto.',
         'I pass di Dott cambiano da città a città, sono nell’app e valgono in tutte le sue città italiane, da Torino a [Milano](guide:milan).',
-        'Per il lancio nei Comuni della cintura, a ottobre 2026 Dott offriva ai nuovi utenti una corsa gratis da 30 minuti con il codice CIAODOTT (TorinoToday, 22 ottobre 2026). Il disciplinare del nuovo servizio chiede agli operatori un buono di almeno 3 euro al mese per chi ha l’abbonamento annuale al trasporto pubblico.',
+        'Il disciplinare del nuovo servizio chiede agli operatori un buono di almeno 3 euro al mese per chi ha l’abbonamento annuale al trasporto pubblico.',
       ],
     },
     {
@@ -86,7 +85,7 @@ const guide: Guide = {
     {
       heading: 'Monopattino su bus, tram, metro e treno a Torino',
       blocks: [
-        'Su **bus e tram GTT** il tuo monopattino sale solo «ripiegato su se stesso», come bagaglio: il regolamento, letto il 24 ottobre 2026, ammette gratis fino a due bagagli a persona, al massimo 80×50×50 cm.',
+        'Su **bus e tram GTT** il tuo monopattino sale solo «ripiegato su se stesso», come bagaglio: il regolamento (novembre 2026) ammette gratis fino a due bagagli a persona, al massimo 80×50×50 cm.',
         'Il regolamento della **metropolitana** ammette come bagaglio solo «le biciclette pieghevoli»: prima di portare il tuo monopattino in stazione, chiedi a GTT.',
         'Sui **treni regionali Trenitalia** il monopattino viaggia gratis fino a 120×80×45 cm: spento e chiuso prima di salire, va sotto il sedile o tra i posti vis-à-vis.',
         'Un monopattino in sharing non si piega e, finché non chiudi la corsa, paghi: chiudila prima della fermata o della stazione.',
@@ -120,7 +119,7 @@ const guide: Guide = {
       heading: 'Fuori Torino: i Comuni della cintura',
       blocks: [
         'Il nuovo servizio copre altri 15 Comuni, ma il disciplinare dà monopattini solo a 11: Borgaro Torinese, Collegno, Grugliasco, Mappano, Moncalieri, Nichelino, Pianezza, Rivalta di Torino, Rivoli, San Mauro Torinese e Venaria Reale. Ad Alpignano, Beinasco, Orbassano e Trofarello puoi passare, ma non chiudere la corsa; altrove la chiudi solo nelle aree consentite, che vedi nell’app.',
-        'Secondo la stampa Dott è partito a Grugliasco il 19 e a Nichelino il 22 ottobre 2026, e c’è già a Borgaro Torinese e a Settimo Torinese, che non fa parte dell’avviso. A Mappano arriva dal 26 ottobre, con 20 monopattini e il collegamento al parcheggio della stazione Torino Stura.',
+        'Secondo la stampa Dott è partito a Grugliasco il 19 e a Nichelino il 22 ottobre 2026, e c’è già a Borgaro Torinese e a Settimo Torinese, che non fa parte dell’avviso. A Mappano il servizio era annunciato dal 26 ottobre, con 20 monopattini e il collegamento al parcheggio della stazione Torino Stura.',
       ],
     },
     {
@@ -140,10 +139,6 @@ const guide: Guide = {
     {
       question: 'Quali monopattini in sharing ci sono a Torino?',
       answer: 'Bird, Dott, Lime e Voi, autorizzati dal Comune nel 2024 e in proroga fino all’avvio del nuovo servizio della Città metropolitana. Da lì, per tre anni, restano solo Dott e Voi, i primi due in graduatoria.',
-    },
-    {
-      question: 'Quanto costa il monopattino Dott a Torino?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città, in Italia e all’estero.',
     },
     {
       question: 'Dove si lascia il monopattino in sharing a Torino?',
@@ -175,7 +170,6 @@ const guide: Guide = {
     { title: 'Quotidiano Piemontese: quasi 12 mila multe nel 2026 (12 ottobre 2026)', url: 'https://www.quotidianopiemontese.it/2026/10/12/multe-monopattini-elettrici-torino-2026/' },
     { title: 'Comune di Torino: regolamento del verde n. 317 (21 luglio 2026)', url: 'https://www.comune.torino.it/amministrazione/documenti-dati/documenti/n-317-regolamento-verde-pubblico-privato' },
     { title: 'Dott: condizioni generali per l’Italia', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
-    { title: 'Dott: quanto costa il servizio (25 agosto 2026)', url: 'https://help.ridedott.com/it/articles/189-quanto-costa-il-servizio' },
     { title: 'GTT: regolamento di bus e tram', url: 'https://www.gtt.to.it/cms/linee-e-orari/torino-e-cintura/urbana/250-regolamento' },
     { title: 'GTT: regolamento della metropolitana', url: 'https://www.gtt.to.it/cms/linee-e-orari/torino-e-cintura/urbana/251-regolamento-metro' },
     { title: 'Trenitalia: bici e mezzi elettrici sui treni regionali', url: 'https://www.trenitalia.com/it/regionale/bici-e-mezzi-elettrici.html' },

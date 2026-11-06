@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Braunschweig 2026: Anbieter, Preise, Parken',
   description: 'E-Scooter Braunschweig: die vier Anbieter, was eine Fahrt kostet, Stationen in der Okerumflut, Fahren im Park und die Mitnahme in Bus und Tram.',
   headline: 'E-Scooter Braunschweig: Anbieter, Preise und warum du in der Innenstadt nur an Stationen parkst',
-  lede: 'E-Scooter in Braunschweig leihst du ohne Führerschein bei Bolt, Dott, Ryde oder Voi; Bolt, Dott und Ryde vermieten ab 18. Bei Voi kostet die Minute 0,22 € ohne Entsperrgebühr, zehn Minuten also 2,20 € (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone; auf den Wegen der städtischen Parks erlaubt die Parksatzung E-Scooter ausdrücklich, Fussgänger haben dort Vorrang. Innerhalb der Okerumflut stellst du den Scooter nur an markierten Stationen ab. Zusammengeklappt fährt dein eigener Scooter kostenlos in Bus und Tram mit.',
+  lede: 'E-Scooter in Braunschweig leihst du ohne Führerschein bei Bolt, Dott, Ryde oder Voi: App laden, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Bolt, Dott und Ryde vermieten ab 18. Bei Voi kostet die Minute 0,22 € ohne Entsperrgebühr, zehn Minuten also 2,20 € (Stand November 2026); bei Bolt, Dott und Ryde zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone; auf den Wegen der städtischen Parks erlaubt die Parksatzung E-Scooter ausdrücklich, Fussgänger haben dort Vorrang. Innerhalb der Okerumflut stellst du den Scooter nur an markierten Stationen ab. Zusammengeklappt fährt dein eigener Scooter kostenlos in Bus und Tram mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Braunschweig',
@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Braunschweig?',
       blocks: [
-        'Laut Stadt Braunschweig (undatierte Seite, gelesen am 25. Oktober 2026) sind vier Verleiher im Stadtgebiet tätig: **Bolt**, **Ryde**, **TIER**, das heute Dott heisst, und **Voi**. Bolt, Dott und Ryde führen Braunschweig auch auf ihren eigenen Seiten. 2022 zählte die Stadt rund 2000 Leih-Scooter von drei Anbietern; Voi kam laut seiner Mitteilung vom März 2025 am 1. April 2025 mit rund 800 Scootern dazu, «bis in die Aussenbezirke».',
-        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; Bolt, Dott und Ryde vermieten laut ihren Bedingungen ab 18. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'Laut Stadt Braunschweig sind vier Verleiher im Stadtgebiet tätig: **Bolt**, **Ryde**, **TIER**, das heute Dott heisst, und **Voi** (Stand November 2026). Bolt, Dott und Ryde führen Braunschweig auch auf ihren eigenen Seiten. 2022 zählte die Stadt rund 2000 Leih-Scooter von drei Anbietern; Voi kam laut seiner Mitteilung vom März 2025 am 1. April 2025 mit rund 800 Scootern dazu, «bis in die Aussenbezirke».',
+        'Bolt, Dott und Ryde vermieten laut ihren Bedingungen ab 18. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Braunschweig](map:de:Braunschweig) rund 600 Dott- und gut 550 Voi-Scooter, die zu diesem Zeitpunkt frei waren. Zoomst du hinein, zeigt sie auch die Abstellflächen und Parkverbotszonen der Stadt und die Okerumflut, in der du nur an den markierten Stationen abstellst.',
         'Eine Genehmigung der Stadt braucht ein Verleih laut Stadt grundsätzlich nicht. Stattdessen sollen Anbieter und Stadt eine Qualitätsvereinbarung unterzeichnen (Vorlage von Dezember 2021), laut ihrem § 12 «für keine Partei verbindlich». Sie sieht höchstens 100 Scooter je Anbieter innerhalb der Okerumflut (Zone A1) vor und höchstens fünf je Standort (100 m Umkreis), wenn der Anbieter sie aufstellt. Liegen seine Scooter ein Jahr lang unter 2 bis 3 Fahrten am Tag, soll er ihre Zahl anpassen.',
       ],
@@ -25,19 +25,17 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Braunschweig?',
       blocks: [
-        'Bei Voi kostet das Entsperren nichts und jede Minute 0,22 €: zehn Minuten kosten 2,20 €, eine Viertelstunde 3,30 € (Stand November 2026). Bolt nennt einen bundesweiten Ab-Preis, bei Dott und Ryde siehst du den Preis in der App vor dem Entsperren.',
+        'Bei Voi kostet das Entsperren nichts und jede Minute 0,22 €: zehn Minuten kosten 2,20 €, eine Viertelstunde 3,30 €, 20 Minuten 4,40 € (Stand November 2026).',
         {
           table: {
-            caption: 'E-Scooter-Preise in Braunschweig (Stand November 2026)',
-            head: ['Anbieter', 'Preis', 'Pässe'],
+            caption: 'Voi in Braunschweig laut offenen Daten (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi', 'Entsperren 0,00 €, dann 0,22 € pro Minute; 10 Minuten 2,20 €', 'Zum Start 2025 nannte Voi Tages-, Wochen- und Monatspässe ab 3,49 €'],
-              ['Bolt', 'Kleine Freischaltgebühr plus ab 0,15 € pro Minute, bundesweit, je nach Standort verschieden', 'Wochen- und Monatspässe; unbegrenzt Freischalten ab 0,99 € im Monat'],
-              ['Dott', 'In der App', 'In einigen Städten Prepaid-Pässe, Preis in der App'],
-              ['Ryde', 'In der App; angefangene Minuten zählen voll', 'Gilt nur in der Stadt, in der du ihn kaufst'],
+              ['Voi', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
             ],
           },
         },
+        'Bolt wirbt für ganz Deutschland mit einer kleinen Freischaltgebühr plus «ab 0,15 € pro Minute», je nach Standort verschieden, dazu mit Wochen- und Monatspässen und unbegrenztem Freischalten ab 0,99 € im Monat (Stand November 2026). Bei Ryde wird laut AGB jede angefangene Minute voll berechnet, und ein Ryde-Pass gilt nur in der Stadt, in der du ihn kaufst.',
         'Teuer wird Falschparken. Bolt verlangt laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 € Parkgebühr, wenn der Scooter falsch steht und kein deutliches Foto am Fahrtende das Gegenteil belegt, und bis zu 100 € Abholgebühr ausserhalb des zulässigen Parkbereichs. Dott kann laut AGB vom September 2025 bis zu 300 € für die Rückholung berechnen, wenn du seine Park- und Sperranweisungen nicht befolgst; wo eine Gemeinde Parkplätze ausweist, parkst du nur dort. Bei Ryde trägst du laut AGB die Kosten, wenn dein Parkfoto fehlt und eine Behörde Ryde dafür ein Verwarnungs- oder Bussgeld auferlegt; bringst du den Scooter aus dem Betriebsgebiet, kann Ryde bis zu 50 € verlangen.',
       ],
     },
@@ -105,7 +103,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Bus, Tram und Zug: BSVG und VRB',
       blocks: [
-        'In Bus, Tram und Zug gelten die Beförderungsbedingungen des Verkehrsverbunds Region Braunschweig (VRB). Anders als die ÜSTRA in [Hannover](guide:hanover), die E-Tretroller seit 1. April 2024 auch zusammengeklappt ausschliesst, nimmt die BSVG sie laut ihren FAQ mit (gelesen am 25. Oktober 2026).',
+        'In Bus, Tram und Zug gelten die Beförderungsbedingungen des Verkehrsverbunds Region Braunschweig (VRB). Anders als die ÜSTRA in [Hannover](guide:hanover), die E-Tretroller seit 1. April 2024 auch zusammengeklappt ausschliesst, nimmt die BSVG sie laut ihren FAQ mit (Stand November 2026).',
         {
           list: [
             '**Zusammengeklappt:** Dein eigener E-Scooter fährt kostenlos mit wie ein Gepäckstück, wenn er Sicherheit und Ordnung nicht gefährdet und Platz ist. Einen Anspruch hast du nicht; im Einzelfall entscheidet das Fahrpersonal.',
@@ -114,7 +112,7 @@ const guide: Guide = {
           ],
         },
         '**Leih-Scooter** lassen sich nicht zusammenklappen. Beende die Fahrt vor der Haltestelle und halte die Zugänge zu Bus und Tram frei.',
-        '**VELOLEO:** Das Leihrad von nextbike kostet 1 € pro 30 Minuten, höchstens 10 € je 24 Stunden. Studierende der TU Braunschweig fahren mit CAMPUSbike die ersten 30 Minuten gratis. Zurück gibst du das Rad an einer der rund 185 Stationen, sonst kostet es 20 €.',
+        '**VELOLEO:** Das Leihrad von nextbike kostet 1 € pro 30 Minuten, höchstens 10 € je 24 Stunden (Stand November 2026). Studierende der TU Braunschweig fahren mit CAMPUSbike die ersten 30 Minuten gratis. Zurück gibst du das Rad an einer offiziellen VELOLEO-Station, sonst kostet es 20 €.',
       ],
     },
     {
@@ -129,11 +127,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Braunschweig?',
-      answer: 'Laut Stadt Bolt, Ryde, Dott (früher TIER) und Voi. Einen Führerschein brauchst du nicht; Bolt, Dott und Ryde vermieten ab 18, das Mindestalter bei Voi zeigt dir die App.',
+      answer: 'Laut Stadt Bolt, Ryde, Dott (früher TIER) und Voi. Einen Führerschein brauchst du nicht; Bolt, Dott und Ryde vermieten ab 18.',
     },
     {
       question: 'Was kostet ein E-Scooter in Braunschweig?',
-      answer: 'Bei Voi 0,22 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,20 € (Stand November 2026). Bolt wirbt bundesweit mit «ab 0,15 €» pro Minute plus Freischaltgebühr, je nach Standort verschieden; bei Dott und Ryde zeigt die App den Preis vor dem Entsperren.',
+      answer: 'Bei Voi 0,22 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,20 € und 20 Minuten 4,40 € (Stand November 2026). Bolt wirbt bundesweit mit «ab 0,15 €» pro Minute plus Freischaltgebühr, je nach Standort verschieden.',
     },
     {
       question: 'Wo stelle ich den E-Scooter am Hauptbahnhof ab?',

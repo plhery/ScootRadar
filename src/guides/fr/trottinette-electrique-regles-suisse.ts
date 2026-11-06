@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trottinette-electrique-regles-suisse',
   topic: 'swiss-rules',
   name: 'Loi suisse sur la trottinette électrique',
-  title: 'Trottinette électrique : loi suisse 2026, âge et amendes',
-  description: 'Trottinette électrique et loi suisse en 2026 : âge et permis M, casque, alcool, trottoir, piste cyclable, amendes d’ordre, train CFF et libre-service.',
+  title: 'Trottinette électrique en Suisse : loi 2026, âge, amendes',
+  description: 'La loi suisse sur la trottinette électrique à novembre 2026 : âge et permis M, piste cyclable ou trottoir, casque, alcool, amendes, train CFF, libre-service.',
   headline: 'Trottinette électrique : ce que dit la loi suisse en 2026, de l’âge aux amendes',
-  lede: 'La loi suisse traite la trottinette électrique comme un cyclomoteur léger : un moteur de 0,5 kW au plus, qui ne vous pousse pas au-delà de 20 km/h, et les règles des cyclistes sur la route. Vous pouvez rouler dès 14 ans avec un permis de catégorie M et sans permis dès 16 ans ; les opérateurs de libre-service exigent 18 ans. Le casque n’est pas obligatoire, mais les feux doivent être allumés de jour comme de nuit. Interdits : le trottoir (CHF 40 d’amende), les passagers et un taux d’alcool de 0,5 ‰ ou plus.',
+  lede: 'En Suisse, la trottinette électrique est un cyclomoteur léger : son moteur l’assiste jusqu’à 20 km/h, avec 0,5 kW au plus, elle n’a ni plaque ni assurance obligatoire, et vous suivez les règles des cyclistes. Vous pouvez rouler dès 16 ans sans permis, ou dès 14 ans avec un permis de catégorie M, sur la piste ou la bande cyclable, sinon sur la chaussée, jamais sur le trottoir (CHF 40) ; pour louer en libre-service, les opérateurs exigent 18 ans. À novembre 2026, le casque n’est pas obligatoire, les feux restent allumés de jour comme de nuit, les passagers sont interdits et la limite d’alcool est de 0,5 ‰. Un feu rouge coûte CHF 60, le téléphone sans kit mains libres CHF 40.',
   published: '2026-10-12',
   updated: '2026-10-12',
   sections: [
@@ -36,7 +36,7 @@ const guide: Guide = {
     {
       heading: 'Casque, feux et passager : ce qui est obligatoire',
       blocks: [
-        '**Le casque n’est pas obligatoire** (art. 3b OCR), mais le BPA le recommande vivement. Dans ses conditions, Voi range pourtant le casque parmi les mesures de sécurité exigées, et Dott prévient qu’une blessure à la tête subie sans casque pourrait ne pas être couverte.',
+        '**Le casque n’est pas obligatoire** (art. 3b OCR), mais le BPA le recommande vivement, et Dott prévient qu’une blessure à la tête subie sans casque pourrait ne pas être couverte.',
         'En France, la règle n’est pas la même : de nombreux préfets y imposent le casque en trottinette. Tout est expliqué dans notre guide sur [la réglementation de la trottinette électrique en France](guide:french-rules).',
         {
           list: [
@@ -45,8 +45,8 @@ const guide: Guide = {
             '**Deux freins** indépendants.',
           ],
         },
-        'Selon le TCS, deux tiers des conducteurs de trottinette électrique n’allument pas leurs feux de jour. C’est pourtant l’amende la plus facile à éviter.',
-        '**Pas de passager, jamais**, pas même un enfant. Depuis le 1er juillet 2025, l’ordonnance l’écrit noir sur blanc : « Il est interdit de transporter des personnes sur les cycles et les cyclomoteurs dépourvus de place assise pour le conducteur » (art. 63 OCR). La presse parle d’une amende de CHF 20, mais la liste officielle des amendes ne prévoit pas encore clairement ce cas.',
+        'Lors d’un comptage publié par le TCS en juin 2023, seuls 32 % des conducteurs de trottinette électrique roulaient feux allumés de jour. C’est pourtant l’amende la plus facile à éviter.',
+        '**Pas de passager, jamais**, pas même un enfant. Depuis le 1er juillet 2025, l’ordonnance l’écrit noir sur blanc : « Il est interdit de transporter des personnes sur les cycles et les cyclomoteurs dépourvus de place assise pour le conducteur » (art. 63 OCR).',
       ],
     },
     {
@@ -87,7 +87,7 @@ const guide: Guide = {
         'Fixés par la Confédération, les montants sont les mêmes dans toute la Suisse et n’ont pas changé depuis 2024.',
         {
           table: {
-            caption: 'Amendes d’ordre pour une trottinette électrique, en vigueur en octobre 2026',
+            caption: 'Amendes d’ordre pour une trottinette électrique, en vigueur en novembre 2026',
             head: ['Infraction', 'Amende'],
             rows: [
               ['Rouler sur le trottoir', 'CHF 40'],
@@ -140,11 +140,11 @@ const guide: Guide = {
             'on peut parquer en zone de rencontre et en zone piétonne.',
           ],
         },
-        '**Au 12 octobre 2026, aucune nouvelle règle fédérale n’est entrée en vigueur cette année** pour les trottinettes. Les débats, eux, continuent :',
+        '**Depuis le 1er juillet 2026**, contourner par la gauche un îlot, une surface interdite au trafic ou un obstacle au milieu de la chaussée coûte CHF 30. Les débats, eux, continuent :',
         {
           list: [
-            '**Casque :** le 30 avril 2026, le Conseil national a rejeté, par 122 voix contre 33, une motion qui voulait rendre le casque et le permis obligatoires pour les scooters électriques et les véhicules similaires. Le 19 août 2026, le Conseil fédéral s’est dit prêt à mettre en consultation un casque obligatoire pour les trottinettes électriques, lors d’une prochaine révision de l’ordonnance, sans projet ni date à ce jour.',
-            '**Immatriculation et assurance :** la motion 26.3637 veut les rendre obligatoires. Le 19 août 2026, le Conseil fédéral a proposé de la rejeter ; le Parlement n’a pas encore voté.',
+            '**Casque :** le 30 avril 2026, le Conseil national a rejeté, par 122 voix contre 33, une motion qui voulait rendre le casque et le permis obligatoires pour les scooters électriques et les véhicules similaires. Le 19 août 2026, le Conseil fédéral s’est dit prêt à soumettre à la discussion un casque obligatoire pour les trottinettes électriques, dans la consultation sur une prochaine révision d’ordonnance. Une consultation sur la révision partielle de sept ordonnances du droit de la circulation routière, dont l’OCR et l’OAC, est prévue du 1er décembre 2026 au 1er mars 2027 (à novembre 2026).',
+            '**Immatriculation et assurance :** la motion 26.3637 veut les rendre obligatoires. Le 19 août 2026, le Conseil fédéral a proposé de la rejeter ; elle est toujours pendante au Conseil national (à novembre 2026).',
             '**Débridage :** le Conseil fédéral veut préciser les règles.',
             '**Train :** le personnel des trains, au sein du syndicat SEV, souhaite des règles plus claires pour les vélos et les trottinettes (juin 2026).',
           ],
@@ -165,7 +165,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en Suisse ?',
-      answer: 'Non, il est seulement recommandé. En août 2026, le Conseil fédéral s’est dit prêt à mettre en consultation un casque obligatoire pour les trottinettes électriques, mais il n’y a encore ni projet ni date.',
+      answer: 'Non, il est seulement recommandé. En août 2026, le Conseil fédéral s’est dit prêt à soumettre un casque obligatoire à la discussion lors d’une prochaine révision d’ordonnance ; une consultation sur sept ordonnances de la circulation routière est prévue de décembre 2026 à mars 2027.',
     },
     {
       question: 'Quelle est la vitesse maximale d’une trottinette électrique ?',
@@ -173,7 +173,7 @@ const guide: Guide = {
     },
     {
       question: 'Y a-t-il une nouvelle loi sur les trottinettes électriques en 2026 ?',
-      answer: 'Pas en Suisse : au 12 octobre 2026, le dernier changement date du 1er juillet 2025. Les articles sur une « nouvelle loi 2026 » parlent surtout de la France et d’autres pays voisins.',
+      answer: 'Pas de grande réforme en Suisse : le dernier grand changement date du 1er juillet 2025. Depuis le 1er juillet 2026, contourner un îlot par la gauche coûte CHF 30. Les articles sur une « nouvelle loi 2026 » parlent surtout de la France et d’autres pays voisins.',
     },
     {
       question: 'Faut-il une assurance ou une vignette pour une trottinette électrique ?',
@@ -194,8 +194,11 @@ const guide: Guide = {
     { title: 'Alliance SwissPass : tarif T600, dispositions tarifaires accessoires communes, chiffres 6 et 7 (édition du 1er juin 2026, PDF)', url: 'https://www.allianceswisspass.ch/fr/asp/Telechargements?download=2666' },
     { title: 'Nau.ch : les CFF offrent des biscuits aux cyclistes qui poussent leur vélo en gare (20 août 2022, en allemand)', url: 'https://www.nau.ch/news/good-news/sbb-verteilt-kekse-an-vorzeige-velofahrer-66245670' },
     { title: 'SEV : personnel de train sous pression, assemblée des délégués du 10 juin 2026', url: 'https://sev-online.ch/fr/aktuell/kontakt.sev/2026/personnel-de-train-sous-pression-202608-146425/' },
-    { title: 'Parlement : motion 26.3637, immatriculation et assurance obligatoires pour les trottinettes électriques', url: 'https://www.parlament.ch/fr/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
+    { title: 'Parlement : motion 26.3637, immatriculation et assurance obligatoires pour les trottinettes électriques, avec l’avis du Conseil fédéral', url: 'https://www.parlament.ch/fr/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
     { title: 'Parlement : motion 26.3010, casque et permis pour les scooters électriques et les véhicules similaires', url: 'https://www.parlament.ch/fr/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263010' },
+    { title: 'Fedlex : consultation prévue sur la révision partielle de sept ordonnances du droit de la circulation routière', url: 'https://www.fedlex.admin.ch/eli/dl/proj/2026/81/cons_1/fr' },
+    { title: 'TCS : comptage, deux tiers des trottinettes sans feux de jour (22 juin 2023)', url: 'https://www.tcs.ch/fr/le-tcs/presse/communiques-de-presse-2023/deux-roues-lumieres.php' },
+    { title: 'PubliBike : conditions générales (en allemand)', url: 'https://www.publibike.ch/de/agb' },
     { title: 'Léman Bleu : trottinettes sur les trottoirs, des amendes rares (7 octobre 2026)', url: 'https://www.lemanbleu.ch/fr/Actualites/Geneve/Trottinettes-sur-les-trottoirs-des-amendes-rares.html' },
   ],
 };

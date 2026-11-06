@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Trottinett Flughafen Zürich 2026: Kloten, Opfikon, Zonen',
   description: 'E-Trottinett Flughafen Zürich: warum Miet-Trottis dort gesperrt sind, wer in Kloten und Opfikon fährt, was zehn Minuten kosten und wo du parkierst.',
   headline: 'E-Trottinett am Flughafen Zürich, in Kloten und Opfikon: Sperrzone, Anbieter, Preise und Parkieren',
-  lede: 'Mit einem gemieteten E-Trottinett kommst du nicht bis an den Flughafen Zürich: Auf Verlangen der Flughafen Zürich AG ist er für Sharing-Trottis gesperrt, vom Bahnhof über Airport Center und Check-in bis The Circle. Rundherum fährst du: Am Mittag des 28. Oktober 2026 zeigte die Karte in Kloten rund 220 Trottis von Bolt, Lime, Bird, Hopp, Dott und Voi, in Opfikon-Glattbrugg rund 150 von Dott, Bolt, Voi und Lime. Meist zahlst du CHF 1.– fürs Entsperren und 41 oder 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.10 bis 5.20 (veröffentlichte Tarife vom 22. Oktober 2026).',
+  lede: 'Mit einem gemieteten E-Trottinett kommst du nicht bis an den Flughafen Zürich: Auf Verlangen der Flughafen Zürich AG ist er für Sharing-Trottis gesperrt, vom Bahnhof über Airport Center und Check-in bis The Circle. Rundherum fährst du: Am Mittag des 28. Oktober 2026 zeigte die Karte in Kloten rund 220 Trottis von Bolt, Lime, Bird, Hopp, Dott und Voi, in Opfikon-Glattbrugg rund 150 von Dott, Bolt, Voi und Lime. Gemietet wird in der App des Anbieters, bei den meisten ab 18: Trotti auf der Karte suchen, QR-Code scannen, losfahren. Meist zahlst du CHF 1.– fürs Entsperren und 41 oder 42 Rappen pro Minute (Stand November 2026); am günstigsten ist Dott mit CHF 5.10 für zehn Minuten, Bolt, Voi und Hopp kosten CHF 5.20.',
   published: '2026-10-23',
   updated: '2026-10-28',
   city: 'ch:kloten',
@@ -43,27 +43,27 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Kloten und Opfikon?',
       blocks: [
-        'Die Tabelle zeigt die Tarife aus den offenen Daten der Anbieter für Kloten und Opfikon vom Abend des 22. Oktober 2026. Massgebend ist der Preis, den dir die App vor dem Entsperren zeigt.',
+        'Die Tabelle zeigt die Tarife aus den offenen Daten der Anbieter für Kloten und Opfikon (Stand November 2026). Am günstigsten ist Dott: Zehn Minuten kosten CHF 5.10, zwanzig CHF 9.20; bei Bolt, Voi und Hopp sind es CHF 5.20 und 9.40.',
         {
           table: {
-            caption: 'Veröffentlichte Tarife in Kloten und Opfikon vom 22. Oktober 2026',
+            caption: 'Tarife in Kloten und Opfikon, Stand November 2026',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Dott', 'CHF 1.–', '41 Rappen', 'CHF 5.10', 'CHF 9.20'],
               ['Bolt', 'CHF 1.–', '42 Rappen, einzelne Trottis 48', 'CHF 5.20', 'CHF 9.40'],
               ['Voi', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
               ['Hopp (Kloten)', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
-              ['Lime (Opfikon)', 'CHF 1.–', 'Meist 49 Rappen, einzelne Trottis 42, ohne Steuern', 'in der App', 'in der App'],
             ],
           },
         },
+        'Lime verlangt in Opfikon wie in Zürich CHF 1.– fürs Entsperren und je nach Trotti 42 oder 49 Rappen pro Minute, zzgl. MWST (Stand November 2026).',
         'Die Minuten laufen, bis du die Fahrt beendest, auch am Rotlicht und in einer Parkverbotszone.',
       ],
     },
     {
       heading: 'Sperrzonen und Langsamfahrzonen: Flughafen, Bahnhöfe, Glatt',
       blocks: [
-        'Kloten gibt den Anbietern seine Zonen über die Plattform Vianova vor, Opfikon mit einer eigenen Karte vom 21. September 2026. Die Tabelle fasst beides mit den Anbieterdaten vom 22. Oktober 2026 zusammen; massgebend sind die Farben in der App.',
+        'Kloten gibt den Anbietern seine Zonen über die Plattform Vianova vor, Opfikon mit einer eigenen Karte vom 21. September 2026. Die Tabelle fasst beides mit den Anbieterdaten vom 22. Oktober 2026 zusammen.',
         {
           table: {
             caption: 'Zonen rund um den Flughafen Zürich, Stand 22. Oktober 2026',
@@ -182,6 +182,11 @@ const guide: Guide = {
     { title: 'Stadt Opfikon: E-Scooter', url: 'https://www.opfikon.ch/dienstleistungen/110935' },
     { title: 'Stadtrat Opfikon: Beschluss 2024-229 (PDF)', url: 'https://www.opfikon.ch/_rte/dokument/5311654' },
     { title: 'Stadt Opfikon: Sharing-Angebote', url: 'https://www.opfikon.ch/mobilitaet/27956' },
+    { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: offene Daten von Bolt Zürich (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_zurich/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime Zürich (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_zurich/gbfs' },
+    { title: 'Dott: offener Datenfeed für Zürich (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/zurich/gbfs.json' },
+    { title: 'Hopp: Tarife in Kloten (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-kloten/gbfs.json' },
     { title: 'Flughafen Zürich: Mit dem Velo an den Flughafen', url: 'https://www.flughafen-zuerich.ch/de/zrh-staff/arbeitsweg-und-sicherheit/arbeitsweg/velo' },
     { title: 'Flughafen Zürich AG: Parkingordnung Fahrradabstellplätze (PDF)', url: 'https://www.flughafen-zuerich.ch/-/jssmedia/airport/portal/dokumente/passagiere/praktisches/parkieren-und-transport/parkingordnung_fahrradabstellpltze-fzag-2018_de.pdf?vs=1' },
   ],

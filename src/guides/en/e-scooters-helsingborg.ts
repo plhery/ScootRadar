@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'helsingborg',
   name: 'E-scooters in Helsingborg, Sweden',
   title: 'E-scooters Helsingborg 2026: Voi, Ryde and the rules',
-  description: 'E-scooters in Helsingborg: Voi and Ryde, the City’s slow zones and fees, where to park in the centre, Skånetrafiken, the Helsingør ferry and Sweden’s fines.',
+  description: 'E-scooters in Helsingborg: Voi at SEK 5 + SEK 2.50 a minute (November 2026) and Ryde, how to rent, slow zones, where to park, the bus and the ferry.',
   headline: 'E-scooters in Helsingborg: Voi and Ryde, and where to ride and park',
-  lede: 'E-scooters in Helsingborg are rented from Voi and Ryde, the two companies Helsingborgs stad names (October 2026), and each app shows the price before you unlock. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h on pedestrian streets and in Stadsparken. In central Helsingborg, end your ride in a cycle rack or a marked e-scooter place, never on a footway or cycle lane.',
+  lede: 'E-scooters in Helsingborg are rented from Voi and Ryde, the two companies Helsingborgs stad names. To rent one, find it on the [map of Helsingborg](map:se:Helsingborg) or in the Voi or Ryde app, sign up with a card and scan the QR code on the handlebar. As of November 2026 a Voi costs SEK 5 to unlock and SEK 2.50 a minute, so 10 minutes cost SEK 30; Ryde’s app shows its price before you unlock. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h on pedestrian streets and in Stadsparken. In central Helsingborg, end your ride in a cycle rack or a marked e-scooter place, never on a footway or cycle lane.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'se:Helsingborg',
@@ -16,15 +16,15 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Helsingborg: Voi and Ryde',
       blocks: [
-        'Electric scooter rental in Helsingborg is run by private companies under agreements with Helsingborgs stad (the City of Helsingborg). Its e-scooter page names two of them (updated 6 March 2026, read 30 October 2026): **Voi** and **Ryde**, which also lists Helsingborg among its towns.',
+        'Electric scooter rental in Helsingborg is run by private companies under agreements with Helsingborgs stad (the City of Helsingborg). Its e-scooter page names two of them: **Voi** and **Ryde**, which also lists Helsingborg among its towns.',
         'At 00:34 on Friday 30 October 2026 the [map of Helsingborg](map:se:Helsingborg) showed about 760 Voi scooters free to rent at that moment. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
       heading: 'How much does a Voi or Ryde scooter cost in Helsingborg?',
       blocks: [
-        '**The app shows the price** before you unlock.',
-        'Ryde’s Swedish terms let you ride from 15, round the per-minute price up to the next whole minute and allow a fee of up to SEK 500 if you take a scooter outside its operating area (read 30 October 2026). Check the Voi app for its own age limit and fees.',
+        'As of November 2026 Voi’s open data gives SEK 5 to unlock and SEK 2.50 a minute in Helsingborg, so 10 minutes cost SEK 30 and 20 minutes SEK 55.',
+        'Ryde’s Swedish terms let you ride from 15, round the per-minute price up to the next whole minute and allow a fee of up to SEK 500 if you take a scooter outside its operating area. Check the Voi app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -96,7 +96,7 @@ const guide: Guide = {
           ],
         },
         'A hire scooter stays on the street: end your ride near Knutpunkten before you board.',
-        'Öresundslinjen runs the ferry to Helsingør. It lets you bring a bicycle or moped free with a standard foot-passenger ticket (read 30 October 2026). A hire scooter must stay in its operating area, so end your ride before you board.',
+        'Öresundslinjen runs the ferry to Helsingør. It lets you bring a bicycle or moped free with a standard foot-passenger ticket. A hire scooter must stay in its operating area, so end your ride before you board.',
       ],
     },
     {
@@ -122,7 +122,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Helsingborg?',
-      answer: 'Voi and Ryde, the two companies Helsingborgs stad names (read 30 October 2026). Find Voi’s on the [Helsingborg map](map:se:Helsingborg) and Ryde’s in the Ryde app.',
+      answer: 'Voi and Ryde, the two companies Helsingborgs stad names. Find Voi’s on the [Helsingborg map](map:se:Helsingborg) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Where can I park a hire scooter in Helsingborg?',
@@ -148,6 +148,7 @@ const guide: Guide = {
     { title: 'Helsingborgs stad: Fees for the use of public land, section 6.14 (revised 27 August 2024)', url: 'https://media.helsingborg.se/uploads/networks/1/sites/2/2017/12/taxor_for_markupplatelse_pa_allman_plats_beslutad_i_kf_240827_sbf.pdf' },
     { title: 'Helsingborgs stad: Centrum and Kullagatan', url: 'https://helsingborg.se/bo-bygga-och-miljo/bostader/bostadsomraden-och-samhallen/centrum/' },
     { title: 'Helsingborgs stadslexikon: Kullagatan', url: 'https://stadslexikon.helsingborg.se/kullagatan/' },
+    { title: 'Voi: Open data for Helsingborg, zone 127 (NeTEx, published 6 November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/127/netex.xml' },
     { title: 'Ryde: Locations (read 30 October 2026)', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Ryde: Terms and conditions, Sweden (read 30 October 2026)', url: 'https://www.ryde-technology.com/terms-conditions-sweden' },
     { title: 'Transportstyrelsen: Elsparkcykel (updated 14 August 2026)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordonsregler/regler-for-olika-fordonsslag/elsparkcykel/' },

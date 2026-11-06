@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Scooters eléctricos Viña del Mar: Whoosh y Lime (2026)',
   description: 'Scooters eléctricos Viña del Mar: arriendo con Whoosh y Lime, dónde andar y estacionar, casco, el tren y lo que cobra Whoosh si lo dejas mal.',
   headline: 'Scooters eléctricos en Viña del Mar: arriendo con Whoosh y Lime, y las reglas para andar en la Ciudad Jardín',
-  lede: 'Los scooters eléctricos de Viña del Mar se arriendan con dos apps, Whoosh y Lime. Whoosh opera desde el verano de 2026 por un convenio con la municipalidad, según la prensa, y sus scooters se toman y se dejan solo en las zonas «P» de su app. El precio lo ves en cada app. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, casco y la vereda solo por excepción.',
+  lede: 'Los scooters eléctricos de Viña del Mar se arriendan con dos apps, Whoosh y Lime: descargas la app, te registras con tu correo, tu número de teléfono y un medio de pago, y escaneas el código QR del scooter. Whoosh pide 18 años; opera desde el verano de 2026 por un convenio con la municipalidad, según la prensa, y sus scooters se toman y se dejan solo en las zonas «P» de su app. Cada app te muestra el precio antes de iniciar el viaje. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, casco, la vereda solo por excepción y, de noche, luces y ropa reflectante.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'cl:Viña del Mar',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: '¿Qué scooters de arriendo hay en Viña del Mar?',
       blocks: [
-        'En octubre de 2026 arriendan scooters en Viña del Mar dos empresas:',
+        'Arriendan scooters en Viña del Mar dos empresas:',
         {
           list: [
             '**Whoosh** partió en el verano de 2026 con 350 scooters y 75 puntos de estacionamiento, según G5 Noticias (19 de febrero de 2026), y la alcaldesa Macarena Ripamonti dijo entonces que la ciudad avanzaba «hacia un ecosistema de movilidad inteligente y sustentable». Opera por un convenio con la Municipalidad de Viña del Mar, según UCV Radio (5 de junio de 2026).',
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta arrendar un scooter en Viña del Mar?',
       blocks: [
-        'El precio de Whoosh y el de Lime los ves en cada app antes del viaje. Whoosh cobra un costo de inicio más un precio por minuto, según la ciudad, la demanda y tu plan o paquete, y puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
+        'Whoosh cobra un costo de inicio más un precio por minuto, según la ciudad, la demanda y tu plan o paquete, y puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
         'Whoosh puede cobrarte aparte, en pesos chilenos, según sus términos para Chile. Son cobros de la empresa, no multas de la ley:',
         {
           table: {
@@ -71,7 +71,7 @@ const guide: Guide = {
             ],
           },
         },
-        'En noviembre de 2025, el Ministerio de Transportes anunció en T13 multas de 0,5 a 1 UTM (unos $36.000 a $72.000 en octubre de 2026) desde el 1 de enero de 2026, y el retiro de los scooters que pasen de 25 km/h. Los Whoosh llegan a 25 km/h y bajan solos la velocidad en las zonas que la app marca en naranja.',
+        'En noviembre de 2025, el Ministerio de Transportes anunció en T13 multas de 0,5 a 1 UTM (unos $36.000 a $72.000 en noviembre de 2026) desde el 1 de enero de 2026, y el retiro de los scooters que pasen de 25 km/h. Los Whoosh llegan a 25 km/h y bajan solos la velocidad en las zonas que la app marca en naranja.',
         'Ojo con la vereda: la fundación del Borde Costero reclamaba en junio de 2026, en Puranoticia, que en la Avenida San Martín «andan todos por las veredas». La ley solo lo permite en esas excepciones.',
       ],
     },
@@ -80,7 +80,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Whoosh.** Según su web (octubre de 2026), sus scooters solo se toman y se dejan en las zonas «P» de la app, que aprueba la municipalidad. Déjalo pegado a una pared, una reja o la solera, paralelo a ella, sin estorbar a peatones ni autos. Terminar fuera de una «P» te cuesta $5.000.',
+            '**Whoosh.** Según su web, sus scooters solo se toman y se dejan en las zonas «P» de la app, que aprueba la municipalidad. Déjalo pegado a una pared, una reja o la solera, paralelo a ella, sin estorbar a peatones ni autos. Terminar fuera de una «P» te cuesta $5.000.',
             '**Lime.** Mira en su app dónde puedes dejarlo antes de terminar el viaje.',
           ],
         },
@@ -145,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: '¿Qué app necesito para los scooters de Viña del Mar?',
-      answer: 'Whoosh o Lime, las dos empresas que arriendan scooters en la ciudad en octubre de 2026. Encuéntralos en el [mapa de Viña del Mar](map:cl:Viña del Mar).',
+      answer: 'Whoosh o Lime, las dos empresas que arriendan scooters en la ciudad. Encuéntralos en el [mapa de Viña del Mar](map:cl:Viña del Mar).',
     },
     {
       question: '¿Es obligatorio el casco para andar en scooter en Viña del Mar?',

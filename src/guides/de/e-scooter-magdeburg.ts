@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'magdeburg',
   name: 'E-Scooter Magdeburg: Anbieter, Preise, Parken',
   title: 'E-Scooter Magdeburg 2026: Voi, Preise, Parken, Regeln',
-  description: 'E-Scooter Magdeburg: Voi ist der einzige Anbieter, den die Stadt zulässt. Was über Preise bekannt ist, wo du fährst und parkst und was in Bus und Bahn gilt.',
+  description: 'E-Scooter Magdeburg: Nur Voi fährt hier, für 0,49 € plus 0,29 € pro Minute (Stand November 2026). Wo du fährst und parkst und was in Bus und Bahn gilt.',
   headline: 'E-Scooter Magdeburg: Voi, Preise, Parken und die geplanten Stationen',
-  lede: 'E-Scooter in Magdeburg leihst du ab 18 und ohne Führerschein bei Voi, dem einzigen Anbieter mit Erlaubnis der Stadt; den Preis zeigt die Voi-App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch Fussgängerzonen wie den Alten Markt oder den Nordabschnitt des Breiten Wegs. Die Fahrt beendest du, wo die App es erlaubt, an Gewässern wie der Elbe laut Stadt nicht. Im Mai 2026 beauftragte der Stadtrat die Oberbürgermeisterin, das freie Abstellen zu untersagen und auf feste Stationen umzustellen.',
+  lede: 'E-Scooter in Magdeburg leihst du ab 18 und ohne Führerschein bei Voi, dem einzigen Anbieter mit Erlaubnis der Stadt: Voi-App laden, Konto anlegen, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Voi verlangt 0,49 € fürs Entsperren und 0,29 € pro Minute, zehn Minuten kosten also 3,39 € (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch Fussgängerzonen wie den Alten Markt oder den Nordabschnitt des Breiten Wegs. Die Fahrt beendest du, wo die App es erlaubt, an Gewässern wie der Elbe laut Stadt nicht. Im Mai 2026 beauftragte der Stadtrat die Oberbürgermeisterin, das freie Abstellen zu untersagen und auf feste Stationen umzustellen.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Magdeburg',
@@ -18,14 +18,14 @@ const guide: Guide = {
       blocks: [
         'In Magdeburg hat **Voi** laut Stadt die «alleinige Erlaubnis zur Abstellung von E-Scootern im Stadtgebiet». Nach einem Vergabeverfahren auf Grundlage des E-Scooter-Konzepts, das der Stadtrat 2023 beschlossen hatte, vergab der Ausschuss für Stadtentwicklung, Bauen und Verkehr am 15. Mai 2025 den Betrieb an die Voi Technology Germany GmbH, «über eine Laufzeit von 3 Jahren beginnend ab dem 01.06.2025», und beauftragte die Verwaltung, dazu eine «Sondernutzungsvereinbarung» abzuschliessen (Amtsblatt vom 4. Juli 2025). Am 23. Juli 2025 kündigte die Stadt den Start für den 1. August an: Voi werde «alleiniger E-Scooter-Anbieter in Magdeburg» und hier «maximal 600 Fahrzeuge stationieren».',
         'Vor Voi waren zwei andere Anbieter in der Stadt aktiv. Im Juli 2025 teilte sie mit, beide seien aufgefordert worden, ihre E-Scooter aus dem öffentlichen Strassenraum zu entfernen. Laut Verwaltung (Dezember 2025) verzögerte sich das, weil sie dagegen Eilverfahren beantragt hatten.',
-        'Du leihst den Scooter in der Voi-App. Leih-Scooter bekommst du erst ab 18, einen eigenen darfst du ab 14 fahren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'Die [Karte von Magdeburg](map:de:Magdeburg) zeigt Voi mit Standort und Akkustand. Am Montag, 26. Oktober 2026, standen dort gegen 14.55 Uhr rund 500 Voi-Scooter: 493 in Magdeburg, 3 in Barleben und 1 in Sülzetal. Die meisten standen in der Altstadt (55), der Alten Neustadt (53) und im Stadtteil Leipziger Strasse (45); 33 der 40 Stadtteile hatten mindestens einen. Das ist eine Momentaufnahme, keine Flottengrösse. Preise, Zonen und Stationen zeigt die Voi-App.',
+        'Leih-Scooter bekommst du erst ab 18, einen eigenen darfst du ab 14 fahren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'Die [Karte von Magdeburg](map:de:Magdeburg) zeigt Voi mit Standort und Akkustand. Am Montag, 26. Oktober 2026, standen dort gegen 14.55 Uhr rund 500 Voi-Scooter: 493 in Magdeburg, 3 in Barleben und 1 in Sülzetal. Die meisten standen in der Altstadt (55), der Alten Neustadt (53) und im Stadtteil Leipziger Strasse (45); 33 der 40 Stadtteile hatten mindestens einen. Das ist eine Momentaufnahme, keine Flottengrösse.',
       ],
     },
     {
       heading: 'E-Scooter mieten in Magdeburg: Was kostet die Fahrt?',
       blocks: [
-        'Was Entsperren und Minuten bei Voi kosten, zeigt die Voi-App vor dem Start.',
+        'Voi verlangt in Magdeburg laut seinen offenen Daten 0,49 € fürs Entsperren und 0,29 € pro Minute (Stand November 2026): Zehn Minuten kosten 3,39 €, eine Viertelstunde 4,84 €, zwanzig Minuten 6,29 €.',
         'Für das Abstellen der Leih-Scooter braucht der Anbieter, wie es im Amtsblatt heisst, die Erlaubnis einer «strassenrechtlichen Sondernutzung». Dafür verlangt die Stadt eine Gebühr: Ihre Sondernutzungsgebührensatzung setzt für das «Abstellen von E-Roller zum Zweck der Verleihung» 4,69 € «je angefangene m² beanspruchte Strassenfläche pro Monat» an (Änderung im Amtsblatt vom 22. November 2024). Diese Gebühr zahlt der Anbieter, nicht du.',
       ],
     },
@@ -51,7 +51,7 @@ const guide: Guide = {
             caption: 'Wo du in Magdeburg einen Leih-Scooter abstellst (laut Stadt, Satzungen und Parkbetreiber, Stand 26. Oktober 2026)',
             head: ['Ort', 'Was gilt'],
             rows: [
-              ['Breiter Weg (Nordabschnitt), Alter Markt, Am Dom', 'Fussgängerzone: nur schieben; ob die Fahrt dort enden darf, zeigt die App'],
+              ['Breiter Weg (Nordabschnitt), Alter Markt, Am Dom', 'Fussgängerzone: nur schieben'],
               ['Hauptbahnhof', 'Der Willy-Brandt-Platz ist Fussgängerzone; die Strassenbahnhaltestelle heisst «Hauptbahnhof/Willy-Brandt-Platz»'],
               ['Elbe und andere Gewässer', 'Kein Fahrtende in den Parkverbotszonen von Voi'],
               ['Stadtpark Rotehorn, Klosterbergegarten, Elbuferpromenade', 'Kraftfahrzeuge nur auf freigegebenen Wegen (Grünanlagensatzung); E-Scooter sind Kraftfahrzeuge (§ 1 eKFV)'],
@@ -100,7 +100,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter rund um Magdeburg: Barleben, Halle und Braunschweig',
       blocks: [
-        '**Barleben und Sülzetal:** Als Betriebsgebiet nennt das Konzept der Stadt «das Gebiet der Landeshauptstadt Magdeburg». Ob du eine Fahrt jenseits der Grenze beenden darfst, zeigt die Voi-App.',
+        '**Barleben und Sülzetal:** Als Betriebsgebiet nennt das Konzept der Stadt «das Gebiet der Landeshauptstadt Magdeburg».',
         '**Halle und Braunschweig:** Freie Scooter dort zeigen die [Karte von Halle (Saale)](map:de:Halle (Saale)) und die [Karte von Braunschweig](map:de:Braunschweig); was in Braunschweig gilt, steht in [E-Scooter in Braunschweig](guide:braunschweig).',
       ],
     },
@@ -112,7 +112,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Magdeburg?',
-      answer: 'Was Entsperren und Minuten kosten, zeigt die Voi-App vor dem Start.',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,29 € pro Minute (Stand November 2026): Zehn Minuten kosten 3,39 €, zwanzig Minuten 6,29 €.',
     },
     {
       question: 'Wo darf ich in Magdeburg einen Leih-Scooter abstellen?',
@@ -145,6 +145,7 @@ const guide: Guide = {
     { title: 'Landeshauptstadt Magdeburg: Gefahrenabwehrverordnung (Amtsblatt Nr. 21 vom 27. Juni 2022, PDF)', url: 'https://www.magdeburg.de/loadDocument.phtml?ObjSvrID=37&ObjID=53138&ObjLa=1&Ext=PDF' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
     { title: 'Elbauenpark Magdeburg: Park- und Besucherordnung (Juli 2024)', url: 'https://www.elbauenpark.de/de/besucherinfos/parkordnung/' },
+    { title: 'Voi: Tarif und Zonen für Magdeburg (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/382/netex.xml' },
     { title: 'Hochschule Magdeburg-Stendal: Campusplan und Anreise', url: 'https://www.h2.de/hochschule/standorte/standort-magdeburg/campusplan-und-anreise.html' },
     { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },

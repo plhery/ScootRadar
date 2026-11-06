@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'bern',
   name: 'Renting an e-scooter in Bern',
   title: 'E-scooter Bern 2026: Voi prices, no-ride zones, parking',
-  description: 'Rent an e-scooter in Bern: only Voi holds a permit. What ten minutes cost, where the Old Town is off-limits, where to park, and when an e-bike is cheaper.',
+  description: 'Rent an e-scooter in Bern: only Voi holds a permit, at CHF 1 + CHF 0.42 a minute (November 2026). How to rent, the Old Town ban, where to park, cheaper e-bikes.',
   headline: 'E-scooters in Bern: renting a Voi, prices, no-ride zones and where to park',
-  lede: 'To rent an e-scooter in Bern, you need the Voi app: since 1 May 2024 the city has licensed Voi alone, for five years and up to 300 scooters. You must be at least 18 and pay CHF 1.00 to unlock plus CHF 0.42 a minute, so ten minutes cost CHF 5.20 (as of November 2026). You can’t ride in the Old Town between Spitalgasse and Gerechtigkeitsgasse; in the rest of the centre, at the station or on Bundesplatz for example, you can end a ride only at a Voi parking spot; and Köniz and the Gurten are no-riding zones.',
+  lede: 'To rent an e-scooter in Bern, you need the Voi app: since 1 May 2024 the city has licensed Voi alone, for five years and up to 300 scooters, so Lime, Bolt and Dott don’t rent here. Find the nearest scooter on the [map of Bern](map:ch:bern) or in the app, sign up, add a card and scan the QR code; you must be at least 18. As of November 2026 a ride costs CHF 1.00 to unlock plus CHF 0.42 a minute, so ten minutes cost CHF 5.20; from ten minutes on, a Velo Region Bern e-bike is cheaper. Ride on the bike lane or the road, never the pavement. You can’t ride in the Old Town between Spitalgasse and Gerechtigkeitsgasse; in the rest of the centre, at the station or on Bundesplatz for example, you can end a ride only at a Voi parking spot; and Köniz and the Gurten are no-riding zones.',
   published: '2026-10-12',
   updated: '2026-10-12',
   city: 'ch:bern',
@@ -35,7 +35,7 @@ const guide: Guide = {
         'Voi charges CHF 1.00 to unlock and CHF 0.42 a minute (as of November 2026); the app shows the final price. Compared with Velo Region Bern’s rental bikes:',
         {
           table: {
-            caption: 'Prices in Bern (Voi: as of November 2026; PubliBike: publibike.ch, October 2026)',
+            caption: 'Prices in Bern, as of November 2026 (Voi: its open data; PubliBike: publibike.ch)',
             head: ['Option', 'Base fare', 'After that, per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi e-scooter', 'CHF 1.00 to unlock', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
@@ -45,7 +45,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Five minutes on a Voi cost CHF 3.10, half an hour CHF 13.60. The average ride lasted about ten minutes when the city measured it in 2021, typically from the station to Breitenrain or Länggasse. In Basel and Biel, Voi charges CHF 0.39 a minute: see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Five minutes on a Voi cost CHF 3.10, half an hour CHF 13.60. The average ride lasted about ten minutes when the city measured it in 2021, typically from the station to Breitenrain or Länggasse. In Basel and Biel, Voi charges CHF 0.39 a minute (as of November 2026): see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {
@@ -165,6 +165,10 @@ const guide: Guide = {
     {
       question: 'Can I use my SwissPass for PubliBike in Bern?',
       answer: 'Yes. Velo Region Bern’s bikes and e-bikes unlock with a SwissPass at no extra cost, and you pay PubliBike’s fares: without a pass, CHF 5.00 for the first 30 minutes on an e-bike.',
+    },
+    {
+      question: 'How do I find an e-scooter near me in Bern?',
+      answer: 'Open the [live map of Bern](map:ch:bern) or the Voi app: both show the scooters free to rent and where you are. In the centre a ride ends only at a Voi parking spot, so check the nearest one in the app before you set off. There are about 90 in the centre, at the station, Bundesplatz and Bärenplatz among them.',
     },
     {
       question: 'How many e-scooters are there in Bern?',

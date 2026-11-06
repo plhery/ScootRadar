@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Mainz 2026: Anbieter, Preise, Abstellflächen',
   description: 'E-Scooter Mainz: Bolt, Lime und Voi, was eine Fahrt kostet, wo du fährst und warum du die Fahrt in Alt- und Neustadt nur auf 25 Flächen beendest.',
   headline: 'E-Scooter Mainz: Anbieter, Preise, Abstellflächen und Verbotszonen',
-  lede: 'E-Scooter in Mainz leihst du bei Bolt, Lime oder Voi, ohne Führerschein: Nur diese drei hat die Stadt seit dem 1. März 2026 zugelassen. Bei Voi kostet eine Fahrt 0,49 € fürs Entsperren und 0,24 € pro Minute (Stand November 2026), bei Bolt und Lime zeigt dir die App den Preis. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. In Alt- und Neustadt beendest du die Fahrt nur auf einer von 25 Abstellflächen, in den übrigen Stadtteilen fast überall, ausser in den Verbotszonen der Stadt, die dir die App zeigt.',
+  lede: 'E-Scooter in Mainz leihst du bei Bolt, Lime oder Voi, ohne Führerschein: Nur diese drei hat die Stadt seit dem 1. März 2026 zugelassen. Du lädst die App, suchst einen Scooter auf der Karte, scannst den QR-Code und fährst los. Bei Voi kostet eine Fahrt 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026); bei Bolt und Lime zeigt dir die App den Preis vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. In Alt- und Neustadt beendest du die Fahrt nur auf einer von 25 Abstellflächen, in den übrigen Stadtteilen fast überall, ausser in den Verbotszonen der Stadt, die dir die App zeigt.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Mainz',
@@ -16,28 +16,27 @@ const guide: Guide = {
     {
       heading: 'E-Scooter mieten in Mainz: Bolt, Lime und Voi',
       blocks: [
-        'In Mainz verleihen drei Anbieter E-Scooter: **Bolt**, **Lime** und **Voi**. «Es wurden 3 Sondernutzungserlaubnisse an die Betreiber Bolt, Lime und Voi erteilt», schrieb die Stadt am 20. März 2026 dem Stadtrat. Du mietest in der App. Das Gesetz erlaubt E-Scooter ab 14, Bolt vermietet laut seinen Bedingungen aber erst ab 18; bei Lime und Voi zeigt dir die App das Mindestalter: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Mainz verleihen drei Anbieter E-Scooter: **Bolt**, **Lime** und **Voi**. «Es wurden 3 Sondernutzungserlaubnisse an die Betreiber Bolt, Lime und Voi erteilt», schrieb die Stadt am 20. März 2026 dem Stadtrat. Das Gesetz erlaubt E-Scooter ab 14, Bolt vermietet laut seinen Bedingungen aber erst ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die Regeln setzt die Stadt, gestützt auf das Landesstrassengesetz Rheinland-Pfalz. Laut ihrer E-Tretroller-Richtlinie vom 2. Juli 2025 dürfen höchstens vier Anbieter zusammen 1200 Scooter aufstellen, mit Genehmigungen für 24 Monate, in denen keine weiteren Anbieter dazukommen. Laut Sondernutzungssatzung zahlen sie der Stadt 7 € pro Scooter und Monat.',
-        '**Dott** (früher TIER) führt Mainz auf seiner Website noch (gelesen am 4. November 2026), hat aber keine der drei Genehmigungen bekommen. Ein Anbieter ohne Genehmigung musste laut Stadt seine Scooter bis Anfang März 2026 abziehen; am 4. März liessen sie sich nicht mehr mieten.',
+        '**Dott** (früher TIER) führt Mainz auf seiner Website noch (Stand November 2026), hat aber keine der drei Genehmigungen bekommen. Ein Anbieter ohne Genehmigung musste laut Stadt seine Scooter bis Anfang März 2026 abziehen; am 4. März liessen sie sich nicht mehr mieten.',
         'Die [Karte von Mainz](map:de:Mainz) zeigt die Scooter von Bolt, Lime und Voi mit Standort und Akkustand (bei Bolt, sofern Bolt ihn nicht ausblendet). In der Nacht zum Montag, 26. Oktober 2026, standen gegen 5.30 Uhr in Mainz rund 410 Scooter von Voi und 320 von Bolt. Für Lime gibt es eine eigene Zählung, nur in Mainz: rund 290 Scooter, Stand Sonntag, 25. Oktober, 12.35 Uhr. Das sind Momentaufnahmen, keine Flottengrössen.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Mainz?',
       blocks: [
-        'Du zahlst fürs Entsperren und pro Minute. Voi verlangt in Mainz und Wiesbaden denselben Tarif. Bolt wirbt für Deutschland mit «ab 0,15 € pro Minute» und einer kleinen Freischaltgebühr; der Minutenpreis hängt laut Bolt vom Standort ab. Was Falschparken kostet, steht in den deutschen Bedingungen der Anbieter:',
+        'Du zahlst fürs Entsperren und pro Minute. Voi verlangt in Mainz und Wiesbaden denselben Tarif:',
         {
           table: {
-            caption: 'E-Scooter-Anbieter in Mainz: Preis und Gebühren (Stand November 2026)',
-            head: ['Anbieter', 'Preis', 'Falsch geparkt (laut Bedingungen)'],
+            caption: 'Voi in Mainz und Wiesbaden laut offenen Daten (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi', '0,49 € fürs Entsperren plus 0,24 € pro Minute, 10 Minuten also 2,89 €', 'in den Bedingungen in der Voi-App'],
-              ['Bolt', 'ab 0,15 € pro Minute plus Freischaltgebühr (für Deutschland)', '15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026)'],
-              ['Lime', 'in der App', 'in den Bedingungen in der Lime-App'],
+              ['Voi', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
             ],
           },
         },
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Wer oft fährt, spart bei Bolt mit einem Abo für unbegrenzte Freischaltungen ab 0,99 € im Monat oder mit Wochen- und Monatspässen (Preise für Deutschland).',
+        'Bolt wirbt für ganz Deutschland mit «ab 0,15 € pro Minute» und einer kleinen Freischaltgebühr; der Minutenpreis hängt laut Bolt vom Standort ab (Stand November 2026). Wer oft fährt, spart bei Bolt mit einem Abo für unbegrenzte Freischaltungen ab 0,99 € im Monat oder mit Wochen- und Monatspässen (Preise für Deutschland).',
+        'Teuer wird falsches Abstellen: Bolt berechnet laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs.',
         'Setzt die Stadt einen falsch abgestellten Scooter um oder schleppt ihn ab, zahlt das laut Richtlinie der Anbieter: laut Satzung 70 bis 200 € fürs Umsetzen, 140 bis 300 € fürs Abschleppen.',
       ],
     },
@@ -68,11 +67,10 @@ const guide: Guide = {
               ['Städtische Parks und Uferanlagen, etwa der Stadtpark', 'Fusswege und Rasen nur, wo ein Schild es erlaubt, auch für E-Scooter; Abstellen vielerorts verboten', 'Stadt: Grünanlagensatzung und Abstellverbotszonen der Richtlinie'],
               ['Theodor-Heuss-Brücke', 'Nicht abstellen: Die Richtlinie verbietet es auf Strassenbrücken, also auch hier', 'Stadt: E-Tretroller-Richtlinie'],
               ['Übrige Stadtteile, etwa Bretzenheim, Gonsenheim und Hechtsheim', 'Frei abstellen, ausser in Verbotszonen; 1,50 m Gehweg frei lassen', 'Stadt: E-Tretroller-Richtlinie'],
-              ['Zitadelle, Campus der Universität und der Hochschule', 'Keine eigene Scooter-Regel gefunden; die Zitadelle liegt in der Innenstadt, beide Campus in keiner Verbotszone', 'Stadt, JGU und Hochschule Mainz (Stand 26. Oktober 2026)'],
+              ['Zitadelle, Campus der Universität und der Hochschule', 'Die Zitadelle liegt in der Innenstadt, es gelten also die Abstellflächen; beide Campus liegen in keiner Verbotszone', 'Stadt: E-Tretroller-Richtlinie'],
             ],
           },
         },
-        'Ein Nachtfahrverbot oder eine Winterpause für Leih-Scooter sieht die Richtlinie nicht vor, und auch sonst nennt die Stadt keine (Stand 26. Oktober 2026).',
       ],
     },
     {
@@ -105,7 +103,7 @@ const guide: Guide = {
         'Mainz gehört zum RMV, und dort gilt: «E-Scooter werden wie Fahrräder behandelt.» Sie fahren kostenlos mit, ohne Anspruch; zusammengeklappt gelten Tretroller als Gepäck. Den Akku darfst du unterwegs weder herausnehmen noch laden.',
         'Bei der **Mainzer Mobilität** gilt: «Fahrräder (inkl. E-Bikes) und E-Tretroller sind in Bussen und Strassenbahnen gleichberechtigt.» Kostenlos ist die Mitnahme auch innerhalb von Mainz und Wiesbaden. Rollstühle und Kinderwagen haben Vorrang, und «die Entscheidung des Fahrpersonals über die Mitnahme von Fahrrädern und E-Rollern ist bindend».',
         'Im Fernverkehr der Deutschen Bahn fährt dein eigener Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; in S-Bahn und Regionalzug gilt die RMV-Regel. Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor dem Hauptbahnhof, etwa auf der Abstellfläche an der Westseite, und miete am Ziel neu.',
-        'Unsere Karte zeigt nur stehende E-Scooter, keine Leihräder. **meinRad** der Mainzer Mobilität hat 1450 Räder an rund 210 Stationen in Mainz, Kastel, Kostheim, Amöneburg und Nachbarorten; ein Standardrad kostet 1,20 € pro 30 Minuten, höchstens 9 € in 24 Stunden (Stand 1. April 2026).',
+        'Leihräder gibt es bei **meinRad** der Mainzer Mobilität: 1450 Räder an rund 210 Stationen in Mainz, Kastel, Kostheim, Amöneburg und Nachbarorten; ein Standardrad kostet 1,20 € pro 30 Minuten, höchstens 9 € in 24 Stunden (Stand November 2026).',
       ],
     },
     {
@@ -113,7 +111,7 @@ const guide: Guide = {
       blocks: [
         '**Grossveranstaltungen:** Für Rosenmontag, das nächste Mal am 8. Februar 2027, und die Johannisnacht kann die Stadt oder die Polizei laut Richtlinie zusätzliche Bereiche sperren lassen, in denen du die Fahrt nicht beenden kannst; die Anbieter müssen es dir mitteilen.',
         '**Johannisnacht:** 2026 füllte das Fest vom 19. bis 22. Juni die Innenstadt bis ans Rheinufer. Der Festbereich war von Freitag, 11 Uhr, bis Dienstag, 6 Uhr, für alle Kraftfahrzeuge gesperrt, also auch für E-Scooter.',
-        '**Mainz 05:** Zur MEWA Arena fahren die Linien 51, 53 und 630; der Verein nennt «rund 3000 Fahrradstellplätze direkt an der MEWA ARENA». Eine Scooter-Regel nennen weder Verein noch Stadionordnung 2026/27, aber die Felder rundum sind laut Karte der Stadt Abstellverbotszone.',
+        '**Mainz 05:** Zur MEWA Arena fahren die Linien 51, 53 und 630; der Verein nennt «rund 3000 Fahrradstellplätze direkt an der MEWA ARENA». Die Felder rund um die Arena sind laut Karte der Stadt Abstellverbotszone: Beende die Fahrt vorher.',
       ],
     },
   ],
@@ -124,7 +122,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Mainz?',
-      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 €; Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute plus Freischaltgebühr (Stand November 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € und 20 Minuten 5,29 €; Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute plus Freischaltgebühr (Stand November 2026).',
     },
     {
       question: 'Wo kann ich in der Mainzer Innenstadt einen E-Scooter abstellen?',
@@ -141,10 +139,6 @@ const guide: Guide = {
     {
       question: 'Gelten in Kastel und Kostheim die Mainzer Regeln?',
       answer: 'Nein: Kastel, Kostheim und Amöneburg gehören zu Wiesbaden, dort gelten die Wiesbadener Regeln.',
-    },
-    {
-      question: 'Kann ich in Mainz nachts einen E-Scooter mieten?',
-      answer: 'Ja: Ein Nachtfahrverbot kennt die Richtlinie der Stadt nicht, und in der Nacht zum Montag, 26. Oktober 2026, standen gegen 5.30 Uhr rund 740 Scooter von Voi und Bolt in Mainz.',
     },
   ],
   sources: [
@@ -165,7 +159,6 @@ const guide: Guide = {
     { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: '1. FSV Mainz 05: Anfahrt zur MEWA Arena', url: 'https://www.mainz05.de/mewa-arena-anfahrt' },
-    { title: '1. FSV Mainz 05: Stadionordnung 2026/27 (PDF)', url: 'https://www.mainz05.de/getmedia/249bf2f3-f298-43c9-9ad2-35ab40bd2b35/Stadionordnung-MEWA-ARENA-26_27.pdf' },
     { title: 'Voi: Tarif und Zonen für Mainz und Wiesbaden (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/305/netex.xml' },
     { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },

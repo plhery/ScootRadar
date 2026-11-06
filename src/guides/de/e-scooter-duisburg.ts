@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Duisburg 2026: Anbieter, Preise, Sperrzonen',
   description: 'E-Scooter Duisburg: fünf Anbieter, was Voi pro Minute kostet, wo Voi die Rückgabe sperrt und was laut ADAC für Scooter in Bus und Bahn der DVG gilt.',
   headline: 'E-Scooter Duisburg: Anbieter, Preise, Parken, Sperrzonen und was bei der DVG gilt',
-  lede: 'Einen E-Scooter in Duisburg leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde; Dott, Bolt und Ryde vermieten ab 18. Voi verlangt in Duisburg 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand November 2026); die anderen zeigen ihren Preis in der App. Die Stadt lässt Leih-Scooter wie Fahrräder abstellen, doch Voi sperrt die Rückgabe in der Fussgängerzone rund um die Königstrasse, am Innenhafen und im Landschaftspark. In Bussen und Bahnen der DVG sind E-Scooter laut ADAC seit dem 1. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Duisburg leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde: App laden, Konto anlegen, Scooter auf der Karte suchen, QR-Code scannen und losfahren. Dott, Bolt und Ryde vermieten ab 18. Voi verlangt in Duisburg 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand November 2026); bei den anderen zeigt die App den Preis vor dem Entsperren. Die Stadt lässt Leih-Scooter wie Fahrräder abstellen, doch Voi sperrt die Rückgabe in der Fussgängerzone rund um die Königstrasse, am Innenhafen und im Landschaftspark. In Bussen und Bahnen der DVG sind E-Scooter laut ADAC seit dem 1. März 2024 verboten.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'de:Duisburg',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Duisburg?',
       blocks: [
-        'Fünf Anbieter vermieten 2026 E-Scooter in Duisburg: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde**. Dott, Bolt, Lime und Ryde nennt die Stadt auf ihrer Seite zum E-Scooter-Verleih (Stand Juli 2026). Voi fährt laut eigener Mitteilung seit dem 1. August 2025 in Duisburg und Oberhausen. Dott und Ryde führen Duisburg auf ihren Websites (Stand November 2026).',
-        'Dott und Bolt fahren laut Stadt (Juli 2026) in der Innenstadt und den Vierteln ringsum, von Neuenkamp bis Wanheimerort und Buchholz und links des Rheins etwa in Rheinhausen; Lime reicht weiter. Ihr Gebiet passen die Anbieter laut Stadt nach ihrer Erfahrung an. Voi fährt auf der rechten Rheinseite von Walsum bis Huckingen und Grossenbaum, links des Rheins in Teilen von Homberg und Hochheide, aber nicht in Rheinhausen (Stand November 2026).',
-        'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Fünf Anbieter vermieten E-Scooter in Duisburg: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde**. Dott, Bolt, Lime und Ryde nennt die Stadt auf ihrer Seite zum E-Scooter-Verleih (Stand November 2026). Voi fährt laut eigener Mitteilung seit dem 1. August 2025 in Duisburg und Oberhausen. Dott und Ryde führen Duisburg auf ihren Websites (Stand November 2026).',
+        'Dott und Bolt fahren laut Stadt in der Innenstadt und den Vierteln ringsum, von Neuenkamp bis Wanheimerort und Buchholz und links des Rheins etwa in Rheinhausen; Lime reicht weiter. Ihr Gebiet passen die Anbieter laut Stadt nach ihrer Erfahrung an. Voi fährt auf der rechten Rheinseite von Walsum bis Huckingen und Grossenbaum, links des Rheins in Teilen von Homberg und Hochheide, aber nicht in Rheinhausen (Stand November 2026).',
+        'Schritt für Schritt erklärt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Duisburg](map:de:Duisburg) rund 1030 Voi- und 300 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntagvormittag, 25. Oktober, rund 2650 Lime-Scooter nach der letzten Zählung.',
       ],
     },
@@ -31,11 +31,10 @@ const guide: Guide = {
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
-              ['Dott, Bolt, Lime, Ryde', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Bei Voi kostet eine Viertelstunde damit 2,70 €, in Oberhausen gilt derselbe Tarif. Verbindlich ist immer der Preis, den die App vor dem Entsperren zeigt.',
+        'Bei Voi kostet eine Viertelstunde damit 2,70 €, in Oberhausen gilt derselbe Tarif.',
         'Teuer wird falsches Abstellen: Bolt berechnet 15 €, wenn der Scooter falsch steht und kein deutliches Foto am Ende der Fahrt da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs. Dott kann bis zu 300 € Rückholkosten verlangen, wenn du seine Park- und Sperranweisungen nicht befolgst, und zahlt Dott ein Bussgeld für dich, kommen 50 € Verwaltungsgebühr dazu.',
       ],
     },
@@ -102,7 +101,7 @@ const guide: Guide = {
       blocks: [
         'Laut ADAC nimmt die DVG seit dem 1. März 2024 in all ihren Bussen und Bahnen keine E-Scooter mehr mit (Stand November 2025). Die Betriebe folgen einer Empfehlung ihres Verbands VDV, Grund ist die Brandgefahr der Akkus.',
         'In S-Bahn und Regionalzug zählt dein Scooter laut VRR als Handgepäck, wenn er «vollständig im kleinstmöglichen Packmass» zusammengeklappt ist, doch jedes Verkehrsunternehmen darf ihn per Hausrecht ausschliessen, auch zusammengeklappt (Stand Juli 2026). In allen Fernzügen der Deutschen Bahn fährt er zusammengeklappt kostenlos als Handgepäck mit; den Akku darfst du unterwegs weder herausnehmen noch laden. Leih-Scooter stellst du vor dem Bahnhof ab.',
-        '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters (Stand Oktober 2026). Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, online über mobil.nrw.',
+        '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters (Stand November 2026). Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, online über mobil.nrw.',
       ],
     },
     {
@@ -126,11 +125,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Duisburg nutzen?',
-      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde (Stand 2026). Einen Führerschein brauchst du nicht. Dott, Bolt und Ryde vermieten ab 18; ab welchem Alter Voi und Lime vermieten, zeigt dir die App. Freie Scooter zeigt auch die [Live-Karte von Duisburg](map:de:Duisburg).',
+      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18. Freie Scooter zeigt auch die [Live-Karte von Duisburg](map:de:Duisburg).',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Duisburg?',
-      answer: 'Bei Voi 1,80 €: 0,18 € pro Minute, Entsperren gratis (Stand November 2026). Bei Dott, Bolt, Lime und Ryde zeigt dir die App den Preis.',
+      answer: 'Bei Voi 1,80 €: 0,18 € pro Minute, Entsperren gratis (Stand November 2026); 20 Minuten kosten 3,60 €.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch Parks und am Rhein fahren?',
@@ -154,7 +153,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Stadt Duisburg: E-Scooter-Verleih in Duisburg (Stand Juli 2026)', url: 'https://www.duisburg.de/microsites/pbv/verkehr/e-scooter/e-scooter-spin' },
+    { title: 'Stadt Duisburg: E-Scooter-Verleih in Duisburg (Stand November 2026)', url: 'https://www.duisburg.de/microsites/pbv/verkehr/e-scooter/e-scooter-spin' },
     { title: 'Stadt Duisburg, Rat: Antrag 26-0978 zur Sondernutzungssatzung (2. Juli 2026)', url: 'https://sessionnet.owl-it.de/duisburg/bi/vo0050.asp?__kvonr=20139411' },
     { title: 'Stadt Duisburg, Ausschuss für Stadtentwicklung und Verkehr: Niederschrift vom 2. Oktober 2025 (PDF)', url: 'https://sessionnet.owl-it.de/duisburg/bi/getfile.asp?id=1768508&type=do' },
     { title: 'Stadt Duisburg, BV Meiderich/Beeck: Antrag 26-0725 (11. Juni 2026)', url: 'https://sessionnet.owl-it.de/duisburg/bi/vo0050.asp?__kvonr=20138166' },

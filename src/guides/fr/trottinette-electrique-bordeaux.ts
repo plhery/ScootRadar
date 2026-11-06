@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'bordeaux',
   name: 'Louer une trottinette électrique à Bordeaux',
   title: 'Trottinette électrique à Bordeaux en 2026 : Dott, Pony, prix',
-  description: 'Trottinette électrique à Bordeaux : prix de Dott et Pony, où se garer, zones lentes, Talence, tram, aéroport, et Le Vélo by TBM comme alternative.',
+  description: 'Trottinette électrique à Bordeaux : Dott et Pony à 1 € + 0,29 €/min (novembre 2026), comment louer, où se garer, zones lentes, Talence, tram, Le Vélo.',
   headline: 'Trottinette électrique à Bordeaux : Dott, Pony, prix, zones et stationnement en 2026',
-  lede: 'Pour louer une trottinette électrique à Bordeaux, vous avez le choix entre **Dott** et **Pony**, que Bordeaux Métropole autorise à déployer 1 000 trottinettes chacun jusqu’en novembre 2029 ; il faut avoir 18 ans. Chez l’un comme chez l’autre, comptez 1 € pour déverrouiller puis 0,29 € la minute, soit 3,90 € les 10 minutes, selon leurs données publiques du 13 octobre 2026. La location se termine uniquement sur un emplacement marqué au sol, et à Talence, restée en dehors du dispositif, c’est presque partout impossible.',
+  lede: 'Pour louer une trottinette électrique à Bordeaux, vous avez le choix entre **Dott** et **Pony**, que Bordeaux Métropole autorise à déployer 1 000 trottinettes chacun jusqu’en novembre 2029 ; il faut avoir 18 ans. Repérez une trottinette sur la [carte de Bordeaux](map:fr:Bordeaux) ou dans l’app de l’opérateur, ajoutez un moyen de paiement et scannez le QR code. Chez l’un comme chez l’autre, comptez 1 € pour déverrouiller puis 0,29 € la minute, soit 3,90 € les 10 minutes (novembre 2026) ; pour 20 minutes, un vélo électrique Le Vélo by TBM, à 2 €, revient bien moins cher. La location se termine uniquement sur un emplacement marqué au sol, et à Talence, restée en dehors du dispositif, c’est presque partout impossible.',
   published: '2026-10-13',
   updated: '2026-10-14',
   city: 'fr:Bordeaux',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Retenus par Bordeaux Métropole à l’issue d’un appel à manifestation d’intérêt, **Dott** et **Pony** sont autorisés du **1er novembre 2025 au 1er novembre 2029**, avec au plus **1 000 trottinettes et 1 000 vélos chacun**. Leurs trottinettes sont bridées à 20 km/h.',
         {
           table: {
-            caption: 'Prix d’un trajet à Bordeaux en trottinette ou en vélo, au 13 octobre 2026',
+            caption: 'Prix d’un trajet à Bordeaux en trottinette ou en vélo, en novembre 2026',
             head: ['Service', 'Déverrouillage', 'Par minute', '10 min', '20 min'],
             rows: [
               ['Dott (trottinette ou vélo électrique)', '1 €', '0,29 €', '3,90 €', '6,80 €'],
@@ -28,7 +28,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Les prix de Dott et Pony sont ceux de leurs données publiques, hors pass et promotions. Le même jour, la page bordelaise de Pony affichait 0,26 € la minute : seul compte le prix que l’app indique avant le déverrouillage.',
+        'Les prix de Dott et Pony sont ceux de leurs données publiques, hors pass et promotions ; la page bordelaise de Pony affiche 0,26 € la minute : seul compte le prix que l’app indique avant le déverrouillage.',
         'Le 13 octobre 2026, la [carte de Bordeaux](map:fr:Bordeaux) de ScootRadar montrait environ 1 000 trottinettes Dott et autant de Pony, libres à ce moment-là. Quand on zoome, elle dessine aussi les 556 emplacements pour trottinettes de Bordeaux Métropole (données ouvertes, Licence Ouverte). Un bouton ouvre l’app de l’opérateur, où vous déverrouillez et payez. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
       ],
     },
@@ -128,7 +128,7 @@ const guide: Guide = {
     {
       heading: 'Le Vélo by TBM : l’alternative à la trottinette',
       blocks: [
-        'Le vélo en libre-service de la Métropole, **Le Vélo by TBM** (l’ancien V³), compte plus de 180 stations et 2 000 vélos, classiques ou électriques, accessibles à toute heure dès 15 ans. Tarifs sur le site de TBM au 13 octobre 2026 :',
+        'Le vélo en libre-service de la Métropole, **Le Vélo by TBM** (l’ancien V³), compte plus de 180 stations et 2 000 vélos, classiques ou électriques, accessibles à toute heure dès 15 ans. Tarifs sur le site de TBM en novembre 2026 :',
         {
           list: [
             '**Sans abonnement** : 2 € le vélo électrique ou 1 € le vélo classique, 30 premières minutes comprises, puis 0,10 € la minute.',
@@ -154,7 +154,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quel est le tarif d’une trottinette électrique à Bordeaux ?',
-      answer: '1 € pour déverrouiller, puis 0,29 € la minute chez Dott comme chez Pony, selon leurs données publiques du 13 octobre 2026 : 3,90 € les 10 minutes, 6,80 € les 20 minutes, hors pass. L’app affiche le prix exact avant le déverrouillage.',
+      answer: '1 € pour déverrouiller, puis 0,29 € la minute chez Dott comme chez Pony, en novembre 2026 : 3,90 € les 10 minutes, 6,80 € les 20 minutes, hors pass. L’app affiche le prix exact avant le déverrouillage.',
     },
     {
       question: 'Où trouver une trottinette en libre-service à Bordeaux ?',
@@ -162,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'Combien coûtent les pass Pony à Bordeaux ?',
-      answer: 'Selon sa page bordelaise au 13 octobre 2026, Pony vend des pass de minutes : 30 minutes pour 5,99 €, 60 minutes pour 9,99 €, 300 minutes pour 31,99 €. Pour garder un véhicule rien que pour vous, comptez 14,99 € la demi-journée ou 29,99 € la journée.',
+      answer: 'Selon sa page bordelaise (novembre 2026), Pony vend des pass de minutes : 30 minutes pour 5,99 €, 60 minutes pour 9,99 €, 300 minutes pour 31,99 €. Pour garder un véhicule rien que pour vous, comptez 14,99 € la demi-journée ou 29,99 € la journée.',
     },
     {
       question: 'Peut-on monter dans le tram avec une trottinette à Bordeaux ?',

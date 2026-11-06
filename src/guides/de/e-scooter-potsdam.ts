@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'potsdam',
   name: 'E-Scooter Potsdam: Anbieter, Preise, Parken',
   title: 'E-Scooter Potsdam 2026: Preise, Parken, Sanssouci, Berlin',
-  description: 'E-Scooter Potsdam: was Dott pro Minute kostet, wo du abstellen darfst, warum Sanssouci tabu ist und ob deine Fahrt in Berlin enden kann.',
+  description: 'E-Scooter Potsdam: was Voi und Dott kosten, wo du abstellen darfst, warum Sanssouci tabu ist und ob deine Fahrt in Berlin enden kann.',
   headline: 'E-Scooter Potsdam: Preise, Stationen, Verbot in den Schlossparks und was zwischen Potsdam und Berlin gilt',
-  lede: 'Einen E-Scooter in Potsdam leihst du ab 18 und ohne Führerschein bei Dott, früher TIER, bei Voi oder bei Bolt. Dott nimmt 1 € fürs Entsperren und 0,29 € pro Minute, zehn Minuten kosten also 3,90 € (Datenfeed von Dott, 23. Oktober 2026). Beenden kannst du eine Dott-Fahrt nur in der Kernstadt, von Potsdam West und dem Bornstedter Feld bis Babelsberg, und rund um die Jelbi-Stationen der Innenstadt nur an der Station. Du fährst auf Radweg oder Fahrbahn, nie auf dem Gehweg, und in den Schlossparks gar nicht: In Sanssouci, im Neuen Garten und im Park Babelsberg darfst du einen E-Scooter nicht einmal schieben. Dotts Potsdamer Gebiet endet am Griebnitzsee, in Berlin kannst du die Fahrt also nicht beenden. In Tram, Bus und Fähre der ViP darf kein E-Scooter mit.',
+  lede: 'Einen E-Scooter in Potsdam leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER) oder Bolt, in der App des Anbieters oder in Jelbi: Scooter auf der Karte suchen, QR-Code scannen, losfahren. Voi nimmt 0,49 € fürs Entsperren und 0,24 € pro Minute, Dott 1 € und 0,29 € pro Minute (Stand November 2026); zehn Minuten kosten also 2,89 € bei Voi und 3,90 € bei Dott. Bolts Preis zeigt die App vor dem Entsperren. Beenden kannst du eine Dott-Fahrt nur in der Kernstadt, von Potsdam West und dem Bornstedter Feld bis Babelsberg, und rund um die Jelbi-Stationen der Innenstadt nur an der Station. Du fährst auf Radweg oder Fahrbahn, nie auf dem Gehweg, und in den Schlossparks gar nicht: In Sanssouci, im Neuen Garten und im Park Babelsberg darfst du einen E-Scooter nicht einmal schieben. Dotts Potsdamer Gebiet endet am Griebnitzsee, in Berlin kannst du die Fahrt also nicht beenden. In Tram, Bus und Fähre der ViP darf kein E-Scooter mit.',
   published: '2026-10-23',
   updated: '2026-10-25',
   city: 'de:Potsdam',
@@ -17,26 +17,27 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Potsdam?',
       blocks: [
         'Auf der [Karte von Potsdam](map:de:Potsdam) standen am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 330 Scooter von **Dott**, das früher TIER hiess, und 670 von **Voi**, am Sonntag kurz vor 14 Uhr rund 560 von **Bolt**. Das sind Momentaufnahmen, keine Flottengrössen.',
-        '**Bolt** nennt auf seiner Potsdamer Seite E-Scooter als verfügbares Angebot; was sie kosten, zeigt die Bolt-App vor dem Entsperren.',
-        '**Voi** kündigte laut den Potsdamer Neuesten Nachrichten im Februar 2025 an, ab 1. März 2025 mit mehreren hundert Scootern nach Potsdam zurückzukehren; seinen Preis zeigt die Voi-App.',
-        '**Jelbi**, die Mobilitäts-App der Berliner BVG, betreibt die Potsdamer Stationen zusammen mit der Stadt und dem Verkehrsbetrieb ViP. Es ist dieselbe App wie in Berlin: Laut Jelbi buchst du darin E-Scooter von Bolt, Voi, Lime und Dott (Stand Oktober 2026). Wie das Mieten Schritt für Schritt geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        '**Bolt** nennt auf seiner Potsdamer Seite E-Scooter als verfügbares Angebot (Stand November 2026).',
+        '**Voi** kündigte laut den Potsdamer Neuesten Nachrichten im Februar 2025 an, ab 1. März 2025 mit mehreren hundert Scootern nach Potsdam zurückzukehren, und fährt heute wieder hier: Laut seinen offenen Daten kostet das Entsperren 0,49 € und die Minute 0,24 € (Stand November 2026).',
+        '**Jelbi**, die Mobilitäts-App der Berliner BVG, betreibt die Potsdamer Stationen zusammen mit der Stadt und dem Verkehrsbetrieb ViP. Es ist dieselbe App wie in Berlin: Laut Jelbi buchst du darin E-Scooter von Bolt, Voi, Lime und Dott (Stand November 2026). Wie das Mieten Schritt für Schritt geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Potsdam?',
       blocks: [
-        'Dott veröffentlicht seinen Potsdamer Tarif im offenen Datenfeed: Das Entsperren kostet mehr als in Berlin, die Minute gleich viel.',
+        'Voi und Dott veröffentlichen ihre Potsdamer Tarife in offenen Daten. Am günstigsten ist Voi: Zehn Minuten kosten dort 2,89 €, bei Dott 3,90 €; für 20 Minuten zahlst du 5,29 € bei Voi und 6,80 € bei Dott (Stand November 2026). Dott nimmt in Potsdam fürs Entsperren mehr als in Berlin, die Minute kostet gleich viel.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Potsdam (Datenfeed von Dott, 23. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Potsdam laut offenen Daten von Voi und Dott (Stand November 2026)',
             head: ['Anbieter und Ort', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
+              ['Voi in Potsdam', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
               ['Dott in Potsdam', '1,00 €', '0,29 €', '3,90 €', '6,80 €'],
               ['Dott in Berlin, zum Vergleich', '0,75 €', '0,29 €', '3,65 €', '6,55 €'],
             ],
           },
         },
-        'Pässe, etwa den Minuten-Pass, bietet Dott laut eigener Website nicht in jeder Stadt an; ob es sie in Potsdam gibt und was sie kosten, zeigt die Dott-App. Ein Pass gilt nur in der App, in der du ihn gekauft hast, also nicht in Jelbi. Verbindlich ist der Preis, den die App vor dem Entsperren nennt.',
+        'Pakete und Abos eines Anbieters gelten laut Jelbi nur in der App, in der du sie gekauft hast, also nicht in Jelbi.',
       ],
     },
     {
@@ -145,7 +146,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Was kostet ein E-Scooter in Potsdam?',
-      answer: 'Bei Dott 1 € fürs Entsperren und 0,29 € pro Minute, zehn Minuten also 3,90 € (Datenfeed, 23. Oktober 2026). Bolt und Voi zeigen ihre Preise in der App; verbindlich ist bei allen der Preis in der App vor dem Entsperren. Freie Dott-, Voi- und Bolt-Scooter zeigt die [Live-Karte von Potsdam](map:de:Potsdam).',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 €; bei Dott 1 € und 0,29 € pro Minute, zehn Minuten also 3,90 € (Stand November 2026). Freie Dott-, Voi- und Bolt-Scooter zeigt die [Live-Karte von Potsdam](map:de:Potsdam).',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Park Sanssouci fahren?',
@@ -171,11 +172,10 @@ const guide: Guide = {
   sources: [
     { title: 'Dott: Tarif, Gebiet und Zonen für Potsdam im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/potsdam/gbfs.json' },
     { title: 'Dott: Tarif für Berlin im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/berlin/system_pricing_plans.json' },
-    { title: 'Dott: So fährst du mit Dott (Pässe)', url: 'https://ridedott.com/de/fahr-mit-uns/' },
-    { title: 'Dott: Minuten-Pass (8. April 2025)', url: 'https://ridedott.com/de/launcht-minuten-pass/' },
+    { title: 'Voi: Tarif und Zonen für Potsdam in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/147/netex.xml' },
     { title: 'Bolt: Potsdam', url: 'https://bolt.eu/de-de/cities/potsdam/' },
     { title: 'Potsdamer Neueste Nachrichten: Voi startet ab März mit hunderten Fahrzeugen (26. Februar 2025)', url: 'https://www.tagesspiegel.de/potsdam/landeshauptstadt/neuer-e-scooter-anbieter-in-potsdam-voi-startet-ab-marz-mit-hunderten-fahrzeugen-13279123.html' },
-    { title: 'Jelbi: Häufige Fragen (buchbare Partner, Pässe)', url: 'https://www.jelbi.de/faq-de/' },
+    { title: 'Jelbi: Häufige Fragen (buchbare Partner, Pakete und Abos)', url: 'https://www.jelbi.de/faq-de/' },
     { title: 'BVG: Jelbis sechstes Jahr (Pressemitteilung, 29. Dezember 2025)', url: 'https://www.bvg.de/de/unternehmen/medienportal/pressemitteilungen/20251223-pm-jelbi' },
     { title: 'Landeshauptstadt Potsdam: Mobilitätsstation am Bassinplatz eröffnet (Pressemitteilung Nr. 391, 3. September 2026)', url: 'https://www.potsdam.de/de/391-besser-mobil-besser-leben-mobilitaetsstation-am-bassinplatz-eroeffnet' },
     { title: 'Landeshauptstadt Potsdam: Bewertung zum Vorschlag «Feste Parkzonen für E-Roller», Bürgerhaushalt 2027/28', url: 'https://mitgestalten.potsdam.de/de/buergerhaushalt/2027-28/988' },

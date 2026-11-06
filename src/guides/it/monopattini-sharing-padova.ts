@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Monopattini sharing Padova 2026: Dott, prezzi, sosta',
   description: 'Monopattini sharing a Padova nel 2026: Dott unico operatore, prezzi e pass per residenti, dove parcheggiare in centro, tram Busitalia, treni e multe.',
   headline: 'Monopattini sharing a Padova: operatore, prezzi, parcheggio, tram e multe nel 2026',
-  lede: 'I monopattini sharing a Padova, a ottobre 2026, sono quelli di Dott: il nuovo servizio del Comune ammette un solo operatore per bici e monopattini, a Padova e in 11 Comuni vicini, e lo gestisce Dott. Servono 18 anni e un documento d’identità, e il casco lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app; per i residenti c’è un pass mensile. Si guida su strada e sulle piste ciclabili, mai sul marciapiede, e in centro storico la corsa si chiude solo nelle aree di sosta previste dal Comune.',
+  lede: 'I monopattini sharing a Padova sono quelli di Dott: il nuovo servizio del Comune ammette un solo operatore per bici e monopattini, a Padova e in 11 Comuni vicini, e lo gestisce Dott. Si noleggia nell’app di Dott: servono 18 anni, una carta e un documento d’identità verificato, poi inquadri il QR code; il casco lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app prima di sbloccare; per i residenti c’è un pass mensile da 15 corse di 30 minuti, che a novembre 2026 si attiva con 0,50 euro, 0,35 sotto i 26 anni. Il Comune chiede un servizio attivo 24 ore su 24, tutto l’anno. Si guida su strada e sulle piste ciclabili, mai sul marciapiede, e in centro storico la corsa si chiude solo nelle aree di sosta previste dal Comune.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'it:Padova',
@@ -21,7 +21,7 @@ const guide: Guide = {
         'Domenica 25 ottobre 2026 alle 7:47 sulla [mappa di Padova](map:it:Padova) c’erano circa 880 monopattini Dott. La cifra comprende anche i Comuni vicini serviti da Dott, da Selvazzano Dentro a Vigonza e Ponte San Nicolò, ed è una fotografia di quel momento, non la flotta. Dott a Padova noleggia anche bici ed e-bike.',
         {
           table: {
-            caption: 'Lo sharing a Padova, a ottobre 2026',
+            caption: 'Lo sharing a Padova, a novembre 2026',
             head: ['Operatore', 'Situazione'],
             rows: [
               ['Dott (EM Transit)', 'Unico operatore del servizio del Comune e di 11 Comuni vicini: monopattini, bici ed e-bike'],
@@ -50,11 +50,11 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattini a Padova: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto, e il prezzo lo vedi nell’app prima di sbloccare il mezzo. Il centro assistenza di Dott (25 agosto 2026) dà una forbice valida per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
-        'Il Comune ha chiesto abbonamenti per chi usa spesso il servizio e sconti agli under 26. Per chi è **residente** a Padova o in uno degli 11 Comuni della Co.Me.Pa., Dott offre due pass mensili (pagina aggiornata il 15 ottobre 2026):',
+        'Paghi uno sblocco più una tariffa al minuto. Il centro assistenza di Dott (25 agosto 2026) dà una forbice valida per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
+        'Il Comune ha chiesto abbonamenti per chi usa spesso il servizio e sconti agli under 26. Per chi è **residente** a Padova o in uno degli 11 Comuni della Co.Me.Pa., Dott offre due pass mensili:',
         {
           table: {
-            caption: 'I pass di Dott per i residenti e il costo di attivazione, a ottobre 2026',
+            caption: 'I pass di Dott per i residenti e il costo di attivazione, a novembre 2026',
             head: ['Pass', 'Cosa comprende', 'Over 26', 'Under 26'],
             rows: [
               ['Monopattino, un mese', '15 corse da 30 minuti', '0,50 euro', '0,35 euro'],
@@ -101,7 +101,7 @@ const guide: Guide = {
     {
       heading: 'Monopattino su bus, tram e treno a Padova',
       blocks: [
-        'A Padova bus e tram sono di **Busitalia Veneto**. Le sue norme di viaggio, lette il 25 ottobre 2026, ammettono gratis, uno per passeggero con biglietto, bici e mezzi di micromobilità ripiegati, al massimo 80×110×45 cm custodia compresa. Le norme escludono in genere i mezzi a batteria, ma sui bus e sul tram di Busitalia Veneto li ammettono: li carichi tu, il personale può rifiutarli per sicurezza o affollamento, e dei danni rispondi tu.',
+        'A Padova bus e tram sono di **Busitalia Veneto**. Le sue norme di viaggio ammettono gratis, uno per passeggero con biglietto, bici e mezzi di micromobilità ripiegati, al massimo 80×110×45 cm custodia compresa. Le norme escludono in genere i mezzi a batteria, ma sui bus e sul tram di Busitalia Veneto li ammettono: li carichi tu, il personale può rifiutarli per sicurezza o affollamento, e dei danni rispondi tu.',
         'Sui **treni regionali Trenitalia** il monopattino viaggia gratis fino a 120×80×45 cm: spento e chiuso prima di salire, va sotto il sedile o tra i posti vis-à-vis.',
         'Un monopattino in sharing non si piega e, finché non chiudi la corsa, paghi: chiudila prima della fermata o della stazione.',
       ],

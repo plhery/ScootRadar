@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Mönchengladbach 2026: Anbieter, Preise, Sperrzonen',
   description: 'E-Scooter Mönchengladbach: Voi, Dott und Bolt, was Voi pro Minute kostet, wo du in Parks nicht abstellst und was in den Bussen der NEW gilt.',
   headline: 'E-Scooter Mönchengladbach: Anbieter, Preise, Sperrzonen, Borussia-Park und was in Bus und Bahn gilt',
-  lede: 'Einen E-Scooter in Mönchengladbach leihst du ohne Führerschein bei Voi, Dott oder Bolt; Dott und Bolt vermieten ab 18. Voi verlangt in Mönchengladbach 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026); Dott und Bolt zeigen ihren Preis in der App. In Parks und Grünanlagen verbietet die Stadt, Fahrzeuge abzustellen, und Voi sperrt die Rückgabe unter anderem im Bunten Garten, hinter dem Hauptbahnhof und am Borussia-Park. Gehwege, Fussgängerzonen und Busspuren sind tabu. In den Bussen der NEW zählt ein vollständig zusammengeklappter eigener E-Scooter als Handgepäck, ein Leih-Scooter nicht.',
+  lede: 'Einen E-Scooter in Mönchengladbach leihst du ohne Führerschein bei Voi, Dott oder Bolt; Dott und Bolt vermieten ab 18. So geht es: App des Anbieters laden, Konto anlegen, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Voi verlangt in Mönchengladbach 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026); bei Dott und Bolt zeigt die App den Preis vor dem Entsperren. In Parks und Grünanlagen verbietet die Stadt, Fahrzeuge abzustellen, und Voi sperrt die Rückgabe unter anderem im Bunten Garten, hinter dem Hauptbahnhof und am Borussia-Park. Gehwege, Fussgängerzonen und Busspuren sind tabu. In den Bussen der NEW zählt ein vollständig zusammengeklappter eigener E-Scooter als Handgepäck, ein Leih-Scooter nicht.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'de:Mönchengladbach',
@@ -16,10 +16,10 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Mönchengladbach?',
       blocks: [
-        'Drei Anbieter vermieten E-Scooter in Mönchengladbach: **Voi**, **Dott** (früher Tier) und **Bolt**. Alle drei nennt die Stadt auf ihrer Seite mit den Beschwerdeadressen für E-Scooter (Stand 25. Oktober 2026). Voi fährt laut eigener Mitteilung seit dem 24. März 2025 in der Stadt, Dott führt Mönchengladbach auf seiner Standortliste, und Bolt nennt auf seiner Stadtseite E-Scooter als Angebot (Stand November 2026).',
-        'Vois Gebiet umfasst Gladbach und Rheydt mit den Vierteln ringsum, im Norden bis Neuwerk, im Süden bis Odenkirchen und Wickrath. Rheindahlen, Hardt, Wanlo und der Flughafen liegen ausserhalb, und über die Stadtgrenze reicht es nirgends (Stand November 2026). Wo du mit Dott und Bolt fahren darfst, zeigen ihre Apps.',
+        'Drei Anbieter vermieten E-Scooter in Mönchengladbach: **Voi**, **Dott** (früher Tier) und **Bolt**. Alle drei nennt die Stadt auf ihrer Seite mit den Beschwerdeadressen für E-Scooter (Stand November 2026). Voi fährt laut eigener Mitteilung seit dem 24. März 2025 in der Stadt, Dott führt Mönchengladbach auf seiner Standortliste, und Bolt nennt auf seiner Stadtseite E-Scooter als Angebot (Stand November 2026).',
+        'Vois Gebiet umfasst Gladbach und Rheydt mit den Vierteln ringsum, im Norden bis Neuwerk, im Süden bis Odenkirchen und Wickrath. Rheindahlen, Hardt, Wanlo und der Flughafen liegen ausserhalb, und über die Stadtgrenze reicht es nirgends (Stand November 2026).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Mönchengladbach](map:de:Mönchengladbach) rund 830 Voi- und 490 Dott-Scooter, die zu diesem Zeitpunkt frei waren.',
-        'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Schritt für Schritt erklärt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -27,15 +27,14 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Mönchengladbach (Stand November 2026)',
+            caption: 'Voi in Mönchengladbach laut offenen Daten von Voi (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
-              ['Dott, Bolt', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Eine Viertelstunde kostet bei Voi damit 4,09 €. Bolt nennt für Deutschland einen Standardtarif ab 0,15 € pro Minute, ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat und Pässe (Stand November 2026); was davon in Mönchengladbach gilt, siehst du in der App. Verbindlich ist immer der Preis, den die App vor dem Entsperren zeigt.',
+        'Eine Viertelstunde kostet bei Voi damit 4,09 €. Bolt nennt für Deutschland einen Standardtarif ab 0,15 € pro Minute, ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat und Pässe (Stand November 2026).',
         'Teuer wird falsches Abstellen: Bolt berechnet 15 €, wenn der Scooter falsch steht und kein deutliches Foto am Ende der Fahrt da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs. Dott kann bis zu 300 € Rückholkosten verlangen, wenn du seine Park- und Sperranweisungen nicht befolgst.',
       ],
     },
@@ -55,7 +54,7 @@ const guide: Guide = {
             '**im Süden:** im Schlosspark Wickrath und entlang der Niers bei Wickrath.',
           ],
         },
-        'In der Fussgängerzone der Hindenburgstrasse und am Alten Markt kannst du eine Voi-Fahrt beenden; dort gilt die Regel für Fahrräder: Der Weg bleibt frei. Wo Dott und Bolt das Abstellen sperren, zeigen ihre Apps.',
+        'In der Fussgängerzone der Hindenburgstrasse und am Alten Markt kannst du eine Voi-Fahrt beenden; dort gilt die Regel für Fahrräder: Der Weg bleibt frei.',
         '**Falsch abgestellt oder kaputt?** Die Stadt nennt auf ihrer Seite für jeden Anbieter eine Beschwerdeadresse: für Dott und Voi die E-Mail-Adresse ihres Supports, für Bolt den Scooter-Melder. Zusätzlich kannst du falsch abgestellte oder defekte Scooter über scooter-melder.de melden.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Sperrzone, und die Miete läuft weiter. Schieb den Scooter aus dem Park oder vom Platz hinter dem Bahnhof hinaus und versuch es dort.',
@@ -106,7 +105,7 @@ const guide: Guide = {
       blocks: [
         'In den Stadtbussen der NEW gelten die Beförderungsbedingungen NRW, dieselben wie im ganzen VRR: Ein E-Tretroller, der «vollständig im kleinstmöglichen Packmass» zusammengeklappt ist, zählt als Handgepäck. Jedes Verkehrsunternehmen darf E-Tretroller aber per Hausrecht ausschliessen, «auch zusammengeklappte». Frag vor der Fahrt bei der NEW nach, ob sie deinen Scooter mitnimmt, etwa über ihre kostenlose Schlaue Nummer 0800 6 50 40 30. Auf der Liste des ADAC mit Betrieben, die keine E-Scooter mehr mitnehmen, stehen unter anderem Rheinbahn, DVG und DSW21 (Stand November 2025).',
         'In S-Bahn und Regionalzug zählt dein zusammengeklappter Scooter laut VRR ebenfalls als Handgepäck, doch auch dort darf jedes Verkehrsunternehmen ihn per Hausrecht ausschliessen (Stand Juli 2026). In allen Fernzügen der Deutschen Bahn fährt er zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; den Akku darfst du unterwegs weder herausnehmen noch laden. Leih-Scooter lassen sich nicht zusammenklappen und zählen damit nicht als Handgepäck; stell sie vor der Haltestelle ab. Fährst du weiter nach Düsseldorf: Die Rheinbahn nimmt laut ADAC seit dem 1. März 2024 keine E-Scooter mehr mit, mehr dazu in [E-Scooter in Düsseldorf](guide:dusseldorf).',
-        '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters (Stand Oktober 2026). Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, online über mobil.nrw.',
+        '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters (Stand November 2026). Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, online über mobil.nrw.',
       ],
     },
     {
@@ -144,11 +143,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Mönchengladbach nutzen?',
-      answer: 'Die von Voi, Dott und Bolt (Stand November 2026). Einen Führerschein brauchst du nicht. Dott und Bolt vermieten ab 18; ab welchem Alter Voi vermietet, zeigt dir die App.',
+      answer: 'Die von Voi, Dott und Bolt (Stand November 2026). Einen Führerschein brauchst du nicht. Dott und Bolt vermieten ab 18.',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Mönchengladbach?',
-      answer: 'Bei Voi 2,89 €: 0,49 € fürs Entsperren und 0,24 € pro Minute (Stand November 2026). Bei Dott und Bolt zeigt dir die App den Preis.',
+      answer: 'Bei Voi 2,89 €: 0,49 € fürs Entsperren und 0,24 € pro Minute (Stand November 2026). Zwanzig Minuten kosten bei Voi 5,29 €.',
     },
     {
       question: 'Wo melde ich einen falsch abgestellten E-Scooter in Mönchengladbach?',

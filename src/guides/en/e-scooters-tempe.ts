@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Tempe, Arizona 2026: Lime, Bird, rules, ASU',
   description: 'E-scooters in Tempe: Lime and Bird, the state and operator rules on sidewalks and speed, ASU’s campus ban, Tempe Town Lake, light rail and Sky Harbor.',
   headline: 'E-scooters in Tempe: Lime and Bird, the rules, and where you can’t ride',
-  lede: 'E-scooters in Tempe come from Lime and Bird. The app shows the price before you unlock, and Bird rents only to riders 18 or over. Arizona law gives a scooter rider a cyclist’s rights and duties and lets Tempe add its own rules, which it updated in July 2026; both companies tell you to stay off the sidewalk. Arizona State University bans motorised scooters on its Tempe campus.',
+  lede: 'E-scooters in Tempe come from Lime and Bird. To rent one, find it on the [Tempe map](map:us:az:Tempe) or in the Lime or Bird app, sign up with a card and scan the QR code on the handlebar; the app shows the price before you unlock. Bird rents only to riders 18 or over. Arizona law gives a scooter rider a cyclist’s rights and duties and lets Tempe add its own rules: since 25 July 2026 the City’s limit is 15 mph on multi-use paths and 10 mph on sidewalks, though both companies tell you to stay off the sidewalk. Arizona State University bans motorised scooters on its Tempe campus.',
   published: '2026-10-22',
   updated: '2026-10-24',
   city: 'us:az:Tempe',
@@ -28,9 +28,8 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'How much does a scooter cost in Tempe?',
+      heading: 'Discounted rides in Tempe',
       blocks: [
-        'The Lime or Bird app shows the price before you unlock.',
         'Bird’s Community and Access Pricing gives discounted rides to people aged 65 or over, US veterans, people on Medicaid or SNAP, and people who get an income-based discount on a utility bill.',
       ],
     },
@@ -57,7 +56,6 @@ const guide: Guide = {
             ],
           },
         },
-        'Articles from before 25 July 2026 may quote the old 20 mph limit on paths; the Bird app shows the limits where you ride.',
       ],
     },
     {
@@ -118,10 +116,6 @@ const guide: Guide = {
     {
       question: 'Which scooter companies operate in Tempe?',
       answer: 'Lime and Bird. At 12:25 on 17 October 2026 the map showed about 835 Lime and 700 Bird scooters.',
-    },
-    {
-      question: 'How much does a scooter cost in Tempe?',
-      answer: 'The Lime or Bird app shows the price before you unlock. Bird offers discounts to riders aged 65 or over, US veterans and people on Medicaid or SNAP.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Tempe?',

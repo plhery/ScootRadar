@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Erfurt 2026: Yoio, Dott, Preise, Parkverbote',
   description: 'E-Scooter Erfurt: was Yoio kostet, wo Yoio und Dott auf der Karte stehen, wo du in der Altstadt weder fährst noch parkst und was in der Strassenbahn gilt.',
   headline: 'E-Scooter Erfurt: Yoio und Dott, Preise, Parkverbotszonen und was in der Altstadt gilt',
-  lede: 'Einen E-Scooter in Erfurt leihst du ab 18 und ohne Führerschein bei Yoio oder bei Dott, das früher Tier hiess. Laut Yoios offenen Daten vom 23. Oktober 2026 kostet das Entsperren 1,09 € und die Minute 0,25 €, bei einzelnen Scootern 0,21 €; zehn Minuten kosten also 3,59 € oder 3,19 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone der Altstadt. Abstellen darfst du im Gebiet der App, aber nicht am Anger, auf der Krämerbrücke, am Fischmarkt, Wenigemarkt, Domplatz und Benediktsplatz und in «Venedig». In Strassenbahn und Bus der EVAG darf kein E-Scooter mit.',
+  lede: 'Einen E-Scooter in Erfurt leihst du ab 18 und ohne Führerschein bei Yoio oder bei Dott, das früher Tier hiess: App laden, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Bei Yoio kostet das Entsperren 1,09 € und die Minute 0,25 €, bei einzelnen Scootern 0,21 € (Stand November 2026); zehn Minuten kosten also 3,59 € oder 3,19 €. Dotts Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone der Altstadt. Abstellen darfst du im Gebiet der App, aber nicht am Anger, auf der Krämerbrücke, am Fischmarkt, Wenigemarkt, Domplatz und Benediktsplatz und in «Venedig». In Strassenbahn und Bus der EVAG darf kein E-Scooter mit.',
   published: '2026-10-23',
   updated: '2026-10-24',
   city: 'de:Erfurt',
@@ -16,18 +16,18 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Erfurt?',
       blocks: [
-        'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Erfurt: **Yoio** und **Dott**. Yoio gehört der YourCar GmbH aus Göttingen. Dott ist das frühere Tier: Im Oktober 2024 kündigte das Unternehmen an, alle Tier-Scooter auf die Dott-App umzustellen, und Dott führt Erfurt auf seiner Städteliste. Bolt bietet in Erfurt laut eigener Website nur Fahrten mit Fahrer und Taxis an. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Zwei Anbieter vermieten E-Scooter in Erfurt: **Yoio** und **Dott**. Yoio gehört der YourCar GmbH aus Göttingen. Dott ist das frühere Tier: Im Oktober 2024 kündigte das Unternehmen an, alle Tier-Scooter auf die Dott-App umzustellen, und Dott führt Erfurt auf seiner Städteliste (Stand November 2026). Bolt bietet in Erfurt laut eigener Website nur Fahrten mit Fahrer und Taxis an. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '2025 nannte die Stadt für die beiden Anbieter 130 und 280 Fahrzeuge im durchschnittlichen täglichen Einsatz.',
-        '**Yoio und Dott auf unserer Karte.** Die [Karte von Erfurt](map:de:Erfurt) zeigt beide Anbieter, Dott seit dem 24. Oktober 2026. An diesem Samstag standen dort um 13:26 Uhr rund 280 Dott- und rund 210 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Dotts Preis siehst du in der Dott-App.',
+        '**Yoio und Dott auf unserer Karte.** Die [Karte von Erfurt](map:de:Erfurt) zeigt beide Anbieter, Dott seit dem 24. Oktober 2026. An diesem Samstag standen dort um 13:26 Uhr rund 280 Dott- und rund 210 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Erfurt?',
       blocks: [
-        'Yoio veröffentlicht seine Tarife in seinen offenen Daten. Am 23. Oktober 2026 listeten sie für jeden Scooter 1,09 € fürs Entsperren, den Minutenpreis aber je Scooter: 0,25 € für rund 180, 0,21 € für 20. Für die Minutenpreise verweist Yoios Gebührenordnung auf die App. Laut Yoios Hilfe kann der Minutenpreis variieren und steht in der App auf dem Button «Fahrt starten».',
+        'Yoio veröffentlicht seine Tarife in seinen offenen Daten. Sie nennen für jeden Scooter 1,09 € fürs Entsperren, den Minutenpreis aber je Scooter: 0,25 € für die meisten, 0,21 € für einzelne (Stand November 2026). Welcher gilt, steht laut Yoios Hilfe in der App auf dem Button «Fahrt starten».',
         {
           table: {
-            caption: 'E-Scooter-Preise in Erfurt (offene Daten von Yoio, 23. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Erfurt (offene Daten von Yoio, Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Yoio, die meisten Scooter', '1,09 €', '0,25 €', '3,59 €', '6,09 €'],
@@ -35,7 +35,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bei Yoio zählt laut AGB jede angefangene Minute. Mehr als 19,99 € kostet eine Fahrt laut seinen offenen Daten nicht; bei 0,25 € pro Minute ist das nach gut 75 Minuten erreicht. Mit einer Jahreskarte des örtlichen Nahverkehrs gibt es laut Yoios Gebührenordnung (Stand 2021) 25 € Guthaben im Jahr. Verbindlich ist bei beiden Anbietern der Preis, den die App vor dem Start zeigt.',
+        'Bei Yoio zählt laut AGB jede angefangene Minute. Mehr als 19,99 € kostet eine Fahrt laut seinen offenen Daten nicht; bei 0,25 € pro Minute ist das nach gut 75 Minuten erreicht. Mit einer Jahreskarte des örtlichen Nahverkehrs gibt es laut Yoios Gebührenordnung (Stand 2021) 25 € Guthaben im Jahr.',
       ],
     },
     {
@@ -80,7 +80,7 @@ const guide: Guide = {
         'Die Verkehrsregeln setzt der Bund. Wo Leih-Scooter stehen dürfen, entscheiden laut Bundesverkehrsministerium die Kommunen. Gebiet, Zonen, Preise und Gebühren legt der Anbieter fest; die Verbotszonen der Altstadt sperrt er auf Wunsch der Stadt in der App.',
         'Erfurt behandelt den Verleih bisher als Gemeingebrauch, also ohne Erlaubnis, und regelt ihn über eine freiwillige Selbstverpflichtung, die alle Anbieter unterschrieben haben: Gebiet, Flottengrösse, Parkverbotszonen. Für die Innenstadt nannte die Stadt 2025 eine «bisherige Obergrenze von 100 E-Scootern». Das Abstellen kontrolliert der Vollzugsdienst der städtischen Ordnungsbehörde, das Fahren die Polizei.',
         'Die Wirkung der Selbstverpflichtung nennt die Stadt «mässig» (2025). Sie bevorzugt eine Regelung als Sondernutzung, mit festen Abstellflächen in der Innenstadt und freiem Abstellen im übrigen Stadtgebiet; rund 60 mögliche Standorte hat sie vorgeprüft. Die Sondernutzungsgebühr für gewerbliche E-Scooter liegt laut Stadt bei 0 €.',
-        'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüft und den Ausschuss bis Ende September 2026 informiert. Eine Vorlage zu Sondernutzung und Vergabe hatte die Verwaltung für das erste Quartal 2026 angekündigt.',
+        'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüfen und den Ausschuss bis Ende September 2026 informieren sollte. Eine Vorlage zu Sondernutzung und Vergabe hatte die Verwaltung für das erste Quartal 2026 angekündigt.',
       ],
     },
     {
@@ -133,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet Yoio in Erfurt?',
-      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,21 € pro Minute, laut Yoios offenen Daten vom 23. Oktober 2026. Zehn Minuten kosten damit 3,59 € oder 3,19 €, eine Fahrt höchstens 19,99 €. Den Minutenpreis des Scooters zeigt dir die App vor dem Start.',
+      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,21 € pro Minute, laut Yoios offenen Daten (Stand November 2026). Zehn Minuten kosten damit 3,59 € oder 3,19 €, 20 Minuten 6,09 € oder 5,29 €, eine Fahrt höchstens 19,99 €.',
     },
     {
       question: 'Wo kann ich in Erfurt einen E-Scooter abstellen?',

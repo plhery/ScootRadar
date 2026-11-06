@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Recklinghausen 2026: Dott, Abstellflächen, Regeln',
   description: 'E-Scooter in Recklinghausen leihen: Dott (früher Tier), die elf Abstellflächen der Stadt, die Altstadt im Wallring und was in Bus und Bahn gilt.',
   headline: 'E-Scooter Recklinghausen: Dott, die Abstellflächen der Stadt und die Regeln',
-  lede: 'Einen E-Scooter in Recklinghausen leihst du ab 18 und ohne Führerschein bei Dott, das früher Tier hiess. Den Preis zeigt dir die App, bevor du entsperrst. Die Stadt hat 2023 elf feste Abstellflächen markiert, zwei davon am Hauptbahnhof; zum Start 2020 wies sie mit den Anbietern Zonen aus, in denen Fahren «nicht erwünscht» und Abstellen nicht möglich war, etwa die Altstadt innerhalb des Wallrings. In die Busse der Vestischen darf kein E-Scooter mit, auch kein eigener.',
+  lede: 'Einen E-Scooter in Recklinghausen leihst du ab 18 und ohne Führerschein bei Dott, das früher Tier hiess: Dott-App laden, Konto anlegen, Scooter auf der Karte suchen, QR-Code scannen, losfahren. Den Preis zeigt dir die App, bevor du entsperrst. Die Stadt hat 2023 elf feste Abstellflächen markiert, zwei davon am Hauptbahnhof; zum Start 2020 wies sie mit den Anbietern Zonen aus, in denen Fahren «nicht erwünscht» und Abstellen nicht möglich war, etwa die Altstadt innerhalb des Wallrings. In die Busse der Vestischen darf kein E-Scooter mit, auch kein eigener.',
   published: '2026-11-01',
   updated: '2026-11-01',
   city: 'de:Recklinghausen',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Recklinghausen?',
       blocks: [
-        'In Recklinghausen vermietet **Dott** E-Scooter. Dott führt Recklinghausen unter seinen Standorten, in der Nachbarschaft auch [Herne](map:de:Herne), [Herten](map:de:Herten) und Gladbeck. Dott hiess früher Tier, und Tier war einer der beiden Anbieter, mit denen die Stadt am 28. September 2020 startete; wer Tier fuhr, nutzt heute die Dott-App.',
-        'Du leihst den Scooter in der Dott-App. Dott verlangt laut seinen AGB mindestens 18 Jahre, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'In Recklinghausen vermietet **Dott** E-Scooter. Dott führt Recklinghausen unter seinen Standorten (Stand November 2026), in der Nachbarschaft auch [Herne](map:de:Herne), [Herten](map:de:Herten) und Gladbeck. Dott hiess früher Tier, und Tier war einer der beiden Anbieter, mit denen die Stadt am 28. September 2020 startete; wer Tier fuhr, nutzt heute die Dott-App.',
+        'Dott verlangt laut seinen AGB mindestens 18 Jahre, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Sonntag, 1. November 2026, um 0:59 Uhr zeigte die [Karte rund um Recklinghausen](map:de:Recklinghausen) rund 480 Dott-Scooter, die zu diesem Zeitpunkt frei waren.',
-        '**Lime und Spin:** Zu Tier und Spin, die 2020 starteten, kam laut Stadt am 10. März 2021 Lime. Ob Lime hier noch vermietet, zeigt dir seine App. Wie es in der Nachbarschaft läuft, steht in [E-Scooter in Bochum](guide:bochum), [Essen](guide:essen) und [Dortmund](guide:dortmund).',
+        '**Lime und Spin:** Zu Tier und Spin, die 2020 starteten, kam laut Stadt am 10. März 2021 Lime. Wie es in der Nachbarschaft läuft, steht in [E-Scooter in Bochum](guide:bochum), [Essen](guide:essen) und [Dortmund](guide:dortmund).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Recklinghausen?',
       blocks: [
-        'Dott zeigt den Preis für Recklinghausen in der App, bevor du entsperrst. Wer oft fährt, spart laut Dott mit Pässen für einen Tag, eine Woche oder einen Monat (Stand November 2026).',
+        'Wer oft fährt, spart laut Dott mit Pässen für einen Tag, eine Woche oder einen Monat (Stand November 2026).',
         'Teuer wird falsches Parken. Zahlt Dott ein Bussgeld für dich, verlangt es laut seinen AGB (Stand 23. September 2025) 50 € Verwaltungsgebühr dazu, plus die Kosten der Abwicklung. Wo eine Gemeinde Parkplätze ausgewiesen hat, darfst du laut denselben AGB nur dort parken, und Dott kann ein Foto vom abgestellten Scooter verlangen.',
       ],
     },
@@ -61,7 +61,7 @@ const guide: Guide = {
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Zone, in der Abstellen nicht möglich ist, oder zu nah an einer Abstellfläche. Stell den Scooter auf die Fläche selbst oder fahr aus der Zone hinaus: Solange die Fahrt läuft, zahlst du weiter.',
         },
-        'Wo du sonst parkst, gelten die Regeln, die die Stadt 2020 aufgeschrieben hat: Auf Gehwegen müssen mindestens zwei Meter frei und nutzbar bleiben; Radwege, auch ohne Benutzungspflicht, Rettungswege, Einfahrten, Eingänge und die Warteflächen an Haltestellen hältst du frei. Was in Recklinghausen gerade gilt, zeigt dir die Dott-App, wenn du die Fahrt beendest.',
+        'Wo du sonst parkst, gelten die Regeln, die die Stadt 2020 aufgeschrieben hat: Auf Gehwegen müssen mindestens zwei Meter frei und nutzbar bleiben; Radwege, auch ohne Benutzungspflicht, Rettungswege, Einfahrten, Eingänge und die Warteflächen an Haltestellen hältst du frei.',
         'Steht dir ein Scooter im Weg, melde ihn auf scooter-melder.de, dem Scooter-Melder der Plattform Shared Mobility, den die Stadt 2023 dafür nannte: Dort wählst du Recklinghausen, und die Meldung geht an den jeweiligen Anbieter.',
       ],
     },
@@ -126,10 +126,6 @@ const guide: Guide = {
     {
       question: 'Wo darf ich einen Leih-Scooter in Recklinghausen abstellen?',
       answer: 'Am besten auf einer der elf Abstellflächen der Stadt, etwa am Hauptbahnhof (Eingang West und Ost), am Bahnhof Süd oder an der Ecke Kaiserwall/Erlbruch. Sonst dort, wo die Dott-App die Fahrt beenden lässt, mit zwei Metern freiem Gehweg. Nicht in den Zonen, die die App sperrt, 2020 etwa die Altstadt innerhalb des Wallrings, und nicht direkt neben einer Abstellfläche.',
-    },
-    {
-      question: 'Was kostet ein E-Scooter in Recklinghausen?',
-      answer: 'Den Preis zeigt die Dott-App, bevor du entsperrst; Dott bietet auch Pässe für einen Tag, eine Woche oder einen Monat. Zahlt Dott ein Bussgeld für dich, kommen laut AGB 50 € Verwaltungsgebühr dazu.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Recklinghäuser Altstadt fahren?',
