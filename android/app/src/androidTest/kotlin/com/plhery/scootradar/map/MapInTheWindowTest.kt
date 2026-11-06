@@ -296,8 +296,8 @@ class MapInTheWindowTest {
      * dock: a group of cities onto their bounds (MAP-050), a city total onto a city's span and a cluster two zoom levels
      * closer (MAP-051, MAP-147), each centred in the middle of the part of the map beside the panel or the fold across
      * and of the whole map up and down, as the iPhone's tap gives setRegionPreservingPerspective the part left visible
-     * (ScooterMapView.swift:1877-1907), and over the dock in the middle of the map (placed). A tap with a scooter's dot in
-     * reach chooses the scooter as well (MAP-209).
+     * (ScooterMapView.swift:1877-1907), and over the dock in the middle of the map (placed). A tap on a cluster with a
+     * scooter's dot in reach, not on the dot itself, opens the cluster alone (MAP-209).
      */
     @Test
     fun aTapOnAClusterOfTheServersShowsItsRegionWhereAPlaceLocatedShows() {
@@ -342,8 +342,8 @@ class MapInTheWindowTest {
             Thread.sleep(1_000)
             val point = onMain { projection.point(cluster.coordinate) }
             assertTrue("${cluster.id} at $point in $part", part.contains(point))
-            // On the cluster's view, and with the scooter in reach on the dot's square.
-            val tap = if (inReach) ScreenPoint(point.x - 10, point.y) else point
+            // On the cluster's view, and with the scooter in reach on the dot's square, 16 points from the dot: not on it.
+            val tap = if (inReach) ScreenPoint(point.x - 4, point.y) else point
             fingers(tap to tap, millis = 40, steps = 1)
             assertTrue("${cluster.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 }.also { if (!it) Log.i(TAG, "${size()}: ${cluster.id} at zoom ${zoom()}") })
             waitUntilAtRest(centre)
@@ -360,7 +360,7 @@ class MapInTheWindowTest {
                 val region = MapRegion(centre, latitudeDelta = 0.08 * citySpan, longitudeDelta = 0.12 * citySpan)
                 assertEquals("the zoom for a city's span", MapZoom.fitting(region, frame.width, frame.height), zoom(), log2(1.02))
             }
-            if (inReach) assertEquals("the scooter in reach chosen", alone.id, onMain { controller.selectedScooterID.value })
+            if (inReach) assertNull("the scooter in reach not chosen as well", onMain { controller.selectedScooterID.value })
         }
         assertNoMarginsWithoutAPanelOrAFold(bounds)
     }

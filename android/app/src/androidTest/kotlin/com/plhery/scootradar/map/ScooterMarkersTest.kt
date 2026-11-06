@@ -248,6 +248,36 @@ class ScooterMarkersTest {
         }
     }
 
+    /**
+     * One tap does one thing (MAP-209, the iPhone's e68593f0): on a cluster's view beside a dot, within the dot's
+     * reach but not on the dot itself, the cluster opens and the scooter is not chosen; on the dot, under the
+     * cluster's view, the scooter is chosen and the map stays where it is.
+     */
+    @Test
+    fun aTapOnAClustersBubbleBesideADotZoomsInAndATapOnTheDotChoosesIt() = withMarkers(zurich, mapLibreZoom = 12.0) { marked ->
+        val alone = scooter("alone", "lime", marked.at(195.0, 400.0))
+        val cellAt = marked.at(215.0, 400.0)
+        val cell = ScooterCluster("12:2145:1434", cellAt.latitude, cellAt.longitude, count = 12, providers = mapOf("voi" to 12))
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters")
+        marked.serve(ScooterResponse(vehicles = listOf(alone), clusters = listOf(cell), meta = meta)) {
+            it.marks.size == 1 && it.clusters().size == 1
+        }
+        val zoom = marked.phone.onMain { marked.phone.map.cameraPosition.zoom }
+
+        // On the dot itself, under the cluster's view, 48 points wide.
+        marked.tap(196.0, 400.0)
+        assertEquals(alone.id, marked.selected)
+        settle()
+        assertEquals(zoom, marked.phone.onMain { marked.phone.map.cameraPosition.zoom }, 1e-6)
+
+        // Nothing chosen, then on the cluster's view 15 points from the dot, on its square.
+        marked.tap(100.0, 300.0)
+        assertNull(marked.selected)
+        marked.tap(210.0, 400.0)
+        waitFor("the map zooms in on the cluster") { marked.phone.onMain { marked.phone.map.cameraPosition.zoom } > zoom + 1 }
+        assertNull(marked.selected)
+    }
+
     // TalkBack
 
     /** The buttons of the window as an accessibility service is given them: what TalkBack reads, in its order. */

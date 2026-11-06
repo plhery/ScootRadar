@@ -103,16 +103,20 @@ object MarkerElements {
 
     /**
      * The marker a finger exploring the map is on: the one a tap there would take, the cluster on top of the
-     * others if no dot or bay is meant; else, among the views under it, the one whose middle is nearest. A count
-     * hidden (ScooterMarkerScene.clearCounts) is not among them, so it is never found.
+     * others unless the finger is on a dot itself (MAP-209), else the dot or the bay meant; else, among the views
+     * under it, the one whose middle is nearest. A count hidden (ScooterMarkerScene.clearCounts) is not among them,
+     * so it is never found.
      */
     fun at(point: ScreenPoint, among: List<MarkerElement>, scene: ScooterMarkerScene, map: MarkerMap): MarkerElement? {
         val scooter = scene.scooterMark(at = point, map = map)
+        val cluster = scene.topCluster(at = point, map = map)
         val bay = scene.bay(at = point, beside = scooter, map = map)
         val key = when {
+            cluster != null && ScooterMarkerScene.tapMeansCluster(isOnCluster = true, isOnDot = scene.isOnDot(scooter)) ->
+                cluster.featureID
             bay != null -> "p:${bay.id}"
             scooter != null -> scooter.first.featureID
-            else -> scene.topCluster(at = point, map = map)?.featureID
+            else -> null
         }
         return among.firstOrNull { it.key == key }
             ?: among.filter { it.frame.contains(point) }.minByOrNull { hypot(it.frame.midX - point.x, it.frame.midY - point.y) }

@@ -958,34 +958,46 @@ class ScooterMarkerScene(
     // Taps
 
     /**
-     * A tap on the map, at a point of it: the name or the dot nearest the finger, else the bay under it, else
-     * nothing, which closes the card unless a walk is under way.
+     * A tap on the map, at a point of it: the cluster on top under the finger, unless the touch is on a dot itself;
+     * else the name or the dot nearest the finger, else the bay under it, else nothing, which closes the card unless a
+     * walk is under way. One tap does one thing (MAP-209).
      */
     fun tap(point: ScreenPoint, map: MarkerMap) {
         if (isExcludedFromMapInteraction(point)) return
-        // MapKit selects the topmost marker under the finger as well: a cluster there opens, whatever the app's own
-        // tap does, so a tap on a cluster with a dot in reach selects the dot and zooms in (MAP-209).
-        val cluster = topCluster(at = point, map = map)
         val scooter = scooterMark(at = point, map = map)
+        // A cluster under the touch is meant, unless the touch is on a dot itself: it opens and zooms in, and a dot
+        // within reach is not chosen as well. On the dot, the dot is chosen and the cluster stays shut.
+        val cluster = topCluster(at = point, map = map)
+        if (cluster != null && tapMeansCluster(isOnCluster = true, isOnDot = isOnDot(scooter))) {
+            // During a walk the card stays open: the map is for looking around.
+            if (!parent.isWalking) clearSelection(map)
+            open(cluster, map)
+            return
+        }
+        // So is a bay, unless the touch is on a dot itself.
         val bay = bay(at = point, beside = scooter, map = map)
         val mark = scooter?.first
         // MapKit selects one marker at a time. The pin, under the clusters and the dots MapKit raises above it, is
         // selected where nothing else is meant; any other tap deselects it, and its callout closes.
-        showsCallout = bay == null && mark == null && cluster == null && destinationFrame(map.projection)?.contains(point) == true
+        showsCallout = bay == null && mark == null && destinationFrame(map.projection)?.contains(point) == true
         when {
             bay != null -> select(bay)
             mark != null -> select(mark, map)
             // During a walk the card stays open: the map is for looking around.
             !parent.isWalking -> clearSelection(map)
         }
-        cluster?.let { open(it, map) }
     }
 
+    /**
+     * Whether a touch is on the dot of the scooter it means, [scooterMark]'s, and not only within its reach: within
+     * half its footprint and 4 points more.
+     */
+    fun isOnDot(scooter: Pair<ScooterMark, Double>?): Boolean =
+        scooter?.let { it.second <= it.first.look.footprint / 2 + 4 } ?: false
+
     /** A bay under the touch is meant, unless the touch is on the dot of the scooter it means. */
-    fun bay(at: ScreenPoint, beside: Pair<ScooterMark, Double>?, map: MarkerMap): ScooterParking? {
-        val isOnDot = beside?.let { it.second <= it.first.look.footprint / 2 + 4 } ?: false
-        return if (isOnDot) null else parking(at = at, map = map)
-    }
+    fun bay(at: ScreenPoint, beside: Pair<ScooterMark, Double>?, map: MarkerMap): ScooterParking? =
+        if (isOnDot(beside)) null else parking(at = at, map = map)
 
     /** A scooter chosen, by a tap or by TalkBack: its card opens and its dot takes the ring, and the pin's callout closes. */
     fun select(mark: ScooterMark, map: MarkerMap) {
@@ -1263,6 +1275,14 @@ class ScooterMarkerScene(
 
         /** Half of the 44 pt a target needs. */
         const val TAP_REACH = 22.0
+
+        /**
+         * One tap does one thing (MAP-209): on a cluster it zooms in, unless it is on a dot itself, which it then
+         * chooses. MapKit's selection of the cluster after a tap on the dot, which the iPhone undoes
+         * (shouldSuppressClusterSelection), has no counterpart: a cluster opens here only from the app's own tap or
+         * from TalkBack's.
+         */
+        fun tapMeansCluster(isOnCluster: Boolean, isOnDot: Boolean): Boolean = isOnCluster && !isOnDot
 
         /**
          * The dots' light-up, the names' fade after it, and a name's fade as it comes or its slide to another side,

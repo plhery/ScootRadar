@@ -12,6 +12,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScreenPoint
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
@@ -197,23 +198,54 @@ class ScooterMarkerClustersTest {
         assertEquals(listOf("cluster_select", "cluster_select", "cluster_select"), events)
     }
 
+    /**
+     * One tap does one thing (MAP-209, the iPhone's e68593f0): on a cluster it zooms in, unless it is on a dot
+     * itself, which it then chooses. The iPhone's test checks shouldSuppressClusterSelection as well, which undoes
+     * MapKit's own selection of the cluster after the tap: here a cluster opens only from the app's tap or TalkBack's.
+     */
     @Test
-    fun aTapOnAClusterWithADotInReachSelectsTheDotAndZoomsIn() {
+    fun aTapOnAClusterWithADotWithinReachDoesOneThing() {
+        // On the cluster's bubble beside a dot: the cluster zooms in, and the dot is not chosen.
+        assertTrue(ScooterMarkerScene.tapMeansCluster(isOnCluster = true, isOnDot = false))
+        // On the dot itself: the dot is chosen, and the cluster stays shut.
+        assertFalse(ScooterMarkerScene.tapMeansCluster(isOnCluster = true, isOnDot = true))
+        assertFalse(ScooterMarkerScene.tapMeansCluster(isOnCluster = false, isOnDot = false))
+    }
+
+    @Test
+    fun aTapOnAClustersBubbleBesideADotZoomsInAndATapOnTheDotChoosesIt() {
         val map = FlatMarkerMap(mapLibreZoom = 12.0)
-        // A scooter the server sends alone, beside one of its clusters.
+        // A scooter the server sends alone, beside one of its clusters, which is drawn above it.
         scene.parent = MarkerParent(usesServerClusters = true)
         scene.reconcile(listOf(scooter("alone", "lime", at = map.at(195.0, 400.0))), revision = 1)
         scene.reconcileClusters(listOf(ScooterCluster("12:2145:1434", map.at(215.0, 400.0).latitude, map.at(215.0, 400.0).longitude, 12, mapOf("voi" to 12))), revision = 1)
+        scene.applySelection("lime:other", map)
 
-        // On the dot's square and on the cluster's view, the cluster drawn above: both (MAP-209).
-        scene.tap(ScreenPoint(205.0, 400.0), map)
-        assertEquals(listOf<String?>("lime:alone"), selections)
+        // On the cluster's view, 14 points from the dot: within its reach, on its square, not on the dot itself. The
+        // cluster opens, the card closes, and the dot is not chosen.
+        val bubble = ScreenPoint(209.0, 400.0)
+        assertEquals("lime:alone", scene.scooterMark(bubble, map)?.first?.id)
+        assertEquals("12:2145:1434", scene.topCluster(bubble, map)?.id)
+        // A finger exploring the map there finds what the tap takes.
+        assertEquals("g:12:2145:1434", MarkerElements.at(bubble, MarkerElements.of(scene, map), scene, map)?.key)
+        scene.tap(bubble, map)
+        assertEquals(listOf<String?>(null), selections)
+        assertEquals(listOf("cluster_select"), events)
         assertEquals(1, moves.size)
 
-        // Selected, the dot is above every cluster: the tap is the dot's alone.
-        scene.tap(ScreenPoint(205.0, 400.0), map)
+        // On the dot itself, under the cluster's view: the dot is chosen, and the map doesn't move.
+        val dot = ScreenPoint(197.0, 400.0)
+        assertEquals("12:2145:1434", scene.topCluster(dot, map)?.id)
+        assertEquals("v:lime:alone", MarkerElements.at(dot, MarkerElements.of(scene, map), scene, map)?.key)
+        scene.tap(dot, map)
+        assertEquals(listOf(null, "lime:alone"), selections)
+        assertEquals(listOf("cluster_select"), events)
         assertEquals(1, moves.size)
-        assertNull(scene.topCluster(ScreenPoint(205.0, 400.0), map))
+
+        // Selected, the dot is above every cluster: a tap on its square is the dot's alone.
+        assertNull(scene.topCluster(bubble, map))
+        scene.tap(bubble, map)
+        assertEquals(1, moves.size)
         // Beyond the dot's square the cluster is on top again.
         assertEquals("12:2145:1434", scene.topCluster(ScreenPoint(230.0, 400.0), map)?.id)
         assertTrue(scene.clusters().single().isServer)
