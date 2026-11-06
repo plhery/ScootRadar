@@ -1,6 +1,11 @@
 package com.plhery.scootradar.ui.settings
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -18,7 +23,9 @@ import com.plhery.scootradar.EmptyScooterAPI
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.generated.ScooterProvider
+import com.plhery.scootradar.core.model.AppleMapStyle
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
@@ -85,10 +92,11 @@ class SettingsTileNameTest {
      * for, not the size drawn.
      * The app shrinks a quarter of a dp at a time, so the largest that fits is drawn up to a quarter of a dp under; a
      * shrink straight to three quarters is drawn under it (review-app-ah 3).
+     * At font scale 1.45: since the names reach 3 in from the tiles' edges (app-bf), System fits its tile at 1.3.
      */
     @Test
     fun aTilesNameThatDoesNotFitShrinksBeforeItIsCutShort() {
-        val tiles = tilesNames()
+        val tiles = tilesNames(fontScale = 1.45f)
         val wrong = mutableListOf<String>()
         val seen = mutableListOf<String>()
         var tooWide = 0
@@ -132,7 +140,7 @@ class SettingsTileNameTest {
         }
         assertTrue("the six tiles' names laid out, ${tiles.size} found", tiles.size >= NAMES.size)
         assertEquals("the tiles' names drawn as `.minimumScaleFactor(0.75)` draws them: $seen", emptyList<String>(), wrong)
-        // Automatic at 1.3 doesn't fit a tile on a phone 360 wide at its size, and another name fits it smaller.
+        // Automatic at 1.45 doesn't fit a tile on a phone 360 wide at its size, and System fits it smaller.
         assertTrue("a name wider than its tile: $seen", tooWide > 0)
         assertTrue("a name shrunk to fit, not cut short: $seen", shrunk > 0)
     }
@@ -162,9 +170,61 @@ class SettingsTileNameTest {
         for ((name, offset) in others.map(::offset)) assertEquals(name, 0f, offset, 0.5f)
     }
 
-    /** The tiles' names laid out under Automatic at font scale 1.3, each with its layout. */
-    private fun tilesNames(): List<Pair<String, TextLayoutResult>> {
-        useFontScale(1.3f)
+    /**
+     * The chosen tile's name reads whole beside its check on a phone 360 wide (ScootRadar_Phone_Min), the sheet floating
+     * 8 in at its first height, at font scale 1.0: Automatic, the choice the app starts with, was cut to "Autom…" there
+     * (app-be's release smoke), its row 5 dp too narrow at three quarters of its size. Every name in English is whole,
+     * and every one in the other languages but their Automatic, which still needs 4 to 11 dp more at three quarters
+     * of its size: a lower floor, or the check off the name's row, is the lead's to choose (app-bf).
+     */
+    @Test
+    fun theChosenTilesNameReadsWholeOnAPhone360Wide() {
+        var shown by mutableIntStateOf(0)
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                IosSheet(true, onDismiss = {}, listOf(SheetDetent.Medium, SheetDetent.Large), "Settings") {
+                    // Laid out again in the language set.
+                    key(shown) { SettingsSheet() }
+                }
+            }
+        }
+        compose.waitForIdle()
+        val styles = AppleMapStyle.entries - AppleMapStyle.Satellite
+        val cut = mutableListOf<String>()
+        var widths = emptySet<Float>()
+        for (language in ScooterLanguage.entries) {
+            for ((index, appearance) in ScooterAppearance.entries.withIndex()) {
+                ScooterLanguage.current = language
+                compose.runOnIdle {
+                    model.setAppearance(appearance)
+                    model.setMapStyle(styles[index % styles.size])
+                    shown += 1
+                }
+                compose.waitForIdle()
+                val chosen = compose.onAllNodes(isSelectable(), useUnmergedTree = true).fetchSemanticsNodes()
+                    .filter { it.config[SemanticsProperties.Selected] }
+                assertEquals("an appearance and a map chosen", 2, chosen.size)
+                widths = widths + chosen.first().boundsInRoot.width / compose.density.density
+                for (tile in chosen) {
+                    val name = tile.children.single { SemanticsProperties.Text in it.config }
+                    val results = mutableListOf<TextLayoutResult>()
+                    name.config.getOrNull(SemanticsActions.GetTextLayoutResult)?.action?.invoke(results)
+                    if (results.single().isLineEllipsized(0)) cut += "${language.rawValue} ${name.config[SemanticsProperties.Text].joinToString()}"
+                }
+            }
+        }
+        // Four tiles across a sheet 344 wide, its sections 16 in, 10 apart.
+        assertEquals(setOf(70.5f), widths)
+        assertEquals(
+            "the chosen tiles' names cut short",
+            listOf("de Automatisch", "fr Automatique", "it Automatico", "nl Automatisch", "nb Automatisk", "pt Automático", "es Automático"),
+            cut,
+        )
+    }
+
+    /** The tiles' names laid out under Automatic at a font scale, 1.3 unless given, each with its layout. */
+    private fun tilesNames(fontScale: Float = 1.3f): List<Pair<String, TextLayoutResult>> {
+        useFontScale(fontScale)
         showSettings()
         return NAMES.flatMap { name ->
             compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.Text, listOf(AnnotatedString(name))), useUnmergedTree = true)
@@ -181,20 +241,23 @@ class SettingsTileNameTest {
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = true) {
                 // As the phone's dock opens it, at the medium detent.
-                IosSheet(true, onDismiss = {}, listOf(SheetDetent.Medium, SheetDetent.Large), "Settings") {
-                    ScooterSettingsSheet(
-                        controller = model,
-                        bottomInset = 0.dp,
-                        defaults = InMemoryScooterDefaults(),
-                        onDone = {},
-                        passProviders = listOf(ScooterProvider.Bolt),
-                        sources = emptyList(),
-                        pages = listOf(SettingsPage.Root),
-                    )
-                }
+                IosSheet(true, onDismiss = {}, listOf(SheetDetent.Medium, SheetDetent.Large), "Settings") { SettingsSheet() }
             }
         }
         compose.waitForIdle()
+    }
+
+    @Composable
+    private fun SettingsSheet() {
+        ScooterSettingsSheet(
+            controller = model,
+            bottomInset = 0.dp,
+            defaults = InMemoryScooterDefaults(),
+            onDone = {},
+            passProviders = listOf(ScooterProvider.Bolt),
+            sources = emptyList(),
+            pages = listOf(SettingsPage.Root),
+        )
     }
 
     private companion object {

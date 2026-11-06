@@ -92,6 +92,14 @@ internal fun SettingsTileRow(title: String, count: Int, tile: @Composable (index
 internal val TILE_SPACING = 10.dp
 
 /**
+ * How far in from a tile's edges its name may reach: 1.5 clear of its 1.5 frame, where the iPhone's stands 6 in, the
+ * tile's 4 and its own 2. Centred, a name that fits is drawn where the iPhone draws it, so this changes only one that
+ * didn't fit: the chosen Automatic, beside its check at three quarters of its size, needs 48 of the 49 it leaves on a
+ * phone 360 wide, the sheet floating, where 6 in left it 43 and cut it to "Autom…" (app-bf).
+ */
+private val NAME_INSET = 3.dp
+
+/**
  * A choice as a tile: its picture over its name, in a hairline frame around a faint fill, blue and checked once
  * chosen. It dims under the finger, as a plain button, and a little under a mouse's pointer; TalkBack reads it as one
  * of the group's choices.
@@ -115,19 +123,19 @@ internal fun SettingsTile(
             .background(if (isSelected) colors.accent.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
             .border(1.5.dp, if (isSelected) colors.accent else colors.dockHairline, shape)
             .selectable(isSelected, interaction, FocusRing(shape), role = Role.RadioButton, onClick = onClick)
-            .padding(start = 4.dp, top = 4.dp, end = 4.dp, bottom = 10.dp),
+            .padding(top = 4.dp, bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Box(
-            Modifier.fillMaxWidth().height(64.dp).clip(SquircleShape(12.dp)).clearAndSetSemantics { },
+            Modifier.padding(horizontal = 4.dp).fillMaxWidth().height(64.dp).clip(SquircleShape(12.dp)).clearAndSetSemantics { },
         ) { picture() }
         val style = ScootType.footnote.weight(IosWeight.semibold)
         val ink = if (isSelected) colors.actionText else colors.label
         // The chosen tile says so by more than its colour: a check before its name, the two centred together, as the
         // iPhone's since 357f0c2c (ScooterSettingsTiles.swift:42-54), hidden from TalkBack, which reads the tile as
-        // selected. The name has the room the check leaves.
+        // selected. The name has the room the check leaves, out to NAME_INSET from the tile's edges.
         Row(
-            Modifier.fillMaxWidth().padding(horizontal = 2.dp),
+            Modifier.fillMaxWidth().padding(horizontal = NAME_INSET),
             horizontalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
