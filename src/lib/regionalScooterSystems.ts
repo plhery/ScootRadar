@@ -171,6 +171,9 @@ export function isRegionalSource(source: string): source is RegionalSource {
 const APP_MAP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(isAppMapSystem).map(system => `${regionalSource(system)}:${system.id}`));
 /** Whether the feed is an operator's app map, read in views as its app does (DATA_SOURCES.md). */
 export const isAppMapFeed = (feed: { id: string }) => APP_MAP_FEEDS.has(feed.id) ||
+  isRydeGroupFeed(feed);
+/** A native Ryde refresh group, sharing one account-wide Mac worker. */
+export const isRydeGroupFeed = (feed: { id: string }) =>
   /^(norway|sweden|finland|germany):ryde_app_[a-z0-9_-]+$/.test(feed.id);
 const LIME_GROUP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.limeMapTiles).map(system => `${regionalSource(system)}:${system.id}`));
 /** Whether the feed is one of the refresh groups of a Lime market's grid (limeGridGroups). */

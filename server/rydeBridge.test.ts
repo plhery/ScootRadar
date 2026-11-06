@@ -1,10 +1,23 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { RYDE_WORKER_SILENT_MS, RydeBroker, type RydeJob } from './rydeBridge';
+import { withinCollection } from './sweeps';
 const brokers: RydeBroker[]=[];
 const broker=(...args: ConstructorParameters<typeof RydeBroker>)=>{const b=new RydeBroker(...args);brokers.push(b);return b;};
 const q={cityId:43,latitude:59.744,longitude:10.205,radius:1};
 afterEach(()=>{for(const b of brokers) b.close();brokers.length=0;vi.useRealTimers();});
 describe('Ryde account broker',()=>{
+  it('promotes a queued idle read when someone starts watching its collection',async()=>{
+    const b=broker('x'.repeat(32),()=>100000,0);
+    const routine=b.query({...q,cityId:6},false);
+    let watched=false;
+    const focused=withinCollection({urgent:()=>watched,focus:()=>undefined,progress:()=>{}},()=>b.query(q));
+    watched=true;
+    const first=b.lease()!;expect(first.cityId).toBe(43);
+    b.accept({version:1,id:first.id,query:first,coverage:'unknown',observedAt:100,scooters:[]});
+    const next=b.lease()!;expect(next.cityId).toBe(6);
+    b.accept({version:1,id:next.id,query:next,coverage:'unknown',observedAt:100,scooters:[]});
+    await Promise.all([focused,routine]);
+  });
   it('coalesces refreshes and serializes native reads, with exact result binding and idempotent acknowledgements',async()=>{
     let now=100000;const b=broker('a'.repeat(32),()=>now,0);
     const a=b.query(q), duplicate=b.query(q);expect(a).toBe(duplicate);

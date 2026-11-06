@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
@@ -318,6 +318,24 @@ describe('feeds collected on demand', () => {
       expect(response.lastSeen?.clusters[0].id).toBe(`seen:${response.clusters[0].id}`);
       expect(response.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['c']);
     });
+  });
+
+  it('keeps a wide Ryde view from queuing a whole city ahead of the street being watched',()=>{
+    const augsburg={south:48.3119,north:48.4049,west:10.8358,east:10.9538};
+    const groups=REGIONAL_SCOOTER_SYSTEMS.filter(s=>s.id.startsWith('ryde_app_de_augsburg_')).map(system=>
+      feed({id:`${regionalSource(system)}:${system.id}`,source:'germany',provider:'ryde',
+        coverage:serviceAreas(system).map(area=>area.bounds),observedAt:now-minutes(40)}));
+    const dott=feed({id:'germany:dott_de_augsburg',source:'germany',coverage:[augsburg]});
+    expect(groups.length).toBeGreaterThan(20);
+    const asked=demandedFeeds([dott,...groups],augsburg);
+    expect(asked).toHaveLength(RYDE_GROUPS_PER_REQUEST+1);
+    expect(asked).toContain(dott);
+    expect(asked).not.toContain(groups[0]);
+    const street={south:48.364,north:48.369,west:10.89,east:10.90};
+    const near=demandedFeeds(groups,street);
+    expect(near).toHaveLength(RYDE_GROUPS_PER_REQUEST);
+    expect(near.some(g=>g.coverage.some(b=>b.south<=48.3665&&b.north>=48.3665&&b.west<=10.8944&&b.east>=10.8944))).toBe(true);
+    expect(demandedFeeds(near,street)).toEqual(near);
   });
 
   describe('Lime\'s groups in a wide view', () => {

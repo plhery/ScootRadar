@@ -9,7 +9,7 @@ export interface RydeObservation { id: string; lat: number; lng: number }
 export interface RydeResult {
   version: 1; id: string; query: RydeJob; observedAt: number; coverage: 'unknown'; scooters: RydeObservation[]; returnedCount?: number;
 }
-interface Entry { job: RydeJob; key: string; urgent: boolean; leasedUntil: number; promise: Promise<RydeResult>;
+interface Entry { job: RydeJob; key: string; urgent: () => boolean; leasedUntil: number; promise: Promise<RydeResult>;
   resolve(value: RydeResult): void; reject(error: Error): void; timer: ReturnType<typeof setTimeout> }
 const validNumber = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
 export function validateRydeQuery(q: RydeQuery): void {
@@ -58,18 +58,25 @@ export class RydeBroker {
     const since = Math.max(this.stats.lastWorkerAt, this.restoredSilence ?? this.startedAt);
     return now - since >= RYDE_WORKER_SILENT_MS ? since : undefined;
   }
-  query(q: RydeQuery, urgent = currentCollection()?.urgent() ?? false): Promise<RydeResult> {
+  query(q: RydeQuery, urgent?: boolean): Promise<RydeResult> {
     validateRydeQuery(q);
+    const collection = currentCollection();
+    // A view can become watched while its native request is already queued.
+    const priority = () => urgent ?? collection?.urgent() ?? false;
     const key = JSON.stringify([q.cityId, q.latitude, q.longitude, q.radius]);
     const existing = this.entries.find(e => e.key === key);
-    if (existing) { existing.urgent ||= urgent; return existing.promise; }
+    if (existing) {
+      const previous = existing.urgent;
+      existing.urgent = () => previous() || priority();
+      return existing.promise;
+    }
     if (this.entries.length >= this.maxQueue) return Promise.reject(new Error('Ryde queue is full'));
     let resolve!: Entry['resolve'], reject!: Entry['reject'];
     const promise = new Promise<RydeResult>((yes, no) => { resolve = yes; reject = no; });
     const job: RydeJob = { ...q, version: 1, id: randomBytes(16).toString('hex'), expiresAt: (this.now() + this.deadlineMs) / 1000 };
     const timer = setTimeout(() => this.fail(job.id, 'Ryde worker deadline exceeded',true), this.deadlineMs);
     timer.unref?.();
-    this.entries.push({ job, key, urgent, leasedUntil: 0, promise, resolve, reject, timer });
+    this.entries.push({ job, key, urgent: priority, leasedUntil: 0, promise, resolve, reject, timer });
     this.stats.queued++;
     return promise;
   }
@@ -88,10 +95,10 @@ export class RydeBroker {
       running.leasedUntil = now + 50_000; return running.job;
     }
     if (now < this.nextAt) return null;
-    const routine = this.entries.find(e => !e.urgent);
-    const entry = (routine && this.urgentTurns >= 1 ? routine : this.entries.find(e => e.urgent)) ?? this.entries[0];
+    const routine = this.entries.find(e => !e.urgent());
+    const entry = (routine && this.urgentTurns >= 1 ? routine : this.entries.find(e => e.urgent())) ?? this.entries[0];
     if (!entry) return null;
-    this.urgentTurns = entry.urgent && routine ? this.urgentTurns + 1 : 0;
+    this.urgentTurns = entry.urgent() && routine ? this.urgentTurns + 1 : 0;
     entry.leasedUntil = now + 50_000; this.nextAt = now + this.intervalMs;
     return entry.job;
   }

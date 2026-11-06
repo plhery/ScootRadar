@@ -66,6 +66,10 @@ request cost and city-by-city completeness remain production observations.
 - `server/rydeBridge.ts`: account-wide bounded queue. Coalesces identical queries,
   leases one job at a time, reserves every second contested turn for routine work,
   spaces new jobs five seconds apart initially, and expires them after two minutes.
+  Queued reads follow the collection's current watch priority, including a view
+  opened after its idle read was queued. Each map request watches the two Ryde
+  groups nearest its centre; the rest keep their routine cadence, preventing a
+  wide city view from queuing every group ahead of the next street view.
   These are conservative configuration defaults, not measured upstream quotas.
 - `server/rydeApp.ts`: bounded overlapping scans, adaptive subdivision, retained
   parent observations, stable pseudonyms and a separate coverage-validation gate.

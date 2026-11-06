@@ -1,6 +1,6 @@
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
 import {
-  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isLimeGroupFeed, isRegionalSource,
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isLimeGroupFeed, isRydeGroupFeed, isRegionalSource,
   regionalCityId, serviceAreas,
 } from '@/lib/regionalScooterSystems';
 import { boundsCenter, boundsContainPoint, crossesDateLine, haversineM } from '@/lib/geo';
@@ -446,6 +446,8 @@ export function feedsForQuery(snapshot: MobilitySnapshot, query: FeedQuery, zoom
  * waited a quarter of an hour for theirs, and expired, and new towns' first collections stalled.
  */
 export const LIME_GROUPS_PER_REQUEST = 6;
+/** Native Ryde reads share one worker; a wide map must not queue a whole town ahead of its street view. */
+export const RYDE_GROUPS_PER_REQUEST = 2;
 
 /** How far the feed's coverage is from a point, in degrees of latitude: 0 for one that holds it. */
 function offPoint(feed: FeedSnapshot, [lat, lng]: [number, number]): number {
@@ -455,17 +457,20 @@ function offPoint(feed: FeedSnapshot, [lat, lng]: [number, number]): number {
 }
 
 /**
- * The feeds in view that a request collects again: all but the Lime groups past the
- * LIME_GROUPS_PER_REQUEST nearest the middle of the view. Those stay idle, and the answer shows them
- * as they are (idleInView).
+ * The feeds in view that a request collects again: the nearest bounded set of Lime and Ryde groups,
+ * plus other feeds. The remaining groups stay idle and the answer shows them as they are.
  */
 export function demandedFeeds(feeds: FeedSnapshot[], bounds: MapBounds): FeedSnapshot[] {
-  const groups = feeds.filter(isLimeGroupFeed);
-  if (groups.length <= LIME_GROUPS_PER_REQUEST) return feeds;
   const middle = boundsCenter(bounds);
-  const nearest = new Set(groups.map((feed, index) => ({ feed, index, off: offPoint(feed, middle) }))
-    .sort((a, b) => a.off - b.off || a.index - b.index).slice(0, LIME_GROUPS_PER_REQUEST).map(({ feed }) => feed));
-  return feeds.filter(feed => !isLimeGroupFeed(feed) || nearest.has(feed));
+  let selected = feeds;
+  for (const [matches, limit] of [[isLimeGroupFeed, LIME_GROUPS_PER_REQUEST], [isRydeGroupFeed, RYDE_GROUPS_PER_REQUEST]] as const) {
+    const groups = feeds.filter(matches);
+    if (groups.length <= limit) continue;
+    const nearest = new Set(groups.map((feed, index) => ({ feed, index, off: offPoint(feed, middle) }))
+      .sort((a, b) => a.off - b.off || a.index - b.index).slice(0, limit).map(({ feed }) => feed));
+    selected = selected.filter(feed => !matches(feed) || nearest.has(feed));
+  }
+  return selected;
 }
 
 /**
