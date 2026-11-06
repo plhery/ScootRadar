@@ -45,7 +45,7 @@ request cost and city-by-city completeness remain production observations.
 
 - `scripts/ryde-bridge/RydeLifecycle.swift`: the operator-authorized helper. Uses
   NSWorkspace only for bundle `com.ryde.NewRyde`; waits for graceful termination
-  and opens in the background. No arbitrary application or input automation.
+  and opens hidden without activation. No arbitrary application or input automation.
 - `producer_addon.py`, `native_protocol.py`, `bridge_crypto.py`: preserve genuine
   native proofs; substitute response recipients only through the authorized
   key bridge; translate replies back to app-owned keys. Each queued map job
@@ -80,6 +80,11 @@ request. Add account parallelism only after measured need and separate authorize
 sessions. No native token, DPoP proof, cookie, encryption key or hardware ID belongs
 on the cache server or in logs. The ID HMAC key is stable, mode 0600, on the Mac.
 E-bikes are excluded; battery/range/provider position-update time remain unknown.
+
+The reliable native request trigger still relaunches Ryde for each map query,
+with its window hidden. Reopening the existing process and hiding/unhiding it
+have not produced new map requests in bounded tests. Keeping the process alive
+therefore needs another proven trigger before replacing the existing one.
 
 ## Datacenter egress
 

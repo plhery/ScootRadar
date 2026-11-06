@@ -7,7 +7,7 @@ let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundle
 if args.count == 2 && args[1] == "status" {
     let session = CGSessionCopyCurrentDictionary() as? [String: Any]
     let status: [String: Any] = ["locked": session?["CGSSessionScreenIsLocked"] as? Bool ?? false,
-        "pids": apps.map { Int($0.processIdentifier) }]
+        "pids": apps.map { Int($0.processIdentifier) }, "hidden": apps.map { $0.isHidden }]
     let data = try! JSONSerialization.data(withJSONObject: status, options: [.sortedKeys])
     print(String(data: data, encoding: .utf8)!)
 } else if args.count == 2 && args[1] == "quit" {
@@ -22,6 +22,7 @@ if args.count == 2 && args[1] == "status" {
     guard let bundle = Bundle(url: url), bundle.bundleIdentifier == bundleID else { exit(2) }
     let config = NSWorkspace.OpenConfiguration()
     config.activates = false
+    config.hides = true
     NSWorkspace.shared.openApplication(at: url, configuration: config) { app, error in
         exit(error == nil ? 0 : 1)
     }
