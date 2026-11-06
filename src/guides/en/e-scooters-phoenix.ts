@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Phoenix 2026: Spin, Lime, rules and parking',
   description: 'E-scooters in Phoenix: Spin and Lime, what a ride costs, the age and sidewalk rules, downtown parking, ASU, the canals, light rail and Sky Harbor.',
   headline: 'E-scooters in Phoenix: Spin and Lime, prices, the rules, and where to ride and park',
-  lede: 'E-scooters in Phoenix come from Spin and Lime, the two companies with City contracts, which run to January 2028. The app shows the price before you unlock, and both companies rent only to riders 18 or over, although City Code lets you ride from 16. Phoenix bans scooters from sidewalks, and downtown you must end your ride in a designated parking spot.',
+  lede: 'You can rent an e-scooter in Phoenix from Spin or Lime, the two companies with City contracts, which run to 20 January 2028: download either app and scan the QR code on the handlebars. The app shows the price before you unlock, and people on Medicaid, SNAP or other public support can get 30% off. Scooters run 24 hours a day, across a service area of about 48 square miles in central Phoenix. You must be 18 to rent one, though City Code lets you ride your own from 16. Phoenix bans scooters from sidewalks, and you end your ride upright in a designated parking spot, with 5 feet clear for people walking.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'us:az:Phoenix',
@@ -23,18 +23,20 @@ const guide: Guide = {
             '**Lime**: in the Lime app.',
           ],
         },
-        'Both contracts cover e-scooters, e-bikes, pedal bikes and adaptive vehicles. At 4:14 pm on Friday 23 October 2026 the [Phoenix map](map:us:az:Phoenix) showed about 400 Spin scooters: what was on the map at that moment, not the fleet. Look for Lime’s scooters in the Lime app.',
-        '**Visiting?** Install the Spin or Lime app and add a way to pay before you set out. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Both contracts cover e-scooters, e-bikes, pedal bikes and adaptive vehicles. At 4:14 pm on Friday 23 October 2026 the [Phoenix map](map:us:az:Phoenix) showed about 400 Spin scooters free to rent at that moment.',
+        '**Visiting?** The City’s steps: download the Lime or Spin app, find a scooter and a parking spot in it, and scan the QR code on the handlebars. Add a way to pay before you set out; [how to rent an e-scooter](guide:how-to-rent) explains the rest.',
+        'To report a scooter, call Lime on 1-888-546-3345 or Spin on 1-888-249-9698, the numbers the City lists, or email its micromobility team at Scooter@phoenix.gov.',
       ],
     },
     {
       heading: 'How much does a scooter cost in Phoenix?',
       blocks: [
-        'The app shows the price before you unlock. Two discounts are worth knowing:',
+        'Two discounts are worth knowing, and one service is free:',
         {
           list: [
             '**30% off** for people who get federal, state or local support, such as Medicaid, SNAP, Social Security, Housing Authority help or a Reduced Transit Pass, the City says. Apply with Lime or Spin.',
             '**Spin Access** offers cheaper rides to people on limited incomes, and lets people with an Access code unlock by text message, without a smartphone.',
+            '**Free adaptive vehicles.** Lime and Spin each run an accessibility programme, which the City calls Lime Assist and Spin Access, that delivers adaptive vehicles to the homes of riders with varying abilities, free to use, when one is available.',
           ],
         },
         'Spin’s US terms ask you to end every ride inside the service zone, or Spin may charge a pick-up fee of up to $100.',
@@ -88,7 +90,7 @@ const guide: Guide = {
             '**Grand Avenue.** The diagonal avenue’s downtown end, from 7th Avenue and Van Buren Street, lies inside the core.',
           ],
         },
-        'The [live map](map:us:az:Phoenix) shows where Spin scooters stand now. These are Spin’s zones as its open data set them on 23 October 2026, not City rules, and they can change: the app shows the exact edges.',
+        'These are Spin’s zones as its open data set them on 23 October 2026, not City rules, and they can change: the app shows the exact edges.',
       ],
     },
     {
@@ -114,7 +116,7 @@ const guide: Guide = {
     {
       heading: 'Tempe next door',
       blocks: [
-        'Tempe runs its own scheme with Lime and Bird: at 4:14 pm on 23 October 2026 the [Tempe map](map:us:az:Tempe) showed about 1,570 of their scooters. Its rules differ: Tempe sets speed limits for sidewalks and paths, where Phoenix bans sidewalk riding outright. Spin’s area stops around 44th Street: in Tempe, use Lime or Bird, and see [e-scooters in Tempe](guide:tempe).',
+        'Tempe runs its own scheme with Lime and Bird: at 4:14 pm on 23 October 2026 the [Tempe map](map:us:az:Tempe) showed about 1,570 of their scooters, Bird’s free to rent at that moment and Lime’s as last counted. Its rules differ: Tempe sets speed limits for sidewalks and paths, where Phoenix bans sidewalk riding outright. Spin’s area stops around 44th Street: in Tempe, use Lime or Bird, and see [e-scooters in Tempe](guide:tempe).',
       ],
     },
     {
@@ -132,12 +134,8 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'How much does a scooter cost in Phoenix?',
-      answer: 'The app shows the price before you unlock. People on Medicaid, SNAP or other public support can get 30% off, the City says, and Spin Access offers cheaper rides on a limited income.',
-    },
-    {
       question: 'Are there Lime scooters in Phoenix?',
-      answer: 'Yes. Lime holds one of the City’s two contracts, with Spin, until January 2028. Look for its scooters in the Lime app.',
+      answer: 'Yes. Lime holds one of the City’s two contracts, with Spin, until 20 January 2028, and rents e-scooters and e-bikes in the Lime app.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Phoenix?',

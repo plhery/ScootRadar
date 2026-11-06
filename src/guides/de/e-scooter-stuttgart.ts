@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-stuttgart',
   topic: 'stuttgart',
   name: 'E-Scooter Stuttgart: Anbieter, Preise, Parken',
-  title: 'E-Scooter Stuttgart 2026: Anbieter, Preise, Parken, Wasen',
-  description: 'E-Scooter Stuttgart: die vier Anbieter, was zehn Minuten kosten, wo du in der City parkst, was auf dem Wasen gilt und welcher Scooter in Bus und Bahn darf.',
+  title: 'E-Scooter Stuttgart 2026: Ausleihen, Preise, Regeln, Parken',
+  description: 'E-Scooter in Stuttgart ausleihen: Voi, Dott, Lime und Bolt, zehn Minuten ab 2,89 € (Stand November 2026), die Regeln, Parken in der City, Bus und Bahn.',
   headline: 'E-Scooter Stuttgart: Anbieter, Preise, Parkzonen und was auf dem Wasen gilt',
-  lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt. Zehn Minuten kosten zwischen 2,89 € bei Voi und 3,39 € bei Dott (Stand November 2026). In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
+  lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt, jeweils über deren App: Sie zeigt freie Scooter auf einer Karte, und mit ihr entsperrst du einen. Zehn Minuten kosten zwischen 2,89 € bei Voi und 3,39 € bei Dott (Stand November 2026); bis etwa 25 Minuten ist Voi am günstigsten, bei längeren Fahrten sind es Bolt und Lime. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
   published: '2026-10-13',
   updated: '2026-10-23',
   city: 'de:Stuttgart',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Stuttgart?',
       blocks: [
         'In Stuttgart vermieten vier Anbieter E-Scooter, alle mit einer Erlaubnis der Stadt: **Voi**, **Dott**, **Lime** und **Bolt**. Dott hiess früher TIER; wer TIER fuhr, nutzt seit Oktober 2024 die Dott-App. Die Seiten der Stadt nennen noch «Tier» oder «TIER/DOTT», gemeint ist derselbe Anbieter.',
-        'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Du brauchst ein Smartphone mit Internet: Die Karte in der App zeigt freie Scooter, du entsperrst einen per App und beendest dort auch die Fahrt. Laut Stadt weist du zu Beginn der Miete mit einem Test nach, dass du fahrtüchtig bist, und lädst nach der Fahrt ein Foto des abgestellten Scooters hoch. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'ScootRadar zeigt alle vier auf der [Karte rund um Stuttgart](map:de:Stuttgart): Am Vormittag des 13. Oktober 2026 zeigte sie rund 5200 Scooter, die zu diesem Zeitpunkt frei waren; erlaubt sind höchstens 6000.',
         'Mit «E-Roller» sind oft auch Elektro-Mopeds gemeint, wie sie etwa stella vermietet: Für die brauchst du Führerschein und Helm, um sie geht es hier nicht.',
       ],
@@ -67,7 +67,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Sonst stellst du den Scooter frei ab, solange niemand behindert wird; auf dem Gehweg bleiben mindestens 2 m frei. Mitte 2025 zählte die Stadt 36 Abstellflächen und 47 Verbotszonen. Jeder Anbieter setzt die Zonen selbst um: Massgeblich ist die Karte in deiner App.',
+        'Sonst stellst du den Scooter frei ab, solange niemand behindert wird; auf dem Gehweg bleiben mindestens 2 m frei. Ob der Scooter richtig steht, prüfen die Anbieter laut Stadt mit künstlicher Intelligenz anhand deines Fotos. Mitte 2025 zählte die Stadt 36 Abstellflächen und 47 Verbotszonen. Jeder Anbieter setzt die Zonen selbst um: Massgeblich ist die Karte in deiner App.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder neben statt auf einer markierten Fläche. Fahr zur nächsten Fläche, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -141,7 +141,8 @@ const guide: Guide = {
     {
       heading: 'Obergrenze und Erlaubnis: Wer verleiht ab 2027 in Stuttgart E-Scooter?',
       blocks: [
-        'Seit einem Beschluss des Gemeinderats vom 22. Juni 2023 brauchen die Anbieter eine Sondernutzungserlaubnis der Stadt. Erlaubt sind höchstens 6000 Leih-Scooter, 1500 je Anbieter, davon je Anbieter höchstens 100 in der Kernstadt. Pro Scooter und angefangenem Monat zahlen sie laut dem seit Januar 2026 geltenden Gebührenverzeichnis 7,50 € in der Kernstadt, 6 € in den übrigen Innenstadtbezirken und 4,50 € im Rest der Stadt, damit die Scooter auch in die Stadtteile kommen.',
+        'Seit Januar 2024 brauchen die Anbieter nach einem Beschluss des Gemeinderats vom 22. Juni 2023 eine Sondernutzungserlaubnis der Stadt. Erlaubt sind höchstens 6000 Leih-Scooter, 1500 je Anbieter, davon je Anbieter höchstens 800 in den Innenstadtbezirken und 100 in der Kernstadt. Pro Scooter und angefangenem Monat zahlen sie laut dem seit Januar 2026 geltenden Gebührenverzeichnis 7,50 € in der Kernstadt, 6 € in den übrigen Innenstadtbezirken und 4,50 € im Rest der Stadt, damit die Scooter auch in die Stadtteile kommen.',
+        'Nach zwei Jahren zog die Stadt im Oktober 2026 eine positive Bilanz: Je Scooter stieg die Nutzung 2025 um zehn Prozent, bei der Stadt und bei den Anbietern gingen weniger Beschwerden ein. Die meisten Fahrten führen zu den Zeiten des Berufsverkehrs von einer Haltestelle von Bus und Bahn bis zum Ziel.',
         'Die aktuellen Erlaubnisse vergab die Stadt im Dezember 2024 nach einem Auswahlverfahren; sie gelten vom 1. Januar 2025 bis zum 31. Dezember 2026. Danach vergibt die Stadt sie laut einer Antwort an den Landtag vom September 2025 in einem neuen Auswahlverfahren, bei dem sich bisherige und neue Anbieter aus ganz Deutschland bewerben können.',
         'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr, sodass die Städte es als Sondernutzung erlauben können; Stuttgart behandelt es schon heute so.',
       ],
@@ -161,8 +162,8 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'Welche App brauche ich für einen E-Scooter in Stuttgart?',
-      answer: 'Die von Voi, Dott (früher TIER), Lime oder Bolt, den vier Anbietern mit einer Erlaubnis der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Scooter aller vier zeigt die [Live-Karte von Stuttgart](map:de:Stuttgart).',
+      question: 'Wie leihe ich in Stuttgart einen E-Scooter aus?',
+      answer: 'Über die App von Voi, Dott (früher TIER), Lime oder Bolt, den vier Anbietern mit einer Erlaubnis der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Die App zeigt freie Scooter auf einer Karte, du entsperrst einen per App und beendest dort auch die Fahrt, in der City nur auf markierten Flächen. Freie Scooter aller vier zeigt die [Live-Karte von Stuttgart](map:de:Stuttgart).',
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Stuttgart am günstigsten?',
@@ -199,6 +200,7 @@ const guide: Guide = {
     { title: 'MobiData BW: Datenfeed von Lime in Baden-Württemberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_bw/gbfs' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Stadt Stuttgart: Zwei Jahre Sonderregeln für E-Scooter, Stadt zieht positive Bilanz (20. Oktober 2026)', url: 'https://www.stuttgart.de/service/aktuelle-meldungen/2026/oktober/zwei-jahre-sonderregeln-fuer-e-scooter-in-stuttgart-stadt-zieht-positive-bilanz' },
   ],
 };
 

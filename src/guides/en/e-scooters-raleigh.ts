@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-raleigh',
   topic: 'raleigh',
   name: 'E-scooters in Raleigh, North Carolina',
-  title: 'E-scooters in Raleigh, NC 2026: Spin, Lime, rules',
+  title: 'E-scooters in Raleigh, NC 2026: Spin, Lime, prices, hours',
   description: 'E-scooters in Raleigh, NC: Spin and Lime, the NC State price, the 11 p.m. stop, no sidewalks, downtown parking corrals, Dix Park, greenways and GoRaleigh.',
   headline: 'E-scooters in Raleigh, North Carolina: Spin and Lime, the 11 p.m. stop, and where to ride and park',
-  lede: 'E-scooters in Raleigh come from Spin and Lime, the two companies with City agreements (September 2026). NC State says Spin’s scooters are available to ride from 6 a.m. to 11 p.m. A 2018 City ordinance keeps scooters off sidewalks and greenway trails, and downtown you end your ride in a painted corral. NC State lists Spin’s price for rides that start on campus; elsewhere, check the app.',
+  lede: 'You can rent an e-scooter in Raleigh from Spin or Lime, the two companies with City agreements, in the Spin or Lime app. As of November 2026 a Spin ride that starts on NC State’s campus costs $1 to unlock and $0.30 a minute, NC State says; off campus, and on Lime, the app shows the price before you unlock. NC State says Spin’s scooters can be ridden from 6 a.m. to 11 p.m., seven days a week, and you must be 18 to ride one. A 2018 City ordinance keeps scooters off sidewalks and greenway trails and puts them in bike lanes, and downtown you end your ride in a painted corral if one is within 320 feet.',
   published: '2026-10-27',
   updated: '2026-11-02',
   city: 'us:nc:Raleigh',
@@ -16,18 +16,18 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Raleigh?',
       blocks: [
-        'Electric scooter rental in Raleigh runs under agreements with the City. A City Manager’s Update of 4 September 2026 names the two companies: **Lime** and **Spin**. NC State’s student paper, the Technician, reported on 11 September 2026 that Spin is the university’s contracted provider, while Lime works through its agreement with the City. A new shared micromobility agreement, from a request for proposals issued in March 2026, is on track to start by 1 January 2027, the City says, so the line-up may change.',
-        'At 12:29 p.m. on Monday 26 October 2026 the [Raleigh map](map:us:nc:Raleigh) showed 577 Spin scooters as they stood at that moment; Lime’s count at 10:05 p.m. on Sunday 25 October was 566. Each is a snapshot, not a fleet.',
+        'Electric scooter rental in Raleigh runs under agreements with the City. A City Manager’s Update of 4 September 2026 names the two companies: **Lime** and **Spin**. NC State’s student paper, the Technician, reported on 11 September 2026 that Spin is the university’s contracted provider, while Lime works through its agreement with the City. A new shared micromobility agreement, from a request for proposals issued in March 2026, is on track to start by 1 January 2027, the City said in September, so the line-up may change.',
+        'At 12:29 p.m. on Monday 26 October 2026 the [Raleigh map](map:us:nc:Raleigh) showed 577 Spin scooters free to rent at that moment, and 566 Lime scooters as last counted, at 10:05 p.m. the evening before.',
         'Spin and Lime also rent **e-bikes** in Raleigh: the Downtown Raleigh Alliance describes the City’s dockless bikeshare pilot as more than 200 electric-assist bikes with Spin and Lime, and Spin’s open data listed 133 available e-bikes at 10:33 p.m. on 26 October. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Spin or Lime scooter cost in Raleigh?',
       blocks: [
-        'NC State’s Transportation department lists the “NC State Rate” for Spin rides that start on campus, and on 11 September 2026 the Technician quoted a university planner giving the same $1 to unlock and 30 cents a minute. For rides that start off campus, and for Lime, check the rate in the app before you unlock.',
+        'NC State’s Transportation department lists the “NC State Rate” for Spin rides that start on campus, and on 11 September 2026 the Technician quoted a university planner giving the same $1 to unlock and 30 cents a minute.',
         {
           table: {
-            caption: 'Spin’s NC State Rate, for rides that start on NC State’s campus (NC State Transportation; page updated 12 August 2022, prices “subject to change”)',
+            caption: 'Spin’s NC State Rate, for rides that start on NC State’s campus, as of November 2026 (NC State Transportation; prices “subject to change”)',
             head: ['Option', 'Price'],
             rows: [
               ['Pay as you go', '$1 to unlock + $0.30 a minute'],
@@ -46,14 +46,14 @@ const guide: Guide = {
         'The City’s riding rules below are as ABC11 reported the ordinance the City Council passed in November 2018, which moved scooters off sidewalks and into bike lanes; the parking rules are from the City’s own report of September 2026.',
         {
           table: {
-            caption: 'E-scooter rules in Raleigh, and who sets them (as published by 27 October 2026)',
+            caption: 'E-scooter rules in Raleigh, and who sets them (as of November 2026)',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Hours', 'Spin: 6 a.m. to 11 p.m., seven days a week; check Lime’s in its app', 'NC State Transportation, for Spin'],
+              ['Hours', 'Spin: 6 a.m. to 11 p.m., seven days a week', 'NC State Transportation, for Spin'],
               ['Where to ride', 'In bike lanes, not on City sidewalks, greenway trails or multi-use paths. Yield to people on foot, and when entering or crossing a street', 'City ordinance, November 2018, as ABC11 reported it'],
               ['Sidewalk fine', '$50, with no driver’s licence or insurance points, ABC11 reported in 2019', 'City ordinance, as reported'],
               ['Greenway trails', '“Motorized vehicles are prohibited on trails”; trails are open dawn to dusk, with a 10 mph speed limit', 'City greenway map, March 2018 (Parks, Recreation and Cultural Resources)'],
-              ['Age', '18 to ride a Spin; check Lime’s terms in its app', 'Spin’s terms'],
+              ['Age', '18 to ride a Spin', 'Spin’s terms'],
               ['Helmet', 'Spin and NC State tell every rider to wear one', 'Spin; NC State Transportation'],
               ['Speed', 'Spin’s scooters at NC State top out at 15 mph', 'NC State Transportation'],
               ['Parking', 'Upright and out of the pedestrian path; downtown, in a painted corral if one is within 320 feet', 'City agreements with Lime and Spin'],
@@ -71,7 +71,7 @@ const guide: Guide = {
         'Under the City’s agreements, a scooter must be parked upright, out of the pedestrian path, and in a designated amenity or planting zone, or in a mandatory corral where there is one. The company must move a badly parked one within two hours of being told; report it through AskRaleigh, the City’s request portal, or in the company’s app.',
         {
           list: [
-            '**Corrals downtown.** After a pilot on Glenwood South, the City is painting more than 70 mandatory corrals at the busiest downtown intersections by the end of 2026. Once the work is done, riders ending a trip within 320 feet (100 metres) of a painted corral must use it; the companies will explain the change in their apps, the City says.',
+            '**Corrals downtown.** After a pilot on Glenwood South, the City is painting more than 70 mandatory corrals at the busiest downtown intersections, due by the end of 2026; nearly 60% were done by 4 September. Once the work is done, riders ending a trip within 320 feet (100 metres) of a painted corral must use it; the companies will explain the change in their apps, the City says.',
             '**Fines come from the companies.** Since January 2025 the third and fourth parking violations each cost $15, after two warnings, and a fifth brings an account review and possible suspension.',
           ],
         },
@@ -84,7 +84,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**NC State.** Spin deploys on North, Central, South and Centennial campuses, its Transportation department says, and shows the no-ride zones in its app. At 10:33 p.m. on 26 October, 263 of Spin’s 554 available scooters in Raleigh stood on NC State’s campus.',
+            '**NC State.** Spin deploys on North, Central, South and Centennial campuses, its Transportation department says, and shows the no-ride zones in its app. At 10:33 p.m. on 26 October, 263 of the 554 Spin scooters free to rent in Raleigh at that moment stood on NC State’s campus.',
             '**Campus sidewalks.** NC State’s Parking and Transportation Ordinances, last revised in April 2026, make every sidewalk, pathway, plaza and walkway a pedestrian safety zone, where e-scooter riders “must either ride at the walking pace of nearby pedestrians or dismount”. They also bar e-scooters from the greenway, and no one may ride inside a building.',
             '**Spin or Lime?** The Technician found that Lime restricts parking between Main and Centennial campuses much more than Spin, and that Lime’s area doesn’t reach the Centennial Biomedical Campus, where Spin has a separate area.',
             '**Other colleges.** Spin’s no-ride zones cover most of the land of Meredith College, William Peace University and Saint Augustine’s University; a no-parking zone covers part of Shaw University’s.',
@@ -97,7 +97,7 @@ const guide: Guide = {
       blocks: [
         'The **Capital Area Greenway** trails are off limits: the City’s greenway map (March 2018) says “Motorized vehicles are prohibited on trails”, and the 2018 ordinance, as reported, kept scooters off greenway trails and multi-use paths. Trails are open dawn to dusk.',
         '**Dorothea Dix Park** covers 308 acres; the City of Raleigh owns and runs it, and it is open from dawn until dusk, its website says. Spin’s data makes it a no-parking zone, so you can’t end a Spin ride there, and the Rocky Branch Greenway that runs past its Grove is a trail.',
-        'Downtown, **Capitol Square**, **Moore Square** and **Nash Square**, all State land on Wake County’s parcel map, are mostly no-ride zones in Spin’s data. So is the City’s **Pullen Park**, west of downtown.',
+        'Downtown, **Capitol Square**, **Moore Square** and **Nash Square** are mostly no-ride zones in Spin’s data. So is the City’s **Pullen Park**, west of downtown.',
       ],
     },
     {
@@ -119,7 +119,7 @@ const guide: Guide = {
           list: [
             '**A first in the state.** In January 2025 Raleigh became the first city in North Carolina with a citywide escalating parking violation policy for shared scooter and bike riders, the City says.',
             '**Parking as public art.** Eight local artists were chosen to paint the new downtown corrals, which will add 12,000 square feet of public art.',
-            '**The pilot worked.** The City reports over 72% parking compliance from the Glenwood South corrals, the model for the 70 new ones.',
+            '**The pilot worked.** The City reported over 72% parking compliance from the Glenwood South corrals, the model for the 70 new ones.',
           ],
         },
       ],
@@ -128,7 +128,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'What time do scooters stop in Raleigh?',
-      answer: 'At 11 p.m. for Spin: NC State’s Spin page says scooters and e-bikes are available to ride from 6 a.m. to 11 p.m., seven days a week. Check Lime’s hours in its app.',
+      answer: 'At 11 p.m. for Spin: NC State’s Spin page says scooters and e-bikes are available to ride from 6 a.m. to 11 p.m., seven days a week.',
     },
     {
       question: 'Can you ride a scooter on the sidewalk in Raleigh?',
@@ -136,7 +136,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Spin scooter cost at NC State?',
-      answer: 'For a ride that starts on campus, $1 to unlock and $0.30 a minute, NC State says; Spin Access riders pay $0.50 and $0.10 a minute. Off campus, and for Lime, check the price in the app.',
+      answer: 'As of November 2026, for a ride that starts on campus, $1 to unlock and $0.30 a minute, NC State says; Spin Access riders pay $0.50 to unlock and $0.10 a minute, and a monthly pass costs $5.99, then $0.30 a minute with no unlock fee.',
     },
     {
       question: 'Where do you park a scooter in downtown Raleigh?',
@@ -168,7 +168,6 @@ const guide: Guide = {
     { title: 'Dix Park: visit', url: 'https://dixpark.org/visit/' },
     { title: 'GoRaleigh: Bikes on Buses and Mobility Devices', url: 'https://goraleigh.org/bikes-on-buses-and-mobility-devices/' },
     { title: 'GoTriangle: RDU Shuttle', url: 'https://gotriangle.org/rdu-shuttle/' },
-    { title: 'Wake County: parcels (GIS)', url: 'https://maps.wake.gov/arcgis/rest/services/Property/Parcels/MapServer/0' },
     { title: 'US Census Bureau: TIGERweb boundaries', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
   ],
 };

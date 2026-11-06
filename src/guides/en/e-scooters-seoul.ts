@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Seoul 2026: Beam, Kickgoing, licence and rules',
   description: 'E-scooters in Seoul: Beam, Kickgoing, Xingxing and Swing, the driving licence and helmet Korean law requires, towing, kickboard-free streets and the parks.',
   headline: 'E-scooters in Seoul: who rents them, the licence you need, where to ride and what gets towed',
-  lede: 'E-scooters in Seoul, the “kickboards” (킥보드) of Korean signs, are rented from Beam, Kickgoing, Xingxing and Swing, and each app shows its price. Korean law asks more than many renters expect: a driving licence that covers motorised bicycles (mopeds), a helmet and no passenger. A visitor’s International Driving Permit counts only for the classes written on it, so check with the operator first. Ride on the cycle path or at the right-hand edge of the road, never on the pavement, and leave the scooter in a parking zone or a side street: one left on the pavement or where parking is banned can be towed as soon as someone reports it.',
+  lede: 'E-scooters in Seoul, the “kickboards” (킥보드) of Korean signs, are rented from Beam, Kickgoing, Xingxing and Swing, each in its own app, which shows the price before you unlock. You need a driving licence that covers motorised bicycles (mopeds), and a helmet; no passengers. A visitor’s International Driving Permit counts only for the classes written on it, so check with the operator first. Ride on the cycle path or at the right-hand edge of the road, never on the pavement. Five crowded streets, Hongdae’s Red Road among them, are closed to e-scooters in their signed hours. Park in a PM parking zone or a side street: a scooter left on the pavement or where parking is banned can be towed as soon as someone reports it.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'kr:Seoul',
@@ -47,7 +47,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Seoul?',
       blocks: [
-        'The app shows the unlock fee and per-minute rate before you start.',
+        'Each operator sets its own unlock fee and per-minute rate.',
         'Bad parking can cost more than the ride: Seoul’s districts charge the operator ₩40,000 to tow a scooter plus ₩700 per 30 minutes in storage, and Kickgoing’s terms pass such fees, and any fine, on to you.',
       ],
     },

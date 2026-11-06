@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Newark, NJ 2026: Bird, Veo, prices, rules',
   description: 'E-scooters in Newark, NJ: where Bird and Veo run, what a ride costs, the sidewalk, speed and parking rules, and why you can’t take one into Penn Station.',
   headline: 'E-scooters in Newark, New Jersey: Bird and Veo, what a ride costs, and where to ride and park',
-  lede: 'E-scooters in Newark are rented from Bird and Veo, the two companies holding the City’s NewarkGo permits since 2024. Veo charges $1 to unlock plus $0.45 a minute plus tax (its published rate, 25 October 2026), and Bird’s app shows the price before you unlock. City rules keep shared scooters off most sidewalks, and Bird requires riders to be 18.',
+  lede: 'You can rent an e-scooter in Newark from Bird or Veo, the two companies holding the City’s NewarkGo permits: get the app and scan the QR code on the handlebars, with no driving licence needed. As of November 2026 Veo charges $1 to unlock and $0.45 a minute, plus tax, about $5.50 for 10 minutes before tax, and $0.50 a minute on its e-bikes; Bird’s app shows the price before you unlock. City rules keep shared scooters off the sidewalk unless the street beside it has a speed limit over 35 mph, Bird rents only to riders 18 or over, and under-17s must wear a helmet. Shared scooters can’t go into stations or onto NJ Transit or PATH trains.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'us:nj:Newark',
@@ -20,22 +20,22 @@ const guide: Guide = {
         {
           list: [
             '**Two permits at most**, one each to two companies chosen by competitive application. Each puts out 500 to 900 vehicles, or up to 1,100 if at least 100 are bikes or e-bikes.',
-            '**Bird and Veo.** The City Council approved Veo’s permit on 7 February 2024 and Bird’s on 10 April 2024. Each runs two years and can be renewed for two more; both were running in October 2026.',
+            '**Bird and Veo.** The City Council approved Veo’s permit on 7 February 2024 and Bird’s on 10 April 2024. Each runs two years and can be renewed for two more; both are running as of November 2026.',
             '**Adaptive vehicles.** The 2023 ordinance encourages the operators to offer, where they can, vehicles adapted for people with disabilities, such as recumbent bikes, tricycles and hand cycles.',
           ],
         },
-        'On the afternoon of Sunday 25 October 2026 the [Newark map](map:us:nj:Newark) showed about 900 scooters, roughly 590 Bird and 320 Veo: what stood there at that moment, not the fleets. That evening about 360 stood in the Central Ward, 210 in the East Ward, 110 each in the North and West Wards and 100 in the South Ward.',
-        '**Veo also rents e-bikes.** That evening Veo’s open data listed about 820 vehicles in Newark that it classes as electric bikes, against about 320 stand-up scooters: open the Veo app to find one.',
+        'On the afternoon of Sunday 25 October 2026 the [Newark map](map:us:nj:Newark) showed about 900 scooters free to rent at that moment, roughly 590 Bird and 320 Veo. That evening about 360 stood in the Central Ward, 210 in the East Ward, 110 each in the North and West Wards and 100 in the South Ward.',
+        '**Veo also rents e-bikes.** That evening Veo’s open data listed about 820 vehicles in Newark that it classes as electric bikes, against about 320 stand-up scooters.',
         '**First ride?** Get the Bird or Veo app and scan the QR code on the handlebars; you need no driving licence. See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Bird or Veo scooter cost in Newark?',
       blocks: [
-        'The City’s 2023 ordinance makes each operator tell the City before raising prices and give riders 30 days’ notice. Veo publishes its Newark rates in its open data; Bird’s app shows the price before you unlock.',
+        'The City’s 2023 ordinance makes each operator tell the City before raising prices and give riders 30 days’ notice. Veo publishes its Newark rates in its open data.',
         {
           table: {
-            caption: 'Veo’s published prices in Newark, 25 October 2026 (plus tax)',
+            caption: 'Veo’s prices in Newark as of November 2026, from its open data (plus tax)',
             head: ['Ride', 'Veo scooter', 'Veo e-bike'],
             rows: [
               ['Unlock', '$1', '$1'],
@@ -131,11 +131,11 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Veo scooter in Newark?',
-      answer: '$1 to unlock plus $0.45 a minute plus tax, Veo’s published rate on 25 October 2026, so a 10-minute ride costs about $5.50 before tax. Veo’s e-bikes cost $0.50 a minute. Bird’s app shows the price before you unlock.',
+      answer: 'As of November 2026, $1 to unlock plus $0.45 a minute, plus tax, Veo’s open data shows, so a 10-minute ride costs about $5.50 before tax. Veo’s e-bikes cost $1 to unlock and $0.50 a minute.',
     },
     {
       question: 'How old do you have to be to ride a Bird scooter in Newark?',
-      answer: 'Bird requires riders to be 18 and checks your age in the app. New Jersey law sets no minimum age for e-scooters, so check Veo’s terms in its app. Under state law, riders under 17 must wear a helmet.',
+      answer: 'Bird requires riders to be 18 and checks your age in the app; New Jersey law sets no minimum age for e-scooters. Under state law, riders under 17 must wear a helmet.',
     },
     {
       question: 'Can I take a Bird or Veo scooter on NJ Transit or PATH?',

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'pforzheim',
   name: 'E-Scooter Pforzheim: Voi, Lime, Preise, Parken',
   title: 'E-Scooter Pforzheim 2026: Voi, Lime, Preise, Parken',
-  description: 'E-Scooter Pforzheim: Voi kostet laut Datenfeed 0,49 € plus 0,24 € pro Minute. Wo du seit 21. September in der Innenstadt abstellen darfst und was im Bus gilt.',
+  description: 'E-Scooter Pforzheim: Voi kostet 0,49 € plus 0,24 € pro Minute (Stand November 2026). Wo du seit 21. September in der Innenstadt abstellst, was im Bus gilt.',
   headline: 'E-Scooter Pforzheim: Preise, Abstellflächen und Sperrzonen von der Innenstadt bis an Enz und Nagold',
-  lede: 'Einen E-Scooter in Pforzheim leihst du ab 18 und ohne Führerschein bei Voi oder Lime, den beiden Anbietern, die die Stadt nennt. Laut Vois Datenfeed kostete eine Fahrt am 23. Oktober 2026 0,49 € fürs Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 €. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt beendest du die Fahrt seit 21. September 2026 nur auf einer der markierten Abstellflächen, sonst läuft die Uhr weiter.',
+  lede: 'Einen E-Scooter in Pforzheim leihst du ab 18 und ohne Führerschein bei Voi oder Lime, den beiden Anbietern, die die Stadt nennt: Du lädst die App des Anbieters, suchst auf ihrer Karte einen freien Scooter und entsperrst ihn per App. Bei Voi kostet eine Fahrt 0,49 € fürs Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026), und Voi vermietet rund um die Uhr. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt beendest du die Fahrt seit 21. September 2026 nur auf einer der markierten Abstellflächen, sonst läuft die Uhr weiter.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Pforzheim',
@@ -25,15 +25,15 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preis in Pforzheim (Stand und Quelle in der ersten Spalte)',
+            caption: 'E-Scooter-Preis in Pforzheim (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi (Datenfeed bei MobiData BW, 23. Oktober 2026)', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
+              ['Voi', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
             ],
           },
         },
-        'Den Tarif nennt Voi selbst in seinem offenen Datenfeed im Landesportal, Limes Preis zeigt die Lime-App. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Derselbe Feed nannte am selben Tag für [Stuttgart](map:de:Stuttgart) ebenfalls 0,49 € plus 0,24 € pro Minute, für Karlsruhe 0,99 € plus 0,25 € (mehr im [Ratgeber für Karlsruhe](guide:karlsruhe)).',
+        'Limes Preis zeigt die Lime-App, bevor du entsperrst.',
+        'In [Stuttgart](map:de:Stuttgart) kostet Voi ebenfalls 0,49 € plus 0,24 € pro Minute, in Karlsruhe 0,99 € plus 0,25 € (Stand November 2026; mehr im [Ratgeber für Karlsruhe](guide:karlsruhe)).',
       ],
     },
     {
@@ -134,11 +134,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Was kostet ein E-Scooter in Pforzheim?',
-      answer: 'Bei Voi laut dessen Datenfeed im Landesportal MobiData BW am 23. Oktober 2026 0,49 € zum Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 €. Den Preis von Lime zeigt die Lime-App. Verbindlich ist, was die App vor dem Entsperren zeigt.',
+      answer: 'Bei Voi 0,49 € zum Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 € und 20 Minuten 5,29 € (Stand November 2026). Den Preis von Lime zeigt die Lime-App.',
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Pforzheim?',
-      answer: 'Laut Stadt Voi und Lime. Du mietest in deren Apps, ab 18 und ohne Führerschein.',
+      answer: 'Laut Stadt Voi und Lime. Du mietest in deren Apps, ab 18 und ohne Führerschein: Die Karte in der App zeigt freie Scooter, und bist du bei einem, entsperrst du ihn per App.',
     },
     {
       question: 'Wo darf ich in der Pforzheimer Innenstadt einen E-Scooter abstellen?',
@@ -154,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Pforzheim ein Nachtfahrverbot für E-Scooter?',
-      answer: 'Bei Voi nicht: Sein Datenfeed gibt als Betriebszeit «24/7» an (Stand 23. Oktober 2026).',
+      answer: 'Bei Voi nicht: Sein Datenfeed gibt als Betriebszeit «24/7» an (Stand November 2026).',
     },
   ],
   sources: [
@@ -167,7 +167,10 @@ const guide: Guide = {
     { title: 'Planungs- und Umweltausschuss Pforzheim: E-Scooter (16. Juli 2025)', url: 'https://allris.pforzheim.de/to020?TOLFDNR=1047127' },
     { title: 'Jugendgemeinderat Pforzheim: Antrag zur Freigabe für E-Scooter (13. November 2025)', url: 'https://allris.pforzheim.de/to020?TOLFDNR=2000903' },
     { title: 'Stadt Pforzheim: Tourismus', url: 'https://www.pforzheim.de/freizeit/tourismus.html' },
-    { title: 'MobiData BW: Tarife von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/system_pricing_plans' },
+    { title: 'Voi: Tarif und Zonen für Pforzheim (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/316/netex.xml' },
+    { title: 'Voi: Tarif für Stuttgart (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/175/netex.xml' },
+    { title: 'Voi: Tarif für Karlsruhe (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/178/netex.xml' },
+    { title: 'MobiData BW: Systeminformationen von Voi in Deutschland (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/system_information' },
     { title: 'MobiData BW: Zonen von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/geofencing_zones' },
     { title: 'VPE: Gemeinschaftstarif, gültig ab 14. Dezember 2025 (PDF)', url: 'https://vpe.de/pdf/tarif/gemeinschaftstarif.pdf' },
     { title: 'KVV: Gemeinschaftstarif (PDF)', url: 'https://www.kvv.de/fileadmin/user_upload/kvv/Dateien/Flyer/2026-07-15_KVV_brs_Gemeinschaftstarif_A5_bf.pdf' },

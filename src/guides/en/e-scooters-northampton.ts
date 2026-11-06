@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Northampton 2026: Voi hours, rules, parking',
   description: 'E-scooters in Northampton: Voi’s 4am–11pm hire, who can ride, where to ride and park, the protection order, buses and trains, and the trial to May 2027.',
   headline: 'E-scooters in Northampton: Voi hire, the 4am–11pm hours, and where you can ride and park',
-  lede: 'E-scooters in Northampton are run by Voi, in a government trial that West Northamptonshire Council has extended to May 2027, and you can hire one from 4am to 11pm every day. You must be 18 or over with a full or provisional driving licence, and the Voi app shows the price before you unlock. Ride on roads and in cycle lanes, never on pavements, and don’t end a ride in a no-park zone: you’ll be fined, the council says.',
+  lede: 'E-scooters in Northampton are run by Voi, in a government trial that West Northamptonshire Council has extended to May 2027, and you can hire one from 4am to 11pm every day, the council says. To ride, download the Voi app, verify your full or provisional driving licence in it (you must be 18 or over) and find a scooter on its map; the app shows the price before you unlock. Ride on roads and in cycle lanes, never on pavements, and don’t end a ride in a no-park zone: you’ll be fined, the council says.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Northampton',
@@ -24,7 +24,7 @@ const guide: Guide = {
     {
       heading: 'How much does a Voi e-scooter cost in Northampton?',
       blocks: [
-        'The Voi app shows the unlock fee and the rate per minute before you start, and the passes on offer. The council and the University of Northampton describe these ways to pay less:',
+        'The app also shows the passes on offer. The council and the University of Northampton describe these ways to pay less:',
         {
           table: {
             caption: 'Ways to pay less for a Voi in Northampton, as the council (September 2025) and the university (October 2026) describe them',
@@ -104,9 +104,9 @@ const guide: Guide = {
     {
       heading: 'Voi in Kettering, Corby, Wellingborough and Rushden',
       blocks: [
-        'Voi also runs North Northamptonshire Council’s scheme, in Burton Latimer, Corby, Higham Ferrers, Kettering, Rushden and Wellingborough. It started in December 2020 and will run until May 2028, the council says. From the launch to May 2026, 58,755 riders made more than 2.92 million trips.',
+        'Voi also runs North Northamptonshire Council’s scheme, in Burton Latimer, Corby, Higham Ferrers, Kettering, Rushden and Wellingborough. It started in December 2020 and will run until May 2028, the council says. From the launch to September 2026, 62,094 riders made more than 3.2 million trips and rode 6.33 million km.',
         'At 14:55 on Saturday 24 October 2026 the map showed about 330 Voi e-scooters in [Wellingborough](map:gb:Wellingborough), 330 in [Kettering](map:gb:Kettering), 230 in Rushden and Higham Ferrers and 210 in [Corby](map:gb:Corby): snapshots, not fleet sizes.',
-        'Hours may differ there. North Northamptonshire Council and Northamptonshire Police began a six-month trial of round-the-clock hire on 10 February 2025: check the app before a late ride.',
+        'Hours may differ there: on 10 February 2025 North Northamptonshire Council and Northamptonshire Police began a six-month trial of round-the-clock hire, so check the app before a late ride.',
       ],
     },
     {
@@ -145,7 +145,7 @@ const guide: Guide = {
     { title: 'West Northamptonshire Council: Northampton e-scooter trial extended to May 2027 (27 April 2026)', url: 'https://www.westnorthants.gov.uk/news/northampton-e-scooter-trial-extended-may-2027-renewed-focus-safety-and-community-concerns' },
     { title: 'West Northamptonshire Council: Public Spaces Protection Orders in force across Northampton', url: 'https://www.westnorthants.gov.uk/personal-safety-and-community-support/public-spaces-protection-orders-pspos/pspos-force-across' },
     { title: 'West Northamptonshire Council: Have your say on proposed Public Spaces Protection Orders (11 August 2026)', url: 'https://www.westnorthants.gov.uk/news/residents-invited-have-their-say-proposed-public-spaces-protection-orders' },
-    { title: 'North Northamptonshire Council: Voi e-scooters (26 June 2026)', url: 'https://www.northnorthants.gov.uk/buses-and-transport/voi-e-scooters' },
+    { title: 'North Northamptonshire Council: Voi e-scooters (26 October 2026)', url: 'https://www.northnorthants.gov.uk/buses-and-transport/voi-e-scooters' },
     { title: 'North Northamptonshire Council: Voi e-scooters to be available 24/7 in North Northants (5 February 2025)', url: 'https://www.northnorthants.gov.uk/news/voi-e-scooters-be-available-247-north-northants' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'University of Northampton: Cycling, e-scooters and walking', url: 'https://www.northampton.ac.uk/student-life/travel-and-parking/cycling-and-walking/' },

@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-turku',
   topic: 'turku',
   name: 'E-scooters in Turku, Finland',
-  title: 'E-scooters Turku 2026: Voi, Ryde, night ban and parking',
-  description: 'E-scooters in Turku: Voi and Ryde under the City’s licence, the weekend night ban, no-ride areas, parking in the centre and the season to 31 October.',
+  title: 'E-scooters Turku 2026: Voi, Ryde, prices, winter, night ban',
+  description: 'E-scooters in Turku: Voi costs €0.27 a minute (November 2026), Ryde, the winter break from 1 November, the weekend night ban and parking in the centre.',
   headline: 'E-scooters in Turku: Voi and Ryde, the weekend night ban, where to park and when the season ends',
-  lede: 'E-scooters in Turku are rented from Voi and Ryde, and since 2026 every company needs the City’s micromobility licence; each app shows its price. No one may ride a rental scooter from 00:00 to 05:00 on Friday and Saturday nights. The licence’s season runs from 1 April to 31 October: from 1 November the scooters must be off the streets unless the City agrees in writing to more time. From 15 you ride on the cycle path or the road, never the pavement, and in the centre you park only in a marked bay.',
+  lede: 'E-scooters in Turku are rented from Voi and Ryde through their apps, and since 2026 every company needs the City’s micromobility licence. As of November 2026 Voi charges no unlock fee and €0.27 a minute, so 10 minutes cost €2.70; Ryde’s app shows its price before you unlock. The licence’s season runs from 1 April to 31 October, so from 1 November to 31 March the scooters must be off the streets unless the City agrees in writing to more time. No one may ride a rental scooter from 00:00 to 05:00 on Friday and Saturday nights. From 15 you ride on the cycle path or the road, never the pavement, and in the centre you park only in a marked bay.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Turku',
@@ -24,7 +24,7 @@ const guide: Guide = {
             rows: [
               ['Voi', 'Yes: back on 18 March, before the season, by agreement with the City (Yle)'],
               ['Ryde', 'Yes: back on 18 March with Voi (Yle)'],
-              ['Dott', 'Had applied by March 2026'],
+              ['Dott', 'Had applied by March 2026; not on Dott’s list of towns (November 2026)'],
             ],
           },
         },
@@ -34,7 +34,7 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Turku: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Voi** charges no unlock fee and €0.27 a minute (as of November 2026): 10 minutes cost €2.70 and 20 minutes €5.40. **Ryde** rounds each ride up to the next full minute, and leaving a scooter outside its area can cost up to €50 on top, under its Finnish terms. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Bad parking can cost more. The licence lets the City move a wrongly parked scooter and bill the company; from March 2026 the fees are €20 for a short move or €40 to the depot, plus €25 in handling costs and €15 a week in storage, Yle reported on 24 February 2026. The company may pass this on to the rider who parked it.',
       ],
     },
@@ -87,7 +87,7 @@ const guide: Guide = {
             head: ['Rule', 'What applies', 'Who sets it'],
             rows: [
               ['Minimum age', '15; handing a scooter to someone younger can cost €60', 'Road Traffic Act §§ 17 and 164 a'],
-              ['Company’s age', 'Voi and Ryde in their apps', 'Each company’s terms'],
+              ['Company’s age', 'Ryde: 15; Voi: shown in its app', 'Each company’s terms'],
               ['Where to ride', 'Cycle path or lane, else the road; not the pavement', 'Road Traffic Act §§ 18 and 52; City licence'],
               ['Alcohol and drugs', '0.5‰ in the blood or 0.22 mg/l in the breath is too much; no narcotics; €200 fee', 'Road Traffic Act §§ 17 a and 164'],
               ['Passengers', 'One rider only', 'Road Traffic Act § 147'],
@@ -145,7 +145,11 @@ const guide: Guide = {
     },
     {
       question: 'When does the e-scooter season end in Turku?',
-      answer: 'The licence’s season runs from 1 April to 31 October. From 1 November to 31 March the scooters must be off the streets unless the City consents in writing to more time.',
+      answer: 'On 31 October: the licence’s season runs from 1 April to 31 October, and from 1 November to 31 March the scooters must be off the streets unless the City consents in writing to more time.',
+    },
+    {
+      question: 'How much does an e-scooter cost in Turku?',
+      answer: 'At Voi, nothing to unlock and €0.27 a minute (as of November 2026), so 10 minutes cost €2.70 and 20 minutes €5.40. Ryde rounds each ride up to the next full minute.',
     },
     {
       question: 'Where can you park an e-scooter in central Turku?',
@@ -176,6 +180,9 @@ const guide: Guide = {
     { title: 'Tallink Silja: Vehicle, bicycle and scooter', url: 'https://www.tallink.com/good-to-know/vehicle-bicycle-scooter' },
     { title: 'Tallink Silja: Ferries to Åland', url: 'https://www.tallink.com/travelling/one-way/aland-ferry' },
     { title: 'Port of Turku: Passenger traffic from Turku to Stockholm', url: 'https://www.portofturku.fi/en/passenger-traffic/' },
+    { title: 'Voi: rates and zones for Turku (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/122/netex.xml' },
+    { title: 'Ryde: Terms and conditions for Finland', url: 'https://www.ryde-technology.com/terms-conditions-finland' },
+    { title: 'Dott: Locations (updated 16 July 2026)', url: 'https://ridedott.com/locations/' },
   ],
 };
 

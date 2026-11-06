@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'indianapolis',
   name: 'E-scooters in Indianapolis',
   title: 'E-scooters in Indianapolis 2026: Bird, Lime, rules, parking',
-  description: 'E-scooters in Indianapolis: where Bird and Lime run, how to find the price, why sidewalks and the Cultural Trail are off limits, and how to park.',
+  description: 'E-scooters in Indianapolis: how to rent Bird and Lime, the age and helmet rules, why sidewalks and the Cultural Trail are off limits, and how to park.',
   headline: 'E-scooters in Indianapolis: Bird and Lime, the rules, and where you can ride and park',
-  lede: 'E-scooters in Indianapolis come from Bird and Lime, the two scooter companies on the City’s shared mobility page (26 October 2026). Bird’s open data gives no Indianapolis price, so check the fare in the Bird or Lime app before you unlock. City rules let you rent from 18 and ride on streets and in bike lanes only: never on sidewalks, the Cultural Trail or the Monon Trail.',
+  lede: 'You can rent an e-scooter in Indianapolis from Bird or Lime, the two scooter companies the City lists as of November 2026. Get the Bird or Lime app and scan the QR code on the handlebars; each company sets its own fares, and the app shows the price before you unlock. You must be 18 to ride a shared scooter, and a helmet is encouraged but not required. Ride on city streets and in bike lanes only, never on sidewalks, the Cultural Trail or the Monon Trail, and park upright with 4 feet clear for people walking.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:in:Indianapolis',
@@ -16,23 +16,23 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Indianapolis?',
       blocks: [
-        'Electric scooter rental in Indianapolis runs under Chapter 905 of the Revised Code of the Consolidated City and County, passed on 16 July 2018. Each company needs a yearly licence from the Department of Business and Neighborhood Services (BNS). The City’s page lists two scooter operators, with the colours of their scooters: **Bird** (black and white) and **Lime** (green).',
+        'Electric scooter rental in Indianapolis runs under Chapter 905 of the Revised Code of the Consolidated City and County, passed on 16 July 2018. Each company needs a yearly licence from the Department of Business and Neighborhood Services (BNS). As of November 2026 the City’s page lists two scooter operators, with the colours of their scooters: **Bird** (black and white) and **Lime** (green).',
         {
           list: [
-            '**Caps.** The City’s page says BNS regulations adopted in May 2019 allow up to six operators with 1,000 scooters each, more only if each scooter is ridden often enough. A fleet of 301 to 1,000 must keep at least 10% of its scooters in the City’s “access zones” and no more than 65% in its “high utilization zones”. The regulations were written to lapse after five years unless readopted, and the page doesn’t say whether they were.',
+            '**Caps.** The City’s page says BNS regulations adopted in May 2019 allow up to six operators with 1,000 scooters each, more only if each scooter is ridden often enough. A fleet of 301 to 1,000 must keep at least 10% of its scooters in the City’s “access zones” and no more than 65% in its “high utilization zones”. The City’s page still describes these caps, though the regulations were written to lapse after five years unless readopted.',
             '**What the licence costs.** $15,000 a year plus $1 per scooter per day, paid by the operator.',
           ],
         },
-        'At 2:38 a.m. on Monday 26 October 2026 the [Indianapolis map](map:us:in:Indianapolis) showed about 1,610 scooters, roughly 1,000 Lime and 610 Bird: what stood there at that moment, not the fleets. By the Census Bureau’s boundaries, every one stood inside the consolidated city of Indianapolis, 96% of them in Center Township; one Bird stood in Rocky Ripple, a small town within it. None stood in Speedway, Beech Grove, Lawrence or Southport, the four Marion County cities and towns outside the consolidated city. At least 40 stood on IU Indianapolis’s campus and eight on Butler University’s.',
-        'For Lime the map shows each scooter’s position and charge; for Bird, its position, charge and range left, plus Bird’s no-ride and no-parking zones. Scooters on a ride aren’t shown. **First ride?** Get the Bird or Lime app and scan the QR code on the handlebars: see [how to rent an e-scooter](guide:how-to-rent).',
-        '**Bikes aren’t on the map.** ScootRadar shows standing e-scooters only. Bird’s open data has an e-bike type but listed none on 26 October 2026. Pacers Bikeshare, the docked bike share the City lists, had 56 stations that day; you rent its bikes in the BCycle app, and they must go back to a dock.',
+        'At 2:38 a.m. on Monday 26 October 2026 the [Indianapolis map](map:us:in:Indianapolis) showed roughly 610 Bird scooters free to rent at that moment and about 1,000 Lime scooters as last counted, 96% of them in Center Township, downtown and the neighbourhoods around it. At least 40 stood on IU Indianapolis’s campus and eight on Butler University’s.',
+        '**First ride?** Get the Bird or Lime app and scan the QR code on the handlebars: see [how to rent an e-scooter](guide:how-to-rent).',
+        '**Prefer a bike?** Pacers Bikeshare, the docked bike share the City lists, has 56 stations as of November 2026; you rent its bikes in the BCycle app, and they must go back to a dock.',
       ],
     },
     {
-      heading: 'How much does a Bird or Lime scooter cost in Indianapolis?',
+      heading: 'Scooter fares and Pacers Bikeshare prices in Indianapolis',
       blocks: [
-        'The City doesn’t set fares: each company files a rate schedule with its licence application. Bird’s open data for Indianapolis held no price plan on 26 October 2026, and Lime’s prices are in its app. So open the Bird or Lime app, which shows the unlock fee and the rate per minute before you start.',
-        'Pacers Bikeshare publishes its prices in its open data. On 26 October 2026 pay as you ride cost $0.20 a minute on a classic bike, and a $3 fee plus $0.25 a minute on an e-bike. An Annual Pass costs $160.50 and covers unlimited rides of up to 60 minutes for a year. Marion County residents can ask for an IndyRides Free pass, which covers rides of up to 30 minutes for a year. The BCycle app shows the final price.',
+        'Bird and Lime each set their own scooter fares, and each files its rate schedule with the City when it applies for a licence.',
+        'Pacers Bikeshare publishes its prices in its open data. As of November 2026 pay as you ride costs $0.20 a minute on a classic bike, and a $3 fee plus $0.25 a minute on an e-bike. An Annual Pass costs $160.50 and covers unlimited rides of up to 60 minutes for a year, then $0.25 a minute. Marion County residents can ask for an IndyRides Free pass, which covers rides of up to 30 minutes for a year. The BCycle app shows the final price.',
       ],
     },
     {
@@ -41,7 +41,7 @@ const guide: Guide = {
         'WISH-TV reported in July 2019 that a state law in force from 1 July called these devices “electric foot scooters”, which left them legal on Indianapolis’s sidewalks and greenways for two weeks, because the City’s ordinance called them only “motorized vehicles”. On 15 July 2019 the City-County Council banned them from both again. The City’s rules are the ones to follow here.',
         {
           table: {
-            caption: 'E-scooter rules in Indianapolis, and who sets them (as published on 26 October 2026)',
+            caption: 'E-scooter rules in Indianapolis, and who sets them (as of November 2026)',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Age', '18 or over to ride a shared scooter', 'Chapter 905 (2018)'],
@@ -52,7 +52,7 @@ const guide: Guide = {
               ['Passengers', 'One rider only', 'Chapter 905'],
               ['Animals', 'Don’t ride while controlling an animal, by hand or on a leash', 'Chapter 905'],
               ['Lights', 'A white front and red rear light, visible from 500 feet, on any shared scooter that can run after sunset', 'Chapter 905'],
-              ['Speed', 'A shared scooter’s motor must top out at 20 mph; the City’s scooter rules set no riding speed limit', 'Chapter 905'],
+              ['Speed', 'A shared scooter’s motor must top out at 20 mph', 'Chapter 905'],
             ],
           },
         },
@@ -71,7 +71,7 @@ const guide: Guide = {
             '**Monument Circle.** Bird’s data makes the middle of the Circle, inside the roadway, a no-ride zone.',
           ],
         },
-        'Bird’s open data held 10 no-ride and 39 no-parking zones on 26 October 2026, nearly all of them downtown, and the map draws them at street zoom. It has none for Lime, so check the map in the Lime app before you set off.',
+        'Bird’s open data held 10 no-ride and 39 no-parking zones on 26 October 2026, nearly all of them downtown, and the [Indianapolis map](map:us:in:Indianapolis) draws them at street zoom. Lime’s zones are in its app: check them before you set off.',
       ],
     },
     {
@@ -85,7 +85,7 @@ const guide: Guide = {
             '**Never** blocking a bus stop, BRT station, accessible parking, a curb ramp, a driveway, a loading zone or a bike-share station; never within 10 feet of a building entrance; not in a street or alley unless approved, and not on private property without permission.',
           ],
         },
-        '**Mass Ave has its own spots.** In September 2025 WRTV reported a Department of Public Works pilot of about 30 designated scooter parking spots along Massachusetts Avenue: a ride won’t end, and the charges keep running, until the scooter stands within inches of one. In August 2026 INDYtoday pointed riders to the Mass Ave parking zones set up with Bird. Bird’s data marks Mass Ave as no-parking from Delaware Street to 9th Street; the spots themselves aren’t in its open data, so follow the app when you end the ride.',
+        '**Mass Ave has its own spots.** In September 2025 WRTV reported a Department of Public Works pilot of about 30 designated scooter parking spots along Massachusetts Avenue: a ride won’t end, and the charges keep running, until the scooter stands within inches of one. In August 2026 INDYtoday pointed riders to the Mass Ave parking zones set up with Bird. Bird’s data marks Mass Ave as no-parking from Delaware Street to 9th Street: follow the app to a spot when you end the ride.',
         'A company must deal with a badly parked scooter within two hours of notice between 6 a.m. and 9 p.m., and within six hours overnight, and the Code sets a $25 penalty, charged to the company, for each one parked illegally. To report one, call Bird on 1-866-205-2442 or Lime on 1-888-LIME-345, the numbers the City lists.',
       ],
     },
@@ -93,8 +93,8 @@ const guide: Guide = {
       heading: 'IU Indianapolis, IndyGo and the airport',
       blocks: [
         '**IU Indianapolis** says several companies run scooters on campus. Its guidelines: don’t ride on sidewalks, use the bike lanes, yield to pedestrians and always wear a helmet. Park at bike racks, never in walkways leading to buildings, car parking spaces, ADA ramps or indoors. Indiana University’s policy FIN-INS-13, reviewed in June 2026, requires a headlight and tail light from dusk to dawn, bans parking on grass and lets campus officials remove and impound badly parked scooters.',
-        '**IndyGo** carries bikes on the outside rack of local buses and the inside rack of its BRT buses, such as the Red Line. Its code of conduct says nothing about scooters, so end the ride before you board, clear of the stop and the station.',
-        '**Indianapolis International Airport** lists buses, taxis, Uber and Lyft, black cars and hotel shuttles among its ground transport, not scooters, and it lies well outside Bird’s service area.',
+        '**IndyGo** carries bikes on the outside rack of local buses and the inside rack of its BRT buses, such as the Red Line. End your scooter ride before you board, and park it clear of the stop or station, as the City’s rules ask.',
+        '**Indianapolis International Airport** lists buses, taxis, Uber and Lyft, black cars and hotel shuttles for its ground transport, and it lies well outside Bird’s service area.',
         'For scooters elsewhere in Indiana, the map shows Veo in [West Lafayette](map:us:in:West Lafayette), by Purdue. In Ohio, see [e-scooters in Columbus](guide:columbus).',
       ],
     },
@@ -122,20 +122,16 @@ const guide: Guide = {
       answer: 'No, except briefly to reach or leave a parked spot. The City-County Council banned sidewalk riding in July 2019, with a ticket of up to $20, WISH-TV reported. Use city streets and bike lanes instead.',
     },
     {
-      question: 'How much is a Lime or Bird scooter in Indianapolis?',
-      answer: 'Bird’s open data gives no Indianapolis price, and the City doesn’t set fares. Open the Lime or Bird app, which shows the unlock fee and the rate per minute before you start the ride.',
-    },
-    {
       question: 'How old do you have to be to ride a scooter in Indianapolis?',
       answer: '18. Chapter 905 of the Revised Code, which governs shared scooters, says riders must be at least 18 years old.',
     },
     {
       question: 'Do you need a helmet to ride an e-scooter in Indianapolis?',
-      answer: 'The City encourages helmets but its rules don’t require one, and INDYtoday wrote in August 2026 that no law requires one on a stand-up scooter. IU Indianapolis tells riders on campus to always wear one.',
+      answer: 'No. The City encourages helmets but doesn’t require one, and INDYtoday wrote in August 2026 that you can’t be fined for riding a stand-up scooter without one. The City says several operators give free or low-cost helmets to riders who ask, and IU Indianapolis tells riders on campus to always wear one.',
     },
     {
-      question: 'Is there a curfew for e-scooters in Indianapolis?',
-      answer: 'No City rule sets riding hours, so the app shows whether you can ride late. Indy Parks close at dusk and White River State Park from 11 p.m. to 5 a.m.',
+      question: 'Can you ride an e-scooter at night in Indianapolis?',
+      answer: 'Chapter 905 requires a white front light and a red rear light, visible from 500 feet, on any shared scooter that can run after sunset. Keep to the streets and bike lanes after dark: Indy Parks close at dusk, and White River State Park from 11 p.m. to 5 a.m.',
     },
   ],
   sources: [
@@ -153,7 +149,6 @@ const guide: Guide = {
     { title: 'Indiana University: policy FIN-INS-13, bicycles, scooters and other personal conveyance vehicles', url: 'https://policies.iu.edu/policies/fin-ins-13-bicycles-scooters-other-personal-conveyance-vehicles/index.html' },
     { title: 'IndyGo: code of conduct', url: 'https://www.indygo.net/code-of-conduct/' },
     { title: 'Indianapolis International Airport: transportation and car rental', url: 'https://www.ind.com/transportation-car-rental' },
-    { title: 'US Census Bureau: TIGERweb boundaries', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
     { title: 'WISH-TV: e-scooter riders now face $20 ticket under new city law, 16 July 2019', url: 'https://www.wishtv.com/news/e-scooter-riders-now-face-20-ticket-under-new-city-law/' },
     { title: 'WISH-TV: City-County Council approves second scooter ordinance, 16 July 2019', url: 'https://www.wishtv.com/news/city-county-council-approves-second-scooter-ordinance/' },
     { title: 'WRTV: Indy DPW pilot programme for e-scooter parking on Mass Ave, 10 September 2025', url: 'https://www.wrtv.com/news/tired-of-e-scooter-clutter-on-downtown-streets-a-new-indy-dpw-pilot-program-aims-to-fix-that/' },

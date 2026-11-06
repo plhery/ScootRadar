@@ -5,20 +5,21 @@ const guide: Guide = {
   slug: 'e-scooters-osaka',
   topic: 'osaka',
   name: 'E-scooters in Osaka',
-  title: 'E-scooters Osaka 2026: LUUP, rules and where to park',
-  description: 'E-scooters in Osaka: LUUP’s ports and area, who may ride (16 or over, no licence), the 6 km/h pavement mode, Japan’s penalties and the Osaka Metro rule.',
+  title: 'E-scooters Osaka 2026: LUUP prices, rules and parking',
+  description: 'E-scooters in Osaka: LUUP costs ¥50 to unlock and ¥20 a minute (November 2026). Who may ride (16+, no licence), the 6 km/h pavement mode, parking, penalties.',
   headline: 'E-scooters in Osaka: renting LUUP, who may ride, where to ride and where to park',
-  lede: 'You rent e-scooters in Osaka from LUUP. Japanese law puts e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own: anyone 16 or over may ride one without a driving licence, and riders are asked only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port.',
+  lede: 'You rent e-scooters in Osaka from LUUP, starting and ending each ride in its app; to find one near you, the [Osaka map](map:jp:Osaka) shows each LUUP port and how many scooters stand there. As of November 2026 LUUP charges ¥50 to unlock and ¥20 a minute in Osaka, so 10 minutes cost ¥250. Japanese law puts e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own: anyone 16 or over may ride one without a driving licence, and riders are asked only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'jp:Osaka',
   sections: [
     {
-      heading: 'E-scooters in Osaka: LUUP on the map',
+      heading: 'E-scooters in Osaka: where to find LUUP and what it costs',
       blocks: [
         'On the [Osaka map](map:jp:Osaka), each **LUUP** port shows how many scooters stand there. At 10:50 on Thursday 29 October 2026, Osaka time, the map’s Osaka figure was about 3,200 LUUP scooters: a snapshot, not a fleet size.',
         'A City of Osaka paper of July 2026 notes that LUUP spread into neighbouring cities, Sakai, Suita and Higashiosaka among them, from March 2026.',
         'Besides e-scooters, LUUP rents e-bikes and seated scooters; docomo bike share and Open Street, the other two main share operators the City names, rent bicycles.',
+        '**What a ride costs.** As of November 2026 LUUP charges ¥50 to unlock and ¥20 a minute in Osaka, Shin-Osaka and Esaka: 10 minutes cost ¥250 and 20 minutes ¥450. The minute costs ¥25 in Tokyo and ¥15 in other regions, its price list says, and prices differ in some areas.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -112,11 +113,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Osaka?',
-      answer: 'LUUP’s: find them at its ports on the [Osaka map](map:jp:Osaka).',
+      answer: 'LUUP’s: to find one near you, look for its ports on the [Osaka map](map:jp:Osaka).',
     },
     {
       question: 'How much does LUUP cost in Osaka?',
-      answer: 'LUUP’s app shows the price before you start the ride.',
+      answer: 'As of November 2026, ¥50 to unlock and ¥20 a minute, so 10 minutes cost ¥250 and 20 minutes ¥450. LUUP’s app shows the price before you start the ride.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Osaka?',
@@ -145,6 +146,7 @@ const guide: Guide = {
     { title: 'National Police Agency: guideline for rental companies, March 2023 (Japanese)', url: 'https://www.npa.go.jp/bureau/traffic/anzen/img/tokuteikogata/guideline.pdf' },
     { title: 'Osaka Metro: carry-on items (Japanese)', url: 'https://subway.osakametro.co.jp/guide/page/temawarihin.php' },
     { title: 'JR West: passenger rules, carry-on items (Japanese)', url: 'https://www.jr-odekake.net/ticket/guide/assets/pdf/stipulation/2022/covenant2-10.pdf' },
+    { title: 'LUUP: home page with its price list', url: 'https://luup.sc/en/' },
   ],
 };
 

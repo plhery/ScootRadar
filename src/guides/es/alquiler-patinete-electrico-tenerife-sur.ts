@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tenerife',
   name: 'Alquiler de patinete eléctrico en Tenerife sur',
   title: 'Alquiler patinete eléctrico Tenerife sur: Hoppy, Dott y Bird',
-  description: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, precios, casco obligatorio, paseos prohibidos, dónde aparcar y cómo ir al aeropuerto.',
+  description: 'Alquiler de patinete eléctrico en Tenerife sur: 10 min, 3,45 € con Hopp y 4,50-4,70 € con Hoppy; Dott y Bird, en su app. Casco obligatorio, paseos prohibidos.',
   headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, precios, casco y paseos prohibidos',
-  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. En noviembre de 2026, diez minutos cuestan de 4,50 a 4,70 € con Hoppy y 3,45 € con Hopp; Dott y Bird te muestran su precio en la app antes de desbloquear. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
+  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Descargas la app del operador, desbloqueas el patinete con ella y pagas por minuto. En noviembre de 2026, diez minutos cuestan 3,45 € con Hopp y de 4,50 a 4,70 € con Hoppy; Dott y Bird te muestran su precio en la app antes de desbloquear. Con Hoppy y Bird, el viaje solo termina en uno de sus puntos de aparcamiento. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
   published: '2026-10-13',
   updated: '2026-10-24',
   city: 'es:Playa de las Américas',
@@ -26,7 +26,7 @@ const guide: Guide = {
             '**Hopp**, una marca islandesa que aquí gestiona una franquicia local, en casi la misma franja y en una pequeña zona aparte en [Golf del Sur](map:es:Golf del Sur), en San Miguel de Abona.',
           ],
         },
-        'La nueva ordenanza de Adeje exigirá un título municipal a las empresas de alquiler cuando entre en vigor (más abajo).',
+        'La nueva ordenanza de Adeje exigirá un título municipal a las empresas de alquiler (más abajo).',
         'A las 8:27 del 30 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 980 patinetes de Hoppy, 530 de Dott, 470 de Bird y 30 de Hopp libres en ese momento.',
         'En Santa Cruz, la capital, también está Dott: mira el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife). Y la app de ISLA Ride, publicada en diciembre de 2025, anuncia patinetas eléctricas de alquiler en Tenerife.',
       ],
@@ -34,7 +34,7 @@ const guide: Guide = {
     {
       heading: 'Precios del alquiler de patinete eléctrico en Tenerife sur',
       blocks: [
-        'La tarifa por minuto de Hoppy depende del patinete; Dott y Bird te muestran la suya en la app antes de desbloquear.',
+        'La tarifa por minuto de Hoppy depende del patinete.',
         {
           table: {
             caption: 'Precios del alquiler de patinete en Tenerife sur, en noviembre de 2026 (tarifas publicadas)',
@@ -47,6 +47,7 @@ const guide: Guide = {
             ],
           },
         },
+        'Hopp sale más barato que Hoppy: 3,45 € por diez minutos y 5,95 € por veinte, frente a 4,50-4,70 € y 8-8,40 €.',
         'Pagas cada minuto desbloqueado, en marcha o parado. Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent).',
         'Para un día de excursión, sale más barata la guagua: el bono de un día cuesta 10 € (más 2 € de la tarjeta ten+) por 24 horas de guaguas de TITSA y tranvía sin límite, según Metrotenerife, y 40 minutos en un Hopp cuestan 10,95 €.',
       ],
@@ -57,7 +58,7 @@ const guide: Guide = {
         'Desde 2016, Arona, el municipio de Los Cristianos y Playa de las Américas, prohíbe circular en bicicleta, segway o patinete por 98 paseos y calles peatonales. Entre ellos están el frente marítimo entre Los Cristianos y Las Américas (Paseo Marítimo, Paseo de Las Vistas y Paseo Francisco Andrade Fumero), la zona peatonal del casco de Los Cristianos y los paseos de Palm-Mar y Las Galletas.',
         { note: 'Bird y Hopp no bloquean el paseo en sus apps, y Hoppy te frena a 12 km/h en casi todo él. La policía, en cambio, te para: bájate y llévalo a pie, o ve por la calzada.' },
         'La policía vigila: en un solo operativo, en abril de 2026, Arona denunció 92 patinetes e inmovilizó 81 por circular por zonas peatonales, no estar inscritos o aparcar en lugares no autorizados. Las condiciones de Dott para España, por ejemplo, hacen pagar cualquier multa a quien conduce y permiten a Dott dar tu nombre a la policía.',
-        'En Costa Adeje, la nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, hará del paseo una zona peatonal, prohibida a los patinetes, y de cruzar el paso subido al patinete, una maniobra temeraria. Las empresas de alquiler necesitarán un título municipal y deberán geolocalizar cada patinete en tiempo real. Su fecha de entrada en vigor no se ha publicado.',
+        'En Costa Adeje, la nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, hará del paseo una zona peatonal, prohibida a los patinetes, y de cruzar el paso subido al patinete, una maniobra temeraria. Las empresas de alquiler necesitarán un título municipal y deberán geolocalizar cada patinete en tiempo real. Según su disposición final, entra en vigor al pasar el plazo que fija para ello la Ley de Bases de Régimen Local.',
       ],
     },
     {
@@ -134,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete eléctrico en Tenerife sur?',
-      answer: 'En noviembre de 2026, con Hoppy pagas 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €). Dott y Bird te muestran su precio en la app antes de desbloquear. Para un día entero de excursión, el bono de un día cuesta 10 € (más 2 € de la tarjeta ten+) por 24 horas de guaguas de TITSA y tranvía.',
+      answer: 'En noviembre de 2026, con Hoppy pagas 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €; veinte, 5,95 €), el más barato de los dos. El de Dott y Bird lo ves en su app. Para un día entero de excursión, el bono de un día cuesta 10 € (más 2 € de la tarjeta ten+) por 24 horas de guaguas de TITSA y tranvía.',
     },
     {
       question: '¿Qué app de patinetes eléctricos funciona en Tenerife?',
@@ -158,7 +159,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 5 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'BOE: Real Decreto 518/2026, que modifica el Reglamento General de Circulación, en vigor desde el 1 de octubre de 2026', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
     { title: 'Ayuntamiento de Arona: los 98 paseos y calles peatonales prohibidos (BOP, agosto de 2016)', url: 'https://www.arona.org/Portals/0/documentos/0_37129_1.pdf' },
     { title: 'Ayuntamiento de Arona: patinetes retirados en 2024 y 2025 (23 de julio de 2025)', url: 'https://www.arona.org/Tu-Ayuntamiento/Prensa/Noticias/ctl/Ver/mid/422?id=92916' },

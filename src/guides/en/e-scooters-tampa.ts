@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tampa',
   name: 'E-scooters in Tampa, Florida',
   title: 'E-scooters in Tampa, Florida 2026: Lime, Spin and the rules',
-  description: 'E-scooters in Tampa: Lime and Spin, the Florida and City rules, corral-only parking, the Riverwalk and Bayshore no-ride areas, USF, HART and the airport.',
+  description: 'E-scooters in Tampa: how to rent Lime and Spin, the Florida and City rules, corral-only parking, and where you can’t ride, from the Riverwalk to Bayshore.',
   headline: 'E-scooters in Tampa: Lime and Spin, the rules, corral parking and where you can’t ride',
-  lede: 'E-scooters in Tampa come from two companies, Lime and Spin, under a City contract that runs to November 2028. Spin’s open data lists no prices, so check the app before you unlock. Florida law asks for no driver’s licence to ride a scooter, and Spin rents only to people aged 18 or over. End every ride in a designated corral, and never ride on the Tampa Riverwalk, Bayshore Boulevard or 7th Avenue in Ybor City.',
+  lede: 'You can rent an e-scooter in Tampa from Lime or Spin, the two companies under a City of Tampa contract that runs to 5 November 2028. Download either app, scan the QR code on a scooter to unlock it and end the trip in the app; the app shows the price before you unlock. The City says riders must be 16 or over and hold a driver’s licence or permit, though Florida law requires no licence, and Spin rents only to people aged 18 or over. Ride on the street, in the bike lane where there is one, end every ride in a designated corral, and never ride on the Tampa Riverwalk, Bayshore Boulevard or 7th Avenue in Ybor City.',
   published: '2026-10-26',
   updated: '2026-11-02',
   city: 'us:fl:Tampa',
@@ -24,17 +24,16 @@ const guide: Guide = {
           ],
         },
         'The City’s list of current contracts for October 2026 shows the programme under contract 25-P-00196, with two vendors, Neutron Holdings Inc. d/b/a Lime and Pheenix USH LLC, until 5 November 2028. Its programme page, last updated on 7 May 2025, names the two companies as Lime and Spin.',
-        'At 6:44 am on Monday 26 October 2026 the [Tampa map](map:us:fl:Tampa) showed about 320 Spin scooters free to rent at that moment and about 1,400 Lime scooters as last counted. Every Spin scooter then stood inside Tampa’s city limits.',
-        'The map shows standing e-scooters only. Both companies also rent e-bikes, and Spin’s open data listed 22 that morning: find them in the apps. Coast Bike Share is gone: HOPR, which ran it, says it has closed all its sites in Tampa.',
-        'Install an app and add a card before you set out; [how to rent an e-scooter](guide:how-to-rent) explains the rest.',
+        'At 6:44 am on Monday 26 October 2026 the [Tampa map](map:us:fl:Tampa) showed about 320 Spin scooters free to rent at that moment and about 1,400 Lime scooters as last counted.',
+        'Both companies also rent e-bikes in their apps. Coast Bike Share is gone: HOPR, which ran it, says it has closed all its sites in Tampa and no longer operates in Florida.',
       ],
     },
     {
-      heading: 'How much does a Lime or Spin scooter cost in Tampa?',
+      heading: 'How do you rent a Lime or Spin scooter in Tampa?',
       blocks: [
-        'On 26 October 2026 Spin’s open data listed no Tampa prices, and the City’s page lists none for either company: the app shows the unlock fee and the rate per minute before you start.',
-        'When it made docks compulsory on 1 April 2024, the City said the companies would charge an “out-of-hub fee” of up to $5 for a scooter left outside an approved dock, and credit 50 cents to $2.50 to a rider who returned a misplaced one. Its programme page, updated in May 2025, doesn’t repeat these figures: check the app.',
-        'Spin Access offers cheaper rides to people on limited incomes, and a text-message unlock for those without a smartphone. Lime’s offers are in its app.',
+        'The City’s programme page sets out the steps: download the Lime or Spin app, create an account with your email address, and scan the QR code on the scooter to unlock it. When you’re done, park it in a corral and end the trip in the app. Add a card before you set out; [how to rent an e-scooter](guide:how-to-rent) explains the rest.',
+        'When it made docks compulsory on 1 April 2024, the City said each company would charge an “out-of-hub fee” for a scooter left outside an approved dock, and reward a rider who returned a misplaced one to a dock with credit on their account.',
+        'Spin Access offers cheaper rides to people on limited incomes, and a way to ride for people without a smartphone or a credit card. Lime’s offers are in its app.',
       ],
     },
     {
@@ -43,20 +42,19 @@ const guide: Guide = {
         'Florida law gives a scooter rider a cyclist’s rights and duties and lets cities add rules; the City runs the programme; the companies’ terms come on top.',
         {
           table: {
-            caption: 'Shared e-scooter rules in Tampa on 26 October 2026, and who sets them',
+            caption: 'Shared e-scooter rules in Tampa as of November 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Age', 'Spin rents only to people aged 18 or over; check Lime’s app. The City’s page says riders must be 16 or over. Florida sets no minimum age, but since 1 July 2025 has let cities set one', 'Spin (terms); City of Tampa; Fla. Stat. § 316.2128(7)'],
-              ['Licence', 'None in law: Florida requires no driver’s licence, registration or insurance for a scooter, and Spin’s terms ask for none. The City’s page still says riders need “a valid driver’s license or permit”, so carry yours if you have one', 'Florida: § 316.2128(2)–(3); Spin (terms); City of Tampa'],
+              ['Licence', 'None in law: Florida requires no driver’s licence, registration or insurance for a scooter. The City’s page still says riders need “a valid driver’s license or permit”, so carry yours if you have one', 'Florida: § 316.2128(2)–(3); City of Tampa'],
               ['Helmet', 'Required under 16. The City encourages one for everyone', 'Florida: § 316.2065(3)(d); City of Tampa'],
               ['Speed', 'The City says shared scooters go up to about 15 mph', 'City of Tampa'],
               ['On the street', 'Obey all traffic laws. Ride in the bike lane, or as close to the right-hand curb as practicable, no more than two abreast', 'City of Tampa; Florida: § 316.2065(5)–(6)'],
-              ['Sidewalks', 'Florida lets cities permit, control or regulate scooters on sidewalks by ordinance, with a 15 mph limit there. The City’s page doesn’t say what Tampa allows, so check the app and signs. On a sidewalk or crosswalk, yield to people walking and give an audible signal before passing', 'Florida: §§ 316.008(7)(a), 316.2128(1) and 316.2065(9)–(10); City of Tampa'],
+              ['Sidewalks', 'Florida lets cities permit, control or regulate scooters on sidewalks by ordinance, with a 15 mph limit there; the City points riders to its own, Tampa Code § 25-173.1. On a sidewalk or crosswalk, yield to people walking and give an audible signal before passing. When you park, leave at least four feet of sidewalk clear', 'Florida: §§ 316.008(7)(a), 316.2128(1) and 316.2065(9)–(10); City of Tampa'],
               ['Passengers', 'None: one rider per scooter', 'City of Tampa; Florida: § 316.2065(3)(a)'],
               ['Lights', 'From sunset to sunrise, a white light in front and a red one behind', 'Florida: § 316.2065(7)'],
               ['Alcohol and drugs', 'Never ride under the influence', 'City of Tampa'],
-              ['Hours', 'The City’s page sets none; the apps show any hours', 'City of Tampa; Lime and Spin'],
-              ['Fines', 'Breaking Florida’s bicycle rules is a noncriminal infraction with a $15 penalty. In April 2024 the City said a company could charge up to $5 for a scooter left outside a dock', 'Florida: §§ 316.2065(19) and 318.18(1)(b); City of Tampa (2024)'],
+              ['Fines', 'Breaking Florida’s bicycle rules is a noncriminal infraction with a $15 penalty. In April 2024 the City said the companies would charge a fee for a scooter left outside a dock', 'Florida: §§ 316.2065(19) and 318.18(1)(b); City of Tampa (2024)'],
             ],
           },
         },
@@ -65,7 +63,7 @@ const guide: Guide = {
     {
       heading: 'Scooters on the Tampa Riverwalk, Bayshore Boulevard and 7th Avenue',
       blocks: [
-        'The City’s programme page, last updated on 7 May 2025, says shared bikes and scooters can be ridden all over Tampa, but not in three places:',
+        'The City’s programme page says shared bikes and scooters can be ridden all over Tampa, but not in three places:',
         {
           list: [
             '**The Tampa Riverwalk.** Friends of the Riverwalk also says scooters are not permitted on it, though you can scoot to it.',
@@ -73,17 +71,17 @@ const guide: Guide = {
             '**7th Avenue** in Ybor City. Spin’s open data marks it as no-ride from about Nuccio Parkway to just past 22nd Street.',
           ],
         },
-        'Our [Tampa map](map:us:fl:Tampa) draws all three as no-riding bands from zoom 14, credited to the City, along OpenStreetMap’s ways: the Riverwalk’s paths, Bayshore Boulevard from Platt Street to MacDill Air Force Base, and 7th Avenue across Ybor City as the City bounds it, from Nebraska Avenue to 22nd Street. Hyde Park Village and Armature Works are not drawn.',
-        'In April 2024 the City also named Hyde Park Village and Armature Works as places not to ride; its programme page lists only the three above, so check the app there.',
-        '**Gasparilla.** In 2026 the City set a no-ride zone for shared e-scooters and e-bikes around both Gasparilla parades, the children’s on 24 January and Pirate Fest on 31 January. The 2027 parades are on 23 and 30 January: watch for the City’s notice.',
-        'Spin’s open data held 82 no-ride zones on 26 October 2026: some 60 small ones in and around downtown, others over both universities, MacDill Air Force Base and both airports. At street zoom the [Tampa map](map:us:fl:Tampa) draws Spin’s no-ride and no-parking zones and the City’s 67 multi-use hubs and 92 public bike racks (CC0), but no Lime zones: check Lime’s app before you set off.',
+        'Our [Tampa map](map:us:fl:Tampa) draws all three as no-riding bands, credited to the City: the Riverwalk’s paths, Bayshore Boulevard from Platt Street to MacDill Air Force Base, and 7th Avenue across Ybor City, from Nebraska Avenue to 22nd Street.',
+        'In April 2024 the City also named Hyde Park Village and Armature Works as places where shared scooters shall not be ridden: check the app before you ride there.',
+        '**Gasparilla.** In 2026 the City set a no-ride zone for shared e-scooters and e-bikes around both Gasparilla parades, the children’s on 24 January and Pirate Fest on 31 January. Personal scooters were not allowed at either event. The 2027 parades are on 23 and 30 January: watch for the City’s notice.',
+        'Spin’s open data held 82 no-ride zones on 26 October 2026: some 60 small ones in and around downtown, others over both universities, MacDill Air Force Base and both airports. At street zoom the [Tampa map](map:us:fl:Tampa) draws Spin’s no-ride and no-parking zones and the City’s 67 multi-use hubs and 92 public bike racks (CC0); Lime’s zones are in its app.',
         'Mind the streetcar tracks downtown and in Ybor City: the TECO Line Streetcar asks anyone with a bicycle or scooter to cross its tracks at a right angle, so the wheels don’t get stuck.',
       ],
     },
     {
       heading: 'Parking a scooter in Tampa: corrals only',
       blocks: [
-        { note: '**End every ride in a corral.** The City’s programme page says shared bikes and scooters should be placed in designated corrals. In April 2024 the City counted marked and virtual corrals, public bike and scooter racks and charging stations as docks, and said a company could charge up to $5 for a scooter left elsewhere.' },
+        { note: '**End every ride in a corral.** The City’s programme page says shared bikes and scooters should be placed in designated corrals. In April 2024 the City counted marked and virtual corrals, public bike and scooter racks and charging stations as docks, and said the company would charge a fee for a scooter left elsewhere.' },
         'The apps show where you can and can’t park, the City said in 2024. Its programme page adds: park upright, never on private property, and keep at least four feet of sidewalk clear for people walking. Never block:',
         {
           list: [
@@ -101,8 +99,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**University of South Florida.** Spin’s open data makes 98% of USF’s Tampa campus no-ride, and at 6:46 am on 26 October 2026 the nearest Spin scooter stood 3.7 miles (5.9 km) away. USF’s safety page, read that day, says e-scooters “are not allowed in buildings on any USF campus” and should be secured outside at a bike rack or in a designated corral.',
-            '**University of Tampa.** UT points students to the City’s programme and says scooters “should be returned to a corral at the end of your ride”. Spin’s data makes 91% of the campus no-ride, yet at that hour it placed 83 Spin scooters within 500 m of it.',
+            '**University of South Florida.** Spin’s open data makes 98% of USF’s Tampa campus no-ride. USF’s safety page says e-scooters “are not allowed in buildings on any USF campus” and should be secured outside at a bike rack or in a designated corral.',
+            '**University of Tampa.** UT points students to the City’s programme and says scooters “should be returned to a corral at the end of your ride”. Spin’s data makes 91% of the campus no-ride, yet at 6:46 am on 26 October 2026 it placed 83 Spin scooters free to rent within 500 m of it.',
             '**Hillsborough Community College**’s Dale Mabry campus is 87% no-ride in Spin’s data, and **MacDill Air Force Base** almost all of it.',
           ],
         },
@@ -111,9 +109,9 @@ const guide: Guide = {
     {
       heading: 'HART buses, the streetcar and Tampa International Airport',
       blocks: [
-        '**HART**’s rules, read on 26 October 2026, say not to use scooters “on buses or HART facilities”, and let one aboard if it can fold and “be kept out of the aisles”. A shared scooter doesn’t fold, so end your ride at a corral near the stop.',
-        '**The TECO Line Streetcar** runs 2.7 miles between downtown, the Channel District and Ybor City. Its rules, read the same day, say “Bikes are not allowed on board” and don’t mention scooters: end your ride before you board.',
-        '**Tampa International Airport** is three quarters no-ride in Spin’s open data (on the Census Bureau’s map), and at 6:46 am on 26 October 2026 the nearest Spin scooter stood under 300 m outside it. Don’t count on a scooter to catch a flight.',
+        '**HART** asks riders not to use scooters “on buses or HART facilities”, so end your ride at a corral near the stop. Bicycles that fold and “can be kept out of the aisles” may come aboard.',
+        '**The TECO Line Streetcar** runs 2.7 miles between downtown, the Channel District and Ybor City. Its rules say “Bikes are not allowed on board”: end your ride before you board.',
+        '**Tampa International Airport** is three quarters no-ride in Spin’s open data: don’t count on a scooter to catch a flight.',
       ],
     },
     {
@@ -140,19 +138,19 @@ const guide: Guide = {
     },
     {
       question: 'Where can you park a Lime or Spin scooter in Tampa?',
-      answer: 'In a designated corral, the City’s programme page says, and the apps show where. In April 2024 the City also counted public bike and scooter racks and charging stations as docks, and said parking anywhere else could cost a company fee of up to $5.',
+      answer: 'In a designated corral, the City’s programme page says, and the apps show where. In April 2024 the City also counted public bike and scooter racks and charging stations as docks, and said parking anywhere else would cost a fee from the company.',
     },
     {
       question: 'Do you need a licence to ride a scooter in Tampa?',
-      answer: 'Not under Florida law, which requires no driver’s licence for a scooter, and Spin’s terms ask for none, only that you are 18 or over. The City’s programme page still says riders need “a valid driver’s license or permit”, so carry yours if you have one.',
+      answer: 'Not under Florida law, which requires no driver’s licence for a scooter, and Spin rents to anyone aged 18 or over. The City’s programme page still says riders need “a valid driver’s license or permit”, so carry yours if you have one.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Tampa?',
-      answer: 'Florida lets cities permit, control or regulate scooters on sidewalks, with a 15 mph limit there. The City’s programme page doesn’t say what Tampa allows and points to its ordinance, Tampa Code § 25-173.1, so check the app and signs. Where there is a bike lane, Florida law says use it; on a sidewalk, yield to people walking and give an audible signal before you pass.',
+      answer: 'Florida lets cities permit, control or regulate scooters on sidewalks, with a 15 mph limit there, and the City of Tampa points riders to its ordinance, Tampa Code § 25-173.1. When you park, keep at least four feet of sidewalk clear for people walking. Where there is a bike lane, Florida law says use it; on a sidewalk, yield to people walking and give an audible signal before you pass.',
     },
     {
       question: 'Are there e-scooters in St. Petersburg too?',
-      answer: 'Yes: at 6:44 am on 26 October 2026 the [St. Petersburg map](map:us:fl:St. Petersburg) counted about 590 Lime scooters. It is a separate city across the bay, with its own rules. For another Florida city, see [e-scooters in Gainesville](guide:gainesville).',
+      answer: 'Yes: at 6:44 am on 26 October 2026 the [St. Petersburg map](map:us:fl:St. Petersburg) showed about 590 Lime scooters as last counted. It is a separate city across the bay, with its own rules. For another Florida city, see [e-scooters in Gainesville](guide:gainesville).',
     },
   ],
   sources: [

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Salt Lake City: Lime, Veo, Spin and the rules',
   description: 'E-scooters in Salt Lake City: Lime and Veo across town, Spin at the University of Utah, Veo’s price, Utah’s helmet rule, downtown sidewalks and parking.',
   headline: 'E-scooters in Salt Lake City: Lime, Veo, Spin on campus, the rules and where to park',
-  lede: 'E-scooters in Salt Lake City come from Lime and Veo, the two companies the City names, and from Spin on the University of Utah’s campus. On 26 October 2026 Veo’s open data priced a ride at $1 to unlock and $0.45 a minute, plus tax; Lime and Spin show their prices in their apps. Utah asks for no driver licence, and a rented scooter needs no helmet, even under 21. Keep off downtown sidewalks, and park between the sidewalk and the curb.',
+  lede: 'You can rent an e-scooter in Salt Lake City from Lime or Veo, the two companies the City names, and from Spin on the University of Utah’s campus; you unlock one in the company’s app. As of November 2026 Veo charges $1 to unlock and $0.45 a minute, plus tax, about $5.50 for 10 minutes before tax; Lime’s and Spin’s apps show the price before you unlock. Utah asks for no driver licence, and a rented scooter needs no helmet, even under 21. Keep to the street downtown, park between the sidewalk and the curb, and end a Spin ride on campus in a white box.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:ut:Salt Lake City',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Salt Lake City?',
       blocks: [
-        'The City’s Shared Mobility page, updated on 19 August 2026, names “e-scooters from two companies: Veo and Lime”, besides GREENbike bike share. A third company runs on the University of Utah’s campus:',
+        'As of November 2026 the City’s Shared Mobility page names “e-scooters from two companies: Veo and Lime”, besides GREENbike bike share. A third company runs on the University of Utah’s campus:',
         {
           list: [
             '**Lime**, in the Lime app, under contract with the City since 2021.',
@@ -24,16 +24,15 @@ const guide: Guide = {
             '**Spin**, in the Spin app, on the campus under a partnership with the University. Spin’s open data names Bird Rides, Inc. as its operator.',
           ],
         },
-        'At 9:41 a.m. on Monday 26 October 2026 the [Salt Lake City map](map:us:ut:Salt Lake City) counted about 2,350 e-scooters, some 1,770 Lime, 305 Spin and 275 Veo: what stood there at that moment, not the fleets. The [South Salt Lake map](map:us:ut:South Salt Lake), a separate city, counted about 120 more, almost all Lime.',
-        'Ten minutes later, on the Census Bureau’s boundaries, all 305 available Spin scooters stood in Salt Lake City, 289 of them on the campus. Of Veo’s 281 available scooters, 271 stood in Salt Lake City, 6 in South Salt Lake and 4 in West Valley City.',
-        'The map shows standing e-scooters only: Lime’s with their charge, Veo’s with the range left, Spin’s with both. It leaves out Veo’s seated scooter, which KSL called the Cosmo and Veo’s open data lists as an electric bicycle (about 670 that morning), and any Spin e-bikes, which the University’s page mentions. Scooters on a ride aren’t shown. First ride? See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 9:41 a.m. on Monday 26 October 2026 the [Salt Lake City map](map:us:ut:Salt Lake City) showed about 305 Spin and 275 Veo scooters free to rent at that moment, and some 1,770 Lime scooters as last counted. Ten minutes later 289 of the Spin scooters stood on the campus. The [South Salt Lake map](map:us:ut:South Salt Lake), a separate city, showed about 120 more, almost all Lime.',
+        'Veo also rents a seated scooter, which KSL called the Cosmo, and Spin rents e-bikes on campus as well as scooters, the University’s page says. First ride? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does electric scooter rental in Salt Lake City cost?',
       blocks: [
-        'On 26 October 2026 Veo’s open data priced a ride at **$1 to unlock and $0.45 a minute, plus tax**: $5.50 for 10 minutes, before tax. That is more than the 39 cents a minute KSL said Veo typically charges elsewhere, and than it charges in [Denver](guide:denver).',
-        'Lime’s and Spin’s prices are in their apps; Spin’s open data for the campus lists none. The City says Lime and Veo offer discounted passes to eligible residents: Lime Access and Veo Access.',
+        'As of November 2026 Veo’s open data prices a ride at **$1 to unlock and $0.45 a minute, plus tax**: $5.50 for 10 minutes, before tax.',
+        'The City says Lime and Veo offer discounted passes to eligible residents: Lime Access and Veo Access.',
       ],
     },
     {
@@ -45,7 +44,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in Salt Lake City on 26 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', 'Spin rents only to people 18 or over; check Lime’s and Veo’s apps. Under-8s may not ride with the motor running. From 5 May 2027 no one may rent a scooter to someone under 16 without a state safety certificate or adult supervision', 'Spin (terms); Utah Code 41-6a-1115 and 41-6a-1512'],
+              ['Age', 'Spin rents only to people 18 or over. Under-8s may not ride with the motor running. From 5 May 2027 no one may rent a scooter to someone under 16 without a state safety certificate or adult supervision', 'Spin (terms); Utah Code 41-6a-1115 and 41-6a-1512'],
               ['Licence', 'None needed', 'Utah Code 41-6a-1115'],
               ['Helmet', 'Required under 21 on a public road, but not on a scooter rented from a business. The University strongly encourages one', 'Utah Code 41-6a-1505 (since 6 May 2026); University of Utah'],
               ['Speed', '15 mph at most; 10 mph on campus sidewalks', 'Utah Code 41-6a-1115; University of Utah'],
@@ -54,7 +53,6 @@ const guide: Guide = {
               ['Crosswalks', 'You may ride across in a crosswalk, but not carelessly', 'Utah Code 41-6a-1115'],
               ['Off limits', 'Public parking structures, and public property posted as closed to bicycles', 'Utah Code 41-6a-1115'],
               ['Passengers', 'None: no more riders than the scooter is built for', 'Utah Code 41-6a-1115'],
-              ['Hours', 'None on the City’s or the University’s pages', 'City of Salt Lake City; University of Utah'],
               ['Fines', 'Breaking Utah’s scooter rules is an infraction, with a fine of up to $750. On campus, riders who break the rules face fines, and repeat offenders lose their ride privileges', 'Utah Code 41-6a-1115 and 76-3-301; University of Utah'],
             ],
           },
@@ -67,8 +65,8 @@ const guide: Guide = {
       blocks: [
         { note: '**Ride in the street downtown.** “Riding on the sidewalk is not allowed downtown,” the City’s Shared Mobility page says. “If you’re on an e-scooter or bike, stick to the street.”' },
         'Downtown is the area shaded grey on the City’s Bikeways Map. On its border streets, the City’s bicycle laws page (updated on 10 February 2026) bars cyclists only from the inner sidewalk: on 200 East they may ride the east sidewalk but not the west one.',
-        'Elsewhere the City’s pages don’t say plainly whether scooters may use the sidewalk: the bicycle laws page lets cyclists ride there, while a March 2025 bulletin from City Council District 5 says “Sidewalk riding is prohibited.” Stay on the street or in a bike lane.',
-        '**Temple Square.** The City’s Cycle the City route, updated on 6 February 2026, says: “You must dismount and walk your bike through the square itself.” Neither it nor Temple Square’s FAQs mention scooters: walk yours through to be safe.',
+        'Elsewhere, the City’s bicycle laws page lets cyclists ride on the sidewalk, while a March 2025 bulletin from City Council District 5 says “Sidewalk riding is prohibited.” Stay on the street or in a bike lane.',
+        '**Temple Square.** The City’s Cycle the City route, updated on 6 February 2026, says: “You must dismount and walk your bike through the square itself.” Walk a scooter through too.',
       ],
     },
     {
@@ -84,7 +82,7 @@ const guide: Guide = {
           ],
         },
         'Report a badly parked scooter in the MySLC app or at myslc.gov, as the District 5 bulletin suggests.',
-        'Zoomed in to the streets, the map draws the zones Spin publishes: no-ride areas on and around the campus, and the whole campus shaded no-parking. Spin rides there end only in the white boxes shown in the Spin app, not on the map. The map has no Lime or Veo zones: check their apps.',
+        'Zoomed in to the streets, the [Salt Lake City map](map:us:ut:Salt Lake City) draws the zones Spin publishes: no-ride areas on and around the campus, and the whole campus shaded no-parking. Spin rides there end only in the white boxes shown in the Spin app. Lime’s and Veo’s zones are in their apps.',
       ],
     },
     {
@@ -103,13 +101,12 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Parks and trails: Liberty Park, the Jordan River and the Foothills',
+      heading: 'Parks and trails: the Foothills and the Jordan River',
       blocks: [
         {
           list: [
             '**The Foothills.** The City’s parks pages say “electric scooters” are “strictly prohibited in the Foothills” trail system.',
             '**The Jordan River Parkway Trail** is a multi-use trail. The City’s page on it says “There is currently no ordinance for e-bikes on the Jordan River Trail” and asks everyone to ride with caution.',
-            '**Liberty Park.** The City’s parks pages give no scooter rule for it. At 9:51 a.m. five Veo scooters stood inside it.',
           ],
         },
       ],
@@ -118,8 +115,8 @@ const guide: Guide = {
       heading: 'TRAX, FrontRunner, GREENbike and the airport',
       blocks: [
         '**UTA**’s rider rules let scooters be carried on board if they stay “under the control of the rider at all times”, and ban riding them on TRAX and FrontRunner platforms. The City forbids parking a shared scooter at a bus or train stop, so end your ride nearby and walk on.',
-        '**GREENbike**, which the City calls Utah’s nonprofit bike-share service, is run by GreenBike Utah and had 57 stations in Salt Lake City on 26 October 2026; you rent it in the BCycle app. A single trip costs $3.50 for 60 minutes and a day pass $11, plus $5 for each hour past the hour. The map doesn’t show it.',
-        '**Salt Lake City International Airport**’s pages offer TRAX’s Green Line and a 2.8-mile trail for bikes and people on foot from North Temple at 2500 West, open from 5:30 a.m. to 10 p.m. (7 a.m. to 7 p.m. from November to January). They don’t mention scooters. At 9:51 a.m. no Veo scooter stood on the airport’s land; the nearest stood just outside its eastern edge.',
+        '**GREENbike**, which the City calls Utah’s nonprofit bike-share service, is run by GreenBike Utah and had 57 stations in Salt Lake City on 26 October 2026; you rent it in the BCycle app. As of November 2026 a single trip costs $3.50 for 60 minutes and a day pass $11, and a ride that runs past 60 minutes costs $5 for each extra hour.',
+        '**Salt Lake City International Airport**’s pages offer TRAX’s Green Line and a 2.8-mile trail for bikes and people on foot from North Temple at 2500 West to the terminal, open from 7 a.m. to 7 p.m. from November to January and from 5:30 a.m. to 10 p.m. the rest of the year.',
       ],
     },
     {
@@ -142,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Veo scooter cost in Salt Lake City?',
-      answer: 'On 26 October 2026 Veo’s open data listed $1 to unlock and $0.45 a minute, plus tax. Lime and Spin show their prices in their apps. Lime and Veo offer discounted passes to eligible residents.',
+      answer: 'As of November 2026 Veo’s open data lists $1 to unlock and $0.45 a minute, plus tax: $5.50 for 10 minutes, before tax. The City says Lime and Veo offer discounted passes to eligible residents.',
     },
     {
       question: 'Do you need a helmet to ride a rented scooter in Utah?',
@@ -150,7 +147,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Salt Lake City?',
-      answer: 'Not downtown: the City says stick to the street. Elsewhere its pages don’t say plainly, and a City Council District 5 bulletin says sidewalk riding is prohibited. On any sidewalk, Utah law requires you to yield to people walking.',
+      answer: 'Not downtown: the City says stick to the street. Elsewhere the City’s bicycle laws page lets cyclists use the sidewalk, but a City Council District 5 bulletin says sidewalk riding is prohibited, so keep to the street or a bike lane. On any sidewalk, Utah law requires you to yield to people walking.',
     },
     {
       question: 'Where can you ride a Spin scooter at the University of Utah?',

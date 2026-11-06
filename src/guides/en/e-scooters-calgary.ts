@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter Calgary 2026: Bird, Lime, rules, fines and season',
   description: 'E-scooter Calgary guide: Bird and Lime, where you may ride (sidewalk, bike lane, pathway, road), the fines, the season, the CTrain, YYC and the Stampede.',
   headline: 'E-scooters in Calgary: Bird and Lime, where you may ride, the fines and winter riding',
-  lede: 'You can rent an e-scooter in Calgary from Bird or Lime, which took over Neuron’s scooters in 2026; each app shows its price before you unlock. You must be 18, a helmet is optional, and you ride at up to 20 km/h on sidewalks, bike lanes, pathways and quiet roads without lane markings. The City’s 2021 rules allowed winter riding only at its discretion, so check the app from November.',
+  lede: 'You can rent an e-scooter in Calgary from Bird or Lime, the two companies the City permits as of November 2026; Lime took over Neuron’s Calgary scooters in July 2026. You rent one in the Bird or Lime app, which shows the price before you unlock, as each company sets its own fares. You must be 18, a helmet is optional, and you ride at up to 20 km/h on sidewalks, bike lanes, pathways and quiet roads without lane markings. The City’s 2021 rules allowed winter riding only at its discretion; on 6 November 2026 both companies still had scooters for rent.',
   published: '2026-10-16',
   updated: '2026-11-03',
   city: 'ca:ab:Calgary',
@@ -16,11 +16,11 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Calgary?',
       blocks: [
-        'Two companies hold the City of Calgary’s permits for shared e-scooters and e-bikes in October 2026:',
+        'As of November 2026 the City of Calgary lists two permitted companies for shared e-scooters and e-bikes:',
         {
           list: [
             '**Bird**, run by Bird Canada, in the Bird app. Bird Canada has held a City permit since 2021.',
-            '**Lime**, in the Lime app, under the five-year permit the City awarded to Neuron in May 2026. Lime Canada bought Neuron Mobility Canada, the City’s other operator since 2021, in July 2026 and took over its Calgary and Airdrie operations; by September the City listed Lime in Neuron’s place.',
+            '**Lime**, in the Lime app, under the five-year permit the City awarded to Neuron in May 2026. Lime Canada bought Neuron Mobility Canada, the City’s other operator since 2021, in July 2026 and took over its Calgary and Airdrie operations. The City’s pages now list Lime in Neuron’s place.',
           ],
         },
         'The City leaves fares to each operator. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
@@ -91,14 +91,14 @@ const guide: Guide = {
     {
       heading: 'Where to park a rental scooter in Calgary',
       blocks: [
-        'Park upright in the sidewalk’s furniture zone, in line with the trees, bike racks and bins, or in a painted share-and-go zone. Where there’s no furniture zone, leave at least 2 m of sidewalk clear. The operators may fine you for bad parking.',
+        'Park upright in the sidewalk’s furniture zone, in line with the trees, bike racks and bins, or in a painted share-and-go zone. Where there’s no furniture zone, leave at least 2 m of sidewalk clear. The operators may fine you for bad parking. To report a badly parked scooter, give the operator its ID number and location: Bird Canada on 1-866-205-2442, Lime on 1-888-546-3345.',
         'Each app shows where you may end a ride. As of 4 November 2026 Bird bars parking in 241 zones, which you can still ride through. They include Stampede Park, the BMO Centre included; the riverbank through East Village, St. Patrick’s Island and the Calgary Zoo; Nose Hill Park; and the City Hall and Calgary Tower blocks.',
       ],
     },
     {
       heading: 'When is e-scooter season in Calgary, and what about winter?',
       blocks: [
-        'The City’s 2021 permit rules ran the season from 16 March to 31 October, and let operators run from 1 November to 15 March only “if weather permits, and at the discretion of The City”. A 2024 City information sheet says the programme offers e-scooters and e-bikes year-round. From November, check the app.',
+        'The City’s 2021 permit rules ran the season from 16 March to 31 October, and let operators run from 1 November to 15 March only “if weather permits, and at the discretion of The City”. A 2024 City information sheet says the programme offers e-scooters and e-bikes year-round. On 6 November 2026 Bird’s and Lime’s open data still listed scooters for rent in Calgary; through the winter, check the app before you set out.',
         'The City clears snow from about 400 km of paved regional pathways, usually within 24 hours of a snowfall.',
         '**When the scooters are gone.** Bird and Lime also rent e-bikes, which follow bicycle rules: any road a bike may use except Deerfoot Trail, and a helmet is compulsory. All year, an adult Calgary Transit fare is C$4.00 for 90 minutes.',
       ],
@@ -143,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'Are e-scooters available in Calgary in winter?',
-      answer: 'The City’s 2021 rules ran the season from 16 March to 31 October, with winter riding only if the weather and the City allow; a 2024 City sheet says the programme runs year-round. Check the app from November.',
+      answer: 'The City’s 2021 rules ran the season from 16 March to 31 October, with winter riding only if the weather and the City allow; a 2024 City sheet says the programme runs year-round. On 6 November 2026 both Bird and Lime still had scooters for rent; check the app through the winter.',
     },
     {
       question: 'Can I ride my own e-scooter in Calgary?',

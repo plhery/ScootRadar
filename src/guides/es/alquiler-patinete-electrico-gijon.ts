@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'alquiler-patinete-electrico-gijon',
   topic: 'gijon',
   name: 'Alquiler de patinete eléctrico en Gijón',
-  title: 'Alquiler patinete eléctrico Gijón: Bird, precio y normas',
-  description: 'Alquiler de patinete eléctrico en Gijón con Bird: dónde ver el precio, casco obligatorio, por qué el Muro y Cimadevilla van a pie y dónde aparcar.',
+  title: 'Alquiler patinete eléctrico Gijón 2026: Bird, casco y normas',
+  description: 'Alquiler de patinete eléctrico en Gijón con Bird: cómo se paga, casco obligatorio, por qué el Muro y Cimadevilla van a pie y dónde aparcar.',
   headline: 'Alquiler de patinete eléctrico en Gijón: Bird, precio, casco y por dónde circular',
-  lede: 'Para el alquiler de patinete eléctrico en Gijón tienes Bird, que va de La Calzada y El Arbeyal a la Universidad Laboral y Cabueñes. La tarifa la ves en su app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, que llevas tú. Gijón no tiene ordenanza de patinetes, pero la ley y su ordenanza de circulación prohíben ir en cualquier vehículo por aceras y zonas peatonales: el paseo del Muro y las calles peatonales de Cimadevilla, a pie.',
+  lede: 'Para el alquiler de patinete eléctrico en Gijón tienes Bird, que va de La Calzada y El Arbeyal a la Universidad Laboral y Cabueñes. Lo desbloqueas con la app de Bird y pagas por minuto empezado, hasta que cierras el viaje; la tarifa la ves en la app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, que llevas tú. Gijón no tiene ordenanza de patinetes, pero la ley y su ordenanza de circulación prohíben ir en cualquier vehículo por aceras y zonas peatonales: el paseo del Muro y las calles peatonales de Cimadevilla, a pie.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'es:Gijón',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: '¿Qué patinetes de alquiler hay en Gijón?',
       blocks: [
-        'A 24 de octubre de 2026, **Bird** alquila en Gijón patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos. No tiene estaciones: lo coges y lo dejas dentro de su zona.',
+        'En noviembre de 2026, **Bird** alquila en Gijón patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos. No tiene estaciones: lo coges y lo dejas dentro de su zona.',
         'A las 11:19 del sábado 24 de octubre de 2026, el [mapa de Gijón](map:es:Gijón) mostraba unos 320 patinetes de Bird.',
         '**Su zona.** Según los datos abiertos de Bird, va de La Calzada y El Arbeyal a la Universidad Laboral, el hospital de Cabueñes y el Parque Científico Tecnológico, y por el sur hasta Roces y Contrueces. Quedan fuera El Musel y el Jardín Botánico. Si sales de la zona, Bird puede cobrarte por cada minuto fuera.',
         '**La ordenanza anulada.** En 2021, el Ayuntamiento quería adjudicar el servicio por concurso con su nueva ordenanza de movilidad, pero el Tribunal Superior de Justicia de Asturias la declaró nula, en una sentencia firme que el BOPA publicó el 10 de noviembre de 2023.',
@@ -25,10 +25,10 @@ const guide: Guide = {
     {
       heading: 'Precio del alquiler de patinete eléctrico en Gijón',
       blocks: [
-        'Según las condiciones de Bird para España, el precio está en la app, puede tener un importe por desbloquear y otro por minuto, y puede cambiar: míralo antes de desbloquear.',
+        'Según las condiciones de Bird para España, la tarifa puede tener un importe por desbloquear y otro por minuto, y puede cambiar.',
         {
           table: {
-            caption: 'Bird en Gijón: lo que publica a 24 de octubre de 2026',
+            caption: 'Bird en Gijón: lo que dicen sus condiciones para España, en noviembre de 2026',
             head: ['Qué', 'Bird'],
             rows: [
               ['Cómo cuenta el tiempo', 'Desde que desbloqueas hasta que cierras el viaje, por minuto empezado'],
@@ -133,7 +133,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete Bird en Gijón?',
-      answer: 'La ves en la app de Bird antes de desbloquear: puede tener un importe fijo y otro por minuto.',
+      answer: 'Bird cobra por minuto empezado, desde que desbloqueas hasta que cierras el viaje, y puede sumar un importe por desbloquear. La tarifa la ves en su app antes de desbloquear.',
     },
     {
       question: '¿Qué app necesito para los patinetes de Gijón?',
@@ -165,7 +165,7 @@ const guide: Guide = {
     { title: 'Ayuntamiento de Gijón: nuevo servicio de bicis eléctricas (junio de 2023)', url: 'https://www.gijon.es/es/noticias/el-ayuntamiento-pone-en-marcha-desde-el-1-de-julio-el-nuevo-servicio-de-bicicletas-electricas' },
     { title: 'Ayuntamiento de Gijón: Plan de Movilidad Sostenible 2023-2032', url: 'https://drupal.gijon.es/sites/default/files/2023-04/221221_PMS%2023-32_firmado.pdf' },
     { title: 'Bird: datos abiertos de Gijón', url: 'https://mds.bird.co/gbfs/v2/public/gijon/gbfs.json' },
-    { title: 'Bird: contrato de alquiler para España', url: 'https://www.bird.co/rental-agreements/spain-es/' },
+    { title: 'Bird: contrato de alquiler para España (actualizado el 25 de julio de 2023)', url: 'https://www.bird.co/rental-agreements/spain-es/' },
     { title: 'BOE: Reglamento General de Circulación', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2003-23514' },
     { title: 'BOE: Ley de Tráfico (anexo I, acera-bici)', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11722' },
     { title: 'BOE: Real Decreto 465/2025, señal R-118', url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-12199' },
