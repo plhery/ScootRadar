@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-milwaukee',
   topic: 'milwaukee',
   name: 'E-scooters in Milwaukee, Wisconsin',
-  title: 'E-scooters in Milwaukee 2026: Lime, rules, where to ride',
-  description: 'E-scooters in Milwaukee: Lime is the only operator, no sidewalks or Riverwalk, 5 mph slow zones, night and winter rides, parking, Marquette, UWM and MCTS.',
+  title: 'E-scooter rental Milwaukee 2026: Lime, rules, where to ride',
+  description: 'E-scooter rental in Milwaukee: Lime, the only operator, from 18, its 40% equity-zone discount, no sidewalks or Riverwalk, slow zones, night and winter rides.',
   headline: 'E-scooters in Milwaukee: Lime, the rules, where to ride and where to park',
-  lede: 'You can rent e-scooters in Milwaukee from Lime, the only company in the City’s scooter programme since Spin left in spring 2026. Check the price in the Lime app before you unlock. City rules keep scooters off every sidewalk and the Riverwalk. Lime may run around the clock and all year; DPW slows scooters to 5 mph in busy areas and planned night no-ride zones downtown for 2026.',
+  lede: 'You can rent e-scooters in Milwaukee from Lime, the only company in the City’s scooter programme since Spin left in spring 2026; riders must be 18. Check the price in the Lime app before you unlock: the City bars deposits and sign-up fees, and rides starting in its equity zones, on parts of the North, West and South Sides, get 40% off. City rules keep scooters off every sidewalk and the Riverwalk. Lime may run around the clock and all year, but may pull its scooters in snow or extreme cold. DPW slows scooters to 5 mph in busy areas, and in May 2026 the City began restricting late-night rides downtown, from Westown to Brady Street.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:wi:Milwaukee',
@@ -24,7 +24,7 @@ const guide: Guide = {
     {
       heading: 'How much does a Lime scooter cost in Milwaukee?',
       blocks: [
-        'Check the rate in the Lime app before you unlock. The City’s terms make a company show its fees clearly before a ride and charge only for actual use, **with no deposit or sign-up fee**. For comparison, Bublr Bikes, Greater Milwaukee’s non-profit bike share, charged 25 cents a minute on 29 October 2026, plus $1 to unlock an e-bike, from station to station.',
+        'The City’s terms make a company show its fees clearly in the app before a ride and charge only for actual use, **with no deposit or sign-up fee**. For comparison, Bublr Bikes, Greater Milwaukee’s non-profit bike share, charged 25 cents a minute on 29 October 2026, plus $1 to unlock an e-bike, from station to station.',
         'Riders on low incomes can get cheaper rides through **Lime Access**: 50% off in September 2024, DPW reported. Rides starting in the City’s equity zones got 40% off in 2025 and 2026, Shepherd Express reported in July 2026. Check the app for today’s offer.',
         'Ride by the rules: Lime fines its own riders. It issued 4,991 fines to Milwaukee riders in 2025 and suspended or banned about 450, Urban Milwaukee reported in July 2026.',
       ],
@@ -65,8 +65,8 @@ const guide: Guide = {
             'from 1 June, the Water Street corridor and Brady Street, 10 p.m. to 4 a.m.',
           ],
         },
-        'Check the app before a late ride downtown.',
-        'DPW does slow scooters to **5 mph** in busy areas, among them Martin Luther King Drive, the Deer District and the streets around the Milwaukee Public Market, Fox6 reported in July 2026, and Council papers confirm such zones. Council proposals for more 5 mph areas downtown, and for ending Lime’s agreement and negotiating a new one, were still in committee on 29 October 2026.',
+        'In May 2026 the City began restricting late-night rides, from Westown to Brady Street, Urban Milwaukee reported. Check the app before a late ride downtown.',
+        'DPW does slow scooters to **5 mph** in busy areas, among them Martin Luther King Drive, the Deer District and the streets around the Milwaukee Public Market, Fox6 reported in July 2026, and Council papers confirm such zones. Council proposals for more 5 mph areas downtown, and for ending Lime’s agreement and negotiating a new one, were still in committee on 6 November 2026.',
         '**Winter.** Scooters have run in winter: DPW counted 24,869 trips in December 2024. A company may take its scooters off the street in snow, extreme cold or other severe weather.',
       ],
     },
@@ -128,7 +128,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Milwaukee?',
-      answer: 'Check the rate in the Lime app before you unlock. The City’s terms bar deposits and sign-up fees.',
+      answer: 'Check the rate in the Lime app before you unlock. The City’s terms bar deposits and sign-up fees. Riders on low incomes can join Lime Access, and under the City’s agreement rides starting in its equity zones, on parts of the North, West and South Sides, get 40% off.',
     },
     {
       question: 'Can you ride a scooter on the sidewalk in Milwaukee?',
@@ -136,7 +136,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a Lime scooter at night or in winter in Milwaukee?',
-      answer: 'Yes: the City lets Lime run 24 hours a day and all year. But DPW planned night no-ride zones downtown from spring 2026, so check the app before a late ride, and Lime may pull its scooters in snow or extreme cold.',
+      answer: 'Yes: the City lets Lime run 24 hours a day and all year. But in May 2026 the City began restricting late-night rides downtown, from Westown to Brady Street, so check the app before a late ride, and Lime may pull its scooters in snow or extreme cold.',
     },
     {
       question: 'How old do you have to be to ride a Lime scooter in Milwaukee?',
@@ -148,7 +148,7 @@ const guide: Guide = {
     },
     {
       question: 'Which scooter companies operate in Milwaukee?',
-      answer: 'Lime, the only company in the City’s programme since Spin left in spring 2026, Urban Milwaukee reported. The City allows two; Lime’s agreement runs through 2027, DPW said in July 2026.',
+      answer: 'Lime, the only company in the City’s programme since Spin left in spring 2026, Urban Milwaukee reported. The City allows two; Lime’s agreement runs through 2027, DPW said in July 2026. To find a scooter near you, open the Lime app or our [Milwaukee map](map:us:wi:Milwaukee).',
     },
   ],
   sources: [
@@ -169,6 +169,7 @@ const guide: Guide = {
     { title: 'Urban Milwaukee: Milwaukee makes first move on scooter crackdown, 2 July 2026', url: 'https://urbanmilwaukee.com/2026/07/02/milwaukee-makes-first-move-on-scooter-crackdown-after-sidewalk-crash/' },
     { title: 'Fox6: sidewalk fines and slow zones, 2 July 2026', url: 'https://www.fox6now.com/news/milwaukee-electric-scooter-sidewalk-fines-proposal' },
     { title: 'Shepherd Express: dockless scooter crash downtown spurs debate, 23 July 2026', url: 'https://shepherdexpress.com/news/features/dockless-scooter-crash-downtown-spurs-debate-city-council-action/' },
+    { title: 'Urban Milwaukee: Milwaukee restricting late-night scooter rides, 12 May 2026', url: 'https://urbanmilwaukee.com/2026/05/12/not-just-food-trucks-milwaukee-restricting-late-night-scooter-rides/' },
     { title: 'Fox6: getting to Summerfest 2026, 12 June 2026', url: 'https://www.fox6now.com/news/getting-summerfest-2026-transportation-options-every-festivalgoer' },
     { title: 'Marquette Today: motorized scooters prohibited on campus property, 16 October 2024', url: 'https://today.marquette.edu/2024/10/reminder-motorized-scooters-prohibited-on-campus-2/' },
     { title: 'UWM News: electric scooters not allowed on UWM’s campus, 19 August 2025', url: 'https://uwm.edu/news/electric-scooters-not-allowed-on-uwms-campus/' },

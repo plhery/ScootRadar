@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'st-gallen',
   name: 'E-Trottinett St. Gallen: Dott, Preise, Zonen',
   title: 'E-Trottinett St. Gallen 2026: Dott, Preise, Zonen, Parkieren',
-  description: 'E-Trottinett St. Gallen: Nur Dott (früher Tier) fährt hier. Was zehn Minuten kosten, was in der Altstadt gilt, wo du parkierst und was die Mühleggbahn erlaubt.',
+  description: 'E-Trottinett St. Gallen: nur Dott (früher Tier), CHF 1.20 plus 45 Rappen pro Minute. Was in der Altstadt gilt, wo du parkierst und was die Mühleggbahn erlaubt.',
   headline: 'E-Trottinett St. Gallen: E-Scooter von Dott mieten, Preise, Altstadt und Mühleggbahn',
-  lede: 'Ein E-Trottinett in St. Gallen mietest du bei Dott, dem früheren Tier: Nur dieser Anbieter hat eine Bewilligung, und laut Stadt stehen 300 E-Trottinette und 200 E-Bikes bereit. Du musst mindestens 18 sein und zahlst CHF 1.20 fürs Entsperren plus 45 Rappen pro Minute, zehn Minuten kosten also CHF 5.70 (veröffentlichter Tarif vom 13. Oktober 2026). Durch die Altstadt darfst du fahren: Marktplatz, Bohl, Marktgasse und Gallusplatz sind Begegnungszonen mit Tempo 20 und Vortritt für Fussgänger, und beenden kannst du die Fahrt dort nur auf einem Dott-Platz.',
+  lede: 'Ein E-Trottinett in St. Gallen mietest du bei Dott, dem früheren Tier: Nur dieser Anbieter hat eine Bewilligung, und laut Stadt stehen 300 E-Trottinette und 200 E-Bikes bereit. Du musst mindestens 18 sein und zahlst CHF 1.20 fürs Entsperren plus 45 Rappen pro Minute, zehn Minuten kosten also CHF 5.70 und zwanzig CHF 10.20 (Stand November 2026). Durch die Altstadt darfst du fahren: Marktplatz, Bohl, Marktgasse und Gallusplatz sind Begegnungszonen mit Tempo 20 und Vortritt für Fussgänger, und beenden kannst du die Fahrt dort nur auf einem Dott-Platz.',
   published: '2026-10-13',
   updated: '2026-10-14',
   city: 'ch:st-gallen',
@@ -32,10 +32,10 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in St. Gallen?',
       blocks: [
-        'Dott verlangt in St. Gallen CHF 1.20 fürs Entsperren und 45 Rappen pro Minute, für E-Trottinette und E-Bikes gleich, so der offene Datenfeed von Dott vom 13. Oktober 2026. Massgebend ist der Preis, den dir die App vor dem Entsperren zeigt.',
+        'Dott verlangt in St. Gallen CHF 1.20 fürs Entsperren und 45 Rappen pro Minute, für E-Trottinette und E-Bikes gleich, so Dotts offener Datenfeed (Stand November 2026). Massgebend ist der Preis, den dir die App vor dem Entsperren zeigt.',
         {
           table: {
-            caption: 'Dott in und um St. Gallen: veröffentlichte Tarife vom 13. Oktober 2026 (offener Datenfeed)',
+            caption: 'Dott in und um St. Gallen: veröffentlichte Tarife, Stand November 2026 (offener Datenfeed)',
             head: ['Gebiet', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten', '30 Minuten'],
             rows: [
               ['Stadt St. Gallen, Gossau, Wittenbach, Gaiserwald, Flawil, Uzwil, Rorschach, Goldach, Rheintal', 'CHF 1.20', '45 Rappen', 'CHF 5.70', 'CHF 10.20', 'CHF 14.70'],
@@ -92,7 +92,7 @@ const guide: Guide = {
           list: [
             '**Universität (HSG):** rund 1 km vom Hauptbahnhof. Vor dem Hauptgebäude gilt in Dotts Zonen Parkverbot; Dott-Plätze gibt es rund um den Campus.',
             '**Drei Weieren:** In Dotts Zonen gilt hier Fahrverbot (Tabelle oben). Beende die Fahrt vorher und geh zu Fuss, oder nimm die Mühleggbahn.',
-            '**Mühleggbahn:** Die Standseilbahn fährt in rund 90 Sekunden von der Altstadt nach St. Georgen, täglich von 5.40 bis 0.50 Uhr. Ein E-Trottinett fährt für CHF 2.30 mit, du selbst für CHF 2.50. Der Tarif unterscheidet nicht zwischen eigenen und Miet-Trottis, doch bei Dott liefen die Minuten weiter: Beende die Dott-Fahrt besser unten, etwa am Gallusplatz; oben an der Bergstation hat Dott wieder einen Abstellplatz. Vom 9. bis 13. November 2026 steht die Bahn wegen Revision still.',
+            '**Mühleggbahn:** Die Standseilbahn fährt in rund 90 Sekunden von der Altstadt nach St. Georgen, täglich von 5.40 bis 0.50 Uhr. Ein E-Trottinett fährt für CHF 2.30 mit, du selbst für CHF 2.50. Der Tarif unterscheidet nicht zwischen eigenen und Miet-Trottis, doch bei Dott liefen die Minuten weiter: Beende die Dott-Fahrt besser unten, etwa am Gallusplatz; oben an der Bergstation hat Dott wieder einen Abstellplatz. Vom 9. bis 13. November 2026 steht die Bahn wegen Revision still, dazu am 30. November und am 28. Dezember 2026 jeweils von 8 bis 11.30 Uhr.',
             '**Bus:** In den Bussen der VBSG braucht ein Velo oder ein ähnliches Fahrgerät mit mehr als 30 cm Raddurchmesser ein Billett zum reduzierten Tarif. Velos nimmt der Bus von 6 bis 8, 11 bis 14 und 17 bis 19 Uhr nicht mit, und im Zweifel entscheidet das Personal. Ein Dott-Trotti lässt du besser draussen: Beende die Fahrt, bevor du einsteigst.',
             '**Zug:** Dein eigenes E-Trottinett fährt bei der SBB gratis mit, wenn das grösste Rad kleiner als 12 Zoll ist, sonst brauchst du ein Velobillett. Dasselbe gilt laut Ostwind-Tarif in den Appenzeller Bahnen.',
           ],
@@ -107,7 +107,7 @@ const guide: Guide = {
             caption: 'Grosse Anlässe in St. Gallen',
             head: ['Anlass', 'Wann', 'Was du wissen musst'],
             rows: [
-              ['OLMA, auf dem Gelände der Olma Messen', 'Jedes Jahr im Oktober, 2026 vom 8. bis 18. Oktober', 'Auf dem Gelände gilt in Dotts Zonen Parkverbot, Dott-Plätze gibt es rundherum. Vom Bahnhof St. Fiden gehst du fünf Minuten, ab Hauptbahnhof fahren die Busse 3, 4 und 6'],
+              ['OLMA, auf dem Gelände der Olma Messen', 'Jedes Jahr im Oktober, 2027 vom 14. bis 24. Oktober', 'Auf dem Gelände gilt in Dotts Zonen Parkverbot, Dott-Plätze gibt es rundherum. Vom Bahnhof St. Fiden gehst du fünf Minuten, ab Hauptbahnhof fahren die Busse 3, 4 und 6'],
               ['FC St. Gallen im Berit Sitterstadion (früher Kybunpark)', 'Heimspiele laut Spielplan', 'Das Stadion liegt rund 5 km westlich des Hauptbahnhofs. Jedes Matchticket gilt 3 Stunden vor und nach dem Spiel als Fahrausweis im ganzen OSTWIND-Verbund, und vom Bahnhof Winkeln gehst du zu Fuss'],
               ['St. Galler Fest, in der Altstadt', '2026 am 14. und 15. August; das Datum 2027 ist noch offen', 'Die Altstadt ist bis spät in die Nacht voll: Beende die Fahrt am Rand und geh zu Fuss'],
               ['Kinderfest', 'Nächstes Mal 2028; das Datum steht frühestens im Mai 2027 fest', 'Rund 40 000 Besucherinnen und Besucher; temporäre Zonen zeigt die App'],
@@ -176,6 +176,10 @@ const guide: Guide = {
     {
       question: 'Ab welchem Alter kann ich in St. Gallen ein E-Trottinett mieten?',
       answer: 'Ab 18, das verlangt Dott. Ein eigenes E-Trottinett darfst du ab 16 ohne Führerausweis fahren, mit 14 und 15 nur mit dem Ausweis der Kategorie M, unter 14 gar nicht.',
+    },
+    {
+      question: 'Was kostet ein E-Trottinett in St. Gallen?',
+      answer: 'Bei Dott CHF 1.20 fürs Entsperren und 45 Rappen pro Minute, zehn Minuten also CHF 5.70 und zwanzig CHF 10.20 (Stand November 2026). Um Romanshorn und Amriswil im Thurgau kostet das Entsperren CHF 1.50.',
     },
   ],
   sources: [

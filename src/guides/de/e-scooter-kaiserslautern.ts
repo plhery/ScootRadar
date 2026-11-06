@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-kaiserslautern',
   topic: 'kaiserslautern',
   name: 'E-Scooter Kaiserslautern: Anbieter, Preise, Parken',
-  title: 'E-Scooter Kaiserslautern 2026: Dott, Preise, Parken, Betze',
-  description: 'E-Scooter Kaiserslautern: nur Dott, was zehn Minuten kosten, wo du parkst, was an FCK-Spieltagen gilt und warum der Leih-Scooter nicht in den Bus darf.',
+  title: 'E-Scooter Kaiserslautern 2026: Dott-App, Preise und Parken',
+  description: 'E-Scooter Kaiserslautern: nur Dott, 1 € plus 0,41 € pro Minute (Stand November 2026). Wo du parkst, was an FCK-Spieltagen und in Bus und Bahn gilt.',
   headline: 'E-Scooter Kaiserslautern: Dott, Preise, Verbotszonen, der Betzenberg und was in Bus und Bahn gilt',
-  lede: 'Einen E-Scooter in Kaiserslautern leihst du ab 18 und ohne Führerschein bei Dott, dem einzigen Anbieter, den die Stadt nennt (Stand 17. Oktober 2026). Zehn Minuten kosten 5 €: 1 € fürs Entsperren und 0,40 € pro Minute. In der Fussgängerzone und in Parks darfst du laut Stadt nicht abstellen; rund um Hauptbahnhof und Fritz-Walter-Stadion endet eine Dott-Fahrt nur auf Dotts Abstellzonen. In den Bus darf der Leih-Scooter nicht. Ramstein und Landstuhl liegen ausserhalb von Dotts Gebiet.',
+  lede: 'Einen E-Scooter in Kaiserslautern leihst du in der **Dott-App**: Dott ist der einzige Anbieter, den die Stadt nennt, und vermietet ab 18, ohne Führerschein. Entsperren kostet 1 €, jede Minute 0,41 €, zehn Minuten also 5,10 € und zwanzig 9,20 € (Stand November 2026). In der Fussgängerzone und in Parks darfst du laut Stadt nicht abstellen; rund um Hauptbahnhof und Fritz-Walter-Stadion endet eine Dott-Fahrt nur auf Dotts Abstellzonen. In den Bus darf der Leih-Scooter nicht. Ramstein und Landstuhl liegen ausserhalb von Dotts Gebiet.',
   published: '2026-10-17',
   updated: '2026-10-17',
   city: 'de:Kaiserslautern',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Kaiserslautern?',
       blocks: [
-        'Im Oktober 2026 vermietet in Kaiserslautern nur **Dott** E-Scooter: Auf ihrer E-Scooter-Seite nennt die Stadt Dott als einzigen Anbieter. TIER heisst heute Dott; TIER fuhr seit Januar 2020 in der Stadt. **Bolt**, **Lime** und **Zeus** führen Kaiserslautern nicht auf ihren Städtelisten, und **Voi** hat für Kaiserslautern keine Seite (Stand 17. Oktober 2026). Früher fuhren laut Stadt zeitweise auch Zeus, Lime und Bird.',
+        'In Kaiserslautern vermietet nur **Dott** E-Scooter: Auf ihrer E-Scooter-Seite nennt die Stadt Dott als einzigen Anbieter (Stand November 2026). TIER heisst heute Dott; TIER fuhr seit Januar 2020 in der Stadt. Früher fuhren laut Stadt zeitweise auch Zeus, Lime und Bird.',
         'Gemietet wird in der Dott-App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Dott veröffentlicht für Kaiserslautern einen offenen Datenfeed. Darum zeigt die [Karte von Kaiserslautern](map:de:Kaiserslautern) die freien Dott-Scooter der Stadt: am 17. Oktober 2026 gegen 19:25 Uhr rund 720. Das ist der Stand eines Abends, keine Flottengrösse. Einen zweiten Anbieter nennt die Stadt nicht, also fehlt auf der Karte auch keiner.',
+        'Auf der [Karte von Kaiserslautern](map:de:Kaiserslautern) standen am 17. Oktober 2026 gegen 19:25 Uhr rund 720 freie Dott-Scooter. Das ist der Stand eines Abends, keine Flottengrösse.',
       ],
     },
     {
@@ -26,29 +26,29 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Kaiserslautern (Datenfeed von Dott, Stand 17. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Kaiserslautern (Datenfeed von Dott, Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Dott', '1,00 €', '0,40 €', '5,00 €', '9,00 €'],
+              ['Dott', '1,00 €', '0,41 €', '5,10 €', '9,20 €'],
             ],
           },
         },
-        'Eine halbe Stunde kostet damit 13 €. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Für längere Wege ist **VRNnextbike** günstiger, das Leihrad im Verkehrsverbund Rhein-Neckar (VRN). Es fährt seit Juni 2017 in Kaiserslautern, laut Stadt an 24 Stationen in der Innenstadt, etwa am Hauptbahnhof, an der Uni und am Volkspark. Es kostet 1 € pro 15 Minuten, höchstens 12 € in 24 Stunden. Im Monats-Abo für 10 € sind die ersten 30 Minuten jeder Fahrt inklusive. Das Rad gibst du an einer Station zurück, sonst kostet es 20 € Servicegebühr (Stand Oktober 2026). Laut Wochenblatt (31. August 2026) heisst das System ab März 2027 VRNrad, und die Flotte in Kaiserslautern soll dann fast doppelt so gross sein, mit mehr als 70 Pedelecs.',
+        'Eine halbe Stunde kostet damit 13,30 €. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Für längere Wege ist **VRNnextbike** günstiger, das Leihrad im Verkehrsverbund Rhein-Neckar (VRN). Es fährt seit Juni 2017 in Kaiserslautern, laut Stadt an 24 Stationen in der Innenstadt, etwa am Hauptbahnhof, an der Uni und am Volkspark. Es kostet 1 € pro 15 Minuten, höchstens 12 € in 24 Stunden. Im Monats-Abo für 10 € sind die ersten 30 Minuten jeder Fahrt inklusive. Das Rad gibst du an einer Station zurück, sonst kostet es 20 € Servicegebühr (Stand November 2026). Laut Wochenblatt (31. August 2026) heisst das System ab März 2027 VRNrad, und die Flotte in Kaiserslautern soll dann fast doppelt so gross sein, mit mehr als 70 Pedelecs.',
       ],
     },
     {
       heading: 'E-Scooter in Kaiserslautern parken: Abstellzonen und Verbotszonen',
       blocks: [
         'Seit 1. Januar 2024 ist das Verleihen von E-Scootern in Kaiserslautern eine Sondernutzung der Strasse; die Satzung dazu beschloss der Stadtrat am 13. November 2023. Jeder Anbieter braucht eine Erlaubnis der Stadt. Darin stehen Mindeststandards und die Zonen, in denen du nicht parken darfst. Laut Satzung zahlt der Anbieter 4 € pro Scooter und Monat.',
-        'In der Innenstadt stellst du den Leih-Scooter laut Stadt nur auf markierten Flächen ab, sobald die Stadt dort welche ausweist. Ausserhalb der Innenstadt stellst du ihn frei ab. Dotts Datenfeed zeigt 30 Abstellzonen, unter anderem am Hauptbahnhof, im Stadtpark, an der Maxstrasse, am Willy-Brandt-Platz, an der Neuen Stadtmitte und am Davenportplatz an der Uni (Stand 17. Oktober 2026).',
-        'Als Parkverbotszonen nennt die Stadt Parks und Grünanlagen wie Stadtpark und Volkspark, die Fussgängerzone und das Umfeld von Kaiserpfalz und Fruchthalle. Dotts Feed zählt 56 Parkverbotszonen, darunter:',
+        'In der Innenstadt stellst du den Leih-Scooter laut Stadt nur auf markierten Flächen ab, sobald die Stadt dort welche ausweist. Ausserhalb der Innenstadt stellst du ihn frei ab. Dotts Datenfeed zeigt 30 Abstellzonen, unter anderem am Hauptbahnhof, im Stadtpark, an der Maxstrasse, am Willy-Brandt-Platz, an der Neuen Stadtmitte und am Davenportplatz an der Uni (Stand November 2026).',
+        'Als Parkverbotszonen nennt die Stadt Parks und Grünanlagen wie Stadtpark und Volkspark, die Fussgängerzone und das Umfeld von Kaiserpfalz und Fruchthalle. Dotts Parkverbotszonen umfassen unter anderem (Stand November 2026):',
         {
           list: [
             'den Stadtkern um Marktstrasse, Fackelstrasse, Schillerplatz, Rathaus und Pfalzgalerie, mit dem Japanischen Garten;',
             'den Bereich vom Hauptbahnhof bis zum Fritz-Walter-Stadion;',
             'Stadtpark, Volkspark, Kennedyplatz und Messeplatz;',
-            'den Hauptfriedhof, den Jüdischen Friedhof, das Pfaff-Quartier und einen Teil der Gartenschau;',
+            'den Hauptfriedhof, den Jüdischen Friedhof und das Pfaff-Quartier;',
             'den Uni-Sportplatz und den Davenportplatz an der RPTU.',
           ],
         },
@@ -66,7 +66,6 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem gemeinsamen Geh- und Radweg, dem Radfahr- oder Schutzstreifen oder in der Fahrradstrasse. Nur wo es nichts davon gibt, fährst du auf der Fahrbahn. Auf dem Gehweg fährst du nicht, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es.',
         '**Fussgängerzone:** In den Fussgängerzonen der Innenstadt dürfen E-Scooter laut Stadt weiterhin nicht fahren. Dort steigst du ab und schiebst.',
         '**Ab 1. März 2027** gilt das Zusatzschild «Radverkehr frei» auch für E-Scooter, etwa auf Gehwegen und in Fussgängerzonen; dort fährst du dann im Schritttempo. Auf ihrer Website nennt die Stadt dafür einen anderen Tag, den 1. April 2026. Die Fussgängerzonen und manche für Räder freigegebene Gehwege will die Stadt aber mit dem Schild «Verbot für Elektrokleinstfahrzeuge» für E-Scooter sperren.',
-        '**Nachts:** Eine nächtliche Sperrzeit nennen weder die Stadt noch Dotts Datenfeed.',
       ],
     },
     {
@@ -81,7 +80,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -95,8 +94,8 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter auf den Betzenberg: FCK-Heimspiele',
       blocks: [
-        'In Dotts App liegen Hauptbahnhof und Fritz-Walter-Stadion in einer gemeinsamen Parkverbotszone. Dort endet die Fahrt nur auf Dotts Abstellzonen: am Bahnhof «Parkplatz HBF», «HBF Parkplatz 2» und «Mobility HUB», am Stadion drei Zonen mit «Betze» im Namen (Stand 17. Oktober 2026).',
-        'An Heimspieltagen des 1. FC Kaiserslautern gibt es laut Stadt zwischen Bahnhof und Stadion zusätzlich vorübergehende Abstellverbotszonen. Plane Zeit für das letzte Stück zu Fuss ein.',
+        'In Dotts App liegen Hauptbahnhof und Fritz-Walter-Stadion in einer gemeinsamen Parkverbotszone. Dort endet die Fahrt nur auf Dotts Abstellzonen: am Bahnhof «Parkplatz HBF», «HBF Parkplatz 2» und «Mobility HUB», am Stadion die Zonen mit «Betze» im Namen (Stand November 2026).',
+        'An Heimspieltagen des 1. FC Kaiserslautern gibt es laut Stadt zwischen Bahnhof und Stadion zusätzlich vorübergehende Abstellverbotszonen. Plane Zeit für das letzte Stück zu Fuss ein. Die nächsten Heimspiele laut FCK-Spielplan: Sonntag, 22. November 2026, um 13:30 Uhr gegen Dynamo Dresden, Mittwoch, 2. Dezember, um 18 Uhr im DFB-Pokal gegen den SC Freiburg und Samstag, 5. Dezember, um 13 Uhr gegen Greuther Fürth.',
         'Oft bequemer ist der Bus: Deine FCK-Eintrittskarte gilt am Spieltag als Fahrschein im ganzen VRN. Die Shuttlebusse der SWK zum Stadion sind kostenlos und fahren ab 2,5 Stunden vor Anpfiff alle fünf bis zehn Minuten. Sie starten an der Kantstrasse (KL-Ost) und am Parkplatz Bremerstrasse/Dunkeltälchen; auf der Uni-Route halten sie laut SWK künftig an Uni Zentral, Uni Süd und Uni West. Der letzte Bus zum Stadion fährt bei Anpfiff, der letzte zurück 1,5 Stunden nach Spielende.',
       ],
     },
@@ -114,7 +113,6 @@ const guide: Guide = {
       blocks: [
         'Dotts Gebiet reicht laut Datenfeed im Westen bis Einsiedlerhof, im Norden bis Erlenbach und Morlautern und im Süden bis Hohenecken. **Landstuhl** mit dem Landstuhl Regional Medical Center, **Ramstein-Miesenbach** und die Ramstein Air Base liegen ausserhalb, ebenso **Enkenbach-Alsenborn**, Otterbach, Weilerbach und Siegelbach mit dem Zoo. Dort kannst du keine Dott-Fahrt beenden.',
         'In Kaiserslautern selbst sind die US-Standorte Vogelweh, Kapaun, Pulaski, Daenner und Kleber in Dotts App Parkverbotszonen. Am Wochenende kommst du nachts mit der Nachtlinie N1 bis Einsiedlerhof und Kindsbach, mit der Linie 10 nach Enkenbach-Alsenborn.',
-        'Die nächsten Leih-Scooter auf unserer Karte stehen in [Neustadt an der Weinstrasse](map:de:Neustadt an der Weinstraße), bei Zeus.',
         'Fragen zu Ämtern und Alltag beantwortet das Deutsch-Amerikanische Bürgerbüro (German-American Community Office, GACO) in der Lauterstrasse 2, auf Deutsch und Englisch.',
       ],
     },
@@ -123,7 +121,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Die 30. Stadt:** TIER startete am 15. Januar 2020 in Kaiserslautern, als 30. Stadt in Deutschland, mit rund 200 Scootern. Die Minute kostete damals 15 Cent, heute bei Dott 40 Cent.',
+            '**Die 30. Stadt:** TIER startete am 15. Januar 2020 in Kaiserslautern, als 30. Stadt in Deutschland, mit rund 200 Scootern. Die Minute kostete damals 15 Cent, heute bei Dott 41 Cent.',
             '**Amerika in der Pfalz:** Die Kaiserslautern Military Community (KMC) ist laut ihrem Kommandeur die grösste Gemeinschaft von Amerikanern ausserhalb der kontinentalen USA. Stadt und KMC eröffneten im Februar 2003 gemeinsam das Bürgerbüro GACO.',
             '**Ein Garten im Steinbruch:** Wo heute der Japanische Garten liegt, in Dotts App eine Parkverbotszone, wurde bis etwa 1870 Buntsandstein abgebaut. Ab etwa 1880 entstand dort der Villenpark «Am Abendsberg», den Garten gibt es seit 2000.',
           ],
@@ -134,11 +132,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Kaiserslautern?',
-      answer: 'Die von Dott, dem einzigen Anbieter, den die Stadt nennt (Stand Oktober 2026); TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Alle freien Dott-Scooter zeigt auch die [Live-Karte von Kaiserslautern](map:de:Kaiserslautern).',
+      answer: 'Die von Dott, dem einzigen Anbieter, den die Stadt nennt (Stand November 2026); TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Alle freien Dott-Scooter zeigt auch die [Live-Karte von Kaiserslautern](map:de:Kaiserslautern).',
     },
     {
       question: 'Was kostet ein E-Scooter in Kaiserslautern?',
-      answer: '1 € fürs Entsperren und 0,40 € pro Minute, zehn Minuten also 5 € und zwanzig Minuten 9 € (Dott, Stand 17. Oktober 2026).',
+      answer: '1 € fürs Entsperren und 0,41 € pro Minute, zehn Minuten also 5,10 € und zwanzig Minuten 9,20 € (Dott, Stand November 2026).',
     },
     {
       question: 'Darf ich durch die Fussgängerzone fahren?',
@@ -154,7 +152,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es E-Scooter in Ramstein oder Landstuhl?',
-      answer: 'Nein, Stand Oktober 2026. Dotts Gebiet endet im Westen bei Einsiedlerhof. Ramstein-Miesenbach, die Air Base und Landstuhl liegen ausserhalb, und Bolt, Lime und Zeus führen sie nicht.',
+      answer: 'Nein, Stand Oktober 2026. Dotts Gebiet endet im Westen bei Einsiedlerhof. Ramstein-Miesenbach, die Air Base und Landstuhl liegen ausserhalb.',
     },
   ],
   sources: [
@@ -166,8 +164,6 @@ const guide: Guide = {
     { title: 'Stadt Kaiserslautern: Fahrradverleih', url: 'https://www.kaiserslautern.de/sozial_leben_wohnen/verkehr_parken/radverkehr/verleih/index.html.de' },
     { title: 'Dott: offener Datenfeed für Kaiserslautern (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/kaiserslautern/gbfs.json' },
     { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
-    { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
-    { title: 'Zeus: Städte', url: 'https://zeusscooters.com/cities/' },
     { title: 'VRN: Beförderungsbedingungen, Anlage 3: Mitnahme von E-Tretrollern', url: 'https://www.vrn.de/tickets/tarifsystem/befoerderungsbedingungen/artikel/011912/index.html' },
     { title: 'VRN: E-Tretroller von Dott', url: 'https://www.vrn.de/mobilitaet/e-tretroller/dott/index.html' },
     { title: 'VRNnextbike: Tarife', url: 'https://www.vrnnextbike.de/de/' },
@@ -180,6 +176,7 @@ const guide: Guide = {
     { title: 'Wochenblatt: E-Scooter-Verleih in Kaiserslautern gestartet (15. Januar 2020)', url: 'https://www.wochenblatt-reporter.de/kaiserslautern/c-lokales/roller-sind-an-zentralen-verkehrsknotenpunkten-und-belebten-bereichen-zu-finden_a159739' },
     { title: 'GACO: German-American Community Office Kaiserslautern', url: 'https://gaco.kaiserslautern.de/welcome/' },
     { title: 'Japanischer Garten Kaiserslautern: Chronik', url: 'https://www.japanischergarten.de/mitmachen/chronik' },
+    { title: '1. FC Kaiserslautern: Kader und Spielplan', url: 'https://fck.de/profis/kader/' },
   ],
 };
 

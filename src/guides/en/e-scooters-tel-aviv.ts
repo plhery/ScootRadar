@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tel-aviv',
   name: 'Renting an e-scooter in Tel Aviv',
   title: 'E-scooter Tel Aviv 2026: Lime, Bird, Dott, rules and prices',
-  description: 'E-scooter Tel Aviv guide: Lime, Bird and Dott, prices, the licence or riding test, helmet and sidewalk fines, parking bays, Shabbat and the airport.',
-  headline: 'E-scooters in Tel Aviv: Lime, Bird and Dott, the licence rule, fines, parking bays and Shabbat',
-  lede: 'You can rent an e-scooter in Tel Aviv with Lime, Bird or Dott, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. In the city centre you can end a ride only in a marked bay.',
+  description: 'E-scooter Tel Aviv guide: Lime, Bird and Dott, Dott’s ₪5 + ₪1.25/min, riding from 16 with a licence or test, the ₪1,000 helmet fine, parking bays and Shabbat.',
+  headline: 'E-scooters in Tel Aviv: Lime, Bird and Dott, prices, the licence rule, fines, parking bays and Shabbat',
+  lede: 'You can rent an e-scooter, a korkinet hashmali (קורקינט חשמלי) in Hebrew, in Tel Aviv with Lime, Bird or Dott. As of November 2026 Dott charges ₪5 to unlock and ₪1.25 a minute, so 10 minutes cost ₪17.50; Lime and Bird show their prices in their apps. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. Riding without a helmet or under 16 costs ₪1,000, without a licence or test ₪750 and on the sidewalk ₪250, Srugim and Ice reported. In the city centre you can end a ride only in a marked bay.',
   published: '2026-10-16',
   updated: '2026-10-23',
   city: 'il:Tel Aviv',
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Tel Aviv?',
       blocks: [
-        'Dott’s open data gives its Tel Aviv price: ₪5 to unlock, then ₪1.25 a minute (as of November 2026). Lime and Bird show their unlock fee and rate in the app before you start, so compare them there.',
+        'Dott’s open data gives its Tel Aviv price: ₪5 to unlock, then ₪1.25 a minute (as of November 2026), so 10 minutes cost ₪17.50 and 20 minutes ₪30. Lime and Bird set their own unlock fee and rate: compare them before you start.',
         'Fines cost far more than rides, and a scooter is easy to trace: since 1 August 2024 e-scooters in Israel have had to be registered and carry an ID plate, Maariv reported in 2026.',
       ],
     },
@@ -49,7 +49,7 @@ const guide: Guide = {
               ['Minimum age', '16', '₪1,000', 'Srugim 2022; Ice 2024'],
               ['Licence or test', 'A driving licence or, without one, a passed test', '₪750', 'Srugim 2022; Ice 2024'],
               ['Helmet', 'Required', '₪1,000', 'Srugim 2022; Ice 2024'],
-              ['Speed', '25 km/h at most', '–', 'Ice 2024'],
+              ['Speed', '25 km/h at most', '₪1,000', 'Ice 2023; Ice 2024'],
               ['Where to ride', 'Bike path, or the road where there is none; never the sidewalk', '₪250 on the sidewalk', 'dpa 2019; Ice 2023'],
               ['Passengers', 'One rider only', '₪250', 'Srugim 2022; Ice 2023'],
               ['Alcohol', 'No riding drunk, as for any vehicle', 'A court case; you can lose your driving licence', 'Calcalist 2019'],
@@ -105,7 +105,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Tel Aviv?',
-      answer: 'Lime, Bird and Dott: the [Tel Aviv map](map:il:Tel Aviv) showed 3,964 of their scooters inside Tel Aviv-Yafo, Jaffa included, at 05:27 on 30 October 2026. Each app shows its price before you unlock.',
+      answer: 'Lime, Bird and Dott: the [Tel Aviv map](map:il:Tel Aviv) showed 3,964 of their scooters inside Tel Aviv-Yafo, Jaffa included, at 05:27 on 30 October 2026.',
+    },
+    {
+      question: 'How much does an e-scooter cost in Tel Aviv?',
+      answer: 'Dott charges ₪5 to unlock and ₪1.25 a minute (as of November 2026), its open data shows, so 10 minutes cost ₪17.50 and 20 minutes ₪30. Lime and Bird set their own prices: compare them before you unlock.',
+    },
+    {
+      question: 'What are the e-scooter fines in Tel Aviv?',
+      answer: '₪1,000 for riding without a helmet or under 16 and ₪750 without a driving licence or a passed test, Srugim reported when the Knesset’s Economy Committee approved them in 2022; ₪250 for riding on the sidewalk or carrying a passenger, ₪1,000 for going over 25 km/h and ₪1,500 for running a red light, Ice reported from the city’s 2023 reminder. Since 1 September 2026 an e-scooter without its ID plate costs ₪750, Maariv reported. City inspectors as well as the police can fine you.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Tel Aviv as a tourist?',
@@ -113,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in Israel?',
-      answer: 'Yes. Israel’s rules require one, Ice reported in 2024, and since 2022 city inspectors as well as the police can fine you for riding without it, Srugim reported.',
+      answer: 'Yes. Israel’s rules require one, Ice reported in 2024. Riding without it costs ₪1,000, and since 2022 city inspectors as well as the police can fine you, Srugim reported.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Tel Aviv?',

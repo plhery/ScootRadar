@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-vancouver',
   topic: 'vancouver',
   name: 'E-scooters in Vancouver',
-  title: 'E-scooter Vancouver 2026: Lime, rules, seawall and fines',
-  description: 'E-scooter Vancouver guide: Lime’s stations, BC rules on helmets, age and sidewalks, the fines, the seawall and Stanley Park, SkyTrain, YVR and nearby cities.',
+  title: 'E-scooter Vancouver 2026: renting a Lime, rules and fines',
+  description: 'E-scooter Vancouver guide: how to rent a Lime at its stations, BC helmet, age and sidewalk rules, the fines, the seawall and Stanley Park, SkyTrain and YVR.',
   headline: 'E-scooters in Vancouver: Lime’s stations, BC rules and fines, the seawall, SkyTrain and YVR',
-  lede: 'You can rent an e-scooter in Vancouver from Lime, the City’s only operator; every ride starts and ends at one of its stations, and the app shows the fare before you unlock. Lime riders must be 18, a helmet is the law in BC and comes attached to each scooter, and scooters top out at 25 km/h. Ride on streets posted at 50 km/h or less, in bike lanes, on greenways and on the seawall where bikes go, never on the sidewalk: that’s a $109 ticket. Your own scooter is legal too, under a provincial pilot that runs until April 2028. Lime’s scooters don’t reach YVR airport.',
+  lede: 'You can rent an e-scooter in Vancouver from Lime, the City’s only operator: in the Lime or Uber app, unlock a scooter at one of Lime’s stations, and lock it into a station when you finish. The app shows the fare before you unlock. Lime riders must be 18, a helmet is the law in BC and comes attached to each scooter, and scooters top out at 25 km/h. Ride on streets posted at 50 km/h or less, in bike lanes, on greenways and on the seawall where bikes go, never on the sidewalk: that’s a $109 ticket. Your own scooter is legal too, under a provincial pilot that runs until April 2028. Lime’s scooters don’t reach YVR airport.',
   published: '2026-10-17',
   updated: '2026-10-26',
   city: 'ca:bc:Vancouver',
@@ -147,7 +147,11 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in Vancouver?',
-      answer: 'The Lime app shows the fare before you unlock.',
+      answer: 'The Lime app shows the fare before you unlock. When the City picked it in 2024, Lime promised a $20 discounted annual pass for marginalized groups.',
+    },
+    {
+      question: 'How do you rent a Lime scooter in Vancouver?',
+      answer: 'Download the Lime app, or use Uber’s, and sign up: you must be 18. Find a Lime station in the app and unlock a scooter there through the app, then wear the helmet attached to it. Ride on the street, in a bike lane, on a greenway or on the seawall, never on the sidewalk. To finish, lock the scooter into a Lime station, again through the app.',
     },
     {
       question: 'Do you need a helmet for an e-scooter in Vancouver?',
@@ -195,6 +199,7 @@ const guide: Guide = {
     { title: 'Freshet News: e-scooters now illegal on major Burnaby roads and parks (26 May 2026)', url: 'https://www.freshetnews.ca/?p=9658' },
     { title: 'Daily Hive: Lime trips during the World Cup (28 August 2026)', url: 'https://dailyhive.com/vancouver/lime-vancouver-e-scooter-share-ridership-fifa-world-cup-statistics' },
     { title: 'Lime: open data for Vancouver (GBFS)', url: 'https://data.lime.bike/api/partners/v2/gbfs/vancouver_bc/gbfs.json' },
+    { title: 'Daily Hive: Lime expands e-scooter share across downtown Vancouver (11 June 2025)', url: 'https://dailyhive.com/vancouver/lime-e-scooter-share-downtown-vancouver-expansion-launch' },
   ],
 };
 

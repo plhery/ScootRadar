@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-austin',
   topic: 'austin',
   name: 'E-scooters in Austin, Texas',
-  title: 'E-scooters in Austin 2026: Lime, Bird, rules and parking',
-  description: 'E-scooters in Austin: Lime and Bird, sidewalks and helmets, downtown, the Butler Trail and Capitol bans, UT’s walk zone and CapMetro.',
+  title: 'E-scooter rental Austin 2026: Lime, Bird, rules and parking',
+  description: 'Renting an e-scooter in Austin: Lime and Bird, how to rent, sidewalks and helmets, the Butler Trail and Capitol bans, UT’s walk zone and where to park.',
   headline: 'E-scooters in Austin: Lime and Bird, the rules, downtown and where to park',
-  lede: 'E-scooters in Austin come from Lime and Bird, the two companies on the City’s list of permitted operators (updated 1 October 2026); the City says prices are in their apps. You may ride on sidewalks if you do it safely and yield to people walking. Riders under 18 must wear a helmet; scooters are banned from the Butler Hike-and-Bike Trail and the Capitol grounds, and since August 2026 the heart of the UT Austin campus is walk-only.',
+  lede: 'E-scooters in Austin come from Lime and Bird, the two companies on the City’s list of permitted operators (updated 1 October 2026). To rent one, download either app and unlock a scooter; at the end, park it in a parking box or corral, or leave at least 3 feet of sidewalk clear. Bird rents from 18. The City says prices are in the apps, and riders on low incomes pay no more than half. You may ride on sidewalks if you do it safely and yield to people walking. Riders under 18 must wear a helmet; scooters are banned from the Butler Hike-and-Bike Trail and the Capitol grounds, and since August 2026 the heart of the UT Austin campus is walk-only.',
   published: '2026-10-28',
   updated: '2026-10-28',
   city: 'us:tx:Austin',
@@ -130,6 +130,10 @@ const guide: Guide = {
     {
       question: 'Can you ride an e-scooter on the sidewalk in Austin?',
       answer: 'Yes. Unlike Dallas and San Antonio, Austin’s City Code allows it “in a reasonable and prudent manner”. Yield to people walking, and keep off the Butler Trail, the Capitol grounds and UT’s walk-only zone.',
+    },
+    {
+      question: 'How do you rent a scooter in Austin?',
+      answer: 'Download the Lime or Bird app and unlock a scooter; Bird rents from 18, and Lime’s app shows its minimum age. No smartphone? The City asks both to offer rentals without one, and cash payment: call Lime on 888-546-3345 or Bird on 866-205-2442. Ride with the traffic, and end the ride in a parking box or corral, or with at least 3 feet of sidewalk left clear.',
     },
     {
       question: 'How much does an electric scooter rental cost in Austin?',

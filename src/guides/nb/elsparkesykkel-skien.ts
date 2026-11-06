@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'elsparkesykkel-skien',
   topic: 'skien',
   name: 'Leie elsparkesykkel i Skien og Porsgrunn',
-  title: 'Elsparkesykkel i Skien og Porsgrunn 2026: Ryde og regler',
-  description: 'Elsparkesykkel i Skien og Porsgrunn: bare Ryde har tillatelse. Priser, Porsgrunn stengt kl. 23–05, vinterpause fra 15. desember og soner i sentrum.',
+  title: 'Elsparkesykkel Skien og Porsgrunn 2026: Ryde, pris og regler',
+  description: 'Elsparkesykkel i Skien og Porsgrunn: bare Ryde, 10,90 kr + 2,50 kr/min. Porsgrunn stengt kl. 23–05, vinterpause fra 15. desember og soner i sentrum.',
   headline: 'Elsparkesykkel i Skien og Porsgrunn: Ryde, priser, nattestenging og vinterpause',
-  lede: 'Vil du leie elsparkesykkel i Skien eller Porsgrunn, er det bare Ryde som har tillatelse i 2026. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (per november 2026), og Ryde krever at du har fylt 16 år. I Porsgrunn er utleien stengt fra kl. 23 til 05 hver natt i hele kommunen. Skien er ikke stengt om natten, men fra kl. 00 til 05 går sparkesyklene maks 12 km/t. Fra 15. desember tar utleien vinterpause.',
+  lede: 'Vil du leie elsparkesykkel i Skien eller Porsgrunn, er det bare Ryde som har tillatelse i 2026. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (per november 2026), og Ryde krever at du har fylt 16 år. I Porsgrunn er utleien stengt fra kl. 23 til 05 hver natt i hele kommunen. Skien er ikke stengt om natten, men fra kl. 00 til 05 går sparkesyklene maks 12 km/t. Om vinteren tar utleien pause, fra 15. desember til det er snø- og isfritt på våren, skriver Skien kommune.',
   published: '2026-10-18',
   updated: '2026-10-18',
   city: 'no:Skien',
@@ -38,7 +38,7 @@ const guide: Guide = {
           },
         },
         'Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter, og tar du sparkesykkelen ut av driftsområdet, kan det koste opptil 500 kr ekstra.',
-        'Loven sier 12 år, men Ryde krever **16 år** i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år.',
+        'Loven sier 12 år, men Ryde krever **16 år** i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
@@ -71,7 +71,7 @@ const guide: Guide = {
           ],
         },
         'På Landmannstorget, det nye kollektivknutepunktet, kan du avslutte turen. I gågata gjelder de nasjonale reglene: Det er lov å kjøre, men maks 6 km/t.',
-        'Høsten 2026 arbeider kommunen i sentrumsgatene. Fra 5. oktober er fortauet ovenfor krysset Telemarksgata/Torggata stengt i noen uker, og kommunen varslet at gangarealet nederst på Rådhusplassen skulle stenges i uke 41. Omkjøringen er skiltet.',
+        'Kommunen ruster opp Torggata og Telemarksgata, over og under bakken. Arbeidet startet nederst i Torggata i januar 2026 og går etappevis nordover til prosjektet er ferdig høsten 2027, og underveis får gater, fortau og gangveier nye trafikkmønstre. Alternativ vei for gående og syklende blir skiltet.',
         'Herkules ligger i utkanten av kjøreområdet: En del av handelsområdet er innenfor, men resten ligger i en sone der du bare kan kjøre gjennom. Sjekk kartet i appen før du avslutter turen der.',
         { note: 'Står sparkesykkelen til hinder, kan du få et parkeringsgebyr på 900 kr, og har du ikke tatt bilde av parkeringen, kan Ryde sende regningen videre til deg. Ser du en feilparkert sparkesykkel, ber kommunen deg melde fra direkte til Ryde.' },
       ],
@@ -162,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må jeg være for å leie elsparkesykkel i Skien?',
-      answer: 'Ryde krever 16 år. Loven sier 12 år, og regjeringen foreslo 5. oktober 2026 å heve den nasjonale grensen til 16 år.',
+      answer: 'Ryde krever 16 år. Loven sier 12 år, og regjeringen foreslo 5. oktober 2026 å heve den nasjonale grensen til 16 år. Forslaget er på høring til 5. februar 2027 og er ikke vedtatt.',
     },
     {
       question: 'Kan jeg ta med elsparkesykkelen på bussen?',
@@ -176,6 +176,7 @@ const guide: Guide = {
     { title: 'Skien kommune: Sykkel (leie el-sparkesykkel, bysykkel og sykkelparkering)', url: 'https://www.skien.kommune.no/kultur-idrett-og-frivillighet/parker-og-friluftsliv/sykkel/' },
     { title: 'Skien kommune, innsyn: arkivsak 2026/3676, søknad og vedtak om utleie av elsparkesykler', url: 'https://innsynpluss.onacos.no/skien/sok/' },
     { title: 'Skien kommune: Nye trafikkmønstre i sentrum (5. oktober 2026)', url: 'https://www.skien.kommune.no/by-og-naeringsutvikling/aktuelt/nye-trafikkmoenstre-i-sentrum/' },
+    { title: 'Skien kommune: Kongens gate, Torggata, Telemarksgata, Brekketrappa og Rådhusplassen', url: 'https://www.skien.kommune.no/by-og-naeringsutvikling/prosjekter-i-skien/prosjekter-i-skien-sentrum/kongensgate-torggata-telemarksgata-brekketrappa-og-raadhusplassen/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Åpne data for Skien (GBFS via Entur: priser, åpningstider og soner)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeskien/gbfs' },
     { title: 'Ryde: Åpne data for Porsgrunn (GBFS via Entur: priser, åpningstider og soner)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeporsgrunn/gbfs' },
@@ -190,6 +191,7 @@ const guide: Guide = {
     { title: 'Telemark Museum: Henrik Ibsen museum, Venstøp', url: 'https://www.telemarkmuseum.no/henrik-ibsen-museum/' },
     { title: 'Store norske leksikon: Henrik Ibsen museum – Venstøp', url: 'https://snl.no/Henrik_Ibsen_museum_-_Venst%C3%B8p' },
     { title: 'Store norske leksikon: Henrik Ibsen', url: 'https://snl.no/Henrik_Ibsen' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 

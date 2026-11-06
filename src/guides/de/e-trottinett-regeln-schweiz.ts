@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Trottinett- und E-Scooter-Regeln Schweiz 2026: Alter, Helm',
   description: 'E-Trottinett- und E-Scooter-Regeln der Schweiz, Stand Oktober 2026: Alter und Führerausweis, Trottoir und Velostreifen, Helm, Promille, Bussen, SBB, Miete.',
   headline: 'E-Trottinett-Regeln in der Schweiz: wer E-Scooter fahren darf, wo und was eine Busse kostet',
-  lede: 'Die E-Trottinett-Regeln der Schweiz kurz gesagt: Ein E-Trottinett oder E-Scooter ist ein Leicht-Motorfahrrad, dessen Motor bis 20 km/h unterstützt, und braucht weder Kontrollschild noch Vignette noch eine obligatorische Versicherung. Fahren darfst du ab 16 ohne Führerausweis, mit 14 und 15 nur mit dem Ausweis der Kategorie M, und zwar auf dem Velostreifen oder der Strasse, nie auf dem Trottoir; mieten kannst du erst ab 18. Stand Oktober 2026 gibt es keine Helmpflicht, das Licht muss auch tagsüber brennen, zu zweit fahren ist verboten, und die Promillegrenze liegt bei 0,5.',
+  lede: 'Die E-Trottinett-Regeln der Schweiz kurz gesagt: Ein E-Trottinett oder E-Scooter ist ein Leicht-Motorfahrrad, dessen Motor bis 20 km/h unterstützt, und braucht weder Kontrollschild noch Vignette noch eine obligatorische Versicherung; mieten kannst du es erst ab 18. Nach Gesetz gilt, Stand November 2026: **Alter:** ab 16 ohne Führerausweis, mit 14 und 15 nur mit dem Ausweis der Kategorie M. **Helm:** keine Pflicht, aber dringend empfohlen. **Wo fahren:** auf dem Velostreifen oder Radweg, sonst auf der Strasse, nie auf dem Trottoir; nie zu zweit und mit Licht auch am Tag. **Alkohol:** unter 0,5 Promille. **Bussen:** CHF 40.– fürs Trottoir oder das Handy ohne Freisprecheinrichtung, CHF 60.– fürs Rotlicht, CHF 20.– ohne Licht am Tag.',
   published: '2026-10-12',
   updated: '2026-10-13',
   sections: [
@@ -61,7 +61,7 @@ const guide: Guide = {
       heading: 'Gibt es eine Helmpflicht? Licht, Glocke und Rückstrahler',
       blocks: [
         '**Eine Helmpflicht gibt es nicht.** Die Helmpflicht für Motorfahrräder gilt nicht für solche mit elektrischem Antrieb bis 25 km/h, die Helmbusse von CHF 30.– trifft dich also nicht. Die BFU empfiehlt den Helm trotzdem nachdrücklich, und Dott warnt, dass Kopfverletzungen ohne Helm womöglich nicht versichert sind.',
-        'Am 30. April 2026 lehnte der Nationalrat eine Motion für Helmpflicht und Führerausweis bei E-Rollern und ähnlichen Trendfahrzeugen mit 122 zu 33 Stimmen bei 33 Enthaltungen ab. Am 19. August erklärte sich der Bundesrat bereit, bei der nächsten Verordnungsanpassung eine Helmtragepflicht für E-Trottinette in die Vernehmlassung zu geben. Einen Entwurf gibt es bis zum 30. Oktober 2026 nicht; die für Dezember 2026 geplante Vernehmlassung zu sieben Verordnungen des Strassenverkehrsrechts nennt den Helm nicht.',
+        'Am 30. April 2026 lehnte der Nationalrat eine Motion für Helmpflicht und Führerausweis bei E-Rollern und ähnlichen Trendfahrzeugen mit 122 zu 33 Stimmen bei 33 Enthaltungen ab. Am 19. August erklärte sich der Bundesrat bereit, bei einer nächsten Verordnungsanpassung eine Helmtragepflicht für E-Trottinette in der Vernehmlassung zur Diskussion zu stellen. Eine Vernehmlassung zu sieben Verordnungen des Strassenverkehrsrechts, darunter die Verkehrsregelnverordnung und die Verkehrszulassungsverordnung, ist von Dezember 2026 bis März 2027 geplant (Stand November 2026).',
         'Vorgeschrieben ist dagegen:',
         {
           list: [
@@ -113,7 +113,7 @@ const guide: Guide = {
         'Die meisten Verstösse erledigt die Polizei mit einer Ordnungsbusse nach der eidgenössischen Bussenliste. Die Beträge gelten schweizweit und haben sich seit 2025 nicht geändert.',
         {
           table: {
-            caption: 'Häufige Bussen für E-Trottinett-Fahrende, Stand Oktober 2026',
+            caption: 'Häufige Bussen für E-Trottinett-Fahrende, Stand November 2026',
             head: ['Verstoss', 'Busse', 'Ziffer OBV'],
             rows: [
               ['Fahren auf dem Trottoir', 'CHF 40.–', '605.1'],
@@ -155,21 +155,21 @@ const guide: Guide = {
         },
         'Diese Versicherung ist dünner, als sie aussieht. Bei Lime, Bolt und Voi ist die Haftpflicht **subsidiär**: Sie zahlt erst nach deiner eigenen Privathaftpflicht. Dotts zuletzt veröffentlichte Deckung zahlte nur über deine anderen Versicherungen hinaus, PubliBike versichert gar nichts. Zu den Polizeibussen kommen Gebühren: Voi kann nach Verwarnungen CHF 25.– fürs falsche Parkieren verlangen, Bolt bis CHF 100.– fürs Abholen eines Scooters ausserhalb des Gebiets.',
         'Welche Anbieter in deiner Nähe Scooter haben, siehst du auf der Karte von [Zürich](map:ch:zurich), [Bern](map:ch:bern) oder [Basel](map:ch:basel), mit Akku und Gehzeit; zum Entsperren und Bezahlen öffnet sie die App des Anbieters. Was eine Fahrt kostet, steht im Ratgeber [E-Trottinett-Preise in der Schweiz](guide:swiss-prices), was in den Städten gilt, in den Ratgebern zu [Zürich](guide:zurich), [Bern](guide:bern) und [Basel](guide:basel).',
-        '**Zu Besuch aus dem Ausland?** Ab 16 darfst du ohne Führerausweis fahren, egal woher du kommst, und die Schweizer Bedingungen der Anbieter verlangen keinen Wohnsitz in der Schweiz. Ob 14- und 15-Jährigen ein ausländischer Mofa-Ausweis statt der Kategorie M genügt, sagt die Verkehrszulassungsverordnung nicht ausdrücklich; verlass dich nicht darauf.',
+        '**Zu Besuch aus dem Ausland?** Ab 16 darfst du ohne Führerausweis fahren, egal woher du kommst, und die Schweizer Bedingungen der Anbieter verlangen keinen Wohnsitz in der Schweiz.',
       ],
     },
     {
       heading: 'Neue E-Trottinett-Regeln in der Schweiz: 2025 und 2026',
       blocks: [
         'Die letzte grosse Änderung trat am **1. Juli 2025** in Kraft: das ausdrückliche Verbot, zu zweit zu fahren, die neuen Signalregeln und das Parkieren in Begegnungs- und Fussgängerzonen. Die Definition unterscheidet seither 20 km/h ohne Sitz und 25 km/h mit Sitz; für Stehmodelle blieb es bei 20 km/h.',
-        '**Was ändert sich 2026?** Seit dem 1. Juli 2026 kostet es CHF 30.–, links an einer Verkehrsinsel vorbeizufahren; sonst trat bis zum 30. Oktober 2026 keine neue Bundesregel für E-Trottinette in Kraft. Wer über die Grenze fährt, findet die deutschen Regeln unter [E-Scooter-Regeln in Deutschland](guide:german-rules). In der Schweiz stehen zur Debatte:',
+        '**Was ändert sich 2026?** Seit dem 1. Juli 2026 kostet es CHF 30.–, links an einer Verkehrsinsel vorbeizufahren. Wer über die Grenze fährt, findet die deutschen Regeln unter [E-Scooter-Regeln in Deutschland](guide:german-rules). In der Schweiz stehen zur Debatte:',
         {
           list: [
-            '**Helm:** Eine Vernehmlassung ist in Aussicht gestellt, einen Entwurf gibt es nicht (siehe oben).',
-            '**Kontrollschild und Versicherung:** Eine Motion vom 15. Juni 2026 verlangt beides. Der Bundesrat beantragte am 19. August die Ablehnung; der Nationalrat hat sie bis zum 30. Oktober nicht behandelt.',
-            '**Frisieren:** Der Bundesrat will die Regeln gegen Tuning präzisieren (Februar 2026); ein Entwurf fehlt noch.',
+            '**Helm:** Der Bundesrat ist bereit, eine Helmtragepflicht bei einer nächsten Verordnungsanpassung zur Diskussion zu stellen (siehe oben).',
+            '**Kontrollschild und Versicherung:** Eine Motion vom 15. Juni 2026 verlangt beides. Der Bundesrat beantragte am 19. August die Ablehnung; im Nationalrat ist sie noch hängig (Stand November 2026).',
+            '**Frisieren:** Der Bundesrat will die Regeln gegen Tuning präzisieren (Februar 2026).',
             '**Zug:** Das Zugpersonal im SEV wünscht sich klarere Regeln für Velos und Trottinette (Juni 2026).',
-            '**Zürich:** Der Stadtrat will die Sharing-Fahrzeuge per Ausschreibung von 7350 auf 3000 senken, mit drei Anbietern und festen Stationen im Zentrum (Gemeinderat, 26. August 2026); ein offizielles Startdatum gibt es nicht. Mehr dazu im Ratgeber [E-Trottinett in Zürich](guide:zurich).',
+            '**Zürich:** Der Stadtrat will die Sharing-Fahrzeuge per Ausschreibung von 7350 auf 3000 senken, mit drei Anbietern und festen Stationen im Zentrum (Gemeinderat, 26. August 2026). Mehr dazu im Ratgeber [E-Trottinett in Zürich](guide:zurich).',
           ],
         },
       ],
@@ -207,7 +207,7 @@ const guide: Guide = {
     { title: 'Fedlex: Geplante Vernehmlassung «Teilrevision von sieben Verordnungen des Strassenverkehrsrechts»', url: 'https://www.fedlex.admin.ch/eli/dl/proj/2026/81/cons_1/de' },
     { title: 'ASTRA: Bedeutung der Radverkehr-Signalisation, gültig ab 1. Juli 2025 (PDF)', url: 'https://www.astra.admin.ch/dam/de/sd-web/3LsKt7R6x8DU/bedeutung-radverkehr-signalisation.pdf' },
     { title: 'BFU: Faktenblatt zu den Regeln für E-Trottinett und andere elektrische Fahrzeuge (PDF)', url: 'https://www.bfu.ch/media/fffpzk2f/bfu_factsheet_e-langsamverkehr_regeln.pdf' },
-    { title: 'Curia Vista: Motion 26.3637 «Immatrikulations- und Haftpflichtversicherungspflicht für E-Trottinette»', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
+    { title: 'Curia Vista: Motion 26.3637 «Zulassungspflicht und zwingender Abschluss einer Haftpflichtversicherung für E-Trottinette und andere motorisierte Fortbewegungsmittel für Einzelpersonen»', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
     { title: 'Curia Vista: Motion 26.3010 «Helmpflicht und Führerausweis für E-Roller und ähnliche Trendfahrzeuge»', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263010' },
     { title: 'Alliance SwissPass: Tarif T600, Gemeinsame Tarif-Nebenbestimmungen, Ziffern 6 und 7 (Ausgabe 1. Juni 2026, PDF)', url: 'https://www.allianceswisspass.ch/de/asp/Downloads?download=2666' },
     { title: 'Nau.ch: SBB verteilt Kekse an Vorzeige-Velofahrer (20. August 2022)', url: 'https://www.nau.ch/news/good-news/sbb-verteilt-kekse-an-vorzeige-velofahrer-66245670' },

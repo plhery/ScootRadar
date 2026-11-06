@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-london',
   topic: 'london',
   name: 'E-scooter hire in London',
-  title: 'E-scooter London 2026: Lime, Voi, boroughs, parking, rules',
-  description: 'E-scooter hire in London with Lime and Voi: the 11 boroughs, who can ride, discounts, parking bays, the Royal Parks, and why your own e-scooter is illegal.',
+  title: 'E-scooter hire London 2026: Lime, Voi, boroughs and rules',
+  description: 'E-scooter hire in London with Lime and Voi: how to rent at 18 with a driving licence, the 11 boroughs, parking bays, the Royal Parks and the ban on your own.',
   headline: 'E-scooter hire in London: Lime and Voi, the 11 boroughs, and where you can ride and park',
-  lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. You must be 18 or over with a full or provisional driving licence, the scooters are capped at 12.5 mph, and every ride ends in a marked parking bay. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
+  lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. To rent, download either app, verify that you are 18 or over with a full or provisional driving licence, complete the in-app lesson, then scan the scooter’s QR code. The scooters are capped at 12.5 mph, and every ride starts and ends in a marked parking bay. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'gb:London',
@@ -148,6 +148,10 @@ const guide: Guide = {
       answer: 'Yes, if you’re 18 or over with a full driving licence the law accepts: an EU or EEA licence, or another country’s full car, moped or motorcycle licence if you entered the UK in the last 12 months. Foreign provisional licences and learner permits don’t count. Each app decides which licences it takes, so sign up before you travel.',
     },
     {
+      question: 'How do I rent an e-scooter in London?',
+      answer: 'Download the Lime or Voi app and register: it checks that you are 18 or over and hold a full or provisional driving licence. Complete the compulsory in-app lesson, then unlock a scooter with the QR code or vehicle ID on it. Start and end the ride in a marked bay inside the 11 trial boroughs. Both companies offer discounts to riders who qualify.',
+    },
+    {
       question: 'Can I ride a Lime or Voi scooter in Hyde Park?',
       answer: 'No. Hyde Park and the other Royal Parks don’t allow e-scooters, hired or private. End your ride in a bay outside the park and walk in.',
     },
@@ -160,8 +164,8 @@ const guide: Guide = {
       answer: 'You mustn’t: a hire e-scooter is legal only inside the trial area, and you can end a ride only in a marked bay inside it. Turn back to the nearest bay, which the app shows.',
     },
     {
-      question: 'Can I see Lime scooters on ScootRadar?',
-      answer: 'Yes, since 25 October 2026: our [London map](map:gb:London) shows Lime’s e-scooters beside Voi’s. To ride one, open the Lime app.',
+      question: 'Where can I find an e-scooter near me in London?',
+      answer: 'In the Lime and Voi apps, or on our [London map](map:gb:London), which has shown Voi’s e-scooters since 24 October 2026 and Lime’s since 25 October. You can hire one only in the 11 trial boroughs, starting and ending in a marked bay.',
     },
   ],
   sources: [

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tromso',
   name: 'Renting an e-scooter in Tromsø',
   title: 'E-scooter Tromsø 2026: Ryde app, prices, season and rules',
-  description: 'E-scooter Tromsø guide for visitors: the Ryde app and its prices, the May to November season, weekend night closures, the bridge, tunnels and airport.',
+  description: 'E-scooter Tromsø: the 2026 season is over and the next starts on 1 May 2027 at the earliest. The Ryde app, prices, night closures, the bridge and the airport.',
   headline: 'E-scooters in Tromsø: the Ryde app, prices, the summer season and where you can ride',
-  lede: 'You can rent an e-scooter in Tromsø from one company only, Ryde, and only from 1 May until 1 November at the latest: there are none in the northern-lights season. A ride costs NOK 10.90 to unlock plus NOK 2.50 a minute, so 10 minutes come to NOK 35.90 (as of November 2026). You must be 16, and a foreign phone number and card should work. Rentals stop from 11 pm to 6 am on Friday and Saturday nights and before public holidays, the road tunnels are off limits, and the way to the Arctic Cathedral is the cycle path over Tromsø Bridge.',
+  lede: 'The e-scooter season in Tromsø is over: the city’s regulation allows rentals from 1 May to 1 November, so the 2026 season has ended and the next can start on 1 May 2027. Until then there are none, northern-lights season included. The only company is Ryde, and in the 2026 season a ride cost NOK 10.90 to unlock plus NOK 2.50 a minute, so 10 minutes came to NOK 35.90. You must be 16, and a foreign phone number and card should work. Rentals stop from 11 pm to 6 am on Friday and Saturday nights and before public holidays, the road tunnels are off limits, and the way to the Arctic Cathedral is the cycle path over Tromsø Bridge.',
   published: '2026-10-14',
   updated: '2026-10-17',
   city: 'no:Tromsø',
@@ -26,17 +26,17 @@ const guide: Guide = {
             '**Age 16 or over.** You need no driving licence.',
           ],
         },
-        'Since 1 January 2026 a local regulation has allowed up to two operators, with at most 200 vehicles in the centre and 2,000 elsewhere in the city.',
+        'Since 1 January 2026 a local regulation has provided for two operators, with at most 200 vehicles in the centre and 2,000 elsewhere in the city.',
         'On 14 October 2026 about 1,050 Ryde e-scooters in Tromsø were free to rent at that moment; in season, the [map of Tromsø](map:no:Tromsø) shows where they stand. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Tromsø?',
       blocks: [
-        'Prices are in Norwegian kroner (NOK), written kr in Norway. Ryde charges NOK 10.90 to unlock, then NOK 2.50 a minute, always rounded up to the next full minute; the app shows the final price before you unlock.',
+        'Prices are in Norwegian kroner (NOK), written kr in Norway. In the 2026 season Ryde charged NOK 10.90 to unlock, then NOK 2.50 a minute, always rounded up to the next full minute; the app shows the price before you unlock.',
         {
           table: {
-            caption: 'Ryde in Tromsø (as of November 2026) and the Svipper bus',
+            caption: 'Ryde in Tromsø (2026 season) and the Svipper bus',
             head: ['Ride or ticket', 'Price'],
             rows: [
               ['Ryde, 10 minutes', 'NOK 35.90'],
@@ -124,7 +124,7 @@ const guide: Guide = {
             caption: 'E-scooter rules and fines in Norway, October 2026',
             head: ['Rule', 'What applies', 'Fine', 'Official source'],
             rows: [
-              ['Age', '12 by law, 16 at Ryde. A national minimum of 16 was proposed on 5 October 2026; it is not law', '–', '[Driving licence regulation § 12-1](https://lovdata.no/dokument/SF/forskrift/2004-01-19-298/KAPITTEL_12)'],
+              ['Age', '12 by law, 16 at Ryde. A national minimum of 16 was proposed on 5 October 2026 and is out for consultation until 5 February 2027; it is not law', '–', '[Driving licence regulation § 12-1](https://lovdata.no/dokument/SF/forskrift/2004-01-19-298/KAPITTEL_12)'],
               ['Helmet', 'Required under 15, recommended for everyone', '–', '[Protective equipment regulation § 4](https://lovdata.no/dokument/SF/forskrift/1979-09-21-7)'],
               ['Speed', 'E-scooters are limited to 20 km/h; past pedestrians and in pedestrian streets, walking pace, never over 6 km/h', '–', '[Small electric vehicle regulation § 3](https://lovdata.no/dokument/SF/forskrift/2022-05-25-918)'],
               ['Where to ride', 'Road, cycle lane or track; pavement only when quiet; never motorways or roads and tunnels signed against cyclists', 'NOK 1,950 past a ban sign', '[Traffic rules §§ 4 and 20](https://lovdata.no/dokument/SF/forskrift/1986-03-21-747)'],
@@ -155,7 +155,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can you rent an e-scooter in Tromsø in winter?',
-      answer: 'No. The season runs from 1 May to 1 November at the latest, and snow can end it earlier. From November to April there are no shared e-scooters in Tromsø, so northern-lights visitors will need the bus or a walk.',
+      answer: 'No. The 2026 season is over, and the next can start on 1 May 2027: the city’s regulation allows rentals from 1 May to 1 November, and snow can end the season earlier. Until then there are no shared e-scooters in Tromsø, so northern-lights visitors will need the bus or a walk.',
+    },
+    {
+      question: 'How much does a Ryde e-scooter cost in Tromsø?',
+      answer: 'In the 2026 season Ryde charged NOK 10.90 to unlock and NOK 2.50 a minute, so 10 minutes cost NOK 35.90 and 20 minutes NOK 60.90. The app shows the price before you unlock.',
     },
     {
       question: 'Do I need a Norwegian phone number or bank card to use Ryde?',
@@ -192,6 +196,7 @@ const guide: Guide = {
     { title: 'Troms County: Tromsø Bridge closure Q&A, 2026 (Norwegian)', url: 'https://www.tromsfylke.no/_f/p1/i1031d413-b9af-485f-8d30-a57e9a5f7457/sporsmal_svar_tromsobrua.pdf' },
     { title: 'Svipper: bikes and e-scooters on buses and boats (Norwegian)', url: 'https://svipper.no/meny/reise/nyttig-informasjon/sykkel/' },
     { title: 'Visit Tromsø: getting around (Norwegian)', url: 'https://www.visittromso.no/no/reise-rundt' },
+    { title: 'Ministry of Transport: proposal to raise the e-scooter age limit sent for consultation (5 November 2026, Norwegian)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 
