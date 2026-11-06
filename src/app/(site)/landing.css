@@ -1593,8 +1593,10 @@ img {
   color: var(--quiet);
 }
 
+/* A block, so a heading that wraps keeps its number beside its first line:
+   an inline-block sits on the baseline of its last line, and the number with it. */
 .contents a {
-  display: inline-block;
+  display: block;
   padding-block: 7px;
   color: var(--soft);
   text-decoration: none;
