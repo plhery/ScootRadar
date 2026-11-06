@@ -136,6 +136,8 @@ struct ScooterSearchIsland: View {
                     .frame(width: 44, height: 44)
                     .contentShape(Rectangle())
                     .contentTransition(.symbolEffect(.replace))
+                    // The replace plays only in an animated change, and nothing else animates this one.
+                    .animation(.snappy(duration: 0.3), value: hasActiveFilters)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "Filters"))
