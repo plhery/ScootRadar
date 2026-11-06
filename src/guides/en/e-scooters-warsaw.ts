@@ -73,7 +73,7 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-scooter rules and fines in Poland (October 2026)',
+            caption: 'E-scooter rules and fines in Poland',
             head: ['Rule', 'What applies', 'Fine'],
             rows: [
               ['Age', '13 or over since 3 March 2026 (10 before); under 13 only in a home zone, with an adult', '–'],

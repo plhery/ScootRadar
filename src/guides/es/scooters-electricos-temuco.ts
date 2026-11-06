@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'temuco',
   name: 'Scooters eléctricos en Temuco',
   title: 'Scooters eléctricos Temuco: arriendo con JET (2026)',
-  description: 'Scooters eléctricos Temuco: arriendo con JET, los $99 por minuto anunciados en agosto, la licitación municipal, casco, ciclovías, la UFRO y dónde estacionar.',
+  description: 'Scooters eléctricos Temuco: cómo arrendar con GO JET, la licitación municipal, 18 años y casco, ciclovías y vereda, la UFRO y dónde estacionar.',
   headline: 'Scooters eléctricos en Temuco: arriendo con JET, el centro, la Avenida Alemania, la UFRO y las reglas para andar',
-  lede: 'El arriendo de scooters en Temuco es con GO JET, la app de JET, que tiene el servicio desde el 1 de septiembre de 2026 por dos años, tras ganar una licitación municipal. En agosto de 2026, la municipalidad anunció $99 por minuto; el precio de hoy lo ves en la app. Whoosh, que llegó a fines de 2023, ya no arrienda en la ciudad. Para la ley son ciclos: ciclovía o calzada, casco y la vereda solo por excepción.',
+  lede: 'Los scooters eléctricos de Temuco se arriendan con GO JET, la app de JET, que tiene el servicio desde el 1 de septiembre de 2026 por dos años, tras ganar una licitación municipal; Whoosh, que llegó a fines de 2023, ya no arrienda en la ciudad. Para arrendar, descarga GO JET, regístrate, busca un scooter en el mapa de la app y desbloquéalo: la app te muestra el precio antes de partir. Al terminar, lo estacionas en un punto autorizado de la app y registras una foto. Necesitas 18 años y casco, y vas de a uno. Para la ley son ciclos: ciclovía o, si no hay, la pista derecha de la calzada, y la vereda solo por excepción.',
   published: '2026-10-31',
   updated: '2026-10-31',
   city: 'cl:Temuco',
@@ -22,23 +22,22 @@ const guide: Guide = {
             '**La licitación.** JET ganó una licitación pública de la municipalidad, encabezada por la Dirección de Tránsito, con el menor valor y las condiciones técnicas más ventajosas. Tiene el servicio de scooters y bicicletas eléctricas desde el 1 de septiembre de 2026, por dos años, prorrogables a tres, según la municipalidad (17 de agosto de 2026).',
             '**Los vehículos.** La municipalidad anunció unas 100 bicicletas y 500 scooters, desplegados de a poco; JET habló de 500 scooters y 130 bicicletas desde el viernes 14 de agosto.',
             '**Whoosh, antes.** Según la municipalidad, Whoosh arrendó scooters en Temuco desde fines de 2023 y bicicletas eléctricas desde octubre de 2024; en septiembre de 2025 tenía 730 vehículos y más de un millón de viajes. Sus scooters amarillos dieron paso a los azules de JET, y ambas empresas convivirían hasta el 1 de septiembre de 2026.',
-            '**Whoosh, hoy.** Su web no lista Temuco entre sus ciudades de Chile, y en su app la temporada de Temuco figuraba cerrada el 24 de octubre de 2026 y seguía así el 31.',
+            '**Whoosh, hoy.** En su app, la temporada de Temuco figuraba cerrada el 24 de octubre de 2026 y seguía así el 31.',
           ],
         },
         'El 31 de octubre de 2026 a las 07:11, hora de Chile, el [mapa de Temuco](map:cl:Temuco) mostraba unos 720 scooters de JET estacionados, según su último recuento. A las 07:13 y a las 07:24, los del centro y de las orillas del Cautín estaban todos en Temuco; ninguno, en Padre Las Casas, al otro lado del río.',
-        'El mapa muestra cada scooter estacionado y su batería; no precios, puntos de estacionamiento, zonas de velocidad reducida, horarios, el límite de la zona de JET ni sus bicicletas. Para los pasos en la app, mira [nuestra guía para arrendar](guide:how-to-rent), escrita para España, donde la ley es otra.',
+        'Para los pasos en la app, mira [nuestra guía para arrendar](guide:how-to-rent), escrita para España, donde la ley es otra.',
       ],
     },
     {
       heading: '¿Cuánto cuesta arrendar un scooter en Temuco?',
       blocks: [
-        'El 17 de agosto de 2026, la municipalidad presentó a JET «a mitad de precio»: $99 por minuto, más barato que antes, según la concejala Micaela Becker. El 13 de agosto, JET había hablado de tarifas de lanzamiento «desde $99 por minuto», que ves en la app antes de cada arriendo.',
+        'JET cobra por minuto y vende además paquetes de minutos y un plan mensual:',
         {
           table: {
-            caption: 'Lo que publicaron la municipalidad y JET sobre el precio en Temuco, en 2026',
+            caption: 'Lo que publicó JET sobre sus tarifas en Temuco, en 2026',
             head: ['Qué', 'Precio o regla', 'Fuente'],
             rows: [
-              ['Por minuto', '$99, «a mitad de precio»', 'Municipalidad de Temuco, 17 de agosto'],
               ['Paquetes de minutos', 'De 15, 30, 60, 100 y 200 minutos, válidos hasta 30 días', 'JET, 13 de agosto'],
               ['Suscripción', 'JET PLUS, un plan mensual', 'JET, 19 de septiembre'],
               ['Desbloqueo y otros cobros', 'La app te los muestra antes de contratar', 'Términos de JET, 21 de mayo'],
@@ -46,7 +45,6 @@ const guide: Guide = {
             ],
           },
         },
-        'Al precio anunciado de $99 el minuto, un viaje de diez minutos suma $990, más el desbloqueo si la app lo cobra.',
       ],
     },
     {
@@ -80,12 +78,12 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Centro.** Lo que ha publicado la municipalidad no fija reglas propias para el centro: rigen la Ley de Tránsito y los puntos de estacionamiento de la app, y, según la municipalidad, los JET van más lento en zonas comunes como las plazas. A las 07:13 del 31 de octubre, el mapa mostraba unos 100 JET a menos de un kilómetro de la Plaza Aníbal Pinto.',
-            '**Avenida Alemania.** Va de Prieto Norte, al oriente, a Javiera Carrera, al poniente; en ella están el Museo Regional de la Araucanía y el Portal Temuco. Lo que han publicado la municipalidad y JET no le fija reglas propias. A las 07:13, el mapa mostraba más de 20 JET cerca de la avenida.',
-            '**Universidad de La Frontera.** Lo que ha publicado la UFRO no fija reglas propias para scooters en su campus. En abril de 2025, su División de Prevención de Riesgos organizó con Whoosh una escuela de manejo para unas 200 personas, frente al Gimnasio Olímpico. A las 07:13, el mapa mostraba más de 20 JET a menos de un kilómetro de la universidad.',
-            '**Universidad Católica de Temuco.** Lo que ha publicado la UCT tampoco fija reglas para scooters. En septiembre de 2025, el alcalde anunció nuevas rutas del servicio, entonces de Whoosh, hacia la Universidad Católica.',
-            '**Cerro Ñielol.** Es un monumento natural de CONAF, de 89 hectáreas, al que se sube por calle Arturo Prat, en un solo sentido, y del que se baja por calle Lynch. CONAF prohíbe salir de los senderos y «descender en bicicleta por zonas no autorizadas»; sus reglas no nombran los scooters.',
-            '**Padre Las Casas.** Es otra comuna, al sur del Cautín. En noviembre de 2025, su municipalidad lanzó 200 scooters de Whoosh, que podían entrar a Temuco por la Avenida Prat. La web de Whoosh no la nombra entre sus ciudades.',
+            '**Centro.** Rigen la Ley de Tránsito y los puntos de estacionamiento de la app, y, según la municipalidad, los JET van más lento en zonas comunes como las plazas. A las 07:13 del 31 de octubre, el mapa mostraba unos 100 JET a menos de un kilómetro de la Plaza Aníbal Pinto.',
+            '**Avenida Alemania.** Va de Prieto Norte, al oriente, a Javiera Carrera, al poniente; en ella están el Museo Regional de la Araucanía y el Portal Temuco. A las 07:13, el mapa mostraba más de 20 JET cerca de la avenida.',
+            '**Universidad de La Frontera.** En abril de 2025, su División de Prevención de Riesgos organizó con Whoosh una escuela de manejo para unas 200 personas, frente al Gimnasio Olímpico. A las 07:13, el mapa mostraba más de 20 JET a menos de un kilómetro de la universidad.',
+            '**Universidad Católica de Temuco.** En septiembre de 2025, el alcalde anunció nuevas rutas del servicio, entonces de Whoosh, hacia la Universidad Católica.',
+            '**Cerro Ñielol.** Es un monumento natural de CONAF, de 89 hectáreas, al que se sube por calle Arturo Prat, en un solo sentido, y del que se baja por calle Lynch. CONAF prohíbe salir de los senderos y «descender en bicicleta por zonas no autorizadas».',
+            '**Padre Las Casas.** Es otra comuna, al sur del Cautín. En noviembre de 2025, su municipalidad lanzó 200 scooters de Whoosh, que podían entrar a Temuco por la Avenida Prat.',
           ],
         },
       ],
@@ -134,7 +132,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta arrendar un scooter eléctrico en Temuco?',
-      answer: 'En agosto de 2026, la municipalidad anunció $99 por minuto con JET, y JET, paquetes de 15 a 200 minutos. El precio de hoy, con el desbloqueo si lo hay, lo ves en la app GO JET antes de cada viaje.',
+      answer: 'JET cobra por minuto y vende paquetes de 15 a 200 minutos y un plan mensual, JET PLUS. El precio de cada viaje, con el desbloqueo si lo hay, lo ves en la app GO JET antes de partir.',
     },
     {
       question: '¿Qué app necesito para los scooters de Temuco?',
@@ -142,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: '¿Todavía hay scooters de Whoosh en Temuco?',
-      answer: 'No. JET reemplazó a Whoosh, que operaba desde fines de 2023, y tiene todo el servicio desde el 1 de septiembre de 2026. La web de Whoosh no lista Temuco entre sus ciudades.',
+      answer: 'No. JET reemplazó a Whoosh, que operaba desde fines de 2023, y tiene todo el servicio desde el 1 de septiembre de 2026.',
     },
     {
       question: '¿Es obligatorio el casco para andar en scooter en Temuco?',
@@ -150,15 +148,11 @@ const guide: Guide = {
     },
     {
       question: '¿Hay scooters de arriendo en Padre Las Casas?',
-      answer: 'En la mañana del 31 de octubre de 2026, el mapa no mostraba ningún JET en Padre Las Casas, al sur del Cautín. Whoosh, que lanzó 200 scooters allí en noviembre de 2025, ya no la nombra en su web. Hasta dónde llega la zona de JET, lo ves en su app.',
-    },
-    {
-      question: '¿Los scooters de Temuco tienen horario?',
-      answer: 'Ni los términos de JET ni lo que ha publicado la municipalidad sobre la licitación fijan un horario.',
+      answer: 'En la mañana del 31 de octubre de 2026, el mapa no mostraba ningún JET en Padre Las Casas, al sur del Cautín. Whoosh lanzó 200 scooters allí en noviembre de 2025. Hasta dónde llega la zona de JET, lo ves en su app.',
     },
   ],
   sources: [
-    { title: 'Municipalidad de Temuco: JET, a mitad de precio (agosto de 2026)', url: 'https://www.temuco.cl/nueva-empresa-de-electromovilidad-desembarca-en-temuco-con-bicicletas-y-scooters-de-ultima-generacion-y-a-mitad-de-precio/' },
+    { title: 'Municipalidad de Temuco: JET llega con bicicletas y scooters (agosto de 2026)', url: 'https://www.temuco.cl/nueva-empresa-de-electromovilidad-desembarca-en-temuco-con-bicicletas-y-scooters-de-ultima-generacion-y-a-mitad-de-precio/' },
     { title: 'Municipalidad de Temuco: convenio con Whoosh (noviembre de 2023)', url: 'https://www.temuco.cl/temuco-avanza-a-ser-una-ciudad-sustentable-con-innovador-plan-piloto-de-electromovilidad-urbana/' },
     { title: 'Municipalidad de Temuco: un millón de viajes y nuevas rutas (septiembre de 2025)', url: 'https://www.temuco.cl/tras-superar-el-millon-de-viajes-en-scooters-y-bicicletas-electricas-temuco-fortalece-su-movilidad-sustentable-con-nueva-extension-de-ciclovias/' },
     { title: 'BCN: Ley de Tránsito, texto vigente', url: 'https://www.bcn.cl/leychile/navegar?idNorma=1007469' },

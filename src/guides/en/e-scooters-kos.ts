@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'kos',
   name: 'Renting an e-scooter on Kos',
   title: 'E-scooter Kos 2026: Hoppy, Volta, Scoot, prices and rules',
-  description: 'E-scooter Kos guide: Hoppy, Volta and Scoot from Tigaki to Psalidi, what a ride costs, the helmet law, the cycle paths and the town’s annulled rules.',
+  description: 'E-scooter Kos guide: Hoppy, Volta and Scoot from €0.25 a minute (November 2026), renting out of season, the helmet law, cycle paths and the annulled town rules.',
   headline: 'E-scooters on Kos: which app to use, what a ride costs, and where Greek law says you can’t ride',
-  lede: 'You can hire an e-scooter in Kos town with Hoppy, Volta or Scoot, and Hoppy’s zones run along the north coast from Tigaki to Psalidi. Hoppy and Volta charge €1 to unlock plus €0.30 a minute or more, as of November 2026. No driving licence is needed, but the apps ask for riders of 18 and over, and Greek law makes a helmet compulsory. The town’s own scooter rules were largely annulled in August 2026, yet national law still bans riding across squares such as Eleftherias Square and on any road with a limit over 50 km/h, and Hoppy’s scooters don’t reach the airport or Kardamena.',
+  lede: 'You can hire an e-scooter in Kos town with Hoppy, Volta or Scoot: download the operator’s app, add a card, scan the code on the handlebar and end the ride where the app allows. As of November 2026 Hoppy charges €1 to unlock plus €0.30–0.35 a minute and Volta from €1 plus €0.30, while Scoot lists €0.25 a minute, the lowest rate on the island. Out of season, check the apps first: on 6 November 2026 Hoppy’s open data showed none of its scooters out on Kos. No driving licence is needed, but the apps ask for riders of 18 and over, and Greek law makes a helmet compulsory. The town’s own scooter rules were largely annulled in August 2026, yet national law still bans riding across squares such as Eleftherias Square and on any road with a limit over 50 km/h, and Hoppy’s zones run only along the north coast from Tigaki to Psalidi, not to the airport or Kardamena.',
   published: '2026-10-14',
   updated: '2026-10-15',
   city: 'gr:Kos',
@@ -43,6 +43,7 @@ const guide: Guide = {
           },
         },
         'Volta’s FAQ says pricing “starts at” those figures. Scoot’s terms say the app shows any unlock fee before you ride, and its site adds that prices may vary by city and season. Hoppy’s terms add an insurance excess of up to €1,000 per claim for damage you cause to others.',
+        '**Which is cheapest?** On the published rates, Scoot: €2.50 for 10 minutes and €5.00 for 20, plus any unlock fee, against €4.00–4.50 and €7.00–8.00 on Hoppy and from €4.00 and €7.00 on Volta.',
       ],
     },
     {
@@ -140,7 +141,7 @@ const guide: Guide = {
         },
         'Scoot’s FAQ says a helmet is “strongly recommended … though not legally required” on its e-scooters. That’s wrong in Greece, and Scoot’s own terms tell riders to wear one where the law requires it. Volta says some of its stations rent out helmets, and told the local press in September 2026 that it lends one free to any rider who asks.',
         'Volta has also said its scooters run from 07:00 to midnight, and that from 20:30 to midnight and 07:00 to 08:00 its app makes you pass a reaction test first: fail it and you’re locked out for 12 hours. Hoppy says it runs 24/7.',
-        'If you visit in winter, open the apps to see what’s still running.',
+        '**Out of season.** On 6 November 2026 Hoppy’s open data showed none of its scooters out on Kos, while Scoot still listed Kos among its live cities. If you visit in winter, open the apps to see what’s still running.',
       ],
     },
     {
@@ -164,6 +165,10 @@ const guide: Guide = {
     {
       question: 'How much is a Hoppy scooter in Kos?',
       answer: '€1 to unlock plus €0.30, €0.33 or €0.35 a minute as of November 2026, so 10 minutes cost €4.00–4.50; the app shows the rate before you unlock.',
+    },
+    {
+      question: 'Can you rent an e-scooter on Kos in November and winter?',
+      answer: 'Check the apps before you count on one. On 6 November 2026 Hoppy’s open data showed none of its scooters out on Kos, while Scoot still listed Kos as live.',
     },
     {
       question: 'Can you ride an e-scooter across Eleftherias Square?',

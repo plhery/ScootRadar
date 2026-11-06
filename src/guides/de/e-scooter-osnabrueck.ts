@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Osnabrück 2026: Anbieter, Preise, Parken',
   description: 'E-Scooter Osnabrück: Dott und Voi, was eine Fahrt kostet, wo du in Fussgängerzone und Parks fahren und parken darfst und was im Bus gilt.',
   headline: 'E-Scooter Osnabrück: Anbieter, Preise und warum du durch die Fussgängerzone schiebst',
-  lede: 'E-Scooter in Osnabrück leihst du ohne Führerschein bei Dott oder Voi; Dott vermietet ab 18. Bei Voi kostet das Entsperren 0,49 € und die Minute 0,24 €, zehn Minuten also 2,89 € (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und bis Ende Februar 2027 nicht durch die Fussgängerzone, auch abends nicht, wenn dort Räder fahren dürfen. Durch städtische Parks wie den Bürgerpark schiebst du: Die Grünflächensatzung verbietet dort das Fahren mit Kraftfahrzeugen. Zusammengeklappt fährt dein eigener Scooter kostenlos im Bus mit.',
+  lede: 'E-Scooter in Osnabrück leihst du ohne Führerschein bei Dott oder Voi: Scooter in der App suchen, QR-Code scannen, losfahren; Dott vermietet ab 18. Bei Voi kostet das Entsperren 0,49 € und die Minute 0,24 €, zehn Minuten also 2,89 € (Stand November 2026); bei Dott zeigt dir die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und bis Ende Februar 2027 nicht durch die Fussgängerzone, auch abends nicht, wenn dort Räder fahren dürfen. Durch städtische Parks wie den Bürgerpark schiebst du: Die Grünflächensatzung verbietet dort das Fahren mit Kraftfahrzeugen. Zusammengeklappt fährt dein eigener Scooter kostenlos im Bus mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Osnabrück',
@@ -18,22 +18,21 @@ const guide: Guide = {
       blocks: [
         'In Osnabrück verleihen zwei Anbieter E-Scooter: **Dott** und **Voi**. Den Betrieb regelt die Stadt über Sondernutzungserlaubnisse, schreibt die Polizeiinspektion Osnabrück in ihrer Unfallstatistik 2025. Diese Erlaubnis verlangt die Stadt seit 2020, «im Gegensatz zu vielen anderen Städten», damit sie Regeln aufstellen und die Zahl der Scooter begrenzen kann; damals liess sie TIER und Lime mit je 580 Scootern fahren.',
         '**Dott** führt Osnabrück auf seiner Standortliste und fährt hier als Nachfolger von TIER: TIER startete laut Polizei am 3. Juni 2020 mit 350 Scootern und fusionierte 2024 mit Dott; laut Hasepost begann die Umstellung auf Dott Mitte Oktober 2024. **Voi** fährt laut seiner Startmitteilung seit dem 16. Juni 2025 in Osnabrück, zum Start mit 500 Scootern; es war Vois 50. Stadt in Deutschland und nach Hannover und Braunschweig die dritte in Niedersachsen.',
-        'Lime hat Osnabrück laut Hasepost am 20. Mai 2024 verlassen; die Mobilitätsseite der Stadt verlinkt trotzdem noch Lime und Tier.',
-        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; Dott vermietet laut seinen AGB ab 18, das Mindestalter bei Voi zeigt dir die App. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'Lime hat Osnabrück laut Hasepost am 20. Mai 2024 verlassen.',
+        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; Dott vermietet laut seinen AGB ab 18. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Osnabrück](map:de:Osnabrück) etwa 600 Voi- und knapp 380 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Wo du nicht parken darfst, zeigt dir die App des Anbieters.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Osnabrück?',
       blocks: [
-        'Bei Voi kostet das Entsperren 0,49 € und jede Minute 0,24 €: zehn Minuten kosten 2,89 €, eine Viertelstunde 4,09 € (Stand November 2026). Zum Start im Juni 2025 waren es 0,20 € pro Minute ohne Entsperrgebühr. Bei Dott siehst du den Preis in der App vor dem Entsperren.',
+        'Bei Voi kostet das Entsperren 0,49 € und jede Minute 0,24 €: zehn Minuten kosten 2,89 €, eine Viertelstunde 4,09 € und 20 Minuten 5,29 € (Stand November 2026).',
         {
           table: {
             caption: 'E-Scooter-Preise in Osnabrück (Stand November 2026)',
             head: ['Anbieter', 'Preis', 'Pässe'],
             rows: [
               ['Voi', 'Entsperren 0,49 €, dann 0,24 € pro Minute; 10 Minuten 2,89 €', 'Zum Start 2025 nannte Voi Tages-, Wochen- und Monatspässe'],
-              ['Dott', 'In der App', 'In einigen Städten Pässe und Abos laut AGB, Preis in der App'],
             ],
           },
         },
@@ -129,7 +128,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Osnabrück?',
-      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026). Zum Start im Juni 2025 waren es 0,20 € pro Minute ohne Entsperrgebühr. Bei Dott steht der Preis in der App.',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026).',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Bürgerpark fahren?',

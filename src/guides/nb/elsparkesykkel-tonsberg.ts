@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Tønsberg 2026: Ryde, priser og regler',
   description: 'Elsparkesykkel i Tønsberg: bare Ryde har tillatelse. Priser, nattestenging fra kl. 23 eller 01, parkering i sentrum, Nøtterøy og veien til Torp.',
   headline: 'Elsparkesykkel i Tønsberg: Ryde, priser, nattestenging, Nøtterøy og Torp',
-  lede: 'Vil du leie elsparkesykkel i Tønsberg, er det bare Ryde som har kommunens tillatelse i sesongene 2025 og 2026. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (22. oktober 2026), og Ryde krever at du har fylt 16 år. Utleien er stengt fra kl. 23 til 05 natt til lørdag, søndag og bevegelige helligdager, ellers fra kl. 01 til 05. Kjøreområdet dekker byen og går over Kanalen til Kaldnes, Teie og Kolberg på Nøtterøy, og sparkesyklene skal tas inn når det er fare for snø og is.',
+  lede: 'Vil du leie elsparkesykkel i Tønsberg, er det bare Ryde som har kommunens tillatelse, for sesongene 2025 og 2026, som varer til 31. mars 2027. Du leier i Ryde-appen, og det koster 10,90 kr å låse opp og 2,50 kr per minutt, altså 35,90 kr for ti minutter (per november 2026). Ryde krever at du har fylt 16 år. Utleien er stengt fra kl. 23 til 05 natt til lørdag, søndag og bevegelige helligdager, ellers fra kl. 01 til 05. Kjøreområdet dekker byen og går over Kanalen til Kaldnes, Teie og Kolberg på Nøtterøy, og sparkesyklene skal tas inn når det er fare for snø og is.',
   published: '2026-10-22',
   updated: '2026-10-22',
   city: 'no:Tønsberg',
@@ -16,43 +16,43 @@ const guide: Guide = {
     {
       heading: 'Leie elsparkesykkel i Tønsberg: bare Ryde',
       blocks: [
-        'Tønsberg kommune skriver at **Ryde** leier ut elsparkesykler og elsykler i kommunen i sesongene 2025 og 2026. Da kommunen lyste ut ordningen, søkte Ryde, Tier og Surf, og kommunen valgte Ryde. Avtalen gjelder fra 1. april 2025 til 31. mars 2027. Hvem som får tillatelse etter det, var ikke kunngjort 22. oktober 2026.',
+        'Tønsberg kommune skriver at **Ryde** leier ut elsparkesykler og elsykler i kommunen i sesongene 2025 og 2026. Da kommunen lyste ut ordningen, søkte Ryde, Tier og Surf, og kommunen valgte Ryde. Avtalen gjelder fra 1. april 2025 til 31. mars 2027.',
         'Ordningen bygger på kommunens utleieforskrift fra 4. september 2024. Den åpner for inntil **300 små elektriske kjøretøy** i Tønsberg kommune, elsykler medregnet, fordelt på høyst to operatører. En tillatelse varer i to sesonger, og en sesong går fra 1. april til 31. mars. Kommunen kan utvide taket for en periode, og etter avtalen kan Ryde leie ut inntil 300 elsparkesykler og skal i tillegg ha minst 60 elsykler. Ryde betaler kommunen et gebyr på 7500 kr i året.',
-        '**Voi, Bolt og Dott leier ikke ut i Tønsberg.** Kommunen nevner bare Ryde, og i Entur, der operatørene i Norge publiserer åpne data, fantes 22. oktober 2026 bare Rydes elsparkesykler i Tønsberg og på Nøtterøy.',
-        'På [kartet over Tønsberg](map:no:Tønsberg) sto det rundt 450 Ryde-sparkesykler kl. 10.01 den 22. oktober 2026. Det er det kartet viste akkurat da, ikke hele flåten. Tallet omfatter også Nøtterøy: Rydes kjøreområde går over Kanalen til Teie og Kolberg, som hører til Færder kommune, og ifølge Rydes åpne data sto rundt en firedel av sparkesyklene der en time senere. Et øyeblikksbilde av hele kjøreområdet kan derfor ikke sammenlignes med taket på 300 i Tønsberg kommune. Kommunen skrev selv i mai 2026 at «et betydelig antall» av Rydes sparkesykler og elsykler står i Færder.',
+        '**Voi, Bolt og Dott leier ikke ut i Tønsberg.** Kommunen nevner bare Ryde.',
+        'På [kartet over Tønsberg](map:no:Tønsberg) sto det rundt 450 Ryde-sparkesykler kl. 10.01 den 22. oktober 2026. Det er det kartet viste akkurat da, ikke hele flåten. Tallet omfatter også Nøtterøy: Rydes kjøreområde går over Kanalen til Teie og Kolberg, som hører til Færder kommune, og ifølge Rydes åpne data sto rundt en firedel av sparkesyklene der en time senere. Kommunen skrev selv i mai 2026 at «et betydelig antall» av Rydes sparkesykler og elsykler står i Færder.',
         'Du låser opp i Ryde-appen. Hvordan du registrerer deg og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster det å leie elsparkesykkel i Tønsberg?',
       blocks: [
-        'Ryde har ingen prisliste på nettsiden og viser til appen. I Rydes åpne data for Tønsberg kostet det 10,90 kr å låse opp og 2,50 kr per minutt 22. oktober 2026, og Ryde runder minuttprisen opp til nærmeste hele minutt. Sjekk prisen i appen før du låser opp.',
+        'Ifølge Rydes åpne data for Tønsberg koster det 10,90 kr å låse opp og 2,50 kr per minutt (per november 2026). Ryde runder minuttprisen opp til nærmeste hele minutt, så en tur på ti minutter koster 35,90 kr og en på 20 minutter 60,90 kr.',
         {
           table: {
-            caption: 'Ryde-priser 22. oktober 2026 og aldersgrense',
+            caption: 'Ryde-priser per november 2026 og aldersgrense',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter', 'Aldersgrense'],
             rows: [
               ['Ryde, Tønsberg og Nøtterøy', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr', '16 år'],
             ],
           },
         },
-        'Ryde selger også dagspass og månedskort, Ryde Pass, men prisene står bare i appen, og et pass gjelder bare i byen der du kjøpte det.',
+        'Ryde selger også dagspass og månedskort, Ryde Pass, og et pass gjelder bare i byen der du kjøpte det.',
         'Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter, og tar du sparkesykkelen ut av driftsområdet, kan det koste opptil 500 kr ekstra.',
-        'Loven sier 12 år, men Ryde krever **16 år** i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt**.',
+        'Loven sier 12 år, men Ryde krever **16 år** i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
       heading: 'Nattestenging og vinter i Tønsberg',
       blocks: [
         'Forskriften sier i § 6 d at utleie kan skje «alle dager, hele dagen», unntatt «mellom kl. 23:00–05:00 natt til lørdag og natt til søndag, samt bevegelige helligdager, og mellom kl. 01:00–05:00 natt til hverdager». Utleien stenger altså **kl. 23** fredag og lørdag kveld, og det samme gjelder ved bevegelige helligdager som påske, Kristi himmelfartsdag og pinse. De andre nettene stenger den **kl. 01**, og den åpner igjen kl. 05.',
-        'Forskriften gjelder bare i Tønsberg kommune, men Rydes åpne data viser de samme tidene for hele kjøreområdet, også i Færder. Helligdagene står ikke i dataene, så sjekk appen rundt helligdagene. Kommunen kan oppheve nattestengingen for en periode eller for godt hvis den mener det er forsvarlig, men 22. oktober 2026 gjaldt den fortsatt.',
-        'Forskriften har ingen fast vintersesong. Sparkesyklene skal tas inn «når det er fare for snø og is slik at rasjonell vinterdrift kan ivaretas». Det finnes ingen fast dato, verken for når de tas inn eller når de kommer tilbake, og 22. oktober 2026 sto de fortsatt ute.',
+        'Forskriften gjelder bare i Tønsberg kommune, men Rydes åpne data viser de samme tidene for hele kjøreområdet, også i Færder (6. november 2026). Kommunen kan oppheve nattestengingen for en periode eller for godt hvis den mener det er forsvarlig.',
+        'Om vinteren skal sparkesyklene tas inn «når det er fare for snø og is slik at rasjonell vinterdrift kan ivaretas», sier forskriften. Ifølge Rydes åpne data leide Ryde fortsatt ut elsparkesykler i Tønsberg 6. november 2026.',
       ],
     },
     {
       heading: 'Parkering i Tønsberg sentrum',
       blocks: [
-        'I sentrum kan du ikke parkere hvor du vil. I Rydes åpne data 22. oktober 2026 var hele sentrum, fra stasjonen og Farmandstredet til Brygga og Ollebukta, en sone med parkeringsforbud. Der kan du bare avslutte turen på en av rundt 25 oppmerkede plasser:',
+        'I sentrum kan du ikke parkere hvor du vil. I Rydes åpne data (6. november 2026) er hele sentrum, fra stasjonen og Farmandstredet til Brygga og Ollebukta, en sone med parkeringsforbud. Der kan du bare avslutte turen på en av rundt 25 oppmerkede plasser:',
         {
           list: [
             'Torvet, Øvre Langgate, Rådhusgata, Prestegaten og biblioteket.',
@@ -69,8 +69,8 @@ const guide: Guide = {
     {
       heading: 'Hvor kan du kjøre i Tønsberg?',
       blocks: [
-        'Ifølge Rydes åpne data 22. oktober 2026 dekker kjøreområdet byen nord for Kanalen, med sentrum, Træleborg og Sykehuset i Vestfold, og et eget område på Nøtterøy. Rundt begge ligger et belte der du kan kjøre gjennom, men ikke starte eller avslutte turen. Ved Vestfoldhallen og Tønsberg ishall er det små egne soner der du kan avslutte. Sparkesyklene er sperret til 20 km/t, og Sem ligger utenfor.',
-        'Samme dag viste dataene også disse sonene:',
+        'Ifølge Rydes åpne data (6. november 2026) dekker kjøreområdet byen nord for Kanalen, med sentrum, Træleborg og Sykehuset i Vestfold, og et eget område på Nøtterøy. Rundt begge ligger et belte der du kan kjøre gjennom, men ikke starte eller avslutte turen. Ved Vestfoldhallen og Tønsberg ishall er det små egne soner der du kan avslutte. Sparkesyklene er sperret til 20 km/t, og Sem ligger utenfor.',
+        'Dataene har også disse sonene:',
         {
           list: [
             '**Saktesone** på 12 km/t langs Brygga og Nedre Langgate og rundt Torvet.',
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'Er elsparkesyklene borte om vinteren?',
-      answer: 'De skal tas inn når det er fare for snø og is. Det er ingen fast dato, verken for når de tas inn eller når de kommer tilbake.',
+      answer: 'Etter kommunens forskrift skal de tas inn når det er fare for snø og is. 6. november 2026 leide Ryde fortsatt ut, ifølge Rydes åpne data.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Nøtterøy?',
@@ -166,7 +166,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor kan jeg parkere elsparkesykkel i sentrum?',
-      answer: 'Bare på en av de rundt 25 oppmerkede plassene, for eksempel på Torvet, ved Farmandstredet, ved jernbanestasjonen eller ved gjestehavna. Resten av sentrum hadde parkeringsforbud i Rydes data 22. oktober 2026. Feilparkering kan gi 900 kr i gebyr.',
+      answer: 'Bare på en av de rundt 25 oppmerkede plassene, for eksempel på Torvet, ved Farmandstredet, ved jernbanestasjonen eller ved gjestehavna. Resten av sentrum er en sone med parkeringsforbud i Rydes data. Feilparkering kan gi 900 kr i gebyr.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Torp?',
@@ -181,6 +181,7 @@ const guide: Guide = {
     { title: 'Færder kommune: Fylkets trafikksikkerhetsutvalg på befaring (oktober 2026)', url: 'https://faerder.kommune.no/aktuelle-saker/fylkets-trafikksikkerhetsutvalg-pa-befaring.106700.aspx' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Åpne data for Tønsberg (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetonsberg/gbfs' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
     { title: 'VKT: Ha med om bord', url: 'https://www.vkt.no/reise/ha-med-ombord/' },
     { title: 'VKT: Ta bussen til Torp Sandefjord lufthavn', url: 'https://www.vkt.no/torp/' },
     { title: 'Torp Sandefjord lufthavn: Tog', url: 'https://torp.no/til-og-fra/tog/' },

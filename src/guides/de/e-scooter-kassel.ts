@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Kassel 2026: Anbieter, Preise, Abstellregeln',
   description: 'E-Scooter Kassel: Qick, Bolt und Dott, wo du seit April 2026 parkst und was im Bergpark, in der Karlsaue und in der Tram gilt.',
   headline: 'E-Scooter Kassel: Anbieter, Preise und wo du seit April 2026 parken darfst',
-  lede: 'E-Scooter in Kassel leihst du bei Qick, Bolt oder Dott, ab 18 und ohne Führerschein; auch Zeus steht auf der Anbieterliste der Stadt. Den Preis zeigt die App vor dem Entsperren. Seit dem 1. April 2026 beendest du die Fahrt nur an einem Radbügel oder auf einer markierten Abstellfläche, innerhalb des Innenstadtrings nur auf einer von 27 Flächen. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone der Königsstrasse und weder im Bergpark Wilhelmshöhe noch in der Karlsaue.',
+  lede: 'E-Scooter in Kassel leihst du bei Qick, Bolt oder Dott; auch Zeus steht auf der Anbieterliste der Stadt (Stand November 2026). Du mietest in der App des Anbieters: Scooter auf der Karte finden, QR-Code scannen, losfahren, ab 18 und ohne Führerschein. Den Preis zeigt die App vor dem Entsperren. Seit dem 1. April 2026 beendest du die Fahrt nur an einem Radbügel oder auf einer markierten Abstellfläche, innerhalb des Innenstadtrings nur auf einer von 27 Flächen. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone der Königsstrasse und weder im Bergpark Wilhelmshöhe noch in der Karlsaue.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Kassel',
@@ -17,22 +17,22 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Kassel?',
       blocks: [
         'Seit dem 1. April 2026 lässt die Stadt Kassel nur noch Anbieter zu, die mit ihr einen Sondernutzungsvertrag haben. Als Ansprechpartner nennt sie vier: **Qick**, **Bolt**, **Dott** (früher TIER) und **Zeus**. Laut HNA waren im Juli 2026 rund 2950 Leih-Scooter von Bolt, Qick und Dott unterwegs; Zeus hatte nach Angaben der Stadt eine Erlaubnis, aber noch keine Scooter aufgestellt (HNA, 23. Juli 2026).',
-        'Qick kommt aus Schweden und verleiht auch in Göttingen: [E-Scooter in Göttingen](guide:goettingen). Bolt führt Kassel im Oktober 2026 auf seiner Stadtseite mit E-Scootern, Dott in seiner Liste der Standorte. Gemietet wird in der App des Anbieters, bei allen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Qick kommt aus Schweden und verleiht auch in Göttingen: [E-Scooter in Göttingen](guide:goettingen). Bolt führt Kassel auf seiner Stadtseite mit E-Scootern, Dott in seiner Liste der Standorte (Stand November 2026). Mieten darfst du bei allen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Auf der [Karte von Kassel](map:de:Kassel) standen in der Nacht zum Sonntag, 25. Oktober 2026, rund 1500 Qick-Scooter, um 0 und um 1 Uhr gezählt, am Sonntag kurz vor 14 Uhr rund 200 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Kassel?',
       blocks: [
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt für ganz Deutschland mit «ab 0,15 € pro Minute» plus Freischaltgebühr (Stand 25. Oktober 2026); der Minutenpreis hängt laut Bolt vom Ort ab. Teuer wird es vor allem beim Parken:',
+        'Bolt wirbt für ganz Deutschland mit «ab 0,15 € pro Minute» plus Freischaltgebühr; der Minutenpreis hängt laut Bolt vom Standort ab (Stand November 2026). Teuer wird es vor allem beim Parken:',
         {
           table: {
-            caption: 'E-Scooter-Anbieter in Kassel: Preis und Gebühren (Stand 25. Oktober 2026)',
-            head: ['Anbieter', 'Preis', 'Falsch geparkt (laut Bedingungen)'],
+            caption: 'E-Scooter-Anbieter in Kassel: Gebühren fürs Falschparken (Stand 25. Oktober 2026)',
+            head: ['Anbieter', 'Falsch geparkt (laut Bedingungen)'],
             rows: [
-              ['Qick', 'in der App', 'bis 150 €, wenn die Stadt einen falsch geparkten Scooter entfernt; davor schützt ein Foto am Ende jeder Fahrt, das ihn am Fahrradständer oder auf einer Abstellfläche zeigt (Bedingungen ohne Datum)'],
-              ['Bolt', 'bundesweit beworben: ab 0,15 € pro Minute plus Freischaltgebühr', '15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des zulässigen Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026)'],
-              ['Dott', 'in der App', 'bis 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst; 50 € Verwaltungsgebühr, wenn Dott ein Bussgeld für dich zahlt (Bedingungen vom 23. September 2025)'],
+              ['Qick', 'bis 150 €, wenn die Stadt einen falsch geparkten Scooter entfernt; davor schützt ein Foto am Ende jeder Fahrt, das ihn am Fahrradständer oder auf einer Abstellfläche zeigt (Bedingungen ohne Datum)'],
+              ['Bolt', '15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des zulässigen Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026)'],
+              ['Dott', 'bis 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst; 50 € Verwaltungsgebühr, wenn Dott ein Bussgeld für dich zahlt (Bedingungen vom 23. September 2025)'],
             ],
           },
         },
@@ -143,10 +143,6 @@ const guide: Guide = {
     {
       question: 'Wo darf ich in Kassel einen E-Scooter abstellen?',
       answer: 'Seit dem 1. April 2026 nur an einem Radbügel oder auf einer markierten Abstellfläche; innerhalb des Innenstadtrings nur auf einer der 27 markierten Flächen.',
-    },
-    {
-      question: 'Was kostet ein E-Scooter in Kassel?',
-      answer: 'Den Preis zeigt die App vor dem Entsperren. Bolt wirbt bundesweit mit ab 0,15 € pro Minute plus Freischaltgebühr (Stand Oktober 2026).',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Königsstrasse fahren?',

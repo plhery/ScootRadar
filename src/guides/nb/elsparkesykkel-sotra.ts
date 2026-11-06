@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel Sotra 2026: Voi på Straume, buss og regler',
   description: 'Elsparkesykkel på Sotra: Voi på Straume, stengt kl. 00–05 hver natt. Parkeringssonene i sentrum, Skyss-bussen til Bergen, Sotrabrua og reglene.',
   headline: 'Elsparkesykkel på Sotra: Voi på Straume, nattestengingen, parkering, bussen til Bergen og Sotrabrua',
-  lede: 'Vil du leie elsparkesykkel på Sotra, er det Voi som gjelder: Voi har Øygarden kommunes tillatelse på Straume fra 1. mars 2026 til 29. februar 2028, og er i dag det eneste utleiefirmaet der, skriver kommunen (september 2026). Utleien er stengt fra midnatt til kl. 05 hver natt. Rundt kjøpesenteret, Sotra Arena og Straume terminal er det oppmerkede parkeringssoner. Prisen ser du i Voi-appen, og til Bergen tar du Skyss-bussen fra Straume terminal.',
+  lede: 'Vil du leie elsparkesykkel på Sotra, er det Voi som gjelder: Voi har Øygarden kommunes tillatelse på Straume fra 1. mars 2026 til 29. februar 2028, og er i dag det eneste utleiefirmaet der, skriver kommunen (september 2026). Du leier i Voi-appen, som viser prisen før du låser opp. Loven sier at du må ha fylt 12 år, hjelm er påbudt under 15 år, og utleien er stengt fra midnatt til kl. 05 hver natt. Rundt kjøpesenteret, Sotra Arena og Straume terminal er det oppmerkede parkeringssoner, og til Bergen tar du Skyss-bussen fra Straume terminal.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'no:Sotra',
@@ -22,19 +22,17 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Hva koster det å leie Voi på Sotra?',
+      heading: 'Aldersgrense og gebyr for Voi på Sotra',
       blocks: [
-        'Prisen ser du i Voi-appen før du låser opp.',
-        'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. Kommunen minner om at utleiefirmaene kan ha høyere aldersgrense, for eksempel 16 eller 18 år, og hva Voi krever, ser du i appen.',
+        'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. Kommunen minner om at utleiefirmaene kan ha høyere aldersgrense, for eksempel 16 eller 18 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
         'Den dyreste delen av turen kan bli parkeringen: Står sparkesykkelen til hinder, kan det koste 900 kr, som du leser mer om lenger ned.',
       ],
     },
     {
       heading: 'Når er utleien stengt? Kl. 00–05 hver natt',
       blocks: [
-        'Etter Øygardens forskrift om utleie av små elektriske kjøretøy på offentlig grunn er utleien stengt hver natt, og kommunen skriver (september 2026) at utleie av elsparkesykler er stengt mellom kl. 24 og 05. Når Voi selv stenger og åpner igjen, ser du i appen.',
+        'Etter Øygardens forskrift om utleie av små elektriske kjøretøy på offentlig grunn er utleien stengt hver natt, og kommunen skriver (september 2026) at utleie av elsparkesykler er stengt mellom kl. 24 og 05.',
         'I Bergen og på Askøy gjelder andre tider. Tidene og hvem som bestemmer dem, står i guiden om [åpningstider for elsparkesykler](guide:opening-hours), og om Voi i nabokommunen Alver står i [guiden for Knarvik](guide:knarvik).',
-        'Tar Voi sparkesyklene inn for vinteren, blir kartet over Sotra tomt. Mandag 2. november 2026 var de fortsatt på kartet.',
       ],
     },
     {
@@ -81,7 +79,7 @@ const guide: Guide = {
       blocks: [
         'Riksvei 555 med Sotrabrua er i dag hovedveien og den eneste veiforbindelsen mellom Sotra og Bergen, skriver Statens vegvesen på prosjektsiden (november 2026). Nå bygges Sotrasambandet, en ny firefelts vei på 9,4 km mellom Storavatnet på Bergen-siden og Kolltveit, med en ny bru på rundt 900 meter over Raunefjorden, sør for dagens bru. Byggingen startet 22. mars 2023, skriver Vegvesenet.',
         'I november 2025 skrev Vegvesenet at prosjektet bygger 14 km sammenhengende gang- og sykkelvei fra Storavatnet til Bildøy, fem meter bred, med fortau og sykkelvei skilt med lav kantstein, og at riksveien skulle åpne i 2027 og gang- og sykkelveien et år etter, i 2028. «Når vi opnar dette i 2028 vil det for første gong vere mogleg å gå eller sykle på ein trafikksikker måte mellom Sotra og Bergen», sa prosjektsjef Lene Sælen Rivenes i Statens vegvesen.',
-        '10. september 2026 skrev Vegvesenet at Sotra Link AS, selskapet som har ansvaret for å finansiere og bygge veien, har varslet forsinkelser, så Sotrasambandet ikke kan åpne for trafikk i fjerde kvartal 2027. Ny dato for åpningen var ikke klar.',
+        '10. september 2026 skrev Vegvesenet at Sotra Link AS, selskapet som har ansvaret for å finansiere og bygge veien, har varslet forsinkelser, så Sotrasambandet ikke kan åpne for trafikk i fjerde kvartal 2027.',
       ],
     },
     {
@@ -129,7 +127,7 @@ const guide: Guide = {
     },
     {
       question: 'Når er utleien stengt på Sotra?',
-      answer: 'Etter Øygardens forskrift er utleien stengt hver natt, og kommunen skriver (september 2026) at den er stengt mellom kl. 24 og 05. Når Voi selv stenger og åpner igjen, ser du i appen.',
+      answer: 'Etter Øygardens forskrift er utleien stengt hver natt, og kommunen skriver (september 2026) at den er stengt mellom kl. 24 og 05.',
     },
     {
       question: 'Hvor parkerer jeg en Voi på Straume?',
@@ -138,10 +136,6 @@ const guide: Guide = {
     {
       question: 'Kan jeg ta Voi fra Sotra til Bergen?',
       answer: 'Voi har ikke tillatelse i Bergen, der Ryde, Lime og RideMovi har kommunens tillatelse til og med 31. mars 2027. Avslutt Voi-turen på Sotra og ta Skyss-bussen fra Straume terminal, for eksempel linje 450 eller 460. Hvor du kan kjøre og avslutte turen, ser du i Voi-appen.',
-    },
-    {
-      question: 'Hva koster det å leie Voi på Sotra?',
-      answer: 'Prisen ser du i Voi-appen før du låser opp. Står sparkesykkelen til hinder eller der det er forbudt å parkere når du avslutter, kan det koste 900 kr i parkeringsgebyr.',
     },
   ],
   sources: [
@@ -154,6 +148,7 @@ const guide: Guide = {
     { title: 'Statens vegvesen: Rv. 555 Sotrasambandet', url: 'https://www.vegvesen.no/vegprosjekter/riksveg/sotrabergen/' },
     { title: 'Statens vegvesen: Sotrasambandet når ikke trafikkåpning i fjerde kvartal 2027 (10. september 2026)', url: 'https://www.vegvesen.no/vegprosjekter/riksveg/sotrabergen/nyhetsarkiv/sotrasambandet-nar-ikke-trafikkapning-i-fjerde-kvartal-2027/' },
     { title: 'Statens vegvesen: Gjennomslag i alle gang- og sykkeltunnelane på Sotrasambandet (20. november 2025)', url: 'https://www.vegvesen.no/vegprosjekter/riksveg/sotrabergen/nyhetsarkiv/gjennomslag-i-alle-gang--og-sykkeltunnelane-pa-sotrasambandet/' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
     { title: 'Bergen kommune: Ryde, Lime og RideMovi får leie ut elsparkesykler (16. februar 2026)', url: 'https://www.bergen.kommune.no/hvaskjer/bymiljo/ryde-lime-og-ridemovi-far-leie-ut-elsparkesykler-i-bergen' },
   ],

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'how-to-rent',
   name: 'How to rent an e-scooter',
   title: 'How to rent an e-scooter: steps, costs, parking (2026)',
-  description: 'How to rent an e-scooter, step by step: the app, age and licence, what a ride costs, card holds, reserving, parking and the photo, crashes and riding abroad.',
+  description: 'How to rent an e-scooter, step by step: the app, ID and licence checks, age, what a ride costs as of November 2026, where to ride, parking, the photo, abroad.',
   headline: 'How to rent an e-scooter: from the app to the end of your ride',
-  lede: 'How to rent an e-scooter, in short: install the operator’s app, sign up with your phone number and a card, scan the QR code on the handlebar and ride, then park where the app allows and take a photo to end the ride. Almost every operator rents only to riders aged 18 or over, and in the UK you also need a driving licence. You pay an unlock fee plus a rate per minute: Voi charges CHF 1 plus CHF 0.42 a minute in Bern (as of November 2026), so ten minutes cost CHF 5.20.',
+  lede: 'How to rent an e-scooter, in short: install the operator’s app, sign up with your phone number, add a card, and scan your ID or driving licence if the app asks: every UK operator wants your licence, and in Brussels, Rome and Turin every rider scans an ID. Then scan the QR code on the handlebar and ride; to finish, park where the app allows, tap End ride and take the photo. You pay an unlock fee plus a rate per minute, shown in the app before you unlock: as of November 2026 ten minutes cost CHF 5.20 with Voi in Bern (CHF 1 + CHF 0.42 a minute), £3.50 with Bolt in Liverpool (£1 + 25p) and €2.89 with Voi in Stuttgart (€0.49 + €0.24). Almost every operator rents only to riders aged 18 or over; in Norway, Bolt, Voi and Ryde rent from 16. Ride in cycle lanes or on the road, never on the pavement: that is the law in the UK, Germany and Switzerland, and the last two make you use the cycle lane where there is one.',
   published: '2026-10-12',
   updated: '2026-10-24',
   sections: [
@@ -31,6 +31,8 @@ const guide: Guide = {
           ],
         },
         'At peak hours Bolt may make you pass a short reaction test before you unlock. Fail it five times and you can’t rent for three hours.',
+        '**Where to ride.** In the UK a rental e-scooter may use the road (not motorways) and cycle lanes, never the pavement. Germany allows cycle paths, cycle lanes and bicycle streets, and the road only where there are none. Switzerland makes you use a cycle path where there is one and keeps every e-vehicle off the pavement unless signs allow it.',
+        'Country by country: [e-scooter hire in the UK](guide:uk-hire), [are e-scooters legal in the UK?](guide:uk-law), [e-scooter rules in Switzerland](guide:swiss-rules) and [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {
@@ -72,7 +74,7 @@ const guide: Guide = {
           },
         },
         '**A worked example.** You ride a Voi in Bern for 9 minutes 20 seconds. That’s billed as 10 minutes: CHF 1 + 10 × CHF 0.42 = CHF 5.20. Spend two more minutes looking for a spot outside a no-parking zone and it’s 12 minutes, or CHF 6.04.',
-        'Lime’s and Dott’s rates change from city to city, but like every operator they show the price in the app before you unlock. Swiss rates by city, Dott’s and Lime’s included, are in [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Lime’s and Dott’s rates change from city to city. Swiss rates by city, Dott’s and Lime’s included, are in [e-scooter prices in Switzerland](guide:swiss-prices).',
         '**Passes** pay off if you ride often. Minute bundles and day passes (Dott) and monthly passes (Bolt) cut or waive the unlock fee.',
         '**The hold.** At the start of a ride the app reserves a small sum on your card: about CHF 3, £2.25 or €2.50 to €3 at Dott. It’s released when the ride ends, though your bank may take days to show it.',
       ],
@@ -180,6 +182,8 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
+    { title: 'Germany: Elektrokleinstfahrzeuge-Verordnung (eKFV), § 10, where e-scooters may ride (in German)', url: 'https://www.gesetze-im-internet.de/ekfv/__10.html' },
+    { title: 'BFU (Swiss Council for Accident Prevention): rules for e-scooters and other electric light vehicles (fact sheet, PDF, in German)', url: 'https://www.bfu.ch/media/fffpzk2f/bfu_factsheet_e-langsamverkehr_regeln.pdf' },
     { title: 'MobiData BW: Voi Switzerland’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
     { title: 'Voi: Stuttgart rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/175/netex.xml' },
     { title: 'Entur: Voi’s open data for Oslo (GBFS)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voioslo/gbfs' },

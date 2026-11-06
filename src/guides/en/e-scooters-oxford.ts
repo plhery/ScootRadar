@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'oxford',
   name: 'E-scooter hire in Oxford',
   title: 'E-scooters Oxford 2026: Voi prices, bays and where to ride',
-  description: 'E-scooters in Oxford with Voi: 99p to unlock and 24p a minute, day and night, who can ride, the parking zones, and where the scooters cut out or are banned.',
+  description: 'E-scooters in Oxford with Voi: 99p to unlock and 24p a minute (November 2026), day and night, the trial to May 2028, who can ride, parking zones, no-go areas.',
   headline: 'E-scooters in Oxford: Voi’s prices, parking bays and where you can ride',
-  lede: 'You can hire e-scooters in Oxford from Voi, which runs Oxfordshire County Council’s trial, at any hour. The council lists 99p to unlock and 24p a minute, so 10 minutes cost £3.39. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle lanes but never on pavements, and end every ride in a parking zone shown in the Voi app. The scooters cut out near the entrances to the John Radcliffe Hospital, and they aren’t allowed on Oxford Brookes’ campuses or on the canal towpath.',
+  lede: 'You can hire e-scooters in Oxford from Voi, which runs Oxfordshire County Council’s trial until 31 May 2028, at any hour. To rent, download the Voi app and upload your driving licence. As of November 2026 the council lists 99p to unlock and 24p a minute, so 10 minutes cost £3.39. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle lanes but never on pavements, and end every ride in a parking zone shown in the Voi app. The scooters cut out near the entrances to the John Radcliffe Hospital, and they aren’t allowed on Oxford Brookes’ campuses or on the canal towpath.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Oxford',
@@ -18,25 +18,14 @@ const guide: Guide = {
       blocks: [
         'One company, **Voi**, hires out e-scooters in Oxford. Oxfordshire County Council, the highway authority, runs the trial, and its page says Voi “operates our rental scheme” with around 850 e-scooters. The trial began in Headington on 18 February 2021 and has run around the clock since October 2022.',
         '**Lime** is in Oxford too, but with e-bikes only: the council’s e-bike page lists Voi and Lime as the city’s two dockless e-bike operators.',
-        '**How long will it run?** The council says Oxford’s trial has been extended until 31 May 2028; the national trials that make hire scooters legal run until May 2028. On 18 June 2026 the council approved plans for a single operator of both hire e-scooters and e-bikes once its e-scooter contract expired on 30 September 2026. On 25 October 2026 its trial page still named Voi.',
+        '**How long will it run?** The council says Oxford’s trial has been extended until 31 May 2028, the date England’s trials are due to end. On 18 June 2026 it approved plans for a new contract with a single operator for both hire e-scooters and e-bikes, to follow its e-scooter contract, which was due to expire on 30 September 2026, and said more detail would come once that contract was awarded. On 6 November 2026 its trial page still named Voi as the operator.',
         'At 14:55 on Saturday 24 October 2026 the [map of Oxford](map:gb:Oxford) showed about 810 Voi e-scooters free to rent.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost in Oxford?',
       blocks: [
-        'The county council’s page says “it costs 99p to unlock the scooter and then 24p per minute of the ride”. Oxford Travel Options, a travel site created by a local charity, gives £1 to unlock and the same 24p a minute, with prices “accurate as of August 2026”. The Voi app shows the current price before you unlock.',
-        {
-          table: {
-            caption: 'Voi e-scooter prices in Oxford: pay as you go from the council’s page (25 October 2026), passes from Oxford Travel Options (August 2026)',
-            head: ['Option', 'Price', 'What you get'],
-            rows: [
-              ['Pay as you go', '99p unlock + 24p a minute', '10 minutes £3.39, 20 minutes £5.79, 30 minutes £8.19'],
-              ['Monthly pass, 300 minutes', '£35.99', 'About 12p a minute'],
-              ['Monthly pass, 750 minutes', '£69.99', 'About 9p a minute'],
-            ],
-          },
-        },
+        'As of November 2026 the county council’s page says “it costs 99p to unlock the scooter and then 24p per minute of the ride”, so 10 minutes cost £3.39, 20 minutes £5.79 and 30 minutes £8.19. The Voi app shows the current price before you unlock.',
         'The council says Voi offers discounted rides to students, people on low incomes, and NHS and emergency service staff. Passes and discounts change, so check them in the app. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -162,9 +151,9 @@ const guide: Guide = {
     { title: 'Oxfordshire County Council: New electric scooter hire scheme for Oxford launched with Voi (18 February 2021)', url: 'https://news.oxfordshire.gov.uk/new-escooter-launch/' },
     { title: 'Oxfordshire County Council: Experimental pedestrian and cycle zone, Market Street', url: 'https://letstalk.oxfordshire.gov.uk/marketstreet_pedestriancycle_experiment2024' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
+    { title: 'GOV.UK: E-scooter trials, guidance for local authorities and rental operators', url: 'https://www.gov.uk/government/publications/e-scooter-trials-guidance-for-local-areas-and-rental-operators/e-scooter-trials-guidance-for-local-areas-and-rental-operators' },
     { title: 'Oxford University Hospitals: John Radcliffe Hospital, other transport (reviewed 24 March 2026)', url: 'https://www.ouh.nhs.uk/hospitals/jr/find-us/other-transport' },
     { title: 'Oxford Brookes University: Cycling and e-scooters', url: 'https://www.brookes.ac.uk/travel/cycling' },
-    { title: 'Oxford Travel Options: Scooting (August 2026)', url: 'https://www.oxfordtraveloptions.co.uk/travelling-within-oxford/scooting' },
     { title: 'Canal & River Trust: Our Towpath Code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
   ],
 };

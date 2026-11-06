@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'bari',
   name: 'Monopattini sharing a Bari',
   title: 'Monopattini sharing Bari 2026: Bit, Dott, Lime e regole',
-  description: 'Monopattini sharing a Bari nel 2026: Bit Mobility, Dott e Lime, prezzi, dove guidare e parcheggiare, via Sparano, bus AMTAB, treno per l’aeroporto e multe.',
+  description: 'Monopattini sharing a Bari nel 2026: Bit Mobility, Dott e Lime, come noleggiare, dove guidare e parcheggiare, via Sparano, bus, treno per l’aeroporto, multe.',
   headline: 'Monopattini sharing a Bari: operatori, prezzi, sosta, treni e multe nel 2026',
-  lede: 'I monopattini sharing a Bari, a ottobre 2026, sono quelli di Bit Mobility, Dott e Lime, i tre operatori indicati dal Comune, con circa 1.500 mezzi in tutto. Il prezzo, sblocco più minuti, lo vedi nell’app prima di partire, e il casco, obbligatorio per tutti, lo porti tu. Si guida su strada e sulle piste ciclabili, mai sul marciapiede; in via Sparano, tra piazza Umberto e corso Vittorio Emanuele, e in largo Urbano II, scrive il Comune, i monopattini non possono circolare.',
+  lede: 'I monopattini sharing a Bari, a ottobre 2026, sono quelli di Bit Mobility, Dott e Lime, i tre operatori indicati dal Comune, con circa 1.500 mezzi in tutto. Per noleggiarne uno scarichi l’app dell’operatore, ti iscrivi con una carta, inquadri il QR code e, a fine corsa, scatti la foto; Dott chiede almeno 18 anni. Il prezzo, sblocco più minuti, lo vedi nell’app prima di partire, e il casco, obbligatorio per tutti, lo porti tu. Si guida su strada e sulle piste ciclabili, mai sul marciapiede; in via Sparano, tra piazza Umberto e corso Vittorio Emanuele, e in largo Urbano II, scrive il Comune, i monopattini non possono circolare. Nelle sette zone periferiche di Bit Mobility la corsa si chiude solo nelle stazioni virtuali dell’app.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'it:Bari',
@@ -28,7 +28,7 @@ const guide: Guide = {
         {
           steps: [
             'Cerca un monopattino sulla [mappa](map:it:Bari) oppure nell’app di Bit Mobility, Dott o Lime.',
-            'Iscriviti con una carta di pagamento: Dott chiede almeno 18 anni; i requisiti di Bit Mobility e Lime li trovi nelle loro app.',
+            'Iscriviti con una carta di pagamento: Dott chiede almeno 18 anni.',
             'Metti il casco: al contrassegno e all’assicurazione, sui mezzi in sharing, ci pensa l’operatore.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',
             'Chiudi la corsa dove l’app lo consente, aspetta la conferma e scatta la foto di fine corsa, che per legge l’app deve chiederti: finché la corsa non è chiusa, paghi.',
@@ -42,7 +42,7 @@ const guide: Guide = {
       heading: 'Noleggio monopattini a Bari: quanto costa',
       blocks: [
         'Paghi uno sblocco più una tariffa al minuto: il prezzo lo vedi nell’app, prima di sbloccare il mezzo.',
-        'Il centro assistenza di Dott (25 agosto 2026) dà una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
+        'A novembre 2026 il centro assistenza di Dott dà una forbice valida per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
         'Attento anche alle penali. Le condizioni di Dott per l’Italia (2 dicembre 2025) prevedono:',
         {
           list: [
@@ -140,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Quanto costa noleggiare un monopattino a Bari?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città.',
+      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto a novembre 2026, vale per tutte le sue città.',
     },
     {
       question: 'Si può andare in monopattino in via Sparano?',

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'halle',
   name: 'E-Scooter Halle: Anbieter, Preise, Parken',
   title: 'E-Scooter Halle 2026: Bolt, Preise, Parken, Regeln',
-  description: 'E-Scooter Halle: Bolt ist der einzige Anbieter, den die Stadt nennt. Was die Fahrt kostet, wo du fährst und parkst und warum kein Scooter in Tram und Bus darf.',
+  description: 'E-Scooter Halle: Bolt ist der einzige Anbieter, den die Stadt nennt. Wie du mietest, wo du fährst und parkst und warum kein Scooter in Tram und Bus darf.',
   headline: 'E-Scooter Halle (Saale): Bolt, Preise, markierte Abstellflächen und das Verbot in Tram und Bus',
-  lede: 'E-Scooter in Halle (Saale) leihst du ab 18 und ohne Führerschein bei Bolt, dem einzigen Anbieter, den die Stadt nennt; den Preis zeigt die Bolt-App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch Fussgängerzonen wie die Leipziger Strasse. Frei abstellen ist laut Stadt nicht vorgesehen: Leih-Scooter gehören auf beantragte Flächen, die der Betreiber farbig markiert. In Strassenbahnen und Bussen der HAVAG darfst du seit Mai 2024 keinen E-Scooter mitnehmen, auch keinen eigenen.',
+  lede: 'E-Scooter in Halle (Saale) leihst du bei Bolt, dem einzigen Anbieter, den die Stadt nennt: Bolt-App laden, Scooter suchen, QR-Code scannen, losfahren, ab 18 und ohne Führerschein. Den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch Fussgängerzonen wie die Leipziger Strasse. Frei abstellen ist laut Stadt nicht vorgesehen: Leih-Scooter gehören auf beantragte Flächen, die der Betreiber farbig markiert. In Strassenbahnen und Bussen der HAVAG darfst du seit Mai 2024 keinen E-Scooter mitnehmen, auch keinen eigenen.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Halle (Saale)',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Halle?',
       blocks: [
         'Als Verleiher von E-Scootern (auch E-Roller genannt) nennt die Stadt Halle (Saale) nur **Bolt**. Den Anbietern waren laut Stadt die beantragten Stellflächen «mit Sondernutzungsbescheid» bis 30. Juni 2024 genehmigt; im April 2024 sprach sie «mit dem verbleibenden Anbieter Bolt» über einen neuen Antrag ab 1. Juli 2024. Nach dem Mindestalter bei den kommerziellen Verleihern gefragt, nannte die Verwaltung im April 2026 nur Bolt: ab 18. Von Juli 2024 bis Juni 2025 waren 549 Roller genehmigt; «von Juli 2025 bis Juni 2028 sind derzeit 600 Roller genehmigt». 44 weitere Standorte waren in Prüfung.',
-        'Auf seiner Seite für Halle nennt Bolt E-Scooter (Stand 26. Oktober 2026). Du leihst den Scooter in der Bolt-App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Auf seiner Seite für Halle nennt Bolt E-Scooter (Stand November 2026). Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die [Karte von Halle (Saale)](map:de:Halle (Saale)) zeigt die freien Bolt-Scooter mit Standort und Akkustand. Am Montag, 26. Oktober 2026, standen dort gegen 16.40 Uhr rund 530 Bolt-Scooter: 433 in Halle, 93 in Merseburg und einer in Leuna. Die meisten standen in der Nördlichen Innenstadt (62), der Nördlichen Neustadt (43) und der Südlichen Innenstadt (41); 22 der 43 Stadtteile hatten mindestens einen. Das ist eine Momentaufnahme, keine Flottengrösse.',
         'Leihräder von nextbike stehen laut Stadt etwa an der Mobilitätsstation am Steintor (September 2024).',
       ],
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter mieten in Halle: Was kostet die Fahrt?',
       blocks: [
-        'Den Preis zeigt dir die Bolt-App vor dem Entsperren; laut Bolts Nutzungsbedingungen gehört «die geltende Gebührentabelle, wie sie in der App angezeigt wird» zum Vertrag. Die Sondernutzungsgebühr der Stadt «hängt von der Anzahl der Scooter ab und nicht von den Aufstellflächen», schrieb sie im April 2026. Teuer wird es für dich, wenn du falsch abstellst:',
+        'Die Sondernutzungsgebühr der Stadt «hängt von der Anzahl der Scooter ab und nicht von den Aufstellflächen», schrieb sie im April 2026. Teuer wird es für dich, wenn du falsch abstellst:',
         {
           table: {
             caption: 'Gebühren laut Bolts Nutzungsbedingungen',
@@ -126,10 +126,6 @@ const guide: Guide = {
     {
       question: 'Welche E-Scooter kann ich in Halle mieten?',
       answer: 'Als Verleiher nennt die Stadt nur Bolt (Stand April 2026). Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Die ScootRadar-Karte zeigt Bolt mit Standort und Akkustand.',
-    },
-    {
-      question: 'Was kostet ein E-Scooter in Halle?',
-      answer: 'Den Preis zeigt dir die Bolt-App vor dem Entsperren. Teuer wird Falschparken: 15 € ohne klares Abstellfoto, bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs.',
     },
     {
       question: 'Wo darf ich in Halle einen Leih-Scooter abstellen?',

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'curitiba',
   name: 'Renting an e-scooter in Curitiba',
   title: 'E-scooters Curitiba 2026: JET, Whoosh and where to ride',
-  description: 'E-scooters in Curitiba: JET and Whoosh, the 16 bairros they serve, where you may ride and park, and the city’s rules for riders since September 2026.',
+  description: 'E-scooters in Curitiba: how to rent JET (Go Jet) or Whoosh, the 16 bairros they serve, who can ride, where to ride and park, and the city’s 2026 rules.',
   headline: 'E-scooters in Curitiba: JET and Whoosh, where to ride, where to park and the rules',
-  lede: 'You can rent an e-scooter in Curitiba from JET, whose app in Brazil is Go Jet, or from Whoosh: the two operators accredited by Urbs, the city company that runs the scheme, in 16 central bairros (districts). Each app shows its price before you ride. You must be 18. Ride on cycle lanes at up to 20 km/h or on streets with a limit of 40 km/h or less, never on the pavement or the Rua XV de Novembro, and end the ride at a point your app shows.',
+  lede: 'E-scooters in Curitiba are rented from the two operators accredited by Urbs, the city company that runs the scheme: JET, whose app in Brazil is Go Jet, and Whoosh, in 16 central bairros (districts). Download the app, sign up with a phone number, an e-mail address and a card or Pix, and unlock a scooter in the app, which shows its price before you start. You must be 18; no licence is needed, and a helmet is recommended but not compulsory. Ride on cycle lanes at up to 20 km/h or on streets with a limit of 40 km/h or less, never on the pavement or the Rua XV de Novembro, and end the ride at a parking point your app shows, with a photo.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'br:Curitiba',
@@ -30,7 +30,7 @@ const guide: Guide = {
     {
       heading: 'How much does electric scooter rental in Curitiba cost?',
       blocks: [
-        'Each app shows the price before you start, and neither operator publishes a Curitiba rate on its website. JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time. Whoosh shows each scooter’s start cost and price per minute before you start the ride, and adds accident insurance unless you switch it off. A Whoosh Pass (7 days, 30 days or a year) removes the unlock fee, not the per-minute price.',
+        'JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time. Whoosh shows each scooter’s start cost and price per minute before you start the ride, and adds accident insurance unless you switch it off. A Whoosh Pass (7 days, 30 days or a year) removes the unlock fee, not the per-minute price.',
         {
           table: {
             caption: 'What Whoosh charges in Brazil when a ride goes wrong (terms updated 21 March 2025)',
@@ -47,7 +47,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Go Jet’s terms (revised August 2026) make you liable for fines, seizures and removal costs, but set no amounts.',
+        'Go Jet’s terms (revised August 2026) make you liable for fines, seizures and removal costs.',
       ],
     },
     {
@@ -101,7 +101,6 @@ const guide: Guide = {
               ['Phone, headphones, alcohol', 'Banned while riding, and so is riding with one hand', 'City decree'],
               ['The scooter', 'Up to 1,000 W and 32 km/h by design, at most 70 cm wide, with a speed display or limiter, a bell and lights at the front, rear and sides', 'National (CONTRAN Resolution 996)'],
               ['Registration and plates', 'None needed', 'National (CONTRAN Resolution 996)'],
-              ['Hours', 'No night ban reported', '–'],
             ],
           },
         },
@@ -112,9 +111,9 @@ const guide: Guide = {
     {
       heading: 'Where to find JET and Whoosh scooters in Curitiba',
       blocks: [
-        'At 16:40 local time on Sunday 25 October 2026 the [map of Curitiba](map:br:Curitiba) showed about 1,700 standing scooters: 1,300 JET and 400 Whoosh. That is a snapshot, not the size of either fleet, and scooters on a ride don’t appear.',
-        'On the official bairro boundaries of IPPUC, the city’s planning institute, every scooter on the map a few minutes later stood inside Curitiba, in 22 of its 75 bairros. The three where the scheme began, the Centro (572), Batel (215) and the Centro Cívico (158), held more than half. Of the 13 added in September, Bigorrilho had the most (173), ahead of Rebouças (121), Água Verde (117), São Francisco (107) and Mercês (89). JET had most of the scooters from Batel to Bigorrilho and Mercês; Whoosh had most of its own in the Centro, Água Verde and Rebouças.',
-        'The map shows Go Jet and Whoosh: each Whoosh scooter’s charge and range, and each JET scooter’s charge. It shows no prices, parking points, zones or hours; the apps do. On Paraná’s coast it also shows JET in [Guaratuba](map:br:Guaratuba) and [Matinhos](map:br:Matinhos). Both operators run in Porto Alegre too: see [e-scooters in Porto Alegre](guide:porto-alegre).',
+        'At 16:40 local time on Sunday 25 October 2026 the [map of Curitiba](map:br:Curitiba) showed about 1,700 standing scooters: 1,300 JET and 400 Whoosh. That is a snapshot, not the size of either fleet.',
+        'A few minutes later every scooter on the map stood inside Curitiba, in 22 of its 75 bairros. The three where the scheme began, the Centro (572), Batel (215) and the Centro Cívico (158), held more than half. Of the 13 added in September, Bigorrilho had the most (173), ahead of Rebouças (121), Água Verde (117), São Francisco (107) and Mercês (89). JET had most of the scooters from Batel to Bigorrilho and Mercês; Whoosh had most of its own in the Centro, Água Verde and Rebouças.',
+        'On Paraná’s coast JET also rents in [Guaratuba](map:br:Guaratuba) and [Matinhos](map:br:Matinhos). Both operators run in Porto Alegre too: see [e-scooters in Porto Alegre](guide:porto-alegre).',
       ],
     },
     {
@@ -122,7 +121,7 @@ const guide: Guide = {
       blocks: [
         'Keep out of the canaletas, the busways kept for Curitiba’s buses, and of the bus roads inside terminals. Paraná’s guidelines ban scooters from bus-only lanes, and the city decree and Urbs’s call, as reported, add the terminals. Whoosh charges R$40 for carrying its scooter on a bus, so end the ride at a point near your stop.',
         'Under the decree, as reported, you may not ride through parks or squares unless signs allow it, and Parque Barigui is outside the operators’ area.',
-        'Curitiba’s docked bike share, bike Estácio, is run by Tembici: ordinary bikes and e-bikes you unlock with a QR code in the Tembici app. The map shows standing e-scooters only, not these bikes.',
+        'Curitiba’s docked bike share, bike Estácio, is run by Tembici: ordinary bikes and e-bikes you unlock with a QR code in the Tembici app.',
       ],
     },
     {
@@ -145,7 +144,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does an e-scooter cost in Curitiba?',
-      answer: 'The app shows the price before you ride, and it changes with demand. Neither JET nor Whoosh publishes a Curitiba rate on its website; a Whoosh Pass removes the unlock fee.',
+      answer: 'The app shows the price before you ride: Whoosh gives each scooter’s start cost and price per minute, and JET’s rates vary with the day and demand. A Whoosh Pass removes the unlock fee.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Curitiba?',

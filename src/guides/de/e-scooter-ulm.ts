@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'ulm',
   name: 'E-Scooter Ulm: Anbieter, Preise, Parken',
   title: 'E-Scooter Ulm 2026: Dott, Preise, Parken, Neu-Ulm',
-  description: 'E-Scooter Ulm: Dott fährt in Ulm und Neu-Ulm, laut den Städten für 0,20 € pro Minute. Wo du fahren und parken darfst und was in Bus und Zug gilt.',
+  description: 'E-Scooter Ulm: Dott fährt in Ulm und Neu-Ulm für 0,20 € pro Minute ohne Freischaltgebühr (Stand November 2026). Wo du fahren und parken darfst.',
   headline: 'E-Scooter Ulm: Anbieter, Preise, Parken und Regeln in Ulm und Neu-Ulm',
-  lede: 'E-Scooter in Ulm und Neu-Ulm leihst du bei Dott, ohne Führerschein und laut Dotts Bedingungen erst ab 18: Seit Juli 2026 hat Dott die Konzession beider Städte. Laut den Städten (1. Juli 2026) kostet die Minute 0,20 € ohne Freischaltgebühr, und unter anderem ÖPNV-Abonnenten zahlen die Hälfte; den aktuellen Preis zeigt die App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In beiden Innenstädten führen die Städte schrittweise Parkverbotszonen ein: Dort beendest du die Fahrt dann nur noch auf ausgewiesenen Parkinseln, die die App zeigt.',
+  lede: 'E-Scooter in Ulm und Neu-Ulm leihst du bei Dott, das seit Juli 2026 die Konzession beider Städte hat: Dott-App laden, registrieren, Scooter suchen, QR-Code scannen, losfahren, ohne Führerschein und laut Dotts Bedingungen erst ab 18. Laut der Konzession kostet die Minute 0,20 € ohne Freischaltgebühr, zehn Minuten also 2 €, und unter anderem ÖPNV-Abonnenten zahlen die Hälfte (Stand November 2026). Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In beiden Innenstädten führen die Städte schrittweise Parkverbotszonen ein: Dort beendest du die Fahrt dann nur noch auf ausgewiesenen Parkinseln, die die App zeigt.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Ulm',
@@ -17,17 +17,17 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Ulm und Neu-Ulm?',
       blocks: [
         'In Ulm und Neu-Ulm verleiht **Dott** E-Scooter und E-Bikes. Laut ihrer gemeinsamen Mitteilung vom 1. Juli 2026 haben beide Städte erstmals eine Konzession für E-Scooter- und E-Bike-Sharing vergeben: «Den Zuschlag erhielt erneut Dott.» Sie ersetzt die frühere Kooperationsvereinbarung. Laut der Konzession darf Dott in Ulm bis zu 600 E-Scooter und 200 Pedelecs einsetzen, in Neu-Ulm bis zu 300 E-Scooter und 100 Pedelecs. Neu-Ulms Sondernutzungsgebührensatzung (in Kraft seit 6. Juni 2026) setzt 30 € pro Leih-E-Scooter und Jahr an.',
-        'Dott führt Ulm und Neu-Ulm auf seiner Standortseite (Stand 25. Oktober 2026). Leih-Scooter gibt es hier laut Stadt Neu-Ulm seit Juli 2020; die früheren TIER-Fahrzeuge mietest du laut Schwäbischer Zeitung seit Oktober 2024 nur noch in der Dott-App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Dott führt Ulm und Neu-Ulm auf seiner Standortseite (Stand November 2026). Leih-Scooter gibt es hier laut Stadt Neu-Ulm seit Juli 2020; die früheren TIER-Fahrzeuge mietest du laut Schwäbischer Zeitung seit Oktober 2024 nur noch in der Dott-App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die [Karte von Ulm](map:de:Ulm) zeigt, wo freie Dott-Scooter stehen: am Sonntag, 25. Oktober 2026, um 8:47 Uhr rund 600. Das ist eine Momentaufnahme, keine Flottengrösse. Von rund 590 Scootern gegen 13:30 Uhr standen rund 370 in Ulm, gut 200 im bayerischen Neu-Ulm, knapp 15 im ebenfalls bayerischen Elchingen und einer in Blaustein.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Ulm?',
       blocks: [
-        'Die Preise haben die Städte mit der Konzession vereinbart (Mitteilung vom 1. Juli 2026): Die Freischaltgebühr «entfällt vollständig», die Minute kostet 0,20 € statt bisher 0,38 €, und «unter anderem ÖPNV-Abonnentinnen und -Abonnenten» bekommen 50 % Rabatt. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Die Preise haben die Städte mit der Konzession vereinbart (Mitteilung vom 1. Juli 2026): Die Freischaltgebühr «entfällt vollständig», die Minute kostet 0,20 € statt bisher 0,38 €, und «unter anderem ÖPNV-Abonnentinnen und -Abonnenten» bekommen 50 % Rabatt.',
         {
           table: {
-            caption: 'Fahrpreise laut den Städten, ohne Freischaltgebühr (1. Juli 2026)',
+            caption: 'Fahrpreise laut der Konzession, ohne Freischaltgebühr (Stand November 2026)',
             head: ['Fahrt', 'Normalpreis', 'Mit 50 % Rabatt'],
             rows: [
               ['10 Minuten', '2,00 €', '1,00 €'],
@@ -108,7 +108,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Strassenbahn, Bus und Zug: DING, Arverio und DB',
       blocks: [
-        'In Strassenbahn und Bus gelten die Regeln des Donau-Iller-Nahverkehrsverbunds (DING), gelesen am 25. Oktober 2026: Leichte, kleine E-Tretroller unter 15 kg und unter 115 cm «gelten zusammengeklappt als Handgepäck» und fahren kostenlos mit, wenn Platz ist; ob es klappt, entscheidet das Fahrpersonal. Grössere, schwerere oder nicht zusammengeklappte Roller behandelt der DING wie Fahrräder. Für die kostenpflichtige Fahrradmitnahme nennt er die Fahrrad-Tageskarte für 7,10 € im Gesamtnetz oder für eine einzelne Fahrt einen Einzelfahrschein Kind. Kinderwagen und Rollatoren haben immer Vorrang.',
+        'In Strassenbahn und Bus gelten die Regeln des Donau-Iller-Nahverkehrsverbunds (DING, Stand November 2026): Leichte, kleine E-Tretroller unter 15 kg und unter 115 cm «gelten zusammengeklappt als Handgepäck» und fahren kostenlos mit, wenn Platz ist; ob es klappt, entscheidet das Fahrpersonal. Grössere, schwerere oder nicht zusammengeklappte Roller behandelt der DING wie Fahrräder. Für die kostenpflichtige Fahrradmitnahme nennt er die Fahrrad-Tageskarte für 7,10 € im Gesamtnetz oder für eine einzelne Fahrt einen Einzelfahrschein Kind. Kinderwagen und Rollatoren haben immer Vorrang.',
         'Fährst du mit dem Regionalzug über den DING hinaus, gilt bei **Arverio** (früher Go-Ahead) und **DB Regio** der Deutschlandtarif (Stand 14. Juni 2026): Einen eigenen E-Scooter darfst du zusammengeklappt als Handgepäck kostenlos mitnehmen, einen pro Person. Fahren darfst du im Zug nicht; der Akku bleibt drin und wird nur geladen, wo ein Schild im Zug es erlaubt.',
         'Im **Fernverkehr der Deutschen Bahn** fährt dein eigener E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst, etwa im Gepäckregal.',
         'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor der Haltestelle oder dem Bahnhof und miete am Ziel neu. Fährst du weiter nach Stuttgart: [E-Scooter in Stuttgart](guide:stuttgart).',
@@ -137,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Ulm?',
-      answer: 'Laut den Städten (Mitteilung vom 1. Juli 2026) 0,20 € pro Minute ohne Freischaltgebühr, also 2 € für 10 Minuten; unter anderem ÖPNV-Abonnenten zahlen die Hälfte. Verbindlich ist der Preis in der App.',
+      answer: 'Laut der Konzession der Städte 0,20 € pro Minute ohne Freischaltgebühr, also 2 € für 10 Minuten und 4 € für 20 Minuten; unter anderem ÖPNV-Abonnenten zahlen die Hälfte (Stand November 2026).',
     },
     {
       question: 'Fahren die E-Scooter auch in Neu-Ulm?',

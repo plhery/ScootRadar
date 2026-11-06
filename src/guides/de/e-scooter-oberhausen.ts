@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Oberhausen 2026: Anbieter, Preise, Regeln',
   description: 'E-Scooter Oberhausen: Voi, Dott, Bolt, Lime und Ryde, was Voi pro Minute kostet, wo du fährst und parkst, was Verstösse kosten und was bei der STOAG gilt.',
   headline: 'E-Scooter Oberhausen: Anbieter, Preise, Parken und was bei STOAG, VRR und DB gilt',
-  lede: 'Einen E-Scooter in Oberhausen leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde; Dott, Bolt und Ryde vermieten ab 18. Voi verlangt 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand November 2026); die anderen zeigen ihren Preis in der App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Innenstadt, wo Polizei und Ordnungsdienst 2026 mehrfach kontrolliert haben. In Bussen und Bahnen der STOAG sind E-Scooter seit dem 1. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Oberhausen leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde: Scooter in der App suchen, QR-Code scannen, losfahren; Dott, Bolt und Ryde vermieten ab 18. Voi verlangt 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand November 2026); die anderen zeigen ihren Preis in der App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Innenstadt, wo Polizei und Ordnungsdienst 2026 mehrfach kontrolliert haben. In Bussen und Bahnen der STOAG sind E-Scooter seit dem 1. März 2024 verboten.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Oberhausen',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Oberhausen?',
       blocks: [
-        'Fünf Anbieter vermieten 2026 E-Scooter in Oberhausen: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde**. Voi startete laut eigener Mitteilung «in Duisburg und Oberhausen», laut Radio Oberhausen am 1. August 2025; die Zahl seiner Scooter wurde nach Vois Angaben «gemeinsam mit den Städten festgelegt». Dott und Ryde führen Oberhausen auf ihren Websites (Stand November 2026).',
+        'Fünf Anbieter vermieten E-Scooter in Oberhausen: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde**. Voi startete laut eigener Mitteilung «in Duisburg und Oberhausen», laut Radio Oberhausen am 1. August 2025; die Zahl seiner Scooter wurde nach Vois Angaben «gemeinsam mit den Städten festgelegt». Dott und Ryde führen Oberhausen auf ihren Websites (Stand November 2026).',
         'Wie das Mieten in der App geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Montag, 26. Oktober 2026, zeigte die [Karte von Oberhausen](map:de:Oberhausen) kurz nach 7 Uhr rund 240 Dott-, 260 Voi- und 140 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 360 Lime-Scooter nach der letzten Zählung.',
         'Leihräder gibt es beim metropolradruhr. Dessen Betreiber ist seit April 2026 Donkey Republic: Das Unternehmen werde «ab 1. April 2026 den Betrieb aufnehmen», schrieb der Regionalverband Ruhr im Dezember 2025.',
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Oberhausen?',
       blocks: [
-        'Voi verlangt in Oberhausen nichts fürs Entsperren und 0,18 € pro Minute (Stand November 2026). Zehn Minuten kosten also 1,80 €, eine Viertelstunde 2,70 €, wie in Duisburg. Dott, Bolt, Lime und Ryde zeigen ihren Preis in der App. Verbindlich ist bei allen der Preis, den die App vor dem Entsperren anzeigt.',
+        'Voi verlangt in Oberhausen nichts fürs Entsperren und 0,18 € pro Minute (Stand November 2026). Zehn Minuten kosten also 1,80 €, eine Viertelstunde 2,70 € und 20 Minuten 3,60 €, wie in Duisburg.',
         {
           table: {
             caption: 'Gebühren laut den Bedingungen der Anbieter (Stand November 2026; Bolt: gültig ab 1. Dezember 2026, Dott: 23. September 2025)',
@@ -116,11 +116,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Oberhausen nutzen?',
-      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde (Stand 2026). Einen Führerschein brauchst du nicht. Dott, Bolt und Ryde vermieten ab 18; ab welchem Alter Voi und Lime vermieten, zeigt dir die App. Freie Scooter zeigt die [Live-Karte von Oberhausen](map:de:Oberhausen).',
+      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18. Freie Scooter zeigt die [Live-Karte von Oberhausen](map:de:Oberhausen).',
     },
     {
       question: 'Was kostet ein E-Scooter in Oberhausen?',
-      answer: 'Bei Voi 0,18 € pro Minute, Entsperren gratis, also 1,80 € für zehn Minuten (Stand November 2026). Bei Dott, Bolt, Lime und Ryde zeigt dir die App den Preis. Teuer wird Falschparken: Bolt verlangt bis zu 100 € Abholgebühr, Dott bis zu 300 € Rückholkosten.',
+      answer: 'Bei Voi 0,18 € pro Minute, Entsperren gratis, also 1,80 € für zehn Minuten (Stand November 2026). Teuer wird Falschparken: Bolt verlangt bis zu 100 € Abholgebühr, Dott bis zu 300 € Rückholkosten.',
     },
     {
       question: 'Wie komme ich ohne Scooter vom Hauptbahnhof zum Centro?',

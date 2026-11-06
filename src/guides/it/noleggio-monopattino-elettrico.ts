@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'how-to-rent',
   name: 'Noleggio monopattino elettrico: come funziona',
   title: 'Noleggio monopattino elettrico: come funziona e quanto costa',
-  description: 'Noleggio monopattino elettrico in sharing, passo per passo: app, età e documento, prezzi e preautorizzazione, parcheggio e foto, incidenti, Italia e Ticino.',
+  description: 'Noleggio monopattino elettrico in Italia: operatori città per città, come funziona l’app, prezzi a novembre 2026, 18 anni, casco, contrassegno, dove guidare.',
   headline: 'Noleggio monopattino elettrico: come noleggiare un monopattino in sharing',
-  lede: 'Il noleggio di un monopattino elettrico in sharing funziona così: scarichi l’app dell’operatore, ti iscrivi con numero di telefono e carta, inquadri il QR code sul manubrio e parti; a fine corsa parcheggi dove l’app lo consente e scatti una foto. Quasi tutti gli operatori chiedono 18 anni e, in Italia come in Svizzera, nessuna patente; in Italia però serve il casco, e lo porti tu. Paghi uno sblocco più una tariffa al minuto: a novembre 2026 Voi chiede a Zurigo 1 franco più 0,42 al minuto, cioè 5,20 franchi per 10 minuti.',
+  lede: 'Per noleggiare un monopattino elettrico in sharing in Italia scarichi l’app dell’operatore, ti iscrivi con numero di telefono e carta, carichi un documento d’identità se l’app lo chiede (a Roma e a Torino lo chiedono tutti), inquadri il QR code sul manubrio e parti; a fine corsa parcheggi dove l’app lo consente e scatti la foto, obbligatoria per legge. A Roma e a Palermo trovi Bird, Dott e Lime; a Milano e a Verona Dott e Lime; a Torino, in proroga, Bird, Dott, Lime e Voi; a Napoli Bird e Voi; a Bari Bit Mobility, Dott e Lime; a Catania Elerent e Lime; a Reggio Emilia Dott e Voi; a Padova, Bergamo e Ferrara Dott; a Rimini Lime. Paghi uno sblocco più una tariffa al minuto, che l’app ti mostra prima di sbloccare: a novembre 2026 Voi chiede 1 euro più 0,28 al minuto a Napoli e 1 euro più 0,27 a Reggio Emilia, Elerent 1 euro più 0,23-0,25 a Catania. Quasi tutti gli operatori chiedono 18 anni, anche se la legge permette di guidare dai 14, e nessuno la patente. Il casco è obbligatorio per tutti dal 14 dicembre 2024 e lo porti tu; contrassegno (dal 17 maggio 2026) e assicurazione (dal 16 luglio 2026) spettano all’operatore. Si guida solo su strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo (6 nelle aree pedonali), mai sul marciapiede.',
   published: '2026-10-12',
   updated: '2026-10-25',
   sections: [
@@ -30,6 +30,7 @@ const guide: Guide = {
             '**Controlla la ricevuta:** la somma bloccata sulla carta viene liberata e compare l’importo finale.',
           ],
         },
+        'Operatori, prezzi e regole città per città: [Roma](guide:rome), [Milano](guide:milan), [Torino](guide:turin), [Napoli](guide:naples), [Palermo](guide:palermo), [Bari](guide:bari), [Catania](guide:catania), [Verona](guide:verona), [Padova](guide:padua), [Bergamo](guide:bergamo), [Ferrara](guide:ferrara), [Reggio Emilia](guide:reggio-emilia) e [Rimini](guide:rimini). Le regole nazionali sono nella guida alle [regole del monopattino in Italia](guide:italian-rules).',
       ],
     },
     {
@@ -47,22 +48,23 @@ const guide: Guide = {
           },
         },
         'Per pagare, Bolt accetta Visa e Mastercard, l’American Express solo nei Paesi dell’euro. Prima di camminare fino al monopattino, controlla nell’app cosa puoi usare.',
-        { note: 'In Italia il casco è obbligatorio per chiunque guidi un monopattino, anche in sharing, dal 14 dicembre 2024, e gli operatori di solito non lo danno: portalo tu. Va bene un casco da bici (UNI EN 1078); senza, la multa va da 50 a 250 euro. Contrassegno e assicurazione, invece, spettano all’operatore. In Svizzera il casco non è obbligatorio.' },
+        { note: 'In Italia il casco è obbligatorio per chiunque guidi un monopattino, anche in sharing, dal 14 dicembre 2024, e gli operatori di solito non lo danno: portalo tu. Va bene un casco da bici (UNI EN 1078); senza, la multa va da 50 a 250 euro. Contrassegno (obbligatorio dal 17 maggio 2026) e assicurazione (dal 16 luglio 2026), invece, spettano all’operatore. In Svizzera il casco non è obbligatorio.' },
       ],
     },
     {
       heading: 'Quanto costa noleggiare un monopattino elettrico',
       blocks: [
         'Paghi uno sblocco più una tariffa per ogni minuto in cui il monopattino è sbloccato, che tu stia andando o no. Dott arrotonda al minuto successivo, e le tariffe cambiano da città a città.',
-        'In Italia le tariffe le vedi nell’app prima di sbloccare, e fa fede il prezzo mostrato lì, non quello dei vecchi articoli. Qualche esempio fuori dall’Italia:',
+        'Le tariffe le vedi nell’app prima di sbloccare. Alcuni operatori le pubblicano anche nei loro dati aperti:',
         {
           table: {
-            caption: 'Tariffe a consumo (Voi: a novembre 2026; Bolt: pubblicate il 12 ottobre 2026), e quanto costa una corsa',
+            caption: 'Tariffe a consumo a novembre 2026, e quanto costa una corsa',
             head: ['Operatore e città', 'Tariffa', '10 minuti', '20 minuti'],
             rows: [
+              ['Voi, Napoli', '1 euro + 0,28 al minuto', '3,80 euro', '6,60 euro'],
+              ['Voi, Reggio Emilia', '1 euro + 0,27 al minuto', '3,70 euro', '6,40 euro'],
+              ['Elerent, Catania', '1 euro + 0,23-0,25 al minuto, secondo il modello', '3,30-3,50 euro', '5,60-6 euro'],
               ['Voi, Zurigo e Berna', '1 franco + 0,42 al minuto', '5,20 franchi', '9,40 franchi'],
-              ['Bolt, Basilea', '1 franco + 0,45 al minuto', '5,50 franchi', '10 franchi'],
-              ['Bolt, Bruxelles', '0,99 euro + 0,31 al minuto', '4,09 euro', '7,19 euro'],
             ],
           },
         },
@@ -169,6 +171,12 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Legge 160/2019, art. 1, commi 75 e seguenti, testo vigente (Normattiva)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
+    { title: 'Legge 177/2024, art. 14: il nuovo Codice della strada sui monopattini, in vigore dal 14 dicembre 2024 (GU n. 280 del 29 novembre 2024, Normattiva)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2024-11-25;177~art14' },
+    { title: 'Ministero delle infrastrutture e dei trasporti: contrassegno obbligatorio dal 17 maggio 2026 (14 maggio 2026)', url: 'https://www.mit.gov.it/node/22065' },
+    { title: 'Ministero delle infrastrutture e dei trasporti: assicurazione dei monopattini dal 16 luglio (22 aprile 2026)', url: 'https://www.mit.gov.it/node/21967' },
+    { title: 'Voi: tariffe di Napoli nei dati aperti (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/322/netex.xml' },
+    { title: 'Voi: tariffe di Reggio Emilia nei dati aperti (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/252/netex.xml' },
+    { title: 'Elerent: tariffe di Catania nei dati aperti (GBFS)', url: 'https://elerent.rideatom.com/gbfs/2166/v3.0/system_pricing_plans' },
     { title: 'Roma Servizi per la Mobilità: nuovo Codice della strada e monopattini', url: 'https://romamobilita.it/primo-piano/nuovo-codice-della-strada-cosa-cambia-per-luso-dei-monopattini-elettrici/' },
     { title: 'Dott: termini e condizioni per l’Italia', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
     { title: 'Dott: quali sono le forme di pagamento accettate?', url: 'https://help.ridedott.com/it/articles/209' },

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'chemnitz',
   name: 'E-Scooter Chemnitz: Anbieter, Preise, Parken',
   title: 'E-Scooter Chemnitz 2026: Dott, Preise, Parken, Regeln',
-  description: 'E-Scooter Chemnitz: Dott verleiht, den Preis zeigt die App. Wo du fährst und parkst, was Verstösse kosten und warum Tram und Bus der CVAG tabu sind.',
+  description: 'E-Scooter Chemnitz: Dott verleiht, ab 18 und ohne Führerschein. Wo du fährst und parkst, was Verstösse kosten und warum Tram und Bus der CVAG tabu sind.',
   headline: 'E-Scooter Chemnitz: Anbieter, Preise, Parken und was in Strassenbahn, Bus und Zug gilt',
-  lede: 'E-Scooter in Chemnitz verleiht Dott: Du mietest ab 18 und ohne Führerschein, den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg, und stellst den Scooter ab wie ein Fahrrad, ohne jemanden zu behindern. In Strassenbahnen und Bussen der CVAG darfst du keinen E-Scooter mitnehmen, auch keinen zusammengeklappten.',
+  lede: 'E-Scooter in Chemnitz verleiht Dott: Dott-App laden, Scooter suchen, QR-Code scannen, losfahren, ab 18 und ohne Führerschein. Den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg, und stellst den Scooter ab wie ein Fahrrad, ohne jemanden zu behindern. In Strassenbahnen und Bussen der CVAG darfst du keinen E-Scooter mitnehmen, auch keinen zusammengeklappten.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Chemnitz',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Chemnitz?',
       blocks: [
-        'In Chemnitz verleiht **Dott** (früher Tier) E-Scooter, auch E-Roller genannt: Dott führt Chemnitz auf seiner Website unter seinen Standorten (Stand 26. Oktober 2026). Mieten darfst du laut Dotts Geschäftsbedingungen ab 18 Jahren, einen Führerschein brauchst du nicht.',
+        'In Chemnitz verleiht **Dott** (früher Tier) E-Scooter, auch E-Roller genannt: Dott führt Chemnitz auf seiner Website unter seinen Standorten (Stand November 2026). Mieten darfst du laut Dotts Geschäftsbedingungen ab 18 Jahren, einen Führerschein brauchst du nicht.',
         'Die [Karte von Chemnitz](map:de:Chemnitz) zeigt die freien Dott-Scooter: Am Montag, 26. Oktober 2026, waren es gegen 17.30 Uhr knapp 30. Das ist eine Momentaufnahme, keine Flottengrösse.',
         'Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
@@ -24,7 +24,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Chemnitz?',
       blocks: [
-        'Den Preis zeigt dir die Dott-App vor dem Entsperren. So steht es in Dotts Geschäftsbedingungen: «Die Gebühren werden in Ihrem Benutzerkonto … angezeigt, bevor Sie ein Fahrzeug freischalten.» Teuer wird es für dich, wenn du falsch abstellst oder Dott ein Bussgeld für dich zahlt:',
+        'Teuer wird es für dich, wenn du falsch abstellst oder Dott ein Bussgeld für dich zahlt:',
         {
           table: {
             caption: 'Gebühren laut Dotts Geschäftsbedingungen für Deutschland (Stand 23. September 2025)',
@@ -119,10 +119,10 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Zwickau:** Dott führt auch Zwickau unter seinen Standorten (Stand 26. Oktober 2026), und die [Karte von Zwickau](map:de:Zwickau) zeigte am selben Montag gegen 17.30 Uhr knapp 20 Dott-Scooter. Der Landkreis Zwickau gehört zum VMS: Auch in Strassenbahnen und Bussen in Zwickau darf kein E-Scooter mit.',
+            '**Zwickau:** Dott führt auch Zwickau unter seinen Standorten (Stand November 2026), und die [Karte von Zwickau](map:de:Zwickau) zeigte am selben Montag gegen 17.30 Uhr knapp 20 Dott-Scooter. Der Landkreis Zwickau gehört zum VMS: Auch in Strassenbahnen und Bussen in Zwickau darf kein E-Scooter mit.',
             '**Drahtseilbahn Augustusburg und Fichtelbergbahn:** Zusammengeklappt fährt dein eigener E-Scooter dort laut CVAG weiterhin mit.',
             '**Leipzig:** Dort verleihen Dott und Voi, und abstellen darfst du nur an markierten Stationen; die [Karte von Leipzig](map:de:Leipzig) zeigt beide. In Strassenbahnen und Bussen der LVB darf seit dem 1. Mai 2024 kein E-Scooter mehr mit. Mehr steht in [E-Scooter in Leipzig](guide:leipzig).',
-            '**Dresden:** Laut Stadt verleihen dort RideMovi und Bolt, Voi soll «ab Herbst 2026» dazukommen; die [Karte von Dresden](map:de:Dresden) zeigt Bolt. Im VVO rund um Dresden fährt dein eigener E-Scooter zusammengeklappt auch in Strassenbahn und Bus mit.',
+            '**Dresden:** Laut Stadt verleihen dort RideMovi und Bolt, Voi soll «ab Herbst 2026» dazukommen; die [Karte von Dresden](map:de:Dresden) zeigt Bolt und RideMovi. Im VVO rund um Dresden fährt dein eigener E-Scooter zusammengeklappt auch in Strassenbahn und Bus mit.',
           ],
         },
         'Ob du eine Dott-Fahrt jenseits der Stadtgrenze beenden darfst, zeigt dir die Dott-App.',
@@ -132,11 +132,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Chemnitz?',
-      answer: 'Die von Dott (Stand Oktober 2026). Du musst 18 sein, einen Führerschein brauchst du nicht.',
-    },
-    {
-      question: 'Was kostet ein E-Scooter in Chemnitz?',
-      answer: 'Den Preis zeigt dir die Dott-App vor dem Entsperren. Teuer wird Falschparken: Befolgst du Dotts Park- und Sperranweisungen nicht, kann Dott bis zu 300 € für die Rückholung berechnen.',
+      answer: 'Die von Dott. Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Darf ich einen E-Scooter in der Strassenbahn in Chemnitz mitnehmen?',
@@ -148,7 +144,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Dott: Unsere Standorte (Stand 26. Oktober 2026)', url: 'https://ridedott.com/de/unsere-standorte/' },
+    { title: 'Dott: Unsere Standorte (Stand November 2026)', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'CVAG: Häufige Fragen zu Mitnahmeregelungen', url: 'https://www.cvag.de/faq/haeufige-fragen-zu-mitnahmeregelungen' },
     { title: 'CVAG: Beförderungsbedingungen', url: 'https://www.cvag.de/fahrtinfo/befoerderungsbedingungen' },

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Ingolstadt 2026: Dott, Preise, Parken, Regeln',
   description: 'E-Scooter Ingolstadt: wer verleiht, wo du fahren und parken darfst, was in Altstadt und Klenzepark gilt und was in Bus und Zug.',
   headline: 'E-Scooter Ingolstadt: Anbieter, Preise, Parken und Regeln',
-  lede: 'E-Scooter in Ingolstadt leihst du bei Dott, ab 18 und ohne Führerschein: Laut Augsburger Allgemeine (September 2026) ist Dott der einzige Anbieter in der Stadt. Den Preis zeigt die Dott-App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone in Ludwig- und Theresienstrasse; die Stunden, in denen Radfahrer dort fahren dürfen, gelten für dich erst ab 1. März 2027. In der Innenstadt stellst du Leih-Scooter laut Stadt nur auf vorgeschriebenen Parkflächen ab, und Glacis und Klenzepark sind laut Grünanlagensatzung für Kraftfahrzeuge tabu, zu denen E-Scooter zählen.',
+  lede: 'E-Scooter in Ingolstadt leihst du bei Dott, laut Augsburger Allgemeine (September 2026) dem einzigen Anbieter in der Stadt: Dott-App laden, Scooter suchen, QR-Code scannen, losfahren, ab 18 und ohne Führerschein. Den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone in Ludwig- und Theresienstrasse; die Stunden, in denen Radfahrer dort fahren dürfen, gelten für dich erst ab 1. März 2027. In der Innenstadt stellst du Leih-Scooter laut Stadt nur auf vorgeschriebenen Parkflächen ab, und Glacis und Klenzepark sind laut Grünanlagensatzung für Kraftfahrzeuge tabu, zu denen E-Scooter zählen.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Ingolstadt',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Ingolstadt?',
       blocks: [
-        'In Ingolstadt verleiht **Dott** E-Scooter; Dott führt Ingolstadt auf seiner Standortseite (Stand 25. Oktober 2026). «Der einzige Anbieter für E-Scooter in Ingolstadt ist die Firma Dott», schrieb die Augsburger Allgemeine am 28. September 2026. Gemietet wird in der Dott-App, laut Dotts Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Ingolstadt verleiht **Dott** E-Scooter; Dott führt Ingolstadt auf seiner Standortseite (Stand November 2026). «Der einzige Anbieter für E-Scooter in Ingolstadt ist die Firma Dott», schrieb die Augsburger Allgemeine am 28. September 2026. Mieten darfst du laut Dotts Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '2019 holten die Stadtwerke mit TIER und der Audi Denkwerkstatt Leih-Scooter nach Ingolstadt, «als erste Stadt in dieser Grösse», so die Stadtzeitung «Ingolstadt informiert» vom 27. Dezember 2019. Im November 2023 zählte die Stadt «rund 1.000 Scooter» im Stadtgebiet, jeder im Schnitt zweimal täglich genutzt. TIER gehört heute zu Dott; Vertragspartner in Dotts Bedingungen ist die TIER Mobility SE.',
         'Die [Karte von Ingolstadt](map:de:Ingolstadt) zeigt, wo freie Dott-Scooter stehen: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 950. Das ist eine Momentaufnahme der Scooter, die Dott als verfügbar meldete, keine Flottengrösse. In der Nacht darauf, gegen 4:30 Uhr, standen von rund 960 Scootern etwa 180 in Nachbarorten: gut 110 in Gaimersheim, knapp 40 in Grossmehring, der Rest in Wettstetten, Kösching, Manching und Lenting. Das Audi-Werk liegt im Stadtgebiet.',
       ],
@@ -24,13 +24,12 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Ingolstadt?',
       blocks: [
-        '«In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif pro Sekunde, Minute oder Stunde, eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
+        'Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif pro Sekunde, Minute oder Stunde, eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
         {
           table: {
             caption: 'Dott in Deutschland: Gebühren laut Bedingungen (letzte Aktualisierung 23. September 2025)',
             head: ['Fall', 'Was Dott verlangt'],
             rows: [
-              ['Fahrt', 'Preis in der App, nach Dauer, je nach Tarif mit Freischaltgebühr'],
               ['Scooter falsch geparkt oder nicht richtig gesperrt', 'bis zu 300 € Rückholkosten'],
               ['Bussgeld, das Dott für dich zahlt', 'das Bussgeld plus 50 € Verwaltungsgebühr'],
               ['Verstoss gegen die Bedingungen', 'Dott kann 50 € verlangen'],
@@ -131,10 +130,6 @@ const guide: Guide = {
       answer: 'Nicht unter eigenem Namen. Mit TIER kamen 2019 die ersten Leih-Scooter nach Ingolstadt; TIER gehört heute zu Dott, und du mietest in der Dott-App.',
     },
     {
-      question: 'Was kostet ein E-Scooter in Ingolstadt?',
-      answer: 'Verbindlich ist der Preis, den die Dott-App vor dem Entsperren zeigt; laut Dotts Bedingungen zahlst du nach Dauer, je nach Tarif mit Freischaltgebühr. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten.',
-    },
-    {
       question: 'Darf ich mit dem E-Scooter durch die Ludwigstrasse fahren?',
       answer: 'Nein, sie ist Fussgängerzone: absteigen und schieben. Die Freigabe für Radfahrer vor 10.30 und ab 20 Uhr gilt für E-Scooter erst ab 1. März 2027, dann im Schritttempo. Fahren kostet heute 15 €, ab 1. März 2027 25 €.',
     },
@@ -170,7 +165,6 @@ const guide: Guide = {
     { title: 'Augsburger Allgemeine: E-Scooter in Ingolstadt (28. September 2026)', url: 'https://www.augsburger-allgemeine.de/neuburg/e-scooter-in-ingolstadt-alle-infos-zu-preisen-regeln-app-unfaelle-und-verkehrsstatistiken-3-112669007' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
-    { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
   ],
 };
 

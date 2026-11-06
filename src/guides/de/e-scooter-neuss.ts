@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Neuss 2026: Anbieter, Preise, Parkverbote',
   description: 'E-Scooter Neuss: Voi, Dott, Bolt und Lime, wo du in Innenstadt und Parks nicht parkst, was die Stadt regelt und was in Bus und Bahn nach Düsseldorf gilt.',
   headline: 'E-Scooter Neuss: Anbieter, Preise, Parkverbote und der Weg nach Düsseldorf',
-  lede: 'Einen E-Scooter in Neuss leihst du ohne Führerschein bei Voi, Dott, Bolt oder Lime; bei Dott und Bolt musst du 18 sein. Voi kostet 0,30 € pro Minute ohne Entsperrgebühr (Stand November 2026), bei den anderen zeigt dir die App den Preis vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. Bei Voi endet die Fahrt nicht im Kern der Innenstadt, von Büchel und Niederstrasse bis zum Markt; in Parks stellst du nach der Grünanlagenordnung keine Fahrzeuge ab. In Bussen und Bahnen der Rheinbahn, auch in der U75 und der 709 nach Düsseldorf, sind E-Scooter seit dem 1. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Neuss leihst du ohne Führerschein bei Voi, Dott, Bolt oder Lime: Scooter in der App suchen, QR-Code scannen, losfahren; bei Dott und Bolt musst du 18 sein. Voi kostet 0,30 € pro Minute ohne Entsperrgebühr (Stand November 2026), bei den anderen zeigt dir die App den Preis vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. Bei Voi endet die Fahrt nicht im Kern der Innenstadt, von Büchel und Niederstrasse bis zum Markt; in Parks stellst du nach der Grünanlagenordnung keine Fahrzeuge ab, also auch keinen E-Scooter. In Bussen und Bahnen der Rheinbahn, auch in der U75 und der 709 nach Düsseldorf, sind E-Scooter seit dem 1. März 2024 verboten.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Neuss',
@@ -24,7 +24,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Neuss?',
       blocks: [
-        'Bei Voi zahlst du in Neuss nichts fürs Entsperren und 0,30 € pro Minute, zehn Minuten kosten also 3 € (Stand November 2026). Bei Dott, Bolt und Lime zeigt dir die App den Preis vor dem Entsperren.',
+        'Bei Voi zahlst du in Neuss nichts fürs Entsperren und 0,30 € pro Minute, zehn Minuten kosten also 3 €, 20 Minuten 6 € (Stand November 2026).',
         'Teuer wird Falschparken. Bolt verlangt laut seinen Nutzungsbedingungen (Fassung ab 1. Dezember 2026) 15 €, wenn der Scooter falsch steht und kein deutliches Foto vom Ende der Fahrt da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs. Dott berechnet laut seinen Bedingungen vom September 2025 bis zu 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst, und 50 € Verwaltungsgebühr, wenn er ein Bussgeld für dich zahlt.',
       ],
     },
@@ -43,7 +43,7 @@ const guide: Guide = {
           ],
         },
         'Eigene Abstellpunkte hat Voi dort trotzdem, etwa am Markt und am Hauptbahnhof; die App zeigt sie. Die Zonen von Dott, Bolt und Lime in Neuss zeigt dir deren App.',
-        'In Parks und anderen Grünanlagen ist das «Parken und Abstellen von Fahrzeugen» nach der Grünanlagenordnung der Stadt ohne ausdrückliche Erlaubnis nicht gestattet; nach unserer Lesart gilt das auch für E-Scooter. Beende die Fahrt am Rand des Parks.',
+        'In Parks und anderen Grünanlagen ist das «Parken und Abstellen von Fahrzeugen» nach der Grünanlagenordnung der Stadt ohne ausdrückliche Erlaubnis nicht gestattet. E-Scooter sind Kraftfahrzeuge (§ 1 eKFV), das Verbot gilt also auch für sie: Beende die Fahrt am Rand des Parks.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone, und die Miete läuft weiter. Fahr ein Stück weiter: Die App zeigt, wo du abstellen darfst.',
         },
@@ -53,7 +53,7 @@ const guide: Guide = {
       heading: 'Wo darf man in Neuss mit dem E-Scooter fahren? Parks und Fussgängerzone',
       blocks: [
         'Innerorts nimmst du den Radweg, wo es einen gibt, auch Radfahr- und Schutzstreifen; nur wo nichts davon da ist, fährst du auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. «Radverkehr frei» reicht dafür erst ab dem 1. März 2027, dann im Schritttempo.',
-        'Für Parks und andere Grünflächen gilt die Grünanlagenordnung der Stadt vom 29. März 2019, zuletzt geändert am 14. Juli 2025. «Radfahren ist grundsätzlich erlaubt, kann aber auf entsprechend gekennzeichneten Wegen untersagt werden», und «Fussgänger geniessen generell Vorrang». Das «Parken und Abstellen von Fahrzeugen» ist dort ohne ausdrückliche Erlaubnis nicht gestattet. E-Scooter nennt die Verordnung nicht. Ob die Erlaubnis zum Radfahren auch für sie gilt, lässt sie offen; nach unserer Lesart gilt das Abstellverbot auch für E-Scooter.',
+        'Für Parks und andere Grünflächen gilt die Grünanlagenordnung der Stadt vom 29. März 2019, zuletzt geändert am 14. Juli 2025. Die Wege mit Fahrzeugen zu befahren, «die ein amtliches Kennzeichen führen müssen», ist dort nicht gestattet. «Radfahren ist grundsätzlich erlaubt, kann aber auf entsprechend gekennzeichneten Wegen untersagt werden», und «Fussgänger geniessen generell Vorrang». Das «Parken und Abstellen von Fahrzeugen» ist ohne ausdrückliche Erlaubnis nicht gestattet, und weil E-Scooter Kraftfahrzeuge sind (§ 1 eKFV), gilt das auch für sie.',
       ],
     },
     {
@@ -116,11 +116,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Neuss nutzen?',
-      answer: 'Die von Voi, Dott, Bolt und Lime (Stand Oktober 2026). Einen Führerschein brauchst du nicht; bei Dott und Bolt musst du 18 sein, das Mindestalter bei Voi und Lime zeigt dir die App. Freie Scooter aller vier zeigt auch die [Live-Karte von Neuss](map:de:Neuss).',
+      answer: 'Die von Voi, Dott, Bolt und Lime. Einen Führerschein brauchst du nicht; bei Dott und Bolt musst du 18 sein. Freie Scooter aller vier zeigt auch die [Live-Karte von Neuss](map:de:Neuss).',
     },
     {
       question: 'Was kostet ein E-Scooter in Neuss?',
-      answer: 'Bei Voi 0,30 € pro Minute ohne Entsperrgebühr, zehn Minuten also 3 € (Stand November 2026); bei Dott, Bolt und Lime zeigt dir die App den Preis vor dem Entsperren. Teuer wird Falschparken: Bolt verlangt bis zu 100 € Abholgebühr, Dott bis zu 300 € Rückholkosten.',
+      answer: 'Bei Voi 0,30 € pro Minute ohne Entsperrgebühr, zehn Minuten also 3 € (Stand November 2026). Teuer wird Falschparken: Bolt verlangt bis zu 100 € Abholgebühr, Dott bis zu 300 € Rückholkosten.',
     },
     {
       question: 'Wie viele E-Scooter darf ein Anbieter in Neuss aufstellen?',
@@ -140,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich im Park mit dem E-Scooter fahren oder ihn dort abstellen?',
-      answer: 'Die Grünanlagenordnung der Stadt erlaubt Radfahren grundsätzlich und verbietet, Fahrzeuge ohne Erlaubnis in Parks abzustellen. E-Scooter nennt sie nicht. Ob die Erlaubnis zum Radfahren auch für sie gilt, lässt sie offen; nach unserer Lesart gilt das Abstellverbot auch für E-Scooter.',
+      answer: 'Abstellen darfst du ihn dort nicht: Die Grünanlagenordnung der Stadt verbietet, Fahrzeuge ohne Erlaubnis in Parks zu parken oder abzustellen, und E-Scooter sind Kraftfahrzeuge (§ 1 eKFV). Befahren dürfen die Wege nach der Ordnung keine Fahrzeuge, «die ein amtliches Kennzeichen führen müssen»; Radfahren ist grundsätzlich erlaubt, und Fussgänger haben Vorrang.',
     },
   ],
   sources: [
@@ -151,6 +151,7 @@ const guide: Guide = {
     { title: 'Stadt Neuss, Ratsinformationssystem: Antrag der CDU zu E-Scootern im öffentlichen Raum (69/0468/2026, PDF)', url: 'https://ris-neuss.itk-rheinland.de/sessionnetneubi/getfile.asp?id=244835&type=do' },
     { title: 'Stadt Neuss, Ratsinformationssystem: Antrag der FDP/UWG zum Abstellen von Leih-E-Scootern (22. Mai 2026, PDF)', url: 'https://ris-neuss.itk-rheinland.de/sessionnetneubi/getfile.asp?id=245004&type=do' },
     { title: 'Stadt Neuss: Grünanlagenordnung (29. März 2019, Fassung vom 14. Juli 2025)', url: 'https://www.neuss.de/rathaus/ortsrecht/67/04' },
+    { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
     { title: 'Stadt Neuss: Sondernutzungssatzung (Fassung vom 21. Mai 2025)', url: 'https://www.neuss.de/rathaus/ortsrecht/69/02' },
     { title: 'Stadt Neuss: Stadtwerke haben weitere fünf Mobilstationen in Betrieb genommen (5. März 2026)', url: 'https://www.neuss.de/news/2026/03/05/stadtwerke-haben-weitere-fuenf-mobilstationen-in-neuss-in-betrieb-genommen' },
     { title: 'Stadt Neuss: Gleisarbeiten der Rheinbahn am Neusser Hauptbahnhof (12. März 2024)', url: 'https://www.neuss.de/news/2024/03/12/gleisarbeiten-der-rheinbahn-am-neusser-hauptbahnhof' },

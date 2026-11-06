@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-luebeck',
   topic: 'luebeck',
   name: 'E-Scooter Lübeck: Anbieter, Preise, Parken',
-  title: 'E-Scooter Lübeck 2026: Anbieter, Preise, Parken, Stationen',
-  description: 'E-Scooter Lübeck: Voi, Lime und Ryde, wo du fährst und parkst, die 34 Stationen in der Altstadt und am Bahnhof und was in Travemünde gilt.',
+  title: 'E-Scooter Lübeck 2026: Voi, Lime, Ryde, Preise, Parken',
+  description: 'E-Scooter Lübeck: Voi, Lime und Ryde, was Voi kostet, wo du fährst und parkst, die 34 Stationen in Altstadt und am Bahnhof und was in Travemünde gilt.',
   headline: 'E-Scooter Lübeck: Anbieter, Preise und warum du in der Altstadt nur an Stationen parkst',
-  lede: 'E-Scooter in Lübeck leihst du ab 18 und ohne Führerschein bei Voi, Lime oder Ryde, den drei Anbietern, die die Stadtwerke Lübeck nennen. Den Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone Breite Strasse. Auf der Altstadtinsel und am Hauptbahnhof beendest du die Fahrt seit Juli 2025 nur an einer der 34 Sharingstationen. Durch die Wallanlagen und andere städtische Parks schiebst du: Die Grünanlagensatzung verbietet dort das Fahren von Kraftfahrzeugen, und dazu zählen E-Scooter. In die Stadtbusse darfst du keinen E-Scooter mitnehmen.',
+  lede: 'E-Scooter in Lübeck leihst du ab 18 und ohne Führerschein bei Voi, Lime oder Ryde, den drei Anbietern, die die Stadtwerke Lübeck nennen: Scooter in der App suchen, QR-Code scannen, losfahren. Bei Voi kosten zehn Minuten 2,89 € (0,49 € zum Entsperren, dann 0,24 € pro Minute, Stand November 2026); bei Lime und Ryde zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone Breite Strasse. Auf der Altstadtinsel und am Hauptbahnhof beendest du die Fahrt seit Juli 2025 nur an einer der 34 Sharingstationen. Durch die Wallanlagen und andere städtische Parks schiebst du: Die Grünanlagensatzung verbietet dort das Fahren von Kraftfahrzeugen, und dazu zählen E-Scooter. In die Stadtbusse darfst du keinen E-Scooter mitnehmen.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Lübeck',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Lübeck?',
       blocks: [
-        'Mit E-Scootern sind laut Stadtwerken Lübeck «derzeit drei Anbieter aktiv»: **Voi**, **Lime** und **Ryde**. Voi und Ryde verleihen dazu E-Bikes (Seite vom 30. September 2026). Bolt führt Lübeck auf seiner Website mit E-Scootern, Dott (früher Tier) auf seiner Standortliste (gelesen am 26. Oktober 2026).',
+        'Mit E-Scootern sind laut Stadtwerken Lübeck «derzeit drei Anbieter aktiv»: **Voi**, **Lime** und **Ryde**. Voi und Ryde verleihen dazu E-Bikes (Seite vom 30. September 2026). Bolt führt Lübeck auf seiner Website mit E-Scootern, Dott (früher Tier) auf seiner Standortliste (Stand November 2026).',
         'Du leihst den Scooter in der App des Anbieters. Leih-Scooter bekommst du erst ab 18, einen eigenen darfst du ab 14 fahren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'Auf der [Karte von Lübeck](map:de:Lübeck) standen am Montag, 26. Oktober 2026, gegen 6.20 Uhr rund 580 Voi-Scooter, Nachbarorte eingeschlossen: rund 490 in Lübeck, 54 in Stockelsdorf, 35 in Bad Schwartau und 2 in Badendorf. Von Lime standen dort am Sonntag, 25. Oktober, um 12.27 Uhr rund 410 Scooter in Lübeck. Das sind Momentaufnahmen, keine Flottengrössen. Preise, Zonen und Stationen zeigt die App des Anbieters; die Scooter von Ryde findest du in der Ryde-App.',
+        'Auf der [Karte von Lübeck](map:de:Lübeck) standen am Montag, 26. Oktober 2026, gegen 6.20 Uhr rund 580 Voi-Scooter, Nachbarorte eingeschlossen: rund 490 in Lübeck, 54 in Stockelsdorf, 35 in Bad Schwartau und 2 in Badendorf. Von Lime standen dort am Sonntag, 25. Oktober, um 12.27 Uhr rund 410 Scooter in Lübeck. Das sind Momentaufnahmen, keine Flottengrössen.',
         'In Schleswig-Holstein gilt der Scooter-Verleih laut Hansestadt Lübeck (Juli 2025) «strassenrechtlich nach wie vor als Gemeingebrauch». Deshalb habe die Stadt «keine gesetzlichen Steuerungsmöglichkeiten wie etwa das Einschränken oder die Untersagung solcher Angebote». Stattdessen haben laut Stadtwerken alle Anbieter eine Qualitätsvereinbarung unterschrieben, mit Höchstzahlen je Zone und festen Stationen in der Altstadt und am Bahnhof.',
         {
           table: {
@@ -39,7 +39,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Lübeck?',
       blocks: [
-        'Was Entsperren und Minuten bei Voi, Lime und Ryde kosten, zeigt die App vor dem Start.',
+        'Bei **Voi** kostet eine Fahrt in Lübeck 0,49 € zum Entsperren und dann 0,24 € pro Minute (Stand November 2026): 10 Minuten kosten 2,89 €, 15 Minuten 4,09 €, 20 Minuten 5,29 €.',
         'Teuer wird es, wenn du am falschen Ort parken willst: Auf der Altstadtinsel und am Hauptbahnhof lässt dich die App die Fahrt nur an einer Station beenden, und laut Stadt gilt: «Die Gebühr läuft so lange weiter, bis das Fahrzeug korrekt abgestellt ist.»',
         'Den nächsten Voi oder Lime und seinen Akkustand findest du auf der [Live-Karte von Lübeck](map:de:Lübeck).',
       ],
@@ -59,7 +59,7 @@ const guide: Guide = {
         'Das wirkt: Laut Stadt (März 2026) liessen sich 2025 «97 Prozent der Abstellvorgänge» den Stationen zuordnen, die Beschwerden seien «drastisch zurückgegangen». Nun prüft sie weitere Stationen.',
         {
           table: {
-            caption: 'Wo du in Lübeck einen Leih-Scooter abstellst (laut Stadt, Stadtwerken und Satzungen, gelesen am 26. Oktober 2026)',
+            caption: 'Wo du in Lübeck einen Leih-Scooter abstellst (laut Stadt, Stadtwerken und Satzungen)',
             head: ['Ort', 'Was gilt'],
             rows: [
               ['Altstadtinsel, auch Breite Strasse', 'Nur an einer der 30 Stationen, etwa am Koberg, am Marienkirchhof, in der Holstenstrasse, am Pferdemarkt oder an der Untertrave'],
@@ -107,7 +107,7 @@ const guide: Guide = {
         '**Stadtbus:** In den Bussen der Stadtwerke Lübeck gelten die Beförderungsbedingungen des SH-Tarifs. Sie untersagen die Mitnahme «von elektrisch angetriebenen Tretrollern jeglicher Bauart», auch mit Allgemeiner Betriebserlaubnis. Für die Linie X85 Lübeck–Fehmarn nennt NAH.SH eine Ausnahme. So streng ist es auch in [Kiel](guide:kiel). Die «E-Scooter», die die Stadtwerke auf ihrer Mitnahmeseite regeln, sind Elektromobile mit Lenker und blauem Aufkleber, keine E-Tretroller.',
         '**Regionalzug:** Im Nahverkehrszug, auch ab Lübeck Hbf und Travemünde, darf ein eigener E-Scooter laut SH-Tarif mit, wenn Platz ist; einen Anspruch darauf hast du nicht. Ist er so gross wie ein Fahrrad, brauchst du eine Fahrradtageskarte (6 € für die gewählte Strecke, fürs ganze Netz des SH-Tarifs ab 6,60 €). Kleinere oder zusammengeklappte Scooter fahren wie Handgepäck kostenlos mit.',
         '**Fernverkehr:** Im ICE und IC fährt er zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden.',
-        '**Priwallfähre:** Die Stadtwerke betreiben zwischen Travemünde und dem Priwall Autofähren und eine Personenfähre; die Autofähre ist «24 Stunden täglich» im Einsatz. Der SH-Tarif gilt hier laut seinen Bestimmungen nicht, also auch nicht sein Verbot. Die Stadtwerke verlangen ein Fahrzeug-Ticket «für die Mitnahme von Fahrrädern und Kleinfahrzeugen», die Einzelfahrt ab 1,20 € (Stand Oktober 2026).',
+        '**Priwallfähre:** Die Stadtwerke betreiben zwischen Travemünde und dem Priwall Autofähren und eine Personenfähre; die Autofähre ist «24 Stunden täglich» im Einsatz. Der SH-Tarif gilt hier laut seinen Bestimmungen nicht, also auch nicht sein Verbot. Die Stadtwerke verlangen ein Fahrzeug-Ticket «für die Mitnahme von Fahrrädern und Kleinfahrzeugen», die Einzelfahrt ab 1,20 € (Stand November 2026).',
       ],
     },
     {
@@ -122,11 +122,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Lübeck?',
-      answer: 'Laut Stadtwerken Voi, Lime und Ryde. Voi und Lime findest du auf der [Karte von Lübeck](map:de:Lübeck), Ryde in seiner App.',
+      answer: 'Laut Stadtwerken Voi, Lime und Ryde. Bolt und Dott führen Lübeck ebenfalls auf ihren Websites.',
     },
     {
       question: 'Was kostet ein E-Scooter in Lübeck?',
-      answer: 'Den Preis zeigt die App vor dem Entsperren. Auf der Altstadtinsel und am Hauptbahnhof läuft die Gebühr weiter, bis du an einer Station parkst.',
+      answer: 'Bei Voi kosten zehn Minuten 2,89 € (0,49 € zum Entsperren, dann 0,24 € pro Minute, Stand November 2026). Auf der Altstadtinsel und am Hauptbahnhof läuft die Gebühr weiter, bis du an einer Station parkst.',
     },
     {
       question: 'Wo stelle ich in Lübeck einen Leih-Scooter ab?',
@@ -166,6 +166,7 @@ const guide: Guide = {
     { title: 'TH Lübeck: Hausordnung vom 20. April 2023 (PDF)', url: 'https://pubdoc.th-luebeck.de/4e43991959' },
     { title: 'UKSH: Anfahrt Campus Lübeck', url: 'https://www.uksh.de/Das+UKSH/Anfahrt/Campus+L%C3%BCbeck.html' },
     { title: 'Statistikamt Nord: Verkehrsunfälle in Schleswig-Holstein 2025 (PDF)', url: 'https://www.statistik-nord.de/fileadmin/Dokumente/SI26_92.pdf' },
+    { title: 'Voi: Tarif und Zonen für Lübeck in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/157/netex.xml' },
     { title: 'Bolt in Lübeck', url: 'https://bolt.eu/de-de/cities/lubeck/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
   ],

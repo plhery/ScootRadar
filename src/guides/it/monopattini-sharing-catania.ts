@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'catania',
   name: 'Monopattini in sharing a Catania',
   title: 'Monopattini in sharing a Catania 2026: Elerent, Lime, prezzi',
-  description: 'Monopattini in sharing a Catania nel 2026: Elerent e Lime, prezzi, casco da portare, via Etnea, dove lasciarli, metro, aeroporto e Sant’Agata.',
+  description: 'Monopattini in sharing a Catania nel 2026: Elerent e Lime, come noleggiare, prezzi, casco da portare, via Etnea, dove lasciarli, metro, aeroporto e Sant’Agata.',
   headline: 'Monopattini in sharing a Catania: Elerent e Lime, prezzi, zone e regole nel 2026',
-  lede: 'I monopattini in sharing a Catania, a ottobre 2026, sono quelli di Elerent e Lime; anche Bolt ha vinto la gara, ma a maggio, secondo l’assessore alla Mobilità, non aveva dato notizie al Comune. A novembre 2026 Elerent costa 1 euro di sblocco più 0,23-0,25 euro al minuto, secondo il modello; Lime mostra il prezzo nell’app. Ti serve il casco, obbligatorio per tutti, che porti tu. Su via Etnea, chiusa al traffico privato, nel tratto pedonale si va a 6 km/h, e tra piazza Duomo e piazza Università con Elerent la corsa non si chiude.',
+  lede: 'I monopattini in sharing a Catania, a ottobre 2026, sono quelli di Elerent e Lime; anche Bolt ha vinto la gara, ma a maggio, secondo l’assessore alla Mobilità, non aveva dato notizie al Comune. Per noleggiarne uno scarichi l’app, ti iscrivi con una carta, inquadri il QR code e chiudi la corsa dove l’app lo consente. A novembre 2026 Elerent costa 1 euro di sblocco più 0,23-0,25 euro al minuto, secondo il modello; Lime mostra il prezzo nell’app. Ti serve il casco, obbligatorio per tutti, che porti tu, e si guida su strada o su pista ciclabile, mai sul marciapiede. Su via Etnea, chiusa al traffico privato, nel tratto pedonale si va a 6 km/h, e tra piazza Duomo e piazza Università con Elerent la corsa non si chiude.',
   published: '2026-10-14',
   updated: '2026-10-25',
   city: 'it:Catania',
@@ -28,7 +28,7 @@ const guide: Guide = {
         {
           steps: [
             'Scarica l’app di Elerent o di Lime; i monopattini liberi li vedi anche sulla [mappa di Catania](map:it:Catania).',
-            'Registrati e aggiungi un mezzo di pagamento; l’età minima te la mostra l’app prima dello sblocco.',
+            'Registrati e aggiungi un mezzo di pagamento.',
             'Metti il casco e controlla freni, luci e batteria.',
             'Inquadra il QR code e parti piano. Sale una persona sola.',
             'Fermati dove l’app consente la sosta, chiudi la corsa e, se l’app la chiede, scatta la foto di fine corsa.',
@@ -41,7 +41,7 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattino a Catania: quanto costa',
       blocks: [
-        'A novembre 2026 Elerent fa pagare 1 euro allo sblocco e, secondo il modello, da 0,23 a 0,25 euro al minuto. Fa fede l’app, che ti mostra il prezzo prima di sbloccare; quello di Lime lo vedi nella sua app.',
+        'A novembre 2026 Elerent fa pagare 1 euro allo sblocco e, secondo il modello, da 0,23 a 0,25 euro al minuto; Lime ti mostra il prezzo nell’app prima dello sblocco.',
         {
           table: {
             caption: 'Quanto costa una corsa con Elerent a Catania, a novembre 2026',
@@ -58,7 +58,7 @@ const guide: Guide = {
       blocks: [
         'Via Etnea, il rettifilo di circa 3 km che dal Duomo punta verso l’Etna, è chiusa al traffico privato fino a Villa Bellini. Nelle aree pedonali il limite nazionale è di **6 km/h**: nel dubbio, tieni quel passo fino alla villa.',
         'Con Elerent, da piazza Duomo fin quasi a piazza Università la corsa non si chiude: lascia il monopattino più su, in piazza Università, in piazza Stesicoro o su via Etnea davanti a Villa Bellini, non dentro la villa.',
-        '**La salita.** Da piazza Duomo (circa 18 m) a Tondo Gioeni (circa 105 m) si sale di circa 87 metri, secondo una nostra stima approssimativa: in lieve pendenza fino a piazza Cavour, al Borgo, poi intorno al 5-6% nell’ultimo chilometro, dove il monopattino rallenta.',
+        '**La salita.** Da piazza Duomo (circa 18 m) a Tondo Gioeni (circa 105 m) si sale di circa 87 metri: in lieve pendenza fino a piazza Cavour, al Borgo, poi intorno al 5-6% nell’ultimo chilometro, dove il monopattino rallenta.',
         '**La pietra lavica.** Il selciato è di pietra lavica dell’Etna, che bagnata scivola: con la pioggia vai piano e frena in anticipo.',
         'Anche intorno al Castello Ursino c’è un’area pedonale: 6 km/h, ma con Elerent la corsa si chiude.',
       ],
@@ -81,7 +81,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Le zone cambiano: prima di partire e di chiudere la corsa fa fede la mappa dell’app. Quelle di Lime le vedi nella sua app.',
+        'Le zone cambiano: prima di partire e di chiudere la corsa fa fede la mappa dell’app.',
       ],
     },
     {
@@ -162,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'A che età si può noleggiare un monopattino a Catania? Serve la patente?',
-      answer: 'Per la legge si guida dai 14 anni, senza patente. L’età minima per noleggiare te la mostra l’app prima dello sblocco.',
+      answer: 'Per la legge si guida dai 14 anni, senza patente.',
     },
     {
       question: 'Si può portare il monopattino in metro a Catania?',
@@ -170,7 +170,7 @@ const guide: Guide = {
     },
     {
       question: 'Si arriva in monopattino all’aeroporto di Catania?',
-      answer: 'Al terminal no: è fuori dall’area di Elerent. Con due modelli Elerent su tre la corsa si chiude a Villaggio Santa Maria Goretti, a circa 300 metri in linea d’aria; le zone di Lime sono nella sua app. Con la valigia, meglio l’Alibus (4 euro a novembre 2026) o il treno.',
+      answer: 'Al terminal no: è fuori dall’area di Elerent. Con due modelli Elerent su tre la corsa si chiude a Villaggio Santa Maria Goretti, a circa 300 metri in linea d’aria. Con la valigia, meglio l’Alibus (4 euro a novembre 2026) o il treno.',
     },
   ],
   sources: [

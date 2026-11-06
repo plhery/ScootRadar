@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'santa-monica',
   name: 'E-scooters in Santa Monica, California',
   title: 'E-scooters in Santa Monica 2026: Bird, Veo, rules, the Pier',
-  description: 'E-scooters in Santa Monica: Bird, Spin and Veo, what a ride costs, the licence and sidewalk rules, and why you can’t ride on the Pier or the beach path.',
+  description: 'E-scooters in Santa Monica: Bird, Spin and Veo, Veo at $1 + $0.50 a minute (November 2026), the licence and sidewalk rules, no riding on the Pier or beach path.',
   headline: 'E-scooters in Santa Monica: Bird, Veo, the rules and the beach path',
-  lede: 'E-scooters in Santa Monica come from Bird, Spin and Veo: the City names Spin and Veo as its operators, and Bird owns Spin. Veo charges $1 to unlock plus $0.50 a minute plus tax (its published rate on 22 October 2026); Bird shows its price in the app. California asks for a valid driving licence or permit and caps scooters at 15 mph, and Bird rents only to over-18s. Sidewalks are off limits, and the City keeps e-scooters off the beach bike path, Ocean Front Walk, the Pier, the Third Street Promenade and its parks, where shared ones shut off or slow to 1 mph.',
+  lede: 'E-scooters in Santa Monica come from Bird, Spin and Veo: the City’s two permit holders are Spin and Veo, and Bird owns Spin, whose scooters you rent in the Bird app. Install the Bird or Veo app, add a card and have your driving licence ready: the companies must check it. As of November 2026 Veo charges $1 to unlock plus $0.50 a minute plus tax, so 10 minutes cost $6 before tax; Bird shows its price in the app. California caps scooters at 15 mph and asks for a valid driving licence or permit, under-18s must wear a helmet, and Bird rents only to over-18s. Sidewalks are off limits, and the City keeps e-scooters off the beach bike path, Ocean Front Walk, the Pier, the Third Street Promenade and its parks, where shared ones shut off or slow to 1 mph.',
   published: '2026-10-23',
   updated: '2026-11-04',
   city: 'us:ca:Santa Monica',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Which apps rent e-scooters in Santa Monica?',
       blocks: [
         'Santa Monica permits shared scooters and e-bikes itself. Its programme left the pilot phase on 26 September 2024 and, under the rules for operators updated on 7 November 2025, continues indefinitely, with permits under continuous review. Up to four companies may hold one, and at launch their combined fleet, e-bikes included, was capped at a daily average of 2,200 devices.',
-        'The City names Spin and Veo as its current operators; both have held permits since July 2021. The Santa Monica Daily Press reported in 2023 that Bird had bought Spin. On 22 October 2026 Spin’s open data for Santa Monica named Bird Rides, Inc. as its operator, and Bird’s own Santa Monica data listed about 490 scooters and 160 e-bikes. Spin’s scooters are in Bird’s rider app: it listed about 360 in Santa Monica on 3 November 2026.',
+        'The City names Spin and Veo as its current operators; both have held permits since July 2021. It has closed its search for a third operator, deciding that no new one will be permitted. The Santa Monica Daily Press reported in 2023 that Bird had bought Spin. On 22 October 2026 Spin’s open data for Santa Monica named Bird Rides, Inc. as its operator, and Bird’s own Santa Monica data listed about 490 scooters and 160 e-bikes. Spin’s scooters are in Bird’s rider app: it listed about 360 in Santa Monica on 3 November 2026.',
         {
           list: [
             '**Bird**: stand-up scooters and e-bikes, in the Bird app.',
@@ -34,7 +34,7 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'Veo’s published rates in Santa Monica on 22 October 2026',
+            caption: 'Veo’s rates in Santa Monica as of November 2026',
             head: ['Ride', 'Veo scooter'],
             rows: [
               ['Unlock', '$1'],
@@ -131,7 +131,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a scooter cost in Santa Monica?',
-      answer: 'Veo charges $1 to unlock plus $0.50 a minute plus tax (its published rate on 22 October 2026), so 10 minutes cost $6 before tax. Bird shows its price in the app. Either way, ending your ride in a City drop zone takes $1 off.',
+      answer: 'As of November 2026 Veo charges $1 to unlock plus $0.50 a minute plus tax, so 10 minutes cost $6 before tax. Bird shows its price in the app. Either way, ending your ride in a City drop zone takes $1 off.',
     },
     {
       question: 'Can you ride a scooter on the Santa Monica Pier or the beach path?',

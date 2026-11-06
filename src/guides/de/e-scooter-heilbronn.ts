@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'heilbronn',
   name: 'E-Scooter Heilbronn: Dott, Preise, Parken',
   title: 'E-Scooter Heilbronn 2026: Dott, Preise, Stationen, Parken',
-  description: 'E-Scooter Heilbronn: Dott nannte im Oktober 2026 1 € plus 0,43 € pro Minute. Wo du in der Innenstadt abstellen darfst und was in Stadtbahn und Bus gilt.',
+  description: 'E-Scooter Heilbronn: Dott kostet 1 € plus 0,44 € pro Minute (Stand November 2026). Wo du in der Innenstadt abstellst und was in Stadtbahn und Bus gilt.',
   headline: 'E-Scooter Heilbronn: Preise, Sharingstationen und Parkverbote von der Innenstadt bis zum Neckarbogen',
-  lede: 'Einen E-Scooter in Heilbronn leihst du ab 18 und ohne Führerschein bei Dott, laut Stadt derzeit dem einzigen Anbieter. Laut Datenfeed von Dott kostete eine Fahrt am 23. Oktober 2026 1 € plus 0,43 € pro Minute, zehn Minuten also 5,30 €. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg. In der Innenstadt, am Hauptbahnhof und im Neckarbogen beendest du die Fahrt nur an einer der blau markierten Sharingstationen.',
+  lede: 'Einen E-Scooter in Heilbronn leihst du ab 18 und ohne Führerschein bei Dott, laut Stadt derzeit dem einzigen Anbieter: Scooter in der Dott-App suchen, QR-Code scannen, losfahren. Eine Fahrt kostet 1 € zum Entsperren plus 0,44 € pro Minute, zehn Minuten also 5,40 € (Stand November 2026). Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg. In der Innenstadt, am Hauptbahnhof und im Neckarbogen beendest du die Fahrt nur an einer der blau markierten Sharingstationen.',
   published: '2026-10-23',
   updated: '2026-10-23',
   city: 'de:Heilbronn',
@@ -26,15 +26,15 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preis in Heilbronn (Stand und Quelle in der ersten Spalte)',
+            caption: 'E-Scooter-Preis in Heilbronn laut Datenfeed von Dott (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Dott (Datenfeed, 23. Oktober 2026)', '1,00 €', '0,43 €', '5,30 €', '9,60 €'],
+              ['Dott', '1,00 €', '0,44 €', '5,40 €', '9,80 €'],
             ],
           },
         },
-        'Für die E-Bikes von Dott nannte der Feed denselben Tarif. Auf seiner Website schreibt Dott: «In der Dott-App siehst du den Preis, der in deiner Region gilt.» Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Pässe und Abos gibt es laut AGB nur in einigen Städten, ebenfalls in der App.',
-        'Heilbronn ist für Dott-Kunden teuer: Am selben Tag nannte der Feed in [Stuttgart](map:de:Stuttgart) 0,99 € plus 0,24 € pro Minute und in [Heidelberg](map:de:Heidelberg) 1 € plus 0,31 €. Eine Viertelstunde kostet in Heilbronn 7,45 €, in Stuttgart 4,59 €.',
+        'Für die E-Bikes von Dott gilt derselbe Tarif.',
+        'Heilbronn ist für Dott-Kunden teuer: In [Stuttgart](map:de:Stuttgart) kostet Dott 0,99 € plus 0,24 € pro Minute, in [Heidelberg](map:de:Heidelberg) 1 € plus 0,32 € (Stand November 2026). Eine Viertelstunde kostet in Heilbronn 7,60 €, in Stuttgart 4,59 €.',
         'Teuer wird auch falsches Abstellen: Holt Dott einen falsch abgestellten Scooter zurück, kann das laut AGB bis zu 300 € kosten; zahlt Dott ein Bussgeld für dich, kommen 50 € Bearbeitungsgebühr dazu.',
       ],
     },
@@ -44,7 +44,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen, in Fahrradstrassen und Fahrradzonen und nur, wo es keinen Radweg gibt, auf der Fahrbahn. Auf Gehwegen und in Fussgängerzonen fährst du nicht, ausser das Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es, dann im Schritttempo. Das ist Bundesrecht; die Stadt wiederholt es auf ihrer Seite und rät zum Helm.',
         '**Fussgängerzone:** Ein Schild, das nur Fahrräder freigibt, gilt heute nicht für E-Scooter, auch wenn die Mobilitätsbroschüre der Stadt beide in einem Satz nennt. Ab 1. März 2027 gibt auch «Radverkehr frei» die Zone für E-Scooter frei, im Schritttempo, sofern die Stadt sie dort nicht eigens ausschliesst. Ohne Freigabe steigst du ab und schiebst.',
         '**Am Neckar:** Wo der Weg am Ufer ein gemeinsamer Geh- und Radweg ist, fährst du dort, mit Rücksicht auf Fussgänger. Reine Fusswege in Parks und Grünanlagen sind tabu, und auf den Neckarbrücken und an unbefestigten Ufern endet laut Stadt keine Fahrt.',
-        '**Tempo:** Dott hinterlegt für Heilbronn im Datenfeed 19 km/h, und seine Zonen regeln dort nur das Abstellen (Stand 23. Oktober 2026).',
+        '**Tempo:** Dott hinterlegt für Heilbronn im Datenfeed 19 km/h, und seine Zonen regeln dort nur das Abstellen (Stand November 2026).',
       ],
     },
     {
@@ -110,7 +110,7 @@ const guide: Guide = {
     {
       heading: 'Wie Heilbronn E-Scooter regelt: Vertrag, Obergrenze, Gebühren',
       blocks: [
-        'Das Verleihen von E-Scootern auf öffentlichen Flächen behandelt Heilbronn als **Sondernutzung** nach dem Strassengesetz Baden-Württemberg und der Sondernutzungssatzung der Stadt. 2023 schrieb die Stadt die Erlaubnis für zwei Anbieter aus; seit September 2023 gelten laut Stadt strengere Auflagen. Laut Mustervertrag lief der Vertrag bis 31. August 2025 und verlängert sich um ein Jahr, wenn keine Seite drei Monate vorher kündigt. Die Seite der Stadt nennt Dott als Anbieter (Stand 23. Oktober 2026).',
+        'Das Verleihen von E-Scootern auf öffentlichen Flächen behandelt Heilbronn als **Sondernutzung** nach dem Strassengesetz Baden-Württemberg und der Sondernutzungssatzung der Stadt. 2023 schrieb die Stadt die Erlaubnis für zwei Anbieter aus; seit September 2023 gelten laut Stadt strengere Auflagen. Laut Mustervertrag lief der Vertrag bis 31. August 2025 und verlängert sich um ein Jahr, wenn keine Seite drei Monate vorher kündigt. Die Seite der Stadt nennt Dott als Anbieter (Stand November 2026).',
         'Die Zahlen stammen aus dem Mustervertrag: je Anbieter höchstens 400 E-Scooter und 200 E-Bikes, innerhalb des Innenstadtrings höchstens 150 Scooter. Der Anbieter zahlt einmalig 360 € und je Jahr 12,50 € pro E-Scooter und 20 € pro E-Bike. Er stellt höchstens drei Fahrzeuge an einen Ort, lässt auf dem Gehweg 2,50 m frei und räumt falsch abgestellte Fahrzeuge fristgerecht weg, sonst kann die Stadt 15 € pro Fahrzeug verlangen.',
         {
           list: [
@@ -141,7 +141,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Was kostet ein E-Scooter in Heilbronn?',
-      answer: 'Laut Datenfeed von Dott am 23. Oktober 2026 1 € zum Entsperren plus 0,43 € pro Minute, zehn Minuten also 5,30 €. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+      answer: 'Bei Dott 1 € zum Entsperren plus 0,44 € pro Minute, zehn Minuten also 5,40 € und 20 Minuten 9,80 € (Stand November 2026, laut Datenfeed von Dott).',
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Heilbronn?',
@@ -177,7 +177,8 @@ const guide: Guide = {
     { title: 'Stadt Neckarsulm: E-Scooter', url: 'https://www.neckarsulm.de/e-scooter' },
     { title: 'Dott: Tarif und Zonen für Heilbronn im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/heilbronn/gbfs.json' },
     { title: 'MobiData BW: Datenfeed von Dott in Heilbronn (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heilbronn/gbfs' },
-    { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
+    { title: 'MobiData BW: Datenfeed von Dott in Stuttgart (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_stuttgart/gbfs' },
+    { title: 'MobiData BW: Datenfeed von Dott in Heidelberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heidelberg/gbfs' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'HNV: Hilfe und FAQ, Mitnahme', url: 'https://www.mein-hnv.de/service-und-kontakt/hilfe-faq/mitnahme/' },
     { title: 'HNV: Gemeinschaftstarif, gültig ab 1. Mai 2026 (PDF)', url: 'https://www.mein-hnv.de/fileadmin/pdf/tarif/gemeinschaftstarif.pdf' },

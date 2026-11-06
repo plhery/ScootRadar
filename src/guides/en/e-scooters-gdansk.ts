@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'gdansk',
   name: 'Renting an e-scooter in Gdańsk, Gdynia and Sopot',
   title: 'E-scooters Gdańsk, Gdynia, Sopot 2026: Bolt, Dott and Lime',
-  description: 'E-scooters in Gdańsk, Gdynia and Sopot: Bolt, Dott and Lime, what a ride costs, where to ride and park, the Main Town’s summer ban, and Poland’s rules.',
+  description: 'E-scooters in Gdańsk, Gdynia and Sopot: how to rent Bolt, Dott or Lime, Bolt from PLN 0.22 a minute (November 2026), where to ride and park, Poland’s rules.',
   headline: 'E-scooters in Gdańsk, Gdynia and Sopot: Bolt, Dott and Lime, prices, Poland’s rules and the places you can’t ride',
-  lede: 'You can rent an e-scooter in Gdańsk, Gdynia and Sopot, the Tricity (Trójmiasto), with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show their prices in the app. Polish law sends you to the cycle path at up to 20 km/h and allows the pavement only beside a fast road, at walking pace, and you may not ride on Sopot’s Monte Cassino street or its pier.',
+  lede: 'You can rent an e-scooter in Gdańsk, Gdynia and Sopot, the Tricity (Trójmiasto), with Bolt, Dott or Lime: download the app, create an account, find a scooter on the app’s map and scan its QR code to unlock it. Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus a small unlock fee (its starting rate for Poland, as of November 2026); Dott’s and Lime’s apps show their price before you unlock. Polish law sends you to the cycle path at up to 20 km/h and allows the pavement only beside a fast road, at walking pace, and you may not ride on Sopot’s Monte Cassino street or its pier.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'pl:Gdańsk / Gdynia / Sopot',
@@ -24,7 +24,6 @@ const guide: Guide = {
             '**Lime**, which Gdańsk (April 2023) and Gdynia (July 2022) named among the companies renting scooters there.',
           ],
         },
-        'No city publishes a current list of operators; any other company’s scooters are only in its own app.',
         'At about 15:30 on Sunday 25 October 2026 the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot) showed about 4,800 Bolt and Dott scooters free to rent at that moment. The town of Pruszcz Gdański, to the south, has [its own map](map:pl:Pruszcz Gdański).',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Poznań](guide:poznan), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
@@ -33,7 +32,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in the Tricity?',
       blocks: [
-        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes and, like Lime, shows its prices in the app.',
+        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes.',
         'Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one. Bolt’s and Dott’s terms set the extra charges:',
         {
           table: {

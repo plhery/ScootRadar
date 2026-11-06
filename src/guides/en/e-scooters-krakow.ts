@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'krakow',
   name: 'Renting an e-scooter in Kraków',
   title: 'E-scooters Kraków 2026: Bolt, Dott, Lime, prices and rules',
-  description: 'E-scooters in Kraków: Bolt, Dott and Lime, what a ride costs, where you may park in the centre, the ban on Wawel Hill, and Poland’s rules.',
+  description: 'E-scooters in Kraków: how to rent Bolt, Dott or Lime, Bolt from PLN 0.22 a minute (November 2026), the 342 parking points, the Wawel Hill ban, Poland’s rules.',
   headline: 'E-scooters in Kraków: Bolt, Dott and Lime, prices, parking points and the places you can’t ride',
-  lede: 'You can rent an e-scooter in Kraków (Krakow) with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show prices in the app. In the centre you may end a ride only at one of the city’s 342 parking points, and Polish law sends you to the cycle path at up to 20 km/h.',
+  lede: 'You can rent an e-scooter in Kraków (Krakow) with Bolt, Dott or Lime: download the app, create an account, find a scooter on the app’s map and scan its QR code to unlock it. Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus a small unlock fee (its starting rate for Poland, as of November 2026); Dott’s and Lime’s apps show their price before you unlock. In the centre you may end a ride only at one of the city’s 342 parking points, Polish law sends you to the cycle path at up to 20 km/h, and you can’t ride on Wawel Hill.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'pl:Kraków',
@@ -34,7 +34,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Kraków?',
       blocks: [
-        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes and, like Lime, shows its prices in the app.',
+        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes.',
         'Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one. Bolt’s and Dott’s terms set the extra charges:',
         {
           table: {
@@ -143,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does electric scooter rental cost in Krakow?',
-      answer: 'Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026). Dott and Lime show their prices in the app.',
+      answer: 'Bolt charges from PLN 0.22 a minute plus a small unlock fee, its starting rate for Poland as of November 2026; the rate can vary by place. Dott sells day, week and month passes.',
     },
     {
       question: 'Where can you park an e-scooter in Kraków?',

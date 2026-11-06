@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-dresden',
   topic: 'dresden',
   name: 'E-Scooter Dresden: Anbieter, Preise, Parken',
-  title: 'E-Scooter Dresden 2026: Bolt, Preise, Parken, Rote Zonen',
-  description: 'E-Scooter Dresden: RideMovi und Bolt verleihen, Voi soll folgen; den Preis zeigt die App. Wo du fährst, wo die Roten Zonen liegen und was in Tram und Bus gilt.',
+  title: 'E-Scooter Dresden 2026: Bolt, RideMovi, Preise, Rote Zonen',
+  description: 'E-Scooter Dresden: RideMovi und Bolt verleihen, Voi soll folgen. Wie du mietest, wo du fährst, wo die Roten Zonen liegen und was in Tram und Bus gilt.',
   headline: 'E-Scooter Dresden: Anbieter, Preise, Rote Zonen und was in Tram, Bus und Fähre gilt',
-  lede: 'E-Scooter in Dresden verleihen laut Stadt RideMovi und Bolt; Voi soll «ab Herbst 2026» dazukommen. Bei Bolt mietest du ab 18 und ohne Führerschein, den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg, und stellst Leih-Scooter nicht in den 15 Roten Zonen der Stadt ab, etwa am Neumarkt, am Altmarkt, an der Prager Strasse und auf mehreren Elbbrücken. Einen eigenen E-Scooter darfst du zusammengeklappt kostenlos in Strassenbahn und Bus mitnehmen.',
+  lede: 'E-Scooter in Dresden verleihen laut Stadt RideMovi und Bolt; Voi soll «ab Herbst 2026» dazukommen (Stand November 2026). Du mietest in der App des Anbieters: Scooter suchen, QR-Code scannen, losfahren, bei Bolt ab 18 und ohne Führerschein. Den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg, und stellst Leih-Scooter nicht in den 15 Roten Zonen der Stadt ab, etwa am Neumarkt, am Altmarkt, an der Prager Strasse und auf mehreren Elbbrücken. Einen eigenen E-Scooter darfst du zusammengeklappt kostenlos in Strassenbahn und Bus mitnehmen.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Dresden',
@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Dresden?',
       blocks: [
-        'Wer in Dresden E-Scooter (auch E-Roller genannt) verleiht, braucht laut Stadt eine Sondernutzungserlaubnis und zahlt Gebühren. Nach einer Ausschreibung mit sechs Bewerbern und einem Losverfahren «erhielten BOLT, VOI und RideMovi am 18. Juli 2025 eine Sondernutzungserlaubnis für jeweils bis zu 833 Fahrzeuge», für drei Jahre ab dem 1. August 2025 (Pressemitteilung vom 28. Juli 2025). Heute nennt die Stadt für E-Scooter «RideMovi (seit August 2025), BOLT (seit März 2026) und Voi (ab Herbst 2026) – insgesamt 2.500 E-Scooter möglich» (Stand 29. September 2026). Lime, dessen E-Scooter laut derselben Pressemitteilung «durch die neuen Angebote ersetzt» werden sollten, führt die Stadt heute nur noch bei den E-Bikes (seit August 2025).',
-        'Die [Karte von Dresden](map:de:Dresden) zeigt die freien Bolt-Scooter mit Standort und Akkustand. Am 26. Oktober 2026 standen dort zwischen 14:50 und 15 Uhr rund 515 Bolt-Scooter: 514 in Dresden, gut 200 davon in den Gemarkungen Altstadt I und II und Neustadt, und einer in Radebeul. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        'Wer in Dresden E-Scooter (auch E-Roller genannt) verleiht, braucht laut Stadt eine Sondernutzungserlaubnis und zahlt Gebühren. Nach einer Ausschreibung mit sechs Bewerbern und einem Losverfahren «erhielten BOLT, VOI und RideMovi am 18. Juli 2025 eine Sondernutzungserlaubnis für jeweils bis zu 833 Fahrzeuge», für drei Jahre ab dem 1. August 2025 (Pressemitteilung vom 28. Juli 2025). Heute nennt die Stadt für E-Scooter «RideMovi (seit August 2025), BOLT (seit März 2026) und Voi (ab Herbst 2026) – insgesamt 2.500 E-Scooter möglich» (Stand November 2026). Lime, dessen E-Scooter laut derselben Pressemitteilung «durch die neuen Angebote ersetzt» werden sollten, führt die Stadt heute nur noch bei den E-Bikes (seit August 2025).',
+        'Die [Karte von Dresden](map:de:Dresden) zeigt die freien Scooter von Bolt und RideMovi. Am 26. Oktober 2026 standen dort zwischen 14:50 und 15 Uhr rund 515 Bolt-Scooter: 514 in Dresden, gut 200 davon in den Gemarkungen Altstadt I und II und Neustadt, und einer in Radebeul. Das ist eine Momentaufnahme, keine Flottengrösse.',
         'Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Dazu kommt MOBIbike, das städtische Leihrad, betrieben von den Dresdner Verkehrsbetrieben (DVB), laut Stadt mit «rund 2.000 Fahrrädern (Stand Juli 2025)». Mit DVB-Abo oder Deutschlandticket und dem Zusatzprodukt «MOBI» kannst du es «bis zu 30 Minuten kostenfrei nutzen – und das mehrmals täglich».',
       ],
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Dresden?',
       blocks: [
-        'Den Preis zeigt dir die App vor dem Entsperren; bei Bolt gehört laut Nutzungsbedingungen «die geltende Gebührentabelle, wie sie in der App angezeigt wird» zum Vertrag. Die Stadt verlangt vom Anbieter laut Sondernutzungssatzung (Stand 17. Juli 2023) 3,35 € je E-Scooter und Monat. Teuer wird es für dich, wenn du falsch abstellst:',
+        'Die Stadt verlangt vom Anbieter laut Sondernutzungssatzung (Stand 17. Juli 2023) 3,35 € je E-Scooter und Monat. Teuer wird es für dich, wenn du falsch abstellst:',
         {
           table: {
             caption: 'Gebühren laut Bolts Nutzungsbedingungen',
@@ -130,11 +130,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter kann ich in Dresden mieten?',
-      answer: 'Laut Stadt die von RideMovi und Bolt; Voi soll «ab Herbst 2026» dazukommen (Stand 29. September 2026). Bei Bolt musst du mindestens 18 sein, einen Führerschein brauchst du nicht.',
-    },
-    {
-      question: 'Was kostet ein E-Scooter in Dresden?',
-      answer: 'Den Preis zeigt dir die App vor dem Entsperren. Bei Bolt wird Falschparken teuer: 15 € ohne klares Abstellfoto, bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs.',
+      answer: 'Laut Stadt die von RideMovi und Bolt; Voi soll «ab Herbst 2026» dazukommen (Stand November 2026). Bei Bolt musst du mindestens 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Wo darf ich in der Dresdner Altstadt einen Leih-Scooter abstellen?',
@@ -150,7 +146,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Landeshauptstadt Dresden: Multimobil & Sharing (29. September 2026)', url: 'https://www.dresden.de/de/stadtraum/verkehr/sharing.php' },
+    { title: 'Landeshauptstadt Dresden: Multimobil & Sharing (30. Oktober 2026)', url: 'https://www.dresden.de/de/stadtraum/verkehr/sharing.php' },
     { title: 'Landeshauptstadt Dresden: Neue E-Scooter und E-Bikes für Dresden (Pressemitteilung, 28. Juli 2025)', url: 'https://www.dresden.de/de/rathaus/aktuelles/pressemitteilungen/07/Pm_037.php' },
     { title: 'Landeshauptstadt Dresden: Aufruf zur Interessenbekundung E-Scooter-Sharing (Mai 2025, PDF)', url: 'https://www.dresden.de/media/pdf/Strassenbau/Sharing_2025-05-06_Interessenbekundung_E-Scooter.pdf' },
     { title: 'Landeshauptstadt Dresden: Leitlinien für eine geteilte Mobilität (Stadtratsbeschluss vom 14. Juli 2022, PDF)', url: 'https://dresden.de/media/pdf/verkehr/Sharingleitlinien-Mobilitaet-Dresden-5.pdf' },
