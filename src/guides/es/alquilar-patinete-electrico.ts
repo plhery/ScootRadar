@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'how-to-rent',
   name: 'Cómo alquilar un patinete eléctrico con app',
   title: 'Alquilar patinete eléctrico con app: dónde, precio y casco',
-  description: 'Cómo alquilar un patinete eléctrico con app en España: dónde quedan, paso a paso, precios, edad, casco obligatorio, dónde aparcar y qué hacer si te caes.',
+  description: 'Cómo alquilar un patinete eléctrico en España: Hoppy, Bird, Hopp o Dott en cada ciudad, paso a paso, precios, 18 años, casco obligatorio y dónde aparcar.',
   headline: 'Cómo alquilar un patinete eléctrico con app en España: paso a paso, precios y dónde quedan',
-  lede: 'Para alquilar un patinete eléctrico con app, descarga la del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. En octubre de 2026 no hay patinetes compartidos en Madrid, Barcelona, Valencia, Sevilla ni Málaga: quedan sobre todo en Gijón, Getafe, Canarias (Tenerife, Fuerteventura y Lanzarote) y la Costa Blanca, con Hoppy, Bird, Hopp o Dott. Pagas un desbloqueo más cada minuto: en Torrevieja, en noviembre de 2026, diez minutos salen por 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy.',
+  lede: 'Para alquilar un patinete eléctrico en España, descarga la app del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. En Madrid, Barcelona, Valencia, Sevilla y Málaga no hay patinetes compartidos; quedan sobre todo en Canarias y la Costa Blanca. En el sur de Tenerife hay Hoppy, Bird, Hopp y Dott; en Santa Cruz de Tenerife, Dott; en Fuerteventura, Hoppy y Bird; en Puerto del Carmen (Lanzarote) y la Marina Baixa, Hoppy; en Torrevieja, Hoppy y Hopp; en Pilar de la Horadada y Jávea, Hopp, y en Orihuela Costa, Vamoz. En el resto de España, Bird está en Gijón, Oviedo y Getafe, y Dott, en Estepona. Pagas un desbloqueo más cada minuto: en noviembre de 2026, diez minutos cuestan 3,45 € con Hopp en el sur de Tenerife y en Jávea, 4,29 € con Hopp en Torrevieja y de 3,80 a 4,50 € con Hoppy en Torrevieja, según el patinete; Bird y Dott te muestran su precio en la app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. Ve por la calzada o por el carril bici donde se permita, nunca por la acera.',
   published: '2026-10-13',
   updated: '2026-11-04',
   sections: [
@@ -16,16 +16,17 @@ const guide: Guide = {
       heading: '¿Hay patinetes de alquiler en Madrid? Dónde quedan en España',
       blocks: [
         'Antes de descargar ninguna app, comprueba si en tu ciudad quedan patinetes. En **Madrid** no hay desde febrero de 2025: el Ayuntamiento revocó en septiembre de 2024 los permisos de Lime, Dott y Tier (6000 patinetes), que siguieron unos meses más gracias a unas medidas cautelares, y no concederá otros nuevos. Según la prensa, tampoco los hay en **Barcelona**, que nunca los autorizó, ni en **Valencia, Sevilla, Málaga, Palma ni Bilbao**, y Tarragona se quedó sin ellos en septiembre de 2026.',
-        'Esta guía va del alquiler con app, por minutos, del patinete que coges en la calle, no de las tiendas que alquilan por horas o por meses. En octubre de 2026, los patinetes compartidos quedan sobre todo en ciudades medianas y zonas turísticas:',
+        'Los patinetes compartidos, los que coges en la calle y pagas por minutos con una app, quedan sobre todo en ciudades medianas y zonas turísticas:',
         {
           list: [
             '**Hoppy:** el sur de Tenerife, de Los Cristianos a Costa Adeje; Fuerteventura (Caleta de Fuste y Corralejo); Lanzarote (Puerto del Carmen); y, en la Costa Blanca, Torrevieja y la Marina Baixa (Altea, L’Albir, L’Alfàs del Pi y La Nucía).',
             '**Bird:** [Gijón](map:es:Gijón), [Oviedo](map:es:Oviedo), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
             '**Hopp:** [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada, en la Costa Blanca; Jávea (y Dénia, según su web), en la Marina Alta; y el sur de Tenerife, en [Playa de las Américas](map:es:Playa de las Américas) y Golf del Sur.',
             '**Dott:** el sur de Tenerife, Santa Cruz de Tenerife (desde 2024, según el Ayuntamiento) y [Estepona](map:es:Estepona), en la Costa del Sol. Tiene condiciones y seguro para España y Canarias.',
+            '**Vamoz:** Orihuela Costa, en la Costa Blanca, donde el Ayuntamiento de Orihuela adjudicó en 2026 a la empresa de la app un contrato de cuatro años con 190 puntos de aparcamiento (The Leader, 11 de octubre de 2026).',
           ],
         },
-        'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos; nuestro mapa los muestra desde el 4 de noviembre de 2026.',
+        'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',
         'Dónde hay uno libre ahora, lo ves en [el mapa](/map).',
       ],
     },
@@ -72,7 +73,7 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta alquilar un patinete eléctrico?',
       blocks: [
-        'Pagas un desbloqueo y cada minuto que tienes el patinete desbloqueado, en marcha o parado. Hoppy y Hopp publican sus tarifas; las de Bird y Dott te las muestra la app antes de desbloquear. En Hoppy, el minuto cuesta más o menos según el patinete.',
+        'Pagas un desbloqueo y cada minuto que tienes el patinete desbloqueado, en marcha o parado. Hoppy y Hopp publican sus tarifas, que ves en la tabla. En Hoppy, el minuto cuesta más o menos según el patinete.',
         {
           table: {
             caption: 'Tarifas de Hoppy y Hopp en noviembre de 2026 y lo que cuesta un trayecto',
@@ -88,6 +89,7 @@ const guide: Guide = {
             ],
           },
         },
+        '**¿Cuál sale más barato?** En el sur de Tenerife, Hopp: 3,45 € por diez minutos y 5,95 € por veinte, frente a 4,50-4,70 € y 8-8,40 € con Hoppy. En Torrevieja depende del patinete: un Hoppy de 0,28 a 0,32 € el minuto sale más barato que Hopp, y uno de 0,33 o 0,35 €, algo más caro (noviembre de 2026).',
         '**Un ejemplo.** Vas 12 minutos en un Hopp por Torrevieja: 0,99 € + 12 × 0,33 € = 4,95 €. Si al llegar das vueltas cinco minutos más buscando dónde dejarlo, son 17 minutos: 6,60 €. El precio final te lo da la app.',
         '**Pases.** Con un pase de Hopp no pagas el desbloqueo. Dott también los vende en algunas ciudades. En los dos, la app te dice dónde vale cada pase antes de comprarlo.',
       ],
@@ -183,7 +185,7 @@ const guide: Guide = {
     },
     {
       question: '¿Cómo se llama la app para alquilar patinetes eléctricos?',
-      answer: 'No hay una sola: cada operador tiene la suya, y en España son sobre todo Hoppy, Bird, Hopp y Dott. La de Hoppy se llama «Hoppy Mobility» en las tiendas de apps. Dónde hay uno libre lo ves en [el mapa](/map); desbloqueas y pagas en la app del operador.',
+      answer: 'No hay una sola: cada operador tiene la suya, y en España son sobre todo Hoppy, Bird, Hopp y Dott, y Vamoz en Orihuela Costa. La de Hoppy se llama «Hoppy Mobility» en las tiendas de apps. Dónde hay uno libre lo ves en [el mapa](/map); desbloqueas y pagas en la app del operador.',
     },
   ],
   sources: [
@@ -210,6 +212,7 @@ const guide: Guide = {
     { title: 'Dott: términos y condiciones para España', url: 'https://ridedott.com/es/terminos-condiciones/espana/' },
     { title: 'Dott: seguro en España y Canarias', url: 'https://ridedott.com/es/seguro/espana/' },
     { title: 'Dott Ayuda: importe bloqueado en tu cuenta bancaria', url: 'https://help.ridedott.com/es/articles/197' },
+    { title: 'The Leader: el contrato de Orihuela con la empresa de Vamoz (11 de octubre de 2026, en inglés)', url: 'https://theleader.info/2026/10/11/e-scooter-hire-companies-put-profit-ahead-of-helmet-safety/' },
   ],
 };
 

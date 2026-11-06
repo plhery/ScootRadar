@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-tuebingen',
   topic: 'tubingen',
   name: 'E-Scooter Tübingen: Anbieter, Preise, Parken',
-  title: 'E-Scooter Tübingen 2026: Anbieter, Preise, Verbotszonen',
+  title: 'E-Scooter Tübingen 2026: Voi, Bolt, Dott, Preise, Zonen',
   description: 'E-Scooter Tübingen: Voi, Bolt und Dott, was zehn Minuten kosten, wo du an Altstadt, Neckar und Uni nicht abstellst und was im TüBus gilt.',
   headline: 'E-Scooter Tübingen: Anbieter, Preise und Verbotszonen von der Altstadt bis auf den Schnarrenberg',
-  lede: 'Einen E-Scooter in Tübingen leihst du ohne Führerschein bei Voi, Bolt oder Dott, bei Bolt und Dott ab 18. Voi und Bolt kosten 0,20 € pro Minute ohne Entsperrgebühr (Stand November 2026). In der Fussgängerzone der Altstadt und in Parks und Grünanlagen fährst du nicht und stellst nicht ab, und an Marktplatz, Holzmarkt, Neckarfront und Platanenallee endet bei Voi und Bolt keine Fahrt. Einen eigenen, zusammengeklappten Scooter unter 15 kg nimmt der TüBus kostenlos mit.',
+  lede: 'Einen E-Scooter in Tübingen leihst du ohne Führerschein in der App von Voi, Bolt oder Dott und entsperrst ihn per QR-Code; Bolt und Dott vermieten ab 18. Voi und Bolt kosten gleich viel, 0,20 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2 € (Stand November 2026); Dotts Preis zeigt die App. In der Fussgängerzone der Altstadt und in Parks und Grünanlagen fährst du nicht und stellst nicht ab, und an Marktplatz, Holzmarkt, Neckarfront und Platanenallee endet bei Voi und Bolt keine Fahrt. Einen eigenen, zusammengeklappten Scooter unter 15 kg nimmt der TüBus kostenlos mit.',
   published: '2026-10-18',
   updated: '2026-10-24',
   city: 'de:Tübingen',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Tübingen?',
       blocks: [
-        'Seit Frühjahr 2022 stehen in Tübingen Leih-Scooter. Die Stadt nennt vier Anbieter: **Voi**, **Bolt**, **Dott**, das früher TIER hiess, und **Zeus** (gelesen im Oktober 2026); **Lime** hat Tübingen laut Stadt Mitte 2023 verlassen. Jeder Anbieter darf laut Stadt höchstens 200 Scooter aufstellen, im Umkreis von 100 Metern höchstens fünf an einem Ort. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Seit Frühjahr 2022 stehen in Tübingen Leih-Scooter. Die Stadt nennt vier Anbieter: **Voi**, **Bolt**, **Dott**, das früher TIER hiess, und **Zeus** (Stand November 2026); **Lime** hat Tübingen laut Stadt Mitte 2023 verlassen. Jeder Anbieter darf laut Stadt höchstens 200 Scooter aufstellen, im Umkreis von 100 Metern höchstens fünf an einem Ort. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am 17. Oktober 2026 um 19:25 Uhr zeigte die [Karte von Tübingen](map:de:Tübingen) rund 200 Voi- und rund 180 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, am Samstag, 24. Oktober, um 13:26 Uhr rund 130 von Dott. Voi ist seit 20. März 2025 in der Stadt und startete mit 200 Scootern.',
         '**Zeus**, den die Stadt als vierten Anbieter nennt, vermietet in Tübingen derzeit keine Scooter.',
       ],
@@ -31,11 +31,10 @@ const guide: Guide = {
             rows: [
               ['Voi', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
               ['Bolt', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
-              ['Dott', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute», der Tarif variiert aber je nach Standort; in Tübingen und Reutlingen sind es 0,20 €. Vielfahrer sparen bei Bolt mit Wochen- und Monatspässen. Voi startete im März 2025 mit 17 Cent pro Minute und Pässen ab 4,99 €.',
+        'Voi und Bolt kosten also bei jeder Fahrtlänge gleich viel. Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute», der Tarif variiert aber je nach Standort; in Tübingen und Reutlingen sind es 0,20 €. Vielfahrer sparen bei Bolt mit Wochen- und Monatspässen.',
       ],
     },
     {
@@ -87,7 +86,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt; länger als 1 Sekunde rot: 100 €, 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Falsch abgestellt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'Unzulässig auf Geh- oder Radweg 55 €, mit Behinderung 70 €'],
             ],
@@ -117,7 +116,7 @@ const guide: Guide = {
       heading: 'Wie Tübingen E-Scooter regelt: Kooperationsvertrag statt Sondernutzung',
       blocks: [
         'Tübingen vergibt für Leih-Scooter keine Sondernutzungserlaubnis, wie sie die Sondernutzungsrichtlinien der Stadt (Fassung vom 24. März 2026) etwa für Plakate, Aussengastronomie und Carsharing-Stellplätze vorsehen. 2022 unterschrieben alle damaligen Anbieter einen freiwilligen Kooperationsvertrag über Flottengrösse, Verteilung, Abstellen und Ansprechpartner; im April 2024 bestätigte die Verwaltung diese Vereinbarung. Laut einem Antrag aus dem Gemeinderat nutzten die Anbieter den öffentlichen Raum 2022 kostenfrei.',
-        'Im April 2024 zog die Verwaltung Bilanz: Die Lage habe sich «ganz deutlich verbessert», es gebe weniger als 15 Beschwerden im Jahr. Die Verbotszonen legen die Anbieter auf Anweisung der Stadt fest. Einen eigenen Plan mit Sperrzonen und markierten Abstellflächen kündigte die Stadt im November 2022 an. Im April 2024 war er für empfindliche Stellen wie ZOB, Neckarbrücke und Mühlstrasse «in Arbeit», und im Oktober 2026 schreibt die Stadt, sie erarbeite ihn derzeit.',
+        'Im April 2024 zog die Verwaltung Bilanz: Die Lage habe sich «ganz deutlich verbessert», es gebe weniger als 15 Beschwerden im Jahr. Die Verbotszonen legen die Anbieter auf Anweisung der Stadt fest. Einen eigenen Plan mit Sperrzonen und markierten Abstellflächen kündigte die Stadt im November 2022 an. Im April 2024 war er für empfindliche Stellen wie ZOB, Neckarbrücke und Mühlstrasse «in Arbeit», und laut Stadt erarbeitet sie ihn derzeit noch (Stand November 2026).',
       ],
     },
     {
@@ -139,7 +138,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Tübingen?',
-      answer: 'Bei Voi und Bolt 0,20 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2 € (Stand November 2026). Dott zeigt seinen Preis in der App.',
+      answer: 'Bei Voi und Bolt gleich viel: 0,20 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2 €, zwanzig Minuten 4 € (Stand November 2026).',
     },
     {
       question: 'Wie viele Leih-Scooter darf es in Tübingen geben?',

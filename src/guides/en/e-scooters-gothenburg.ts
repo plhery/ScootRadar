@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-gothenburg',
   topic: 'gothenburg',
   name: 'E-scooters in Gothenburg, Sweden',
-  title: 'E-scooters Gothenburg 2026: Voi, Lime, Ryde and rules',
-  description: 'E-scooters in Gothenburg: Voi, Lime and Ryde, the City’s permits, where to ride, where to park in the centre, trams and ferries, and Sweden’s fines.',
+  title: 'E-scooters Gothenburg 2026: Voi, Lime, Ryde, prices, rules',
+  description: 'E-scooters in Gothenburg: Voi at SEK 3 a minute with no unlock fee (November 2026), Lime and Ryde, where to ride and park, Sweden’s fines, the 2028 review.',
   headline: 'E-scooters in Gothenburg: Voi, Lime and Ryde, and where to ride and park',
-  lede: 'E-scooters in Gothenburg need a City permit; in April 2025 Voi, Ryde and TierDott got one, and the City now lists Voi, Ryde and Lime. Each app shows its price before you unlock. Ride on cycle lanes or the road, never on the pavement. Park in a stand or cycle rack, never on a cycle lane, nor on the pavement inside the old moat or on Drottningtorget.',
+  lede: 'E-scooters in Gothenburg are rented from Voi, Lime and Ryde, the three companies on the City’s list in November 2026; each needs a City permit. As of November 2026 Voi charges no unlock fee and SEK 3 a minute, so 10 minutes cost SEK 30; Lime’s and Ryde’s apps show their prices before you unlock. You rent and end the ride in the company’s app, which also shows the City’s parking and riding zones. Ride on cycle lanes or the road, never on the pavement; under-15s must wear a helmet. Park in a stand or cycle rack, never on a cycle lane, nor on the pavement inside the old moat or on Drottningtorget. The City’s new governing coalition wants stricter rules for the companies from 2027 and may bar them from public land if problems remain at a review by 2028.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Göteborg',
@@ -16,10 +16,10 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Gothenburg: Voi, Lime and Ryde',
       blocks: [
-        'Electric scooter rental in Gothenburg (Göteborg in Swedish) needs a permit, the City of Gothenburg says, and the permit decides where the companies may place their scooters, how fast they may go and where they may be parked. The companies pay the City a fee for each vehicle. The City’s page on shared e-scooters lists three companies (October 2026):',
+        'Electric scooter rental in Gothenburg (Göteborg in Swedish) needs a permit, the City of Gothenburg says, and the permit decides where the companies may place their scooters, how fast they may go and where they may be parked. The companies pay the City a fee for each vehicle. The City’s page on shared e-scooters lists three companies (November 2026):',
         {
           table: {
-            caption: 'E-scooter companies in Gothenburg and their permits, October 2026',
+            caption: 'E-scooter companies on the City’s list (November 2026) and their 2025–26 permits',
             head: ['Company', 'On the City’s list', 'Permit, 1 April 2025 to 31 March 2026'],
             rows: [
               ['Voi', 'Yes', 'E-scooters and e-bikes'],
@@ -31,12 +31,13 @@ const guide: Guide = {
         },
         'For 1 April 2025 to 31 March 2026 the City capped the fleets at **4,000 e-scooters and 1,000 e-bikes in the centre zone**, 2,500 e-scooters in the outer zone and 500 in a north-east zone of Angered, Bergsjön and Kortedala, which TierDott served. The City’s report for January to March 2026 says one of the three companies stopped early, in January, and that from 1 April the scooters reach further beyond the centre.',
         'At 23:50 on Wednesday 28 October 2026 the [map of Gothenburg](map:se:Göteborg) showed about 2,530 Voi scooters as they stood at that moment and about 2,290 Lime scooters as last counted: a snapshot, not the fleet size. Look for Ryde’s scooters in the Ryde app.',
+        'The companies may not stay for good. On 3 November 2026 the City’s new governing coalition of the Social Democrats, the Left Party and the Greens said in its budget that the urban environment committee will set stricter requirements on the companies next year, and that if serious problems remain when the situation is evaluated, by 2028 at the latest, the companies will lose their permission to use public land, SVT reported. If that happens, the City could expand its own Styr & Ställ bike-share, SVT added.',
       ],
     },
     {
       heading: 'How much does a Voi or Lime scooter cost in Gothenburg?',
       blocks: [
-        '**The app shows the price** before you unlock. Check each app for its own age limit and fees.',
+        'As of November 2026 **Voi charges no unlock fee and SEK 3 a minute** in Gothenburg, its open data says, so 10 minutes cost SEK 30 and 20 minutes SEK 60. Lime’s and Ryde’s apps show their prices before you unlock. Check each app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -130,7 +131,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Gothenburg?',
-      answer: 'The City lists Voi, Ryde and Lime (October 2026). Find Voi’s and Lime’s on the [Gothenburg map](map:se:Göteborg) and Ryde’s in the Ryde app. TierDott’s permit ran to 31 March 2026.',
+      answer: 'The City lists Voi, Ryde and Lime (November 2026). Find Voi’s and Lime’s on the [Gothenburg map](map:se:Göteborg) and Ryde’s in the Ryde app. TierDott’s permit ran to 31 March 2026.',
+    },
+    {
+      question: 'Will e-scooters be banned in Gothenburg?',
+      answer: 'Not now. The City’s new governing coalition said on 3 November 2026 that the companies will face stricter requirements from next year, and that if serious problems remain at an evaluation by 2028 at the latest, they will lose their permission to use public land, SVT reported.',
     },
     {
       question: 'Can I park an e-scooter on the pavement in Gothenburg?',
@@ -169,6 +174,8 @@ const guide: Guide = {
     { title: 'Akademiska Hus: Chalmers, campus Johanneberg', url: 'https://www.akademiskahus.se/campus--fastigheter/goteborg/chalmers---campus-johanneberg/' },
     { title: 'Swedavia: Göteborg Landvetter Airport, motorcycle and bicycle parking', url: 'https://www.swedavia.com/landvetter/parking/motorcycle-parking/' },
     { title: 'Ryde: Locations', url: 'https://www.ryde-technology.com/Locations' },
+    { title: 'Voi: Open data for Gothenburg, zone 5 (NeTEx, published 6 November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/5/netex.xml' },
+    { title: 'SVT Nyheter: Då kan elsparkcyklar i Göteborg förbjudas (3 November 2026)', url: 'https://www.svt.se/nyheter/lokalt/vast/da-kan-elsparkcyklar-i-goteborg-forbjudas' },
   ],
 };
 

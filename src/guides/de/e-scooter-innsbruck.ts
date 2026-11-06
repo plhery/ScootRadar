@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-innsbruck',
   topic: 'innsbruck',
   name: 'E-Scooter Innsbruck: Anbieter, Abstellen, Regeln',
-  title: 'E-Scooter Innsbruck 2026: Anbieter, Abstellen, Regeln',
+  title: 'E-Scooter Innsbruck 2026: Anbieter, Preise, Parken, Regeln',
   description: 'E-Scooter Innsbruck: Bird, Dott, Lime und Voi, was eine Fahrt kostet, die 34 Abstellflächen in der Sperrzone und was im Hofgarten, in Tram und Bus gilt.',
   headline: 'E-Scooter Innsbruck: Bird, Dott, Lime und Voi, Preise, die Sperrzone mit 34 Abstellflächen und die Regeln seit Mai 2026',
-  lede: 'Einen E-Scooter in Innsbruck leihst du im November 2026 bei Bird, Dott, Lime oder Voi. Voi verlangt 0,25 € pro Minute und nichts fürs Entsperren (Stand November 2026). In der Innenstadt und in Teilen von Wilten und Pradl beendest du die Fahrt seit September 2024 nur an einer gekennzeichneten Abstellfläche; im Juli 2024 nannte die Stadt 34. Gefahren wird wie mit dem Rad, nie auf dem Gehsteig, und laut Vereinbarung mit der Stadt fahren Leih-Scooter höchstens 20 km/h, in Fussgängerzonen, die für Räder offen sind, 8 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
+  lede: 'Einen E-Scooter in Innsbruck leihst du im November 2026 bei Bird, Dott, Lime oder Voi: App des Anbieters laden, Zahlungsmittel hinterlegen, Scooter per QR-Code entsperren. Voi verlangt 0,25 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 2,50 € (Stand November 2026). In der Innenstadt und in Teilen von Wilten und Pradl beendest du die Fahrt seit September 2024 nur an einer gekennzeichneten Abstellfläche; im Juli 2024 nannte die Stadt 34. Gefahren wird wie mit dem Rad, nie auf dem Gehsteig, und laut Vereinbarung mit der Stadt fahren Leih-Scooter höchstens 20 km/h, in Fussgängerzonen, die für Räder offen sind, 8 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-10-28',
   updated: '2026-11-05',
   city: 'at:Innsbruck',
@@ -61,7 +61,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Erweitern will die Stadt die Sperrzone laut MeinBezirk (19. Oktober 2026) unter anderem um die Haymongasse in Wilten. Beschlossen ist das nicht: Die Vorlage soll noch heuer in den Gemeinderat; stimmt er zu, ist die Umsetzung bis Ende 2026 geplant.',
+        'Erweitern will die Stadt die Sperrzone laut MeinBezirk (19. Oktober 2026) unter anderem um die Haymongasse in Wilten. Beschlossen war das im Oktober noch nicht: Die Vorlage sollte noch heuer in den Gemeinderat, die Umsetzung war bis Ende 2026 geplant.',
         { note: 'Abseits einer Abstellfläche lässt dich die App die Fahrt in der Sperrzone nicht beenden. Plane den Halt darum vorher und schau in der App, wo die nächste Fläche liegt.' },
         'Steht ein Leih-Scooter im Weg, empfiehlt die Stadt laut MeinBezirk (Oktober 2026) ihre Plattform [Buergermeldungen.com](https://www.buergermeldungen.com/innsbruck/), die die Meldung automatisch per E-Mail an den Betreiber weiterleitet. Dass der Roller damit schon weg ist, heisst das laut Stadt nicht; laut Vereinbarung muss der Betreiber Behinderungen binnen höchstens vier Stunden beseitigen, sagte Stadträtin Janine Bex im August 2024 zu ORF Tirol. Für falsches Abstellen nannten die Betreiber MeinBezirk Verwarnungen, Gebühren oder Kontosperren; Lime und Voi prüfen auch das Foto am Ende der Fahrt.',
         'Die Abstellflächen darf laut Bex jeder nutzen, auch mit dem eigenen Scooter. Sonst stellst du ihn wie ein Fahrrad ab: auf dem Gehsteig nur, wenn er breiter als 2,5 Meter ist, und an Haltestellen nur in Fahrradständern (§ 68 Abs. 4 StVO).',
@@ -70,8 +70,8 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Parks, im Hofgarten und am Campus',
       blocks: [
-        '**Parks der Stadt:** Die Parkordnung des Gemeinderats (zuletzt geändert 2023) lässt in Parks nur Fussgänger zu, auf gekennzeichneten Radwegen auch Fahrräder, Inlineskates und «Sportgeräte mit Rollen»; andere Fahrzeuge brauchen eine Genehmigung des Magistrats. Mit dem E-Scooter fährst du dort nach unserer Lesart höchstens auf gekennzeichneten Radwegen. Strafe: bis 2000 €. Am DDr.-Alois-Lugger-Platz im O-Dorf sind «Rad- und Scooterfahrten» laut Stadt (Oktober 2025) «generell untersagt».',
-        '**Hofgarten und Schlosspark Ambras:** Hier gilt die Parkordnung der Bundesgärten und der Burghauptmannschaft (April 2014): «Das Radfahren, Rodeln, Schifahren und die Benützung von Sportgeräten mit Rollen (z. B. Segways, Rollbretter, Langlaufschier auf Rollen und dergleichen) sowie deren Mitnahme sind in öffentlich zugänglichen Parkanlagen verboten.» Nach unserer Lesart fällt der E-Scooter darunter: Lass ihn draussen, auch geschoben.',
+        '**Parks der Stadt:** Die Parkordnung des Gemeinderats (zuletzt geändert 2023) lässt in Parks nur Fussgänger zu, auf gekennzeichneten Radwegen auch Fahrräder, Inlineskates und «Sportgeräte mit Rollen»; andere Fahrzeuge brauchen eine Genehmigung des Magistrats. Mit dem E-Scooter fährst du dort also höchstens auf gekennzeichneten Radwegen. Strafe: bis 2000 €. Am DDr.-Alois-Lugger-Platz im O-Dorf sind «Rad- und Scooterfahrten» laut Stadt (Oktober 2025) «generell untersagt».',
+        '**Hofgarten und Schlosspark Ambras:** Hier gilt die Parkordnung der Bundesgärten und der Burghauptmannschaft (April 2014): «Das Radfahren, Rodeln, Schifahren und die Benützung von Sportgeräten mit Rollen (z. B. Segways, Rollbretter, Langlaufschier auf Rollen und dergleichen) sowie deren Mitnahme sind in öffentlich zugänglichen Parkanlagen verboten.» Lass den E-Scooter also draussen, auch geschoben.',
         '**Universität:** Die Parkordnung der Universität Innsbruck (2009) regelt nur das Abstellen mehrspuriger Kraftfahrzeuge auf ihren Parkflächen, für deinen Scooter gilt sie also nicht.',
       ],
     },
@@ -100,7 +100,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Tram, Bus und Zug',
       blocks: [
-        '**IVB und VVT:** In Tram, Stadtbus, Stubaitalbahn und den Regionalbussen des VVT gelten die Beförderungsbedingungen von VVT und IVB (Fassung 2026): «In den Stadtlinien der Kernzone Innsbruck ist die Mitnahme von nicht faltbaren E-Scootern nicht erlaubt.» Leih-Scooter lassen sich nicht falten. Zusammengeklappt zählt dein eigener Scooter nach unserer Lesart als Handgepäck: Er darf mit, wenn er anderen nicht erheblich Platz nimmt, niemanden gefährdet und als Gerät mit Akku eine CE-Kennzeichnung trägt; im Zweifel entscheidet das Personal.',
+        '**IVB und VVT:** In Tram, Stadtbus, Stubaitalbahn und den Regionalbussen des VVT gelten die Beförderungsbedingungen von VVT und IVB (Fassung 2026): «In den Stadtlinien der Kernzone Innsbruck ist die Mitnahme von nicht faltbaren E-Scootern nicht erlaubt.» Leih-Scooter lassen sich nicht falten. Zusammengeklappt gelten für deinen eigenen Scooter die Regeln für Handgepäck: Er darf mit, wenn er anderen nicht erheblich Platz nimmt, niemanden gefährdet und als Gerät mit Akku eine CE-Kennzeichnung trägt; im Zweifel entscheidet das Personal.',
         '**ÖBB ab Innsbruck Hauptbahnhof:** Zusammengeklappt fährt dein eigener Scooter laut ÖBB-Handbuch (gültig ab 15. Oktober 2026) in allen ÖBB-Zügen kostenlos mit, wenn er höchstens 90 × 60 × 40 cm misst; bis 110 × 80 × 40 cm darf er ins Mehrzweckabteil der Nahverkehrszüge und in die gekennzeichneten Gepäckregale von Railjet und Railjet Express. Grössere gelten als Fahrrad. Klapp ihn schon vor dem Einsteigen zusammen; der Akku muss fest montiert sein und darf im Zug nicht laden.',
         '**Stadtrad:** Das IVB-Stadtrad, das Leihradsystem der Stadt, hat laut seiner Seite über 600 Räder an rund 50 Stationen. Du leihst sie ab 16 mit der App von nextbike; im Basistarif kosten die ersten 30 Minuten 1,30 € (Stand November 2026).',
       ],
@@ -121,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in Tram oder Bus mitnehmen?',
-      answer: 'Nicht aufgeklappt: In den Stadtlinien der IVB sind nicht faltbare E-Scooter verboten, Leih-Scooter also auch. Zusammengeklappt darf dein eigener Scooter nach unserer Lesart als Handgepäck mit. In ÖBB-Zügen fährt er zusammengeklappt kostenlos mit, bis 90 × 60 × 40 cm in jedem Zug.',
+      answer: 'Nicht aufgeklappt: In den Stadtlinien der IVB sind nicht faltbare E-Scooter verboten, Leih-Scooter also auch. Zusammengeklappt darf dein eigener Scooter als Handgepäck mit. In ÖBB-Zügen fährt er zusammengeklappt kostenlos mit, bis 90 × 60 × 40 cm in jedem Zug.',
     },
     {
       question: 'Gilt in Innsbruck eine Helmpflicht auf dem E-Scooter?',

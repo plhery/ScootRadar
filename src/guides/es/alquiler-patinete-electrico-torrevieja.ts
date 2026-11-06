@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Alquiler patinete eléctrico Torrevieja: Hoppy, Hopp y casco',
   description: 'Alquiler de patinete eléctrico en Torrevieja con Hoppy y Hopp: precios, casco obligatorio, paseos prohibidos, dónde aparcar y qué pasa en Orihuela Costa.',
   headline: 'Alquiler de patinete eléctrico en Torrevieja: Hoppy y Hopp, precios, casco y dónde no circular',
-  lede: 'Para el alquiler de patinete eléctrico en Torrevieja tienes Hoppy y Hopp, del centro a La Mata; en la costa de Pilar de la Horadada, Hopp, y en Orihuela Costa, Vamoz. En noviembre de 2026, diez minutos cuestan 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco: los operadores no lo prestan. Y no vayas por los paseos ni por las calles peatonales: la multa es de 80 €.',
+  lede: 'Para el alquiler de patinete eléctrico en Torrevieja tienes Hoppy y Hopp, del centro a La Mata; en la costa de Pilar de la Horadada, Hopp, y en Orihuela Costa, Vamoz. Se alquilan con la app de cada operador. En noviembre de 2026, diez minutos cuestan de 3,80 a 4,50 € con Hoppy, según el patinete, y 4,29 € con Hopp. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco: los operadores no lo prestan. Y no vayas por los paseos ni por las calles peatonales: la multa es de 80 €.',
   published: '2026-10-14',
   updated: '2026-10-16',
   city: 'es:Torrevieja',
@@ -42,7 +42,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Hopp vende además pases: minutos prepagados más baratos y sin desbloqueo. Sus precios te los da la app.',
+        'Un Hoppy de 0,28 a 0,32 € el minuto sale más barato que Hopp; uno de 0,33 o 0,35 €, algo más caro. Hopp vende además pases: minutos prepagados más baratos y sin desbloqueo. Sus precios te los da la app.',
       ],
     },
     {
@@ -142,7 +142,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete Hoppy en Torrevieja?',
-      answer: 'En noviembre de 2026, Hoppy cobra 1 € por desbloquear y de 0,28 a 0,35 € por minuto, según el patinete (diez minutos, de 3,80 a 4,50 €); Hopp, 0,99 € y 0,33 € por minuto (4,29 € los diez minutos). El precio final te lo da la app.',
+      answer: 'En noviembre de 2026, Hoppy cobra 1 € por desbloquear y de 0,28 a 0,35 € por minuto, según el patinete (diez minutos, de 3,80 a 4,50 €); Hopp, 0,99 € y 0,33 € por minuto (4,29 € los diez minutos). Un Hoppy de hasta 0,32 € el minuto sale más barato que Hopp.',
     },
     {
       question: '¿Qué app necesito para los patinetes de Torrevieja?',

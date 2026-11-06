@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'lyon',
   name: 'Louer une trottinette électrique à Lyon',
   title: 'Trottinette électrique à Lyon en 2026 : casque, Dott, prix',
-  description: 'Trottinette électrique à Lyon : casque et gilet obligatoires dans le Rhône, prix de Dott, où se garer, zones lentes, Villeurbanne et Vélo’v.',
+  description: 'Trottinette électrique à Lyon : louer une Dott, seul opérateur, son prix, casque et gilet obligatoires dans le Rhône, où se garer, Villeurbanne, Vélo’v.',
   headline: 'Trottinette électrique à Lyon : casque obligatoire, Dott, prix et stationnement en 2026',
-  lede: 'Pour louer une trottinette électrique à Lyon, il n’y a plus qu’un opérateur autorisé, Dott : 18 ans minimum, 1 € pour déverrouiller puis 0,29 € la minute, soit 3,90 € les 10 minutes (tarif publié le 12 octobre 2026). Depuis le 28 septembre 2026, le casque et un gilet haute visibilité sont obligatoires dans tout le Rhône, de jour comme de nuit : 135 € d’amende sans casque, 35 € sans gilet. La location se termine uniquement sur un emplacement indiqué dans l’app, et Villeurbanne n’a pas de trottinettes en libre-service.',
+  lede: 'Pour louer une trottinette électrique à Lyon, il n’y a plus qu’un opérateur autorisé, Dott : téléchargez son app, qui vérifie que vous avez 18 ans, déverrouillez une trottinette, puis terminez la location uniquement sur un emplacement signalé par un P dans l’app. À novembre 2026, Dott facture 1 € le déverrouillage puis 0,29 € la minute, soit 3,90 € les 10 minutes et 6,80 € les 20 minutes. Depuis le 28 septembre 2026, le casque et un gilet haute visibilité sont obligatoires dans tout le Rhône, de jour comme de nuit : 135 € d’amende sans casque, 35 € sans gilet. Le trottoir est interdit (135 €) : prenez la piste cyclable, sinon une rue limitée à 50 km/h au plus. Villeurbanne n’a pas de trottinettes en libre-service, et la Ville a lancé en août 2026 un appel à projets pour choisir l’opérateur unique du contrat qui doit commencer en février 2027.',
   published: '2026-10-12',
   updated: '2026-10-13',
   city: 'fr:Lyon',
@@ -25,7 +25,7 @@ const guide: Guide = {
             '**Combien** : **135 €** sans casque, **35 €** sans gilet.',
           ],
         },
-        'La préfecture a annoncé une période de pédagogie avant des contrôles stricts, sans en donner la fin. L’arrêté cite un chiffre qui parle : dans le Rhône, la nuit concentre 38 % des accidents de trottinettes et d’engins semblables, mais 64 % des morts.',
+        'La préfecture a annoncé une période de pédagogie avant des contrôles stricts. L’arrêté cite un chiffre qui parle : dans le Rhône, la nuit concentre 38 % des accidents de trottinettes et d’engins semblables, mais 64 % des morts.',
       ],
     },
     {
@@ -34,8 +34,8 @@ const guide: Guide = {
         'La Ville avait retenu Dott et Tier en 2020. Les deux ont fusionné, et depuis le **1er janvier 2025**, seul **Dott** est autorisé, avec environ 3 500 trottinettes. Ses conditions : **18 ans minimum**, âge vérifié dans l’app, vitesse bridée à **20 km/h**, trottinettes immatriculées et usagers assurés par l’opérateur.',
         {
           table: {
-            caption: 'Trottinette Dott à Lyon : tarif publié par Dott le 12 octobre 2026 et conditions',
-            head: ['Dott à Lyon', 'Au 12 octobre 2026'],
+            caption: 'Trottinette Dott à Lyon : tarif et conditions à novembre 2026',
+            head: ['Dott à Lyon', 'À novembre 2026'],
             rows: [
               ['Déverrouillage', '1 €'],
               ['Prix à la minute', '0,29 €'],
@@ -47,9 +47,9 @@ const guide: Guide = {
             ],
           },
         },
-        'Ce tarif vient du flux de données public de Dott, hors pass et promotions ; l’app affiche le prix final. Pour la marche à suivre, lisez notre guide [louer une trottinette électrique](guide:how-to-rent).',
-        'Le 12 octobre 2026, ScootRadar affichait environ 3 500 trottinettes Dott sur la [carte autour de Lyon](map:fr:Lyon) ; un bouton ouvre l’app Dott, où vous déverrouillez et payez.',
-        '**Et après février 2027 ?** En juillet 2026, Laurent Bosetti, adjoint au maire chargé des mobilités, a annoncé que la Ville relançait son appel à manifestation d’intérêt, pour un nouveau contrat dès février 2027 et un cahier des charges renforcé sur la sécurité routière et le stationnement. L’opérateur peut donc changer en 2027.',
+        'Ce tarif s’entend hors pass et promotions ; l’app affiche le prix final. Pour la marche à suivre, lisez notre guide [louer une trottinette électrique](guide:how-to-rent).',
+        'Le 12 octobre 2026, ScootRadar affichait environ 3 500 trottinettes Dott sur la [carte autour de Lyon](map:fr:Lyon). Vous déverrouillez et payez dans l’app Dott.',
+        '**Et après février 2027 ?** En juillet 2026, Laurent Bosetti, adjoint au maire chargé des mobilités, a annoncé un nouveau contrat dès février 2027, avec un cahier des charges renforcé sur la sécurité routière et le stationnement. L’autorisation de Dott court jusqu’au 28 février 2027, et en août 2026 la Ville a lancé un appel à projets pour choisir **un seul opérateur** de trottinettes en libre-service à Lyon, avec jusqu’à 3 500 trottinettes ; les candidats avaient jusqu’au 2 octobre 2026 pour se faire connaître. L’opérateur peut donc changer en 2027.',
       ],
     },
     {
@@ -119,16 +119,16 @@ const guide: Guide = {
     {
       heading: 'Vélo’v ou trottinette : l’alternative à Lyon',
       blocks: [
-        'Là où la trottinette ne va pas, ou sans casque sous la main, prenez un **Vélo’v**, le vélo en libre-service de la Métropole : l’arrêté du préfet ne concerne pas les vélos. Tarifs sur le site de Vélo’v au 12 octobre 2026 :',
+        'Là où la trottinette ne va pas, ou sans casque sous la main, prenez un **Vélo’v**, le vélo en libre-service de la Métropole : l’arrêté du préfet ne concerne pas les vélos. Ses formules, dont les tarifs sont sur le site de Vélo’v :',
         {
           list: [
-            '**Ticket occasionnel** : à partir de 1,80 € pour un trajet ou une journée.',
-            '**Vélo’v Classique** : à partir de 15 € par an, les 30 ou 45 premières minutes de chaque trajet gratuites en vélo mécanique.',
-            '**Vélo’v Plus** : à partir de 49,20 € par an, jusqu’à six trajets électriques par jour, les 30 premières minutes gratuites.',
+            '**Ticket occasionnel** : pour un trajet ou une journée.',
+            '**Vélo’v Classique** : un abonnement annuel, avec les 30 ou 45 premières minutes de chaque trajet gratuites en vélo mécanique.',
+            '**Vélo’v Plus** : un abonnement annuel avec jusqu’à six trajets électriques par jour, les 30 premières minutes gratuites.',
             '**Offre Découverte Mobilités** : trois mois gratuits pour les adultes de la Métropole qui n’ont pas été abonnés depuis trois ans.',
           ],
         },
-        'À comparer avec 5,35 € pour 15 minutes en trottinette Dott.',
+        'Pour comparer : 15 minutes en trottinette Dott coûtent 5,35 € à novembre 2026.',
       ],
     },
     {
@@ -166,7 +166,7 @@ const guide: Guide = {
     },
     {
       question: 'Combien coûte une trottinette Dott à Lyon ?',
-      answer: '1 € pour déverrouiller, puis 0,29 € la minute, selon le tarif publié par Dott le 12 octobre 2026 : 3,90 € pour 10 minutes, 6,80 € pour 20 minutes. L’app affiche le prix final.',
+      answer: 'À novembre 2026, 1 € pour déverrouiller, puis 0,29 € la minute : 3,90 € pour 10 minutes, 6,80 € pour 20 minutes, hors pass et promotions.',
     },
     {
       question: 'Lime ou Tier sont-ils encore à Lyon ?',
@@ -178,7 +178,7 @@ const guide: Guide = {
     },
     {
       question: 'Que deviennent les trottinettes à Lyon après février 2027 ?',
-      answer: 'Un nouveau contrat doit commencer dès février 2027 : en juillet 2026, l’adjoint au maire chargé des mobilités a annoncé que la Ville relançait son appel à manifestation d’intérêt. L’opérateur peut donc changer.',
+      answer: 'Un nouveau contrat doit commencer dès février 2027. En août 2026, la Ville a lancé un appel à projets pour choisir un seul opérateur, avec des candidatures à remettre au plus tard le 2 octobre 2026. L’opérateur peut donc changer.',
     },
   ],
   sources: [
@@ -186,7 +186,7 @@ const guide: Guide = {
     { title: 'Ville de Lyon : Plus de sécurité pour les usagers de l’espace public (28 septembre 2026)', url: 'https://www.lyon.fr/actualite/mobilites/plus-de-securite-pour-les-usagers-de-lespace-public' },
     { title: 'Ville de Lyon : Renforcement des contrôles des trottinettes électriques (3 juillet 2026)', url: 'https://www.lyon.fr/node/939328' },
     { title: 'Dott : conditions générales d’utilisation en France (mises à jour le 23 septembre 2025)', url: 'https://ridedott.com/fr/conditions-generales/france/' },
-    { title: 'Dott : flux de données public (GBFS) de Lyon, tarif, emplacements et zones', url: 'https://gbfs.api.ridedott.com/public/v2/lyon/' },
+    { title: 'Dott : flux de données public (GBFS) de Lyon, tarif au 6 novembre 2026, emplacements et zones', url: 'https://gbfs.api.ridedott.com/public/v2/lyon/' },
     { title: 'Vélo’v (Métropole de Lyon) : offres et tarifs', url: 'https://velov.grandlyon.com/fr/offers/groups' },
     { title: 'Visit Lyon : la trottinette Dott, communes desservies et stationnement', url: 'https://www.visiterlyon.com/sejourner/venir-et-se-deplacer-a-lyon/transport-et-transfert/dott' },
     { title: 'Lyon Capitale : « Faire toujours mieux », Dott renforce la sécurité de ses nouvelles trottinettes (4 mai 2026)', url: 'https://www.lyoncapitale.fr/actualite/faire-toujours-mieux-a-lyon-dott-renforce-la-securite-de-ses-nouvelles-trottinettes' },
@@ -194,6 +194,7 @@ const guide: Guide = {
     { title: 'Lyon Capitale : la Ville de Lyon conserve un opérateur unique de trottinettes en libre-service (19 décembre 2024)', url: 'https://www.lyoncapitale.fr/actualite/trottinettes-en-libre-service-la-ville-de-lyon-conserve-un-operateur-unique-sans-nouvel-appel-a-projets' },
     { title: 'LyonMag : Villeurbanne garde son interdiction des trottinettes en libre-service (28 août 2026)', url: 'https://www.lyonmag.com/article/153741/' },
     { title: 'TCL : Règlement du réseau TCL unifié (article 6.1)', url: 'https://www.tcl.fr/a-propos-de-tcl/reglement-du-reseau' },
+    { title: 'Le Progrès : trottinettes en libre-service, la Ville de Lyon lance un appel à projets pour un seul opérateur (27 août 2026)', url: 'https://www.leprogres.fr/environnement/2026/08/27/trottinettes-en-libre-service-dans-les-rues-de-lyon-dott-sera-t-il-encore-present-en-2027' },
   ],
 };
 

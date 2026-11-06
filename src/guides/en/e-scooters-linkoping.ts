@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-linkoping',
   topic: 'linkoping',
   name: 'E-scooters in Linköping, Sweden',
-  title: 'E-scooters Linköping 2026: Voi, Qick, Ryde and rules',
-  description: 'E-scooters in Linköping: Voi, Qick and Ryde, the kommun’s letter of intent, slow streets, where to ride and park, buses and Sweden’s fines.',
+  title: 'E-scooters Linköping 2026: Voi, Qick, Ryde, prices, rules',
+  description: 'E-scooters in Linköping: Voi at SEK 2 a minute with no unlock fee (November 2026), Qick and Ryde, slow streets, where to ride and park, Sweden’s fines.',
   headline: 'E-scooters in Linköping: Voi, Qick and Ryde, and where to ride and park',
-  lede: 'E-scooters in Linköping are rented from Voi, Qick and Ryde, all three linked on the kommun’s (the municipality’s) e-scooter page, which says the companies renting in town have signed its letter of intent. Each app shows the price before you unlock. Ride on cycle lanes or the road, never on the pavement, and expect hire scooters to slow to 6 km/h on named streets and squares in the centre. End your ride in a cycle rack or a marked bay, never on a footway or cycle lane.',
+  lede: 'E-scooters in Linköping are rented from Voi, Qick and Ryde, all three linked on the kommun’s (the municipality’s) e-scooter page, which says the companies renting in town have signed its letter of intent. As of November 2026 Voi charges no unlock fee and SEK 2 a minute, so 10 minutes cost SEK 20; Qick’s and Ryde’s apps show their prices before you unlock. To rent, find a scooter on the company’s app map, scan its QR code, and end the ride in a parking zone the app marks. Qick rents only to riders aged 18 or over. Ride on cycle lanes or the road, never on the pavement, and expect hire scooters to slow to 6 km/h on named streets and squares in the centre. End your ride in a cycle rack or a marked bay, never on a footway or cycle lane.',
   published: '2026-10-29',
   updated: '2026-11-03',
   city: 'se:Linköping',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Electric scooter rental in Linköping works through a letter of intent (avsiktsförklaring), a form of agreement that Linköpings kommun drew up and that the companies renting scooters in town have signed, the kommun says. It sets where scooters may not be left and where they must go slower. The kommun’s page links three companies for reports of badly parked scooters (17 June 2026):',
         {
           table: {
-            caption: 'E-scooter companies in Linköping, October 2026',
+            caption: 'E-scooter companies in Linköping, as of November 2026',
             head: ['Company', 'Linked on the kommun’s page'],
             rows: [
               ['Voi', 'Yes'],
@@ -34,8 +34,8 @@ const guide: Guide = {
     {
       heading: 'How much does a Voi or Qick scooter cost in Linköping?',
       blocks: [
-        '**The app shows the price** before you unlock.',
-        'Qick rents only to riders aged 18 or over, its website and terms say (October 2026). Check each app for its own age limit and fees.',
+        'As of November 2026 **Voi charges no unlock fee and SEK 2 a minute** in Linköping, its open data says, so 10 minutes cost SEK 20 and 20 minutes SEK 40. Qick’s and Ryde’s apps show their prices before you unlock.',
+        'Qick rents only to riders aged 18 or over, its website and terms say (November 2026). Check each app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -82,7 +82,7 @@ const guide: Guide = {
       blocks: [
         'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Gothenburg still lets scooters stand on the pavement outside its old centre where they block no one (see our [Gothenburg guide](guide:gothenburg)). Linköping kommun says e-scooters **must be parked in a cycle rack or other parking place**, and never on a footway or cycle lane, in people’s way or where they put others in danger.',
         'In the city centre there are marked parking bays for e-scooters on **Apotekaregatan by Domkyrkoparken**, on **Ågatan opposite Pusslunden** and at **Sankt Larsparken**, and there are e-scooter stands at **Resecentrum**, the Travel Centre at the station (17 June 2026). Domkyrkoparken and S:t Larsparken are on the no-parking list too, so stop exactly where the app allows it.',
-        'The companies must move scooters left in the way or dangerously, and encourage riders to use racks and bays. If you park a Qick scooter wrongly and the kommun removes it, Qick’s terms (October 2026) let it charge you up to SEK 1,500; to avoid that, the photo the app asks for at the end of a ride must show the scooter in a cycle rack or other cycle parking.',
+        'The companies must move scooters left in the way or dangerously, and encourage riders to use racks and bays. If you park a Qick scooter wrongly and the kommun removes it, Qick’s terms (November 2026) let it charge you up to SEK 1,500; to avoid that, the photo the app asks for at the end of a ride must show the scooter in a cycle rack or other cycle parking.',
         'To report a badly parked scooter, use the kommun’s “Synpunkt, felanmälan eller fråga” form under the category Parkering, with the company’s name or colour and the exact place, or contact the company directly.',
         {
           note: 'In Linköping a hire scooter belongs in a cycle rack, a marked bay or another parking place, never on the pavement or a cycle lane. The app shows where ending a ride is allowed.',
@@ -156,6 +156,7 @@ const guide: Guide = {
     { title: 'Ryde: Locations', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Qick: Elsparkcyklar i din stad', url: 'https://qickscooters.com/sv' },
     { title: 'Qick: Användaravtal (terms of use)', url: 'https://qickscooters.com/sv/terms' },
+    { title: 'Voi: Open data for Linköping, zone 184 (NeTEx, published 6 November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/184/netex.xml' },
     { title: 'Transportstyrelsen: Elsparkcykel (updated 14 August 2026)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordonsregler/regler-for-olika-fordonsslag/elsparkcykel/' },
     { title: 'Transportstyrelsen: Traffic rules for cyclists (updated 22 December 2025)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/trafikregler-och-vagmarken/trafikregler/trafikregler-for-dig-som-cyklar/' },
     { title: 'Riksdagen: Trafikförordningen (1998:1276)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/trafikforordning-19981276_sfs-1998-1276/' },

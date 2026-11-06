@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Florianópolis 2026: Whoosh, JET, prices and rules',
   description: 'E-scooters in Florianópolis: Whoosh and JET, prices and fees, where you may ride and park, and the rules on age, helmets and the pavement.',
   headline: 'E-scooters in Florianópolis: Whoosh and JET, prices and fees, where to ride and where to park',
-  lede: 'You can rent an e-scooter in Florianópolis from Whoosh or from JET, whose app is Go Jet: they are the two scooter companies the Prefeitura listed in March 2026. Each app shows its own price. You must be 18, and both operators ask you to keep to cycle lanes and to streets with a limit of 40 km/h or less, at up to 20 km/h, and to end your ride at a parking point your app shows.',
+  lede: 'You can rent an e-scooter in Florianópolis from Whoosh or from JET, whose app is Go Jet: they are the two scooter companies the Prefeitura listed in March 2026. Go Jet opens an account from your phone number; Whoosh asks for a phone number, an e-mail address and a card or a Pix top-up, and you unlock its scooters by scanning the QR code on the handlebar. Each app shows its price before you ride: Whoosh charges a start fee plus a price per minute, and JET’s rates vary with the day of the week and demand. You must be 18, and you need no licence or helmet. Both operators ask you to keep to cycle lanes and to streets with a limit of 40 km/h or less, at up to 20 km/h, and to end your ride at a “P” parking point your app shows, with a photo of the scooter.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'br:Florianópolis',
@@ -30,7 +30,7 @@ const guide: Guide = {
     {
       heading: 'How much does electric scooter rental in Florianópolis cost?',
       blocks: [
-        'Each app shows its rate before you ride. Whoosh shows a scooter’s start fee and price per minute when you tap it, and both can change with demand. JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time.',
+        'Whoosh shows a scooter’s start fee and price per minute when you tap it on the map, and both can change with demand. JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time.',
         'A Whoosh Pass, for a week, a month or a year, removes the unlock fee but not the price per minute. As of November 2026 Whoosh’s terms let it hold up to R$25 on your card when a ride starts.',
         {
           table: {
@@ -138,7 +138,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does an e-scooter cost in Florianópolis?',
-      answer: 'The app shows the price before you ride. Whoosh charges a start fee plus a price per minute, and JET’s rates vary by city, day of the week and demand; both may change their prices. A Whoosh Pass removes the unlock fee.',
+      answer: 'Whoosh charges a start fee plus a price per minute, and JET’s rates vary by city, day of the week and demand; both may change their prices. A Whoosh Pass removes the unlock fee.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Florianópolis?',

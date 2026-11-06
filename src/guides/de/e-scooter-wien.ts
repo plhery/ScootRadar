@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-wien',
   topic: 'vienna',
   name: 'E-Scooter Wien: Anbieter, Abstellen, Regeln',
-  title: 'E-Scooter Wien 2026: Anbieter, Abstellflächen, Regeln',
-  description: 'E-Scooter Wien: wer verleiht, was eine Fahrt kostet, wo du fahren und abstellen darfst und was in Parks, U-Bahn und Bim gilt, mit den Regeln seit Mai 2026.',
-  headline: 'E-Scooter Wien: Anbieter, Preise, Abstellflächen, Sperrzonen und die Regeln seit Mai 2026',
-  lede: 'Einen E-Scooter in Wien leihst du im Oktober 2026 bei Voi, dessen Scooter in allen 23 Bezirken stehen, oder bei Lime; Konzessionen vergibt die Stadt nur noch an zwei Betreiber. Voi verlangt 1 € fürs Entsperren und 0,30 € pro Minute (Stand November 2026). Gefahren wird wie mit dem Fahrrad auf dem Radweg oder der Fahrbahn, nie auf dem Gehsteig. Abgestellt wird auf einer der rund 400 rot markierten Abstellflächen oder, weiter weg davon, in der Parkspur. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
+  title: 'E-Scooter Wien 2026: Voi, Lime, Preise, Abstellen, Regeln',
+  description: 'E-Scooter Wien: Voi und Lime, was eine Fahrt kostet, wo du fahren und abstellen darfst und was in Parks, U-Bahn und Bim gilt, mit den Regeln seit Mai 2026.',
+  headline: 'E-Scooter Wien: Voi und Lime, Preise, Abstellflächen, Sperrzonen und die Regeln seit Mai 2026',
+  lede: 'Einen E-Scooter in Wien leihst du bei Voi, dessen Scooter in allen 23 Bezirken stehen, oder bei Lime; Konzessionen vergibt die Stadt nur noch an zwei Betreiber. Du lädst die App des Anbieters, hinterlegst ein Zahlungsmittel und entsperrst den Scooter per QR-Code. Voi verlangt 1 € fürs Entsperren und 0,30 € pro Minute, zehn Minuten kosten also 4 € (Stand November 2026). Gefahren wird wie mit dem Fahrrad auf dem Radweg oder der Fahrbahn, nie auf dem Gehsteig. Abgestellt wird auf einer der rund 400 rot markierten Abstellflächen oder, weiter weg davon, in der Parkspur. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'at:Wien',
@@ -22,7 +22,7 @@ const guide: Guide = {
         {
           steps: [
             'Den nächsten Scooter auf der [Live-Karte von Wien](map:at:Wien) suchen und die App des Anbieters öffnen.',
-            'Registrieren und ein Zahlungsmittel hinterlegen. Laut «Autorevue» musst du dafür mindestens 18 sein; verbindlich sind die Bedingungen in der App.',
+            'Registrieren und ein Zahlungsmittel hinterlegen. Laut «Autorevue» musst du dafür mindestens 18 sein.',
             'QR-Code scannen, losfahren und die Fahrt auf einer Abstellfläche beenden. Jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
           ],
         },
@@ -122,6 +122,10 @@ const guide: Guide = {
     },
   ],
   faq: [
+    {
+      question: 'Welche E-Scooter-App brauche ich in Wien?',
+      answer: 'Die von Voi oder Lime: Seit 2024 vermieten nur noch diese zwei in Wien E-Scooter. Voi kostet 1 € fürs Entsperren und 0,30 € pro Minute (Stand November 2026). Freie Scooter siehst du auf der [Live-Karte von Wien](map:at:Wien).',
+    },
     {
       question: 'Gilt in Wien eine Helmpflicht auf dem E-Scooter?',
       answer: 'Ja, für alle unter 16, seit dem 1. Mai 2026 in ganz Österreich (§ 68a Abs. 7 StVO). Ab 16 ist der Helm freiwillig. Wer ein Kind unter 12 beim Rollerfahren beaufsichtigt, muss dafür sorgen, dass es den Helm trägt.',

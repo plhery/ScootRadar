@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-nuernberg',
   topic: 'nuremberg',
   name: 'E-Scooter Nürnberg: Anbieter, Preise, Parken',
-  title: 'E-Scooter Nürnberg 2026: Anbieter, Preise, Sammelparkplätze',
-  description: 'E-Scooter Nürnberg: wer vermietet, was eine Fahrt kostet, wo du innerhalb des Rings nur an Sammelparkplätzen abstellst und was in U-Bahn und Tram gilt.',
-  headline: 'E-Scooter Nürnberg: Anbieter, Preise, Sammelparkplätze und was in Altstadt und U-Bahn gilt',
-  lede: 'Einen E-Scooter in Nürnberg mietest du ab 18 und ohne Führerschein bei Voi, Dott, Lime oder Bolt; diese vier nennt die Stadt. Den Preis zeigt die App; Bolt nennt für ganz Deutschland «ab 0,15 € pro Minute» (Stand 24. Oktober 2026). In der Altstadt und überall innerhalb des Bundesstrassenrings beendest du die Fahrt nur an einem markierten Sammelparkplatz, durch die Fussgängerzone fährst du nicht, und in U-Bahn, Tram und Bus darf kein E-Scooter mit.',
+  title: 'E-Scooter Nürnberg 2026: mieten, Preise, Parken, Regeln',
+  description: 'E-Scooter in Nürnberg mieten: Voi, Dott, Lime oder Bolt, was eine Fahrt kostet, wo du im Ring nur an Sammelparkplätzen abstellst, was in der U-Bahn gilt.',
+  headline: 'E-Scooter in Nürnberg mieten: Anbieter, Preise, Sammelparkplätze und was in Altstadt und U-Bahn gilt',
+  lede: 'Einen E-Scooter in Nürnberg mietest du ab 18 und ohne Führerschein bei Voi, Dott, Lime oder Bolt; diese vier nennt die Stadt. Du lädst die App des Anbieters, für Voi geht auch NürnbergMOBIL, hinterlegst ein Zahlungsmittel und entsperrst per QR-Code. Voi kostet 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026); bei Dott, Lime und Bolt zeigt die App den Preis vor dem Entsperren. In der Altstadt und überall innerhalb des Bundesstrassenrings beendest du die Fahrt nur an einem markierten Sammelparkplatz, durch die Fussgängerzone fährst du nicht, und in U-Bahn, Tram und Bus darf kein E-Scooter mit.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Nürnberg',
@@ -18,20 +18,20 @@ const guide: Guide = {
       blocks: [
         'Betrieb und Abstellen regelt die Stadt in einem Sondernutzungsvertrag mit jedem Anbieter. Im April 2024 schloss sie solche Verträge mit den fünf Anbietern, die damals in Nürnberg vermieteten: Bolt, Lime, Superpedestrian, TIER und Voi. Heute nennt das Verkehrsplanungsamt vier Ansprechpartner: **Voi**, **Dott** (TIER heisst heute Dott), **Lime** und **Bolt**.',
         'Dott führt auf seiner Website neben Nürnberg auch Fürth und Erlangen, Bolt nennt E-Scooter auf seiner Nürnberg-Seite. Gemietet wird in der App des Anbieters, Voi auch in **NürnbergMOBIL**, der App der VAG. Alle vier vermieten laut ihren Bedingungen nur ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte rund um Nürnberg](map:de:Nürnberg) standen am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zusammen rund 2500 Dott- und Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 1150 Lime- und 500 Bolt-Scooter. Die Zahl von Dott und Voi umfasst nicht nur die Stadt, sondern auch Fürth, Zirndorf und bei Voi Erlangen. Dotts Scooter in Erlangen findest du auf der [Karte von Erlangen](map:de:Erlangen). Preise, Zonen und Sammelparkplätze zeigen die Apps.',
+        'Auf der [Karte rund um Nürnberg](map:de:Nürnberg) standen am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zusammen rund 2500 Dott- und Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 1150 Lime- und 500 Bolt-Scooter. Die Zahl von Dott und Voi umfasst nicht nur die Stadt, sondern auch Fürth, Zirndorf und bei Voi Erlangen. Dotts Scooter in Erlangen findest du auf der [Karte von Erlangen](map:de:Erlangen). Zonen und Sammelparkplätze zeigen die Apps.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Nürnberg?',
       blocks: [
-        'Du zahlst in der Regel fürs Entsperren und pro Minute; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Du zahlst fürs Entsperren und pro Minute. Bei Voi kosten zehn Minuten 2,89 €, zwanzig Minuten 5,29 €.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Nürnberg (Stand 24. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Nürnberg (Stand November 2026)',
             head: ['Anbieter', 'Preis', 'Buchen in'],
             rows: [
-              ['Voi', 'In der App; Freiminuten mit Deutschlandticket', 'Voi-App, NürnbergMOBIL'],
-              ['Bolt', 'Ab 0,15 € pro Minute plus kleine Entsperrgebühr (für Deutschland)', 'Bolt-App'],
+              ['Voi', '0,49 € fürs Entsperren plus 0,24 € pro Minute; Freiminuten mit Deutschlandticket', 'Voi-App, NürnbergMOBIL'],
+              ['Bolt', 'Für ganz Deutschland ab 0,15 € pro Minute plus kleine Freischaltgebühr; der Minutenpreis variiert je nach Stadt', 'Bolt-App'],
             ],
           },
         },
@@ -125,7 +125,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter kann ich in Nürnberg mieten?',
-      answer: 'Die von Voi, Dott, Lime und Bolt; diese vier nennt die Stadt. Du findest sie auf der [Live-Karte von Nürnberg](map:de:Nürnberg). Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Voi, Dott, Lime und Bolt; diese vier nennt die Stadt. Du mietest in der App des Anbieters, Voi auch in NürnbergMOBIL, und findest freie Scooter auf der [Live-Karte von Nürnberg](map:de:Nürnberg). Du musst 18 sein, einen Führerschein brauchst du nicht.',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Nürnberg?',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026). Mit dem Deutschlandticket bekommst du in NürnbergMOBIL jeden Monat 15 Voi-Freiminuten, die Startgebühr zahlst du extra. Bolt nennt für ganz Deutschland «ab 0,15 € pro Minute» plus eine kleine Freischaltgebühr.',
     },
     {
       question: 'Wo darf ich in Nürnberg einen E-Scooter abstellen?',
@@ -161,6 +165,7 @@ const guide: Guide = {
     { title: 'VAG_Rad: Tarife und Rückgabe', url: 'https://www.vagrad.de/de/' },
     { title: 'Bolt in Nürnberg', url: 'https://bolt.eu/de-de/cities/nuremberg/' },
     { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Voi: Tarif und Zonen für Nürnberg in den offenen Daten (NeTEx, Stand 6. November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/169/netex.xml' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen für Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },

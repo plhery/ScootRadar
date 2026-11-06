@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Linz 2026: Dott, Lime, Abstellen, Regeln',
   description: 'E-Scooter Linz: Dott und Lime, wo du fährst, an welchen 115 Standorten du in der Innenstadt parkst, was in Parks gilt und was in Strassenbahn und Bus.',
   headline: 'E-Scooter Linz: Dott und Lime, die 115 Standorte in der Innenstadt und die Regeln seit Mai 2026',
-  lede: 'Einen E-Scooter in Linz leihst du bei Dott oder Lime, den zwei Betreibern, die die Stadt nennt; den Preis zeigt die App vor dem Entsperren. In der Innenstadt, vom Hauptbahnhof über die Landstrasse und den Hauptplatz bis nach Urfahr, beendest du die Fahrt nur an einem der 115 Standorte der Stadt. Gefahren wird wie mit dem Rad auf dem Radweg oder der Fahrbahn, nie auf dem Gehsteig. Laut Stadt sind Leih-Scooter auf 20 km/h begrenzt, in Fussgängerzonen, Parks und anderen sensiblen Bereichen auf 10 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
+  lede: 'Einen E-Scooter in Linz leihst du bei Dott oder Lime, den zwei Betreibern, die die Stadt nennt: In der App des Anbieters registrierst du dich, bei Dott ab 18, und entsperrst den Scooter per QR-Code; den Preis zeigt die App vor dem Entsperren. In der Innenstadt, vom Hauptbahnhof über die Landstrasse und den Hauptplatz bis nach Urfahr, beendest du die Fahrt nur an einem der 115 Standorte der Stadt. Gefahren wird wie mit dem Rad auf dem Radweg oder der Fahrbahn, nie auf dem Gehsteig. Laut Stadt sind Leih-Scooter auf 20 km/h begrenzt, in Fussgängerzonen, Parks und anderen sensiblen Bereichen auf 10 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'at:Linz',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter mieten in Linz: Dott und Lime',
       blocks: [
-        'Die Stadt schreibt auf ihrer Infoseite (Stand 26. Oktober 2026): «Derzeit stellen 2 aktive Betreiber (Dott und Lime) im Linzer Stadtgebiet insgesamt etwa 1.000 Leihscooter zur Verfügung.» Die Rahmenbedingungen legt laut Stadt eine «vertragliche Vereinbarung» mit den Betreibern fest; sie ersetzt seit 2023 den Verhaltenskodex von 2019.',
+        'Die Stadt schreibt auf ihrer Infoseite (Stand November 2026): «Derzeit stellen 2 aktive Betreiber (Dott und Lime) im Linzer Stadtgebiet insgesamt etwa 1.000 Leihscooter zur Verfügung.» Die Rahmenbedingungen legt laut Stadt eine «vertragliche Vereinbarung» mit den Betreibern fest; sie ersetzt seit 2023 den Verhaltenskodex von 2019.',
         'Tier heisst heute Dott; dein Vertragspartner ist laut Dotts österreichischen Bedingungen die TIER Mobility Austria GmbH. Bolt bietet in Linz laut eigener Seite nur Autofahrten an (Stand November 2026).',
         'Am Montag, 26. Oktober 2026, gegen 11.10 Uhr standen in Linz rund 500 Dott-Scooter, die zu diesem Zeitpunkt frei waren, die meisten in der Inneren Stadt, in Bulgariplatz, Froschberg und Urfahr; bei Lime waren es am Sonntag, 25. Oktober, gegen 18.30 Uhr ebenfalls rund 500. Wo gerade einer steht, siehst du auf der [Karte von Linz](map:at:Linz).',
         {
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Linz?',
       blocks: [
-        'Was Entsperren und Minuten bei Dott und Lime kosten, zeigt die App vor dem Start. Laut Dotts österreichischen Bedingungen (Stand 23. September 2025) kann zur Gebühr nach Fahrzeit eine Entsperrgebühr kommen.',
+        'Bei Dott zahlst du laut seinen österreichischen Bedingungen (Stand 23. September 2025) nach Fahrzeit, unter Umständen plus eine Entsperrgebühr.',
         'Teuer wird falsches Abstellen. Laut Stadt (Februar 2024) haben die Betreiber versichert, dass der Gebührenzähler weiterläuft, wenn der Scooter nicht ordnungsgemäss abgestellt ist. Hältst du dich nicht an die Abstellregeln, darf Dott laut seinen Bedingungen bis zu 300 € fürs Holen des Scooters verlangen. Zahlt Dott eine Strafe für dich, kommen 50 € Bearbeitungsgebühr dazu.',
       ],
     },
@@ -99,7 +99,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Strassenbahn, Bus, Pöstlingbergbahn und Zug',
       blocks: [
-        '**Linz AG Linien:** In Strassenbahn, Obus, Bus und Pöstlingbergbahn gelten die Beförderungsbedingungen der Linz AG, gültig ab 1. Jänner 2026. Sie untersagen die Mitnahme nicht zusammengeklappter Falträder und (E-)Scooter. Zusammengeklappt zählt dein eigener Scooter nach unserer Lesart als Gepäck: Er darf mit, wenn er niemanden gefährdet, die Abfahrt nicht verzögert und Platz ist. Im Zweifel entscheidet laut Bedingungen das Personal.',
+        '**Linz AG Linien:** In Strassenbahn, Obus, Bus und Pöstlingbergbahn gelten die Beförderungsbedingungen der Linz AG, gültig ab 1. Jänner 2026. Sie untersagen die Mitnahme nicht zusammengeklappter Falträder und (E-)Scooter. Zusammengeklappt gelten für deinen eigenen Scooter die Regeln für Gepäck: Er darf mit, wenn er niemanden gefährdet, die Abfahrt nicht verzögert und Platz ist. Im Zweifel entscheidet laut Bedingungen das Personal.',
         '**Regionalbusse:** Der Tarif des OÖ Verkehrsverbunds (gültig ab 1. Juli 2026) verweist auf die Beförderungsbestimmungen der einzelnen Busunternehmen; ob dein Scooter mitdarf, fragst du dort nach.',
         '**ÖBB ab Linz Hauptbahnhof:** Zusammengeklappt fährt dein eigener Scooter laut ÖBB-Handbuch (gültig ab 15. Oktober 2026) in allen ÖBB-Zügen kostenlos mit, wenn er höchstens 90 × 60 × 40 cm misst; bis 110 × 80 × 40 cm darf er ins Mehrzweckabteil der Nahverkehrszüge und in die gekennzeichneten Gepäckregale von Railjet und Railjet Express. Grössere gelten als Fahrrad. Klapp ihn schon vor dem Einsteigen zusammen; der Akku muss fest montiert sein und darf im Zug nicht laden.',
         'Einen Leih-Scooter stellst du am Hauptbahnhof an einem der Standorte beim Bahnhofplatz ab, sonst nie in der Haltestelle. Fährst du weiter nach Wels, findest du freie Scooter auf der [Karte von Wels](map:at:Wels).',
@@ -109,7 +109,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Linz?',
-      answer: 'Laut Stadt Dott und Lime, zusammen etwa 1000 Leih-Scooter (Stand 26. Oktober 2026). Tier heisst heute Dott. Bolt bietet in Linz laut eigener Seite nur Autofahrten an.',
+      answer: 'Laut Stadt Dott und Lime, zusammen etwa 1000 Leih-Scooter (Stand November 2026). Tier heisst heute Dott. Bolt bietet in Linz laut eigener Seite nur Autofahrten an.',
     },
     {
       question: 'Wo darf ich in der Linzer Innenstadt einen Leih-Scooter abstellen?',
@@ -117,7 +117,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in die Strassenbahn oder die Pöstlingbergbahn mitnehmen?',
-      answer: 'Nicht aufgeklappt: Das verbieten die Beförderungsbedingungen der Linz AG für Strassenbahn, Obus, Bus und Pöstlingbergbahn. Zusammengeklappt darf dein eigener Scooter nach unserer Lesart als Gepäck mit, wenn Platz ist. In ÖBB-Zügen fährt er zusammengeklappt kostenlos mit, bis 90 × 60 × 40 cm in jedem Zug.',
+      answer: 'Nicht aufgeklappt: Das verbieten die Beförderungsbedingungen der Linz AG für Strassenbahn, Obus, Bus und Pöstlingbergbahn. Zusammengeklappt darf dein eigener Scooter als Gepäck mit, wenn Platz ist. In ÖBB-Zügen fährt er zusammengeklappt kostenlos mit, bis 90 × 60 × 40 cm in jedem Zug.',
     },
     {
       question: 'Gilt in Linz eine Helmpflicht auf dem E-Scooter?',

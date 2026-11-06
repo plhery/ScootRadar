@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Edmonton 2026: Bird, Lime, rules and fines',
   description: 'E-scooters in Edmonton: Bird and Lime, the $250 sidewalk ticket, where you may ride, Whyte Avenue, the LRT, the airport and riding into winter.',
   headline: 'E-scooters in Edmonton: Bird and Lime, where you may ride, the fines, the LRT and winter',
-  lede: 'You can rent an e-scooter in Edmonton from Bird or Lime, the two companies the City licenses; the apps show the price before you unlock. You must be 18, you need no licence, and a helmet is optional on a scooter. Bird caps its scooters at 20 km/h, and you may ride in bike lanes, on shared pathways and on roads posted at 50 km/h or less, but not on sidewalks: that’s a $250 ticket. Whyte Avenue is off limits, you can walk a scooter onto the LRT but not a bus, and there are none at the airport. The City’s licences allow riding all year, weather permitting.',
+  lede: 'You can rent an e-scooter in Edmonton from Bird or Lime, the two companies the City approves as of November 2026: find a scooter in the Bird or Lime app, which shows the price before you unlock. You must be 18, you need no licence, and a helmet is optional on a scooter. Bird caps its scooters at 20 km/h, and you may ride in bike lanes, on shared pathways and on roads posted at 50 km/h or less, but not on sidewalks: that’s a $250 ticket. Whyte Avenue is off limits, you can walk a scooter onto the LRT but not a bus, and there are none at the airport. The City’s licences allow riding all year, weather permitting, and on 6 November 2026 both companies still had scooters out for rent.',
   published: '2026-10-17',
   updated: '2026-11-02',
   city: 'ca:ab:Edmonton',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Edmonton, and what do they cost?',
       blocks: [
-        'The City of Edmonton lists two approved companies for shared e-scooters and e-bikes in October 2026: **Bird**, run by Bird Canada, and **Lime**. Neuron, which joined them in June 2024, is no longer listed.',
+        'The City of Edmonton lists two approved companies for shared e-scooters and e-bikes as of November 2026: **Bird**, run by Bird Canada, and **Lime**. You find and unlock their scooters in each company’s app. Neuron, which joined them in June 2024, is no longer listed.',
         {
           list: [
             '**The licences.** In 2024 the City gave Bird and Lime three-year, year-round licences. The City sets the speed, zones and parking rules.',
@@ -108,7 +108,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**The season.** The City’s 2024 licences let the companies keep their scooters out all year, as long as the weather allows: once snow arrives, check the app.',
+            '**The season.** The City’s 2024 licences let the companies keep their scooters out all year, as long as the weather allows. On 6 November 2026 Bird’s and Lime’s open data still listed scooters for rent in Edmonton; once snow arrives, check the app.',
             '**Past winters.** In 2023 the big snow didn’t come until after Christmas, and Lime kept its scooters out well into November, Global News reported.',
             '**Night.** Bird said in 2024 its scooters would be available 24/7. The Traffic Bylaw requires a headlamp, a red tail lamp and a rear reflector on any scooter ridden on a road.',
             '**St. Albert**, the separate city to the north, has its own rules: you ride on sidewalks and paved trails but never on streets, at up to 15 km/h, from age 16, and a helmet is compulsory at any age. Bird and Lime are both approved, and about 170 Lime scooters were on the [St. Albert map](map:ca:ab:St. Albert) on the morning of 17 October. Its rental scooters can’t cross into Edmonton.',
@@ -152,7 +152,7 @@ const guide: Guide = {
     },
     {
       question: 'Are e-scooters available in Edmonton in winter?',
-      answer: 'The City’s licences let Bird and Lime run all year, as long as the weather allows. Check the app once snow and ice arrive.',
+      answer: 'The City’s licences let Bird and Lime run all year, as long as the weather allows, and on 6 November 2026 both still had scooters for rent. Check the app once snow and ice arrive.',
     },
   ],
   sources: [
@@ -168,6 +168,7 @@ const guide: Guide = {
     { title: 'Bird Canada: Edmonton', url: 'https://birdcanada.ca/locations/edmonton-alberta/' },
     { title: 'Bird Canada: rental agreement', url: 'https://birdcanada.ca/rental-policy/' },
     { title: 'Bird: Edmonton open data (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/edmonton/gbfs.json' },
+    { title: 'Lime: Edmonton open data (GBFS)', url: 'https://data.lime.bike/api/partners/v2/gbfs/edmonton/gbfs.json' },
     { title: 'City of St. Albert: common e-scooter questions', url: 'https://stalbert.ca/city/eps/rcmp/traffic-safety/e-scooters/faq/' },
     { title: 'Global News: where are the scooters? Edmonton’s new contracts, 2 May 2024', url: 'https://globalnews.ca/news/10465522/edmonton-e-scooters-bikes-may-2024/' },
     { title: 'Global News: Lime, Bird scooters and e-bikes returning year-round, 28 May 2024', url: 'https://globalnews.ca/news/10529937/edmonton-scooters-ebikes-2024/' },

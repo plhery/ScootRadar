@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Rostock 2026: Anbieter, Preise, Parken, RSAG',
   description: 'E-Scooter Rostock: Voi, Dott und MOIN, was sie kosten, wo du fährst und parkst und was in Warnemünde, in Parks, am Strand und in der Strassenbahn gilt.',
   headline: 'E-Scooter Rostock: drei Anbieter, Sperrzonen am Wasser und was in Warnemünde gilt',
-  lede: 'E-Scooter in Rostock leihst du ohne Führerschein bei Voi, Dott oder MOIN; Dott und MOIN vermieten ab 18. Bei Voi kostet die Fahrt 0,49 € fürs Entsperren und 0,24 € pro Minute (Stand November 2026), bei Dott und MOIN zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzonen der Innenstadt. In Parks, am Warnowufer und in Fussgängerzonen lässt sich die Fahrt laut Stadt nicht beenden; durch städtische Parks und den IGA Park schiebst du nach unserer Lesart, am Strand ist Fahren verboten. Zusammengeklappt fährt dein eigener Scooter in Strassenbahn, Bus, S-Bahn und Fähre kostenlos mit.',
+  lede: 'E-Scooter in Rostock leihst du ohne Führerschein in der App von Voi, Dott oder MOIN; Dott und MOIN vermieten ab 18. Bei Voi kostet die Fahrt 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026); bei Dott und MOIN zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzonen der Innenstadt. In Parks, am Warnowufer und in Fussgängerzonen lässt sich die Fahrt laut Stadt nicht beenden; durch städtische Parks und den IGA Park schiebst du, am Strand ist Fahren verboten. Zusammengeklappt fährt dein eigener Scooter in Strassenbahn, Bus, S-Bahn und Fähre kostenlos mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Rostock',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Rostock?',
       blocks: [
         'In Rostock verleihen drei Anbieter E-Scooter: **Voi**, **Dott** und **MOIN**. Die Stadt schliesst mit ihnen freiwillige Vereinbarungen, etwa über Parkverbotszonen und höchstens fünf Scooter je Standort.',
-        '**MOIN** ist ein Angebot der MIR Solutions GmbH aus Rostock. Laut einem Bericht der Stadt vom Mai 2022 startete es 2020; laut eigener Seite (Stand November 2025) fährt es auch in [Schwerin](guide:schwerin), Greifswald, Stralsund und Neubrandenburg. **Dott** führt Rostock auf seiner Standortliste; Vertragspartner ist laut AGB die TIER Mobility SE, und TIER kam laut demselben Bericht 2021. **Voi** fährt seit Mai 2022 in Rostock und zählte laut eigener Mitteilung bis Mai 2025 rund eine Million Fahrten.',
+        '**MOIN** ist ein Angebot der MIR Solutions GmbH aus Rostock. Laut einem Bericht der Stadt vom Mai 2022 startete es 2020; laut eigener Seite (Stand November 2026) fährt es auch in [Schwerin](guide:schwerin), Greifswald, Stralsund und Neubrandenburg. **Dott** führt Rostock auf seiner Standortliste; Vertragspartner ist laut AGB die TIER Mobility SE, und TIER kam laut demselben Bericht 2021. **Voi** fährt seit Mai 2022 in Rostock und zählte laut eigener Mitteilung bis Mai 2025 rund eine Million Fahrten.',
         'Wie du per App leihst, zeigt Schritt für Schritt [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Rostock](map:de:Rostock) rund 450 Voi- und 340 Dott-Scooter, die zu diesem Zeitpunkt frei waren.',
       ],
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Rostock?',
       blocks: [
-        'Bei **Voi** kostet eine Fahrt in Rostock 0,49 € fürs Entsperren und 0,24 € pro Minute (Stand November 2026): zehn Minuten 2,89 €, zwanzig Minuten 5,29 €. **Dott** und **MOIN** nennen ihren Fahrpreis in der App vor dem Entsperren. Verbindlich ist immer der Preis, den die App vor dem Entsperren zeigt. Dazu kommen Gebühren, die Dott und MOIN in ihren Bedingungen nennen:',
+        'Bei **Voi** kostet eine Fahrt in Rostock 0,49 € fürs Entsperren und 0,24 € pro Minute (Stand November 2026): zehn Minuten 2,89 €, zwanzig Minuten 5,29 €. Was **Dott** und **MOIN** laut ihren Bedingungen berechnen:',
         {
           table: {
             caption: 'Gebühren bei Dott und MOIN laut deren Bedingungen (Stand November 2026)',
@@ -45,8 +45,8 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, Radfahr- oder Schutzstreifen oder in der Fahrradstrasse und nur dort, wo es nichts davon gibt, auf der Fahrbahn. Auf gemeinsamen Geh- und Radwegen haben Fussgänger Vorrang. Gehwege sind tabu, ebenso Fussgängerzonen, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es; ab 1. März 2027 reicht auch «Radverkehr frei», dann im Schritttempo. Diese Regeln setzt der Bund.',
         '**Innenstadt:** Die Kröpeliner Strasse und ihr Umfeld sind Fussgängerzone (Zonenkarte der Stadt, Stand Juli 2021); dort schiebst du.',
         '**Einbahnstrassen:** Bei «Radverkehr frei» ist die Lage bis Ende Februar 2027 widersprüchlich: Die StVO lässt dich mitfahren, die eKFV verlangt «Elektrokleinstfahrzeuge frei». Die Stadt schreibt knapp, «Rad frei» gelte nicht für E-Tretroller. Ab 1. März 2027 ist die Gegenrichtung erlaubt, wo «Radverkehr frei» sie öffnet.',
-        '**Parks:** Die Grünflächensatzung von 2009 verbietet in städtischen Grün- und Parkanlagen, sie «mit Kraftfahrzeugen zu befahren» und Fahrzeuge abzustellen (§ 4), bei 5 bis 1000 € Geldbusse (§ 11). E-Scooter nennt sie nicht, laut eKFV sind sie aber Kraftfahrzeuge. Für uns heisst das: In den Wallanlagen und anderen städtischen Parks schiebst du, auch auf den Wegen.',
-        '**IGA Park:** Die Parkordnung (Februar 2025) verbietet «das Befahren mit Kraftfahrzeugen sowie das Abstellen dieser auf Wegen und Grünflächen»; «das Fahrradfahren erfolgt auf eigene Gefahr». Bei Verstössen darf das Personal ein «erhöhtes Nutzungsentgelt» von 20 € kassieren. Auch hier schiebst du nach unserer Lesart.',
+        '**Parks:** Die Grünflächensatzung von 2009 verbietet in städtischen Grün- und Parkanlagen, sie «mit Kraftfahrzeugen zu befahren» und Fahrzeuge abzustellen (§ 4), bei 5 bis 1000 € Geldbusse (§ 11). E-Scooter nennt sie nicht, laut eKFV sind sie aber Kraftfahrzeuge. In den Wallanlagen und anderen städtischen Parks schiebst du also, auch auf den Wegen.',
+        '**IGA Park:** Die Parkordnung (Februar 2025) verbietet «das Befahren mit Kraftfahrzeugen sowie das Abstellen dieser auf Wegen und Grünflächen»; «das Fahrradfahren erfolgt auf eigene Gefahr». Bei Verstössen darf das Personal ein «erhöhtes Nutzungsentgelt» von 20 € kassieren. Da E-Scooter Kraftfahrzeuge sind, schiebst du auch hier.',
         '**Strand:** Die Strandsatzung von 2026 verbietet an den Stränden von Diedrichshagen, Warnemünde, Hohe Düne, Markgrafenheide und der Rostocker Heide «das Abstellen und Fahren von Fahrzeugen, auch von Fahrrädern und Booten», bei bis zu 1000 € Geldbusse. Auf der Strandpromenade und am Alten Strom gelten die Schilder.',
       ],
     },
@@ -91,7 +91,7 @@ const guide: Guide = {
               ['Nebeneinander gefahren', '15 €, bis 30 €', 'Erlaubt, wenn niemand behindert wird'],
               ['Zu zweit gefahren', '10 €', '25 €'],
               ['Rote Ampel', '60 € und 1 Punkt; länger als 1 Sekunde rot: 100 € und 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt'],
               ['Unzulässig auf Geh- oder Radweg geparkt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', '55 €, mit Behinderung 70 €'],
             ],
           },
@@ -137,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Rostock?',
-      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026). Bei Dott und MOIN zeigt die App den Preis vor dem Entsperren. Falschparken kann bei Dott bis zu 300 € Rückholkosten bringen; MOIN nennt 35 € für «falsch geparkt, kein Foto am Fahrtende gemacht».',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026). Falschparken kann bei Dott bis zu 300 € Rückholkosten bringen; MOIN nennt 35 € für «falsch geparkt, kein Foto am Fahrtende gemacht».',
     },
     {
       question: 'Wie viele Leih-Scooter darf es in Rostock geben?',

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'asker',
   name: 'Leie elsparkesykkel i Asker',
   title: 'Elsparkesykkel i Asker 2026: Ryde, Voi, priser og regler',
-  description: 'Elsparkesykkel i Asker: Ryde og Voi har tillatelse til 2028. Priser, parkering i Asker sentrum, vinterstenging, Heggedal, Røyken og grensen mot Bærum.',
+  description: 'Elsparkesykkel i Asker: Ryde og Voi har tillatelse til 2028. Hvem er billigst, parkering i Asker sentrum, vinterstenging, Røyken og grensen mot Bærum.',
   headline: 'Elsparkesykkel i Asker: Ryde og Voi, priser, parkering i sentrum og vinteren',
-  lede: 'Vil du leie elsparkesykkel i Asker, velger du mellom Ryde og Voi, som har kommunens tillatelse fram til 31. mars 2028. Det koster 10,90 kr å låse opp hos Ryde og 10 kr hos Voi, og deretter 2,50 kr per minutt hos begge (22. oktober 2026). Loven sier 12 år, men Ryde og Voi krever selv 16 år. Kommunen har ikke innført nattestenging, men utleien stenger om vinteren, og 22. oktober 2026 var det ikke kunngjort når. I Asker sentrum setter appene farten ned til 15 km/t, og du parkerer på oppmerkede plasser. I Heggedal, Slemmestad og Røyken sto det ingen sparkesykler den dagen.',
+  lede: 'Vil du leie elsparkesykkel i Asker, velger du mellom Ryde og Voi, som har kommunens tillatelse fram til 31. mars 2028. Du låser opp i Ryde- eller Voi-appen eller i Ruter-appen. Begge tar 2,50 kr per minutt, men Voi er billigst å låse opp: 10 kr, mot 10,90 kr hos Ryde (per november 2026). Loven sier 12 år, men Ryde og Voi krever selv 16 år. Kommunen har ikke innført nattestenging, men tjenesten er vinterstengt, og det er kommunen som bestemmer når sesongen slutter. I Asker sentrum setter appene farten ned til 15 km/t, og du parkerer på oppmerkede plasser.',
   published: '2026-10-22',
   updated: '2026-10-22',
   city: 'no:Asker',
@@ -18,17 +18,17 @@ const guide: Guide = {
       blocks: [
         'Asker kommune ga **Ryde** og **Voi** tillatelse til å leie ut elsparkesykler og elsykler i mai 2026. Tillatelsene gjelder fra 8. mai 2026 til 31. mars 2028. Ruter lyste ut ordningen for Asker og Bærum 7. mars 2026, og Asker fikk bare to søknader. **Bolt og Dott har ikke tillatelse i Asker.** Dott var med i prøveåret 2025, og Bolt står hos Ruter bare oppført for Oslo.',
         'Ordningen bygger på utleieforskriften kommunestyret vedtok 3. februar 2026, som åpner for inntil to operatører. Etter tillatelsene kan hver av dem ha opptil **700** små elektriske kjøretøy ute, elsykler medregnet: 100 i Asker sentrum og 600 i resten av kommunen. Taket er dermed 1400 til sammen, og antallet ligger omtrent på samme nivå som i 2025, skriver kommunen. Hver operatør betaler kommunen 401 500 kr for perioden fram til 31. mars 2027.',
-        'På [kartet over Asker](map:no:Asker) sto det rundt 630 Ryde- og 100 Voi-sparkesykler om ettermiddagen 22. oktober 2026. Det er det kartet viste da, ikke hele flåten. Voi har felles åpne data for Asker og Bærum, så kartet regner Voi-sparkesyklene som sto utenfor Bærums kommunegrense, som Askers. Rydes sparkesykler i Asker kom på kartet samme dag.',
+        'På [kartet over Asker](map:no:Asker) sto det rundt 630 Ryde- og 100 Voi-sparkesykler om ettermiddagen 22. oktober 2026. Det er det kartet viste da, ikke hele flåten.',
         'Du låser opp i Ryde- eller Voi-appen, eller i Ruter-appen. Hvordan du kommer i gang, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster det å leie elsparkesykkel i Asker?',
       blocks: [
-        'I Rydes åpne data for Asker kostet det 10,90 kr å låse opp og 2,50 kr per minutt 22. oktober 2026, og Ryde runder opp til nærmeste hele minutt. I Vois åpne data for Asker og Bærum kostet det samme dag 10 kr å låse opp og 2,50 kr per minutt. Sjekk prisen i appen før du låser opp.',
+        'Per november 2026 koster det 10,90 kr å låse opp hos Ryde og 2,50 kr per minutt, ifølge Rydes åpne data for Asker, og Ryde runder opp til nærmeste hele minutt. Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt, ifølge Vois åpne data for Asker og Bærum. Sjekk prisen i appen før du låser opp.',
         {
           table: {
-            caption: 'Priser 22. oktober 2026 og operatørenes aldersgrense',
+            caption: 'Priser per november 2026 og operatørenes aldersgrense',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', 'Aldersgrense'],
             rows: [
               ['Ryde, Asker', '10,90 kr', '2,50 kr', '10,90 + 10 × 2,50 = 35,90 kr', '16 år'],
@@ -36,16 +36,17 @@ const guide: Guide = {
             ],
           },
         },
+        '**Hvem er billigst?** Voi: 10 minutter koster 35 kr og 20 minutter 60 kr, mot 35,90 kr og 60,90 kr hos Ryde (per november 2026).',
         'Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter.',
-        'Loven sier 12 år, og Askers forskrift har ingen egen aldersgrense. Ruters kunngjøring av ordningen setter 15 år som laveste grense for utleien, og operatørene kan kreve mer. Voi krever **16 år**, ifølge både kommunen og Ruter. For Ryde oppgir kommunen og Ruter 15 år, men Rydes egne vilkår for Norge krever **16 år**, og de gjelder i tillegg når du leier i Ruter-appen (22. oktober 2026).',
+        'Loven sier 12 år, og Askers forskrift har ingen egen aldersgrense. Ruters kunngjøring av ordningen setter 15 år som laveste grense for utleien, og operatørene kan kreve mer. Voi krever **16 år**, ifølge både kommunen og Ruter. For Ryde oppgir kommunen og Ruter 15 år, men Rydes egne vilkår for Norge krever **16 år**, og de gjelder i tillegg når du leier i Ruter-appen (22. oktober 2026). Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
       heading: 'Natt og vinter: når kan du leie i Asker?',
       blocks: [
         'Kommunen har ikke innført nattestenging. Forskriften sier at utleie kan skje «alle dager, hele døgnet», men kommunen kan korte inn tiden eller stenge om natten. Ruter oppgir både Ryde og Voi som døgnåpne i Asker. Politiet ba i høringen i 2025 om å begrense utleien om natten, særlig i helgene, men forskriften ble vedtatt med døgnåpen utleie.',
-        'I Vois åpne data 22. oktober 2026 var Voi stengt fra midnatt til kl. 05 natt til søndag, og det er Vois egen stengetid, ikke kommunens. Ryde skriver i vilkårene at tjenesten tidvis kan være stengt om natten. Kunngjøringen krever dessuten at operatørene har en promilletest aktiv i appen hver natt fra kl. 23 til 05. Forskriften skjermer også naboene: Alarmer med lyd skal være av fra kl. 20 til 07, og til kl. 09 natt til lørdager, søndager og helligdager.',
-        '«Tjenesten er vinterstengt», står det i forskriften, og vilkårene finner du i kunngjøringen fra 7. mars 2026: Kommunen bestemmer når tjenesten skal stenge, og fra da har operatørene fire dager på å samle inn alle kjøretøyene. Utover høsten bør de trappe ned flåten og området når etterspørselen faller, men faste datoer gir kunngjøringen ikke. I høringsbrevet fra 2025 foreslo kommunen å holde datoene fleksible, «da vinteren kan være ustabil», og at det ikke skal være utleie når det er snø på bakken. 22. oktober 2026 hadde kommunen ikke kunngjort når sesongen slutter. Året før skrev kommunen 19. desember at Ryde hadde tatt inn sparkesyklene for vinteren.',
+        'Per november 2026 stenger Voi fra midnatt til kl. 05 natt til søndag, ifølge Vois åpne data, og det er Vois egen stengetid, ikke kommunens. Ryde skriver i vilkårene at tjenesten tidvis kan være stengt om natten. Kunngjøringen krever dessuten at operatørene har en promilletest aktiv i appen hver natt fra kl. 23 til 05. Forskriften skjermer også naboene: Alarmer med lyd skal være av fra kl. 20 til 07, og til kl. 09 natt til lørdager, søndager og helligdager.',
+        '«Tjenesten er vinterstengt», står det i forskriften, og vilkårene finner du i kunngjøringen fra 7. mars 2026: Kommunen bestemmer når tjenesten skal stenge, og fra da har operatørene fire dager på å samle inn alle kjøretøyene. Utover høsten bør de trappe ned flåten og området når etterspørselen faller. I høringsbrevet fra 2025 foreslo kommunen å holde datoene fleksible, «da vinteren kan være ustabil», og at det ikke skal være utleie når det er snø på bakken. Året før skrev kommunen 19. desember at Ryde hadde tatt inn sparkesyklene for vinteren.',
       ],
     },
     {
@@ -86,7 +87,7 @@ const guide: Guide = {
       blocks: [
         'Kommunen skriver at du kan leie «i sentrumsområdene», og i praksis var det den nordlige delen av Asker. I Rydes åpne data om ettermiddagen 22. oktober 2026 sto nesten alle sparkesyklene i et belte fra Borgen og Bondi, gjennom sentrum og videre til Hvalstad, Holmen, Nesbru og Billingstad.',
         'På Nesøya har Ryde 13 egne parkeringsplasser i dataene. Voi har én plass ved Nesøya idrettspark, men i Vois data lå øya utenfor området der du kan avslutte en tur. Skal du dit med Voi, sjekker du appen først.',
-        'Røyken og Hurum ble en del av Asker i 2020, men 22. oktober 2026 sto det ingen sparkesykler fra Ryde eller Voi i Heggedal, Vollen, Slemmestad, Røyken, Spikkestad eller på Hurumlandet. I Vois data kunne du heller ikke avslutte en tur der. Tillatelsene gjelder hele kommunen, og kunngjøringen ber operatørene drive i et størst mulig område, men hvor sparkesyklene står, avgjør operatørene ut fra bruk og etterspørsel, skrev kommunen i april 2026.',
+        'Røyken og Hurum ble en del av Asker i 2020. I Vois data 22. oktober 2026 kunne du ikke avslutte en tur i Heggedal, Vollen, Slemmestad, Røyken, Spikkestad eller på Hurumlandet. Tillatelsene gjelder hele kommunen, og kunngjøringen ber operatørene drive i et størst mulig område, men hvor sparkesyklene står, avgjør operatørene ut fra bruk og etterspørsel, skrev kommunen i april 2026.',
         'Fra Heggedal og Røyken tar du lokaltoget L1 eller L2 inn til Asker stasjon.',
       ],
     },
@@ -94,7 +95,7 @@ const guide: Guide = {
       heading: 'Over grensen til Bærum',
       blocks: [
         'Fra Billingstad og Nesbru er det kort vei til Slependen og Sandvika i Bærum. Bærum har egen forskrift og egne tillatelser, også til Ryde og Voi, og egne parkeringsregler i Sandvika, på Bekkestua og på Lysaker.',
-        'I Vois åpne data er Asker og Bærum ett kjøreområde, så en Voi-tur kan starte på Asker torg og slutte i Sandvika, på en av Vois plasser der. Ryde har egne systemer for Asker og Bærum, og Rydes data for Asker viser ikke noe driftsområde. Sjekk derfor i appen om du kan avslutte på den andre siden av grensen: Utenfor driftsområdet kan det koste opptil 500 kr, ifølge Rydes vilkår. Mer om nabokommunen står i [guiden om Bærum](guide:baerum) og på [kartet over Bærum](map:no:Bærum).',
+        'I Vois åpne data er Asker og Bærum ett kjøreområde, så en Voi-tur kan starte på Asker torg og slutte i Sandvika, på en av Vois plasser der. Ryde har egne systemer for Asker og Bærum, så sjekk i appen om du kan avslutte på den andre siden av grensen: Utenfor driftsområdet kan det koste opptil 500 kr, ifølge Rydes vilkår. Mer om nabokommunen står i [guiden om Bærum](guide:baerum) og på [kartet over Bærum](map:no:Bærum).',
       ],
     },
     {
@@ -140,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Når stenger elsparkesyklene for vinteren i Asker?',
-      answer: 'Det bestemmer kommunen, og operatørene har da fire dager på å hente inn sparkesyklene. 22. oktober 2026 var det ikke kunngjort noen dato.',
+      answer: 'Det bestemmer kommunen, og operatørene har da fire dager på å hente inn sparkesyklene. I 2025 skrev kommunen 19. desember at Ryde hadde tatt inn sparkesyklene for vinteren.',
     },
     {
       question: 'Hvor kan jeg parkere elsparkesykkel i Asker sentrum?',
@@ -148,7 +149,7 @@ const guide: Guide = {
     },
     {
       question: 'Er det elsparkesykler i Heggedal, Slemmestad og Røyken?',
-      answer: 'Nei, ikke 22. oktober 2026. Sparkesyklene sto mellom Borgen, Asker sentrum og Billingstad. Fra Heggedal og Røyken tar du toget til Asker stasjon.',
+      answer: 'Operatørene bestemmer selv hvor sparkesyklene står. 22. oktober 2026 sto de mellom Borgen, Asker sentrum og Billingstad, og i Vois data kunne du ikke avslutte en tur i Heggedal, Slemmestad eller Røyken. Fra Heggedal og Røyken tar du toget til Asker stasjon.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel fra Asker til Sandvika?',
@@ -171,9 +172,10 @@ const guide: Guide = {
     { title: 'Vy: Sykkel på toget', url: 'https://www.vy.no/alt-om-reisen/tog/praktisk-informasjon/sykkel-pa-toget' },
     { title: 'Entur: Reiseplanlegger-API (linjene ved stasjonene i Asker)', url: 'https://developer.entur.org/pages-journeyplanner-journeyplanner' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
-    { title: 'Ryde: Åpne data for Asker (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeasker/gbfs' },
-    { title: 'Voi: Åpne data for Bærum og Asker (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voibaerum/gbfs' },
+    { title: 'Ryde: Åpne data for Asker (GBFS via Entur: priser, 6. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeasker/gbfs' },
+    { title: 'Voi: Åpne data for Bærum og Asker (GBFS via Entur: priser og åpningstider, 6. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voibaerum/gbfs' },
     { title: 'Store norske leksikon: Asker', url: 'https://snl.no/Asker' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 

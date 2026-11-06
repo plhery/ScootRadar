@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-tampere',
   topic: 'tampere',
   name: 'E-scooters in Tampere, Finland',
-  title: 'E-scooters Tampere 2026: Voi, Dott, Ryde, rules and parking',
-  description: 'E-scooters in Tampere: Voi, Dott and Ryde under the City’s licence, the night speed limit, the reaction test, parking in the centre and the season.',
+  title: 'E-scooters Tampere 2026: Voi, Dott, Ryde, prices, winter',
+  description: 'E-scooters in Tampere: Voi costs €0.26 a minute (November 2026), Dott and Ryde, the season to 14 November, the night speed limit and parking in the centre.',
   headline: 'E-scooters in Tampere: Voi, Dott and Ryde, the night rules, where to park and when the season ends',
-  lede: 'E-scooters in Tampere are rented from Voi, Dott and Ryde, the three companies the City lists; each app shows its price. From 15 you ride on the cycle path or the road, never the pavement. There is no night ban, but on Wednesday to Saturday nights rental scooters slow to 15 km/h from 23:00 to 05:00, and in the centre you park in a marked bay. The season runs, as a rule, to 14 November.',
+  lede: 'E-scooters in Tampere are rented from Voi, Dott and Ryde through their apps, the three companies the City lists. As of November 2026 Voi charges no unlock fee and €0.26 a minute, so 10 minutes cost €2.60; Dott’s and Ryde’s apps show their prices before you unlock. The City’s licence sets the season from 15 April to 14 November, so from 15 November to 14 April the scooters must be off the streets unless the City agrees in writing to more time. From 15 you ride on the cycle path or the road, never the pavement. There is no night ban, but on Wednesday to Saturday nights rental scooters slow to 15 km/h from 23:00 to 05:00, and in the centre you park in a marked bay.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Tampere',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Since 1 October 2025 renting out e-scooters in Tampere has required the City’s micromobility licence (mikroliikennelupa). The first licences run to the end of the 2026 season, and for now the City charges no fee. Its e-scooter page lists three companies:',
         {
           table: {
-            caption: 'E-scooter companies in Tampere, October 2026',
+            caption: 'E-scooter companies in Tampere, as of November 2026',
             head: ['Company', 'On the City’s list', 'Rider’s terms'],
             rows: [
               ['Voi', 'Yes', 'In the app'],
@@ -35,14 +35,14 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Tampere: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock.',
+        '**Voi** charges no unlock fee and €0.26 a minute (as of November 2026): 10 minutes cost €2.60 and 20 minutes €5.20.',
         'Dott’s terms for Finland (last updated 23 September 2025) set its extra charges: up to €300 for recovering a scooter you parked or locked against its instructions, €50 for any breach of its terms, and a €50 admin fee if Dott pays a fine for you; fines and impounding costs are yours. Check Voi’s and Ryde’s fees and age limits in their apps. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'When can you ride? The season, the night limit and the reaction test',
       blocks: [
-        '**The season.** The City’s licence sets a basic season from 15 April to 14 November; outside it the companies need the City’s written consent. In 2026 the City let them start early, on 16 March, because of the mild weather. In such extra time the City can order them off the streets on 72 hours’ notice if the weather turns for good.',
+        '**The season.** The City’s licence sets a basic season from 15 April to 14 November; outside it the companies need the City’s written consent. Within it, each company decides when it brings its scooters out and when it takes them away, the City says. In 2026 the City let them start early, on 16 March, because of the mild weather. In such extra time the City can order them off the streets on 72 hours’ notice if the weather turns for good.',
         '**No night ban.** Tampere doesn’t switch the scooters off at night. In May 2026 the City was weighing a weekend night ban after accidents, Yle reported; in June it chose more slow zones and an earlier weekend reaction test instead, to keep night riding possible, and will review them before next season.',
         {
           table: {
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'When does the e-scooter season end in Tampere?',
-      answer: 'The City’s licence sets a basic season from 15 April to 14 November, and running outside it needs the City’s written consent. In 2026 the season started early, on 16 March.',
+      answer: 'On 14 November: the City’s licence sets a basic season from 15 April to 14 November, and running outside it needs the City’s written consent. In 2026 the season started early, on 16 March.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Tampere?',
@@ -184,6 +184,7 @@ const guide: Guide = {
     { title: 'Nokia Arena: How to get to the arena', url: 'https://nokiaarena.fi/en/directions/how-to-get-to-the-arena/' },
     { title: 'Särkänniemi: Arrival and parking', url: 'https://sarkanniemi.fi/en/arrival-and-parking' },
     { title: 'Dott: Terms and conditions for Finland', url: 'https://ridedott.com/terms-and-conditions/finland/' },
+    { title: 'Voi: rates and zones for Tampere (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/136/netex.xml' },
     { title: 'Yle: How e-scooter rules differ from city to city, 28 May 2026 (Finnish)', url: 'https://yle.fi/a/74-20228186' },
   ],
 };

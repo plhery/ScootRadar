@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Monopattini sharing Verona 2026: Dott, Lime, prezzi, sosta',
   description: 'Monopattini sharing a Verona nel 2026: Dott e Lime, prezzi, dove parcheggiare in centro e in piazza Bra, ZTL, Arena, bus ATV, treni e multe.',
   headline: 'Monopattini sharing a Verona: operatori, prezzi, sosta, bus e multe nel 2026',
-  lede: 'I monopattini sharing a Verona, a ottobre 2026, sono quelli di Dott e Lime, che trovi sulla mappa: due dei tre operatori scelti dal Comune nel 2021. Dott chiede 18 anni e un documento d’identità, e il casco, obbligatorio per tutti, lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app. Si guida su strada e sulle piste ciclabili, mai sul marciapiede; nel centro storico, scrive il Comune, si parcheggia solo negli stalli dedicati o negli spazi scooter autorizzati.',
+  lede: 'I monopattini sharing a Verona sono quelli di Dott e Lime, che trovi sulla mappa: due dei tre operatori scelti dal Comune nel 2021. Si noleggiano con l’app dell’operatore: ti registri, aggiungi un metodo di pagamento e sblocchi il monopattino con il QR code. Dott chiede 18 anni e un documento d’identità, e il casco, obbligatorio per tutti, lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app. Si guida su strada e sulle piste ciclabili, mai sul marciapiede; nel centro storico, scrive il Comune, si parcheggia solo negli stalli dedicati o negli spazi scooter autorizzati.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'it:Verona',
@@ -21,10 +21,10 @@ const guide: Guide = {
         'Lunedì 26 ottobre 2026 alle 5:53 la [mappa di Verona](map:it:Verona) mostrava circa 300 monopattini Dott liberi in quel momento; i Lime, domenica 25 ottobre alle 16:26, erano circa 360 all’ultimo conteggio.',
         {
           table: {
-            caption: 'Gli operatori di Verona, a ottobre 2026',
+            caption: 'Gli operatori di Verona nel 2026',
             head: ['Operatore', 'Cosa noleggia a Verona'],
             rows: [
-              ['Dott (EM Transit)', 'Monopattini; da luglio 2025 anche e-bike, per un anno di prova'],
+              ['Dott (EM Transit)', 'Monopattini; a luglio 2025 ha avviato anche le e-bike, per un anno di prova'],
               ['Lime', 'Monopattini'],
               ['Bit Mobility', 'Scelto nel 2021 per i monopattini; dal 13 agosto 2026 ha in prova 50 scooter elettrici con sella'],
             ],
@@ -52,8 +52,8 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattini a Verona: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto, e il prezzo lo vedi nell’app prima di sbloccare; con Dott è IVA compresa. Il capitolato del Comune del 2021 fissava un tetto: una «tariffa massima oraria di € 12 non aumentabile per i tre anni».',
-        'Per tutte le sue città, a novembre 2026, il centro assistenza di Dott (pagina del 25 agosto 2026) indica una forbice da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero; quello di Verona te lo mostra l’app.',
+        'Paghi uno sblocco più una tariffa al minuto; con Dott è IVA compresa. Il capitolato del Comune del 2021 fissava un tetto: una «tariffa massima oraria di € 12 non aumentabile per i tre anni».',
+        'Per tutte le sue città, a novembre 2026, il centro assistenza di Dott (pagina del 25 agosto 2026) indica una forbice da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
         'Attento anche alle penali. Le condizioni di Dott per l’Italia (2 dicembre 2025) prevedono:',
         {
           list: [
@@ -84,7 +84,7 @@ const guide: Guide = {
         'Il monopattino va sulle strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo e a 6 km/h nelle aree pedonali; mai sul marciapiede né contromano. Le condizioni di Dott per Verona aggiungono che la circolazione è permessa «nelle strade urbane laddove è consentita per i velocipedi».',
         '**ZTL.** Nella zona a traffico limitato, l’ansa dell’Adige tra Castelvecchio e ponte Aleardi fino a piazza Bra, le bici «circolano sempre liberamente», scrive il Comune.',
         '**Piazza delle Erbe e Castel San Pietro.** Piazza Erbe è area pedonale dall’ottobre 2024; a gennaio 2025 il Comune annunciava che anche la piazzetta di Castel San Pietro sarebbe diventata del tutto pedonale. Segui i cartelli, e in area pedonale vai al massimo a 6 km/h.',
-        '**Arena ed eventi.** Per la stagione lirica, dal 25 marzo al 5 novembre 2026, l’ordinanza 437 del Comune vieta il transito dei veicoli in alcune vie intorno all’Arena, come via Dietro Anfiteatro e via San Nicolò, salvo frontisti, taxi e pochi altri. Per alcune manifestazioni il Comune ferma anche i monopattini: per la Straverona del 17 maggio 2026, dalle 6 alle 14, era «vietato il transito e la sosta dei monopattini su tutta piazza Bra».',
+        '**Arena ed eventi.** Per la stagione lirica 2026, dal 25 marzo al 5 novembre, l’ordinanza 437 del Comune vietava il transito dei veicoli in alcune vie intorno all’Arena, come via Dietro Anfiteatro e via San Nicolò, salvo frontisti, taxi e pochi altri. Per alcune manifestazioni il Comune ferma anche i monopattini: per la Straverona del 17 maggio 2026, dalle 6 alle 14, era «vietato il transito e la sosta dei monopattini su tutta piazza Bra».',
         '**Parchi.** Nel Parco dell’Adige il regolamento del verde del Comune (2021) vieta i mezzi a motore e vuole bici e monopattini su piste ciclabili e sentieri, fuori dalle zone pedonali, a 15 km/h al massimo.',
         '**Di notte e d’inverno.** Il capitolato chiede un servizio 24 ore su 24, tutto l’anno, salvo riduzioni decise dal Comune.',
       ],
@@ -149,7 +149,7 @@ const guide: Guide = {
     },
     {
       question: 'Quanto costa noleggiare un monopattino a Verona?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. A novembre 2026 Dott indica per tutte le sue città una forbice da circa 0,17 a 0,55 euro al minuto; il capitolato del Comune del 2021 fissava un massimo di 12 euro l’ora.',
+      answer: 'Uno sblocco più una tariffa al minuto. A novembre 2026 Dott indica per tutte le sue città una forbice da circa 0,17 a 0,55 euro al minuto; il capitolato del Comune del 2021 fissava un massimo di 12 euro l’ora.',
     },
     {
       question: 'Dove si lascia il monopattino in sharing in centro a Verona?',
