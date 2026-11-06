@@ -1,22 +1,24 @@
 package com.plhery.scootradar.ui
 
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.Context
+import android.view.View
+import android.view.accessibility.AccessibilityManager
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assert
-import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestControllers
@@ -35,6 +37,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import java.util.Locale
 
@@ -43,7 +46,8 @@ import java.util.Locale
  * cover all of it. While the search is open TalkBack reads it alone, the map's markers none, nor beside a large
  * window's panel the zones' legend and the locate button in the map's corner, and Back closes it, as VoiceOver reads
  * the iPhone's search alone and its escape scrub closes it since 4 November (ScooterMapScreen.swift:96-97 and 415-417,
- * SwissAddressSearch.swift:364-366).
+ * SwissAddressSearch.swift:364-366). Heard is what Compose hands TalkBack as a node in view: hidden from accessibility
+ * above it, the map under the open search still gave TalkBack its credits (app-bd).
  */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w443dp-h970dp-mdpi")
@@ -53,12 +57,19 @@ class MapUnderChromeTest {
 
     private val controllers = TestControllers()
     private val locale = Locale.getDefault()
-    private val hidden = SemanticsMatcher.keyIsDefined(SemanticsProperties.HideFromAccessibility)
+
+    /** The screen's view, whose nodes TalkBack is given. */
+    private lateinit var view: View
 
     @Before
     fun setUp() {
         Locale.setDefault(Locale.US)
         ScooterLanguage.current = ScooterLanguage.En
+        // TalkBack on: a service, which Compose gives its nodes to, and touch exploration.
+        val accessibility = ApplicationProvider.getApplicationContext<Context>().getSystemService(AccessibilityManager::class.java)
+        shadowOf(accessibility).setEnabled(true)
+        shadowOf(accessibility).setTouchExplorationEnabled(true)
+        shadowOf(accessibility).setEnabledAccessibilityServiceList(listOf(AccessibilityServiceInfo()))
     }
 
     @After
@@ -82,7 +93,7 @@ class MapUnderChromeTest {
         compose.waitForIdle()
         assertTrue(frames().covered)
         assertUnheard(map())
-        compose.onNodeWithTag(SEARCH_ISLAND_TAG).assert(!hidden and !hasAnyAncestor(hidden))
+        assertHeard(compose.onNodeWithTag(SEARCH_ISLAND_TAG, useUnmergedTree = true))
 
         // Back closes it, as Cancel does.
         back()
@@ -119,7 +130,7 @@ class MapUnderChromeTest {
         assertTrue(frames().covered)
         assertUnheard(map())
         assertUnheard(locateButton())
-        compose.onNodeWithTag(SEARCH_ISLAND_TAG).assert(!hidden and !hasAnyAncestor(hidden))
+        assertHeard(compose.onNodeWithTag(SEARCH_ISLAND_TAG, useUnmergedTree = true))
 
         back()
         assertFalse(screen().searchIsExpanded)
@@ -133,6 +144,7 @@ class MapUnderChromeTest {
         lateinit var screen: ScreenState
         lateinit var frames: MapChromeFrames
         compose.setContent {
+            view = LocalView.current
             screen = rememberScreenState()
             ScooterMapScreen(
                 controller = model,
@@ -148,16 +160,24 @@ class MapUnderChromeTest {
         return Pair({ screen }, { frames })
     }
 
-    private fun map() = compose.onNodeWithTag(MAP)
+    // Unmerged: a node TalkBack is not given is still there, and its id is asked for.
+    private fun map() = compose.onNodeWithTag(MAP, useUnmergedTree = true)
 
-    private fun locateButton() = compose.onNode((hasContentDescription("Near me") or hasText("Near me")) and hasClickAction())
+    private fun locateButton() =
+        compose.onNode((hasContentDescription("Near me") or hasText("Near me")) and hasClickAction(), useUnmergedTree = true)
+
+    /** Whether TalkBack reads the node: Compose gives it TalkBack, as a node in view. */
+    private fun heard(node: SemanticsNodeInteraction): Boolean {
+        val id = node.fetchSemanticsNode().id
+        return compose.runOnIdle { view.accessibilityNodeProvider.createAccessibilityNodeInfo(id)?.isVisibleToUser == true }
+    }
 
     private fun assertHeard(node: SemanticsNodeInteraction) {
-        node.assert(!hidden and !hasAnyAncestor(hidden))
+        assertTrue("TalkBack reads it", heard(node))
     }
 
     private fun assertUnheard(node: SemanticsNodeInteraction) {
-        node.assert(hidden or hasAnyAncestor(hidden))
+        assertFalse("TalkBack reads it", heard(node))
     }
 
     private fun back() {

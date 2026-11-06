@@ -55,8 +55,8 @@ class AccessibilityFocusReturn internal constructor(private val view: View) {
      * search bar as the search closes, by a place chosen, Cancel or Back. The row the focus was on goes with the panel,
      * and TalkBack, finding no focus once the keyboard's window had gone, put it on the first node it found, a cluster
      * on an open Fold (app-ai's F11); a focus already on the bar keeps TalkBack's own away. A focus outside [closing]
-     * as it closes stays where it is: the map beside the panel, its markers and the locate button, is heard while
-     * searching, as on the iPad, and Back or a link closes the search from there too (review-lead-1nov K1).
+     * as it closes stays where it is (review-lead-1nov K1, when the map beside the panel, its markers and the locate
+     * button, was heard while searching; since 4 November TalkBack reads the open search alone).
      */
     fun moveTo(tag: String, closing: String) {
         if (view.context.getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled != true) return

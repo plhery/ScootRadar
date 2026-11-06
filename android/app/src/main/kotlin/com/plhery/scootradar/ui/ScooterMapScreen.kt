@@ -320,7 +320,7 @@ fun ScooterMapScreen(
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
                     // The open search is over it: TalkBack reads the search alone, its markers, its compass and its
                     // credits none, as VoiceOver reads the iPhone's (4810e235).
-                    Box(Modifier.fillMaxSize().unheard(searchIsExpanded)) {
+                    Box(Modifier.fillMaxSize().unheardWithAllItHolds(searchIsExpanded)) {
                         map(dark)
                     }
                     // Before the chrome is hidden from TalkBack under what opens.
@@ -924,7 +924,7 @@ private fun PanelChrome(
                 // at the most, the iPad's spacing after its Spacer (ScooterMapScreen.swift:401-404).
                 // Beside the open search they stay in view, but TalkBack reads the search alone, as the map's.
                 Row(
-                    Modifier.align(Alignment.BottomEnd).padding(16.dp).padding(start = 10.dp).unheard(isSearching),
+                    Modifier.align(Alignment.BottomEnd).padding(16.dp).padding(start = 10.dp).unheardWithAllItHolds(isSearching),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {
@@ -966,6 +966,15 @@ private fun GraphicsLayerScope.makeWay(hidden: Boolean, progress: Float, scale: 
 
 /** [makingWay]'s `.accessibilityHidden`. */
 private fun Modifier.unheard(hidden: Boolean): Modifier = if (hidden) semantics { hideFromAccessibility() } else this
+
+/**
+ * `.accessibilityHidden` on what stays in view under or beside the open search, the map and a panel's legend and
+ * locate button: TalkBack hears neither it nor anything it holds, as SwiftUI's hides a view's children too.
+ * hideFromAccessibility() hides only the node it is set on: TalkBack read the map's credits under the open search
+ * (app-bd), and beside a panel the map's markers, the legend's link and the locate button. Their nodes go with it.
+ */
+private fun Modifier.unheardWithAllItHolds(hidden: Boolean): Modifier =
+    if (hidden) clearAndSetSemantics { hideFromAccessibility() } else this
 
 /** `.allowsHitTesting(false)` while it goes: its buttons and its scroll take no touch. */
 private fun Modifier.inert(hidden: Boolean): Modifier =
