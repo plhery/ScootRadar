@@ -58,15 +58,15 @@ const guide: Guide = {
       heading: 'Wo darf man in Mainz mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf Radwegen und Radfahrstreifen, auf Geh- und Radwegen und in Fahrradstrassen; nur wo es nichts davon gibt, auf der Fahrbahn. Gehweg und Fussgängerzone sind tabu, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es; ab 1. März 2027 darfst du auch dort im Schritttempo fahren, wo «Radverkehr frei» sie öffnet. Diese Regeln setzt der Bund.',
-        'In den **städtischen Grünanlagen**, laut Grünanlagensatzung (Fassung von 2022) «insbesondere Parks, Uferanlagen», dürfen Fusswege, Rasen und Beete nur Kinderwagen, Kinderfahrzeuge und Krankenfahrstühle befahren, ausser ein Schild gibt sie frei; nach unserer Lesart gilt das auch für E-Scooter. Laut Karte der Stadt (Anlage 2) sind unter anderem die Felder rund um die MEWA Arena, ein Streifen am Rheinufer vom Winterhafen bis Weisenau und mehrere Flächen südlich der Zitadelle Abstellverbotszone.',
+        'In den **städtischen Grünanlagen**, laut Grünanlagensatzung (Fassung von 2022) «insbesondere Parks, Uferanlagen», dürfen Fusswege, Rasen und Beete nur Kinderwagen, Kinderfahrzeuge und Krankenfahrstühle befahren, ausser ein Schild gibt sie frei; das gilt also auch für E-Scooter. Laut Karte der Stadt (Anlage 2) sind unter anderem die Felder rund um die MEWA Arena, ein Streifen am Rheinufer vom Winterhafen bis Weisenau und mehrere Flächen südlich der Zitadelle Abstellverbotszone.',
         {
           table: {
             caption: 'Wo in Mainz was gilt (Stand 26. Oktober 2026)',
             head: ['Ort', 'Was gilt', 'Wer es festlegt'],
             rows: [
               ['Altstadt und Neustadt, auch Hauptbahnhof und Rheinufer bis zum Winterhafen', 'Fahrt nur auf einer der 25 Abstellflächen beenden; in Teilen der Altstadt ist Abstellen ganz verboten', 'Stadt: E-Tretroller-Richtlinie, seit 1. März 2026'],
-              ['Städtische Parks und Uferanlagen, etwa der Stadtpark', 'Fusswege und Rasen nur, wo ein Schild es erlaubt (nach unserer Lesart auch für E-Scooter); Abstellen vielerorts verboten', 'Stadt: Grünanlagensatzung und Abstellverbotszonen der Richtlinie'],
-              ['Theodor-Heuss-Brücke', 'Nicht abstellen: Die Richtlinie verbietet es auf Strassenbrücken, nach unserer Lesart auch hier', 'Stadt: E-Tretroller-Richtlinie'],
+              ['Städtische Parks und Uferanlagen, etwa der Stadtpark', 'Fusswege und Rasen nur, wo ein Schild es erlaubt, auch für E-Scooter; Abstellen vielerorts verboten', 'Stadt: Grünanlagensatzung und Abstellverbotszonen der Richtlinie'],
+              ['Theodor-Heuss-Brücke', 'Nicht abstellen: Die Richtlinie verbietet es auf Strassenbrücken, also auch hier', 'Stadt: E-Tretroller-Richtlinie'],
               ['Übrige Stadtteile, etwa Bretzenheim, Gonsenheim und Hechtsheim', 'Frei abstellen, ausser in Verbotszonen; 1,50 m Gehweg frei lassen', 'Stadt: E-Tretroller-Richtlinie'],
               ['Zitadelle, Campus der Universität und der Hochschule', 'Keine eigene Scooter-Regel gefunden; die Zitadelle liegt in der Innenstadt, beide Campus in keiner Verbotszone', 'Stadt, JGU und Hochschule Mainz (Stand 26. Oktober 2026)'],
             ],
@@ -86,7 +86,7 @@ const guide: Guide = {
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €. **Ohne Versicherungsplakette:** 40 €.',
             '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** heute 100 € und ein Punkt.',
             '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille. Bolt verbietet laut seinen Bedingungen (gültig ab 1. Dezember 2026) jeden Alkohol.',
-            '**Fusswege oder Rasen einer städtischen Grünanlage befahren:** laut Grünanlagensatzung bis zu 5000 €, nach unserer Lesart auch mit dem E-Scooter.',
+            '**Fusswege oder Rasen einer städtischen Grünanlage befahren:** laut Grünanlagensatzung bis zu 5000 €, auch mit dem E-Scooter.',
           ],
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
@@ -112,7 +112,7 @@ const guide: Guide = {
       heading: 'Johannisnacht, Rosenmontag und Mainz 05: Tipps',
       blocks: [
         '**Grossveranstaltungen:** Für Rosenmontag, das nächste Mal am 8. Februar 2027, und die Johannisnacht kann die Stadt oder die Polizei laut Richtlinie zusätzliche Bereiche sperren lassen, in denen du die Fahrt nicht beenden kannst; die Anbieter müssen es dir mitteilen.',
-        '**Johannisnacht:** 2026 füllte das Fest vom 19. bis 22. Juni die Innenstadt bis ans Rheinufer. Der Festbereich war von Freitag, 11 Uhr, bis Dienstag, 6 Uhr, für alle Kraftfahrzeuge gesperrt, nach unserer Lesart also auch für E-Scooter.',
+        '**Johannisnacht:** 2026 füllte das Fest vom 19. bis 22. Juni die Innenstadt bis ans Rheinufer. Der Festbereich war von Freitag, 11 Uhr, bis Dienstag, 6 Uhr, für alle Kraftfahrzeuge gesperrt, also auch für E-Scooter.',
         '**Mainz 05:** Zur MEWA Arena fahren die Linien 51, 53 und 630; der Verein nennt «rund 3000 Fahrradstellplätze direkt an der MEWA ARENA». Eine Scooter-Regel nennen weder Verein noch Stadionordnung 2026/27, aber die Felder rundum sind laut Karte der Stadt Abstellverbotszone.',
       ],
     },
@@ -132,7 +132,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Stadtpark oder am Rheinufer fahren?',
-      answer: 'Fusswege und Rasen in städtischen Parks und Uferanlagen dürfen laut Grünanlagensatzung nur Kinderwagen, Kinderfahrzeuge und Krankenfahrstühle befahren, ausser ein Schild gibt sie frei; nach unserer Lesart gilt das auch für E-Scooter.',
+      answer: 'Fusswege und Rasen in städtischen Parks und Uferanlagen dürfen laut Grünanlagensatzung nur Kinderwagen, Kinderfahrzeuge und Krankenfahrstühle befahren, ausser ein Schild gibt sie frei; das gilt also auch für E-Scooter.',
     },
     {
       question: 'Darf ich meinen E-Scooter in Strassenbahn und Bus mitnehmen?',

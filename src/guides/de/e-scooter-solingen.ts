@@ -44,8 +44,8 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehweg und Fussgängerzone sind tabu, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es, dann im Schritttempo; ab 1. März 2027 genügt auch «Radverkehr frei». Diese Regeln setzt der Bund.',
         {
           list: [
-            '**Parks, Wälder, Friedhöfe und Ufer:** Die Strassenordnung der Stadt vom 14. Februar 2019 zählt Waldungen, Park- und Grünanlagen, Friedhöfe sowie «Gewässer und Uferzonen» zu den Anlagen, wem auch immer sie gehören, und sagt: «Das Befahren von Anlagen mit Kraftfahrzeugen und Anhängern ist verboten. Auch das Parken ist hier unzulässig.» E-Scooter nennt sie nicht; rechtlich sind sie aber Kraftfahrzeuge (§ 1 eKFV). Nach unserer Lesart fährst und parkst du dort keinen E-Scooter, auch nicht am Ufer der Wupper. Vorsätzliche Verstösse gegen die Strassenordnung kann die Stadt mit bis zu 1000 € ahnden, fahrlässige mit bis zu 500 €.',
-            '**Grünstreifen:** «Das Fahren, Parken und Abstellen von Fahrzeugen auch auf ausserhalb der öffentlichen Strassen angelegten Grünstreifen ist untersagt», heisst es in derselben Strassenordnung. Nach unserer Lesart gilt das auch für E-Scooter.',
+            '**Parks, Wälder, Friedhöfe und Ufer:** Die Strassenordnung der Stadt vom 14. Februar 2019 zählt Waldungen, Park- und Grünanlagen, Friedhöfe sowie «Gewässer und Uferzonen» zu den Anlagen, wem auch immer sie gehören, und sagt: «Das Befahren von Anlagen mit Kraftfahrzeugen und Anhängern ist verboten. Auch das Parken ist hier unzulässig.» E-Scooter sind rechtlich Kraftfahrzeuge (§ 1 eKFV): Du fährst und parkst dort keinen E-Scooter, auch nicht am Ufer der Wupper. Vorsätzliche Verstösse gegen die Strassenordnung kann die Stadt mit bis zu 1000 € ahnden, fahrlässige mit bis zu 500 €.',
+            '**Grünstreifen:** «Das Fahren, Parken und Abstellen von Fahrzeugen auch auf ausserhalb der öffentlichen Strassen angelegten Grünstreifen ist untersagt», heisst es in derselben Strassenordnung. Das gilt auch für E-Scooter.',
           ],
         },
       ],
@@ -59,8 +59,8 @@ const guide: Guide = {
             caption: 'Wo in Solingen eigene Regeln gelten und wer sie setzt (Stand 26. Oktober 2026)',
             head: ['Ort', 'Was gilt', 'Wer es regelt'],
             rows: [
-              ['Parks, Wälder, Friedhöfe, Gewässer und Uferzonen', 'Nach unserer Lesart weder fahren noch parken', 'Stadt (Strassenordnung vom 14. Februar 2019)'],
-              ['Grünstreifen', 'Nach unserer Lesart weder fahren noch abstellen', 'Stadt (Strassenordnung)'],
+              ['Parks, Wälder, Friedhöfe, Gewässer und Uferzonen', 'Weder fahren noch parken', 'Stadt (Strassenordnung vom 14. Februar 2019)'],
+              ['Grünstreifen', 'Weder fahren noch abstellen', 'Stadt (Strassenordnung)'],
               ['Fussgängerzonen', 'Nur schieben, ausser ein Schild erlaubt das Fahren', 'Bund (eKFV, StVO), Stadt (Beschilderung)'],
               ['Rote Bereiche in der Bolt-App', 'Nicht abstellen', 'Bolt (Nutzungsbedingungen)'],
             ],
@@ -127,11 +127,11 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter an der Wupper oder im Wald fahren?',
-      answer: 'Nach unserer Lesart nicht. Die Strassenordnung der Stadt zählt Waldungen, Park- und Grünanlagen, Friedhöfe sowie Gewässer und Uferzonen zu den Anlagen und verbietet dort, mit Kraftfahrzeugen zu fahren und zu parken; ein E-Scooter ist rechtlich ein Kraftfahrzeug. Vorsätzliche Verstösse kann die Stadt mit bis zu 1000 € ahnden.',
+      answer: 'Nein. Die Strassenordnung der Stadt zählt Waldungen, Park- und Grünanlagen, Friedhöfe sowie Gewässer und Uferzonen zu den Anlagen und verbietet dort, mit Kraftfahrzeugen zu fahren und zu parken; ein E-Scooter ist rechtlich ein Kraftfahrzeug. Vorsätzliche Verstösse kann die Stadt mit bis zu 1000 € ahnden.',
     },
     {
       question: 'Wo darf ich in Solingen einen Leih-Scooter abstellen?',
-      answer: 'Wo die App das Fahrtende erlaubt und so, dass niemand behindert wird; bei Bolt nicht in den roten Bereichen der App. Nach unserer Lesart der Strassenordnung nicht in Parks, Wäldern, auf Friedhöfen, an Ufern und auf Grünstreifen.',
+      answer: 'Wo die App das Fahrtende erlaubt und so, dass niemand behindert wird; bei Bolt nicht in den roten Bereichen der App. Laut Strassenordnung nicht in Parks, Wäldern, auf Friedhöfen, an Ufern und auf Grünstreifen.',
     },
     {
       question: 'Darf ich einen E-Scooter im Bus der Stadtwerke Solingen mitnehmen?',
@@ -139,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'Komme ich mit dem E-Scooter zu Schloss Burg?',
-      answer: 'Ob du eine Fahrt in Burg beenden darfst, zeigt dir die App. Den Waldpfad von Unterburg zum Schloss fährst du nach unserer Lesart der Strassenordnung nicht: Waldungen zählen zu den Anlagen, in denen Kraftfahrzeuge verboten sind. Nimm ab Unterburg die Seilbahn oder einen Bus, etwa die Linie 683 oder am Wochenende die Freizeitlinie 687.',
+      answer: 'Ob du eine Fahrt in Burg beenden darfst, zeigt dir die App. Den Waldpfad von Unterburg zum Schloss fährst du laut Strassenordnung nicht: Waldungen zählen zu den Anlagen, in denen Kraftfahrzeuge verboten sind. Nimm ab Unterburg die Seilbahn oder einen Bus, etwa die Linie 683 oder am Wochenende die Freizeitlinie 687.',
     },
   ],
   sources: [

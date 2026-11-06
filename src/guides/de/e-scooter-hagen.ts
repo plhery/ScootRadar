@@ -35,11 +35,11 @@ const guide: Guide = {
         {
           list: [
             '**Innenstadt:** Die Elberfelder Strasse liegt in der Fussgängerzone der Innenstadt; so beschreibt es die Polizei Hagen in Meldungen vom Juni 2025 und vom Februar 2026. Wie weit die Zone reicht, zeigen die Schilder vor Ort. Dort steigst du ab und schiebst, solange kein Zusatzschild das Fahren erlaubt. Ab 1. März 2027 öffnet auch «Radverkehr frei» eine Fussgängerzone für E-Scooter, im Schritttempo.',
-            '**Hengsteysee und Harkortsee:** Für die Ufer gilt eine Verordnung, die die Bezirksregierung Arnsberg als Landesbehörde am 21. Februar 2020 im Einvernehmen mit dem Ruhrverband, dem Eigentümer der Seen, erlassen hat: «Das Befahren der Uferrandstreifen mit Kraftfahrzeugen und das Parken von Kraftfahrzeugen auf Uferrandstreifen sind verboten.» Der Uferrandstreifen ist 5 m breit. Rechtlich ist ein E-Scooter ein Kraftfahrzeug (§ 1 eKFV); nach unserer Lesart gilt das Verbot also auch für ihn.',
+            '**Hengsteysee und Harkortsee:** Für die Ufer gilt eine Verordnung, die die Bezirksregierung Arnsberg als Landesbehörde am 21. Februar 2020 im Einvernehmen mit dem Ruhrverband, dem Eigentümer der Seen, erlassen hat: «Das Befahren der Uferrandstreifen mit Kraftfahrzeugen und das Parken von Kraftfahrzeugen auf Uferrandstreifen sind verboten.» Der Uferrandstreifen ist 5 m breit. Rechtlich ist ein E-Scooter ein Kraftfahrzeug (§ 1 eKFV), das Verbot gilt also auch für ihn.',
             '**Radweg am Hengsteysee gesperrt:** Unterhalb der Wehranlage sichert der Ruhrverband auf der Hagener Seite rund 140 m Uferböschung. Der angrenzende Radweg ist dafür seit dem 26. Oktober 2026 voll gesperrt; eine Umleitung ist eingerichtet. Die Arbeiten sollen voraussichtlich bis Ende März 2027 dauern (Ruhrverband, 19. Oktober 2026; Radio Ennepe Ruhr, 26. Oktober 2026).',
             '**FernUniversität:** Ihre Hausordnung vom 11. Mai 2022 gilt für alle Gebäude und Flächen der Universität: «Die Benutzung jeglicher Fortbewegungsmittel wie z.B. Fahrräder, E-Scooter, Hoover-Boards, Inline-Skates u. ä. ist innerhalb der Gebäude der FernUniversität in Hagen nicht gestattet.»',
             '**Fachhochschule Südwestfalen:** Ihre Hausordnung vom 17. Juli 2026, veröffentlicht am 21. Juli, gilt an allen Standorten, auch auf dem Campus an der Haldener Strasse. «E-Roller» dürfen in den Hochschulgebäuden nicht benutzt werden, und draussen gilt: «Die Nutzung von Fahrzeugen aller Art auf den Aussenflächen der FH SWF setzt Rücksichtnahme auf Fussgängerinnen und Fussgänger voraus. Eine Nutzung auf Gehwegen und Bürgersteigen ist untersagt.»',
-            '**LWL-Freilichtmuseum:** In seinen Regeln für den Besuch vom 1. März 2016 heisst es: «Das Befahren des Museumsgeländes mit Fahrzeugen aller Art ist nicht erlaubt. Ausnahmen genehmigt die Museumsverwaltung.» Nach unserer Lesart gilt das auch für E-Scooter. Laut Museum fahren ab Hauptbahnhof die Buslinie 512 und der Regionalbus 84 bis zur Haltestelle «Freilichtmuseum».',
+            '**LWL-Freilichtmuseum:** In seinen Regeln für den Besuch vom 1. März 2016 heisst es: «Das Befahren des Museumsgeländes mit Fahrzeugen aller Art ist nicht erlaubt. Ausnahmen genehmigt die Museumsverwaltung.» Das gilt auch für E-Scooter. Laut Museum fahren ab Hauptbahnhof die Buslinie 512 und der Regionalbus 84 bis zur Haltestelle «Freilichtmuseum».',
           ],
         },
       ],
@@ -50,9 +50,9 @@ const guide: Guide = {
         'Es gelten die Regeln für Fahrräder: auf dem Gehweg, solange niemand behindert oder gefährdet wird; ab 1. März 2027 steht das ausdrücklich in der StVO. Wo du die Fahrt beenden darfst, zeigt dir die Lime-App.',
         {
           list: [
-            '**FernUniversität:** «Fahrräder und fahrradähnliche Fortbewegungsmittel sind ausschliesslich an den zur Verfügung gestellten Fahrradständern abzustellen», heisst es in der Hausordnung vom 11. Mai 2022. Nach unserer Lesart gehört ein Leih-Scooter auf dem Campus also an die Fahrradständer.',
+            '**FernUniversität:** «Fahrräder und fahrradähnliche Fortbewegungsmittel sind ausschliesslich an den zur Verfügung gestellten Fahrradständern abzustellen», heisst es in der Hausordnung vom 11. Mai 2022. Stell einen Leih-Scooter auf dem Campus also an die Fahrradständer.',
             '**Fachhochschule Südwestfalen:** «Fahrzeuge aller Art (z. B. Fahrräder, E-Roller, E-Bikes, landwirtschaftliche Geräte) sind auch gemäss geltender Brandschutzordnung nur im Aussenbereich in den dafür gekennzeichneten Flächen abzustellen» (Hausordnung vom 17. Juli 2026). Unberechtigt abgestellte Fahrzeuge, vor allem in Flucht- und Rettungswegen, lässt die Hochschule kostenpflichtig entfernen.',
-            '**Hengsteysee und Harkortsee:** Nicht auf dem 5 m breiten Uferrandstreifen; dort ist das Parken von Kraftfahrzeugen verboten, nach unserer Lesart auch von E-Scootern.',
+            '**Hengsteysee und Harkortsee:** Nicht auf dem 5 m breiten Uferrandstreifen; dort ist das Parken von Kraftfahrzeugen verboten, also auch von E-Scootern.',
           ],
         },
         {
@@ -122,7 +122,7 @@ const guide: Guide = {
     },
     {
       question: 'Wo darf ich einen Leih-Scooter in Hagen abstellen?',
-      answer: 'Wie ein Fahrrad, auf dem Gehweg nur, wenn niemand behindert wird, und nur dort, wo die App das Fahrtende erlaubt. An der FernUniversität gehört er nach unserer Lesart an die Fahrradständer, an der Fachhochschule in die gekennzeichneten Flächen draussen. An Hengstey- und Harkortsee stellst du ihn nach unserer Lesart nicht auf den 5 m breiten Uferrandstreifen.',
+      answer: 'Wie ein Fahrrad, auf dem Gehweg nur, wenn niemand behindert wird, und nur dort, wo die App das Fahrtende erlaubt. An der FernUniversität gehört er an die Fahrradständer, an der Fachhochschule in die gekennzeichneten Flächen draussen. An Hengstey- und Harkortsee stellst du ihn nicht auf den 5 m breiten Uferrandstreifen.',
     },
     {
       question: 'Darf ich einen E-Scooter im Bus der HST mitnehmen?',

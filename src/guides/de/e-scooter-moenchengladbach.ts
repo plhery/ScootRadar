@@ -43,7 +43,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Mönchengladbach parken: Innenstadt, Hauptbahnhof, Parks',
       blocks: [
         '«E-Scooter werden abgestellt wie Fahrräder, ohne Behinderung anderer Menschen», schreibt die Polizei Mönchengladbach (Juli 2025). Lass also Gehweg, Hauseingänge, Haltestellen und Einfahrten frei, auch in der Fussgängerzone der Hindenburgstrasse und am Hauptbahnhof.',
-        '**Parks und Grünanlagen:** Hier gilt eine Regel der Stadt. Ihre Strassen- und Anlagenverordnung vom 17. Dezember 2015, gültig bis Dezember 2035, erfasst alle öffentlich zugänglichen Park- und Grünanlagen, Gärten, Friedhöfe und Spielplätze, gleich wem sie gehören. Dort ist verboten, «Fahrzeuge abzustellen» und «ausserhalb der hierfür zugelassenen Wege zu fahren»; die Geldbusse reicht bis 1000 €. E-Scooter nennt die Verordnung nicht eigens, doch laut Polizei ist ein E-Scooter ein Kraftfahrzeug. Nach unserer Lesart gilt das Verbot also auch für ihn.',
+        '**Parks und Grünanlagen:** Hier gilt eine Regel der Stadt. Ihre Strassen- und Anlagenverordnung vom 17. Dezember 2015, gültig bis Dezember 2035, erfasst alle öffentlich zugänglichen Park- und Grünanlagen, Gärten, Friedhöfe und Spielplätze, gleich wem sie gehören. Dort ist verboten, «Fahrzeuge abzustellen» und «ausserhalb der hierfür zugelassenen Wege zu fahren»; die Geldbusse reicht bis 1000 €. Laut Polizei ist ein E-Scooter ein Kraftfahrzeug, das Verbot gilt also auch für ihn.',
         'Das gilt etwa für den Bunten Garten mit Botanischem Garten, den Volksgarten, den Geropark am Geroweiher, den Abteigarten und den Park von Schloss Rheydt, ebenso für Friedhöfe und Spielplätze. Beende die Fahrt am Rand des Parks, auf einer Fläche, wo der Scooter niemanden behindert.',
         'Bei Voi endet die Fahrt nicht (Stand November 2026):',
         {
@@ -156,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich den E-Scooter im Bunten Garten oder im Volksgarten abstellen?',
-      answer: 'Nach unserer Lesart nicht. Die Strassen- und Anlagenverordnung der Stadt verbietet, in Parks und Grünanlagen «Fahrzeuge abzustellen», und ein E-Scooter ist laut Polizei ein Kraftfahrzeug. Voi sperrt zudem die Rückgabe im Bunten Garten, und der Volksgarten liegt fast ganz ausserhalb des Voi-Gebiets (Stand November 2026). Beende die Fahrt vor dem Park, wo der Scooter niemanden behindert.',
+      answer: 'Nein. Die Strassen- und Anlagenverordnung der Stadt verbietet, in Parks und Grünanlagen «Fahrzeuge abzustellen», und ein E-Scooter ist laut Polizei ein Kraftfahrzeug. Voi sperrt zudem die Rückgabe im Bunten Garten, und der Volksgarten liegt fast ganz ausserhalb des Voi-Gebiets (Stand November 2026). Beende die Fahrt vor dem Park, wo der Scooter niemanden behindert.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Fussgängerzone der Hindenburgstrasse fahren?',

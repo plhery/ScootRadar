@@ -45,7 +45,7 @@ const guide: Guide = {
       heading: 'Wo darf man in Wolfsburg mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf Radwegen, Radfahr- und Schutzstreifen und in Fahrradstrassen; nur wo es nichts davon gibt, auf der Fahrbahn. Gehweg und Fussgängerzone sind tabu, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es; ab 1. März 2027 reicht auch «Radverkehr frei», dann im Schritttempo. Diese Regeln setzt der Bund.',
-        '**Parks:** Die Verordnung über die öffentliche Sicherheit der Stadt (seit 25. Januar 2019) verbietet, öffentliche Anlagen «mit Kraftfahrzeugen aller Art» zu befahren, «es sei denn, die Wege sind dazu durch eine entsprechende Beschilderung freigegeben», und dort Kraftfahrzeuge ausserhalb ausgewiesener Flächen abzustellen (§ 3 Abs. 2 Nr. 1 und 2), bei bis zu 5000 € Bussgeld. E-Scooter sind laut eKFV Kraftfahrzeuge, also gilt das nach unserer Lesart auch für sie. Die E-Mobilitäts-Seite der Stadt sagt es so: In Grünanlagen wird nicht gefahren und nicht geparkt, «ausgenommen ausgewiesene Radwege».',
+        '**Parks:** Die Verordnung über die öffentliche Sicherheit der Stadt (seit 25. Januar 2019) verbietet, öffentliche Anlagen «mit Kraftfahrzeugen aller Art» zu befahren, «es sei denn, die Wege sind dazu durch eine entsprechende Beschilderung freigegeben», und dort Kraftfahrzeuge ausserhalb ausgewiesener Flächen abzustellen (§ 3 Abs. 2 Nr. 1 und 2), bei bis zu 5000 € Bussgeld. E-Scooter sind laut eKFV Kraftfahrzeuge, also gilt das auch für sie. Die E-Mobilitäts-Seite der Stadt sagt es so: In Grünanlagen wird nicht gefahren und nicht geparkt, «ausgenommen ausgewiesene Radwege».',
         '**Allerpark:** Hier gilt zusätzlich eine eigene Ordnung, vom Rat am 17. Juni 2026 beschlossen und im Amtsblatt vom 26. Juni 2026 bekannt gemacht; sie gilt seit dem Tag danach und ersetzt die von 2009. Ihr § 4 Abs. 3: «Rennräder, E-Roller und andere Fortbewegungsmittel mit hoher Geschwindigkeit dürfen im Allerpark nur unter Berücksichtigung der Sicherheit aller Besucher benutzt werden.» Dass «E-Roller» auch E-Scooter meint, ist unsere Lesart.',
         {
           table: {
@@ -147,7 +147,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich im Allerpark E-Scooter fahren?',
-      answer: 'Nach unserer Lesart ja, auf freigegebenen Radwegen und mit Rücksicht: Laut Allerparkordnung von 2026 dürfen E-Roller dort «nur unter Berücksichtigung der Sicherheit aller Besucher» benutzt werden. Abstellen auf Grünflächen ist tabu.',
+      answer: 'Ja, auf freigegebenen Radwegen und mit Rücksicht: Laut Allerparkordnung von 2026 dürfen E-Roller dort «nur unter Berücksichtigung der Sicherheit aller Besucher» benutzt werden. Abstellen auf Grünflächen ist tabu.',
     },
     {
       question: 'Darf ich einen E-Scooter im Bus mitnehmen?',

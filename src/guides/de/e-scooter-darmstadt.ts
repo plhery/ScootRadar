@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Darmstadt 2026: Anbieter, Preise, Parkzonen',
   description: 'E-Scooter Darmstadt: Bolt, Dott, Lime und Voi, was eine Fahrt kostet, wo du fährst und parkst und was in Fussgängerzone, Parks und Strassenbahn gilt.',
   headline: 'E-Scooter Darmstadt: Anbieter, Preise, Parkzonen und Verbote',
-  lede: 'E-Scooter in Darmstadt leihst du bei Bolt, Dott, Lime oder Voi, ohne Führerschein. Bei Voi kostet eine Fahrt 0,49 € fürs Entsperren und 0,23 € pro Minute, Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Freischaltgebühr (Stand November 2026). Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone am Luisenplatz und nach unserer Lesart auch nicht durch die städtischen Parks. Dort lässt dich die App die Fahrt nicht beenden, am Hauptbahnhof laut Stadt nur auf den Abstellflächen an der Ost- und der Westseite.',
+  lede: 'E-Scooter in Darmstadt leihst du bei Bolt, Dott, Lime oder Voi, ohne Führerschein. Bei Voi kostet eine Fahrt 0,49 € fürs Entsperren und 0,23 € pro Minute, Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Freischaltgebühr (Stand November 2026). Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone am Luisenplatz und laut Grünanlagensatzung auch nicht durch die städtischen Parks. Dort lässt dich die App die Fahrt nicht beenden, am Hauptbahnhof laut Stadt nur auf den Abstellflächen an der Ost- und der Westseite.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Darmstadt',
@@ -51,7 +51,7 @@ const guide: Guide = {
             head: ['Ort', 'Was gilt', 'Wer es festlegt'],
             rows: [
               ['Fussgängerzone, etwa Luisenplatz und Wilhelminenstrasse', 'Absteigen und schieben; die Fahrt lässt sich dort nicht beenden', 'Bund (Fahren); Parkverbotszone in den Apps aller Anbieter (laut Stadt, Juli 2025)'],
-              ['Öffentliche Grünanlagen, etwa Herrngarten, Orangerie, Mathildenhöhe und Rosenhöhe', 'Kraftfahrzeuge verboten, nach unserer Lesart auch E-Scooter; Räder nur auf beschilderten Wegen im Schritttempo. Die Fahrt lässt sich nicht beenden', 'Stadt: Grünanlagensatzung von 1976, zuletzt 2002 geändert'],
+              ['Öffentliche Grünanlagen, etwa Herrngarten, Orangerie, Mathildenhöhe und Rosenhöhe', 'Kraftfahrzeuge verboten, also auch E-Scooter; Räder nur auf beschilderten Wegen im Schritttempo. Die Fahrt lässt sich nicht beenden', 'Stadt: Grünanlagensatzung von 1976, zuletzt 2002 geändert'],
               ['Prinz-Georg-Garten', 'Das Fahrverbot für Räder «umfasst auch andere Formen von Freizeitmobilität wie E-Scooter»: schieben oder draussen abstellen, ausser auf offiziellen Radwegen', 'Land Hessen: Besuchsordnung der Staatlichen Schlösser und Gärten (August 2026)'],
               ['Hauptbahnhof', 'Fahrt nur auf den Abstellflächen an der Ost- und der Westseite beenden', 'Die Anbieter mit der Stadt (laut Magistrat, Mai 2023)'],
               ['17 Call-a-Bike-Stationen', 'Im Umkreis von etwa 100 m nur an der Station abstellen', 'Stadt und HEAG mobilo (seit Juni 2024)'],
@@ -128,7 +128,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Herrngarten fahren?',
-      answer: 'Nach unserer Lesart nein: Laut Grünanlagensatzung dürfen öffentliche Grünanlagen «nicht mit Kraftfahrzeugen» befahren werden, und ein E-Scooter ist laut § 1 der E-Scooter-Verordnung eines. Ausdrücklich sagt die Stadt das nicht. Beenden kannst du die Fahrt im Park nicht.',
+      answer: 'Nein: Laut Grünanlagensatzung dürfen öffentliche Grünanlagen «nicht mit Kraftfahrzeugen» befahren werden, und ein E-Scooter ist laut § 1 der E-Scooter-Verordnung eines. Beenden kannst du die Fahrt im Park nicht.',
     },
     {
       question: 'Darf ich meinen E-Scooter in der Strassenbahn mitnehmen?',

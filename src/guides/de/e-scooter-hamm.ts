@@ -47,8 +47,8 @@ const guide: Guide = {
             head: ['Ort', 'Was gilt', 'Wer es regelt'],
             rows: [
               ['Fussgängerzone an Weststrasse und Bahnhofstrasse', 'Nicht fahren, solange kein Schild es erlaubt', 'Bund (eKFV)'],
-              ['Gehwege in Grünanlagen und Alleen', 'Befahren nur mit Krankenfahrstuhl, Kinderwagen oder Kinderfahrzeug; nach unserer Lesart gilt das Verbot auch für E-Scooter', 'Stadt (Strassen- und Anlagenordnung von 2021)'],
-              ['Betriebswege am Datteln-Hamm-Kanal', 'Frei nur für Fussgänger und Fahrräder; nach unserer Lesart ist der E-Scooter als Kraftfahrzeug ausgeschlossen', 'Bund (Wasserstrassen-Betriebsanlagenverordnung)'],
+              ['Gehwege in Grünanlagen und Alleen', 'Befahren nur mit Krankenfahrstuhl, Kinderwagen oder Kinderfahrzeug; E-Scooter also nicht', 'Stadt (Strassen- und Anlagenordnung von 2021)'],
+              ['Betriebswege am Datteln-Hamm-Kanal', 'Frei nur für Fussgänger und Fahrräder; der E-Scooter ist als Kraftfahrzeug ausgeschlossen', 'Bund (Wasserstrassen-Betriebsanlagenverordnung)'],
               ['Hauptbahnhof', 'Im Bahnhof nicht fahren, nur schieben oder tragen; nicht an Zugängen oder auf Bahnsteigen abstellen', 'DB (Hausordnung der Bahnhöfe)'],
               ['Hochschule Hamm-Lippstadt', 'StVO und Schrittgeschwindigkeit auf dem Gelände; E-Roller in den Gebäuden nur in einer Tasche', 'Hochschule (Hausordnung, zuletzt geändert am 20. Januar 2025)'],
             ],
@@ -57,9 +57,9 @@ const guide: Guide = {
         {
           list: [
             '**Fussgängerzone:** Die Sondernutzungssatzung nennt sie «die Fussgängerzone im Bereich der Weststrasse und der Bahnhofstrasse». Hier steigst du ab und schiebst, solange kein Zusatzschild «Elektrokleinstfahrzeuge frei» das Fahren erlaubt; das Schild «Radfahrer frei» gilt laut Stadt nicht für E-Scooter. Die Fussgängerzone nennt die Stadt auch als Beispiel für eine Parkverbotszone. Am 14. Oktober 2026 kontrollierte die Polizei Hamm in der Fussgängerzone, auf der Martin-Luther-Strasse und rund um das Beisenkamp-Gymnasium und stellte insgesamt 99 Verstösse fest, «vor allem bei jungen E-Scooter-Fahrenden»: auf der falschen Strassenseite, gegen die Fahrtrichtung auf Gehwegen, zu mehreren auf einem Fahrzeug. Weitere Kontrollen hat sie angekündigt.',
-            '**Grünanlagen:** Die Strassen- und Anlagenordnung der Stadt vom 14. Dezember 2021 verbietet, «die Gehwege in den Anlagen mit anderen Fahrzeugen als Krankenfahrstühlen, Kinderwagen oder Kinderfahrzeugen (Roller, Dreirad, Skateboard, Kinderfahrrad, Rollschuhe u.ä.) zu befahren». Als Anlagen zählt sie unter anderem die allgemein zugänglichen Grünanlagen und Alleen, die Wälder der Stadt, Friedhöfe und Spielplätze. E-Scooter nennt die Verordnung nicht; nach unserer Lesart gilt das Verbot auch für sie.',
-            '**Datteln-Hamm-Kanal:** Der Kanal ist eine Wasserstrasse des Bundes. Auf den bundeseigenen Ufergrundstücken und Betriebswegen verbietet die Wasserstrassen-Betriebsanlagenverordnung das «Befahren mit Kraftfahrzeugen»; erlaubt sind nur Fussgänger und auf den Betriebswegen Fahrräder. E-Scooter nennt sie nicht, sie sind aber Kraftfahrzeuge: Nach unserer Lesart fährst du dort nicht.',
-            '**Hochschule Hamm-Lippstadt:** Laut Hausordnung, zuletzt am 20. Januar 2025 geändert, fährst du in den Gebäuden nicht mit dem E-Roller; dort ist er «in einer Tasche zu transportieren». Auf dem Gelände gilt die StVO, und «es ist Schrittgeschwindigkeit einzuhalten». Abstellen dürfen «Kraftfahrzeuge und Fahrräder» nur auf gekennzeichneten Flächen; nach unserer Lesart gilt das auch für E-Scooter.',
+            '**Grünanlagen:** Die Strassen- und Anlagenordnung der Stadt vom 14. Dezember 2021 verbietet, «die Gehwege in den Anlagen mit anderen Fahrzeugen als Krankenfahrstühlen, Kinderwagen oder Kinderfahrzeugen (Roller, Dreirad, Skateboard, Kinderfahrrad, Rollschuhe u.ä.) zu befahren». Als Anlagen zählt sie unter anderem die allgemein zugänglichen Grünanlagen und Alleen, die Wälder der Stadt, Friedhöfe und Spielplätze. Ein E-Scooter ist ein anderes Fahrzeug, das Verbot gilt also auch für ihn.',
+            '**Datteln-Hamm-Kanal:** Der Kanal ist eine Wasserstrasse des Bundes. Auf den bundeseigenen Ufergrundstücken und Betriebswegen verbietet die Wasserstrassen-Betriebsanlagenverordnung das «Befahren mit Kraftfahrzeugen»; erlaubt sind nur Fussgänger und auf den Betriebswegen Fahrräder. E-Scooter sind Kraftfahrzeuge (§ 1 eKFV): Du fährst dort nicht.',
+            '**Hochschule Hamm-Lippstadt:** Laut Hausordnung, zuletzt am 20. Januar 2025 geändert, fährst du in den Gebäuden nicht mit dem E-Roller; dort ist er «in einer Tasche zu transportieren». Auf dem Gelände gilt die StVO, und «es ist Schrittgeschwindigkeit einzuhalten». Abstellen dürfen «Kraftfahrzeuge und Fahrräder» nur auf gekennzeichneten Flächen; das gilt also auch für E-Scooter.',
           ],
         },
       ],
@@ -137,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter am Datteln-Hamm-Kanal fahren?',
-      answer: 'Nach unserer Lesart nicht auf den Betriebswegen und Ufergrundstücken des Bundes: Die Wasserstrassen-Betriebsanlagenverordnung verbietet dort das Befahren mit Kraftfahrzeugen und lässt auf den Betriebswegen nur Fussgänger und Fahrräder zu. Ein E-Scooter ist ein Kraftfahrzeug.',
+      answer: 'Nicht auf den Betriebswegen und Ufergrundstücken des Bundes: Die Wasserstrassen-Betriebsanlagenverordnung verbietet dort das Befahren mit Kraftfahrzeugen und lässt auf den Betriebswegen nur Fussgänger und Fahrräder zu. Ein E-Scooter ist ein Kraftfahrzeug.',
     },
     {
       question: 'Wo darf ich in Hamm einen Leih-Scooter abstellen?',

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Augsburg 2026: Anbieter, Preise, Parken, Tram',
   description: 'E-Scooter Augsburg: wer verleiht, was eine Fahrt kostet, wo du fahren und parken darfst, was in Innenstadt und Parks gilt und warum die Tram tabu ist.',
   headline: 'E-Scooter Augsburg: Anbieter, Preise, Parken und Regeln',
-  lede: 'E-Scooter in Augsburg leihst du ohne Führerschein bei Voi, Lime oder Bolt; Bolt vermietet erst ab 18, einen eigenen E-Scooter darfst du schon ab 14 fahren. Auch Hopp führt Augsburg auf seiner Website. Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du nach unserer Lesart der Grünanlagensatzung nicht.',
+  lede: 'E-Scooter in Augsburg leihst du ohne Führerschein bei Voi, Lime oder Bolt; Bolt vermietet erst ab 18, einen eigenen E-Scooter darfst du schon ab 14 fahren. Auch Hopp führt Augsburg auf seiner Website. Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du laut Grünanlagensatzung nicht.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Augsburg',
@@ -139,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Wittelsbacher Park oder an der Wertach fahren?',
-      answer: 'Nach unserer Lesart nein. Die Grünanlagensatzung verbietet in städtischen Parks, Kraftfahrzeuge zu fahren oder abzustellen, und E-Scooter sind rechtlich Kraftfahrzeuge; das gilt auch in den Lech- und Wertachauen, soweit sie städtische Anlagen sind. Ausgenommen sind Wege, die ein Schild freigibt.',
+      answer: 'Nein. Die Grünanlagensatzung verbietet in städtischen Parks, Kraftfahrzeuge zu fahren oder abzustellen, und E-Scooter sind rechtlich Kraftfahrzeuge; das gilt auch in den Lech- und Wertachauen, soweit sie städtische Anlagen sind. Ausgenommen sind Wege, die ein Schild freigibt.',
     },
   ],
   sources: [
