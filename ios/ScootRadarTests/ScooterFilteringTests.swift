@@ -651,6 +651,32 @@ final class ScooterFilteringTests: XCTestCase {
     }
 
     @MainActor
+    func testATapOnAClusterWithADotWithinReachDoesOneThing() {
+        // On the cluster's bubble beside a dot: the cluster zooms in, and the dot is not chosen.
+        XCTAssertTrue(ScooterMapView.Coordinator.tapMeansCluster(isOnCluster: true, isOnDot: false))
+        // On the dot itself: the dot is chosen...
+        XCTAssertFalse(ScooterMapView.Coordinator.tapMeansCluster(isOnCluster: true, isOnDot: true))
+        XCTAssertFalse(ScooterMapView.Coordinator.tapMeansCluster(isOnCluster: false, isOnDot: false))
+        // ...and the cluster MapKit selects after the tap stays shut.
+        XCTAssertTrue(ScooterMapView.Coordinator.shouldSuppressClusterSelection(
+            intendedID: "lime:tapped",
+            until: 11,
+            now: 10.5
+        ))
+        // A tap that chose no dot opens the cluster, and so does a later selection (VoiceOver).
+        XCTAssertFalse(ScooterMapView.Coordinator.shouldSuppressClusterSelection(
+            intendedID: nil,
+            until: 11,
+            now: 10.5
+        ))
+        XCTAssertFalse(ScooterMapView.Coordinator.shouldSuppressClusterSelection(
+            intendedID: "lime:tapped",
+            until: 11,
+            now: 11
+        ))
+    }
+
+    @MainActor
     func testTopChromeFrameExcludesUnderlyingMapInteractions() {
         let chromeFrame = CGRect(x: 12, y: 62, width: 369, height: 62)
 

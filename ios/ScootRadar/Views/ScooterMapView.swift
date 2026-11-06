@@ -1668,8 +1668,17 @@ struct ScooterMapView: UIViewRepresentable {
                 return
             }
             let scooter = scooterAnnotation(at: point, on: mapView)
-            // A bay under the touch is meant, unless the touch is on a dot itself.
             let isOnDot = scooter.map { $0.distance <= $0.annotation.look.footprint / 2 + 4 } ?? false
+            // A cluster under the touch is meant, unless the touch is on a dot itself: MapKit selects
+            // it and zooms in, and a dot within reach is not chosen as well.
+            if Self.tapMeansCluster(isOnCluster: isOnClusterView(point, on: mapView), isOnDot: isOnDot) {
+                registerDirectMapTap(selectionID: nil)
+                if !parent.isWalking {
+                    clearSelection(on: mapView)
+                }
+                return
+            }
+            // So is a bay, unless the touch is on a dot itself.
             if !isOnDot, let parking = parkingAnnotation(at: point, on: mapView) {
                 // Like a scooter: publish the tap at once, whatever MapKit resolves later.
                 registerDirectMapTap(selectionID: nil)
@@ -1779,6 +1788,34 @@ struct ScooterMapView: UIViewRepresentable {
         /// Half of the 44 pt a target needs.
         private static let tapReach: CGFloat = 22
 
+        /// Whether the topmost view under the touch is a cluster's, the server's or MapKit's: MapKit
+        /// selects that cluster after the tap.
+        private func isOnClusterView(_ point: CGPoint, on mapView: MKMapView) -> Bool {
+            var hitView = mapView.hitTest(point, with: nil)
+            while let view = hitView, view !== mapView {
+                if let annotation = (view as? MKAnnotationView)?.annotation {
+                    return annotation is MKClusterAnnotation || annotation is ScooterServerClusterAnnotation
+                }
+                hitView = view.superview
+            }
+            return false
+        }
+
+        /// One tap does one thing (MAP-209): on a cluster it zooms in, unless it is on a dot itself,
+        /// which it then chooses.
+        static func tapMeansCluster(isOnCluster: Bool, isOnDot: Bool) -> Bool {
+            isOnCluster && !isOnDot
+        }
+
+        /// A cluster MapKit selects after a direct tap chose a dot stays shut: the tap meant the dot.
+        static func shouldSuppressClusterSelection(
+            intendedID: String?,
+            until deadline: TimeInterval,
+            now: TimeInterval
+        ) -> Bool {
+            now < deadline && intendedID != nil
+        }
+
         private func parkingAnnotation(
             at point: CGPoint,
             on mapView: MKMapView
@@ -1881,6 +1918,18 @@ struct ScooterMapView: UIViewRepresentable {
             }
             if now >= suppressAllMapKitSelectionsUntil {
                 suppressAllMapKitSelectionsUntil = 0
+            }
+
+            if let annotation = view.annotation,
+               annotation is ScooterServerClusterAnnotation || annotation is MKClusterAnnotation,
+               Self.shouldSuppressClusterSelection(
+                   intendedID: directTapSelectionID,
+                   until: suppressMapKitSelectionUntil,
+                   now: now
+               ) {
+                mapView.deselectAnnotation(annotation, animated: false)
+                restoreDirectSelection(on: mapView)
+                return
             }
 
             if let cluster = view.annotation as? ScooterServerClusterAnnotation {
