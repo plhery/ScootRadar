@@ -730,6 +730,11 @@ class ScooterModelsTest {
     fun mapZoomRoundsUpAtTheServerClusteringBoundary() {
         assertEquals(15, ScooterClusteringPolicy.apiZoom(15.0))
         assertEquals(16, ScooterClusteringPolicy.apiZoom(15.01))
+        assertEquals(22, ScooterClusteringPolicy.apiZoom(1e300))
+        assertEquals(0, ScooterClusteringPolicy.apiZoom(-1e300))
+        assertEquals(0, ScooterClusteringPolicy.apiZoom(Double.NaN))
+        assertEquals(22, ScooterClusteringPolicy.apiZoom(Double.POSITIVE_INFINITY))
+        assertEquals(0, ScooterClusteringPolicy.apiZoom(Double.NEGATIVE_INFINITY))
         assertTrue(ScooterClusteringPolicy.representationsMatch(16, 18))
         assertFalse(ScooterClusteringPolicy.representationsMatch(14, 15))
     }

@@ -201,10 +201,13 @@ object ScooterClusteringPolicy {
 
     fun shouldCluster(apiZoom: Int): Boolean = apiZoom <= maximumClusterZoom
 
-    /** A zoom past Int's range, which would stop the iPhone app, is 22 here, as any above 22 is. */
+    /**
+     * Clamped to 0–22 before it becomes an Int, as the iPhone's is (d7cb79f2): a zoom past Int's range, infinity
+     * included, is 22 as any above 22 is, and below it 0; NaN is 0.
+     */
     fun apiZoom(zoomLevel: Double): Int {
-        if (!zoomLevel.isFinite()) return 0
-        return min(22, max(0, ceil(zoomLevel).toInt()))
+        if (zoomLevel.isNaN()) return 0
+        return min(22.0, max(0.0, ceil(zoomLevel))).toInt()
     }
 
     fun representationsMatch(lhs: Int, rhs: Int): Boolean {
