@@ -1784,7 +1784,9 @@ Bonaire had feeds to add. Survey files are in
   228 and Mankato 30. Cochrane, Cranbrook and Okotoks held none in the sweeps
   of the afternoon of 2 November, and are paused from that day until 1 April.
   On 2 November Kamloops held 143, Vernon 94, Oshawa 50, Brampton 56,
-  Bloomington 239 and Mankato 38.
+  Bloomington 239 and Mankato 38. Oshawa held none from 4 November, its city saying the
+  program "paused for the cold, snowy months" as of 2 November, and is paused
+  from that day until 1 April (below).
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));
@@ -2003,6 +2005,14 @@ Bonaire had feeds to add. Survey files are in
   move `until` to that day; in October 2027, set `from` by the city's notice.
   Bird Pickering likewise, its pilot's page saying April to the end of
   October: check that the pilot comes back in 2027.
+- **Late March 2027:** Bird Oshawa (`bird_ca_app_oshawa`), paused from 2
+  November until 1 April, Toronto time, by the city's notice that the program
+  "paused for the cold, snowy months" as of 2 November 2026 and returns "in
+  spring 2027"; its spring notice brought the scooters back on 1 April. Bird
+  Windsor (`bird_ca_windsor`) likewise from 1 November, the city's page giving
+  "between April and October": Bird took its scooters in from 220 on 31
+  October to none by 4 November. If either is back earlier, move `until` to
+  that day ([Canada's winter section](canadian-scooter-feeds.md#winter)).
 - **Late March 2027:** Lime Târgoviște (`lime_ro_app_targoviste`), paused
   from 30 October until 1 April, Bucharest time: Lime took its 106 scooters
   in on 30 October 2026, between 10:20 and 10:30 UTC, and its map listed none
@@ -2037,6 +2047,12 @@ Bonaire had feeds to add. Survey files are in
   Rhodes falling and no dates published, so the feed has no `seasonal` window.
   It is still polled. If it holds scooters by then, nothing needs doing;
   otherwise look for a notice and decide whether it stays.
+- **1 April 2027:** Hoppy Kos (`hoppy_gr_kos`), from about 316 scooters on
+  27 October 2026 to none from 12:12 UTC on 3 November, as Zakynthos's a week
+  earlier. Kos publishes no season (its scooter regulation was annulled on 24
+  August 2026), so the feed has no `seasonal` window: its "feed empty" alert
+  is silenced until 1 April 2027 08:00 UTC. If it holds scooters by then,
+  nothing needs doing; otherwise look for a notice and decide whether it stays.
 - **1 April 2027:** Hopp Bucharest (`ro-bucharest`), empty on 18 October
   2026, in case Hopp starts a season there.
 - **1 April 2027:** Lichtensteig, out of the map's towns since 18 October
@@ -2082,6 +2098,14 @@ Bonaire had feeds to add. Survey files are in
   season; in 2026 the scooters came back on 5 May, so if the city announces
   a later start, move `until` to it
   ([Canada's winter section](canadian-scooter-feeds.md#winter)).
+- **20 April 2027:** Vaughan, Lime's market (`lime_ca_app_vaughan`) and
+  Bird's feed (`bird_ca_vaughan`), paused from 1 November 2026 until 1 May,
+  Toronto time: both emptied on 3 November 2026, Lime's from about 300 and
+  Bird's from 27. The city paused rentals from 1 November 2025 until 1 May
+  2026, and a search reading its pilot page gave a pause "as of Nov. 1,
+  2026", which the page, refusing automated reads, did not confirm. The pilot
+  runs to June 2027: check that it comes back, and move `until` to the city's
+  date ([Canada's winter section](canadian-scooter-feeds.md#winter)).
 - **20 April 2027:** Voi Jyväskylä (`voi_fi_app_275`), paused from 3
   November 2026 until the streets are clear, Helsinki time. Voi took its
   scooters in from about 1,350 on 30 October to none from about 16:00 UTC on

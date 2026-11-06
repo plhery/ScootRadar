@@ -2746,7 +2746,12 @@
       ],
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json"
-      ]
+      ],
+      "seasonal": {
+        "from": "11-01",
+        "until": "05-01",
+        "timeZone": "America/Toronto"
+      }
     },
     {
       "country": "US",

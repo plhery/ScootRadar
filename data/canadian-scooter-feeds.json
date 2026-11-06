@@ -148,7 +148,12 @@
         "west": -79.603,
         "east": -79.4076
       },
-      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/vaughan/gbfs.json"
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/vaughan/gbfs.json",
+      "seasonal": {
+        "from": "11-01",
+        "until": "05-01",
+        "timeZone": "America/Toronto"
+      }
     },
     {
       "id": "bird_ca_windsor",
@@ -170,7 +175,12 @@
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/windsor-on/gbfs.json",
       "aliases": [
         "Tecumseh"
-      ]
+      ],
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-01",
+        "timeZone": "America/Toronto"
+      }
     },
     {
       "id": "bird_ca_app_brampton",
@@ -370,7 +380,12 @@
         "east": -78.79867
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "f8e51758-3590-483c-b526-0634008bb3b2"
+      "birdAppArea": "f8e51758-3590-483c-b526-0634008bb3b2",
+      "seasonal": {
+        "from": "11-02",
+        "until": "04-01",
+        "timeZone": "America/Toronto"
+      }
     },
     {
       "id": "bird_ca_app_penticton",
@@ -911,6 +926,11 @@
       ],
       "timeZone": "America/Toronto",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "seasonal": {
+        "from": "11-01",
+        "until": "05-01",
+        "timeZone": "America/Toronto"
+      },
       "limeAppMap": true,
       "limeAppRegion": "ZOOUYXHNWQPH7",
       "limeMapGrid": {

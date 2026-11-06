@@ -328,6 +328,27 @@ which keeps standard time all year. In 2026 the scooters came back on 5 May
 so "feed empty" may report the market in late April 2027: move `until` then
 if the city announces a later start.
 
+Vaughan, Windsor and Oshawa emptied together in the first days of November
+2026, and each stops for the winter (below). In Vaughan, Lime's rider map
+held about 375 scooters on 1 November and 300 on 2 November, and Bird's feed
+27; both fell in the morning of 3 November, Lime's to none that evening and
+Bird's to one, gone by the 5th. The city paused rentals from 1 November 2025
+until 1 May 2026, and a search reading its pilot page on 6 November 2026 gave
+a pause "as of Nov. 1, 2026", which the page, refusing automated reads, did
+not confirm. So the catalog pauses Lime's Vaughan market and Bird's feed from
+1 November until 1 May, Toronto time: check in late April 2027, as the pilot
+ends in June 2027. Windsor's page gives the season as "between April and
+October", the rule Waterloo Region's pause follows, and Bird's feed fell from
+220 on 31 October to none by 4 November, so the catalog pauses it from 1
+November until 1 April. Oshawa's
+[page](https://www.oshawa.ca/escooters) says "As of Nov. 2, Oshawa's
+ride-sharing program offered through third-party vendor Bird Canada has
+paused for the cold, snowy months. The ride-sharing pilot program will return
+in spring 2027"; its rider-map area held 124 on 1 November and none from 4
+November. The catalog pauses it from 2 November until 1 April, Toronto time,
+when the city's spring notice brought the scooters back: check in late March
+2027.
+
 Elsewhere the winter stop is announced each year, or is the operator's own,
 so the catalog sets no window, and an empty feed shows as an empty town (see
 above):
@@ -342,7 +363,8 @@ above):
   [project page](https://www.halifax.ca/transportation/cycling-walking/shared-micromobility-project-bike-e-scooter-share).
 - **Vaughan:** rentals paused from 1 November 2025 "until Spring 2026" and
   were back on 1 May 2026, by the city's pilot page; the pilot runs from June
-  2025 to June 2027, with Bird and Lime.
+  2025 to June 2027, with Bird and Lime. Paused from 1 November 2026
+  (above).
 - **Parc Jean-Drapeau:** the park sets each season on its page. It ended on
   15 November in 2023, 2024 and 2025, and the 2026 calendar runs from 15
   April to 15 November.
@@ -362,7 +384,8 @@ above):
 - **Lacombe** and **Blackfalds** publish no season.
 - **Windsor:** the city's page says "between April and October"; its 2023
   report says Bird doesn't run in winter by its own choice, and the 2026
-  contract reportedly runs from February to November.
+  contract reportedly runs from February to November. Paused from 1 November
+  2026 (above).
 - **Beaumont:** the scooters were removed on 15 November 2025; the pilot runs
   "until the end of October 2026", and Lime's licence to the end of 2026
   ([town page](https://www.beaumont.ab.ca/recreation-activities/outdoor-spaces/e-scooters/)).
@@ -387,7 +410,8 @@ above):
 - **Brampton** set its seasons each year: 1 May to 30 November in 2024, 1
   April to 16 November in 2025; the 2026 season opened on 1 April with no
   end date. **Oshawa**'s ran from April to 1 December in 2023 and 2024, and
-  Bird "paused for the cold, snowy months" in 2025.
+  Bird "paused for the cold, snowy months" in 2025 and again from 2 November
+  2026 (paused, above).
 - **Cochrane** runs "through the warmer months, weather permitting" (paused
   from 2 November 2026, above);
   **Vernon** ran from March to October in 2025; **Lethbridge**'s pilot had an
