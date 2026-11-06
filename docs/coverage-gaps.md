@@ -1840,10 +1840,29 @@ Bonaire had feeds to add. Survey files are in
   a notice; whether it stays is decided then.
 - **1 December 2026:** Dott Hatvan (`dott_hu_hatvan`). It fell from 70
   scooters on 24 October 2026 to 15 and listed none from 28 October, 00:00
-  UTC; Dott's public feed answers 404 for the town and no notice was found in
-  Hungarian or English. The feed is read from Dott's rider map, on Netcup, and
-  is still polled. Then read it there and look for a notice; whether it stays
-  is decided then.
+  UTC; Dott's public feed answers 404 for the town and Dott itself published
+  no notice. Hatvan's papers then reported the service ending because its
+  operator is leaving Hungary
+  ([Heol](https://www.heol.hu/helyi-kozelet/2026/10/megszunik-a-berelheto-e-rollerezes-hatvanban),
+  [3000hatvan.hu](https://3000hatvan.hu/megszunik-a-berelheto-e-rollerezes-hatvanban/)).
+  The feed is read from Dott's rider map, on Netcup, and is still polled. Then
+  read it there and look for a notice; whether it stays is decided then.
+- **1 December 2026:** Dott Budapest, Dunaújváros and Pápa
+  (`dott_hu_budapest`, `dott_hu_dunaujvaros`, `dott_hu_papa`). They went from
+  about 109, 18 and 64 scooters to none together, between 09:00 and 12:00 UTC
+  on 4 November 2026, while Győr still held about 173 on 6 November. Veol
+  reports Pápa's scooters may go because Dott is leaving Hungary
+  ([Veol](https://www.veol.hu/helyi-kozelet/2026/11/e-roller-berles-dott-papa-megszunes)),
+  as Hatvan's did; Dott has published nothing. Their feeds stay ok and are
+  still polled; their "feed empty" alerts are silenced in Grafana until 1
+  December, 08:00 UTC. Then read them from Netcup with Hatvan's and Győr's:
+  still empty, retire them.
+- **1 December 2026:** Dott Piraeus (`dott_gr_piraeus`). It thinned from 32
+  scooters on 24 October 2026 to none from 2 November (one for an hour on the
+  evening of 4 November), while Thessaloniki runs on with about 690; no notice
+  or season was found. The feed stays ok and is still polled; its "feed
+  empty" alert is silenced in Grafana until 1 December, 08:00 UTC. Then read
+  it from Netcup and look for a notice; whether it stays is decided then.
 - **1 December 2026:** Dott Lubliniec (`dott_pl_lubliniec`). It held about
   128 scooters on 24 October 2026 and 102 on the morning of 28 October, when
   they were taken in by day, from 11:00 to 12:00 and 17:45 to 19:45 UTC; the
