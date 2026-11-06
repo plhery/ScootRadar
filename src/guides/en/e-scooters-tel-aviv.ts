@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Tel Aviv?',
       blocks: [
-        'Our map shows Dott’s price in Tel Aviv: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. Lime and Bird show their unlock fee and rate in the app before you start, so compare them there.',
+        'Dott’s open data gives its Tel Aviv price: ₪5 to unlock, then ₪1.25 a minute (as of November 2026). Lime and Bird show their unlock fee and rate in the app before you start, so compare them there.',
         'Fines cost far more than rides, and a scooter is easy to trace: since 1 August 2024 e-scooters in Israel have had to be registered and carry an ID plate, Maariv reported in 2026.',
       ],
     },
@@ -146,6 +146,7 @@ const guide: Guide = {
     { title: 'Walla: the Red Line’s hours, stations and rules on opening day (17 August 2023), Hebrew', url: 'https://news.walla.co.il/item/3602625' },
     { title: 'Walla: free weekend bus from Ben Gurion to Tel Aviv (12 February 2026), Hebrew', url: 'https://cars.walla.co.il/item/3816317' },
     { title: 'IAS: Naim BeSofash line 711 to Ben Gurion, free (12 February 2026), Hebrew', url: 'https://www.ias.co.il/?p=184936' },
+    { title: 'Dott: Tel Aviv area pricing, open data (GBFS), read 6 November 2026', url: 'https://gbfs.api.ridedott.com/public/v2/tel-aviv/system_pricing_plans.json' },
   ],
 };
 

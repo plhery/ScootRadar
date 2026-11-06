@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Cambridge 2026: Voi rules, parking, where to ride',
   description: 'E-scooters in Cambridge: Voi is the only hire operator. Who can ride, where to ride and park, the busway and towpath rules, and e-scooters on trains and buses.',
   headline: 'E-scooters in Cambridge: Voi hire, where you can ride and park, and the local rules',
-  lede: 'E-scooters in Cambridge come from one company, Voi, in a government trial extended to May 2028. You must be 18 or over with a full or provisional driving licence, and the Voi app shows the price before you unlock. Ride on roads and cycle lanes, never on pavements, and park without blocking the pavement. Voi scooters may use the path beside the guided busway; as we read the river towpath’s byelaws, they aren’t allowed there. A private e-scooter is illegal everywhere in public.',
+  lede: 'E-scooters in Cambridge come from one company, Voi, in a government trial extended to May 2028. You must be 18 or over with a full or provisional driving licence, and the Voi app shows the price before you unlock. Ride on roads and cycle lanes, never on pavements, and park without blocking the pavement. Voi scooters may use the path beside the guided busway, but the river towpath’s byelaws ban riding any vehicle on it except a bicycle. A private e-scooter is illegal everywhere in public.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Cambridge',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Cambridge: Voi and the combined authority’s trial',
       blocks: [
-        'One company, **Voi**, hires out e-scooters in Cambridge. Cambridgeshire County Council’s cycling page says “Voi has e-bikes and e-scooters for hire across Cambridge and some of the surrounding villages” and names no other operator.',
+        'One company, **Voi**, hires out e-scooters in Cambridge. Cambridgeshire County Council’s cycling page says “Voi has e-bikes and e-scooters for hire across Cambridge and some of the surrounding villages”.',
         '**Who runs it?** The Cambridgeshire and Peterborough Combined Authority holds the contract with Voi, the Cambridge Independent reported in September 2026. Cambridgeshire County Council is the highway authority, so it makes the traffic orders for the city’s roads.',
         '**How long will it run?** The trial has been “extended until May 2028”, the Cambridge Independent reported in September 2026.',
-        'At 14:55 on Saturday 24 October 2026 the [map of Cambridge](map:gb:Cambridge) showed about 800 Voi e-scooters free to rent. The total covers the villages on the city’s edge too: before dawn on 25 October about one in six stood outside the city boundary, in Orchard Park, Milton, Girton, Histon and Impington, Teversham, Oakington and Fulbourn, and none in Great Shelford, Grantchester or Waterbeach.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Cambridge](map:gb:Cambridge) showed about 800 Voi e-scooters free to rent. The total covers the villages on the city’s edge too: before dawn on 25 October about one in six stood outside the city boundary, in Orchard Park, Milton, Girton, Histon and Impington, Teversham, Oakington and Fulbourn.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost in Cambridge?',
       blocks: [
-        'No council page we checked gives Voi’s Cambridge prices or hours, so check the app: it shows the unlock fee and the price per minute before you start, and any passes on offer. Rides are short: a typical e-scooter trip lasts around 11 minutes, says a March 2025 report by Cambridge Ahead, a group of local businesses and institutions.',
+        'The Voi app shows the unlock fee and the price per minute before you start, and any passes on offer. Rides are short: a typical e-scooter trip lasts around 11 minutes, says a March 2025 report by Cambridge Ahead, a group of local businesses and institutions.',
         'Students may pay less: an Anglia Ruskin University student blog (November 2023) says Voi offers “a student discount when you register with your student email”; the app shows whether it still does. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -59,18 +59,18 @@ const guide: Guide = {
       blocks: [
         'Across England, hire scooters may use roads (never motorways), cycle lanes and routes with the blue bicycle sign, but never the pavement. In 2022 Cambridgeshire County Council made an experimental Electric Scooter Exemptions order: hire scooters could go wherever a pedal cycle may on dual-use cycle tracks, contraflow cycle lanes, bus lanes, bus gates and streets signed “no entry except cycles”.',
         'That order came into force on 31 March 2022 “for a period not exceeding 18 months”. The county’s page of experimental orders still listed it on 6 November 2026, and says such an order can stay in force for 18 months at most, so don’t count on bus lanes: follow the signs and the app. Voi’s no-ride and slow zones, for King’s Parade, the Market Square and elsewhere, are in the app.',
-        'Before dawn on 25 October 2026 our map showed Voi scooters from Eddington and the Science Park to Cherry Hinton and Trumpington Park & Ride, and in the edge villages above; the app’s map shows where you can ride and end a ride.',
+        'Before dawn on 25 October 2026 Voi scooters stood from Eddington and the Science Park to Cherry Hinton and Trumpington Park & Ride, and in the edge villages above; the app’s map shows where you can ride and end a ride.',
       ],
     },
     {
       heading: 'Where to park a Voi e-scooter in Cambridge',
       blocks: [
         'The county council asks riders to “park without blocking the pavement”. Cambridge uses **parking hubs**.',
-        'The centre is tight: in March 2022 there were only 4 parking spots within 200 metres of the Market Square while the app was opened 120 times a day there, Cambridge Ahead’s report said, and before dawn on 25 October 2026 our map showed just one Voi scooter within 500 metres of it. The app shows where you can end your ride.',
+        'The centre is tight: in March 2022 there were only 4 parking spots within 200 metres of the Market Square while the app was opened 120 times a day there, Cambridge Ahead’s report said, and before dawn on 25 October 2026 the map showed just one Voi scooter within 500 metres of it. The app shows where you can end your ride.',
       ],
     },
     {
-      heading: 'Can you ride a Voi on the busway, the towpath or the commons?',
+      heading: 'Can you ride a Voi on the busway or the towpath?',
       blocks: [
         'Landowners set their own rules:',
         {
@@ -79,21 +79,18 @@ const guide: Guide = {
             head: ['Place', 'Owner', 'What it says'],
             rows: [
               ['Guided busway path', 'Cambridgeshire County Council', 'Private e-scooters “are also not allowed on the Busway path. Only Voi trial e-scooters which are limited to 15mph are permitted”; the path has a 15 mph limit (page current in October 2026)'],
-              ['River Cam towpath, Chesterton to Clayhithe', 'Conservators of the River Cam', 'Its 1996 byelaws ban riding “any other vehicle of any description” on the towpath; only cycles other than motor cycles are exempt. E-scooters aren’t named: we read the ban as covering them'],
-              ['Anglia Ruskin campuses', 'Anglia Ruskin University', '“The use and storage of privately owned e-scooters is prohibited on all ARU campuses”, and so is charging one (rules, July 2026); nothing on hire scooters'],
-              ['Addenbrooke’s and the Rosie', 'Cambridge University Hospitals', 'No rule we could read: its travel page (October 2026) gives none for e-scooters'],
-              ['Parker’s Piece, Jesus Green, Midsummer Common, Christ’s Pieces', 'Cambridge City Council', 'No rule we could read: its pages for the first three say nothing about e-scooters (25 October 2026), so follow the signs'],
-              ['The colleges, the Backs, University sites', 'The colleges and the University of Cambridge', 'No rule we could read: they are private land, so follow the signs'],
+              ['River Cam towpath, Chesterton to Clayhithe', 'Conservators of the River Cam', 'Its 1996 byelaws ban riding “any other vehicle of any description” on the towpath; only cycles other than motor cycles are exempt'],
+              ['Anglia Ruskin campuses', 'Anglia Ruskin University', '“The use and storage of privately owned e-scooters is prohibited on all ARU campuses”, and so is charging one (rules, July 2026)'],
             ],
           },
         },
-        'The towpath byelaws don’t apply where the towpath crosses a city council public walk or pleasure ground; breaking them can bring a fine. At Addenbrooke’s, end your ride at a hub nearby and walk in.',
+        'The towpath byelaws don’t apply where the towpath crosses a city council public walk or pleasure ground; breaking them can bring a fine.',
       ],
     },
     {
       heading: 'Cambridge station, trains and buses',
       blocks: [
-        'The railway station was the most popular place in Cambridge to hire an e-scooter, Cambridge Ahead’s report said, and before dawn on 25 October 2026 our map showed 37 Voi scooters within 500 metres of it. End your ride near the station and walk in. The train and bus companies set their own rules:',
+        'The railway station was the most popular place in Cambridge to hire an e-scooter, Cambridge Ahead’s report said, and before dawn on 25 October 2026 the map showed 37 Voi scooters within 500 metres of it. End your ride near the station and walk in. The train and bus companies set their own rules:',
         {
           list: [
             '**Thameslink and Great Northern**: “all e-scooters, e-unicycles, e-skateboards and hoverboards are not permitted on our trains or in our stations from 1 June 2023”, even with the battery removed, and rail replacement buses ban them too.',
@@ -119,11 +116,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is there Lime or Bird in Cambridge?',
-      answer: 'No. Voi is the only e-scooter hire operator: the county council’s page names no other, and only Voi’s trial scooters can be ridden legally in the city. Voi also hires out e-bikes, which our [Cambridge map](map:gb:Cambridge) doesn’t show.',
+      answer: 'No. Voi is the only e-scooter hire operator, and only Voi’s trial scooters can be ridden legally in the city. Voi also hires out e-bikes.',
     },
     {
       question: 'How much does a Voi e-scooter cost in Cambridge?',
-      answer: 'The councils don’t publish Voi’s Cambridge prices, so check the app: it shows the unlock fee and the price per minute before you unlock. In November 2023 an Anglia Ruskin student blog said students get a discount by registering with a student email.',
+      answer: 'The Voi app shows the unlock fee and the price per minute before you unlock. In November 2023 an Anglia Ruskin student blog said students get a discount by registering with a student email.',
     },
     {
       question: 'Can I ride a Voi on the guided busway?',
@@ -131,7 +128,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter on the towpath along the Cam?',
-      answer: 'Not on the Conservators’ towpath between Chesterton and Clayhithe, as we read their 1996 byelaws: they ban riding any vehicle there except a cycle that isn’t a motor cycle. E-scooters aren’t named, and breaking the byelaws can bring a fine.',
+      answer: 'Not on the Conservators’ towpath between Chesterton and Clayhithe: their 1996 byelaws ban riding any vehicle there except a cycle that isn’t a motor cycle, and breaking them can bring a fine.',
     },
     {
       question: 'Can I take an e-scooter on the train at Cambridge?',
@@ -147,11 +144,9 @@ const guide: Guide = {
     { title: 'Cambridgeshire County Council: Guided Busway improvements', url: 'https://www.cambridgeshire.gov.uk/residents/travel-roads-and-parking/public-transport-park-and-ride-and-guided-busway/guided-busway-improvements' },
     { title: 'Cambridgeshire County Council: Experimental traffic regulation orders', url: 'https://www.cambridgeshire.gov.uk/residents/travel-roads-and-parking/roads-and-pathways/traffic-regulation-orders/experimental-traffic-regulation-orders' },
     { title: 'Cambridgeshire County Council: Electric Scooter Exemptions Experimental Order 2022 (PR0788)', url: 'https://www.cambridgeshire.gov.uk/asset-library/PR0788-Made-Order.pdf' },
-    { title: 'Cambridge City Council: Parker’s Piece', url: 'https://www.cambridge.gov.uk/parkers-piece' },
     { title: 'Conservators of the River Cam: About', url: 'https://www.camconservancy.org/about' },
     { title: 'Conservators of the River Cam: Byelaws (1996)', url: 'https://www.camconservancy.org/_files/ugd/79067b_7b01f16e688a4bd58800e73891642d7c.pdf' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
-    { title: 'Cambridge University Hospitals: Travel to Addenbrooke’s and Rosie', url: 'https://www.cuh.nhs.uk/visiting-our-hospitals/travel-and-parking/getting-here/' },
     { title: 'Anglia Ruskin University: Rules, Regulations and Procedures for Students (amended July 2026)', url: 'https://www.aru.ac.uk/-/media/Files/about-us/corporate-documents/Rules_Regulations_Procedures_for_Students.pdf' },
     { title: 'Anglia Ruskin University: Student life in Cambridge, a money-saving guide (22 November 2023)', url: 'https://www.aru.ac.uk/blogs/student-life-in-cambridge-a-money-saving-guide' },
     { title: 'Thameslink: Bringing your bike on a train (e-scooter policy)', url: 'https://www.thameslinkrailway.com/travel-information/onboard-travel/bringing-a-bike' },

@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         '**Voi** hires out Slough’s e-scooters. Slough Borough Council began its rental trial in October 2020 with Neuron Mobility, suspended it on 30 November 2022 and restarted it with Zipp Mobility on 28 May 2024. The trial switched to Voi on 10 December 2024 and will continue until the end of the government’s trial period, the council says.',
         'The government’s list of trial areas, updated on 7 July 2026, includes Slough, and the government says the 21 live trials are due to end on 31 May 2028.',
-        'At 13:57 GMT on Sunday 1 November 2026 the [map of Slough](map:gb:Slough) showed 216 Voi e-scooters free to rent at that moment. At 13:53 GMT the map showed 216 too, in and around the town, from Britwell, Cippenham and Haymill in the west to Wexham Court and Langley in the east. The map shows where each scooter stands and its battery, not bays or zones; you unlock and pay in the Voi app.',
+        'At 13:57 GMT on Sunday 1 November 2026 the [map of Slough](map:gb:Slough) showed 216 Voi e-scooters free to rent at that moment. At 13:53 GMT the map showed 216 too, in and around the town, from Britwell, Cippenham and Haymill in the west to Wexham Court and Langley in the east. You unlock and pay in the Voi app.',
       ],
     },
     {
@@ -41,8 +41,6 @@ const guide: Guide = {
             ],
           },
         },
-        'At 13:53 the map showed none in the villages of Burnham, Farnham Royal or Stoke Poges, in Buckinghamshire, none in Colnbrook or Poyle, between Langley and Heathrow, and none in Eton or Datchet, or in Windsor across the Thames.',
-        'The council’s pages give no hours for the scooters, so check the app before a late ride.',
       ],
     },
     {
@@ -95,9 +93,9 @@ const guide: Guide = {
       heading: 'Where can you ride and park a Voi in Slough?',
       blocks: [
         'You may ride on the road and in cycle and bus lanes, but never on pavements, playing fields or parks, Slough Borough Council says. Every ride ends in a marked bay, a painted square on the ground that the Voi app shows on its map. If the scooter isn’t in a bay, the ride can’t end and you keep paying until it is. The council’s page put the first spread at up to 130 bays across the trial area.',
-        'Voi worked with the council on the speeds and the areas where you may ride and park, and the scooters are geofenced: take one into a no-go zone and it slows down and finally stops, the council says. The map here doesn’t draw bays or zones, so check the app before you set off.',
+        'Voi worked with the council on the speeds and the areas where you may ride and park, and the scooters are geofenced: take one into a no-go zone and it slows down and finally stops, the council says.',
         '**Parks.** The ban covers Slough’s parks, Herschel Park among them: end your ride in a bay and walk in.',
-        '**The town centre.** At 14:02 GMT on 1 November 2026 the map showed 44 scooters in and around the town centre, by the station and the High Street: 9 within 150 metres of the station, the nearest 13 metres away, and 18 within 300 metres.',
+        '**The town centre.** At 14:02 GMT on 1 November 2026 the map showed 44 scooters in and around the town centre, by the station and the High Street: 9 within 150 metres of the station and 18 within 300 metres.',
         'Seen a scooter ridden on a pavement or left in the way? Note its number plate and tell Voi in the app: it can act faster than the council’s highways form, the council says.',
       ],
     },
@@ -118,7 +116,7 @@ const guide: Guide = {
     {
       heading: 'Windsor, Eton and Heathrow: outside the trial',
       blocks: [
-        '**Windsor and Eton.** Eton lies about 2.8 km south of Slough station as the crow flies, and Windsor, across the Thames, about 3.8 km, both in the Royal Borough of Windsor and Maidenhead, which wasn’t on the government’s July 2026 list of trial areas. At 13:53 GMT the map showed no scooter in either, or in Datchet. A hire scooter may be ridden only in a trial area, so end your ride in Slough and go on by train, bus or on foot.',
+        '**Windsor and Eton.** Eton lies about 2.8 km south of Slough station as the crow flies, and Windsor, across the Thames, about 3.8 km, both in the Royal Borough of Windsor and Maidenhead, which wasn’t on the government’s July 2026 list of trial areas. A hire scooter may be ridden only in a trial area, so end your ride in Slough and go on by train, bus or on foot.',
         '**Heathrow.** The airport isn’t in Slough: Terminal 5 is about 5.5 km south-east of Langley station as the crow flies, in the London Borough of Hillingdon, which in October 2026 wasn’t one of the 11 boroughs in London’s trial (see [e-scooters in London](guide:london)). So you can’t ride a hire e-scooter to the airport.',
       ],
     },
@@ -138,7 +136,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Voi the only e-scooter hire in Slough?',
-      answer: 'Yes. Voi has run Slough Borough Council’s rental trial since 10 December 2024, when it took over from Zipp Mobility, and the map shows its e-scooters. Only trial scooters may be ridden in public.',
+      answer: 'Yes. Voi has run Slough Borough Council’s rental trial since 10 December 2024, when it took over from Zipp Mobility, and only trial scooters may be ridden in public. Find them on the [map of Slough](map:gb:Slough).',
     },
     {
       question: 'How much does a Voi e-scooter cost in Slough?',

@@ -16,15 +16,14 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Tokyo: LUUP and Lime',
       blocks: [
-        'The map shows two companies’ e-scooters in Tokyo:',
+        'LUUP and Lime rent e-scooters in Tokyo:',
         {
           list: [
-            '**LUUP**, counted at its ports: each port on the [Tokyo map](map:jp:Tokyo) shows how many scooters stand there, without their charge or range, and ports closed at the time are left off. At 05:13 on Tuesday 27 October 2026, Tokyo time, the map’s Tokyo figure was about 13,000 LUUP scooters: an early-morning snapshot, not a fleet size.',
-            '**Lime**, each scooter at its own position with its battery level. A full scan of Lime’s Tokyo zone, which finished at 09:32 on Monday 26 October, found about 2,300 Lime scooters: a separate count, not part of that snapshot.',
+            '**LUUP**, whose scooters stand at its ports: each port on the [Tokyo map](map:jp:Tokyo) shows how many stand there. At 05:13 on Tuesday 27 October 2026, Tokyo time, the map’s Tokyo figure was about 13,000 LUUP scooters: an early-morning snapshot, not a fleet size.',
+            '**Lime**: a full scan of Lime’s Tokyo zone, which finished at 09:32 on Monday 26 October, found about 2,300 Lime scooters: a separate count, not part of that snapshot.',
           ],
         },
-        'The LUUP figure is the map’s count for LUUP’s Tokyo service as a whole, not for the 23 wards: every port of that service counts as Tokyo, including any beyond the wards or over the borders of Saitama, Chiba and Kanagawa.',
-        'ScootRadar shows standing e-scooters only, not LUUP’s e-bikes and seated scooters or docomo bike share’s e-assist bicycles. Each app shows its price before you start; any other company’s scooters are only in its own app.',
+        'LUUP also rents e-bikes and seated scooters, and docomo bike share rents e-assist bicycles. Each app shows its price before you start.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -91,13 +90,13 @@ const guide: Guide = {
       heading: 'Expressways and Yoyogi Park',
       blocks: [
         '**Expressways.** The MPD’s English poster is plain: “E-Scooters, 125cc or less Motorcycle and Pedestrians, Bicycles are not allowed to enter the Metropolitan expressway (Shutoko)”.',
-        '**Yoyogi Park.** A notice from the park’s service centre dated 9 June 2023 bans bringing in or riding “motorbikes, Segways and the like” (バイク、セグウェイなど). It doesn’t name e-scooters; as we read it, they come under it.',
+        '**Yoyogi Park.** A notice from the park’s service centre dated 9 June 2023 bans bringing in or riding “motorbikes, Segways and the like” (バイク、セグウェイなど).',
       ],
     },
     {
       heading: 'Kawasaki, Yokohama and further afield',
       blocks: [
-        'Kawasaki and Yokohama, next door in Kanagawa, have their own figures on the map. At 05:13 on 27 October it showed about 210 LUUP scooters in [Kawasaki](map:jp:Kawasaki) and about 640 in [Yokohama](map:jp:Yokohama). A separate scan of Lime’s Yokohama zone, which finished at 08:52 on 26 October, found about 50 Lime scooters there.',
+        'Kawasaki and Yokohama lie next door, in Kanagawa. At 05:13 on 27 October the map showed about 210 LUUP scooters in [Kawasaki](map:jp:Kawasaki) and about 640 in [Yokohama](map:jp:Yokohama). A separate scan of Lime’s Yokohama zone, which finished at 08:52 on 26 October, found about 50 Lime scooters there.',
         'Heading west? At the same moment the map showed about 3,300 LUUP scooters in [Osaka](map:jp:Osaka) and 1,500 in Kyoto.',
       ],
     },
@@ -117,7 +116,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Tokyo?',
-      answer: 'LUUP and Lime, both on our map. Each app shows its price before you start; any other company’s scooters are only in its own app.',
+      answer: 'LUUP and Lime. Each app shows its price before you start.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Japan?',

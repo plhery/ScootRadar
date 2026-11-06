@@ -18,8 +18,8 @@ const guide: Guide = {
       blocks: [
         '**Lime** is the only company hiring out e-scooters in Salford. It runs the Department for Transport trial and is “fully responsible for the implementation and operating costs”, with the support of Salford City Council, Transport for Greater Manchester (TfGM) and the University of Salford, the council’s Greener Salford site says. The first 300 scooters took to the road on Monday 26 October 2020. When the trial was extended in March 2024, council and TfGM officers were to choose the operator, the Manchester Evening News reported; in January 2025 a TfGM paper for the Greater Manchester Combined Authority said it “continues to run with the operator Lime”.',
         'Hire e-scooters are legal here because Salford is one of England’s 21 trial areas, which run until May 2028. In October 2025 the combined authority said the local trial had been “extended until May 2026, pending legislative approval”. The government’s list of 7 July 2026 still names Salford.',
-        'At 07:47 on Sunday 25 October 2026 the [map of Salford](map:gb:Salford) showed about 810 Lime e-scooters: a snapshot, not the fleet size. It shows where they stand and their battery, not prices, zones, parking or hours. That afternoon all of the roughly 750 it showed stood inside Salford’s boundary, none across the Irwell in Manchester or Trafford; most were in Pendleton and Charlestown, Quays and Ordsall wards.',
-        'TfGM’s Starling Bank Bikes, pedal and electric, are a separate scheme, which the map doesn’t show.',
+        'At 07:47 on Sunday 25 October 2026 the [map of Salford](map:gb:Salford) showed about 810 Lime e-scooters: a snapshot, not the fleet size.',
+        'TfGM’s Starling Bank Bikes, pedal and electric, are a separate scheme.',
       ],
     },
     {
@@ -35,7 +35,6 @@ const guide: Guide = {
               ['What does a ride cost?', 'Shown in the app; £1 to unlock, then 17p a minute in October 2024', 'The Manchester Evening News (press, 2 October 2024)'],
               ['Who can ride?', '18 or over, with a full or provisional driving licence', 'Lime, to the Manchester Evening News (2 October 2024)'],
               ['Where?', 'Between the university, Salford Quays and the Manchester boundary, and parts of Pendleton up to Salford Royal', 'The Manchester Evening News (March 2024); Greener Salford'],
-              ['When?', 'No hours or night ban published', 'Nothing found'],
               ['Where does a ride end?', 'Only in a parking bay, with a photo', 'Lime (October 2024)'],
             ],
           },
@@ -56,7 +55,7 @@ const guide: Guide = {
               ['One rider', 'No passengers, and no towing', 'The law', '–'],
               ['Speed', '15.5 mph at most', 'The law', 'The scooter limits its speed'],
               ['Zone', 'Stay inside the trial area shown in the app', 'The council; Lime', 'Geofencing limits the scooter outside it'],
-              ['Parking', 'Only in a bay, with an end-of-ride photo', 'Lime, with the council', '“A warning, and fine”, Lime says; no amount published'],
+              ['Parking', 'Only in a bay, with an end-of-ride photo', 'Lime, with the council', '“A warning, and fine”, Lime says'],
               ['Phone', 'Not in your hand while riding', 'The law', '£200 and 6 points'],
               ['Drink and drugs', 'Drink-drive law applies', 'The law', 'Court'],
               ['Helmet', 'Recommended, not compulsory', 'The law', '–'],
@@ -74,7 +73,7 @@ const guide: Guide = {
       heading: 'Where can you ride a Lime in Salford?',
       blocks: [
         'Ride on roads and in cycle lanes. The scooters “can use bike lanes and shared footways where cycling is permitted but are not allowed on footways or in other pedestrian areas”, Greener Salford said when the trial ran to May 2024.',
-        'The council has limited the scooters “to an area between the University of Salford, Salford Quays and up to the boundary with Manchester city council, as well as parts of Pendleton to Salford Royal Hospital”, the Manchester Evening News reported in March 2024. On 25 October 2026 the map also showed scooters in Eccles ward, but none in Swinton, Walkden or Worsley.',
+        'The council has limited the scooters “to an area between the University of Salford, Salford Quays and up to the boundary with Manchester city council, as well as parts of Pendleton to Salford Royal Hospital”, the Manchester Evening News reported in March 2024. On 25 October 2026 the map also showed scooters in Eccles ward.',
         'For no-go and slow zones at Salford Quays, MediaCityUK or the Crescent, and for hours, check the app before you set off.',
       ],
     },
@@ -82,11 +81,11 @@ const guide: Guide = {
       heading: 'Where to park a Lime e-scooter in Salford',
       blocks: [
         'Salford has no free-floating parking. “All of our e-scooters in Salford must be picked up and dropped off in designated parking bays identified in partnership with the Council,” Lime told the Manchester Evening News in October 2024. The app shows the bays, Greener Salford said when the trial ran to May 2024.',
-        'Lime added that it has “GPS-based no parking zones” and “mandatory end trip photos”, and that riders who ignore the rules “will receive a warning, and fine”, without giving the amount.',
+        'Lime added that it has “GPS-based no parking zones” and “mandatory end trip photos”, and that riders who ignore the rules “will receive a warning, and fine”.',
       ],
     },
     {
-      heading: 'Campuses, the Quays, canals, parks and hospitals',
+      heading: 'The university campuses and the Bridgewater Canal',
       blocks: [
         'Landowners set their own rules:',
         {
@@ -95,7 +94,6 @@ const guide: Guide = {
             head: ['Place', 'Owner', 'What it says'],
             rows: [
               ['University of Salford campuses', 'University of Salford', 'Lime’s scheme is “licenced by Salford City Council”, with “dedicated parking locations in and around our campuses”'],
-              ['MediaCityUK', 'Media City Salford Ltd', 'No e-scooter rule on its visitor page (8 September 2026), which lists 650 bike spaces'],
               ['Bridgewater Canal towpath and the Bridgewater Way', 'The Bridgewater Canal Company (Peel)', '“Motor vehicles” and “Motorcycles / Scooters” are not permitted; cycling only where the towpath was improved for the Bridgewater Way'],
             ],
           },
@@ -109,7 +107,7 @@ const guide: Guide = {
         {
           list: [
             '**Northern** manages Salford Central, Salford Crescent and Eccles stations: check its own rules before you take any e-scooter on board.',
-            '**Metrolink trams and Bee Network buses:** TfGM sets their conditions of carriage. A combined authority report of 12 December 2024 says Metrolink “currently allows folded bikes”, and says nothing about e-scooters.',
+            '**Metrolink trams and Bee Network buses:** TfGM sets their conditions of carriage. A combined authority report of 12 December 2024 says Metrolink “currently allows folded bikes”.',
           ],
         },
         'A hire scooter stays behind: end the ride in a bay near the station or stop. On the afternoon of 25 October 2026 the map showed about 100 Lime scooters within 300 m of Salford Crescent station and about 120 within 500 m of the Salford Quays tram stop.',
@@ -173,7 +171,6 @@ const guide: Guide = {
     { title: 'GMCA: Vision Zero action plan 2024–2027', url: 'https://www.greatermanchester-ca.gov.uk/media/nxxlv5hv/vision-zero-gm-action-plan.pdf' },
     { title: 'GMCA: Bikes on Metrolink (12 December 2024)', url: 'https://democracy.greatermanchester-ca.gov.uk/documents/s35090/BNC%2020241212%20Bikes%20on%20Metrolink.pdf' },
     { title: 'Bridgewater Canal Company: Terms and conditions', url: 'https://bridgewatercanal.co.uk/boating/terms-conditions/' },
-    { title: 'MediaCityUK: Plan your visit (8 September 2026)', url: 'https://www.mediacityuk.co.uk/visit-us/' },
     { title: 'Beryl: Starling Bikes pricing (24 June 2026)', url: 'https://help-bikes.beryl.cc/en/articles/8365023-starling-bikes-pricing-guide' },
   ],
 };

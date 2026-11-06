@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'E-scooters on the Isle of Wight: Voi and the Solent trial',
       blocks: [
         '**Voi** hires out the island’s e-scooters. The government’s list of rental trial areas, updated on 7 July 2026, has the Solent (the Isle of Wight, Portsmouth and Southampton) among 21 areas, and its change log shows the island arriving first: “Solent (Isle of Wight)” was added on 9 December 2020, and Portsmouth and Southampton on 31 March 2021. The government says the 21 live trials are due to end on 31 May 2028.',
-        'At 06:33 GMT on Sunday 1 November 2026 the [map of the Isle of Wight](map:gb:Isle of Wight) showed 216 Voi e-scooters free to rent at that moment. The total takes in the whole island; at 04:45 GMT that morning the scooters stood in four towns and their edges: Newport, Cowes, East Cowes and Ryde, with a few in Seaview, Wootton Bridge and Fishbourne. The map shows where each scooter stands and its battery, not prices, zones or parking places; you unlock and pay in the Voi app.',
+        'At 06:33 GMT on Sunday 1 November 2026 the [map of the Isle of Wight](map:gb:Isle of Wight) showed 216 Voi e-scooters free to rent at that moment. At 04:45 GMT that morning the scooters stood in four towns and their edges: Newport, Cowes, East Cowes and Ryde, with a few in Seaview, Wootton Bridge and Fishbourne. You unlock and pay in the Voi app.',
       ],
     },
     {
@@ -36,13 +36,13 @@ const guide: Guide = {
             ],
           },
         },
-        'At 04:45 the map showed none in Sandown, Shanklin, Ventnor, Bembridge, Yarmouth or Freshwater, so don’t count on one on the south or west coast. Unlike Portsmouth’s, the island’s scooters were on the map late at night: at 23:25 GMT on Saturday 31 October it showed 216 on the island, and at 23:37 none across the water in Portsmouth. Check the app for the hours before a late ride.',
+        'The island’s scooters were on the map late at night: at 23:25 GMT on Saturday 31 October it showed 216 on the island. Check the app for the hours before a late ride.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost on the Isle of Wight?',
       blocks: [
-        'The Voi app shows the unlock fee, the price per minute and any passes before you start; the map doesn’t show prices. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent), and for every trial area in England, [e-scooter hire in the UK](guide:uk-hire).',
+        'The Voi app shows the unlock fee, the price per minute and any passes before you start. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent), and for every trial area in England, [e-scooter hire in the UK](guide:uk-hire).',
       ],
     },
     {
@@ -72,7 +72,7 @@ const guide: Guide = {
     {
       heading: 'Where can you ride and leave a Voi?',
       blocks: [
-        'In a trial area you may ride on the road, except motorways, in cycle lanes and on cycle routes with the blue bicycle sign, unless a sign bans e-scooters there, but never on the pavement, the government’s guidance says. Where you may ride and end a ride, and any go-slow or no-go zones, are in the Voi app; the map here doesn’t draw them, so check the app before you set off for a beach or a village outside the four towns.',
+        'In a trial area you may ride on the road, except motorways, in cycle lanes and on cycle routes with the blue bicycle sign, unless a sign bans e-scooters there, but never on the pavement, the government’s guidance says. Where you may ride and end a ride, and any go-slow or no-go zones, are in the Voi app, so check it before you set off for a beach or a village outside the four towns.',
         '**Ryde.** At 04:58 GMT on 1 November 2026 the map showed 20 scooters in Ryde North West, the ward that takes in Ryde Pier, whose head is Wightlink’s FastCat port.',
         '**Cowes and East Cowes.** The Isle of Wight Council’s floating bridge across the River Medina between the two towns takes bicycles and scooters only if they are pushed or carried: its terms of use bar riding them on board. On 1 November 2026 a foot passenger’s single cost £1, or 50p with a Saver Card.',
         '**Newport.** At 04:45 GMT on 1 November 2026 the map showed 67 scooters in Newport, home of the Isle of Wight Council’s County Hall, 31 of them in and around the centre.',
@@ -114,15 +114,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Voi the only e-scooter hire on the Isle of Wight?',
-      answer: 'Yes. At 06:33 GMT on 1 November 2026 the map showed 216 Voi e-scooters free to rent on the island and no other company’s, and only trial scooters may be ridden in public.',
+      answer: 'Yes. At 06:33 GMT on 1 November 2026 the map showed 216 e-scooters free to rent on the island, all of them Voi’s, and only trial scooters may be ridden in public.',
     },
     {
       question: 'Where can I find a Voi e-scooter on the Isle of Wight?',
-      answer: 'In Newport, Cowes, East Cowes and Ryde, with a few in Seaview, Wootton Bridge and Fishbourne. At 04:45 GMT on 1 November 2026 the map showed none in Sandown, Shanklin, Ventnor, Bembridge, Yarmouth or Freshwater.',
+      answer: 'In Newport, Cowes, East Cowes and Ryde, with a few in Seaview, Wootton Bridge and Fishbourne.',
     },
     {
       question: 'How much does a Voi e-scooter cost on the Isle of Wight?',
-      answer: 'Check the Voi app: it shows the unlock fee and the price per minute before you start. The map shows where the scooters are and their battery, not prices.',
+      answer: 'Check the Voi app: it shows the unlock fee and the price per minute before you start.',
     },
     {
       question: 'Can I take an e-scooter on the ferry to the Isle of Wight?',
@@ -130,7 +130,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take a Voi on the floating bridge between Cowes and East Cowes?',
-      answer: 'The floating bridge’s terms of use let scooters on board, as they do bicycles, skateboards and hoverboards, only if they are pushed or carried, never ridden; they don’t mention hire e-scooters. On 1 November 2026 a foot passenger paid £1 for a single, or 50p with a Saver Card.',
+      answer: 'The floating bridge’s terms of use let scooters on board, as they do bicycles, skateboards and hoverboards, only if they are pushed or carried, never ridden. On 1 November 2026 a foot passenger paid £1 for a single, or 50p with a Saver Card.',
     },
     {
       question: 'Can I ride my own e-scooter on the Isle of Wight?',

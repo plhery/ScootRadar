@@ -17,15 +17,15 @@ const guide: Guide = {
       heading: 'Which e-scooter apps work in Tauranga?',
       blocks: [
         'One company runs shared e-scooters in Tauranga in 2026: **Flamingo**. Shared e-scooters arrived in late 2020 with a council trial of Lime. In March 2023 the council decided to keep them and find a permanent operator; Beam won a two-year licence and started on 4 December 2023. On 27 March 2025 the council announced that Beam’s service would end that month, by mutual agreement, and that its exclusive e-scooter licence had been awarded to Flamingo, from 1 April 2025.',
-        'At 10.11pm on Saturday 31 October 2026 the [map of Tauranga](map:nz:bop:Tauranga) showed 275 Flamingo scooters free to rent at that moment. That total covers Flamingo’s whole Tauranga area, Mount Maunganui and Papamoa included: it runs from Matua and Bethlehem in the west, through the city centre, Greerton and Welcome Bay, and over the Harbour Bridge to the Mount and along the coast to Papamoa East.',
-        'The map shows each scooter’s place, its range and Flamingo’s price; zoom in and it also draws Flamingo’s zones and its 13 marked parking spots. It doesn’t show Flamingo’s curfew areas, restricted from 10pm on Fridays and Saturdays, which Flamingo doesn’t name: check the app late on a weekend night. The app has the final word on where you may ride and park.',
-        '**Lime** still lists Tauranga in its app, but had no scooter near the city centre on 27 October 2026; the council’s exclusive licence went to Flamingo. **Beam** left at the end of March 2025.',
+        'At 10.11pm on Saturday 31 October 2026 the [map of Tauranga](map:nz:bop:Tauranga) showed 275 Flamingo scooters free to rent at that moment. Flamingo’s Tauranga area, Mount Maunganui and Papamoa included, runs from Matua and Bethlehem in the west, through the city centre, Greerton and Welcome Bay, and over the Harbour Bridge to the Mount and along the coast to Papamoa East.',
+        'Zoom in and the map draws Flamingo’s zones and its 13 marked parking spots. Flamingo restricts its curfew areas from 10pm on Fridays and Saturdays: check the app late on a weekend night. The app has the final word on where you may ride and park.',
+        '**Lime** still lists Tauranga in its app, but the council’s exclusive licence went to Flamingo. **Beam** left at the end of March 2025.',
       ],
     },
     {
       heading: 'How much does a Flamingo scooter cost in Tauranga?',
       blocks: [
-        'Flamingo’s Tauranga rate is NZ$1 to unlock and 55c a minute, 24 hours a day, every day. The map shows that price on each of its scooters.',
+        'Flamingo’s Tauranga rate is NZ$1 to unlock and 55c a minute, 24 hours a day, every day.',
         {
           table: {
             caption: 'Flamingo in Tauranga (published rate, 31 October 2026)',
@@ -83,7 +83,7 @@ const guide: Guide = {
         '**The Strand and the waterfront.** Flamingo’s 15 km/h zone in the city centre runs along The Strand and the waterfront, about 1.2 km from end to end. The waterfront strip beside The Strand, about 700 m long, is a no-parking zone, and a short stretch of it is a no-ride zone. Flamingo’s marked spots in the centre include Spring Street and Vitality Kitchen, both inside the slow zone.',
         '**The Domain, the bridge, the motorways and the hospital.** Tauranga and Wharepai Domains, the sports grounds north of the centre, are no-ride zones. You can ride over the Harbour Bridge to the Mount but not park on it. Stretches of the State Highway 2 and 29A motorways and the grounds of Tauranga Hospital are no-ride zones; Takitimu Drive and its walkway, Memorial Park and the shores of the Waimapu Estuary are no-parking.',
         '**Parking.** Leave the scooter at the side of the footpath, next to street furniture, clear of the walkway and entrances, and take the end-of-ride photo.',
-        '**Curfews.** When the council approved Lime’s trial in October 2020, it set the trial’s hours at 5am to midnight, with an earlier curfew, 10pm on Fridays and Saturdays, in downtown Mount Maunganui and the city centre. Flamingo’s page now restricts its curfew areas from the same hour, but doesn’t say which they are or until when.',
+        '**Curfews.** When the council approved Lime’s trial in October 2020, it set the trial’s hours at 5am to midnight, with an earlier curfew, 10pm on Fridays and Saturdays, in downtown Mount Maunganui and the city centre. Flamingo’s page now restricts its curfew areas from the same hour.',
       ],
     },
     {
@@ -139,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you hire an e-scooter at night in Tauranga?',
-      answer: 'Yes, Flamingo runs 24 hours a day, but its curfew areas are restricted from 10pm on Fridays and Saturdays. Flamingo doesn’t name them and the map doesn’t show them: check the app.',
+      answer: 'Yes, Flamingo runs 24 hours a day, but its curfew areas are restricted from 10pm on Fridays and Saturdays: check the app.',
     },
     {
       question: 'Can you take an e-scooter on a Baybus bus?',

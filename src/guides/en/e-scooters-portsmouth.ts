@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         '**Voi** runs Portsmouth’s hire e-scooters. The city council and Solent Transport launched the trial on 18 March 2021 with 100 scooters, as part of the Solent Future Transport Zone funded by the Department for Transport, Express FM reported that day. In November 2026 the University of Portsmouth says anyone can report misuse to Voi, “the operator”, and that Voi also hires out e-bikes in the city, with docking bays around Southsea.',
         '**How long will it run?** In March 2022 the council extended the trial to 30 November 2022 to collect more data for the Department for Transport, Express FM reported. Hire was still running on 1 November 2026, and the government’s list, updated on 7 July 2026, has the Solent (the Isle of Wight, Portsmouth and Southampton) among 21 trial areas, all due to end in May 2028.',
-        'At 04:11 GMT on Sunday 1 November 2026 the [map of Portsmouth](map:gb:Portsmouth) showed 559 Voi e-scooters free to rent at that moment. The total takes in the whole city: Portsea Island, from The Hard and Gunwharf to Southsea and Eastney, and the mainland from Paulsgrove and Cosham to Drayton and Farlington. None stood in Gosport, Portchester or on Hayling Island, outside the city. The map shows where each scooter stands and its battery, not prices, zones, bays or Voi’s e-bikes; tap a scooter to open the Voi app, where you unlock and pay.',
+        'At 04:11 GMT on Sunday 1 November 2026 the [map of Portsmouth](map:gb:Portsmouth) showed 559 Voi e-scooters free to rent at that moment. They stood across the city: on Portsea Island, from The Hard and Gunwharf to Southsea and Eastney, and on the mainland from Paulsgrove and Cosham to Drayton and Farlington. Tap a scooter on the map to open the Voi app, where you unlock and pay.',
       ],
     },
     {
@@ -35,13 +35,13 @@ const guide: Guide = {
             ],
           },
         },
-        'In November 2026 the University of Portsmouth says Voi’s e-bikes cost from 18p a minute; it gives no e-scooter price. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'In November 2026 the University of Portsmouth says Voi’s e-bikes cost from 18p a minute. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'When can you ride? Not late at night',
       blocks: [
-        'In March 2022 Voi’s scooters could be hired from 4am to 10pm, Express FM reported; at the launch a year earlier the hours were 6am to 10pm. At 23:37 GMT on Saturday 31 October 2026 the map showed no Voi scooters in Portsmouth, and at 04:04 GMT the next morning it showed 559. Check the app for today’s hours.',
+        'In March 2022 Voi’s scooters could be hired from 4am to 10pm, Express FM reported; at the launch a year earlier the hours were 6am to 10pm. On Saturday 31 October 2026 the scooters were off the map at 23:37 GMT and back by 04:04 the next morning, when it showed 559. Check the app for today’s hours.',
       ],
     },
     {
@@ -72,7 +72,7 @@ const guide: Guide = {
       heading: 'Where can you ride a Voi in Portsmouth?',
       blocks: [
         'Voi’s scooters “can be used on public roads, including cycle lanes and shared-use paths, but not footpaths”, Express FM reported in March 2022. Across England, a sign can ban e-scooters from a cycle route.',
-        'In March 2022 the University of Portsmouth’s guidance explained how the trial kept riders inside Portsmouth: ridden out of the zone, the scooter stopped, and the ride couldn’t end until it was moved to a permitted parking place; if it sat idle for an hour, the app charged a £25 misuse fee. In slow-speed zones the scooter ran a little slower, and in no-ride zones it slowed to a stop. The map here doesn’t draw these zones: check the Voi app.',
+        'In March 2022 the University of Portsmouth’s guidance explained how the trial kept riders inside Portsmouth: ridden out of the zone, the scooter stopped, and the ride couldn’t end until it was moved to a permitted parking place; if it sat idle for an hour, the app charged a £25 misuse fee. In slow-speed zones the scooter ran a little slower, and in no-ride zones it slowed to a stop. Check the Voi app for today’s zones.',
         '**Southsea and the seafront.** At 04:29 GMT on 1 November 2026 the map showed 74 Voi scooters in Southsea between Clarence Pier and South Parade Pier, from the shore up to Palmerston Road, three of them by Clarence Pier.',
       ],
     },
@@ -127,7 +127,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Voi the only e-scooter hire in Portsmouth?',
-      answer: 'Yes. Voi runs the city’s hire scooters in the Solent trial, and only trial scooters may be ridden in public. Voi’s e-bikes aren’t on the map.',
+      answer: 'Yes. Voi runs the city’s hire scooters in the Solent trial, and only trial scooters may be ridden in public. Voi also hires out e-bikes in the city.',
     },
     {
       question: 'How much does a Voi e-scooter cost in Portsmouth?',
@@ -135,11 +135,11 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a Voi at night in Portsmouth?',
-      answer: 'Not late at night. In March 2022 the scooters could be hired from 4am to 10pm, and at 23:37 GMT on 31 October 2026 the map showed none in the city. Check the app for today’s hours.',
+      answer: 'Not late at night. In March 2022 the scooters could be hired from 4am to 10pm, and on 31 October 2026 they were off the map at 23:37 GMT. Check the app for today’s hours.',
     },
     {
       question: 'Can I ride a Voi to Gosport, Fareham or Havant?',
-      answer: 'No. In March 2022 the University of Portsmouth said the trial scooters were restricted to Portsmouth and stopped outside the zone, and on 1 November 2026 the map showed none outside the city.',
+      answer: 'No. In March 2022 the University of Portsmouth said the trial scooters were restricted to Portsmouth and stopped outside the zone.',
     },
     {
       question: 'Can I take an e-scooter on the ferry to the Isle of Wight?',

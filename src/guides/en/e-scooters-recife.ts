@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'How much does electric scooter rental in Recife cost?',
       blocks: [
-        'Each app shows the price before you start, and neither operator publishes a Recife rate. JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time. A Whoosh Pass (7 days, 30 days or a year) removes Whoosh’s unlock fee but not the per-minute price, which also moves with demand. Whoosh may hold up to R$25 on your card when you start.',
+        'Each app shows the price before you start. JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time. A Whoosh Pass (7 days, 30 days or a year) removes Whoosh’s unlock fee but not the per-minute price, which also moves with demand. Whoosh may hold up to R$25 on your card when you start.',
         {
           table: {
             caption: 'What Whoosh charges in Brazil when a ride goes wrong (terms updated 21 March 2025)',
@@ -48,7 +48,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Go Jet’s terms (revised August 2026) let JET charge you for damage, loss, removal, seizure and fines, but set no amounts.',
+        'Go Jet’s terms (revised August 2026) let JET charge you for damage, loss, removal, seizure and fines.',
       ],
     },
     {
@@ -103,7 +103,6 @@ const guide: Guide = {
               ['Insurance', 'Every ride is insured against accidents; Whoosh’s cover excludes misuse such as riding two-up', 'Prefeitura (in the operators’ contracts); JET and Whoosh'],
               ['The scooter', 'Up to 1,000 W and 32 km/h by design, at most 70 cm wide, with a speed display or limiter, a bell and lights at the front, rear and sides', 'National (CONTRAN Resolution 996)'],
               ['Registration and plates', 'None needed', 'National (CONTRAN Resolution 996)'],
-              ['Hours', 'No night ban reported; both operators say they monitor the service around the clock', '–'],
             ],
           },
         },
@@ -113,17 +112,16 @@ const guide: Guide = {
     {
       heading: 'Where to find JET and Whoosh scooters in Recife',
       blocks: [
-        'At 17:40 local time on Sunday 25 October 2026 the [map of Recife](map:br:Recife) showed about 900 standing scooters: 450 JET and 450 Whoosh. That is a snapshot, not the size of either fleet, and scooters on a ride don’t appear.',
-        'On the municipal boundaries of IBGE, Brazil’s statistics institute, about 855 stood inside Recife, every Whoosh scooter among them. The other 40 or so were JET scooters, 39 of them at one spot a few dozen metres inside Jaboatão dos Guararapes; since 26 October the map counts them there. About 600 stood north of the Pina basin, in the centre and the north of the city, and about 260 south of it, where the pilot’s bairros are Pina and Boa Viagem; Whoosh had more there, about 160 to JET’s 100. None stood in Olinda or Camaragibe, or as far west as the UFPE campus.',
-        'The map shows JET separately in [Paulista](map:br:Paulista), north beyond Olinda (about 630 scooters), and in [Jaboatão dos Guararapes](map:br:Jaboatão dos Guararapes) to the south (about 560).',
-        'The map shows Go Jet and Whoosh: each Whoosh scooter’s charge and range, and each JET scooter’s charge. It shows no prices, parking points, zones or hours; the apps do. Both operators run in Porto Alegre and Florianópolis too: see [e-scooters in Porto Alegre](guide:porto-alegre) and [e-scooters in Florianópolis](guide:florianopolis).',
+        'At 17:40 local time on Sunday 25 October 2026 the [map of Recife](map:br:Recife) showed about 900 standing scooters: 450 JET and 450 Whoosh. That is a snapshot, not the size of either fleet. About 600 stood north of the Pina basin, in the centre and the north of the city, and about 260 south of it, where the pilot’s bairros are Pina and Boa Viagem; Whoosh had more there, about 160 to JET’s 100.',
+        'JET also rents in [Paulista](map:br:Paulista), north beyond Olinda (about 630 scooters on the map), and in [Jaboatão dos Guararapes](map:br:Jaboatão dos Guararapes) to the south (about 560).',
+        'Both operators run in Porto Alegre and Florianópolis too: see [e-scooters in Porto Alegre](guide:porto-alegre) and [e-scooters in Florianópolis](guide:florianopolis).',
       ],
     },
     {
       heading: 'The metro, the buses and the city’s bikes',
       blocks: [
-        'Neither the Metrô do Recife, run by the federal CBTU, nor the Grande Recife Consórcio de Transporte, which runs the buses, mentions scooters aboard on the pages we read. Don’t take a shared one aboard: Whoosh charges R$80 for the metro and R$40 for a bus, and Go Jet’s terms forbid carrying its scooter in any vehicle. End the ride at a point near your station or stop.',
-        'Recife’s orange docked bikes are run by Tembici and rented in the Bike Itaú app. Bike Itaú’s Recife page, updated on 22 October 2026, lists 79 stations and 830 bikes: a day pass on the mechanical bikes costs R$9.75, with rides of up to 60 minutes (two hours on Sundays and holidays), and the pedal-assisted e-bikes, from 24 October, R$0.90 a minute with no unlock fee but a 15-minute minimum (R$13.50). In July 2026 Floresta Notícias reported that the Prefeitura was replacing the state’s Bike PE with its own Bike Recife, again run by Tembici. The map shows none of these bikes.',
+        'Don’t take a shared scooter aboard the Metrô do Recife, run by the federal CBTU, or the buses of the Grande Recife Consórcio de Transporte: Whoosh charges R$80 for the metro and R$40 for a bus, and Go Jet’s terms forbid carrying its scooter in any vehicle. End the ride at a point near your station or stop.',
+        'Recife’s orange docked bikes are run by Tembici and rented in the Bike Itaú app. Bike Itaú’s Recife page, updated on 22 October 2026, lists 79 stations and 830 bikes: a day pass on the mechanical bikes costs R$9.75, with rides of up to 60 minutes (two hours on Sundays and holidays), and the pedal-assisted e-bikes, from 24 October, R$0.90 a minute with no unlock fee but a 15-minute minimum (R$13.50). In July 2026 Floresta Notícias reported that the Prefeitura was replacing the state’s Bike PE with its own Bike Recife, again run by Tembici.',
       ],
     },
     {
@@ -142,11 +140,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which companies rent e-scooters in Recife?',
-      answer: 'JET, in its Go Jet app, and Whoosh: the two firms in the Prefeitura’s pilot since 22 March 2026. The map shows both.',
+      answer: 'JET, in its Go Jet app, and Whoosh: the two firms in the Prefeitura’s pilot since 22 March 2026. Find both on the [map of Recife](map:br:Recife).',
     },
     {
       question: 'How much does an e-scooter cost in Recife?',
-      answer: 'The app shows the price before you ride, and it changes with demand; neither operator publishes a Recife rate. Whoosh charges R$40 if you end a ride away from a “P” parking point.',
+      answer: 'The app shows the price before you ride, and it changes with demand. Whoosh charges R$40 if you end a ride away from a “P” parking point.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Recife?',
@@ -189,7 +187,6 @@ const guide: Guide = {
     { title: 'Grande Recife Consórcio de Transporte: FAQ, Portuguese', url: 'https://www.granderecife.pe.gov.br/fale-conosco/perguntas-frequentes/' },
     { title: 'Bike Itaú (Tembici): bikes in Recife, Portuguese', url: 'https://bikeitau.com.br/recife/' },
     { title: 'Floresta Notícias: Recife prepares Bike Recife (21 July 2026), Portuguese', url: 'https://florestanoticias.com.br/2026/07/11034/' },
-    { title: 'Geological Survey of Brazil (SGB): IBGE’s municipal boundaries, map service', url: 'https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer' },
   ],
 };
 

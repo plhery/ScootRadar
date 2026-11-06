@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         '**Voi** hires out Gloucester’s e-scooters. Gloucestershire County Council, the local transport authority, says it “facilitated the trial” and that the operators take “all the financial risk”. E-scooters first came in during the Covid pandemic in 2020, the council said in June 2023, when it appointed Voi after a tender, with a contract starting on 1 August 2023.',
         'The government’s list of trial areas, updated on 7 July 2026, includes “Gloucestershire (Cheltenham, Gloucester and surrounding areas)”, and the government says the 21 live trials are due to end on 31 May 2028.',
-        'At 18:48 GMT on Sunday 1 November 2026 the [map of Gloucester](map:gb:Gloucester) showed 162 Voi e-scooters free to rent at that moment. At 18:42 the map showed 162 too: the furthest south in Podsmead and Matson, none in Quedgeley, and a few just past the city’s edge to the north-east and east. The map shows where each scooter stands and its battery, not prices, bays or zones; you unlock and pay in the Voi app.',
+        'At 18:48 GMT on Sunday 1 November 2026 the [map of Gloucester](map:gb:Gloucester) showed 162 Voi e-scooters free to rent at that moment. At 18:42 the map showed 162 too: the furthest south in Podsmead and Matson, and a few just past the city’s edge to the north-east and east. You unlock and pay in the Voi app.',
       ],
     },
     {
@@ -44,13 +44,13 @@ const guide: Guide = {
             ],
           },
         },
-        'So 15 of those 48 stood just outside the city boundary. The county council’s pages give no hours for the scooters, so check the app before a late ride.',
+        'So 15 of those 48 stood just outside the city boundary.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost in Gloucester?',
       blocks: [
-        'The county council’s e-scooter pages give no prices, and on 1 November 2026 the map showed none for Gloucester, so check the Voi app: it shows the unlock fee, the price per minute and any passes before you start.',
+        'The Voi app shows the unlock fee, the price per minute and any passes before you start.',
         'To hire one, the county council says: download the Voi app, register a valid driving licence, add a credit or debit card, read or watch the safety briefing, then unlock a scooter. Its June 2023 announcement adds a selfie and Voi’s online safety school. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent), and for every trial area in England, [e-scooter hire in the UK](guide:uk-hire).',
       ],
     },
@@ -90,21 +90,20 @@ const guide: Guide = {
             '**No-go areas:** “There are some areas where you cannot ride, such as motorways and shopping centres. Your scooter will switch off if you enter a ‘no go’ area,” the council says, and it sends you to the map in the Voi app.',
           ],
         },
-        'The map here doesn’t draw bays or zones. For a problem with a scooter, the county council sends you to Voi first.',
+        'For a problem with a scooter, the county council sends you to Voi first.',
       ],
     },
     {
       heading: 'The Docks, Gloucester Quays and the cathedral',
       blocks: [
         '**The Docks and the Quays.** In June 2023 the council named Gloucester Quays a 5 mph area, and its FAQ names shopping centres among the no-go areas: end your ride in a bay before you go in. At 18:50 GMT on 1 November 2026 the map showed seven scooters together about 70 metres from the Waterways Museum.',
-        '**Gloucester Cathedral.** The cathedral, in the historic heart of the city, is a 10 to 15 minute walk from both the train and bus stations, it says. It has bike racks on Cathedral Green, Route 41 of the National Cycle Network runs through its grounds, and parking in the Cathedral Close is for pass holders only. Its visiting page says nothing about e-scooters (read on 1 November 2026), so end your ride in a bay and walk in. At 18:50 the map showed 12 scooters within 300 metres of the cathedral.',
+        '**Gloucester Cathedral.** The cathedral, in the historic heart of the city, is a 10 to 15 minute walk from both the train and bus stations, it says. It has bike racks on Cathedral Green, Route 41 of the National Cycle Network runs through its grounds, and parking in the Cathedral Close is for pass holders only. End your ride in a bay and walk in. At 18:50 the map showed 12 scooters within 300 metres of the cathedral.',
       ],
     },
     {
       heading: 'Gloucester station, the bus station and Stagecoach',
       blocks: [
-        'Gloucester station is close to the city centre, the county council says, about 500 metres east of the Cross as the crow flies, and the bus station, Gloucester Transport Hub, about 140 metres from it. The county council’s page describes a £6 million upgrade of the station by Great Western Railway and Gloucester City Council: a new car-park entrance from Metz Way opened in December 2021, and the plans included more cycle spaces.',
-        'At 18:50 GMT on 1 November 2026 the nearest scooter to the station stood about 240 metres away, and one stood about 110 metres from the bus station. End your Voi ride in a bay and walk in.',
+        'Gloucester station is close to the city centre, the county council says, about 500 metres east of the Cross as the crow flies, and the bus station, Gloucester Transport Hub, about 140 metres from it. The county council’s page describes a £6 million upgrade of the station by Great Western Railway and Gloucester City Council: a new car-park entrance from Metz Way opened in December 2021, and the plans included more cycle spaces. End your Voi ride in a bay and walk in.',
         {
           list: [
             '**Trains:** check with the train company before you travel with any e-scooter.',
@@ -137,11 +136,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Voi the only e-scooter hire in Gloucester?',
-      answer: 'Yes. Gloucestershire County Council appointed Voi to run the trial and names no other operator, and only trial scooters may be ridden in public. The [Gloucester map](map:gb:Gloucester) shows where they are.',
+      answer: 'Yes. Gloucestershire County Council appointed Voi to run the trial, and only trial scooters may be ridden in public. The [Gloucester map](map:gb:Gloucester) shows where they are.',
     },
     {
       question: 'How much does a Voi e-scooter cost in Gloucester?',
-      answer: 'Check the Voi app: it shows the unlock fee, the price per minute and any passes before you start. The county council doesn’t list prices, and the map showed none for Gloucester on 1 November 2026.',
+      answer: 'Check the Voi app: it shows the unlock fee, the price per minute and any passes before you start.',
     },
     {
       question: 'Where can I leave a Voi in Gloucester?',

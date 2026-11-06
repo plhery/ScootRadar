@@ -47,7 +47,7 @@ const guide: Guide = {
             ],
           },
         },
-        { note: '**On Duke’s campus, ride only from 6 a.m. to 11 p.m.** Duke Parking & Transportation says “Scooters may only be operated between 6am-11pm.” That is Duke’s rule. Across Durham the map showed scooters through the night of 26 to 27 October; in June 2019 ABC11 reported they would “generally be available from 6 a.m. to 11 p.m. daily”.' },
+        { note: '**On Duke’s campus, ride only from 6 a.m. to 11 p.m.** Duke Parking & Transportation says “Scooters may only be operated between 6am-11pm.” That is Duke’s rule, for its campus. In June 2019 ABC11 reported that scooters across Durham would “generally be available from 6 a.m. to 11 p.m. daily”.' },
       ],
     },
     {
@@ -114,7 +114,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'What time do scooters stop in Durham?',
-      answer: 'On Duke’s campus scooters may only be ridden from 6 a.m. to 11 p.m., Duke says. Elsewhere in Durham the map showed scooters through the night of 26 to 27 October.',
+      answer: 'On Duke’s campus scooters may only be ridden from 6 a.m. to 11 p.m., Duke says.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Durham?',

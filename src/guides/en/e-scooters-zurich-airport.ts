@@ -54,11 +54,11 @@ const guide: Guide = {
         'Each town decides who may rent out scooters, so the apps differ on either side of the airport:',
         {
           list: [
-            '**Kloten** licenses its operators, and in March 2025 it named Voi, Bird, Bolt, Lime and Dott. Hopp wasn’t on that list. Lime’s Kloten scooters are in no open data feed; since 28 October 2026 ScootRadar has read them from the map in Lime’s app.',
-            '**Opfikon** has allowed at most four operators and 160 scooters in all since 1 January 2025. The town says all four places are taken but doesn’t name the firms; Dott, Voi, Bolt and Lime carry Opfikon’s zones in their data.',
+            '**Kloten** licenses its operators, and in March 2025 it named Voi, Bird, Bolt, Lime and Dott.',
+            '**Opfikon** has allowed at most four operators and 160 scooters in all since 1 January 2025. The town says all four places are taken; Dott, Voi, Bolt and Lime carry Opfikon’s zones in their data.',
           ],
         },
-        'Every other operator on ScootRadar’s map comes from its open data, and the map shows only e-scooters, no e-bikes. Bolt, Bird, Dott, Lime and Voi rent from 18; check Hopp’s age limit in its app. Install an app and add a card before you set off; every step is in [how to rent an e-scooter](guide:how-to-rent).',
+        'Bolt, Bird, Dott, Lime and Voi rent from 18; check Hopp’s age limit in its app. Install an app and add a card before you set off; every step is in [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -75,8 +75,6 @@ const guide: Guide = {
               ['Voi', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
               ['Hopp (Kloten)', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
               ['Lime (Opfikon)', 'CHF 1.00', 'Mostly CHF 0.49, some CHF 0.42, before tax', 'In the app', 'In the app'],
-              ['Lime (Kloten)', 'Not published', 'Not published', 'In the app', 'In the app'],
-              ['Bird (Kloten)', 'Not published', 'Not published', 'In the app', 'In the app'],
             ],
           },
         },
@@ -119,7 +117,7 @@ const guide: Guide = {
         {
           list: [
             '**Bolt and Dott:** Kloten, Opfikon and the city of Zürich form one area.',
-            '**Voi:** its data contradicts itself here, so check the app before you cross a town line.',
+            '**Voi:** check the app before you cross a town line.',
             '**Bird and Hopp:** their area here is Kloten alone, so you end the ride in Kloten.',
             '**Lime:** Kloten and Opfikon are separate zones in its data, so check the app before you cross the town line.',
             '**Rümlang, Bassersdorf and Wallisellen** lie outside the areas of Bird, Bolt, Dott and Hopp. Voi marks all three as no-parking, and Lime marks Bassersdorf and Wallisellen as no-ride.',
@@ -152,7 +150,7 @@ const guide: Guide = {
       heading: 'PubliBike: rental bikes that may ride to the terminals',
       blocks: [
         'To ride all the way to the terminals, take a bike. PubliBike may ride to the airport, and its data puts a station right by the airport station’s tram and bus stop. Opfikon has seven, among them Glattbrugg and Opfikon stations, Sirius-Platz, the Ambassador House on Thurgauerstrasse and the Hotel Hilton Zurich Airport.',
-        'You can return a bike at any station in Opfikon, Zürich, Kloten, Wallisellen or Dübendorf. ScootRadar’s map shows PubliBike’s e-scooters but not these bikes; the PubliBike app shows them, with its prices.',
+        'You can return a bike at any station in Opfikon, Zürich, Kloten, Wallisellen or Dübendorf. The PubliBike app shows the bikes and their prices.',
       ],
     },
   ],
@@ -172,10 +170,6 @@ const guide: Guide = {
     {
       question: 'Why won’t the app let me end my ride?',
       answer: 'You are in a no-ride or no-parking zone, or outside your operator’s area: at the airport, next to a parking zone at Glattbrugg or Opfikon station, or with Bird or Hopp outside Kloten. The minutes keep counting until you reach a place where the app lets you stop.',
-    },
-    {
-      question: 'Is there a night ban on e-scooters around Zurich Airport?',
-      answer: 'No. Neither Kloten’s nor Opfikon’s rules hold a night ban or a winter break, and none of the zones in the operators’ open data carried a time limit on 22 October 2026.',
     },
   ],
   sources: [

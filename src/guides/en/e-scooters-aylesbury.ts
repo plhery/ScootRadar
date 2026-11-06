@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'E-scooters in Aylesbury: Voi and Buckinghamshire Council’s trial',
       blocks: [
         '**Voi** hires out Aylesbury’s e-scooters. Buckinghamshire Council’s trial page says Voi operates the rental scheme, that the Department for Transport has extended the trial until 31 May 2028, and that it runs in Aylesbury and High Wycombe; in Buckinghamshire, it adds, only Voi e-scooters are legal. The government’s list of trial areas, updated on 7 July 2026, includes “Buckinghamshire (Aylesbury, High Wycombe)”, and its change log shows Buckinghamshire added on 21 October 2020. The government says the 21 live trials are due to end on 31 May 2028.',
-        'At 07:33 GMT on Sunday 1 November 2026 the [map of Aylesbury](map:gb:Aylesbury) showed 212 Voi e-scooters free to rent at that moment. The total is Aylesbury’s alone, as High Wycombe’s scooters have a map of their own; at 07:53 GMT that morning the scooters stood in the town centre and its suburbs, from Quarrendon and Elmhurst to Kingsbrook, Bedgrove, Southcourt and Stoke Mandeville Hospital. The map shows where each scooter stands and its battery, not prices, zones or parking places; you unlock and pay in the Voi app.',
+        'At 07:33 GMT on Sunday 1 November 2026 the [map of Aylesbury](map:gb:Aylesbury) showed 212 Voi e-scooters free to rent at that moment. At 07:53 GMT that morning the scooters stood in the town centre and its suburbs, from Quarrendon and Elmhurst to Kingsbrook, Bedgrove, Southcourt and Stoke Mandeville Hospital. You unlock and pay in the Voi app.',
       ],
     },
     {
@@ -39,14 +39,13 @@ const guide: Guide = {
             ],
           },
         },
-        'At 07:53 the map showed none at Aylesbury Vale Parkway station or in Berryfields beside it, and none in the villages of Stoke Mandeville, Aston Clinton, Waddesdon or Haddenham, or in Wendover. Don’t count on finding one outside Aylesbury itself.',
         'The scooters were on the map late at night too: at 23:33 GMT on Saturday 31 October it showed 199 in and around the town. Hours can change, so check the app before a late ride.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost in Aylesbury?',
       blocks: [
-        'Buckinghamshire Council’s trial page lists three ways to pay: pay-as-you-go, a daily subscription and a monthly subscription, with discounts for riders who meet certain criteria. For up-to-date prices it sends you to the Voi app, which shows the price and any passes before you start; the map doesn’t show prices. Leave a scooter outside a parking place and you keep being charged, the council warns. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent), and for every trial area in England, [e-scooter hire in the UK](guide:uk-hire).',
+        'Buckinghamshire Council’s trial page lists three ways to pay: pay-as-you-go, a daily subscription and a monthly subscription, with discounts for riders who meet certain criteria. For up-to-date prices it sends you to the Voi app, which shows the price and any passes before you start. Leave a scooter outside a parking place and you keep being charged, the council warns. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent), and for every trial area in England, [e-scooter hire in the UK](guide:uk-hire).',
       ],
     },
     {
@@ -77,16 +76,15 @@ const guide: Guide = {
     {
       heading: 'Where can you ride and park a Voi in Aylesbury?',
       blocks: [
-        'You may ride a trial e-scooter on the road, except motorways, and in cycle lanes and on cycle paths, but never on the pavement, Buckinghamshire Council says. Every ride has to start and finish at one of the parking places the Voi app shows. The trial zone is geofenced: ride out of it and the scooter slows down and stops. The council also said it would bring in lower-speed zones in some places for safety. The map here doesn’t draw zones or parking places, so check the app before you set off.',
+        'You may ride a trial e-scooter on the road, except motorways, and in cycle lanes and on cycle paths, but never on the pavement, Buckinghamshire Council says. Every ride has to start and finish at one of the parking places the Voi app shows. The trial zone is geofenced: ride out of it and the scooter slows down and stops. The council also said it would bring in lower-speed zones in some places for safety.',
         '**The town centre.** At 07:58 GMT on 1 November 2026 the map showed 103 scooters in and around the centre: 26 within 150 metres of the station entrance, 7 of them right beside it, then 10 near the High Street and 7 by Exchange Street.',
-        'The centre has been changing. The council’s news of 30 October 2025 listed a pedestrian zone in Cambridge Street, traffic restrictions in Kingsbury Square made permanent to improve pedestrian access, and a new walkway in the Pavilion Quarter linking the High Street with the Exchange. It doesn’t say how the e-scooter zones treat them: the app shows where you may ride and park.',
+        'The centre has been changing. The council’s news of 30 October 2025 listed a pedestrian zone in Cambridge Street, traffic restrictions in Kingsbury Square made permanent to improve pedestrian access, and a new walkway in the Pavilion Quarter linking the High Street with the Exchange. The app shows where you may ride and park.',
       ],
     },
     {
       heading: 'Aylesbury station, Chiltern Railways and the buses',
       blocks: [
         'Chiltern Railways runs the mainline trains to and from Aylesbury, Buckinghamshire Healthcare NHS Trust says. Check Chiltern’s own rules on e-scooters before you bring one to a station, and end your Voi ride at a parking place before you go in.',
-        'Aylesbury Vale Parkway station had no scooter near it at 07:53 GMT on 1 November 2026, and at 07:59 the nearest to Stoke Mandeville station, south of the town, stood nearly half a kilometre away.',
         'The bus station is on Great Western Street, less than 200 metres from the train station; at 07:58 the map showed 11 scooters near it. Buckinghamshire Council’s bus page has the timetables and routes and sends you to Traveline for longer journeys. End your ride before you board a bus.',
       ],
     },
@@ -125,11 +123,11 @@ const guide: Guide = {
     },
     {
       question: 'Where can I find a Voi e-scooter in Aylesbury?',
-      answer: 'Across the town: at 07:53 GMT on 1 November 2026 the map showed 144 in and around the centre and the rest in suburbs such as Quarrendon, Elmhurst, Kingsbrook, Bedgrove and Southcourt and at Stoke Mandeville Hospital. It showed none in the villages of Stoke Mandeville, Aston Clinton, Waddesdon or Haddenham, or in Wendover.',
+      answer: 'Across the town: at 07:53 GMT on 1 November 2026 the map showed 144 in and around the centre and the rest in suburbs such as Quarrendon, Elmhurst, Kingsbrook, Bedgrove and Southcourt and at Stoke Mandeville Hospital.',
     },
     {
       question: 'How much does a Voi e-scooter cost in Aylesbury?',
-      answer: 'Check the Voi app: it shows the price before you start. Buckinghamshire Council lists pay-as-you-go, daily and monthly subscriptions, and discounts for riders who meet certain criteria. The map shows where the scooters are and their battery, not prices.',
+      answer: 'Check the Voi app: it shows the price before you start. Buckinghamshire Council lists pay-as-you-go, daily and monthly subscriptions, and discounts for riders who meet certain criteria.',
     },
     {
       question: 'Where can I leave a Voi in Aylesbury?',

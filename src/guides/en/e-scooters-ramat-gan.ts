@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Ramat Gan 2026: Lime, Bird, Dott, rules, parking',
   description: 'E-scooters in Ramat Gan: Lime, Bird and Dott, prices, the licence or riding test, helmet and sidewalk fines, parking, the Red Line and Shabbat.',
   headline: 'E-scooters in Ramat Gan: Lime, Bird and Dott, the licence rule, parking, the Red Line and Shabbat',
-  lede: 'You can rent e-scooters in Ramat Gan with Lime, Bird or Dott, all three on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
+  lede: 'You can rent e-scooters in Ramat Gan with Lime, Bird or Dott, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'il:Ramat Gan',
@@ -16,17 +16,17 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Ramat Gan?',
       blocks: [
-        'Three apps put stand-up e-scooters on our map of Ramat Gan: **Lime**, **Bird** and **Dott**.',
+        '**Lime**, **Bird** and **Dott** rent stand-up e-scooters in Ramat Gan.',
         'At 05:27 Israel time on Friday 30 October 2026 the [Ramat Gan map](map:il:Ramat Gan) showed 1,485 scooters inside the city’s boundary: 866 Lime, 433 Dott and 186 Bird. That’s what stood there at that moment, not the size of the fleets. Each town next door has its own count: at the same moment the map showed 524 in Givatayim, 81 in Bnei Brak and about 4,000 in Tel Aviv-Yafo.',
         'Lime also rents e-bikes in Ramat Gan, since August 2025, RGG News reported. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
           table: {
             caption: 'Who rents e-scooters in Ramat Gan, 30 October 2026',
-            head: ['Company', 'On our map at 05:27', 'Price', 'Ride and parking zones'],
+            head: ['Company', 'On the map at 05:27', 'Price', 'Ride and parking zones'],
             rows: [
-              ['Lime', 'Yes: 866', 'In the app', 'In the app'],
-              ['Dott', 'Yes: 433', '₪5 to unlock, ₪1.25 a minute, on the map', 'In the app, and on the map'],
-              ['Bird', 'Yes: 186', 'In the app', 'In the app, and on the map'],
+              ['Lime', '866', 'In the app', 'In the app'],
+              ['Dott', '433', '₪5 to unlock, ₪1.25 a minute', 'In the app, and on the map'],
+              ['Bird', '186', 'In the app', 'In the app, and on the map'],
             ],
           },
         },
@@ -35,7 +35,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Ramat Gan?',
       blocks: [
-        'Our map shows Dott’s price in Ramat Gan: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. Lime and Bird show their unlock fee and rate in the app before you start, so compare them there.',
+        'Dott’s open data gives its Ramat Gan price: ₪5 to unlock, then ₪1.25 a minute (as of November 2026). Lime and Bird show their unlock fee and rate in the app before you start, so compare them there.',
         'Fines cost far more than rides. Since 1 August 2024 every e-scooter in Israel has had to be registered and carry an ID plate, a duty that falls on its owner, Ice reported, so on a shared scooter it’s the company’s. On a scooter of your own, riding without a plate has cost ₪750 since 1 September 2026, Maariv reported.',
       ],
     },
@@ -82,10 +82,10 @@ const guide: Guide = {
     {
       heading: 'Ramat Gan National Park, the Safari, the Diamond Exchange and Bar-Ilan',
       blocks: [
-        '**Ramat Gan National Park (Park Leumi).** The city’s park covers 1.9 km² around a lake. With zones turned on, the map shows a Bird no-parking zone over it, so you can ride through on a Bird but can’t end your ride inside, and a Dott no-ride zone: walk a Dott through. Check Lime’s app for its zones too.',
-        '**The Safari.** The zoo next to the park, the Zoological Center Tel Aviv–Ramat Gan, bans riding e-bikes and e-scooters anywhere on its grounds, its visitor rules say, and the map shows Bird and Dott no-ride zones over it. End your ride outside.',
-        '**The Diamond Exchange District.** The towers of the Israel Diamond Exchange stand in the north-west of the city, across the Ayalon Highway from Tel Aviv. Bridges from Savidor Center station lead east into the district, and the Red Line’s Abba Hillel station serves it. The map shows a Bird no-parking spot by the exchange and a Dott no-parking zone over the district.',
-        '**Bar-Ilan University.** The map shows a Dott no-ride zone over the Ramat Gan campus, so a Dott won’t run inside; ask campus security at the gate before you ride or park inside.',
+        '**Ramat Gan National Park (Park Leumi).** The city’s park covers 1.9 km² around a lake. Bird marks it as a no-parking zone, so you can ride through on a Bird but can’t end your ride inside, and Dott as a no-ride zone: walk a Dott through. Check Lime’s app for its zones too.',
+        '**The Safari.** The zoo next to the park, the Zoological Center Tel Aviv–Ramat Gan, bans riding e-bikes and e-scooters anywhere on its grounds, its visitor rules say, and Bird and Dott mark it as a no-ride zone. End your ride outside.',
+        '**The Diamond Exchange District.** The towers of the Israel Diamond Exchange stand in the north-west of the city, across the Ayalon Highway from Tel Aviv. Bridges from Savidor Center station lead east into the district, and the Red Line’s Abba Hillel station serves it. Bird marks a no-parking spot by the exchange, and Dott a no-parking zone over the district.',
+        '**Bar-Ilan University.** Dott marks the Ramat Gan campus as a no-ride zone, so a Dott won’t run inside; ask campus security at the gate before you ride or park inside.',
       ],
     },
     {
@@ -123,11 +123,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Ramat Gan?',
-      answer: 'Lime, Bird and Dott are on our [Ramat Gan map](map:il:Ramat Gan): 1,485 scooters inside the city at 05:27 on 30 October 2026.',
+      answer: 'Lime, Bird and Dott: the [Ramat Gan map](map:il:Ramat Gan) showed 1,485 of their scooters inside the city at 05:27 on 30 October 2026.',
     },
     {
       question: 'How much does a Lime, Bird or Dott scooter cost in Ramat Gan?',
-      answer: 'Dott’s is on our map: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. Lime and Bird show theirs in the app before you unlock.',
+      answer: 'Dott charges ₪5 to unlock, then ₪1.25 a minute (as of November 2026), its open data shows. Lime and Bird show theirs in the app before you unlock.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Ramat Gan as a tourist?',
@@ -143,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a scooter in Ramat Gan National Park?',
-      answer: 'On a Bird you can ride through but not end your ride there, and a Dott won’t run there: the map shows a Bird no-parking zone and a Dott no-ride zone over the park. The Safari next door bans e-scooters on its grounds. Check Lime’s app for its zones too.',
+      answer: 'On a Bird you can ride through but not end your ride there, and a Dott won’t run there: Bird marks the park as a no-parking zone, and Dott as a no-ride zone. The Safari next door bans e-scooters on its grounds. Check Lime’s app for its zones too.',
     },
   ],
   sources: [
@@ -173,6 +173,7 @@ const guide: Guide = {
     { title: 'Hon: Bird raises prices on Shabbat, holidays and at night (6 October 2019), Hebrew', url: 'https://www.hon.co.il/?p=116880' },
     { title: 'Ice: police tickets to e-scooter riders by city, 2022 (21 May 2023), Hebrew', url: 'https://www.ice.co.il/research/news/article/963957' },
     { title: 'Calcalist: Ofo bikes used over 1,000 times a day in Ramat Gan (28 June 2018)', url: 'https://www.calcalistech.com/articles/0,7340,L-3741274,00.html' },
+    { title: 'Dott: Tel Aviv area pricing, open data (GBFS), read 6 November 2026', url: 'https://gbfs.api.ridedott.com/public/v2/tel-aviv/system_pricing_plans.json' },
   ],
 };
 
