@@ -68,6 +68,12 @@ interface ServerOptions {
   /** Whether a deploy is stopping the container: /health and /ready answer 503 while the rest answers as
    * before, so Docker marks it unhealthy and Traefik moves its requests to the new one (DEPLOY.md). */
   draining?: () => boolean;
+  /**
+   * Whether the feed is paused, so /health does not count it failed: in its seasonal pause or closed
+   * for the season (snapshotPaused, the default), or, in the cache, collected through a worker that
+   * has stopped asking for jobs, as the Ryde bridge's paused on its Mac (scooter-cache.ts).
+   */
+  paused?: (feed: { id: string; seasonOver?: boolean }, now: number) => boolean;
 }
 
 // The Worker's address searches report here how many requests they sent to Geoapify.
@@ -87,6 +93,7 @@ export function createSnapshotServer(options: ServerOptions) {
   const clients = new Map<string, { count: number; resetAt: number }>();
   let activeResponses = 0;
   const cadence = options.cadence ?? ALWAYS_FAST;
+  const paused = options.paused ?? snapshotPaused;
   const fromWorker = (request: IncomingMessage) => tokenHash
     ? timingSafeEqual(tokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())
     : ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress ?? '');
@@ -127,7 +134,9 @@ export function createSnapshotServer(options: ServerOptions) {
         usableFeeds: usable.length,
         // Positions recent enough to show without collecting again.
         servedFeeds: feeds.filter(feed => showsPositions(feed, now)).length,
-        failedFeeds: attempted.filter(feed => feedState(feed, now, cadence) !== 'ok').map(feed => feed.id),
+        // A paused feed is expected to stop: counted apart, as the feed-stopped alert leaves it out.
+        failedFeeds: attempted.filter(feed => feedState(feed, now, cadence) !== 'ok' && !paused(feed, now)).map(feed => feed.id),
+        pausedFeeds: feeds.filter(feed => paused(feed, now)).length,
         warmingFeeds: feeds.filter(feed => feed.attemptedAt === 0).map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),

@@ -9,7 +9,7 @@ import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { feedCurfewEnds, feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
+import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
@@ -112,6 +112,17 @@ const lastErrors = new Map<string, string>();
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
 // The feeds collected now, whose zones are read when someone asks for them.
 let collectable: CollectableScooterFeed[] = [];
+// The worker each feed collected through one is collected through, as the Ryde bridge's (setDefinitions).
+let workerOf = new Map<string, NonNullable<CollectableScooterFeed['worker']>>();
+/** Whether the feed is collected through a worker that has stopped asking for jobs, as the Ryde bridge's paused on its Mac. */
+const workerSilent = (feedId: string, now: number) => workerOf.get(feedId)?.silentSince(now) !== undefined;
+/**
+ * Whether the feed is expected to stop: in its seasonal pause or closed for the season (snapshotPaused),
+ * or collected through a silent worker. Sentry hears of the worker's silence once for all its feeds
+ * (reportRydeWorkerSilent), /health leaves them out of its failed feeds, and scootradar_feed_paused
+ * keeps them from the feed-stopped and feed-empty alerts until the worker asks again.
+ */
+const pausedNow = (feed: { id: string; seasonOver?: boolean }, now: number) => snapshotPaused(feed, now) || workerSilent(feed.id, now);
 const zoneStore = createZoneStore({ onError: (feed, error) => console.warn(JSON.stringify({ event: 'zones_feed_failed', feed,
   error: (error instanceof Error ? error.message : String(error)).slice(0, 300) })) });
 const stalls = watchStalls(console.warn);
@@ -143,6 +154,7 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 // City totals count the feeds collected on time, whatever the age of their positions.
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
+  paused: (feedId, now) => feedPaused(feedId, now) || workerSilent(feedId, now),
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
       binbinMapRequests.status + beamMapRequests.status + gcooMapRequests.status + kickgoingMapRequests.status + swingMapRequests.status +
@@ -159,7 +171,8 @@ const server = createSnapshotServer({ rydeBridge, snapshot: () => snapshot,
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
   // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
-  lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining });
+  lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining,
+  paused: pausedNow });
 // The city totals, built in two parts (cityOverview): those of the feeds without a retention cap, and
 // those of the capped feeds. The file keeps the first only.
 let baseOverview: MobilitySnapshot['overview'] | undefined;
@@ -324,6 +337,7 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
   // Capped feeds are collected every 13 minutes while nobody looks, but expire as the others do.
   const definitions = withRetentionCaps(collected, schedule.idleIntervalMs);
   collectable = definitions;
+  workerOf = new Map(definitions.flatMap(feed => feed.worker ? [[feed.id, feed.worker] as const] : []));
   ownIdleExpiry = ownIdleExpiries(definitions, schedule.idleExpiryMs);
   retentionCap = retentionCaps(definitions);
   const active = new Set(definitions.map(feed => feed.id));
@@ -435,18 +449,16 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
   // on 16 October 2026: Sentry hears of it only if it is not back 30 minutes after the ban.
   wait: waitOutCurfew(feedCurfewed),
   report: (change, feed) => {
-    // In its seasonal pause, or closed by its operator for the season, a feed is expected to stop;
-    // the log still says it did.
+    // In its seasonal pause, closed by its operator for the season, or collected through a worker that
+    // has stopped asking for jobs, whose one report stands for its feeds (reportRydeWorkerSilent), a feed
+    // is expected to stop; the log still says it did.
     const now = Date.now();
-    if (snapshotPaused(feed, now)) return;
-    // Collected through a worker that has stopped asking for jobs, as the Ryde bridge's paused on its
-    // Mac: the report of its silence stands for its feeds (reportRydeWorkerSilent).
-    if (collectable.find(definition => definition.id === feed.id)?.worker?.silentSince(now) !== undefined) return;
+    if (pausedNow(feed, now)) return;
     const hostOf = new Map(collectable.map(definition => [definition.id, definition.host]));
     // Without one, the feed is out of the catalog, and so are the others listed with it.
     const host = hostOf.get(feed.id);
     const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
-      !snapshotPaused(other, now) && expiredBeside(other, now, cadence)).map(other => other.id).sort();
+      !pausedNow(other, now) && expiredBeside(other, now, cadence)).map(other => other.id).sort();
     reportFeedExpired(change, feed, lastErrors.get(feed.id), host, alsoExpired);
   } }, restoredFeedStates);
 const persistenceTimer = setInterval(() => {
@@ -466,8 +478,7 @@ const persistenceTimer = setInterval(() => {
 function reportRydeWorkerSilent(now: number) {
   const silentSince = rydeBridge?.silentSince(now);
   if (silentSince === undefined || !snapshot) return;
-  const viaWorker = new Set(collectable.filter(definition => definition.worker === rydeBridge).map(definition => definition.id));
-  const feeds = snapshot.feeds.filter(feed => viaWorker.has(feed.id));
+  const feeds = snapshot.feeds.filter(feed => workerOf.get(feed.id) === rydeBridge);
   reportWorkerSilent(RYDE_WORKER, silentSince, { total: feeds.length,
     expired: feeds.filter(feed => expiredBeside(feed, now, cadence)).length }, now);
 }

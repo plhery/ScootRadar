@@ -56,7 +56,10 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   its season is over (Whoosh's `seasonIsOver`, as in Almaty since 24 October 2026), else 0. The feed may then
   serve nothing: the map says when its scooters are back rather than that the provider is
   not sharing data, Sentry is not told it stopped, and "feed stopped" and "feed empty"
-  ignore it.
+  ignore it. In the cache it is also 1 while the feed is collected through a worker that
+  has not asked for a job for 10 minutes, as the Ryde bridge's 1,332 feeds since the user
+  paused it on 5 November 2026, until the worker asks again; the map says nothing of it,
+  and Sentry hears once of the worker's silence.
 - `scootradar_feed_curfewed`: 1 while a night ban (data/rental-curfews.json) holds at
   every service area of the feed, else 0. Its operator may take the feed down until
   morning, as Dott does in Trondheim on Friday and Saturday nights while Entur keeps
@@ -460,7 +463,8 @@ the feeds that have some, null when none has) are JSON lines, as is `feed_states
 (at start-up, with the number of `feeds` whose state was restored, 0 when the saved
 states are 10 minutes old or more, and the file's `ageSeconds`; see Sentry).
 `/ready` likewise lists the feeds not collected yet as `warmingFeeds`, apart from
-`failedFeeds`. So is `upstream_stale_fallback`, a request to an
+`failedFeeds`, which leaves out the paused feeds (`scootradar_feed_paused`): they are
+counted as `pausedFeeds`. So is `upstream_stale_fallback`, a request to an
 operator that failed while an earlier answer could still be served: its host and path,
 and the HTTP status, or the error's type, Node's code for a network error (`errorCode`,
 as `ECONNRESET` or `UND_ERR_SOCKET`) and whether it failed before the operator answered
