@@ -3,8 +3,10 @@ package com.plhery.scootradar.ui
 import android.app.Activity
 import android.app.Application
 import android.graphics.Bitmap
+import android.hardware.display.DisplayManager
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.view.Display
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
@@ -40,6 +42,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,8 +53,8 @@ import java.util.Locale
  * The dock and the panel switch live as the window changes size, as a foldable unfolds and folds again, in the
  * same activity (UI-108–UI-115, X-AD17): the scooter chosen stays chosen, its card goes from the dock to the panel
  * and back, and the map's leading margin moves past the panel and back. For ScootRadar_Resizable, whose phone and
- * foldable screens `wm size` gives it at the same density; the screens are kept in the run's additional output,
- * as resize-*.png.
+ * foldable screens `wm size` gives it at the same density, and skipped on a screen too small to be given them; the
+ * screens are kept in the run's additional output, as resize-*.png.
  *
  * No compose rule: its test clock would move the screen only while the test waits for it.
  */
@@ -67,8 +70,20 @@ class WindowResizeTest {
     private val application = ApplicationProvider.getApplicationContext<Application>()
     private var recreations: Application.ActivityLifecycleCallbacks? = null
 
+    /** Whether a test gave the screen a size, which tearDown takes back. */
+    private var resized = false
+
     @Before
     fun setUp() {
+        // `wm size` gives a screen at most twice the device's own each way, as WindowManagerService caps it: on
+        // ScootRadar_Phone_Min, 720 × 1280, the unfolded 2208 × 1840 came as 1440 × 1840, which the test waited for
+        // in vain (app-bd, 6 November).
+        val own = instrumentation.targetContext.getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY).mode
+        val sizes = listOf(PHONE, UNFOLDED).map { size -> size.split("x").map(String::toInt) }
+        assumeTrue(
+            "a screen `wm size` can make $PHONE and $UNFOLDED, not ${own.physicalWidth}x${own.physicalHeight}",
+            sizes.all { (width, height) -> width <= 2 * own.physicalWidth && height <= 2 * own.physicalHeight },
+        )
         Locale.setDefault(Locale.UK)
         ScooterLanguage.current = ScooterLanguage.En
     }
@@ -78,7 +93,7 @@ class WindowResizeTest {
         scenario?.close()
         recreations?.let(application::unregisterActivityLifecycleCallbacks)
         scope.cancel()
-        shell("wm size reset")
+        if (resized) shell("wm size reset")
         ScooterLanguage.current = language
         Locale.setDefault(locale)
     }
@@ -147,6 +162,7 @@ class WindowResizeTest {
 
     /** Gives the screen `size` in pixels, as the resizable emulator's modes do, and waits for the window to take it. */
     private fun resize(size: String) {
+        resized = true
         shell("wm size $size")
         val (width, height) = size.split("x").map { it.toInt() }
         assertTrue("the screen at $size", waitFor(10_000) {
