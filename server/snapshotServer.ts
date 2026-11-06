@@ -136,7 +136,7 @@ export function createSnapshotServer(options: ServerOptions) {
         servedFeeds: feeds.filter(feed => showsPositions(feed, now)).length,
         // A paused feed is expected to stop: counted apart, as the feed-stopped alert leaves it out.
         failedFeeds: attempted.filter(feed => feedState(feed, now, cadence) !== 'ok' && !paused(feed, now)).map(feed => feed.id),
-        pausedFeeds: feeds.filter(feed => paused(feed, now)).length,
+        pausedFeeds: attempted.filter(feed => paused(feed, now)).length,
         warmingFeeds: feeds.filter(feed => feed.attemptedAt === 0).map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),

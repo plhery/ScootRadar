@@ -463,8 +463,8 @@ the feeds that have some, null when none has) are JSON lines, as is `feed_states
 (at start-up, with the number of `feeds` whose state was restored, 0 when the saved
 states are 10 minutes old or more, and the file's `ageSeconds`; see Sentry).
 `/ready` likewise lists the feeds not collected yet as `warmingFeeds`, apart from
-`failedFeeds`, which leaves out the paused feeds (`scootradar_feed_paused`): they are
-counted as `pausedFeeds`. So is `upstream_stale_fallback`, a request to an
+`failedFeeds`, which leaves out the paused feeds (`scootradar_feed_paused`): those collected
+once at least are counted as `pausedFeeds`, as the metric covers them. So is `upstream_stale_fallback`, a request to an
 operator that failed while an earlier answer could still be served: its host and path,
 and the HTTP status, or the error's type, Node's code for a network error (`errorCode`,
 as `ECONNRESET` or `UND_ERR_SOCKET`) and whether it failed before the operator answered

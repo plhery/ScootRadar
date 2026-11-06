@@ -435,11 +435,14 @@ describe('collection on demand', () => {
   it('counts a paused feed apart from the failed ones, as the Ryde bridge\'s while its worker is silent', async () => {
     const now = Date.now();
     const feeds = [feed('france:dott_fr_lyon', lyon, now - minutes(40)), feed('france:dott_fr_paris', paris, now - minutes(40)),
-      feed('norway:ryde_app_drammen', lyon, now - minutes(40), { failed: true })];
+      feed('norway:ryde_app_drammen', lyon, now - minutes(40), { failed: true }),
+      feed('norway:ryde_app_drammen_001', lyon, 0, { attemptedAt: 0 })];
     const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) },
       { cadence: { fastSince: () => undefined, idleExpiryMs: minutes(30) }, paused: feed => feed.id.includes(':ryde_app_') });
     const health = await (await fetch(`http://127.0.0.1:${port}/health`)).json() as Record<string, unknown>;
-    expect(health).toMatchObject({ failedFeeds: ['france:dott_fr_lyon', 'france:dott_fr_paris'], pausedFeeds: 1 });
+    // As failedFeeds, of the feeds collected once at least: one not yet is warming.
+    expect(health).toMatchObject({ failedFeeds: ['france:dott_fr_lyon', 'france:dott_fr_paris'], pausedFeeds: 1,
+      warmingFeeds: ['norway:ryde_app_drammen_001'] });
   });
 
   it('answers the zones of a street view to the Worker, and lets it keep a complete answer', async () => {
