@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter Plymouth 2026: Beryl prices, bays and rules',
   description: 'E-scooter hire in Plymouth with Beryl: £1 to unlock and 22p a minute, no night stop, minute bundles, who can ride, the Armada Way slow zone and the bays.',
   headline: 'E-scooter hire in Plymouth: Beryl’s prices, bays and where you can ride',
-  lede: 'You can hire an e-scooter in Plymouth from Beryl, the only operator, in a government trial that began on 28 July 2026. It costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and Beryl lists no night-time stop. You must be 18 or over with a driving licence, ride on roads and cycle lanes but never on pavements, push the scooter through the Slow-Go Zone on and around Armada Way, and start and end every ride in a Beryl bay.',
+  lede: 'You can hire an e-scooter in Plymouth from Beryl, the only operator, in a government trial that began on 28 July 2026. It costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and you can hire one at night too. You must be 18 or over with a driving licence, ride on roads and cycle lanes but never on pavements, push the scooter through the Slow-Go Zone on and around Armada Way, and start and end every ride in a Beryl bay.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'gb:Plymouth',
@@ -17,9 +17,9 @@ const guide: Guide = {
       heading: 'Plymouth e-scooter hire: Beryl, in a trial since July 2026',
       blocks: [
         'One company, **Beryl**, rents e-scooters in Plymouth, alongside the e-bikes it has run there since March 2023 for the council’s Connect Plymouth scheme. The council signed its decision to go ahead with the trial on 1 July 2026, the government added Plymouth to its list of trial areas on 7 July, and the scooters went on hire on 28 July. Beryl funds the trial, about £1 million, at no cost to the council.',
-        'Beryl lists 200 e-scooters and 510 e-bikes in Plymouth. At 9.18am on Friday 23 October 2026 the [map of Plymouth](map:gb:Plymouth) showed about 160 Beryl e-scooters free to rent. The map shows e-scooters only, not Beryl’s e-bikes.',
-        '**How long will it run?** Beryl’s Plymouth page says “until March 2028”, subject to review. That is Beryl’s date for Plymouth; the government’s national trials, which make hire scooters legal, run separately until May 2028. The council’s pages give no end date.',
-        '**Can you ride at night?** Yes. Beryl’s hire-hours page (July 2026) limits night hires only in Bournemouth, Christchurch and Poole and in Brighton, and our map still showed Plymouth scooters at 2.26am on Saturday 17 October 2026.',
+        'Beryl lists 200 e-scooters and 510 e-bikes in Plymouth. At 9.18am on Friday 23 October 2026 the [map of Plymouth](map:gb:Plymouth) showed about 160 Beryl e-scooters free to rent.',
+        '**How long will it run?** Beryl’s Plymouth page says “until March 2028”, subject to review. That is Beryl’s date for Plymouth; the government’s national trials, which make hire scooters legal, run separately until May 2028.',
+        '**Can you ride at night?** Yes. Beryl’s hire-hours page (July 2026) limits night hires only in Bournemouth, Christchurch and Poole and in Brighton.',
       ],
     },
     {
@@ -39,7 +39,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Validity periods are from Beryl’s open data; its Plymouth page lists no day pass. Beryl’s e-bikes cost £1 to unlock and 17p a minute, from age 16. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Validity periods are from Beryl’s open data. Beryl’s e-bikes cost £1 to unlock and 17p a minute, from age 16. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         '**Students** get 25% off bundles, but not pay-as-you-ride, with the code **STUDENT26** until 31 July 2027, if their Beryl account uses a university or college email: the 100-minute bundle then costs £11.25.',
       ],
     },
@@ -75,8 +75,8 @@ const guide: Guide = {
       blocks: [
         'Beryl says you can ride “throughout Plymouth” inside the operating area the app shows, on roads and on cycle lanes, shared paths and bus lanes signed with a bicycle. But rides start and end only in its parking zones: the city centre and the Western Corridor, and a separate zone around Derriford.',
         'In Beryl’s data on 23 October 2026, the main parking zone reaches from the Hoe, the Barbican and Cattedown north to Mutley Plain and Peverell, and west through Stonehouse and Devonport to St Budeaux; Mount Batten, Plymstock, Plympton and Crownhill lie outside it.',
-        '**The Slow-Go Zone** lies “in the city centre, on and around Armada Way”, the council says: the power cuts to 3 mph and you get off and push. Beryl’s data draws two zones there, “Pedestrianised Core” and “Armada Way”. On a street map they take in Armada Way, New George Street, Cornwall Street, Old Town Street and Bedford Way, with the Old Town Street and Mayflower Street bays inside. That is our reading, not an official list: the app shows the exact edges.',
-        '**The Hoe, the Barbican and Royal William Yard** have no special zone in Beryl’s data, and Beryl suggests riding to all three. Keep to roads and paths where bikes may go. The Yard has no bay of its own, so end your ride at Admiral’s Hard, about 200 metres from its main gate.',
+        '**The Slow-Go Zone** lies “in the city centre, on and around Armada Way”, the council says: the power cuts to 3 mph and you get off and push. Beryl’s data draws two zones there, “Pedestrianised Core” and “Armada Way”. They take in Armada Way, New George Street, Cornwall Street, Old Town Street and Bedford Way, with the Old Town Street and Mayflower Street bays inside; the app shows the exact edges.',
+        'Beryl suggests riding to **the Hoe, the Barbican and Royal William Yard**. Keep to roads and paths where bikes may go. The Yard has no bay of its own, so end your ride at Admiral’s Hard, about 200 metres from its main gate.',
       ],
     },
     {
@@ -119,11 +119,11 @@ const guide: Guide = {
         {
           list: [
             '**Trains:** check GWR’s own rules before you take any e-scooter to its trains. Dock at Saltash Road and walk to the station.',
-            '**Ferries:** the Mount Batten and Cremyll ferries carry bicycles, but neither the council nor the ferry companies mention e-scooters. Dock at Barbican Landing Stage for the Mount Batten ferry, at Admiral’s Hard for the Cremyll ferry to Mount Edgcumbe (back there since 19 July 2026, says Plymouth Boat Trips), or at the Torpoint Ferry bay.',
+            '**Ferries:** the Mount Batten and Cremyll ferries carry bicycles. Dock at Barbican Landing Stage for the Mount Batten ferry, at Admiral’s Hard for the Cremyll ferry to Mount Edgcumbe (back there since 19 July 2026, says Plymouth Boat Trips), or at the Torpoint Ferry bay.',
             '**Derriford:** the hospital, the district centre, Alpha Way and George Park and Ride have bays in a zone of their own; the Marjon University bays were out of use on 23 October 2026.',
           ],
         },
-        '**Students:** the University of Plymouth lists e-scooters and e-bikes among the items you may not bring into its student accommodation; we found no university rule on hire scooters. Arts University Plymouth also has a bay.',
+        '**Students:** the University of Plymouth lists e-scooters and e-bikes among the items you may not bring into its student accommodation. Arts University Plymouth also has a bay.',
         'Heading into Cornwall? Beryl also rents e-scooters in Falmouth, Newquay, Penzance and [Truro](map:gb:Truro), a separate trial area. See [e-scooter hire in the UK](guide:uk-hire) for all 21 areas.',
       ],
     },
@@ -155,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Do Beryl e-scooters stop at night in Plymouth?',
-      answer: 'No. Beryl lists night-time limits only in Bournemouth, Christchurch and Poole and in Brighton, and our map showed Plymouth scooters at 2.26am on 17 October 2026.',
+      answer: 'No. Beryl lists night-time limits only in Bournemouth, Christchurch and Poole and in Brighton.',
     },
     {
       question: 'Can I use a foreign driving licence on a Beryl e-scooter in Plymouth?',

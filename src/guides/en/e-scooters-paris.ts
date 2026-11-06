@@ -6,7 +6,7 @@ const guide: Guide = {
   topic: 'paris',
   name: 'E-scooters in Paris',
   title: 'E-scooter Paris 2026: the ban and what to ride instead',
-  description: 'Can you rent an e-scooter in Paris? Not since 2023. What Vélib’ and Lime, Dott and Voi e-bikes cost, the nearest shared scooters, and rules for your own.',
+  description: 'Can you rent an e-scooter in Paris? Not since 2023. What Vélib’, Dott and Voi e-bikes cost, the nearest shared scooters, and rules for your own.',
   headline: 'E-scooters in Paris: why you can’t rent one, and what to ride instead',
   lede: 'You can’t rent a shared e-scooter in Paris: the city ended the service on 1 September 2023, after a vote on 2 April 2023 in which 89.03% said no, on a turnout of 7.46%. Ride a Vélib’ (€3 for 45 minutes) or a Lime, Dott or Voi e-bike instead (Voi: €0.29 a minute, no unlock fee, published rate on 12 October 2026). The nearest shared e-scooters are in the outer suburbs, around Versailles, in Saint-Quentin-en-Yvelines and near Disneyland Paris, where helmets are compulsory. Your own e-scooter is allowed in Paris, with a helmet and a high-visibility vest at all hours since 7 August 2026.',
   published: '2026-10-12',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Can you rent an e-scooter in Paris?',
       blocks: [
-        'No. On 12 October 2026 the public data feeds of Dott, Lime and Voi for Paris held nothing but e-bikes. As far as we know, no return of shared e-scooters has been announced, not even since Emmanuel Grégoire became mayor on 29 March 2026.',
+        'No. On 12 October 2026 Dott, Lime and Voi rented only e-bikes in Paris.',
         '**Is Lime in Paris?** Yes, with e-bikes. Lime, Dott and Voi each run 3,000 to 6,000 of them under a four-year agreement with the city that began on 1 October 2025. Hiring an e-scooter from a shop is still legal: the ban covers only shared scooters left on the street.',
       ],
     },
@@ -64,12 +64,11 @@ const guide: Guide = {
             rows: [
               ['Voi', '€0', '€0.29', '€2.90', '€5.80'],
               ['Dott', '€1', '€0.35', '€4.50', '€8.00'],
-              ['Lime', 'Not published', 'Not published', 'See the app', 'See the app'],
               ['Vélib’ (Ticket-V)', '€3 a ride', '45 min included', '€3', '€3'],
             ],
           },
         },
-        'Lime publishes no Paris rates, so check its app before you unlock; with every operator, the app shows the final price. Since 1 October 2025, shared bikes may only be left in bike bays without racks or at racks with at least four hoops, never on the pavement.',
+        'With every operator, the app shows the final price before you unlock. Since 1 October 2025, shared bikes may only be left in bike bays without racks or at racks with at least four hoops, never on the pavement.',
       ],
     },
     {
@@ -82,7 +81,7 @@ const guide: Guide = {
     {
       heading: 'The nearest shared e-scooters to Paris',
       blocks: [
-        'There are none in Paris, and as far as we know none in the three départements around it: no operator publishes shared e-scooter data there. At about 10:45 on 12 October 2026, the map showed about 1,650 in the outer suburbs, in five areas. In the evening the nearest to Notre-Dame was about 14 km away as the crow flies, in Bougival.',
+        'There are none in Paris: at about 10:45 on 12 October 2026, the map showed about 1,650 in the outer suburbs, in five areas.',
         {
           table: {
             caption: 'The nearest shared e-scooters to Paris: published rates and scooters on the map, 12 October 2026',
@@ -99,10 +98,10 @@ const guide: Guide = {
         'The counts are a snapshot of the map, not fleet sizes, and the app shows the final price.',
         {
           list: [
-            '**Around Versailles**: none in the town itself. At about 6 pm on 12 October 2026, the nearest Dott to the Château was about 1.4 km away, in Le Chesnay-Rocquencourt. The [map at Le Chesnay-Rocquencourt](map:fr:Le Chesnay-Rocquencourt) shows the nearest.',
+            '**Around Versailles**: Dott, on the [map at Le Chesnay-Rocquencourt](map:fr:Le Chesnay-Rocquencourt).',
             '**Saint-Quentin-en-Yvelines**: Voi, across the area’s 12 towns; you pick up and return scooters at stations. [See Saint-Quentin on the map](map:fr:Saint-Quentin-en-Yvelines).',
             '**Grand Paris Seine & Oise**: Voi since 4 May 2026, in three separate clusters, so you can’t ride from Poissy to Meulan. Riders must be 18, scooters slow to 10 km/h near schools and bridges, and the meter runs until you park in a station. [See Poissy on the map](map:fr:Poissy).',
-            '**Marne-la-Vallée**: Dott, but none in Chessy or Serris on 12 October 2026; at about 6 pm, the nearest to Disneyland Paris was about 1.1 km away, in Montévrain. [See Marne-la-Vallée on the map](map:fr:Marne-la-Vallée (SIEMU)).',
+            '**Marne-la-Vallée**: Dott. [See Marne-la-Vallée on the map](map:fr:Marne-la-Vallée (SIEMU)).',
             '**Évry-Courcouronnes**: Pony, since March 2022.',
           ],
         },
@@ -135,7 +134,7 @@ const guide: Guide = {
     {
       heading: 'Parking and taking your e-scooter on the metro',
       blocks: [
-        'Since a mayoral order of 30 July 2019, e-scooters may not park on the pavement, in pedestrian areas or on the road. Use the motorbike and moped bays, where e-scooters park for free. Leave it anywhere else and you can be fined; the city does not publish the amount.',
+        'Since a mayoral order of 30 July 2019, e-scooters may not park on the pavement, in pedestrian areas or on the road. Use the motorbike and moped bays, where e-scooters park for free. Leave it anywhere else and you can be fined.',
         'On RATP’s metro, RER, buses and trams, an e-scooter is allowed only if it folds, and it must stay folded and in your hands the whole time. Since September 2023, riding it on a platform or in a corridor, or keeping it unfolded on board, can cost €150, plus €50 in fees if you don’t pay on the spot. On SNCF trains, do the same and check SNCF’s conditions.',
       ],
     },
@@ -156,11 +155,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Lime still in Paris?',
-      answer: 'Yes, but only with e-bikes, alongside Dott and Voi, under a four-year agreement that began on 1 October 2025. Lime doesn’t publish its Paris rates, so check the price in its app.',
+      answer: 'Yes, but only with e-bikes, alongside Dott and Voi, under a four-year agreement that began on 1 October 2025. Lime’s app shows the price before you unlock.',
     },
     {
-      question: 'Will shared e-scooters come back to Paris?',
-      answer: 'Not as far as we know: as of 12 October 2026, no return has been announced. Some rental guides still list Lime, Bird or Dott scooters in Paris, so check their date.',
+      question: 'Can you still rent a Lime, Bird or Dott e-scooter in Paris?',
+      answer: 'No: the city ended shared e-scooters on 1 September 2023. Some rental guides still list Lime, Bird or Dott scooters in Paris, so check their date.',
     },
     {
       question: 'How much is a Vélib’ day pass?',
@@ -172,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: 'Are there shared e-scooters at Versailles or Disneyland Paris?',
-      answer: 'Not in the town of Versailles, nor in Chessy or Serris, as of 12 October 2026. Dott runs next door: in Le Chesnay-Rocquencourt and Bougival near Versailles, and in Montévrain and Bussy-Saint-Georges near Disneyland. Both areas require a helmet.',
+      answer: 'Around them, yes: Dott runs in Le Chesnay-Rocquencourt and Bougival near Versailles, and in Montévrain and Bussy-Saint-Georges near Disneyland. Both areas require a helmet.',
     },
   ],
   sources: [

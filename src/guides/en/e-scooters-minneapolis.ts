@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Minneapolis 2026: Lime, Spin, rules, night ban',
   description: 'E-scooters in Minneapolis: Lime and Spin, the midnight switch-off, no sidewalks, where to park, the lakes and parks, the U of M, light rail and MSP.',
   headline: 'E-scooters in Minneapolis: Lime and Spin, the rules, the night switch-off and where to park',
-  lede: 'You can rent e-scooters in Minneapolis from Lime and Spin, the two companies the City licensed for 2025 and the two on the map on 26 October 2026. Check the price in the app before you unlock: Spin’s open data lists none for Minneapolis. Under the City’s 2025 licence the scooters are switched off from midnight to 4 a.m., Minnesota law keeps them off sidewalks, and at the end of a ride you lock the scooter to a bike rack, a meter hitch or a sign post.',
+  lede: 'You can rent e-scooters in Minneapolis from Lime and Spin, the two companies the City licensed for 2025. The app shows the price before you unlock. Under the City’s 2025 licence the scooters are switched off from midnight to 4 a.m., Minnesota law keeps them off sidewalks, and at the end of a ride you lock the scooter to a bike rack, a meter hitch or a sign post.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:mn:Minneapolis',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Minneapolis?',
       blocks: [
-        'Electric scooter rental in Minneapolis runs on City licences. For the 2025 season the City licensed two companies, **Lime** and **Spin**, Fox 9 reported on 8 April 2025, and Park Board records confirm it. Their licences ran to 1 March 2026 (31 March, in the Park Board’s memo), with options to renew. We found no open record of the 2026 licences, so the City rules below are the 2025 licence’s, and another company may run here too. Spin’s open data names Bird Rides, Inc. as its operator. The 2025 licence allowed up to 3,000 scooters among all the companies.',
-        'At 4:13 p.m. on Monday 26 October 2026 the [Minneapolis map](map:us:mn:Minneapolis) showed about 1,775 scooters: roughly 290 Spin as they stood at that moment, and 1,480 Lime as last counted. That is a snapshot, not the fleets. At 4:18 p.m. every scooter and e-bike in Spin’s open data stood inside the city, by the Census Bureau’s boundaries; none in St. Paul, St. Louis Park or Richfield.',
-        'For Spin the map shows each scooter’s position, charge and range, and its zones (see below); for Lime, position and charge. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Not everything is on the map.** ScootRadar shows standing e-scooters only. Spin and Lime rent e-bikes too: none of them is on the map. Nice Ride, the docked bike share, no longer runs in Minneapolis, the Park Board said in 2023.',
+        'Electric scooter rental in Minneapolis runs on City licences. For the 2025 season the City licensed two companies, **Lime** and **Spin**, Fox 9 reported on 8 April 2025, and Park Board records confirm it. Their licences ran to 1 March 2026 (31 March, in the Park Board’s memo), with options to renew. The City rules below are the 2025 licence’s. Spin’s open data names Bird Rides, Inc. as its operator. The 2025 licence allowed up to 3,000 scooters among all the companies.',
+        'At 4:13 p.m. on Monday 26 October 2026 the [Minneapolis map](map:us:mn:Minneapolis) showed about 1,775 scooters: roughly 290 Spin as they stood at that moment, and 1,480 Lime as last counted. That is a snapshot, not the fleets.',
+        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Spin and Lime rent e-bikes too. Nice Ride, the docked bike share, no longer runs in Minneapolis, the Park Board said in 2023.',
       ],
     },
     {
       heading: 'How much does a Lime or Spin scooter cost in Minneapolis?',
       blocks: [
-        'On 26 October 2026 Spin’s open data held no Minneapolis price, so check the rate in the Lime or Spin app before you unlock.',
+        'The Lime and Spin apps show the rate before you unlock.',
         'The City’s 2025 licence makes each company offer cheaper rides to lower-income riders, with eligibility checked through Metro Transit’s Transit Assistance Program (TAP). Spin’s is **Spin Access**: discounted fares once you send proof of your status, and approved riders without a smartphone can unlock by text message. Lime’s is Lime Access, Lime said in April 2025.',
       ],
     },
@@ -81,7 +81,7 @@ const guide: Guide = {
     {
       heading: 'Spin and Lime zones, and the August 2026 takeover',
       blocks: [
-        'On 26 October 2026 Spin’s open data held 195 no-parking zones and 12 no-ride zones in the city, which the map draws at street zoom, with the City of Minneapolis’s own: 206 zones where a ride may not end, 21 no-riding areas and 8 slow zones. Matched to the City’s park map, the three largest no-ride zones cover **Gold Medal Park** downtown, much of **Columbia** Park and its golf course, and the golf course at **Lake Hiawatha**; the other nine are small patches downtown and by the river. The Stone Arch Bridge, Minnehaha Falls and Bde Maka Ska lay inside Spin’s riding area that day. The map doesn’t show Lime’s zones: check its app.',
+        'On 26 October 2026 Spin’s open data held 195 no-parking zones and 12 no-ride zones in the city, which the map draws at street zoom, with the City of Minneapolis’s own: 206 zones where a ride may not end, 21 no-riding areas and 8 slow zones. Spin’s three largest no-ride zones cover **Gold Medal Park** downtown, much of **Columbia** Park and its golf course, and the golf course at **Lake Hiawatha**; the other nine are small patches downtown and by the river. The Stone Arch Bridge, Minnehaha Falls and Bde Maka Ska lay inside Spin’s riding area that day. Lime’s zones are in its app.',
         'Zones can change at short notice. After hundreds of riders took over downtown streets in a “scooter takeover” on Saturday 8 August 2026, some of them riding onto I-35W, Lime banned the riders who went onto the freeway, added slow and no-ride zones and took highways out of its scooters’ area, CBS Minnesota reported. It told MPR News it was working with the City “to implement geofencing as-needed for anticipated events”.',
       ],
     },
@@ -92,7 +92,7 @@ const guide: Guide = {
           list: [
             '**Park trails.** The Park Board says scooters can be ridden on bike paths but not sidewalks. Its trail rules keep bikes and skates off pedestrian paths, hold bikers to 10 mph and make the bike paths at Lake Harriet, Bde Maka Ska and Lake of the Isles one-way, and its 2025 licences have the companies match its speed zones. In winter the bike paths are ploughed for walkers and bikers to share, and bikers must yield to pedestrians.',
             '**Parks at night.** Under the Park Board’s 2025 licences parks are closed from midnight to 6 a.m.; a ride may go on along its lit commuter paths at any hour, but none may restart from or end on park land after midnight.',
-            '**University of Minnesota.** The University picked the operators with the City, the Park Board, St. Paul, St. Louis Park and Hopkins in January 2025, and each company must sign a separate agreement with it. The City bars riding on Northrop Mall, Scholars Walk and Lilly Plaza, as the map shows; Spin’s open data marked no zone of its own on the Minneapolis campus on 26 October, and at 4:18 p.m. one available Spin scooter stood on it, by the Census Bureau’s boundaries. Follow campus signs and the app.',
+            '**University of Minnesota.** The University picked the operators with the City, the Park Board, St. Paul, St. Louis Park and Hopkins in January 2025, and each company must sign a separate agreement with it. The City bars riding on Northrop Mall, Scholars Walk and Lilly Plaza, as the map shows. Follow campus signs and the app.',
           ],
         },
       ],
@@ -103,7 +103,7 @@ const guide: Guide = {
         {
           list: [
             '**Light rail: yes. Buses: no.** Metro Transit’s Mobility Device Policy lets shared e-scooters (“Lime, Spin, Veo”) ride inside METRO light rail and Northstar trains, but not on any bus, on its rack or inside. It warns you to check that your destination is in the company’s area, or face its penalty. Your own electric scooter may ride inside a bus if it folds.',
-            '**MSP Airport.** Both terminals lie outside Minneapolis (in Fort Snelling Unorganized Territory, by the Census Bureau’s boundaries) and outside Spin’s riding area. The METRO Blue Line stops at Terminal 1 and Terminal 2 and reaches the Warehouse District downtown in about 25 minutes, the airport says.',
+            '**MSP Airport.** Both terminals lie outside Minneapolis, in Fort Snelling Unorganized Territory, and outside Spin’s riding area. The METRO Blue Line stops at Terminal 1 and Terminal 2 and reaches the Warehouse District downtown in about 25 minutes, the airport says.',
           ],
         },
       ],
@@ -111,7 +111,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a scooter in winter in Minneapolis?',
       blocks: [
-        'Sometimes. The programme used to stop at the end of November and restart in April. In 2025 the City’s licence let Lime and Spin keep their vehicles out through the winter “as long as there’s not an excessive amount of snow and ice buildup”, a City project manager told MPR News; the licence let them shrink their fleets from 15 November. The map counts only scooters standing for hire, so it shows at a glance who is out, and none once the fleets are put away.',
+        'Sometimes. The programme used to stop at the end of November and restart in April. In 2025 the City’s licence let Lime and Spin keep their vehicles out through the winter “as long as there’s not an excessive amount of snow and ice buildup”, a City project manager told MPR News; the licence let them shrink their fleets from 15 November. Check the [Minneapolis map](map:us:mn:Minneapolis) to see who is out.',
       ],
     },
     {
@@ -130,7 +130,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Minneapolis?',
-      answer: 'On 26 October 2026 Spin’s open data held no Minneapolis price, so check the Lime or Spin app before you unlock. The City’s 2025 licence makes both companies offer lower prices to riders on low incomes, checked through Metro Transit’s TAP.',
+      answer: 'The Lime and Spin apps show the price before you unlock. The City’s 2025 licence makes both companies offer lower prices to riders on low incomes, checked through Metro Transit’s TAP.',
     },
     {
       question: 'Can you ride a Lime or Spin scooter after midnight in Minneapolis?',

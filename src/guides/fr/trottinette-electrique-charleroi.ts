@@ -87,7 +87,7 @@ const guide: Guide = {
           },
         },
         'Le long de la Sambre, certains tronçons du RAVeL sont aussi interdits chez Dott, notamment à Marcinelle et à Couillet. Si la trottinette s’arrête, poussez-la hors de la zone.',
-        'Dans les parcs, jardins, aires de jeux, cimetières et stades communaux, le règlement général de police de la Ville n’admet les trottinettes électriques qu’**au pas**, soit 5 km/h. Dans un parc clos, on ne roule que sur les allées aménagées et signalées pour cela.',
+        'Dans les parcs, jardins, aires de jeux, cimetières et stades communaux, le règlement général de police de la Ville limite les trottinettes électriques à **5 km/h**, sauf sur les espaces aménagés et signalés pour elles. Dans un parc clos, on ne roule que sur les pistes et promenades aménagées ou signalées pour cela ; ailleurs, on pousse la trottinette à la main.',
         'Dans une zone piétonne, la loi belge ne vous laisse rouler que si un panneau y admet les cyclistes, et alors au pas : ne pas rouler au pas y coûte 191 €.',
       ],
     },
@@ -168,7 +168,7 @@ const guide: Guide = {
   sources: [
     { title: 'Ville de Charleroi : se déplacer en trottinette (août 2024)', url: 'https://www.charleroi.be/vivre/mobilite/en-trottinette' },
     { title: 'Ville de Charleroi : charte du cyclopartage en libre-service (30 mai 2022)', url: 'https://www.charleroi.be/assets/files/2022_CRL-Charte-cyclopartage-en-libre-service-2022.pdf' },
-    { title: 'Ville de Charleroi : règlement général de police (juillet 2024)', url: 'https://www.charleroi.be/assets/files/RGP-2024.pdf' },
+    { title: 'Ville de Charleroi : règlement général de police (mise à jour d’octobre 2026)', url: 'https://www.charleroi.be/assets/files/RGP_Charleroi_2026.pdf' },
     { title: 'Conseil communal de Charleroi : règlement de la rue de l’Ancre (23 mars 2026)', url: 'https://www.deliberations.be/charleroi/decisions/23-mars-2026-18-30/tec-vo-mob-rc-2026-02-circulation-routiere-reglement-complementaire-section-de-charleroi-rue-de-lancre-dans-son-troncon-compris-entre-la-rue-des-allies-et-le-rond-point-situe-au-debouche-de-la-sortie-ndeg1-porte-des-palais-du-ring-r9-circulation-et' },
     { title: 'SPW Mobilité : licences de cyclopartage en flotte libre en cours de validité', url: 'https://mobilite.wallonie.be/home/politiques-de-mobilite/mobilite-partagee/evolution-de-la-legislation/licence-cyclopartage-en-flotte-libre.html' },
     { title: 'SPW Mobilité : état des lieux de la mobilité partagée (cartes de février 2026)', url: 'https://mobilite.wallonie.be/files/politiques-mobilite/Etat-des-lieux-mobilite-partagee-202602.pdf' },

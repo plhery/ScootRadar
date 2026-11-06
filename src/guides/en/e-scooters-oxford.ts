@@ -18,8 +18,8 @@ const guide: Guide = {
       blocks: [
         'One company, **Voi**, hires out e-scooters in Oxford. Oxfordshire County Council, the highway authority, runs the trial, and its page says Voi “operates our rental scheme” with around 850 e-scooters. The trial began in Headington on 18 February 2021 and has run around the clock since October 2022.',
         '**Lime** is in Oxford too, but with e-bikes only: the council’s e-bike page lists Voi and Lime as the city’s two dockless e-bike operators.',
-        '**How long will it run?** The council says Oxford’s trial has been extended until 31 May 2028; the national trials that make hire scooters legal run until May 2028. On 18 June 2026 the council approved plans for a single operator of both hire e-scooters and e-bikes once its e-scooter contract expired on 30 September 2026. On 25 October 2026 its trial page still named Voi, and our map showed Voi’s scooters.',
-        'At 14:55 on Saturday 24 October 2026 the [map of Oxford](map:gb:Oxford) showed about 810 Voi e-scooters free to rent. It shows their positions and battery, not prices, zones, bays or e-bikes. The total counts every Voi scooter in and around Oxford: overnight on 25 October almost all stood inside the city boundary, from Cutteslowe to Blackbird Leys; a few stood just beyond it, and none in Kidlington, Kennington or Abingdon.',
+        '**How long will it run?** The council says Oxford’s trial has been extended until 31 May 2028; the national trials that make hire scooters legal run until May 2028. On 18 June 2026 the council approved plans for a single operator of both hire e-scooters and e-bikes once its e-scooter contract expired on 30 September 2026. On 25 October 2026 its trial page still named Voi.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Oxford](map:gb:Oxford) showed about 810 Voi e-scooters free to rent.',
       ],
     },
     {
@@ -69,7 +69,7 @@ const guide: Guide = {
     {
       heading: 'Where can you ride a Voi in Oxford? Zones and the trial area',
       blocks: [
-        'You may ride on roads, cycle lanes and shared cycle and footpaths inside the trial area, the council says. It publishes no list of the **slow-ride** and **no-ride zones**: they are in the Voi app, so check its map before you set off for the city centre. Ride past the edge of the operating area and the software slows you down gradually.',
+        'You may ride on roads, cycle lanes and shared cycle and footpaths inside the trial area, the council says. The **slow-ride** and **no-ride zones** are in the Voi app, so check its map before you set off for the city centre. Ride past the edge of the operating area and the software slows you down gradually.',
         'One street has its own traffic order: Market Street, from Cornmarket to just short of Turl Street, has been a pedestrian and cycle zone at all times since April 2024. The county council’s order, first experimental and now permanent, exempts “street legal E-scooters”; the app’s zones still apply.',
         'The area may grow. Under plans approved on 18 June 2026, the council aims to expand hire e-scooters and e-bikes, “subject to local and DfT approval”, to Botley, Kennington, Kidlington and Horspath, and potentially to Abingdon and Wheatley. Until then, the app’s map shows where you can ride and end a ride.',
       ],
@@ -93,7 +93,8 @@ const guide: Guide = {
             rows: [
               ['John Radcliffe Hospital', 'Oxford University Hospitals', 'Voi e-scooters “are not allowed on our hospital sites”: they cut out near the entrances (page reviewed March 2026)'],
               ['Oxford Brookes campuses and halls', 'Oxford Brookes University', '“The use of any e-scooters (hired or personal) is not permitted”, and e-scooter and e-bike batteries may not be charged on its sites or in residences'],
-              ['University Parks, college grounds, Port Meadow, city parks, the Oxford Canal and Thames towpaths', 'Several owners, the Canal & River Trust among them', 'Check each owner’s rules, and follow the signs and the app’s zones'],
+              ['Oxford Canal towpath', 'Canal & River Trust', '“E-scooters, motorbikes, modified e-bikes and other unauthorised vehicles are not allowed” (Towpath Code)'],
+              ['University Parks, college grounds, Port Meadow, city parks, the Thames towpath', 'Several owners', 'Check each owner’s rules, and follow the signs and the app’s zones'],
             ],
           },
         },
@@ -129,7 +130,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is there Lime in Oxford?',
-      answer: 'Not for e-scooters. Lime hires out dockless e-bikes in Oxford, as Voi does, but the county council’s page names Voi as the operator of its e-scooter trial. Our [Oxford map](map:gb:Oxford) shows Voi’s e-scooters, not the e-bikes.',
+      answer: 'Not for e-scooters. Lime hires out dockless e-bikes in Oxford, as Voi does, but the county council’s page names Voi as the operator of its e-scooter trial. Find Voi’s e-scooters on the [Oxford map](map:gb:Oxford).',
     },
     {
       question: 'Are Voi scooters available 24 hours in Oxford?',
@@ -137,7 +138,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a Voi to Kidlington, Botley or Abingdon?',
-      answer: 'Probably not yet. On 24 and 25 October 2026 Voi’s scooters stood only in and just around the city, and outside the operating area the scooter slows down. The council plans to extend hire to Botley and Kidlington, and potentially Abingdon, subject to local and DfT approval.',
+      answer: 'Probably not yet. The council plans to extend hire to Botley and Kidlington, and potentially Abingdon, subject to local and DfT approval; until then, the Voi app’s map shows where you can ride, and outside the operating area the scooter slows down.',
     },
     {
       question: 'What happens if I ride into a no-ride zone?',
@@ -164,6 +165,7 @@ const guide: Guide = {
     { title: 'Oxford University Hospitals: John Radcliffe Hospital, other transport (reviewed 24 March 2026)', url: 'https://www.ouh.nhs.uk/hospitals/jr/find-us/other-transport' },
     { title: 'Oxford Brookes University: Cycling and e-scooters', url: 'https://www.brookes.ac.uk/travel/cycling' },
     { title: 'Oxford Travel Options: Scooting (August 2026)', url: 'https://www.oxfordtraveloptions.co.uk/travelling-within-oxford/scooting' },
+    { title: 'Canal & River Trust: Our Towpath Code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
   ],
 };
 

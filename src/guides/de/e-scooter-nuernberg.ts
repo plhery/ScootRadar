@@ -151,7 +151,7 @@ const guide: Guide = {
     { title: 'Stadt Nürnberg: Pressemitteilung Nr. 1272 zum Bundesstrassenring, 19. November 2024', url: 'https://www.nuernberg.de/presse/mitteilungen/pm_24420.html' },
     { title: 'Verkehrsausschuss Nürnberg: E-Scooter-Nutzung, 7. Juli 2022', url: 'https://online-service2.nuernberg.de/buergerinfo/to0050.asp?__ktonr=93584' },
     { title: 'Stadtrat Nürnberg: Sondernutzungsgebühren, 20. November 2025', url: 'https://online-service2.nuernberg.de/buergerinfo/to0050.asp?__ktonr=104885' },
-    { title: 'Stadt Nürnberg: Grünanlagensatzung (PDF)', url: 'https://www.nuernberg.de/imperia/md/stadtrecht/dokumente/8/850/850_270.pdf' },
+    { title: 'Stadt Nürnberg: Grünanlagensatzung vom 18. April 2016, Stadtrecht 850.270 (PDF)', url: 'https://www.nuernberg.de/imperia/md/zentral/dokumente/stadtrecht/850_270.pdf' },
     { title: 'Verkehrsplanungsamt Nürnberg: Fussgängerzonen', url: 'https://www.nuernberg.de/internet/verkehrsplanung/fussgaengerzonen.html' },
     { title: 'infranken.de (dpa): Nürnberg ergreift Massnahmen wegen E-Scootern, 26. April 2024', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300' },
     { title: 'VGN: Mitnahmeverbot für E-Tretroller, 13. Mai 2024', url: 'https://www.vgn.de/presse/240513_mitnahme-escooter' },

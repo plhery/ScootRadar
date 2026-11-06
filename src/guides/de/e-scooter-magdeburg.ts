@@ -132,7 +132,6 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Landeshauptstadt Magdeburg: Konzept für elektrische Tretroller (E-Scooter)', url: 'https://www.magdeburg.de/B%C3%BCrger-Stadt/System/Konzept-der-Landeshauptstadt-Magdeburg-f%C3%BCr-elektrische-Tretroller-E-Scooter-Magdeburger-E-Scooter-Konzept.php?object=tx,698.14800.1' },
     { title: 'Landeshauptstadt Magdeburg: Landeshauptstadt setzt ab August auf alleinigen Anbieter von E-Scootern (23. Juli 2025, PDF)', url: 'https://www.magdeburg.de/loadDocument.phtml?FID=698.26120.1&Ext=PDF' },
     { title: 'Amtsblatt der Landeshauptstadt Magdeburg Nr. 16 vom 4. Juli 2025: Vergabe E-Scooter (PDF)', url: 'https://www.magdeburg.de/loadDocument.phtml?FID=698.25925.1&Ext=PDF' },
     { title: 'Amtsblatt Nr. 23 vom 22. November 2024: Erste Änderungssatzung zur Sondernutzungsgebührensatzung (PDF)', url: 'https://www.magdeburg.de/loadDocument.phtml?FID=698.23164.1&Ext=PDF' },

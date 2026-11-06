@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter along the canals?',
-      answer: 'Check the Canal & River Trust’s own rules first: the towpaths are the trust’s.',
+      answer: 'No. The towpaths belong to the Canal & River Trust, whose Towpath Code says “E-scooters, motorbikes, modified e-bikes and other unauthorised vehicles are not allowed”.',
     },
   ],
   sources: [
@@ -183,6 +183,7 @@ const guide: Guide = {
     { title: 'Bullring & Grand Central: Bullring visitor guide', url: 'https://www.bullring.co.uk/terms-conditions' },
     { title: 'National Express West Midlands: Conditions of carriage (10 March 2026)', url: 'https://nxbus.co.uk/media/gpmn1mhu/nxbus-conditions-of-carriage-100326.pdf' },
     { title: 'Avanti West Coast: Bikes', url: 'https://www.avantiwestcoast.co.uk/onboard/bikes' },
+    { title: 'Canal & River Trust: Our Towpath Code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
   ],
 };
 

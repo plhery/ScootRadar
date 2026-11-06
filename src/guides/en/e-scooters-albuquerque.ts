@@ -44,7 +44,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter rules in Albuquerque and New Mexico',
       blocks: [
-        'The state’s Motor Vehicle Code defines e-bikes, which have pedals, and “electric mobility devices”, which can top 20 mph on the motor alone (NMSA 66-1-4.5): a rental scooter held to 15 mph is neither. Albuquerque says that any rule that applies to bicycles also applies to e-scooters.',
+        'New Mexico’s e-bike law of 2023 defines an e-bike as having fully operable pedals, so a stand-up e-scooter isn’t one. Albuquerque says that any rule that applies to bicycles also applies to e-scooters.',
         {
           table: {
             caption: 'E-scooter rules in Albuquerque, and who sets them (checked on 29 October 2026)',
@@ -53,10 +53,9 @@ const guide: Guide = {
               ['Where to ride', 'On the right side of the street, with traffic; in bike lanes; on paved trails', 'City of Albuquerque'],
               ['Sidewalks', 'Not where a wide right lane, bike lane or multi-use trail runs alongside, where signs forbid bikes, or in a business district; elsewhere ride slowly and yield to people walking', 'City of Albuquerque'],
               ['Speed', '15 mph on any City street or right-of-way; 20 mph at most on City trails, or lower where posted', 'City permit; City ordinance O-24-14'],
-              ['Helmet', 'Required under 18, encouraged for everyone; a parent who lets a child ride without one can be fined up to $10', 'City of Albuquerque; Child Helmet Safety Act'],
+              ['Helmet', 'Required under 18, encouraged for everyone', 'City of Albuquerque; Child Helmet Safety Act'],
               ['Passengers', 'One rider: the bicycle rules allow a passenger only on a seat made for one', 'City Traffic Code'],
               ['Lights', 'After sunset, a white front lamp visible from 500 feet and a red rear reflector', 'City Traffic Code'],
-              ['Alcohol', 'Driving any “vehicle” under the influence is a crime; the law’s definition leaves out only devices moved by human power alone or running on rails', 'NMSA 66-8-102 and 66-1-4.19'],
             ],
           },
         },
@@ -107,7 +106,7 @@ const guide: Guide = {
             '**“The honeymoon phase is over.”** So said Alan Varela, the City’s planning director, announcing the scooter sweep of March 2025.',
             '**Where the fees go.** Every dollar the City collects from the programme’s operators must go to pedestrian and shared-transport infrastructure and to the cost of overseeing the programme, the permit says.',
             '**A Traffic Code from 1974.** Albuquerque’s Traffic Code was largely unchanged from 1974 until the City Council passed an overhaul on 5 November 2025. It makes drivers stop at marked and unmarked crosswalks for “vulnerable road users”, people on scooters among them, and keeps e-scooter riders off sidewalks next to a bike lane, the Council said.',
-            '**The state follows in 2027.** From 1 January 2027, New Mexico’s Motor Vehicle Code will also count people riding scooters among its “vulnerable road users” (NMSA 66-1-4.19, as amended in 2026).',
+            '**The state follows in 2027.** From 1 January 2027, driver education in New Mexico must give new drivers under 18 three hours on “vulnerable road users”, scooter riders among them, under a law signed in March 2026, KRQE and the Albuquerque Journal reported.',
           ],
         },
       ],
@@ -128,7 +127,7 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet to ride a scooter in New Mexico?',
-      answer: 'Under 18, yes. Under the state’s Child Helmet Safety Act a parent who lets a child ride without one can be fined up to $10, and a rental business must provide a helmet to a minor who has none, for a reasonable fee. The City encourages helmets for everyone.',
+      answer: 'Under 18, yes. New Mexico’s Child Helmet Safety Act, in force since July 2007, requires anyone under 18 riding a bicycle, skateboard, scooter or skates to wear one. The City encourages helmets for everyone.',
     },
     {
       question: 'How fast do Lime scooters go in Albuquerque?',
@@ -147,8 +146,9 @@ const guide: Guide = {
     { title: 'City of Albuquerque: Albuquerque’s e-bike law takes effect, 23 September 2024', url: 'https://www.cabq.gov/parksandrecreation/news/albuquerques-e-bike-law-takes-effect' },
     { title: 'City of Albuquerque Parks and Recreation: E-bikes and powered micromobility devices', url: 'https://www.cabq.gov/parksandrecreation/recreation/bike/e-bikes' },
     { title: 'Albuquerque City Council: Council passes overhaul of Traffic Code, 5 November 2025', url: 'https://www.cabq.gov/council/find-your-councilor/district-7/news/albuquerque-city-council-unanimously-passes-historic-overhaul-of-traffic-code-prioritizing-safety-for-all-road-users' },
-    { title: 'NMOneSource: NMSA 1978, Chapter 66, Motor Vehicles', url: 'https://nmonesource.com/nmos/nmsa/en/item/4422/index.do' },
-    { title: 'NMOneSource: NMSA 1978, Chapter 32A, Children’s Code (Child Helmet Safety Act)', url: 'https://nmonesource.com/nmos/nmsa/en/item/4389/index.do' },
+    { title: 'New Mexico Department of Health: helmet use on non-motorized vehicles, 2007–2010 (February 2011, PDF)', url: 'https://www.nmhealth.org/data/view/injury/1750' },
+    { title: 'KRQE: Bill signed into law requires special training for vulnerable road users in New Mexico, 11 March 2026', url: 'https://digital-release.krqe.com/news/politics-government/legislature/bill-signed-into-law-requires-special-training-for-vulnerable-road-users-in-new-mexico/' },
+    { title: 'Albuquerque Journal: Governor signs bill requiring student drivers to take course on bicyclist and pedestrian safety, 10 March 2026', url: 'https://www.abqjournal.com/news/governor-signs-bill-requiring-student-drivers-to-take-course-on-bicyclist-and-pedestrian-safety/2997603' },
     { title: 'ABQ RIDE: Rules to ride, bike and scooter policy', url: 'https://www.cabq.gov/transit/safety/copy_of_bus-safety-rules' },
     { title: 'ABQ RIDE: About Albuquerque Rapid Transit (ART)', url: 'https://www.cabq.gov/transit/services/about-albuquerque-rapid-transit' },
     { title: 'Rio Metro: Bicycles onboard the Rail Runner', url: 'https://riometro.org/320/Bicycles-Onboard' },

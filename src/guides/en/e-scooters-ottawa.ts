@@ -87,7 +87,7 @@ const guide: Guide = {
             '**Lansdowne.** Bird’s open data bars starting or ending a ride at Lansdowne: ride through, but park outside it.',
           ],
         },
-        'Bird’s open data on 22 October 2026 also put Dow’s Lake, the Central Experimental Farm, Billings Bridge, the VIA Rail station, the Canada Science and Technology Museum and Rideau Hall outside its service area. Zoomed in, the [Ottawa map](map:ca:on:Ottawa) draws the City of Ottawa’s no-ride and slow ride zones and its designated parking areas, from the City’s map of shared e-scooter areas.',
+        'Bird’s open data on 22 October 2026 also put Dow’s Lake, the Central Experimental Farm, Billings Bridge, the VIA Rail station, the Canada Science and Technology Museum and Rideau Hall outside its service area. Zoomed in, the [Ottawa map](map:ca:on:Ottawa) draws the City of Ottawa’s no-ride and slow ride zones and its designated parking areas, from the City’s open data for its 2026 e-scooter programme.',
       ],
     },
     {
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'City of Ottawa: Map of shared e-scooter areas', url: 'https://ottawa.ca/en/city-hall/creating-equal-inclusive-and-diverse-city/accessibility-city/transportation/e-scooters/map-shared-e-scooter-areas' },
+    { title: 'City of Ottawa: 2026 E-Scooter Program, open map data (November 2026)', url: 'https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer' },
     { title: 'Ontario Regulation 389/19: pilot project, electric kick-scooters', url: 'https://www.ontario.ca/laws/regulation/190389' },
     { title: 'Ontario Highway Traffic Act, s. 228', url: 'https://www.ontario.ca/laws/statute/90h08' },
     { title: 'Government of Ontario: electric kick-style scooters (e-scooters)', url: 'https://www.ontario.ca/page/electric-kick-style-scooters-e-scooters' },

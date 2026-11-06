@@ -17,14 +17,14 @@ const guide: Guide = {
       heading: 'Leeds e-scooter hire: Beryl, since March 2026',
       blocks: [
         'One company, **Beryl**, rents e-scooters in Leeds, alongside its e-bikes, in a scheme run with Leeds City Council and branded **LNER Beryl**: the train company sponsors it through to 2027, the council says. The e-scooters joined on 19 March 2026 as part of the Department for Transport’s trial, 100 at first, using the bays the e-bike scheme already had. Like the other UK trials, it is due to run until May 2028. Beryl’s e-bikes cost £1 to unlock and 17p a minute, from age 16.',
-        'At 9.18am on 23 October 2026 the [map of Leeds](map:gb:Leeds) showed about 310 Beryl e-scooters: a snapshot, not the fleet size. The map shows e-scooters only, not Beryl’s e-bikes.',
-        '**When do the scooters stop?** They don’t: Leeds has no night stop. Beryl’s page on hire hours (July 2026) lists restrictions only in Bournemouth, Christchurch and Poole (10pm to 5am) and in Brighton (midnight to 5am), and Leeds scooters were still on our map at 2.23am on 17 October 2026.',
+        'At 9.18am on 23 October 2026 the [map of Leeds](map:gb:Leeds) showed about 310 Beryl e-scooters: a snapshot, not the fleet size.',
+        '**When do the scooters stop?** They don’t: Leeds has no night stop. Beryl’s page on hire hours (July 2026) lists restrictions only in Bournemouth, Christchurch and Poole (10pm to 5am) and in Brighton (midnight to 5am).',
       ],
     },
     {
       heading: 'How much does a Beryl e-scooter cost in Leeds?',
       blocks: [
-        'Beryl charges **£1 to unlock and 22p a minute** for its e-scooters in Leeds: its Leeds page, its pricing guide (July 2026) and its data on 23 October 2026 agree. Bundles and passes work on e-bikes and e-scooters alike, and Beryl’s Leeds page lists no unlock fee with them, though one example in its pricing guide still adds the £1: the app shows what you pay.',
+        'Beryl charges **£1 to unlock and 22p a minute** for its e-scooters in Leeds: its Leeds page, its pricing guide (July 2026) and its data on 23 October 2026 agree. Bundles and passes work on e-bikes and e-scooters alike, and the app shows what you pay.',
         {
           table: {
             caption: 'Beryl e-scooter prices in Leeds, 23 October 2026',
@@ -72,12 +72,12 @@ const guide: Guide = {
     {
       heading: 'Where can you ride? The Beryl zone, Briggate and the parks',
       blocks: [
-        'Beryl’s zone is “set in partnership with local councils”, its help pages say, and the app shows the boundary, with the area outside it in red. Reading Beryl’s zone data on 23 October 2026, it covers the city centre and Leeds Dock, Holbeck, Hunslet, Beeston and Elland Road; Woodhouse, Hyde Park and Headingley, including Headingley Stadium and Headingley and Burley Park stations; Kirkstall Road to Kirkstall Leisure Centre; and Chapel Allerton, Roundhay Park and Oakwood.',
+        'Beryl’s zone is “set in partnership with local councils”, its help pages say, and the app shows the boundary, with the area outside it in red. On 23 October 2026 Beryl’s zone data covered the city centre and Leeds Dock, Holbeck, Hunslet, Beeston and Elland Road; Woodhouse, Hyde Park and Headingley, including Headingley Stadium and Headingley and Burley Park stations; Kirkstall Road to Kirkstall Leisure Centre; and Chapel Allerton, Roundhay Park and Oakwood.',
         'Kirkstall Abbey, Kirkstall Forge, Armley, Harehills, St James’s Hospital, Horsforth, White Rose and Leeds Bradford Airport are outside. You can ride across the edge, but locking outside costs **£25** each time, plus £80 if the scooter is still out after 24 hours.',
-        'Beryl’s launch announcement promised “slow-go and no-ride zones in busy or shared spaces”. Its open data names 14 smaller zones but gives no rule for any of them, so follow the app in these places:',
+        'Beryl’s launch announcement promised “slow-go and no-ride zones in busy or shared spaces”. Its open data names 14 smaller zones; the app shows what applies in each:',
         {
           table: {
-            caption: 'Zones in Beryl’s Leeds data, 23 October 2026 (no rule published: the app shows what applies)',
+            caption: 'Zones in Beryl’s Leeds data, 23 October 2026 (the app shows what applies)',
             head: ['Where', 'Name in Beryl’s data', 'Bays inside'],
             rows: [
               ['Briggate, Commercial Street, Albion Street, Bond Street, Lands Lane and the arcades', '“Pedestrian Core”', 'None'],
@@ -121,7 +121,7 @@ const guide: Guide = {
         {
           list: [
             '**LNER:** no e-scooters on board, and any left at its stations, cycle racks included, are removed.',
-            '**First West Yorkshire buses:** its conditions of travel (March 2026) say electric scooters “are not permitted to be brought on board”. We couldn’t check the rules of Northern’s trains or Arriva’s buses, so ask before you board.',
+            '**First West Yorkshire buses:** its conditions of travel (March 2026) say electric scooters “are not permitted to be brought on board”.',
           ],
         },
         'Heading elsewhere? See [e-scooter hire in the UK](guide:uk-hire) for the other trial areas.',
@@ -142,11 +142,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much is a Beryl e-scooter per minute in Leeds?',
-      answer: '22p a minute, plus £1 to unlock, so 15 minutes cost £4.30. The £8 Day Pass gives 100 minutes in 24 hours, 8p a minute, and the minute bundles start at £8 for 50 minutes; Beryl’s Leeds page lists no unlock fee with either.',
+      answer: '22p a minute, plus £1 to unlock, so 15 minutes cost £4.30. The £8 Day Pass gives 100 minutes in 24 hours, 8p a minute, and the minute bundles start at £8 for 50 minutes.',
     },
     {
       question: 'What time do Beryl e-scooters stop in Leeds?',
-      answer: 'They don’t stop at night. Beryl’s page on hire hours lists restrictions only in Bournemouth, Christchurch and Poole and in Brighton, and Leeds scooters were still on our map at 2.23am on 17 October 2026. Its phone support runs from 7am to 9pm.',
+      answer: 'They don’t stop at night. Beryl’s page on hire hours lists restrictions only in Bournemouth, Christchurch and Poole and in Brighton. Its phone support runs from 7am to 9pm.',
     },
     {
       question: 'Can I use a foreign driving licence on a Beryl e-scooter in Leeds?',
@@ -154,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a Beryl e-scooter on Briggate?',
-      answer: 'Briggate, Commercial Street and the shopping streets around them are in Beryl’s “Pedestrian Core” zone. Beryl doesn’t publish the zone’s rule and there is no bay inside it, so you can’t end a ride there. Follow the app, walk the scooter if it says so, and never ride on the pavement.',
+      answer: 'Briggate, Commercial Street and the shopping streets around them are in Beryl’s “Pedestrian Core” zone. There is no bay inside it, so you can’t end a ride there. Follow the app, walk the scooter if it says so, and never ride on the pavement.',
     },
     {
       question: 'Is there a Beryl student discount in Leeds?',

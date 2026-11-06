@@ -106,7 +106,7 @@ const guide: Guide = {
             '**The Royal Parks:** Hyde Park, Kensington Gardens, Green Park, St James’s Park, the Regent’s Park and Primrose Hill, Richmond Park, Bushy Park, Greenwich Park, Brompton Cemetery and Victoria Tower Gardens. The Royal Parks, the charity that runs them, “does not, and has no plans to, permit the use of e-scooters on the land it manages”, and the Metropolitan Police enforce its park regulations.',
           ],
         },
-        'The canal towpaths, the Regent’s Canal and the Grand Union included, belong to the Canal & River Trust: check its own rules before you ride on one.',
+        'The canal towpaths, the Regent’s Canal and the Grand Union included, belong to the Canal & River Trust, whose Towpath Code says “E-scooters, motorbikes, modified e-bikes and other unauthorised vehicles are not allowed”.',
         'Council parks and private estates set their own rules: follow the app, whose navigation highlights cycleways and quiet routes, TfL says.',
       ],
     },
@@ -186,6 +186,7 @@ const guide: Guide = {
     { title: 'Transport for London: Santander Cycles, what you pay', url: 'https://tfl.gov.uk/modes/cycling/santander-cycles/what-you-pay' },
     { title: 'Transport for London: Santander Cycles app switch (October 2026)', url: 'https://tfl.gov.uk/info-for/media/press-releases/2026/october/tfl-and-santander-to-make-bike-hire-quicker-and-easier-than-ever' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
+    { title: 'Canal & River Trust: Our Towpath Code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
   ],
 };
 

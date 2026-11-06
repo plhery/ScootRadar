@@ -16,15 +16,15 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Northampton: Voi, in a trial since 2020',
       blocks: [
-        '**Voi** runs Northampton’s hire e-scooters in the government’s rental trial, hosted for the town by West Northamptonshire Council. The scheme began in early September 2020 with 300 scooters, among the first in England, and the council put Voi’s fleet at about 1,500 in September 2025. Its page names no other operator and mentions e-scooters only, no e-bikes.',
+        '**Voi** runs Northampton’s hire e-scooters in the government’s rental trial, hosted for the town by West Northamptonshire Council. The scheme began in early September 2020 with 300 scooters, among the first in England, and the council put Voi’s fleet at about 1,500 in September 2025.',
         'On 27 April 2026 the council extended the trial to May 2027, a year before the national trials are due to end. There are conditions: the council’s cabinet member for highways and transport said Voi will be “held firmly” to its commitments, including “improved parking compliance, stronger enforcement against misuse, better rider education”, and that “continued operation of the scheme depends on demonstrable improvements”. The council says many people feel pavement riding, riding two up and underage use haven’t been fully resolved.',
-        'At 14:55 on Saturday 24 October 2026 the [map of Northampton](map:gb:Northampton) showed about 1,240 Voi e-scooters: a snapshot, not the fleet size. The count covers the town within its old borough boundary; about 1% of the scooters stood just outside it. The map shows where the scooters stand and their battery, not prices, zones or hours; you unlock and pay in the Voi app.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Northampton](map:gb:Northampton) showed about 1,240 Voi e-scooters: a snapshot, not the fleet size.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost in Northampton?',
       blocks: [
-        'Neither council publishes Voi’s prices, so check the app: it shows the unlock fee and the rate per minute before you start, and the passes on offer. The council and the University of Northampton describe these ways to pay less:',
+        'The Voi app shows the unlock fee and the rate per minute before you start, and the passes on offer. The council and the University of Northampton describe these ways to pay less:',
         {
           table: {
             caption: 'Ways to pay less for a Voi in Northampton, as the council (September 2025) and the university (October 2026) describe them',
@@ -33,7 +33,7 @@ const guide: Guide = {
               ['Voi’s Ride Like Voila traffic school', 'Credits for new riders who complete its modules', 'West Northamptonshire Council'],
               ['Voi’s Ride Safe course, online, 30 minutes', 'A free ride when you finish', 'University of Northampton'],
               ['University parking zones', 'A slightly cheaper journey when you use one', 'University of Northampton'],
-              ['Student discounts', 'Offered by Voi; the university gives no amount', 'University of Northampton'],
+              ['Student discounts', 'Offered by Voi', 'University of Northampton'],
             ],
           },
         },
@@ -71,10 +71,10 @@ const guide: Guide = {
       heading: 'Where can you ride a Voi in Northampton?',
       blocks: [
         'You may ride on roads (never motorways), in cycle lanes and on cycle routes with the blue bicycle sign, unless a sign bans e-scooters there, the government says, but never on the pavement. You may ride only within the designated trial zones, the council says, and the app shows where they end.',
-        'Inside the trial zone, the Voi app marks the no-ride zones, the slow zones, where the scooter drops to 5 mph, and the no-park zones. The council publishes no map of them, and Voi adjusts its geofencing in problem areas, so check the app before heading into the town centre (Abington Street, the Market Square, the Drapery) or a park such as Abington Park, Becket’s Park or the Racecourse. The council’s pages for those parks say nothing about e-scooters.',
+        'Inside the trial zone, the Voi app marks the no-ride zones, the slow zones, where the scooter drops to 5 mph, and the no-park zones. Voi adjusts its geofencing in problem areas, so check the app before heading into the town centre (Abington Street, the Market Square, the Drapery) or a park such as Abington Park, Becket’s Park or the Racecourse.',
         {
           list: [
-            '**The canal towpath:** the Northampton Arm of the Grand Union Canal runs 4.8 miles from Gayton Junction to the River Nene in the town centre, and the Canal & River Trust looks after it: check its own rules before you ride there.',
+            '**The canal towpath:** the Northampton Arm of the Grand Union Canal runs 4.8 miles from Gayton Junction to the River Nene in the town centre, and the Canal & River Trust looks after it: its Towpath Code says “E-scooters, motorbikes, modified e-bikes and other unauthorised vehicles are not allowed”.',
             '**Dark evenings:** the scooters have front and rear lights and a bell, the council says, and the government advises light-coloured or fluorescent clothing.',
           ],
         },
@@ -83,8 +83,8 @@ const guide: Guide = {
     {
       heading: 'Where to park a Voi in Northampton',
       blocks: [
-        'West Northamptonshire Council’s page doesn’t say whether you must end a ride in a parking bay, only where you can’t: in the no-park zones, which the Voi app shows. Leave the scooter where it won’t block anyone’s way, and never ride it on the pavement to get there.',
-        'The council’s page is clear about no-park zones: “You can not end a ride in a no-park zone. If you do, you will receive a fine and Voi will move the e-scooter.” It doesn’t say who fines you or how much. Voi and the councils design parking areas, and the university’s zones make a ride slightly cheaper.',
+        'The Voi app shows the no-park zones. Leave the scooter where it won’t block anyone’s way, and never ride it on the pavement to get there.',
+        'The council’s page says: “You can not end a ride in a no-park zone. If you do, you will receive a fine and Voi will move the e-scooter.” Voi and the councils design parking areas, and the university’s zones make a ride slightly cheaper.',
         'To report a badly parked or misused Voi, use Voi’s online form and give the time, the place and the scooter’s four-digit ID. Many trial towns make you end every ride in a bay: see [e-scooter hire in the UK](guide:uk-hire).',
       ],
     },
@@ -106,7 +106,7 @@ const guide: Guide = {
       blocks: [
         'Voi also runs North Northamptonshire Council’s scheme, in Burton Latimer, Corby, Higham Ferrers, Kettering, Rushden and Wellingborough. It started in December 2020 and will run until May 2028, the council says. From the launch to May 2026, 58,755 riders made more than 2.92 million trips.',
         'At 14:55 on Saturday 24 October 2026 the map showed about 330 Voi e-scooters in [Wellingborough](map:gb:Wellingborough), 330 in [Kettering](map:gb:Kettering), 230 in Rushden and Higham Ferrers and 210 in [Corby](map:gb:Corby): snapshots, not fleet sizes.',
-        'Hours may differ there. North Northamptonshire Council and Northamptonshire Police began a six-month trial of round-the-clock hire on 10 February 2025, and the council’s site gives no later word on whether it continued, so check the app before a late ride.',
+        'Hours may differ there. North Northamptonshire Council and Northamptonshire Police began a six-month trial of round-the-clock hire on 10 February 2025: check the app before a late ride.',
       ],
     },
     {
@@ -132,10 +132,6 @@ const guide: Guide = {
       answer: 'Not yet. On 27 April 2026 West Northamptonshire Council extended it to May 2027, and said the scheme’s future depends on Voi improving parking, enforcement and rider education. The national trials that make hire e-scooters legal run until May 2028, as does North Northamptonshire’s scheme.',
     },
     {
-      question: 'Do I have to park a Voi in a bay in Northampton?',
-      answer: 'West Northamptonshire Council’s page doesn’t say. It names only the no-park zones: ending a ride in one brings a fine, the council says, and Voi moves the scooter. At the University of Northampton, its parking zones make a ride slightly cheaper.',
-    },
-    {
       question: 'Can I take an e-scooter on the bus or train in Northampton?',
       answer: 'No. West Northamptonshire Council says e-scooters are not permitted on trains or buses. End your ride outside Northampton station or North Gate bus station and walk in.',
     },
@@ -154,6 +150,7 @@ const guide: Guide = {
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'University of Northampton: Cycling, e-scooters and walking', url: 'https://www.northampton.ac.uk/student-life/travel-and-parking/cycling-and-walking/' },
     { title: 'University of Northampton: Student parking', url: 'https://www.northampton.ac.uk/student-life/travel-and-parking/student-parking/' },
+    { title: 'Canal & River Trust: Our Towpath Code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
   ],
 };
 

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'austin',
   name: 'E-scooters in Austin, Texas',
   title: 'E-scooters in Austin 2026: Lime, Bird, rules and parking',
-  description: 'E-scooters in Austin: Lime and Bird, what a ride costs, sidewalks and helmets, downtown, the Butler Trail and Capitol bans, UT’s walk zone and CapMetro.',
+  description: 'E-scooters in Austin: Lime and Bird, sidewalks and helmets, downtown, the Butler Trail and Capitol bans, UT’s walk zone and CapMetro.',
   headline: 'E-scooters in Austin: Lime and Bird, the rules, downtown and where to park',
-  lede: 'E-scooters in Austin come from Lime and Bird, the two companies on the City’s list of permitted operators (updated 1 October 2026); the City says prices are in their apps. No City rule sets riding hours, and you may ride on sidewalks if you do it safely and yield to people walking. Riders under 18 must wear a helmet; scooters are banned from the Butler Hike-and-Bike Trail and the Capitol grounds, and since August 2026 the heart of the UT Austin campus is walk-only.',
+  lede: 'E-scooters in Austin come from Lime and Bird, the two companies on the City’s list of permitted operators (updated 1 October 2026); the City says prices are in their apps. You may ride on sidewalks if you do it safely and yield to people walking. Riders under 18 must wear a helmet; scooters are banned from the Butler Hike-and-Bike Trail and the Capitol grounds, and since August 2026 the heart of the UT Austin campus is walk-only.',
   published: '2026-10-28',
   updated: '2026-10-28',
   city: 'us:tx:Austin',
@@ -18,17 +18,16 @@ const guide: Guide = {
       blocks: [
         'Electric scooter rental in Austin runs on six-month City licences under Chapter 14-9 of the City Code, and on its Director Rules, filed on 8 August 2025.',
         'The City’s list of permitted companies (updated 1 October 2026) names two: **Bird**, allowed up to 3,000 stand-up scooters, and **Lime**, up to 3,700 stand-up scooters and 180 e-bikes. Its Shared Mobility page splits Lime’s 3,880 differently, as 3,205 scooters and 675 seated “gliders”. These are maximums, not what stands on the street. In May 2024 the City stopped licensing new companies, keeping two, and cut the citywide limit from 8,700 to 6,700 scooters, and the downtown limit from 4,500 to 2,250.',
-        'At 3:50 p.m. on Wednesday 28 October 2026 the [Austin map](map:us:tx:Austin) showed about 5,800 scooters: roughly 3,300 Lime and 2,500 Bird, both as last counted, so some may have moved since. A snapshot, not the fleets. The map has no outline for Austin: its total is what the two companies’ Austin areas hold, and those also take in Sunset Valley and, for Lime, Rollingwood, small cities of their own where Austin’s City Code doesn’t apply.',
-        'For Bird the map shows each scooter’s position, charge and range; for Lime, position and charge. Scooters on a ride aren’t shown, and the map draws no zones in Austin: the apps have the final word. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Not everything is on the map.** ScootRadar shows e-scooters only, Lime’s seated gliders among them: Lime’s e-bikes aren’t on it, nor is CapMetro Bikeshare (see below).',
+        'At 3:50 p.m. on Wednesday 28 October 2026 the [Austin map](map:us:tx:Austin) showed about 5,800 scooters: roughly 3,300 Lime and 2,500 Bird, both as last counted, so some may have moved since. A snapshot, not the fleets. The two companies’ Austin areas also take in Sunset Valley and, for Lime, Rollingwood, small cities of their own where Austin’s City Code doesn’t apply.',
+        'Lime’s and Bird’s zones are in their apps. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime or Bird scooter cost in Austin?',
       blocks: [
-        'The City doesn’t publish the fares: “All service fees, including promotions, costs per minute, trip and unlock fees can be found in provider-specific applications,” its page says. Neither company publishes an Austin price we could check, so look in the app before you unlock.',
+        '“All service fees, including promotions, costs per minute, trip and unlock fees can be found in provider-specific applications,” the City’s page says, so the app shows the price before you unlock.',
         'The Director Rules ask each company for an affordable programme: riders with an income at or below 80% of Austin’s median household income pay no more than half the usual price. The City’s page names them **Lime Access** and **Bird’s Community Pricing**. The rules also ask them to offer rentals without a smartphone and cash payment: ask Lime (888-546-3345) or Bird (866-205-2442).',
-        'Bird’s US rental agreement (updated 30 August 2024) says riders must be at least 18. The City’s rules set no rental age; Lime’s app gives its own.',
+        'Bird’s US rental agreement (updated 30 August 2024) says riders must be at least 18; Lime’s app gives its own.',
       ],
     },
     {
@@ -43,12 +42,11 @@ const guide: Guide = {
               ['Sidewalks', 'Allowed “in a reasonable and prudent manner”; yield to people on sidewalks and in crosswalks, and don’t hinder anyone with limited mobility', 'City Code § 12-2-13; Texas Transportation Code § 551.352(d)'],
               ['Streets', 'With the traffic, never against it in a bike lane; only on streets posted at 35 mph or less, though you may cross faster ones at an intersection', 'Texas Transportation Code § 551.352(a); City Code § 12-2-12'],
               ['Helmet', 'Required under 18; Texas’s scooter law requires none', 'City Code § 12-2-31; City page'],
-              ['Age', 'No rental age in the City’s rules; Bird says 18', 'Bird’s rental agreement'],
+              ['Age', 'At least 18 with Bird; Lime’s app gives its own', 'Bird’s rental agreement'],
               ['Speed', 'A shared scooter’s motor assists up to 15 mph; slow zones, where set, show in the app', 'Director Rules § 2.K'],
               ['Phone', 'Don’t hold or use one while riding; hands-free calls and a mounted map are allowed', 'City Code § 12-1-34'],
               ['Passengers', 'One person per scooter', 'City Code § 12-2-34'],
               ['Alcohol', 'Ride sober', 'City page'],
-              ['Hours', 'None: no City rule stops rentals at night', 'Director Rules (none set)'],
             ],
           },
         },
@@ -61,7 +59,7 @@ const guide: Guide = {
         'In May 2024 the City cut the number of shared scooters allowed downtown (the Downtown Austin Project Coordination Zone) from 4,500 to 2,250, and gave the companies staging areas to bring them back to, its December 2024 memo says.',
         {
           list: [
-            '**Sixth Street and Rainey Street.** Among the May 2024 changes the City listed a 10 mph top speed, down from 15, from 10 p.m. to 5 a.m. in the main entertainment districts. In December 2024 it said it was still collecting data on the Rainey Street and East Sixth Street slow zones. We found no later City source saying they still apply: the app shows any slow zone.',
+            '**Sixth Street and Rainey Street.** Among the May 2024 changes the City listed a 10 mph top speed, down from 15, from 10 p.m. to 5 a.m. in the main entertainment districts. In December 2024 it said it was still collecting data on the Rainey Street and East Sixth Street slow zones; the app shows any slow zone in force.',
             '**Congress Avenue.** In 2024 the City installed parking boxes along Congress Avenue and began working with the companies on “force park” technology, which limits ending a ride outside designated spots.',
           ],
         },
@@ -135,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does an electric scooter rental cost in Austin?',
-      answer: 'The City says fares are in the companies’ apps, and neither Lime nor Bird publishes an Austin price we could check, so look in the app before you unlock. Riders on lower incomes can apply for Lime Access or Bird’s Community Pricing, at no more than half the usual price.',
+      answer: 'The City says fares are in the companies’ apps: the app shows the price before you unlock. Riders on lower incomes can apply for Lime Access or Bird’s Community Pricing, at no more than half the usual price.',
     },
     {
       question: 'Do you need a helmet to ride a scooter in Austin?',
@@ -143,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a Lime or Bird scooter at night in Austin?',
-      answer: 'Yes. The City sets no riding hours. In 2024 it slowed scooters to 10 mph from 10 p.m. to 5 a.m. on Sixth Street and Rainey Street, and no later City source says whether that still applies: the app shows any slow zone.',
+      answer: 'Yes. In 2024 the City slowed scooters to 10 mph from 10 p.m. to 5 a.m. on Sixth Street and Rainey Street; the app shows any slow zone in force.',
     },
     {
       question: 'Can you ride scooters on the UT Austin campus?',

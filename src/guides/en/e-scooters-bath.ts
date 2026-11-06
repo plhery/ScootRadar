@@ -91,7 +91,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The towpath belongs to the Canal & River Trust: check its own rules before you ride on any of it.',
+        'The towpath belongs to the Canal & River Trust, whose Towpath Code says “E-scooters, motorbikes, modified e-bikes and other unauthorised vehicles are not allowed”.',
         'The app’s map shows every zone exactly: check it before you ride.',
       ],
     },
@@ -156,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter on the Kennet and Avon Canal towpath?',
-      answer: 'Not inside Dott’s Bath area, where almost all of it is a no-ride zone. The towpath belongs to the Canal & River Trust, so check its own rules too.',
+      answer: 'No. Inside Dott’s Bath area almost all of it is a no-ride zone, and the Canal & River Trust, which owns the towpath, says in its Towpath Code that e-scooters are not allowed.',
     },
     {
       question: 'Do Dott scooters reach Bath Spa University’s Newton Park campus?',
@@ -183,6 +183,7 @@ const guide: Guide = {
     { title: 'Bath Spa University: Getting around', url: 'https://www.bathspa.ac.uk/student-life/why-bath-spa/life-in-bath/getting-around/' },
     { title: 'First West of England: Conditions of travel (March 2026)', url: 'https://www.firstbus.co.uk/sites/default/files/public/node_images/Conditions%20of%20Travel%20-%20WoE%20-%20%20March%2026%20_0.pdf' },
     { title: 'Dott: open data for Bath', url: 'https://gbfs.api.ridedott.com/public/v2/bath/gbfs.json' },
+    { title: 'Canal & River Trust: Our Towpath Code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
   ],
 };
 
