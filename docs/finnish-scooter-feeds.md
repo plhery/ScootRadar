@@ -15,6 +15,18 @@ exit; Dott publishes no season. The town is paused from 31 October until 1
 April, Helsinki time, the date the cache's other winter towns use, and its
 feed stays polled, so scooters back early show at once.
 
+Update, 6 November 2026: Voi took **Jyväskylä**'s scooters in over the first
+days of November. Its map there (zone 275) went from about 1,350 on 30
+October to 576 on 1 November, 90 on the 2nd and none from about 16:00 UTC that
+day. The city's micromobility permit allows renting only while the ground is
+free of snow: the season runs at least to 15 October and on as the weather
+allows, and may start in spring by 20 April at the latest
+([Yle, 16 August 2025](https://yle.fi/a/74-20177353)). Voi's feed is paused
+from 3 November until the streets are clear, Helsinki time, with its alerts
+back by 1 May at the latest. Only Voi's feed is paused: Ryde's map, read
+through the Mac's bridge, listed 29 scooters in Jyväskylä on 4 and 5 November,
+so the map does not show the town as off season.
+
 Verified 13 October 2026. Finland's only usable feed is Hopp's, in Mariehamn,
 on Åland. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)

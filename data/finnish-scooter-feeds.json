@@ -449,6 +449,11 @@
       "timeZone": "Europe/Helsinki",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=275&include_suggestion=false",
       "voiAppZone": "275",
+      "seasonal": {
+        "from": "11-03",
+        "until": "clear",
+        "timeZone": "Europe/Helsinki"
+      },
       "aliases": [
         "Jyvaskyla"
       ]

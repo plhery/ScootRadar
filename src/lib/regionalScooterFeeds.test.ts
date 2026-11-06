@@ -582,6 +582,21 @@ describe('German and Italian scooter coverage', () => {
     expect(feedPaused('greece:hoppy_gr_rhodes', winter)).toBe(false);
     expect(activeSeasonalPause(faliraki, winter)).toBeNull();
   });
+  it('pauses Voi\'s Jyväskylä feed from 3 November until the streets are clear, its alerts back by 1 May, while Ryde\'s runs on', () => {
+    const jyvaskyla: [number, number] = [62.2407, 25.7444];
+    const voi = 'finland:voi_fi_app_275';
+    // Finland is two hours ahead of UTC in November: 23:30 on 2 November is still in season; 00:30 on the 3rd is not.
+    expect(feedPaused(voi, Date.UTC(2026, 10, 2, 21, 30))).toBe(false);
+    expect(feedPaused(voi, Date.UTC(2026, 10, 2, 22, 30))).toBe(true);
+    // Jyväskylä lets the season start by 20 April at the latest; the pause holds to 1 May, three hours ahead of UTC.
+    expect(feedPaused(voi, Date.UTC(2027, 3, 20, 12))).toBe(true);
+    expect(feedPaused(voi, Date.UTC(2027, 3, 30, 20, 30))).toBe(true);
+    expect(feedPaused(voi, Date.UTC(2027, 3, 30, 21, 30))).toBe(false);
+    // Ryde's Jyväskylä feed is not paused, so the town is not shown as away for the season.
+    const winter = Date.UTC(2027, 0, 15, 12);
+    expect(feedPaused('finland:ryde_app_fi_jyvaskyla_000', winter)).toBe(false);
+    expect(activeSeasonalPause(jyvaskyla, winter)).toBeNull();
+  });
   it('takes Hopp\'s scooters off in Ólafsvík and Hellissandur from 23 October until 1 May, as its feed emptied on 22 October 2026', () => {
     const olafsvik: [number, number] = [64.8959, -23.7084];
     const hellissandur: [number, number] = [64.9172, -23.8825];

@@ -1849,6 +1849,21 @@ Bonaire had feeds to add. Survey files are in
   polled; its "feed empty" alert is silenced in Grafana until 1 December,
   08:00 UTC. Then read it there and look for a notice; whether it stays is
   decided then.
+- **1 December 2026:** Dott Katowice and Chorzów, Częstochowa, Nowy Targ,
+  Radzionków and Zawiercie (`dott_pl_katowice_chorzow`,
+  `dott_pl_czestochowa`, `dott_pl_nowy_targ`, `dott_pl_radzionkow`,
+  `dott_pl_zawiercie`), and Leszno and Brzeg (`dott_pl_leszno`,
+  `dott_pl_brzeg`). The first five thinned through late October (Katowice
+  and Chorzów from about 1,300 on 25 October to 173 on 2 November) and all
+  went to none in the same hour, about 12:00 UTC on 2 November; Leszno
+  listed none from 3 November, 07:00 UTC, and Brzeg from 5 November, 01:00
+  UTC. Their feeds stay ok, Dott's locations page still listed Katowice,
+  Chorzów, Częstochowa, Nowy Targ, Zawiercie, Leszno and Brzeg on 6
+  November, and no notice was found, while Kraków, Warsaw, Poznań, Wrocław,
+  the Tricity, Szczecin and Dott's smaller Polish towns run on. The feeds
+  are still polled; their "feed empty" alerts are silenced in Grafana until
+  1 December, 08:00 UTC. Then read them from Netcup and look for a notice,
+  with Lubliniec's and Tarnowskie Góry's.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
@@ -2067,6 +2082,14 @@ Bonaire had feeds to add. Survey files are in
   season; in 2026 the scooters came back on 5 May, so if the city announces
   a later start, move `until` to it
   ([Canada's winter section](canadian-scooter-feeds.md#winter)).
+- **20 April 2027:** Voi Jyväskylä (`voi_fi_app_275`), paused from 3
+  November 2026 until the streets are clear, Helsinki time. Voi took its
+  scooters in from about 1,350 on 30 October to none from about 16:00 UTC on
+  2 November; the city's permit allows renting only on snow-free ground,
+  from 20 April at the latest
+  ([Finnish feeds](finnish-scooter-feeds.md)). The pause holds the alerts
+  quiet to 1 May; if Voi is not back by then, they report it. If the
+  scooters come back much later or earlier in autumn 2027, move `from`.
 - **Late April 2027:** Ottawa's 2027 season. The catalog pauses Ottawa from
   16 November until 30 April, from council's "approximately April 30 to
   November 15"; if the city announces another start, change `until` for Bird
