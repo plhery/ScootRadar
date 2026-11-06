@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-malmo',
   topic: 'malmo',
   name: 'E-scooters in Malmö, Sweden',
-  title: 'E-scooters Malmö 2026: Ryde, Voi, Lime, Bolt and rules',
-  description: 'E-scooters in Malmö: Ryde, Voi, Lime and Bolt, the City’s cap, where to ride, the parking stands in the centre, trains to Copenhagen and Sweden’s fines.',
+  title: 'E-scooters Malmö 2026: Ryde, Voi, Lime, Bolt, prices, rules',
+  description: 'E-scooters in Malmö: Ryde, Voi, Lime and Bolt, how to rent, Voi’s SEK 2.50 a minute (November 2026), where to ride, the centre’s parking stands, fines.',
   headline: 'E-scooters in Malmö: Ryde, Voi, Lime and Bolt, and where to ride and park',
-  lede: 'E-scooters in Malmö are rented from four companies with permits, Ryde, Voi, Lime and Bolt, up to 2,800 scooters between them until 31 March 2027. As of November 2026 a Voi costs SEK 2.50 a minute, with no unlock fee. Ride on cycle lanes or the road, never on the pavement, and in the centre end your ride in a marked e-scooter stand. Swedish law applies, not Denmark’s.',
+  lede: 'E-scooters in Malmö are rented from four companies with permits, Ryde, Voi, Lime and Bolt, up to 2,800 scooters between them under permits that run through the winter, to 31 March 2027. To rent one, download the company’s app, create an account, find a scooter on the app’s map and scan its QR code to unlock it. As of November 2026 a Voi costs SEK 2.50 a minute with no unlock fee, so 10 minutes cost SEK 25; the other apps show their price before you unlock. Ride on cycle lanes or the road, never on the pavement, and in the centre end your ride in a marked e-scooter stand. Swedish law applies, not Denmark’s.',
   published: '2026-10-28',
   updated: '2026-10-28',
   city: 'se:Malmö',
@@ -36,8 +36,9 @@ const guide: Guide = {
     {
       heading: 'How much does a Voi, Lime, Bolt or Ryde scooter cost in Malmö?',
       blocks: [
-        '**The app shows the price** before you unlock, and prices can change, so check it before each ride. As of November 2026 Voi charges SEK 2.50 a minute in Malmö, with no fee to unlock. Bolt’s Swedish website gives prices in euros for the whole of Sweden rather than for Malmö (as of November 2026): from €0.15 a minute plus a small unlock fee, both varying from place to place; unlimited unlocks from €0.99 a month; and passes that make each minute cheaper the more minutes you buy.',
-        'Bolt rents only to riders aged 18 or over, its Swedish terms say. If you leave a Bolt scooter outside its permitted parking area, it may charge up to SEK 1,000 to collect it and up to SEK 1,000 for the unpermitted parking. From 1 December 2026, new terms add a SEK 60 fee if the photo the app asks for at the end of a ride shows the scooter wrongly parked. Check each of the other apps for its own age limit and fees.',
+        'As of November 2026 Voi charges SEK 2.50 a minute in Malmö, with no fee to unlock: SEK 25 for 10 minutes, SEK 50 for 20. Bolt’s Swedish website gives prices in euros for the whole of Sweden rather than for Malmö (as of November 2026): from €0.15 a minute plus a small unlock fee, both varying from place to place; unlimited unlocks from €0.99 a month; and passes that make each minute cheaper the more minutes you buy.',
+        'Bolt rents only to riders aged 18 or over, its Swedish terms say. If you leave a Bolt scooter outside its permitted parking area, it may charge up to SEK 1,000 to collect it and up to SEK 1,000 for the unpermitted parking. From 1 December 2026, new terms add a SEK 60 fee if the photo the app asks for at the end of a ride shows the scooter wrongly parked.',
+        'Ryde rents to riders aged 15 or over, its Swedish terms say. It rounds each ride up to the next full minute, may end a trip on its own after 60 to 65 minutes, and may charge up to SEK 500 if you leave a scooter outside its area. Voi and Lime show their age limits and fees in their apps.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -78,8 +79,8 @@ const guide: Guide = {
     {
       heading: 'Gamla staden, Västra hamnen, Ribersborg and the station',
       blocks: [
-        'For Gamla staden (the old town), Lilla torg and Stortorget, Västra hamnen and the Turning Torso, and the parks, the City’s e-scooter page (17 August 2026) sets no rule beyond its parking stands and the slow zones the apps show. Wherever a street is signed as a pedestrian street (gågata), the law requires walking pace and gives people on foot priority; the City’s map marks its pedestrian zones. Ribersborgsstigen, by Ribersborg beach, is the city’s one cycle street (cykelgata), where vehicles may go no faster than 30 km/h.',
-        'Malmö bans motor traffic from 23:00 to 05:00 on parts of Bergsgatan and Stora Nygatan all year, but the ban doesn’t cover cycles, the City says, and an e-scooter counts as one. Neither the City’s e-scooter page nor its 2026 permit papers set a night rule or winter pause for hire scooters.',
+        'In Gamla staden (the old town), Lilla torg and Stortorget, Västra hamnen and the Turning Torso, and the parks, the City’s rules for hire scooters are its parking stands and the slow zones the apps show (its e-scooter page, 17 August 2026). Wherever a street is signed as a pedestrian street (gågata), the law requires walking pace and gives people on foot priority; the City’s map marks its pedestrian zones. Ribersborgsstigen, by Ribersborg beach, is the city’s one cycle street (cykelgata), where vehicles may go no faster than 30 km/h.',
+        'Malmö bans motor traffic from 23:00 to 05:00 on parts of Bergsgatan and Stora Nygatan all year, but the ban doesn’t cover cycles, the City says, and an e-scooter counts as one.',
         {
           table: {
             caption: 'Rules on land owned by others, as each owner states them, October 2026',
@@ -133,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does an e-scooter cost in Malmö?',
-      answer: 'As of November 2026 Voi charges SEK 2.50 a minute with no unlock fee, and Bolt from €0.15 a minute plus an unlock fee. Each app shows the price before you unlock, and prices can change.',
+      answer: 'As of November 2026 Voi charges SEK 2.50 a minute with no unlock fee, SEK 25 for 10 minutes. Bolt’s Swedish website gives one price for the whole country: from €0.15 a minute plus an unlock fee, both varying from place to place.',
     },
     {
       question: 'Do I need a helmet to ride an e-scooter in Malmö?',
@@ -148,8 +149,8 @@ const guide: Guide = {
       answer: 'No. A hire scooter can’t go on the train, so end your ride in Malmö before you board. You may take your own e-scooter on the Öresundståg if it is fully folded, fits under the seat and there is room.',
     },
     {
-      question: 'Are e-scooters banned at night in Malmö?',
-      answer: 'No. The City sets no night ban or winter pause for hire scooters, and its night driving bans on Bergsgatan and Stora Nygatan don’t cover cycles, e-scooters included (October 2026). Bolt’s terms from 1 December 2026 tell riders not to ride in snow or ice.',
+      question: 'Can you ride an e-scooter in Malmö at night or in winter?',
+      answer: 'Yes. The companies’ permits run through the winter, from 1 October 2026 to 31 March 2027, and the City’s night driving bans on Bergsgatan and Stora Nygatan don’t cover cycles, e-scooters included. Bolt’s terms from 1 December 2026 tell riders not to ride in snow or ice.',
     },
   ],
   sources: [
@@ -172,6 +173,7 @@ const guide: Guide = {
     { title: 'Bolt: Terms for e-vehicles in Sweden (from 1 December 2026)', url: 'https://bolt.eu/sv-se/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Bolt: E-scooters in Sweden', url: 'https://bolt.eu/sv-se/scooters/' },
     { title: 'Voi: Malmö rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/7/netex.xml' },
+    { title: 'Ryde: Terms and conditions, Sweden', url: 'https://www.ryde-technology.com/terms-conditions-sweden' },
   ],
 };
 

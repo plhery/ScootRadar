@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Freiburg 2026: Zeus, Yoio, Preise, Altstadt',
   description: 'E-Scooter Freiburg: was Zeus und Yoio kosten, warum du in der Altstadt weder fährst noch parkst, was an der Dreisam gilt und wann dein Scooter in die Bahn darf.',
   headline: 'E-Scooter Freiburg: Zeus und Yoio, Preise, Parkzonen und was in der Altstadt gilt',
-  lede: 'Einen E-Scooter in Freiburg im Breisgau leihst du ab 18 und ohne Führerschein bei Zeus oder Yoio. Zehn Minuten kosten 3,50 € bei Zeus und 3,59 € oder 3,99 € bei Yoio, je nach Scooter (Stand November 2026). In der Fussgängerzone der Altstadt darfst du nicht fahren, und beenden kannst du die Fahrt dort ebenso wenig wie in Parks oder näher als 50 m an der Dreisam. Deinen eigenen E-Scooter nimmt die VAG in Strassenbahn und Bus sogar aufgeklappt mit, einen Leih-Scooter nie.',
+  lede: 'Einen E-Scooter in Freiburg im Breisgau leihst du in der App von Zeus oder Yoio, ab 18 und ohne Führerschein: freien Scooter in der App suchen, per QR-Code entsperren, losfahren. Zeus ist knapp am günstigsten: Zehn Minuten kosten dort 3,50 €, bei Yoio je nach Scooter 3,59 € oder 3,99 € (Stand November 2026). In der Fussgängerzone der Altstadt darfst du nicht fahren, und beenden kannst du die Fahrt dort ebenso wenig wie in Parks oder näher als 50 m an der Dreisam. Deinen eigenen E-Scooter nimmt die VAG in Strassenbahn und Bus sogar aufgeklappt mit, einen Leih-Scooter nie.',
   published: '2026-10-14',
   updated: '2026-10-23',
   city: 'de:Freiburg im Breisgau',
@@ -37,7 +37,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Eine Viertelstunde kostet damit 4,75 € bei Zeus und 4,84 € oder 5,44 € bei Yoio. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Zeus ist damit bei jeder Fahrtlänge am günstigsten: Eine Viertelstunde kostet 4,75 € bei Zeus und 4,84 € oder 5,44 € bei Yoio.',
         'Laut Yoios Gebührenordnung (Stand 2021) gibt es mit einer Jahreskarte des örtlichen Nahverkehrs 25 € Guthaben im Jahr.',
         'Günstiger für kurze Wege ist das Leihrad Frelo (siehe unten). Den nächsten Scooter und eine Preisschätzung zeigt die [Live-Karte von Freiburg](map:de:Freiburg im Breisgau).',
       ],
@@ -102,7 +102,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch offen'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -121,7 +121,7 @@ const guide: Guide = {
         '**Frelo**, das Leihrad der VAG, buchst du in der App von nextbike. Zurück gibst du es an einer Station, sonst kostet es 20 € Servicegebühr.',
         {
           table: {
-            caption: 'Frelo: Tarife (Stand 14. Oktober 2026)',
+            caption: 'Frelo: Tarife (Stand November 2026)',
             head: ['Tarif', 'Preis'],
             rows: [
               ['Einzelfahrt', '1 € pro 30 Minuten, höchstens 15 € in 24 Stunden'],
@@ -136,9 +136,9 @@ const guide: Guide = {
     {
       heading: 'E-Scooter bei Herbstmess, SC-Spielen, Weihnachtsmarkt und ZMF',
       blocks: [
-        '**Freiburger Herbstmess**, jeden Herbst auf dem Neuen Messplatz, 2026 vom 16. bis 26. Oktober: Mit Zeus stellst du an der Messe ab, mit Yoio nicht. Die VAG fährt die Linie 4 dann ab 21 Uhr bis Messeschluss alle 15 Minuten.',
-        '**Heimspiele des SC Freiburg:** Am Europa-Park Stadion ist bei Zeus Fahrverbotszone; bei Yoio beendest du die Fahrt auf einem Streifen an der Südwestseite des Stadions. Nach dem Spiel fahren Sonderzüge der VAG, etwa am Abend des 25. Oktober 2026.',
-        '**Weihnachtsmarkt**, jedes Jahr vor Weihnachten, 2026 vom 19. November bis 23. Dezember: Seine neun Plätze in und um die Altstadt liegen alle in den Parkverbotszonen. Stell den Scooter am Rand ab und geh zu Fuss.',
+        '**Freiburger Herbstmess**, jeden Herbst auf dem Neuen Messplatz, zuletzt vom 16. bis 26. Oktober 2026: Mit Zeus stellst du an der Messe ab, mit Yoio nicht (Stand November 2026). Zur Messe 2026 fuhr die VAG die Linie 4 ab 21 Uhr bis Messeschluss alle 15 Minuten.',
+        '**Heimspiele des SC Freiburg:** Am Europa-Park Stadion ist bei Zeus Fahrverbotszone; bei Yoio beendest du die Fahrt auf einem Streifen an der Südwestseite des Stadions. Zu den Heimspielen setzt die VAG Zusatzverkehre ins Stadion ein.',
+        '**Weihnachtsmarkt**, jedes Jahr vor Weihnachten, 2026 vom 19. November bis 23. Dezember, am Totensonntag, 22. November, geschlossen: Seine Plätze in und um die Altstadt liegen alle in den Parkverbotszonen. Stell den Scooter am Rand ab und geh zu Fuss.',
         '**Zelt-Musik-Festival (ZMF)**, jeden Sommer am Mundenhof, 2027 vom 14. Juli bis 1. August: Dort endet bei keinem der beiden Anbieter eine Fahrt, und Zeus sperrt das Fahren. Das ZMF empfiehlt das Fahrrad, mit virtueller Frelo-Station, oder die Strassenbahnlinien 3 und 5 und einen Sonderbus.',
       ],
     },
@@ -169,8 +169,8 @@ const guide: Guide = {
       answer: 'Zeus und Yoio, die beiden Anbieter, die die Stadt für E-Scooter nennt. Freie Scooter von Zeus und Yoio zeigt die [Live-Karte von Freiburg](map:de:Freiburg im Breisgau).',
     },
     {
-      question: 'Was kostet Yoio in Freiburg?',
-      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,29 € pro Minute (Stand November 2026). Zehn Minuten kosten damit 3,59 € oder 3,99 €.',
+      question: 'Was kosten Zeus und Yoio in Freiburg?',
+      answer: 'Bei Zeus 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €; bei Yoio 1,09 € und je nach Scooter 0,25 € oder 0,29 € pro Minute, zehn Minuten 3,59 € oder 3,99 € (Stand November 2026). Zeus ist damit am günstigsten.',
     },
     {
       question: 'Darf man mit dem E-Scooter durch die Freiburger Altstadt fahren?',
@@ -194,6 +194,9 @@ const guide: Guide = {
     { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
     { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
     { title: 'Polizeipräsidium Freiburg: Unfallbarometer 2025, Stadtkreis Freiburg (PDF)', url: 'https://www.presseportal.de/download/document/6995b7d5270000fd2cbf70e0-unfallbarometer2025freiburg.pdf' },
+    { title: 'Freiburger Weihnachtsmarkt 2026: Öffnungszeiten', url: 'https://weihnachtsmarkt.freiburg.de/' },
+    { title: 'VAG Freiburg: Sonderverkehre, Zusatzverkehre zu den SC-Heimspielen', url: 'https://www.vag-freiburg.de/fahrplan/sonderverkehre' },
+    { title: 'Zelt-Musik-Festival Freiburg', url: 'https://zmf.de/' },
   ],
 };
 

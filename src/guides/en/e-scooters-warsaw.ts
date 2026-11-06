@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'warsaw',
   name: 'Renting an e-scooter in Warsaw',
   title: 'E-scooters Warsaw 2026: Bolt, Dott, Lime, prices and rules',
-  description: 'E-scooters in Warsaw: Bolt, Dott and Lime, what a ride costs, where to ride and park, the 12 km/h streets, the no-go Old Town and Łazienki, and Poland’s fines.',
+  description: 'E-scooters in Warsaw: how to rent Bolt, Dott or Lime, Bolt’s rate from PLN 0.22 a minute (November 2026), where to ride and park, the no-go zones, fines.',
   headline: 'E-scooters in Warsaw: Bolt, Dott and Lime, prices, and where you may ride and park',
-  lede: 'To rent an e-scooter in Warsaw, use the Bolt, Dott or Lime app: the three companies in the city’s e-scooter agreement of May 2026. Bolt and Dott rent only to riders aged 18 or over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show prices in the app. Ride on the cycle path at no more than 20 km/h, on the pavement only at walking pace where there’s no other way, and park at a marked rack or the pavement’s outer edge, never in the Old Town or Łazienki Park.',
+  lede: 'To rent an e-scooter in Warsaw, use the Bolt, Dott or Lime app, the three companies in the city’s e-scooter agreement of May 2026: find a scooter on the app’s map and scan its QR code to unlock it. Bolt and Dott rent only to riders aged 18 or over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott’s and Lime’s apps show their price before you unlock. Ride on the cycle path at no more than 20 km/h, on the road only where the limit is 30 km/h or less, on the pavement only at walking pace where there’s no other way, and park at a marked rack or the pavement’s outer edge, never in the Old Town or Łazienki Park.',
   published: '2026-10-25',
   updated: '2026-11-03',
   city: 'pl:Warszawa',
@@ -24,15 +24,14 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Warsaw?',
       blocks: [
-        'You pay to unlock, then by the minute, at a rate that can vary from city to city, so check it in the app before you unlock.',
+        'A ride costs an unlock fee plus a rate per minute that can vary from place to place, Bolt says.',
         {
           table: {
             caption: 'E-scooter prices in Warsaw, as of November 2026',
             head: ['Operator', 'Pay as you go', 'Passes'],
             rows: [
-              ['Bolt', 'From PLN 0.22 a minute plus an unlock fee that varies by place (its Polish page; its English page says from €0.15)', 'Unlimited unlocks from €0.99 a month; weekly and monthly minute passes'],
-              ['Dott', 'In the app: “check the price in your city in the Dott app”', 'Day, week and month passes'],
-              ['Lime', 'In the Lime app', 'In the Lime app'],
+              ['Bolt', 'From PLN 0.22 a minute, a rate that can vary by place, plus an unlock fee (its Polish page; its English page says from €0.15)', 'Unlimited unlocks from €0.99 a month; weekly and monthly minute passes'],
+              ['Dott', 'Set for each city', 'Day, week and month passes'],
             ],
           },
         },
@@ -56,8 +55,8 @@ const guide: Guide = {
             '**12 km/h:** Krakowskie Przedmieście and Nowy Świat when they’re pedestrianised, the pedestrian part of Chmielna, the Vistula boulevards where there’s no separate cycle path, and since May 2026 Złota, Zgoda, Bracka, Plac Centralny and the pedestrian and cycle bridge over the Vistula.',
           ],
         },
-        'Our [Warsaw map](map:pl:Warszawa) draws them from zoom 14, credited to ZDM, on OpenStreetMap’s outlines and streets: the Old Town as its World Heritage site, without the paths along the Wisłostrada below it, and Złota and Bracka only where they’re pedestrian or living streets. Krakowskie Przedmieście and Nowy Świat aren’t drawn, as ZDM doesn’t give the hours they’re pedestrianised, nor the boulevards, as it doesn’t say which stretches.',
-        'In September 2026 the mayor said more places had been added, unnamed (Notes from Poland): check the app before you set off.',
+        'Our [Warsaw map](map:pl:Warszawa) draws them from zoom 14, credited to ZDM, on OpenStreetMap’s outlines and streets: the Old Town as its World Heritage site, without the paths along the Wisłostrada below it, and Złota and Bracka only where they’re pedestrian or living streets. Krakowskie Przedmieście, Nowy Świat and the boulevards aren’t drawn, as their 12 km/h holds only at some times or on some stretches.',
+        'In September 2026 the mayor said the city had added more areas to the ban, which the companies programme into their scooters (Notes from Poland, 17 September 2026).',
       ],
     },
     {
@@ -104,7 +103,7 @@ const guide: Guide = {
     {
       heading: 'Taking an e-scooter on the metro, trams, buses and trains',
       blocks: [
-        'The city council’s rules for ZTM’s metro, trams and buses let you carry an e-scooter as luggage if it doesn’t block the aisle, endanger other passengers or their property or block the driver’s view, the city’s 19115 page says; you may not use one on board. It doesn’t say the scooter must be folded. SKM’s suburban trains run under the same rules.',
+        'The city council’s rules for ZTM’s metro, trams and buses let you carry an e-scooter as luggage if it doesn’t block the aisle, endanger other passengers or their property or block the driver’s view, the city’s 19115 page says; you may not use one on board. SKM’s suburban trains run under the same rules.',
         'Koleje Mazowieckie’s regional trains carry “a folded scooter, including an electric one” free as hand luggage, but not on replacement buses or the Modlin station–Modlin Airport bus (§ 17 of its rules, in force since 1 June 2026).',
       ],
     },
@@ -135,7 +134,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Lime in Warsaw?',
-      answer: 'Yes, one of the three companies in the city’s May 2026 agreement; its scooters are on the [Warsaw map](map:pl:Warszawa). Its app shows the price and parking rules.',
+      answer: 'Yes, one of the three companies in the city’s May 2026 agreement, with Bolt and Dott; its scooters are on the [Warsaw map](map:pl:Warszawa).',
     },
     {
       question: 'Can I ride an e-scooter on the pavement in Warsaw?',

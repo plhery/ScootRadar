@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Bochum 2026: Anbieter, Preise, Parkverbote',
   description: 'E-Scooter Bochum: Voi, Dott, Bolt, Lime und Ryde, was eine Fahrt kostet, wo du in City und Stadtpark nicht fährst oder parkst und was bei der BOGESTRA gilt.',
   headline: 'E-Scooter Bochum: Anbieter, Preise, Parkverbote und was bei BOGESTRA und VRR gilt',
-  lede: 'Einen E-Scooter in Bochum leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde; Dott, Bolt und Ryde vermieten ab 18. Zehn Minuten kosten (Stand November 2026) bei Voi 1,80 € und bei Dott 3,90 €, bei Bolt, Lime und Ryde zeigt die App den Preis. In der Fussgängerzone der City fährst du nicht, in Parks laut Stadt nur auf ausgeschilderten Radwegen, und im Kern der Innenstadt markiert Voi Parkverbotszonen. In Bussen und Bahnen der BOGESTRA sind E-Scooter laut ADAC seit dem 1. April 2024 verboten.',
+  lede: 'Einen E-Scooter in Bochum leihst du in der App von Voi, Dott, Bolt, Lime oder Ryde: freien Scooter in der App suchen, per QR-Code entsperren und ohne Führerschein losfahren; Dott, Bolt und Ryde vermieten ab 18. Voi ist günstiger als Dott: Zehn Minuten kosten 1,80 € statt 3,90 € (Stand November 2026). Bei Bolt, Lime und Ryde zeigt die App den Preis, bevor du entsperrst. In der Fussgängerzone der City fährst du nicht, in Parks laut Stadt nur auf ausgeschilderten Radwegen, und im Kern der Innenstadt markiert Voi Parkverbotszonen. In Bussen und Bahnen der BOGESTRA sind E-Scooter laut ADAC seit dem 1. April 2024 verboten.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Bochum',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Bochum?',
       blocks: [
-        'Fünf Anbieter vermieten im Oktober 2026 E-Scooter in Bochum: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde** aus Norwegen. Dott, Bolt und Ryde führen Bochum auf ihren Websites (Stand November 2026). Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern.',
+        'Fünf Anbieter vermieten E-Scooter in Bochum: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde** aus Norwegen. Dott, Bolt und Ryde führen Bochum auf ihren Websites (Stand November 2026). Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern.',
         'Wie das Mieten in der App geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'In der Nacht auf Montag, 26. Oktober 2026, zeigte die [Karte von Bochum](map:de:Bochum) um 4:24 Uhr rund 220 Dott-, 320 Voi- und 310 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 520 Lime-Scooter nach der letzten Zählung.',
         'Leihräder gibt es beim metropolradruhr, das laut Regionalverband Ruhr seit dem 1. April 2026 Donkey Republic betreibt.',
@@ -32,13 +32,10 @@ const guide: Guide = {
             rows: [
               ['Voi', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
               ['Dott', '1,00 €', '0,29 €', '3,90 €', '6,80 €'],
-              ['Bolt', 'in der App', 'in der App', 'in der App', 'in der App'],
-              ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
-              ['Ryde', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Verbindlich ist bei allen Anbietern, was die App vor dem Entsperren anzeigt.',
+        'Voi ist bei jeder Fahrtlänge günstiger als Dott.',
         'Teuer wird Falschparken. Bolt verlangt laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs. Dott berechnet laut seinen Bedingungen vom September 2025 bis zu 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst, und 50 € Verwaltungsgebühr, wenn er ein Bussgeld für dich zahlt.',
       ],
     },
@@ -65,7 +62,7 @@ const guide: Guide = {
       heading: 'Wo darf man in Bochum mit dem E-Scooter fahren? Fussgängerzone und Parks',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, auch mit ausgeschaltetem Motor, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. Für die City schrieb die Stadt 2019: «die komplette Fussgängerzone ist für E-Tretroller tabu». Auf der Kortumstrasse zwischen Südring und Brückstrasse steigst du also ab und schiebst.',
-        'Grünanlagen zu befahren, verbietet die Bochumer Sicherheitsverordnung (Fassung vom 20. Mai 2026) grundsätzlich, gleich wem die Fläche gehört; ausgenommen ist unter anderem «das Radfahren auf dafür bestimmten und entsprechend gekennzeichneten Wegen». Verstösse kosten bis zu 1000 €. E-Scooter nennt die Verordnung nicht, nach unserer Lesart gilt das Verbot aber auch für sie. Den Anbietern schrieb die Stadt 2019 vor, dass in Parks nur auf Wegen mit blauem Radwegschild (Zeichen 237, 240 und 241) gefahren werden darf. Im Stadtpark und im Westpark bleibst du also auf diesen Wegen oder schiebst.',
+        'Grünanlagen zu befahren, verbietet die Bochumer Sicherheitsverordnung (Fassung vom 20. Mai 2026) grundsätzlich, gleich wem die Fläche gehört; ausgenommen ist unter anderem «das Radfahren auf dafür bestimmten und entsprechend gekennzeichneten Wegen». Verstösse kosten bis zu 1000 €. Nach unserer Lesart gilt das Verbot auch für E-Scooter. Den Anbietern schrieb die Stadt 2019 vor, dass in Parks nur auf Wegen mit blauem Radwegschild (Zeichen 237, 240 und 241) gefahren werden darf. Im Stadtpark und im Westpark bleibst du also auf diesen Wegen oder schiebst.',
         'Leih-Scooter fahren nur in einem Teil der Stadt; wo genau, zeigt die App.',
       ],
     },
@@ -81,7 +78,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'unzulässig auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -115,7 +112,7 @@ const guide: Guide = {
           list: [
             '**Herne:** Am 26. Oktober 2026 um 4:24 Uhr zeigte die [Karte von Herne](map:de:Herne) rund 250 Voi- und 240 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und rund 170 Lime-Scooter nach der letzten Zählung. Dott führt Herne auch auf seiner Website.',
             '**Witten:** Zur selben Zeit zeigte die [Karte von Witten](map:de:Witten) rund 70 Voi-Scooter, die zu diesem Zeitpunkt frei waren, und rund 140 Lime-Scooter nach der letzten Zählung.',
-            '**Gelsenkirchen:** Leih-Scooter gibt es dort laut ADAC nicht (Stand November 2025).',
+            '**Gelsenkirchen:** Die Stadt verbietet Leih-Scooter laut ADAC im ganzen Stadtgebiet (November 2025).',
           ],
         },
       ],
@@ -130,11 +127,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Bochum nutzen?',
-      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde (Stand Oktober 2026). Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18, bei Voi und Lime zeigt dir die App das Mindestalter. Freie Scooter zeigt auch die [Live-Karte von Bochum](map:de:Bochum).',
+      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18. Freie Scooter zeigt auch die [Live-Karte von Bochum](map:de:Bochum).',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Bochum?',
-      answer: 'Bei Voi 1,80 € (0,18 € pro Minute, Entsperren gratis), bei Dott 3,90 € (1 € Entsperren plus 0,29 € pro Minute), Stand November 2026. Bolt, Lime und Ryde zeigen ihren Preis in der App.',
+      answer: 'Bei Voi 1,80 € (0,18 € pro Minute, Entsperren gratis), bei Dott 3,90 € (1 € Entsperren plus 0,29 € pro Minute), Stand November 2026. Voi ist damit günstiger.',
     },
     {
       question: 'Wo melde ich einen falsch abgestellten Leih-Scooter in Bochum?',

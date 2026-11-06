@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'columbus',
   name: 'E-scooters in Columbus, Ohio',
   title: 'E-scooters in Columbus, Ohio 2026: Veo, Spin, prices, rules',
-  description: 'E-scooters in Columbus, Ohio: Veo and Spin, what a ride costs, the City rules, the Short North, the Scioto Mile, Ohio State, parking, COTA and winter.',
+  description: 'E-scooters in Columbus, Ohio: Veo costs $1 to unlock and $0.39 a minute (November 2026), Spin, how to rent, the City rules, Ohio State, parking.',
   headline: 'E-scooters in Columbus, Ohio: Veo and Spin, what a ride costs, the rules and where you can’t ride',
-  lede: 'E-scooters in Columbus come from two companies, Veo and Spin, which have run the City’s shared programme since spring 2025. As of November 2026 a Veo costs $1 to unlock and $0.39 a minute plus tax, stand-up or seated. You must be 18 to rent, the City bans riding on the sidewalk, and scooters aren’t allowed in Bicentennial Park on the Scioto Mile.',
+  lede: 'E-scooters in Columbus come from two companies, Veo and Spin, which have run the City’s shared programme since spring 2025. To rent one, get the Veo or Spin app, find a scooter near you on the app’s map or the [Columbus map](map:us:oh:Columbus), scan its QR code to unlock it, and end the ride in the app once it’s parked at a corral, a bike rack or another approved spot. As of November 2026 a Veo costs $1 to unlock and $0.39 a minute plus tax, stand-up or seated, so 10 minutes cost $4.90; Spin’s app shows its price before you unlock. You must be 18 to rent, the City bans riding on the sidewalk, and scooters aren’t allowed in Bicentennial Park on the Scioto Mile.',
   published: '2026-10-18',
   updated: '2026-10-23',
   city: 'us:oh:Columbus',
@@ -32,7 +32,7 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in Columbus?',
       blocks: [
-        'As of November 2026 Veo charges one rate for its stand-up and seated scooters: $1 to unlock and $0.39 a minute, plus tax. For Spin, check the price in its app before you unlock.',
+        'As of November 2026 Veo charges one rate for its stand-up and seated scooters: $1 to unlock and $0.39 a minute, plus tax.',
         {
           table: {
             caption: 'Veo scooter prices in Columbus as of November 2026, before tax',

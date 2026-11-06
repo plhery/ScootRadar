@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'how-to-rent',
   name: 'Como alugar uma trotinete elétrica',
   title: 'Alugar trotinete elétrica: passo a passo e preços (2026)',
-  description: 'Como alugar uma trotinete elétrica em Portugal: a app, a idade, quanto custa, onde estacionar, o Navegante, o que muda em Lisboa e o que fazer num acidente.',
+  description: 'Como alugar uma trotinete elétrica em Portugal: Bolt, Lime ou Bird em cada cidade, a app, os 18 anos, a Bolt desde 0,15 €/min, onde andar e estacionar, Lisboa.',
   headline: 'Alugar trotinete elétrica: como funcionam as trotinetes partilhadas, da app ao fim da viagem',
-  lede: 'Para alugar uma trotinete elétrica partilhada em Portugal, descarregue a app do operador, adicione um cartão, leia o código QR do guiador e, no fim, estacione onde a app deixar e tire uma fotografia. A Bird e a Bolt só alugam a maiores de 18 anos, e a lei não exige carta de condução. Paga um valor pelo desbloqueio e um preço por minuto, que a app mostra antes de desbloquear: em novembro de 2026, a Bolt anuncia minutos a partir de 0,15 €. Em Lisboa, o passe Navegante dá minutos grátis, mas a Câmara aprovou a 21 de outubro de 2026 suspender as trotinetes partilhadas: os operadores têm de as retirar até ao fim do ano.',
+  lede: 'Para alugar uma trotinete elétrica partilhada em Portugal, descarregue a app do operador, adicione um cartão, leia o código QR do guiador e, no fim, estacione onde a app deixar e tire uma fotografia. Em Lisboa e Oeiras há Bolt, Lime e Bird; no Porto e em Almada, Bird e Lime; em Matosinhos e Coimbra, Bird e Bolt; em Faro, Lime e Bolt; em Santarém, Bolt; e em Cascais, na Maia, em Portimão, Olhão e na Covilhã, Bird. A Bird e a Bolt só alugam a maiores de 18 anos, e a lei não exige carta de condução, seguro nem capacete. Paga um valor pelo desbloqueio e um preço por minuto, que a app mostra antes de desbloquear: em novembro de 2026, a Bolt anuncia minutos a partir de 0,15 € em Portugal. Ande na ciclovia ou na estrada, pela direita, nunca no passeio. Em Lisboa, o passe Navegante dá minutos grátis, mas a Câmara aprovou a 21 de outubro de 2026 suspender as trotinetes partilhadas: os operadores terão 60 dias para as retirar depois da notificação formal, e a Câmara conta já não as ter no fim de janeiro de 2027.',
   published: '2026-10-13',
   updated: '2026-11-05',
   sections: [
@@ -35,7 +35,7 @@ const guide: Guide = {
     {
       heading: 'O que precisa para alugar: idade, carta e pagamento',
       blocks: [
-        'Um telemóvel com dados móveis, uma conta e um meio de pagamento. A lei não exige carta de condução nem seguro, nem fixa idade mínima: os 18 anos são regra dos operadores. A idade mínima da Lime, a app mostra-a antes de desbloquear.',
+        'Um telemóvel com dados móveis, uma conta e um meio de pagamento. A lei não exige carta de condução nem seguro, nem fixa idade mínima: os 18 anos são regra dos operadores.',
         {
           table: {
             caption: 'O que pedem a Bird e a Bolt em Portugal (termos, em novembro de 2026)',
@@ -59,13 +59,13 @@ const guide: Guide = {
             caption: 'Operadores de trotinetes partilhadas por cidade (novembro de 2026)',
             head: ['Onde', 'Operadores', 'O que saber'],
             rows: [
-              ['Lisboa', 'Bolt, Lime e Bird', 'A viagem só termina num hotspot; 20 km/h no máximo; minutos grátis com o Navegante; a Câmara aprovou a 21 de outubro de 2026 suspendê-las, e os operadores têm de as retirar até ao fim do ano'],
+              ['Lisboa', 'Bolt, Lime e Bird', 'A viagem só termina num hotspot; 20 km/h no máximo; minutos grátis com o Navegante; a Câmara aprovou a 21 de outubro de 2026 suspendê-las e conta que saiam até ao fim de janeiro de 2027'],
               ['Porto', 'Bird e Lime', 'A viagem só termina num ponto de partilha, marcado a azul no chão'],
               ['Matosinhos', 'Bird e Bolt', 'As duas têm licença da Câmara desde 2024; o regulamento municipal de 2022 só permite alugar das 6h00 às 22h00'],
               ['Oeiras', 'Bird, Lime e Bolt', 'A viagem só começa e acaba num ponto move sinalizado'],
               ['Almada e Costa da Caparica', 'Bird e Lime', 'Siga as zonas do mapa da app'],
               ['Cascais, Maia, Portimão, Olhão e Covilhã', 'Bird', '–'],
-              ['Coimbra', 'Bird e Bolt', 'Em agosto de 2026, a presidente da Câmara disse que a cidade «não tem condições» para elas e que prepara uma concessão e um regulamento: confirme na app'],
+              ['Coimbra', 'Bird e Bolt', 'Em agosto de 2026, a presidente da Câmara disse que a cidade «não tem condições» para elas e que prepara uma concessão e um regulamento'],
               ['Santarém', 'Bolt', 'A Câmara renovou o acordo com a Bolt em 2024: 20 km/h no máximo, 15 km/h em zonas do centro histórico'],
               ['Faro', 'Lime e Bolt', 'Só elas têm licença da Câmara, desde abril de 2025, com 350 trotinetes cada; a Lime tem também bicicletas'],
               ['Braga, Vila Nova de Gaia e Espinho', 'Nenhum', 'Braga votou em junho de 2026 o fim das trotinetes; Gaia cancelou o concurso em abril, e Espinho acabou com elas no fim de julho'],
@@ -79,8 +79,8 @@ const guide: Guide = {
       heading: 'Quanto custa alugar uma trotinete elétrica?',
       blocks: [
         'Paga um valor pelo desbloqueio e cada minuto em que a trotinete está desbloqueada, a andar ou parada, até a app confirmar o fim da viagem.',
-        'Em novembro de 2026, a Bolt anuncia «um pequeno valor pelo desbloqueio» e minutos «a partir de 0,15 €», um valor nacional que pode variar com o local; tem também desbloqueios ilimitados a partir de 0,99 € por mês e passes semanais e mensais. A Lime e a Bird mostram os seus preços na app antes de desbloquear.',
-        '**Um exemplo, com tarifas inventadas para a conta:** 1 € para desbloquear e 0,20 € por minuto. Se o operador contar cada minuto iniciado, como faz a Bird, 9 minutos e 20 segundos contam como 10: 1 + 10 × 0,20 = 3 €. Com mais 3 minutos à procura de um lugar onde terminar, são 13 minutos: 3,60 €.',
+        'Em novembro de 2026, a Bolt anuncia «um pequeno valor pelo desbloqueio» e minutos «a partir de 0,15 €», um valor nacional que pode variar com o local; tem também desbloqueios ilimitados a partir de 0,99 € por mês e passes semanais e mensais.',
+        '**Cada minuto iniciado conta** na Bird: 9 minutos e 20 segundos pagam-se como 10. Os minutos à procura de um lugar onde terminar também se pagam: à tarifa mais baixa que a Bolt anuncia, 0,15 € por minuto, 3 minutos somam 0,45 €.',
         '**A cativação.** A Bird retém 5 € no cartão antes de cada viagem e devolve-os em até 30 dias; a Bolt cativa um valor quando reserva a trotinete, para confirmar o pagamento.',
       ],
     },
@@ -95,7 +95,7 @@ const guide: Guide = {
             '**Lime:** registe-se em [navegante.li.me](https://navegante.li.me/).',
           ],
         },
-        'A 21 de outubro de 2026, a Câmara aprovou suspender as trotinetes partilhadas na cidade: os operadores têm de as retirar no prazo de 60 dias, até ao fim do ano.',
+        'A 21 de outubro de 2026, a Câmara aprovou suspender as trotinetes partilhadas na cidade: os operadores terão 60 dias para as retirar depois da notificação formal, e o vice-presidente Gonçalo Reis conta que já não haja trotinetes partilhadas em Lisboa no fim de janeiro de 2027.',
       ],
     },
     {
@@ -133,7 +133,6 @@ const guide: Guide = {
           list: [
             '**Bird:** seguro de responsabilidade civil para a trotinete e de acidentes pessoais para quem a conduz; os danos na trotinete não estão cobertos.',
             '**Bolt:** os termos exigem que tenha um seguro de responsabilidade civil pessoal válido, e a Bolt só se reserva o direito de oferecer cobertura. O seguro de casa pode já o incluir: pergunte à seguradora.',
-            '**Lime:** veja os termos na app antes da primeira viagem.',
             '**Porto:** o regulamento obriga os operadores a ter seguro de responsabilidade civil e um seguro que cubra os utilizadores.',
           ],
         },
@@ -192,6 +191,7 @@ const guide: Guide = {
     { title: 'Lisboa para Pessoas: viagens gratuitas de trotinete com o Navegante, 26 de novembro de 2025', url: 'https://lisboaparapessoas.pt/2025/11/26/lisboa-trotinetas-navegante-viagens-gratuitas/' },
     { title: 'Observador (Lusa): Câmara de Lisboa aprova suspensão das trotinetes partilhadas, 21 de outubro de 2026', url: 'https://observador.pt/2026/10/21/camara-de-lisboa-aprova-suspensao-das-trotinetes-partilhadas-livre-e-il-votaram-contra/' },
     { title: 'Sábado (Lusa): municípios acabam com as trotinetes, 28 de agosto de 2026', url: 'https://www.sabado.pt/portugal/detalhe/municipios-acabam-com-trotinetes-mas-empresas-defendem-que-se-tem-adaptado-as-regras' },
+    { title: 'RTP: «Não prevemos regresso». Câmara espera já não ter trotinetas em Lisboa em janeiro de 2027', url: 'https://www.rtp.pt/noticias/pais/nao-prevemos-regresso-camara-espera-ja-nao-ter-trotinetas-em-lisboa-em-janeiro-de-2027_n1772050' },
   ],
 };
 

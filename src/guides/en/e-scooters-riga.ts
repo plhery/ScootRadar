@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'riga',
   name: 'Renting an e-scooter in Riga',
   title: 'E-scooter Riga 2026: Ride, Bolt, prices and the licence rule',
-  description: 'E-scooter Riga guide: Ride (the old Tuul fleet) and Bolt, what a ride costs, the licence even adults need, Old Town parking, the airport and Jūrmala.',
+  description: 'E-scooter Riga guide: Ride (€0.29 + €0.22 a minute, November 2026) and Bolt, how to rent, the licence even adults need, Old Town parking, the airport.',
   headline: 'E-scooters in Riga: Ride and Bolt, what a ride costs, the licence rule and where to park in the Old Town',
-  lede: 'You can rent an e-scooter in Riga with Ride, which took over Tuul’s scooters, or with Bolt. As of November 2026 Ride charges €0.29 to unlock plus €0.22 a minute, and Bolt advertises scooters in Latvia from €0.15 a minute plus an unlock fee. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and both apps rent only to riders of 18 and over. In the Old Town you can park only at marked spots, and in the centre shared scooters slow to 20 km/h.',
+  lede: 'You can rent an e-scooter in Riga with Ride, which took over Tuul’s scooters, or with Bolt. Download the app, sign up with your phone number and a payment card, let the app check your age and licence, then scan a scooter to unlock it. As of November 2026 Ride charges €0.29 to unlock plus €0.22 a minute, €2.49 for 10 minutes, and Bolt advertises scooters in Latvia from €0.15 a minute plus an unlock fee. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and both apps rent only to riders of 18 and over. In the Old Town you can park only at marked spots, and in the centre shared scooters slow to 20 km/h.',
   published: '2026-10-14',
   updated: '2026-10-25',
   city: 'lv:Rīga',
@@ -110,12 +110,12 @@ const guide: Guide = {
     {
       heading: 'Winter, events and safety in Riga',
       blocks: [
-        '**Winter.** Whether scooters run in winter is up to each company: check the app before you set out. Bolt’s terms forbid riding in snow, hail, ice, sleet or freezing rain.',
+        '**Winter.** Ride’s scooters were still out in November 2026, and its open data give its hours as 24/7. Bolt’s terms forbid riding in snow, hail, ice, sleet or freezing rain.',
         '**Events** to plan around:',
         {
           list: [
-            '**Staro Rīga**, the light festival along the Daugava and through the Old Town: 15–18 November 2026, in the evenings.',
-            '**The Christmas market on Dome Square**, inside the no-parking zone: 28 November 2025 to 4 January 2026 last time.',
+            '**Staro Rīga**, the light festival along the Daugava and through the Old Town: 15–18 November 2026, from 17:00 to 23:00 each evening.',
+            '**The Christmas market on Dome Square**, inside the no-parking zone: from 27 November to 3 January, Live Riga says.',
             '**The Rimi Riga Marathon**, 15–16 May 2027.',
           ],
         },
@@ -182,6 +182,9 @@ const guide: Guide = {
     { title: 'Live Riga: how to get from Riga Airport to the city centre (read on 4 November 2026)', url: 'https://www.liveriga.com/en/13353-how-to-get-from-riga-airport-to-the-city-center' },
     { title: 'Live Riga: public transport and tickets (read on 4 November 2026)', url: 'https://www.liveriga.com/en/17-public-transportation' },
     { title: 'LV portāls: Riga City Council on traffic limits for Riga’s birthday, 13 August 2026, Latvian', url: 'https://lvportals.lv/dienaskartiba/393197-rigas-dzimsanas-dienas-svinibu-laika-sestdien-satiksmei-slegs-vecrigu-ierobezota-transporta-parvietosanas-pilsetas-centra-2026' },
+    { title: 'Staro Rīga 2026: dates and hours (read on 6 November 2026), Latvian', url: 'https://staroriga.lv/lv/sakums/' },
+    { title: 'Live Riga: traditional Christmas market (read on 6 November 2026)', url: 'https://www.liveriga.com/en/visit/what-to-do/christmas-in-riga/traditional-christmas-market-1' },
+    { title: 'Rimi Riga Marathon: 2027 dates (read on 6 November 2026)', url: 'https://rimirigamarathon.com/en/' },
   ],
 };
 

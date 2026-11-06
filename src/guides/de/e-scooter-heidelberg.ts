@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'heidelberg',
   name: 'E-Scooter Heidelberg: Anbieter, Preise, Parken',
   title: 'E-Scooter Heidelberg 2026: Anbieter, Preise, Abstellflächen',
-  description: 'E-Scooter Heidelberg: Dott, Voi und Bolt, was zehn Minuten kosten, wo du in der Altstadt abstellen darfst und was in Strassenbahn und Bergbahn gilt.',
+  description: 'E-Scooter Heidelberg: Dott, Voi oder Bolt mieten, was zehn Minuten kosten, wo du in der Altstadt abstellen darfst und was in Strassenbahn und Bergbahn gilt.',
   headline: 'E-Scooter Heidelberg: Anbieter, Preise, Abstellflächen und Verbotszonen von der Altstadt bis ins Neuenheimer Feld',
-  lede: 'Einen E-Scooter in Heidelberg leihst du ohne Führerschein bei Dott, Voi oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis März 2028; Dott und Bolt vermieten ab 18. Voi kostet 0,25 € pro Minute ohne Entsperrgebühr, Dott 1 € plus 0,32 € pro Minute (Stand November 2026). In der Altstadt beendest du die Fahrt nur auf markierten Abstellflächen, auf der Neckarwiese bei Dott und Voi gar nicht. In Strassenbahn, Bus und Bergbahn nimmst du keinen Leih-Scooter mit.',
+  lede: 'Einen E-Scooter in Heidelberg leihst du in der App von Dott, Voi oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis März 2028: Die App zeigt freie Scooter auf einer Karte, du entsperrst per QR-Code und fährst ohne Führerschein; Dott und Bolt vermieten ab 18. Voi ist günstiger als Dott: Zehn Minuten kosten 2,50 € (0,25 € pro Minute, Entsperren gratis) statt 4,20 € (1 € plus 0,32 € pro Minute), Stand November 2026. In der Altstadt beendest du die Fahrt nur auf markierten Abstellflächen, auf der Neckarwiese bei Dott und Voi gar nicht. In Strassenbahn, Bus und Bergbahn nimmst du keinen Leih-Scooter mit.',
   published: '2026-10-17',
   updated: '2026-10-25',
   city: 'de:Heidelberg',
@@ -18,7 +18,6 @@ const guide: Guide = {
       blocks: [
         'Seit 1. April 2026 dürfen in Heidelberg nur noch drei Anbieter Leih-Scooter aufstellen: **Dott**, das früher TIER hiess, **Bolt** und, neu in der Stadt, **Voi**. Die Stadt hat sie in einem Auswahlverfahren bestimmt; ihre Erlaubnisse laufen bis 31. März 2028. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, standen rund um Heidelberg kurz vor 16 Uhr rund 360 Dott- und 300 Voi-Scooter, die zu diesem Zeitpunkt frei waren, am Sonntag kurz vor 14 Uhr rund 370 von Bolt. Wo gerade einer steht, siehst du auf der [Karte von Heidelberg](map:de:Heidelberg).',
-        'Preise und Zonen siehst du in der App des Anbieters.',
         '**Lime und Zeus** gehören seit April 2026 nicht mehr zu den Heidelberger Anbietern. Zeus vermietet weiter südlich der Stadt, vor allem in Leimen, dazu in Walldorf und Wiesloch. In Leimen standen am selben Nachmittag rund 70 Scooter, die zu diesem Zeitpunkt frei waren, 60 davon von Zeus, der Rest von Dott, das auch in der Mitte Leimens ein eigenes kleines Gebiet hat: siehe die [Karte von Leimen](map:de:Leimen).',
       ],
     },
@@ -32,11 +31,11 @@ const guide: Guide = {
             rows: [
               ['Voi', '0,00 €', '0,25 €', '2,50 €', '5,00 €'],
               ['Dott', '1,00 €', '0,32 €', '4,20 €', '7,40 €'],
-              ['Bolt', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'In Leimen kostet Zeus 1 € plus 0,25 € pro Minute, höchstens 45 € pro Fahrt (Stand November 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Voi ist bei jeder Fahrtlänge günstiger als Dott. Bolts Preis zeigt die App, bevor du entsperrst.',
+        'In Leimen kostet Zeus 1 € plus 0,25 € pro Minute, höchstens 45 € pro Fahrt (Stand November 2026).',
         'Günstiger ist **VRNnextbike**, das Leihrad im Verkehrsverbund Rhein-Neckar: 1 € pro 15 Minuten, höchstens 12 € in 24 Stunden. Im Monats-Abo für 10 € sind die ersten 30 Minuten jeder Fahrt inklusive (Stand November 2026). In Heidelberg gab es laut Stadt im März 2026 42 Stationen mit rund 360 Rädern. Der Vertrag mit nextbike läuft Ende Februar 2027 aus; die Stadt will das Leihrad ab März 2027 nahtlos weiterführen.',
       ],
     },
@@ -133,12 +132,12 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'Welche E-Scooter-App brauche ich in Heidelberg?',
-      answer: 'Die von Dott, Voi oder Bolt; TIER heisst heute Dott. Lime und Zeus gehören seit April 2026 nicht mehr dazu. Bei Dott und Bolt musst du 18 sein, Vois Mindestalter zeigt dir die App vor dem Entsperren; einen Führerschein brauchst du nicht. Wo gerade ein freier Scooter steht, zeigt die [Live-Karte von Heidelberg](map:de:Heidelberg).',
+      question: 'Wie leihe ich in Heidelberg einen E-Scooter aus?',
+      answer: 'In der App von Dott, Voi oder Bolt; TIER heisst heute Dott. Die App zeigt freie Scooter auf einer Karte, du entsperrst einen per QR-Code und beendest dort auch die Fahrt. Bei Dott und Bolt musst du 18 sein, einen Führerschein brauchst du nicht. Lime und Zeus gehören seit April 2026 nicht mehr zu den Heidelberger Anbietern. Wo gerade ein freier Scooter steht, zeigt die [Live-Karte von Heidelberg](map:de:Heidelberg).',
     },
     {
       question: 'Was kostet ein E-Scooter in Heidelberg?',
-      answer: 'Bei Voi 0,25 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,50 €; bei Dott 1 € plus 0,32 € pro Minute, zehn Minuten 4,20 € (Stand November 2026). Bolt zeigt den Preis nur in der App.',
+      answer: 'Bei Voi 0,25 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,50 €; bei Dott 1 € plus 0,32 € pro Minute, zehn Minuten 4,20 € (Stand November 2026). Voi ist damit günstiger; Bolts Preis zeigt die App.',
     },
     {
       question: 'Warum kann ich in der Altstadt die Fahrt nicht beenden?',

@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-wolfsburg',
   topic: 'wolfsburg',
   name: 'E-Scooter Wolfsburg: Anbieter, Preise, Parken',
-  title: 'E-Scooter Wolfsburg 2026: Anbieter, Preise, Parken',
+  title: 'E-Scooter Wolfsburg 2026: Dott, Bolt, Preise, Parken',
   description: 'E-Scooter Wolfsburg: Dott und Bolt, was eine Fahrt kostet, wo du fährst und parkst, was in Autostadt und Allerpark gilt und wann der Scooter in den Bus darf.',
   headline: 'E-Scooter Wolfsburg: Anbieter, Preise, Parken und was in Autostadt und Allerpark gilt',
-  lede: 'E-Scooter in Wolfsburg leihst du bei Dott oder Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (Stand August 2026). Sie vermieten erst ab 18, einen Führerschein brauchst du nicht; den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Porschestrasse, in Grünanlagen laut Stadt nur auf ausgewiesenen Radwegen. Dein eigener Scooter fährt zusammengeklappt kostenlos im Bus mit, ein Leih-Scooter nicht.',
+  lede: 'Einen E-Scooter in Wolfsburg leihst du in der App von Dott oder Bolt, den beiden Anbietern, die die Stadt an ihren mobiSTATIONEN nennt (Stand November 2026): freien Scooter in der App suchen, per QR-Code entsperren, losfahren. Beide vermieten ab 18, einen Führerschein brauchst du nicht; den Preis zeigt die App, bevor du entsperrst. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Porschestrasse, in Grünanlagen laut Stadt nur auf ausgewiesenen Radwegen. Dein eigener Scooter fährt zusammengeklappt kostenlos im Bus mit, ein Leih-Scooter nicht.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Wolfsburg',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Wolfsburg?',
       blocks: [
-        'In Wolfsburg fahren **Dott** und **Bolt**. «Die e-Scooter-Dienste von Bolt und Dott findest du im markierten Parkbereich», schreibt die Stadt auf ihrer Seite zu den mobiSTATIONEN (neueste Meldung dort vom 17. August 2026). Beide führen Wolfsburg auch auf ihren eigenen Seiten (Stand November 2026). Mieten kannst du laut den Bedingungen beider ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Wolfsburg fahren **Dott** und **Bolt**. «Die e-Scooter-Dienste von Bolt und Dott findest du im markierten Parkbereich», schreibt die Stadt auf ihrer Seite zu den mobiSTATIONEN (Stand November 2026). Beide führen Wolfsburg auch auf ihren eigenen Seiten (Stand November 2026). Mieten kannst du laut den Bedingungen beider ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '**TIER** ist mit Dott fusioniert: Laut regionalHeute vom 1. Oktober 2024 sollten alle TIER-Scooter in den folgenden Wochen das Dott-Logo bekommen.',
         'Am Sonntag, 25. Oktober 2026, standen rund um Wolfsburg kurz vor 9 Uhr rund 600 Dott-Scooter und kurz vor 14 Uhr rund 430 von Bolt, die zu diesem Zeitpunkt frei waren. Wo gerade einer steht, siehst du auf der [Karte von Wolfsburg](map:de:Wolfsburg).',
         'Der Betrieb eines Verleihs ist laut Stadt «grundsätzlich» nicht genehmigungspflichtig. Geschäftsgebiet und Parkverbotszonen legen die Anbieter laut Stadt mit ihr fest. Dazu hat die Stadt eine freiwillige Selbstverpflichtung für die Anbieter formuliert (Vorlage von 2020): Eine Erhöhung der Flotte «bedarf der Absprache mit der Stadt Wolfsburg», und falsch abgestellte Scooter soll der Anbieter binnen 24 Stunden umstellen oder entfernen. Diese Pflichten treffen die Anbieter, nicht dich.',
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Wolfsburg?',
       blocks: [
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. «In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott; sparen kannst du dort mit Pässen für einen Tag, eine Woche oder einen Monat. Bolt wirbt bundesweit mit «ab 0,15 € pro Minute» plus einer «kleinen Freischaltungsgebühr»; der Minutentarif variiert laut Bolt je nach Standort, unbegrenzte Freischaltungen kosten ab 0,99 € im Monat, dazu kommen Wochen- und Monatspässe (Stand November 2026).',
+        '«In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott; sparen kannst du dort mit Pässen für einen Tag, eine Woche oder einen Monat. Bolt wirbt bundesweit mit «ab 0,15 € pro Minute» plus einer «kleinen Freischaltungsgebühr»; der Minutentarif variiert laut Bolt je nach Standort, unbegrenzte Freischaltungen kosten ab 0,99 € im Monat, dazu kommen Wochen- und Monatspässe (Stand November 2026).',
         {
           table: {
             caption: 'Was Dott und Bolt laut ihren Bedingungen verlangen (Stand November 2026; Dott: AGB vom 23. September 2025; Bolt: Bedingungen gültig ab 1. Dezember 2026)',
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Wolfsburg?',
-      answer: 'Dott und Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (August 2026). Wo gerade ein freier Scooter steht, zeigt die [Karte von Wolfsburg](map:de:Wolfsburg).',
+      answer: 'Dott und Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (Stand November 2026). Wo gerade ein freier Scooter steht, zeigt die [Karte von Wolfsburg](map:de:Wolfsburg).',
     },
     {
       question: 'Was kostet ein E-Scooter in Wolfsburg?',

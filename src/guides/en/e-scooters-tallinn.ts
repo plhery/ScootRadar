@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tallinn',
   name: 'Renting an e-scooter in Tallinn',
   title: 'E-scooters Tallinn 2026: Bolt, prices, rules and parking',
-  description: 'E-scooters in Tallinn: Bolt, what a ride costs, Estonia’s age and helmet rules, where to ride slowly and park in the Old Town, trams and winter.',
+  description: 'E-scooters in Tallinn: how to rent Bolt, from €0.15 a minute (November 2026), Estonia’s age and helmet rules, the Old Town’s 10 km/h and parking areas.',
   headline: 'E-scooters in Tallinn: Bolt, what a ride costs, Estonia’s rules and where to park in the Old Town',
-  lede: 'E-scooters in Tallinn are rented from Bolt, which calls the city its hometown. As of November 2026 it advertises scooters in Estonia from €0.15 a minute plus an unlock fee shown in the app, and rents only to riders of 18 and over. Estonian law lets e-scooters use cycle tracks and pavements, at walking pace near pedestrians, and asks for a helmet only under 16. In the Old Town and the city centre you can end a ride only in a marked parking area, and the Old Town is limited to 10 km/h.',
+  lede: 'E-scooters in Tallinn are rented from Bolt, which calls the city its hometown: open the Bolt app, find a scooter on its map and scan the QR code on it to unlock. Bolt rents only to riders of 18 and over and, as of November 2026, charges from €0.15 a minute plus an unlock fee across Estonia; its app shows Tallinn’s price before you unlock. Estonian law lets e-scooters use cycle tracks and pavements, at walking pace near pedestrians, and asks for a helmet only under 16. In the Old Town and the city centre you can end a ride only in a marked parking area; the Old Town is limited to 10 km/h, and the whole city to 17 km/h on Friday and Saturday nights.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'ee:Tallinn',
@@ -31,15 +31,15 @@ const guide: Guide = {
     {
       heading: 'How much does a Bolt scooter cost in Tallinn?',
       blocks: [
-        'Bolt’s scooter page for Estonia advertises rides “starting from €0.15 per minute”, a national figure; each ride also has a small unlock fee, and the per-minute rate “may vary depending on your location”, so check the app before you start. Tallinn’s public transport fares, for comparison:',
+        'Bolt’s scooter page for Estonia advertises rides “starting from €0.15 per minute”, a national figure; each ride also has a small unlock fee, and the per-minute rate “may vary depending on your location”. Tallinn’s public transport fares, for comparison:',
         {
           table: {
             caption: 'Bolt’s advertised scooter prices in Estonia (as of November 2026) and Tallinn’s public transport tickets (the city’s fares regulation, 26 October 2026)',
             head: ['Option', 'Price'],
             rows: [
-              ['Bolt scooter, pay as you go', 'From €0.15 a minute, plus an unlock fee shown in the app'],
+              ['Bolt scooter, pay as you go', 'From €0.15 a minute, plus an unlock fee'],
               ['Bolt Unlimited unlocks', 'From €0.99 a month'],
-              ['Bolt passes', 'Weekly and monthly passes of minutes, priced in the app'],
+              ['Bolt passes', 'Weekly and monthly passes of minutes'],
               ['Tram, bus or trolleybus, 1 hour', '€2'],
               ['Public transport, 24 hours', '€5.50'],
               ['Public transport, 72 hours', '€9'],
@@ -78,7 +78,7 @@ const guide: Guide = {
     {
       heading: 'Where to ride slowly and park in Tallinn’s Old Town',
       blocks: [
-        'Tallinn’s rules for rental scooters are a City Government regulation of 15 April 2025, in its current form since 1 July 2025. It sets speeds and parking areas under the Traffic Act (§§ 190¹³–190¹⁵), which gives cities no power to issue permits or cap fleets; it sets no fees or night ban either. The Municipal Police enforce it.',
+        'Tallinn’s rules for rental scooters are a City Government regulation of 15 April 2025, in its current form since 1 July 2025. It sets speeds and parking areas under the Traffic Act (§§ 190¹³–190¹⁵), and the Municipal Police enforce it.',
         {
           list: [
             '**Old Town (Vanalinn): 10 km/h**, Toompea included.',
@@ -107,8 +107,8 @@ const guide: Guide = {
     {
       heading: 'Night riding and winter in Tallinn',
       blocks: [
-        '**No night ban.** Neither the law nor the city stops rentals at night. The only night rule is the 17 km/h cap on Friday and Saturday nights.',
-        '**Winter.** Neither the law nor the city’s regulation sets a winter break, but in November 2024 Tallinn agreed with Bolt, Tuul and Rekola to take rental scooters and bikes off the streets from 1 December, ERR News reported, and they returned on 1 March 2025 after a three-month break. Check the app from late November. Bolt’s terms forbid riding in snow, hail, ice, sleet or freezing rain.',
+        '**Nights.** On Friday and Saturday nights, from 21:00 to 07:00, the city caps rental scooters at 17 km/h, and at 10 km/h in the Old Town.',
+        '**Winter.** In November 2024 Tallinn agreed with Bolt, Tuul and Rekola to take rental scooters and bikes off the streets from 1 December, ERR News reported, and they returned on 1 March 2025 after a three-month break. Bolt’s terms forbid riding in snow, hail, ice, sleet or freezing rain.',
         'Travelling on? See our guides to [Tartu](guide:tartu), [Helsinki](guide:helsinki), where the season runs, in principle, to 30 November, and [Riga](guide:riga), where Ride and Bolt both run.',
       ],
     },
@@ -134,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Bolt scooter cost in Tallinn?',
-      answer: 'As of November 2026 Bolt advertises scooters in Estonia from €0.15 a minute, plus an unlock fee; the app shows the exact price for Tallinn before you start. For comparison, a one-hour public transport ticket costs €2.',
+      answer: 'As of November 2026 Bolt charges from €0.15 a minute across Estonia, plus an unlock fee, and its per-minute rate may vary by place. For comparison, a one-hour public transport ticket costs €2.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Tallinn?',
@@ -147,10 +147,6 @@ const guide: Guide = {
     {
       question: 'Can you ride an e-scooter on the pavement in Tallinn?',
       answer: 'Yes. The Traffic Act lets e-scooters use pavements, footpaths and cycle tracks, and the road only where those are missing or very hard to use. Pass pedestrians at about walking pace.',
-    },
-    {
-      question: 'Can you rent an e-scooter in Tallinn in winter?',
-      answer: 'Not always. In winter 2024–25 rental scooters were off the streets from 1 December to 1 March by agreement with the city, though neither the law nor the city’s scooter regulation requires a break. Check the app from late November.',
     },
   ],
   sources: [

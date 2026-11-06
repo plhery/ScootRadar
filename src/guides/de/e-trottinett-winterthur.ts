@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'winterthur',
   name: 'E-Trottinett Winterthur: Voi, Preise, Zonen',
   title: 'E-Trottinett Winterthur 2026: Voi, Preise, Zonen, Parkieren',
-  description: 'E-Trottinett Winterthur: Nur Voi fährt hier. Was zehn Minuten kosten, wo du am HB parkierst, was in der Altstadt gilt und was sich ab 2028 ändern soll.',
+  description: 'E-Trottinett Winterthur: Nur Voi fährt hier, für CHF 1.– plus 42 Rappen pro Minute. Wo du am HB parkierst, was in der Altstadt gilt und was ab 2028 kommt.',
   headline: 'E-Trottinett Winterthur: E-Scooter von Voi mieten, Preise, Zonen und Parkieren am HB',
-  lede: 'Ein E-Trottinett in Winterthur mietest du bei Voi: Seit 2026 ist Voi laut Stadt der einzige Anbieter, mit 450 E-Scootern und 100 E-Bikes und einem Vertrag bis Ende 2027. Du musst mindestens 18 sein und zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (Stand November 2026). Rund um den Hauptbahnhof parkierst du nur auf den roten Feldern, die für Voi markiert sind, und die Altstadt ist Fussgängerzone: Fahren darfst du dort nur, wo eine Zusatztafel Velos erlaubt. Auf Hügeln wie dem Goldenberg oder dem Eschenberg endet bei Voi die Fahrt nicht.',
+  lede: 'Ein E-Trottinett in Winterthur mietest du in der Voi-App: registrieren, Trotti per QR-Code entsperren, losfahren. Seit 2026 ist Voi laut Stadt der einzige Anbieter, mit 450 E-Scootern und 100 E-Bikes und einem Vertrag bis Ende 2027; Tier, heute Dott, fuhr hier bis Ende 2025. Du musst mindestens 18 sein und zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (Stand November 2026). Rund um den Hauptbahnhof parkierst du nur auf den roten Feldern, die für Voi markiert sind, und die Altstadt ist Fussgängerzone: Fahren darfst du dort nur, wo eine Zusatztafel Velos erlaubt. Auf Hügeln wie dem Goldenberg oder dem Eschenberg endet bei Voi die Fahrt nicht.',
   published: '2026-10-13',
   updated: '2026-10-14',
   city: 'ch:winterthur',
@@ -32,7 +32,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Winterthur?',
       blocks: [
-        'Voi verlangt in Winterthur CHF 1.– fürs Entsperren und 42 Rappen pro Minute, für E-Trottinette und E-Bikes gleich (Stand November 2026). Die Minuten laufen, bis die Fahrt beendet ist, auch am Rotlicht. Massgebend ist der Tarif, den dir die App vor dem Entsperren zeigt.',
+        'Voi verlangt in Winterthur CHF 1.– fürs Entsperren und 42 Rappen pro Minute, für E-Trottinette und E-Bikes gleich (Stand November 2026). Die Minuten laufen, bis die Fahrt beendet ist, auch am Rotlicht. Was Voi und die anderen Anbieter in Zürich, Bern oder Basel verlangen, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
         {
           table: {
             caption: 'Voi in Winterthur, Stand November 2026',
@@ -146,8 +146,8 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'Gibt es in Winterthur auch Lime, Bolt oder PubliBike?',
-      answer: 'Nein. Seit 2026 ist Voi laut Stadt der einzige Anbieter von E-Scootern und E-Bikes in Winterthur.',
+      question: 'Gibt es in Winterthur auch Tier, Lime, Bolt oder PubliBike?',
+      answer: 'Nein. Seit 2026 ist Voi laut Stadt der einzige Anbieter von E-Scootern und E-Bikes in Winterthur; der Vertrag mit Tier, das heute Dott heisst, endete Ende 2025. Lime, Bolt, Dott oder PubliBike mietest du in Zürich: siehe [E-Trottinett in Zürich](guide:zurich).',
     },
     {
       question: 'Kann ich mit dem Voi-Trotti nach Zürich oder an den Flughafen fahren?',
@@ -180,6 +180,7 @@ const guide: Guide = {
     { title: 'Hopp: offener Datenfeed für Kloten mit Zonen (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-kloten/gbfs.json' },
     { title: 'Lime: Zonen für Kloten', url: 'https://assets.lime.bike/zones_attributes/Kloten_5536_exclude_new_type.json' },
     { title: 'Carvelo: Tarife', url: 'https://www.carvelo.ch/de/preise/' },
+    { title: 'Musikfestwochen Winterthur: Daten 2027', url: 'https://musikfestwochen.ch/' },
   ],
 };
 

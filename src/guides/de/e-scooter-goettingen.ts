@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-goettingen',
   topic: 'goettingen',
   name: 'E-Scooter Göttingen: Anbieter, Preise, Parkverbote',
-  title: 'E-Scooter Göttingen 2026: Yoio, Qick, Preise, Parkzonen',
-  description: 'E-Scooter Göttingen: was Yoio pro Minute kostet, wo du in der Innenstadt fahren darfst, wo du am Wall und am Bahnhof parkst und was im Bus gilt.',
-  headline: 'E-Scooter Göttingen: Yoio, Preise, Parkverbotszonen und was in der Innenstadt gilt',
-  lede: 'Einen E-Scooter in Göttingen leihst du ohne Führerschein bei Yoio, einem Anbieter aus Göttingen, bei Qick oder bei Lime; auch Bolt führt die Stadt auf seiner Website mit E-Scootern. Yoio vermietet ab 18; (Stand November 2026) kostet das Entsperren 1 € und die Minute je nach Scooter 0,25 € oder 0,21 €, zehn Minuten also 3,50 € oder 3,10 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone um Weender Strasse und Markt. Eine Yoio-Fahrt beendest du im Gebiet der App, aber nicht in der Fussgängerzone, auf weiten Teilen des Walls, im Leinepark und direkt vor dem Bahnhofsgebäude.',
+  title: 'E-Scooter Göttingen 2026: Yoio, Qick, Lime, Bolt, Preise',
+  description: 'E-Scooter Göttingen: Yoio, Qick, Lime und Bolt, was Yoio pro Minute kostet, wo du in der Innenstadt fahren darfst und wo du am Wall und Bahnhof parkst.',
+  headline: 'E-Scooter Göttingen: Yoio, Qick, Lime und Bolt, Preise, Parkverbotszonen und was in der Innenstadt gilt',
+  lede: 'Einen E-Scooter in Göttingen leihst du in der App von Yoio, einem Anbieter aus Göttingen, von Qick oder von Lime; auch Bolt führt die Stadt auf seiner Website mit E-Scootern. Du entsperrst per QR-Code und fährst ohne Führerschein; Yoio und Qick vermieten ab 18. Bei Yoio kostet das Entsperren 1 € und die Minute je nach Scooter 0,25 € oder 0,21 €, zehn Minuten also 3,50 € oder 3,10 € (Stand November 2026); bei Qick, Lime und Bolt zeigt die App den Preis, bevor du entsperrst. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone um Weender Strasse und Markt. Eine Yoio-Fahrt beendest du im Gebiet der App, aber nicht in der Fussgängerzone, auf weiten Teilen des Walls, im Leinepark und direkt vor dem Bahnhofsgebäude.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Göttingen',
@@ -17,24 +17,25 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Göttingen?',
       blocks: [
         'Im November 2026 vermietet **Yoio** E-Scooter in Göttingen, laut seinen Bedingungen ab 18. Yoio gehört der YourCar GmbH mit Sitz in Göttingen; ausser hier fährt Yoio laut Website in Freiburg und [Erfurt](guide:erfurt).',
-        '**Bolt** führt Göttingen auf seiner Website mit der Kategorie «E-Scooter» (Stand November 2026) und vermietet laut seinen Bedingungen ebenfalls ab 18. Auch **Qick** und **Lime** haben E-Scooter in Göttingen. Den Preis von Qick, Lime und Bolt zeigt dir ihre App vor dem Entsperren.',
+        '**Bolt** führt Göttingen auf seiner Website mit der Kategorie «E-Scooter» (Stand November 2026) und vermietet laut seinen Bedingungen ebenfalls ab 18. Auch **Qick**, laut seinen Bedingungen ebenfalls ab 18, und **Lime** haben E-Scooter in Göttingen.',
         'In der Nacht zum Sonntag, 25. Oktober 2026, standen in Göttingen rund 250 Scooter von **Yoio** und 340 von **Qick**, die zu diesem Zeitpunkt frei waren; von **Lime** waren es am Sonntagvormittag rund 620 nach der letzten Zählung. Wo gerade einer steht, siehst du auf der [Karte von Göttingen](map:de:Göttingen); wie das Mieten geht, erklärt der Ratgeber [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Göttingen?',
       blocks: [
-        'Bei Yoio kostet das Entsperren bei jedem Scooter 1 €, der Minutenpreis hängt aber vom einzelnen Scooter ab: Die meisten kosten 0,25 €, gut ein Drittel 0,21 € (Stand November 2026). Laut Yoios Hilfe kann der Minutenpreis variieren; welcher für deinen Scooter gilt, zeigt dir die App auf dem Button «Fahrt starten».',
+        'Bei Yoio kostet das Entsperren bei jedem Scooter 1 €, der Minutenpreis hängt aber vom einzelnen Scooter ab: Gut die Hälfte kostet 0,25 €, knapp die Hälfte 0,21 € (Stand November 2026). Laut Yoios Hilfe kann der Minutenpreis variieren; welcher für deinen Scooter gilt, zeigt dir die App auf dem Button «Fahrt starten».',
         {
           table: {
             caption: 'E-Scooter-Preise in Göttingen (Yoio, Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Yoio, die meisten Scooter', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
-              ['Yoio, gut ein Drittel der Scooter', '1,00 €', '0,21 €', '3,10 €', '5,20 €'],
+              ['Yoio, gut die Hälfte der Scooter', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
+              ['Yoio, knapp die Hälfte der Scooter', '1,00 €', '0,21 €', '3,10 €', '5,20 €'],
             ],
           },
         },
+        'Günstiger fährst du auf einem Yoio-Scooter zu 0,21 €: Zehn Minuten kosten 3,10 € statt 3,50 €, 20 Minuten 5,20 € statt 6,00 €.',
         'Bei Yoio zählt laut AGB jede angefangene Minute. Eine Fahrt kostet höchstens 19,99 €. Mit einer Jahreskarte des örtlichen Nahverkehrs gibt es laut Yoios Gebührenordnung (Stand 2021) 25 € Guthaben im Jahr.',
       ],
     },
@@ -94,7 +95,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Göttingen: Bussgelder und Alkohol',
       blocks: [
-        'In Göttingen gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Yoio und Bolt ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Göttingen gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Yoio, Qick und Bolt ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -103,7 +104,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Falsch abgestellt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'Auf Geh- oder Radweg 55 €, mit Behinderung 70 €'],
             ],
@@ -136,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Göttingen?',
-      answer: 'Yoio, Qick, Lime oder Bolt, das Göttingen auf seiner Website mit E-Scootern führt; wo gerade einer frei ist, zeigt die [Live-Karte von Göttingen](map:de:Göttingen). Bei Yoio und Bolt musst du 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Yoio, Qick, Lime oder Bolt, das Göttingen auf seiner Website mit E-Scootern führt; wo gerade einer frei ist, zeigt die [Live-Karte von Göttingen](map:de:Göttingen). Bei Yoio, Qick und Bolt musst du 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet Yoio in Göttingen pro Minute?',
@@ -176,6 +177,7 @@ const guide: Guide = {
     { title: 'Strassenverkehrs-Ordnung, Anlage 2: Einbahnstrassen und Verbot der Einfahrt', url: 'https://www.gesetze-im-internet.de/stvo_2013/anlage_2.html' },
     { title: 'Bundesministerium für Verkehr: Fragen und Antworten zur eKFV-Novelle', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
     { title: 'Göttingen Tourismus: Das Gänseliesel-Fest feiert ein Doppeljubiläum', url: 'https://www.goettingen-tourismus.de/top-post/goettingen-geht-auf-zeitreise-das-gaenseliesel-fest-feiert-ein-doppeljubilaeum/' },
+    { title: 'Qick: Nutzungsbedingungen', url: 'https://qickscooters.com/de/terms' },
   ],
 };
 

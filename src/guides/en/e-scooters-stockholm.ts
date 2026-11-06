@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'stockholm',
   name: 'E-scooter hire in Stockholm',
   title: 'E-scooters Stockholm 2026: Voi, Bolt, prices and rules',
-  description: 'E-scooters in Stockholm with Voi and Bolt: the price, who can ride, where to ride and park, Gamla stan, the metro ban and Sweden’s fines.',
+  description: 'E-scooters in Stockholm: Voi (SEK 10 + SEK 3 a minute, November 2026) and Bolt, how to rent, who can ride, where to ride and park, the metro ban.',
   headline: 'E-scooters in Stockholm: Voi, Bolt, prices and where to ride and park',
-  lede: 'E-scooters in Stockholm are rented from Voi and Bolt, the only two companies with permits since 1 July 2026. As of November 2026 a Voi costs SEK 10 to unlock and SEK 3 a minute, and Bolt rents only to riders aged 18 or over. Ride on cycle lanes or the road, never on the pavement, and park in one of about 700 bays or a city cycle rack. You can’t take an e-scooter into the metro, even folded.',
+  lede: 'E-scooters in Stockholm are rented from Voi and Bolt, the only two companies with permits since 1 July 2026. To rent one, download the Voi or Bolt app, create an account, find a scooter on the app’s map and scan its QR code to unlock it. As of November 2026 a Voi costs SEK 10 to unlock and SEK 3 a minute, SEK 40 for 10 minutes; Bolt’s app shows its price before you unlock, and Bolt rents only to riders aged 18 or over. Ride on cycle lanes or the road, never on the pavement, and end your ride in one of about 700 bays or a city cycle rack. You can’t take an e-scooter into the metro, even folded.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'se:Stockholm',
@@ -17,25 +17,24 @@ const guide: Guide = {
       heading: 'E-scooters in Stockholm: Voi and Bolt',
       blocks: [
         '**Voi** and **Bolt** are the only companies renting out e-scooters in the City of Stockholm. On 11 December 2025 the city’s traffic committee (trafiknämnden) limited e-scooter operators to two from 1 July 2026, and in June 2026 the city chose Voi and Bolt, Bolt and the local paper Mitt i reported. Lime had to leave and said it would appeal.',
-        'The city allows up to **12,000** rental e-scooters, a cap it kept in December 2025; Voi and Bolt now share it, and Bolt says its permit covers up to 6,000 of them for about two years. Each company needs a permit from the Swedish Police Authority (Polismyndigheten) to use public land, granted only if the city agrees, and pays the city SEK 1,400 a scooter a year, the city’s traffic office wrote in October 2025. Neither the committee’s decision nor that report sets a separate cap for the inner city; from 1 July 2026 the city’s criteria for sharing out scooters reward companies that reach the outer districts.',
-        'At about 15:20 on Sunday 25 October 2026 the [map of Stockholm](map:se:Stockholm) showed about 10,950 Voi and Bolt e-scooters free to rent at that moment within the City of Stockholm. Zoomed in, it draws Stockholms stad’s e-scooter bays (open data, CC0), but not its no-parking areas.',
+        'The city allows up to **12,000** rental e-scooters, a cap it kept in December 2025; Voi and Bolt now share it, and Bolt says its permit covers up to 6,000 of them for about two years. Each company needs a permit from the Swedish Police Authority (Polismyndigheten) to use public land, granted only if the city agrees, and pays the city SEK 1,400 a scooter a year, the city’s traffic office wrote in October 2025. From 1 July 2026 the city’s criteria for sharing out scooters reward companies that reach the outer districts.',
+        'At about 15:20 on Sunday 25 October 2026 the [map of Stockholm](map:se:Stockholm) showed about 10,950 Voi and Bolt e-scooters free to rent at that moment within the City of Stockholm. Zoomed in, it draws Stockholms stad’s e-scooter bays (open data, CC0).',
         'Voi and Bolt also rent out **e-bikes** here, up to 1,500 each since 1 January 2026, Mitt i reported in June 2026, citing the city.',
       ],
     },
     {
       heading: 'How much does a Voi or Bolt e-scooter cost in Stockholm?',
       blocks: [
-        '**The app shows the price** before you unlock, and prices can change, so check it before each ride. As of November 2026 Voi charges SEK 10 to unlock and then SEK 3 a minute in Stockholm. Bolt’s Swedish website gives prices in euros for the whole of Sweden rather than for Stockholm (as of November 2026): from €0.15 a minute plus a small unlock fee, both varying from place to place; unlimited unlocks from €0.99 a month; and passes that make each minute cheaper the more minutes you buy.',
+        'As of November 2026 Voi charges SEK 10 to unlock and then SEK 3 a minute in Stockholm: SEK 40 for 10 minutes, SEK 70 for 20. Bolt’s Swedish website gives prices in euros for the whole of Sweden rather than for Stockholm (as of November 2026): from €0.15 a minute plus a small unlock fee, both varying from place to place; unlimited unlocks from €0.99 a month; and passes that make each minute cheaper the more minutes you buy.',
         {
           table: {
             caption: 'Voi and Bolt in Stockholm at a glance, October 2026, and who says so',
             head: ['Question', 'Answer', 'Who says so'],
             rows: [
               ['Who rents e-scooters?', 'Voi and Bolt, the only two since 1 July 2026', 'The traffic committee (11 December 2025); Bolt and Mitt i (2 June 2026)'],
-              ['What does a ride cost?', 'Voi: SEK 10 to unlock, then SEK 3 a minute (as of November 2026). Bolt: from €0.15 a minute plus an unlock fee, across Sweden', 'Voi’s open data (4 November 2026); Bolt’s Swedish website (November 2026)'],
+              ['What does a ride cost?', 'Voi: SEK 10 to unlock, then SEK 3 a minute (as of November 2026). Bolt: from €0.15 a minute plus an unlock fee, across Sweden', 'Voi’s open data (6 November 2026); Bolt’s Swedish website (6 November 2026)'],
               ['How old must you be?', 'Bolt: 18 or over. Voi: shown in its app', 'Bolt’s terms for Sweden (from 1 February 2023, and from 1 December 2026)'],
               ['How many scooters?', 'Up to 12,000 in the city', 'The City of Stockholm (21 October 2026)'],
-              ['When can you ride?', 'No hours, night ban or winter pause', 'None set on the city’s e-scooter pages (21 October 2026)'],
               ['Where does a ride end?', 'In a bay or city cycle rack, outside the no-parking areas', 'The City of Stockholm (21 October 2026)'],
             ],
           },
@@ -130,7 +129,7 @@ const guide: Guide = {
       heading: 'Solna, Sundbyberg, Nacka and the rest of Sweden',
       blocks: [
         'The cap, bays and no-parking areas above are the City of Stockholm’s; its neighbours set their own terms. **Solna** has one-year agreements with Voi and Bolt, whose scooters stand at 52 marked stations (2 July 2026). **Nacka** has an agreement with Voi, for western Sicklaön up to Nacka Forum and Kvarnholmen (10 July 2026), and decided in May 2022 to charge companies SEK 1,400 a scooter a year.',
-        'Elsewhere in Sweden the map shows, among other towns, Voi and Lime in [Uppsala](map:se:Uppsala) and [Gothenburg](map:se:Göteborg), Voi, Bolt and Lime in [Malmö](map:se:Malmö), and Voi and Bolt in Lund. **Ryde**, which isn’t on the map, also rents scooters in Malmö, where it has the largest share of the City’s cap, 1,000 of 2,800 from 1 October 2026 (8 September 2026), and in Gothenburg, whose City lists it beside Voi and Lime (October 2026). Unlike Stockholm, [Oslo](guide:oslo) stops rentals every night and [Helsinki](guide:helsinki) on weekend nights.',
+        'Elsewhere in Sweden the map shows, among other towns, Voi and Lime in [Uppsala](map:se:Uppsala) and [Gothenburg](map:se:Göteborg), Ryde, Voi, Bolt and Lime in [Malmö](map:se:Malmö), and Voi and Bolt in Lund. **Ryde** has the largest share of Malmö’s cap, 1,000 of 2,800 scooters from 1 October 2026 (8 September 2026), and also rents in Gothenburg, whose City lists it beside Voi and Lime (October 2026). Unlike Stockholm, [Oslo](guide:oslo) stops rentals every night and [Helsinki](guide:helsinki) on weekend nights.',
       ],
     },
     {
@@ -153,7 +152,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Voi or Bolt e-scooter cost in Stockholm?',
-      answer: 'As of November 2026 Voi charges SEK 10 to unlock and then SEK 3 a minute in Stockholm, and Bolt from €0.15 a minute plus an unlock fee; prices can change.',
+      answer: 'As of November 2026 Voi charges SEK 10 to unlock and then SEK 3 a minute in Stockholm, SEK 40 for 10 minutes. Bolt’s Swedish website gives one price for the whole country: from €0.15 a minute plus an unlock fee, both varying from place to place.',
     },
     {
       question: 'Do I need a helmet to ride an e-scooter in Stockholm?',
@@ -168,8 +167,8 @@ const guide: Guide = {
       answer: 'No, not even folded: SL has banned e-scooters on the tunnelbana since 25 November 2024. Folded e-scooters up to 120 cm long may go on buses, trams and other trains.',
     },
     {
-      question: 'Can I ride an e-scooter in Stockholm in winter?',
-      answer: 'The city’s e-scooter pages set no winter pause or night ban (October 2026). Bolt’s terms from 1 December 2026 tell riders not to ride in snow, ice or sleet; check the app for scooters near you.',
+      question: 'Can you ride a hire scooter in Stockholm in snow or ice?',
+      answer: 'Bolt’s terms from 1 December 2026 tell riders not to ride in snow, ice or sleet. In some places, such as the city’s winter outdoor-café areas, hire scooters slow to walking pace by themselves.',
     },
   ],
   sources: [

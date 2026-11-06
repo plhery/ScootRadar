@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Karlsruhe 2026: Anbieter, Preise, Parken, KVV',
   description: 'E-Scooter Karlsruhe: Voi, Bolt und Dott, was zehn Minuten kosten, wo du an Kaiserstrasse und Hauptbahnhof parkst und welcher Scooter in Bahn und Bus darf.',
   headline: 'E-Scooter Karlsruhe: Anbieter, Preise, Abstellflächen und warum du auf der Kaiserstrasse schiebst',
-  lede: 'Einen E-Scooter in Karlsruhe leihst du ab 18 und ohne Führerschein bei Voi, Bolt oder Dott. Zehn Minuten kosten 3,39 € bei Bolt und 3,49 € bei Voi (Stand November 2026). Auf der Kaiserstrasse zwischen Europaplatz und Kronenplatz und auf dem Marktplatz darfst du nicht fahren, und rund um die Kaiserstrasse und am Hauptbahnhof stellst du nur auf markierten Flächen ab. Im KVV zählt dein eigener Scooter als Fahrrad; einen Leih-Scooter stellst du vor der Fahrt mit Bus oder Bahn ab.',
+  lede: 'Einen E-Scooter in Karlsruhe leihst du in der App von Voi, Bolt oder Dott, ab 18 und ohne Führerschein: freien Scooter in der App suchen, QR-Code scannen, losfahren. Am günstigsten ist Bolt: Zehn Minuten kosten dort 3,39 €, bei Voi 3,49 € und bei Dott 3,69 € (Stand November 2026). Auf der Kaiserstrasse zwischen Europaplatz und Kronenplatz und auf dem Marktplatz darfst du nicht fahren, und rund um die Kaiserstrasse und am Hauptbahnhof stellst du nur auf markierten Flächen ab. Im KVV zählt dein eigener Scooter als Fahrrad; einen Leih-Scooter stellst du vor der Fahrt mit Bus oder Bahn ab.',
   published: '2026-10-14',
   updated: '2026-10-24',
   city: 'de:Karlsruhe',
@@ -18,7 +18,6 @@ const guide: Guide = {
       blocks: [
         'Die Stadt nennt drei Anbieter: **Voi**, **Bolt** und **Dott**, das früher TIER hiess. Gemietet wird in der App des Anbieters, ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'ScootRadar zeigt auf der [Karte von Karlsruhe](map:de:Karlsruhe) alle drei Anbieter: am Samstag, 24. Oktober 2026, um 13:26 Uhr rund 1900 Scooter, je rund 620 von Voi, Bolt und Dott.',
-        '**Dott: Preis in der App.** Was eine Fahrt bei Dott kostet, siehst du in der App.',
       ],
     },
     {
@@ -31,11 +30,11 @@ const guide: Guide = {
             rows: [
               ['Bolt', '0,99 €', '0,24 €', '3,39 €', '5,79 €'],
               ['Voi', '0,99 €', '0,25 €', '3,49 €', '5,99 €'],
-              ['Dott', 'in der App', 'in der App', 'in der App', 'in der App'],
+              ['Dott', '0,99 €', '0,27 €', '3,69 €', '6,39 €'],
             ],
           },
         },
-        'Bolt ist bei jeder Fahrtlänge etwas günstiger, eine Viertelstunde kostet 4,59 € statt 4,74 €. In Stuttgart, Mannheim und Pforzheim entsperrt Voi für 0,49 €, in Karlsruhe für 0,99 €. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Bolt ist bei jeder Fahrtlänge am günstigsten, vor Voi und Dott: Eine Viertelstunde kostet 4,59 € bei Bolt, 4,74 € bei Voi und 5,04 € bei Dott. In Stuttgart, Mannheim und Pforzheim entsperrt Voi für 0,49 €, in Karlsruhe für 0,99 €. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
         'Für kurze Wege ist das Leihrad KVV.nextbike mit 1 € pro halbe Stunde günstiger. Den nächsten Scooter und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Karlsruhe](map:de:Karlsruhe).',
       ],
     },
@@ -46,7 +45,7 @@ const guide: Guide = {
         '**Kaiserstrasse und Marktplatz:** Beide sind laut Stadt «auch für E-Tretroller verbotene Zonen». Zwischen Europaplatz und Kronenplatz ist die Kaiserstrasse Fussgängerzone, gesperrt auch für Fahrräder; die Strassenbahn fährt dort seit 2021 im Tunnel. Keine App sperrt oder bremst dich dort: Die Regel ist die der Stadt, durchgesetzt von Ordnungsdienst und Polizei. Steig ab und schieb. Östlich vom Kronenplatz ist die Kaiserstrasse eine normale Strasse mit Strassenbahn.',
         '**Andere Fussgängerzonen** sind ebenfalls tabu, auch wenn ein Schild Fahrräder durchlässt. Ab 1. März 2027 gilt «Radverkehr frei» auch für E-Scooter, im Schritttempo; auf Kaiserstrasse und Marktplatz, wo kein Fahrrad fahren darf, ändert das nichts.',
         '**Parks:** In städtischen Grünanlagen wie Stadtgarten, Günther-Klotz-Anlage oder Otto-Dullenkopf-Park fährst du nur auf Wegen, die dafür ausgeschildert sind.',
-        '**Durlach und Turmberg:** Am Durlacher Marktplatz und auf dem Vorplatz des Bahnhofs Durlach kannst du bei Voi und Bolt die Fahrt beenden. Der Turmberg liegt ausserhalb von Bolts Gebiet, bei Voi hält der Scooter dort an. Hinauf bringt dich auch die Turmbergbahn nicht: Sie fährt seit Ende 2024 nicht mehr. Laut VBK beginnt der Neubau voraussichtlich Ende 2026 und dauert 15 bis 18 Monate.',
+        '**Durlach und Turmberg:** Am Durlacher Marktplatz und auf dem Vorplatz des Bahnhofs Durlach kannst du bei Voi und Bolt die Fahrt beenden. Der Turmberg liegt ausserhalb von Bolts Gebiet, bei Voi hält der Scooter dort an. Hinauf bringt dich auch die Turmbergbahn nicht: Sie fährt seit Ende 2024 nicht mehr. Mit einem Spatenstich am 28. Oktober 2026 haben die VBK den Neubau begonnen; läuft der Bau optimal, fährt die neue Bahn laut VBK im Frühjahr 2028.',
         '**Stadtrand:** Knielingen liegt in den Gebieten von Voi und Bolt, bei Bolt mit grossen Parkverbotszonen; Neureut liegt nur im Gebiet von Voi. Der Rheinhafen, die Messe in Rheinstetten, der KIT Campus Nord, Ettlingen und fast ganz Rüppurr liegen ausserhalb beider; ein Voi hält an der Gebietsgrenze an.',
       ],
     },
@@ -87,7 +86,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch offen'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -121,14 +120,14 @@ const guide: Guide = {
         },
         '**Leih-Scooter** lassen sich nicht klappen, und die Miete liefe weiter: Beende die Fahrt ein Stück vor der Haltestelle (an ihr selbst darfst du nicht abstellen) und miete am Ziel einen neuen.',
         '**KVV.nextbike**, das Leihrad des KVV, hat in Karlsruhe rund 640 Räder, die du in der Flexzone an jeder Strassenkreuzung abstellst.',
-        'Ein normales Rad kostet 1 € pro 30 Minuten, höchstens 9 € am Tag. Mit Monats-Abo (10 €) oder Jahres-Abo (48 €) sind die ersten 30 Minuten jeder Fahrt inklusive, Studierende der beteiligten Hochschulen fahren sie gratis. Der Vertrag läuft bis Februar 2027; einen Nachfolger schreibt der KVV aus.',
+        'Ein normales Rad kostet 1 € pro 30 Minuten, höchstens 9 € am Tag. Mit Monats-Abo (10 €) oder Jahres-Abo (48 €) sind die ersten 30 Minuten jeder Fahrt inklusive, Studierende der beteiligten Hochschulen fahren sie gratis (Stand November 2026).',
       ],
     },
     {
       heading: 'Sondernutzungserlaubnis und Gebühr: Wie Karlsruhe E-Scooter regelt',
       blocks: [
         'Von November 2022 bis zum 31. Oktober 2025 regelte ein öffentlich-rechtlicher Vertrag mit den Anbietern das Verleihen. Inzwischen verleihen die Anbieter mit einer Sondernutzungserlaubnis der Stadt und zahlen 70 € pro Scooter und Jahr; diese Gebühr beschloss der Gemeinderat am 16. Dezember 2025.',
-        'Ab 1. Januar 2027 soll sie als eigener Posten in der Gebührensatzung stehen, mit einem Rahmen von 50 bis 130 € je Leih-Scooter und Jahr. In der Vorlage für den Gemeinderat am 20. Oktober 2026 schreibt die Verwaltung: «Die Gebühr für E-Scooter beträgt weiterhin 70 Euro.»',
+        'Am 20. Oktober 2026 hat der Gemeinderat die geänderte Gebührensatzung einstimmig beschlossen: Ab 1. Januar 2027 steht die Gebühr darin als eigener Posten, mit einem Rahmen von 50 bis 130 € je Leih-Scooter und Jahr und einem Regelsatz von weiterhin 70 €.',
         'Unter dem Vertrag durfte jeder Anbieter höchstens 300 Scooter in der Innenstadt und den Stadtteilen drumherum und 100 in der Durlacher Altstadt aufstellen, höchstens fünf an einer Stelle.',
       ],
     },
@@ -151,8 +150,8 @@ const guide: Guide = {
       answer: 'Die von Voi, Bolt oder Dott, früher TIER. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Scooter aller drei zeigt auch die [Live-Karte von Karlsruhe](map:de:Karlsruhe).',
     },
     {
-      question: 'Wie viel kostet Voi in Karlsruhe?',
-      answer: '0,99 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,49 € (Stand November 2026). Bolt ist mit 0,24 € pro Minute etwas günstiger.',
+      question: 'Was kostet ein E-Scooter in Karlsruhe?',
+      answer: 'Zehn Minuten kosten 3,39 € bei Bolt (0,99 € fürs Entsperren plus 0,24 € pro Minute), 3,49 € bei Voi (0,99 € plus 0,25 €) und 3,69 € bei Dott (0,99 € plus 0,27 €), Stand November 2026. Bolt ist damit bei jeder Fahrtlänge am günstigsten.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Kaiserstrasse fahren?',
@@ -182,6 +181,11 @@ const guide: Guide = {
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'DAS FEST: Anreise', url: 'https://www.dasfest.de/info/anreise' },
+    { title: 'Dott: offener Datenfeed für Karlsruhe (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/karlsruhe/gbfs.json' },
+    { title: 'Stadt Karlsruhe: Niederschrift der Gemeinderatssitzung vom 20. Oktober 2026, TOP 1, Sondernutzungsgebührensatzung (PDF)', url: 'https://web1.karlsruhe.de/ris/oparl/bodies/0001/downloadfiles/00682085.pdf' },
+    { title: 'Stadt Karlsruhe, Vorlage 2026/0605, Anlage 5: Regelsätze 2027 (PDF)', url: 'https://web1.karlsruhe.de/ris/oparl/bodies/0001/downloadfiles/00680803.pdf' },
+    { title: 'VBK: Spatenstich für die neue Turmbergbahn in Durlach (28. Oktober 2026)', url: 'https://www.vbk.info/unternehmen/news/detail/aufbruch-in-eine-neue-aera-spatenstich-fuer-die-neue-turmbergbahn-in-durlach-1.html' },
+    { title: 'KVV: KVV.nextbike in Karlsruhe und der Region', url: 'https://www.kvv.de/mobilitaet/kvvnextbike.html' },
   ],
 };
 
