@@ -64,7 +64,7 @@ const guide: Guide = {
             ],
           },
         },
-        'En revanche, Dott ne ralentit la trottinette ni sur les quais, ni au Miroir d’eau, ni place de la Bourse, malgré la foule : levez le pied. Dans une aire piétonne, roulez au pas, quoi que permette l’app.',
+        'Dans une aire piétonne, roulez au pas, quoi que permette l’app.',
       ],
     },
     {
@@ -85,7 +85,7 @@ const guide: Guide = {
       heading: 'Âge, casque, amendes : les règles à Bordeaux',
       blocks: [
         '**L’âge.** La Métropole impose **18 ans** en libre-service. La loi, elle, autorise la trottinette personnelle dès 14 ans.',
-        '**Le casque.** Au 14 octobre 2026, ni la presse ni les actes préfectoraux que nous avons pu lire ne signalent d’arrêté imposant le casque en Gironde, comme à Paris, dans le Rhône ou le Nord. Faute d’avoir pu lire tout son recueil des actes, vérifiez sur le site de la [préfecture](https://www.gironde.gouv.fr/). Il reste fortement recommandé.',
+        '**Le casque.** Il n’est pas obligatoire au niveau national, mais des préfets l’imposent dans leur département, comme à Paris, dans le Rhône ou le Nord : vérifiez sur le site de la [préfecture](https://www.gironde.gouv.fr/). Il reste fortement recommandé.',
         {
           table: {
             caption: 'Trottinette électrique à Bordeaux : les règles nationales qui coûtent le plus cher (octobre 2026)',
@@ -119,7 +119,7 @@ const guide: Guide = {
         {
           list: [
             '**Le Pont de pierre.** En travaux depuis le 5 mai 2025, pour un peu plus de quatre ans, il n’offre qu’une voie, partagée par les vélos et les piétons : ne doublez pas, et ne vous y arrêtez pas. Pour l’éviter, la Ville suggère les ponts Chaban-Delmas ou Saint-Jean.',
-            '**L’aéroport de Mérignac.** D’après nos calculs sur les données des opérateurs du 13 octobre 2026, seul Pony a un emplacement près de l’aérogare, à une centaine de mètres. Chez Dott, le plus proche est à environ 1,2 km, près de la station de tram Caroline Aigle, juste avant l’aéroport. Depuis le centre, le tram, qui dessert l’aéroport depuis avril 2023, est souvent plus simple.',
+            '**L’aéroport de Mérignac.** Selon les données des opérateurs du 13 octobre 2026, Pony a un emplacement à une centaine de mètres de l’aérogare ; chez Dott, le plus proche est à environ 1,2 km, près de la station de tram Caroline Aigle, juste avant l’aéroport. Depuis le centre, le tram, qui dessert l’aéroport depuis avril 2023, est souvent plus simple.',
             '**Le marathon.** Selon la presse spécialisée, le marathon de Bordeaux revient le dimanche 8 novembre 2026, de jour, avec un départ rive droite : attendez-vous à des rues fermées et regardez l’app avant de partir.',
           ],
         },
@@ -135,7 +135,7 @@ const guide: Guide = {
             '**Abonnement annuel** : 30 € en classique, compris dans l’abonnement annuel TBM ; 75 € en électrique, 45 € pour les abonnés annuels TBM.',
           ],
         },
-        'Pour 20 minutes, comptez 2 € en vélo électrique TBM, contre 6,80 € en trottinette. Dott et Pony louent aussi des vélos électriques, au prix de leurs trottinettes ; notre carte ne montre que les trottinettes.',
+        'Pour 20 minutes, comptez 2 € en vélo électrique TBM, contre 6,80 € en trottinette. Dott et Pony louent aussi des vélos électriques, au prix de leurs trottinettes.',
       ],
     },
     {
@@ -170,7 +170,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Bordeaux ?',
-      answer: 'Pas à notre connaissance au 14 octobre 2026 : nous n’avons pas trouvé d’arrêté préfectoral en Gironde, mais vérifiez auprès de la préfecture. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire partout (35 €).',
+      answer: 'Pas au niveau national, mais des préfets l’imposent dans leur département, comme à Paris, dans le Rhône ou le Nord : vérifiez auprès de la préfecture de la Gironde. Il reste fortement recommandé. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire partout (35 €).',
     },
     {
       question: 'Peut-on louer une trottinette à Bordeaux avant 18 ans ?',

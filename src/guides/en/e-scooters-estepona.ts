@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Estepona: Dott, the bylaw and the promenade',
   description: 'Electric scooter rental in Estepona: Dott only, priced in its app, 18+. A helmet is compulsory; the Paseo Marítimo and pedestrian streets are off-limits.',
   headline: 'E-scooters in Estepona: Dott, the town’s 2026 bylaw, the Paseo Marítimo and old town, buses and Spain’s rules',
-  lede: 'In Estepona, on the Costa del Sol, you can rent Dott’s shared e-scooters in the town itself: at 15:01 on 1 November 2026 our map showed all of them there and none in Marbella or San Pedro. Dott shows its price only in its app. You must be 18 to rent, and Spanish law has required a helmet since 1 October 2026, so bring one. Estepona’s scooter bylaw, in force since 8 April 2026, keeps you off pavements and pedestrian areas, the town council said; in 2025 it signposted the Paseo Marítimo and the shopping streets Calle Real and Calle Terraza as off-limits.',
+  lede: 'In Estepona, on the Costa del Sol, you can rent Dott’s shared e-scooters in the town itself. Dott’s app shows its price before you unlock. You must be 18 to rent, and Spanish law has required a helmet since 1 October 2026, so bring one. Estepona’s scooter bylaw, in force since 8 April 2026, keeps you off pavements and pedestrian areas, the town council said; in 2025 it signposted the Paseo Marítimo and the shopping streets Calle Real and Calle Terraza as off-limits.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'es:Estepona',
@@ -16,17 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter app works in Estepona?',
       blocks: [
-        'This guide, like our map, covers shared e-scooters: the stand-up kind you unlock with an app and pay for by the minute, not mopeds or mobility scooters. In Estepona our map shows one operator, **Dott**.',
-        'At 14:57 local time on Sunday 1 November 2026 the [map of Estepona](map:es:Estepona) showed 142 Dott scooters free to rent at that moment. That total takes in everything from west of the port east to Guadalmina, on the edge of Marbella’s San Pedro Alcántara. Minutes later, at 15:01, every Dott in that area stood in the town itself: none in El Padrón, at Selwo, in Cancelada or in Bel-Air.',
-        'The map shows where each scooter stands, but not Dott’s price, parking spots or no-ride areas, so the app has the final word.',
-        '**Marbella and Málaga.** At 14:57 our map showed no shared e-scooters elsewhere on the Costa del Sol, so a Dott is for getting around Estepona, not between towns.',
-        'Shops aren’t on our map. Estepona’s tourism office lists Eco&Bike among its bike-hire shops: it sells electric bikes and personal mobility vehicles and hires them out by the hour, its listing says (read on 1 November 2026).',
+        'In Estepona the shared e-scooters, the stand-up kind you unlock with an app and pay for by the minute, are **Dott**’s.',
+        'At 14:57 local time on Sunday 1 November 2026 the [map of Estepona](map:es:Estepona) showed 142 Dott scooters free to rent at that moment.',
+        'Dott’s parking spots and no-ride areas are in its app, which has the final word.',
+        'Estepona’s tourism office lists Eco&Bike among its bike-hire shops: it sells electric bikes and personal mobility vehicles and hires them out by the hour, its listing says (read on 1 November 2026).',
       ],
     },
     {
       heading: 'How much does a Dott scooter cost in Estepona?',
       blocks: [
-        'Dott publishes no price for Estepona: the app shows the unlock fee and the rate per minute before you unlock, and any passes on sale.',
+        'Dott’s app shows the unlock fee and the rate per minute before you unlock, and any passes on sale.',
         'You pay until you end the ride in the app and get its confirmation: walk away without ending it and the meter runs on.',
         '**Signing up.** You need a phone and a payment method, and you must be 18, the age Dott’s terms require, although Spanish law lets you ride from 15. You need **no driving licence**. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
@@ -47,7 +46,7 @@ const guide: Guide = {
     {
       heading: 'Estepona’s scooter bylaw, in force since April 2026',
       blocks: [
-        'Estepona’s Ordenanza Reguladora de Circulación y uso de Vehículos de Movilidad Personal, its bylaw for e-scooters and other personal mobility vehicles (VMP), took effect on 8 April 2026. The Ayuntamiento, the town council, summarised it the day before as follows, naming no separate rules for rental scooters.',
+        'Estepona’s Ordenanza Reguladora de Circulación y uso de Vehículos de Movilidad Personal, its bylaw for e-scooters and other personal mobility vehicles (VMP), took effect on 8 April 2026. The Ayuntamiento, the town council, summarised it the day before as follows.',
         {
           list: [
             '**Age and helmet.** Riders must be over 16 and wear a certified helmet at all times.',
@@ -109,7 +108,7 @@ const guide: Guide = {
               ['Licence and age', 'No licence. Legal minimum age 15, over 16 in Estepona’s bylaw; Dott rents only to over-18s', '–'],
               ['After dark or in poor visibility', 'A certified reflective or luminous item visible at 150 m', '€200'],
               ['Pavements and pedestrian areas', 'Never on pavements; in pedestrian areas only where the town allows it, which Estepona doesn’t', 'Set by the town; €200 for pavements before October 2026'],
-              ['Out of town', 'Not on interurban roads or motorways, such as the A-7 and AP-7', 'No published amount'],
+              ['Out of town', 'Not on interurban roads or motorways, such as the A-7 and AP-7', '–'],
               ['Passengers', 'One rider only', '€100'],
               ['Phone and headphones', 'No phone in your hand, and no headphones, not even one earbud', '€200 each'],
               ['Alcohol', 'Limit 0.5 g/l in the blood (0.25 mg/l in breath), the general limit for drivers', '€500; €1,000 above double the limit or for a repeat within a year'],
@@ -136,11 +135,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which app do I need for e-scooters in Estepona?',
-      answer: 'Dott, the only shared operator on ScootRadar’s map of Estepona. Its app shows the price, and that’s where you unlock and pay.',
+      answer: 'Dott. Its app shows the price, and that’s where you unlock and pay.',
     },
     {
       question: 'How much does an e-scooter cost in Estepona?',
-      answer: 'Dott publishes no price for Estepona: the app shows the unlock fee and the rate per minute before you unlock, and you pay until you end the ride in the app.',
+      answer: 'Dott’s app shows the unlock fee and the rate per minute before you unlock, and you pay until you end the ride in the app.',
     },
     {
       question: 'Do I need a helmet or a driving licence for an e-scooter in Estepona?',
@@ -152,7 +151,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a Dott from Estepona to Marbella?',
-      answer: 'No. Dott’s terms bar riding outside the area its app shows, and the A-7 and AP-7 are closed to e-scooters; at 15:01 on 1 November 2026 every Dott on the map of Estepona stood in the town. Take an interurban bus from the bus station on Avenida Litoral.',
+      answer: 'No. Dott’s terms bar riding outside the area its app shows, and the A-7 and AP-7 are closed to e-scooters. Take an interurban bus from the bus station on Avenida Litoral.',
     },
   ],
   sources: [

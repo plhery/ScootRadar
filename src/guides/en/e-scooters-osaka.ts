@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Osaka 2026: LUUP, rules and where to park',
   description: 'E-scooters in Osaka: LUUP’s ports and area, who may ride (16 or over, no licence), the 6 km/h pavement mode, Japan’s penalties and the Osaka Metro rule.',
   headline: 'E-scooters in Osaka: renting LUUP, who may ride, where to ride and where to park',
-  lede: 'You rent e-scooters in Osaka from LUUP, the one company the map shows there: its standing scooters, counted at its ports, but not its e-bikes or seated scooters, or the city’s bike shares. Japanese law puts e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own: anyone 16 or over may ride one without a driving licence, and riders are asked only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port.',
+  lede: 'You rent e-scooters in Osaka from LUUP. Japanese law puts e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own: anyone 16 or over may ride one without a driving licence, and riders are asked only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'jp:Osaka',
@@ -16,17 +16,16 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Osaka: LUUP on the map',
       blocks: [
-        'The map shows one company’s e-scooters in Osaka, **LUUP**, counted at its ports: each port on the [Osaka map](map:jp:Osaka) shows how many scooters stand there, without their charge or range, and ports closed at the time are left off. At 10:50 on Thursday 29 October 2026, Osaka time, the map’s Osaka figure was about 3,200 LUUP scooters: a snapshot, not a fleet size.',
-        'That figure is the map’s count for LUUP’s Osaka service as a whole, not for the city alone: every port of the service counts as Osaka, including any beyond the city limits. A City of Osaka paper of July 2026 notes that LUUP spread into neighbouring cities, Sakai, Suita and Higashiosaka among them, from March 2026.',
-        'ScootRadar shows standing e-scooters only: not LUUP’s e-bikes or seated scooters, and not the bicycles of docomo bike share and Open Street, the other two main share operators the City names.',
-        'Beam, another e-scooter company, still lists Osaka City on its page for partner cities, but its page for riders no longer lists Japan (both read on 29 October 2026), and we couldn’t confirm that it rents scooters in Osaka now.',
+        'On the [Osaka map](map:jp:Osaka), each **LUUP** port shows how many scooters stand there. At 10:50 on Thursday 29 October 2026, Osaka time, the map’s Osaka figure was about 3,200 LUUP scooters: a snapshot, not a fleet size.',
+        'A City of Osaka paper of July 2026 notes that LUUP spread into neighbouring cities, Sakai, Suita and Higashiosaka among them, from March 2026.',
+        'Besides e-scooters, LUUP rents e-bikes and seated scooters; docomo bike share and Open Street, the other two main share operators the City names, rent bicycles.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Where LUUP runs in Osaka, and where to end a ride',
       blocks: [
-        'A paper for the City of Osaka’s bicycle council of 29 July 2026 counts about 2,400 LUUP ports in the city, the most of any share operator, against about 750 for docomo bike share and about 400 for Open Street. LUUP’s ports are densest in the central wards of Kita, Chuo, Nishi and Naniwa, and in Yodogawa and Higashiyodogawa around Shin-Osaka. The City counts them as share-cycle ports and doesn’t say how many take scooters.',
+        'A paper for the City of Osaka’s bicycle council of 29 July 2026 counts about 2,400 LUUP ports in the city, the most of any share operator, against about 750 for docomo bike share and about 400 for Open Street. LUUP’s ports are densest in the central wards of Kita, Chuo, Nishi and Naniwa, and in Yodogawa and Higashiyodogawa around Shin-Osaka. The City counts them as share-cycle ports.',
         'The same paper notes that LUUP and docomo bike share have teamed up with Osaka Metro to put ports around its stations.',
         'Japan’s guideline for rental companies asks them to oblige riders, in their terms, to return the scooter to a rental point (貸出拠点). The app shows where a ride may end.',
         'Don’t leave it on the pavement or on the right-hand side of the road: Osaka Prefectural Police list both as places where you may not park. If the rider can’t be held to account for a scooter left illegally, the rental company, as its user (使用者), can be ordered to pay Japan’s parking penalty (放置違反金).',
@@ -87,7 +86,7 @@ const guide: Guide = {
       heading: 'Taking your own e-scooter on Osaka Metro and JR West',
       blocks: [
         'Osaka Metro lets bicycles and kickboards, electric kickboards included, aboard only taken apart or folded and packed in a bag made for them, its carry-on rules say (read on 29 October 2026). Each passenger may bring up to two carry-on items free, each no more than 2.5 m in length, width and height added together, 2 m on any side and 30 kg, and only where they cause no trouble on the train.',
-        'JR West’s passenger rules, as in force on 1 October 2026, set the same limits and let bicycles aboard only taken apart or folded and bagged; they don’t name e-scooters (art. 308).',
+        'JR West’s passenger rules, as in force on 1 October 2026, set the same limits and let bicycles aboard only taken apart or folded and bagged (art. 308).',
         'A shared scooter ends its ride at a port instead; to find one near your station, open the [Osaka map](map:jp:Osaka).',
       ],
     },
@@ -113,11 +112,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Osaka?',
-      answer: 'LUUP’s, shown on the map at its ports, though not its e-bikes or seated scooters. Beam still lists Osaka City on one of its pages, but we couldn’t confirm that it rents scooters there now.',
+      answer: 'LUUP’s: find them at its ports on the [Osaka map](map:jp:Osaka).',
     },
     {
       question: 'How much does LUUP cost in Osaka?',
-      answer: 'LUUP’s app shows the price before you start the ride. ScootRadar shows where LUUP’s scooters stand, not its prices.',
+      answer: 'LUUP’s app shows the price before you start the ride.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Osaka?',
@@ -146,8 +145,6 @@ const guide: Guide = {
     { title: 'National Police Agency: guideline for rental companies, March 2023 (Japanese)', url: 'https://www.npa.go.jp/bureau/traffic/anzen/img/tokuteikogata/guideline.pdf' },
     { title: 'Osaka Metro: carry-on items (Japanese)', url: 'https://subway.osakametro.co.jp/guide/page/temawarihin.php' },
     { title: 'JR West: passenger rules, carry-on items (Japanese)', url: 'https://www.jr-odekake.net/ticket/guide/assets/pdf/stipulation/2022/covenant2-10.pdf' },
-    { title: 'Beam: cities (page for partners)', url: 'https://partner.ridebeam.com/cities' },
-    { title: 'Beam: home page', url: 'https://www.ridebeam.com/' },
   ],
 };
 

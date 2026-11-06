@@ -16,21 +16,10 @@ const guide: Guide = {
     {
       heading: 'Quali monopattini in sharing ci sono a Bari',
       blocks: [
-        'Il 16 settembre 2026 il Comune di Bari scriveva che in città il servizio di monopattini elettrici in sharing «è attualmente gestito da tre diversi operatori (Bit Mobility, Lime e Dott), con una flotta complessiva di circa 1500 mezzi». Altri operatori non ne abbiamo trovati.',
-        {
-          table: {
-            caption: 'Gli operatori di Bari e dove trovarli, a ottobre 2026',
-            head: ['Operatore', 'Sulla mappa', 'Prezzo'],
-            rows: [
-              ['Dott', 'Sì, dal 24 ottobre 2026: solo la posizione, senza carica né autonomia', 'Nell’app'],
-              ['Lime', 'Sì, dal 25 ottobre 2026, con la carica della batteria', 'Nell’app'],
-              ['Bit Mobility', 'No: i suoi monopattini li vedi solo nella sua app', 'Nell’app'],
-            ],
-          },
-        },
-        'Domenica 25 ottobre 2026 alle 22:54 sulla [mappa di Bari](map:it:Bari) c’erano circa 420 monopattini Dott: una fotografia di quel momento, non la flotta. Lunedì 26 all’1:30 di notte erano ancora circa 420, tutti dentro il Comune di Bari secondo i confini dell’Istat: nessuno a Modugno, Valenzano o Triggiano. I Lime sono un conteggio a parte: l’ultima scansione completa della loro zona, finita domenica alle 14:19, ne contava circa 820.',
+        'Il 16 settembre 2026 il Comune di Bari scriveva che in città il servizio di monopattini elettrici in sharing «è attualmente gestito da tre diversi operatori (Bit Mobility, Lime e Dott), con una flotta complessiva di circa 1500 mezzi».',
+        'Domenica 25 ottobre 2026 alle 22:54 sulla [mappa di Bari](map:it:Bari) c’erano circa 420 monopattini Dott: una fotografia di quel momento, non la flotta. Lunedì 26 all’1:30 di notte erano ancora circa 420. Quelli di Lime, all’ultimo conteggio di domenica alle 14:19, erano circa 820.',
         'Dal 16 settembre 2026 Bit Mobility copre anche sette zone periferiche: Santo Spirito e San Pio, San Girolamo, Stanic, San Paolo, Mungivacca e Carbonara, Japigia sud e Torre a Mare. Lì, scrive il Comune, il servizio funziona in «modalità station-based, con stazioni virtuali di parcheggio, e non in modalità free floating»: la mappa delle zone è nell’app di Bit Mobility.',
-        'Le autorizzazioni attuali scadranno, ma la data non l’abbiamo trovata. In vista della scadenza, il 29 giugno 2026 la Giunta comunale ha approvato le linee di indirizzo per i nuovi avvisi: fino a 1.500 monopattini, «con eventuale incremento fino a 2.000 mezzi», e autorizzazioni di cinque anni al massimo. Al 26 ottobre 2026 il nuovo avviso non l’abbiamo trovato, né sul sito del Comune né all’albo pretorio.',
+        'In vista della scadenza delle autorizzazioni attuali, il 29 giugno 2026 la Giunta comunale ha approvato le linee di indirizzo per i nuovi avvisi: fino a 1.500 monopattini, «con eventuale incremento fino a 2.000 mezzi», e autorizzazioni di cinque anni al massimo.',
       ],
     },
     {
@@ -38,7 +27,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Cerca un Dott o un Lime sulla [mappa](map:it:Bari), oppure apri l’app di Bit Mobility, Dott o Lime.',
+            'Cerca un monopattino sulla [mappa](map:it:Bari) oppure nell’app di Bit Mobility, Dott o Lime.',
             'Iscriviti con una carta di pagamento: Dott chiede almeno 18 anni; i requisiti di Bit Mobility e Lime li trovi nelle loro app.',
             'Metti il casco: al contrassegno e all’assicurazione, sui mezzi in sharing, ci pensa l’operatore.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',
@@ -52,8 +41,8 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattini a Bari: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto. Tariffe di Bari pubblicate dal Comune o dagli operatori non ne abbiamo trovate: il prezzo lo vedi nell’app, prima di sbloccare il mezzo.',
-        'Il centro assistenza di Dott (25 agosto 2026) dà solo una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero. Non è il prezzo di Bari.',
+        'Paghi uno sblocco più una tariffa al minuto: il prezzo lo vedi nell’app, prima di sbloccare il mezzo.',
+        'Il centro assistenza di Dott (25 agosto 2026) dà una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
         'Attento anche alle penali. Le condizioni di Dott per l’Italia (2 dicembre 2025) prevedono:',
         {
           list: [
@@ -63,13 +52,12 @@ const guide: Guide = {
             'fino a 300 euro se, per un parcheggio o un blocco sbagliato, Dott deve recuperare il mezzo, per esempio dopo un fermo o un sequestro.',
           ],
         },
-        'Le condizioni di Bit Mobility e di Lime non le abbiamo potute verificare: leggile nell’app prima di partire.',
       ],
     },
     {
       heading: 'Dove parcheggiare il monopattino in sharing a Bari',
       blocks: [
-        'Per legge mai sul marciapiede, salvo nelle aree riservate ai monopattini: la multa va da 41 a 168 euro. Un elenco pubblico di stalli o di zone vietate del Comune non l’abbiamo trovato: dove puoi chiudere la corsa lo vedi nell’app dell’operatore.',
+        'Per legge mai sul marciapiede, salvo nelle aree riservate ai monopattini: la multa va da 41 a 168 euro. Dove puoi chiudere la corsa lo vedi nell’app dell’operatore.',
         {
           list: [
             '**Dott.** Le sue condizioni chiedono di lasciare il mezzo nelle aree di parcheggio designate dal Comune, dove ci sono, indicate nell’app; altrimenti dove la legge consente la sosta, senza bloccare ingressi, pedoni o traffico.',
@@ -81,14 +69,11 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Dove si guida: via Sparano, Bari Vecchia e lungomare',
+      heading: 'Dove si guida: via Sparano e Bari Vecchia',
       blocks: [
         'Il monopattino va sulle strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo e a 6 km/h nelle aree pedonali; mai sul marciapiede né contromano. Queste regole sono nazionali; a Bari il Comune aggiunge un divieto.',
-        '**Via Sparano e largo Urbano II.** Nel comunicato del 1° luglio 2026 sulle linee di indirizzo il Comune scrive che «resteranno interdetti alla circolazione dei monopattini largo Urbano II e via Sparano, nel tratto compreso tra piazza Umberto (lato via Nicolai) e corso Vittorio Emanuele». L’ordinanza non l’abbiamo trovata, e il comunicato non dice se il divieto valga anche per i monopattini privati: nel dubbio, lì scendi e porta il monopattino a mano.',
-        '**Bari Vecchia e Murat.** Le novità della Ztl di Bari Vecchia dal 1° luglio 2026, come la nuova area pedonale di strada Arco Basso, non parlano di monopattini, e al 26 ottobre 2026 regole del Comune per il Murat non le abbiamo trovate.',
-        '**Lungomare.** Per il lungomare Nazario Sauro, Pane e Pomodoro e il Parco 2 Giugno non abbiamo trovato regole del Comune sui monopattini: valgono le norme nazionali e i cartelli.',
-        '**Di notte e d’inverno.** Divieti notturni o pause stagionali per lo sharing a Bari non ne abbiamo trovati.',
-        '**Aeroporto, porto e università.** Le regole di Aeroporti di Puglia, dell’Autorità portuale e dell’Università di Bari non le abbiamo potute verificare, e sul sito del Politecnico non ne abbiamo trovate: segui i cartelli di chi gestisce l’area.',
+        '**Via Sparano e largo Urbano II.** Nel comunicato del 1° luglio 2026 sulle linee di indirizzo il Comune scrive che «resteranno interdetti alla circolazione dei monopattini largo Urbano II e via Sparano, nel tratto compreso tra piazza Umberto (lato via Nicolai) e corso Vittorio Emanuele». Lì scendi e porta il monopattino a mano.',
+        '**Bari Vecchia.** Dal 1° luglio 2026 strada Arco Basso, nella Ztl di Bari Vecchia, è area pedonale: lì vai al massimo a 6 km/h.',
       ],
     },
     {
@@ -102,7 +87,7 @@ const guide: Guide = {
             rows: [
               ['AMTAB (bus urbani)', 'Solo pieghevole, come bagaglio a mano', 'Gratis fino a 25×40×80 cm e circa 20 kg (Carta della mobilità 2026)'],
               ['Ferrotramviaria (treni, anche per l’aeroporto, e bus)', 'Sì, su tutti i treni e i bus, con o senza sacca', 'Gratis fino a 120×80×45 cm, spento e chiuso prima di salire'],
-              ['FAL (Ferrovie Appulo Lucane)', 'Sì, riposto in modo sicuro e non ingombrante', 'Misure e prezzo non indicati nella Carta dei servizi 2025-2026'],
+              ['FAL (Ferrovie Appulo Lucane)', 'Sì', 'Riposto in modo sicuro e non ingombrante (Carta dei servizi 2025-2026)'],
               ['FS Sud Est', 'Sì, anche elettrico, su tutti i treni e i bus', 'Sul treno spento e chiuso; sul bus spento e in una custodia'],
               ['Trenitalia (treni regionali)', 'Sì', 'Gratis fino a 120×80×45 cm, spento e chiuso, sotto il sedile o tra i posti vis-à-vis'],
             ],
@@ -142,7 +127,7 @@ const guide: Guide = {
           list: [
             'Negli ultimi anni, dice il Comune (1° luglio 2026), i servizi di mobilità elettrica condivisa di Bari hanno registrato 3.275.785 noleggi, 175.739 utenti iscritti e quasi 7 milioni di km.',
             'La sperimentazione MaaS di Bari, da settembre 2024 ad aprile 2026, ha riunito nelle stesse app i bus AMTAB, i treni di Trenitalia, FSE, FAL e Ferrotramviaria e lo sharing di Bit, Dott, Lime e PikyRent: oltre 400.000 viaggi e oltre 21.000 utenti registrati.',
-            'Più a ovest la mappa mostra i monopattini di [Napoli](map:it:Napoli), dove c’è anche la guida ai [monopattini sharing a Napoli](guide:naples).',
+            'Più a ovest, sulla mappa trovi i monopattini di [Napoli](map:it:Napoli), dove c’è anche la guida ai [monopattini sharing a Napoli](guide:naples).',
           ],
         },
       ],
@@ -151,11 +136,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quali monopattini in sharing ci sono a Bari?',
-      answer: 'Quelli di Bit Mobility, Dott e Lime, i tre operatori che il Comune indicava a settembre 2026, con circa 1.500 mezzi in tutto. Sulla mappa trovi Dott e Lime; i monopattini di Bit Mobility solo nella sua app, che copre anche le sette zone periferiche aperte a settembre.',
+      answer: 'Quelli di Bit Mobility, Dott e Lime, i tre operatori che il Comune indicava a settembre 2026, con circa 1.500 mezzi in tutto. Bit Mobility copre anche le sette zone periferiche aperte a settembre.',
     },
     {
       question: 'Quanto costa noleggiare un monopattino a Bari?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire: tariffe di Bari pubblicate non ne abbiamo trovate. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città.',
+      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città.',
     },
     {
       question: 'Si può andare in monopattino in via Sparano?',
@@ -178,7 +163,6 @@ const guide: Guide = {
     { title: 'Comune di Bari: Ztl di Bari Vecchia, le modifiche dal 1° luglio 2026', url: 'https://www.comune.bari.it/-/novita/notizie/ztl-bari-vecchia-dal-1-luglio-2026-in-vigore-le-modifiche' },
     { title: 'Comune di Bari: report della Polizia Locale, 1-18 agosto 2026', url: 'https://www.comune.bari.it/-/sicurezza-stradale-il-report-della-polizia-locale-177-incidenti-rilevati-dall-1-al-18-agosto' },
     { title: 'Comune di Bari: i risultati di MaaS Bari (3 giugno 2026)', url: 'https://www.comune.bari.it/-/maas-bari-oltre-400.000-viaggi-e-21.000-utenti-registrati-il-comune-presenta-i-risultati-della-sperimentazione-nazionale-maas4italy' },
-    { title: 'Istat: confini delle unità amministrative a fini statistici (al 1° gennaio 2026)', url: 'https://www.istat.it/notizia/confini-delle-unita-amministrative-a-fini-statistici-al-1-gennaio-2018-2/' },
     { title: 'AMTAB: Carta della mobilità 2026 (PDF)', url: 'https://amtab.contrasparenza.it/documenti/allegati/trasparenza/90/carta-della-mobilit-2026.pdf' },
     { title: 'Ferrotramviaria: Carta dei servizi 2026 (PDF)', url: 'https://ferrotramviaria.it/documents/20124/101361/CARTA+DEI+SERVIZI+2026+REV.2.pdf/41c6ee67-7d0f-7b6f-37de-dbfc32f3b754' },
     { title: 'Ferrovie Appulo Lucane: Carta dei servizi 2025-2026 (PDF)', url: 'https://ferrovieappulolucane.it/wp-content/uploads/2026/03/CARTA-DEI-SERVIZI-FAL-2025_2026.pdf' },

@@ -21,11 +21,11 @@ const guide: Guide = {
           list: [
             '**Voi**, with the most scooters on the map on 25 October 2026.',
             '**Dott**, whose Finnish terms are with TIER Mobility Finland Oy.',
-            '**Ryde**. Its scooters are only in its app: our map doesn’t show them.',
+            '**Ryde**: look for its scooters in the Ryde app.',
           ],
         },
         'Five companies rented out scooters in Helsinki in 2025 and three in 2026. Since late July 2026 Donkey Republic has also rented out pedal bikes under the licence.',
-        'Between 18:45 and 19:00 on Sunday 25 October 2026 the map showed about 4,000 scooters free to rent at that moment within Helsinki’s city limits (about 2,300 Voi and 1,700 Dott) and about 2,300 more in Espoo. Zoomed out, the [Helsinki map](map:fi:Helsinki) counts Voi’s Espoo scooters in Helsinki’s total, about 5,800 at 14:50 that day. It shows Voi’s scooters with their battery level, and Dott’s positions only; zoomed in, it draws the City of Helsinki’s e-scooter bays (CC BY 4.0).',
+        'Between 18:45 and 19:00 on Sunday 25 October 2026 the map showed about 4,000 scooters free to rent at that moment in Helsinki (about 2,300 Voi and 1,700 Dott) and about 2,300 more in Espoo. The [Helsinki map](map:fi:Helsinki) showed about 5,800 at 14:50 that day, Voi’s Espoo scooters included. Zoomed in, the map draws the City of Helsinki’s e-scooter bays (CC BY 4.0).',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -46,15 +46,15 @@ const guide: Guide = {
             ],
           },
         },
-        'Voi’s and Ryde’s websites refused our requests: check their fees and age limits in their apps.',
+        'Voi’s and Ryde’s apps show their fees and age limits.',
       ],
     },
     {
       heading: 'When can you ride? The night ban, the speed limits and the season',
       blocks: [
         '**The weekend night ban.** The City’s licence has every rental scooter switched off from 23:00 to 05:00 on the nights from Friday to Saturday and from Saturday to Sunday, and on the Vappu night, from 30 April to 1 May. Nobody can start a ride then.',
-        '**Speed.** From Monday to Friday the licence caps rental scooters at 20 km/h from 05:00 to 23:00 and at 15 km/h from 23:00 to 05:00. In the slow zones the cap is 10 km/h every day and at every hour. The limits apply downhill too, and the scooters keep to them by GPS. The licence sets no weekend daytime limit outside the slow zones; the City’s page gives 20 km/h by day.',
-        '**The season.** The 2026 season began on 17 March. The licence sets it, in principle, from 1 April to 30 November and lets the City lengthen or shorten it for the weather, with at least a week’s notice; the operators must then clear every scooter from the streets within 48 hours of the City’s notice. In winter no rental scooters are used or kept on the streets. We found no end date for 2026 on the City’s pages on 25 October.',
+        '**Speed.** From Monday to Friday the licence caps rental scooters at 20 km/h from 05:00 to 23:00 and at 15 km/h from 23:00 to 05:00. In the slow zones the cap is 10 km/h every day and at every hour. The limits apply downhill too, and the scooters keep to them by GPS. The City’s page gives 20 km/h by day.',
+        '**The season.** The 2026 season began on 17 March. The licence sets it, in principle, from 1 April to 30 November and lets the City lengthen or shorten it for the weather, with at least a week’s notice; the operators must then clear every scooter from the streets within 48 hours of the City’s notice. In winter no rental scooters are used or kept on the streets.',
         'Espoo (Esbo) and Vantaa (Vanda) license their own operators: 20 km/h by day, 15 km/h on weekday nights, and no scooters on weekend nights from 00:00 to 05:00, an hour later than Helsinki. Vantaa’s licence adds the Vappu night and the same season in principle.',
       ],
     },
@@ -109,19 +109,17 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Espoo, Vantaa, the airport and Suomenlinna',
+      heading: 'Espoo, Vantaa, the airport and VR’s trains',
       blocks: [
         '**Espoo (Esbo).** Since 1 January 2026 renting out scooters there has needed a city licence; the city names Dott, Ryde and Voi. It has its own 10 km/h, parking and no-use zones on its map service, and counted more than 2 million scooter trips in 2025. About 1,700 Voi scooters stood in Espoo on the evening of 25 October, the biggest clusters around Otaniemi and Matinkylä: the [map around Espoo](map:fi:Espoo) shows them beside Dott’s.',
-        '**Vantaa (Vanda).** About 540 scooters stood there that evening, nearly all Dott ([Vantaa map](map:fi:Vantaa)). Its licence has slow zones, bay-only zones and no-parking zones, shown in the apps.',
-        '**Helsinki Airport** is in Vantaa. On the evening of 25 October the map showed no scooter within a kilometre of the terminal and 18 Dott within two, so don’t count on one.',
-        '**Suomenlinna**, the sea fortress a short ferry ride from the Market Square, had no scooters on the map that evening.',
-        '**Your own scooter on a train.** On VR’s trains, “small or foldable scooters can be taken on trains free of charge as hand luggage”; a large one that won’t fold needs a paid, booked bike space, and you mustn’t attach it to the train or charge it on board. We couldn’t check HSL’s rules for its buses, trams, metro, local trains and the Suomenlinna ferry: its website refused our request.',
+        '**Vantaa (Vanda).** About 540 scooters stood there that evening, nearly all Dott ([Vantaa map](map:fi:Vantaa)). Its licence has slow zones, bay-only zones and no-parking zones, shown in the apps. Helsinki Airport is in Vantaa.',
+        '**Your own scooter on a train.** On VR’s trains, “small or foldable scooters can be taken on trains free of charge as hand luggage”; a large one that won’t fold needs a paid, booked bike space, and you mustn’t attach it to the train or charge it on board.',
       ],
     },
     {
       heading: 'City bikes in Helsinki and Espoo',
       blocks: [
-        'Helsinki and Espoo share one docked city bike scheme, with sign-up on HSL’s website; its season runs from the beginning of April to the end of October, the City of Espoo says. Our map shows standing e-scooters only, not city bikes or Donkey Republic’s bikes.',
+        'Helsinki and Espoo share one docked city bike scheme, with sign-up on HSL’s website; its season runs from the beginning of April to the end of October, the City of Espoo says.',
       ],
     },
     {
@@ -140,7 +138,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Helsinki?',
-      answer: 'Voi, Dott and Ryde, the three companies with the City’s 2026 licence. [Our map](map:fi:Helsinki) shows Voi and Dott; Ryde’s scooters are only in its app.',
+      answer: 'Voi, Dott and Ryde, the three companies with the City’s 2026 licence. Find Voi’s and Dott’s scooters on the [Helsinki map](map:fi:Helsinki) and Ryde’s in the Ryde app.',
     },
     {
       question: 'How much does an e-scooter cost in Helsinki?',

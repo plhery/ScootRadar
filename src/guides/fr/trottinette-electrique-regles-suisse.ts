@@ -122,8 +122,8 @@ const guide: Guide = {
         'Lime, Bolt, Voi, Dott, Bird et PubliBike exigent tous **18 ans** dans leurs conditions suisses, et une seule personne par trottinette.',
         'L’assurance responsabilité civile incluse passe **après la vôtre** : chez Lime, Bolt et Voi, elle est subsidiaire à votre RC privée et, selon la dernière attestation publiée par Dott (valable jusqu’au 30 juin 2026), son assurance ne payait qu’en complément de la vôtre. PubliBike n’en inclut aucune. Les passagers ne sont jamais couverts.',
         'L’app vous montre où terminer la course et où la trottinette ralentit ou s’arrête. Les frais de l’opérateur s’ajoutent aux amendes : Voi peut facturer CHF 25 pour un mauvais stationnement, après des avertissements, et Bolt jusqu’à CHF 100 pour récupérer une trottinette laissée hors zone.',
-        'Pour trouver la plus proche, tous opérateurs confondus, ouvrez [la carte](/map) ; un bouton ouvre ensuite l’app de l’opérateur, où vous déverrouillez et payez. À [Bienne](map:ch:biel), par exemple, elle montre les trottinettes de Voi et de PubliBike.',
-        '**Touristes :** dès 16 ans, aucun permis n’est exigé, quelle que soit votre nationalité. À 14 et 15 ans, il faut le permis suisse de catégorie M ; nous n’avons pas pu confirmer qu’un permis étranger suffise, alors mieux vaut s’abstenir. Les conditions des opérateurs ne demandent pas de domicile en Suisse.',
+        'Pour trouver la plus proche, ouvrez [la carte](/map) ; un bouton ouvre ensuite l’app de l’opérateur, où vous déverrouillez et payez.',
+        '**Touristes :** dès 16 ans, aucun permis n’est exigé, quelle que soit votre nationalité. À 14 et 15 ans, il faut un permis de catégorie M.',
         '**Frontaliers :** de l’autre côté de la frontière, les règles changent. Avant de rouler en France, lisez [les règles de la trottinette électrique en France](guide:french-rules).',
       ],
     },
@@ -152,10 +152,9 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Genève et Lausanne : contrôles et libre-service',
+      heading: 'Genève : des contrôles renforcés',
       blocks: [
         'À Genève, les contrôles sont renforcés depuis le **1er octobre 2026**, selon Léman Bleu (7 octobre 2026). La chaîne relevait qu’en douze mois, il n’y avait eu que 16 amendes, mais 551 trottinettes saisies. Les amendes restent celles de la liste fédérale : CHF 40 sur le trottoir, CHF 20 sans feux de jour.',
-        'Nous n’avons pas pu confirmer quels opérateurs de libre-service sont autorisés à Genève et à Lausanne. ScootRadar n’affichait aucun véhicule autour de Genève et de Lausanne le 12 octobre 2026, ce qui ne veut pas dire qu’aucun opérateur n’y circule.',
       ],
     },
   ],

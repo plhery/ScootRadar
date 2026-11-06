@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Gainesville, Florida 2026: Bird, Veo, Spin, UF',
   description: 'E-scooters in Gainesville: Bird, Spin and Veo, the Florida, City and UF rules, campus parking zones, the midnight stop, Depot Park, RTS and the airport.',
   headline: 'E-scooters in Gainesville: Bird, Spin and Veo, the rules, UF’s parking zones and where you can’t ride',
-  lede: 'E-scooters in Gainesville come from three companies, Bird, Spin and Veo, under City permits that the University of Florida must also approve. On 22 October 2026 Veo’s open data listed $1 to unlock and $0.37 a minute plus tax; Bird and Spin publish no prices, so check the app. You must be 18 or over to rent from Bird or Spin, scooters run only from 6 am to midnight, and on the UF campus you can end a ride only in a marked scooter parking zone.',
+  lede: 'E-scooters in Gainesville come from three companies, Bird, Spin and Veo, under City permits that the University of Florida must also approve. On 22 October 2026 Veo’s open data listed $1 to unlock and $0.37 a minute plus tax; Bird’s and Spin’s apps show their prices before you unlock. You must be 18 or over to rent from Bird or Spin, scooters run only from 6 am to midnight, and on the UF campus you can end a ride only in a marked scooter parking zone.',
   published: '2026-10-23',
   updated: '2026-10-23',
   city: 'us:fl:Gainesville',
@@ -25,7 +25,7 @@ const guide: Guide = {
           ],
         },
         'The Code allows no more than three companies at a time. Each permit lasts a year, and each company also needs UF’s approval to run on campus. A company starts with 100 to 200 vehicles and may ask for more, up to 50 at a time; the City’s mobility director may cap the total at 400 per company, or 1,200 in all.',
-        'On the afternoon of 22 October 2026 the [Gainesville map](map:us:fl:Gainesville) showed about 160 Bird, 150 Veo and 135 Spin scooters, some 445 in all: what was on the map at that moment, not the fleets. All three publish open data, so all are on the map. Most stood near campus: at 17:00 that day just over half were within 1 km of Century Tower.',
+        'On the afternoon of 22 October 2026 the [Gainesville map](map:us:fl:Gainesville) showed about 160 Bird, 150 Veo and 135 Spin scooters, some 445 in all: what was on the map at that moment, not the fleets. Most stood near campus: at 17:00 that day just over half were within 1 km of Century Tower.',
         'Install an app and add a card before you set out; [how to rent an e-scooter](guide:how-to-rent) explains the rest.',
       ],
     },
@@ -44,7 +44,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bird and Spin publish no Gainesville prices: check the rate in the app before you unlock.',
+        'Bird’s and Spin’s apps show their rates before you unlock.',
         'The City Code asks each company for an equity plan that lets people without a suitable phone ride and gives those without a bank account a way to pay. Bird Access offers cheaper rides to seniors, US veterans and people on state or federal assistance; Spin Access offers them to people on limited incomes, with a text-message unlock for those without a smartphone.',
       ],
     },
@@ -80,7 +80,7 @@ const guide: Guide = {
         {
           list: [
             '**Park only in UF’s zones.** UF’s policy says rental scooters must park in its campus zones, and TAPS asks you to stay inside the ground markings. Outside one the app won’t let you end the ride, and TAPS says you keep paying by the minute until the scooter is parked properly or someone else rents it. TAPS’s Campus Micromobility Parking Map and the apps show the zones.',
-            '**No-ride plazas.** On 22 October 2026 Bird’s and Spin’s open data made these no-ride zones: the Plaza of the Americas, Century Tower with University Auditorium, Turlington Plaza, the Reitz Union and its North Lawn, UF Health Shands Hospital and the campus parking garages. Veo publishes no zones, so follow its app.',
+            '**No-ride plazas.** On 22 October 2026 Bird’s and Spin’s open data made these no-ride zones: the Plaza of the Americas, Century Tower with University Auditorium, Turlington Plaza, the Reitz Union and its North Lawn, UF Health Shands Hospital and the campus parking garages. Veo’s zones are in its app.',
             '**Impound.** UF may impound a scooter parked against its policy, and TAPS warns that bad parking can also get your app membership revoked.',
           ],
         },
@@ -129,8 +129,8 @@ const guide: Guide = {
       heading: 'RTS buses, Santa Fe College and Gainesville airport (GNV)',
       blocks: [
         '**RTS**, the City’s bus service, lets a scooter aboard only if it folds and stays out of the aisle: end a rental ride near the stop, parked clear of it. An adult fare is $1.50 and a 24-hour pass $3; UF students, faculty and staff ride free under UF’s contract with RTS.',
-        '**Santa Fe College**’s Northwest campus lay outside Bird’s and Spin’s area on 22 October 2026, and the nearest scooter stood over 3 km away. We found no scooter rules of its own.',
-        '**Gainesville Regional Airport (GNV)** lay outside the area too, about 3.4 km from the nearest scooter. RTS Route 26 serves it on weekdays; otherwise take Uber, Lyft or a taxi from the stand outside the terminal.',
+        '**Santa Fe College**’s Northwest campus lay outside Bird’s and Spin’s area on 22 October 2026.',
+        '**Gainesville Regional Airport (GNV)** lay outside the area too. RTS Route 26 serves it on weekdays; otherwise take Uber, Lyft or a taxi from the stand outside the terminal.',
       ],
     },
     {
@@ -169,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a scooter to Gainesville airport?',
-      answer: 'No. On 22 October 2026 the airport lay outside Bird’s and Spin’s area, about 3.4 km from the nearest scooter of any company. Take RTS Route 26 on weekdays, a ride-hail car or a taxi.',
+      answer: 'Not with Bird or Spin: on 22 October 2026 the airport lay outside their area. Take RTS Route 26 on weekdays, a ride-hail car or a taxi.',
     },
   ],
   sources: [

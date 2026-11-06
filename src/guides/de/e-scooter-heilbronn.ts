@@ -17,8 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter gibt es in Heilbronn?',
       blocks: [
         'Laut Stadt bietet in Heilbronn derzeit nur **Dott** E-Scooter und E-Bikes an; Dott hiess früher TIER. Leih-Scooter gibt es in der Stadt seit 2020. Als 2023 strengere Auflagen der Stadt kamen, blieb laut echo24 vom 11. Juli 2023 nur einer von vier Anbietern: Lime, Zeus und Bird gingen, TIER blieb. Gemietet wird in der Dott-App, ab 18 und ohne Führerschein: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        '[Auf der ScootRadar-Karte](map:de:Heilbronn) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 340 Dott-Scooter in Heilbronn, Neckarsulm und weiteren Nachbarorten, dazu 10 in Weinsberg. Das ist eine Momentaufnahme der freien Fahrzeuge, nicht die Grösse der Flotte. Die Karte zeigt nur E-Scooter, nicht die E-Bikes von Dott: Im offenen Datenfeed standen um 17:36 Uhr 351 Scooter und 144 E-Bikes.',
-        'Auch im Datenportal des Landes, MobiData BW, stand am 23. Oktober 2026 kein Fahrzeug von Lime, Voi, Bolt oder Zeus in Heilbronn.',
+        '[Auf der ScootRadar-Karte](map:de:Heilbronn) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 340 Dott-Scooter in Heilbronn, Neckarsulm und weiteren Nachbarorten, dazu 10 in Weinsberg. Das ist eine Momentaufnahme der freien Fahrzeuge, nicht die Grösse der Flotte. Im offenen Datenfeed von Dott standen um 17:36 Uhr 351 Scooter und 144 E-Bikes.',
         'Das Geschäftsgebiet von Dott reicht laut Datenfeed über die Stadtgrenze nach **Neckarsulm** und **Weinsberg**. Neckarsulm verlangt keine Erlaubnis; Dott hat dort eine freiwillige Selbstverpflichtung abgegeben: höchstens 75 Fahrzeuge je Anbieter, kein Abstellen in Grünanlagen und an Haltestellen. Verlässt du das Geschäftsgebiet, darf Dott den Scooter laut AGB abschalten und eine Gebühr verlangen, wenn du ihn nicht zurückbringst.',
       ],
     },
@@ -34,7 +33,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Für die E-Bikes von Dott nannte der Feed denselben Tarif. Auf seiner Website nennt Dott keinen Preis für Heilbronn, sondern schreibt: «In der Dott-App siehst du den Preis, der in deiner Region gilt.» Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Pässe und Abos gibt es laut AGB nur in einigen Städten, ebenfalls in der App.',
+        'Für die E-Bikes von Dott nannte der Feed denselben Tarif. Auf seiner Website schreibt Dott: «In der Dott-App siehst du den Preis, der in deiner Region gilt.» Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Pässe und Abos gibt es laut AGB nur in einigen Städten, ebenfalls in der App.',
         'Heilbronn ist für Dott-Kunden teuer: Am selben Tag nannte der Feed in [Stuttgart](map:de:Stuttgart) 0,99 € plus 0,24 € pro Minute und in [Heidelberg](map:de:Heidelberg) 1 € plus 0,31 €. Eine Viertelstunde kostet in Heilbronn 7,45 €, in Stuttgart 4,59 €.',
         'Teuer wird auch falsches Abstellen: Holt Dott einen falsch abgestellten Scooter zurück, kann das laut AGB bis zu 300 € kosten; zahlt Dott ein Bussgeld für dich, kommen 50 € Bearbeitungsgebühr dazu.',
       ],
@@ -45,7 +44,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen, in Fahrradstrassen und Fahrradzonen und nur, wo es keinen Radweg gibt, auf der Fahrbahn. Auf Gehwegen und in Fussgängerzonen fährst du nicht, ausser das Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es, dann im Schritttempo. Das ist Bundesrecht; die Stadt wiederholt es auf ihrer Seite und rät zum Helm.',
         '**Fussgängerzone:** Ein Schild, das nur Fahrräder freigibt, gilt heute nicht für E-Scooter, auch wenn die Mobilitätsbroschüre der Stadt beide in einem Satz nennt. Ab 1. März 2027 gibt auch «Radverkehr frei» die Zone für E-Scooter frei, im Schritttempo, sofern die Stadt sie dort nicht eigens ausschliesst. Ohne Freigabe steigst du ab und schiebst.',
         '**Am Neckar:** Wo der Weg am Ufer ein gemeinsamer Geh- und Radweg ist, fährst du dort, mit Rücksicht auf Fussgänger. Reine Fusswege in Parks und Grünanlagen sind tabu, und auf den Neckarbrücken und an unbefestigten Ufern endet laut Stadt keine Fahrt.',
-        '**Tempo:** Dott hinterlegt für Heilbronn im Datenfeed 19 km/h. Zonen, in denen der Scooter abbremst oder nicht fährt, enthielt der Feed am 23. Oktober 2026 nicht: Die Zonen von Dott regeln in Heilbronn nur das Abstellen. Ein nächtliches Fahrverbot oder eine Winterpause nennen weder die Stadt noch Dott.',
+        '**Tempo:** Dott hinterlegt für Heilbronn im Datenfeed 19 km/h, und seine Zonen regeln dort nur das Abstellen (Stand 23. Oktober 2026).',
       ],
     },
     {
@@ -88,7 +87,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -105,13 +104,13 @@ const guide: Guide = {
         'In Stadtbahn und Bus gelten die Beförderungsbedingungen des Heilbronner Verbunds HNV; auf sie verweist auch die Albtal-Verkehrs-Gesellschaft (AVG), die die Stadtbahn betreibt.',
         '**In der Stadtbahn** nimmst du laut HNV einen E-Tretroller mit wie ein Fahrrad: am Wochenende und an Feiertagen ganztägig kostenlos, montags bis freitags von 6 bis 9 Uhr nur mit einer HNV-Fahrradkarte für 2,60 €, sonst kostenlos. Er gehört in den Bereich für Fahrräder. Einen Anspruch auf Mitnahme hast du nicht, Rollstühle und Kinderwagen haben Vorrang.',
         '**Im Bus** ist die Mitnahme grundsätzlich ausgeschlossen. Zusammengeklappte kleine Roller unter 15 kg und kürzer als 115 cm nimmst du aber in Bus und Bahn kostenlos als Handgepäck mit.',
-        '**Leih-Scooter:** Eine eigene Regel dafür nennen weder der HNV noch Dott. Am einfachsten beendest du die Fahrt an einer Sharingstation nahe der Haltestelle, etwa am Hauptbahnhof, und mietest am Ziel neu.',
+        '**Leih-Scooter:** Am einfachsten beendest du die Fahrt an einer Sharingstation nahe der Haltestelle, etwa am Hauptbahnhof, und mietest am Ziel neu.',
       ],
     },
     {
       heading: 'Wie Heilbronn E-Scooter regelt: Vertrag, Obergrenze, Gebühren',
       blocks: [
-        'Das Verleihen von E-Scootern auf öffentlichen Flächen behandelt Heilbronn als **Sondernutzung** nach dem Strassengesetz Baden-Württemberg und der Sondernutzungssatzung der Stadt. 2023 schrieb die Stadt die Erlaubnis für zwei Anbieter aus; seit September 2023 gelten laut Stadt strengere Auflagen. Laut Mustervertrag lief der Vertrag bis 31. August 2025 und verlängert sich um ein Jahr, wenn keine Seite drei Monate vorher kündigt. Den unterschriebenen Vertrag hat die Stadt nicht veröffentlicht, auch nicht, ob und wie lange er verlängert wurde (Stand 23. Oktober 2026); ihre Seite nennt Dott als Anbieter.',
+        'Das Verleihen von E-Scootern auf öffentlichen Flächen behandelt Heilbronn als **Sondernutzung** nach dem Strassengesetz Baden-Württemberg und der Sondernutzungssatzung der Stadt. 2023 schrieb die Stadt die Erlaubnis für zwei Anbieter aus; seit September 2023 gelten laut Stadt strengere Auflagen. Laut Mustervertrag lief der Vertrag bis 31. August 2025 und verlängert sich um ein Jahr, wenn keine Seite drei Monate vorher kündigt. Die Seite der Stadt nennt Dott als Anbieter (Stand 23. Oktober 2026).',
         'Die Zahlen stammen aus dem Mustervertrag: je Anbieter höchstens 400 E-Scooter und 200 E-Bikes, innerhalb des Innenstadtrings höchstens 150 Scooter. Der Anbieter zahlt einmalig 360 € und je Jahr 12,50 € pro E-Scooter und 20 € pro E-Bike. Er stellt höchstens drei Fahrzeuge an einen Ort, lässt auf dem Gehweg 2,50 m frei und räumt falsch abgestellte Fahrzeuge fristgerecht weg, sonst kann die Stadt 15 € pro Fahrzeug verlangen.',
         {
           list: [
@@ -146,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Heilbronn?',
-      answer: 'Laut Stadt nur Dott, das früher TIER hiess. Im Landesportal MobiData BW stand am 23. Oktober 2026 kein Fahrzeug von Lime, Voi, Bolt oder Zeus in Heilbronn.',
+      answer: 'Laut Stadt nur Dott, das früher TIER hiess.',
     },
     {
       question: 'Wo darf ich in der Heilbronner Innenstadt einen E-Scooter abstellen?',
@@ -178,7 +177,6 @@ const guide: Guide = {
     { title: 'Stadt Neckarsulm: E-Scooter', url: 'https://www.neckarsulm.de/e-scooter' },
     { title: 'Dott: Tarif und Zonen für Heilbronn im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/heilbronn/gbfs.json' },
     { title: 'MobiData BW: Datenfeed von Dott in Heilbronn (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heilbronn/gbfs' },
-    { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds (Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'HNV: Hilfe und FAQ, Mitnahme', url: 'https://www.mein-hnv.de/service-und-kontakt/hilfe-faq/mitnahme/' },

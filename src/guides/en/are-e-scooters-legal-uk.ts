@@ -99,11 +99,11 @@ const guide: Guide = {
     {
       heading: 'E-scooter rental trial areas in 2026',
       blocks: [
-        'According to the government’s list, last updated on 7 July 2026, you can ride a rental e-scooter in these 21 areas, all in England. Every area has an operator, and our map shows all of them. The last column names the operators you’ll find on the map, Voi since 24 October 2026 and Lime since 25 October.',
+        'According to the government’s list, last updated on 7 July 2026, you can ride a rental e-scooter in these 21 areas, all in England. Every area has an operator, named in the last column.',
         {
           table: {
             caption: 'Rental e-scooter trial areas, as of the government list updated 7 July 2026',
-            head: ['Trial area', 'Towns', 'On our map'],
+            head: ['Trial area', 'Towns', 'Operator'],
             rows: [
               ['Bournemouth and Poole', 'Bournemouth, Christchurch, Poole', 'Beryl'],
               ['Brighton and Hove', 'Brighton and Hove, since July 2026', 'Beryl'],
@@ -146,7 +146,7 @@ const guide: Guide = {
           ],
         },
         'Don’t take an e-scooter on the Tube or a bus. Since 13 December 2021 private e-scooters and e-unicycles have been banned from all TfL services and stations, even when folded, after battery fires; the fine is up to £1,000. Rental e-scooters have never been allowed on board either. A kick scooter without a motor is fine if you carry it.',
-        'Since 24 October 2026 our [map of London](map:gb:London) has shown Voi’s scooters, about 1,600 at 14:55 that Saturday, and since 25 October Lime’s, about 1,500 on Lime’s own map in the early hours: snapshots, not the fleets.',
+        'The [map of London](map:gb:London) showed about 1,600 Voi scooters at 14:55 on Saturday 24 October 2026, and about 1,500 Lime scooters, as last counted, in the early hours of 25 October: snapshots, not the fleets.',
       ],
     },
     {
@@ -169,9 +169,9 @@ const guide: Guide = {
     {
       heading: 'Scotland, Wales and Northern Ireland',
       blocks: [
-        'The government’s list has no trial areas in Wales, Scotland or Northern Ireland, so as far as we can tell there is no rental e-scooter you can legally ride in any of them.',
-        'Wales and Scotland come under the same Road Traffic Act as England, so a private e-scooter is just as illegal in public there. We couldn’t find guidance from Police Scotland itself to confirm this. Scotland’s drink-drive limit is lower: 50 mg of alcohol per 100 ml of blood, against 80 mg in the rest of the UK.',
-        'Northern Ireland has its own road traffic law. Published guides say it also treats e-scooters as motor vehicles, which would make a private one illegal in public there too, but we couldn’t confirm this with an official Northern Ireland source. Don’t assume it’s allowed: check with the PSNI before you ride.',
+        'All 21 trial areas are in England, so there is no rental e-scooter you can legally ride in Wales, Scotland or Northern Ireland.',
+        'Wales and Scotland come under the same Road Traffic Act as England, so a private e-scooter is just as illegal in public there. Scotland’s drink-drive limit is lower: 50 mg of alcohol per 100 ml of blood, against 80 mg in the rest of the UK.',
+        'Northern Ireland has its own road traffic law. Published guides say it also treats e-scooters as motor vehicles, which would make a private one illegal in public there too. Don’t assume it’s allowed: check with the PSNI before you ride.',
       ],
     },
   ],
@@ -182,7 +182,7 @@ const guide: Guide = {
     },
     {
       question: 'Can tourists rent an e-scooter in the UK?',
-      answer: 'Yes, with a full driving licence. An EU or EEA licence works; a licence from another country works if it covers cars, mopeds or motorcycles and you entered the UK in the last 12 months. Foreign provisional licences and learner permits are not accepted, and the operators we checked only rent to riders aged 18 or over.',
+      answer: 'Yes, with a full driving licence. An EU or EEA licence works; a licence from another country works if it covers cars, mopeds or motorcycles and you entered the UK in the last 12 months. Foreign provisional licences and learner permits are not accepted, and Beryl, Dott, and Lime and Voi in London only rent to riders aged 18 or over.',
     },
     {
       question: 'Can I ride a rental e-scooter on a provisional licence?',

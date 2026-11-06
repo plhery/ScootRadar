@@ -18,7 +18,6 @@ const guide: Guide = {
       blocks: [
         'En 2023, la Métropole européenne de Lille (MEL) a ouvert le libre-service à ses communes, chacune choisissant d’accueillir trottinettes et vélos électriques, ou les vélos seulement. Lille s’en est tenue aux vélos : « pour des raisons de sécurité, le choix a été fait de n’autoriser que les vélos à assistance électrique et pas les trottinettes ».',
         'Pas de trottinette, donc, sur la Grand’Place, dans le Vieux-Lille, à Euralille ni aux gares Lille-Flandres et Lille-Europe. Le soir du 13 octobre 2026, les données publiques de Lime montraient 827 vélos dans Lille, et seulement douze trottinettes dans ses limites, en lisière d’Hellemmes et de Lomme.',
-        'Notre carte ne montre que les trottinettes, ni les V’Lille ni les vélos Lime : au centre de Lille, elle paraîtra vide, et c’est normal.',
       ],
     },
     {
@@ -49,16 +48,16 @@ const guide: Guide = {
             '**Roubaix**, à moins de 500 m : 21 autour de la gare, 22 autour du musée La Piscine, 17 autour de la Grand-Place. [Roubaix sur la carte](map:fr:Roubaix).',
             '**Villeneuve-d’Ascq** : près du LaM, de la Cité scientifique et du stade Pierre-Mauroy.',
             '**Lambersart** : le secteur le plus commode depuis le centre de Lille, de l’autre côté du parc de la Citadelle.',
-            '**Tourcoing** : huit trottinettes seulement, aucune à moins de 500 m de la Grand-Place. N’y comptez pas.',
+            '**Tourcoing** : huit trottinettes seulement. N’y comptez pas.',
           ],
         },
-        '**Et en 2027 ?** Lime roule avec des autorisations d’occuper la voirie délivrées par chaque maire depuis 2023, pour un an renouvelable deux fois ; leur échéance exacte n’est pas publiée. La MEL a soumis à son conseil du 9 octobre 2026 un nouvel appel : **un seul opérateur**, pour trois ans renouvelables deux fois un an, dès le premier trimestre 2027. Au 14 octobre, la MEL n’avait pas publié le vote.',
+        '**Et en 2027 ?** Lime roule avec des autorisations d’occuper la voirie délivrées par chaque maire depuis 2023, pour un an renouvelable deux fois. La MEL a soumis à son conseil du 9 octobre 2026 un nouvel appel : **un seul opérateur**, pour trois ans renouvelables deux fois un an, dès le premier trimestre 2027.',
       ],
     },
     {
       heading: 'Tarif Lime à Lille : minute, LimePass et LimePrime',
       blocks: [
-        'Lime ne publie son tarif lillois ni dans ses données, donc notre carte ne l’estime pas, ni sur son site : seule l’app l’affiche, avant le départ. Les pages des communes, non datées, donnent **1 € pour déverrouiller**, puis de **0,18 €** (Armentières) à **0,22 € la minute** (Hem).',
+        'L’app affiche le prix avant le déverrouillage. Les pages des communes, non datées, donnent **1 € pour déverrouiller**, puis de **0,18 €** (Armentières) à **0,22 € la minute** (Hem).',
         {
           table: {
             caption: 'Prix indicatifs d’une trottinette Lime (pages des communes ; LimePass selon la presse)',
@@ -78,7 +77,7 @@ const guide: Guide = {
     {
       heading: 'Stations Lime : où garer sa trottinette dans la MEL',
       blocks: [
-        'Pas de stationnement libre : selon la MEL, vous devez **impérativement** garer la trottinette dans une station, et vous payez tant qu’elle n’y est pas correctement garée. Il en existe **près de 1 400** ; l’app les montre, notre carte non.',
+        'Pas de stationnement libre : selon la MEL, vous devez **impérativement** garer la trottinette dans une station, et vous payez tant qu’elle n’y est pas correctement garée. Il en existe **près de 1 400** ; l’app les montre.',
         'Vous roulez vers Lille ? Selon les données ouvertes de la MEL (septembre 2026), les stations de la ville n’acceptent que les vélos, sauf quatre : deux à Hellemmes, deux à Lomme près du métro Saint-Philibert.',
         '**Mal se garer peut coûter cher.** La MEL a prévu dès 2023 des sanctions de l’opérateur, jusqu’au blocage du compte à la troisième infraction, et Lime vous refacture amendes et frais de fourrière. Côté police, le stationnement gênant coûte 35 €, fourrière possible. Une Lime mal garée ? Écrivez à signalement-MEL@li.me.',
       ],
@@ -88,7 +87,7 @@ const guide: Guide = {
       blocks: [
         '**Le casque.** Depuis le **1er septembre 2026**, un arrêté du préfet du Nord du 30 juillet 2026 impose un casque aux normes et attaché à tout conducteur de trottinette électrique ou d’engin semblable, **trottinettes Lime comprises**, de jour comme de nuit, pistes cyclables comprises. Les vélos électriques ne sont pas concernés.',
         'L’arrêté en fait une contravention de 2e classe : **35 €**, jusqu’à 150 € devant le juge, et non 135 € comme l’écrit la Ville de Lille.',
-        { note: 'Selon la page de la MEL, non datée, les Lime ont un casque intégré ; Lime n’en dit rien et nous n’avons pas pu le vérifier : prenez le vôtre.' },
+        { note: 'Selon la page de la MEL, non datée, les Lime ont un casque intégré ; prenez quand même le vôtre.' },
         '**L’âge et la vitesse.** Selon Lime, ses trottinettes sont réservées aux majeurs ; la page de la MEL indique 16 ans. L’app fait foi. Une trottinette personnelle, elle, se conduit dès 14 ans. Selon la MEL, les Lime sont bridées à 20 km/h, et à 6 km/h dans certaines zones très fréquentées ; l’app affiche les zones lentes et interdites.',
         {
           table: {
@@ -128,7 +127,7 @@ const guide: Guide = {
         {
           list: [
             '**Métro, tram et bus.** Pour continuer en transports, rendez la Lime dans une station près de l’arrêt : le compteur tourne tant qu’elle n’y est pas garée.',
-            '**Lille-Flandres et Lille-Europe.** Aucune trottinette à la descente du TGV ou de l’Eurostar : le 13 octobre 2026, la plus proche était à 1,8 km. Prenez un V’Lille, à moins de 100 m de chacune des deux gares, ou un vélo Lime : ce soir-là, 85 attendaient à moins de 500 m de Lille-Flandres.',
+            '**Lille-Flandres et Lille-Europe.** À la descente du TGV ou de l’Eurostar, prenez un V’Lille, à moins de 100 m de chacune des deux gares, ou un vélo Lime : le soir du 13 octobre 2026, 85 attendaient à moins de 500 m de Lille-Flandres.',
             '**Aéroport de Lille-Lesquin.** La navette rejoint les gares en une vingtaine de minutes, pour 7,99 € en ligne ou à la borne et 9 € auprès du chauffeur (novembre 2026) ; le bus Ilévia 68 va jusqu’au métro 4 Cantons-Stade Pierre-Mauroy.',
             '**Marché de Noël.** Il s’installe place Rihour du 18 novembre au 30 décembre 2026 : on y met pied à terre tous les jours de 11 h à 20 h.',
           ],

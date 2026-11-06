@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Seattle 2026: Lime, prices, helmets and rules',
   description: 'E-scooters in Seattle: Lime is the only operator. What a ride costs, the helmet and sidewalk rules, parking, Link light rail and where you can’t ride.',
   headline: 'E-scooters in Seattle: Lime, what a ride costs, the rules, and where you can’t ride',
-  lede: 'E-scooters in Seattle come from one app: Lime, the only company in the City’s programme through 2026, with standing scooters and seated ones called Gliders. Lime shows its Seattle price in the app, and the City bans surge pricing. Lime riders must be 18, SDOT tells you to wear a helmet under the City’s code, sidewalks are off-limits and scooters top out at 15 mph. Shared scooters can’t board Link trains or buses, and Sea-Tac Airport, outside the city, has no Lime scooters.',
+  lede: 'E-scooters in Seattle come from one app: Lime, the only company in the City’s programme through 2026, with standing scooters and seated ones called Gliders. Lime shows its Seattle price in the app, and the City bans surge pricing. Lime riders must be 18, SDOT tells you to wear a helmet under the City’s code, sidewalks are off-limits and scooters top out at 15 mph. Shared scooters can’t board Link trains or buses.',
   published: '2026-10-17',
   updated: '2026-10-23',
   city: 'us:wa:Seattle',
@@ -16,22 +16,22 @@ const guide: Guide = {
     {
       heading: 'Which scooter apps work in Seattle?',
       blocks: [
-        'One company runs shared scooters in Seattle in October 2026: **Lime**. The Seattle Department of Transportation (SDOT) told its advisory boards in April 2026 that Lime is the sole provider through 2026 while it evaluates the programme. Lime also rents e-bikes. No other company has a permit, so you won’t find Bird, Veo or Lyft scooters in the city.',
+        'One company runs shared scooters in Seattle in October 2026: **Lime**. The Seattle Department of Transportation (SDOT) told its advisory boards in April 2026 that Lime is the sole provider through 2026 while it evaluates the programme. Lime also rents e-bikes.',
         {
           list: [
-            '**The permit.** Lime works under SDOT’s permit requirements 6.0, in force since 1 April 2026 “until further notice”. Its term is set in writing, with no published end date, and SDOT hasn’t said who will run scooters after 2026.',
+            '**The permit.** Lime works under SDOT’s permit requirements 6.0, in force since 1 April 2026 “until further notice”, and its term is set in writing.',
             '**The fleet.** No more than 20,000 devices at a time, and since April 2026 at least half the fleet must be bikes or seated scooters.',
             '**The area.** Scooters may serve the whole city, apart from no-ride zones, and at least 15% of the fleet must stand in the City’s Equity Focus Neighborhoods.',
           ],
         },
-        'On the evening of 16 October 2026 the [map of Seattle](map:us:wa:Seattle) showed about 9,100 Lime scooters: what’s on the map, not the fleet. Nearly all were standing scooters: Lime’s open data listed just 20 seated ones early on 17 October. Lime’s e-bikes aren’t shown.',
+        'On the evening of 16 October 2026 the [map of Seattle](map:us:wa:Seattle) showed about 9,100 Lime scooters: what’s on the map, not the fleet. Nearly all were standing scooters: Lime’s open data listed just 20 seated ones early on 17 October.',
         '**Visiting?** Get the Lime app before you go. You need no driving licence: Washington law doesn’t ask for one on a scooter. Your first ride is held to 8 mph unless you have ridden Lime in another US city. No smartphone? SDOT’s scooter share page explains how to rent by text. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in Seattle?',
       blocks: [
-        'Lime shows its Seattle price in the app and publishes no rates in its open data. SDOT’s permit still shapes what you pay:',
+        'Lime shows its Seattle price in the app. SDOT’s permit still shapes what you pay:',
         {
           list: [
             '**No surge pricing.** Lime may not raise rates at busy times, and must show every rate, fee and penalty before you unlock.',
@@ -105,7 +105,7 @@ const guide: Guide = {
         '**No shared scooters on Sound Transit.** Lime scooters may not go on any Sound Transit train or bus, into fare-paid areas or onto platforms, and King County Metro buses take only folding scooters. End your ride in the marked parking at the station; Lime must keep scooters at every Link station in Seattle. Link costs $3.00 for adults, and you can tap a contactless bank card on the reader before you board; riders aged 18 and under travel free.',
         '**King Street Station.** Amtrak and Sounder trains stop on Jackson Street, between 3rd and 4th Avenue South; cross 4th Avenue for International District/Chinatown Link station.',
         '**Ferries.** SDOT’s permit bars Lime parking on Washington State Ferries property, and the ferry service asks that bike-share bikes stay off it, so end your ride before Colman Dock.',
-        '**Sea-Tac Airport** is in the city of SeaTac, outside Seattle, and on 17 October Lime’s open data showed no scooter within about 4 miles of the terminal. Take Link instead: 38 minutes from SeaTac/Airport Station to downtown, with trains every 8 to 10 minutes for most of the day and a free shuttle between the station and the skybridge.',
+        '**Sea-Tac Airport** is in the city of SeaTac, outside Seattle. Link takes 38 minutes from SeaTac/Airport Station to downtown, with trains every 8 to 10 minutes for most of the day and a free shuttle between the station and the skybridge.',
       ],
     },
     {
@@ -115,11 +115,11 @@ const guide: Guide = {
           list: [
             '**Rain and hills.** SDOT makes Lime certify its scooters as safe in wet, icy or snowy weather, on steep slopes and over streetcar and train tracks. On ice or snow, SDOT suggests taking transit instead.',
             '**Helmets.** SDOT hands out free adult helmets, one each, at six Customer Service Centers around the city, though not downtown.',
-            '**Night.** The permit sets no curfew, and Lime’s open data lists the service as open around the clock. At night the app asks if you’re safe to ride.',
-            '**The season.** The permit sets no winter break either. Most trips happen in summer, between 3 and 7 pm, SDOT’s figures show.',
+            '**Night.** Lime’s open data lists the service as open around the clock, and at night the app asks if you’re safe to ride.',
+            '**The season.** Most trips happen in summer, between 3 and 7 pm, SDOT’s figures show.',
           ],
         },
-        'The [Seattle map](map:us:wa:Seattle) shows the nearest Lime scooter and the walk to it.',
+        'Find the nearest Lime scooter on the [Seattle map](map:us:wa:Seattle).',
       ],
     },
     {
@@ -155,10 +155,6 @@ const guide: Guide = {
     {
       question: 'Can you take a Lime scooter on Link light rail?',
       answer: 'No. Sound Transit bans shared scooters and bikes on all its trains and buses, in fare-paid areas and on platforms. Park in the marked area at the station.',
-    },
-    {
-      question: 'Are there scooters at Sea-Tac Airport?',
-      answer: 'No. The airport is outside Seattle, and Lime’s open data shows no scooters near it. Link light rail reaches downtown in 38 minutes, and you can pick up a Lime there.',
     },
   ],
   sources: [

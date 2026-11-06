@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Turku 2026: Voi, Ryde, night ban and parking',
   description: 'E-scooters in Turku: Voi and Ryde under the City’s licence, the weekend night ban, no-ride areas, parking in the centre and the season to 31 October.',
   headline: 'E-scooters in Turku: Voi and Ryde, the weekend night ban, where to park and when the season ends',
-  lede: 'E-scooters in Turku are rented from Voi and Ryde, and since 2026 every company needs the City’s micromobility licence; each app shows its price, and our map shows Voi, not Ryde. No one may ride a rental scooter from 00:00 to 05:00 on Friday and Saturday nights. The licence’s season runs from 1 April to 31 October: from 1 November the scooters must be off the streets unless the City agrees in writing to more time. From 15 you ride on the cycle path or the road, never the pavement, and in the centre you park only in a marked bay.',
+  lede: 'E-scooters in Turku are rented from Voi and Ryde, and since 2026 every company needs the City’s micromobility licence; each app shows its price. No one may ride a rental scooter from 00:00 to 05:00 on Friday and Saturday nights. The licence’s season runs from 1 April to 31 October: from 1 November the scooters must be off the streets unless the City agrees in writing to more time. From 15 you ride on the cycle path or the road, never the pavement, and in the centre you park only in a marked bay.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Turku',
@@ -16,19 +16,19 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Turku: Voi and Ryde',
       blocks: [
-        'Since 1 January 2026 renting out e-scooters in Turku has required the City’s micromobility licence (mikroliikennelupa). The City grants it for a year at a time, for a fee of €200, and its terms set no cap on the number of scooters. It publishes no list of licence holders.',
+        'Since 1 January 2026 renting out e-scooters in Turku has required the City’s micromobility licence (mikroliikennelupa). The City grants it for a year at a time, for a fee of €200.',
         {
           table: {
-            caption: 'E-scooter companies in Turku and what the map shows, October 2026',
-            head: ['Company', 'In Turku in 2026', 'On the ScootRadar map'],
+            caption: 'E-scooter companies in Turku, October 2026',
+            head: ['Company', 'In Turku in 2026'],
             rows: [
-              ['Voi', 'Yes: back on 18 March, before the season, by agreement with the City (Yle)', 'Yes, with battery'],
-              ['Ryde', 'Yes: back on 18 March with Voi (Yle)', 'No: check the Ryde app'],
-              ['Dott', 'Had applied by March 2026; Turku isn’t on Dott’s list of towns (July 2026)', 'No'],
+              ['Voi', 'Yes: back on 18 March, before the season, by agreement with the City (Yle)'],
+              ['Ryde', 'Yes: back on 18 March with Voi (Yle)'],
+              ['Dott', 'Had applied by March 2026'],
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as every scooter in town. At 05:51 Turku time on Thursday 29 October 2026 the [Turku map](map:fi:Turku) showed about 2,400 Voi scooters free to rent at that moment. Scooters on a ride aren’t shown, nor prices; zoomed in, the map draws the City of Turku’s parking bays and its no-parking, slow and no-riding areas, from its open data (CC BY 4.0). The map’s Turku area isn’t cut to the city limits and may take in parts of Kaarina and Raisio.',
+        'At 05:51 Turku time on Thursday 29 October 2026 the [Turku map](map:fi:Turku) showed about 2,400 Voi scooters free to rent at that moment. Zoomed in, the map draws the City of Turku’s parking bays and its no-parking, slow and no-riding areas, from its open data (CC BY 4.0). Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
@@ -56,9 +56,9 @@ const guide: Guide = {
             ],
           },
         },
-        'From midnight on Friday and Saturday nights the [map](map:fi:Turku) marks the night ban in Turku and says when renting starts again. It marks the nights that start on 30 April, 1 May and 31 December too; the licence names its holidays “such as”, so on other holiday nights check the app. The ban is Turku’s own: Raisio’s infrastructure committee voted 9–2 against one on 18 November 2025.',
-        '**The season.** From 1 November to 31 March the licence keeps the scooters off the streets, in storage. Running outside the season needs the City’s written consent, which let Voi and Ryde start on 18 March 2026, Yle reported. In such extra time the City can order the scooters off on 72 hours’ notice if the weather turns for good, and the service must stop once frost makes riding dangerous. Whether any scooter runs after 31 October is the City’s decision; it had announced no extra time by 29 October 2026.',
-        'When the scooters are gone, Föli’s 700 city bikes (föllärit) run until 22 December 2026 from more than 200 stations, rented in the Donkey Republic app for €2.00 an hour or €46 for the season. Our map shows standing e-scooters only, not bikes.',
+        'The ban is Turku’s own: Raisio’s infrastructure committee voted 9–2 against one on 18 November 2025.',
+        '**The season.** From 1 November to 31 March the licence keeps the scooters off the streets, in storage. Running outside the season needs the City’s written consent, which let Voi and Ryde start on 18 March 2026, Yle reported. In such extra time the City can order the scooters off on 72 hours’ notice if the weather turns for good, and the service must stop once frost makes riding dangerous.',
+        'When the scooters are gone, Föli’s 700 city bikes (föllärit) run until 22 December 2026 from more than 200 stations, rented in the Donkey Republic app for €2.00 an hour or €46 for the season.',
       ],
     },
     {
@@ -137,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Turku?',
-      answer: 'Voi and Ryde; since 1 January 2026 every company needs the City’s micromobility licence. [Our map](map:fi:Turku) shows Voi; Ryde’s scooters are only in its app.',
+      answer: 'Voi and Ryde; since 1 January 2026 every company needs the City’s micromobility licence. Find Voi’s scooters on the [Turku map](map:fi:Turku) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Can you ride an e-scooter at night in Turku?',
@@ -145,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'When does the e-scooter season end in Turku?',
-      answer: 'The licence’s season runs from 1 April to 31 October. From 1 November to 31 March the scooters must be off the streets unless the City consents in writing to more time, and it had announced none for autumn 2026 by 29 October.',
+      answer: 'The licence’s season runs from 1 April to 31 October. From 1 November to 31 March the scooters must be off the streets unless the City consents in writing to more time.',
     },
     {
       question: 'Where can you park an e-scooter in central Turku?',
@@ -176,7 +176,6 @@ const guide: Guide = {
     { title: 'Tallink Silja: Vehicle, bicycle and scooter', url: 'https://www.tallink.com/good-to-know/vehicle-bicycle-scooter' },
     { title: 'Tallink Silja: Ferries to Åland', url: 'https://www.tallink.com/travelling/one-way/aland-ferry' },
     { title: 'Port of Turku: Passenger traffic from Turku to Stockholm', url: 'https://www.portofturku.fi/en/passenger-traffic/' },
-    { title: 'Dott: Locations (updated 16 July 2026)', url: 'https://ridedott.com/locations/' },
   ],
 };
 

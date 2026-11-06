@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'One company, **Beryl**, runs Norwich’s hire e-scooters, alongside its pedal bikes and e-bikes, in a scheme with Norfolk County Council that opened on 17 March 2020. E-scooters joined on 14 September 2020 for the Department for Transport’s rental trial, the county council says, and by February 2026 there were 500 of them, up from 100 at first.',
         'On 10 March 2026 Graham Plant, the county council’s cabinet member for highways, extended the trial to **31 May 2028**, the date the Department for Transport has set for the end of all 21 trials. Pages that give an earlier end date are out of date.',
-        'In the early hours of 17 October 2026 the [map of Norwich](map:gb:Norwich) showed about 550 Beryl e-scooters, and the [map of Wymondham](map:gb:Wymondham) 24 more: a snapshot at night, not the fleet size. The map shows e-scooters only, not Beryl’s bikes and e-bikes. You unlock and pay in the Beryl app.',
+        'In the early hours of 17 October 2026 the [map of Norwich](map:gb:Norwich) showed about 550 Beryl e-scooters, and the [map of Wymondham](map:gb:Wymondham) 24 more: a snapshot at night, not the fleet size. You unlock and pay in the Beryl app.',
       ],
     },
     {
@@ -47,7 +47,7 @@ const guide: Guide = {
       heading: 'Are e-scooters legal in Norwich? Age, licence and fines',
       blocks: [
         'Hire scooters are legal because Norwich is one of England’s 21 trial areas. Beryl rents them only to riders **18 or over** with a **full or provisional driving licence** (category Q, included in every UK car, moped and motorcycle licence). It checks the front and back of your photocard and a selfie, and it doesn’t accept paper licences.',
-        'Visiting? Beryl’s Norwich help pages and its terms ask for a valid UK driving licence. The law also accepts a full EU or EEA licence, or another country’s full licence within 12 months of entering the UK (never a foreign provisional one), but Beryl doesn’t say it takes them here, so verify yours in the app before you travel.',
+        'Visiting? Beryl’s Norwich help pages and its terms ask for a valid UK driving licence. The law also accepts a full EU or EEA licence, or another country’s full licence within 12 months of entering the UK (never a foreign provisional one): check in the app that Beryl takes yours before you travel.',
         {
           table: {
             caption: 'The rules that get riders fined or banned in Norwich, October 2026',
@@ -64,7 +64,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Beryl offers free Scoot Happy training, online and face to face; it launched the online course with the county council in 2022. It’s optional: Beryl’s Norwich help pages list only the licence and selfie checks before your first ride. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
+        'Beryl offers free Scoot Happy training, online and face to face; it launched the online course with the county council in 2022. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
         {
           note: 'A private e-scooter is illegal on Norwich’s roads, pavements and cycle lanes and in its parks. Riding one means a £300 fixed penalty and 6 points for having no insurance, and the police can seize it; since 29 June 2026 they can seize a vehicle ridden anti-socially without a warning first. Anti-social riding on Beryl’s own scooters earns a warning or a ban from Beryl, the county council says.',
         },
@@ -73,9 +73,9 @@ const guide: Guide = {
     {
       heading: 'Where can you ride? The Beryl zone and the pedestrian streets',
       blocks: [
-        'Beryl’s zone covers Norwich, including the airport, UEA, the Norwich Research Park and the Norfolk and Norwich University Hospital, and reaches south-west to **Hethersett and Wymondham** and north-west to Drayton. That is how we read Beryl’s zone data on 17 October 2026; the app shows the boundary, with the area outside it in red. Taverham village and Easton are outside.',
+        'On 17 October 2026 Beryl’s zone covered Norwich, including the airport, UEA, the Norwich Research Park and the Norfolk and Norwich University Hospital, and reached south-west to **Hethersett and Wymondham** and north-west to Drayton. The app shows the boundary, with the area outside it in red. Taverham village and Easton are outside.',
         'Keep the scooter inside the zone: Beryl’s terms don’t allow its e-scooters beyond it. Locking outside costs £20 each time, plus £80 if the scooter is still outside after 24 hours.',
-        'Beryl’s terms ban riding on pavements and in pedestrianised areas, and its help pages say to ride only on roads and cycle lanes where bikes are allowed. Beryl publishes no list of slow or no-ride zones for Norwich and its open data has none, so walk the scooter through pedestrian streets and watch these places:',
+        'Beryl’s terms ban riding on pavements and in pedestrianised areas, and its help pages say to ride only on roads and cycle lanes where bikes are allowed. Beryl’s slow and no-ride zones are in its app; walk the scooter through pedestrian streets and watch these places:',
         {
           table: {
             caption: 'Where to ride and where to walk in and around Norwich, October 2026 (check the app for current zones)',
@@ -127,7 +127,7 @@ const guide: Guide = {
     {
       heading: 'UEA and NUA students',
       blocks: [
-        '**UEA** has Beryl bays across its campus, among them the UEA Mobility Hub, the Sports Park and the Sainsbury Centre. We found no UEA rules for riding on campus, so keep to roads and cycle paths.',
+        '**UEA** has Beryl bays across its campus, among them the UEA Mobility Hub, the Sports Park and the Sainsbury Centre. On campus, keep to roads and cycle paths.',
         '**Norwich University of the Arts** is in the city centre: The Halls bay is about 85 metres from its St George’s Street building, and the Norwich Playhouse bay about 130 metres. With the STUDENT26 code, the 100-minute bundle costs £12: 12p a minute with no unlock fees, if you use it within a month.',
       ],
     },

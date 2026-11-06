@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Nürnberg 2026: Anbieter, Preise, Sammelparkplätze',
   description: 'E-Scooter Nürnberg: wer vermietet, was eine Fahrt kostet, wo du innerhalb des Rings nur an Sammelparkplätzen abstellst und was in U-Bahn und Tram gilt.',
   headline: 'E-Scooter Nürnberg: Anbieter, Preise, Sammelparkplätze und was in Altstadt und U-Bahn gilt',
-  lede: 'Einen E-Scooter in Nürnberg mietest du ab 18 und ohne Führerschein bei Voi, Dott, Lime oder Bolt; diese vier nennt die Stadt. Den Preis zeigt die App; offen nennt nur Bolt einen, für ganz Deutschland «ab 0,15 € pro Minute» (Stand 24. Oktober 2026). In der Altstadt und überall innerhalb des Bundesstrassenrings beendest du die Fahrt nur an einem markierten Sammelparkplatz, durch die Fussgängerzone fährst du nicht, und in U-Bahn, Tram und Bus darf kein E-Scooter mit. Ein Nachtverbot nennt die Stadt nicht.',
+  lede: 'Einen E-Scooter in Nürnberg mietest du ab 18 und ohne Führerschein bei Voi, Dott, Lime oder Bolt; diese vier nennt die Stadt. Den Preis zeigt die App; Bolt nennt für ganz Deutschland «ab 0,15 € pro Minute» (Stand 24. Oktober 2026). In der Altstadt und überall innerhalb des Bundesstrassenrings beendest du die Fahrt nur an einem markierten Sammelparkplatz, durch die Fussgängerzone fährst du nicht, und in U-Bahn, Tram und Bus darf kein E-Scooter mit.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Nürnberg',
@@ -18,22 +18,20 @@ const guide: Guide = {
       blocks: [
         'Betrieb und Abstellen regelt die Stadt in einem Sondernutzungsvertrag mit jedem Anbieter. Im April 2024 schloss sie solche Verträge mit den fünf Anbietern, die damals in Nürnberg vermieteten: Bolt, Lime, Superpedestrian, TIER und Voi. Heute nennt das Verkehrsplanungsamt vier Ansprechpartner: **Voi**, **Dott** (TIER heisst heute Dott), **Lime** und **Bolt**.',
         'Dott führt auf seiner Website neben Nürnberg auch Fürth und Erlangen, Bolt nennt E-Scooter auf seiner Nürnberg-Seite. Gemietet wird in der App des Anbieters, Voi auch in **NürnbergMOBIL**, der App der VAG. Alle vier vermieten laut ihren Bedingungen nur ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte rund um Nürnberg](map:de:Nürnberg) zeigt seit dem 24. Oktober 2026 Dott und Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr zusammen rund 2500 Dott- und Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 1150 Lime- und 500 Bolt-Scooter. Die Zahl von Dott und Voi umfasst nicht nur die Stadt, sondern auch Fürth, Zirndorf und bei Voi Erlangen. Die Dott-Scooter in Erlangen zeigt die [Karte von Erlangen](map:de:Erlangen). Preise, Zonen und Sammelparkplätze zeigen nur die Apps; Leihräder zeigt die Karte nicht.',
+        'Auf der [Karte rund um Nürnberg](map:de:Nürnberg) standen am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zusammen rund 2500 Dott- und Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 1150 Lime- und 500 Bolt-Scooter. Die Zahl von Dott und Voi umfasst nicht nur die Stadt, sondern auch Fürth, Zirndorf und bei Voi Erlangen. Dotts Scooter in Erlangen findest du auf der [Karte von Erlangen](map:de:Erlangen). Preise, Zonen und Sammelparkplätze zeigen die Apps.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Nürnberg?',
       blocks: [
-        'Du zahlst in der Regel fürs Entsperren und pro Minute. Einen offenen Nürnberger Tarif fanden wir bei keinem der vier Anbieter (Stand 24. Oktober 2026); verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Du zahlst in der Regel fürs Entsperren und pro Minute; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Nürnberg: was offen genannt wird (Stand 24. Oktober 2026)',
-            head: ['Anbieter', 'Preis', 'Buchen in', 'Auf unserer Karte'],
+            caption: 'E-Scooter-Preise in Nürnberg (Stand 24. Oktober 2026)',
+            head: ['Anbieter', 'Preis', 'Buchen in'],
             rows: [
-              ['Voi', 'In der App; Freiminuten mit Deutschlandticket', 'Voi-App, NürnbergMOBIL', 'Ja'],
-              ['Dott', 'In der App', 'Dott-App', 'Ja'],
-              ['Bolt', 'Ab 0,15 € pro Minute plus kleine Entsperrgebühr (für Deutschland)', 'Bolt-App', 'Ja, seit dem 25. Oktober 2026'],
-              ['Lime', 'In der App', 'Lime-App', 'Ja'],
+              ['Voi', 'In der App; Freiminuten mit Deutschlandticket', 'Voi-App, NürnbergMOBIL'],
+              ['Bolt', 'Ab 0,15 € pro Minute plus kleine Entsperrgebühr (für Deutschland)', 'Bolt-App'],
             ],
           },
         },
@@ -44,7 +42,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Nürnberg abstellen: Sammelparkplätze im Ring',
       blocks: [
         'Seit dem 1. Mai 2024 leihst du in der Altstadt (Zone A) nur an einem Sammelparkplatz aus und gibst den Scooter nur dort zurück, seit dem 19. November 2024 auch überall sonst innerhalb des Bundesstrassenrings (Zone B), samt Weststadt: rund 22 km². Abseits der Plätze kannst du die Fahrt nicht beenden, und die Miete läuft weiter. Festgelegt hat das die Stadt im Vertrag mit den Anbietern; für deinen eigenen E-Scooter gilt es nicht.',
-        'Die Sammelparkplätze erkennst du am Schild «Parken», einer Randmarkierung und einem E-Scooter-Piktogramm. Geplant waren laut Stadt rund 300 in der ganzen Stadt, rund 50 davon in der Altstadt; dort sollen sie etwa alle 150 m liegen, ausserhalb der Altstadt alle 250 m, wo Platz ist. Die Zonen zeigt eine Karte der Stadt, die einzelnen Plätze nur die App.',
+        'Die Sammelparkplätze erkennst du am Schild «Parken», einer Randmarkierung und einem E-Scooter-Piktogramm. Geplant waren laut Stadt rund 300 in der ganzen Stadt, rund 50 davon in der Altstadt; dort sollen sie etwa alle 150 m liegen, ausserhalb der Altstadt alle 250 m, wo Platz ist. Die Zonen zeigt eine Karte der Stadt, die einzelnen Plätze die App.',
         {
           table: {
             caption: 'Wo du einen Leih-Scooter in Nürnberg abstellst und wer das festlegt (Zonenkarte der Stadt, Stand 24. Oktober 2026)',
@@ -61,7 +59,7 @@ const guide: Guide = {
         {
           note: 'Lässt dich die App innerhalb des Rings die Fahrt nicht beenden, stehst du nicht auf einem Sammelparkplatz. Fahr zum nächsten: Solange die Fahrt läuft, zahlst du weiter. Mach am Ende ein Foto vom abgestellten Scooter.',
         },
-        'Steht ein Scooter im Weg, muss der Anbieter ihn laut Vertrag binnen sechs Stunden nach einer Beschwerde wegräumen; die Kontakte nennt die Stadt. Wer falsch abstellt, zahlt unter Umständen auch an den Anbieter. Laut den deutschen Bedingungen (Stand 24. Oktober 2026) verlangt Bolt 15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist, Dott bis 300 € fürs Zurückholen, wenn du die Anweisungen zum Abstellen missachtest. Die Bedingungen von Voi und Lime konnten wir nicht prüfen.',
+        'Steht ein Scooter im Weg, muss der Anbieter ihn laut Vertrag binnen sechs Stunden nach einer Beschwerde wegräumen; die Kontakte nennt die Stadt. Wer falsch abstellt, zahlt unter Umständen auch an den Anbieter. Laut den deutschen Bedingungen (Stand 24. Oktober 2026) verlangt Bolt 15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist, Dott bis 300 € fürs Zurückholen, wenn du die Anweisungen zum Abstellen missachtest.',
       ],
     },
     {
@@ -69,8 +67,8 @@ const guide: Guide = {
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahrstreifen oder in der Fahrradstrasse, nur wo es die nicht gibt auf der Fahrbahn. Gehweg und Fussgängerzone sind tabu, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es. Gegen die Fahrtrichtung einer Einbahnstrasse fährst du nur, wo ein Zusatzschild es erlaubt: «Elektrokleinstfahrzeuge frei» auf jeden Fall, «Radverkehr frei» laut Strassenverkehrs-Ordnung auch, laut E-Scooter-Verordnung erst ab 1. März 2027. Diese Regeln setzt der Bund.',
         'Die **Fussgängerzone** der Altstadt ist gross: die Breite Gasse, die Karolinen- und die Kaiserstrasse, dazu etwa Hallplatz, Luitpoldstrasse und Weissgerbergasse. Auch der Weg vom Hauptbahnhof über Königstrasse und Hauptmarkt hinauf zur Kaiserburg führt laut Stadt weitgehend durch Fussgängerzonen. Radfahrer dürfen in den zentralen Zonen während der Lieferzeit von 18.30 bis 10.30 Uhr (samstags bis 10 Uhr) fahren, E-Scooter nicht.',
-        'Ab 1. März 2027 öffnet ein Schild «Radverkehr frei» Gehwege und Fussgängerzonen auch für E-Scooter, im Schritttempo. Was das für die Nürnberger Lieferzeiten heisst, hat die Stadt noch nicht gesagt.',
-        'In den **Grünanlagen** der Stadt verbietet die Grünanlagensatzung, Kraftfahrzeuge zu bewegen oder abzustellen, ausser auf Wegen, die ein Schild dafür freigibt; das gilt auch für Wiesen und Wege an der Pegnitz, die dazugehören. E-Scooter sind laut Stadt Kraftfahrzeuge; bei Vorsatz drohen bis zu 2500 € Bussgeld. Eine eigene E-Scooter-Regel für die Pegnitz oder den Stadtpark nennt die Stadt nicht.',
+        'Ab 1. März 2027 öffnet ein Schild «Radverkehr frei» Gehwege und Fussgängerzonen auch für E-Scooter, im Schritttempo.',
+        'In den **Grünanlagen** der Stadt verbietet die Grünanlagensatzung, Kraftfahrzeuge zu bewegen oder abzustellen, ausser auf Wegen, die ein Schild dafür freigibt; das gilt auch für Wiesen und Wege an der Pegnitz, die dazugehören. E-Scooter sind laut Stadt Kraftfahrzeuge; bei Vorsatz drohen bis zu 2500 € Bussgeld.',
       ],
     },
     {
@@ -85,7 +83,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt; länger als 1 Sekunde rot: 100 €, 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille oder 3,5 ng/ml THC', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Falsch abgestellt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'Unzulässig auf Geh- oder Radweg 55 €, mit Behinderung 70 €'],
             ],
@@ -111,7 +109,7 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter zum Christkindlesmarkt, zur Kaiserburg und zur Messe',
       blocks: [
-        'Der **Christkindlesmarkt** 2026 läuft vom 27. November bis 24. Dezember, täglich von 10 bis 21 Uhr, an Heiligabend bis 14 Uhr; feierlich eröffnet wird er am Freitag, 27. November, um 17.30 Uhr. Der Hauptmarkt liegt in der Fussgängerzone und in Zone A: Stell den Scooter an einem Sammelparkplatz ausserhalb der Fussgängerzone ab und geh zu Fuss weiter. Eine eigene Scooter-Regel für den Markt nennt die Stadt nicht; sie empfiehlt die U1 bis Lorenzkirche.',
+        'Der **Christkindlesmarkt** 2026 läuft vom 27. November bis 24. Dezember, täglich von 10 bis 21 Uhr, an Heiligabend bis 14 Uhr; feierlich eröffnet wird er am Freitag, 27. November, um 17.30 Uhr. Der Hauptmarkt liegt in der Fussgängerzone und in Zone A: Stell den Scooter an einem Sammelparkplatz ausserhalb der Fussgängerzone ab und geh zu Fuss weiter. Die Stadt empfiehlt die U1 bis Lorenzkirche.',
         'Auf dem Weg zur **Kaiserburg** ist auch ein Teil der Burgstrasse Fussgängerzone. Die **Messe** und das Max-Morlock-Stadion liegen ausserhalb des Rings: Dort stellst du frei ab, solange niemand behindert wird, aber nicht in einer Grünanlage.',
       ],
     },
@@ -119,7 +117,7 @@ const guide: Guide = {
       heading: 'Wie Nürnberg E-Scooter regelt: Vertrag, Obergrenze und 2027',
       blocks: [
         'Den Rahmen hat der Verkehrsausschuss des Stadtrats am 7. Juli 2022 einstimmig beschlossen: feste Sammelparkplätze und ein Vertrag mit jedem Anbieter. Seit Mai 2024 will die Stadt das Konzept fünf Jahre lang testen; laut einer von dpa zitierten Mitteilung von Voi enden die Verträge am 30. April 2029. Laut Vertrag darf jeder Anbieter höchstens 800 Scooter aufstellen. Bei damals fünf Anbietern nannte die Stadt 4000 als Obergrenze, vorher waren mehr als 6000 unterwegs. Für jeden Scooter zahlt der Anbieter der Stadt 50 € im Jahr, so steht es in der Sondernutzungsgebührensatzung, die der Stadtrat zuletzt am 20. November 2025 geändert hat.',
-        'Ausserhalb des Rings wollte die Stadt die Pflicht ausweiten, falls die Beschwerden dort nicht sinken. Im Januar 2025 berichtete sie dem Ausschuss, sie beobachte das System; einen späteren Beschluss haben wir bis zum 24. Oktober 2026 nicht gefunden. Ein Nachtverbot oder eine Winterpause nennt die Stadt nicht.',
+        'Ausserhalb des Rings wollte die Stadt die Pflicht ausweiten, falls die Beschwerden dort nicht sinken. Im Januar 2025 berichtete sie dem Ausschuss, sie beobachte das System.',
         'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; Städte können es dann als Sondernutzung regeln. Wie München das angehen will: [E-Scooter in München](guide:munich).',
       ],
     },
@@ -127,7 +125,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter kann ich in Nürnberg mieten?',
-      answer: 'Die von Voi, Dott, Lime und Bolt; diese vier nennt die Stadt. Die [Live-Karte von Nürnberg](map:de:Nürnberg) zeigt alle vier. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Voi, Dott, Lime und Bolt; diese vier nennt die Stadt. Du findest sie auf der [Live-Karte von Nürnberg](map:de:Nürnberg). Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Wo darf ich in Nürnberg einen E-Scooter abstellen?',

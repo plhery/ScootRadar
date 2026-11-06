@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Nashville scooter rentals: Bird, Spin, Lime and the rules',
   description: 'Rent a Bird, Spin or Lime scooter in Nashville: you must be 18, rides stop from midnight to 5 am, and you can’t ride on business-district sidewalks.',
   headline: 'E-scooters in Nashville: Bird, Spin and Lime, the rules, the midnight curfew and where you can’t ride',
-  lede: 'E-scooters in Nashville come from three companies, Bird, Spin and Lime, under Metro permits. Metro intends to give a new contract to Lime alone, but on 22 October 2026 that award was still pending. Bird and Spin publish no Nashville prices, so check the app. You must be 18 or over, scooters stop from midnight to 5 am, and you may not ride on the sidewalk in a business district, nor on the Vanderbilt and Belmont campuses.',
+  lede: 'E-scooters in Nashville come from three companies, Bird, Spin and Lime, under Metro permits. Metro intends to give a new contract to Lime alone, but on 22 October 2026 that award was still pending. The app shows the price before you unlock. You must be 18 or over, scooters stop from midnight to 5 am, and you may not ride on the sidewalk in a business district, nor on the Vanderbilt and Belmont campuses.',
   published: '2026-10-22',
   updated: '2026-10-23',
   city: 'us:tn:Nashville',
@@ -21,18 +21,18 @@ const guide: Guide = {
           list: [
             '**Bird**, in the Bird app.',
             '**Spin**, in the Spin app. Spin has joined forces with Bird, its website says, and the two mark the same zones in their open data.',
-            '**Lime**, in the Lime app. Lime publishes no open data for Nashville, so its scooters aren’t on our map. It still runs here: Metro lists it, and in September 2026 it asked the TLC for 50 more scooters.',
+            '**Lime**, in the Lime app. Metro lists it, and in September 2026 it asked the TLC for 50 more scooters.',
           ],
         },
-        'The line-up may change. On 8 June 2026, after scoring five bids, Metro gave notice that it intends to award a new contract to Lime alone. Two bidders protested, a hearing followed on 22 July, and the TLC put off its decision in June, July and August. The award was on its agenda again on 20 October 2026; by 22 October Metro had published no decision. Once an award is final, the TLC rules end the older permits that have reached their last extension.',
-        'At 14:25 on 17 October 2026 the [Nashville map](map:us:tn:Nashville) showed about 415 Spin and 385 Bird scooters, some 800 in all: what was on the map at that moment, not the fleets. E-bikes aren’t counted, and Lime isn’t on the map.',
+        'The line-up may change. On 8 June 2026, after scoring five bids, Metro gave notice that it intends to award a new contract to Lime alone. Two bidders protested, a hearing followed on 22 July, and the TLC put off its decision in June, July and August. The award was on its agenda again on 20 October 2026, and on 22 October it was still pending. Once an award is final, the TLC rules end the older permits that have reached their last extension.',
+        'At 14:25 on 17 October 2026 the [Nashville map](map:us:tn:Nashville) showed about 415 Spin and 385 Bird scooters, some 800 in all: what was on the map at that moment, not the fleets.',
         '**Visiting?** Install an app and add a payment card before you set out. Bird may ask you to verify your ID before your first ride: Metro makes the companies check that riders are 18. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in Nashville?',
       blocks: [
-        'On 22 October 2026 Bird and Spin published no Nashville prices, in their open data or on their websites: check the rate in the app before you unlock, Lime’s included. Metro’s programme page lists these discounts:',
+        'The Bird, Spin and Lime apps show the rate before you unlock. Metro’s programme page lists these discounts:',
         {
           list: [
             '**Bird Community and Access Pricing**: cheaper rides for people aged 65 or over, US veterans, and people on Medicaid, SNAP or an income-based utility discount, Bird’s website says.',
@@ -74,7 +74,7 @@ const guide: Guide = {
             '**The John Seigenthaler Pedestrian Bridge.** The same open data made the bridge a no-ride zone on 22 October 2026: walk across to Nissan Stadium and East Nashville.',
             '**Greenways and parks.** The TLC bans riding on Metro greenways as far as the Parks Board’s rules do (the greenways’ posted rules say “No motorized vehicles on the trails”), and in Metro parks except on their paved streets. The open data made Centennial Park, Shelby Bottoms and Bicentennial Capitol Mall State Park no-parking zones, and part of the Richland Creek Greenway no-ride.',
             '**Vanderbilt.** The TLC rules make Vanderbilt University and its medical centre no-ride zones for scooters. The university bans rental scooters from nearly all of its campus, riding and parking included, and says their motors cut out at the campus boundary: end your ride before it. In Bird’s and Spin’s open data on 22 October 2026 the campus was a no-parking zone only.',
-            '**Belmont.** Belmont University’s campus security says rented scooters and dockless bikes may not be ridden or stored on its property. On 22 October 2026 the open data set no zone there, so the app may not stop you: end your ride before you reach campus.',
+            '**Belmont.** Belmont University’s campus security says rented scooters and dockless bikes may not be ridden or stored on its property: end your ride before you reach campus.',
             '**Event days.** Metro adds zones that scooters and e-bikes can’t enter for CMA Fest, the Fourth of July and New Year’s Eve.',
           ],
         },
@@ -120,7 +120,7 @@ const guide: Guide = {
     {
       heading: 'WeGo buses and the airport (BNA)',
       blocks: [
-        '**WeGo** buses carry two bikes on the front rack, and its e-bike policy bars rented e-bikes, naming Lime and Bird. It doesn’t mention scooters, so end your ride before you reach the stop: the TLC rules ban parking at bus stops, except at a bike rack. Pay by QuickTicket or a contactless card or phone and $2 buys two hours of unlimited rides, capped at $4 a day; exact cash pays $2 a ride, with no transfers.',
+        '**WeGo** buses carry two bikes on the front rack, and its e-bike policy bars rented e-bikes, naming Lime and Bird. End your ride before you reach the stop: the TLC rules ban parking at bus stops, except at a bike rack. Pay by QuickTicket or a contactless card or phone and $2 buys two hours of unlimited rides, capped at $4 a day; exact cash pays $2 a ride, with no transfers.',
         '**Nashville International Airport (BNA)**, terminal included, lay inside a no-ride zone in Bird’s and Spin’s open data on 22 October 2026, so you can’t ride a scooter to your flight. WeGo’s Route 18 links BNA with WeGo Central downtown for $2: about 20 minutes on an express trip, 35 to 45 on a local one. It leaves from the Ground Transportation Center on Level 1 of the Terminal 2 Garage, and luggage is allowed.',
         'Elsewhere in Tennessee, the [Memphis map](map:us:tn:Memphis) shows Bird scooters. Another Southern city with a night stop: [Atlanta](guide:atlanta).',
       ],
@@ -142,7 +142,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Nashville?',
-      answer: 'Bird, Spin and Lime, under permits from Metro’s TLC. Metro intends to award a new contract to Lime alone, but that award was still pending on 22 October 2026. Lime publishes no open data, so only Bird and Spin are on the map.',
+      answer: 'Bird, Spin and Lime, under permits from Metro’s TLC. Metro intends to award a new contract to Lime alone, but that award was still pending on 22 October 2026. Find Bird’s and Spin’s scooters on the [Nashville map](map:us:tn:Nashville), and Lime’s in the Lime app.',
     },
     {
       question: 'What time do scooters stop in Nashville?',

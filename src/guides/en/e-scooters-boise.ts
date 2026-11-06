@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Boise 2026: Lime, rules, the Greenbelt',
   description: 'E-scooters in Boise: renting Lime, the price, 10 mph downtown at night, 12 mph on the Greenbelt, sidewalks, parking pins, Boise State and Garden City.',
   headline: 'E-scooters in Boise: Lime, the rules, the Greenbelt and where to park',
-  lede: 'You can rent e-scooters in Boise from Lime, the City’s only shared scooter and bike provider since July 2023 and the only operator on the map. Boise State’s page gives Lime’s price as $1 to unlock plus 39 cents a minute (June 2026); the app shows yours before you ride. You may ride in the street, in bike lanes, on sidewalks, where people walking come first, and on the City’s stretch of the Greenbelt, where Lime’s scooters top out at 12 mph; downtown they slow to 10 mph from 6 p.m. to 3 a.m.',
+  lede: 'You can rent e-scooters in Boise from Lime, the City’s only shared scooter and bike provider since July 2023. Boise State’s page gives Lime’s price as $1 to unlock plus 39 cents a minute (June 2026); the app shows yours before you ride. You may ride in the street, in bike lanes, on sidewalks, where people walking come first, and on the City’s stretch of the Greenbelt, where Lime’s scooters top out at 12 mph; downtown they slow to 10 mph from 6 p.m. to 3 a.m.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:id:Boise',
@@ -16,10 +16,10 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Boise?',
       blocks: [
-        'Electric scooter rental in Boise means **Lime**. Lime and Bird both arrived in October 2018, after the City adopted ordinances that allowed e-scooters; in July 2023 the City chose Lime as its only shared micromobility provider, which ended Bird’s agreement, KIVI reported. The City’s page still names Lime as its only provider in October 2026, and no other company was renting scooters in Boise. Garden City, a separate city on the river north-west of downtown, chose Lime as its only provider in July 2024, under its own rules.',
-        'A renewal of Lime’s contract was recommended at a City Council work session on 4 June 2024, KIVI reported: under the new terms Lime pays the City $100,000 a year plus 10 cents a ride, keeps sidewalks and ramps clear of its scooters and bikes, and puts out fewer in the winter months and more in the busy ones. No record of the final vote had been published by 29 October 2026.',
-        'At 1:51 a.m. on Thursday 29 October 2026 the [Boise map](map:us:id:Boise) showed about 1,390 Lime scooters as last counted, across Lime’s Boise area: nearly four-fifths of it is the City of Boise and most of the rest unincorporated Ada County, with all of Garden City and slivers of Eagle and Meridian. Boise’s code and agreement apply only inside the city limits.',
-        'For Lime the map shows each scooter’s position and charge; scooters on a ride aren’t shown. **Not everything is on the map:** ScootRadar shows e-scooters only, so Lime’s e-bikes aren’t on it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Electric scooter rental in Boise means **Lime**. Lime and Bird both arrived in October 2018, after the City adopted ordinances that allowed e-scooters; in July 2023 the City chose Lime as its only shared micromobility provider, which ended Bird’s agreement, KIVI reported. The City’s page still names Lime as its only provider in October 2026. Garden City, a separate city on the river north-west of downtown, chose Lime as its only provider in July 2024, under its own rules.',
+        'A renewal of Lime’s contract was recommended at a City Council work session on 4 June 2024, KIVI reported: under the new terms Lime pays the City $100,000 a year plus 10 cents a ride, keeps sidewalks and ramps clear of its scooters and bikes, and puts out fewer in the winter months and more in the busy ones.',
+        'At 1:51 a.m. on Thursday 29 October 2026 the [Boise map](map:us:id:Boise) showed about 1,390 Lime scooters as last counted.',
+        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -44,7 +44,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter rules in Boise: sidewalks, speed, helmets',
       blocks: [
-        'Searching for scooter rules in Idaho? We couldn’t check the Idaho Code, so the rules below are as the City, Lime and Boise State state them. Garden City sets its own (see the Greenbelt below).',
+        'Searching for scooter rules in Idaho? The rules below are as the City, Lime and Boise State state them; Garden City sets its own (see the Greenbelt below).',
         {
           table: {
             caption: 'E-scooter rules in Boise, and who sets them (checked on 29 October 2026)',
@@ -68,8 +68,8 @@ const guide: Guide = {
     {
       heading: 'Nights and winter',
       blocks: [
-        'Boise’s rules set no riding hours or night ban, and Lime’s scooters are on the map at every hour.',
-        'Nor did we find a winter pause. The terms recommended in 2024 have Lime put out fewer scooters in the winter months rather than stop (KIVI), and Lime’s scooters were on the map at the end of October 2026. After a snowfall, check the map: it shows only scooters standing for hire.',
+        'Downtown at night, Lime’s scooters slow to 10 mph rather than stop: the limit is not a curfew.',
+        'In winter Lime puts out fewer scooters rather than stopping, under the terms recommended in 2024 (KIVI). After a snowfall, check the [Boise map](map:us:id:Boise).',
       ],
     },
     {
@@ -81,7 +81,7 @@ const guide: Guide = {
             '**Elsewhere, aim for a preferred spot.** Preferred parking spots, marked P in the app and some with a “Park Here” sign, take $1 off your next ride. About 40 corrals marked “Park Here” went in during 2024 around downtown, Boise State, nearby neighbourhoods and transit corridors.',
             '**Leave the way clear.** Stand the scooter upright at the edge of the sidewalk or by a bike rack. Never block bus stops, benches, curb ramps, intersections, building entrances or ADA access, and never park on private property, in a parking garage or in the street unless a corral is there. You may be fined for breaking the parking rules, the City says.',
             '**On the Greenbelt,** park off the path, on concrete or another hard surface.',
-            '**Zones.** Obey the geofenced no-ride and slow zones, which the City maps on its page, as Garden City does Lime’s slow zones. Zoomed in, the ScootRadar map draws the City of Boise’s no-ride, slow and no-parking zones and its parking corrals, but not Garden City’s zones. Report a badly parked Lime with the City’s online enforcement request form.',
+            '**Zones.** Obey the geofenced no-ride and slow zones, which the City maps on its page, as Garden City does Lime’s slow zones. Zoomed in, the ScootRadar map draws the City of Boise’s no-ride, slow and no-parking zones and its parking corrals. Report a badly parked Lime with the City’s online enforcement request form.',
           ],
         },
       ],
@@ -94,7 +94,7 @@ const guide: Guide = {
           list: [
             '**Boise’s stretch.** E-scooters may use the 29 miles of Greenbelt the City manages, where 52 signs remind everyone to slow down and share the path. People walking have the right of way; warn them before you pass, by voice or bell. Lime’s scooters keep to 12 mph here.',
             '**Garden City’s stretch.** E-scooters may use it and Garden City’s sidewalks, its council papers say, but an ordinance adopted on 13 July 2026 bans “high-speed” ones from the Greenbelt, parks, sidewalks, crosswalks and bike lanes, with a $300 fine plus court costs (CBS2). Garden City Police count any e-scooter that can top 15 mph as high-speed; Lime told Garden City that month that its devices in Idaho are capped at 15 mph. With no posted speed limit, the police ask riders to keep to 15 mph and slow down near the Riverside Hotel and the Boardwalk (KIVI, July 2026).',
-            '**Ada County’s stretches.** Other parts lie on Ada County land, under the County’s own rules, which we couldn’t check: follow the signs.',
+            '**Ada County’s stretches.** Other parts lie on Ada County land, under the County’s own rules: follow the signs there.',
           ],
         },
       ],
@@ -105,8 +105,8 @@ const guide: Guide = {
         {
           list: [
             '**Boise State.** University Policy 12170 (revised 19 September 2025) caps every rider on campus at 15 mph, makes you walk your scooter through the Quad and the “B” Plaza, and keeps scooters out of buildings and the Lincoln, Brady, Osprey and University Plaza garages. Keep at least three feet from people walking and warn before you pass. A scooter that blocks a ramp or an entrance can be cited and impounded.',
-            '**VRT buses.** Valley Regional Transit’s buses carry bikes on a front rack, at least two per bus, and none inside; its bike page says nothing about e-scooters. End your Lime ride clear of the stop before you board.',
-            '**Boise Airport.** Routes 2 Broadway, 3 Vista and 20 Orchard serve the terminal from Monday to Saturday, VRT says; Route 2 runs from Main Street Station past Boise State. The airport’s ground transportation page says nothing about scooters, so follow the signs at the terminal.',
+            '**VRT buses.** Valley Regional Transit’s buses carry bikes on a front rack, at least two per bus, and none inside. End your Lime ride clear of the stop before you board.',
+            '**Boise Airport.** Routes 2 Broadway, 3 Vista and 20 Orchard serve the terminal from Monday to Saturday, VRT says; Route 2 runs from Main Street Station past Boise State.',
             '**Riding elsewhere in the Northwest?** See [e-scooters in Spokane](guide:spokane) and [Portland](guide:portland), or find the nearest Lime on the [Boise map](map:us:id:Boise).',
           ],
         },
@@ -160,7 +160,6 @@ const guide: Guide = {
     { title: 'Garden City: council packet, 27 July 2026, with the minutes of 13 July (PDF)', url: 'https://files.heygov.com/gardencityidaho.org/meetings/me_01kyaas5fbw41ypjvjp2svb208/july-27-2026-council-packet.pdf' },
     { title: 'Valley Regional Transit: Bikes on buses', url: 'https://www.valleyregionaltransit.org/bikes/' },
     { title: 'Valley Regional Transit: Boise Airport service', url: 'https://www.valleyregionaltransit.org/how-to-ride/boise-airport-service/' },
-    { title: 'Boise Airport: Ground transportation', url: 'https://www.iflyboise.com/parking-transportation/ground-transportation/' },
     { title: 'KIVI: Boise changes deal with Lime, 6 June 2024', url: 'https://www.kivitv.com/downtown-boise/boise-changes-deal-with-lime-increases-prices-and-orders-sidewalks-be-kept-clear' },
     { title: 'KIVI: Lime will become exclusive shared e-vehicle service in Boise, 20 June 2023', url: 'https://www.kivitv.com/news/lime-will-become-exclusive-shared-e-vehicle-service-in-boise-this-summer' },
     { title: 'KIVI: Lime and Bird scooters launch in Boise, 18 October 2018', url: 'https://www.kivitv.com/news/lime-and-bird-scooters-launch-in-boise' },

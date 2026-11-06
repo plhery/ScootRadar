@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Tempe, Arizona 2026: Lime, Bird, rules, ASU',
   description: 'E-scooters in Tempe: Lime and Bird, the state and operator rules on sidewalks and speed, ASU’s campus ban, Tempe Town Lake, light rail and Sky Harbor.',
   headline: 'E-scooters in Tempe: Lime and Bird, the rules, and where you can’t ride',
-  lede: 'E-scooters in Tempe come from Lime and Bird. Neither publishes its prices, so check the app, and Bird rents only to riders 18 or over. Arizona law gives a scooter rider a cyclist’s rights and duties and lets Tempe add its own rules, which it updated in July 2026; both companies tell you to stay off the sidewalk. Arizona State University bans motorised scooters on its Tempe campus.',
+  lede: 'E-scooters in Tempe come from Lime and Bird. The app shows the price before you unlock, and Bird rents only to riders 18 or over. Arizona law gives a scooter rider a cyclist’s rights and duties and lets Tempe add its own rules, which it updated in July 2026; both companies tell you to stay off the sidewalk. Arizona State University bans motorised scooters on its Tempe campus.',
   published: '2026-10-22',
   updated: '2026-10-24',
   city: 'us:az:Tempe',
@@ -30,7 +30,7 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in Tempe?',
       blocks: [
-        'Neither company publishes a Tempe price in its open data, so check the app before you unlock.',
+        'The Lime or Bird app shows the price before you unlock.',
         'Bird’s Community and Access Pricing gives discounted rides to people aged 65 or over, US veterans, people on Medicaid or SNAP, and people who get an income-based discount on a utility bill.',
       ],
     },
@@ -53,7 +53,7 @@ const guide: Guide = {
               ['Passengers', 'None: one rider per scooter', 'Arizona, A.R.S. § 28-813; Bird'],
               ['Lights at night', 'A white front light visible from 500 feet and at least a red rear reflector', 'Arizona, A.R.S. § 28-817'],
               ['Alcohol and phones', 'Never ride under the influence; no phone use while riding', 'Bird (riding rules)'],
-              ['Night', 'No curfew in Bird’s data; most City parks close at 10 pm or midnight and open at 6 am', 'Bird; City of Tempe park data'],
+              ['Parks at night', 'Most City parks close at 10 pm or midnight and open at 6 am', 'City of Tempe park data'],
             ],
           },
         },
@@ -65,10 +65,10 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Mill Avenue and downtown.** Downtown Tempe’s 2019 riding guide lists bike lanes on Mill Avenue, Rio Salado Parkway, Ash Avenue, 5th Street/Veterans Way, College Avenue and University Drive, so their sidewalks are off-limits. It says the other downtown streets are posted at 25 mph or less: ride in the street there, not on the sidewalk. On 22 October 2026 Bird’s open data set no zone on Mill Avenue between University Drive and the lake.',
+            '**Mill Avenue and downtown.** Downtown Tempe’s 2019 riding guide lists bike lanes on Mill Avenue, Rio Salado Parkway, Ash Avenue, 5th Street/Veterans Way, College Avenue and University Drive, so their sidewalks are off-limits. It says the other downtown streets are posted at 25 mph or less: ride in the street there, not on the sidewalk.',
             '**Tempe Town Lake and Tempe Beach Park.** Arizona law lets e-scooters use multi-use paths like those around the lake unless the authority in charge bans them. On 22 October 2026 Bird’s open data left the main lakeside paths open but marked patches beside them as no-ride, among them parts of Tempe Beach Park, North Beach and Moeur Park, and further north parts of Papago Park.',
             '**ASU’s Tempe campus.** ASU’s Campus Transportation Code bans motorised scooters from the campus and its buildings: riding one is a $30 violation, $60 inside a building, and the officer may impound it. ASU’s transport office also closes its walk-only zones to every wheeled vehicle from 8 am to 5 pm, Monday to Friday (the policy text, last revised in 2019, says 4 pm). On 22 October 2026 Bird’s open data marked most of the campus as no-ride, from Hayden Library and Palm Walk to Mountain America Stadium, and Hayden Butte beside it.',
-            '**Lime’s zones.** Lime publishes none: check its app’s map before you set off. The [live map](map:us:az:Tempe) shows where scooters are now.',
+            '**Lime’s zones** are in its app: check its map before you set off. The [live map](map:us:az:Tempe) shows where scooters are now.',
           ],
         },
         'These are Bird’s own zones, not City rules, and can change: the app has the final word.',
@@ -84,21 +84,21 @@ const guide: Guide = {
     {
       heading: 'Light rail, the streetcar and Phoenix Sky Harbor Airport',
       blocks: [
-        '**Light rail and streetcar.** Valley Metro’s light rail stops twice downtown, at 3rd Street/Mill Avenue and at the Transportation Center, and the Tempe Streetcar serves 14 stops on a 3-mile route every 15 to 20 minutes, Downtown Tempe says. End a shared scooter ride before you board. ASU’s transport office says a folded scooter of your own may ride the light rail under the seat; that is ASU’s note, not a Valley Metro rule.',
-        '**Phoenix Sky Harbor (PHX).** The free PHX Sky Train runs 24 hours a day between the terminals and the light rail at 44th and Washington streets. On the morning of 22 October 2026 no Bird or Lime scooter stood within a mile of that station, so take the train to Mill Avenue and pick one up there.',
+        '**Light rail and streetcar.** Valley Metro’s light rail stops twice downtown, at 3rd Street/Mill Avenue and at the Transportation Center, and the Tempe Streetcar serves 14 stops on a 3-mile route every 15 to 20 minutes, Downtown Tempe says. End a shared scooter ride before you board. ASU’s transport office says a folded scooter of your own may ride the light rail under the seat.',
+        '**Phoenix Sky Harbor (PHX).** The free PHX Sky Train runs 24 hours a day between the terminals and the light rail at 44th and Washington streets.',
       ],
     },
     {
       heading: 'Riding at night and in the summer heat',
       blocks: [
-        'Bird’s data sets no night hours for scooters, but most City parks close at 10 pm or midnight and open at 6 am, the City’s park data shows; Tempe Beach Park opens at 5 am. After dark Arizona law requires a white front light and a red rear reflector.',
+        'Most City parks close at 10 pm or midnight and open at 6 am, the City’s park data shows; Tempe Beach Park opens at 5 am. After dark Arizona law requires a white front light and a red rear reflector.',
         'Summer is the hard season. Heat is the deadliest weather in Arizona, says the National Weather Service’s Phoenix office: carry water and drink even if you don’t feel thirsty, avoid alcohol, and wear light-coloured clothing, a hat and sunscreen. The City of Phoenix’s heat office adds: plan time outdoors for the coolest part of the day and take frequent breaks.',
       ],
     },
     {
       heading: 'Phoenix next door',
       blocks: [
-        'Phoenix runs its own programme: the City permits the companies, and its page names Lime and Spin. The City asks you to park upright in the designated spots, keep 5 feet clear and stay off the sidewalk. City Code lets you ride from 16, but Spin and Lime rent only to riders 18 or over. The [Phoenix map](map:us:az:Phoenix) shows Spin only: Lime publishes no open data for Phoenix, so open the Lime app to find its scooters there.',
+        'Phoenix runs its own programme: the City permits the companies, and its page names Lime and Spin. The City asks you to park upright in the designated spots, keep 5 feet clear and stay off the sidewalk. City Code lets you ride from 16, but Spin and Lime rent only to riders 18 or over. The [Phoenix map](map:us:az:Phoenix) shows Spin’s scooters; look for Lime’s in the Lime app.',
       ],
     },
     {
@@ -121,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a scooter cost in Tempe?',
-      answer: 'Neither company publishes a Tempe price in its open data, so check the app before you unlock. Bird offers discounts to riders aged 65 or over, US veterans and people on Medicaid or SNAP.',
+      answer: 'The Lime or Bird app shows the price before you unlock. Bird offers discounts to riders aged 65 or over, US veterans and people on Medicaid or SNAP.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Tempe?',
@@ -137,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you take a scooter on the light rail?',
-      answer: 'End a shared scooter ride before you board. ASU says a folded scooter of your own may go under the seat, but that is ASU’s note, not Valley Metro’s.',
+      answer: 'End a shared scooter ride before you board. ASU’s transport office says a folded scooter of your own may go under the seat.',
     },
   ],
   sources: [

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Monopattini Rimini 2026: Lime, sharing, regole e sosta',
   description: 'Monopattini elettrici sharing a Rimini nel 2026: Lime e Bit Mobility, zone e limiti del Comune, sosta, lungomare, bus, Metromare, treni e multe.',
   headline: 'Monopattini a Rimini: chi noleggia, dove si guida, sosta, bus e multe nel 2026',
-  lede: 'I monopattini elettrici in sharing a Rimini che trovi sulla mappa, a ottobre 2026, sono quelli di Lime. Il Comune, nella pagina aggiornata a giugno 2025, indica due operatori, Lime e Bit Mobility: i monopattini di Bit sulla mappa non ci sono, e se Bit li noleggia ancora a Rimini non l’abbiamo potuto verificare. Il casco, obbligatorio per tutti, lo porti tu, e il prezzo lo vedi nell’app. Secondo il Comune si guida solo in alcune zone, al massimo a 15 km/h sui lungomari e a 6 km/h nel centro storico, e mai sul marciapiede.',
+  lede: 'A Rimini, a ottobre 2026, noleggi i monopattini elettrici in sharing di Lime. Il Comune, nella pagina aggiornata a giugno 2025, indica due operatori, Lime e Bit Mobility. Il casco, obbligatorio per tutti, lo porti tu, e il prezzo lo vedi nell’app. Secondo il Comune si guida solo in alcune zone, al massimo a 15 km/h sui lungomari e a 6 km/h nel centro storico, e mai sul marciapiede.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'it:Rimini',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Quali monopattini in sharing ci sono a Rimini',
       blocks: [
-        'Con la delibera di Giunta 401 del 30 novembre 2021 il Comune ha deciso di affidare a due operatori, scelti con un’indagine di mercato, il noleggio di monopattini e bici elettriche in free floating, con al massimo 1.000 monopattini in tutto il Comune, per un servizio «della durata di 3 anni eventualmente rinnovabile». Dal 2023, scriveva il Comune nella pagina aggiornata il 13 giugno 2025, il servizio è gestito da **Lime** e **Bit Mobility**. Quando scadano i tre anni non lo sappiamo, e un rinnovo o un nuovo avviso, al 30 ottobre 2026, non li abbiamo trovati: Lime, comunque, a Rimini noleggia ancora, come mostra la mappa.',
+        'Con la delibera di Giunta 401 del 30 novembre 2021 il Comune ha deciso di affidare a due operatori, scelti con un’indagine di mercato, il noleggio di monopattini e bici elettriche in free floating, con al massimo 1.000 monopattini in tutto il Comune, per un servizio «della durata di 3 anni eventualmente rinnovabile». Dal 2023, scriveva il Comune nella pagina aggiornata il 13 giugno 2025, il servizio è gestito da **Lime** e **Bit Mobility**. A ottobre 2026 Lime a Rimini noleggia ancora.',
         'Nella stessa pagina il Comune indica quanti mezzi, d’accordo con gli operatori, ciascuno mette su strada a seconda della stagione:',
         {
           table: {
@@ -29,18 +29,17 @@ const guide: Guide = {
             ],
           },
         },
-        'Venerdì 30 ottobre 2026 alle 4:27 la [mappa di Rimini](map:it:Rimini) mostrava circa 600 monopattini Lime all’ultimo conteggio, e qualcuno nel frattempo può essersi spostato: è il conteggio della mappa, non la flotta di Lime. Il totale comprende tutta l’area in cui Lime noleggia, che lungo la costa va da Miramare fino a Bellaria-Igea Marina e San Mauro Mare: conta quindi anche monopattini fuori dal Comune di Rimini.',
+        'Venerdì 30 ottobre 2026 alle 4:27 la [mappa di Rimini](map:it:Rimini) mostrava circa 600 monopattini Lime all’ultimo conteggio, e qualcuno nel frattempo può essersi spostato: è il conteggio della mappa, non la flotta di Lime. Il totale comprende tutta l’area in cui Lime noleggia, che lungo la costa va da Miramare fino a Bellaria-Igea Marina e San Mauro Mare.',
         {
           table: {
-            caption: 'Gli operatori di Rimini e dove trovarli, a ottobre 2026',
-            head: ['Operatore', 'Sulla mappa', 'Cosa noleggia a Rimini'],
+            caption: 'Gli operatori di Rimini, a ottobre 2026',
+            head: ['Operatore', 'Cosa noleggia a Rimini'],
             rows: [
-              ['Lime', 'Sì, dal 25 ottobre 2026, con la carica della batteria', 'Monopattini; anche bici elettriche, che sulla mappa non compaiono'],
-              ['Bit Mobility', 'No', 'Monopattini e bici elettriche, secondo il Comune (giugno 2025); a giugno 2026 noleggiava bici ai congressisti di Velo-city. Il 16 luglio 2026 ha fermato i mezzi in tutta Italia per le nuove polizze, riportava SoldiOnline; il 16 settembre il Comune di Bari lo indicava tra gli operatori in servizio in città. Se a Rimini noleggia ancora monopattini non l’abbiamo potuto verificare: controlla la sua app'],
+              ['Lime', 'Monopattini e bici elettriche'],
+              ['Bit Mobility', 'Monopattini e bici elettriche, secondo il Comune (giugno 2025); a giugno 2026 noleggiava bici ai congressisti di Velo-city. Il 16 luglio 2026 ha fermato i mezzi in tutta Italia per le nuove polizze, riportava SoldiOnline; il 16 settembre il Comune di Bari lo indicava tra gli operatori in servizio in città'],
             ],
           },
         },
-        'Altri operatori il Comune non ne nomina, e Dott, Bird, Voi o RideMovi a Rimini non ne abbiamo trovati.',
       ],
     },
     {
@@ -62,7 +61,7 @@ const guide: Guide = {
     {
       heading: 'Lime a Rimini: quanto costa il noleggio',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto. Tariffe di Rimini pubblicate non ne abbiamo trovate: il prezzo lo vedi nell’app prima di sbloccare, e sulla mappa non compare.',
+        'Paghi uno sblocco più una tariffa al minuto: il prezzo lo vedi nell’app prima di sbloccare.',
         'La delibera del 2021 chiedeva agli operatori di mantenere per tutto il servizio le tariffe offerte al Comune, con la possibilità di abbonamenti giornalieri, settimanali o mensili e di sconti. Quali siano oggi pacchetti e pass di Lime a Rimini lo vedi nell’app.',
       ],
     },
@@ -78,11 +77,11 @@ const guide: Guide = {
           ],
         },
         'Per legge, dove il Comune limita le aree, l’operatore deve far sì che il monopattino in sharing non funzioni fuori da quelle aree: dove finiscono te lo mostra l’app.',
-        '**Lungomari e Parco del Mare.** Sui lungomari, scrive il Comune, non si superano i 15 km/h; nelle altre zone il limite è 20 km/h. Per il Parco del Mare una regola a parte sui monopattini non l’abbiamo trovata.',
+        '**Lungomari e Parco del Mare.** Sui lungomari, scrive il Comune, non si superano i 15 km/h; nelle altre zone il limite è 20 km/h.',
         '**Centro storico.** I monopattini possono entrare, scrive il Comune, ma a 6 km/h al massimo, come nelle aree pedonali.',
-        '**Ponte di Tiberio.** Dal 4 maggio 2026 il ponte è in restauro. Dal 30 maggio è di nuovo aperto, con un passaggio pedonale ricavato dentro il ponteggio, e i lavori finiscono nella prima parte di dicembre, scriveva il Comune a settembre. Regole per i monopattini sul ponte durante i lavori il Comune non ne indica: nel passaggio pedonale, tra la gente a piedi, conviene portarlo a mano.',
+        '**Ponte di Tiberio.** Dal 4 maggio 2026 il ponte è in restauro. Dal 30 maggio è di nuovo aperto, con un passaggio pedonale ricavato dentro il ponteggio, e i lavori finiscono nella prima parte di dicembre, scriveva il Comune a settembre. Nel passaggio pedonale, tra la gente a piedi, conviene portare il monopattino a mano.',
         '**Concerti allo stadio.** Per i grandi eventi il Comune può fermare anche i monopattini. Per Vasco Rossi, il 29 e 30 maggio 2026, nell’«area blu» intorno allo stadio Romeo Neri transito e sosta erano vietati anche a bici e monopattini, dalle 23:59 del 28 maggio alle 6 del 31.',
-        '**Di notte e d’inverno.** Divieti notturni per lo sharing non ne abbiamo trovati, e il Comune non prevede una pausa invernale: da novembre a marzo, nella pagina aggiornata a giugno 2025, chiede a ogni operatore almeno 200 monopattini.',
+        '**D’inverno.** Lo sharing resta: da novembre a marzo, nella pagina aggiornata a giugno 2025, chiede a ogni operatore almeno 200 monopattini.',
       ],
     },
     {
@@ -156,15 +155,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quali monopattini in sharing ci sono a Rimini?',
-      answer: 'Quelli di Lime, che trovi sulla mappa. Il Comune, a giugno 2025, indicava come operatori Lime e Bit Mobility, che sulla mappa non c’è: a luglio 2026 Bit aveva fermato i mezzi in tutta Italia per le polizze, e se a Rimini noleggia ancora monopattini non l’abbiamo potuto verificare.',
+      answer: 'Quelli di Lime, che trovi sulla mappa. Il Comune, a giugno 2025, indicava come operatori Lime e Bit Mobility; a luglio 2026 Bit aveva fermato i mezzi in tutta Italia per le polizze.',
     },
     {
       question: 'Quanto costa noleggiare un monopattino a Rimini?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire: tariffe di Rimini pubblicate non ne abbiamo trovate. Le regole fissate dal Comune nel 2021 chiedevano agli operatori di non cambiare le tariffe offerte per tutta la durata del servizio.',
+      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. Le regole fissate dal Comune nel 2021 chiedevano agli operatori di non cambiare le tariffe offerte per tutta la durata del servizio.',
     },
     {
       question: 'Si può andare in monopattino sul lungomare di Rimini?',
-      answer: 'Sì: secondo il Comune i lungomari sono dentro le zone in cui i monopattini possono circolare, ma al massimo a 15 km/h. Per il Parco del Mare non abbiamo trovato regole a parte; il monopattino non va mai lasciato sulla pista ciclabile.',
+      answer: 'Sì: secondo il Comune i lungomari sono dentro le zone in cui i monopattini possono circolare, ma al massimo a 15 km/h. Il monopattino non va mai lasciato sulla pista ciclabile.',
     },
     {
       question: 'Si può portare il monopattino sul Metromare?',
@@ -172,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: 'I monopattini in sharing a Rimini ci sono anche d’inverno?',
-      answer: 'Il Comune non prevede una pausa: nella pagina aggiornata a giugno 2025, da novembre a marzo chiede a ogni operatore almeno 200 monopattini, contro i 500 dell’estate. Divieti notturni non ne abbiamo trovati.',
+      answer: 'Sì: nella pagina aggiornata a giugno 2025, da novembre a marzo il Comune chiede a ogni operatore almeno 200 monopattini, contro i 500 dell’estate.',
     },
   ],
   sources: [

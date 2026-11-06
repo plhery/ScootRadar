@@ -16,22 +16,22 @@ const guide: Guide = {
     {
       heading: 'Which scooter apps work in Portland?',
       blocks: [
-        'Two companies rent e-scooters in Portland in October 2026: **Lime**, with green scooters, and **Lyft**, with gray and orange ones under the BIKETOWN name. The Portland Bureau of Transportation (PBOT) picked them through a request for proposals in 2023 and made its e-scooter programme permanent in summer 2024, after pilots that began in 2018. You won’t find Bird, Spin or Veo here.',
+        'Two companies rent e-scooters in Portland in October 2026: **Lime**, with green scooters, and **Lyft**, with gray and orange ones under the BIKETOWN name. The Portland Bureau of Transportation (PBOT) picked them through a request for proposals in 2023 and made its e-scooter programme permanent in summer 2024, after pilots that began in 2018.',
         {
           list: [
             '**The fleet.** Under their current contracts, Lime and Lyft may run up to about 4,300 scooters between them, after PBOT approved a larger fleet in 2026. In 2025 they had about 3,500.',
             '**The area.** Scooters work citywide, across 145 square miles. Lyft lets you ride anywhere inside the Portland city limits, apart from its no-ride zones.',
-            '**The term.** The contracts run from 2024; PBOT’s pages give no end date.',
+            '**The term.** The contracts run from 2024.',
           ],
         },
-        'At 11:47 pm on Saturday 24 October 2026 the [map of Portland](map:us:or:Portland) showed about 1,130 scooters, all Lyft, and about 1,170 at 4:26 am that morning: late-night counts of what’s on the map, not the fleet. Since 26 October 2026 the map shows Lime’s scooters too, from the map in its app: about 2,160 across the city on the night of 25 to 26 October. BIKETOWN’s e-bikes aren’t on the map.',
+        'At 11:47 pm on Saturday 24 October 2026 the [map of Portland](map:us:or:Portland) showed about 1,130 Lyft scooters, and about 1,170 at 4:26 am that morning: late-night counts of what’s on the map, not the fleet. On the night of 25 to 26 October it showed about 2,160 Lime scooters across the city, as last counted.',
         '**Visiting?** Get the app before you set out. Lyft’s riders must be 18 or over, and your first Lyft ride is held to 10 mph. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in Portland?',
       blocks: [
-        'Lyft publishes its Portland scooter price in its open data and on BIKETOWN’s site. Lime’s standard price is only in its app. Both companies must offer cheaper plans to Portlanders on low incomes, and PBOT lists them.',
+        'Lyft publishes its Portland scooter price in its open data and on BIKETOWN’s site. Lime’s app shows its standard price before you unlock. Both companies must offer cheaper plans to Portlanders on low incomes, and PBOT lists them.',
         {
           table: {
             caption: 'Scooter prices in Portland on 25 October 2026, before any tax',
@@ -41,7 +41,6 @@ const guide: Guide = {
               ['Lyft, BIKETOWN annual member', 'Free', '$0.29', '$2.90', '$5.80'],
               ['Lyft Scooter Community Pass ($5 a month)', 'Free', '$0.13', '$1.30', '$2.60'],
               ['Lime Access', '$0.50', '$0.07', '$1.20', '$1.90'],
-              ['Lime, standard', 'In the app', 'In the app', 'In the app', 'In the app'],
             ],
           },
         },
@@ -52,7 +51,7 @@ const guide: Guide = {
     {
       heading: 'Portland scooter rules: age, helmets, speed and sidewalks',
       blocks: [
-        'The State sets the basic riding rules in the Oregon Vehicle Code, which calls an e-scooter a motor assisted scooter, and PBOT sums them up on its rules page. The City adds rules for parks, and PBOT’s contracts set what Lime and Lyft enforce through their apps. A 2026 state law, House Bill 4007, rewrote Oregon’s age requirements and penalties for e-scooters and similar devices; whatever it sets, Lyft rents only to riders 18 and over.',
+        'The State sets the basic riding rules in the Oregon Vehicle Code, which calls an e-scooter a motor assisted scooter, and PBOT sums them up on its rules page. The City adds rules for parks, and PBOT’s contracts set what Lime and Lyft enforce through their apps. A 2026 state law, House Bill 4007, rewrote Oregon’s age requirements and penalties for e-scooters and similar devices. Lyft rents only to riders 18 and over.',
         {
           table: {
             caption: 'E-scooter rules in Portland on 25 October 2026, and who sets them',
@@ -105,21 +104,15 @@ const guide: Guide = {
     {
       heading: 'Can you take a scooter on MAX, buses or the Streetcar?',
       blocks: [
-        '**Scooters and transit.** TriMet’s rules allow single-seat two-wheeled bikes, recumbents the size of a standard bike, and folding bikes with wheels of 20 inches or less, kept folded. The Portland Streetcar’s list of onboard items names bikes, shopping carts, dollies and mobility aids. Neither mentions e-scooters. With a rental, end your ride before you reach the station: MAX platforms are no-parking zones for Lyft, and you’ll need a rack or signpost nearby.',
+        '**Scooters and transit.** TriMet’s rules allow single-seat two-wheeled bikes, recumbents the size of a standard bike, and folding bikes with wheels of 20 inches or less, kept folded. The Portland Streetcar’s list of onboard items names bikes, shopping carts, dollies and mobility aids. With a rental, end your ride before you reach the station: MAX platforms are no-parking zones for Lyft, and you’ll need a rack or signpost nearby.',
         'Heading to Seattle as well? Our [Seattle guide](guide:seattle) covers Lime’s scooters there, and the [Seattle map](map:us:wa:Seattle) shows them live.',
       ],
     },
     {
-      heading: 'Night rides, winter and free helmets',
+      heading: 'Free helmets',
       blocks: [
-        {
-          list: [
-            '**Night.** Neither PBOT nor Lyft publishes a curfew, and Lyft’s open data lists no rental hours.',
-            '**Winter.** PBOT publishes no winter break either, and Lyft’s open data lists no seasonal hours.',
-            '**Helmets.** PBOT handed out free helmets with Plaid Pantry stores in summer 2026, and Lime gave away more than 1,000 in 2025.',
-          ],
-        },
-        'The [Portland map](map:us:or:Portland) shows the nearest Lime or Lyft scooter and the walk to it.',
+        'PBOT handed out free helmets with Plaid Pantry stores in summer 2026, and Lime gave away more than 1,000 in 2025.',
+        'Find the nearest Lime or Lyft scooter on the [Portland map](map:us:or:Portland).',
       ],
     },
     {

@@ -6,7 +6,7 @@ const guide: Guide = {
   topic: 'paris',
   name: 'Trottinette en libre-service à Paris',
   title: 'Trottinette libre-service à Paris : que louer en 2026 ?',
-  description: 'Trottinette libre-service à Paris : interdite depuis 2023. Prix des Vélib’ et des vélos Lime, Dott, Voi, trottinettes les plus proches, règles pour la vôtre.',
+  description: 'Trottinette libre-service à Paris : interdite depuis 2023. Prix des Vélib’ et des vélos Dott et Voi, trottinettes les plus proches, règles pour la vôtre.',
   headline: 'Trottinette en libre-service à Paris : interdite depuis 2023, que louer à la place ?',
   lede: 'Il n’y a plus de trottinette en libre-service à Paris depuis le 1er septembre 2023 : à la votation du 2 avril 2023, 89,03 % des votants ont dit « contre », avec 7,46 % de participation. À la place, prenez un Vélib’ (3 € le trajet de 45 minutes) ou un vélo électrique Lime, Dott ou Voi (0,29 € la minute chez Voi, sans frais de déverrouillage, tarif publié le 12 octobre 2026). Les trottinettes en libre-service les plus proches roulent en grande banlieue, autour de Versailles, à Saint-Quentin-en-Yvelines ou à Marne-la-Vallée, casque obligatoire. Votre propre trottinette reste permise dans Paris, avec casque et gilet à toute heure depuis le 7 août 2026.',
   published: '2026-10-12',
@@ -30,7 +30,6 @@ const guide: Guide = {
           },
         },
         'Le ministre des Transports de l’époque, Clément Beaune, a jugé ce taux de participation « humiliant ». La votation n’était qu’une consultation, mais la Ville l’a suivie : les conventions de Dott, Lime et Tier ont pris fin le 31 août 2023 à minuit. Chacun pouvait en déployer 5 000 au plus, soit 15 000 en tout.',
-        'Au 12 octobre 2026, aucun retour n’a été annoncé à notre connaissance, pas même depuis l’élection d’Emmanuel Grégoire à la mairie, le 29 mars 2026.',
       ],
     },
     {
@@ -58,7 +57,6 @@ const guide: Guide = {
             rows: [
               ['Voi', '0 €', '0,29 €', '2,90 €', '5,80 €'],
               ['Dott', '1 €', '0,35 €', '4,50 €', '8 €'],
-              ['Lime', 'Non publié', 'Non publié', 'Voir l’app', 'Voir l’app'],
               ['Vélib’ (Ticket-V)', '3 € le trajet', '45 min incluses', '3 €', '3 €'],
             ],
           },
@@ -76,7 +74,7 @@ const guide: Guide = {
     {
       heading: 'Où trouver une trottinette en libre-service près de Paris ?',
       blocks: [
-        'Pas dans Paris, ni, à notre connaissance, en petite couronne : aucun opérateur n’y publie de données de trottinettes. Le 12 octobre 2026 vers 10 h 45, la carte en montrait environ 1 650 en grande banlieue ; le soir, la plus proche de Notre-Dame était à environ 14 km à vol d’oiseau, à Bougival.',
+        'Pas dans Paris : le 12 octobre 2026 vers 10 h 45, la carte en montrait environ 1 650 en grande banlieue.',
         {
           table: {
             caption: 'Trottinettes en libre-service près de Paris : tarifs publiés et relevé de la carte, le 12 octobre 2026',
@@ -93,10 +91,10 @@ const guide: Guide = {
         'Ce relevé n’est pas la taille des flottes, et le prix final est celui de l’app.',
         {
           list: [
-            '**Autour de Versailles** : aucune dans la commune même. Vers 18 h, la Dott la plus proche du château était à environ 1,4 km, au Chesnay-Rocquencourt. [La carte au Chesnay-Rocquencourt](map:fr:Le Chesnay-Rocquencourt) montre les plus proches.',
+            '**Autour de Versailles** : Dott, sur la [carte au Chesnay-Rocquencourt](map:fr:Le Chesnay-Rocquencourt).',
             '**Saint-Quentin-en-Yvelines** : Voi, dans les 12 communes de l’agglomération ; on prend et on rend la trottinette en station. [Saint-Quentin-en-Yvelines sur la carte](map:fr:Saint-Quentin-en-Yvelines).',
             '**Grand Paris Seine et Oise** : Voi depuis le 4 mai 2026, en trois pôles séparés : impossible d’aller de Poissy à Meulan. Il faut avoir 18 ans, la vitesse tombe à 10 km/h près des écoles et des ponts, et la location court jusqu’à ce que la trottinette soit garée en station. [Poissy sur la carte](map:fr:Poissy).',
-            '**Marne-la-Vallée** : Dott, mais aucune à Chessy ou à Serris le 12 octobre 2026 ; vers 18 h, la plus proche de Disneyland Paris était à environ 1,1 km, à Montévrain. [Marne-la-Vallée sur la carte](map:fr:Marne-la-Vallée (SIEMU)).',
+            '**Marne-la-Vallée** : Dott. [Marne-la-Vallée sur la carte](map:fr:Marne-la-Vallée (SIEMU)).',
             '**Évry-Courcouronnes** : Pony, depuis mars 2022.',
           ],
         },
@@ -130,7 +128,7 @@ const guide: Guide = {
     {
       heading: 'Où garer sa trottinette électrique à Paris ?',
       blocks: [
-        'Depuis un arrêté du maire publié le 30 juillet 2019, une trottinette ne se gare ni sur le trottoir, ni dans une aire piétonne, ni sur la chaussée : utilisez les places pour deux-roues motorisés, où elle stationne gratuitement. Garée ailleurs, elle peut vous valoir une amende, dont la Ville ne publie pas le montant.',
+        'Depuis un arrêté du maire publié le 30 juillet 2019, une trottinette ne se gare ni sur le trottoir, ni dans une aire piétonne, ni sur la chaussée : utilisez les places pour deux-roues motorisés, où elle stationne gratuitement. Garée ailleurs, elle peut vous valoir une amende.',
       ],
     },
     {
@@ -156,8 +154,8 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'Les trottinettes Lime vont-elles revenir à Paris ?',
-      answer: 'Rien ne l’annonce au 12 octobre 2026, à notre connaissance. Lime est toujours à Paris, mais avec des vélos électriques seulement, comme Dott et Voi, sous une convention de quatre ans entrée en vigueur le 1er octobre 2025.',
+      question: 'Les trottinettes Lime sont-elles encore à Paris ?',
+      answer: 'Non, seulement ses vélos électriques : comme Dott et Voi, Lime les fait rouler à Paris sous une convention de quatre ans entrée en vigueur le 1er octobre 2025.',
     },
     {
       question: 'Peut-on encore louer une trottinette électrique à Paris ?',
@@ -173,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: 'Y a-t-il des trottinettes en libre-service à Versailles ?',
-      answer: 'Pas dans la commune même, au 12 octobre 2026. Des Dott roulent juste à côté, au Chesnay-Rocquencourt, à La Celle-Saint-Cloud et à Bougival. Dans les Yvelines, casque et gilet sont obligatoires à toute heure depuis le 15 septembre 2026.',
+      answer: 'Autour de Versailles, des Dott roulent au Chesnay-Rocquencourt, à La Celle-Saint-Cloud et à Bougival. Dans les Yvelines, casque et gilet sont obligatoires à toute heure depuis le 15 septembre 2026.',
     },
   ],
   sources: [

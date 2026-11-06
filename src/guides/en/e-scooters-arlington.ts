@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Arlington VA 2026: Lime, Bird, GCOO, rules',
   description: 'E-scooters in Arlington, VA: Lime, Bird and GCOO, County permits, sidewalk rules, corrals, the Mount Vernon Trail ban, the Pentagon and crossing into DC.',
   headline: 'E-scooters in Arlington, Virginia: Lime, Bird and GCOO, the rules, and where you can ride',
-  lede: 'You can rent e-scooters in Arlington, VA, from Lime, Bird and GCOO, the three companies on the map; each app shows its price before you unlock. Spin, permitted in 2025, has no scooters on the map. As Falls Church’s staff summed up the County’s rules in 2025, you may ride in the street, in bike lanes, on shared-use paths and on most sidewalks, unless signs say no or a bike lane runs your way. The Mount Vernon Trail is federal parkway land where e-scooters are banned, and the Pentagon and Arlington National Cemetery are no place to ride or park one.',
+  lede: 'You can rent e-scooters in Arlington, VA, from Lime, Bird and GCOO; each app shows its price before you unlock. As Falls Church’s staff summed up the County’s rules in 2025, you may ride in the street, in bike lanes, on shared-use paths and on most sidewalks, unless signs say no or a bike lane runs your way. The Mount Vernon Trail is federal parkway land where e-scooters are banned, and the Pentagon and Arlington National Cemetery are no place to ride or park one.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:va:Arlington',
@@ -16,22 +16,22 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Arlington, VA?',
       blocks: [
-        'Arlington is a county, not a city, and its Board adopted its shared scooter and e-bike rules on 16 November 2019. In September 2025 the staff of neighbouring Falls Church counted **three permitted operators** in the County, **Lime**, **Bird** and **Spin**, with up to 2,000 e-scooters and 1,000 e-bikes allowed and 1,600 scooters out. Operators paid $1,000 to apply for each kind of device, plus $80 a device. ARLnow still counted three operators in March 2026, without naming them.',
-        '**Spin**, which Bird bought in 2023, has no scooters on our map: its open data listed none in Arlington in late October 2026. **GCOO**, a South Korean brand with a permit next door in Alexandria until 31 March 2027, publishes a service area covering most of Arlington, and the map has shown its scooters there since 24 October 2026. Falls Church’s staff deck of 11 February 2026 still listed Lime, Bird and Spin in Arlington and GCOO in Alexandria only, and BikeArlington, the County’s cycling programme, names Lime, Bird and Spin. Veo and LINK left early in 2024, ARLnow reported.',
-        'At 4:56 a.m. on Thursday 29 October 2026 the [Arlington map](map:us:va:Arlington) showed about 1,010 scooters: some 520 Lime and 230 Bird at that moment, and 260 GCOO as last counted. That is what the map holds, not the fleets. The total is what the three companies list for Arlington, less any in Alexandria, not a count within the County’s boundary: a few may stand just over the line in Falls Church or Fairfax County.',
-        'For Bird and GCOO the map shows each scooter’s position, charge and range, and their zones; for Lime, position and range. Scooters on a ride aren’t shown, nor are e-bikes or Capital Bikeshare. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Arlington is a county, not a city, and its Board adopted its shared scooter and e-bike rules on 16 November 2019. In September 2025 the staff of neighbouring Falls Church counted **three permitted operators** in the County, **Lime**, **Bird** and **Spin**, with up to 2,000 e-scooters and 1,000 e-bikes allowed and 1,600 scooters out. Operators paid $1,000 to apply for each kind of device, plus $80 a device. ARLnow still counted three operators in March 2026.',
+        '**Spin** has belonged to Bird since 2023. **GCOO**, a South Korean brand with a permit next door in Alexandria until 31 March 2027, publishes a service area covering most of Arlington. Falls Church’s staff deck of 11 February 2026 still listed Lime, Bird and Spin in Arlington and GCOO in Alexandria only, and BikeArlington, the County’s cycling programme, names Lime, Bird and Spin. Veo and LINK left early in 2024, ARLnow reported.',
+        'At 4:56 a.m. on Thursday 29 October 2026 the [Arlington map](map:us:va:Arlington) showed about 1,010 scooters: some 520 Lime and 230 Bird at that moment, and 260 GCOO as last counted. That is what the map holds, not the fleets.',
+        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in Arlington?',
       blocks: [
-        'No open official page gave Lime’s, Bird’s or GCOO’s Arlington prices in October 2026: each app shows its rate before you unlock. The County’s 2019 rules required permit holders to offer discounts to lower-income riders. GCOO Access gives approved riders a 50% coupon for a year, which doesn’t cover the unlock fee, and ten $2 coupons; GCOO says conditions vary by city.',
+        'Each app shows its rate before you unlock. The County’s 2019 rules required permit holders to offer discounts to lower-income riders. GCOO Access gives approved riders a 50% coupon for a year, which doesn’t cover the unlock fee, and ten $2 coupons; GCOO says conditions vary by city.',
       ],
     },
     {
       heading: 'Scooter rules in Arlington and Virginia',
       blocks: [
-        'Two levels apply. The Code of Virginia defines an e-scooter as under 100 pounds and no faster than 20 mph on its motor, allows it on sidewalks unless a local ordinance says no, and lets counties license rental companies. Arlington’s ordinance took effect on 31 December 2019. We couldn’t read the County’s website, so its rules below are as the County announced them in November 2019 and February 2020, reported by the Arlington Connection and ARLnow, and as Falls Church’s staff summed them up in September 2025.',
+        'Two levels apply. The Code of Virginia defines an e-scooter as under 100 pounds and no faster than 20 mph on its motor, allows it on sidewalks unless a local ordinance says no, and lets counties license rental companies. Arlington’s ordinance took effect on 31 December 2019. The County’s rules below are as it announced them in November 2019 and February 2020, reported by the Arlington Connection and ARLnow, and as Falls Church’s staff summed them up in September 2025.',
         {
           table: {
             caption: 'E-scooter rules in Arlington and who sets them (as published or reported by 29 October 2026)',
@@ -42,10 +42,9 @@ const guide: Guide = {
               ['Speed', '6 mph on sidewalks and 15 mph on streets and trails, as the County announced in November 2019. 20 mph at most anywhere in Virginia', 'Arlington County (2019); Code of Virginia § 46.2-908.1'],
               ['People on foot', 'On a sidewalk, shared-use path or crosswalk, yield to them and give an audible signal before you pass', 'Code of Virginia § 46.2-904'],
               ['Age', '18 to ride a GCOO; Lime and Bird set theirs in their apps. Under 14, only with someone 18 or older supervising', 'GCOO’s terms; Code of Virginia § 46.2-908.1'],
-              ['Helmet', 'Virginia lets a county require one up to age 14; we couldn’t check whether Arlington does. GCOO advises one for everyone', 'Code of Virginia § 46.2-906.1; GCOO'],
+              ['Helmet', 'Virginia lets a county require one up to age 14. GCOO advises one for everyone', 'Code of Virginia § 46.2-906.1; GCOO'],
               ['Passengers and alcohol', 'One rider only, and never impaired by alcohol or drugs', 'GCOO’s terms'],
               ['Fines', 'Riding where signs ban it, or parking in people’s way: a civil penalty of up to $50', 'Code of Virginia § 46.2-904'],
-              ['Hours', 'None in the County’s rules as reported; the Mount Vernon Trail closes at night', 'Arlington County; National Park Service'],
             ],
           },
         },
@@ -92,8 +91,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Metro.** WMATA takes bikes and electric scooters free if under 80 inches long, 48 high and 22 wide, by elevator. It says nothing about shared ones, which bill until you end the ride: end it at the station.',
-            '**ART buses.** Arlington Transit carries bikes on a front rack and says nothing about e-scooters.',
+            '**Metro.** WMATA takes bikes and electric scooters free if under 80 inches long, 48 high and 22 wide, by elevator. Shared ones bill until you end the ride: end it at the station.',
+            '**ART buses.** Arlington Transit carries bikes on a front rack.',
             '**The Pentagon.** “The Pentagon Reservation is not an authorized location” to leave rental scooters or bikes, the Pentagon Force Protection Agency told Defense One in 2018, warning it would impound them. End your ride in Pentagon City.',
             '**Arlington National Cemetery.** Federal rules (32 CFR § 553.33(c)(8), in the edition of 1 July 2025) ban riding a bicycle “or similar conveyance” there, except with a pass to visit a gravesite: end your ride outside and walk in.',
             '**Reagan National (DCA).** The airport’s 30 bike and scooter racks between Terminals 1 and 2 take no ride-share equipment, and riding on its sidewalks and crossings is banned. Take Metro, or a Capital Bikeshare bike to its dock in Garage 2.',
@@ -121,7 +120,7 @@ const guide: Guide = {
     },
     {
       question: 'Which scooter companies operate in Arlington?',
-      answer: 'The map shows Lime, Bird and GCOO. Falls Church’s February 2026 deck listed Lime, Bird and Spin in Arlington, and Spin’s scooters aren’t on the map. GCOO has a permit in Alexandria until 31 March 2027.',
+      answer: 'Lime, Bird and GCOO: find their scooters on the [Arlington map](map:us:va:Arlington). Falls Church’s February 2026 deck listed Lime, Bird and Spin in Arlington, and GCOO has a permit in Alexandria until 31 March 2027.',
     },
     {
       question: 'Can you ride a scooter on the Mount Vernon Trail?',

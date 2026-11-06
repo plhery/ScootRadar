@@ -17,15 +17,15 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Dresden?',
       blocks: [
         'Wer in Dresden E-Scooter (auch E-Roller genannt) verleiht, braucht laut Stadt eine Sondernutzungserlaubnis und zahlt Gebühren. Nach einer Ausschreibung mit sechs Bewerbern und einem Losverfahren «erhielten BOLT, VOI und RideMovi am 18. Juli 2025 eine Sondernutzungserlaubnis für jeweils bis zu 833 Fahrzeuge», für drei Jahre ab dem 1. August 2025 (Pressemitteilung vom 28. Juli 2025). Heute nennt die Stadt für E-Scooter «RideMovi (seit August 2025), BOLT (seit März 2026) und Voi (ab Herbst 2026) – insgesamt 2.500 E-Scooter möglich» (Stand 29. September 2026). Lime, dessen E-Scooter laut derselben Pressemitteilung «durch die neuen Angebote ersetzt» werden sollten, führt die Stadt heute nur noch bei den E-Bikes (seit August 2025).',
-        'Die [Karte von Dresden](map:de:Dresden) zeigt die freien Bolt-Scooter mit Standort und Akkustand, keine Preise, Zonen oder Abstellflächen; sie deckt das ganze Stadtgebiet ab. Am 26. Oktober 2026 zeigte sie zwischen 14:50 und 15 Uhr rund 515 Bolt-Scooter. Nach den amtlichen Grenzen (GeoSN) standen 514 in Dresden und einer in Radebeul, 16 m hinter der Stadtgrenze; gut 200 davon in den Gemarkungen Altstadt I und II und Neustadt, keiner in Loschwitz, Pillnitz oder Langebrück. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        'RideMovi und, sobald es startet, Voi zeigt die Karte nicht, ebenso wenig E-Bikes und Leihräder; die findest du in den Apps der Anbieter. Dass Dott, Zeus oder Bird in Dresden vermieten, nennt keine offizielle Quelle. Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Die [Karte von Dresden](map:de:Dresden) zeigt die freien Bolt-Scooter mit Standort und Akkustand. Am 26. Oktober 2026 standen dort zwischen 14:50 und 15 Uhr rund 515 Bolt-Scooter: 514 in Dresden, gut 200 davon in den Gemarkungen Altstadt I und II und Neustadt, und einer in Radebeul. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        'Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Dazu kommt MOBIbike, das städtische Leihrad, betrieben von den Dresdner Verkehrsbetrieben (DVB), laut Stadt mit «rund 2.000 Fahrrädern (Stand Juli 2025)». Mit DVB-Abo oder Deutschlandticket und dem Zusatzprodukt «MOBI» kannst du es «bis zu 30 Minuten kostenfrei nutzen – und das mehrmals täglich».',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Dresden?',
       blocks: [
-        'Den Preis zeigt dir die App vor dem Entsperren; bei Bolt gehört laut Nutzungsbedingungen «die geltende Gebührentabelle, wie sie in der App angezeigt wird» zum Vertrag. Die Stadt nennt keinen Tarif. Sie selbst verlangt vom Anbieter laut Sondernutzungssatzung (Stand 17. Juli 2023) 3,35 € je E-Scooter und Monat. Teuer wird es für dich, wenn du falsch abstellst:',
+        'Den Preis zeigt dir die App vor dem Entsperren; bei Bolt gehört laut Nutzungsbedingungen «die geltende Gebührentabelle, wie sie in der App angezeigt wird» zum Vertrag. Die Stadt verlangt vom Anbieter laut Sondernutzungssatzung (Stand 17. Juli 2023) 3,35 € je E-Scooter und Monat. Teuer wird es für dich, wenn du falsch abstellst:',
         {
           table: {
             caption: 'Gebühren laut Bolts Nutzungsbedingungen',
@@ -49,18 +49,17 @@ const guide: Guide = {
             rows: [
               ['Hauptstrasse in der Inneren Neustadt', 'Gehweg oder Fussgängerzone mit «Rad frei»: heute nicht fahren, ab 1. März 2027 im Schritttempo', 'Stadt (Beschilderung), Bund (eKFV, StVO)'],
               ['15 Rote Zonen rund um Altstadt und Neustadt', 'Leih-Scooter nicht abstellen, teils ganzjährig, teils zu Markt- und Veranstaltungszeiten', 'Stadt (Sharing-Leitlinien, Erlaubnis)'],
-              ['Städtische Grünanlagen', 'Befahren mit «Kraftfahrzeugen aller Art» und Abstellen nur mit Genehmigung; nach unserer Lesart gilt das auch für E-Scooter', 'Stadt (Grünanlagensatzung von 2011)'],
+              ['Städtische Grünanlagen', 'Befahren mit «Kraftfahrzeugen aller Art» und Abstellen nur mit Genehmigung; E-Scooter sind Kraftfahrzeuge (§ 1 eKFV)', 'Stadt (Grünanlagensatzung von 2011)'],
               ['Gelände der TU Dresden', 'Es gilt die StVO; E-Scooter nicht in Gebäuden und nicht an Geländern oder Handläufen der Eingänge abstellen', 'TU Dresden (Hausordnung von 2026)'],
-              ['HTW Dresden', '«Kraftfahrzeuge dürfen nur auf den dafür vorgesehenen und markierten Flächen abgestellt werden»; nach unserer Lesart gilt das auch für E-Scooter', 'HTW Dresden (Hausordnung, gültig ab 10. Februar 2012)'],
+              ['HTW Dresden', '«Kraftfahrzeuge dürfen nur auf den dafür vorgesehenen und markierten Flächen abgestellt werden»; E-Scooter sind Kraftfahrzeuge (§ 1 eKFV)', 'HTW Dresden (Hausordnung, gültig ab 10. Februar 2012)'],
             ],
           },
         },
         {
           list: [
             '**Hauptstrasse:** Die Stadt kündigte am 22. Oktober 2025 an: «Statt wie bisher als Fussweg mit der Zusatzbezeichnung ‹Rad frei› wird die Hauptstrasse als Fussgängerzone mit ‹Rad frei› ausgewiesen.» Ob Gehweg oder Fussgängerzone: Für E-Scooter gilt «Rad frei» erst ab 1. März 2027, dann im Schritttempo; bis dahin schiebst du.',
-            '**Grünanlagen:** In den Grünanlagen im Verzeichnis der Stadt braucht laut Grünanlagensatzung vom 27. Januar 2011 «das Befahren mit Kraftfahrzeugen aller Art oder das Abstellen derselben» eine Genehmigung. E-Scooter nennt sie nicht; nach unserer Lesart gilt das auch für sie.',
+            '**Grünanlagen:** In den Grünanlagen im Verzeichnis der Stadt braucht laut Grünanlagensatzung vom 27. Januar 2011 «das Befahren mit Kraftfahrzeugen aller Art oder das Abstellen derselben» eine Genehmigung, und nach § 1 der E-Scooter-Verordnung ist ein E-Scooter ein Kraftfahrzeug.',
             '**TU Dresden:** Ihre Hausordnung vom 3. September 2026 nennt E-Scooter ausdrücklich: «Elektrokleinstfahrzeuge dürfen nicht in Gebäuden, an Geländern und Handläufen der Gebäudezugänge abgestellt werden.» In gekennzeichneten Abstellräumen und auf gekennzeichneten Flächen dürfen nur E-Scooter mit abnehmbarem Akku stehen, und den Akku nimmst du ab; laden darfst du ihn an der TU nicht. Auf dem Gelände gilt die StVO.',
-            '**Nachts und im Winter:** Eine nächtliche Sperrzeit oder Winterpause nennen weder die Stadt noch Bolt (Stand 26. Oktober 2026).',
           ],
         },
       ],
@@ -75,7 +74,7 @@ const guide: Guide = {
           list: [
             '**Foto:** Die Stadt verlangt von den Anbietern, dass am Ende jeder Fahrt ein Foto vom abgestellten Scooter entsteht und die Position mit den Verbotszonen abgeglichen wird.',
             '**Abstand:** Die Anbieter müssen laut Leitlinien dafür sorgen, dass an Haltestellen 20 m frei bleiben, auf dem Gehweg mindestens 2 m Platz bleibt und höchstens vier Fahrzeuge an einer Stelle stehen, mit 50 m Abstand zur nächsten. Freihalten müssen sie auch Brücken, Parks und Grünflächen.',
-            '**Hauptbahnhof und Bahnhof Neustadt:** Eigene Abstellregeln nennt die Stadt für beide nicht; Bahnsteige und Haltestellen müssen die Anbieter auch dort freihalten.',
+            '**Hauptbahnhof und Bahnhof Neustadt:** Bahnsteige und Haltestellen müssen die Anbieter auch dort freihalten.',
           ],
         },
         {
@@ -95,7 +94,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit gefahren', '10 €', '25 €'],
               ['Rote Ampel', '60 € und 1 Punkt; länger als 1 Sekunde rot: 100 € und 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Unzulässig auf Geh- oder Radweg geparkt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', '55 €, mit Behinderung 70 €'],
               ['Ohne gültige Versicherungsplakette', '40 €', 'Unverändert'],
@@ -113,8 +112,8 @@ const guide: Guide = {
         'Im Verkehrsverbund Oberelbe (VVO), also in Strassenbahn und Bus der DVB wie in S-Bahn und Regionalzug, erlauben die Beförderungsbedingungen (Stand 1. August 2026) zusammengeklappte elektrische Tretroller, «wenn die Voraussetzungen zur Beförderung dazu gegeben sind». Nicht zusammengeklappte versicherungspflichtige Fahrzeuge sind «grundsätzlich von der Beförderung ausgeschlossen». Kostenlos fährt laut VVO-Tarif «ein zusammengeklappter elektrischer Tretroller» mit.',
         {
           list: [
-            '**Strassenbahn und Bus der DVB:** Für sie machen die VVO-Bedingungen keine Ausnahme, anders als in Leipzig, wo seit dem 1. Mai 2024 kein E-Scooter mehr in Strassenbahnen und Busse der LVB darf. Einen Anspruch auf Mitnahme hast du aber nicht: «Das Betriebspersonal entscheidet im Einzelfall, ob Sachen zur Beförderung zugelassen werden».',
-            '**Elbfähren:** Dort werden laut VVO auch versicherungspflichtige Fahrzeuge «grundsätzlich befördert, sofern die Bauart des Fahrzeugs und der Fähre sowie der Fähranleger die Beförderung zulassen»; nach unserer Lesart gehört ein E-Scooter dazu. Es entscheidet das Fährpersonal.',
+            '**Strassenbahn und Bus der DVB:** Die VVO-Regel gilt auch hier, anders als in Leipzig, wo seit dem 1. Mai 2024 kein E-Scooter mehr in Strassenbahnen und Busse der LVB darf. Einen Anspruch auf Mitnahme hast du aber nicht: «Das Betriebspersonal entscheidet im Einzelfall, ob Sachen zur Beförderung zugelassen werden».',
+            '**Elbfähren:** Dort werden laut VVO auch versicherungspflichtige Fahrzeuge «grundsätzlich befördert, sofern die Bauart des Fahrzeugs und der Fähre sowie der Fähranleger die Beförderung zulassen», und ein E-Scooter ist versicherungspflichtig. Es entscheidet das Fährpersonal.',
             '**IC und ICE der Deutschen Bahn:** Zusammengeklappt und sicher verstaut fährt dein eigener E-Scooter dort kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden.',
           ],
         },
@@ -131,11 +130,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter kann ich in Dresden mieten?',
-      answer: 'Laut Stadt die von RideMovi und Bolt; Voi soll «ab Herbst 2026» dazukommen (Stand 29. September 2026). Bei Bolt musst du mindestens 18 sein, einen Führerschein brauchst du nicht. Unsere Karte zeigt nur Bolt.',
+      answer: 'Laut Stadt die von RideMovi und Bolt; Voi soll «ab Herbst 2026» dazukommen (Stand 29. September 2026). Bei Bolt musst du mindestens 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet ein E-Scooter in Dresden?',
-      answer: 'Den Preis zeigt dir die App vor dem Entsperren; die Stadt nennt keinen Tarif. Bei Bolt wird Falschparken teuer: 15 € ohne klares Abstellfoto, bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs.',
+      answer: 'Den Preis zeigt dir die App vor dem Entsperren. Bei Bolt wird Falschparken teuer: 15 € ohne klares Abstellfoto, bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs.',
     },
     {
       question: 'Wo darf ich in der Dresdner Altstadt einen Leih-Scooter abstellen?',
@@ -160,7 +159,7 @@ const guide: Guide = {
     { title: 'Landeshauptstadt Dresden: Sondernutzungssatzung, zuletzt geändert am 17. Juli 2023 (PDF)', url: 'https://www.dresden.de/media/pdf/verkehr/satzung_sondernutzung.pdf' },
     { title: 'Landeshauptstadt Dresden: Grünanlagensatzung vom 27. Januar 2011 (PDF)', url: 'https://www.dresden.de/media/pdf/gruenflaechen/Satzung_sondernutzung_gruenanlagen.pdf' },
     { title: 'Landeshauptstadt Dresden: Neue Piktogramme auf der Hauptstrasse (Pressemitteilung, 22. Oktober 2025)', url: 'https://www.dresden.de/de/rathaus/aktuelles/pressemitteilungen/10/Pm_048.php' },
-    { title: 'GeoSN: ALKIS-WFS, Verwaltungseinheiten und Gemarkungen (Stand 15. Oktober 2026)', url: 'https://www.geodaten.sachsen.de/alkis-wfs-4968.html' },
+    { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. August 2023 bis 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicle-old/' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'TU Dresden: Hausordnung vom 3. September 2026 (Amtliche Bekanntmachungen Nr. 11/2026, PDF)', url: 'https://www.verw.tu-dresden.de/AmtBek/PDF-Dateien/2026-11/20_AB26_208_Hausordnung.pdf' },

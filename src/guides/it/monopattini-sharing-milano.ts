@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Quali monopattini in sharing ci sono a Milano',
       blocks: [
         'A ottobre 2026 gli operatori autorizzati dal Comune sono due, **Dott** e **Lime**, «con un totale di 4.000 mezzi disponibili in città»: lo riportavano il 16 luglio 2026 MilanoPost e Il Giornale, riprendendo la nota del Comune sulla revoca di Bird.',
-        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Milano](map:it:Milano), Sesto San Giovanni compreso, c’erano circa 1.500 monopattini Dott, una fotografia di quel momento. Da domenica 25 ottobre la mappa mostra anche i Lime: quel giorno verso le 15 erano circa 2.700 all’ultimo conteggio, sulla stessa area. Non sono le flotte. Dott e Lime noleggiano anche bici elettriche, che sulla mappa non compaiono.',
-        'Il quadro è un avviso pubblico del Comune del 2023: al massimo 6.000 monopattini, in offerte da 2.000 per operatore, per tre anni (MilanoToday, dicembre 2023), con autorizzazioni dal 16 dicembre 2023 a dicembre 2026 (Il Giorno, marzo 2024). Per dopo non abbiamo trovato annunci: da dicembre controlla l’app prima di uscire.',
+        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Milano](map:it:Milano), Sesto San Giovanni compreso, c’erano circa 1.500 monopattini Dott, una fotografia di quel momento; domenica 25 ottobre verso le 15 quelli di Lime erano circa 2.700 all’ultimo conteggio, sulla stessa area. Non sono le flotte. Dott e Lime noleggiano anche bici elettriche.',
+        'Il quadro è un avviso pubblico del Comune del 2023: al massimo 6.000 monopattini, in offerte da 2.000 per operatore, per tre anni (MilanoToday, dicembre 2023), con autorizzazioni dal 16 dicembre 2023 a dicembre 2026 (Il Giorno, marzo 2024).',
         {
           table: {
             caption: 'Gli operatori a Milano dall’avviso 2023, secondo la stampa',
@@ -52,8 +52,8 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattino a Milano: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto. Né Dott né Lime pubblicano le tariffe di Milano: il prezzo lo vedi nell’app toccando un mezzo, prima di sbloccarlo.',
-        'Il centro assistenza di Dott (25 agosto 2026) dà solo una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, più lo sblocco. Non è il prezzo di Milano.',
+        'Paghi uno sblocco più una tariffa al minuto: il prezzo lo vedi nell’app toccando un mezzo, prima di sbloccarlo.',
+        'Il centro assistenza di Dott (25 agosto 2026) dà una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, più lo sblocco.',
         'I pass di Dott cambiano da città a città e valgono in tutte le sue città italiane, da Monza a [Roma](guide:rome): quelli di Milano, come i pacchetti di Lime, li trovi nell’app.',
       ],
     },
@@ -77,9 +77,9 @@ const guide: Guide = {
       heading: 'Dove si guida: centro, Navigli e parchi',
       blocks: [
         'A Milano il monopattino va sulle strade urbane dove possono andare le bici, dicono le condizioni di Dott citando la delibera del Comune, e sulle piste ciclabili; mai sul marciapiede. La legge nazionale aggiunge il limite di 20 km/h, che scende a 6 km/h nelle aree pedonali.',
-        'Su OpenStreetMap, la mappa libera, sono segnate come pedonali, almeno in parte, piazza del Duomo, via Dante, piazza della Scala, piazza San Babila, corso Como e via Paolo Sarpi, e ai Navigli tratti dell’alzaia Naviglio Grande e di Ripa di Porta Ticinese. Non è un elenco del Comune: fanno fede i cartelli.',
-        'Nel **Parco Nord Milano** il monopattino entra solo nei giorni feriali, mai la domenica e nei festivi, e solo sui percorsi asfaltati, a 15 km/h al massimo e con una persona sola. Lo stabilisce il regolamento del parco (testo vigente al 29 maggio 2025); la sanzione va da 60 a 180 euro. Per i parchi del Comune, come il Sempione, non abbiamo potuto verificare le regole: segui i cartelli.',
-        'Non abbiamo trovato divieti notturni né stop stagionali per lo sharing a Milano. Di sera, da mezz’ora dopo il tramonto, la legge chiede le luci accese e il giubbotto o le bretelle retroriflettenti.',
+        'Su OpenStreetMap, la mappa libera, sono segnate come pedonali, almeno in parte, piazza del Duomo, via Dante, piazza della Scala, piazza San Babila, corso Como e via Paolo Sarpi, e ai Navigli tratti dell’alzaia Naviglio Grande e di Ripa di Porta Ticinese: fanno fede i cartelli.',
+        'Nel **Parco Nord Milano** il monopattino entra solo nei giorni feriali, mai la domenica e nei festivi, e solo sui percorsi asfaltati, a 15 km/h al massimo e con una persona sola. Lo stabilisce il regolamento del parco (testo vigente al 29 maggio 2025); la sanzione va da 60 a 180 euro.',
+        'Di sera, da mezz’ora dopo il tramonto, la legge chiede le luci accese e il giubbotto o le bretelle retroriflettenti.',
       ],
     },
     {
@@ -93,7 +93,7 @@ const guide: Guide = {
             '**Tram 4, 7 e 31**: in via sperimentale, sui tram con il simbolo della bici, anche aperto: nei feriali fino alle 7 e dalle 20, tutto il giorno nel fine settimana e nei festivi; al massimo 2 per tram, dalle porte 3 e 4.',
           ],
         },
-        '**A dicembre.** La pagina di ATM, letta il 24 ottobre 2026, ammette bici e mezzi di micromobilità in metro tutti i giorni «tranne dall’1 al 24 dicembre», senza dire l’anno né se valga per i monopattini piegati; l’opuscolo dice «sempre» e rimanda al sito. In quei giorni controlla prima.',
+        '**A dicembre.** La pagina di ATM, letta il 24 ottobre 2026, ammette bici e mezzi di micromobilità in metro tutti i giorni «tranne dall’1 al 24 dicembre»; l’opuscolo dice «sempre» e rimanda al sito. In quei giorni controlla prima.',
         'La M4 arriva all’aeroporto di Linate; con le carrozze troppo piene, ATM può sospendere il trasporto.',
         'Sui treni **Trenord**, Malpensa Express compreso, è sempre gratis il trasporto di «monopattini pieghevoli, opportunamente ripiegati» e di mezzi non più grandi di 80×120×45 cm, dice la pagina di Trenord. Le condizioni di trasporto (settembre 2026) chiedono di salire con il monopattino spento e, se pieghevole, chiuso, e di metterlo sotto il sedile o tra due sedili.',
         'Un monopattino in sharing non si piega e, finché non chiudi la corsa, paghi: chiudila prima di entrare in stazione.',
@@ -150,7 +150,7 @@ const guide: Guide = {
     },
     {
       question: 'Quanto costa noleggiare un monopattino a Milano?',
-      answer: 'Paghi uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire: né Dott né Lime pubblicano il prezzo di Milano. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città.',
+      answer: 'Paghi uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città.',
     },
     {
       question: 'Dove posso lasciare il monopattino in sharing a Milano?',

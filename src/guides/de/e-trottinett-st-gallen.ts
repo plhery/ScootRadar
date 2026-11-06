@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'E-Trottinett in St. Gallen mieten: Dott ist der einzige Anbieter',
       blocks: [
-        'Lime, Voi, Bolt oder Bird suchst du in St. Gallen vergeblich. Seit 2020 lässt die Stadt nur Tier zu, das heute Dott heisst. 2022 schrieb sie die Bewilligung zusammen mit Gossau, Wittenbach, Gaiserwald und Berg öffentlich aus, und Tier gewann gegen zwei andere Angebote. Die Bewilligung lief ab dem 1. April 2023 für drei Jahre, mit Option auf zwei weitere, also längstens bis Ende März 2028. Ob die Stadt die Option gezogen hat, hat sie bis Oktober 2026 nicht veröffentlicht; Dott fährt weiter.',
-        'Die [Karte von St. Gallen](map:ch:st-gallen) zeigt dir die freien Dott-Trottis; die E-Bikes findest du nur in der Dott-App. Am Morgen des 13. Oktober 2026 zeigte sie etwa 880, weit über die Stadt hinaus: von Gossau und Flawil über [Rorschach](map:ch:rorschach) bis ins Rheintal und nach Romanshorn. Innerhalb der Stadtgrenze waren es in der Nacht auf den 14. Oktober gut 300, ungefähr so viele, wie die Stadt nennt. So kommst du zu deinem Trotti:',
+        'Lime, Voi, Bolt oder Bird suchst du in St. Gallen vergeblich. Seit 2020 lässt die Stadt nur Tier zu, das heute Dott heisst. 2022 schrieb sie die Bewilligung zusammen mit Gossau, Wittenbach, Gaiserwald und Berg öffentlich aus, und Tier gewann gegen zwei andere Angebote. Die Bewilligung lief ab dem 1. April 2023 für drei Jahre, mit Option auf zwei weitere, also längstens bis Ende März 2028. Dott fährt weiter.',
+        'Auf der [Karte von St. Gallen](map:ch:st-gallen) standen am Morgen des 13. Oktober 2026 etwa 880 freie Dott-Trottis, weit über die Stadt hinaus: von Gossau und Flawil über [Rorschach](map:ch:rorschach) bis ins Rheintal und nach Romanshorn. Innerhalb der Stadtgrenze waren es in der Nacht auf den 14. Oktober gut 300, ungefähr so viele, wie die Stadt nennt. So kommst du zu deinem Trotti:',
         {
           steps: [
             'Das nächste Dott-Trotti auf der [Live-Karte](map:ch:st-gallen) suchen.',
@@ -43,8 +43,8 @@ const guide: Guide = {
             ],
           },
         },
-        'Zeigt dir die Karte ein Trotti mit CHF 1.50 Entsperrgebühr, steht es nicht in St. Gallen, sondern im Thurgau. Um [Romanshorn](map:ch:romanshorn) und Amriswil betreibt Dott ein eigenes Gebiet mit diesem Tarif, und die Karte von St. Gallen reicht bis dorthin.',
-        'Abos und Pässe sehen Dotts Schweizer Bedingungen vor; ob es einen Pass für St. Gallen gibt und was er kostet, zeigt nur die App.',
+        'CHF 1.50 fürs Entsperren zahlst du im Thurgau: Um [Romanshorn](map:ch:romanshorn) und Amriswil betreibt Dott ein eigenes Gebiet mit diesem Tarif.',
+        'Abos und Pässe sehen Dotts Schweizer Bedingungen vor; welche es gibt und was sie kosten, zeigt die App.',
       ],
     },
     {
@@ -54,7 +54,7 @@ const guide: Guide = {
         'Dazu kommen Dotts Zonen in der App. Laut Dotts Hilfe-Center darfst du in roten Bereichen weder fahren noch parkieren, in grauen nicht parkieren, in gelben drosselt das Trotti, und in hellblauen beendest du die Fahrt nur an einem blauen «P», einem Dott-Platz. Die Tabelle zeigt, was Dotts offener Datenfeed für die Trottis festlegt; massgebend ist die App.',
         {
           table: {
-            caption: 'Dotts Zonen für E-Trottinette in St. Gallen (unsere Auswertung von Dotts Datenfeed vom 14. Oktober 2026)',
+            caption: 'Dotts Zonen für E-Trottinette in St. Gallen (Dotts Datenfeed vom 14. Oktober 2026)',
             head: ['Zone', 'Was gilt', 'Wo, zum Beispiel'],
             rows: [
               ['Altstadt', 'Fahrt nur auf einem Dott-Platz beenden', 'Marktplatz, Bohl, Marktgasse, Klosterhof, Gallusplatz, Talstation der Mühleggbahn'],
@@ -79,7 +79,7 @@ const guide: Guide = {
             'nie, wo die App Parkverbot zeigt, auch wenn das Gesetz seit dem 1. Juli 2025 Parkieren in Begegnungszonen erlaubt.',
           ],
         },
-        '**In und um die Altstadt** heissen Dotts Plätze «Bonusparken»: beim Kloster, am Gallusplatz, am Blumenmarkt und am Brühltor, weiter westlich an der Vadianstrasse, am Roten Platz und am Neumarkt. Worin der Bonus besteht, erklärt Dott weder in seinen Bedingungen noch im Hilfe-Center.',
+        '**In und um die Altstadt** heissen Dotts Plätze «Bonusparken»: beim Kloster, am Gallusplatz, am Blumenmarkt und am Brühltor, weiter westlich an der Vadianstrasse, am Roten Platz und am Neumarkt.',
         '**Am Hauptbahnhof** ist der Bahnhofplatz in Dotts Zonen Parkverbotszone; Dott-Plätze gibt es auf der Nordseite an der Rosenbergstrasse und auf der Stadtseite beim Rathaus. Im Bahnhof steigst du ab: Die SBB verbietet das Fahren auf ihrem Areal. In der Nacht auf den 14. Oktober stand im Umkreis von 300 m um den Bahnhofplatz nur ein Trotti, um den Marktplatz 21.',
         'Befolgst du Dotts Park- und Sperranweisungen nicht, kann Dott laut seinen Schweizer Bedingungen bis zu 300 Euro verlangen, um das Trotti zurückzuholen. Landet eine Busse bei Dott, gibt Dott sie an dich weiter, plus 50 Euro Bearbeitungsgebühr. Steht ein Trotti im Weg, melde es auf [trotti-melder.ch](https://trotti-melder.ch).',
       ],
