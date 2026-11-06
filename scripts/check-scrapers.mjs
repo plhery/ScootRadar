@@ -42,8 +42,11 @@ function prometheus(path) {
 }
 const instant = query => prometheus(`/api/v1/query?${new URLSearchParams({ query, time: String(dayEnd) })}`);
 const value = query => Math.round(Number(instant(query)[0]?.value[1] ?? 0));
+// In the buckets' order (server/visitorLedger.ts), which Prometheus does not keep.
+const ORDER = ['1-15', '16-60', '61-300', '301+', '1', '2-3', '4-7', '8-15', '16-31', '32-63', '64+'];
 const byLabel = (query, label) => Object.fromEntries(instant(query)
-  .map(series => [series.metric[label], Math.round(Number(series.value[1]))]));
+  .map(series => [series.metric[label], Math.round(Number(series.value[1]))])
+  .sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)));
 
 function cache() {
   const sweptAt = prometheus(`/api/v1/query_range?${new URLSearchParams({ query: `sum(increase(${SWEEPS}[15m]))`,
