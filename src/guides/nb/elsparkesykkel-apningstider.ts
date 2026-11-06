@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Når stenger Voi, Ryde og Bolt? Åpningstider by for by',
   description: 'Voi, Ryde og Bolt stenger kl. 23 og åpner kl. 05 i Oslo, hver natt. Se tidene i Trondheim, Kristiansand, Stavanger og flere byer, og vinterstengingen.',
   headline: 'Åpningstider for elsparkesykkel: når Voi, Ryde og Bolt stenger om natten og om vinteren',
-  lede: 'Åpningstidene for elsparkesykkel i Oslo er like hos alle tre operatørene: Voi, Ryde og Bolt stenger kl. 23 og åpner igjen kl. 05, hver natt, også i helgene. Sandefjord, Porsgrunn, Arendal, Grimstad, Lillesand og Sotra stenger også hver natt, Stavanger, Kristiansand, Tromsø, Lillestrøm og Askøy bare natt til helg, mens Bærum, Asker, Bodø, Ålesund og Fredrikstad ikke har nattestenging fra kommunen. Trondheims forskrift stenger utleien kl. 23–05 hver natt, men Voi og Ryde oppgir i sine åpne data at de bare stenger natt til helg. Om vinteren forsvinner sparkesyklene fra mange byer, først fra Tromsø, der sesongen sluttet 1. november, og fra Sandefjord, der de skulle være fjernet senest samme dag.',
+  lede: 'Åpningstidene for elsparkesykkel i Oslo er like hos alle tre operatørene: Voi, Ryde og Bolt stenger kl. 23 og åpner igjen kl. 05, hver natt, også i helgene. Porsgrunn, Arendal, Grimstad, Lillesand og Sotra stenger også hver natt, Stavanger, Kristiansand, Lillestrøm og Askøy bare natt til helg, mens Bærum, Asker, Bodø, Ålesund og Fredrikstad ikke har nattestenging fra kommunen. Trondheims forskrift stenger utleien kl. 23–05 hver natt, men Voi og Ryde oppgir i sine åpne data at de bare stenger natt til helg. Om vinteren forsvinner sparkesyklene fra mange byer, først fra Tromsø, der sesongen sluttet 1. november, og fra Sandefjord, der de skulle være fjernet senest samme dag.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'no:Oslo',
@@ -24,7 +24,7 @@ const guide: Guide = {
             rows: [
               ['[Oslo](guide:oslo)', 'Kl. 23–05 hver natt', 'Bolt, Ryde, Voi', 'Kommunens forskrift'],
               ['Porsgrunn', 'Kl. 23–05 hver natt', 'Ryde', 'Kommunenes kunngjøring for 2026–27'],
-              ['[Sandefjord](guide:sandefjord)', 'Kl. 01–05 hver natt', 'Ryde', 'Kommunens forskrift'],
+              ['[Sandefjord](guide:sandefjord)', 'Kl. 01–05 hver natt i sesongen. Sesongen 2026 er over', 'Ryde', 'Kommunens forskrift'],
               ['[Arendal](guide:arendal)', 'Vois data: kl. 23–05 hver natt. Kommunens side (endret 7. juli 2026): kl. 23–06. Forskriften: kl. 00–05', 'Voi', 'Voi og kommunen, som kan stramme inn forskriften'],
               ['Vennesla', 'Kl. 00–04 hver natt', 'Voi', 'Kommunens forskrift'],
               ['Lillesand', 'Kl. 23–05 hver natt', 'Voi', 'Kommunens forskrift'],
@@ -33,7 +33,7 @@ const guide: Guide = {
               ['Sotra (Øygarden)', 'Kl. 00–05 hver natt', 'Voi', 'Kommunens forskrift'],
               ['Askøy', 'Kl. 00–05 natt til lørdag og søndag', 'Voi', 'Kommunens nettside'],
               ['[Trondheim](guide:trondheim)', 'Forskriften og kommunens side: kl. 23–05 hver natt. Data fra Voi og Ryde: kl. 23–05 bare natt til lørdag og søndag. Dotts data: døgnåpent', 'Dott, Ryde, Voi', 'Kommunens forskrift; operatørene oppgir andre tider'],
-              ['[Tromsø](guide:tromso)', 'Kl. 23–06 natt til lørdag, søndag og helligdager', 'Ryde', 'Kommunens forskrift'],
+              ['[Tromsø](guide:tromso)', 'Kl. 23–06 natt til lørdag, søndag og helligdager i sesongen. Neste sesong starter 1. mai 2027', 'Ryde', 'Kommunens forskrift'],
               ['[Stavanger](guide:stavanger)', 'Kl. 00–05 natt til lørdag, søndag og helligdager', 'Ryde, Voi', 'Kommunens forskrift'],
               ['Sandnes', 'Vois data: kl. 00–05 natt til lørdag og søndag', 'Voi', 'Voi'],
               ['[Kristiansand](guide:kristiansand)', 'Forskriften: kl. 00–05 natt til lørdag og søndag. Voi stenger allerede kl. 23', 'Ryde, Voi', 'Kommunens forskrift; Voi stenger tidligere'],
@@ -69,7 +69,7 @@ const guide: Guide = {
         {
           list: [
             '**Voi** stenger kl. 23 hver natt i Oslo og Arendal, og kl. 23 natt til lørdag og søndag i Trondheim, Kristiansand, Lillestrøm, Lørenskog og Rælingen. I Stavanger og Sandnes stenger Voi ved midnatt de samme nettene, i Bærum og Asker bare natt til søndag. I Fredrikstad, Sarpsborg og Moss er Voi døgnåpen.',
-            '**Ryde** stenger kl. 23 hver natt i Oslo og Porsgrunn, og kl. 23 natt til lørdag og søndag i Trondheim, Tromsø og Tønsberg. I Tønsberg stenger Ryde kl. 01 de andre nettene, og i Sandefjord kl. 01 hver natt. I Stavanger, Lillestrøm og Ålesund stenger Ryde ved midnatt natt til lørdag og søndag. Ryde åpner igjen kl. 05, i Tromsø kl. 06.',
+            '**Ryde** stenger kl. 23 hver natt i Oslo og Porsgrunn, og kl. 23 natt til lørdag og søndag i Trondheim og Tønsberg. I Tønsberg stenger Ryde kl. 01 de andre nettene. I Stavanger, Lillestrøm og Ålesund stenger Ryde ved midnatt natt til lørdag og søndag. Ryde åpner igjen kl. 05. I Tromsø og Sandefjord er sesongen 2026 over.',
             '**Ryde døgnåpent:** Bærum, Asker, Lørenskog, Bodø, Fredrikstad, Sarpsborg og Skien. Ryde skriver likevel i vilkårene at tjenesten tidvis kan være stengt om natten.',
             '**Bolt** stenger kl. 23 og åpner kl. 05 i Oslo.',
             '**Dott** oppgir døgnåpent i Trondheim og Stjørdal, men Trondheims forskrift gjelder alle operatører, så sjekk appen.',
@@ -147,7 +147,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg kjøre etter kl. 23?',
-      answer: 'Ikke i Oslo, der du ikke kan leie fra kl. 23 til 05. I Bærum, Asker, Bodø, Fredrikstad, Sarpsborg og Skien kan du leie om natten, og i Stavanger, Kristiansand, Tromsø, Lillestrøm og Ålesund hele natten fra søndag kveld til fredag morgen. I Trondheim stenger forskriften hver natt, men Voi og Ryde oppgir åpent på hverdagsnetter. I Tønsberg kan du leie til kl. 01 natt til hverdager, og i Sandefjord til kl. 01 hver natt. Sjekk appen før du starter en tur sent på kvelden.',
+      answer: 'Ikke i Oslo, der du ikke kan leie fra kl. 23 til 05. I Bærum, Asker, Bodø, Fredrikstad, Sarpsborg og Skien kan du leie om natten, og i Stavanger, Kristiansand, Lillestrøm og Ålesund hele natten fra søndag kveld til fredag morgen. I Trondheim stenger forskriften hver natt, men Voi og Ryde oppgir åpent på hverdagsnetter. I Tønsberg kan du leie til kl. 01 natt til hverdager. I Tromsø og Sandefjord er sesongen 2026 over, og i Tromsø starter neste 1. mai 2027. Sjekk appen før du starter en tur sent på kvelden.',
     },
     {
       question: 'Når stenger elsparkesyklene for vinteren?',

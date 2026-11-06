@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Sandefjord 2026: Ryde, pris og vinterpause',
   description: 'Ryde i Sandefjord: 10,90 kr å låse opp og 2,50 kr per minutt, fra 16 år. Stengt kl. 01–05, og sparkesyklene skal bort innen første snøfall, senest 1. november.',
   headline: 'Elsparkesykkel i Sandefjord: Ryde, priser, vinterpause og veien til Torp',
-  lede: 'Vil du leie elsparkesykkel i Sandefjord, er det bare Ryde som har kommunens tillatelse i 2026. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og Ryde krever at du har fylt 16 år. Utleien er stengt fra kl. 01 til 05 hver natt. Etter et politisk vedtak skal sparkesyklene bort fra offentlig grunn innen første snøfall, og senest 1. november 2026. Kjøreområdet dekker selve byen, ikke Torp, Stokke eller Andebu.',
+  lede: 'Vil du leie elsparkesykkel i Sandefjord, er det bare Ryde som har kommunens tillatelse i 2026. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og Ryde krever at du har fylt 16 år. Utleien er stengt fra kl. 01 til 05 hver natt. Etter et politisk vedtak måtte sparkesyklene bort fra offentlig grunn innen første snøfall, og senest 1. november 2026, så sesongen 2026 er over. Kjøreområdet dekker selve byen, ikke Torp, Stokke eller Andebu.',
   published: '2026-10-17',
   updated: '2026-10-22',
   city: 'no:Sandefjord',

@@ -46,7 +46,7 @@ const guide: Guide = {
           },
         },
         '**Capital Bikeshare**, the docked system, is the main alternative: $1 to unlock plus $0.15 a minute on a classic bike or $0.35 on an e-bike, or $10 for a day pass ([prices](https://capitalbikeshare.com/pricing) as of November 2026). Lyft’s rental terms let riders of 16 and over rent either kind of bike.',
-        '**Low-income riders.** Each operator must offer unlimited trips under 30 minutes, with no deposit and a cash option, to people at or below 200% of the federal poverty line. Sign up with each company, for Hopp for All, Lime Access or Veo Access: DDOT says they may ask for ID and proof of benefits such as SNAP. Hopp for All costs $29.99 a month (as of November 2026).',
+        '**Low-income riders.** Each operator must offer a plan with no deposit and a cash option to people at or below 200% of the federal poverty line. Rules DDOT issued on 23 October 2026 change it from unlimited trips under 30 minutes to 300 minutes a month, which don’t carry over, then half price, and the operators are moving members across. Sign up with each company, for Hopp for All, Lime Access or Veo Access: DDOT says they may ask for ID and proof of benefits such as SNAP. Hopp for All costs $29.99 a month (as of November 2026).',
       ],
     },
     {
@@ -131,7 +131,7 @@ const guide: Guide = {
             '**The National Cherry Blossom Festival** runs from 20 March to 11 April 2027, with Petalpalooza at Navy Yard on 3 April and the parade on 10 April. The trees ring the Tidal Basin, a Hopp no-ride zone: park by a rack and walk in.',
             '**The Fourth of July** fireworks over the Mall, held every year, fall next on Sunday 4 July 2027. DDOT can order event zones where scooters slow to 6 or 3 mph, stop, or must park in set spots.',
             '**Weather.** DDOT can have scooters taken off the streets in extreme weather, such as winds over 30 mph, snow or ice storms and flood warnings.',
-            '**Night.** There’s no curfew: DDOT encourages round-the-clock service and Hopp runs 24/7, but East Potomac Park closes to everyone from 1 to 5 am. DDOT’s draft operator agreement for 2027–2028, open for comment until 2 November 2026, would add in-app sobriety tests from midnight to 4 am.',
+            '**Night.** There’s no curfew: DDOT encourages round-the-clock service and Hopp runs 24/7, but East Potomac Park closes to everyone from 1 to 5 am. DDOT’s draft operator agreement for 2027–2028, open for comment until 2 November 2026, would add in-app sobriety tests from midnight to 4 am. As of November 2026 it was still a draft, for permits that start on 1 January 2027.',
           ],
         },
       ],
@@ -178,6 +178,7 @@ const guide: Guide = {
   sources: [
     { title: 'DDOT: Shared Mobility DC', url: 'https://sharedmobilitydc-dcgis.hub.arcgis.com/' },
     { title: 'DDOT: 2027–2028 shared fleet device permits', url: 'https://sharedmobilitydc-dcgis.hub.arcgis.com/pages/2025-2026-permits' },
+    { title: 'DDOT: new regulations for shared micromobility, 23 October 2026', url: 'https://ddot.dc.gov/release/ddot-announces-new-regulations-strengthen-shared-micromobility-safety-accessibility-and' },
     { title: 'DDOT: permitted providers for the 2023–2024 shared fleet devices program, January 2023', url: 'https://ddot.dc.gov/release/ddot-announces-new-permitted-providers-2023-2024-shared-fleet-devices-program-launches' },
     { title: 'DDOT: Dockless Demonstration Evaluation Report, January 2019 (PDF)', url: 'https://ddot.dc.gov/sites/default/files/dc/sites/ddot/publication/attachments/Dockless%20Demonstration%20Evaluation%20010319.pdf' },
     { title: 'DC Code § 50-2201.03c: operation of shared fleet devices', url: 'https://code.dccouncil.gov/us/dc/council/code/sections/50-2201.03c' },

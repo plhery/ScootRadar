@@ -24,8 +24,8 @@ const guide: Guide = {
     {
       heading: 'Proroga e nuovo bando dei monopattini sharing a Roma',
       blocks: [
-        'Le autorizzazioni di Bird, Dott e Lime scadevano il 31 agosto 2026: il Comune le ha prorogate «limitatamente al periodo strettamente necessario» a scegliere i nuovi operatori. Secondo la stampa la proroga arriva al 31 ottobre 2026, quando scadono anche le autorizzazioni delle bici elettriche.',
-        'Le domande per il nuovo bando, dopo una proroga, si chiudevano il **2 novembre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini, per tre anni e con 3.000-4.500 mezzi ciascuno; chi vince avrà fino a 150 giorni dall’autorizzazione per partire, quindi gli operatori potrebbero cambiare nel 2027.',
+        'Le autorizzazioni di Bird, Dott e Lime scadevano il 31 agosto 2026: il Comune le ha prorogate «limitatamente al periodo strettamente necessario» a scegliere i nuovi operatori. Secondo la stampa la proroga arrivava al 31 ottobre 2026, il giorno in cui scadevano anche le autorizzazioni delle bici elettriche. Il 6 novembre 2026 i dati pubblici di Bird mostravano ancora i suoi monopattini a noleggio intorno a Roma.',
+        'Le domande per il nuovo bando, dopo una proroga del termine, si sono chiuse il **2 novembre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini, per tre anni e con 3.000-4.500 mezzi ciascuno; chi vince avrà fino a 150 giorni dall’autorizzazione per partire, quindi gli operatori potrebbero cambiare nel 2027.',
         'Il bando premia chi mette su ogni monopattino un casco certificato, in un vano che si apre con l’app: non è un obbligo, ma chi lo promette deve farlo su tutta la flotta.',
       ],
     },
@@ -117,7 +117,7 @@ const guide: Guide = {
         '**Salite.** Su Aventino, Esquilino, Gianicolo e Pincio il monopattino fatica; in discesa frena per tempo, perché il limite resta 20 km/h.',
         '**Tevere.** La ciclabile sulle banchine è molto amata, ma con Bird lì non chiudi la corsa. Dopo le piene di fine febbraio 2026 il fango ha bloccato il tratto tra Ponte Sisto e Ponte Garibaldi, con decine di monopattini abbandonati.',
         '**Aeroporti.** Fiumicino e Ciampino sono fuori dall’area di Bird, e il monopattino non può andare su strade extraurbane: arriva in città in treno o in bus. Termini è dentro l’area di Bird; l’Appia Antica verso Cecilia Metella è fuori; Ostia ha un’area Bird a parte.',
-        '**Alternative.** Le bici elettriche di Dott e Lime (autorizzate fino al 31 ottobre 2026), gli scooter di Cooltra, e metro, bus e tram ATAC.',
+        '**Alternative.** Gli scooter di Cooltra, e metro, bus e tram ATAC. Le bici elettriche di Dott e Lime erano autorizzate fino al 31 ottobre 2026, secondo la stampa, e il nuovo bando sceglie anche gli operatori delle bici.',
       ],
     },
     {
@@ -140,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Cosa succede ai monopattini in sharing a Roma dopo il 31 ottobre 2026?',
-      answer: 'Bird, Dott e Lime lavorano in proroga tecnica, per il tempo necessario a scegliere i nuovi operatori: le domande si chiudevano il 2 novembre 2026, e i vincitori avranno fino a 150 giorni dall’autorizzazione per partire.',
+      answer: 'Il Comune ha prorogato le autorizzazioni di Bird, Dott e Lime per il tempo necessario a scegliere i nuovi operatori: fino al 31 ottobre 2026, secondo la stampa. Le domande per il nuovo bando si sono chiuse il 2 novembre 2026, e chi vince avrà fino a 150 giorni dall’autorizzazione per partire. Il 6 novembre 2026 i monopattini di Bird erano ancora a noleggio, secondo i suoi dati pubblici.',
     },
     {
       question: 'Perché il noleggio del monopattino non si chiude?',
@@ -160,10 +160,12 @@ const guide: Guide = {
     { title: 'Roma Servizi per la Mobilità: il bando 2026 per gli operatori in sharing', url: 'https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/' },
     { title: 'Roma Servizi per la Mobilità: avviso pubblico per la selezione degli operatori, 2026 (PDF)', url: 'https://drive.google.com/file/d/1j7m6Tdu5YViNDKbO-yNZjwftI_DJxC3a/view' },
     { title: 'Roma Capitale: le linee guida per il nuovo bando (27 agosto 2026)', url: 'https://www.comune.roma.it/web/it/notizia/sharing-monopattini-giunta-ok-linee-guida-nuovo-bando.page' },
+    { title: 'RomaToday: monopattini in sharing prorogati al 31 ottobre 2026, data di scadenza delle bici (31 agosto 2026)', url: 'https://www.romatoday.it/politica/monopattini-sharing-proroga-servizio.html' },
     { title: 'Roma Servizi per la Mobilità: pacchetti di corse per gli abbonati Metrebus (PDF)', url: 'https://drive.google.com/file/d/1T1-qRH6_yJx4X5NHkfVSL0pfqbyCb9FC/view' },
     { title: 'Turismo Roma: monopattini in sharing, sosta solo nelle aree autorizzate', url: 'https://turismoroma.it/it/node/81426' },
     { title: 'AGCM: sanzioni a Bird, Dott e Lime sui pacchetti Metrebus (6 agosto 2026, in inglese)', url: 'https://en.agcm.it/en/media/press-releases/2026/8/PS13028-PS13029-PS13030' },
     { title: 'Bird: zone di geofencing di Roma (dati GBFS pubblici)', url: 'https://mds.bird.co/gbfs/v2/public/rome/geofencing_zones.json' },
+    { title: 'Bird: mezzi a noleggio a Roma (dati GBFS pubblici, 6 novembre 2026)', url: 'https://mds.bird.co/gbfs/v2/public/rome/free_bike_status.json' },
     { title: 'Dott: termini e condizioni per l’Italia', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
     { title: 'Legge 160/2019, art. 1, commi 75 e seguenti, testo vigente (Normattiva)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
   ],

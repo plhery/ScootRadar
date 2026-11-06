@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Rome?',
       blocks: [
-        'Only operators authorised by the city may rent out e-scooters in Rome, and on 30 October 2026 there were three: **Bird**, **Dott** and **Lime**, according to the city’s transport agency, Roma Servizi per la Mobilità. Dott and Lime also rent e-bikes.',
+        'Only operators authorised by the city may rent out e-scooters in Rome, and on 30 October 2026 there were three: **Bird**, **Dott** and **Lime**, according to the city’s transport agency, Roma Servizi per la Mobilità. Dott and Lime also rented out e-bikes.',
         'At 1:36 pm on Friday 30 October 2026 about 4,100 Bird and 4,000 Dott scooters around Rome were free to rent at that moment, and about 4,300 Lime as last counted; the [map around Rome](map:it:Roma) shows where they stand.',
         'The old centre has few by design: each operator may keep only 30 scooters in the Tridente, around Piazza del Popolo, Via del Corso and Piazza di Spagna, 300 in the historic-centre ZTL and 70 in Trastevere. If there are none nearby, walk a few streets out.',
       ],
@@ -105,14 +105,14 @@ const guide: Guide = {
         '**Hills.** The Aventine, the Esquiline, the Janiculum and the Pincio slow a scooter down on the way up; on the way down, brake early, as the limit is still 20 km/h.',
         '**The Tiber.** The cycle path along the embankments is a popular ride, but you can’t end a Bird ride down there. After floods in late February 2026, mud blocked the stretch between Ponte Sisto and Ponte Garibaldi, and dozens of scooters were left there.',
         '**Airports.** Fiumicino and Ciampino are outside Bird’s operating area, and e-scooters may not use extra-urban roads anyway. Take the train or bus into town; Termini is inside Bird’s area. The Appia Antica around Cecilia Metella is outside it too, and Ostia has a separate Bird area.',
-        '**Other ways around.** Dott and Lime e-bikes (their permits end on 31 October 2026), Cooltra mopeds, and the ATAC metro, buses and trams.',
+        '**Other ways around.** Cooltra mopeds, and the ATAC metro, buses and trams. Dott’s and Lime’s e-bikes were permitted until 31 October 2026, the press reported, and the new tender covers e-bikes too.',
       ],
     },
     {
       heading: 'Rome’s new e-scooter tender: what may change in 2027',
       blocks: [
-        'The permits ran out on 31 August 2026. Since then Bird, Dott and Lime (back from 6 September, after a suspension) have operated on a technical extension lasting, in the city’s words, the period strictly necessary to choose the next operators; the press gives its end as 31 October 2026, the day the e-bike permits end.',
-        'The city has extended the deadline for applications to **2 November 2026 at 15:00**. Rome will pick up to three e-scooter operators for three years, each running 3,000 to 4,500 scooters, and the winners will have up to 150 days from their permit to start, so the line-up may change in 2027. Helmets on board may come too: the tender awards points for an app-unlocked helmet box on every scooter, but no winner has to offer one.',
+        'The permits ran out on 31 August 2026. Bird, Dott and Lime (back from 6 September, after a suspension) then ran on a technical extension granted, in the city’s words, for the period strictly necessary to choose the next operators; the press gave its end as 31 October 2026, the day the e-bike permits were also due to end. On 6 November 2026 Bird’s public data still showed its scooters for hire around Rome.',
+        'Applications closed on **2 November 2026 at 15:00**, after the city extended the deadline. Rome will pick up to three e-scooter operators for three years, each running 3,000 to 4,500 scooters, and the winners will have up to 150 days from their permit to start, so the line-up may change in 2027. Helmets on board may come too: the tender awards points for an app-unlocked helmet box on every scooter, but no winner has to offer one.',
       ],
     },
     {
@@ -156,10 +156,12 @@ const guide: Guide = {
     { title: 'Turismo Roma: helmets and identification plates mandatory on shared scooters too', url: 'https://www.turismoroma.it/en/news/electric-scooters-helmets-and-identification-plate-mandatory-shared-vehicles-too' },
     { title: 'Turismo Roma: shared scooters park only in authorised areas (Italian)', url: 'https://turismoroma.it/it/node/81426' },
     { title: 'Moto.it: Rome extends shared scooters to 31 October 2026, 1 September 2026 (Italian)', url: 'https://www.moto.it/news/roma-proroga-di-due-mesi-ai-monopattini-in-sharing.html' },
+    { title: 'RomaToday: shared scooters extended to 31 October 2026, the e-bike permits’ end date, 31 August 2026 (Italian)', url: 'https://www.romatoday.it/politica/monopattini-sharing-proroga-servizio.html' },
     { title: 'Wanted in Rome: Rome police get tough with electric scooter riders as new rules kick in', url: 'https://www.wantedinrome.com/news/rome-police-get-tough-with-electric-scooter-riders-as-new-rules-kick-in.html' },
     { title: 'SicurAUTO: stickers stripped from shared scooters in Rome, 4 June 2026 (Italian)', url: 'https://www.sicurauto.it/news/codice-della-strada/disastro-annunciato-targhe-monopattini-in-sharing-a-roma-furti-continui/' },
     { title: 'Roma Servizi per la Mobilità: ride packages for annual Metrebus pass holders (PDF, Italian)', url: 'https://drive.google.com/file/d/1T1-qRH6_yJx4X5NHkfVSL0pfqbyCb9FC/view' },
     { title: 'Bird: geofencing zones for Rome (public GBFS data)', url: 'https://mds.bird.co/gbfs/v2/public/rome/geofencing_zones.json' },
+    { title: 'Bird: vehicles for hire in Rome (public GBFS data), 6 November 2026', url: 'https://mds.bird.co/gbfs/v2/public/rome/free_bike_status.json' },
     { title: 'Italian Law 160/2019, art. 1, paragraphs 75 ff.: the e-scooter rules (Normattiva, Italian)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
     { title: 'Dott: terms and conditions for Italy (Italian)', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
   ],
