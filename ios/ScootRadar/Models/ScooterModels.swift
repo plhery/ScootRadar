@@ -699,7 +699,8 @@ enum ScooterClusteringPolicy {
 
     static func apiZoom(for zoomLevel: Double) -> Int {
         guard zoomLevel.isFinite else { return 0 }
-        return min(22, max(0, Int(ceil(zoomLevel))))
+        // Clamped before Int(_:), which traps on a value out of Int's range (1e300).
+        return Int(min(22, max(0, ceil(zoomLevel))))
     }
 
     static func representationsMatch(_ lhs: Int, _ rhs: Int) -> Bool {

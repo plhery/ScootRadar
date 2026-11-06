@@ -335,6 +335,9 @@ final class ScooterModelsTests: XCTestCase {
     func testMapZoomRoundsUpAtTheServerClusteringBoundary() {
         XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: 15), 15)
         XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: 15.01), 16)
+        XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: 1e300), 22)
+        XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: -1e300), 0)
+        XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: .nan), 0)
         XCTAssertTrue(ScooterClusteringPolicy.representationsMatch(16, 18))
         XCTAssertFalse(ScooterClusteringPolicy.representationsMatch(14, 15))
     }
