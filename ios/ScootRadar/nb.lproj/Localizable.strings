@@ -118,6 +118,7 @@
 "Updated %lld min ago" = "Oppdatert for %lld min siden";
 "Tap a city to see its scooters." = "Trykk på en by for å se elsparkesyklene der.";
 "Couldn’t refresh · showing %@" = "Kunne ikke oppdatere · data fra kl. %@";
+"Paused to save data · tap to refresh" = "Satt på pause for å spare data · trykk for å oppdatere";
 "You’re offline · showing %@" = "Du er frakoblet · data fra kl. %@";
 "Data delayed · showing %@" = "Forsinket · data fra kl. %@";
 "Updating · faded ones seen at %@" = "Oppdaterer · bleke: sett kl. %@";

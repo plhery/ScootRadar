@@ -1402,6 +1402,75 @@ extension ScooterMapModelTests {
         XCTAssertEqual(callsAfterEarlyReturn, 4)
     }
 
+    func testAutomaticRefreshPausesHalfAnHourAfterTheLastTouchUntilTheNext() async {
+        let clock = TestClock()
+        let api = StubScooterAPI(response: timedResponse(generatedAt: clock.now, expiresIn: 300))
+        let model = makeModel(api: api, clock: clock)
+        model.refresh()
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        // A refresh a minute while someone was there in the last half hour.
+        for minute in 1...29 {
+            clock.advance(60)
+            await api.setResponse(timedResponse(generatedAt: clock.now, expiresIn: 300))
+            model.autoRefreshIfNeeded()
+            let refreshed = await waitUntil { await api.snapshot().calls == minute + 1 && !model.isLoading }
+            XCTAssertTrue(refreshed)
+        }
+        XCTAssertFalse(model.isPausedForIdle)
+
+        // Half an hour after the last touch the map stops asking, however long it stays open.
+        clock.advance(60)
+        model.autoRefreshIfNeeded()
+        await settle()
+        XCTAssertTrue(model.isPausedForIdle)
+        clock.advance(3 * 3600)
+        model.autoRefreshIfNeeded()
+        await settle()
+        var calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 30)
+
+        // The next touch refreshes at once, and the minute's refresh starts again.
+        await api.setResponse(timedResponse(generatedAt: clock.now, expiresIn: 300))
+        model.noteInteraction()
+        XCTAssertFalse(model.isPausedForIdle)
+        let refreshedOnTouch = await waitUntil { await api.snapshot().calls == 31 && !model.isLoading }
+        XCTAssertTrue(refreshedOnTouch)
+        clock.advance(60)
+        await api.setResponse(timedResponse(generatedAt: clock.now, expiresIn: 300))
+        model.autoRefreshIfNeeded()
+        let refreshedAfterTouch = await waitUntil { await api.snapshot().calls == 32 && !model.isLoading }
+        XCTAssertTrue(refreshedAfterTouch)
+
+        // A touch while the map refreshes itself asks for nothing more.
+        model.noteInteraction()
+        await settle()
+        calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 32)
+    }
+
+    func testReturningToTheAppEndsThePause() async {
+        let clock = TestClock()
+        let api = StubScooterAPI(response: timedResponse(generatedAt: clock.now, expiresIn: 300))
+        let model = makeModel(api: api, clock: clock)
+        model.refresh()
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        clock.advance(31 * 60)
+        model.autoRefreshIfNeeded()
+        await settle()
+        XCTAssertTrue(model.isPausedForIdle)
+
+        model.becameInactive()
+        clock.advance(3600)
+        model.becameActive()
+        XCTAssertFalse(model.isPausedForIdle)
+        let refreshedOnReturn = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(refreshedOnReturn)
+    }
+
     func testExpiryWaitsForTheRequestInFlightBeforeAnythingIsCleared() async {
         let clock = TestClock()
         let generatedAt = clock.now

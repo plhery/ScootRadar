@@ -3237,12 +3237,15 @@ private struct LiveIndicator: View {
 }
 
 /// The banner under the search bar while nothing has loaded and the load
-/// failed: the reason and a filled Try again button.
+/// failed: the reason and a filled Try again button. Without a button, a line
+/// such as the one a paused map shows.
 struct MapStatusBanner: View {
     let message: String
-    let actionTitle: String
+    var actionTitle: String?
     var isBusy = false
-    let action: () -> Void
+    var systemImage = "exclamationmark.triangle.fill"
+    var tint = ScooterPalette.critical
+    var action: (() -> Void)?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -3254,8 +3257,10 @@ struct MapStatusBanner: View {
                         statusMessage
                     }
 
-                    statusAction
-                        .frame(maxWidth: .infinity)
+                    if let statusAction {
+                        statusAction
+                            .frame(maxWidth: .infinity)
+                    }
                 }
             } else {
                 HStack(spacing: 9) {
@@ -3264,10 +3269,12 @@ struct MapStatusBanner: View {
                     Spacer(minLength: 0)
                     statusAction
                 }
+                // As tall without the button as with it.
+                .frame(minHeight: 44)
             }
         }
         .padding(.leading, 14)
-        .padding(.trailing, stacks ? 14 : 5)
+        .padding(.trailing, stacks || action == nil ? 14 : 5)
         .padding(.vertical, stacks ? 10 : 2)
         // As wide as the search bar above it, whatever the length of the sentence.
         .frame(maxWidth: 560)
@@ -3294,8 +3301,8 @@ struct MapStatusBanner: View {
     }
 
     private var statusIndicator: some View {
-        Image(systemName: "exclamationmark.triangle.fill")
-            .foregroundStyle(ScooterPalette.critical)
+        Image(systemName: systemImage)
+            .foregroundStyle(tint)
             .accessibilityHidden(true)
     }
 
@@ -3305,10 +3312,22 @@ struct MapStatusBanner: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    private var statusAction: some View {
+    private var statusAction: StatusAction? {
+        guard let action, let actionTitle else { return nil }
+        return StatusAction(title: actionTitle, isBusy: isBusy, action: action)
+    }
+}
+
+/// The banner's filled button.
+private struct StatusAction: View {
+    let title: String
+    let isBusy: Bool
+    let action: () -> Void
+
+    var body: some View {
         Button(action: action) {
             ZStack {
-                Text(actionTitle)
+                Text(title)
                     .opacity(isBusy ? 0 : 1)
                 if isBusy {
                     ProgressView()
@@ -3327,7 +3346,7 @@ struct MapStatusBanner: View {
         }
         .buttonStyle(.plain)
         .disabled(isBusy)
-        .accessibilityLabel(actionTitle)
+        .accessibilityLabel(title)
     }
 }
 

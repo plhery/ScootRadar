@@ -118,6 +118,7 @@
 "Updated %lld min ago" = "Vor %lld Min. aktualisiert";
 "Tap a city to see its scooters." = "Tippe auf eine Stadt, um ihre Scooter zu sehen.";
 "Couldn’t refresh · showing %@" = "Nicht aktualisiert · Stand %@";
+"Paused to save data · tap to refresh" = "Pausiert, um Daten zu sparen · zum Aktualisieren tippen";
 "You’re offline · showing %@" = "Du bist offline · Stand %@";
 "Data delayed · showing %@" = "Daten verzögert · Stand %@";
 "Updating · faded ones seen at %@" = "Wird aktualisiert · blasse Scooter: Stand %@";

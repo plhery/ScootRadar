@@ -306,6 +306,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private let locationManager: CLLocationManager
     @ObservationIgnored private var isTrackingHeading = false
     @ObservationIgnored private var isSceneActive = true
+    /// When the map was last touched, a key pressed or the app brought back to the front.
+    @ObservationIgnored private var lastInteractionAt: Date
+    /// Automatic refreshes stopped, `refreshPolicy.idlePause` after the last touch, until the next
+    /// one: said under the search bar.
+    private(set) var isPausedForIdle = false
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private let locationTimeout: Duration
     @ObservationIgnored private let refreshPolicy: ScooterRefreshPolicy
@@ -447,6 +452,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         self.locationTimeout = locationTimeout
         self.refreshPolicy = refreshPolicy
         clock = now
+        lastInteractionAt = now()
         knownAuthorizationStatus = locationManager.authorizationStatus
         hasLocatedOnce = defaults.bool(forKey: Self.hasLocatedOnceKey)
         reviewPrompt = ScooterReviewPrompt(defaults: defaults, version: ScooterLinks.appVersion)
@@ -1007,6 +1013,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     func becameActive() {
         isSceneActive = true
+        // Coming back to the app counts as a touch.
+        lastInteractionAt = clock()
+        isPausedForIdle = false
         if hasStarted { startHeadingUpdates() }
         expireParkingIfNeeded()
         noteReturnFromRide()
@@ -1090,10 +1099,26 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 attemptGap: followUpGap
             )
         if clock() >= due {
-            refresh()
+            // Nobody has touched the map for a while: it stops asking until someone does.
+            if clock().timeIntervalSince(lastInteractionAt) >= refreshPolicy.idlePause {
+                isPausedForIdle = true
+                refreshTimerTask?.cancel()
+                refreshTimerTask = nil
+            } else {
+                refresh()
+            }
         } else {
             scheduleAutomaticRefresh()
         }
+    }
+
+    /// A touch anywhere in the window, or a key: a paused map refreshes at once
+    /// if its data is due, and the automatic refreshes start again.
+    func noteInteraction() {
+        lastInteractionAt = clock()
+        guard isPausedForIdle else { return }
+        isPausedForIdle = false
+        refreshIfDue(respectingAttemptGap: false)
     }
 
     private func scheduleAutomaticRefresh() {

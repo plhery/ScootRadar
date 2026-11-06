@@ -118,6 +118,7 @@
 "Updated %lld min ago" = "Atualizado há %lld min";
 "Tap a city to see its scooters." = "Toque numa cidade para ver as trotinetes que lá estão.";
 "Couldn’t refresh · showing %@" = "Não foi possível atualizar · dados das %@";
+"Paused to save data · tap to refresh" = "Em pausa para poupar dados · toque para atualizar";
 "You’re offline · showing %@" = "Está offline · dados das %@";
 "Data delayed · showing %@" = "Dados com atraso · atualizados às %@";
 "Updating · faded ones seen at %@" = "A atualizar · esbatidas: vistas às %@";

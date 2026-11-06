@@ -1493,6 +1493,10 @@ struct ScooterRefreshPolicy: Equatable, Sendable {
     /// while a quick feed is on its way, the server holds the request until it is in: the gap only
     /// spaces the requests should it not.
     var minimumFollowUp: TimeInterval = 0.2
+    /// Automatic refreshes stop this long after the last touch, key or return to the app, until the
+    /// next one. A map left open where nobody looked asked for the same view every minute, as one on
+    /// Berlin from 3 to 6 November 2026 did for three days (Desk [316]).
+    var idlePause: TimeInterval = 30 * 60
 
     static let standard = ScooterRefreshPolicy()
 

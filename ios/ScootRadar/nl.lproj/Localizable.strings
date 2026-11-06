@@ -118,6 +118,7 @@
 "Updated %lld min ago" = "%lld min geleden bijgewerkt";
 "Tap a city to see its scooters." = "Tik op een stad om de deelsteps daar te zien.";
 "Couldn’t refresh · showing %@" = "Bijwerken mislukt · data van %@";
+"Paused to save data · tap to refresh" = "Gepauzeerd om data te besparen · tik om bij te werken";
 "You’re offline · showing %@" = "Je bent offline · data van %@";
 "Data delayed · showing %@" = "Data vertraagd · bijgewerkt om %@";
 "Updating · faded ones seen at %@" = "Bijwerken · vervaagd: gezien om %@";

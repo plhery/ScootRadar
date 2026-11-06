@@ -2,6 +2,7 @@ import CoreLocation
 import StoreKit
 import SwiftUI
 import UIKit
+import UIKit.UIGestureRecognizerSubclass
 
 struct ScooterMapScreen: View {
     @State private var model: ScooterMapModel
@@ -214,6 +215,7 @@ struct ScooterMapScreen: View {
         // Automatic turns dark or light within the minute the sun has it.
         .background(TimelineView(.everyMinute) { _ in WindowAppearance(style: model.interfaceStyle) })
         .background(InterfaceOrientationProbe { model.setHeadingOrientation(ScooterHeadingPolicy.deviceOrientation(for: $0)) })
+        .background(WindowTouchProbe { model.noteInteraction() })
         .environment(\.locale, model.language.locale)
     }
 
@@ -252,6 +254,7 @@ struct ScooterMapScreen: View {
                 if !searchIsExpanded { searchChromeHeight = frame.height }
             }
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: firstLoadFailure)
+            .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.isPausedForIdle)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.locationIssue)
 
             Spacer(minLength: 0)
@@ -376,6 +379,7 @@ struct ScooterMapScreen: View {
             }
             .padding(.top, searchBarHeight + 8)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: firstLoadFailure)
+            .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.isPausedForIdle)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.locationIssue)
             .opacity(searchIsExpanded ? 0 : 1)
             .scaleEffect(searchIsExpanded ? 0.96 : 1, anchor: .top)
@@ -507,7 +511,13 @@ struct ScooterMapScreen: View {
     }
 
     private var hasTopNotices: Bool {
-        firstLoadFailure != nil || model.locationIssue != nil
+        firstLoadFailure != nil || showsPausedNotice || model.locationIssue != nil
+    }
+
+    /// The map stopped refreshing itself, half an hour after the last touch.
+    /// A first load that failed says more.
+    private var showsPausedNotice: Bool {
+        model.isPausedForIdle && firstLoadFailure == nil
     }
 
     /// The room between the search bar and the locate button above the dock.
@@ -555,6 +565,18 @@ struct ScooterMapScreen: View {
                 action: model.retryLoad
             )
             .transition(.move(edge: .top).combined(with: .opacity))
+        } else if showsPausedNotice {
+            // Any touch refreshes it (WindowTouchProbe); VoiceOver's double tap, which may not
+            // touch the window, presses it.
+            MapStatusBanner(
+                message: String(localized: "Paused to save data · tap to refresh"),
+                systemImage: "arrow.clockwise",
+                tint: ScooterPalette.secondaryText
+            )
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { model.noteInteraction() }
+            .transition(.move(edge: .top).combined(with: .opacity))
         }
 
         if let issue = model.locationIssue {
@@ -587,6 +609,7 @@ struct ScooterMapScreen: View {
 
     /// What a key does: what the button or the gesture it stands for does.
     private func perform(_ command: ScooterKeyCommand) {
+        model.noteInteraction()
         switch command {
         case .search, .searchWithSlash:
             searchIsExpanded = true
@@ -1023,6 +1046,69 @@ private struct InterfaceOrientationProbe: UIViewRepresentable {
                     self?.onChange?(scene.effectiveGeometry.interfaceOrientation)
                 }
             }
+        }
+    }
+}
+
+/// Each touch on the window, wherever it lands and whatever then takes it: the
+/// map, a button, a sheet. Its recognizer gives up at the first touch, so it
+/// takes nothing from them. VoiceOver moving to another element counts too,
+/// for its touches don't reach the window.
+private struct WindowTouchProbe: UIViewRepresentable {
+    let onTouch: @MainActor () -> Void
+
+    func makeUIView(context: Context) -> Probe {
+        Probe()
+    }
+
+    func updateUIView(_ probe: Probe, context: Context) {
+        probe.recognizer.onTouch = onTouch
+    }
+
+    final class Probe: UIView {
+        let recognizer = TouchRecognizer()
+        private var focusObserver: NSObjectProtocol?
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            recognizer.view?.removeGestureRecognizer(recognizer)
+            window?.addGestureRecognizer(recognizer)
+            if window == nil {
+                if let focusObserver { NotificationCenter.default.removeObserver(focusObserver) }
+                focusObserver = nil
+            } else if focusObserver == nil {
+                focusObserver = NotificationCenter.default.addObserver(
+                    forName: UIAccessibility.elementFocusedNotification,
+                    object: nil,
+                    queue: .main
+                ) { [weak self] _ in
+                    MainActor.assumeIsolated { self?.recognizer.onTouch?() }
+                }
+            }
+        }
+    }
+
+    final class TouchRecognizer: UIGestureRecognizer, UIGestureRecognizerDelegate {
+        var onTouch: (@MainActor () -> Void)?
+
+        init() {
+            super.init(target: nil, action: nil)
+            cancelsTouchesInView = false
+            delaysTouchesBegan = false
+            delaysTouchesEnded = false
+            delegate = self
+        }
+
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+            onTouch?()
+            state = .failed
+        }
+
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            true
         }
     }
 }

@@ -118,6 +118,7 @@
 "Updated %lld min ago" = "Uppfært fyrir %lld mín.";
 "Tap a city to see its scooters." = "Ýttu á stað til að sjá rafskúturnar þar.";
 "Couldn’t refresh · showing %@" = "Uppfærsla mistókst · staðan kl. %@";
+"Paused to save data · tap to refresh" = "Gert hlé til að spara gögn · ýttu til að uppfæra";
 "You’re offline · showing %@" = "Engin nettenging · staðan kl. %@";
 "Data delayed · showing %@" = "Seinkun á gögnum · staðan kl. %@";
 "Updating · faded ones seen at %@" = "Uppfærist · daufar sáust kl. %@";

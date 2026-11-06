@@ -118,6 +118,7 @@
 "Updated %lld min ago" = "Updated %lld min ago";
 "Tap a city to see its scooters." = "Tap a city to see its scooters.";
 "Couldn’t refresh · showing %@" = "Couldn’t refresh · showing %@";
+"Paused to save data · tap to refresh" = "Paused to save data · tap to refresh";
 "You’re offline · showing %@" = "You’re offline · showing %@";
 "Data delayed · showing %@" = "Data delayed · showing %@";
 "Updating · faded ones seen at %@" = "Updating · faded ones seen at %@";
