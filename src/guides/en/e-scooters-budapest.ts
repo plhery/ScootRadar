@@ -5,45 +5,20 @@ const guide: Guide = {
   slug: 'e-scooters-budapest',
   topic: 'budapest',
   name: 'E-scooters in Budapest',
-  title: 'E-scooters Budapest 2026: Lime, Dott, parking and rules',
-  description: 'E-scooters in Budapest: Lime and Dott, the age to rent, Mobi-pont parking, the police on alcohol, and Hungary’s planned 20 km/h cap on rental scooters.',
-  headline: 'E-scooters in Budapest: Lime and Dott, Mobi-pontok, the rules and District VII',
-  lede: 'E-scooters in Budapest are rented through Lime and Dott; each shows its prices in its app, and Dott rents only to riders of 18 and over. On streets the city owns or manages, its public-space decree lets rental scooters stand only at a Mobi-pont, a marked parking bay, except in the outer zone, where they may be left elsewhere if they block no one. BKK asks riders to keep off the pavement, and Hungary’s police say alcohol is forbidden to e-scooter riders too. New national rules, with rental scooters capped at 20 km/h, were proposed on 28 October 2026 but are not law yet.',
+  title: 'E-scooters Budapest 2026: Lime, parking and the rules',
+  description: 'E-scooters in Budapest: Lime, no Dott scooters since 4 November 2026, Mobi-pont parking, the police on alcohol, and the planned 20 km/h cap on rentals.',
+  headline: 'E-scooters in Budapest: Lime, Mobi-pontok, the rules and District VII',
+  lede: 'E-scooters in Budapest are rented through Lime, which shows its prices in its app. Dott has listed no scooters in the city since 4 November 2026; a Hatvan news site had reported in October that Dott told that town it was leaving Hungary. On streets the city owns or manages, its public-space decree lets rental scooters stand only at a Mobi-pont, a marked parking bay, except in the outer zone, where they may be left elsewhere if they block no one. BKK asks riders to keep off the pavement, and Hungary’s police say alcohol is forbidden to e-scooter riders too. New national rules, with rental scooters capped at 20 km/h, were proposed on 28 October 2026 but are not law yet.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'hu:Budapest',
   sections: [
     {
-      heading: 'Lime and Dott: who rents e-scooters in Budapest',
+      heading: 'Who rents e-scooters in Budapest: Lime, and Dott since 4 November',
       blocks: [
-        'Two companies rent out e-scooters (elektromos roller) in Budapest:',
-        {
-          list: [
-            '**Lime**, whose prices and rules are in its app.',
-            '**Dott**: under its terms for Hungary (last updated 23 September 2025), you rent from TIER Operations Hungary Kft, in Budapest, and must be 18.',
-          ],
-        },
-        'At 21:13 on Monday 26 October 2026 the [Budapest map](map:hu:Budapest) showed 830 Dott scooters free to rent at that moment, and about 4,600 Lime as last counted. Each app shows where you may ride and park.',
-      ],
-    },
-    {
-      heading: 'How much does an e-scooter cost in Budapest?',
-      blocks: [
-        'Both companies show their prices in the app. Dott’s terms for Hungary also set what a breach can cost:',
-        {
-          table: {
-            caption: 'Charges in Dott’s terms for Hungary, as of November 2026 (terms last updated 23 September 2025)',
-            head: ['When', 'What Dott’s terms say'],
-            rows: [
-              ['Every ride', 'An unlock fee may apply, plus use fees by the time you ride, shown in the app before you unlock'],
-              ['You ride out of the operational area shown in the app', 'The scooter may be switched off, and you may be charged a fine if you don’t bring it back'],
-              ['You don’t park or lock it as the terms say', 'An administrative fee of up to €300 for recovering it'],
-              ['An authority fines you for parking or riding', 'You pay it, and Dott may give your identity to the authority'],
-              ['Dott pays that fine for you', 'You repay it, plus a €50 administration fee'],
-              ['Any breach of the terms', 'A fine of €50, on top of any other charge'],
-            ],
-          },
-        },
+        '**Lime** rents out e-scooters (elektromos roller) in Budapest. Its app shows the price before you unlock, and where you may ride and park; where a scooter is free right now, the [Budapest map](map:hu:Budapest) shows.',
+        '**Dott** has listed no scooters for rent in Budapest since 4 November 2026, when its listings for Dunaújváros and Pápa emptied too. In Győr it still listed about 170 on 7 November.',
+        'On 27 October 2026 the Hatvan news site 3000hatvan.hu reported that the town’s rental scooters, run by Dott since December 2024, were being taken back to Budapest and that the service would end that week. The town’s chief of staff, Milán Jagodics, said the operator had told the council a few weeks earlier that it was leaving Hungary.',
       ],
     },
     {
@@ -60,23 +35,20 @@ const guide: Guide = {
           ],
         },
         'Streets a district owns fall outside the city’s decree: under the scheme the city and BKK put to the city assembly in December 2021, operators may sign public-authority contracts with the council that owns the space, and pay it for its use. Erzsébetváros has set its terms for such contracts (below).',
-        'Dott’s terms add their own rule: where an authority has designated parking areas, you park only there, as the app’s map shows; elsewhere you park legally, without blocking entrances, pedestrians or traffic, and Dott may ask for a photo.',
       ],
     },
     {
       heading: 'E-scooter rules in Hungary: alcohol, speed and a new KRESZ',
       blocks: [
-        'Hungary’s highway code, the KRESZ (joint decree 1/1975. (II. 5.) KPM–BM on the rules of road traffic), still doesn’t include e-scooters, leaving much about their use unclear, the city’s own news site, ÉnBudapestem, wrote on 15 May 2025. What riders are told comes from the police, the city and the operators:',
+        'Hungary’s highway code, the KRESZ (joint decree 1/1975. (II. 5.) KPM–BM on the rules of road traffic), still doesn’t include e-scooters, leaving much about their use unclear, the city’s own news site, ÉnBudapestem, wrote on 15 May 2025. What riders are told comes from the police and the city:',
         {
           table: {
-            caption: 'E-scooter rules in Budapest, by who sets them (read 26 October 2026; Dott’s terms re-read 3 November 2026)',
+            caption: 'E-scooter rules in Budapest, by who sets them (read 26 October 2026)',
             head: ['Rule', 'What applies', 'Who says so'],
             rows: [
               ['Alcohol', 'Alcohol is forbidden to e-scooter riders too, and riding drunk can, depending on the level, bring criminal proceedings.', 'The police (Somogy County, 1 July 2026)'],
               ['Faster scooters', 'A scooter with a design speed over 25 km/h counts as a moped (segédmotoros kerékpár), so a licence, insurance and a helmet are compulsory.', 'The police (the same release)'],
               ['Passengers and drink on rental scooters', 'Since 1 September 2026 an operator gets a permit only if it undertakes to tell renters that they may carry no passenger, except a child in a child seat the operator fits, and may not ride drunk or drugged.', 'The city’s public-space decree'],
-              ['Age', '18 to rent from Dott.', 'Dott’s terms for Hungary'],
-              ['Speed, phone and riders', 'No faster than 20 km/h, or less where the local authority sets it; no phone or music player while riding; one rider only.', 'Dott’s terms for Hungary'],
             ],
           },
         },
@@ -141,11 +113,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Budapest?',
-      answer: 'Lime and Dott; where one is free right now, the [Budapest map](map:hu:Budapest) shows. Dott rents only to riders of 18 and over, and both show their prices in the app.',
+      answer: 'Lime, which shows its price in the app before you unlock; where one is free right now, the [Budapest map](map:hu:Budapest) shows. Dott has listed no scooters in Budapest since 4 November 2026.',
     },
     {
       question: 'Can you ride an e-scooter after a drink in Budapest?',
-      answer: 'No. The police say alcohol is forbidden to e-scooter riders too, and that riding drunk can, depending on the level, bring criminal proceedings. Dott’s terms also bar riding under the influence of alcohol.',
+      answer: 'No. The police say alcohol is forbidden to e-scooter riders too, and that riding drunk can, depending on the level, bring criminal proceedings. Since 1 September 2026 the city gives a rental operator a permit only if it undertakes to tell renters they may not ride drunk or drugged.',
     },
     {
       question: 'Where can you park a rental e-scooter in Budapest?',
@@ -153,7 +125,7 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet on an e-scooter in Hungary?',
-      answer: 'On a scooter with a design speed over 25 km/h, yes: the police say it counts as a moped, which also needs a licence and insurance. They ask every rider to wear protective gear, and Dott’s terms warn that where it provides injury insurance, head injuries may not be covered without a helmet.',
+      answer: 'On a scooter with a design speed over 25 km/h, yes: the police say it counts as a moped, which also needs a licence and insurance. They ask every rider to wear protective gear.',
     },
     {
       question: 'Are there new e-scooter rules in Hungary?',
@@ -190,7 +162,7 @@ const guide: Guide = {
     { title: 'Erzsébetváros: stricter rules, 19 October 2023 (Hungarian)', url: 'https://www.erzsebetvaros.hu/articles/kepviselo-testuelet-szigorubb-szabalyok-erzsebetvarosban' },
     { title: 'Erzsébetváros: Mobi-pontok for shared scooter users, 30 May 2022 (Hungarian)', url: 'https://www.erzsebetvaros.hu/articles/mobi-pontok-a-koezoessegi-rollerek-hasznaloinak' },
     { title: 'Erzsébetváros: e-scooters as lost property, 20 January 2020 (Hungarian)', url: 'https://www.erzsebetvaros.hu/articles/matol-erzsebetvaros-talalt-targykent-kezeli-az-elektromos-rollereket' },
-    { title: 'Dott: terms and conditions for Hungary', url: 'https://ridedott.com/terms-and-conditions/hungary/' },
+    { title: '3000hatvan.hu: rental e-scooters end in Hatvan, 27 October 2026 (Hungarian)', url: 'https://3000hatvan.hu/megszunik-a-berelheto-e-rollerezes-hatvanban/' },
   ],
 };
 
