@@ -94,7 +94,7 @@ const guide: Guide = {
       blocks: [
         'I Sandnes er det i praksis bare Voi: Ryde dekker kun området nærmest grensen mot Stavanger, ved Forus. Voi dekker Sandnes sentrum, Lura og Kvadrat og områdene mot Ganddal.',
         'På [kartet over Sandnes](map:no:Sandnes) sto det rundt 360 Voi-sparkesykler 13. oktober 2026, til samme pris som i Stavanger: gratis opplåsing og 2,50 kr per minutt. Med Voi kan du kjøre mellom Stavanger og Sandnes på én tur, for eksempel langs Sykkelstamveien.',
-        'Kommunestyret vedtok i oktober 2025 en **forbudssone for leide elsparkesykler i gågata i Langgata**. I Vois soner (oktober 2026) er det kjøreforbud mellom tverrgatene, og du kan krysse gata i lav fart. Gå av og trill.',
+        'I **gågata i Langgata** har Voi kjøreforbud mellom tverrgatene (Vois soner, oktober 2026), og du kan krysse gata i lav fart. Gå av og trill.',
         'I gatene rundt Ruten og Sandnes stasjon setter Voi ned farten, og i sentrumskjernen kan du bare parkere ved en Voi-stasjon. Sandnes Parkering skriver ut gebyrer for feilparkering i hele kommunen.',
       ],
     },
@@ -185,7 +185,7 @@ const guide: Guide = {
     { title: 'Stavanger kommune: Utleie og bruk av elsparkesykler i Stavanger', url: 'https://www.stavanger.kommune.no/vei-og-trafikk/stavanger-pa-sykkel/utleie-av-sparkesykler-i-stavanger/' },
     { title: 'Stavanger kommune: Sakte fart for elsparkesykkel 17. mai (2026)', url: 'https://www.stavanger.kommune.no/nyheter/sakte-fart-for-elsparkesykkel-17.-mai' },
     { title: 'Stavanger Parkering: El-sparkesykkel', url: 'https://stavanger-parkering.no/el-sparkesykkel/' },
-    { title: 'Sandnes kommune: El-sparkesykkel', url: 'https://www.sandnes.kommune.no/sti/vei-og-trafikk/parkering-i-sandnes/el-sparkesykkel/' },
+    { title: 'Sandnes kommune: El-sparkesykkel', url: 'https://www.sandnes.kommune.no/artikkel/el-sparkesykkel' },
     { title: 'Entur: Vois åpne data for Stavanger og Sandnes (GBFS: priser og åpningstider, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voistavanger/gbfs' },
     { title: 'Entur: Rydes åpne data for Stavanger (GBFS: priser, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydestavanger/gbfs' },
     { title: 'Kolumbus: Kan jeg ta med sykkelen om bord?', url: 'https://www.kolumbus.no/reise/sykkel-oversikt/kan-jeg-ta-med-sykkelen-om-bord/' },

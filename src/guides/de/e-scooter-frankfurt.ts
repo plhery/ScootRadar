@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'frankfurt',
   name: 'E-Scooter Frankfurt: Anbieter, Preise, Parken',
   title: 'E-Scooter Frankfurt 2026: Anbieter, Preise, Parkzonen',
-  description: 'E-Scooter Frankfurt: die drei Anbieter seit Juli 2026, was eine Fahrt kostet, wo du parkst und was auf Mainbrücken, Zeil, Messe und in der U-Bahn gilt.',
+  description: 'E-Scooter Frankfurt: Bolt, Lime und Voi seit Juli 2026, Voi 0,27 € pro Minute ohne Entsperrgebühr, Parkzonen, Zeil, Mainbrücken, Messe und U-Bahn-Verbot.',
   headline: 'E-Scooter Frankfurt: Anbieter, Preise, Parkzonen und Verbote',
-  lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ohne Führerschein. Zehn Minuten kosten bei Voi im Standardtarif 2,70 € (Stand November 2026); bei Bolt und Lime zeigt dir die App den Preis. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
+  lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ohne Führerschein. Voi verlangt im Standardtarif 0,27 € pro Minute ohne Entsperrgebühr, zehn Minuten kosten also 2,70 € (Stand November 2026); Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Entsperrgebühr. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:Frankfurt',
@@ -148,6 +148,10 @@ const guide: Guide = {
     {
       question: 'Warum gibt es Dott in Frankfurt nicht mehr?',
       answer: 'Dott ist im Auswahlverfahren der Stadt leer ausgegangen, ebenso Ryde und RideMovi. Seit dem 1. Juli 2026 verleihen nur noch Bolt, Lime und Voi, mit Genehmigungen bis zum 30. Juni 2028.',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Frankfurt pro Minute?',
+      answer: 'Bei Voi im Standardtarif 0,27 € pro Minute ohne Entsperrgebühr: zehn Minuten 2,70 €, zwanzig Minuten 5,40 € (Stand November 2026). Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Entsperrgebühr; seinen Frankfurter Preis zeigt, wie bei Lime, die App vor dem Entsperren.',
     },
     {
       question: 'Wie viele E-Scooter gibt es in Frankfurt?',

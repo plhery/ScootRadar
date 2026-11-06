@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'E-scooters in Birmingham: Lime and the West Midlands trial',
       blocks: [
         '**Lime** is the only company hiring out e-scooters in Birmingham. It has run the region’s cycle and e-scooter hire scheme since 1 April 2026 for Transport for West Midlands (TfWM), part of the West Midlands Combined Authority, which said in January 2026 that “for the first time the scheme will operate at no cost to the taxpayer”. Birmingham City Council, the highway authority, decides on Lime’s parking stands in the street.',
-        'Hire e-scooters are legal here because the West Midlands is one of England’s 21 trial areas, which run until May 2028. Voi ran the trial in Birmingham from September 2020 until its scheme ended in February 2023. Beryl’s e-scooters followed on 2 August 2023; its bikes and scooters were removed in stages in February and March 2026, TfWM said, to make way for Lime.',
+        'Hire e-scooters are legal here because the West Midlands is one of England’s 21 trial areas, which run until May 2028. Voi ran the trial in Birmingham from September 2020 until its scheme ended in February 2023. Beryl’s e-scooters followed on 2 August 2023, and Lime took over the scheme on 1 April 2026.',
         'In January 2026 the combined authority said Lime’s e-scooters would be “available in Birmingham and on the University of Warwick campus only”, and TfWM adds that “the service area may expand over time”. **Lime also hires out e-bikes** in the same app, in Birmingham, Coventry and Solihull, and in March 2026 the combined authority said they would soon reach Wolverhampton, Sandwell, Dudley and Walsall.',
         'At 07:47 on Sunday 25 October 2026 the [map of Birmingham](map:gb:Birmingham) showed about 1,340 Lime e-scooters: a snapshot, not the fleet size. At 08:54 about a third of the roughly 1,090 it showed stood within 1.5 km of Victoria Square, the rest spread from Perry Barr to Cotteridge.',
       ],
@@ -138,7 +138,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Are Voi or Beryl e-scooters still in Birmingham?',
-      answer: 'No. Voi’s scheme ended in February 2023 and Beryl’s by the end of March 2026; since 1 April 2026 Lime has been the only operator.',
+      answer: 'No. Voi’s scheme ended in February 2023, and since 1 April 2026 Lime has been the only operator.',
     },
     {
       question: 'Can I ride a Lime e-scooter at night in Birmingham?',
@@ -163,7 +163,6 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Transport for West Midlands: E-scooters in the West Midlands', url: 'https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/cycling-in-the-west-midlands/e-scooters-in-the-west-midlands/' },
-    { title: 'Transport for West Midlands: Changes to West Midlands Cycle Hire from February 2026', url: 'https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/cycling-walking-and-wheeling-in-the-west-midlands/changes-to-west-midlands-cycle-hire-from-february-2026/' },
     { title: 'West Midlands Combined Authority: Lime to run West Midlands cycle and e-scooter hire (20 January 2026)', url: 'https://www.wmca.org.uk/news/lime-to-run-west-midlands-cycle-and-e-scooter-hire/' },
     { title: 'West Midlands Combined Authority: New LimeBike to launch in West Midlands (18 March 2026)', url: 'https://www.wmca.org.uk/news/new-limebike-to-launch-in-west-midlands/' },
     { title: 'West Midlands Combined Authority: E-scooter trial in Birmingham paused (24 February 2023)', url: 'https://www.wmca.org.uk/news/e-scooter-trial-in-birmingham-paused/' },

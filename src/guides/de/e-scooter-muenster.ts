@@ -121,9 +121,9 @@ const guide: Guide = {
             caption: 'Grosse Termine in Münster (laut Stadt und Spielplan) und wo du die Fahrt beendest',
             head: ['Veranstaltung', 'Nächster Termin', 'Fahrt beenden'],
             rows: [
-              ['Herbstsend, Schlossplatz', '24. Oktober bis 1. November 2026, Feuerwerk am 30. Oktober von 21 bis 21:30 Uhr', 'Nur in einer Parkzone; Dott hat welche am Ostrand des Platzes, an der Strasse Schlossplatz'],
+              ['Heimspiele von Preussen Münster (3. Liga), Preussenstadion', 'Samstag, 7. November 2026, 16:30 Uhr, gegen den MSV Duisburg; dann 28. November (14 Uhr) gegen den SC Verl und 12. Dezember gegen den SV Meppen', 'Nur in einer Parkzone; Dott hat welche direkt an der Haltestelle LVM-Preussenstadion an der Hammer Strasse'],
               ['Sechs Weihnachtsmärkte, vom Rathausinnenhof bis zum Harsewinkelplatz', '23. November bis 23. Dezember 2026', 'Nur in einer Parkzone'],
-              ['Heimspiele von Preussen Münster (3. Liga), Preussenstadion', 'Sonntag, 25. Oktober 2026, 16:30 Uhr, gegen Fortuna Köln, mitten im Herbstsend', 'Nur in einer Parkzone; Dott hat welche direkt an der Haltestelle LVM-Preussenstadion an der Hammer Strasse'],
+              ['Send, Schlossplatz', 'Frühjahrssend 3. bis 11. April 2027, Sommersend 15. bis 19. Juli, Herbstsend 23. bis 31. Oktober 2027', 'Nur in einer Parkzone; Dott hat welche am Ostrand des Platzes, an der Strasse Schlossplatz'],
             ],
           },
         },
@@ -183,6 +183,10 @@ const guide: Guide = {
       answer: 'Bei Voi 2,50 € (0,25 € pro Minute, Entsperren gratis), bei Dott 4 € (1 € Entsperren plus 0,30 € pro Minute), Stand November 2026. Bolt und Qick zeigen ihren Preis in der App.',
     },
     {
+      question: 'Welcher E-Scooter-Anbieter ist in Münster am günstigsten?',
+      answer: 'Von Voi und Dott ist Voi günstiger: 0,25 € pro Minute ohne Entsperrgebühr, bei Dott 1 € plus 0,30 € pro Minute. 10 Minuten kosten bei Voi 2,50 €, bei Dott 4 €, 20 Minuten 5 € und 7 € (Stand November 2026).',
+    },
+    {
       question: 'Warum kann ich meine Fahrt in der Innenstadt nicht beenden?',
       answer: 'Weil du innerhalb der Promenade, am Ring und an den grossen Ausfallstrassen nur in einer ausgewiesenen Parkzone abstellen darfst; überall sonst sperrt die App dort das Beenden. Fahr zur nächsten Parkzone, die die App zeigt: Bis dahin läuft der Preis weiter.',
     },
@@ -207,6 +211,9 @@ const guide: Guide = {
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Qick: Nutzungsbedingungen Deutschland', url: 'https://qickscooters.com/de/terms' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 12', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
+    { title: 'Stadt Münster: Send, Termine 2027', url: 'https://www.stadt-muenster.de/send' },
+    { title: 'Stadt Münster: Advent in Münster, Weihnachtsmärkte 2026', url: 'https://www.stadt-muenster.de/weihnachten/startseite' },
+    { title: 'SC Preussen Münster: Spielplan', url: 'https://scpreussen-muenster.de/profis/saison/spielplan/' },
     { title: 'Stadtwerke Münster: Fragen rund um Mobilität', url: 'https://www.stadtwerke-muenster.de/hilfe/mobilitaet/faq-rund-um-mobilitaet' },
     { title: 'Beförderungsbedingungen Nahverkehr NRW ab 1. Januar 2026, Mobilitätsgarantie (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
     { title: 'Polizei Münster: Verkehrsunfallstatistik 2025 (PDF)', url: 'https://muenster.polizei.nrw/sites/default/files/2026-03/Infobroschuere_VUS_2025_Polizei_Muenster.pdf' },

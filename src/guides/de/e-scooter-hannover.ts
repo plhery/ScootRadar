@@ -6,7 +6,7 @@ const guide: Guide = {
   topic: 'hanover',
   name: 'E-Scooter Hannover: Anbieter, Preise, Parken',
   title: 'E-Scooter Hannover 2026: Anbieter, Preise, Parken, ÜSTRA',
-  description: 'E-Scooter Hannover: die fünf Anbieter, was zehn Minuten kosten, wo du in der City parkst, warum die ÜSTRA keine Scooter mitnimmt und was der Rat neu regelt.',
+  description: 'E-Scooter Hannover: Voi 0,22 € pro Minute, Dott 1 € plus 0,29 €, die fünf Anbieter, Parken in der City, kein Scooter in der ÜSTRA und was der Rat neu regelt.',
   headline: 'E-Scooter Hannover: Anbieter, Preise, Parkzonen und was die neuen Regeln ändern',
   lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde. Zehn Minuten kosten im Standardtarif bei Voi 2,20 € und bei Dott 3,90 € (Stand November 2026); verbindlich ist bei allen der Preis in der App. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
@@ -27,15 +27,16 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Hannover im Standardtarif (laut den offenen Daten von Voi und Dott, Stand November 2026)',
+            caption: 'E-Scooter-Preise in Hannover im Standardtarif (laut Voi, Dott und Bolt, Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
               ['Dott', '1,00 €', '0,29 €', '3,90 €', '6,80 €'],
+              ['Bolt', 'kleine Gebühr, Betrag in der App', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
             ],
           },
         },
-        'Dott ist damit im Standardtarif teurer als Voi: Zehn Minuten kosten 1,70 € mehr. Bolt, Lime und Ryde zeigen ihren Preis für Hannover in der App.',
+        '**Welcher Anbieter ist am günstigsten?** Im Standardtarif ist Voi günstiger als Dott: Zehn Minuten kosten bei Voi 2,20 €, bei Dott 3,90 €, zwanzig Minuten 4,40 € und 6,80 €. Den Hannover-Preis von Bolt, Lime und Ryde zeigt die App. Wer oft fährt, spart bei Bolt mit einem Abo für unbegrenzte Freischaltungen ab 0,99 € im Monat oder mit Wochen- und Monatspässen (Preise für Deutschland).',
         'Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
@@ -138,16 +139,16 @@ const guide: Guide = {
     {
       heading: 'Neue E-Scooter-Regeln: Ab wann nur noch drei Anbieter in Hannover?',
       blocks: [
-        'Heute regelt eine freiwillige Vereinbarung von 2023 zwischen Stadt und Anbietern das Leihgeschäft, ohne Obergrenze und ohne Gebühr. Am 24. September 2026 hat der Rat einstimmig beschlossen:',
+        'Heute regelt eine freiwillige Vereinbarung von 2023 zwischen Stadt und Anbietern das Leihgeschäft, ohne Obergrenze und ohne Gebühr. Am 24. September 2026 hat der Rat einstimmig die Vorgaben für eine Ausschreibung beschlossen:',
         {
           list: [
-            '**drei Anbieter**, die die Stadt nach Qualität auswählt, mit Verträgen über drei Jahre;',
+            '**drei Anbieter**, die die Stadt in der Ausschreibung auch nach Qualität auswählt (Produkt, Service, Sicherheit), mit Verträgen über drei Jahre;',
             '**höchstens 2500 Scooter je Anbieter, 7500 insgesamt**. Die Verwaltung hatte 6000 vorgeschlagen;',
-            'erstmals eine **Gebühr** pro Scooter und Monat, einheitlich für die ganze Stadt; die Höhe berechnet die Verwaltung noch;',
+            'erstmals eine **Gebühr** pro Scooter und Monat, einheitlich für die ganze Stadt und zwischen den Sätzen, die die Verwaltung für das übrige Stadtgebiet (5,22 €) und die Innenstadt (9,63 €) vorgeschlagen hatte; die genaue Höhe berechnet sie neu;',
             'in der **Innenstadt** Fahrtende nur noch auf markierten Flächen; im übrigen Stadtgebiet kommen nach und nach Flächen dazu, im Umkreis von meist 150 m parkst du dann nur dort.',
           ],
         },
-        'Wer bleibt und ab wann, ist offen; bis auf Weiteres vermieten alle fünf.',
+        'Nur noch drei Anbieter gibt es erst nach der Ausschreibung, die auf diesen Beschluss folgt; bis dahin vermieten laut Stadt alle fünf.',
       ],
     },
     {
@@ -168,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Hannover?',
-      answer: 'Im Standardtarif laut den offenen Daten der Anbieter (Stand November 2026) bei Voi 0,22 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,20 €, bei Dott 1 € plus 0,29 € pro Minute, also 3,90 €. Bolt, Lime und Ryde zeigen ihren Preis in der App.',
+      answer: 'Im Standardtarif (Stand November 2026) bei Voi 0,22 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,20 € und zwanzig 4,40 €, bei Dott 1 € plus 0,29 € pro Minute, also 3,90 € und 6,80 €. Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Entsperrgebühr. Den Hannover-Preis von Bolt, Lime und Ryde zeigt die App.',
     },
     {
       question: 'Darf ich meinen E-Scooter in der ÜSTRA mitnehmen?',
@@ -176,7 +177,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Hannover ein E-Scooter-Verbot?',
-      answer: 'Nein, aber neue Regeln: Der Rat hat am 24. September 2026 beschlossen, künftig nur noch drei Anbieter mit zusammen höchstens 7500 Scootern zuzulassen. Wer bleibt und ab wann, steht noch nicht fest. Verboten sind das Fahren auf Gehwegen und in Fussgängerzonen sowie die Mitnahme in Stadtbahnen und Bussen der ÜSTRA.',
+      answer: 'Nein, aber neue Regeln: Der Rat hat am 24. September 2026 beschlossen, künftig nur noch drei Anbieter mit zusammen höchstens 7500 Scootern zuzulassen. Welche drei es werden, entscheidet eine Ausschreibung, die auf den Beschluss folgt; bis dahin vermieten alle fünf. Verboten sind das Fahren auf Gehwegen und in Fussgängerzonen sowie die Mitnahme in Stadtbahnen und Bussen der ÜSTRA.',
     },
     {
       question: 'Kann ich mit dem E-Scooter zum Flughafen Hannover fahren?',
@@ -194,6 +195,8 @@ const guide: Guide = {
     { title: 'Polizeidirektion Hannover: Verkehrssicherheitsbericht 2025', url: 'https://www.pd-h.polizei-nds.de/verkehr/verkehrssicherheitsbericht-2025-der-polizeidirektion-hannover-116779.html' },
     { title: 'Dott: offener Datenfeed für Hannover mit Tarif und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/hannover/gbfs.json' },
     { title: 'Voi: Tarif für Hannover in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/292/netex.xml' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Rat der Stadt Hannover, Drucksache 1366/2026, Anlage 4: Entwurf des Sondernutzungsvertrags (Stand 21. Mai 2026, PDF)', url: 'https://e-government.hannover-stadt.de/lhhsimwebdd.nsf/826681B525EEBCA0C1258E1B0017852F/$FILE/1366-2026_Anlage4.pdf' },
   ],
 };
 

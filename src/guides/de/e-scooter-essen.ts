@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'essen',
   name: 'E-Scooter Essen: Anbieter, Preise, Parken',
   title: 'E-Scooter Essen 2026: Anbieter, Preise, Abstellflächen',
-  description: 'E-Scooter Essen: fünf Anbieter, was zehn Minuten bei Dott kosten, wo du in der Innenstadt die Fahrt beendest und warum Scooter nicht in die Ruhrbahn dürfen.',
+  description: 'E-Scooter Essen: Voi 0,18 € pro Minute, Dott 1 € plus 0,25 €, die fünf Anbieter, wo du in der Innenstadt parkst und warum Scooter nicht in die Ruhrbahn dürfen.',
   headline: 'E-Scooter Essen: Anbieter, Preise, Abstellflächen, Sperrzonen und was in der Ruhrbahn gilt',
-  lede: 'Einen E-Scooter in Essen leihst du ohne Führerschein bei Dott, Bolt, Lime, Voi oder Ryde, bei Dott, Bolt und Ryde laut deren AGB ab 18. Zehn Minuten kosten bei Dott laut Datenfeed 3,50 € (Stand November 2026); die anderen zeigen ihren Preis in der App. In der Innenstadt beendest du die Fahrt seit dem 1. Januar 2026 nur auf einer der rund 54 markierten Abstellflächen, sonst läuft die Miete weiter. In Bussen und Bahnen der Ruhrbahn ist die Mitnahme von E-Scootern seit dem 1. März 2024 untersagt.',
+  lede: 'Einen E-Scooter in Essen leihst du ohne Führerschein bei Dott, Bolt, Lime, Voi oder Ryde, bei Dott, Bolt und Ryde laut deren AGB ab 18. Zehn Minuten kosten im Standardtarif bei Voi 1,80 € und bei Dott 3,50 € (Stand November 2026). In der Innenstadt beendest du die Fahrt seit dem 1. Januar 2026 nur auf einer der rund 54 markierten Abstellflächen, sonst läuft die Miete weiter. In Bussen und Bahnen der Ruhrbahn ist die Mitnahme von E-Scootern seit dem 1. März 2024 untersagt.',
   published: '2026-10-17',
   updated: '2026-10-26',
   city: 'de:Essen',
@@ -26,8 +26,20 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Essen?',
       blocks: [
-        'Dott verlangt in Essen laut seinem Datenfeed 1 € fürs Entsperren und 0,25 € pro Minute: Zehn Minuten kosten 3,50 €, zwanzig 6,00 € (Stand November 2026).',
-        'Bei Bolt, Lime, Voi und Ryde siehst du den Essener Preis in der App. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Du zahlst fürs Entsperren und pro Minute. Voi und Dott nennen ihren Essener Standardtarif, Bolt einen Ab-Preis für ganz Deutschland.',
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Essen im Standardtarif (laut Voi, Dott und Bolt, Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
+            rows: [
+              ['Voi', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
+              ['Dott', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
+              ['Bolt', 'kleine Gebühr, Betrag in der App', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
+            ],
+          },
+        },
+        '**Welcher Anbieter ist am günstigsten?** Im Standardtarif ist Voi günstiger als Dott: Zehn Minuten kosten bei Voi 1,80 €, bei Dott 3,50 €, zwanzig Minuten 3,60 € und 6,00 €. Den Essener Preis von Bolt, Lime und Ryde zeigt die App. Wer oft fährt, spart bei Bolt mit einem Abo für unbegrenzte Freischaltungen ab 0,99 € im Monat oder mit Wochen- und Monatspässen (Preise für Deutschland).',
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
@@ -98,7 +110,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Bus und Bahn: Was bei Ruhrbahn und VRR gilt',
       blocks: [
-        'Seit dem 1. März 2024 nimmt die Ruhrbahn in Bus, Strassenbahn und U-Bahn in Essen und Mülheim keine E-Scooter mehr mit. Grund ist die Brandgefahr der Akkus: «Bis es eindeutige Sicherheitsstandards gibt, ist die Mitnahme von E-Tretrollern untersagt.» Eine Ausnahme für zusammengeklappte Scooter nennt die Ruhrbahn nicht. Pedelecs und Elektro-Rollstühle sind nicht betroffen. Anders lautende Angaben in der FAQ der Stadt von 2020 sind überholt.',
+        'Seit dem 1. März 2024 nimmt die Ruhrbahn in Bus, Strassenbahn und U-Bahn in Essen und Mülheim keine E-Scooter mehr mit. Grund ist die Brandgefahr der Akkus: «Bis es eindeutige Sicherheitsstandards gibt, ist die Mitnahme von E-Tretrollern untersagt.» Pedelecs und Elektro-Rollstühle sind nicht betroffen. Anders lautende Angaben in der FAQ der Stadt von 2020 sind überholt.',
         'In S-Bahn und Regionalzug zählt dein zusammengeklappter Scooter laut VRR als Handgepäck, doch jedes Verkehrsunternehmen darf ihn per Hausrecht ausschliessen (Stand Juli 2026). Am Hauptbahnhof heisst das: Leih-Scooter auf einer Abstellfläche abstellen, den eigenen zusammenklappen und damit höchstens in den Zug, nicht in die U-Bahn.',
         '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten zu spät ab oder fällt er aus, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters. Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, auch online über mobil.nrw.',
       ],
@@ -146,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Essen?',
-      answer: 'Bei Dott 3,50 €: 1 € fürs Entsperren plus 0,25 € pro Minute, laut Datenfeed (Stand November 2026). Bei Bolt, Lime, Voi und Ryde zeigt dir die App den Preis.',
+      answer: 'Im Standardtarif (Stand November 2026) bei Voi 1,80 €: kein Entsperren, 0,18 € pro Minute. Bei Dott 3,50 €: 1 € fürs Entsperren plus 0,25 € pro Minute. Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Entsperrgebühr. Den Essener Preis von Bolt, Lime und Ryde zeigt die App.',
     },
     {
       question: 'Wo melde ich einen falsch abgestellten E-Scooter in Essen?',
@@ -158,7 +170,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in Bus, Strassenbahn oder U-Bahn mitnehmen?',
-      answer: 'Nicht bei der Ruhrbahn: Seit dem 1. März 2024 ist die Mitnahme von E-Scootern in ihren Bussen und Bahnen in Essen und Mülheim untersagt, eine Ausnahme für zusammengeklappte nennt sie nicht. In S-Bahn und Regionalzug darf ein zusammengeklappter Scooter laut VRR als Handgepäck mit, sofern das Verkehrsunternehmen ihn nicht ausschliesst.',
+      answer: 'Nicht bei der Ruhrbahn: Seit dem 1. März 2024 ist die Mitnahme von E-Scootern in ihren Bussen und Bahnen in Essen und Mülheim untersagt. In S-Bahn und Regionalzug darf ein zusammengeklappter Scooter laut VRR als Handgepäck mit, sofern das Verkehrsunternehmen ihn nicht ausschliesst.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Essener Fussgängerzone fahren?',
@@ -182,6 +194,8 @@ const guide: Guide = {
     { title: 'Ruhrbahn: Ab 1. März keine E-Tretroller mehr in Bus und Bahn (23. Februar 2024)', url: 'https://www.ruhrbahn.de/essen/aktuelles/meldung/ab-1-maerz-keine-e-tretroller-mehr-in-bus-und-bahn' },
     { title: 'VRR: Handbuch Tarif und Vertrieb (Stand 1. Juli 2026, PDF)', url: 'https://www.vrr.de/fileadmin/user_upload/pdf/service/downloads/Tarifhandbuch/VRR_Handbuch_2026.pdf' },
     { title: 'Dott: offener Datenfeed für Essen mit Tarif und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/essen/gbfs.json' },
+    { title: 'Voi: Tarif für Essen in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/302/netex.xml' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Bolt: Allgemeine Geschäftsbedingungen für E-Fahrzeuge', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'cologne',
   name: 'E-Scooter Köln: Anbieter, Preise, Parken',
   title: 'E-Scooter Köln 2026: Anbieter, Preise, Parken, Karneval',
-  description: 'E-Scooter Köln: die sechs Anbieter, was zehn Minuten kosten, wo du in der Altstadt parkst, was an Karneval gilt und warum die KVB keine Scooter mitnimmt.',
+  description: 'E-Scooter Köln: sechs Anbieter, Preise (Voi 0,30 €/Min., Dott 1 € + 0,30 €/Min.), Parken in der Altstadt, Sperrzonen an Karneval und das KVB-Verbot.',
   headline: 'E-Scooter Köln: Anbieter, Preise, Parkzonen und was an Karneval gilt',
-  lede: 'Einen E-Scooter in Köln leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten bei Dott nach seinem veröffentlichten Tarif 4 € (Stand November 2026), bei den anderen zeigt die App den Preis. In der Altstadt beendest du die Fahrt nur an Stationen, am Rheinufer, auf Brücken und in Parks gar nicht, und an Karneval sperrt die Stadt Ausleihe und Rückgabe in den Feierzonen. In Bahnen und Bussen der KVB sind E-Scooter verboten.',
+  lede: 'Einen E-Scooter in Köln leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten (Stand November 2026) bei Voi 3 € und bei Dott 4 €; bei Bolt, Lime, RideMovi und Ryde zeigt die App den Preis. In der Altstadt beendest du die Fahrt nur an Stationen, am Rheinufer, auf Brücken und in Parks gar nicht, und an Karneval sperrt die Stadt Ausleihe und Rückgabe in den Feierzonen. In Bahnen und Bussen der KVB sind E-Scooter verboten.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:Köln',
@@ -26,15 +26,16 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Köln (Dotts veröffentlichter Tarif, Stand November 2026)',
+            caption: 'E-Scooter-Preise in Köln (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
+              ['Voi', '0,00 €', '0,30 €', '3,00 €', '6,00 €'],
               ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
-              ['Bolt, Lime, RideMovi, Ryde, Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
+              ['Bolt, Lime, RideMovi, Ryde', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Eine Viertelstunde kostet bei Dott damit 5,50 €. Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Eine Viertelstunde kostet damit 4,50 € bei Voi und 5,50 € bei Dott: Beide verlangen 0,30 € pro Minute, Voi aber nichts fürs Entsperren. Bolt nennt für Deutschland Minutenpreise ab 0,15 € plus eine Freischaltgebühr, je nach Stadt. Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
@@ -109,10 +110,10 @@ const guide: Guide = {
         'Bei grossen Festen schaltet die Stadt in den Feierzonen Ausleihe und Rückgabe aller Leihfahrzeuge ab. Durchfahren bleibt erlaubt. Wer dort ein KVB-Rad abgibt, zahlt laut KVB 20 € Sonderentgelt.',
         {
           table: {
-            caption: 'Zonen ohne Ausleihe und Rückgabe: Beispiele aus 2025 und 2026 (Stadt Köln und KVB)',
+            caption: 'Gesperrte Zonen für Leihfahrzeuge: Beispiele aus 2025 und 2026 (Stadt Köln und KVB)',
             head: ['Anlass', 'Zeitraum', 'Gesperrte Zonen'],
             rows: [
-              ['11.11.2025', '10. und 11. November', 'Altstadt, Kwartier Latäng, Zülpicher Strasse, Uni-Wiese, Friesenstrasse und Friesenplatz, Severinsviertel'],
+              ['11.11.2026', '10. November, 23 Uhr, bis 11. November', 'Altstadt, Chlodwigplatz, Bahnhofsvorplatz und Dom-Umgebung, Zülpicher Strasse und Uni-Wiese, Friesenplatz und Friesenstrasse'],
               ['Weihnachtsmärkte 2025', 'bis 23. Dezember', 'Roncalliplatz, Alter Markt, Heumarkt, Neumarkt, Rudolfplatz'],
               ['Silvester 2025', '31. Dezember bis Neujahrsmorgen', 'Altstadt vom Hauptbahnhof bis zu den Museen, Rheinboulevard Deutz, Deutzer und Severinsbrücke'],
               ['Strassenkarneval 2026', '12. bis 17. Februar', 'Alter Markt, Heumarkt, Dom, Zülpicher Strasse, Kwartier Latäng, Severinstrasse, Rudolfplatz und mehr'],
@@ -120,7 +121,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Rechne am **11.11.2026**, einem Mittwoch, wieder mit Sperren in Altstadt, Kwartier Latäng und rund um die Zülpicher Strasse, ebenso zu den Weihnachtsmärkten und an Karneval 2027 (Weiberfastnacht ist am 4. Februar).',
+        '**Am 11.11.2026**, einem Mittwoch, darfst du Leih-Scooter laut KVB vom Vorabend um 23 Uhr bis zum 11. November in sechs Zonen nicht abstellen: in der Altstadt, rund um den Chlodwigplatz, auf dem Bahnhofsvorplatz und rund um den Dom, in zwei Zonen an Zülpicher Strasse und Uni-Wiese sowie an Friesenplatz und Friesenstrasse. Beende die Fahrt ausserhalb und geh das letzte Stück zu Fuss. Mit Sperren rechnen musst du auch zu den Weihnachtsmärkten und an Karneval 2027 (Weiberfastnacht ist am 4. Februar).',
         'Auch nach dem Kölsch gelten auf dem Scooter die Promillegrenzen fürs Auto: ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0. 2023 standen laut Polizei 83 der 400 in Köln verletzten E-Scooter-Fahrer unter Alkohol.',
       ],
     },
@@ -155,7 +156,7 @@ const guide: Guide = {
             'Genehmigungen ab 1. Januar 2027 für ein bis zwei Jahre, ohne neue Anbieter in dieser Zeit.',
           ],
         },
-        'Veröffentlicht werden sollte das Verfahren Ende September 2026. Am 22. September stellte der Mobilitätsausschuss des Rats einen Antrag zu E-Scootern bis zu seiner nächsten Sitzung am 24. November zurück. In Frankfurt verleihen nach einem solchen Verfahren seit Juli 2026 nur noch drei Anbieter: [E-Scooter in Frankfurt](guide:frankfurt). Ein komplettes Verbot liesse das Landesrecht kaum zu: Nach dem Fahrrad- und Nahmobilitätsgesetz von NRW sollen kommunale Satzungen E-Scooter nicht so einschränken, dass ihr Angebot dadurch verhindert wird.',
+        'Veröffentlichen wollte die Verwaltung das Verfahren Ende September 2026. Der Mobilitätsausschuss des Rats vertagte am 22. September aber ihre Mitteilung dazu ebenso wie einen Antrag der Linken zu E-Scootern auf seine Sitzung am 24. November. In Frankfurt verleihen nach einem solchen Verfahren seit Juli 2026 nur noch drei Anbieter: [E-Scooter in Frankfurt](guide:frankfurt). Ein komplettes Verbot liesse das Landesrecht kaum zu: Nach dem Fahrrad- und Nahmobilitätsgesetz von NRW sollen kommunale Satzungen E-Scooter nicht so einschränken, dass ihr Angebot dadurch verhindert wird.',
       ],
     },
     {
@@ -178,7 +179,11 @@ const guide: Guide = {
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Köln?',
-      answer: 'Bei Dott 4 € (1 € Entsperren plus 0,30 € pro Minute), nach seinem veröffentlichten Tarif (Stand November 2026). Bolt, Lime, RideMovi, Ryde und Voi zeigen ihren Preis in der App.',
+      answer: 'Bei Voi 3 € (0,30 € pro Minute, Entsperren gratis), bei Dott 4 € (1 € Entsperren plus 0,30 € pro Minute), Stand November 2026. Bolt, Lime, RideMovi und Ryde zeigen ihren Preis in der App.',
+    },
+    {
+      question: 'Welcher E-Scooter-Anbieter ist in Köln am günstigsten?',
+      answer: 'Von Voi und Dott ist Voi günstiger: Beide verlangen 0,30 € pro Minute, Voi aber nichts fürs Entsperren. 10 Minuten kosten bei Voi 3 €, bei Dott 4 €, 20 Minuten 6 € und 7 € (Stand November 2026).',
     },
     {
       question: 'Gibt es in Köln ein E-Scooter-Verbot?',
@@ -186,7 +191,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich an Karneval mit dem E-Scooter fahren?',
-      answer: 'Durchfahren ja, aber in den Feierzonen kannst du weder ausleihen noch zurückgeben, 2026 vom 12. bis 17. Februar etwa am Alter Markt, am Dom und an der Zülpicher Strasse. Die Zonen für den 11.11.2026 gibt die Stadt erfahrungsgemäss kurz vorher bekannt. Auf dem Scooter gelten die Promillegrenzen fürs Auto.',
+      answer: 'Durchfahren ja, aber in den Feierzonen kannst du die Fahrt nicht beenden. Am 11.11.2026 gilt das laut KVB vom 10. November, 23 Uhr, bis zum 11. November in der Altstadt, am Chlodwigplatz, rund um Dom und Bahnhofsvorplatz, an Zülpicher Strasse und Uni-Wiese sowie an Friesenplatz und Friesenstrasse. Auf dem Scooter gelten die Promillegrenzen fürs Auto.',
     },
     {
       question: 'Darf ich einen E-Scooter in Bahn und Bus der KVB mitnehmen?',
@@ -196,15 +201,18 @@ const guide: Guide = {
   sources: [
     { title: 'Stadt Köln: Häufig gestellte Fragen zu E-Scootern', url: 'https://www.stadt-koeln.de/artikel/68437/index.html' },
     { title: 'Stadt Köln, Mitteilung 1701/2026: E-Scooter-Sharing und Zulassungsverfahren ab 2027 (PDF)', url: 'https://ratsinformation.stadt-koeln.de/getfile.asp?id=1099681&type=do' },
-    { title: 'Stadt Köln: Beschlussprotokoll des Mobilitätsausschusses, 22. September 2026 (PDF)', url: 'https://ratsinformation.stadt-koeln.de/getfile.asp?id=1112991&type=do' },
+    { title: 'Stadt Köln: Tagesordnung des Mobilitätsausschusses, 24. November 2026', url: 'https://ratsinformation.stadt-koeln.de/si0057.asp?__ksinr=34413' },
     { title: 'Stadt Köln: Ausweitung der Abstellverbotszonen und feste Rückgabeorte (9. August 2021)', url: 'https://www.stadt-koeln.de/politik-und-verwaltung/presse/mitteilungen/23694/index.html' },
     { title: 'Stadt Köln: Netz von Mobilstationen vergrössert und verdichtet (21. November 2025)', url: 'https://www.stadt-koeln.de/politik-und-verwaltung/presse/mitteilungen/28061/index.html' },
     { title: 'Stadt Köln: Sondernutzungssatzung, Fassung vom 10. Juni 2024 (PDF)', url: 'https://www.stadt-koeln.de/mediaasset/content/satzungen/sondernutzungssatzung_10_06_2024.pdf' },
     { title: 'KVB: Keine E-Tretroller in Bahnen und Bussen', url: 'https://www.kvb.koeln/service/spielregeln/etretroller.html' },
     { title: 'KVB: Leihfahrzeuge zum Strassenkarneval 2026', url: 'https://www.kvb.koeln/unternehmen/presse/pressemitteilungen.html?view=1502' },
+    { title: 'KVB: 11.11.2026, Sessionseröffnung, mit den Abstellverboten für Leihfahrzeuge (2. November 2026)', url: 'https://www.kvb.koeln/aktuelles/meldung.html?action=shownews&id=120' },
     { title: 'KVB-Rad: Tarife und Rückgabe', url: 'https://www.kvb-rad.de/koeln/de/' },
     { title: 'Dott: offener Datenfeed für Köln mit Tarif, Stationen und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/cologne/gbfs.json' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen für Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Voi: Tarif und Zonen für Köln in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/240/netex.xml' },
+    { title: 'Bolt: E-Scooter mieten in Deutschland, Tarife', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'WDR: Freiwillige ziehen E-Scooter aus dem Rhein (18. Juli 2026)', url: 'https://www1.wdr.de/nrw/koeln/e-scooter-koeln-rhein-bergung-100.html' },
     { title: 'Polizei Köln: Bierdeckel-Kampagne und Zahlen für 2023 (Englisch)', url: 'https://koeln.polizei.nrw/en/have-a-drink-then-leave-the-e-scooter' },
