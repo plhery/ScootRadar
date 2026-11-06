@@ -48,7 +48,7 @@ const guide: Guide = {
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder ausserhalb des Gebiets. Fahr hinaus: Solange die Fahrt läuft, zahlst du weiter.',
         },
-        'Im Mai 2021 hatte die Stadt mit dem Anbieter eine Vereinbarung geschlossen und eine Höchstgrenze festgelegt: «Maximal 400 E-Scooter sollen insgesamt in Jena rollen.» Ob beides heute noch gilt, sagt sie auf ihrer Seite zur Elektromobilität nicht (gelesen am 1. November 2026). Ihre Sondernutzungssatzung vom 13. Dezember 2017, zuletzt geändert am 16. November 2022, zählt «reservierte Stellplätze für Fahrzeugsharing» zu den Sondernutzungen; E-Scooter nennt sie nicht.',
+        'Im Mai 2021 hatte die Stadt mit dem Anbieter eine Vereinbarung geschlossen und eine Höchstgrenze festgelegt: «Maximal 400 E-Scooter sollen insgesamt in Jena rollen.» Ihre Sondernutzungssatzung vom 13. Dezember 2017, zuletzt geändert am 16. November 2022, zählt «reservierte Stellplätze für Fahrzeugsharing» zu den Sondernutzungen; E-Scooter nennt sie nicht.',
         '**Falsch abgestellt?** Dott nimmt Beschwerden laut seinen AGB per E-Mail an support@ridedott.com entgegen.',
       ],
     },

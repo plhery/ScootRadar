@@ -39,7 +39,7 @@ const guide: Guide = {
           },
         },
         'Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter, og tar du sparkesykkelen ut av driftsområdet, kan det koste opptil 500 kr ekstra.',
-        'Loven sier 12 år, og Bærums forskrift har ingen egen aldersgrense. Både Voi og Ryde krever likevel **16 år**: Voi ifølge Ruter, Ryde i vilkårene for Norge. Kommunen og Ruter oppgir fortsatt 15 år for Ryde, også i Ruter-appens vilkår, men Rydes egne vilkår gjelder i tillegg når du leier der (17. oktober 2026). Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt**.',
+        'Loven sier 12 år, og Bærums forskrift har ingen egen aldersgrense. Både Voi og Ryde krever likevel **16 år**: Voi ifølge Ruter, Ryde i vilkårene for Norge. Kommunen og Ruter oppgir fortsatt 15 år for Ryde, også i Ruter-appens vilkår, men Rydes egne vilkår gjelder i tillegg når du leier der (17. oktober 2026). Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
@@ -175,6 +175,7 @@ const guide: Guide = {
     { title: 'Asker kommune: To aktører tilbyr elsparkesykler i Asker', url: 'https://www.asker.kommune.no/klima-og-natur/siste-nytt-om-klima-og-natur/na-kan-du-leie-elsparkesykler/' },
     { title: 'Fornebubanen: Ett års forsinkelse og økte kostnader for Fornebu stasjon og base (12. november 2025)', url: 'https://afk.no/_f/p104/i1beb9328-349c-47b0-abcd-9a95dfc9896d/fornebubanen-orientering-om-forsinket-fremdrift-og-okt-kostnadsprognose.pdf' },
     { title: 'Statens vegvesen: E18 Lysaker–Ramstadsletta', url: 'https://www.vegvesen.no/vegprosjekter/europaveg/e18vestkorridoren/lysaker-ramstadsletta/' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 

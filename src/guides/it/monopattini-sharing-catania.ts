@@ -134,7 +134,7 @@ const guide: Guide = {
           },
         },
         'Se paghi entro 5 giorni, di solito la multa si riduce del 30%.',
-        'Il nuovo Codice della strada approvato in via preliminare il 13 ottobre 2026 non è ancora in vigore.',
+        'Il nuovo Codice della strada, approvato in via preliminare dal Consiglio dei ministri il 13 ottobre 2026, è all’esame della commissione Trasporti della Camera, che ha tempo fino al 12 gennaio 2027 per il parere (atto del Governo n. 448). Fino all’approvazione definitiva valgono le regole della tabella.',
         'Se vai anche a Palermo, operatori e regole del centro sono diversi: vedi la guida ai [monopattini in sharing a Palermo](guide:palermo).',
       ],
     },
@@ -188,6 +188,8 @@ const guide: Guide = {
     { title: 'Trenitalia: bici e mezzi elettrici sui regionali', url: 'https://www.trenitalia.com/it/regionale/bici-e-mezzi-elettrici.html' },
     { title: 'La Sicilia: 837 multe per il casco (7 ottobre 2026)', url: 'https://www.lasicilia.it/news/cronaca/3079474/monopattini-in-pochi-mesi-837-multe-per-gli-indisciplinati-senza-casco-a-catania.html' },
     { title: 'La Sicilia: la polizia locale in monopattino (23 febbraio 2026)', url: 'https://www.lasicilia.it/news/cronaca/3019387/catania-vigili-on-the-road-in-monopattino-parte-la-polizia-locale-smart-per-il-controllo-di-prossimita.html' },
+    { title: 'Governo: comunicato stampa del Consiglio dei ministri n. 192 (13 ottobre 2026, nuovo Codice della strada in esame preliminare)', url: 'https://www.governo.it/it/articolo/comunicato-stampa-del-consiglio-dei-ministri-n-192/32836' },
+    { title: 'Camera dei deputati: atti del Governo sottoposti a parere (n. 448, schema di decreto legislativo recante nuovo codice della strada)', url: 'https://www.camera.it/leg19/142' },
   ],
 };
 

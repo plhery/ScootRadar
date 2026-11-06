@@ -40,8 +40,8 @@ const guide: Guide = {
       heading: 'Aldersgrense og hjelm på elsparkesykkel',
       blocks: [
         'Du må ha fylt **12 år** og ha «nødvendig ferdighet» for å kjøre elsparkesykkel. Det står i førerkortforskriften § 12-1.',
-        'Den 5. oktober 2026 foreslo regjeringen å heve aldersgrensen til **16 år**. Samferdselsdepartementet ber Statens vegvesen sende forslaget på høring, fordi skadene blant barn og unge har økt kraftig fra 2024 til 2026.',
-        '**Forslaget er ikke vedtatt.** Pressemeldingen sier ikke når en endring kan tre i kraft, eller om den gjelder både private og leide elsparkesykler. Inntil videre gjelder 12 år. Flere operatører har egne, høyere grenser, se avsnittet om leie nedenfor.',
+        'Den 5. oktober 2026 foreslo regjeringen å heve aldersgrensen til **16 år**, fordi skadene blant barn og unge har økt kraftig fra 2024 til 2026. Statens vegvesen sendte forslaget på høring 5. november 2026, med høringsfrist 5. februar 2027.',
+        '**Forslaget er ikke vedtatt.** Det gjelder alle små elektriske motorvogner, også private elsparkesykler, og målet er at endringen kan gjelde fra våren 2027. Inntil videre gjelder 12 år. Flere operatører har egne, høyere grenser, se avsnittet om leie nedenfor.',
         'Er du under 15 år, skal du bruke en godkjent og CE-merket sykkelhjelm når du kjører. Fra 15 år er hjelmen frivillig, men Statens vegvesen anbefaler den for alle.',
         { note: 'Tolv personer døde i ulykker med elsparkesykkel i årene 2019–2024. Ingen av dem hadde hjelm, og Statens vegvesen mener at åtte av dem kunne ha overlevd med hjelm.' },
         'Et overtredelsesgebyr kan bare gis til den som har fylt 15 år, så et barn uten hjelm får ikke gebyr, men påbudet gjelder like fullt. Ifølge NAF kan foreldrene holdes ansvarlige. Statens vegvesen utreder i 2026 om alle som kjører elsparkesykkel eller sykkel, skal få hjelmpåbud. Ingenting er bestemt.',
@@ -198,7 +198,7 @@ const guide: Guide = {
     },
     {
       question: 'Blir aldersgrensen for elsparkesykkel 16 år?',
-      answer: 'Kanskje. Regjeringen foreslo 5. oktober 2026 å heve den fra 12 til 16 år, og forslaget skal på høring. Det er ikke vedtatt, og det er ikke satt noen dato, så inntil videre gjelder 12 år.',
+      answer: 'Kanskje. Regjeringen foreslo 5. oktober 2026 å heve den fra 12 til 16 år, og 5. november sendte Statens vegvesen forslaget på høring, med frist 5. februar 2027. Målet er at endringen kan gjelde fra våren 2027, men den er ikke vedtatt, så inntil videre gjelder 12 år.',
     },
   ],
   sources: [
@@ -212,6 +212,8 @@ const guide: Guide = {
     { title: 'Lovdata: Forskrift om forenklet forelegg i vegtrafikksaker', url: 'https://lovdata.no/dokument/SF/forskrift/1990-06-29-492' },
     { title: 'Høyesterett: HR-2023-298-A, promillekjøring på elsparkesykkel', url: 'https://www.domstol.no/globalassets/upload/hret/avgjorelser/2023/februar/hr-2023-298-a.pdf' },
     { title: 'Samferdselsdepartementet: Regjeringen foreslår å heve aldersgrensen for bruk av elsparkesykler til 16 år (5. oktober 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19092540/regjeringen-foreslar-a-heve-aldersgrensen-for-bruk-av-elsparkesykler-til-16-ar?lang=no' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
+    { title: 'Statens vegvesen: Høringsnotat om økt aldersgrense for liten elektrisk motorvogn (5. november 2026, PDF)', url: 'https://www.vegvesen.no/globalassets/fag/horinger/2026/26-315420-1-horing-om-okt-aldersgrense-for-liten-elektrisk-motorvogn/vedlegg-1---horingsnotat.pdf' },
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy på offentlig grunn, Oslo', url: 'https://lovdata.no/dokument/LF/forskrift/2024-11-20-2821' },
     { title: 'Oslo kommune: Leie av elsparkesykler og elsykler', url: 'https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/' },
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy, Bergen (2022, endret 17. desember 2025)', url: 'https://lovdata.no/dokument/LF/forskrift/2022-03-30-521' },

@@ -47,7 +47,7 @@ const guide: Guide = {
         '**Holstenstrasse:** Kiels Einkaufsstrasse ist zwischen Holstenplatz und Altem Markt Fussgängerzone, also keine Strecke für den Scooter. Seit März 2026 baut die Stadt den oberen Teil am Alten Markt um, mit Winterpause von Mitte November 2026 bis Anfang 2027; fertig sein soll er im Herbst 2027.',
         '**Parks:** Die Grünflächensatzung der Stadt von 2022 verbietet, auf städtischen Grünflächen mit Kraftfahrzeugen zu fahren oder sie dort abzustellen. Laut Stadt gelten E-Scooter rechtlich als Kraftfahrzeuge. Im Schrevenpark, rund um den Kleinen Kiel oder im Schwanenseepark schiebst du also, auch auf den Wegen.',
         '**Kiellinie:** Auf der Promenade vom Ostseekai bis zur Wik fährst du nur, wo sie ein Radweg ist oder ein Schild «Elektrokleinstfahrzeuge frei» sie freigibt, sonst auf Radweg oder Fahrbahn daneben.',
-        '**Velorouten:** Die Veloroute 10, Kiels erste Premiumroute, führt rund 7 km auf einer früheren Bahntrasse von Hassee an der Universität vorbei in die Wik, grösstenteils ohne Kreuzungen und Ampeln. Die Veloroute 1 folgt der Förde und quert die Hörn über die Hörnbrücke; öffnet diese Klappbrücke für Schiffe, wartest du laut Stadt etwa 15 Minuten, oder du umfährst das Hörnbecken. Am 4. November 2026 wird die Brücke laut Hafenamt ausgehoben.',
+        '**Velorouten:** Die Veloroute 10, Kiels erste Premiumroute, führt rund 7 km auf einer früheren Bahntrasse von Hassee an der Universität vorbei in die Wik, grösstenteils ohne Kreuzungen und Ampeln. Die Veloroute 1 folgt der Förde; an der Hörn umfährst du mit dem Scooter das Hörnbecken. Der bewegliche Teil der Hörnbrücke ist seit Oktober 2025 ausser Betrieb und geht laut Stadt nicht wieder in Betrieb; seinen Ausbau hat sie für den 2. bis 6. November 2026 angesetzt. Über die schmale Rollverschubbrücke daneben darfst du laut Stadt weder mit dem Rad noch mit dem E-Scooter fahren.',
       ],
     },
     {
@@ -124,7 +124,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Einmalige Brücke:** Die Hörnbrücke ist eine Dreifeld-Zug-Klappbrücke, laut Stadt weltweit einzigartig.',
+            '**Einmalige Brücke:** Die Hörnbrücke war als Dreifeld-Zug-Klappbrücke laut Stadt weltweit einzigartig. Seit Oktober 2025 klappt sie nicht mehr, und Anfang November 2026 lässt die Stadt ihren beweglichen Teil ausbauen.',
             '**Scooter in Beton:** Auf der Mittelinsel der Andreas-Gayk-Strasse steht seit Juli 2024 die Skulptur «Ruhender Fortschritt»: ein E-Scooter, den ein Student der Muthesius Kunsthochschule mit 850 kg Beton ummantelt hat. Die Stadt kaufte sie im November 2024.',
           ],
         },
@@ -163,7 +163,7 @@ const guide: Guide = {
     { title: 'Landeshauptstadt Kiel: Grünflächensatzung vom 31. März 2022 (PDF)', url: 'https://www.kiel.de/de/_data/ortsrecht_bekanntmachungen/root/download.php?typ=lf&fid=ae36a799edffbc1fc85c0b5aefea7029' },
     { title: 'Landeshauptstadt Kiel: Unsere neue Holstenstrasse', url: 'https://www.kiel.de/de/kiel_zukunft/kiel_plant_baut/innenstadt/holstenstrasse.php' },
     { title: 'Landeshauptstadt Kiel: Kieler Velorouten', url: 'https://www.kiel.de/de/umwelt_verkehr/fahrrad/velorouten.php' },
-    { title: 'Landeshauptstadt Kiel, Hafenamt: Anordnung 036-2026 (PDF)', url: 'https://www.kiel.de/de/_data/ortsrecht_bekanntmachungen/root/download.php?typ=bm&fid=106fd69387afbb6ee11a7ca61b4fc902' },
+    { title: 'Landeshauptstadt Kiel: Aktuelle Meldungen zu Baustellen (Hörnbrücke, Meldung vom 26. Oktober 2026)', url: 'https://www.kiel.de/de/umwelt_verkehr/baustellen.php' },
     { title: 'Kieler Woche: Service und Anreise', url: 'https://www.kieler-woche.de/de/service/index.php' },
     { title: 'KVG Kiel: Keine Mitnahme von Elektro-Tretrollern in Bussen (Juni 2024)', url: 'https://www.kvg-kiel.de/fuer-interessierte/presse/keine-mitnahme-von-elektro-tretrollern-in-bussen' },
     { title: 'NAH.SH: Fahrradmitnahme im SH-Tarif', url: 'https://www.nah.sh/de/fahrkarten/fahrradmitnahme/' },

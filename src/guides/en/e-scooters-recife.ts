@@ -107,7 +107,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The operators enforce the rules too: in the first month they blocked more than 100 users, they told the Diario. A state bill, PL 4009/2026, would set rules for all of Pernambuco, and an amendment would make helmets compulsory; on 26 October 2026 the Legislative Assembly’s (Alepe’s) record showed no vote on it, so it is not law.',
+        'The operators enforce the rules too: in the first month they blocked more than 100 users, they told the Diario. A state bill, PL 4009/2026, would set rules for all of Pernambuco, and an amendment would make helmets compulsory; on 6 November 2026 the Legislative Assembly’s (Alepe’s) record showed it still a bill.',
       ],
     },
     {

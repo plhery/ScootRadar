@@ -38,7 +38,7 @@ const guide: Guide = {
           },
         },
         'Tjue minutter koster 50 kr hos Voi og 60,90 kr hos Ryde. Prisene kan endres, og den endelige prisen ser du i appen før du låser opp.',
-        'Loven sier 12 år, men Ryde krever 16 år i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
+        'Loven sier 12 år, men Ryde krever 16 år i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
@@ -193,6 +193,7 @@ const guide: Guide = {
     { title: 'Statens vegvesen: Sykkelstamveien mellom Stavanger og Sandnes (juni 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/06/dyre-men-lonnsomme-sykkelveier/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 

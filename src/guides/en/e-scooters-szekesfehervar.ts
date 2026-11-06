@@ -100,14 +100,16 @@ const guide: Guide = {
     {
       heading: 'Will Hungary’s e-scooter rules change?',
       blocks: [
-        'In June 2026 transport minister Dávid Vitézy said e-scooters would be taken out of the KRESZ rewrite, which had dragged on for years, and settled sooner. He told Telex a public consultation would come first and that people would get time to prepare before any new rules took effect. Telex outlined the draft rules then under discussion:',
+        'In June 2026 transport minister Dávid Vitézy told Telex that e-scooters would be taken out of the KRESZ rewrite, which had dragged on for years, and settled sooner. On 28 October Prime Minister Péter Magyar set out the government’s proposal, eduline reported: the e-scooter would become a vehicle category of its own in the KRESZ, with these rules.',
         {
           list: [
-            'a **low-power motor scooter** (kis teljesítményű motoros roller), one that can’t go faster than 25 km/h on the flat under its own power, would follow the rules for cyclists, with differences: still no alcohol, riders over 12 only, and a helmet compulsory;',
-            'a **high-power motor scooter** (nagy teljesítményű motoros roller), one with a motor rated over 1,000 W or able to go faster than 25 km/h, would follow the rules for mopeds: no pavements, riders over 14 only, and a motorcycle helmet.',
+            '**For every e-scooter:** no riding under the influence of alcohol, and no second person on board.',
+            '**Up to 25 km/h:** from the age of 14, with head protection compulsory until 18, and on the pavement only where there is no alternative, such as a cycle track.',
+            '**Over 25 km/h:** from 16, with at least a moped licence and a crash helmet, never on the pavement, and no faster than 40 km/h.',
+            '**Rental scooters:** top speed capped at 20 km/h.',
           ],
         },
-        'These were proposals, not law, when Telex reported them; Székesfehérvár’s zones above are in force.',
+        'The decree is to go out for public consultation once more before it is issued. Székesfehérvár’s zones above are in force.',
       ],
     },
     {
@@ -149,13 +151,14 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet on an e-scooter in Hungary?',
-      answer: 'On a scooter built to go faster than 25 km/h, yes: the police count it as a moped, which also needs a licence and insurance. For slower scooters they ask riders to wear protective gear; the draft rules Telex described in June 2026 would make a helmet compulsory.',
+      answer: 'On a scooter built to go faster than 25 km/h, yes: the police count it as a moped, which also needs a licence and insurance. For slower scooters they ask riders to wear protective gear; under the government’s proposal of 28 October 2026, head protection would be compulsory on them until 18.',
     },
   ],
   sources: [
     { title: 'Székesfehérvár City Assembly: decree 7/2011. (III. 31.) on the use of public space, consolidated to 1 June 2026 (Hungarian)', url: 'https://mikrodat.szekesfehervar.hu/app/cms/api/honlap/getfile/2d9bb9a4-5f18-11f1-9d50-0242ac140002/Szren1107esz_20260601.pdf?dt=2026.06.03%2008:54' },
     { title: 'Hungarian Police: Somogy County release, 1 July 2026 (Hungarian)', url: 'https://www.police.hu/hu/hirek-es-informaciok/legfrissebb-hireink/kozlekedesrendeszet/ittasan-szenvedett-balesetet-egy' },
     { title: 'Telex: e-scooters, drink-riding and the courts, 16 June 2026 (Hungarian)', url: 'https://telex.hu/belfold/2026/06/16/elektromos-roller-ittas-vezetes-jogszabaly-buntetes-kresz' },
+    { title: 'eduline: the government’s e-scooter proposal, 29 October 2026 (Hungarian)', url: 'https://eduline.hu/campus-life/20261029_elektromos-roller-kresz-modositas-magyar-peter-bejelentes' },
   ],
 };
 

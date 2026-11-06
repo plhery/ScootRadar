@@ -58,7 +58,7 @@ const guide: Guide = {
       heading: 'Where can you ride a Voi in Cambridge?',
       blocks: [
         'Across England, hire scooters may use roads (never motorways), cycle lanes and routes with the blue bicycle sign, but never the pavement. In 2022 Cambridgeshire County Council made an experimental Electric Scooter Exemptions order: hire scooters could go wherever a pedal cycle may on dual-use cycle tracks, contraflow cycle lanes, bus lanes, bus gates and streets signed “no entry except cycles”.',
-        'That order came into force on 31 March 2022 “for a period not exceeding 18 months”. The county’s page of experimental orders still listed it on 25 October 2026, with no record of it being made permanent, so don’t count on bus lanes: follow the signs and the app. Voi’s no-ride and slow zones, for King’s Parade, the Market Square and elsewhere, are in the app.',
+        'That order came into force on 31 March 2022 “for a period not exceeding 18 months”. The county’s page of experimental orders still listed it on 6 November 2026, and says such an order can stay in force for 18 months at most, so don’t count on bus lanes: follow the signs and the app. Voi’s no-ride and slow zones, for King’s Parade, the Market Square and elsewhere, are in the app.',
         'Before dawn on 25 October 2026 our map showed Voi scooters from Eddington and the Science Park to Cherry Hinton and Trumpington Park & Ride, and in the edge villages above; the app’s map shows where you can ride and end a ride.',
       ],
     },

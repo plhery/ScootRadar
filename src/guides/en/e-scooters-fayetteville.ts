@@ -85,7 +85,7 @@ const guide: Guide = {
             '**The campus core** is a slow zone, where scooters drop to 6 mph.',
           ],
         },
-        '**A proposal, not yet law.** An ordinance from Mayor Molly Rawn and Council Member Sarah Bunch, on the City Council’s agenda session of 27 October 2026 for its meeting of 5 November, would bar from sidewalks and paved trails any device able to exceed 28 mph or rated at 750 watts or more, and allow “only Class 1 electric bicycles” on soft-surface trails. Its text would still allow e-scooters, as Arkansas law defines them, on the City’s paved trails.',
+        '**Faster devices.** An ordinance from Mayor Molly Rawn and Council Member Sarah Bunch was on the agenda of the City Council’s meeting of 5 November 2026, with an emergency clause that brings it into force as soon as it is passed. As drafted, it bars from sidewalks and paved trails any device able to exceed 28 mph or rated at 750 watts or more, and allows “only Class 1 electric bicycles” on soft-surface trails. Its text still allows e-scooters, as Arkansas law defines them, on the City’s paved trails.',
       ],
     },
     {
@@ -153,6 +153,7 @@ const guide: Guide = {
     { title: 'City of Fayetteville: City Council agenda packet, 19 January 2021, with Ordinance 6406 and City Code § 75.10 (PDF)', url: 'https://fayettevillear.api.civicclerk.com/v1/Meetings/GetMeetingFileStream(fileId=5668,plainText=false)' },
     { title: 'City of Fayetteville: City Council minutes, 19 January 2021 (PDF)', url: 'https://fayettevillear.api.civicclerk.com/v1/Meetings/GetMeetingFileStream(fileId=5669,plainText=false)' },
     { title: 'City of Fayetteville: City Council agenda packet, 27 October 2026, with City Code § 71.170 (PDF)', url: 'https://fayettevillear.api.civicclerk.com/v1/Meetings/GetMeetingFileStream(fileId=5985,plainText=false)' },
+    { title: 'City of Fayetteville: City Council final agenda, 5 November 2026 (PDF)', url: 'https://fayettevillear.api.civicclerk.com/v1/Meetings/GetMeetingFileStream(fileId=6008,plainText=false)' },
     { title: 'University of Arkansas: traffic and parking regulations', url: 'https://parking.uark.edu/policies-and-requests/rules-and-regulations.php' },
     { title: 'University of Arkansas: e-scooter safety', url: 'https://safety.uark.edu/e-scooter-safety.php' },
     { title: 'University of Arkansas: campus e-scooter slow zone map (PDF)', url: 'https://safety.uark.edu/eScooter-slow-zone-campus.pdf' },

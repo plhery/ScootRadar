@@ -77,7 +77,16 @@ const guide: Guide = {
           ],
         },
         'The police magazine Zsaru’s advice to riders, on 2 September 2025: hold the handlebar with both hands, use lights and reflectors in the dark or in poor visibility, slow down among pedestrians, and choose quieter streets or cycle lanes.',
-        'On 16 July 2026 Dávid Vitézy, minister for transport and investment, presented a public road-safety questionnaire, open until early September, Telex reported. On e-scooters it asked whether their rules should come before the full review of the KRESZ, Hungary’s highway code, whether to split them into two vehicle categories, whether to make head protection compulsory, and whether to allow riding from 12, 14, 16 or 18; he said the laws would be finalised in the light of the answers.',
+        'On 16 July 2026 Dávid Vitézy, minister for transport and investment, presented a public road-safety questionnaire, open until early September, that asked among other things whether to split e-scooters into two vehicle categories and from what age to allow riding, Telex reported. On 28 October Prime Minister Péter Magyar set out the government’s proposal, eduline reported: the e-scooter would become a vehicle category of its own in the KRESZ, Hungary’s highway code, with these rules.',
+        {
+          list: [
+            '**For every e-scooter:** no riding under the influence of alcohol, and no second person on board.',
+            '**Up to 25 km/h:** from the age of 14, with head protection compulsory until 18, and on the pavement only where there is no alternative, such as a cycle track.',
+            '**Over 25 km/h:** from 16, with at least a moped licence and a crash helmet, never on the pavement, and no faster than 40 km/h.',
+            '**Rental scooters:** top speed capped at 20 km/h.',
+          ],
+        },
+        'The decree is to go out for public consultation once more before it is issued.',
       ],
     },
     {
@@ -121,7 +130,7 @@ const guide: Guide = {
     },
     {
       question: 'Will Hungary’s e-scooter rules change?',
-      answer: 'They may. In July 2026 the government’s road-safety questionnaire asked whether to split e-scooters into two vehicle categories, make head protection compulsory and allow riding only from 12, 14, 16 or 18, and the minister said the laws would be finalised in the light of the answers (Telex, 16 July 2026).',
+      answer: 'The government has proposed new rules. On 28 October 2026 it proposed making the e-scooter a vehicle category of its own, with rental scooters capped at 20 km/h, no alcohol and no passenger, and a minimum age of 14 with head protection until 18 (16, with a moped licence and a helmet, for scooters faster than 25 km/h), eduline reported. The decree is to go out for public consultation again before it is issued.',
     },
     {
       question: 'Can you ride an e-scooter drunk in Hungary?',
@@ -140,6 +149,7 @@ const guide: Guide = {
     { title: 'Telex: fines for e-scooter riders in Szeged, 28 November 2025 (Hungarian)', url: 'https://telex.hu/belfold/2025/11/28/szeged-elektromos-roller-szabalyozas-birsag' },
     { title: 'Telex: the road-safety questionnaire, 16 July 2026 (Hungarian)', url: 'https://telex.hu/belfold/2026/07/16/vitezy-david-kerdoiv-kozlekedesbiztonsag' },
     { title: 'Telex: Szeged fines e-scooter riders, 9 September 2026 (Hungarian)', url: 'https://telex.hu/belfold/2026/09/09/szeged-roller-kerekpar-szabalyozas-birsag-botka-laszlo' },
+    { title: 'eduline: the government’s e-scooter proposal, 29 October 2026 (Hungarian)', url: 'https://eduline.hu/campus-life/20261029_elektromos-roller-kresz-modositas-magyar-peter-bejelentes' },
   ],
 };
 

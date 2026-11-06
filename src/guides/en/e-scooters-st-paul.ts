@@ -57,7 +57,7 @@ const guide: Guide = {
     {
       heading: 'When does the scooter season end in St. Paul?',
       blocks: [
-        'The City’s page says the season runs “typically from mid-April to mid-November each year”. The 2026 agreements estimate the first scooters “on or around April 15th” and the end “on or around November 15th”, and the City may move either date with notice. A company that wants to run later must send the City a winter plan by 1 November 2026; the City may then let it run to 31 December.',
+        'The City’s page says the season runs “typically from mid-April to mid-November each year”. The 2026 agreements estimate the first scooters “on or around April 15th” and the end “on or around November 15th”, and the City may move either date with notice. A company that wanted to run later had to send the City a winter plan by 1 November 2026; the City may then let it run to 31 December.',
         'In 2024 Lime kept about 100 scooters out into December as an informal winter test, until it stopped on 18 December, the day before the City’s first snow emergency, the City’s report says.',
         'Minneapolis next door has rules of its own, among them, under its 2025 licence, a switch-off from midnight to 4 a.m.: see [e-scooters in Minneapolis](guide:minneapolis) and the [Minneapolis map](map:us:mn:Minneapolis).',
       ],
@@ -130,7 +130,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a Lime or Spin scooter in St. Paul in winter?',
-      answer: 'Only until the season ends. The City’s 2026 agreements estimate the end on or around 15 November, and the City may let a company that sends a winter plan run to 31 December.',
+      answer: 'Only until the season ends. The City’s 2026 agreements estimate the end on or around 15 November, and the City may let a company that sent it a winter plan by 1 November run to 31 December.',
     },
     {
       question: 'Can you ride a scooter on the sidewalk in St. Paul?',

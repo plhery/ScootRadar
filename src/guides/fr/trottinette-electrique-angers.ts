@@ -79,7 +79,7 @@ const guide: Guide = {
       heading: 'Âge, casque, amendes : les règles à Angers',
       blocks: [
         '**L’âge.** Pony exige **16 ans** dans ses conditions de location du 29 mai 2026 ; la loi autorise la trottinette personnelle dès 14 ans.',
-        '**Le casque.** La proposition de loi n° 3256 du 6 octobre 2026, qui l’imposerait partout en France, n’a pas encore été examinée. Le casque reste fortement recommandé.',
+        '**Le casque.** La proposition de loi n° 3256 du 6 octobre 2026, qui l’imposerait partout en France, est à la commission des lois de l’Assemblée nationale (novembre 2026). Le casque reste fortement recommandé.',
         {
           table: {
             caption: 'Trottinette électrique à Angers : les règles nationales qui coûtent le plus cher (octobre 2026)',
@@ -159,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Angers ?',
-      answer: 'Pas au niveau national : la proposition de loi n° 3256, qui l’imposerait partout en France, n’a pas encore été examinée. Il reste fortement recommandé. Le gilet ou un équipement réfléchissant est obligatoire la nuit et par mauvaise visibilité (35 €).',
+      answer: 'Pas au niveau national : la proposition de loi n° 3256, qui l’imposerait partout en France, en est à la commission des lois de l’Assemblée nationale (novembre 2026). Il reste fortement recommandé. Le gilet ou un équipement réfléchissant est obligatoire la nuit et par mauvaise visibilité (35 €).',
     },
     {
       question: 'Peut-on encore « adopter » un pony ?',
@@ -180,6 +180,7 @@ const guide: Guide = {
     { title: 'Ville d’Angers : VéloCité, le prêt de vélo gratuit', url: 'https://www.angers.fr/vivre-a-angers/voirie-deplacements/le-velo/velocite/index.html' },
     { title: 'Ville d’Angers : les Accroche-cœurs 2026 (7 juillet 2026)', url: 'https://presse.angers.fr/private/uploads/piecesjointes/communique-de-presse-le-festival-des-accroche-coeur-2026-se-devoile-0707.pdf' },
     { title: 'Ville d’Angers : Soleils d’hiver 2026, avis pour le jardin du Mail', url: 'https://www.angers.fr/fileadmin/user_upload/avis_de_publicite_chalets_sh_2026.pdf' },
+    { title: 'Assemblée nationale : proposition de loi n° 3256 du 6 octobre 2026 visant à rendre obligatoire le port du casque pour les utilisateurs de trottinettes et autres EDPM', url: 'https://www.assemblee-nationale.fr/dyn/17/dossiers/porte_casque_obligatoire_trottinettes_17e' },
   ],
 };
 

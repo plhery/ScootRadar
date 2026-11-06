@@ -38,7 +38,7 @@ const guide: Guide = {
           },
         },
         'Tjue minutter koster 60 kr hos Voi og 60,90 kr hos Ryde og Dott.',
-        'Loven sier 12 år, men operatørene har egne grenser. Ryde krever 16 år og Dott 18 år. På kommunens nettside står det «15 eller 18 års aldersgrense». Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
+        'Loven sier 12 år, men operatørene har egne grenser. Ryde krever 16 år og Dott 18 år. På kommunens nettside står det «15 eller 18 års aldersgrense». Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
@@ -201,6 +201,7 @@ const guide: Guide = {
     { title: 'AtB: Fri bruk av bysykkel med periodebillett', url: 'https://www.atb.no/forside/aktuelt/fri-bruk-av-bysykkel-med-periodebillett-i-atb-appen' },
     { title: 'Trondheim Bysykkel: Priser', url: 'https://trondheimbysykkel.no/kjop' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 

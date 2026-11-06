@@ -106,9 +106,16 @@ const guide: Guide = {
     {
       heading: 'What Hungary may change',
       blocks: [
-        'Under the drafts Telex outlined on 16 June 2026, e-scooters would fall into two classes. The slower, a **low-power motor scooter** (kis teljesítményű motoros roller), is one whose motor alone can’t push it beyond 25 km/h on level ground; its riders would follow the cycling rules but, among other differences, stay alcohol-free, be over 12 and wear a helmet. Anything with more than 1,000 W of rated power, or able to beat 25 km/h, would be a **high-power motor scooter** (nagy teljesítményű motoros roller), treated as a moped: kept off pavements, ridden only by over-14s, and with a motorcycle helmet required.',
-        'A road-safety questionnaire that Dávid Vitézy, the minister for transport and investment, presented on 16 July 2026, open until early September, asked about e-scooter rules ahead of the overhaul of the whole KRESZ, the two classes, compulsory head protection and a minimum age of 12, 14, 16 or 18, Telex reported. He promised the replies would shape the final rules.',
-        'Neither the drafts nor the questionnaire had changed the law when Telex wrote.',
+        'After a road-safety questionnaire over the summer, which Dávid Vitézy, the minister for transport and investment, presented on 16 July 2026 (Telex), Prime Minister Péter Magyar set out the government’s proposal on 28 October, eduline reported: the e-scooter would become a vehicle category of its own in the KRESZ, with these rules.',
+        {
+          list: [
+            '**For every e-scooter:** no riding under the influence of alcohol, and no second person on board.',
+            '**Up to 25 km/h:** from the age of 14, with head protection compulsory until 18, and on the pavement only where there is no alternative, such as a cycle track.',
+            '**Over 25 km/h:** from 16, with at least a moped licence and a crash helmet, never on the pavement, and no faster than 40 km/h.',
+            '**Rental scooters:** top speed capped at 20 km/h.',
+          ],
+        },
+        'The decree is to go out for public consultation once more before it is issued.',
       ],
     },
     {
@@ -150,7 +157,7 @@ const guide: Guide = {
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in Hungary?',
-      answer: 'The police said in July 2026 that a rider needs a crash helmet, a licence and insurance once a scooter is designed for more than 25 km/h, because it is then a moped. They urge every rider to wear one, and the drafts Telex described in June 2026 would make one compulsory on any e-scooter.',
+      answer: 'The police said in July 2026 that a rider needs a crash helmet, a licence and insurance once a scooter is designed for more than 25 km/h, because it is then a moped. They urge every rider to wear one. Under the government’s proposal of 28 October 2026, head protection would be compulsory until 18 on scooters up to 25 km/h, and a crash helmet on faster ones.',
     },
   ],
   sources: [
@@ -161,6 +168,7 @@ const guide: Guide = {
     { title: 'Hungarian Police: Somogy County release, 1 July 2026 (Hungarian)', url: 'https://www.police.hu/hu/hirek-es-informaciok/legfrissebb-hireink/kozlekedesrendeszet/ittasan-szenvedett-balesetet-egy' },
     { title: 'Telex: e-scooters, drink-riding and the courts, 16 June 2026 (Hungarian)', url: 'https://telex.hu/belfold/2026/06/16/elektromos-roller-ittas-vezetes-jogszabaly-buntetes-kresz' },
     { title: 'Telex: the road-safety questionnaire, 16 July 2026 (Hungarian)', url: 'https://telex.hu/belfold/2026/07/16/vitezy-david-kerdoiv-kozlekedesbiztonsag' },
+    { title: 'eduline: the government’s e-scooter proposal, 29 October 2026 (Hungarian)', url: 'https://eduline.hu/campus-life/20261029_elektromos-roller-kresz-modositas-magyar-peter-bejelentes' },
   ],
 };
 

@@ -192,7 +192,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque va-t-il devenir obligatoire dans toute la France ?',
-      answer: 'C’est à l’étude. Le 16 juin 2026, au Sénat, la ministre déléguée chargée de la citoyenneté, Marie-Pierre Vedrenne, a dit avoir demandé à la Sécurité routière d’étudier un casque obligatoire « en toutes circonstances et sur l’ensemble du territoire », pour les trottinettes comme pour les vélos. Le 6 octobre 2026, le député Yannick Favennec-Bécot a déposé une proposition de loi (n° 3256) qui l’imposerait à tout conducteur d’EDPM, location comprise, six mois après sa promulgation. Elle n’a pas encore été examinée en commission : au 16 octobre 2026, il n’y a ni loi ni décret.',
+      answer: 'C’est à l’étude. Le 16 juin 2026, au Sénat, la ministre déléguée chargée de la citoyenneté, Marie-Pierre Vedrenne, a dit avoir demandé à la Sécurité routière d’étudier un casque obligatoire « en toutes circonstances et sur l’ensemble du territoire », pour les trottinettes comme pour les vélos. Le 6 octobre 2026, le député Yannick Favennec-Bécot a déposé une proposition de loi (n° 3256) qui l’imposerait à tout conducteur d’EDPM, location comprise, six mois après sa promulgation. Elle a été renvoyée à la commission des lois de l’Assemblée nationale : en novembre 2026, il n’y a ni loi ni décret.',
     },
   ],
   sources: [
