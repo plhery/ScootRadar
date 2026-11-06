@@ -59,7 +59,7 @@ const guide: Guide = {
         'A GNR considera-o «fortemente recomendado». Num estudo da Unidade Local de Saúde de São José, em Lisboa, sobre 1566 adultos acidentados de bicicleta ou de trotinete entre 2019 e 2022, 36,9% tinham lesões na cabeça, e o capacete só constava em 7% dos casos com essa informação, segundo a Prevenção Rodoviária Portuguesa.',
         {
           list: [
-            '**Dois projetos de lei**, do PSD e do PS, tornariam o capacete obrigatório na trotinete elétrica e em dispositivos semelhantes, como o monociclo, com coima de **30 a 150 €**. Foram aprovados na generalidade a 30 de setembro de 2026.',
+            '**Dois projetos de lei**, do PSD e do PS, tornariam o capacete obrigatório na trotinete elétrica; o do PSD prevê uma coima de **60 a 300 €** para quem conduza uma trotinete, ou um dispositivo semelhante como o monociclo, sem capacete. Foram aprovados na generalidade a 30 de setembro de 2026.',
             'O do **PSD** exigiria também o capacete em todas as bicicletas com motor e vestuário refletor à noite; o do PS, só nas bicicletas que passam os limites legais, e sem vestuário refletor.',
             '**Faltam** a discussão na especialidade, na comissão parlamentar, a votação final global, a promulgação e a publicação. Não há datas, e os textos, incluindo o valor das coimas, ainda podem mudar.',
             'No mesmo dia, o Parlamento aprovou uma **resolução** do PS, sem força de lei, que recomenda ao Governo limitadores de velocidade obrigatórios e o estudo de capacetes descartáveis nas trotinetes partilhadas.',
@@ -118,7 +118,7 @@ const guide: Guide = {
               ['Trotinete com mais de 0,25 kW ou de 25 km/h', '60 a 300 € e apreensão imediata', 'Grave'],
               ['Estacionar no passeio ou na ciclovia', '15 a 75 €; 30 a 150 € se impedir a passagem', 'Leve'],
               ['Estacionar numa passadeira', '30 a 150 €', 'Grave'],
-              ['Andar sem capacete', 'Nenhuma; 30 a 150 € se os projetos forem aprovados', '–'],
+              ['Andar sem capacete', 'Nenhuma; 60 a 300 € no projeto do PSD', '–'],
             ],
           },
         },
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Quando passa o capacete a ser obrigatório nas trotinetes?',
-      answer: 'Só depois da votação final global e da publicação em Diário da República. Os projetos do PSD e do PS foram aprovados na generalidade a 30 de setembro de 2026 e estão na comissão parlamentar. Pelos textos aprovados na generalidade, a obrigação começaria 30 dias depois da publicação, com coima de 30 a 150 €.',
+      answer: 'Só depois da votação final global e da publicação em Diário da República. Os projetos do PSD e do PS foram aprovados na generalidade a 30 de setembro de 2026 e estão na comissão parlamentar. O do PSD prevê uma coima de 60 a 300 € para quem conduza uma trotinete sem capacete.',
     },
     {
       question: 'A polícia pode apreender a minha trotinete?',
@@ -176,8 +176,7 @@ const guide: Guide = {
     { title: 'Código Penal, artigo 292.º (PGDL)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?artigo_id=109A0292&nid=109&tabela=leis' },
     { title: 'Decreto-Lei n.º 26/2025 (Diário da República)', url: 'https://diariodarepublica.pt/dr/detalhe/decreto-lei/26-2025-911648872' },
     { title: 'Sábado (Lusa): ANSR esclarece que o seguro obrigatório não se aplica às trotinetas (19 de junho de 2025)', url: 'https://www.sabado.pt/portugal/detalhe/seguranca-rodoviaria-esclarece-que-seguro-obrigatorio-nao-se-aplica-as-trotinetas' },
-    { title: 'Assembleia da República: Projeto de Lei 622/XVII (PSD), capacete e vestuário refletor', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=356782' },
-    { title: 'Assembleia da República: Projeto de Lei 774/XVII (PS), capacete', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=377254' },
+    { title: 'Diário de Aveiro/Lusa: uso de capacete para quem utiliza trotinete e bicicleta elétrica aprovado na generalidade, 2 de outubro de 2026', url: 'https://www.diarioaveiro.pt/2026/10/02/uso-de-capacete-para-quem-utiliza-trotinete-e-bicicleta-eletrica-aprovado-na-generalidade/' },
     { title: 'GNR: Sinistralidade com trotinetes a motor (13 de março de 2026)', url: 'https://www.gnr.pt/comunicado.aspx?linha=9448' },
     { title: 'Prevenção Rodoviária Portuguesa: trotinetas em Portugal (25 de setembro de 2026)', url: 'https://prp.pt/trotinetas-portugal-2026/' },
     { title: 'Bird: contrato de aluguer em Portugal (8 de dezembro de 2021)', url: 'https://bird.co/rental-agreements/portugal-pt/' },

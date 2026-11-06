@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'istanbul',
   name: 'E-scooters in İstanbul',
   title: 'E-scooters Istanbul 2026: BinBin, Martı, Hop and the rules',
-  description: 'E-scooters in Istanbul: BinBin, Martı and Hop, how prices work, the age and pavement rules, where to park, the Bosphorus bridges and 2026 fines.',
+  description: 'E-scooters in Istanbul: BinBin, Martı and Hop, what a ride costs, riding from 15 with no licence, no pavements or Bosphorus bridges, parking and 2026 fines.',
   headline: 'E-scooters in İstanbul: BinBin, Martı and Hop, prices, where to ride and park, and Turkey’s 2026 rules',
-  lede: 'E-scooters in İstanbul are rented through three apps, BinBin, Martı and Hop, and the app shows the unlock fee and the price a minute before you start. Turkish law lets you ride from 15 without a licence: in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, never on the pavement and never over the Bosphorus bridges. End your ride only where the app allows; red areas on its map are no-parking zones.',
+  lede: 'E-scooters in İstanbul are rented through three apps, BinBin, Martı and Hop, and each shows its prices before you start: on BinBin, an unlock fee plus a price a minute. Turkish law lets you ride from 15 without a licence (Martı asks for 16): in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, never on the pavement (a 5,000-lira fine) and never over the Bosphorus bridges. No helmet is required, but a reflective vest is at night. End your ride only where the app allows; red areas on its map are no-parking zones.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'tr:İstanbul',
@@ -34,7 +34,7 @@ const guide: Guide = {
         'BinBin shows the unlock fee and the price a minute when you pick a scooter, and since June 2026 the national regulation has made every operator show its prices in its app or on its website. BinBin charges your card or prepaid balance at the end of the ride.',
         {
           table: {
-            caption: 'E-scooters in İstanbul at a glance, 25 October 2026, and who says so',
+            caption: 'E-scooters in İstanbul at a glance, as of November 2026, and who says so',
             head: ['Question', 'Answer', 'Who says so'],
             rows: [
               ['Which operators?', 'BinBin, Martı and Hop', 'The operators’ websites'],
@@ -153,7 +153,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a BinBin scooter cost in İstanbul?',
-      answer: 'The app shows the unlock fee and the price a minute before you start.',
+      answer: 'As of November 2026, BinBin charges an unlock fee plus a price a minute, both shown when you pick a scooter, and takes the fare from your card or prepaid balance when the ride ends. Its BinPass sells prepaid minutes, rides or free unlocks. Every operator must show its prices in its app or on its website.',
     },
     {
       question: 'Do I need a driving licence to ride an e-scooter in Turkey?',
@@ -166,6 +166,10 @@ const guide: Guide = {
     {
       question: 'Can I ride an e-scooter on the pavement in İstanbul?',
       answer: 'No: it costs 5,000 lira. Use the cycle lane, or a road with a limit of 50 km/h or less.',
+    },
+    {
+      question: 'Where can I park a shared e-scooter in İstanbul?',
+      answer: 'Only where the app lets you end the ride: on BinBin, in the light areas of its map, never in a red one, with a photo at the end. Never block pedestrians, disabled people or traffic, or park on private property: the operator must remove such a scooter within two hours.',
     },
     {
       question: 'Can I cross the Bosphorus on an e-scooter?',

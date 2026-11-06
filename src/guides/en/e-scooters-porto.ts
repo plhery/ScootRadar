@@ -98,7 +98,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The helmet may come back: on 30 September 2026 Parliament approved, at first reading, two bills making it compulsory (proposed fine: €30–150). They still need committee work and a final vote.',
+        'The helmet may come back: on 30 September 2026 Parliament approved, at first reading, two bills making it compulsory; the PSD’s would fine a scooter rider without one €60–300. They still need committee work and a final vote.',
         'Insurance isn’t compulsory for riders, and Porto obliges operators to insure their users. Lisbon has rules of its own: see [e-scooters in Lisbon](guide:lisbon).',
       ],
     },
@@ -151,7 +151,7 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a helmet for an e-scooter in Portugal?',
-      answer: 'Not as of October 2026: the helmet rule for e-scooters was dropped in January 2021. Parliament approved two bills to bring it back on 30 September 2026, with a proposed fine of €30–150, but they are not law yet. The GNR, Portugal’s national guard, strongly recommends wearing one.',
+      answer: 'Not as of October 2026: the helmet rule for e-scooters was dropped in January 2021. Parliament approved two bills to bring it back on 30 September 2026, but they are not law yet; the PSD’s proposes a €60–300 fine for scooter riders without one. The GNR, Portugal’s national guard, strongly recommends wearing one.',
     },
     {
       question: 'Who pays if a rental scooter is badly parked in Porto?',
@@ -175,6 +175,7 @@ const guide: Guide = {
     { title: 'Código da Estrada, Portugal’s Highway Code (Portuguese)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
     { title: 'Bird: rental agreement for Portugal (Portuguese)', url: 'https://bird.co/rental-agreements/portugal-pt/' },
     { title: 'CP: bikes and scooters on trains (Portuguese)', url: 'https://cp.pt/info/pt/w/transporte-bicicletas' },
+    { title: 'Diário de Aveiro/Lusa: helmets for e-scooter and e-bike riders approved at first reading, 2 October 2026 (Portuguese)', url: 'https://www.diarioaveiro.pt/2026/10/02/uso-de-capacete-para-quem-utiliza-trotinete-e-bicicleta-eletrica-aprovado-na-generalidade/' },
   ],
 };
 

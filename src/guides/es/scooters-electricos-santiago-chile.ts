@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'santiago-de-chile',
   name: 'Scooters eléctricos en Santiago de Chile',
   title: 'Scooters eléctricos Santiago de Chile: Whoosh, JET y Lime',
-  description: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime comuna por comuna, dónde ver el precio, casco, ciclovía y dónde estacionar.',
-  headline: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime, comuna por comuna, y las reglas para andar',
-  lede: 'Los scooters eléctricos de Santiago de Chile se arriendan con tres apps, Whoosh, GO JET (de JET) y Lime, y cada comuna decide si los permite. El precio lo ves en la app. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, y casco. Whoosh y JET piden 18 años para arrendar.',
+  description: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime, cuánto cuesta un viaje de 10 minutos, en qué comunas hay, casco, ciclovía y dónde estacionar.',
+  headline: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime, cuánto cuestan, comuna por comuna, y las reglas para andar',
+  lede: 'Los scooters eléctricos de Santiago de Chile se arriendan con tres apps, Whoosh, GO JET (de JET) y Lime, y cada comuna decide si los permite. Whoosh y JET cobran un monto por partir más un precio por minuto, que ves en la app antes del viaje; en junio de 2026, un viaje de 10 minutos costaba entre $1.500 y $2.300 según la empresa. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, y casco. Whoosh y JET piden 18 años para arrendar.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'cl:Santiago',
@@ -33,13 +33,14 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta arrendar un scooter en Santiago?',
       blocks: [
-        'El precio exacto lo ves en la app antes del viaje. Así cobran en noviembre de 2026:',
+        'En junio de 2026, un viaje de 10 minutos costaba entre $1.500 y $2.300, según la empresa (T13 / Ex-Ante). El precio exacto lo ves en la app antes del viaje. Así cobran en noviembre de 2026:',
         {
           list: [
             '**Whoosh** cobra un costo de inicio, que incluye el primer minuto, más un precio por minuto, según la ciudad, la demanda y tu plan o paquete; una vez que partes, la tarifa no cambia. Puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
             '**JET** te muestra la tarifa en GO JET antes de que confirmes el arriendo, según sus términos.',
           ],
         },
+        'Cuando llegó JET, en septiembre de 2025, La Tercera comparó las tarifas: JET cobraba $400 por desbloquear y $135 por minuto, y Whoosh $500 y $180; con la suscripción mensual de cada una ($2.499 en JET, $2.700 en Whoosh), desbloquear era gratis. En octubre de 2026, 4 de cada 10 viajes de JET en Santiago se hacían con su plan mensual, JET PLUS, según El Diario Santiago.',
         'Whoosh puede cobrarte aparte, en pesos chilenos, según sus términos para Chile:',
         {
           table: {
@@ -80,7 +81,7 @@ const guide: Guide = {
             ],
           },
         },
-        'En noviembre de 2025, el Ministerio de Transportes anunció en T13 multas de 0,5 a 1 UTM (unos $36.000 a $72.000 en octubre de 2026) desde el 1 de enero de 2026, y el retiro de los scooters que pasen de 25 km/h. Las Condes empezó a cursar partes el 1 de junio de 2024, con multas de 1 a 3 UTM por andar sin casco, por la vereda o sin respetar las señales, según la municipalidad.',
+        'En noviembre de 2025, el Ministerio de Transportes anunció en T13 multas de 0,5 a 1 UTM (unos $36.000 a $72.000 en noviembre de 2026) desde el 1 de enero de 2026, y el retiro de los scooters que pasen de 25 km/h. Las Condes empezó a cursar partes el 1 de junio de 2024, con multas de 1 a 3 UTM por andar sin casco, por la vereda o sin respetar las señales, según la municipalidad.',
         'Un proyecto de ley de septiembre de 2026 exigiría 18 años, licencia y seguro para los de más de 25 km/h o 0,25 kW, y limitaría a 25 km/h los de arriendo. Aún no es ley.',
       ],
     },
@@ -97,7 +98,7 @@ const guide: Guide = {
               ['San Miguel', 'Whoosh desde el 27 de junio de 2025, por acuerdo con la municipalidad: un piloto de 200 scooters en estacionamientos exclusivos, que crecería a 500. Lime desde octubre de 2025: 200 de libre flotación dentro de un polígono'],
               ['Renca', 'Whoosh desde mayo de 2026: 400 scooters en más de 250 estaciones; el alcalde anunció 15% de descuento con la Tarjeta Vecino'],
               ['Cerrillos', 'JET, en marcha blanca desde el 2 de octubre de 2026: 300 scooters y 200 bicis'],
-              ['Lo Barnechea, Las Condes y Vitacura', 'Licitación conjunta liderada por Lo Barnechea, por casi 1.800 vehículos durante dos años. A comienzos de septiembre de 2026, La Tercera esperaba la adjudicación para noviembre; a fines de mes, El Mercurio informó que la ganó Lime (La Voz de Pucón). Lo Barnechea terminó su contrato el 15 de octubre de 2026 y anunciará cuándo vuelve el servicio'],
+              ['Lo Barnechea, Las Condes y Vitacura', 'Licitación conjunta liderada por Lo Barnechea, por casi 1.800 vehículos durante dos años. Lo Barnechea la adjudicó a Lime el 10 de septiembre de 2026, pero el 30 de octubre dejó sin efecto esa adjudicación y la readjudicó a Whoosh, por 24 meses (Mercado Público). Lo Barnechea terminó su contrato anterior el 15 de octubre de 2026 y anunciará cuándo vuelve el servicio'],
               ['La Reina', 'Whoosh partió ahí en mayo de 2023 y se fue el 31 de julio de 2025, cuando la comuna licitaba el servicio para una sola marca (La Tercera, agosto de 2025)'],
               ['Ñuñoa', 'Whoosh tuvo un permiso piloto de ocho meses que no se renovó; en agosto de 2025 conversaba para volver (La Tercera)'],
               ['Providencia', 'En mayo de 2024 dijo que estos scooters no podrían estacionarse en la comuna (La Tercera); en agosto de 2025, Whoosh decía estar ahí'],
@@ -146,7 +147,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta arrendar un scooter eléctrico en Santiago?',
-      answer: 'Cada app te muestra el precio antes del viaje. En noviembre de 2026, Whoosh cobra un costo de inicio, que incluye el primer minuto, más un precio por minuto, y sus multas por infracciones van de $5.000 a $50.000.',
+      answer: 'En junio de 2026, un viaje de 10 minutos costaba entre $1.500 y $2.300 según la empresa. Whoosh y JET cobran un monto por partir más un precio por minuto, que ves en la app antes del viaje, y ambas ofrecen suscripciones. Las multas de Whoosh por infracciones van de $5.000 a $50.000.',
     },
     {
       question: '¿Qué app necesito para los scooters de Santiago?',
@@ -158,7 +159,11 @@ const guide: Guide = {
     },
     {
       question: '¿En qué comunas de Santiago hay scooters?',
-      answer: 'En las que dan permiso o convenio. En junio de 2026, Lime operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, y Whoosh en doce comunas, entre ellas Renca, Quinta Normal y Cerro Navia (Forbes Chile); JET, en Huechuraba y, desde octubre, en Cerrillos, entre otras.',
+      answer: 'En las que dan permiso o convenio. En junio de 2026, Lime operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, y Whoosh en doce comunas, entre ellas Renca, Quinta Normal y Cerro Navia (Forbes Chile); JET, en Huechuraba y, desde octubre, en Cerrillos, entre otras. El 30 de octubre de 2026, Lo Barnechea readjudicó a Whoosh la concesión conjunta con Las Condes y Vitacura, por 24 meses.',
+    },
+    {
+      question: '¿Qué es JET y cuánto cuesta?',
+      answer: 'JET es una empresa de scooters y bicis eléctricas que llegó a Santiago a mediados de 2025; se arrienda con la app GO JET, pide 18 años y sus scooters no pasan de 20 km/h. En septiembre de 2025 cobraba $400 por desbloquear y $135 por minuto, y con su suscripción mensual desbloquear era gratis, según La Tercera. Hoy la tarifa y los paquetes de minutos los ves en GO JET antes de confirmar; quienes andan seguido usan su plan mensual, JET PLUS.',
     },
     {
       question: '¿Puedo subir un scooter de arriendo al Metro?',
@@ -184,7 +189,9 @@ const guide: Guide = {
     { title: 'La Tercera: Las Condes y Providencia (mayo de 2024)', url: 'https://www.latercera.com/nacional/noticia/hasta-195-mil-pesos-las-condes-comenzara-a-multar-por-mal-uso-de-scooters-electricos/YHQ5LZDXRJDP5DEAF4AUACFWYY/' },
     { title: 'La Tercera: Whoosh en Santiago (agosto de 2025)', url: 'https://www.latercera.com/pulso/noticia/whoosh-apunta-a-llevar-sus-scooters-electricos-a-todo-el-gran-santiago-para-2028/' },
     { title: 'La Tercera: la licitación del sector oriente (septiembre de 2026)', url: 'https://www.latercera.com/pulso/noticia/licitacion-de-scooters-de-lo-barnechea-vitacura-y-las-condes-enfrenta-a-dos-gigantes-de-estados-unidos-y-rusia/' },
-    { title: 'La Voz de Pucón, citando a El Mercurio (septiembre de 2026)', url: 'https://www.lavozdepucon.cl/2026/09/29/scooters-electricos-municipios-de-santiago-obtienen-ingresos-millonarios-mientras-pucon-solo-cobra-poco-mas-de-300-mil-al-mes/' },
+    { title: 'Mercado Público: readjudicación de la concesión de Lo Barnechea, Las Condes y Vitacura (octubre de 2026)', url: 'https://www.mercadopublico.cl/Procurement/Modules/RFB/DetailsAcquisition.aspx?idlicitacion=2735-73-R126' },
+    { title: 'Mercado Público: adjudicación a Lime (septiembre de 2026)', url: 'https://www.mercadopublico.cl/Procurement/Modules/RFB/StepsProcessAward/PreviewAwardAct.aspx?qs=RSAVUFXnPKlzJ4qAwujK/w==' },
+    { title: 'La Tercera: las tarifas de JET, Whoosh y Lime (septiembre de 2025)', url: 'https://www.latercera.com/tendencias/noticia/jet-entra-al-mercado-de-los-scooters-en-chile-estos-son-los-precios-con-los-que-busca-competir/' },
     { title: 'G5 Noticias: Whoosh en Renca (mayo de 2026)', url: 'https://g5noticias.cl/2026/05/12/renca-incorpora-scooters-electricos-como-nueva-alternativa-de-movilidad-en-la-comuna/' },
     { title: 'El Diario Santiago: JET en Cerrillos (octubre de 2026)', url: 'https://eldiariosantiago.cl/2026/10/03/jet-en-cerrillos-500-vehiculos-electricos/' },
     { title: 'El Diario Santiago: JET en Colina y Peñalolén (octubre de 2026)', url: 'https://eldiariosantiago.cl/2026/10/17/jet-900-vehiculos-electricos-cerrillos-colina-penalolen/' },

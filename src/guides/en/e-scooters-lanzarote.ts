@@ -84,7 +84,7 @@ const guide: Guide = {
         'Interurban roads, here the LZ-2 above all, are closed to e-scooters, and all of Hoppy’s spots lie in the resort: you can’t end a ride at the airport, in Puerto Calero, in Tías village or in Arrecife.',
         {
           list: [
-            '**The airport.** César Manrique-Lanzarote airport lies beside Matagorda, but you can’t end a ride there: on 31 October 2026 the nearest free scooter stood about 2 km from the terminal. Intercity Bus line 161 leaves Terminal 1 every 30–60 minutes from 07:30 to 21:30 (timetable of 31 October 2026) and reaches Matagorda in about 6 minutes, then runs along the resort to Puerto Calero, Yaiza and Playa Blanca. It doesn’t carry passengers between two stops within Puerto del Carmen.',
+            '**The airport.** César Manrique-Lanzarote airport lies beside Matagorda. Intercity Bus line 161 leaves Terminal 1 every 30–60 minutes from 07:30 to 21:30 (timetable as of November 2026) and reaches Matagorda in about 6 minutes, then runs along the resort to Puerto Calero, Yaiza and Playa Blanca. It doesn’t carry passengers between two stops within Puerto del Carmen.',
             '**Arrecife.** Line 2 links the capital with Puerto del Carmen.',
             '**Your own scooter on the guagua.** Intercity Bus Lanzarote, which runs the island’s buses (guaguas), carries bikes and e-scooters only folded in the luggage hold, never inside, one per person, on buses that have a hold. A Hoppy must end its ride at one of its spots, so it can’t go on the bus.',
           ],
@@ -144,8 +144,8 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'Which app do I need for e-scooters on Lanzarote?',
-      answer: 'Hoppy, in Puerto del Carmen. The [map of Puerto del Carmen](map:es:Puerto del Carmen) shows where its free scooters are; you unlock and pay in the Hoppy app, which shows the price first.',
+      question: 'Where on Lanzarote can you rent an e-scooter, and with which app?',
+      answer: 'In Puerto del Carmen, in the municipality of Tías, with the Hoppy app: its scooters run along about 6 km of coast, from just west of the old harbour to Matagorda, and the app shows the price before you unlock. The [map of Puerto del Carmen](map:es:Puerto del Carmen) shows where its free scooters are. Dott also lists Lanzarote among its locations. In May 2026 Yaiza and Teguise removed rental scooters that had no municipal permit from Playa Blanca and Costa Teguise.',
     },
     {
       question: 'How much does scooter hire in Puerto del Carmen cost?',
@@ -157,7 +157,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a Hoppy from Lanzarote airport to Puerto del Carmen?',
-      answer: 'No. Hoppy has no spot at the airport (on 31 October 2026 the nearest free scooter stood about 2 km from the terminal), and the LZ-2 is closed to e-scooters. Take Intercity Bus line 161 from Terminal 1, or a taxi.',
+      answer: 'No. Hoppy has no spot at the airport, and the LZ-2 is closed to e-scooters. Take Intercity Bus line 161 from Terminal 1, which reaches Matagorda in about 6 minutes, or a taxi.',
     },
     {
       question: 'Can I ride an e-scooter on the promenade in Puerto del Carmen?',

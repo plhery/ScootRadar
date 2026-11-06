@@ -81,7 +81,7 @@ const guide: Guide = {
               ['Alcohol', 'Limit 0.5 g/l, as for drivers; 1.2 g/l or more is a crime', '€125–625 (0.5–0.8 g/l); €250–1,250 (0.8–1.2 g/l)'],
               ['Passenger', 'One rider only', '€60–300'],
               ['Lights', 'On from dusk to dawn and in poor visibility', '€30–150'],
-              ['Helmet', 'Not compulsory, but strongly advised', 'None today; €30–150 proposed'],
+              ['Helmet', 'Not compulsory, but strongly advised', 'None today; €60–300 in the PSD bill'],
             ],
           },
         },
@@ -163,7 +163,7 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a helmet on an e-scooter in Lisbon?',
-      answer: 'Not by law (31 October 2026), though strongly advised. Two bills to make helmets compulsory, with a €30–150 fine, passed a first vote in Parliament on 30 September 2026 but still await their final vote.',
+      answer: 'Not by law (31 October 2026), though strongly advised. Two bills to make helmets compulsory passed a first vote in Parliament on 30 September 2026 but still await their final vote; the PSD’s would fine a scooter rider without one €60–300.',
     },
     {
       question: 'Can I ride a scooter across the 25 de Abril bridge to Almada?',
@@ -188,7 +188,7 @@ const guide: Guide = {
     { title: 'TTSL: bikes and scooters on the Lisbon ferries (Portuguese)', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },
     { title: 'CP: bikes and scooters on trains', url: 'https://www.cp.pt/info/w/bikes-and-scooters' },
     { title: 'Metropolitano de Lisboa: using the Metro (Portuguese)', url: 'https://www.metrolisboa.pt/viajar/como-utilizar-o-metro/' },
-    { title: 'Portuguese Parliament: the PSD helmet bill, Projeto de Lei 622/XVII (Portuguese)', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=356782' },
+    { title: 'Diário de Aveiro/Lusa: helmets for e-scooter and e-bike riders approved at first reading, 2 October 2026 (Portuguese)', url: 'https://www.diarioaveiro.pt/2026/10/02/uso-de-capacete-para-quem-utiliza-trotinete-e-bicicleta-eletrica-aprovado-na-generalidade/' },
     { title: 'Código da Estrada, consolidated text (PGDL, Portuguese)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
     { title: 'ACP: the referendum petition on shared e-scooters in Lisbon (Portuguese)', url: 'https://trotinetessimounao.acp.pt' },
     { title: 'Jornal Económico: “We want the scooters removed by the end of January”, says Gonçalo Reis, 16 October 2026 (Portuguese)', url: 'https://jornaleconomico.sapo.pt/noticias/queremos-as-trotinetes-removidas-ate-ao-final-de-janeiro-afirma-goncalo-reis-que-garante-que-nao-havera-indemnizacoes/' },

@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trottinette-electrique-bruxelles',
   topic: 'brussels',
   name: 'Louer une trottinette électrique à Bruxelles',
-  title: 'Trottinette électrique Bruxelles : tarifs, règles, fin 2026',
-  description: 'Trottinette électrique à Bruxelles : Bolt et Dott roulent jusqu’au 31 décembre 2026. Tarifs, 18 ans et scan d’identité, dropzones, zones à 8 km/h, et après.',
+  title: 'Trottinette électrique Bruxelles : prix, règles, fin 2026',
+  description: 'Trottinette électrique à Bruxelles : Bolt (0,99 € + 0,31 €/min) et Dott (1 € + 0,37 €/min) jusqu’au 31 décembre 2026, dès 18 ans, scan d’identité, dropzones.',
   headline: 'Trottinette électrique à Bruxelles : louer jusqu’au 31 décembre 2026, tarifs, dropzones et fin en 2027',
-  lede: 'Louer une trottinette électrique à Bruxelles reste possible jusqu’au 31 décembre 2026 : Bolt et Dott roulent sous un régime transitoire, pour 0,99 ou 1 € au déverrouillage et 0,31 ou 0,37 € la minute (tarifs en novembre 2026). Il faut avoir 18 ans, scanner une pièce d’identité et terminer la location dans une dropzone. Le gouvernement bruxellois a décidé de mettre fin aux trottinettes partagées le 1er janvier 2027, au profit des vélos partagés ; votre trottinette personnelle reste autorisée.',
+  lede: 'Louer une trottinette électrique à Bruxelles reste possible jusqu’au 31 décembre 2026 : Bolt et Dott roulent sous un régime transitoire. Bolt facture 0,99 € au déverrouillage et 0,31 € la minute, Dott 1 € et 0,37 € la minute : 10 minutes coûtent 4,09 € chez Bolt et 4,70 € chez Dott (tarifs en novembre 2026). Il faut avoir 18 ans, scanner une pièce d’identité et terminer la location dans une dropzone. Le gouvernement bruxellois a décidé de mettre fin aux trottinettes partagées le 1er janvier 2027, au profit des vélos partagés ; votre trottinette personnelle reste autorisée.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'be:Bruxelles',
@@ -55,6 +55,7 @@ const guide: Guide = {
             ],
           },
         },
+        '**Quelle trottinette est la moins chère ?** Celle de Bolt : 10 minutes coûtent 4,09 €, contre 4,70 € chez Dott, et 20 minutes 7,19 €, contre 8,40 €.',
         'Selon leurs conditions, Bolt et Dott peuvent aussi vendre des pass prépayés, dont l’app affiche le prix. À noter : le vélo électrique de Bolt coûte moins cher que n’importe quelle trottinette.',
       ],
     },
@@ -161,6 +162,14 @@ const guide: Guide = {
     {
       question: 'Les trottinettes partagées sont-elles interdites à Bruxelles ?',
       answer: 'Pas encore : Bolt et Dott en louent jusqu’au 31 décembre 2026. Le gouvernement bruxellois a décidé qu’elles disparaîtront à partir du 1er janvier 2027 ; les vélos électriques partagés et Villo! restent.',
+    },
+    {
+      question: 'Combien coûte une trottinette électrique à Bruxelles ?',
+      answer: 'En novembre 2026, Bolt facture 0,99 € pour déverrouiller et 0,31 € la minute, Dott 1 € et 0,37 € la minute. Une course de 10 minutes coûte donc 4,09 € chez Bolt et 4,70 € chez Dott, une de 20 minutes 7,19 € et 8,40 €. Le vélo électrique de Bolt, sans frais de déverrouillage et à 0,25 € la minute, revient moins cher.',
+    },
+    {
+      question: 'Comment louer une trottinette électrique à Bruxelles ?',
+      answer: 'Téléchargez l’app de Bolt ou de Dott, créez un compte et scannez une fois votre pièce d’identité : il faut avoir 18 ans. Scannez ensuite le QR code de la trottinette, roulez sur la piste cyclable ou la chaussée et terminez la location dans une dropzone. C’est possible jusqu’au 31 décembre 2026.',
     },
     {
       question: 'Pourrai-je rouler avec ma propre trottinette à Bruxelles en 2027 ?',

@@ -98,7 +98,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Faltam a discussão na especialidade e a votação final global.',
+        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido; o do PSD prevê uma coima de 60 a 300 € para quem conduza uma trotinete sem capacete. Faltam a discussão na especialidade e a votação final global.',
         'O seguro não é obrigatório para quem conduz, e o regulamento do Porto obriga os operadores a segurar os utilizadores. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules); para Lisboa, que tem regras próprias, veja [trotinetes em Lisboa](guide:lisbon).',
       ],
     },
@@ -170,6 +170,7 @@ const guide: Guide = {
     { title: 'Código da Estrada, versão consolidada (PGDL)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
     { title: 'Bird: contrato de aluguer em Portugal', url: 'https://bird.co/rental-agreements/portugal-pt/' },
     { title: 'CP: transporte de bicicletas e trotinetas', url: 'https://cp.pt/info/pt/w/transporte-bicicletas' },
+    { title: 'Diário de Aveiro/Lusa: uso de capacete para quem utiliza trotinete e bicicleta elétrica aprovado na generalidade, 2 de outubro de 2026', url: 'https://www.diarioaveiro.pt/2026/10/02/uso-de-capacete-para-quem-utiliza-trotinete-e-bicicleta-eletrica-aprovado-na-generalidade/' },
   ],
 };
 

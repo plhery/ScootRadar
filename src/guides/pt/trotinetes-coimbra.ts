@@ -93,7 +93,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Ainda não são lei. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules).',
+        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido; o do PSD prevê uma coima de 60 a 300 € para quem conduza uma trotinete sem capacete. Ainda não são lei. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules).',
       ],
     },
     {
@@ -161,7 +161,7 @@ const guide: Guide = {
     { title: 'Diário de Coimbra/Lusa: o metrobus em Coimbra-B (23 de setembro de 2026)', url: 'https://www.diariocoimbra.pt/2026/09/23/presidente-da-metro-mondego-defende-espera-normal-de-passageiros-em-coimbra-b-durante-manhas/' },
     { title: 'SMTUC: Elevador do Mercado', url: 'https://www.smtuc.pt/elevador-do-mercado/' },
     { title: 'Código da Estrada, versão consolidada (PGDL)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
-    { title: 'Assembleia da República: Projeto de Lei 622/XVII (PSD), capacete', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=356782' },
+    { title: 'Diário de Aveiro/Lusa: uso de capacete para quem utiliza trotinete e bicicleta elétrica aprovado na generalidade, 2 de outubro de 2026', url: 'https://www.diarioaveiro.pt/2026/10/02/uso-de-capacete-para-quem-utiliza-trotinete-e-bicicleta-eletrica-aprovado-na-generalidade/' },
     { title: 'CP: transporte de bicicletas e trotinetas', url: 'https://www.cp.pt/info/w/bikes-and-scooters' },
     { title: 'Echo Boomer: fecho da estação de Coimbra aos comboios (3 de janeiro de 2025)', url: 'https://echoboomer.pt/estacao-ferroviaria-coimbra-desativada-12-janeiro/' },
     { title: 'Coimbra Coolectiva: as trotinetes são uma boa alternativa? (7 de maio de 2022)', url: 'https://coimbracoolectiva.pt/historias/temas/mobilidade/as-trotinetes-sao-uma-boa-alternativa/' },
