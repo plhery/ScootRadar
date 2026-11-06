@@ -1,12 +1,33 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import { SMART_APP_BANNER, smartAppBanner } from '@/lib/appStore';
-import { SITE_URL } from '@/lib/site';
+import { MAP_SHARE_IMAGE, SITE_NAME, SITE_URL } from '@/lib/site';
 
+const TITLE = 'Accessibility — ScootRadar';
+const DESCRIPTION =
+  'Which accessibility features the ScootRadar app for iPhone and iPad supports, what comes next, and its known gaps, with what to do meanwhile.';
+
+// A shared link names this page, not the map: the layout's openGraph and twitter are the map's,
+// and a page that sets either replaces the whole of it.
 export const metadata: Metadata = {
-  title: 'Accessibility — ScootRadar',
-  description: 'Which accessibility features the ScootRadar app for iPhone and iPad supports, and what is still being worked on.',
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: '/accessibility' },
+  openGraph: {
+    type: 'website',
+    url: '/accessibility',
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: 'en_CH',
+    images: [MAP_SHARE_IMAGE],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [MAP_SHARE_IMAGE],
+  },
   other: { [SMART_APP_BANNER]: smartAppBanner(new URL('/accessibility', SITE_URL)) },
 };
 
@@ -98,7 +119,9 @@ export default function AccessibilityPage() {
           <li>
             <strong>Sufficient Contrast:</strong> on the light map, the dots stand out from the map
             less than Apple asks. They stand out more on the dark map: choose Settings › Appearance ›
-            Dark. The system&apos;s Increase Contrast setting doesn&apos;t change the dots.
+            Dark. On the dark map, though, the red edge of a zone where riding is forbidden stands
+            out less than Apple asks; on the light map it stands out enough. The system&apos;s
+            Increase Contrast setting doesn&apos;t change the dots or the zones.
           </li>
         </ul>
 

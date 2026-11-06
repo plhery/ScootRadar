@@ -7,6 +7,14 @@ import type { LandingLocale } from '@/lib/landingCopy';
 export const SITE_URL = 'https://scootradar.com';
 export const SITE_NAME = 'ScootRadar';
 
+/** The picture a shared link to the map shows, of the English landing page (scripts/generate-share-images.mjs). */
+export const MAP_SHARE_IMAGE = {
+  url: '/share/en.png',
+  width: 1200,
+  height: 630,
+  alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of nine providers.',
+};
+
 /** The language and country a shared link names, for each language of the site. */
 export const OPEN_GRAPH_LOCALES: Record<LandingLocale, string> = {
   en: 'en_CH',

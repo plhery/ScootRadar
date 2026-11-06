@@ -8,7 +8,7 @@ import { formatLocale } from "@/lib/formatLocale";
 import { I18nProvider } from "@/lib/i18n";
 import { MAP_PATH } from "@/lib/mapAddress";
 import { ROTATE_PANES_STYLE, ROTATE_PANES_STYLE_ID } from "@/lib/mapRotation";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { MAP_SHARE_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -35,13 +35,6 @@ const text = Red_Hat_Text({
 const TITLE = "Live e-scooter map: Lime, Bolt, Bird, Voi, Dott | ScootRadar";
 const DESCRIPTION =
   "Every e-scooter near you on a live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike and Zeus, with battery, walking time and price. Free, no account.";
-// The picture of the English landing page, scripts/generate-share-images.mjs.
-const SHARE_IMAGE = {
-  url: "/share/en.png",
-  width: 1200,
-  height: 630,
-  alt: "Every e-scooter on one map: the app at night by Zürich main station, beside the initials of nine providers.",
-};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -55,13 +48,13 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     locale: "en_CH",
-    images: [SHARE_IMAGE],
+    images: [MAP_SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: [SHARE_IMAGE],
+    images: [MAP_SHARE_IMAGE],
   },
   manifest: "/manifest.json",
   icons: {
