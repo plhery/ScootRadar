@@ -398,11 +398,25 @@ Area", Nicosia, Limassol, Larnaca, Rhodes (Nemo Scooters'), Istanbul,
 İzmir, Antalya and Adana (Seven Group's), Mexico City, Tijuana, Seoul,
 Riyadh, Jeddah, Doha and its Asian Cup stadiums, San Juan and Skootel's
 Puerto Rico areas, and test areas in Liverpool and Newcastle. London's area
-lists vehicles within 5 km of its centre, but no scooter. A centre read clears 5 km only: unlike the American search, the
-areas larger than that were not swept whole. In Békéscsaba a read listed a
-brand the reader did not know (`9b2c8a73…`): the search stopped for 15
-minutes, as it should, and the research reader accepts the brand since, as
-it does those of two Bird partners, though the cache does not.
+lists vehicles within 5 km of its centre, but no scooter.
+
+A centre read clears 5 km only, so on 6 November, from 07:30 to 08:39 UTC,
+the production code swept whole the 44 areas 6 to 60 km across that a centre
+read had left with a scooter or none, here and in the European search, where
+no feed of ours covered them: 138 requests. Helsinki's held 3 scooters,
+Espoo's, Vantaa's and Santarém's one each, and the others none, Bucharest's,
+Munich's, Antwerp's, Doha's, Seville's and Verona's among them. Mexico City's
+and San Juan's had been swept whole on 5 November, at 17:46 and 17:48 UTC,
+and held none. The partners' areas named above were not swept, nor Finland's
+Fake Ops areas, Switzerland's, whose towns read Bird's own feeds, London's
+and Barcelona's, whose reads were full, and the areas larger than 60 km:
+Jeddah's, one of Doha's, Riyadh's, Seoul's and a default area of thousands
+of kilometres.
+
+In Békéscsaba a read listed a brand the reader did not know (`9b2c8a73…`):
+the search stopped for 15 minutes, as it should, and the research reader
+accepts the brand since, as it does those of two Bird partners, though the
+cache does not.
 
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.
