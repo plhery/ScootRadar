@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trotinetes-cascais',
   topic: 'cascais',
   name: 'Trotinetes em Cascais',
-  title: 'Trotinetes em Cascais 2026: Bird, estações e paredão',
-  description: 'Trotinetes em Cascais: a Bird e as 157 estações onde a viagem acaba, o paredão, o centro histórico, a ciclovia do Guincho, o comboio e as regras de 2026.',
+  title: 'Trotinetes em Cascais 2026: Bird, preços, estações e paredão',
+  description: 'Trotinetes em Cascais: a Bird e as 157 estações, os quiosques a 6 € por 30 minutos (novembro de 2026), o paredão, o centro histórico e a ciclovia do Guincho.',
   headline: 'Trotinetes em Cascais: a Bird, as estações, o paredão e a ciclovia do Guincho',
-  lede: 'As trotinetes partilhadas em Cascais são da Bird, a única operadora no concelho em outubro de 2026, e apanham-se e deixam-se numa das 157 estações de mobilidade partilhada. A app da Bird mostra o preço antes de desbloquear. O paredão, entre a Conceição e a Azarujinha, é para peões, e a app não deixa circular em cinco zonas do centro histórico, junto à baía. Para o Guincho, há ciclovia ao longo da costa.',
+  lede: 'Em Cascais, as trotinetes partilhadas são da Bird, a única operadora no concelho em novembro de 2026: apanham-se e deixam-se numa das 157 estações de mobilidade partilhada, e a Bird pede 18 anos. A app mostra o preço antes de desbloquear; ao balcão dos quiosques MobiCascais, uma trotinete custa 6 € por 30 minutos ou 10 € por hora (novembro de 2026). O paredão, entre a Conceição e a Azarujinha, é para peões, e a app não deixa circular em cinco zonas do centro histórico, junto à baía. Para o Guincho, há ciclovia ao longo da costa.',
   published: '2026-10-16',
   updated: '2026-10-26',
   city: 'pt:Cascais',
@@ -19,11 +19,11 @@ const guide: Guide = {
         'Segundo a MobiCascais, o serviço de mobilidade da Câmara, as 157 estações de mobilidade partilhada do concelho servem veículos «propriedade de uma empresa externa». É a **Bird**, cujos dados abertos para Cascais listam também 157 estações, com trotinetes e bicicletas elétricas. Em 2018, a Câmara fez acordos com as empresas «mediante regras e condições muito claras».',
         {
           table: {
-            caption: 'Trotinetes em Cascais: quem as aluga e a que preço (16 de outubro de 2026)',
+            caption: 'Trotinetes em Cascais: quem as aluga e a que preço (novembro de 2026)',
             head: ['Quem', 'Em Cascais', 'Preço'],
             rows: [
-              ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Na app, antes de desbloquear'],
-              ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos'],
+              ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Na app'],
+              ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos, 10 € por hora'],
             ],
           },
         },
@@ -33,7 +33,7 @@ const guide: Guide = {
     {
       heading: 'Quanto custa: a Bird e as viagens grátis do Cartão Viver Cascais',
       blocks: [
-        'A app da Bird mostra o preço antes de começar. O contrato de aluguer da Bird para Portugal (de 8 de dezembro de 2021, o ainda publicado) exige 18 anos, prevê uma cativação de 5 € no cartão antes de cada viagem e fixa o preço máximo em 100 € por dia.',
+        'O contrato de aluguer da Bird para Portugal (de 8 de dezembro de 2021, o ainda publicado) exige 18 anos, prevê uma cativação de 5 € no cartão antes de cada viagem e fixa o preço máximo em 100 € por dia.',
         '**Trotinetes grátis?** Não. Desde 17 de julho de 2026, quem tem o Cartão Viver Cascais (residentes, estudantes e trabalhadores no concelho) anda de graça nas **bicicletas elétricas** da Bird, até 60 minutos por viagem, sem limite diário, dentro do concelho. O benefício «aplica-se exclusivamente às bicicletas elétricas Bird»: nas trotinetes, paga o preço normal. O desbloqueio não está incluído. Para ativar:',
         {
           steps: [
@@ -50,7 +50,7 @@ const guide: Guide = {
         'Para pagar ao balcão, há quatro quiosques da MobiCascais: no Largo da Estação, em Cascais, na Guia, em Carcavelos e no Estoril. Alugam trotinetes elétricas e biCas, as bicicletas da Câmara.',
         {
           table: {
-            caption: 'Preços dos quiosques MobiCascais (tabela da MobiCascais, janeiro de 2024)',
+            caption: 'Preços dos quiosques MobiCascais, em novembro de 2026',
             head: ['Tempo', 'Trotinete elétrica', 'biCa elétrica', 'biCa tradicional'],
             rows: [
               ['30 minutos', '6 €', '–', '–'],
@@ -60,7 +60,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O capacete e o cadeado custam 1 € por dia cada. Os quiosques abrem todos os dias das 8h00 às 20h00; do último domingo de outubro (25 de outubro em 2026) até ao fim de março, das 8h00 às 18h00.',
+        'O capacete e o cadeado custam 1 € por dia cada. Desde 25 de outubro de 2026 e até 27 de março de 2027, os quiosques abrem todos os dias das 8h00 às 18h00; no resto do ano, das 8h00 às 20h00.',
       ],
     },
     {
@@ -131,7 +131,7 @@ const guide: Guide = {
         {
           list: [
             '**As biCas têm 25 anos.** As bicicletas de Cascais nasceram em 2001, em três quiosques, para passear. Em 2016, com a MobiCascais, passaram a transporte diário, com 12 estações; ano e meio depois, eram 87.',
-            '**Em 2021, havia escolha.** A LINK chegou a Cascais em agosto de 2021 com 200 trotinetes, a 0,15 € por minuto mais 1 € de desbloqueio, e a Bolt em novembro. Hoje, a Câmara fala de uma só empresa.',
+            '**Em 2021, havia escolha.** A LINK chegou a Cascais em agosto de 2021 com 200 trotinetes, e a Bolt em novembro. Hoje, a Câmara fala de uma só empresa.',
             '**Cada vez mais viagens.** Segundo a MobiCascais, o serviço tem vindo a crescer cerca de 20 mil viagens por ano.',
           ],
         },
@@ -139,6 +139,10 @@ const guide: Guide = {
     },
   ],
   faq: [
+    {
+      question: 'Quanto custa uma trotinete em Cascais?',
+      answer: 'Nos quiosques MobiCascais, 6 € por 30 minutos, 10 € por hora ou 15 € por 4 horas (novembro de 2026), e o capacete custa mais 1 € por dia. Na Bird, o contrato para Portugal fixa o preço máximo em 100 € por dia.',
+    },
     {
       question: 'Há trotinetes grátis em Cascais?',
       answer: 'Não. O benefício do Cartão Viver Cascais, em vigor desde 17 de julho de 2026, dá viagens grátis até 60 minutos só nas bicicletas elétricas da Bird. Nas trotinetes, paga o preço da app.',
@@ -153,7 +157,7 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Lime ou Bolt em Cascais?',
-      answer: 'Em outubro de 2026, as trotinetes partilhadas em Cascais são da Bird. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa e em Oeiras.',
+      answer: 'Em novembro de 2026, as trotinetes partilhadas em Cascais são da Bird. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa e em Oeiras.',
     },
   ],
   sources: [

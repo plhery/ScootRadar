@@ -6,17 +6,17 @@ const guide: Guide = {
   topic: 'portland',
   name: 'E-scooters in Portland',
   title: 'E-scooters in Portland 2026: Lime, Lyft, prices and rules',
-  description: 'E-scooters in Portland, Oregon: Lime and Lyft, what a ride costs, the helmet and sidewalk rules, where to lock the scooter, parks and MAX.',
+  description: 'E-scooters in Portland, Oregon: Lime and Lyft’s BIKETOWN, which app to use, what a ride costs, the helmet and sidewalk rules, and where to lock up.',
   headline: 'E-scooters in Portland: Lime and Lyft, what a ride costs, the rules, and where to lock up',
-  lede: 'E-scooters in Portland, Oregon come from two apps, Lime and Lyft (which runs BIKETOWN), the only companies in the City’s permanent programme since 2024. Lyft’s open data listed $1.00 to unlock and $0.41 a minute on 25 October 2026; Lime shows its price in its app. Ride in the street, in bike lanes or on multi-use paths, never on the sidewalk, wear a bicycle helmet, and lock the scooter to a bike rack or a signpost when you’re done.',
+  lede: 'E-scooters in Portland, Oregon come from Lime and Lyft, the only companies in the City’s permanent programme since 2024: rent one in the Lime app, or a Lyft scooter in the BIKETOWN app. As of November 2026 a Lyft scooter costs $1.00 to unlock and $0.41 a minute, so 10 minutes cost $5.10 before any tax; Lime’s app shows its price before you unlock. Ride in the street, in bike lanes or on multi-use paths, never on the sidewalk, wear a bicycle helmet, and lock the scooter to a bike rack or a signpost when you’re done.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'us:or:Portland',
   sections: [
     {
-      heading: 'Which scooter apps work in Portland?',
+      heading: 'Which scooter apps work in Portland, and how do you rent one near you?',
       blocks: [
-        'Two companies rent e-scooters in Portland in October 2026: **Lime**, with green scooters, and **Lyft**, with gray and orange ones under the BIKETOWN name. The Portland Bureau of Transportation (PBOT) picked them through a request for proposals in 2023 and made its e-scooter programme permanent in summer 2024, after pilots that began in 2018.',
+        'As of November 2026 two companies rent e-scooters in Portland: **Lime**, with green scooters, and **Lyft**, with grey and orange ones under the BIKETOWN name. The Portland Bureau of Transportation (PBOT) picked them through a request for proposals in 2023 and made its e-scooter programme permanent in summer 2024, after pilots that began in 2018.',
         {
           list: [
             '**The fleet.** Under their current contracts, Lime and Lyft may run up to about 4,300 scooters between them, after PBOT approved a larger fleet in 2026. In 2025 they had about 3,500.',
@@ -25,16 +25,17 @@ const guide: Guide = {
           ],
         },
         'At 11:47 pm on Saturday 24 October 2026 the [map of Portland](map:us:or:Portland) showed about 1,130 Lyft scooters, and about 1,170 at 4:26 am that morning: late-night counts of what’s on the map, not the fleet. On the night of 25 to 26 October it showed about 2,160 Lime scooters across the city, as last counted.',
+        '**Renting one near you.** Open the Lime app, the BIKETOWN app or the [Portland map](map:us:or:Portland) to find the nearest scooter. A Lyft scooter unlocks when you scan the QR code between its handlebars, enter the ID by its front wheel or tap a BIKETOWN key card.',
         '**Visiting?** Get the app before you set out. Lyft’s riders must be 18 or over, and your first Lyft ride is held to 10 mph. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in Portland?',
       blocks: [
-        'Lyft publishes its Portland scooter price in its open data and on BIKETOWN’s site. Lime’s app shows its standard price before you unlock. Both companies must offer cheaper plans to Portlanders on low incomes, and PBOT lists them.',
+        'Lyft publishes its Portland scooter price in its open data and on BIKETOWN’s site. Both companies must offer cheaper plans to Portlanders on low incomes, and PBOT lists them.',
         {
           table: {
-            caption: 'Scooter prices in Portland on 25 October 2026, before any tax',
+            caption: 'Scooter prices in Portland as of November 2026, before any tax',
             head: ['Plan', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Lyft, pay as you go', '$1.00', '$0.41', '$5.10', '$9.20'],
@@ -44,7 +45,8 @@ const guide: Guide = {
             ],
           },
         },
-        'Lyft’s open data marks its scooter price as taxable, so the app may add tax. Who qualifies for the low-income plans? PBOT lists SNAP, Medicaid, a reduced-rate utility bill, free or reduced school lunch, an income-based TriMet Honored Citizen pass and subsidized housing, among others; Lyft also accepts the Oregon Health Plan and Pell Grants. BIKETOWN for All members must apply for the Scooter Community Pass separately.',
+        'Lyft’s open data marks its scooter price as taxable, so the app may add tax. Who qualifies for the low-income plans? PBOT lists SNAP, Medicaid, a reduced-rate utility bill, free or reduced school lunch, an income-based TriMet Honored Citizen pass and subsidised housing, among others; Lyft also accepts the Oregon Health Plan and Pell Grants. BIKETOWN for All members must apply for the Scooter Community Pass separately.',
+        '**Cheapest for 10 and 20 minutes**, if you qualify: Lime Access, at $1.20 and $1.90, against $1.30 and $2.60 on Lyft’s Community Pass, which also costs $5 a month. Without a plan, Lyft’s 10 minutes cost $5.10 and 20 minutes $9.20.',
         'For comparison, a BIKETOWN e-bike costs $1.00 to unlock and $0.35 a minute, but bikes stay inside BIKETOWN’s smaller service area.',
       ],
     },
@@ -84,7 +86,7 @@ const guide: Guide = {
         },
         '**Slow zones.** On four of the city’s busiest paths, Lyft’s scooters top out at 12 mph: Tom McCall Waterfront Park, the Eastbank Esplanade, the Springwater Corridor and the area around the Portland Aerial Tram.',
         '**What the parks rule says.** Portland Parks & Recreation’s rule on motorized wheeled vehicles, in force since 13 July 2025, lets e-scooters use paved paths and roads in a park, but not buildings or places where signs ban them. On park paths keep to 12 mph unless a sign says otherwise, slow to 5 mph near other people, yield to people walking, warn them before you pass, and walk the scooter where signs tell you to dismount. You may not end a shared ride in a park, and the companies must slow their scooters there.',
-        'Lyft’s page still lists City parks as no-riding zones, and PBOT’s rules page still describes the older ban on riding in parks off park roads. If the app or a sign keeps you out, walk the scooter.',
+        'Lyft, though, lists City parks as no-riding zones. If the app or a sign keeps you out, walk the scooter.',
       ],
     },
     {
@@ -134,8 +136,12 @@ const guide: Guide = {
       answer: 'Lime and Lyft, which runs BIKETOWN. They are the only two companies in PBOT’s permanent e-scooter programme, which began in summer 2024.',
     },
     {
+      question: 'Which app do you need to rent a scooter in Portland?',
+      answer: 'The Lime app for Lime’s green scooters, or the BIKETOWN app for Lyft’s grey and orange ones; Lyft rents only to riders 18 and over. To find the nearest scooter, open either app or the [Portland map](map:us:or:Portland).',
+    },
+    {
       question: 'How much does a Lyft scooter cost in Portland?',
-      answer: '$1.00 to unlock and $0.41 a minute on 25 October 2026, so a 10-minute ride costs $5.10 before any tax. BIKETOWN annual members unlock free and pay $0.29 a minute.',
+      answer: '$1.00 to unlock and $0.41 a minute as of November 2026, so a 10-minute ride costs $5.10 before any tax. BIKETOWN annual members unlock free and pay $0.29 a minute.',
     },
     {
       question: 'Do you need a helmet to ride a scooter in Portland?',

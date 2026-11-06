@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'detroit',
   name: 'E-scooters in Detroit',
   title: 'E-scooters in Detroit 2026: Lime, Spin, rules and RiverWalk',
-  description: 'E-scooters in Detroit: Lime and Spin, the Michigan and City rules, sidewalks, the RiverWalk and Belle Isle, curfews, parking, the QLINE, DTW and Windsor.',
+  description: 'E-scooters in Detroit: Lime and Spin, which app to use, the Michigan and City rules, sidewalks, the RiverWalk and Belle Isle, curfews, parking and the QLINE.',
   headline: 'E-scooters in Detroit: Lime and Spin, the rules, the RiverWalk and where you can’t ride',
-  lede: 'Detroit’s shared e-scooters come from Lime and from Spin, which Bird runs through its own app. Check the price in the app before you unlock. Michigan law lets you ride on the sidewalk if you yield to people on foot, and riders under 19 must wear a helmet. Spin’s data bars riding in the middle of Campus Martius Park, and the RiverWalk’s rules bar e-scooters going over 7 mph.',
+  lede: 'You can rent e-scooters in Detroit from Lime, in the Lime app, and from Spin, whose scooters Bird runs through the Bird app; on 6 November 2026 both companies’ open data listed scooters for rent. Download the app, find a scooter and scan its QR code to unlock; the app shows the price before you unlock. Michigan law lets you ride on the sidewalk if you yield to people on foot, and riders under 19 must wear a helmet. Spin’s data bars riding in the middle of Campus Martius Park, and the RiverWalk’s rules bar e-scooters going over 7 mph.',
   published: '2026-10-18',
   updated: '2026-10-23',
   city: 'us:mi:Detroit',
@@ -21,11 +21,11 @@ const guide: Guide = {
           list: [
             '**Lime**: in the Lime app you unlock a scooter by scanning its QR code or entering its plate number.',
             '**Spin**: its open data names Bird Rides as the operator and sends riders to the Bird app, so that is the app you need.',
-            '**Bird**: the City’s page, written before the 2026 permit round, names “Lime, Bird, and Spin”; in October 2026 the Bird-run scooters in Detroit were Spin’s.',
+            '**Bird**: the City’s page, written before the 2026 permit round, names “Lime, Bird, and Spin”; in November 2026 the Bird-run scooters for rent in Detroit were Spin’s.',
           ],
         },
         'At 15:25 on 17 October 2026 the [Detroit map](map:us:mi:Detroit) showed about 1,960 Lime and 295 Spin scooters: what was on the map at that moment, not the fleets. The Bird scooters you may see across the river are in [Windsor, Ontario](map:ca:on:Windsor): another country, with its own scheme.',
-        '**Prices**: check the rate in the app before you unlock. All three companies offer cheaper rides to residents on low incomes, OMI says, each with its own programme.',
+        '**Cheaper rides**: all three companies offer cheaper rides to residents on low incomes, OMI says, each with its own programme.',
         '**Visiting?** Get the Lime or Bird app before you set out; Bird’s terms say riders must be “over the age of 18”. With that slow-season minimum, scooters stay out through the winter. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -115,11 +115,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter apps work in Detroit?',
-      answer: 'Lime, and Spin, which Bird runs through the Bird app. On 17 October 2026 the map showed about 1,960 Lime and 295 Spin scooters in Detroit.',
+      answer: 'Two, as of November 2026: Lime, in the Lime app, and Spin, which Bird runs through the Bird app. On 17 October 2026 the map showed about 1,960 Lime and 295 Spin scooters in Detroit.',
     },
     {
       question: 'How much does a scooter cost in Detroit?',
-      answer: 'Check the rate in the Lime or Bird app before you unlock. Each company offers cheaper rides to residents on low incomes, the City says.',
+      answer: 'Each company sets its own unlock fee and rate per minute, which the Lime or Bird app shows before you unlock. Each also offers cheaper rides to residents on low incomes, the City says.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Detroit?',

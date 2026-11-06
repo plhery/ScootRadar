@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'bodo',
   name: 'Leie elsparkesykkel i Bodø',
   title: 'Elsparkesykkel i Bodø 2026: Ryde, pris, sesong og regler',
-  description: 'Elsparkesykkel i Bodø: bare Ryde har tillatelse i 2026 og 2027. Pris, sesongen fra 1. april til 30. november, døgnåpen utleie, parkering og soner.',
+  description: 'Elsparkesykkel i Bodø: bare Ryde, 10,90 kr + 2,50 kr per minutt (november 2026), fra 16 år. Sesongen slutter 30. november, døgnåpent, parkering og soner.',
   headline: 'Elsparkesykkel i Bodø: Ryde, pris, sesong, soner og parkering',
-  lede: 'Vil du leie elsparkesykkel i Bodø, er det Ryde du må bruke: Ryde er eneste operatør med kommunens tillatelse i 2026 og 2027. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (22. oktober 2026), og Ryde krever at du har fylt 16 år. Sesongen varer fra 1. april til 30. november, og fra 1. desember er sparkesyklene borte til våren. Utleien er åpen hele døgnet, men Ryde har kjøreforbud i Glasshuset og på jernbanestasjonen, og i gågata kjører du i gangfart.',
+  lede: 'Vil du leie elsparkesykkel i Bodø, er det Ryde du må bruke: Ryde er eneste operatør med kommunens tillatelse i 2026 og 2027. Det koster 10,90 kr å låse opp og 2,50 kr per minutt, så ti minutter koster 35,90 kr (per november 2026), og Ryde krever at du har fylt 16 år. Sesongen varer til og med 30. november 2026, og fra 1. desember er sparkesyklene borte til 1. april 2027. Utleien er åpen hele døgnet, men Ryde har kjøreforbud i Glasshuset og på jernbanestasjonen, og i gågata kjører du i gangfart.',
   published: '2026-10-22',
   updated: '2026-10-22',
   city: 'no:Bodø',
@@ -18,46 +18,46 @@ const guide: Guide = {
       blocks: [
         'Bodø kommune lyste ut tillatelser for sesongene 2026 og 2027 og fikk én søknad, fra **Ryde**. I tillatelsen av 18. mars 2026 får Ryde leie ut inntil **500** små elektriske kjøretøy i sonen der kommunen begrenser antallet, fra 1. april til 30. november begge år. For de to sesongene betaler Ryde kommunen et gebyr på til sammen 728 000 kr.',
         'Ordningen bygger på kommunens utleieforskrift fra 2022. Den åpner for inntil to operatører, med tillatelse for to sesonger om gangen, og taket på 500 deles likt mellom dem. Taket gjelder bare i sonen kommunen har tegnet. I resten av kommunen er det foreløpig ingen grense, står det i kunngjøringen.',
-        '**Dott er ikke lenger i Bodø.** I 2025 hadde Ryde og Dott, tidligere Tier, 250 sparkesykler hver, og det står fortsatt på kommunens side om elsparkesykler, sist endret 7. juli 2026. Men Dott søkte ikke for 2026 og 2027, og Dotts egen liste over byer i Norge har bare Trondheim, Malvik, Melhus og Stjørdal. **Voi og Bolt** har heller ingen tillatelse i Bodø, og i Entur, der operatørene i Norge publiserer åpne data, fantes 22. oktober 2026 bare Ryde i Bodø.',
+        '**Dott er ikke lenger i Bodø.** I 2025 hadde Ryde og Dott, tidligere Tier, 250 sparkesykler hver, og det står fortsatt på kommunens side om elsparkesykler, sist endret 7. juli 2026. Men Dott søkte ikke for 2026 og 2027, og Dotts egen liste over byer i Norge har bare Trondheim, Malvik, Melhus og Stjørdal. **Voi og Bolt** har heller ingen tillatelse i Bodø, og i Entur, der operatørene i Norge publiserer åpne data, er Ryde eneste utleier av elsparkesykler i Bodø per 6. november 2026.',
         'På [kartet over Bodø](map:no:Bodø) sto det rundt 720 Ryde-sparkesykler om ettermiddagen 22. oktober 2026. Det er det kartet viste akkurat da, ikke hele flåten. Tallet gjelder hele byen, mens taket bare gjelder i én sone, så de to tallene kan ikke sammenlignes. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster Ryde i Bodø?',
       blocks: [
-        'Ryde har ingen prisliste på nettsiden og viser til appen. I Rydes åpne data for Bodø kostet det 10,90 kr å låse opp og 2,50 kr per minutt 22. oktober 2026, og Ryde runder opp til nærmeste hele minutt. Sjekk prisen i appen før du låser opp.',
+        'Per november 2026 koster Ryde i Bodø 10,90 kr å låse opp og 2,50 kr per minutt, ifølge Rydes åpne data i Entur, og Ryde runder opp til nærmeste hele minutt. Appen viser prisen før du låser opp.',
         {
           table: {
-            caption: 'Rydes priser 22. oktober 2026 og aldersgrense',
+            caption: 'Rydes priser per november 2026 og aldersgrense',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter', 'Aldersgrense'],
             rows: [
               ['Ryde, Bodø', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr', '16 år'],
             ],
           },
         },
-        'Et kvarter koster 48,40 kr, omtrent som en enkeltbillett på bussen, som koster fra 45 kr for voksne hos Reis Nordland. Ryde selger også pass, men prisene for Bodø står bare i appen, og et pass gjelder bare i byen der du kjøpte det.',
+        'Et kvarter koster 48,40 kr, omtrent som en enkeltbillett på bussen, som koster fra 45 kr for voksne hos Reis Nordland. Ryde selger også pass, og et pass gjelder bare i byen der du kjøpte det.',
         'Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter, og tar du sparkesykkelen ut av driftsområdet, kan det koste opptil 500 kr ekstra.',
-        'Loven sier 12 år, men Ryde krever **16 år** i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt**.',
+        'Loven sier 12 år, men Ryde krever **16 år** i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
       heading: 'Sesongen: fra 1. april til 30. november',
       blocks: [
         'Forskriften sier i § 2 at sesongen er «perioden fra og med 1. april til og med 30. november», og Rydes tillatelse gjelder bare da. Fra 1. desember 2026 til 31. mars 2027 skal det altså ikke stå utleiesparkesykler ute, og neste sesong starter 1. april 2027.',
-        'Snøen kan likevel komme først. Når det skal brøytes eller strøs, kan kommunen kreve at Ryde samler inn alle sparkesyklene, med en frist på minst 48 timer. Den 22. oktober 2026 sto de fortsatt ute, men regn ikke med å kjøre helt til 30. november hvis vinteren kommer tidlig.',
+        'Snøen kan likevel komme først. Når det skal brøytes eller strøs, kan kommunen kreve at Ryde samler inn alle sparkesyklene, med en frist på minst 48 timer. Den 6. november 2026 sto de fortsatt ute, ifølge Rydes åpne data, men regn ikke med å kjøre helt til 30. november hvis vinteren kommer tidlig.',
       ],
     },
     {
       heading: 'Døgnåpent: ingen nattestenging i Bodø',
       blocks: [
         'Fram til sommeren 2025 var utleien stengt fra kl. 01 til 05 natt til hverdager og fra kl. 23 til 05 natt til lørdag og søndag. Den 20. juni 2025 endret kommunen forskriften og åpnet for utleie hele døgnet.',
-        'Nå sier forskriften at utleie kan skje «alle dager, hele døgnet», og Rydes åpne data viser åpent døgnet rundt. Kommunen kan innføre nattestenging igjen, midlertidig eller på ubestemt tid, men 22. oktober 2026 gjaldt ingen.',
+        'Nå sier forskriften at utleie kan skje «alle dager, hele døgnet», og Rydes åpne data viser åpent døgnet rundt. Kommunen kan innføre nattestenging igjen, midlertidig eller på ubestemt tid, men per 6. november 2026 gjelder ingen.',
       ],
     },
     {
       heading: 'Parkering i Bodø: husveggen og 2 meter',
       blocks: [
-        'Kommunen har ikke merket opp egne plasser for elsparkesykler. På fortauet gjelder kommunens parkeringsregler:',
+        'På fortauet gjelder kommunens parkeringsregler:',
         {
           list: [
             'Sett sparkesykkelen helt inntil husveggen, på langs, og la minst **2 meter** av fortauet være fritt.',
@@ -103,7 +103,7 @@ const guide: Guide = {
           list: [
             '**Bodø lufthavn:** Det er rundt en kilometer fra terminalen ned til sentrum, skriver Avinor. Du kan kjøre helt fram, men ved terminalen er det parkeringsforbud, unntatt på to små oppmerkede plasser. Busslinje 1 og 4 stopper rett ved hovedinngangen.',
             '**Ny bydel Hernes:** Avinor bygger en ny flyplass med rullebanen 900 meter nærmere sjøen, og etter planen står den ferdig i 2029 eller 2030. Da blir rundt 3000 dekar frigjort til den nye bydelen Hernes, som bystyret vedtok å kjøpe i desember 2022. På dagens flyplass landet Luftforsvarets siste F-16 i aktiv tjeneste i januar 2022.',
-            '**Nord universitet på Mørkved:** Campus ligger innenfor kjøreområdet, men ved Mørkvedveien Studentpark er det parkeringsforbud. Med prisene 22. oktober 2026 koster en tur på 30 minutter for eksempel 85,90 kr: 10,90 kr + 30 × 2,50 kr. Kjører du hver dag, blir bussen billigere: Reis Ung koster 295 kr for 30 dager hvis du er mellom 6 og 25 år, og studenter til og med 29 år kan reise med studentbillett.',
+            '**Nord universitet på Mørkved:** Campus ligger innenfor kjøreområdet, men ved Mørkvedveien Studentpark er det parkeringsforbud. Med prisene per november 2026 koster en tur på 30 minutter for eksempel 85,90 kr: 10,90 kr + 30 × 2,50 kr. Kjører du hver dag, blir bussen billigere: Reis Ung koster 240 kr for 30 dager hvis du er mellom 6 og 25 år, og studenter til og med 29 år kan reise med studentbillett.',
             '**Nordlandssykehuset:** Parkeringsforbud rundt sykehuset, med ni oppmerkede plasser der du kan avslutte turen.',
           ],
         },
@@ -116,7 +116,7 @@ const guide: Guide = {
           list: [
             '**Leid sparkesykkel:** Ryde forbyr å ta med sparkesykkelen på buss, tog og i bil. Avslutt turen før du går om bord.',
             '**Egen elsparkesykkel på bussen:** Hos Reis Nordland må den være slått sammen før du går om bord, og den skal stå slik at den ikke er til hinder eller fare. Har bussen lasterom, skal den dit, og sjåføren avgjør om den kan tas med. Elsykler kan ikke tas med.',
-            '**Hurtigbåten:** En sykkel koster 30 kr. Reis Nordland nevner ikke elsparkesykler på båtene, så spør mannskapet.',
+            '**Hurtigbåten:** En sykkel koster 30 kr. Vil du ta med egen elsparkesykkel, spør mannskapet.',
             '**Billetter:** En enkeltbillett for voksne koster fra 45 kr, og 20 kr mer kjøpt om bord. Natt til lørdag og søndag koster nattbilletten 100 kr, kjøpt mellom kl. 00 og 04.15.',
             '**Tromsø:** Ryde leier også ut i Tromsø, men der er sesongen kortere og utleien stengt om natten i helgene. Mer står i [guiden om Tromsø](guide:tromso) og på [kartet over Tromsø](map:no:Tromsø).',
           ],
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'Er det nattestenging i Bodø?',
-      answer: 'Nei. Siden 20. juni 2025 kan du leie hele døgnet. Kommunen kan innføre nattestenging igjen, men 22. oktober 2026 gjaldt ingen.',
+      answer: 'Nei. Siden 20. juni 2025 kan du leie hele døgnet. Kommunen kan innføre nattestenging igjen, men per 6. november 2026 gjelder ingen.',
     },
     {
       question: 'Hvor kan jeg parkere elsparkesykkel i Bodø?',
@@ -191,6 +191,7 @@ const guide: Guide = {
     { title: 'Avinor: Til og fra Bodø lufthavn', url: 'https://www.avinor.no/flyplass/bodo/info/til-og-fra-flyplassen/' },
     { title: 'Avinor: Ny lufthavn Bodø', url: 'https://om.avinor.no/innovasjon/nylufthavnbodo/' },
     { title: 'Store norske leksikon: Bodø lufthavn', url: 'https://snl.no/Bod%C3%B8_lufthavn' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
   ],
 };
 

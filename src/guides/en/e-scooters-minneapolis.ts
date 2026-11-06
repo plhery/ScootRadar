@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-minneapolis',
   topic: 'minneapolis',
   name: 'E-scooters in Minneapolis, Minnesota',
-  title: 'E-scooters in Minneapolis 2026: Lime, Spin, rules, night ban',
-  description: 'E-scooters in Minneapolis: Lime and Spin, the midnight switch-off, no sidewalks, where to park, the lakes and parks, the U of M, light rail and MSP.',
-  headline: 'E-scooters in Minneapolis: Lime and Spin, the rules, the night switch-off and where to park',
-  lede: 'You can rent e-scooters in Minneapolis from Lime and Spin, the two companies the City licensed for 2025. The app shows the price before you unlock. Under the City’s 2025 licence the scooters are switched off from midnight to 4 a.m., Minnesota law keeps them off sidewalks, and at the end of a ride you lock the scooter to a bike rack, a meter hitch or a sign post.',
+  title: 'E-scooters in Minneapolis 2026: Lime, Spin, hours and rules',
+  description: 'E-scooters in Minneapolis: Lime and Spin, how to rent one, the 4 a.m. to midnight hours, winter, no sidewalks, where to park, the lakes and light rail.',
+  headline: 'E-scooters in Minneapolis: Lime and Spin, how to rent, the hours, the rules and where to park',
+  lede: 'You can rent e-scooters in Minneapolis from Lime and Spin, the two apps the City’s scooter page points riders to as of November 2026. To rent one, the City says, you must be 18 or older, with a valid driver’s licence and a credit, debit or prepaid card; the app shows the price before you unlock. Scooters run from 4 a.m. to midnight, Minnesota law keeps them off sidewalks, and at the end of a ride you lock the scooter to a bike rack, a meter hitch or a street sign.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:mn:Minneapolis',
@@ -16,8 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Minneapolis?',
       blocks: [
-        'Electric scooter rental in Minneapolis runs on City licences. For the 2025 season the City licensed two companies, **Lime** and **Spin**, Fox 9 reported on 8 April 2025, and Park Board records confirm it. Their licences ran to 1 March 2026 (31 March, in the Park Board’s memo), with options to renew. The City rules below are the 2025 licence’s. Spin’s open data names Bird Rides, Inc. as its operator. The 2025 licence allowed up to 3,000 scooters among all the companies.',
+        'As of November 2026 the City’s scooter pages send riders to two apps, **Lime** and **Spin**, and on 6 November Spin’s open data listed scooters for rent. Electric scooter rental in Minneapolis runs on City licences: for the 2025 season the City licensed the same two companies, Fox 9 reported on 8 April 2025, and Park Board records confirm it. Their licences ran to 1 March 2026 (31 March, in the Park Board’s memo), with options to renew. The City rules below are the 2025 licence’s. Spin’s open data names Bird Rides, Inc. as its operator. The City’s page caps the fleet at 3,000 scooters.',
         'At 4:13 p.m. on Monday 26 October 2026 the [Minneapolis map](map:us:mn:Minneapolis) showed about 1,775 scooters: roughly 290 Spin as they stood at that moment, and 1,480 Lime as last counted. That is a snapshot, not the fleets.',
+        '**How to rent one**, as the City’s page sets it out:',
+        {
+          steps: [
+            'Download the Lime or Spin app and accept its rental agreement: the companies ask for a photo of your driver’s licence, a card and your contact details.',
+            'Find a scooter in the app, tap “Ride” and scan the QR code between the handlebars.',
+            'To finish, park as the rules below say, tap “End” and take a photo of where you left the scooter.',
+          ],
+        },
         '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
         'Spin and Lime rent e-bikes too. Nice Ride, the docked bike share, no longer runs in Minneapolis, the Park Board said in 2023.',
       ],
@@ -25,7 +33,7 @@ const guide: Guide = {
     {
       heading: 'How much does a Lime or Spin scooter cost in Minneapolis?',
       blocks: [
-        'The Lime and Spin apps show the rate before you unlock.',
+        'Each company sets its own unlock fee and rate per minute.',
         'The City’s 2025 licence makes each company offer cheaper rides to lower-income riders, with eligibility checked through Metro Transit’s Transit Assistance Program (TAP). Spin’s is **Spin Access**: discounted fares once you send proof of your status, and approved riders without a smartphone can unlock by text message. Lime’s is Lime Access, Lime said in April 2025.',
       ],
     },
@@ -38,12 +46,12 @@ const guide: Guide = {
             caption: 'E-scooter rules in Minneapolis, and who sets them (checked on 26 October 2026)',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Hours', 'Scooters are switched off at midnight and may come back on from 4 a.m.; a ride under way at midnight may finish', 'City licence 2025, III.5.g'],
+              ['Hours', '4 a.m. to midnight: the companies switch the scooters off at midnight and back on at 4 a.m.; a ride under way at midnight may finish', 'City ordinance, as the City’s page states it; City licence 2025, III.5.g'],
               ['Sidewalks', 'Banned, except to enter or leave the property beside them', 'Minnesota law'],
               ['Where to ride', 'On the street as close to the right-hand curb as is practicable, or on a bike lane, path or trail unless it is reserved for nonmotorized traffic; local authorities may set stricter rules', 'Minnesota law'],
               ['Left turns', 'Stop and get off at the right-hand curb, then cross the road on foot', 'Minnesota law, as the Mankato Free Press quoted it'],
               ['Speed', '15 mph at most for shared scooters, less in busy pedestrian areas', 'City officials, as Fox 9 reported (April 2025)'],
-              ['Age', 'At least 12, with no driver’s licence needed, under state law; Spin says you must be 18. Check Lime’s terms in its app', 'Minnesota law; Spin'],
+              ['Age', 'At least 12, with no driver’s licence needed, under state law; to rent, 18 or older with a valid driver’s licence, as the companies require', 'Minnesota law; the City’s rental page'],
               ['Helmet', 'Required under 18', 'Minnesota law'],
               ['Passengers', 'None', 'Minnesota law'],
               ['Lights', 'A headlight and a taillight whenever the law requires vehicle lights', 'Minnesota law'],
@@ -55,10 +63,10 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Can you ride a scooter at night in Minneapolis?',
+      heading: 'Scooter hours in Minneapolis: can you ride at night?',
       blocks: [
-        'Not after midnight, under the City’s 2025 licence: “All motorized foot scooters must be disabled from public use daily, no later than 12am Minneapolis Time. Any rides active at 12am Minneapolis Time may remain active until completed.” They may come back on from 4 a.m., and the City may change the hours. From midnight the map marks the night ban in Minneapolis and says when renting starts again.',
-        'The ban is the City’s, so it stops at the city line. St. Paul next door has its own rules: see [e-scooters in St. Paul](guide:st-paul), and the [St. Paul map](map:us:mn:St. Paul) for its Lime and Spin scooters.',
+        'Not after midnight. As of November 2026 the City’s page sets rental hours of 4 a.m. to midnight: by ordinance the companies switch the scooters off at midnight and turn them back on at 4 a.m. Under the City’s 2025 licence a ride under way at midnight may finish. From midnight the map marks the night ban in Minneapolis and says when renting starts again.',
+        'The ban is the City’s, so it stops at the city line. St. Paul next door has its own rules: see [e-scooters in St. Paul](guide:st-paul), and the [St. Paul map](map:us:mn:St. Paul) for its Lime and Spin scooters. End a ride outside Minneapolis and, the City says, you can’t start another until you bring the scooter back into the city.',
       ],
     },
     {
@@ -74,7 +82,7 @@ const guide: Guide = {
           ],
         },
         'Never block people walking, or curb ramps, doors, driveways, loading zones, disabled parking, transit stops, crosswalks or sidewalk cafés. In the parks, don’t lock a scooter to a tree, the Park Board says.',
-        'Leave room on the sidewalk too. The City requires at least 4 feet of clear sidewalk space for everyone, CBS Minnesota reported in August 2026, quoting the City’s website.',
+        'Leave room on the sidewalk too: the City’s parking page keeps at least 4 feet of sidewalk clear for everyone, and bars riding or parking in that clear zone. Don’t lock a scooter to a tree, a handrail, a streetlight or a bus stop sign.',
         'Under the licence the City may impound a scooter that hasn’t moved for 72 hours, or one parked against the rules, and a company must re-park a scooter within two hours of a complaint.',
       ],
     },
@@ -109,9 +117,10 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Can you ride a scooter in winter in Minneapolis?',
+      heading: 'Does scooter season end in Minneapolis? Riding in winter',
       blocks: [
-        'Sometimes. The programme used to stop at the end of November and restart in April. In 2025 the City’s licence let Lime and Spin keep their vehicles out through the winter “as long as there’s not an excessive amount of snow and ice buildup”, a City project manager told MPR News; the licence let them shrink their fleets from 15 November. Check the [Minneapolis map](map:us:mn:Minneapolis) to see who is out.',
+        'Only when snow and ice stop it. The programme used to stop at the end of November and restart in April, but since 2025 it runs year-round, MPR News reported: a City project manager said the companies could keep their vehicles out “as long as there’s not an excessive amount of snow and ice buildup”, and the licence let them shrink their fleets from 15 November.',
+        'As of November 2026 the City’s page says that if it becomes snowy and icy, the City may suspend operations for a while or through the end of the year. On 6 November 2026 Spin’s open data listed scooters for rent. Check the app or the [Minneapolis map](map:us:mn:Minneapolis) to see who is out.',
       ],
     },
     {
@@ -129,12 +138,20 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'How much does an electric scooter rental cost in Minneapolis?',
-      answer: 'The Lime and Spin apps show the price before you unlock. The City’s 2025 licence makes both companies offer lower prices to riders on low incomes, checked through Metro Transit’s TAP.',
+      question: 'Which e-scooter companies operate in Minneapolis?',
+      answer: 'Lime and Spin. As of November 2026 the City’s scooter page tells riders to download the Lime or Spin app, and Spin’s open data names Bird Rides, Inc. as its operator.',
     },
     {
-      question: 'Can you ride a Lime or Spin scooter after midnight in Minneapolis?',
-      answer: 'No. Under the City’s 2025 licence the scooters are switched off at midnight and may come back on from 4 a.m.; a ride already under way at midnight may finish.',
+      question: 'How much does an electric scooter rental cost in Minneapolis?',
+      answer: 'Lime and Spin set their own prices, which each app shows before you unlock. The City’s 2025 licence makes both companies offer lower prices to riders on low incomes, checked through Metro Transit’s TAP.',
+    },
+    {
+      question: 'What are the e-scooter rental hours in Minneapolis?',
+      answer: 'From 4 a.m. to midnight, the City’s page says: the companies switch the scooters off at midnight and back on at 4 a.m. Under the City’s 2025 licence a ride already under way at midnight may finish.',
+    },
+    {
+      question: 'Do e-scooters stop for the winter in Minneapolis?',
+      answer: 'Only if snow and ice stop them: the programme has run year-round since 2025, and the City may suspend it when it becomes snowy and icy, for a while or through the end of the year. Check the app or the [Minneapolis map](map:us:mn:Minneapolis).',
     },
     {
       question: 'Can you ride a scooter on the sidewalk in Minneapolis?',
@@ -142,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to ride a scooter in Minneapolis?',
-      answer: 'Minnesota law sets 12 as the minimum age and requires a helmet under 18. Spin says you must be 18 to ride its scooters; check Lime’s terms in its app.',
+      answer: 'To rent one you must be 18 or older, with a valid driver’s licence, the City says. Minnesota law itself sets 12 as the minimum age, with no licence needed, and requires a helmet under 18.',
     },
     {
       question: 'Can you take a Lime or Spin scooter on the light rail?',
@@ -165,7 +182,6 @@ const guide: Guide = {
     { title: 'MSP Airport: light rail transit', url: 'https://www.mspairport.com/directions/ground-transportation/light-rail-transit' },
     { title: 'City of Minneapolis: SBSP Operations and Geofence Data, its scooter zones (ArcGIS)', url: 'https://www.arcgis.com/home/item.html?id=dae79ddcc012456db9f1c825375bd7e4' },
     { title: 'Spin: Minneapolis open data (GBFS)', url: 'https://gbfs.spin.pm/api/gbfs/v2_3/minneapolis/gbfs' },
-    { title: 'Spin: safety', url: 'https://www.spin.app/safety' },
     { title: 'Spin: Spin Access', url: 'https://www.spin.app/spin-access' },
     { title: 'Fox 9: Lime and Spin return for 2025, 8 April 2025', url: 'https://www.fox9.com/news/lime-scooter-ebikes-minneapolis-2025' },
     { title: 'MPR News: year-round e-bike and scooter program, 12 April 2025', url: 'https://www.mprnews.org/story/2025/04/12/minneapolis-launches-yearround-shared-ebike-and-scooter-program' },
@@ -173,6 +189,10 @@ const guide: Guide = {
     { title: 'CBS Minnesota: Lime’s new rules, 13 August 2026', url: 'https://www.cbsnews.com/minnesota/news/lime-scooter-reacts-minneapolis-viral-takeover/' },
     { title: 'MPR News: Lime bans users after takeovers, 14 August 2026', url: 'https://www.mprnews.org/story/2026/08/14/users-banned-routes-limited-after-lime-scooter-takeovers-in-minneapolis' },
     { title: 'City of Minneapolis (MapIT): parks layer', url: 'https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/Parks/FeatureServer/0' },
+    { title: 'City of Minneapolis: Scooters', url: 'https://www.minneapolismn.gov/getting-around/scooters/' },
+    { title: 'City of Minneapolis: Rent a scooter', url: 'https://www.minneapolismn.gov/getting-around/scooters/rent-a-scooter/' },
+    { title: 'City of Minneapolis: Park a scooter', url: 'https://www.minneapolismn.gov/getting-around/scooters/scooter-rules/scooter-parking-rules/' },
+    { title: 'City of Minneapolis: Ride a scooter', url: 'https://www.minneapolismn.gov/getting-around/scooters/scooter-rules/scooter-riding-rules/' },
     { title: 'US Census Bureau: TIGERweb boundaries', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
   ],
 };

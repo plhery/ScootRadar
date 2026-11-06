@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'uk-hire',
   name: 'E-scooter hire in the UK',
   title: 'E-scooter hire in the UK 2026: 21 areas, prices, rules',
-  description: 'E-scooter hire in the UK in 2026: all 21 trial areas and who runs them, what you need to rent one, prices, London’s rules and parking charges.',
+  description: 'E-scooter hire in the UK in 2026: the 21 trial areas and who runs them, the licence and age you need, prices by town, the main rules and parking charges.',
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
-  lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and in most areas you must be 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £4 to £4.75 at the rates published as of November 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
+  lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to end in May 2028. Five companies run them: Voi, Beryl, Lime, Dott and Bolt. To hire one you need a full or provisional driving licence with category Q, and in most areas you must be 18 or over. As of November 2026, 15 minutes pay as you go cost from £4 in the West Midlands (Lime, £1 to unlock and 20p a minute) to £4.75 in Liverpool (Bolt) and Bristol and Bath (Dott), both £1 and 25p a minute. Ride on roads and in cycle lanes, never on the pavement. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
   updated: '2026-10-26',
   sections: [
@@ -90,7 +90,7 @@ const guide: Guide = {
     {
       heading: 'How much does e-scooter hire cost?',
       blocks: [
-        'Pay-as-you-go rates as of November 2026, cheapest first. The app shows the final price.',
+        'Pay-as-you-go rates as of November 2026, cheapest first, each from the operator’s open data or the council’s page. The app shows the final price.',
         {
           table: {
             caption: 'Pay-as-you-go e-scooter prices as of November 2026, and what 15 minutes cost',
@@ -106,18 +106,19 @@ const guide: Guide = {
             ],
           },
         },
-        'If you ride often, bundles and passes cost less: Beryl’s day pass in Leeds is £8 for 100 minutes, Lime’s West Midlands passes start at £2.99 for 30 minutes, and Slough Borough Council lists Voi bundles from £4.49 for 30 minutes within a day. In Liverpool, Bolt’s monthly pass is half price for residents on Universal Credit and some other benefits, and 20% off for students and NHS staff.',
+        '**Cheapest for 10 and 20 minutes:** for 10 minutes, Dott in Nottingham, at £2.90 with no unlock fee; for 20 minutes, Lime in the West Midlands and Beryl in Brighton and Hove on weekdays, at £5.00.',
+        'If you ride often, bundles and passes cost less: Beryl’s day pass in Leeds is £8 for 100 minutes, Lime’s West Midlands passes start at £2.99 for 30 minutes, Dott’s 2 Ride Pass in Bristol and Bath is £3.99 for two 20-minute rides within 24 hours, and Slough Borough Council lists Voi bundles from £4.49 for 30 minutes within a day.',
       ],
     },
     {
       heading: 'E-scooter parking bays, and what parking outside them costs',
       blocks: [
-        'Where a ride may end is set area by area, and the app shows it. What TfL and the councils say:',
+        'Where a ride may end is set area by area, and the app shows it. What TfL, the councils and the operators say:',
         {
           list: [
             '**London:** start and end every ride in a marked bay.',
             '**Central Milton Keynes:** since 28 October 2024, inside the V8, V6, H6 and H5 grid roads, Lime and Dott riders can end a ride only at the existing cycle parking: Sheffield stands and street pods.',
-            '**Liverpool:** the council says you can simply leave a scooter on the street when you’ve finished, and its GPS tells Bolt’s team where to collect it; Bolt’s app ends rides in its own bays.',
+            '**Liverpool:** end the ride in one of Bolt’s bays shown in the app, and take a photo of the parked scooter, which Bolt checks with AI.',
             '**Leeds:** the service works within bays, and a rider who doesn’t return an e-scooter to one faces extra charges.',
             '**Cornwall:** the e-scooters use the Beryl e-bike bays, and you return one to any bay in the same town zone.',
             '**Oxford:** rides end only in the mandatory parking zones shown in the app.',
@@ -168,6 +169,18 @@ const guide: Guide = {
   ],
   faq: [
     {
+      question: 'Where can you hire an e-scooter in the UK?',
+      answer: 'Only in the 21 government trial areas, all in England, until May 2028: Bournemouth, Christchurch and Poole; Brighton and Hove; Buckinghamshire; Cambridge; Cornwall; Essex; Gloucestershire; Leeds; Liverpool; 11 London boroughs; Milton Keynes; Northamptonshire; Norwich; Nottingham; Oxford; Plymouth; Salford; Slough; the Solent; the West Midlands; and the West of England. Voi, Beryl, Lime, Dott and Bolt run them.',
+    },
+    {
+      question: 'How much does it cost to hire an e-scooter in the UK?',
+      answer: 'As of November 2026, pay as you go: £1 to unlock and 20p a minute with Lime in the West Midlands; £1 and 22p with Beryl in Bournemouth, Christchurch and Poole, Cornwall, Leeds, Norwich and Plymouth; no unlock fee and 29p a minute with Dott in Nottingham; 99p and 24p with Voi in Oxford; £1 and 24p with Dott in Milton Keynes; and £1 and 25p with Bolt in Liverpool and Dott in Bristol and Bath. In London, Lime and Voi show their prices in the app.',
+    },
+    {
+      question: 'What are the main rules for riding a hire e-scooter?',
+      answer: 'Ride on roads, but not motorways, and in cycle lanes, never on the pavement: that’s a £50 fixed penalty. One rider only; a phone in your hand costs £200 and 6 points, and the drink-drive limit applies. The top speed is 15.5 mph, or 12.5 mph in London, Brighton, Oxford and the West of England. A helmet is recommended but not required by law.',
+    },
+    {
       question: 'Can I hire an e-scooter with a provisional licence?',
       answer: 'Yes. A UK provisional licence with category Q, which comes with a moped, motorcycle or car licence, is enough, and you don’t need L plates. A provisional licence or learner permit from another country doesn’t count.',
     },
@@ -212,8 +225,8 @@ const guide: Guide = {
     { title: 'Dott: UK terms and conditions', url: 'https://ridedott.com/terms-and-conditions/uk/' },
     { title: 'WECA: Public e-scooters trial', url: 'https://www.westofengland-ca.gov.uk/what-we-do/transport/future-transport-zone/public-e-scooters-trial/' },
     { title: 'WECA: Scoot Safe (20 August 2025)', url: 'https://www.westofengland-ca.gov.uk/news/scoot-safe-say-mayor-and-police-crime-commissioner/' },
+    { title: 'Travelwest (West of England Mayoral Combined Authority): E-scooter and e-bike hire (updated 22 September 2026)', url: 'https://travelwest.info/e-scooter-e-bike-hire/' },
     { title: 'West Northamptonshire Council: E-scooters in West Northamptonshire (11 September 2025)', url: 'https://www.westnorthants.gov.uk/travel/e-scooters-west-northamptonshire' },
-    { title: 'Liverpool City Council: E-scooters and e-bikes for hire', url: 'https://liverpool.gov.uk/parking-roads-and-travel/getting-around-liverpool/e-scooters-and-e-bikes-for-hire' },
     { title: 'Liverpool Express: Bolt launching in Liverpool (30 January 2026)', url: 'https://liverpoolexpress.co.uk/bolt-launching-new-shared-scooters-and-e-bikes-in-liverpool-from-sunday-1-february/' },
     { title: 'Liverpool Express: Council and police e-scooter reminder (August 2026)', url: 'https://liverpoolexpress.co.uk/liverpool-city-council-and-merseyside-police-remind-e-scooter-users-to-stay-safe-and-follow-the-law/' },
     { title: 'Bolt: open data for Liverpool', url: 'https://mds.bolt.eu/gbfs/3/412/gbfs' },

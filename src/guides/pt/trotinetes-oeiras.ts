@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trotinetes-oeiras',
   topic: 'oeiras',
   name: 'Trotinetes em Oeiras',
-  title: 'Trotinetes em Oeiras 2026: Bird, pontos move e regras',
+  title: 'Trotinetes em Oeiras 2026: Bird, Lime, Bolt e pontos move',
   description: 'Trotinetes em Oeiras: Bird, Lime e Bolt, os preços, as 400 estações onde a viagem acaba, o passeio marítimo, Carcavelos, Taguspark e as regras de 2026.',
   headline: 'Trotinetes em Oeiras: Bird, Lime e Bolt, os preços, os pontos move e as fronteiras com Lisboa e Cascais',
-  lede: 'As trotinetes em Oeiras alugam-se nas apps da Bird, da Lime e da Bolt, e cada viagem começa e acaba num ponto move, um lugar sinalizado para as trotinetes. A Bird pede 18 anos e mostra o preço no ecrã de desbloqueio, antes da viagem. No passeio marítimo, as trotinetes só podem circular nos horários definidos pela Câmara, e nos espaços verdes públicos é proibido entrar com veículos motorizados.',
+  lede: 'As trotinetes em Oeiras alugam-se nas apps da Bird, da Lime e da Bolt, e cada viagem começa e acaba num ponto move, um lugar sinalizado para as trotinetes. Em novembro de 2026, a Bolt cobra a partir de 0,15 € por minuto em Portugal, mais um pequeno valor pelo desbloqueio; a Bird e a Lime mostram o preço na app antes de desbloquear. A Bird pede 18 anos e limita o preço a 100 € por dia. No passeio marítimo, as trotinetes só podem circular nos horários definidos pela Câmara, e nos espaços verdes públicos é proibido entrar com veículos motorizados.',
   published: '2026-10-24',
   updated: '2026-10-26',
   city: 'pt:Oeiras',
@@ -22,14 +22,14 @@ const guide: Guide = {
             caption: 'Trotinetes partilhadas em Oeiras: quem e a que preço (em novembro de 2026)',
             head: ['Quem', 'Em Oeiras', 'Preço'],
             rows: [
-              ['Bird', 'Trotinetes e bicicletas elétricas, em 400 estações', 'No ecrã de desbloqueio da app, antes da viagem; no máximo 100 € por dia'],
+              ['Bird', 'Trotinetes e bicicletas elétricas, em 400 estações', 'Até 100 € por dia, pelo contrato da Bird'],
               ['Lime', 'Chegou em junho de 2024', 'Veja na app'],
               ['Bolt', 'Chegou em novembro de 2022', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio'],
             ],
           },
         },
         'Às 10h13 de sábado, 24 de outubro de 2026, o [mapa de Oeiras](map:pt:Oeiras) mostrava cerca de 390 trotinetes da Bird livres nesse momento; às 12h36 de 30 de outubro, cerca de 30 da Bolt livres nesse momento e cerca de 170 da Lime na última contagem.',
-        '**O preço da Bird.** Pelo contrato de aluguer da Bird para Portugal, na versão de 8 de dezembro de 2021, o preço aparece no ecrã de desbloqueio, antes da viagem, e pode incluir uma taxa de início e uma tarifa por minuto. O contrato exige 18 anos, cativa 5 € no cartão antes de cada viagem e limita o preço a 100 € por dia.',
+        '**O preço da Bird.** Pelo contrato de aluguer da Bird para Portugal, na versão de 8 de dezembro de 2021, o preço pode incluir uma taxa de início e uma tarifa por minuto. O contrato exige 18 anos, cativa 5 € no cartão antes de cada viagem e limita o preço a 100 € por dia.',
       ],
     },
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quanto custa uma trotinete em Oeiras?',
-      answer: 'Na Bird, a app mostra o preço no ecrã de desbloqueio, antes da viagem; pelo contrato da Bird, o máximo é 100 € por dia, e o cartão fica com 5 € cativos antes de cada viagem. A Bolt cobra em Portugal a partir de 0,15 € por minuto, mais o desbloqueio (em novembro de 2026).',
+      answer: 'A Bolt cobra em Portugal a partir de 0,15 € por minuto, mais um pequeno valor pelo desbloqueio (em novembro de 2026). Na Bird, o contrato fixa o máximo em 100 € por dia, e o cartão fica com 5 € cativos antes de cada viagem.',
     },
     {
       question: 'Onde posso deixar a trotinete em Oeiras?',

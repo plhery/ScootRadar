@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-jyvaskyla',
   topic: 'jyvaskyla',
   name: 'E-scooters in Jyväskylä, Finland',
-  title: 'E-scooters Jyväskylä 2026: Voi, Ryde, rules and parking',
-  description: 'E-scooters in Jyväskylä: Voi and Ryde under the City’s licence, the 15 km/h night limit, the reaction test, slow zones, parking and the season.',
+  title: 'E-scooters Jyväskylä 2026: Ryde, Voi, prices and rules',
+  description: 'E-scooters in Jyväskylä: Ryde rides on in November 2026, Voi’s are off for the year. Prices, the 15 km/h night limit, slow zones, parking and the season.',
   headline: 'E-scooters in Jyväskylä: Voi and Ryde, the night rules, where to park and how long the season lasts',
-  lede: 'E-scooters in Jyväskylä are rented from Voi and Ryde, and every company needs the City’s micromobility licence; each app shows its price. From 15 you ride on the cycle path or the road, never the pavement. There is no night ban, but the City requires the companies to slow their scooters to 15 km/h every night from 22:00 to 06:00, with a reaction test on weekend nights. The licence lets them run only while the ground is free of snow: at least to 15 October, then while the weather allows.',
+  lede: 'E-scooters in Jyväskylä are rented from Ryde and Voi, and every company needs the City’s micromobility licence. In November 2026 only Ryde’s are on the streets: the City had the scooters cleared by 2 November for street gritting, Ryde put its back on 5 November, and Voi’s won’t return this year, Keskisuomalainen reported. Voi’s published rate is no unlock fee and €0.27 a minute (as of November 2026), so ten minutes cost €2.70; Ryde’s app shows its price before you unlock. From 15 you ride on the cycle path or the road, never the pavement. There is no night ban, but the City requires the companies to slow their scooters to 15 km/h every night from 22:00 to 06:00, with a reaction test on weekend nights. The licence lets them run only while the ground is free of snow: at least to 15 October, then while the weather allows.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Jyväskylä',
@@ -19,13 +19,13 @@ const guide: Guide = {
         'Since 8 September 2025 renting out e-scooters in Jyväskylä has required the City’s micromobility licence (mikroliikennelupa). The City charges €150 to handle an application, and licences granted in 2026 run to 30 April 2027. The City’s rider checklist (updated 4 May 2026) gives feedback contacts for two companies, Voi and Ryde, the same two Yle named on 27 May 2026.',
         {
           table: {
-            caption: 'E-scooter companies in Jyväskylä, October 2026',
+            caption: 'E-scooter companies in Jyväskylä, November 2026',
             head: ['Company', 'In Jyväskylä in 2026'],
             rows: [
-              ['Voi', 'Yes: on the City’s checklist (May 2026)'],
-              ['Ryde', 'Yes: on the City’s checklist (May 2026)'],
-              ['Dott', 'Licensed to 30 April 2026 (Keskisuomalainen, March 2026); not on Dott’s list of towns (July 2026)'],
-              ['Bolt', 'Its Jyväskylä page lists car rides and deliveries, no scooters (29 October 2026)'],
+              ['Voi', 'Yes: on the City’s checklist (May 2026); off the streets from 2 November 2026 for the rest of the year (Keskisuomalainen)'],
+              ['Ryde', 'Yes: on the City’s checklist (May 2026); back on the streets since 5 November 2026 (Keskisuomalainen)'],
+              ['Dott', 'Licensed to 30 April 2026 (Keskisuomalainen, March 2026); not on Dott’s list of towns (November 2026)'],
+              ['Bolt', 'Its Jyväskylä page lists car rides and deliveries, no scooters (November 2026)'],
             ],
           },
         },
@@ -35,7 +35,7 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Jyväskylä: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Voi** charges no unlock fee and €0.27 a minute (as of November 2026): ten minutes cost €2.70 and twenty €5.40. **Ryde** rounds each ride up to the next full minute, and taking a scooter outside its area can cost a penalty of up to €50 on top, under its Finnish terms, which set a minimum age of 15. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Bad parking can cost more. The City can move a scooter parked against the licence terms, and it bills the company €50 for a short move or €70 to take it to storage; whether the company charges you is up to its terms.',
       ],
     },
@@ -58,7 +58,7 @@ const guide: Guide = {
           },
         },
         'Jyväskylä lets you ride on weekend nights: of Finland’s seven largest cities, only Jyväskylä and Tampere do, Yle reported on 28 May 2026. When the City’s committee adopted the licence on 12 August 2025, it voted 7–4 against extending the reaction test to Wednesday and Thursday nights.',
-        '**The season.** The licence lets the companies run only while the ground is free of snow and ice. In spring the City tells them when they may start, by 20 April at the latest, once the roads are bare. In 2026 the season began on Thursday 19 March, Keskisuomalainen reported. In autumn they may run at least to 15 October and then while the weather allows, but from 16 October they must be ready to clear their scooters within 48 hours if the City asks, for forecast snow or night frost.',
+        '**The season.** The licence lets the companies run only while the ground is free of snow and ice. In spring the City tells them when they may start, by 20 April at the latest, once the roads are bare. In 2026 the season began on Thursday 19 March, Keskisuomalainen reported. In autumn they may run at least to 15 October and then while the weather allows, but from 16 October they must be ready to clear their scooters within 48 hours if the City asks, for forecast snow or night frost. In 2026 the City had the companies clear their scooters off the streets by the afternoon of Monday 2 November, for street gritting. Ryde put its scooters back on Thursday 5 November; Voi’s won’t return this year, Keskisuomalainen reported on 5 November.',
         '**Events.** For big events such as Vappu Eve, the school-end day, Suomipop and Rally Finland (MM-ralli), the licence lets the City set temporary slow zones, no-ride areas and parking. During Rally Finland 2026 it had the companies bar riding in the areas closed round Harju, Yle reported.',
       ],
     },
@@ -150,7 +150,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Jyväskylä?',
-      answer: 'Voi and Ryde, the two companies on the City’s rider checklist; since 8 September 2025 every company needs the City’s micromobility licence. Find Voi’s on the [Jyväskylä map](map:fi:Jyväskylä) and Ryde’s in the Ryde app.',
+      answer: 'Ryde and Voi, the two companies on the City’s rider checklist; since 8 September 2025 every company needs the City’s micromobility licence. In November 2026 only Ryde’s are on the streets, as Voi’s won’t return this year, Keskisuomalainen reported. Ryde’s scooters are in the Ryde app.',
+    },
+    {
+      question: 'How much does an e-scooter cost in Jyväskylä?',
+      answer: 'At Voi, nothing to unlock and €0.27 a minute (as of November 2026), so ten minutes cost €2.70 and twenty €5.40. Ryde rounds each ride up to the next full minute.',
     },
     {
       question: 'Can you ride an e-scooter at night in Jyväskylä?',
@@ -158,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'When does the e-scooter season end in Jyväskylä?',
-      answer: 'There’s no fixed date: the licence lets the companies run at least to 15 October, then while the weather allows, clearing their scooters on 48 hours’ notice from the City.',
+      answer: 'There’s no fixed date: the licence lets the companies run at least to 15 October, then while the weather allows, clearing their scooters on 48 hours’ notice from the City. In 2026 the City had them cleared by 2 November for street gritting; Ryde’s came back on 5 November, Voi’s won’t this year.',
     },
     {
       question: 'Where can you park an e-scooter in Jyväskylä?',
@@ -191,6 +195,9 @@ const guide: Guide = {
     { title: 'Visit Jyväskylä: Harju ridge and Vesilinna observation tower', url: 'https://visitjyvaskyla.fi/en/attractions/harju-ridge-vesilinna-observation-tower/' },
     { title: 'Dott: Locations (updated 16 July 2026)', url: 'https://ridedott.com/locations/' },
     { title: 'Bolt: Bolt in Jyväskylä', url: 'https://bolt.eu/en/cities/jyvaskyla/' },
+    { title: 'Voi: rates and zones for Jyväskylä (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/275/netex.xml' },
+    { title: 'Keskisuomalainen: Ryde’s scooters return to Jyväskylä, Voi’s stay off this year, 5 November 2026 (Finnish)', url: 'https://www.ksml.fi/paikalliset/9930364' },
+    { title: 'Ryde: Terms and conditions for Finland', url: 'https://www.ryde-technology.com/terms-conditions-finland' },
   ],
 };
 

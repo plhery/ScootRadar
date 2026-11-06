@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'milton-keynes',
   name: 'E-scooter hire in Milton Keynes',
   title: 'E-scooters Milton Keynes 2026: Lime, Dott, parking, Redways',
-  description: 'E-scooters in Milton Keynes: Lime and Dott hire, the price, riding on the Redways, the parking zones, and the rules for parks, private scooters and trains.',
+  description: 'E-scooter hire in Milton Keynes: Lime and Dott, how to hire one, the price, riding on the Redways, the parking zones, the rules and the trial’s end in 2028.',
   headline: 'E-scooters in Milton Keynes: Lime and Dott hire, the Redways and where to park',
-  lede: 'E-scooters in Milton Keynes are hired from Lime and Dott, in a trial run by Milton Keynes City Council since 2020. Dott’s published price on 25 October 2026 was £1 to unlock and 24p a minute; Lime shows its price in the app. You must be 18 or over with a full or provisional driving licence. Ride on the Redways, cycle tracks and local roads, never on pavements or grid roads, and end every ride in a parking zone shown in the app. A private e-scooter is illegal in public.',
+  lede: 'E-scooters in Milton Keynes are hired from Lime and Dott, in a trial run by Milton Keynes City Council since 2020 and due to end in May 2028. As of November 2026 Dott charges £1 to unlock and 24p a minute, so 10 minutes cost £3.40; Lime’s app shows its price before you unlock. To hire one, get the Lime or Dott app and register with a full or provisional driving licence; you must be 18 or over. Ride on the Redways, cycle tracks and local roads, never on pavements or grid roads, and end every ride in a parking zone shown in the app. A private e-scooter is illegal in public.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Milton Keynes',
@@ -16,23 +16,23 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Milton Keynes: Lime, Dott and the council’s trial',
       blocks: [
-        'Two companies, **Lime** and **Dott**, hire out e-scooters in Milton Keynes, and **e-bikes** in the same apps. Milton Keynes City Council, the highway authority, runs the trial “working with Lime and Dott”, its Get Around MK site says.',
+        'As of November 2026 two companies, **Lime** and **Dott**, hire out e-scooters in Milton Keynes, and **e-bikes** in the same apps. Milton Keynes City Council, the highway authority, runs the trial “working with Lime and Dott”, its Get Around MK site says.',
         '**Since when?** Since August 2020, when the council announced a 12-month trial with Lime, Spin and Ginger. Tier took over from Spin in August 2022, MKFM reported, and merged with Dott in March 2024; Dott said it would move every Tier city to the Dott app by early 2025. By October 2024 the council named only Lime and Dott.',
-        '**Until when?** Milton Keynes is on the government’s list of trial areas (updated 7 July 2026), and the national trials run until May 2028.',
-        'At 07:47 on Sunday 25 October 2026 the [map of Milton Keynes](map:gb:Milton Keynes) showed about 1,200 e-scooters, about 1,110 Lime and 90 Dott: a snapshot, not the fleet size. It shows where they stand and Lime’s battery, not prices, zones, parking, hours or e-bikes. The total takes in the older towns too: later that morning scooters stood from Stony Stratford and Wolverton to Newport Pagnell, Kents Hill and Bletchley.',
+        '**Until when?** Milton Keynes is on the government’s list of trial areas (updated 7 July 2026), and the national trials are due to end in May 2028, the Department for Transport says.',
+        'At 07:47 on Sunday 25 October 2026 the [map of Milton Keynes](map:gb:Milton Keynes) showed about 1,200 e-scooters, about 1,110 Lime and 90 Dott: a snapshot, not the fleet size. The total takes in the older towns too: later that morning scooters stood from Stony Stratford and Wolverton to Newport Pagnell, Kents Hill and Bletchley.',
+        '**Hiring one near you.** Open the Lime or Dott app, or the [map of Milton Keynes](map:gb:Milton Keynes), to find the nearest scooter. The app shows the parking zones where you pick one up and leave it, and you take a photo to end the ride.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Milton Keynes?',
       blocks: [
-        'Dott charges **£1 to unlock and 24p a minute**, for e-scooters and e-bikes alike, in its open data on 25 October 2026. For Lime, check the app: it shows the price before you unlock.',
+        'As of November 2026 Dott charges **£1 to unlock and 24p a minute**, for e-scooters and e-bikes alike, in its open data: 10 minutes cost £3.40 and 20 minutes £5.80.',
         {
           table: {
-            caption: 'E-scooter prices and discounts in Milton Keynes, October 2026',
+            caption: 'E-scooter prices and discounts in Milton Keynes, as of November 2026',
             head: ['Option', 'Price', 'Who says so'],
             rows: [
-              ['Dott, pay as you go', '£1 + 24p a minute: 10 minutes £3.40, 20 minutes £5.80', 'Dott’s published prices, 25 October 2026'],
-              ['Lime, pay as you go', 'Shown in the Lime app before you unlock', 'The Lime app'],
+              ['Dott, pay as you go', '£1 + 24p a minute: 10 minutes £3.40, 20 minutes £5.80', 'Dott’s open data'],
               ['Lime Access', '50% off Lime e-bike and e-scooter rides with a Jobcentre Plus Travel Card, a Blue Light Card, a student card (NUS or your institution’s), another free or discounted travel card, or another eligible key-worker ID or pass', 'Get Around MK and The Parks Trust'],
               ['Dott UK Access Scheme', 'Up to 80% off for blue light cardholders, NHS employees, university students and staff, apprentices, holders of a national bus pass or railcard for older or disabled people, people on income support or universal credit, and refugees and asylum seekers', 'Get Around MK'],
             ],
@@ -70,7 +70,7 @@ const guide: Guide = {
       blocks: [
         '“Generally, you can ride the rental scooters anywhere you can ride a cycle,” the council says: in Milton Keynes “primarily … the Redway network, cycle tracks and local roads”. Never ride on the pavement, and keep off the grid roads. In Central Milton Keynes you may also use the roads, car parks and underpasses.',
         'The **Redways** are over 200 miles of shared paths for “walking, wheeling, cycling and scooting”. The council’s Redway Code asks you to slow down at bends and junctions, pass people with plenty of room and not use your phone.',
-        'The apps cut a scooter’s power or speed where it isn’t allowed, the council explains. Dott’s own data listed 68 zones on 25 October 2026, without names:',
+        'The apps cut a scooter’s power or speed where it isn’t allowed, the council explains. Dott’s own data listed 68 zones in November 2026:',
         {
           list: [
             '**No riding:** 30 zones, most of them small, which you can’t even ride through: 9 in Central Milton Keynes and 8 in Bletchley.',
@@ -101,9 +101,7 @@ const guide: Guide = {
             rows: [
               ['Willen Lake, Campbell Park and the other parks', 'The Parks Trust', 'Hire scooters have places with enforced slow speeds and areas where you can’t end a ride; follow the Redway Code. Private e-scooters “must not be used in any Park locations”'],
               ['The shopping centre', 'centre:mk', '“Bikes and scooters are not to be used within the shopping centre”; there are council bike racks outside'],
-              ['Milton Keynes University Hospital', 'The hospital’s NHS trust', 'Lists bike racks (April 2026), but nothing on e-scooters'],
               ['Bletchley Park', 'Bletchley Park Trust', '“Scooters, children’s bikes, roller skates etc. are also not allowed” (visitor FAQs, on play equipment)'],
-              ['Stadium MK', 'Stadium MK', 'Its FAQs and travel page say nothing on e-scooters'],
             ],
           },
         },
@@ -116,7 +114,7 @@ const guide: Guide = {
           list: [
             '**Avanti West Coast**, whose intercity trains stop at Milton Keynes Central: “electric scooters are not permitted on our trains or anywhere on our stations”. The ban began on 27 December 2022, on its trains and at the 16 stations it manages, over the risks of lithium-ion batteries.',
             '**London Northwestern Railway** manages Milton Keynes Central: check its own conditions before you take any e-scooter on board.',
-            '**Buses:** check Arriva’s conditions before you travel; the council’s MK Connect page mentions mobility scooters, not e-scooters.',
+            '**Buses:** check Arriva’s conditions before you travel.',
           ],
         },
         'Commuting to London? Lime and Voi hire out e-scooters in parts of the capital: see our [London guide](guide:london). Voi runs the schemes in [Northampton](map:gb:Northampton) and [Aylesbury](map:gb:Aylesbury), where the map showed about 1,250 and 230 e-scooters at 07:47 on 25 October 2026; see [e-scooters in Aylesbury](guide:aylesbury).',
@@ -138,7 +136,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies are in Milton Keynes?',
-      answer: 'Lime and Dott, the council says. Spin, Ginger and Tier have gone; Tier merged into Dott in 2024. Our [Milton Keynes map](map:gb:Milton Keynes) shows Lime’s and Dott’s e-scooters, not their e-bikes.',
+      answer: 'Lime and Dott, the council’s Get Around MK site says as of November 2026. Spin, Ginger and Tier have gone; Tier merged into Dott in 2024. Find the nearest scooter on our [Milton Keynes map](map:gb:Milton Keynes).',
+    },
+    {
+      question: 'How much does it cost to hire an e-scooter in Milton Keynes?',
+      answer: 'As of November 2026 Dott charges £1 to unlock and 24p a minute, so 10 minutes cost £3.40 and 20 minutes £5.80; Lime’s app shows its price before you unlock. Lime Access takes 50% off and Dott’s UK Access Scheme up to 80% for those who qualify.',
     },
     {
       question: 'Can I ride a Lime or Dott to Newport Pagnell, Olney or Woburn Sands?',
@@ -157,8 +159,8 @@ const guide: Guide = {
       answer: 'Only at cycle parking. Since 28 October 2024 Lime and Dott rides there can end only at the existing Sheffield stands and street pods, the council says. The app shows the racks.',
     },
     {
-      question: 'What time do e-scooters stop in Milton Keynes?',
-      answer: 'The council’s pages set no hours and no night ban (October 2026). Check the Lime or Dott app before a late ride home.',
+      question: 'When does the Milton Keynes e-scooter trial end?',
+      answer: 'The national trials, Milton Keynes’ among them, are due to end in May 2028, the Department for Transport says. Milton Keynes is on the government’s list of trial areas, updated on 7 July 2026.',
     },
   ],
   sources: [
@@ -167,13 +169,12 @@ const guide: Guide = {
     { title: 'Get Around MK: Redways and the Redway Code', url: 'https://getaroundmk.org.uk/cycling/where-to-ride/redways' },
     { title: 'Get Around MK: Changes to e-bike and scooter parking (30 October 2024)', url: 'https://getaroundmk.org.uk/news/changes-to-electric-bike-and-scooter-parking' },
     { title: 'Get Around MK: MKC e-scooter trial (18 August 2020)', url: 'https://getaroundmk.org.uk/news/mkc-e-scooter-trial' },
-    { title: 'Get Around MK: MK Connect', url: 'https://getaroundmk.org.uk/on-board/plan-your-trip/mk-connect' },
     { title: 'Milton Keynes City Council: E-scooter trial to continue in MK (25 November 2022)', url: 'https://www.milton-keynes.gov.uk/news/2022/e-scooter-trial-continue-mk' },
     { title: 'Bletchley and Fenny Stratford Town Council: Mandatory Parking Zones (29 January 2026)', url: 'https://www.bletchleyfennystratford-tc.gov.uk/mandatory-parking-zones-mpzs-for-the-ebike-and-escooter-hire-schemes-in-milton-keynes' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'Department for Transport: Rental e-scooter trials (21 July 2025)', url: 'https://www.gov.uk/government/publications/rental-e-scooter-trials/rental-e-scooter-trials' },
-    { title: 'Dott open data: Milton Keynes prices (25 October 2026)', url: 'https://gbfs.api.ridedott.com/public/v2/milton-keynes/system_pricing_plans.json' },
-    { title: 'Dott open data: Milton Keynes zones (25 October 2026)', url: 'https://gbfs.api.ridedott.com/public/v2/milton-keynes/geofencing_zones.json' },
+    { title: 'Dott open data: Milton Keynes prices (November 2026)', url: 'https://gbfs.api.ridedott.com/public/v2/milton-keynes/system_pricing_plans.json' },
+    { title: 'Dott open data: Milton Keynes zones (November 2026)', url: 'https://gbfs.api.ridedott.com/public/v2/milton-keynes/geofencing_zones.json' },
     { title: 'Dott open data: Milton Keynes parking points (25 October 2026)', url: 'https://gbfs.api.ridedott.com/public/v2/milton-keynes/station_information.json' },
     { title: 'Dott: Tier becomes Dott (1 October 2024)', url: 'https://ridedott.com/press-release/tier-becomes-dott/' },
     { title: 'ONS: Parish boundaries (May 2026)', url: 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/PARNCP_MAY_2026_EW_BFC/FeatureServer/0' },
@@ -183,9 +184,7 @@ const guide: Guide = {
     { title: 'road.cc ebiketips: mis-parked hire bikes in Milton Keynes (29 May 2026)', url: 'https://road.cc/ebiketips/feature/forest-booms-while-ampler-goes-bang-councillor-singlehandedly-solves-e-bike-parking-problems-police-get-32-crime-fighting-e-bikes-more' },
     { title: 'The Parks Trust: Bike and scooter hire', url: 'https://www.theparkstrust.com/activities/bike-and-scooter-hire/' },
     { title: 'centre:mk: FAQs', url: 'https://www.centremk.com/visit/faqs/' },
-    { title: 'Milton Keynes University Hospital: Maps and car parking (updated 27 April 2026)', url: 'https://www.mkuh.nhs.uk/patients-and-visitors/maps-and-car-parking' },
     { title: 'Bletchley Park: FAQs', url: 'https://www.bletchleypark.org.uk/faqs/' },
-    { title: 'Stadium MK: FAQs', url: 'https://www.stadiummk.com/faqs' },
     { title: 'Avanti West Coast: Bikes on board', url: 'https://www.avantiwestcoast.co.uk/onboard/bikes' },
     { title: 'Avanti West Coast: E-scooter ban (21 December 2022)', url: 'https://newsdesk.avantiwestcoast.co.uk/news/avanti-west-coast-introduces-ban-on-e-scooters-across-its-route' },
   ],

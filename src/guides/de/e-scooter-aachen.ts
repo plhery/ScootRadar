@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'aachen',
   name: 'E-Scooter Aachen: Anbieter, Preise, Parken',
   title: 'E-Scooter Aachen 2026: Anbieter, Preise, Parken, Grenze',
-  description: 'E-Scooter Aachen: vier Anbieter, was zehn Minuten kosten, wo du an Dom und Hauptbahnhof parkst und was im ASEAG-Bus und in Vaals oder Kelmis gilt.',
+  description: 'E-Scooter Aachen: Dott, Voi, RideMovi, Ryde; zehn Minuten bei Voi 2,89 € (November 2026), Parken an Dom und Hauptbahnhof, ASEAG-Bus, Vaals und Kelmis.',
   headline: 'E-Scooter Aachen: Anbieter, Preise, Abstellflächen, ASEAG-Bus und die Grenze zu Vaals und Kelmis',
-  lede: 'Einen E-Scooter in Aachen leihst du ab 18 und ohne Führerschein bei Dott, Voi, RideMovi oder Ryde, laut Stadt je 500 Stück (Stand Oktober 2026). Zehn Minuten kosten bei Dott 4,30 € (Stand November 2026). Rund um Dom, Markt und Elisenbrunnen endet eine Dott-Fahrt nur an einer Station, sonst läuft die Miete weiter. Nach Vaals oder Kelmis kommst du mit Dott nicht: Das Gebiet endet noch auf Aachener Seite.',
+  lede: 'Einen E-Scooter in Aachen leihst du ab 18 und ohne Führerschein bei Dott, Voi, RideMovi oder Ryde, laut Stadt je 500 Stück. Zehn Minuten kosten bei Voi 2,89 € (0,49 € fürs Entsperren plus 0,24 € pro Minute), bei Dott 4,30 € (alles Stand November 2026). Du fährst höchstens 20 km/h, auf dem Radweg oder, wo es keinen gibt, auf der Fahrbahn, nicht auf dem Gehweg; eine Helmpflicht gibt es nicht. Rund um Dom, Markt und Elisenbrunnen endet eine Dott-Fahrt nur an einer Station, sonst läuft die Miete weiter. Nach Vaals oder Kelmis kommst du mit Dott nicht: Das Gebiet endet noch auf Aachener Seite.',
   published: '2026-10-17',
   updated: '2026-10-24',
   city: 'de:Aachen',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Aachen?',
       blocks: [
-        'Vier Anbieter vermieten im Oktober 2026 E-Scooter in Aachen, laut Stadt jeweils 500, zusammen 2000:',
+        'Vier Anbieter vermieten im November 2026 E-Scooter in Aachen, laut Stadt jeweils 500, zusammen 2000:',
         {
           list: [
             '**Voi**, seit Oktober 2019;',
@@ -34,15 +34,15 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Aachen (Dotts veröffentlichter Tarif, Stand November 2026)',
+            caption: 'E-Scooter-Preise in Aachen, Stand November 2026',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
+              ['Voi', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
               ['Dott', '1,00 €', '0,33 €', '4,30 €', '7,60 €'],
-              ['Voi, RideMovi, Ryde', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Voi ist damit günstiger als Dott: Zehn Minuten kosten dort 2,89 €, zwanzig 5,29 €, bei Dott 4,30 € und 7,60 €. Die Preise von RideMovi und Ryde zeigt die App; verbindlich ist bei allen Anbietern der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
@@ -134,11 +134,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Aachen nutzen?',
-      answer: 'Die von Dott, Voi, RideMovi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter siehst du auch auf der [Live-Karte von Aachen](map:de:Aachen).',
+      answer: 'Die von Dott, Voi, RideMovi und Ryde, Stand November 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter siehst du auch auf der [Live-Karte von Aachen](map:de:Aachen).',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Aachen?',
-      answer: 'Bei Dott 4,30 € (1 € Entsperren plus 0,33 € pro Minute), Stand November 2026. Voi, RideMovi und Ryde zeigen ihren Preis in der App.',
+      answer: 'Bei Voi 2,89 € (0,49 € Entsperren plus 0,24 € pro Minute), bei Dott 4,30 € (1 € Entsperren plus 0,33 € pro Minute), Stand November 2026.',
     },
     {
       question: 'Wo darf ich in Aachen einen Leih-Scooter abstellen?',
@@ -173,6 +173,7 @@ const guide: Guide = {
     { title: 'RDW: Bijzondere bromfietsen met kenteken de weg op (18. Juni 2026)', url: 'https://www.rdw.nl/nieuws/2026/bijzondere-bromfietsen-met-kenteken-de-weg-op' },
     { title: 'CHIO Aachen: Noch 300 Tage bis zur Eröffnungsfeier 2027 (2. September 2026)', url: 'https://www.chioaachen.de/de/news/der-chio-aachen-2027-noch-300-tage-bis-zur-eroeffnungsfeier/' },
     { title: 'CHIO Aachen: Anfahrt', url: 'https://www.chioaachen.de/de/informationen-fuer-besucher/anfahrt/' },
+    { title: 'Voi: Tarif und Zonen für Aachen in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/176/netex.xml' },
   ],
 };
 

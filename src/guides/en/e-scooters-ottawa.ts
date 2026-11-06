@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'ottawa',
   name: 'E-scooters in Ottawa',
   title: 'E-scooters Ottawa 2026: Bird, Lime, rules, fines and season',
-  description: 'E-scooters Ottawa guide: Bird and Lime, where you may ride (never sidewalks or NCC paths), the ByWard Market, parking, the O-Train and the season’s end.',
+  description: 'E-scooters in Ottawa: Bird and Lime, where you may ride (never sidewalks or NCC paths), the ByWard Market, parking, and the season’s end on 15 November.',
   headline: 'E-scooters in Ottawa: Bird and Lime, the rules, where you can’t ride and when the season ends',
-  lede: 'You can rent e-scooters in Ottawa from Bird or Lime, which took over Neuron’s scooters in 2026; the apps show the price before you unlock. You must be 16, with a helmet if you’re under 18; rentals top out at 20 km/h, and you ride in bike lanes, on the City’s multi-use pathways and on roads posted at 50 km/h or less, never on a sidewalk (a C$150 ticket) or an NCC pathway. Recent seasons were set to end on 15 November; the scooters come back in spring, on a date the City sets each year.',
+  lede: 'You can rent e-scooters in Ottawa from Bird or Lime, which took over Neuron’s scooters in 2026; the apps show the price before you unlock. You must be 16, with a helmet if you’re under 18; rentals top out at 20 km/h, and you ride in bike lanes, on the City’s multi-use pathways and on roads posted at 50 km/h or less, never on a sidewalk (a C$150 ticket) or an NCC pathway. The 2026 season is set to end on Sunday 15 November: council set rentals to run from 30 April to 15 November, so the scooters stay off the streets until about the end of April 2027.',
   published: '2026-10-22',
   updated: '2026-10-23',
   city: 'ca:on:Ottawa',
@@ -16,14 +16,14 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Ottawa, and what do they cost?',
       blocks: [
-        'In October 2026 two companies rent shared e-scooters in Ottawa:',
+        'As of November 2026 two companies rent shared e-scooters in Ottawa, and on 6 November both listed scooters for rent in their open data:',
         {
           list: [
             '**Bird**, run by Bird Canada, in the Bird app.',
             '**Lime**, in the Lime app. Lime Canada announced on 3 July 2026 that it was buying Neuron, one of the City’s two operators, and has since replaced Neuron’s scooters; it told CTV News it would run 500 in Ottawa.',
           ],
         },
-        '**Prices.** The apps show the fare before you unlock. Bird charges an unlock fee and a rate per minute, plus taxes and “compliance fees”, and sells ride passes and a Bird Plus subscription. Bird’s Community & Access pricing can lower fares for seniors, veterans and people on income assistance.',
+        '**Prices.** Bird charges an unlock fee and a rate per minute, plus taxes and “compliance fees”, and sells ride passes and a Bird Plus subscription. Bird’s Community & Access pricing can lower fares for seniors, veterans and people on income assistance.',
         'At 3:25 pm on 17 October 2026 the [map of Ottawa](map:ca:on:Ottawa) showed about 430 Bird scooters free to rent at that moment and about 460 Lime scooters as last counted.',
         '**Visiting?** Get the app before you go; Bird takes a credit, debit or prepaid card. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -107,8 +107,8 @@ const guide: Guide = {
     {
       heading: 'When does e-scooter season end in Ottawa, and when do scooters come back?',
       blocks: [
-        'The 2026 season began on Monday 27 April. The 2023, 2024 and 2025 seasons were each set to run until 15 November, weather permitting, so expect the shared scooters to leave the streets in mid-November and stay off until spring.',
-        'The City sets each season’s start. Recent seasons began on 15 May 2023, 18 April 2024 and 27 April 2026. Check the City’s e-scooter pages or the apps from April.',
+        'When council extended the City’s pilot in April 2025, it set rentals to run from 30 April to 15 November. The 2026 season began early, on Monday 27 April, and is set to end on Sunday 15 November 2026.',
+        'From Monday 16 November the shared scooters stay off the streets until spring 2027. The City sets each season’s start: recent seasons began on 15 May 2023, 18 April 2024 and 27 April 2026, so check the apps from mid-April.',
       ],
     },
     {
@@ -143,8 +143,8 @@ const guide: Guide = {
       answer: 'You must be 16 or over, under Ontario’s pilot. Riders under 18 must wear a helmet, and Ottawa Police urge everyone to wear one. You don’t need a driver’s licence.',
     },
     {
-      question: 'When do e-scooters come back to Ottawa?',
-      answer: 'Recent seasons were set to end on 15 November, weather permitting, and the scooters return in spring on a date the City sets each year. Recent seasons began on 15 May 2023, 18 April 2024 and 27 April 2026.',
+      question: 'When does the e-scooter season end in Ottawa, and when do scooters come back?',
+      answer: 'The 2026 season is set to end on Sunday 15 November, the end date council set for rentals, which run from 30 April. The scooters come back in spring 2027, on a date the City sets: recent seasons began on 15 May 2023, 18 April 2024 and 27 April 2026.',
     },
     {
       question: 'Can you ride an e-scooter on the Rideau Canal pathway?',
@@ -152,7 +152,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Bird or Lime scooter cost in Ottawa?',
-      answer: 'The apps show the unlock fee and the rate per minute before you start. Bird offers lower fares to some seniors, veterans and low-income riders.',
+      answer: 'Bird and Lime each charge an unlock fee and a rate per minute, and you see both in the app before you start; Bird adds taxes and compliance fees. Bird offers lower fares to some seniors, veterans and low-income riders.',
     },
     {
       question: 'Can you ride a rental e-scooter to Gatineau?',
@@ -171,6 +171,7 @@ const guide: Guide = {
     { title: 'Bird Canada: Access', url: 'https://birdcanada.ca/access/' },
     { title: 'Bird Canada: rental agreement', url: 'https://birdcanada.ca/rental-policy/' },
     { title: 'Bird: open data for Ottawa (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/ottawa/gbfs.json' },
+    { title: 'Lime: open data for Ottawa (GBFS)', url: 'https://data.lime.bike/api/partners/v2/gbfs/ottawa/gbfs.json' },
     { title: 'CBC News Ottawa: e-scooters set to hit Ottawa streets, paths (June 2020)', url: 'https://www.cbc.ca/news/canada/ottawa/transportation-committee-approves-escooter-pilot-1.5596449' },
     { title: 'CTV News Ottawa: Ottawa gives green light to e-scooters on streets, pathways (10 June 2020)', url: 'https://www.ctvnews.ca/ottawa/article/ottawa-gives-green-light-to-e-scooters-on-streets-pathways/' },
     { title: 'CTV News Ottawa: OC Transpo recommends bikes, e-scooters be permitted on the O-Train (12 February 2021)', url: 'https://www.ctvnews.ca/ottawa/article/oc-transpo-recommends-bikes-e-scooters-be-permitted-on-the-o-train/' },

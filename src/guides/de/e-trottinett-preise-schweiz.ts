@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'swiss-prices',
   name: 'E-Trottinett-Preise in der Schweiz',
   title: 'E-Trottinett-Preise Schweiz 2026: Was eine Fahrt kostet',
-  description: 'E-Trottinett-Preise in der Schweiz: Entsperrgebühr und Minutenpreis je Anbieter und Stadt, was 5, 10 und 20 Minuten kosten, Abos und teure Zusatzgebühren.',
+  description: 'E-Trottinett-Preise in der Schweiz, Stand November 2026: Entsperren und Minutenpreis je Anbieter und Stadt, zehn Minuten ab CHF 3.–, Abos und Zusatzgebühren.',
   headline: 'E-Trottinett-Preise in der Schweiz: So viel kostet ein Sharing-Trottinett, Stadt für Stadt',
-  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife von Bolt, Hopp und Voi, Stand November 2026. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort CHF 1.– bis CHF 1.50 fürs Entsperren, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
+  lede: 'Ein Sharing-E-Trottinett kostet in der Schweiz meist CHF 1.– fürs Entsperren plus 39 bis 48 Rappen pro Minute, Stand November 2026; zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Am günstigsten fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute, für zehn Minuten also CHF 3.–. In Basel sind Dott und Voi mit CHF 4.90 für zehn Minuten am günstigsten, in Zürich unter den übrigen Anbietern Hopp mit CHF 5.–. Dott verlangt je nach Ort CHF 1.– bis CHF 1.50 fürs Entsperren, Lime nennt seine Preise zzgl. MWST, und bei allen Anbietern, auch bei Bird, zeigt die App den Endpreis, bevor du entsperrst.',
   published: '2026-10-12',
   updated: '2026-10-24',
   sections: [
@@ -24,14 +24,14 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'Entsperrgebühr und Preis pro Minute, Stand November 2026 (Dott: 23. Oktober 2026)',
+            caption: 'Entsperrgebühr und Preis pro Minute, Stand November 2026',
             head: ['Gebiet', 'Anbieter', 'Entsperren', 'Pro Minute'],
             rows: [
               ['Region Zürich', 'Voi', 'CHF 1.–', '42 Rappen (Illnau-Effretikon: 39 Rappen)'],
               ['Region Zürich', 'Bolt', 'CHF 1.–', '42 Rappen (einzelne 48 Rappen)'],
               ['Region Zürich', 'Hopp', 'CHF 1.–', '40 Rappen (Kloten: 42 Rappen)'],
               ['Region Zürich', 'Dott', 'CHF 1.–', '41 Rappen'],
-              ['Region Zürich', 'Lime', 'CHF 1.– zzgl. MWST', '42 Rappen zzgl. MWST (Uster: 49 Rappen)'],
+              ['Region Zürich', 'Lime', 'CHF 1.– zzgl. MWST', '42 oder 49 Rappen zzgl. MWST (Uster: 49 Rappen)'],
               ['Winterthur und Frauenfeld', 'Voi', 'CHF 1.–', '42 Rappen'],
               ['Bern', 'Voi', 'CHF 1.–', '42 Rappen'],
               ['Basel', 'Voi', 'CHF 1.–', '39 Rappen'],
@@ -39,21 +39,19 @@ const guide: Guide = {
               ['Basel', 'Hopp', 'CHF 1.–', '45 Rappen'],
               ['Basel', 'Lime', 'CHF 1.– zzgl. MWST', '46 Rappen zzgl. MWST'],
               ['Basel', 'Dott', 'CHF 1.–', '39 Rappen'],
-              ['Basel', 'Bird', 'in der App', 'in der App'],
               ['Biel/Bienne', 'Voi', 'CHF 1.–', '39 Rappen'],
               ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil und Wil', 'Dott', 'CHF 1.20', '45 Rappen'],
               ['Romanshorn und Amriswil', 'Dott', 'CHF 1.50', '45 Rappen'],
               ['Wädenswil und Richterswil', 'Bolt', 'CHF 1.–', '48 Rappen'],
               ['Schaffhausen', 'Voi', 'keine', '39 Rappen'],
               ['Singen (Deutschland), jenseits der Grenze bei Schaffhausen', 'Zeus', '1 Euro', '25 Cent'],
-              ['Zürich und Biel/Bienne', 'PubliBike (Preisliste, Oktober 2026)', 'CHF 1.–', '20 Rappen'],
-              ['Region Zürich und weitere', 'Bird', 'in der App', 'in der App'],
+              ['Zürich und Biel/Bienne', 'PubliBike', 'CHF 1.–', '20 Rappen'],
             ],
           },
         },
-        'Voi verlangt also in Basel und Biel 39 Rappen pro Minute, in Bern 42 Rappen, Bolt je nach Gebiet 42, 45 oder 48 Rappen, und fürs Entsperren verlangt Dott in Basel und Zürich CHF 1.–, in Romanshorn CHF 1.50. Selbst innerhalb eines Gebiets fahren einzelne Trottinette zu einem anderen Tarif; massgebend ist darum der Preis in der App.',
+        'Voi verlangt also in Basel und Biel 39 Rappen pro Minute, in Bern 42 Rappen, Bolt je nach Gebiet 42, 45 oder 48 Rappen, und fürs Entsperren verlangt Dott in Basel und Zürich CHF 1.–, in Romanshorn CHF 1.50. Selbst innerhalb eines Gebiets fahren einzelne Trottinette zu einem anderen Tarif.',
         'In Schaffhausen verlangt Voi keine Entsperrgebühr (Stand November 2026); zehn Minuten kosten dort CHF 3.90. Die Zeus-Trottinette, die die Karte bei Schaffhausen zeigt, stehen jenseits der Grenze in Singen (Deutschland) und werden in Euro abgerechnet.',
-        'Der Standardtarif von PubliBike (B-Quick National) beträgt für die E-Scooter in Zürich und Biel/Bienne CHF 1.– plus 20 Rappen pro Minute, Stand Oktober 2026. Im Tessin kannst du sie mit diesem Tarif nicht ausleihen: Du brauchst das Abo B-Fit Local Tessin (CHF 69.– pro Jahr), dann kosten je 15 Minuten CHF 3.–.',
+        'Der Standardtarif von PubliBike (B-Quick National) beträgt für die E-Scooter in Zürich und Biel/Bienne CHF 1.– plus 20 Rappen pro Minute, Stand November 2026. Im Tessin kannst du sie mit diesem Tarif nicht ausleihen: Du brauchst das Abo B-Fit Local Tessin (CHF 69.– pro Jahr), dann kosten je 15 Minuten CHF 3.–.',
       ],
     },
     {
@@ -62,7 +60,7 @@ const guide: Guide = {
         'Minuten mal Minutenpreis, plus Entsperrgebühr: CHF 1.– + 10 × 42 Rappen = CHF 5.20 für zehn Minuten mit Voi in Bern. Die Tabelle rechnet in ganzen Minuten, ohne Zuschläge für Zonen oder andere Gebühren.',
         {
           table: {
-            caption: 'Was eine Fahrt kostet, Tarife Stand November 2026 (Dott: 23. Oktober 2026; PubliBike: Preisliste, Oktober 2026)',
+            caption: 'Was eine Fahrt kostet, Tarife Stand November 2026',
             head: ['Tarif (wo)', '5 Minuten', '10 Minuten', '20 Minuten'],
             rows: [
               ['PubliBike, CHF 1.– + 20 Rp. (Zürich, Biel)', 'CHF 2.–', 'CHF 3.–', 'CHF 5.–'],
@@ -77,6 +75,7 @@ const guide: Guide = {
             ],
           },
         },
+        '**Wer ist am günstigsten?** In Zürich PubliBike: Zehn Minuten kosten CHF 3.–, zwanzig CHF 5.–. Unter den übrigen Anbietern folgen Hopp mit CHF 5.– und 9.–, Dott mit CHF 5.10 und 9.20 sowie Voi und Bolt mit CHF 5.20 und 9.40; bei Lime sind es je nach Trottinett CHF 5.20 und 9.40 oder CHF 5.90 und 10.80, zzgl. MWST. In Basel sind Dott und Voi am günstigsten, mit CHF 4.90 und 8.80, vor Bolt und Hopp mit CHF 5.50 und 10.– und Lime mit CHF 5.60 und 10.20 zzgl. MWST. In Biel kostet PubliBike CHF 3.– und 5.–, Voi CHF 4.90 und 8.80 (alles Stand November 2026).',
         'Eine Mietfahrt dauert in Zürich im Schnitt etwa zehn Minuten, sagt der Chef der städtischen Verkehrssicherheit. Bei kurzen Fahrten fällt die Entsperrgebühr am stärksten ins Gewicht: Von den CHF 3.10 für fünf Minuten mit Voi in Bern entfällt ein Franken aufs Entsperren. Bei langen Fahrten entscheidet der Minutenpreis: 20 Minuten mit Bolt zu 48 Rappen in Wädenswil kosten CHF 1.80 mehr als mit Voi in Basel.',
       ],
     },
@@ -132,9 +131,9 @@ const guide: Guide = {
     {
       heading: 'So funktioniert die Preisschätzung auf der Karte',
       blocks: [
-        'ScootRadar liest die veröffentlichte Entsperrgebühr und den Minutenpreis jedes Anbieters aus seinem offenen Datenfeed und rechnet wie oben, für eine Fahrt von 5, 10, 15, 20 oder 30 Minuten; voreingestellt sind 10. Für Bird und PubliBike findet die Karte keinen Tarif, den sie verwenden kann, und Lime kennzeichnet seine Tarife im Feed als Preise ohne Steuern; ihre Trottinette zeigen darum keine Schätzung.',
+        'ScootRadar liest die veröffentlichte Entsperrgebühr und den Minutenpreis jedes Anbieters aus seinem offenen Datenfeed und rechnet wie oben, für eine Fahrt von 5, 10, 15, 20 oder 30 Minuten; voreingestellt sind 10.',
         'In der iPhone-App kannst du ein Abo oder Paket eintragen, das du bei einem Anbieter hast, mit Gratis-Entsperrungen, Gratis-Minuten und Ablaufdatum, und die Schätzung rechnet es ein. Diese Angaben bleiben auf deinem iPhone.',
-        'Die Feeds können einige Minuten alt sein, und Tarife können je nach Zone oder Zeit abweichen. Die Schätzung hilft beim Vergleichen, ein verbindliches Angebot ist sie nicht. Der Button bei jedem Trottinett öffnet die App des Anbieters, und dort siehst du den Endpreis, bevor du entsperrst. [Öffne die Karte](/map) und vergleiche.',
+        'Die Feeds können einige Minuten alt sein, und Tarife können je nach Zone oder Zeit abweichen. Die Schätzung hilft beim Vergleichen, ein verbindliches Angebot ist sie nicht. Der Button bei jedem Trottinett öffnet die App des Anbieters. [Öffne die Karte](/map) und vergleiche.',
       ],
     },
   ],
@@ -159,7 +158,12 @@ const guide: Guide = {
   sources: [
     { title: 'PubliBike: Preise & Abos', url: 'https://www.publibike.ch/de/abos' },
     { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
-    { title: 'MobiData BW: Tarife von Bolt und Lime in der Schweiz und von Zeus in Singen (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
+    { title: 'MobiData BW: offene Daten von Bolt Zürich (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_zurich/gbfs' },
+    { title: 'MobiData BW: offene Daten von Bolt Basel (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_basel/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime Zürich (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_zurich/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime Uster (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_uster/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime Basel (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_basel/gbfs' },
+    { title: 'MobiData BW: offene Daten von Zeus in Singen (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_singen/gbfs' },
     { title: 'Hopp: Tarife in Zürich (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-zurich/gbfs.json' },
     { title: 'Hopp: Tarife in Kloten (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-kloten/gbfs.json' },
     { title: 'Hopp: Tarife in Basel (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-basel/gbfs.json' },
@@ -167,6 +171,11 @@ const guide: Guide = {
     { title: 'Dott: Allgemeine Geschäftsbedingungen Schweiz', url: 'https://ridedott.com/de/allgemeine/schweiz/' },
     { title: 'Stadt Zürich: Weisung zu Sharing-Fahrzeugen und ihren Zonen (GR Nr. 2025/210)', url: 'https://www.gemeinderat-zuerich.ch/dokumente/9c8a7ffaed6e4f3ca6234611a78f2946-332' },
     { title: 'Ordnungsbussenverordnung (OBV), Anhang 1: Bussenliste', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'Dott: offener Datenfeed für Zürich (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/zurich/gbfs.json' },
+    { title: 'Dott: offener Datenfeed für Basel (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/basel/gbfs.json' },
+    { title: 'Dott: offener Datenfeed für St. Gallen und Umgebung (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/st.-gallen/gbfs.json' },
+    { title: 'Dott: offener Datenfeed für Rorschach (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/rorschach/gbfs.json' },
+    { title: 'Dott: offener Datenfeed für Romanshorn und Amriswil (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/romanshorn/gbfs.json' },
   ],
 };
 

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'basel',
   name: 'Renting an e-scooter in Basel',
   title: 'E-scooter Basel 2026: prices, no-go zones, Rhine parking',
-  description: 'Rent an e-scooter in Basel: the six apps, what ten minutes cost, where the old town stops your scooter, why you can’t park on the Rhine, and the border rules.',
+  description: 'Rent an e-scooter in Basel: six apps, which is cheapest, where the old town stops your scooter, why you can’t park on the Rhine, and the border rules.',
   headline: 'E-scooters in Basel: six apps, prices, no-go zones and parking by the Rhine',
-  lede: 'To rent an e-scooter in Basel, open the app of Lime, Voi, Dott, Bird, Bolt or Hopp, scan the QR code and ride on the bike lane at up to 20 km/h. Ten minutes cost CHF 4.90 to CHF 5.60: CHF 1 to unlock plus CHF 0.39 to CHF 0.46 a minute (published rates on 23 October 2026). In the old town the scooter brakes to a halt, you can’t end a ride on the Rhine bridges, and rental scooters can’t cross into Germany or France or reach EuroAirport.',
+  lede: 'To rent an e-scooter in Basel, open the app of Lime, Voi, Dott, Bird, Bolt or Hopp, scan the QR code and ride on the bike lane at up to 20 km/h. Dott and Voi are the cheapest, at CHF 1 to unlock plus CHF 0.39 a minute: ten minutes cost CHF 4.90 there and CHF 5.50 at Bolt and Hopp (as of November 2026). In the old town the scooter brakes to a halt, you can’t end a ride on the Rhine bridges, and rental scooters can’t cross into Germany or France or reach EuroAirport.',
   published: '2026-10-12',
   updated: '2026-10-23',
   city: 'ch:basel',
@@ -31,21 +31,21 @@ const guide: Guide = {
     {
       heading: 'What does an e-scooter cost in Basel?',
       blocks: [
-        'You pay to unlock, then by the minute. Dott, Voi, Bolt, Hopp and Lime publish their Basel rates in open data feeds; here they are as of 23 October 2026. Rates can vary by zone and time (Bolt says so itself), and the app shows the final price before you unlock.',
+        'You pay to unlock, then by the minute. The table shows Basel’s published rates as of November 2026; they can vary by zone, and Bolt calls its per-minute rate variable. The app shows the final price before you unlock.',
         {
           table: {
-            caption: 'Published e-scooter rates in Basel (operators’ data feeds, 23 October 2026)',
+            caption: 'Published e-scooter rates in Basel, as of November 2026',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Dott', 'CHF 1.00', 'CHF 0.39', 'CHF 4.90', 'CHF 8.80'],
               ['Voi', 'CHF 1.00', 'CHF 0.39', 'CHF 4.90', 'CHF 8.80'],
               ['Bolt', 'CHF 1.00', 'CHF 0.45', 'CHF 5.50', 'CHF 10.00'],
               ['Hopp', 'CHF 1.00', 'CHF 0.45', 'CHF 5.50', 'CHF 10.00'],
-              ['Lime', 'CHF 1.00', 'CHF 0.46', 'CHF 5.60', 'CHF 10.20'],
+              ['Lime (plus VAT)', 'CHF 1.00', 'CHF 0.46', 'CHF 5.60', 'CHF 10.20'],
             ],
           },
         },
-        'Dott and Voi were the cheapest that day and Lime the most expensive, CHF 1.40 apart after 20 minutes. Bolt sells weekly and monthly passes (for the others, check their apps) and says it asks for a short reaction test before you unlock at peak hours. To compare Basel with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        '**Which operator is cheapest?** Dott and Voi: ten minutes cost CHF 4.90 and twenty CHF 8.80. Bolt and Hopp charge CHF 5.50 and CHF 10.00, Lime CHF 5.60 and CHF 10.20, plus VAT. Bolt sells weekly and monthly passes and says it asks for a short reaction test before you unlock at peak hours. To compare Basel with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {
@@ -132,7 +132,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Velospot**, run by PubliBike for the canton, rents bikes and e-bikes all year. The code RIDEBASEL gets you a free monthly pass for 30 days in the Basel-Hochrhein network: the first 30 minutes of each bike ride are free, and an e-bike costs CHF 2 for the first 15 minutes and CHF 1 for the next 15 (October 2026).',
+            '**Velospot**, run by PubliBike for the canton, rents bikes and e-bikes all year. With the B-Fit Local Basel yearly subscription (CHF 69), the first 30 minutes of each bike ride are free; on an e-bike the first 15 minutes cost CHF 2 and the next 15 CHF 1, then CHF 0.20 a minute (as of November 2026).',
             '**Pick-e-Bike** rents e-bikes and seated e-scooters that are closer to e-mopeds; its app tells you which licence you need.',
             '**Carvelo** rents cargo bikes.',
           ],
@@ -153,6 +153,10 @@ const guide: Guide = {
     },
   ],
   faq: [
+    {
+      question: 'Which app do I need for an e-scooter in Basel?',
+      answer: 'The app of the operator whose scooter you take: Lime, Voi, Dott, Bird, Bolt or Hopp. Dott and Voi are the cheapest, at CHF 4.90 for ten minutes (as of November 2026). The [live map of Basel](map:ch:basel) shows where the scooters are.',
+    },
     {
       question: 'Can tourists rent an e-scooter in Basel?',
       answer: 'Yes, from 18: you sign up in the app and pay by card. If you don’t live in Switzerland, though, you pay any police fine on the spot or leave a deposit.',
@@ -181,6 +185,12 @@ const guide: Guide = {
     { title: 'Art Basel: 2027 dates', url: 'https://www.artbasel.com/basel' },
     { title: 'PubliBike: Velospot in Basel (German)', url: 'https://www.publibike.ch/de/basel' },
     { title: 'Swiss Ordinance on Fixed Penalties, list of fines (German)', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'PubliBike: prices and subscriptions (German)', url: 'https://www.publibike.ch/de/abos' },
+    { title: 'MobiData BW: Voi Switzerland’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: Bolt Basel’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_basel/gbfs' },
+    { title: 'MobiData BW: Lime Basel’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_basel/gbfs' },
+    { title: 'Hopp: rates in Basel (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-basel/gbfs.json' },
+    { title: 'Dott: open data feed for Basel (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/basel/gbfs.json' },
   ],
 };
 

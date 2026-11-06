@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'baltimore',
   name: 'E-scooters in Baltimore',
   title: 'E-scooters in Baltimore 2026: Spin, Lime, rules and zones',
-  description: 'E-scooters in Baltimore: Spin and Lime, Maryland and City rules, sidewalks, the Inner Harbor, stadium no-ride zones, parking, MTA and BWI.',
+  description: 'E-scooters in Baltimore: Spin and Lime, how to rent one, Maryland and City rules, sidewalks, the Inner Harbor, stadium no-ride zones, parking and BWI.',
   headline: 'E-scooters in Baltimore: Spin and Lime, the rules, the Inner Harbor and where you can’t ride',
-  lede: 'E-scooters in Baltimore come from Spin and Lime, the two companies holding permits from the Baltimore City Department of Transportation (BCDOT). The app shows the price before you unlock. Spin requires you to be 18; scooters are held to 15 mph, and to 8 mph on the waterfront from the Inner Harbor to Canton. You may ride on the sidewalk only beside a street posted at 30 mph or more, at 6 mph at most, and the scooters cut out around Camden Yards and M&T Bank Stadium at all times.',
+  lede: 'You can rent e-scooters in Baltimore from Spin and Lime, the two companies holding permits from the Baltimore City Department of Transportation (BCDOT) as of November 2026. Download the Spin or Lime app to find and unlock a scooter; the app shows the price before you unlock, and both companies offer a low-income plan, a way to pay in cash and a way to ride without a smartphone. Spin requires you to be 18; scooters are held to 15 mph, and to 8 mph on the waterfront from the Inner Harbor to Canton. You may ride on the sidewalk only beside a street posted at 30 mph or more, at 6 mph at most, and the scooters cut out around Camden Yards and M&T Bank Stadium at all times.',
   published: '2026-10-17',
   updated: '2026-10-23',
   city: 'us:md:Baltimore',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which apps rent e-scooters in Baltimore?',
       blocks: [
-        'BCDOT lists two permit holders, Lime and Spin, both with scooters and e-bikes. Permits run for a year, from 1 July to 30 June, and can be renewed: in June 2024 BCDOT renewed Spin and brought Lime back. BCDOT’s page, updated in May 2026, still lists both.',
+        'BCDOT lists two permit holders, Lime and Spin, both with scooters and e-bikes. Permits run for a year, from 1 July to 30 June, and can be renewed: in June 2024 BCDOT renewed Spin and brought Lime back. As of November 2026 BCDOT’s page, last updated on 20 May 2026, lists both, and on 6 November both companies’ open data listed scooters for rent.',
         {
           list: [
             '**Spin**, the orange scooters. Spin has joined forces with Bird. BCDOT and Spin’s website point to the Spin app, but Spin’s Baltimore open data names Bird as operator and links to Bird’s app.',
@@ -30,7 +30,7 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in Baltimore?',
       blocks: [
-        'The app shows the price before you unlock. The City’s permit rules make every company offer:',
+        'Each company sets its own standard price. The City’s permit rules make every company offer:',
         {
           list: [
             'a way to pay in cash, and a way to ride without a smartphone;',
@@ -115,7 +115,7 @@ const guide: Guide = {
       heading: 'BWI airport and Washington DC',
       blocks: [
         '**BWI Marshall Airport** is off-limits to Spin: its zones mark the area south of the city, the airport included, as no-ride. The light rail stops outside the terminal’s lower level, by Concourse E, and runs to Camden Yards and Lexington Market for $2; for Penn Station, change at Mt. Royal Avenue. The last train leaves at 12:40 am on weekdays, but at 8:40 pm on Sundays and holidays. MARC and Amtrak stop at BWI Marshall Rail Station, linked to the terminal by a free 24-hour shuttle.',
-        '**Washington DC** is on the same MARC Penn Line, with its own companies and rules: see [scooter rental in Washington, DC](guide:washington-dc) and the [map of Washington](map:us:dc:Washington). Between the two cities, [College Park](map:us:md:College Park) has Veo: about 470 scooters on the map on 17 October 2026, at $1 to unlock and $0.32 a minute in its open data the day before.',
+        '**Washington DC** is on the same MARC Penn Line, with its own companies and rules: see [scooter rental in Washington, DC](guide:washington-dc) and the [map of Washington](map:us:dc:Washington). Between the two cities, [College Park](map:us:md:College Park) has Veo: the map showed about 470 of its scooters on 17 October 2026, and its open data lists $1 to unlock and $0.32 a minute as of November 2026.',
       ],
     },
     {
@@ -138,7 +138,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime or Spin scooter cost in Baltimore?',
-      answer: 'The app shows the price before you unlock. On a low income, Spin Access or Lime Access waive the unlock fee and cut at least 80% off at least four rides a day, a City requirement, and ending a ride in a BCDOT corral earns a discount.',
+      answer: 'Spin and Lime set their own prices, which the app shows before you unlock. On a low income, Spin Access or Lime Access waive the unlock fee and cut at least 80% off at least four rides a day, a City requirement, and ending a ride in a BCDOT corral earns a discount.',
     },
     {
       question: 'Do you need a helmet to ride an e-scooter in Maryland?',
@@ -171,6 +171,9 @@ const guide: Guide = {
     { title: 'Maryland Transportation Article § 21-902: Driving under the influence', url: 'https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtr&section=21-902&enactments=false' },
     { title: 'Spin: Terms of Service (US)', url: 'https://www.spin.app/policies/terms-us' },
     { title: 'Spin: Spin Access', url: 'https://www.spin.app/spin-access' },
+    { title: 'Spin: Baltimore open data (GBFS)', url: 'https://gbfs.spin.pm/api/gbfs/v2_3/baltimore/gbfs' },
+    { title: 'Lime: Baltimore open data (GBFS)', url: 'https://data.lime.bike/api/partners/v2/gbfs/baltimore/gbfs.json' },
+    { title: 'Veo: College Park open data (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/cpk/gbfs' },
     { title: 'MDOT MTA: Bikes, e-bikes and e-scooters on transit', url: 'https://www.mta.maryland.gov/bike' },
     { title: 'MDOT MTA: Bikes on MARC', url: 'https://www.mta.maryland.gov/MARCbikes' },
     { title: 'BCDOT: Charm City Circulator', url: 'https://transportation.baltimorecity.gov/charm-city-circulator' },
