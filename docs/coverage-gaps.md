@@ -1848,9 +1848,10 @@ Bonaire had feeds to add. Survey files are in
   The feed is read from Dott's rider map, on Netcup, and is still polled. Then
   read it there and look for a notice; whether it stays is decided then.
 - **1 December 2026:** Dott Budapest, Dunaújváros and Pápa
-  (`dott_hu_budapest`, `dott_hu_dunaujvaros`, `dott_hu_papa`). They went from
-  about 109, 18 and 64 scooters to none together, between 09:00 and 12:00 UTC
-  on 4 November 2026, while Győr still held about 173 on 6 November. Veol
+  (`dott_hu_budapest`, `dott_hu_dunaujvaros`, `dott_hu_papa`). Budapest's
+  fleet thinned from about 1,050 scooters on 25 October 2026 to 109, and
+  Dunaújváros's from 99 to 18, then all three went to none together, between
+  09:00 and 12:00 UTC on 4 November, while Győr held about 184 on 6 November. Veol
   reports Pápa's scooters may go because Dott is leaving Hungary
   ([Veol](https://www.veol.hu/helyi-kozelet/2026/11/e-roller-berles-dott-papa-megszunes)),
   as Hatvan's did; Dott has published nothing. Their feeds stay ok and are
