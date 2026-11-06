@@ -1291,8 +1291,13 @@ banned shared scooters, and feeds that were empty when checked.
     Swept whole on 1 November 2026, its areas in Airdrie and Chestermere held
     no scooter, and it shows no area in Red Deer, Regina or Laval; Lime's
     Airdrie, Red Deer, Regina and Laval scooters are covered.
-  - **Neuron:** its 12 Canadian feeds answer 404 since Lime bought it on 3
-    July 2026. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
+  - **Neuron:** its Canadian feeds answered 404 after Lime bought it on 3
+    July 2026, but on 6 November 2026 seven answer again at
+    `mds.neuron-mobility.com/<code>/gbfs/gbfs.json`, with two scooters at
+    most: Ottawa (`yow`) listed 2, Calgary (`yyc`), Edmonton (`yeg`), Red
+    Deer (`yqf`) and Saskatoon (`yxe`) 1 each, Lethbridge (`yql`) and Regina
+    (`yqr`) none. Waterloo Region's (`ykf`) answers 401. The catalog holds
+    none of them. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
     and its rider map the other towns since 27 October 2026, but for Sylvan
     Lake, where its Red Deer region has no zone.
   - **MoVe:** its [authorized app map](move-app-map.md) now supplies

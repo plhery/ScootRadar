@@ -529,11 +529,15 @@ Bays show from zoom 16, as elsewhere.
 - **Bird**'s Kelowna, Saskatoon, Ajax and Surrey feeds were empty. Its rider
   map supplies fourteen towns with no feed (above); its Airdrie and
   Chestermere areas held no scooter, swept whole on 1 November 2026.
-- **Neuron**'s twelve Canadian feeds answer 404 since Lime bought it; Lime has
-  no public feed yet for its other former Neuron towns, which its rider map
-  supplies since 27 October 2026 (Saskatoon, Regina, Red Deer, Lacombe,
-  Blackfalds, Waterloo Region). Its Red Deer region has no zone in Sylvan
-  Lake.
+- **Neuron**'s Canadian feeds answered 404 after Lime bought it. On 6 November
+  2026 seven answer again (`mds.neuron-mobility.com/<code>/gbfs/gbfs.json`),
+  with two scooters at most: Ottawa (`yow`) 2, Calgary (`yyc`), Edmonton
+  (`yeg`), Red Deer (`yqf`) and Saskatoon (`yxe`) 1 each, Lethbridge (`yql`)
+  and Regina (`yqr`) none; Waterloo Region's (`ykf`) answers 401. The catalog
+  holds none of them. Lime has no public feed yet for its other former Neuron
+  towns, which its rider map supplies since 27 October 2026 (Saskatoon,
+  Regina, Red Deer, Lacombe, Blackfalds, Waterloo Region). Its Red Deer region
+  has no zone in Sylvan Lake.
 - **MoVe** runs scooters in Halifax and Dartmouth (and has announced Moncton)
   on ATOM Mobility, `move-mobility.rideatom.com`, but its system id isn't
   public, so no feed was found (18 October 2026).
