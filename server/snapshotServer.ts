@@ -230,7 +230,7 @@ export function createSnapshotServer(options: ServerOptions) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
       // all but the Lime groups past the few nearest the middle of the view, which Lime's pace could not keep up.
       const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
-      const watched = watches ? demandedFeeds(inView, parsed.query.bounds) : [];
+      const watched = watches ? demandedFeeds(inView, parsed.query.bounds, now) : [];
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
       const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds));

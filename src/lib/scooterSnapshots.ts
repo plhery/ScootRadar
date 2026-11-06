@@ -460,14 +460,18 @@ function offPoint(feed: FeedSnapshot, [lat, lng]: [number, number]): number {
  * The feeds in view that a request collects again: the nearest bounded set of Lime and Ryde groups,
  * plus other feeds. The remaining groups stay idle and the answer shows them as they are.
  */
-export function demandedFeeds(feeds: FeedSnapshot[], bounds: MapBounds): FeedSnapshot[] {
+export function demandedFeeds(feeds: FeedSnapshot[], bounds: MapBounds, now = Date.now()): FeedSnapshot[] {
   const middle = boundsCenter(bounds);
   let selected = feeds;
   for (const [matches, limit] of [[isLimeGroupFeed, LIME_GROUPS_PER_REQUEST], [isRydeGroupFeed, RYDE_GROUPS_PER_REQUEST]] as const) {
     const groups = feeds.filter(matches);
     if (groups.length <= limit) continue;
-    const nearest = new Set(groups.map((feed, index) => ({ feed, index, off: offPoint(feed, middle) }))
-      .sort((a, b) => a.off - b.off || a.index - b.index).slice(0, limit).map(({ feed }) => feed));
+    // Once a Ryde batch is fresh, move on to the faded groups still in view rather
+    // than refreshing the same centre forever. Pending/partial batches retain their
+    // old feed timestamp, so polling does not enqueue the whole city at once.
+    const nearest = new Set(groups.map((feed, index) => ({ feed, index, off: offPoint(feed, middle),
+      fresh: matches === isRydeGroupFeed && showsPositions(feed, now) ? 1 : 0 }))
+      .sort((a, b) => a.fresh - b.fresh || a.off - b.off || a.index - b.index).slice(0, limit).map(({ feed }) => feed));
     selected = selected.filter(feed => !matches(feed) || nearest.has(feed));
   }
   return selected;

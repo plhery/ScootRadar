@@ -336,6 +336,12 @@ describe('feeds collected on demand', () => {
     expect(near).toHaveLength(RYDE_GROUPS_PER_REQUEST);
     expect(near.some(g=>g.coverage.some(b=>b.south<=48.3665&&b.north>=48.3665&&b.west<=10.8944&&b.east>=10.8944))).toBe(true);
     expect(demandedFeeds(near,street)).toEqual(near);
+    // The centre finishing must allow faded edges to refresh, without increasing the batch.
+    const completed=new Set(asked.map(g=>g.id));
+    const after=groups.map(g=>completed.has(g.id)?{...g,observedAt:now}:g);
+    const next=demandedFeeds(after,augsburg,now);
+    expect(next).toHaveLength(RYDE_GROUPS_PER_REQUEST);
+    expect(next.every(g=>!completed.has(g.id))).toBe(true);
   });
 
   describe('Lime\'s groups in a wide view', () => {
