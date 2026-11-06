@@ -98,6 +98,16 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   them) or everyone does (a fourth account would): e.g. the share of refreshes from
   visitors with more than 7 is
   `sum(increase(scootradar_lime_wakes_total{refreshes=~"8-15|16\\+"}[7d])) / sum(increase(scootradar_lime_wakes_total[7d]))`.
+  Only refreshes a request starts count, not those the cache makes every minute of a
+  feed a request keeps watched, nor a request whose feed is already queued, so a map
+  left open counts for little once the accounts are at their pace. Six Berlin groups
+  were collected about 110 times an hour together from 07:00 UTC on 4 November 2026 to
+  20:00 UTC on 5 November, through the night too, and none from 00:00 UTC on
+  6 November, where they had had at most 57 an hour on 2 November: the accounts'
+  status requests went from 24,093 on 2 November to 42,492 on 4 November, at their
+  2,160 an hour most hours, while the refreshes counted here stayed about 1,600 a day.
+  A map left open shows instead as a few groups collected through the night, e.g.
+  `topk(5, sum by (feed)(increase(scootradar_feed_collections_total{provider="lime",feed=~".*_app_.*"}[3h])))`.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
