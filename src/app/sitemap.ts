@@ -72,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${SITE}/accessibility`,
       // The day the page says it was last updated.
-      lastModified: new Date('2026-11-04'),
+      lastModified: new Date('2026-11-06'),
       changeFrequency: 'monthly',
       priority: 0.3,
     },

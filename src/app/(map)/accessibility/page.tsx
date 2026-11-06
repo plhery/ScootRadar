@@ -80,12 +80,25 @@ export default function AccessibilityPage() {
             the search while it is open, and describing the map&apos;s zones to someone who
             can&apos;t see them.
           </li>
+        </ul>
+
+        <h2>Known gaps</h2>
+        <p>
+          We are keeping the map&apos;s look as it is, so these two stay for now. Here is what you can
+          do meanwhile.
+        </p>
+        <ul>
           <li>
-            <strong>Differentiate Without Color Alone:</strong> on the map, some providers&apos; dots
-            differ only by colour.
+            <strong>Differentiate Without Color Alone:</strong> some providers&apos; dots differ only
+            by colour. Lime&apos;s and Bolt&apos;s are both green, for example. Tap a dot and its card
+            names the provider. Zoomed in to the street, the scooters nearest you show the
+            provider&apos;s name and the minutes&apos; walk beside them. In Filters, you can turn off
+            the providers you don&apos;t use.
           </li>
           <li>
-            <strong>Sufficient Contrast:</strong> the dots on the light map.
+            <strong>Sufficient Contrast:</strong> on the light map, the dots stand out from the map
+            less than Apple asks. They stand out more on the dark map: choose Settings › Appearance ›
+            Dark. The system&apos;s Increase Contrast setting doesn&apos;t change the dots.
           </li>
         </ul>
 
@@ -95,7 +108,7 @@ export default function AccessibilityPage() {
           device and which screen, and the feature you use, such as VoiceOver or Larger Text.
         </p>
 
-        <p>Last updated 4 November 2026</p>
+        <p>Last updated 6 November 2026</p>
       </article>
     </main>
   );
