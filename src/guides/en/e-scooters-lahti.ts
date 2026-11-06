@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-lahti',
   topic: 'lahti',
   name: 'E-scooters in Lahti, Finland',
-  title: 'E-scooters Lahti 2026: Dott, Ryde, night ban and parking',
-  description: 'E-scooters in Lahti: Dott and Ryde under the City’s 2026 permit, the weekend night ban, 20 km/h, bay-only parking in the centre and the season.',
+  title: 'E-scooters Lahti 2026: Dott, Ryde, winter and the night ban',
+  description: 'E-scooters in Lahti: Dott and Ryde under the City’s permit, the season to at least 15 November, the weekend night ban, 20 km/h, bay-only parking in the centre.',
   headline: 'E-scooters in Lahti: Dott and Ryde, the weekend night ban, where to park and when the season ends',
-  lede: 'E-scooters in Lahti are rented from Dott and Ryde, and every company needs the City’s micromobility permit; each app shows its price. No one can rent a scooter from 00:00 to 05:00 on Friday and Saturday nights. From 15 you ride on the cycle path or the road at up to 20 km/h, in the centre you park in a marked bay, and the season runs, as a rule, to 15 November.',
+  lede: 'E-scooters in Lahti are rented from Dott and Ryde through their apps, and since 2026 every company needs the City’s micromobility permit; each app shows its price before you unlock. The permit lets the season run to at least 15 November, weather permitting: once the 10-day forecast turns to frost and snow, the companies must take their scooters off the streets within 48 hours of the City’s notice, and they may return in spring once the streets are free of ice and snow. No one can rent a scooter from 00:00 to 05:00 on Friday and Saturday nights. From 15 (Dott: 18) you ride on the cycle path or the road at up to 20 km/h, never the pavement, and in the centre you park only in a marked bay.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Lahti',
@@ -20,11 +20,11 @@ const guide: Guide = {
         'In December 2025 the City counted two e-scooter companies in Lahti, and Dott and Ryde commented on its draft terms; both list Lahti on their own pages:',
         {
           table: {
-            caption: 'E-scooter companies in Lahti, October 2026',
+            caption: 'E-scooter companies in Lahti, as of November 2026',
             head: ['Company', 'In Lahti', 'Rider’s terms'],
             rows: [
               ['Dott', 'Lists Lahti and Hollola (July 2026)', 'TIER Mobility Finland Oy; 18 and over'],
-              ['Ryde', 'Lists Lahti (October 2026)', 'In the app'],
+              ['Ryde', 'Lists Lahti (November 2026)', 'Ryde Technology; 15 and over'],
             ],
           },
         },
@@ -34,8 +34,8 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Lahti: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock.',
-        'Dott’s terms for Finland (last updated 23 September 2025) set its extra charges: up to €300 for recovering a scooter you parked or locked against its instructions, €50 for any breach of its terms, and a €50 admin fee if Dott pays a fine for you; fines and impounding costs are yours. Check Ryde’s fees and age limit in its app. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Ryde’s Finnish terms round each ride up to the next full minute and allow a fee of up to €50 if you leave a scooter outside its operating area.',
+        'Dott’s terms for Finland (last updated 23 September 2025) set its extra charges: up to €300 for recovering a scooter you parked or locked against its instructions, €50 for any breach of its terms, and a €50 admin fee if Dott pays a fine for you; fines and impounding costs are yours. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -79,7 +79,7 @@ const guide: Guide = {
             head: ['Rule', 'What applies', 'Who sets it'],
             rows: [
               ['Minimum age', '15; handing a scooter to someone younger can cost €60', 'Road Traffic Act §§ 17 and 164 a'],
-              ['Company’s age', 'Dott 18; Ryde in its app', 'Each company’s terms'],
+              ['Company’s age', 'Dott 18; Ryde 15', 'Each company’s terms'],
               ['Where to ride', 'Cycle path or lane, else the road; not the pavement', 'Road Traffic Act §§ 18 and 52; City of Lahti'],
               ['Alcohol and drugs', '0.5‰ in the blood or 0.22 mg/l in the breath is too much; no narcotics; €200 fee', 'Road Traffic Act §§ 17 a and 164'],
               ['Passengers', 'One rider only', 'Road Traffic Act § 147'],
@@ -149,11 +149,11 @@ const guide: Guide = {
     },
     {
       question: 'When does the e-scooter season end in Lahti?',
-      answer: 'The City’s basic season runs to 15 November, and the companies may carry on while the weather allows. Once the forecast turns to frost and snow, the scooters must be off the streets within 48 hours of the City’s notice.',
+      answer: 'The City’s permit lets the season run to at least 15 November, and longer while the weather allows. Once the 10-day forecast turns to frost and snow, the scooters must be off the streets within 48 hours of the City’s notice, until spring.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Lahti?',
-      answer: '15, by Finnish law since 17 June 2025. Dott rents only to riders of 18 and over; Ryde shows its limit in its app.',
+      answer: '15, by Finnish law since 17 June 2025. Dott rents only to riders of 18 and over; Ryde’s terms allow riders from 15.',
     },
   ],
   sources: [
@@ -167,9 +167,10 @@ const guide: Guide = {
     { title: 'Act 304/2025 amending the Road Traffic Act (Finnish)', url: 'https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2025/304' },
     { title: 'LSL: Aids and luggage on the buses (updated 31 August 2026, Finnish)', url: 'https://www.lsl.fi/liput-ja-hinnat/apuvalineet-ja-matkatavarat/' },
     { title: 'VR: Bikes and scooters on trains', url: 'https://www.vr.fi/en/facilities-and-services/bikes-on-trains' },
-    { title: 'Dott: Terms and conditions for Finland', url: 'https://ridedott.com/terms-and-conditions/finland/' },
+    { title: 'Dott: Terms and conditions for Finland (last updated 23 September 2025)', url: 'https://ridedott.com/terms-and-conditions/finland/' },
     { title: 'Dott: Locations (updated 13 July 2026)', url: 'https://ridedott.com/fi/locations-2/' },
     { title: 'Ryde: Locations', url: 'https://www.ryde-technology.com/Locations' },
+    { title: 'Ryde: Terms and conditions, Finland (read 6 November 2026)', url: 'https://www.ryde-technology.com/terms-conditions-finland' },
   ],
 };
 

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'wroclaw',
   name: 'Renting an e-scooter in Wrocław',
   title: 'E-scooters Wrocław 2026: Bolt, Dott, Lime, parking and rules',
-  description: 'E-scooters in Wrocław: Bolt, Dott and Lime, what a ride costs, where to park, the zoo and Centennial Hall, the tram and bus ban, and Poland’s rules.',
+  description: 'E-scooters in Wrocław: how to rent Bolt, Dott or Lime, Bolt from PLN 0.22 a minute (November 2026), where to park, the tram and bus ban, Poland’s rules.',
   headline: 'E-scooters in Wrocław: Bolt, Dott and Lime, prices, parking and the tram ban',
-  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Wrocław (Wroclaw) with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show prices in the app. The city asks you to leave your scooter at a bike rack where there is one, and since 29 April 2026 MPK’s rules have kept every e-scooter, shared or your own, off its trams and buses.',
+  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Wrocław (Wroclaw) with Bolt, Dott or Lime: download the app, create an account, find a scooter on the app’s map and scan its QR code to unlock it. Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus a small unlock fee (its starting rate for Poland, as of November 2026); Dott’s and Lime’s apps show their price before you unlock. The city asks you to leave your scooter at a bike rack where there is one, and since 29 April 2026 MPK’s rules have kept every e-scooter, shared or your own, off its trams and buses.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'pl:Wrocław',
@@ -21,7 +21,7 @@ const guide: Guide = {
           list: [
             '**Bolt**, in the same app as its taxis. Its terms for Poland require you to be 18.',
             '**Dott**, whose terms for Poland also require 18. Its website also lists nearby Siechnice, Oława and Trzebnica.',
-            '**Lime**, whose prices and rules are in its app.',
+            '**Lime**, which, like Dott, has put a phone number on all its scooters for reporting one left badly parked, at the city’s request.',
           ],
         },
         'At 20:40 on Sunday 25 October 2026 the [Wrocław map](map:pl:Wrocław) showed about 3,200 Bolt and Dott scooters free to rent at that moment.',
@@ -32,7 +32,7 @@ const guide: Guide = {
       heading: 'How much does an e-scooter cost in Wrocław?',
       blocks: [
         'Bolt’s Polish page advertises scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026). It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one.',
-        'Dott sells day, week and month passes and, like Lime, shows its prices in the app. Bolt’s and Dott’s terms set the extra charges:',
+        'Dott sells day, week and month passes. Bolt’s and Dott’s terms set the extra charges:',
         {
           table: {
             caption: 'Extra charges in Bolt’s and Dott’s terms for Poland, as of November 2026',
@@ -141,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does electric scooter rental cost in Wroclaw?',
-      answer: 'Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026). Dott and Lime show their prices in the app.',
+      answer: 'Bolt charges from PLN 0.22 a minute plus a small unlock fee, its starting rate for Poland as of November 2026; the rate can vary by place. Dott sells day, week and month passes.',
     },
     {
       question: 'Where can you park an e-scooter in Wrocław?',

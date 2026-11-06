@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-gavle',
   topic: 'gavle',
   name: 'E-scooters in Gävle, Sweden',
-  title: 'E-scooters Gävle 2026: Voi, the season and the rules',
-  description: 'E-scooters in Gävle: Voi, the only company allowed, its usual May–October season, slow zones, where to ride and park, X-trafik buses and Sweden’s fines.',
+  title: 'E-scooters Gävle 2026: Voi prices, the season and rules',
+  description: 'E-scooters in Gävle: Voi alone, at SEK 10 + SEK 3 a minute (November 2026), its usual May–October season, slow zones, where to ride and park, the fines.',
   headline: 'E-scooters in Gävle: Voi’s season, and where to ride and park',
-  lede: 'E-scooters in Gävle are rented from Voi alone: it won the municipality’s procurement and is the only company allowed to put out hire scooters, and they are normally out from May to October, Gävle kommun says (September 2026); they were still on the streets on 29 October 2026, so check the Voi app. Ride on the cycle lane or the road, never on the pavement, and end your ride at an approved parking place, such as a cycle rack.',
+  lede: 'E-scooters in Gävle are rented from Voi alone: it won the municipality’s procurement and is the only company allowed to put out hire scooters. To rent one, download the Voi app and find a scooter in it or on the [map of Gävle](map:se:Gävle). As of November 2026 a Voi costs SEK 10 to unlock and SEK 3 a minute, so 10 minutes cost SEK 40. The scooters are normally out from May to October, Gävle kommun says; in 2026 they were still on the streets on 29 October, so check the Voi app. Ride on the cycle lane or the road, never on the pavement; under-15s must wear a helmet; end your ride at an approved parking place, such as a cycle rack.',
   published: '2026-10-29',
   updated: '2026-11-03',
   city: 'se:Gävle',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Gävle chose its e-scooter company by public procurement. Voi won it, and Gävle kommun (the Municipality of Gävle) says Voi is the only provider allowed to put out hire e-scooters and e-bikes in the town (page updated 11 September 2026):',
         {
           table: {
-            caption: 'E-scooter companies in Gävle, October 2026',
+            caption: 'E-scooter companies in Gävle, as of November 2026',
             head: ['Company', 'Allowed in Gävle, as the municipality says'],
             rows: [
               ['Voi', 'Yes, the only one, under the agreement it won'],
@@ -33,8 +33,8 @@ const guide: Guide = {
     {
       heading: 'How much does a Voi scooter cost in Gävle?',
       blocks: [
-        '**The app shows the price** before you unlock.',
-        'Check the Voi app for its age limit and fees too. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'As of November 2026 Voi’s open data gives SEK 10 to unlock and SEK 3 a minute in Gävle, so 10 minutes cost SEK 40 and 20 minutes SEK 70.',
+        'Check the Voi app for its age limit and other fees. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -109,7 +109,7 @@ const guide: Guide = {
     {
       heading: 'Can you take an e-scooter on an X-trafik bus or the train?',
       blocks: [
-        'X-trafik, the public transport of Gävleborg county, lets you bring a folding e-scooter free of charge as hand luggage on its town buses, regional buses and X-tåg trains, if there is room. It must stay fully folded for the whole trip and be no larger than 120 cm and no heavier than 15 kg. An e-scooter that doesn’t fold may not come aboard any X-trafik vehicle, and you may not charge a battery on board (read 29 October 2026). End a hire-scooter ride at a rack near the stop before you board.',
+        'X-trafik, the public transport of Gävleborg county, lets you bring a folding e-scooter free of charge as hand luggage on its town buses, regional buses and X-tåg trains, if there is room. It must stay fully folded for the whole trip and be no larger than 120 cm and no heavier than 15 kg. An e-scooter that doesn’t fold may not come aboard any X-trafik vehicle, and you may not charge a battery on board. End a hire-scooter ride at a rack near the stop before you board.',
         '**On SJ’s trains**, SJ says, fold the e-scooter and put it in the luggage rack or under the seat in front of you, not overhead; you may not charge it on board.',
       ],
     },
@@ -163,7 +163,8 @@ const guide: Guide = {
     { title: 'Transportstyrelsen: Elsparkcykel (updated 14 August 2026)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordonsregler/regler-for-olika-fordonsslag/elsparkcykel/' },
     { title: 'Riksdagen: Trafikförordningen (1998:1276)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/trafikforordning-19981276_sfs-1998-1276/' },
     { title: 'Åklagarmyndigheten: Fixed fines, annex 1A (1 November 2025)', url: 'https://www.aklagare.se/globalassets/dokument/ordningsbotskatalog/bilaga-1a.pdf' },
-    { title: 'X-trafik: Cykel i kollektivtrafiken, bikes and e-scooters on board (read 29 October 2026)', url: 'https://xtrafik.se/cykel-i-kollektivtrafiken' },
+    { title: 'Voi: Open data for Gävle, zone 296 (NeTEx, published 6 November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/296/netex.xml' },
+    { title: 'X-trafik: Cykel i kollektivtrafiken, bikes and e-scooters on board (read 6 November 2026)', url: 'https://xtrafik.se/cykel-i-kollektivtrafiken' },
     { title: 'SJ: Luggage rules', url: 'https://www.sj.se/en/about-sj/terms-and-conditions/luggage-rules' },
     { title: 'Högskolan i Gävle: Ordningsregler på campus, campus rules (11 June 2026)', url: 'https://www.hig.se/student/din-studiemiljo/ditt-campus/ordningsregler-pa-campus' },
     { title: 'Högskolan i Gävle: Contact and maps (11 September 2026)', url: 'https://www.hig.se/om-hogskolan/kontakt-och-kartor' },

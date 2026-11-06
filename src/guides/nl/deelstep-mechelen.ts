@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'mechelen',
   name: 'Een deelstep huren in Mechelen',
   title: 'Deelstep Mechelen 2026: Hoppy, prijzen en parkeerzones',
-  description: 'Deelstep Mechelen: wat een Hoppy-step kost, waar je hem neemt en parkeert, waar hij 15 km/u rijdt of stilvalt, en de stepvrije zones in de binnenstad.',
+  description: 'Deelstep Mechelen: Hoppy kost € 1 plus € 0,18 tot € 0,33 per minuut (november 2026). Hoe je huurt, waar je parkeert, de 15 km/u-zone en de stepvrije zones.',
   headline: 'Deelstep Mechelen: Hoppy, wat een rit kost, waar je parkeert en waar je niet mag steppen',
-  lede: 'Een deelstep in Mechelen huur je bij Hoppy, waarvan het college de vergunning voor 2026-2027 verlengde. Je betaalt € 1 om te ontgrendelen en € 0,18, € 0,27 of € 0,33 per minuut, naargelang de step (prijs in november 2026). Je neemt en parkeert de step in een aangeduide parkeerzone; op de Grote Markt, de Vismarkt en aan het station kan dat niet. Rond de Bruul rijdt hij hooguit 15 km/u, en volgens de stad moet je minstens 18 jaar zijn.',
+  lede: 'Een deelstep in Mechelen huur je bij Hoppy, waarvan het college de vergunning voor 2026-2027 verlengde: je installeert de Hoppy-app, maakt een account aan met een betaalkaart, zoekt de dichtstbijzijnde step op de kaart in de app en ontgrendelt hem. In november 2026 betaal je € 1 om te ontgrendelen en € 0,18, € 0,27 of € 0,33 per minuut, naargelang de step: tien minuten kost € 2,80 tot € 4,30. Je neemt en parkeert de step in een aangeduide parkeerzone; op de Grote Markt, de Vismarkt en aan het station kan dat niet. Rond de Bruul rijdt hij hooguit 15 km/u, en volgens de stad moet je minstens 18 jaar zijn.',
   published: '2026-10-24',
   updated: '2026-10-26',
   city: 'be:Mechelen',
@@ -37,7 +37,7 @@ const guide: Guide = {
           },
         },
         'Welke van de drie een step vraagt, zie je in de app voor je ontgrendelt.',
-        'Abonnementen en hun prijs zie je in de app; Hoppy verkoopt ze pas vanaf 18 jaar. Een rit duurt hooguit 24 uur en kost dan hooguit € 361.',
+        'Abonnementen verkoopt Hoppy pas vanaf 18 jaar. Een rit duurt hooguit 24 uur en kost dan hooguit € 361.',
       ],
     },
     {
@@ -156,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Hoeveel kost een deelstep in Mechelen?',
-      answer: 'Je betaalt € 1 om te ontgrendelen en € 0,18, € 0,27 of € 0,33 per minuut, naargelang de step (november 2026). Tien minuten kost dus € 2,80 tot € 4,30. De app toont de prijs voor je ontgrendelt.',
+      answer: 'Je betaalt € 1 om te ontgrendelen en € 0,18, € 0,27 of € 0,33 per minuut, naargelang de step (november 2026). Tien minuten kost dus € 2,80 tot € 4,30, twintig minuten € 4,60 tot € 7,60.',
     },
     {
       question: 'Waar mag je een deelstep parkeren in Mechelen?',

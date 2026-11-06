@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trottinette-electrique-lille',
   topic: 'lille',
   name: 'Louer une trottinette électrique autour de Lille',
-  title: 'Trottinette électrique à Lille en 2026 : Lime, casque, prix',
-  description: 'Trottinette électrique à Lille : aucune en libre-service en ville, des Lime dans la métropole. Prix, stations, casque obligatoire dans le Nord et V’Lille.',
-  headline: 'Trottinette électrique à Lille : pas de libre-service en ville, des Lime dans la métropole, casque et prix en 2026',
-  lede: 'Pour louer une trottinette électrique à Lille, il faut sortir de la ville, qui n’autorise en libre-service que les vélos électriques : dans Lille même, prenez un V’Lille ou un vélo Lime. **Lime**, seul opérateur, a environ un millier de trottinettes dans le reste de la métropole, surtout à Roubaix, Villeneuve-d’Ascq, Wattrelos, Hem et Lambersart. Comptez 1 € pour déverrouiller, puis 0,18 à 0,22 € la minute selon les pages des communes ; l’app affiche le prix exact. La location se termine dans une station, et le casque est obligatoire dans tout le Nord depuis le 1er septembre 2026.',
+  title: 'Trottinette électrique à Lille en 2026 : Lime et casque',
+  description: 'Trottinette électrique à Lille : aucune en libre-service en ville, des Lime dans la métropole. Comment louer, stations, casque obligatoire dans le Nord.',
+  headline: 'Trottinette électrique à Lille : pas de libre-service en ville, des Lime dans la métropole, stations et casque en 2026',
+  lede: 'Pour louer une trottinette électrique à Lille, il faut sortir de la ville, qui n’autorise en libre-service que les vélos électriques : dans Lille même, prenez un V’Lille ou un vélo Lime. **Lime**, seul opérateur, a environ un millier de trottinettes dans le reste de la métropole, surtout à Roubaix, Villeneuve-d’Ascq, Wattrelos, Hem et Lambersart. Il vous faut l’app Lime sur un smartphone et une carte bancaire ; l’app affiche le prix avant le déverrouillage. La location se termine dans une station, et le casque est obligatoire dans tout le Nord depuis le 1er septembre 2026, location comprise : 35 € d’amende.',
   published: '2026-10-13',
   updated: '2026-10-14',
   city: 'fr:Lille Métropole',
@@ -23,7 +23,7 @@ const guide: Guide = {
     {
       heading: 'Où trouver une trottinette Lime dans la métropole lilloise',
       blocks: [
-        '**Lime** est le seul opérateur de trottinettes de la MEL : Tier, retenu avec lui en 2023, s’est retiré en 2024. Le matin du 13 octobre 2026, ScootRadar en affichait environ 1 060 sur la [carte de la métropole lilloise](map:fr:Lille Métropole), et à peu près autant le soir, dans 45 communes : un relevé, pas la taille de la flotte. Un bouton ouvre l’app Lime, où vous déverrouillez et payez.',
+        '**Lime** est le seul opérateur de trottinettes de la MEL : Tier, retenu avec lui en 2023, s’est retiré en 2024. Le matin du 13 octobre 2026, ScootRadar en affichait environ 1 060 sur la [carte de la métropole lilloise](map:fr:Lille Métropole), et à peu près autant le soir, dans 45 communes : un relevé, pas la taille de la flotte. Un bouton ouvre l’app Lime, où vous déverrouillez et payez. Première fois ? Voyez notre guide [louer une trottinette électrique](guide:how-to-rent).',
         {
           table: {
             caption: 'Les communes qui comptaient le plus de trottinettes Lime, le soir du 13 octobre 2026 (données publiques de Lime)',
@@ -52,26 +52,6 @@ const guide: Guide = {
           ],
         },
         '**Et en 2027 ?** Lime roule avec des autorisations d’occuper la voirie délivrées par chaque maire depuis 2023, pour un an renouvelable deux fois. La MEL a soumis à son conseil du 9 octobre 2026 un nouvel appel : **un seul opérateur**, pour trois ans renouvelables deux fois un an, dès le premier trimestre 2027.',
-      ],
-    },
-    {
-      heading: 'Tarif Lime à Lille : minute, LimePass et LimePrime',
-      blocks: [
-        'L’app affiche le prix avant le déverrouillage. Les pages des communes, non datées, donnent **1 € pour déverrouiller**, puis de **0,18 €** (Armentières) à **0,22 € la minute** (Hem).',
-        {
-          table: {
-            caption: 'Prix indicatifs d’une trottinette Lime (pages des communes ; LimePass selon la presse)',
-            head: ['Formule', 'Prix'],
-            rows: [
-              ['Déverrouillage, puis prix à la minute', '1 €, puis 0,18 à 0,22 €'],
-              ['Trajet de 10 minutes', '2,80 à 3,20 €'],
-              ['Trajet de 20 minutes', '4,60 à 5,40 €'],
-              ['LimePass de 30, 60, 200 ou 300 minutes (annoncés en septembre 2025)', '2,99 €, 5,99 €, 19,99 € ou 29,99 €'],
-              ['LimePrime, sans frais de déverrouillage (lancé en mars 2026)', '3,99 € par mois'],
-            ],
-          },
-        },
-        'Au-delà d’une dizaine de minutes, un pass revient souvent moins cher : comparez dans l’app. Pour la marche à suivre, lisez notre guide [louer une trottinette électrique](guide:how-to-rent).',
       ],
     },
     {
@@ -145,7 +125,7 @@ const guide: Guide = {
             '**Gratuit** de 14 à 17 ans, et sur demande pour les abonnés Ilévia longue durée, qui versent une caution de 200 €.',
           ],
         },
-        'Les **vélos électriques Lime** se louent dans l’app Lime, se garent sur des emplacements dédiés et se paient comme les trottinettes : pour 20 minutes, comptez 4,60 à 5,40 €, contre 1,90 € la journée en V’Lille.',
+        'Les **vélos électriques Lime** se louent dans l’app Lime, se garent sur des emplacements dédiés et se paient comme les trottinettes.',
       ],
     },
     {
@@ -167,8 +147,8 @@ const guide: Guide = {
       answer: 'Pas dans Lille même, où la Ville n’autorise que les vélos électriques en libre-service. Les trottinettes Lime roulent dans les autres communes de la métropole, comme Roubaix ou Villeneuve-d’Ascq : notre [carte de la métropole lilloise](map:fr:Lille Métropole) les montre. Dans Lille, prenez un V’Lille ou un vélo Lime.',
     },
     {
-      question: 'Quels sont les tarifs de Lime à Lille ?',
-      answer: 'Les pages des communes donnent 1 € pour déverrouiller, puis 0,18 à 0,22 € la minute, soit 4,60 à 5,40 € pour 20 minutes ; selon la presse, un LimePass de 30 minutes coûte 2,99 €. L’app affiche le prix exact avant le départ.',
+      question: 'Comment louer une trottinette Lime près de Lille ?',
+      answer: 'Téléchargez l’app Lime sur un smartphone et inscrivez-vous avec une carte bancaire ; la MEL demande au moins 16 ans. Trouvez une trottinette dans une commune qui en accueille, comme Roubaix ou Villeneuve-d’Ascq, déverrouillez-la dans l’app, puis rendez-la dans une station : vous payez tant qu’elle n’y est pas correctement garée.',
     },
     {
       question: 'Le casque est-il obligatoire en trottinette dans le Nord ?',
@@ -184,14 +164,11 @@ const guide: Guide = {
     { title: 'Métropole européenne de Lille : des trottinettes et des VAE en libre-service', url: 'https://www.lillemetropole.fr/des-trottinettes-et-des-vae-en-libre-service' },
     { title: 'MEL : « Dès cet été, tous en vélo et trottinette électrique avec la MEL » (1er juin 2023)', url: 'https://www.lillemetropole.fr/communique-de-presse/des-cet-ete-tous-en-velo-et-trottinette-electrique-avec-la-mel' },
     { title: 'MEL : déploiement des trottinettes et vélos électriques en juillet 2023 (30 juin 2023)', url: 'https://www.lillemetropole.fr/communique-de-presse/en-juillet-deploiement-operationnel-des-trottinettes-et-velos-electriques-dans' },
-    { title: 'Ville de Hem : tarifs des vélos et trottinettes en libre-service', url: 'https://www.ville-hem.fr/cadre-de-vie/vlille/' },
-    { title: 'Ville d’Armentières : tarifs et abonnements', url: 'https://www.ville-armentieres.fr/tarifs-et-abonnements' },
     { title: 'Ville de Lille : arrêté n° 17822 du 22 janvier 2026 sur le pied à terre (bulletin officiel du 22 janvier 2026, p. 114-117)', url: 'https://www.lille.fr/content/download/391481/3928997/file/BO+VDL+du+22+janvier+2026.pdf' },
     { title: 'Ville de Lille : arrêté n° 1412 du 4 septembre 2026 instituant les aires piétonnes (bulletin officiel du 4 septembre 2026, p. 4-9)', url: 'https://www.lille.fr/content/download/420156/4099680/file/BO+VDL+du+04+septembre+2026.pdf' },
     { title: 'Ville de Lille : « À pied, à vélo : plus de sécurité » (2026)', url: 'https://www.lille.fr/Actualites/A-pied-a-velo-plus-de-securite' },
     { title: 'Préfet du Nord : arrêté du 30 juillet 2026 portant obligation du port du casque pour tout conducteur d’EDPM (copie publiée par la commune de Linselles)', url: 'https://www.linselles.fr/wp-content/uploads/2026/08/Arrete-prefectoral-portant-obligation-du-port-du-casque-pour-tout-conducteur-dengin-de-deplacement-personnel-motorise-EDPM-dans-le-departement-du-Nord.pdf' },
     { title: 'MEL : note de synthèse du conseil du 9 octobre 2026 (délibération 26-C-0137, micromobilités)', url: 'https://www.lillemetropole.fr/sites/default/files/2026-10/C0910_NOTE_SYNTHESE.pdf' },
-    { title: 'actu.fr : Lime annonce 1 000 vélos et trottinettes électriques de plus dans la métropole (30 septembre 2025)', url: 'https://actu.fr/hauts-de-france/lille_59350/metropole-de-lille-lime-annonce-larrivee-de-1000-velos-et-trottinettes-electriques-supplementaires_63234891.html' },
     { title: 'Aéroport de Lille : la navette aéroport–centre de Lille, tarifs (lu le 4 novembre 2026)', url: 'https://www.lille.aeroport.fr/acceder-a-l-aeroport/navette/' },
     { title: 'Aéroport de Lille : rejoindre l’aéroport en bus, ligne Ilévia 68 (lu le 4 novembre 2026)', url: 'https://www.lille.aeroport.fr/acceder-a-l-aeroport/transports-en-commun/' },
     { title: 'Le Bonbon Lille : les nouveaux tarifs Ilévia et V’Lille au 1er août 2026 (4 août 2026)', url: 'https://www.lebonbon.fr/lille/news/prendre-metro-a-lille-coute-desormais-plus-cher-voici-nouveaux-tarifs-ilevia/' },

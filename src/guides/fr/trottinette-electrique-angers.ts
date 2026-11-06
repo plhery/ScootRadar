@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'angers',
   name: 'Louer une trottinette électrique à Angers',
   title: 'Trottinette électrique à Angers en 2026 : Pony, prix, zones',
-  description: 'Trottinette électrique à Angers : Pony, 1 € puis 0,26 € la minute, dès 16 ans. Où se garer, centre piéton, tram Irigo, gare, amendes et VéloCité.',
+  description: 'Trottinette électrique à Angers : Pony, 1 € puis 0,26 € la minute (novembre 2026), dès 16 ans. Comment louer, où se garer, centre piéton, tram, amendes.',
   headline: 'Trottinette électrique à Angers : Pony, prix, stationnement et règles en 2026',
-  lede: 'Pour louer une trottinette électrique à Angers, vous passerez par **Pony**, l’opérateur angevin. Comptez 1 € pour déverrouiller, puis 0,26 € la minute, soit 3,60 € les 10 minutes, selon ses données du 16 octobre 2026 ; il faut avoir 16 ans. La location se termine près d’un « P » bleu de l’app, jamais sur les rives de la Maine, et la Ville a durci le ton en 2026.',
+  lede: 'Pour louer une trottinette électrique à Angers, vous passerez par **Pony**, l’opérateur angevin, présent aussi dans sept communes voisines. Téléchargez l’app Pony, créez un compte avec votre numéro de téléphone et un moyen de paiement, puis scannez le QR code de la trottinette ; il faut avoir 16 ans. Comptez 1 € pour déverrouiller, puis 0,26 € la minute, soit 3,60 € les 10 minutes et 6,20 € les 20 minutes (novembre 2026). La location se termine près d’un « P » bleu de l’app, photo à l’appui, jamais sur les rives de la Maine. Dans les rues piétonnes, on roule au pas, et la Ville a annoncé en septembre 2026 des contrôles chaque semaine.',
   published: '2026-10-16',
   updated: '2026-10-16',
   city: 'fr:Angers',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Trottinette électrique en libre-service à Angers : Pony',
       blocks: [
-        'En octobre 2026, **Pony** loue ses trottinettes en libre-service à Angers et dans sept communes voisines : Avrillé, Beaucouzé, Écouflant, Les Ponts-de-Cé, Saint-Barthélemy-d’Anjou, Sainte-Gemmes-sur-Loire et Trélazé.',
+        'En novembre 2026, **Pony** loue ses trottinettes en libre-service à Angers et dans sept communes voisines : Avrillé, Beaucouzé, Écouflant, Les Ponts-de-Cé, Saint-Barthélemy-d’Anjou, Sainte-Gemmes-sur-Loire et Trélazé.',
         'Un arrêté des Ponts-de-Cé de janvier 2023 cite une **convention d’occupation du domaine public du 14 octobre 2021** par laquelle la Ville d’Angers a autorisé Pony à stationner ses vélos et trottinettes sur les trottoirs.',
         'Le 16 octobre 2026 au soir, la [carte d’Angers](map:fr:Angers) de ScootRadar affichait **environ 600 trottinettes Pony** : un relevé, pas la taille de la flotte. Un bouton ouvre l’app Pony pour déverrouiller et payer.',
       ],
@@ -27,7 +27,7 @@ const guide: Guide = {
         'Même tarif en trottinette et en vélo électrique, selon Pony : **1 € pour déverrouiller, puis 0,26 € la minute**.',
         {
           table: {
-            caption: 'Prix d’une trottinette Pony à Angers, au 16 octobre 2026',
+            caption: 'Prix d’une trottinette Pony à Angers, en novembre 2026',
             head: ['Formule', 'Prix'],
             rows: [
               ['Déverrouillage', '1 €'],
@@ -143,7 +143,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Combien coûte une trottinette Pony à Angers ?',
-      answer: '1 € pour déverrouiller, puis 0,26 € la minute au 16 octobre 2026 : 3,60 € les 10 minutes, 6,20 € les 20 minutes. Pour 4,99 € la journée ou 9,99 € le mois, les déverrouillages sont gratuits.',
+      answer: '1 € pour déverrouiller, puis 0,26 € la minute en novembre 2026 : 3,60 € les 10 minutes, 6,20 € les 20 minutes. Pour 4,99 € la journée ou 9,99 € le mois, les déverrouillages sont gratuits.',
     },
     {
       question: 'Quelle application pour une trottinette en libre-service à Angers ?',
@@ -163,7 +163,7 @@ const guide: Guide = {
     },
     {
       question: 'Peut-on encore « adopter » un pony ?',
-      answer: 'Pas pour l’instant : au 16 octobre 2026, la campagne du printemps 2026 est épuisée, et une liste d’attente est ouverte pour la suivante. « Adopt a pony » est un placement : vous prêtez à Pony en souscrivant des obligations, dès 500 € et pour 48 mois, à un taux d’intérêt annuel annoncé de 8,5 %, avec un risque de perte en capital que Pony rappelle.',
+      answer: 'Pas pour l’instant : en novembre 2026, la campagne du printemps 2026 est épuisée, et la suivante, « Flotte Automne 2026 », qui finance des vélos, est annoncée « bientôt disponible », avec une liste d’attente. « Adopt a pony » est un placement : vous prêtez à Pony en souscrivant des obligations, dès 500 € et pour 48 mois, à un taux d’intérêt annuel annoncé de 8,5 %, avec un risque de perte en capital que Pony rappelle.',
     },
   ],
   sources: [

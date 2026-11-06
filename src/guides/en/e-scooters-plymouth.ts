@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'plymouth',
   name: 'E-scooter hire in Plymouth',
   title: 'E-scooter Plymouth 2026: Beryl prices, bays and rules',
-  description: 'E-scooter hire in Plymouth with Beryl: £1 to unlock and 22p a minute, no night stop, minute bundles, who can ride, the Armada Way slow zone and the bays.',
+  description: 'E-scooter hire in Plymouth with Beryl: £1 to unlock and 22p a minute (November 2026), no night stop, bundles, who can ride, the Armada Way slow zone, bays.',
   headline: 'E-scooter hire in Plymouth: Beryl’s prices, bays and where you can ride',
-  lede: 'You can hire an e-scooter in Plymouth from Beryl, the only operator, in a government trial that began on 28 July 2026. It costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and you can hire one at night too. You must be 18 or over with a driving licence, ride on roads and cycle lanes but never on pavements, push the scooter through the Slow-Go Zone on and around Armada Way, and start and end every ride in a Beryl bay.',
+  lede: 'You can hire an e-scooter in Plymouth from Beryl, the only operator, in a government trial that began on 28 July 2026 and runs until March 2028, Beryl says. Hire one in the Beryl app, which checks your driving licence and a selfie before your first ride. As of November 2026 it costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and you can hire one at night too. You must be 18 or over with a full or provisional licence, ride on roads and cycle lanes but never on pavements, push the scooter through the Slow-Go Zone on and around Armada Way, and start and end every ride in a Beryl bay.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'gb:Plymouth',
@@ -25,10 +25,10 @@ const guide: Guide = {
     {
       heading: 'How much does a Beryl e-scooter cost in Plymouth?',
       blocks: [
-        'Beryl charges **£1 to unlock and 22p a minute** for its e-scooters in Plymouth: its Plymouth page and open data agreed on 23 October 2026. Minute bundles work on e-bikes and e-scooters alike, and with them you pay no unlock fee.',
+        'Beryl charges **£1 to unlock and 22p a minute** for its e-scooters in Plymouth, as of November 2026: its Plymouth page and open data agree. Minute bundles work on e-bikes and e-scooters alike, and with them you pay no unlock fee.',
         {
           table: {
-            caption: 'Beryl e-scooter prices in Plymouth, 23 October 2026',
+            caption: 'Beryl e-scooter prices in Plymouth, as of November 2026',
             head: ['Option', 'Price', 'What you get'],
             rows: [
               ['Pay as you ride', '£1 unlock + 22p a minute', '10 minutes £3.20, 15 minutes £4.30, 30 minutes £7.60'],
@@ -143,7 +143,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much is a Beryl e-scooter per minute in Plymouth?',
-      answer: '22p a minute, plus £1 to unlock, so 15 minutes cost £4.30. Minute bundles bring it down to 16p a minute (50 minutes for £8) or 13p (400 minutes for £52), with no unlock fee.',
+      answer: 'As of November 2026, 22p a minute plus £1 to unlock, so 15 minutes cost £4.30. Minute bundles bring it down to 16p a minute (50 minutes for £8) or 13p (400 minutes for £52), with no unlock fee.',
     },
     {
       question: 'Where can I park a Beryl e-scooter in Plymouth?',

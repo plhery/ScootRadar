@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Copenhagen 2026: Lime, Danish law and city rules',
   description: 'E-scooters in Copenhagen: Lime, the no-rental zone in the centre, the 400 parking areas, Denmark’s helmet rule, age 15, the fines and the Metro.',
   headline: 'E-scooters in Copenhagen: renting a Lime, the city’s no-rental zone, and Denmark’s rules',
-  lede: 'Lime is the only company with an agreement to rent out e-scooters in Copenhagen for 2025 to 2027. Danish rules make a helmet compulsory for every rider, set the minimum age at 15, limit the motor to 20 km/h and send you onto the cycle track, never the pavement. The city adds its own: no rental scooters standing in the dense centre, and parking only in about 400 selected areas.',
+  lede: 'Lime is the only company with an agreement to rent out e-scooters in Copenhagen for 2025 to 2027, so you rent in the Lime app: find a scooter in it or on the [Copenhagen map](map:dk:København), unlock it in the app and check the price it shows before you ride. Danish rules make a helmet compulsory for every rider, so bring your own; they set the minimum age at 15, limit the motor to 20 km/h and send you onto the cycle track, never the pavement. The city adds its own: no rental scooters standing in the dense centre, and parking only in about 400 selected areas.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'dk:København',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Copenhagen?',
       blocks: [
-        'Lime. When the Municipality of Copenhagen (Københavns Kommune) last invited companies to rent out scooters, in September 2024, only one applied for 2025 to 2027, so the city made an agreement with Lime alone, its page says (read 2 November 2026). You unlock a scooter in the Lime app.',
+        'Lime. When the Municipality of Copenhagen (Københavns Kommune) last invited companies to rent out scooters, in September 2024, only one applied for 2025 to 2027, so the city made an agreement with Lime alone, its page says (November 2026). You unlock a scooter in the Lime app.',
         'At 8:57 am on Monday 2 November 2026, Danish time, the [Copenhagen map](map:dk:København) showed about 580 Lime scooters as last counted. The map shows the nearest one and the walk to it, and a button opens the app.',
-        'Check the price in the app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -174,7 +174,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Københavns Kommune: Tilladelse til udlejning af løbehjul (permits, no-rental zone, parking areas; read 2 November 2026, Danish)', url: 'https://www.kk.dk/erhverv/butik-gadesalg-og-restaurant/loebehjulsudlejning' },
+    { title: 'Københavns Kommune: Tilladelse til udlejning af løbehjul (permits, no-rental zone, parking areas; read 6 November 2026, Danish)', url: 'https://www.kk.dk/erhverv/butik-gadesalg-og-restaurant/loebehjulsudlejning' },
     { title: 'Københavns Kommune, City Council meeting of 24 August 2023, item 19: the model for rental scooters (Danish)', url: 'https://www.kk.dk/dagsordener-og-referater/Borgerrepr%C3%A6sentationen/m%C3%B8de-24082023/referat/punkt-19' },
     { title: 'Københavns Kommune, archive news: rental scooters return to Copenhagen, with limits, 18 October 2021 (Danish)', url: 'https://www.kk.dk/nyheder/udlejningsloebehjul-er-paa-vej-tilbage-i-koebenhavn-men-med-vaesentlige-begraensninger' },
     { title: 'Rådet for Sikker Trafik: El-løbehjul, rules, fines and advice (updated 19 May 2026, Danish)', url: 'https://www.sikkertrafik.dk/rad-og-viden/sma-el-koretojer/regler-for-el-lobehjul/' },

@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-vasteras',
   topic: 'vasteras',
   name: 'E-scooters in Västerås, Sweden',
-  title: 'E-scooters Västerås 2026: Voi, Ryde and the rules',
-  description: 'E-scooters in Västerås: Voi and Ryde, the city’s permit conditions, slow zones, where to ride and park, VL buses, trains and Sweden’s fines.',
+  title: 'E-scooters Västerås 2026: Voi, Ryde, prices and rules',
+  description: 'E-scooters in Västerås: Voi at SEK 5 + SEK 2.50 a minute (November 2026) and Ryde, how to rent, slow zones, where to ride and park, buses and the fines.',
   headline: 'E-scooters in Västerås: Voi and Ryde, and where to ride and park',
-  lede: 'E-scooters in Västerås are rented from Voi and Ryde, the two companies with permits, Västerås stad says (October 2026), and each app shows the price before you unlock. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h in the city’s slow zones. End your ride in an e-scooter parking place or cycle parking, never on a pavement or footway.',
+  lede: 'E-scooters in Västerås are rented from Voi (red) and Ryde (green), the two companies with permits, Västerås stad says. To rent one, download the Voi or Ryde app, find a scooter in it or on the [map of Västerås](map:se:Västerås) and unlock it in the app. As of November 2026 a Voi costs SEK 5 to unlock and SEK 2.50 a minute, so 10 minutes cost SEK 30; Ryde’s app shows its price before you unlock. Ride on the cycle lane or the road, never on the pavement; under-15s must wear a helmet, and hire scooters slow to 10 km/h in the city’s slow zones. End your ride in an e-scooter parking place or cycle parking, never on a pavement or footway.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Västerås',
@@ -16,27 +16,27 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Västerås: Voi and Ryde',
       blocks: [
-        'Electric scooter rental in Västerås needs a permit: companies apply to the police, and Västerås stad (the City of Västerås) sets the conditions. Its e-scooter page names two companies with permits (read 29 October 2026): **Voi**, with red scooters, and **Ryde**, with green ones, which also lists Västerås among its towns.',
+        'Electric scooter rental in Västerås needs a permit: companies apply to the police, and Västerås stad (the City of Västerås) sets the conditions. Its e-scooter page names two companies with permits: **Voi**, with red scooters, and **Ryde**, with green ones, which also lists Västerås among its towns.',
         'At 13:55 on Thursday 29 October 2026 the [map of Västerås](map:se:Västerås) showed about 960 Voi scooters free to rent at that moment. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
       heading: 'How much does a Voi or Ryde scooter cost in Västerås?',
       blocks: [
-        '**The app shows the price** before you unlock.',
-        'Ryde’s Swedish terms let you ride from 15 and allow a fee of up to SEK 500 if you take a scooter outside its operating area (read 29 October 2026). Check the Voi app for its own age limit and fees.',
+        'As of November 2026 Voi’s open data gives SEK 5 to unlock and SEK 2.50 a minute in Västerås, so 10 minutes cost SEK 30 and 20 minutes SEK 55.',
+        'Ryde’s Swedish terms let you ride from 15, round the per-minute price up to the next whole minute and allow a fee of up to SEK 500 if you take a scooter outside its operating area. Check the Voi app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Västerås stad’s permit conditions: zones, removals and caps',
       blocks: [
-        'The city’s conditions for rental companies (read 29 October 2026) include:',
+        'The city’s conditions for rental companies include:',
         {
           list: [
             '**Slow zones:** the companies must set their scooters to go no faster than 10 km/h in the city’s low-speed areas (lågfartszoner).',
             '**No-ride and no-parking areas:** the companies must apply the city’s speed limits, no-ride areas and the places where a ride may not end. The city can add areas while a permit runs, and the companies must put changes into their apps within three working days.',
-            '**Removals:** the companies must move a badly parked, fallen or broken scooter within two hours and take broken ones away within 24 hours. If the city’s contractors have to move one, the company pays.',
+            '**Removals:** the companies must move a badly parked, fallen or broken scooter within two hours and take broken ones away within 24 hours. Their scooters must not get in the way of the city’s street cleaning or snow clearing, and if the city’s contractors have to move one, the company pays.',
             '**Caps:** each permit sets the most scooters a company may put out, and the city may lower it after repeated breaches.',
           ],
         },
@@ -82,13 +82,13 @@ const guide: Guide = {
     {
       heading: 'Where to ride: the centre, the station, Mälardalen University and the airport',
       blocks: [
-        'Ride on the cycle lane, or in some cases the road, the city says. This summer, from 15 June to 16 August 2026, Vasagatan in the city centre was a summer pedestrian street (sommargågata): you had to walk a cycle or e-scooter along it, and hire scooters couldn’t be ridden there at all. Check the city’s map before you head for Stora torget, Vasaparken or the Mälaren shore: it shows a parking place at the ferry quay (Färjkajen).',
+        'Ride on the cycle lane, or in some cases the road, the city says. In summer 2026, from 15 June to 16 August, Vasagatan in the city centre was a summer pedestrian street (sommargågata): you had to walk a cycle or e-scooter along it, and hire scooters couldn’t be ridden there at all. Check the city’s map before you head for Stora torget, Vasaparken or the Mälaren shore: it shows a parking place at the ferry quay (Färjkajen).',
         {
           table: {
             caption: 'What the owners of these places say, October 2026',
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
-              ['Campus Västerås', 'Mälardalen University', 'No e-scooters or e-bikes on its free student bus (MDU-bussen) to Campus Eskilstuna, for safety; ordinary folding bikes may come (read 29 October 2026)'],
+              ['Campus Västerås', 'Mälardalen University', 'No e-scooters or e-bikes on its free student bus (MDU-bussen) to Campus Eskilstuna, for safety; ordinary folding bikes may come'],
               ['Stockholm Västerås Airport', 'The airport', 'At Hässlö, about 5 km east of the centre; VL bus 3 runs there from the central station and the city every ten minutes on weekdays'],
             ],
           },
@@ -120,7 +120,7 @@ const guide: Guide = {
         {
           list: [
             '**A surprise in 2019.** Hire e-scooters reached Västerås in June 2019 and took the municipality by surprise; mainly one company had set up, and it said it had 50 scooters in town, SVT reported.',
-            '**No limit in 2024.** In April 2024 the city told SVT it had set no limit on numbers and, after three companies applied, expected just over 2,000 scooters that summer; by October 2026 two companies held permits.',
+            '**No limit in 2024.** In April 2024 the city told SVT it had set no limit on numbers and, after three companies applied, expected just over 2,000 scooters that summer; as of November 2026 two companies hold permits.',
             '**Red or green.** Voi’s Västerås scooters are red and Ryde’s are green, the city says: handy when you report one left in the way.',
             '**Parking bans on request.** Some of the city’s no-parking areas for e-scooters were added at the request of housing co-operatives (bostadsrättsföreningar) or landowners, its map notes.',
           ],
@@ -131,7 +131,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Västerås?',
-      answer: 'Voi and Ryde, the two companies with permits, Västerås stad says (read 29 October 2026). Find Voi’s on the [Västerås map](map:se:Västerås) and Ryde’s in the Ryde app.',
+      answer: 'Voi and Ryde, the two companies with permits, Västerås stad says (November 2026). Find Voi’s on the [Västerås map](map:se:Västerås) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Can I park an e-scooter on the pavement in Västerås?',
@@ -151,14 +151,15 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Västerås stad: Res med elsparkcykel, riding an e-scooter (read 29 October 2026)', url: 'https://www.vasteras.se/trafik-och-gator/hallbara-resor/res-med-elsparkcykel.html' },
-    { title: 'Västerås stad: Villkor för uthyrning av elsparkcyklar, conditions for rental (read 29 October 2026)', url: 'https://www.vasteras.se/naringsliv-och-foretagande/tillstand-regler-och-tillsyn/villkor-for-uthyrning-av-elsparkcyklar.html' },
+    { title: 'Västerås stad: Res med elsparkcykel, riding an e-scooter (read 6 November 2026)', url: 'https://www.vasteras.se/trafik-och-gator/hallbara-resor/res-med-elsparkcykel.html' },
+    { title: 'Västerås stad: Villkor för uthyrning av elsparkcyklar, conditions for rental (read 6 November 2026)', url: 'https://www.vasteras.se/naringsliv-och-foretagande/tillstand-regler-och-tillsyn/villkor-for-uthyrning-av-elsparkcyklar.html' },
     { title: 'Västerås stad: Digital map of e-scooter bans and slow zones (read 29 October 2026)', url: 'https://gisportal.vasteras.se/portal/apps/webappviewer/index.html?id=27c54fbfdc5c47f8b827dca65914920a' },
     { title: 'Västerås stad: Special places for e-scooters (8 April 2025)', url: 'https://www.vasteras.se/nyheter/nyheter/2025-04-08-nu-skapar-vi-sarskilda-platser-for-elsparkcyklar.html' },
     { title: 'Västerås stad: Traffic on the summer pedestrian street (15 June 2026)', url: 'https://www.vasteras.se/nyheter/nyheter/2026-06-15-detta-galler-for-trafiken-langs-sommargagatan-i-city.html' },
     { title: 'Västerås stad: Giving a lift on an e-scooter (22 June 2026)', url: 'https://www.vasteras.se/nyheter/nyheter/2026-06-22-skjutsa-pa-elsparkcykeln---ar-det-vart-det.html' },
+    { title: 'Voi: Open data for Västerås, zone 171 (NeTEx, published 6 November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/171/netex.xml' },
     { title: 'Ryde: Locations (read 29 October 2026)', url: 'https://www.ryde-technology.com/Locations' },
-    { title: 'Ryde: Terms and conditions, Sweden (read 29 October 2026)', url: 'https://www.ryde-technology.com/terms-conditions-sweden' },
+    { title: 'Ryde: Terms and conditions, Sweden (read 6 November 2026)', url: 'https://www.ryde-technology.com/terms-conditions-sweden' },
     { title: 'Transportstyrelsen: Elsparkcykel (updated 14 August 2026)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordonsregler/regler-for-olika-fordonsslag/elsparkcykel/' },
     { title: 'Riksdagen: Trafikförordningen (1998:1276)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/trafikforordning-19981276_sfs-1998-1276/' },
     { title: 'Åklagarmyndigheten: Fixed fines, annex 1A (1 November 2025)', url: 'https://www.aklagare.se/globalassets/dokument/ordningsbotskatalog/bilaga-1a.pdf' },
@@ -167,7 +168,7 @@ const guide: Guide = {
     { title: 'Mälartåg: Our lines', url: 'https://www.malardalstrafik.se/maelartaag/' },
     { title: 'SJ: Luggage rules', url: 'https://www.sj.se/en/about-sj/terms-and-conditions/luggage-rules' },
     { title: 'Stockholm Västerås Airport: Getting to and from the airport', url: 'https://vasterasairport.se/infor-flygresan/ta-dig-till-och-fran-flygplatsen.html' },
-    { title: 'Mälardalen University: MDU-bussen, the student bus (read 29 October 2026)', url: 'https://www.mdu.se/student/under-studietiden/campus-och-lokaler/mdu-bussen' },
+    { title: 'Mälardalen University: MDU-bussen, the student bus (read 6 November 2026)', url: 'https://www.mdu.se/student/under-studietiden/campus-och-lokaler/mdu-bussen' },
     { title: 'SVT Västmanland: The e-scooters have come to Västerås (11 June 2019)', url: 'https://www.svt.se/nyheter/lokalt/vastmanland/elsparkcyklarna-har-kommit-till-vasteras' },
     { title: 'SVT Västmanland: A record number of e-scooters in Västerås (10 April 2024)', url: 'https://www.svt.se/nyheter/lokalt/vastmanland/rekordmanga-elsparkcyklar-i-vasteras-okar-till-2-000' },
   ],
