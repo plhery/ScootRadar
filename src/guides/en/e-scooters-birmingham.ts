@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'birmingham',
   name: 'E-scooter hire in Birmingham',
   title: 'E-scooters Birmingham 2026: Lime hire, prices and rules',
-  description: 'E-scooters in Birmingham with Lime: the price, who can ride, where to ride and park, and the rules on campuses, buses and trains.',
+  description: 'E-scooter hire in Birmingham with Lime: £1 to unlock and 20p a minute as of November 2026, passes, who can ride, where to ride and park, buses and trains.',
   headline: 'E-scooters in Birmingham: Lime hire, prices and where you can ride and park',
-  lede: 'E-scooters in Birmingham are hired from Lime, the only operator, which has run the West Midlands scheme for Transport for West Midlands since 1 April 2026. A ride costs £1 to unlock plus 20p a minute, and you must be 18 or over with a valid UK driving licence. Ride on roads and in cycle lanes, never on pavements, and end your ride in a parking area shown in the app.',
+  lede: 'E-scooter hire in Birmingham is with Lime, the only operator, which has run the West Midlands scheme for Transport for West Midlands (TfWM) since 1 April 2026. As of November 2026 a ride costs £1 to unlock plus 20p a minute, so 20 minutes cost £5, or £2.99 with a 30-minute pass, and you must be 18 or over with a valid UK driving licence. Ride on roads and in cycle lanes, never on pavements, and end your ride in a parking area shown in the app.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Birmingham',
@@ -18,17 +18,17 @@ const guide: Guide = {
       blocks: [
         '**Lime** is the only company hiring out e-scooters in Birmingham. It has run the region’s cycle and e-scooter hire scheme since 1 April 2026 for Transport for West Midlands (TfWM), part of the West Midlands Combined Authority, which said in January 2026 that “for the first time the scheme will operate at no cost to the taxpayer”. Birmingham City Council, the highway authority, decides on Lime’s parking stands in the street.',
         'Hire e-scooters are legal here because the West Midlands is one of England’s 21 trial areas, which run until May 2028. Voi ran the trial in Birmingham from September 2020 until its scheme ended in February 2023. Beryl’s e-scooters followed on 2 August 2023, and Lime took over the scheme on 1 April 2026.',
-        'In January 2026 the combined authority said Lime’s e-scooters would be “available in Birmingham and on the University of Warwick campus only”, and TfWM adds that “the service area may expand over time”. **Lime also hires out e-bikes** in the same app, in Birmingham, Coventry and Solihull, and in March 2026 the combined authority said they would soon reach Wolverhampton, Sandwell, Dudley and Walsall.',
+        'In January 2026 the combined authority said Lime’s e-scooters would be “available in Birmingham and on the University of Warwick campus only”, and as of November 2026 TfWM’s page names the same two places, adding that “the service area may expand over time”. **Lime also hires out e-bikes** in the same app, in Birmingham, Coventry and Solihull, and in March 2026 the combined authority said they would soon reach Wolverhampton, Sandwell, Dudley and Walsall.',
         'At 07:47 on Sunday 25 October 2026 the [map of Birmingham](map:gb:Birmingham) showed about 1,340 Lime e-scooters: a snapshot, not the fleet size. At 08:54 about a third of the roughly 1,090 it showed stood within 1.5 km of Victoria Square, the rest spread from Perry Barr to Cotteridge.',
       ],
     },
     {
       heading: 'How much does a Lime e-scooter cost in Birmingham?',
       blocks: [
-        'TfWM publishes Lime’s prices and says they “are frozen for the first two years of the service”: **£1 to unlock, then 20p a minute**, so a 20-minute ride costs £5. The city council’s page (10 April 2026) gives the same prices, but £19.99 for 300 minutes, and adds LimePrime at “£3.99 a month for unlimited £1 rides”. The app shows the price before you unlock.',
+        'As of November 2026 TfWM publishes Lime’s prices and says they “are frozen for the first two years of the service”: **£1 to unlock, then 20p a minute**, so a 20-minute ride costs £5. The city council’s page (10 April 2026) gives the same prices, but £19.99 for 300 minutes, and adds LimePrime at “£3.99 a month for unlimited £1 rides”. The app shows the price before you unlock.',
         {
           table: {
-            caption: 'Lime in Birmingham at a glance, October 2026, and who says so',
+            caption: 'Lime in Birmingham at a glance, as of November 2026, and who says so',
             head: ['Question', 'Answer', 'Who says so'],
             rows: [
               ['Who runs it?', 'Lime, for TfWM, since 1 April 2026', 'The combined authority (20 January 2026)'],
@@ -139,6 +139,10 @@ const guide: Guide = {
     {
       question: 'Are Voi or Beryl e-scooters still in Birmingham?',
       answer: 'No. Voi’s scheme ended in February 2023, and since 1 April 2026 Lime has been the only operator.',
+    },
+    {
+      question: 'How much does a Lime e-scooter cost in Birmingham?',
+      answer: 'As of November 2026, £1 to unlock and 20p a minute, so a 20-minute ride costs £5. Passes cost £2.99 for 30 minutes, £5.99 for 60, £9.99 for 120 and £19.90 for 300, and TfWM says the prices are frozen for the first two years of the service.',
     },
     {
       question: 'Can I ride a Lime e-scooter at night in Birmingham?',

@@ -164,7 +164,7 @@ const guide: Guide = {
     { title: 'RNZ: What you need to know about road rules changing on 1 October (1 October 2026)', url: 'https://www.rnz.co.nz/news/community/1662993/explainer-what-you-need-to-know-about-road-rules-changing-on-1-october' },
     { title: 'RNZ: The rules that apply to electric scooters (23 May 2024)', url: 'https://www.rnz.co.nz/news/environment_climate/517651/the-rules-that-apply-to-electric-scooters-what-you-need-to-know' },
     { title: 'RNZ: Coroner’s findings on helmets and e-scooters (21 July 2026)', url: 'https://www.rnz.co.nz/news/community/755675/man-killed-in-lime-scooter-crash-wasn-t-wearing-helmet-had-been-drinking' },
-    { title: 'Christchurch City Council: shared micromobility report (11 December 2024)', url: 'https://christchurch.infocouncil.biz/Open/2024/12/CNCL_20241211_AGN_10401_AT.htm' },
+    { title: 'Christchurch City Council: shared micromobility report, on the 300 W declaration and Accessible Streets (11 December 2024)', url: 'https://christchurch.infocouncil.biz/Open/2024/12/CNCL_20241211_AGN_10401_AT.htm' },
   ],
 };
 

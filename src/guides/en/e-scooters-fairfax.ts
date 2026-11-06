@@ -50,7 +50,7 @@ const guide: Guide = {
           },
         },
         { note: '**Sidewalks depend on the side of the line.** In the City, ride in the street or a bike lane, never on the sidewalk or a trail. In the County the sidewalk is allowed unless a sign says no, at 10 mph at most and giving way to people on foot. On Mason’s campus, WTOP reported in February 2020 that “Sidewalks are restricted from scooters on campus”: follow the signs there.' },
-        'A DMV work group on e-bike and scooter safety must report to state lawmakers by 1 November 2026, so the state rules may change.',
+        'A DMV work group on e-bike and scooter safety was due to report to the chairs of the House and Senate transportation committees by 1 November 2026, with recommendations on whether new regulations or laws are needed.',
       ],
     },
     {

@@ -5,8 +5,8 @@ const guide: Guide = {
   slug: 'e-trottinett-bern',
   topic: 'bern',
   name: 'E-Trottinett Bern: Voi, Preise, Zonen',
-  title: 'E-Trottinett Bern 2026: Voi, Preise, Sperrzonen, Parkieren',
-  description: 'E-Trottinett Bern: Nur Voi hat eine Bewilligung. Was 10 Minuten kosten, wo die Altstadt tabu ist, wo du parkierst und wann das Leihvelo günstiger ist.',
+  title: 'E-Trottinett Bern mieten 2026: Voi, Preise, Sperrzonen',
+  description: 'E-Trottinett in Bern mieten: Nur Voi hat eine Bewilligung. Was 10 Minuten kosten, wo die Altstadt tabu ist, wo du parkierst und wann das Leihvelo günstiger ist.',
   headline: 'E-Trottinett Bern: E-Scooter von Voi mieten, Preise, Sperrzonen und Parkplätze',
   lede: 'Ein E-Trottinett in Bern mietest du bei Voi: Seit dem 1. Mai 2024 hat nur dieser Anbieter eine Bewilligung der Stadt, für fünf Jahre und höchstens 300 Trottis. Du musst mindestens 18 sein und zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (Stand November 2026). In der Altstadt von der Spitalgasse bis zur Gerechtigkeitsgasse darfst du nicht fahren. In der übrigen Innenstadt, etwa am Bahnhof und auf dem Bundesplatz, beendest du die Fahrt nur auf einem Voi-Parkplatz, und in Köniz und auf dem Gurten gilt Fahrverbot.',
   published: '2026-10-12',
@@ -26,7 +26,7 @@ const guide: Guide = {
             'Die Fahrt dort beenden, wo die App es erlaubt, und das verlangte Schlussfoto machen.',
           ],
         },
-        'Wer Vois Online-Kurs RideSafe Academy absolvierte, bekam dafür 30 Gratisminuten, so der Gemeinderat in einem Bericht von 2025; ob das noch gilt, zeigt die App. Mehr zum Ablauf: [So mietest du ein E-Trottinett](guide:how-to-rent).',
+        'Wer Vois Online-Kurs RideSafe Academy absolvierte, bekam dafür 30 Gratisminuten, so der Gemeinderat in einem Bericht von 2025. Mehr zum Ablauf: [So mietest du ein E-Trottinett](guide:how-to-rent).',
       ],
     },
     {
@@ -35,17 +35,17 @@ const guide: Guide = {
         'Voi verlangt in Bern CHF 1.– fürs Entsperren und 42 Rappen pro Minute (Stand November 2026); den Endpreis zeigt die App. Zum Vergleich die Leihvelos von Velo Region Bern:',
         {
           table: {
-            caption: 'E-Trottinett und Leihvelo in Bern im Vergleich (Voi: Stand November 2026; PubliBike: publibike.ch, Oktober 2026)',
+            caption: 'E-Trottinett und Leihvelo in Bern im Vergleich, Stand November 2026',
             head: ['Angebot', 'Grundpreis', 'Danach pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi, E-Trottinett', 'CHF 1.– fürs Entsperren', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
               ['PubliBike, E-Bike ohne Abo', 'CHF 5.– für 30 Minuten', '20 Rappen', 'CHF 5.–', 'CHF 5.–'],
               ['PubliBike, Velo ohne Abo', 'CHF 3.– für 30 Minuten', '10 Rappen', 'CHF 3.–', 'CHF 3.–'],
-              ['PubliBike, E-Bike mit Jahresabo (CHF 69.–)', 'CHF 2.– für 15 Minuten, CHF 1.– für die nächsten 15', '20 Rappen', 'CHF 2.–', 'CHF 3.–'],
+              ['PubliBike, E-Bike mit Jahresabo B-Fit Local Bern (CHF 69.–)', 'CHF 2.– für 15 Minuten, CHF 1.– für die nächsten 15', '20 Rappen', 'CHF 2.–', 'CHF 3.–'],
             ],
           },
         },
-        'Fünf Minuten kosten CHF 3.10, eine halbe Stunde CHF 13.60. Eine Fahrt dauerte 2021 laut Stadt im Schnitt rund zehn Minuten, typischerweise vom Bahnhof in den Breitenrain oder in die Länggasse. In Basel und Biel kostet die Voi-Minute 39 Rappen: [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
+        'Fünf Minuten kosten CHF 3.10, eine halbe Stunde CHF 13.60. Eine Fahrt dauerte 2021 laut Stadt im Schnitt rund zehn Minuten, typischerweise vom Bahnhof in den Breitenrain oder in die Länggasse. In Basel und Biel kostet die Voi-Minute 39 Rappen (Stand November 2026): [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },
     {
@@ -150,6 +150,10 @@ const guide: Guide = {
     },
   ],
   faq: [
+    {
+      question: 'Welche App brauche ich für ein E-Trottinett in Bern?',
+      answer: 'Die Voi-App: Seit dem 1. Mai 2024 vermietet in Bern nur Voi E-Trottinette. Du zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (Stand November 2026). Wo die Trottis stehen, zeigt die [Live-Karte von Bern](map:ch:bern).',
+    },
     {
       question: 'Warum gibt es in Bern keine Trottis von Lime oder Bolt?',
       answer: 'Weil das Vermieten von E-Trottinetten in Bern eine Bewilligung der Stadt braucht und seit dem 1. Mai 2024 nur Voi eine hat, für fünf Jahre. Der Gemeinderat hatte 2023 entschieden, statt zwei Anbietern nur noch einen zuzulassen, und Voi setzte sich gegen zwei andere Interessenten durch. Lime und Bolt fahren etwa in Zürich.',

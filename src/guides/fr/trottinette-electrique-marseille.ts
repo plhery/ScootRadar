@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'marseille',
   name: 'Louer une trottinette électrique à Marseille',
   title: 'Trottinette électrique à Marseille en 2026 : Lime, Voi, prix',
-  description: 'Trottinette électrique à Marseille : prix de Lime et Voi, où se garer, zones lentes et interdites, métro RTM, levélo et la décision attendue d’ici l’été 2027.',
+  description: 'Louer une trottinette électrique à Marseille : Lime et Voi, prix de Voi, où se garer, zones lentes et interdites, métro RTM, levélo, décision d’ici l’été 2027.',
   headline: 'Trottinette électrique à Marseille : Lime, Voi, prix, zones et stationnement en 2026',
-  lede: 'Pour louer une trottinette électrique à Marseille, vous avez le choix entre **Lime** et **Voi**, autorisés à en déployer 1 500 chacun. Chez Voi, comptez 1 € pour déverrouiller puis 0,27 € la minute, soit 3,70 € les 10 minutes (novembre 2026) ; Lime affiche son prix dans l’app. La location se termine sur un emplacement indiqué dans l’app, et Voi bride la vitesse au Vieux-Port ou au Panier. Les autorisations courent jusqu’en 2027 : la mairie doit trancher d’ici l’été 2027, et le maire penche pour l’interdiction.',
+  lede: 'Pour louer une trottinette électrique à Marseille, vous avez le choix entre **Lime** et **Voi**, autorisés à en déployer 1 500 chacun. Chez Voi, comptez 1 € pour déverrouiller puis 0,27 € la minute, soit 3,70 € les 10 minutes (novembre 2026) ; Lime affiche son tarif dans son appli. La location se termine sur un emplacement indiqué dans l’app, et Voi bride la vitesse au Vieux-Port ou au Panier. Les autorisations courent jusqu’en 2027 : la mairie doit trancher d’ici l’été 2027, et le maire penche pour l’interdiction.',
   published: '2026-10-13',
   updated: '2026-10-13',
   city: 'fr:Marseille',
@@ -19,11 +19,11 @@ const guide: Guide = {
         'Depuis le **23 octobre 2023**, la Ville n’autorise plus que **Lime** et **Voi**, avec **1 500 trottinettes chacun** ; Bird, le troisième opérateur, n’a pas été retenu. En septembre, le maire, Benoît Payan, avait annoncé le retrait de 1 500 des quelque 4 000 trottinettes de la ville. Chez Voi, il faut être majeur : l’inscription passe par une double vérification d’identité et un questionnaire sur le code de la route.',
         {
           table: {
-            caption: 'Prix d’un trajet à Marseille en trottinette ou en vélo électrique (Voi : novembre 2026 ; levélo : 13 octobre 2026)',
+            caption: 'Prix d’un trajet à Marseille en trottinette ou en vélo électrique (tarifs publiés, novembre 2026)',
             head: ['Service', 'Déverrouillage', 'Par minute', '10 min', '20 min'],
             rows: [
               ['Voi (trottinette ou vélo électrique)', '1 €', '0,27 €', '3,70 €', '6,40 €'],
-              ['Lime (trottinette)', 'Dans l’app', 'Dans l’app', 'Voir l’app', 'Voir l’app'],
+              ['Pony (vélo électrique)', '1 €', '0,27 €', '3,70 €', '6,40 €'],
               ['levélo (vélo électrique en station)', '1 €, 30 premières minutes comprises', '0,05 € au-delà', '1 €', '1 €'],
             ],
           },
@@ -125,7 +125,7 @@ const guide: Guide = {
     {
       heading: 'levélo et vélos électriques : l’alternative à la trottinette',
       blocks: [
-        'Le vélo en libre-service de la Métropole Aix-Marseille-Provence, **levélo**, est électrique et se prend en station : 1 € pour 20 minutes, contre 6,40 € en trottinette Voi. Tarifs sur son site au 13 octobre 2026 :',
+        'Le vélo en libre-service de la Métropole Aix-Marseille-Provence, **levélo**, est électrique et se prend en station : 1 € pour 20 minutes, contre 6,40 € en trottinette Voi ou en vélo électrique Voi ou Pony. Tarifs sur son site en novembre 2026 :',
         {
           list: [
             '**À l’usage** : 1 € les 30 premières minutes, puis 0,05 € la minute.',
@@ -133,7 +133,7 @@ const guide: Guide = {
             '**Abonnement** : 6 € par mois sur 12 mois, 3 € avant 26 ans ; gratuit avec certains abonnements RTM ou Métropole.',
           ],
         },
-        'Depuis le **1er juillet 2026**, les vélos électriques des opérateurs privés sont ceux de **Voi**, au tarif de ses trottinettes, et de **Pony**, qui en propose à deux places ; Lime a retiré les siens.',
+        'Depuis le **1er juillet 2026**, les vélos électriques des opérateurs privés sont ceux de **Voi**, au tarif de ses trottinettes, et de **Pony**, qui en propose à deux places, au même tarif : 1 € puis 0,27 € la minute (novembre 2026) ; Lime a retiré les siens.',
       ],
     },
     {
@@ -157,10 +157,6 @@ const guide: Guide = {
     {
       question: 'Quel est le tarif d’une trottinette Voi à Marseille ?',
       answer: '1 € pour déverrouiller, puis 0,27 € la minute, en novembre 2026 : 3,70 € les 10 minutes, 6,40 € les 20 minutes, hors forfaits.',
-    },
-    {
-      question: 'Combien coûte une trottinette Lime à Marseille ?',
-      answer: 'L’app de Lime affiche son tarif avant le déverrouillage.',
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Marseille ?',
@@ -192,6 +188,7 @@ const guide: Guide = {
     { title: 'Office de tourisme de Marseille : navette aéroport–gare Saint-Charles (ligne 91)', url: 'https://www.marseille-tourisme.com/offres/navette-marseille-aeroport-gare-st-charles-marseille-1er-fr-3382452/' },
     { title: 'levélo (Métropole Aix-Marseille-Provence) : offres et tarifs', url: 'https://levelo.ampmetropole.fr/fr/sharing' },
     { title: 'Made in Marseille : 500 vélos électriques en libre-service de plus et des vélos à deux places (12 juin 2026)', url: 'https://madeinmarseille.net/actualite/205580-500-velos-electriques-en-libre-service-supplementaires-a-marseille-et-des-velos-deux-places/' },
+    { title: 'Pony : tarif de Marseille dans ses données ouvertes (GBFS, transport.data.gouv.fr)', url: 'https://proxy.transport.data.gouv.fr/resource/pony-marseille-gbfs/gbfs.json' },
   ],
 };
 

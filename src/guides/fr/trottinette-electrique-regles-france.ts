@@ -67,7 +67,7 @@ const guide: Guide = {
               ['Yvelines (Versailles, Saint-Quentin-en-Yvelines)', 'Depuis le 15 septembre 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises ; amende de 35 € ou 135 €'],
               ['Essonne (Évry-Courcouronnes)', 'Depuis le 5 octobre 2026', 'Casque et gilet ou équipement rétroréfléchissant, à toute heure, pistes cyclables comprises'],
               ['Rhône, Métropole de Lyon comprise', 'Depuis le 28 septembre 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises, dans tout le département ; amende de 135 € sans casque, 35 € sans gilet'],
-              ['Seine-et-Marne (Marne-la-Vallée)', 'Arrêté du 2 juillet 2026', 'Casque et équipement réfléchissant'],
+              ['Seine-et-Marne (Marne-la-Vallée)', 'Depuis le 3 juillet 2026', 'Casque et équipement réfléchissant'],
               ['Nord (Métropole de Lille)', 'Depuis le 1er septembre 2026 (arrêté du 30 juillet 2026)', 'Casque attaché, à toute heure, pistes cyclables comprises, dans tout le département ; amende de 35 €'],
               ['Manche (Cherbourg-en-Cotentin)', 'Depuis le 1er septembre 2026', 'Casque et gilet, de jour comme de nuit, location comprise ; amende de 135 € sans casque, 35 € sans gilet'],
               ['Alpes-Maritimes (Nice)', 'Arrêté du 2 avril 2026', 'Casque et gilet, de jour comme de nuit ; amende de 35 €'],
@@ -211,6 +211,7 @@ const guide: Guide = {
     { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
     { title: 'Ville de Cherbourg-en-Cotentin : casque et gilet obligatoires dans la Manche depuis le 1er septembre 2026 (page « Louer une trottinette avec Bird »)', url: 'https://www.cherbourg.fr/au-quotidien/mobilites-et-transports/louer-une-trottinette-avec-bird/' },
     { title: 'ICI Cotentin : les amendes du casque et du gilet dans la Manche (7 septembre 2026)', url: 'https://www.ici.fr/emissions/l-info-d-ici-ici-cotentin/casque-obligatoire-a-cherbourg-la-societe-bird-souhaite-une-derogation-pour-les-trottinettes-en-libre-service-7274891' },
+    { title: 'Journal du Geek : le casque et le gilet deviennent obligatoires à trottinette dans plusieurs villes d’Île-de-France (4 août 2026)', url: 'https://www.journaldugeek.com/2026/08/04/le-casque-et-le-gilet-deviennent-obligatoires-a-trottinette-dans-plusieurs-villes-dile-de-france/' },
   ],
 };
 

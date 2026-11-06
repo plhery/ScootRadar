@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'san-antonio',
   name: 'E-scooters in San Antonio, Texas',
   title: 'E-scooters in San Antonio 2026: Bird, Veo, prices, rules',
-  description: 'E-scooters in San Antonio: Bird and Veo, what a ride costs, the Texas and City rules, the River Walk and Alamo bans, parking, VIA buses and the airport.',
+  description: 'E-scooters in San Antonio: Bird and Veo, Veo at $1 + $0.43 a minute, the City rules, the River Walk and Alamo bans, parking, VIA buses and the airport.',
   headline: 'E-scooters in San Antonio: Bird and Veo, what a ride costs, the rules and where you can’t ride',
-  lede: 'E-scooters in San Antonio come from two companies, Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026, so the line-up may change. As of November 2026 a Veo costs $1 to unlock and $0.43 a minute plus tax, stand-up or seated. The City Code sets the riding age at 16, bans riding on sidewalks and keeps scooters off the River Walk, Alamo Plaza, parks and trails.',
+  lede: 'Electric scooter rental in San Antonio means Bird or Veo, the two companies under City contracts since October 2023, each allowed up to 1,000 vehicles; Lime left in January 2020. As of November 2026 a Veo costs $1 to unlock and $0.43 a minute plus tax, stand-up or seated, so a 10-minute ride costs $5.30. The City Code sets the riding age at 16, bans riding on sidewalks and keeps scooters off the River Walk, Alamo Plaza, parks and trails.',
   published: '2026-10-22',
   updated: '2026-10-23',
   city: 'us:tx:San Antonio',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in San Antonio?',
       blocks: [
-        'The City’s Center City Development and Operations department runs the programme. Its contracts with Bird and Veo began on 1 October 2023 and cap each company at 1,000 vehicles, 2,000 in all; in November 2025 the City Council extended them by a year, to 30 September 2026, City staff said. In May 2026 the City sought new bids (RFP 26-077) from two operators with 1,000 vehicles each. Both companies were still running on 3 November 2026: check the apps for any change.',
+        'The City’s Center City Development and Operations department runs the programme. Its contracts with Bird and Veo began on 1 October 2023 and cap each company at 1,000 vehicles, 2,000 in all; in November 2025 the City Council extended them by a year, to 30 September 2026, City staff said. In May 2026 the City sought new bids (RFP 26-077) from two operators with 1,000 vehicles each. Both companies’ open data listed scooters for rent on 6 November 2026.',
         {
           list: [
             '**Bird**: stand-up scooters in the Bird app, under contract with the City since January 2020.',
@@ -83,7 +83,7 @@ const guide: Guide = {
             '**Alamo Plaza and the old plazas.** The City Code names Alamo Plaza, La Villita, Main Plaza and Market Square; you may ride on the public streets that cross them. On 3 November 2026 Bird’s data also marked Travis Park and Plaza de Armas, among others, as no-parking.',
             '**Hemisfair.** Its conservancy bans scooters on the sidewalks of its three parks: ride on the district’s streets.',
             '**The Pearl.** “Pearl is scooter-free”, its FAQ says; its 2019 ban covered the heart of the complex, between West Josephine Street, Avenue A, Newell Avenue and East Elmira Street. Bird’s no-parking zones stopped short of it on 3 November 2026, so the app may not warn you: park outside and walk in.',
-            '**The missions.** On 3 November 2026 Mission Concepción lay less than half a mile outside Bird’s area, and the other three missions further out. San Antonio BCycle’s e-bikes, which run around the clock, link the Alamo with all four missions; as of November 2026 a one-hour pass costs $15.',
+            '**The missions.** On 3 November 2026 all four missions lay outside Bird’s area. San Antonio BCycle’s e-bikes, which run around the clock, link the Alamo with all four missions; as of November 2026 a one-hour pass costs $15.',
             '**Where the areas end.** On 3 November 2026 Bird’s open data showed a main area from about a mile north of Trinity University to just short of Mission Concepción, plus a separate one around UTSA’s main campus. The [live map](map:us:tx:San Antonio) shows where scooters are now.',
           ],
         },
@@ -110,8 +110,8 @@ const guide: Guide = {
       heading: 'VIA buses, the airport (SAT) and event days',
       blocks: [
         '**VIA** bans motorised scooters aboard its vehicles, and its bike racks don’t take rental or app-based e-bikes, so end your ride before you board. A bus ride costs $1.30 and a Day Pass $2.75.',
-        '**San Antonio International Airport (SAT)** lay outside Bird’s area on 3 November 2026, about 4 miles beyond its edge. VIA’s Route 5 serves the airport about hourly from 5 am to 10:30 pm, and Express Route 7 reaches downtown in about 20 minutes, every 30 minutes on weekdays until 7 pm, for $2.60. The stop is on the lower level outside baggage claim at Terminal B.',
-        '**Event days.** The Alamodome, where UTSA plays its home football games, lay inside Bird’s area but in a no-parking zone on 3 November 2026, so leave the scooter a few streets away. The Frost Bank Center, on the East Side, lay outside Bird’s area, about 1.4 miles beyond its edge. The City may also have scooters removed from an area for a special event, and sets when they come back.',
+        '**San Antonio International Airport (SAT)** lay outside Bird’s area on 3 November 2026. VIA’s Route 5 serves the airport about hourly from 5 am to 10:30 pm, and Express Route 7 reaches downtown in about 20 minutes, every 30 minutes on weekdays until 7 pm, for $2.60. The stop is on the lower level outside baggage claim at Terminal B.',
+        '**Event days.** The Alamodome, where UTSA plays its home football games, lay inside Bird’s area but in a no-parking zone on 3 November 2026, so leave the scooter a few streets away. The Frost Bank Center, on the East Side, lay outside Bird’s area. The City may also have scooters removed from an area for a special event, and sets when they come back.',
         '**Students.** On 3 November 2026 Bird’s data marked Trinity University’s campus as no-parking; UTSA’s main campus has its own Bird area.',
       ],
     },
@@ -138,7 +138,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in San Antonio?',
-      answer: 'Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026. At 14:25 on 17 October 2026 the map showed about 850 Bird and 295 Veo scooters free to rent at that moment.',
+      answer: 'Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026, and both were renting on 6 November 2026. Lime left San Antonio in January 2020, days before its City contract began. At 14:25 on 17 October 2026 the map showed about 850 Bird and 295 Veo scooters free to rent at that moment.',
     },
     {
       question: 'How much is a Veo scooter in San Antonio?',

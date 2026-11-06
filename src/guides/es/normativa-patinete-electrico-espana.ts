@@ -43,7 +43,7 @@ const guide: Guide = {
       blocks: [
         'Los cambios llegaron con el **Real Decreto 518/2026**, que reformó el Reglamento General de Circulación. Según la DGT, en 2024 murieron 19 usuarios de patinete, casi el doble que en 2023 (10).',
         '**Casco.** Obligatorio para todo el que conduzca un patinete, a cualquier edad, por cualquier vía y también en los de alquiler. Tiene que ser «homologado o certificado» e ir bien abrochado. Sin casco, 200 €, y los agentes pueden inmovilizar el patinete: la ley exime de esa medida a los ciclistas, pero no a ti.',
-        '**Edad mínima: 15 años**, en toda España. Si un menor comete una infracción, sus padres o tutores responden con él de la multa. Barcelona pide 16 en su ordenanza, aunque no está claro que pueda exigir más.',
+        '**Edad mínima: 15 años**, en toda España. Si un menor comete una infracción, sus padres o tutores responden con él de la multa. En Barcelona, la Ordenanza de circulación prohíbe usar el patinete a los menores de 16 años desde el 1 de febrero de 2025.',
         '**De noche o con poca visibilidad**, lleva al menos un elemento reflectante o luminoso que cumpla la normativa de equipos de protección individual (EPI) y se vea a 150 metros. La DGT habla de chaleco, pero el reglamento admite cualquier prenda o elemento que cumpla esa norma. Sin él, 200 €. Si trabajas en patinete, como los repartidores, el chaleco de alta visibilidad es obligatorio a todas horas.',
         '**Luces.** Las del patinete tienen que ir siempre encendidas. De noche, circular sin ellas ya cuesta 200 €; de día, solo se multará a partir del 1 de octubre de 2027.',
       ],
@@ -171,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: '¿A qué edad se puede ir en patinete eléctrico?',
-      answer: 'A partir de los 15 años, en toda España y sin carné, desde el 1 de octubre de 2026. Barcelona pide 16, aunque no está claro que pueda exigir más. Para alquilar, los operadores piden 18.',
+      answer: 'A partir de los 15 años, en toda España y sin carné, desde el 1 de octubre de 2026. En Barcelona, su Ordenanza de circulación lo prohíbe a los menores de 16 desde el 1 de febrero de 2025. Para alquilar, los operadores piden 18.',
     },
     {
       question: '¿Se puede ir en patinete por la acera o por carretera?',
@@ -207,6 +207,7 @@ const guide: Guide = {
     { title: 'Última Hora (Europa Press): la Comunidad de Madrid impedirá el acceso de patinetes al transporte público desde el 4 de noviembre (27 de octubre de 2023)', url: 'https://www.ultimahora.es/noticias/comunidades/2023/10/27/2039155/comunidad-madrid-prohibe-acceso-patinetes-electricos-transporte-publico.html' },
     { title: 'Consorcio Regional de Transportes de Madrid: acuerdo que hace definitiva la prohibición de patinetes (31 de mayo de 2024)', url: 'https://crtm.es/media/gccozqco/2024-05-31-certificado-ratificaci%C3%B3n-prohibici%C3%B3n-patinetes-el%C3%A9ctricos.pdf' },
     { title: 'elDiario.es: Almeida prohíbe los patinetes de alquiler en Madrid (5 de septiembre de 2024)', url: 'https://www.eldiario.es/madrid/somos/almeida-prohibe-patinetes-alquiler-madrid_1_11630578.html' },
+    { title: 'Ajuntament de Barcelona: vehículos de movilidad personal (VMP), en catalán', url: 'https://www.barcelona.cat/mobilitat/ca/mitjans-de-transport/vehicles-mobilitat-personal' },
   ],
 };
 

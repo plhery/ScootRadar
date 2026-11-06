@@ -39,7 +39,7 @@ const guide: Guide = {
     {
       heading: 'What does an e-scooter cost in Zürich?',
       blocks: [
-        'You pay an unlock fee plus a price per minute. Bolt, Hopp, Voi, Dott and Lime publish their rates in open data feeds; the table shows them as they stood on 12 October 2026 (Lime’s on 15 October, Dott’s on 23 October), with PubliBike’s rate from its own price page. Rates can vary by zone and time, and the app shows the final price before you ride.',
+        'You pay an unlock fee plus a price per minute. Bolt, Hopp, Voi, Dott and Lime publish their rates in open data feeds; the table shows them as they stood on 12 October 2026 (Lime’s on 6 November, Dott’s on 23 October), with PubliBike’s rate from its own price page. Rates can vary by zone and time, and the app shows the final price before you ride.',
         {
           table: {
             caption: 'Published e-scooter rates in Zürich (feeds on 12, 15 and 23 October 2026; PubliBike: publibike.ch, October 2026)',
@@ -50,7 +50,7 @@ const guide: Guide = {
               ['Dott', 'CHF 1.00', 'CHF 0.41', 'CHF 5.10'],
               ['Bolt', 'CHF 1.00', 'CHF 0.42 (a few at CHF 0.48)', 'CHF 5.20'],
               ['Voi', 'CHF 1.00', 'CHF 0.42 (some at CHF 0.39)', 'CHF 5.20'],
-              ['Lime', 'CHF 1.00', 'CHF 0.40 to CHF 0.49, changing through the day', 'CHF 5.00 to CHF 5.90'],
+              ['Lime', 'CHF 1.00', 'CHF 0.42 or CHF 0.49 (most at CHF 0.49)', 'CHF 5.20 or CHF 5.90'],
             ],
           },
         },
@@ -167,6 +167,7 @@ const guide: Guide = {
     { title: 'City of Zürich, Street Smart campaign: e-scooter accidents', url: 'https://www.stadt-zuerich.ch/artikel/de/kampagne/street-smart/e-trottinett.html' },
     { title: 'TCS Zürich: interview with the city’s head of traffic safety, September 2026 (German)', url: 'https://www.tcs.ch/de/der-tcs/sektionen/zuerich/news/verkehrssicherheit-10-26.php' },
     { title: 'Swiss Ordinance on Fixed Penalties, list of fines (German)', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'MobiData BW: Lime Zürich open data (GBFS, prices by vehicle; Data licence Germany – attribution – version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_zurich/gbfs' },
   ],
 };
 

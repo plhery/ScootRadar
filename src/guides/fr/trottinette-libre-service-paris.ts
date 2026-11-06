@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trottinette-libre-service-paris',
   topic: 'paris',
   name: 'Trottinette en libre-service à Paris',
-  title: 'Trottinette libre-service à Paris : que louer en 2026 ?',
-  description: 'Trottinette libre-service à Paris : interdite depuis 2023. Prix des Vélib’ et des vélos Dott et Voi, trottinettes les plus proches, règles pour la vôtre.',
+  title: 'Trottinette libre-service à Paris : interdite, que louer ?',
+  description: 'Trottinette en libre-service à Paris : interdite depuis 2023. Prix des vélos Voi et Dott, Vélib’, trottinettes en grande banlieue, règles pour la vôtre.',
   headline: 'Trottinette en libre-service à Paris : interdite depuis 2023, que louer à la place ?',
-  lede: 'Il n’y a plus de trottinette en libre-service à Paris depuis le 1er septembre 2023 : à la votation du 2 avril 2023, 89,03 % des votants ont dit « contre », avec 7,46 % de participation. À la place, prenez un Vélib’ (3 € le trajet de 45 minutes) ou un vélo électrique Lime, Dott ou Voi (0,29 € la minute chez Voi, sans frais de déverrouillage, tarif publié le 12 octobre 2026). Les trottinettes en libre-service les plus proches roulent en grande banlieue, autour de Versailles, à Saint-Quentin-en-Yvelines ou à Marne-la-Vallée, casque obligatoire. Votre propre trottinette reste permise dans Paris, avec casque et gilet à toute heure depuis le 7 août 2026.',
+  lede: 'On ne peut plus louer de trottinette en libre-service à Paris : elles y sont interdites depuis le 1er septembre 2023, après la votation du 2 avril 2023 (89,03 % « contre », 7,46 % de participation). À la place, louez un vélo électrique Lime, Dott ou Voi (chez Voi, 0,29 € la minute sans frais de déverrouillage ; chez Dott, 1 € puis 0,35 € la minute) ou un Vélib’ (3 € le trajet de 45 minutes avec le Ticket-V), tarifs de novembre 2026. Les trottinettes en libre-service les plus proches roulent en grande banlieue : Dott autour de Versailles et à Marne-la-Vallée, Voi à Saint-Quentin-en-Yvelines et en Seine et Oise, Pony à Évry-Courcouronnes, casque obligatoire. Votre propre trottinette reste permise dans Paris, avec casque et gilet à toute heure depuis le 7 août 2026.',
   published: '2026-10-12',
   updated: '2026-10-13',
   city: 'fr:Le Chesnay-Rocquencourt',
@@ -33,26 +33,13 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Vélib’ et vélos électriques en libre-service : les prix à Paris',
+      heading: 'Vélos électriques Lime, Dott, Voi et Vélib’ : que louer à Paris',
       blocks: [
         '**Vélib’ Métropole**, ce sont plus de 20 000 vélos, dont 40 % électriques, dans plus de 1 500 stations réparties sur 65 communes du Grand Paris.',
-        {
-          table: {
-            caption: 'Tarifs Vélib’ Métropole : tickets et passes (juillet 2025)',
-            head: ['Offre', 'Prix', 'Ce qui est inclus'],
-            rows: [
-              ['Ticket-V', '3 €', 'Un trajet de 45 min, vélo mécanique ou électrique'],
-              ['Pass 24h Classique', '5 €', '24 h ; vélo mécanique gratuit 30 min par trajet ; vélo électrique à 2 € le trajet'],
-              ['Pass 24h Électrique', '10 €', '24 h ; vélo mécanique gratuit 60 min par trajet ; 5 trajets électriques de 45 min offerts'],
-              ['Pass 3 jours', '20 €', '72 h, comme le Pass 24h Électrique'],
-            ],
-          },
-        },
-        'Au-delà du temps compris, comptez 1 € (mécanique) ou 2 € (électrique) par demi-heure. Tickets et passes s’achètent sur le site ou l’app Vélib’, ou à la borne d’une station.',
         '**Lime, Dott et Voi** font chacun rouler 3 000 à 6 000 vélos électriques sans station, sous une convention de quatre ans entrée en vigueur le 1er octobre 2025.',
         {
           table: {
-            caption: 'Vélo en libre-service à Paris : prix d’un trajet (tarifs publiés au 12 octobre 2026 ; Vélib’ : juillet 2025)',
+            caption: 'Vélo électrique en libre-service à Paris : prix d’un trajet (tarifs publiés, novembre 2026)',
             head: ['Service', 'Déverrouillage', 'Par minute', '10 min', '20 min'],
             rows: [
               ['Voi', '0 €', '0,29 €', '2,90 €', '5,80 €'],
@@ -61,6 +48,7 @@ const guide: Guide = {
             ],
           },
         },
+        '**Lequel est le moins cher ?** Pour 10 minutes, Voi : 2,90 €, contre 3 € avec le Ticket-V de Vélib’ et 4,50 € chez Dott. Pour 20 minutes, le Ticket-V : 3 €, contre 5,80 € chez Voi et 8 € chez Dott (novembre 2026).',
         'Depuis le 1er octobre 2025, un vélo partagé se gare sur un emplacement vélo sans arceaux ou à un groupe d’au moins quatre arceaux, jamais sur le trottoir.',
       ],
     },
@@ -77,7 +65,7 @@ const guide: Guide = {
         'Pas dans Paris : le 12 octobre 2026 vers 10 h 45, la carte en montrait environ 1 650 en grande banlieue.',
         {
           table: {
-            caption: 'Trottinettes en libre-service près de Paris : tarifs publiés et relevé de la carte, le 12 octobre 2026',
+            caption: 'Trottinettes en libre-service près de Paris : tarifs publiés en novembre 2026 et relevé de la carte du 12 octobre 2026',
             head: ['Secteur', 'Opérateur', 'Tarif publié', '10 min / 20 min', 'Sur la carte à 10 h 45'],
             rows: [
               ['Autour de Versailles (La Celle-Saint-Cloud, Le Chesnay-Rocquencourt, Bougival)', 'Dott', '1 € + 0,25 €/min', '3,50 € / 6 €', 'Environ 100'],
@@ -98,7 +86,7 @@ const guide: Guide = {
             '**Évry-Courcouronnes** : Pony, depuis mars 2022.',
           ],
         },
-        { note: 'Prévoyez votre casque. Dans les Yvelines (environs de Versailles, Saint-Quentin, Seine et Oise), le casque et le gilet ou un équipement réfléchissant sont obligatoires à toute heure depuis le 15 septembre 2026 ; en Seine-et-Marne, un arrêté du 2 juillet 2026 impose le casque et un équipement réfléchissant. L’Essonne a suivi le 5 octobre 2026 : casque et gilet ou équipement rétroréfléchissant, de jour comme de nuit, pistes cyclables comprises.' },
+        { note: 'Prévoyez votre casque. Dans les Yvelines (environs de Versailles, Saint-Quentin, Seine et Oise), le casque et le gilet ou un équipement réfléchissant sont obligatoires à toute heure depuis le 15 septembre 2026 ; la Seine-et-Marne, autour de Marne-la-Vallée, applique des règles semblables depuis le 3 juillet 2026. L’Essonne a suivi le 5 octobre 2026 : casque et gilet ou équipement rétroréfléchissant, de jour comme de nuit, pistes cyclables comprises.' },
         'Ailleurs qu’en Seine et Oise, vérifiez l’âge minimum dans l’app. Première location ? Voyez [comment louer une trottinette en libre-service](guide:how-to-rent).',
       ],
     },
@@ -166,8 +154,8 @@ const guide: Guide = {
       answer: '135 € depuis le 7 août 2026, à toute heure et même sur piste cyclable, à Paris et en petite couronne. Sans gilet ni équipement réfléchissant, c’est 35 €. Les Vélib’ et les vélos électriques ne sont pas concernés.',
     },
     {
-      question: 'Combien coûte un Vélib’ pour une journée ?',
-      answer: '5 € avec le Pass 24h Classique : trajets en vélo mécanique gratuits pendant 30 minutes, vélo électrique à 2 € le trajet. Le Pass 24h Électrique, à 10 €, inclut cinq trajets électriques de 45 minutes.',
+      question: 'Quel vélo électrique en libre-service est le moins cher à Paris ?',
+      answer: 'Pour un trajet court, Voi : 0,29 € la minute sans frais de déverrouillage, soit 2,90 € les 10 minutes. Au-delà de 10 minutes, le Ticket-V de Vélib’ revient moins cher : 3 € le trajet jusqu’à 45 minutes, vélo électrique compris. Chez Dott, comptez 1 € puis 0,35 € la minute, soit 4,50 € les 10 minutes (novembre 2026).',
     },
     {
       question: 'Y a-t-il des trottinettes en libre-service à Versailles ?',
@@ -181,12 +169,20 @@ const guide: Guide = {
     { title: 'Ville de Paris : Trottinettes électriques, de nouvelles règles de circulation (mise à jour du 10 août 2026)', url: 'https://www.paris.fr/pages/trottinettes-electriques-de-nouvelles-regles-de-circulation-7249' },
     { title: 'Préfecture de police : arrêté n° 2026-00969 du 7 août 2026 (casque et gilet à Paris et en petite couronne)', url: 'https://cdn.paris.fr/paris/2026/08/10/arrete-2026_00969_07082026-1-nPt1.pdf' },
     { title: 'AGEMOB : le service public Vélib’ Métropole (stations, vélos, communes)', url: 'https://agemob.fr/velib-metropole/le-velo-partage/' },
-    { title: 'Secrets of Paris : utiliser Vélib’, tickets et passes (en anglais, mis à jour en juillet 2025)', url: 'https://secretsofparis.com/practical/using-the-velib-bike-service-in-paris/' },
     { title: 'Sortir à Paris : certains objets sont interdits dans le métro parisien (20 janvier 2026)', url: 'https://www.sortiraparis.com/arts-culture/histoire-patrimoine/articles/340245-le-saviez-vous-certains-objets-sont-interdits-dans-le-metro-parisien' },
     { title: 'Journal du Geek : la RATP sanctionne les trottinettes non pliées, 150 € d’amende (15 septembre 2023)', url: 'https://www.journaldugeek.com/2023/09/15/attention-a-cette-grosse-amende-dans-les-transports-si-vous-ne-respectez-pas-cette-regle-avec-votre-trottinette-electrique/' },
     { title: 'Ville de Meulan-en-Yvelines : les trottinettes Voi dans le Grand Paris Seine et Oise', url: 'https://ville-meulan.fr/print/pdf/node/2348' },
     { title: 'Préfecture des Yvelines : arrêté n° 78-2026-09-07-00004 sur le casque et le gilet (copie publiée par Bois-d’Arcy)', url: 'https://www.boisdarcy.fr/arrete-pref.pdf' },
     { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
+    { title: 'Voi : tarif de Paris dans ses données ouvertes (GBFS)', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/352/gbfs.json' },
+    { title: 'Dott : tarif de Paris dans ses données ouvertes (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/paris/gbfs.json' },
+    { title: 'Dott : tarif de Versailles Grand Parc dans ses données ouvertes (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/versailles-grand-parc/gbfs.json' },
+    { title: 'Dott : tarif de Marne-la-Vallée (SIEMU) dans ses données ouvertes (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/siemu/gbfs.json' },
+    { title: 'Voi : tarif de Saint-Quentin-en-Yvelines dans ses données ouvertes (GBFS)', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/355/gbfs.json' },
+    { title: 'Voi : tarif du Grand Paris Seine et Oise dans ses données ouvertes (GBFS)', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/422/gbfs.json' },
+    { title: 'Pony : tarif d’Évry-Courcouronnes dans ses données ouvertes (GBFS, transport.data.gouv.fr)', url: 'https://proxy.transport.data.gouv.fr/resource/pony-evry-gbfs/gbfs.json' },
+    { title: 'Tout sur mes finances : Vélib’, tarifs, tickets et abonnements (mis à jour le 28 octobre 2026)', url: 'https://www.toutsurmesfinances.com/argent/a/velib-tarifs-et-conditions-des-abonnements-tickets' },
+    { title: 'Journal du Geek : le casque et le gilet deviennent obligatoires à trottinette dans plusieurs villes d’Île-de-France (4 août 2026)', url: 'https://www.journaldugeek.com/2026/08/04/le-casque-et-le-gilet-deviennent-obligatoires-a-trottinette-dans-plusieurs-villes-dile-de-france/' },
   ],
 };
 

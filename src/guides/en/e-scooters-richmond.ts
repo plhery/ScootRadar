@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'richmond',
   name: 'E-scooters in Richmond, Virginia',
   title: 'E-scooters in Richmond, VA 2026: Bird, Spin, Lime, rules',
-  description: 'E-scooters in Richmond, VA: Bird, Spin and Lime, prices and discounts, the 1 a.m. curfew, sidewalks and parking, VCU, the Capital Trail, GRTC and RIC.',
+  description: 'E-scooters in Richmond, VA: Bird, Spin and Lime, 50% discounts, the 1 a.m. curfew, sidewalks and parking, VCU, the Capital Trail, GRTC and RIC.',
   headline: 'E-scooters in Richmond, Virginia: Bird, Spin and Lime, the night rule, and where to ride and park',
-  lede: 'E-scooters in Richmond come from Bird, Spin and Lime, the three companies the City lists as permit holders (26 October 2026). Each app shows the price before you unlock. The City Code allows rides only from 5 a.m. to 1 a.m., the City asks you to keep off sidewalks and trails, and Bird and Spin require riders to be 18.',
+  lede: 'Electric scooter rental in Richmond, Virginia, comes from Bird, Spin and Lime, the three companies the City lists as permit holders as of November 2026. You rent one in the company’s app, and residents of five equity zones ride at half price. The City Code allows rides only from 5 a.m. to 1 a.m., the City asks you to keep off sidewalks and trails, and Bird and Spin require riders to be 18.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:va:Richmond',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Richmond?',
       blocks: [
-        'Electric scooter rental in Richmond runs on City permits. The City’s E-Scooter Program page, read on 26 October 2026, lists three permit holders: **Bird**, for e-scooters and e-bikes, and **Lime** and **Spin**, for e-scooters. Each starts with a cap of 500 devices. A City release of March 2025 calls Spin a subsidiary of Bird.',
+        'Electric scooter rental in Richmond runs on City permits. As of November 2026 the City’s E-Scooter Program page lists three permit holders: **Bird**, for e-scooters and e-bikes, and **Lime** and **Spin**, for e-scooters. Each starts with a cap of 500 devices. A City release of March 2025 calls Spin a subsidiary of Bird.',
         'At 12:29 p.m. on Monday 26 October 2026 the [Richmond map](map:us:va:Richmond) showed about 565 scooters: roughly 270 Spin and 185 Bird as they stood at that moment, and 115 Lime as last counted. That is a snapshot, not the fleets.',
-        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        '**To rent one**, the City says, download the company’s app, register and add a payment method, and the app gives you access to its scooters. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
         '**Bikes.** Bird’s permit covers e-bikes too. **RVA Bike Share**, which the City’s public works department runs with Wegoshare, says it has 22 stations and 220 bikes, open around the clock.',
       ],
     },
@@ -68,7 +68,7 @@ const guide: Guide = {
           },
         },
         { note: '**Scooters stop at 1 a.m.** Since February 2023 the City Code has let shared scooters be ridden only from 5 a.m. to 1 a.m. Open the map between 1 and 5 a.m. and it tells you why Richmond’s scooters can’t be rented.' },
-        'A DMV work group on e-bike and scooter safety must report to state lawmakers by 1 November 2026, so the state rules may change.',
+        'A DMV work group on e-bike and scooter safety was due to report to the chairs of the House and Senate transportation committees by 1 November 2026, with recommendations on whether new regulations or laws are needed.',
       ],
     },
     {
@@ -142,8 +142,12 @@ const guide: Guide = {
       answer: 'The City asks you not to: ride in the bike lane or the street, and walk the scooter on the sidewalk. Virginia law allows sidewalk riding unless a city bans it, and Richmond bans it wherever signs say so.',
     },
     {
-      question: 'How much does a Bird or Spin scooter cost in Richmond?',
-      answer: 'Each app shows the price before you unlock. Residents of five equity zones can get 50% off, and Bird offers the same to seniors, veterans and other groups.',
+      question: 'Are there scooter discounts in Richmond?',
+      answer: 'Yes. Residents of Fairfield Court, Gilpin Court, Hillside Court, Mosby Court and Whitcomb Court get 50% off rides they start in their neighbourhood, and 50% off every ride in the city if they register through Bird’s Community Pricing or Spin Access. Bird offers 50% off to seniors, veterans and other groups too.',
+    },
+    {
+      question: 'Where can I find an e-scooter near me in Richmond?',
+      answer: 'In the Bird, Spin and Lime apps, or on our [Richmond map](map:us:va:Richmond), which shows all three. You can ride from 5 a.m. to 1 a.m., and a ride ends upright on the sidewalk, by the curb.',
     },
     {
       question: 'Do you need a licence to ride an electric scooter in Richmond?',

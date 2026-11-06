@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter Zurich Airport 2026: no-ride zone, Kloten, prices',
   description: 'E-scooter at Zurich Airport: why you can’t ride or park one at the terminals, where the nearest ones wait in Kloten and Glattbrugg, prices and rules.',
   headline: 'E-scooters at Zurich Airport: the no-ride zone, the nearest scooters in Kloten and Glattbrugg, prices and rules',
-  lede: 'You can’t ride a rental e-scooter at Zurich Airport, or end a ride there: at the airport company’s request, the station, the Airport Center, Check-in 1 and 2 and The Circle are a no-ride and no-parking zone. The nearest scooters, from Bolt, Bird, Dott, Voi, Lime and Hopp, are a short bus ride away in Kloten or a short tram ride away in Glattbrugg and Glattpark, both part of Opfikon. Most cost CHF 1.00 to unlock plus CHF 0.41 or 0.42 a minute (published rates on 22 October 2026), and into Zürich itself the train is quicker and cheaper.',
+  lede: 'You can’t ride a rental e-scooter at Zurich Airport, or end a ride there: at the airport company’s request, the station, the Airport Center, Check-in 1 and 2 and The Circle are a no-ride and no-parking zone. The nearest scooters, from Bolt, Bird, Dott, Voi, Lime and Hopp, are a short bus ride away in Kloten or a short tram ride away in Glattbrugg and Glattpark, both part of Opfikon. Most cost CHF 1.00 to unlock plus CHF 0.41 or 0.42 a minute (published rates, as of November 2026), and into Zürich itself the train is quicker and cheaper.',
   published: '2026-10-23',
   updated: '2026-10-28',
   city: 'ch:kloten',
@@ -67,17 +67,17 @@ const guide: Guide = {
         'You pay to unlock, then by the minute, and the clock runs until you end the ride, at red lights and in no-parking zones too. The table shows the operators’ published rates; the app shows the final price before you unlock.',
         {
           table: {
-            caption: 'Published e-scooter rates in Kloten and Opfikon, 22 October 2026',
+            caption: 'Published e-scooter rates in Kloten and Opfikon, as of November 2026',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Dott', 'CHF 1.00', 'CHF 0.41', 'CHF 5.10', 'CHF 9.20'],
               ['Bolt', 'CHF 1.00', 'CHF 0.42 (a few at CHF 0.48)', 'CHF 5.20', 'CHF 9.40'],
               ['Voi', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
               ['Hopp (Kloten)', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
-              ['Lime (Opfikon)', 'CHF 1.00', 'Mostly CHF 0.49, some CHF 0.42, before tax', 'In the app', 'In the app'],
             ],
           },
         },
+        '**Which is cheapest?** Dott, by a little: 10 minutes cost CHF 5.10 and 20 minutes CHF 9.20, against CHF 5.20 and CHF 9.40 with Bolt, Voi and Hopp (as of November 2026).',
       ],
     },
     {
@@ -183,6 +183,12 @@ const guide: Guide = {
     { title: 'ZVV: prices from 13 December 2026 (PDF, German)', url: 'https://www.zvv.ch/content/dam/markt/tarif-und-fahrausweiskontrolle/verbundtarif/2027/Preise%20ab%2013.12.2026.pdf' },
     { title: 'ZVV: frequently asked questions, zones 110 and 121', url: 'https://www.zvv.ch/en/service/customer-service/frequently-asked-questions.html' },
     { title: 'Swiss Ordinance on Fixed Penalties, list of fines (German)', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'MobiData BW: Voi Switzerland open data (GBFS: prices and zones; Data licence Germany – attribution – version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: Bolt Zürich open data (GBFS: prices and zones; Data licence Germany – attribution – version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_zurich/gbfs' },
+    { title: 'MobiData BW: Bird Kloten open data (GBFS: zones; Data licence Germany – attribution – version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bird-kloten/gbfs' },
+    { title: 'MobiData BW: Lime Zürich open data (GBFS: zones; Data licence Germany – attribution – version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_zurich/gbfs' },
+    { title: 'Hopp: Kloten open data (GBFS: prices and zones)', url: 'https://api.hopp.bike/gbfs/ch-kloten/gbfs.json' },
+    { title: 'Dott: Zürich open data (GBFS: prices and zones)', url: 'https://gbfs.api.ridedott.com/public/v2/zurich/gbfs.json' },
   ],
 };
 

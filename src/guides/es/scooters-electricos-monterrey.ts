@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'monterrey',
   name: 'Scooters eléctricos en Monterrey',
   title: 'Scooters eléctricos Monterrey y San Pedro: Whoosh y JET',
-  description: 'Scooters eléctricos en Monterrey y San Pedro Garza García: Whoosh, JET y Lime, dónde están, cuánto cuesta la renta y dónde puedes andar y estacionar.',
+  description: 'Scooters eléctricos en Monterrey y San Pedro Garza García: Whoosh, GO JET y Lime, qué app usar, cómo cobran y dónde puedes andar y estacionar.',
   headline: 'Scooters eléctricos en Monterrey y San Pedro: Whoosh, JET y Lime, dónde encontrarlos y las reglas para andar',
-  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. En Monterrey rentan Whoosh y Lime, y en San Pedro, Whoosh y JET. Whoosh prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
+  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. En Monterrey rentan Whoosh y Lime, y en San Pedro, Whoosh y JET. Whoosh cobra un monto por desbloquear más una tarifa por minuto que cambia con la demanda, y JET cobra por desbloqueo y por tiempo de uso. Whoosh prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'mx:Monterrey',
@@ -31,8 +31,7 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta la renta de scooters en Monterrey?',
       blocks: [
-        'Ninguna empresa publica en su web su tarifa de Monterrey o San Pedro: el precio lo ves en la app antes de desbloquear. JET te lo muestra en GO JET antes de que confirmes la renta, según sus términos para México del 7 de abril de 2026.',
-        '**Whoosh en Monterrey.** Al llegar, a finales de junio de 2026, cobraba $8.00 por desbloquear y de $2.49 a $3.00 por minuto, con un pase mensual de $49.99 que quita el desbloqueo (Publimetro). Era el precio de lanzamiento: según sus términos, las tarifas de Whoosh cambian con la demanda y la batería del scooter.',
+        'Whoosh cobra un monto fijo por desbloquear el scooter más una tarifa por minuto, y JET puede cobrar por desbloqueo y por tiempo de uso (términos para México de abril de 2026). La tarifa de Whoosh es dinámica: cambia con la demanda y con la batería del scooter al empezar el viaje, y su suscripción, el Whoosh México Pass, puede quitarte en todo o en parte el cargo por desbloquear. Cada app te muestra la tarifa antes de desbloquear: Whoosh, al elegir el scooter, y GO JET, antes de que confirmes la renta.',
         'Whoosh puede retener hasta $70 MXN en tu tarjeta al empezar, y cobrarte multas según sus términos para México:',
         {
           table: {
@@ -142,11 +141,11 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta rentar un scooter eléctrico en Monterrey?',
-      answer: 'Lo ves en la app antes de desbloquear. Al llegar, a finales de junio de 2026, Whoosh cobraba $8 por desbloquear y de $2.49 a $3 por minuto, según Publimetro. JET y Lime muestran su tarifa en sus apps.',
+      answer: 'Whoosh te cobra un monto por desbloquear el scooter más una tarifa por minuto, que cambia con la demanda y con la batería del scooter al empezar; su suscripción, el Whoosh México Pass, puede quitarte el cargo por desbloquear. JET cobra por desbloqueo y por tiempo de uso.',
     },
     {
-      question: '¿Qué app necesito para los scooters de San Pedro Garza García?',
-      answer: 'Whoosh o GO JET, de JET: son las dos empresas del programa de San Pedro, y el mapa te muestra las dos.',
+      question: '¿Qué app necesito para rentar un scooter en Monterrey o San Pedro?',
+      answer: 'En Monterrey, la de Whoosh o la de Lime (Lime también se renta desde la app de Uber). En San Pedro Garza García, Whoosh o GO JET, de JET: son las dos empresas del programa del municipio. El mapa te muestra las tres.',
     },
     {
       question: '¿Puedo andar en scooter por la banqueta en Monterrey?',

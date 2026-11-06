@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'paris',
   name: 'E-scooters in Paris',
   title: 'E-scooter Paris 2026: the ban and what to ride instead',
-  description: 'Can you rent an e-scooter in Paris? Not since 2023. What Vélib’, Dott and Voi e-bikes cost, the nearest shared scooters, and rules for your own.',
+  description: 'Can you rent an e-scooter in Paris? Not since 1 September 2023. What Vélib’, Dott and Voi e-bikes cost, the nearest shared scooters, and rules for your own.',
   headline: 'E-scooters in Paris: why you can’t rent one, and what to ride instead',
-  lede: 'You can’t rent a shared e-scooter in Paris: the city ended the service on 1 September 2023, after a vote on 2 April 2023 in which 89.03% said no, on a turnout of 7.46%. Ride a Vélib’ (€3 for 45 minutes) or a Lime, Dott or Voi e-bike instead (Voi: €0.29 a minute, no unlock fee, published rate on 12 October 2026). The nearest shared e-scooters are in the outer suburbs, around Versailles, in Saint-Quentin-en-Yvelines and near Disneyland Paris, where helmets are compulsory. Your own e-scooter is allowed in Paris, with a helmet and a high-visibility vest at all hours since 7 August 2026.',
+  lede: 'Since 1 September 2023 you can’t rent a shared e-scooter in Paris: the city let the operators’ agreements end after a vote on 2 April 2023 in which 89.03% said no, on a turnout of 7.46%. Ride a Vélib’ or a Lime, Dott or Voi e-bike instead. As of November 2026 a Vélib’ Ticket-V costs €3 for a 45-minute ride, Voi charges €0.29 a minute with no unlock fee, and Dott €1 to unlock plus €0.35 a minute. The nearest shared e-scooters run in the outer suburbs, around Versailles, in Saint-Quentin-en-Yvelines, along the Seine around Poissy, near Disneyland Paris and in Évry, and helmets are compulsory in all of them. Your own e-scooter is allowed in Paris, with a helmet and a high-visibility vest at all hours since 7 August 2026.',
   published: '2026-10-12',
   updated: '2026-10-13',
   city: 'fr:Le Chesnay-Rocquencourt',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Can you rent an e-scooter in Paris?',
       blocks: [
-        'No. On 12 October 2026 Dott, Lime and Voi rented only e-bikes in Paris.',
+        'No. Since 1 September 2023 Paris has allowed shared e-bikes, not shared e-scooters, and as of November 2026 Dott’s and Voi’s Paris fleets are e-bikes only, their open data shows.',
         '**Is Lime in Paris?** Yes, with e-bikes. Lime, Dott and Voi each run 3,000 to 6,000 of them under a four-year agreement with the city that began on 1 October 2025. Hiring an e-scooter from a shop is still legal: the ban covers only shared scooters left on the street.',
       ],
     },
@@ -45,13 +45,13 @@ const guide: Guide = {
         '**Vélib’ Métropole** has more than 20,000 docked bikes, 40% of them electric, at more than 1,500 stations across 65 towns of Greater Paris.',
         {
           table: {
-            caption: 'Vélib’ tickets and passes for visitors (July 2025)',
+            caption: 'Vélib’ tickets and passes for visitors, as of November 2026',
             head: ['Ticket or pass', 'Price', 'What you get'],
             rows: [
               ['Ticket-V', '€3', 'One 45-minute ride on a classic or electric bike'],
               ['Pass 24h Classique', '€5', '24 hours; classic bikes free for 30 minutes a ride; electric bikes €2 a ride'],
               ['Pass 24h Électrique', '€10', '24 hours; classic bikes free for 60 minutes a ride; five free 45-minute electric rides'],
-              ['Pass 3 jours', '€20', '72 hours, with the same rides as the Pass 24h Électrique'],
+              ['Pass 3 jours', '€20', '72 hours; classic bikes free for 60 minutes a ride; up to five bikes at once'],
             ],
           },
         },
@@ -59,7 +59,7 @@ const guide: Guide = {
         '**Lime, Dott and Voi** e-bikes are dockless: unlock one in the app and end the ride at a bike bay.',
         {
           table: {
-            caption: 'Shared bikes in Paris: what a ride costs (published rates on 12 October 2026; Vélib’: July 2025)',
+            caption: 'Shared bikes in Paris: what a ride costs, as of November 2026',
             head: ['Service', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi', '€0', '€0.29', '€2.90', '€5.80'],
@@ -81,11 +81,11 @@ const guide: Guide = {
     {
       heading: 'The nearest shared e-scooters to Paris',
       blocks: [
-        'There are none in Paris: at about 10:45 on 12 October 2026, the map showed about 1,650 in the outer suburbs, in five areas.',
+        'Shared e-scooters run only outside Paris: at about 10:45 on 12 October 2026, the map showed about 1,650 in the outer suburbs, in five areas.',
         {
           table: {
-            caption: 'The nearest shared e-scooters to Paris: published rates and scooters on the map, 12 October 2026',
-            head: ['Area', 'Operator', 'Published rate', '10 / 20 minutes', 'On the map at 10:45'],
+            caption: 'The nearest shared e-scooters to Paris: rates as of November 2026, and scooters on the map on 12 October 2026',
+            head: ['Area', 'Operator', 'Rate', '10 / 20 minutes', 'On the map at 10:45'],
             rows: [
               ['Around Versailles (La Celle-Saint-Cloud, Le Chesnay-Rocquencourt, Bougival)', 'Dott', '€1 + €0.25/min', '€3.50 / €6.00', 'About 100'],
               ['Saint-Quentin-en-Yvelines (Montigny-le-Bretonneux, Guyancourt, Trappes…)', 'Voi', '€0.49 + €0.25/min', '€2.99 / €5.49', 'About 680'],
@@ -105,7 +105,7 @@ const guide: Guide = {
             '**Évry-Courcouronnes**: Pony, since March 2022.',
           ],
         },
-        { note: 'Bring a helmet. In the Yvelines (around Versailles, Saint-Quentin, Seine & Oise), a helmet and a vest or reflective gear have been compulsory at all hours since 15 September 2026, and a Seine-et-Marne order of 2 July 2026 requires a helmet and reflective gear around Marne-la-Vallée. Essonne, where Évry is, followed on 5 October 2026: a helmet and a vest or reflective gear at all hours, bike lanes included.' },
+        { note: 'Bring a helmet. In the Yvelines (around Versailles, Saint-Quentin, Seine & Oise), a helmet and a vest or reflective gear have been compulsory at all hours since 15 September 2026, and Seine-et-Marne, around Marne-la-Vallée, has applied similar rules since 3 July 2026. Essonne, where Évry is, followed on 5 October 2026: a helmet and a vest or reflective gear at all hours, bike lanes included.' },
         'The minimum age is 18 in Seine & Oise; elsewhere, check the app. First time on a shared scooter? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -162,8 +162,12 @@ const guide: Guide = {
       answer: 'No: the city ended shared e-scooters on 1 September 2023. Some rental guides still list Lime, Bird or Dott scooters in Paris, so check their date.',
     },
     {
+      question: 'How much does a Voi or Dott e-bike cost in Paris?',
+      answer: 'As of November 2026 Voi charges €0.29 a minute with no unlock fee, so 10 minutes cost €2.90, and Dott €1 to unlock plus €0.35 a minute, so 10 minutes cost €4.50.',
+    },
+    {
       question: 'How much is a Vélib’ day pass?',
-      answer: '€5 for the Pass 24h Classique, with free 30-minute rides on classic bikes and electric rides at €2 each. The €10 Pass 24h Électrique includes five 45-minute electric rides, and three days cost €20.',
+      answer: 'As of November 2026, €5 for the Pass 24h Classique, with free 30-minute rides on classic bikes and electric rides at €2 each. The €10 Pass 24h Électrique includes five 45-minute electric rides, and three days cost €20.',
     },
     {
       question: 'Do I need a helmet on a Vélib’ or a Lime e-bike?',
@@ -181,12 +185,20 @@ const guide: Guide = {
     { title: 'City of Paris: e-scooter traffic rules, updated 10 August 2026 (French)', url: 'https://www.paris.fr/pages/trottinettes-electriques-de-nouvelles-regles-de-circulation-7249' },
     { title: 'Paris police prefecture: order 2026-00969 of 7 August 2026 on helmets and vests (PDF, French)', url: 'https://cdn.paris.fr/paris/2026/08/10/arrete-2026_00969_07082026-1-nPt1.pdf' },
     { title: 'AGEMOB: the Vélib’ Métropole public service, stations, bikes and towns (French)', url: 'https://agemob.fr/velib-metropole/le-velo-partage/' },
-    { title: 'Secrets of Paris: using the Vélib’ bike service, tickets and passes (updated July 2025)', url: 'https://secretsofparis.com/practical/using-the-velib-bike-service-in-paris/' },
+    { title: 'Tout sur mes finances: Vélib’ prices, tickets and passes, updated 28 October 2026 (French)', url: 'https://www.toutsurmesfinances.com/argent/a/velib-tarifs-et-conditions-des-abonnements-tickets' },
     { title: 'Sortir à Paris: some items are not allowed on the Paris metro (20 January 2026)', url: 'https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/340245-did-you-know-certain-items-are-not-allowed-on-the-paris-metro' },
     { title: 'Journal du Geek: RATP fines riders who don’t fold their e-scooters €150, 15 September 2023 (French)', url: 'https://www.journaldugeek.com/2023/09/15/attention-a-cette-grosse-amende-dans-les-transports-si-vous-ne-respectez-pas-cette-regle-avec-votre-trottinette-electrique/' },
     { title: 'Meulan-en-Yvelines: Voi e-scooters in Grand Paris Seine & Oise (French)', url: 'https://ville-meulan.fr/print/pdf/node/2348' },
     { title: 'Yvelines prefecture: order 78-2026-09-07-00004 on helmets and vests, copy published by Bois-d’Arcy (PDF, French)', url: 'https://www.boisdarcy.fr/arrete-pref.pdf' },
     { title: 'Vauhallan town hall: new rules for e-scooters across Essonne, 12 October 2026 (French)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
+    { title: 'Journal du Geek: helmets and vests become compulsory on e-scooters in several Île-de-France départements, 4 August 2026 (French)', url: 'https://www.journaldugeek.com/2026/08/04/le-casque-et-le-gilet-deviennent-obligatoires-a-trottinette-dans-plusieurs-villes-dile-de-france/' },
+    { title: 'Voi: Paris prices, open data (GBFS)', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/352/system_pricing_plans.json' },
+    { title: 'Dott: Paris prices, open data (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/paris/system_pricing_plans.json' },
+    { title: 'Dott: Versailles Grand Parc prices, open data (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/versailles-grand-parc/system_pricing_plans.json' },
+    { title: 'Dott: Marne-la-Vallée (SIEMU) prices, open data (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/siemu/system_pricing_plans.json' },
+    { title: 'Voi: Saint-Quentin-en-Yvelines prices, open data (GBFS)', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/355/system_pricing_plans.json' },
+    { title: 'Voi: Grand Paris Seine & Oise prices, open data (GBFS)', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/422/system_pricing_plans.json' },
+    { title: 'Pony: Évry-Courcouronnes prices, open data (GBFS, transport.data.gouv.fr)', url: 'https://proxy.transport.data.gouv.fr/resource/pony-evry-gbfs/system_pricing_plans.json' },
   ],
 };
 

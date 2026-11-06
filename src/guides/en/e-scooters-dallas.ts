@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-dallas',
   topic: 'dallas',
   name: 'E-scooters in Dallas',
-  title: 'E-scooters in Dallas 2026: Lime, Bird, rules, night ban',
-  description: 'E-scooters in Dallas: Lime and Bird, the 8:45 p.m. cut-off, no sidewalks, slow zones in Deep Ellum, where to park, parks and trails, DART and the airports.',
+  title: 'E-scooters in Dallas 2026: Lime, Bird, hours and rules',
+  description: 'E-scooters in Dallas: Lime and Bird, rides start 5 a.m. to 8:45 p.m. and end by 9 p.m., no sidewalks, Deep Ellum’s slow zone, parking, trails and DART.',
   headline: 'E-scooters in Dallas: Lime and Bird, the rules, the night ban and where to park',
-  lede: 'E-scooters in Dallas come from Lime and Bird, the two companies the City’s page names for its 2026–27 permits (26 October 2026); neither the City nor Bird’s open data lists a price, so check the app. Rides may start from 5 a.m. to 8:45 p.m. and must end by 9 p.m., and no one under 16 may rent (Bird says 18). The City Code bans riding on any sidewalk, and parks, plazas and trails are off limits, the Ronald Kirk Pedestrian Bridge apart.',
+  lede: 'Electric scooter rental in Dallas means Lime or Bird, the two companies the City selected for its 2026–27 permits. As of November 2026 rides may start from 5 a.m. to 8:45 p.m. and must end by 9 p.m., every day, and no one under 16 may rent (Bird says 18). The City Code bans riding on any sidewalk, downtown and in Deep Ellum included, and parks, plazas and trails are off limits, the Ronald Kirk Pedestrian Bridge apart.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:tx:Dallas',
@@ -16,17 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Dallas?',
       blocks: [
-        'Electric scooter rental in Dallas runs on one-year City permits and on the City’s Shared Dockless Vehicle Program Rules, posted on 17 April 2026 and in force since 28 April. The City’s page names the companies selected for the 2026–27 permit cycle: **Lime** (green and white vehicles) and **Bird** (silver and blue). Spin, permitted in 2025–26, “temporarily exited the market as of March 2026”, City staff said in April 2026; the page doesn’t name it for 2026–27.',
-        'The page sets a cap of 3,000 vehicles: up to 750 Bird scooters and 2,250 Lime vehicles, among them seated scooters, “Glider” seated scooters and e-bikes.',
-        'At 3:13 p.m. on Monday 26 October 2026 the [Dallas map](map:us:tx:Dallas) counted about 2,000 scooters, roughly 1,670 Lime and 330 Bird: the map’s figures at that moment, not the fleets. Matched to the Census Bureau’s boundaries at noon and at 4 p.m., every Bird stood in the city of Dallas, none in University Park, Highland Park, Irving or Addison.',
-        'For Bird the map shows each scooter’s position, charge and range, and its zones (see below); for Lime, position and charge. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Not everything is on the map.** ScootRadar shows standing e-scooters only: Lime’s e-bikes aren’t on it, and its seated scooters and Gliders may not be either, so look for them in the Lime app. The City’s page names no other bike share.',
+        'Electric scooter rental in Dallas runs on one-year City permits and on the City’s Shared Dockless Vehicle Program Rules, posted on 17 April 2026 and in force since 28 April. The City selected two companies for the 2026–27 permit cycle: **Lime** (green and white vehicles) and **Bird** (silver and blue). Spin, permitted in 2025–26, “temporarily exited the market as of March 2026”, City staff said in April 2026.',
+        'As of November 2026 the City allows up to 3,150 vehicles: up to 650 Bird scooters and up to 2,500 Lime vehicles, of which 1,550 standing scooters, 200 seated scooters, 650 “Glider” seated scooters and 100 e-bikes.',
+        'At 3:13 p.m. on Monday 26 October 2026 the [Dallas map](map:us:tx:Dallas) counted about 2,000 scooters, roughly 1,670 Lime and 330 Bird: the map’s figures at that moment, not the fleets.',
+        '**To rent one**, the City says, scan the QR code or barcode on the scooter with your phone’s camera and follow the instructions. For other ways to rent, call Lime on 1-888-546-3345 or Bird on 1-866-205-2442. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime or Bird scooter cost in Dallas?',
       blocks: [
-        'On 26 October 2026 neither the City’s page nor Bird’s open data gave a Dallas price, so check it in the Lime or Bird app before you unlock. For other ways to rent, the City says, call Lime on 1-888-546-3345 or Bird on 1-866-205-2442.',
+        'Lime and Bird set their own Dallas prices and show them in the app before you unlock.',
         'The Program Rules add one charge: the company fines you **$20** each time you park badly or skip the end-of-trip photo, and suspends your account for 30 days after your fifth parking offence. Breaking the City Code’s scooter rules can cost up to $200.',
       ],
     },
@@ -36,7 +35,7 @@ const guide: Guide = {
         'Texas’s Transportation Code, Chapter 551, lets a “motor-assisted scooter” use streets posted at 35 mph or less, sidewalks and bike paths, under the bicycle rules, and lets cities ban it from streets and sidewalks. The Dallas City Code, § 28-41.1.1 (Ordinance 32235, June 2022), binds riders; the Program Rules bind the companies.',
         {
           table: {
-            caption: 'E-scooter rules in Dallas, and who sets them (as published on 26 October 2026)',
+            caption: 'E-scooter rules in Dallas, and who sets them, as of November 2026',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Hours', 'Rides may start from 5 a.m. to 8:45 p.m. and must end by 9 p.m., every day', 'Program Rules § 6.A; City page'],
@@ -59,7 +58,7 @@ const guide: Guide = {
       heading: 'Can you ride a scooter at night in Dallas?',
       blocks: [
         'Not late. The Program Rules say: “Units may only be available to users to start a ride from 5:00 am to 8:45 pm daily. All rides must end by 9:00 pm.” The City’s page says the same. From 8:45 p.m. the map marks the night ban in Dallas and says when renting starts again.',
-        'For the FIFA World Cup the City authorised a 30-day pilot from 15 June to 15 July 2026, with rides from 5 a.m. to 10 p.m. and none starting after 9:45 p.m.; the 9 p.m. curfew was to return after it. The rules allow one such pilot in each permit cycle.',
+        'For the FIFA World Cup the City authorised a 30-day pilot from 15 June to 15 July 2026, with rides from 5 a.m. to 10 p.m. and none starting after 9:45 p.m. Since it ended, the City’s page gives the 9 p.m. curfew again. The rules allow one such pilot in each permit cycle.',
       ],
     },
     {
@@ -92,7 +91,7 @@ const guide: Guide = {
           ],
         },
         'The City Code adds: on a hard surface, never in the street unless a space is marked, nor in car parking or loading spaces, nor blocking doors, driveways or fire hydrants. Along a trail, the Program Rules add, park only at a trailhead.',
-        'Before the ride ends the app asks for a photo of the scooter, parked, and of its number. On 26 October 2026 Bird’s open data held about 1,500 no-parking zones and one no-ride zone, at City Hall Plaza; the map draws them at street zoom. It has no Lime zones, so check the Lime app. To report a scooter in the way, call 311 on 214-670-3111, or the company.',
+        'Before the ride ends the app asks for a photo of the scooter, parked, and of its number. On 26 October 2026 Bird’s open data held about 1,500 no-parking zones and one no-ride zone, at City Hall Plaza; the map draws them at street zoom. Lime’s zones are in its app. To report a scooter in the way, call 311 on 214-670-3111, or the company.',
       ],
     },
     {
@@ -115,8 +114,8 @@ const guide: Guide = {
         {
           list: [
             '**DART trains.** “Bikes and scooters share the space inside DART and TRE cars with persons using wheelchairs and strollers”, DART says. End a shared ride and park it properly before you board.',
-            '**Dallas Love Field.** DART’s Love Link bus runs to it from Inwood/Love Field Station, on the Green and Orange lines. Love Field lies inside Bird’s area, but at midday on 26 October 2026 the nearest Bird was about 2.5 miles away.',
-            '**DFW Airport.** DART’s Orange Line runs to Terminal A and its Silver Line to Terminal B. The airport lies outside Bird’s area, about 13.5 miles from the nearest Bird that day.',
+            '**Dallas Love Field.** DART’s Love Link bus runs to it from Inwood/Love Field Station, on the Green and Orange lines. Love Field lies inside Bird’s area.',
+            '**DFW Airport.** DART’s Orange Line runs to Terminal A and its Silver Line to Terminal B. The airport lies outside Bird’s area.',
           ],
         },
         'Elsewhere in Texas, see [e-scooters in San Antonio](guide:san-antonio), where Bird and Veo run; the [San Antonio map](map:us:tx:San Antonio) shows both.',
@@ -137,8 +136,8 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: 'How much does an electric scooter rental cost in Dallas?',
-      answer: 'On 26 October 2026 neither the City nor Bird’s open data listed a Dallas price, so check the Lime or Bird app before you unlock. Parking badly costs you a $20 fine from the company.',
+      question: 'Which scooter companies operate in Dallas?',
+      answer: 'Lime and Bird, the two the City selected for its 2026–27 permits. As of November 2026 the City allows Lime up to 2,500 vehicles, standing and seated scooters and e-bikes, and Bird up to 650 scooters. Spin, permitted the year before, stopped renting in March 2026, City staff said.',
     },
     {
       question: 'Can you ride a Lime or Bird scooter at night in Dallas?',
@@ -175,7 +174,6 @@ const guide: Guide = {
     { title: 'DART: Bikes on DART rail and TRE', url: 'https://www.dart.org/guide/supporting-services/bike-to-work/bikes-on-dart-rail-and-tre' },
     { title: 'DART: DART to the airports', url: 'https://www.dart.org/trip/trip-planner/dart-to-airports' },
     { title: 'Bird: Safety', url: 'https://bird.co/safety/' },
-    { title: 'US Census Bureau: TIGERweb boundaries', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
   ],
 };
 

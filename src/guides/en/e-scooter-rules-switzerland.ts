@@ -61,7 +61,7 @@ const guide: Guide = {
       heading: 'Do you need a helmet? Lights, bell and reflector',
       blocks: [
         '**A helmet is not compulsory.** The helmet rule for mopeds exempts electric ones whose motor assists up to 25 km/h, so its CHF 30 fine doesn’t apply to you. The BFU, the Swiss council for accident prevention, strongly recommends a helmet all the same, and Dott warns that head injuries may not be covered if you ride without one.',
-        'On 30 April 2026 the National Council rejected a motion for a helmet and licence requirement on e-mopeds (“E-Roller”) and similar vehicles, by 122 votes to 33 with 33 abstentions. On 19 August the Federal Council said it is ready to put a helmet requirement for e-scooters to consultation at the next revision of the ordinance; as of 12 October 2026 there is no draft and no date.',
+        'On 30 April 2026 the National Council rejected a motion for a helmet and licence requirement on e-mopeds (“E-Roller”) and similar vehicles, by 122 votes to 33 with 33 abstentions. On 19 August the Federal Council said it is ready to put a helmet requirement for e-scooters up for discussion in the consultation on a future revision of the ordinance. A consultation on seven road traffic ordinances, including the Traffic Regulations Ordinance (VRV) and the Road Traffic Licensing Ordinance (VZV), is planned from December 2026 to March 2027 (as of November 2026).',
         'What the law does require:',
         {
           list: [
@@ -113,7 +113,7 @@ const guide: Guide = {
         'Most offences end with a fixed on-the-spot fine (Ordnungsbusse) from the federal list, the same in every canton. The amounts for e-scooter riders have not changed since 2024.',
         {
           table: {
-            caption: 'Common fines for e-scooter riders, as of October 2026',
+            caption: 'Common fines for e-scooter riders, as of November 2026',
             head: ['What you do', 'Fine', 'Item (OBV)'],
             rows: [
               ['Riding on the pavement', 'CHF 40', '605.1'],
@@ -162,14 +162,14 @@ const guide: Guide = {
       heading: 'New e-scooter rules in Switzerland: July 2025 and 2026',
       blocks: [
         'The last big change came on **1 July 2025**: the passenger ban, the new sign rules and parking in shared-space and pedestrian zones described above. The definition now says 20 km/h without a seat and 25 km/h with one, so stand-up scooters stayed at 20 km/h.',
-        '**What changes in 2026?** As of 12 October 2026, no new federal e-scooter rule has come into force this year; most “new rules for 2026” headlines are about Germany, Austria, Italy or France. Under discussion in Switzerland:',
+        '**What changes in 2026?** Since 1 July 2026, passing a traffic island on the left costs CHF 30; most “new rules for 2026” headlines are about Germany, Austria, Italy or France. Under discussion in Switzerland:',
         {
           list: [
-            '**Helmet:** a consultation is promised, with no draft or date yet (see above).',
-            '**Plate and insurance:** a motion of 15 June 2026 asks for both. The Federal Council proposed rejecting it on 19 August; parliament has not voted yet.',
-            '**Tuning:** the Federal Council intends to make the rules on tuned scooters more specific; no draft yet.',
+            '**Helmet:** the Federal Council is ready to put a helmet requirement up for discussion at a future revision of the ordinance (see above).',
+            '**Plate and insurance:** a motion of 15 June 2026 asks for both. The Federal Council proposed rejecting it on 19 August; it is still pending in the National Council (as of November 2026).',
+            '**Tuning:** the Federal Council intends to make the rules on tuned scooters more specific.',
             '**Trains:** train staff in the SEV union want clearer rules for bikes and scooters (June 2026).',
-            '**Zürich:** the city plans to cut shared vehicles from 7,350 to 3,000, with three operators chosen by tender and fixed stations in the centre, from a date not yet set. See [e-scooters in Zürich](guide:zurich).',
+            '**Zürich:** the city plans to cut shared vehicles from 7,350 to 3,000, with three operators chosen by tender and fixed stations in the centre. See [e-scooters in Zürich](guide:zurich).',
           ],
         },
       ],
@@ -205,11 +205,12 @@ const guide: Guide = {
     { title: 'Fedlex: Ordinance on Alcohol Limits in Road Traffic, SR 741.13, in German', url: 'https://www.fedlex.admin.ch/eli/cc/2015/493/de' },
     { title: 'ASTRA (Federal Roads Office): Cycle traffic signs from 1 July 2025 (PDF, in German)', url: 'https://www.astra.admin.ch/dam/de/sd-web/3LsKt7R6x8DU/bedeutung-radverkehr-signalisation.pdf' },
     { title: 'BFU: Rules for e-scooters and other electric light vehicles (fact sheet, PDF)', url: 'https://www.bfu.ch/media/fffpzk2f/bfu_factsheet_e-langsamverkehr_regeln.pdf' },
-    { title: 'Swiss Parliament: Motion 26.3637, registration and liability insurance for e-scooters', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
+    { title: 'Swiss Parliament: Motion 26.3637, registration and liability insurance for e-scooters, with the Federal Council’s statement (in German)', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
     { title: 'Swiss Parliament: Motion 26.3010, helmet and licence for e-mopeds and similar vehicles', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263010' },
     { title: 'Alliance SwissPass: Tariff T600, common tariff provisions, sections 6 and 7 (edition of 1 June 2026, PDF, in German)', url: 'https://www.allianceswisspass.ch/de/asp/Downloads?download=2666' },
     { title: 'Nau.ch: SBB hands biscuits to cyclists who push their bikes in stations (20 August 2022, in German)', url: 'https://www.nau.ch/news/good-news/sbb-verteilt-kekse-an-vorzeige-velofahrer-66245670' },
     { title: 'SEV union: train staff under pressure, delegates’ meeting of 10 June 2026 (in German)', url: 'https://sev-online.ch/de/aktuell/kontakt.sev/2026/zugpersonal-unter-druck-202608-146425/' },
+    { title: 'Fedlex: planned consultation on a partial revision of seven road traffic ordinances (in German)', url: 'https://www.fedlex.admin.ch/eli/dl/proj/2026/81/cons_1/de' },
   ],
 };
 

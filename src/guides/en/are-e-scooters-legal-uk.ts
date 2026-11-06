@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'uk-law',
   name: 'Are e-scooters legal in the UK?',
   title: 'Are e-scooters legal in the UK? E-scooter law and rules 2026',
-  description: 'Are e-scooters legal in the UK? The law in 2026: private ones aren’t; rentals are, in 21 trial areas. Licence, fines, where to ride, what changed.',
+  description: 'Are e-scooters legal in the UK? Private ones aren’t, on roads, pavements or cycle lanes; rentals are, in 21 trial areas. Licence, age, fines and seizure.',
   headline: 'Are e-scooters legal in the UK? What you can ride, where, and what it costs if you get it wrong',
-  lede: 'E-scooters are legal in the UK only as rentals in an official trial area. A privately owned e-scooter is illegal on public roads, pavements and cycle lanes and in parks; you may ride it only on private land with the landowner’s permission. The rental trials run in 21 areas, all in England, until May 2028, and you need a full or provisional driving licence to ride. As of 12 October 2026 the government has promised a new law but has not put a bill before Parliament.',
+  lede: 'Not if you own one. In the UK a privately owned e-scooter is illegal on public roads, pavements and cycle lanes and in parks; you may ride it only on private land with the landowner’s permission. Rental e-scooters are legal in the official trial areas, 21 of them, all in England, until May 2028: you need a full or provisional driving licence and must be at least 16, though Beryl, Dott and the London operators ask for 18. Riding a private e-scooter in public counts as riding without insurance, which means a £300 fixed penalty and 6 penalty points, and the police can seize it. As of November 2026 GOV.UK still says so, and the government’s Road Safety Strategy calls e-scooters “illegal by default”, promising reform “when parliamentary time allows”.',
   published: '2026-10-12',
   updated: '2026-10-26',
   sections: [
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Rental e-scooters are the exception. Since July 2020 the government has allowed trial schemes in which the operator insures every ride and the scooter meets a legal standard: one rider, a motor of no more than 500 W and a top speed of 15.5 mph.',
         {
           table: {
-            caption: 'Private and rental e-scooters compared, October 2026',
+            caption: 'Private and rental e-scooters compared, as of November 2026',
             head: ['At a glance', 'Private e-scooter', 'Rental e-scooter in a trial area'],
             rows: [
               ['Roads', 'Illegal', 'Allowed, except motorways'],
@@ -130,7 +130,7 @@ const guide: Guide = {
           },
         },
         'The list changes. Leeds opened in March 2026; Brighton and Hove, Cornwall and Plymouth were added in July 2026, when Newcastle’s trial was listed as ended; and Colchester left the Essex trial in November 2025.',
-        'To find the nearest scooter, open the map in [Bristol](map:gb:Bristol), [Liverpool](map:gb:Liverpool) or [Bournemouth](map:gb:Bournemouth). Published rates on 12 October 2026: Bolt in Liverpool, £1 to unlock plus 25p a minute; Beryl in Bournemouth, Christchurch and Poole and in Norwich, £1 to unlock plus 22p a minute. The operator’s app shows the final price, and it’s where you unlock and pay. Who runs each area, what it costs and where you may park are in our guide to [e-scooter hire in the UK](guide:uk-hire).',
+        'To find the nearest scooter, open the map in [Bristol](map:gb:Bristol), [Liverpool](map:gb:Liverpool) or [Bournemouth](map:gb:Bournemouth). As of November 2026 Bolt charges £1 to unlock plus 25p a minute in Liverpool, and Beryl £1 to unlock plus 22p a minute in Bournemouth, Christchurch and Poole and in Norwich. The operator’s app shows the final price, and it’s where you unlock and pay. Who runs each area, what it costs and where you may park are in our guide to [e-scooter hire in the UK](guide:uk-hire).',
       ],
     },
     {
@@ -210,7 +210,7 @@ const guide: Guide = {
     { title: 'GOV.UK: Riding an electric scooter: the rules', url: 'https://www.gov.uk/electric-scooter-rules' },
     { title: 'Department for Transport: Rental e-scooter trials', url: 'https://www.gov.uk/government/publications/rental-e-scooter-trials/rental-e-scooter-trials' },
     { title: 'Department for Transport: Road Safety Strategy (January 2026)', url: 'https://www.gov.uk/government/publications/road-safety-strategy' },
-    { title: 'GOV.UK: Vehicle insurance (driving without insurance)', url: 'https://www.gov.uk/vehicle-insurance' },
+    { title: 'GOV.UK: Vehicle insurance, driving without insurance', url: 'https://www.gov.uk/vehicle-insurance/driving-without-insurance' },
     { title: 'GOV.UK: Penalty points (endorsements)', url: 'https://www.gov.uk/penalty-points-endorsements' },
     { title: 'The Fixed Penalty Order 2000, Schedule 1', url: 'https://www.legislation.gov.uk/uksi/2000/2792/schedule' },
     { title: 'Crime and Policing Act 2026, section 8', url: 'https://www.legislation.gov.uk/ukpga/2026/20/section/8/enacted' },
@@ -225,6 +225,10 @@ const guide: Guide = {
     { title: 'Micromobility Industries: Lime and Voi reappointed for London’s e-scooter trial (23 September 2026)', url: 'https://micromobility.io/news/lime-and-voi-reappointed-for-londons-e-scooter-trial' },
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
     { title: 'Gloucestershire County Council: New provider for e-scooters in Gloucester and Cheltenham (27 June 2023)', url: 'https://www.gloucestershire.gov.uk/gcc-news/2023-news-archive/news-june-2023/new-provider-for-e-scooters-in-gloucester-and-cheltenham/' },
+    { title: 'GOV.UK: Driving licence categories', url: 'https://www.gov.uk/driving-licence-categories' },
+    { title: 'Bolt: Liverpool prices, open data (GBFS)', url: 'https://mds.bolt.eu/gbfs/3/412/system_pricing_plans' },
+    { title: 'Beryl: Bournemouth, Christchurch and Poole prices, open data (GBFS)', url: 'https://beryl-gbfs-production.web.app/v2_2/BCP/system_pricing_plans.json' },
+    { title: 'Beryl: Norwich prices, open data (GBFS)', url: 'https://beryl-gbfs-production.web.app/v2_2/Norwich/system_pricing_plans.json' },
   ],
 };
 

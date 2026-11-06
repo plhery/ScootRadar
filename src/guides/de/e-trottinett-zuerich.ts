@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-trottinett-zuerich',
   topic: 'zurich',
   name: 'E-Trottinett Zürich: Anbieter, Preise, Zonen',
-  title: 'E-Trottinett Zürich 2026: Preise, Sperrzonen, Parkieren',
-  description: 'E-Trottinett Zürich: welche Anbieter es gibt, was zehn Minuten kosten, wo du nicht fahren oder parkieren darfst und worauf du bei Tramschienen achtest.',
+  title: 'E-Trottinett Zürich mieten 2026: Apps, Preise, Sperrzonen',
+  description: 'E-Trottinett in Zürich mieten: sieben Apps, was 10 und 20 Minuten kosten, welcher Anbieter am günstigsten ist und wo du nicht fahren oder parkieren darfst.',
   headline: 'E-Trottinett Zürich: Anbieter, Preise, Sperrzonen und wo du parkierst',
-  lede: 'Ein E-Trottinett in Zürich mietest du in der App von Lime, Bolt, Bird, Voi, Dott, Hopp oder PubliBike: QR-Code scannen, entsperren und auf dem Velostreifen losfahren, mit höchstens 20 km/h. Zehn Minuten kosten bei PubliBike CHF 3.– (CHF 1.– plus 20 Rappen pro Minute, Stand Oktober 2026), bei Bolt und Voi CHF 5.20 (CHF 1.– plus 42 Rappen, veröffentlichte Tarife vom 12. Oktober 2026). In der Altstadt und auf dem Bahnhofplatz kannst du die Fahrt nicht beenden: Parkiere in einer Parkierzone der App oder ausserhalb der Parkverbotszone.',
+  lede: 'Ein E-Trottinett in Zürich mietest du in der App von Lime, Bolt, Bird, Voi, Dott, Hopp oder PubliBike: QR-Code scannen, entsperren und auf dem Velostreifen losfahren, mit höchstens 20 km/h. Am günstigsten ist PubliBike mit CHF 1.– plus 20 Rappen pro Minute: Zehn Minuten kosten dort CHF 3.–, bei Hopp CHF 5.–, bei Bolt und Voi CHF 5.20 (CHF 1.– plus 42 Rappen), Stand November 2026. In der Altstadt und auf dem Bahnhofplatz kannst du die Fahrt nicht beenden: Parkiere in einer Parkierzone der App oder ausserhalb der Parkverbotszone.',
   published: '2026-10-12',
   updated: '2026-10-23',
   city: 'ch:zurich',
@@ -39,22 +39,22 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Zürich?',
       blocks: [
-        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Bolt, Hopp, Voi, Dott und Lime veröffentlichen ihre Tarife in offenen Datenfeeds; die Tabelle zeigt sie mit Stand vom 12. Oktober 2026 (Lime vom 15., Dott vom 23. Oktober), dazu den Tarif von PubliBike aus seiner eigenen Preisliste. Je nach Zone und Tageszeit können die Preise abweichen; den Endpreis zeigt die App vor der Fahrt.',
+        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Die Tabelle zeigt die veröffentlichten Tarife, Stand November 2026; je nach Zone können sie abweichen. Den Endpreis zeigt dir jede App vor dem Entsperren, auch die von Bird.',
         {
           table: {
-            caption: 'Veröffentlichte Tarife für E-Trottinette in Zürich (Feeds vom 12., 15. und 23. Oktober 2026; PubliBike: publibike.ch, Oktober 2026)',
-            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten'],
+            caption: 'Veröffentlichte Tarife für E-Trottinette in Zürich, Stand November 2026',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['PubliBike (publibike.ch, Oktober 2026)', 'CHF 1.–', '20 Rappen', 'CHF 3.–'],
-              ['Hopp', 'CHF 1.–', '40 Rappen', 'CHF 5.–'],
-              ['Dott', 'CHF 1.–', '41 Rappen', 'CHF 5.10'],
-              ['Bolt', 'CHF 1.–', '42 Rappen (einzelne zu 48 Rappen)', 'CHF 5.20'],
-              ['Voi', 'CHF 1.–', '42 Rappen (einige zu 39 Rappen)', 'CHF 5.20'],
-              ['Lime', 'CHF 1.–', '40 bis 49 Rappen, je nach Tageszeit', 'CHF 5.– bis CHF 5.90'],
+              ['PubliBike', 'CHF 1.–', '20 Rappen', 'CHF 3.–', 'CHF 5.–'],
+              ['Hopp', 'CHF 1.–', '40 Rappen', 'CHF 5.–', 'CHF 9.–'],
+              ['Dott', 'CHF 1.–', '41 Rappen', 'CHF 5.10', 'CHF 9.20'],
+              ['Bolt', 'CHF 1.–', '42 Rappen (einzelne zu 48 Rappen)', 'CHF 5.20', 'CHF 9.40'],
+              ['Voi', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
+              ['Lime (zzgl. MWST)', 'CHF 1.–', '42 oder 49 Rappen', 'CHF 5.20 oder 5.90', 'CHF 9.40 oder 10.80'],
             ],
           },
         },
-        'Bei Bird siehst du den Preis in der App, bevor du entsperrst. Lime kennzeichnet seine Tarife im Feed als Preise ohne Steuern; den Endpreis zeigt die App. Das Jahresabo von PubliBike für CHF 69.– macht seine E-Trottinette nicht günstiger. Eine durchschnittliche Fahrt ist in Zürich rund 1,5 km lang und dauert etwa 10 Minuten, sagt der Chef der städtischen Verkehrssicherheit. Wie Zürich im Vergleich zu anderen Städten abschneidet, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
+        '**Welcher Anbieter ist am günstigsten?** PubliBike: Zehn Minuten kosten CHF 3.–, zwanzig CHF 5.–. Danach kommen Hopp (CHF 5.– und 9.–) und Dott (CHF 5.10 und 9.20); Bolt und Voi verlangen CHF 5.20 und 9.40. Bei Lime kosten zehn Minuten CHF 5.20 oder 5.90, zuzüglich MWST. Das Jahresabo von PubliBike für CHF 69.– macht seine E-Trottinette nicht günstiger. Eine durchschnittliche Fahrt ist in Zürich rund 1,5 km lang und dauert etwa 10 Minuten, sagt der Chef der städtischen Verkehrssicherheit. Wie Zürich im Vergleich zu anderen Städten abschneidet, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },
     {
@@ -135,6 +135,10 @@ const guide: Guide = {
   ],
   faq: [
     {
+      question: 'Welche App brauche ich für ein E-Trottinett in Zürich?',
+      answer: 'Die App des Anbieters, dessen Trotti du nimmst: Lime, Bolt, Bird, Voi, Dott, Hopp oder PubliBike. Lime kannst du in Zürich auch über die Uber-App mieten. Die [Live-Karte von Zürich](map:ch:zurich) zeigt die Trottis aller sieben Marken, und ein Tippen öffnet die passende App.',
+    },
+    {
       question: 'Können Touristen in Zürich ein E-Trottinett mieten?',
       answer: 'Ja, ab 18: Du registrierst dich in der App und zahlst mit Karte. Ohne Wohnsitz in der Schweiz musst du eine Ordnungsbusse allerdings sofort bezahlen oder eine Kaution hinterlegen.',
     },
@@ -144,7 +148,7 @@ const guide: Guide = {
     },
     {
       question: 'Gilt in Zürich eine Helmpflicht für E-Trottinette?',
-      answer: 'Nein, in der Schweiz gibt es für E-Trottinette keine Helmpflicht. Die BFU empfiehlt aber nachdrücklich einen Helm, und Dott warnt, dass Kopfverletzungen ohne Helm womöglich nicht gedeckt sind. Im August 2026 erklärte sich der Bundesrat bereit, eine Helmpflicht für E-Trottinette bei der nächsten Verordnungsanpassung in die Vernehmlassung zu geben; einen Entwurf oder ein Datum gibt es noch nicht.',
+      answer: 'Nein, in der Schweiz gibt es für E-Trottinette keine Helmpflicht. Die BFU empfiehlt aber nachdrücklich einen Helm, und Dott warnt, dass Kopfverletzungen ohne Helm womöglich nicht gedeckt sind. Im August 2026 erklärte sich der Bundesrat bereit, eine Helmtragepflicht für E-Trottinette bei einer nächsten Verordnungsanpassung in der Vernehmlassung zur Diskussion zu stellen.',
     },
     {
       question: 'Wie viele E-Trottinette gibt es in Zürich?',
@@ -167,6 +171,12 @@ const guide: Guide = {
     { title: 'Stadt Zürich, Kampagne Street Smart: E-Trottinett', url: 'https://www.stadt-zuerich.ch/artikel/de/kampagne/street-smart/e-trottinett.html' },
     { title: 'TCS Zürich: Interview mit dem Chef der städtischen Verkehrssicherheit, September 2026', url: 'https://www.tcs.ch/de/der-tcs/sektionen/zuerich/news/verkehrssicherheit-10-26.php' },
     { title: 'Ordnungsbussenverordnung (OBV), Bussenliste', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: offene Daten von Bolt Zürich (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_zurich/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime Zürich (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_zurich/gbfs' },
+    { title: 'Hopp: Tarife in Zürich (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-zurich/gbfs.json' },
+    { title: 'Dott: offener Datenfeed für Zürich (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/zurich/gbfs.json' },
+    { title: 'Curia Vista: Motion 26.3637 «Zulassungspflicht und zwingender Abschluss einer Haftpflichtversicherung für E-Trottinette und andere motorisierte Fortbewegungsmittel für Einzelpersonen», mit der Stellungnahme des Bundesrats', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
   ],
 };
 

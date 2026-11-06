@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-trottinett-basel',
   topic: 'basel',
   name: 'E-Trottinett Basel: Anbieter, Preise, Zonen',
-  title: 'E-Trottinett Basel 2026: Anbieter, Preise, Sperrzonen',
-  description: 'E-Trottinett Basel: sechs Anbieter, was zehn Minuten kosten, wo das Trotti in der Altstadt stoppt, warum du am Rhein nicht parkierst und was an Anlässen gilt.',
+  title: 'E-Trottinett Basel mieten 2026: Apps, Preise, Sperrzonen',
+  description: 'E-Trottinett in Basel mieten: sechs Apps, wer am günstigsten ist, wo das Trotti in der Altstadt stoppt, warum du am Rhein nicht parkierst, was an Anlässen gilt.',
   headline: 'E-Trottinett Basel: Anbieter, Preise, Sperrzonen und Parkieren am Rhein',
-  lede: 'Ein E-Trottinett in Basel mietest du in der App von Lime, Voi, Dott, Bird, Bolt oder Hopp: QR-Code scannen, entsperren und auf dem Velostreifen losfahren. Zehn Minuten kosten CHF 4.90 bis 5.60: CHF 1.– fürs Entsperren plus 39 bis 46 Rappen pro Minute (veröffentlichte Tarife vom 23. Oktober 2026). In der Altstadt, etwa auf dem Marktplatz oder in der Freien Strasse, bremst das Trotti bis zum Stillstand, und auf den Rheinbrücken kannst du die Fahrt nicht beenden. Nach Deutschland, nach Frankreich und an den EuroAirport kommst du damit nicht.',
+  lede: 'Ein E-Trottinett in Basel mietest du in der App von Lime, Voi, Dott, Bird, Bolt oder Hopp: QR-Code scannen, entsperren und auf dem Velostreifen losfahren. Am günstigsten sind Dott und Voi mit CHF 1.– fürs Entsperren plus 39 Rappen pro Minute: Zehn Minuten kosten dort CHF 4.90, bei Bolt und Hopp CHF 5.50 (Stand November 2026). In der Altstadt, etwa auf dem Marktplatz oder in der Freien Strasse, bremst das Trotti bis zum Stillstand, und auf den Rheinbrücken kannst du die Fahrt nicht beenden. Nach Deutschland, nach Frankreich und an den EuroAirport kommst du damit nicht.',
   published: '2026-10-12',
   updated: '2026-10-23',
   city: 'ch:basel',
@@ -31,21 +31,21 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Basel?',
       blocks: [
-        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Lime, Voi, Dott, Bolt und Hopp veröffentlichen ihre Basler Tarife in offenen Datenfeeds. Je nach Zone und Tageszeit können sie abweichen; Bolt nennt seinen Minutenpreis selbst variabel. Den Endpreis zeigt dir die App, bevor du entsperrst.',
+        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Die Tabelle zeigt die veröffentlichten Basler Tarife, Stand November 2026; je nach Zone können sie abweichen, und Bolt nennt seinen Minutenpreis selbst variabel. Den Endpreis zeigt dir die App, bevor du entsperrst.',
         {
           table: {
-            caption: 'Veröffentlichte Tarife für E-Trottinette in Basel (Datenfeeds der Anbieter vom 23. Oktober 2026)',
+            caption: 'Veröffentlichte Tarife für E-Trottinette in Basel, Stand November 2026',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Dott', 'CHF 1.–', '39 Rappen', 'CHF 4.90', 'CHF 8.80'],
               ['Voi', 'CHF 1.–', '39 Rappen', 'CHF 4.90', 'CHF 8.80'],
               ['Bolt', 'CHF 1.–', '45 Rappen', 'CHF 5.50', 'CHF 10.–'],
               ['Hopp', 'CHF 1.–', '45 Rappen', 'CHF 5.50', 'CHF 10.–'],
-              ['Lime', 'CHF 1.–', '46 Rappen', 'CHF 5.60', 'CHF 10.20'],
+              ['Lime (zzgl. MWST)', 'CHF 1.–', '46 Rappen', 'CHF 5.60', 'CHF 10.20'],
             ],
           },
         },
-        'An diesem Tag waren Dott und Voi am günstigsten und Lime am teuersten; nach 20 Minuten macht das CHF 1.40 aus. Bolt verkauft Wochen- und Monatspässe und verlangt laut eigener Website zu Stosszeiten vor dem Entsperren einen kurzen Reaktionstest. Ob die anderen in Basel Pässe anbieten, siehst du in ihrer App.',
+        '**Welcher Anbieter ist am günstigsten?** Dott und Voi: Zehn Minuten kosten CHF 4.90, zwanzig CHF 8.80. Bei Bolt und Hopp sind es CHF 5.50 und 10.–, bei Lime CHF 5.60 und 10.20, zuzüglich MWST. Bolt verkauft Wochen- und Monatspässe und verlangt laut eigener Website zu Stosszeiten vor dem Entsperren einen kurzen Reaktionstest.',
       ],
     },
     {
@@ -133,7 +133,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Velospot** von PubliBike ist das Bikesharing, das der Kanton bestellt: Velos und E-Bikes, das ganze Jahr. Mit dem Code RIDEBASEL bekommst du ein Monatsabo gratis, 30 Tage gültig im Netz Basel-Hochrhein: Mit dem Velo sind die ersten 30 Minuten jeder Fahrt gratis, mit dem E-Bike kosten die ersten 15 Minuten CHF 2.– und die nächsten 15 CHF 1.– (Stand Oktober 2026). Entsperren kannst du per App oder SwissPass; fahren darfst du in Basel schon ab 14, mit Mofa-Ausweis (Kategorie M) und Einwilligung der Eltern.',
+            '**Velospot** von PubliBike ist das Bikesharing, das der Kanton bestellt: Velos und E-Bikes, das ganze Jahr. Mit dem Jahresabo B-Fit Local Basel für CHF 69.– sind mit dem Velo die ersten 30 Minuten jeder Fahrt gratis, mit dem E-Bike kosten die ersten 15 Minuten CHF 2.– und die nächsten 15 CHF 1.–, danach 20 Rappen pro Minute (Stand November 2026). Entsperren kannst du per App oder SwissPass; fahren darfst du in Basel schon ab 14, mit Mofa-Ausweis (Kategorie M) und Einwilligung der Eltern.',
             '**Pick-e-Bike** vermietet E-Bikes und E-Scooter mit Sitz, die eher E-Mopeds sind; welchen Ausweis du dafür brauchst, zeigt die App.',
             '**Carvelo** vermietet Cargo-Velos.',
           ],
@@ -155,6 +155,10 @@ const guide: Guide = {
     },
   ],
   faq: [
+    {
+      question: 'Welche App brauche ich für ein E-Trottinett in Basel?',
+      answer: 'Die App des Anbieters, dessen Trotti du nimmst: Lime, Voi, Dott, Bird, Bolt oder Hopp. Am günstigsten fährst du mit Dott und Voi, zehn Minuten kosten dort CHF 4.90 (Stand November 2026). Die [Live-Karte von Basel](map:ch:basel) zeigt die Trottis aller sechs Marken.',
+    },
     {
       question: 'Wo melde ich ein falsch parkiertes E-Trottinett in Basel?',
       answer: 'Auf trotti-melder.ch, auf das auch der Kanton verweist, oder bei der Hotline des Anbieters, die täglich von 7 bis 19 Uhr erreichbar sein muss. Der Anbieter muss Beschwerden innert 12 Stunden erledigen. Versperrt ein Trotti eine Durchfahrt oder behindert es den Verkehr, wird es ohne Vorwarnung abgeschleppt.',
@@ -183,6 +187,12 @@ const guide: Guide = {
     { title: 'Herbstmesse Basel: Daten 2026', url: 'https://www.herbstmesse.ch/' },
     { title: 'PubliBike: Velospot in Basel', url: 'https://www.publibike.ch/de/basel' },
     { title: 'Ordnungsbussenverordnung (OBV), Bussenliste', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'PubliBike: Preise & Abos', url: 'https://www.publibike.ch/de/abos' },
+    { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: offene Daten von Bolt Basel (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_basel/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime Basel (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_basel/gbfs' },
+    { title: 'Hopp: Tarife in Basel (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-basel/gbfs.json' },
+    { title: 'Dott: offener Datenfeed für Basel (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/basel/gbfs.json' },
   ],
 };
 

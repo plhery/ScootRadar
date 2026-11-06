@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'gainesville',
   name: 'E-scooters in Gainesville, Florida',
   title: 'E-scooters in Gainesville, Florida 2026: Bird, Veo, Spin, UF',
-  description: 'E-scooters in Gainesville: Bird, Spin and Veo, the Florida, City and UF rules, campus parking zones, the midnight stop, Depot Park, RTS and the airport.',
+  description: 'E-scooters in Gainesville: Bird, Spin and Veo, Veo at $1 + $0.37 a minute, rides from 6 am to midnight, the Florida, City and UF rules, campus parking and RTS.',
   headline: 'E-scooters in Gainesville: Bird, Spin and Veo, the rules, UF’s parking zones and where you can’t ride',
-  lede: 'E-scooters in Gainesville come from three companies, Bird, Spin and Veo, under City permits that the University of Florida must also approve. On 22 October 2026 Veo’s open data listed $1 to unlock and $0.37 a minute plus tax; Bird’s and Spin’s apps show their prices before you unlock. You must be 18 or over to rent from Bird or Spin, scooters run only from 6 am to midnight, and on the UF campus you can end a ride only in a marked scooter parking zone.',
+  lede: 'Electric scooter rental in Gainesville, Florida, comes from three companies, Bird, Spin and Veo, under City permits that the University of Florida must also approve. As of November 2026 a Veo costs $1 to unlock and $0.37 a minute plus tax, so a 10-minute ride costs $4.70. Scooters can be rented from 6 am to midnight, you must be 18 or over to rent from Bird or Spin, and on the UF campus you can end a ride only in a marked scooter parking zone.',
   published: '2026-10-23',
   updated: '2026-10-23',
   city: 'us:fl:Gainesville',
@@ -26,16 +26,16 @@ const guide: Guide = {
         },
         'The Code allows no more than three companies at a time. Each permit lasts a year, and each company also needs UF’s approval to run on campus. A company starts with 100 to 200 vehicles and may ask for more, up to 50 at a time; the City’s mobility director may cap the total at 400 per company, or 1,200 in all.',
         'On the afternoon of 22 October 2026 the [Gainesville map](map:us:fl:Gainesville) showed about 160 Bird, 150 Veo and 135 Spin scooters, some 445 in all: what was on the map at that moment, not the fleets. Most stood near campus: at 17:00 that day just over half were within 1 km of Century Tower.',
-        'Install an app and add a card before you set out; [how to rent an e-scooter](guide:how-to-rent) explains the rest.',
+        '**To rent one**, Bird’s steps are typical: download the app, create an account and add a payment method (Bird may ask to verify your ID), find a scooter on the app’s map and scan the QR code on its handlebars. At the end, park it properly and take the photo the app asks for. [How to rent an e-scooter](guide:how-to-rent) explains the rest.',
       ],
     },
     {
       heading: 'How much does a scooter cost in Gainesville?',
       blocks: [
-        'Veo’s open data listed its Gainesville price on 22 October 2026: $1 to unlock, then $0.37 a minute, plus tax.',
+        'As of November 2026 Veo’s open data gives its Gainesville price: $1 to unlock, then $0.37 a minute, plus tax.',
         {
           table: {
-            caption: 'A Veo ride at the rate listed on 22 October 2026, before tax',
+            caption: 'A Veo ride in Gainesville as of November 2026, before tax',
             head: ['Ride', 'Price'],
             rows: [
               ['10 minutes', '$4.70'],
@@ -120,7 +120,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a scooter at night in Gainesville?',
       blocks: [
-        { note: '**Scooters stop at midnight.** UF’s TAPS says scooters can be rented each day from 6 am to midnight. The City Code makes the companies switch their fleets off each night and keep them off for riders until 6 am.' },
+        { note: '**Scooters stop at midnight.** As of November 2026 UF’s TAPS says scooters can be rented each day from 6 am to midnight. The City Code makes the companies switch their fleets off each night and keep them off for riders until 6 am.' },
         'Older articles give a 10 pm stop: the 2020 ordinance set it and the scooters launched with it in June 2021, WUFT reported; on 20 October 2022 the City Commission voted to allow later hours.',
         'After dark you need lights, and after midnight another way home. For current UF students, SNAP, UF’s free night van service, runs between its stops from 8:30 pm to 3 am; book it in the UF SNAP by Spare app.',
       ],
@@ -150,6 +150,18 @@ const guide: Guide = {
     {
       question: 'Which scooter companies operate in Gainesville?',
       answer: 'Bird, Spin and Veo, under one-year permits from the City of Gainesville, which allows no more than three companies at a time. Each also needs UF’s approval to run on campus.',
+    },
+    {
+      question: 'How much does a scooter cost in Gainesville?',
+      answer: 'As of November 2026 Veo charges $1 to unlock and $0.37 a minute, plus tax: $4.70 for 10 minutes and $8.40 for 20, before tax.',
+    },
+    {
+      question: 'How do you rent a scooter in Gainesville?',
+      answer: 'Download the Bird, Spin or Veo app, create an account and add a payment method. Find a scooter on the app’s map, scan its QR code and ride; at the end, park it properly and take the photo the app asks for. On the UF campus you can end a ride only in a marked scooter parking zone.',
+    },
+    {
+      question: 'Where can I find an e-scooter near me in Gainesville?',
+      answer: 'In the Bird, Spin and Veo apps, or on our [Gainesville map](map:us:fl:Gainesville), which shows all three. On the afternoon of 22 October 2026 most stood on and around the UF campus. You can rent one from 6 am to midnight.',
     },
     {
       question: 'What time do scooters stop in Gainesville?',
