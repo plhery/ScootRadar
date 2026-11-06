@@ -484,8 +484,8 @@ subrequest limitation; prefer rolling back the cache image.
 
 Parking is an optional field in the existing scooter response and snapshot
 format; old clients and persisted snapshots remain readable. Deploy the cache
-before the clients, then verify `/health` reports `parkingLocations > 0` and an
-empty `failedParkingFeeds` list. A French request at zoom 16 includes `parking`
+before the clients, then verify `/health` (with the metrics token, or from inside
+the container) reports `parkingLocations > 0` and an empty `failedParkingFeeds` list. A French request at zoom 16 includes `parking`
 and `meta.parkingStatus`; zoom 15 and below omit individual parking locations.
 
 

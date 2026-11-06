@@ -1951,7 +1951,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "decimals": 0
         },
         "overrides": []
       },
@@ -2017,7 +2018,8 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "decimals": 0
         },
         "overrides": []
       },
@@ -2083,7 +2085,8 @@
                 "value": 50
               }
             ]
-          }
+          },
+          "decimals": 0
         },
         "overrides": []
       },
@@ -2149,7 +2152,8 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "decimals": 0
         },
         "overrides": []
       },
