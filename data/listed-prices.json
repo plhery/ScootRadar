@@ -240,6 +240,19 @@
     },
     {
       "systems": [
+        "voi_gb_app_229"
+      ],
+      "currency": "GBP",
+      "unlock_fee_minor_units": 99,
+      "minute_fee_minor_units": 24,
+      "plus_tax": false,
+      "source": "city",
+      "url": "https://www.oxfordshire.gov.uk/residents/roads-and-transport/connecting-oxfordshire/active-travel/e-scooter-trial",
+      "quote": "It costs 99p to unlock the scooter and then 24p per minute of the ride.",
+      "checked": "2026-11-06"
+    },
+    {
+      "systems": [
         "lime_hu_app_miskolc"
       ],
       "currency": "HUF",
