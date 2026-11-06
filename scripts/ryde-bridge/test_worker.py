@@ -120,4 +120,16 @@ class ServeTests(unittest.TestCase):
         waits=self.run_serve(replies,[timeout,timeout,timeout,'ok'],5)
         self.assertEqual(waits,[60,60,60,840,0]);self.assertEqual(self.held,['AppFailing'])
 
+    def test_exhausted_datacenter_budget_waits_before_leasing_another_job(self):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name)
+            def stop(seconds,path):
+                self.assertGreater(seconds,100)
+                path.write_text('{}')
+            with patch('worker.egress.available_at',return_value=time.time()+120), \
+                 patch('worker.broker') as broker,patch('worker.wait_interval',side_effect=stop):
+                serve({},base)
+            broker.assert_not_called()
+            self.assertEqual(json.loads((base/'worker-status.json').read_text())['reason'],'DatacenterBudget')
+
 if __name__=='__main__':unittest.main()

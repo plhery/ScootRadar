@@ -75,6 +75,7 @@ class Producer(BridgeTrial):
         private_json(ROOT/'proxy-ready.json', {'pid':os.getpid(),'at':time.time()}, replace=True)
 
     def request(self, flow):
+        if flow.metadata.get('egressDenied'): return
         path = origin_path(flow)
         if path in {MAP, ROTATE}:
             fields=dict(parse_qsl((flow.request.content or b'').decode()))
@@ -162,6 +163,7 @@ class Producer(BridgeTrial):
         self.event('upstream-refused',httpStatus=flow.response.status_code,path=urlsplit(flow.request.url).path[:80])
 
     def response(self, flow):
+        if flow.metadata.get('egressDenied'): return
         self.note_refusal(flow)
         if origin_path(flow)==LOGIN and self.stage in {'needs-sign-in','native-restored'}:
             reply=json.loads(flow.response.content)

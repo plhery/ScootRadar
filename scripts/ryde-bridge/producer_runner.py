@@ -40,6 +40,11 @@ def main():
                 command=[transport.CONFIG['mitmdump'],'--listen-host','127.0.0.1','--listen-port','8897',
                     '--allow-hosts',r'^api\.ryde\.vip(:443)?$','--certs','api.ryde.vip='+str(ROOT/'leaf.pem'),
                     '--set','confdir='+str(ROOT/'mitm-conf'),'--set','flow_detail=0','--set','termlog_verbosity=warn']
+                if transport.CONFIG.get('datacenterEgressRequired') or (PRODUCER/'egress-config.json').exists():
+                    # Placeholder is deliberately unreachable: an addon/config failure cannot go direct.
+                    command+=['--mode','upstream:http://127.0.0.1:9',
+                        '--set','connection_strategy=lazy','--set','upstream_cert=false',
+                        '-s',str(ROOT/'egress_addon.py')]
                 if not (PRODUCER/'stopped.json').exists(): command+=['-s',str(ROOT/'producer_addon.py')]
                 env=dict(os.environ,RYDE_PRODUCER_ROOT=str(PRODUCER),PYTHONPATH=str(ROOT)+os.pathsep+str(Path.home()/'.local/share/scootradar/ryde-login'))
                 with (PRODUCER/'proxy.log').open('a') as log:

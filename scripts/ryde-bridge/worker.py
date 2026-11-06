@@ -12,6 +12,7 @@ import http.client
 import uuid
 import math
 import re
+import egress
 
 ROOT=Path.home()/'.local/share/scootradar/ryde-bridge'
 # Once Ryde refuses the app, or the app fails to bring a map FAILURES_BEFORE_HOLD times in a row, the
@@ -52,6 +53,9 @@ def relaunch(root=ROOT, after_quit=None):
             ready=json.loads((root/'producer/proxy-ready.json').read_text())
             transport=json.loads((root/'transport-status.json').read_text())
             if ready['pid']==transport['proxyPid']:
+                if egress.configured(root/'producer'):
+                    route=json.loads((root/'producer/egress-ready.json').read_text())
+                    if route['pid']!=ready['pid']:time.sleep(.25);continue
                 os.kill(ready['pid'],0);break
         except (FileNotFoundError,ProcessLookupError): pass
         time.sleep(.25)
@@ -67,6 +71,7 @@ def relaunch(root=ROOT, after_quit=None):
     lifecycle_event('before-quit')
     subprocess.run([str(helper),'quit'],check=True,timeout=12)
     lifecycle_event('after-quit')
+    egress.begin_cycle(root/'producer')
     if after_quit is not None: after_quit()
     time.sleep(2)
     try:
@@ -168,6 +173,10 @@ def serve(config, base):
         if time.time()<hold_until:
             save(base/'worker-status.json',{'state':'held','reason':reason,'until':hold_until,'at':time.time()})
             wait_interval(hold_until-time.time(),stop);continue
+        available=egress.available_at(base)
+        if available>time.time():
+            save(base/'worker-status.json',{'state':'held','reason':'DatacenterBudget','until':available,'at':time.time()})
+            wait_interval(available-time.time(),stop);continue
         try:
             job=broker(config,'GET','/internal/ryde/job')
             retry=BROKER_RETRY

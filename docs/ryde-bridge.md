@@ -1,6 +1,9 @@
 # Ryde bridge implementation and rollout
 
-Status on 4 November 2026: **production rollout to all 83 official Ryde cities**.
+The catalog covers **all 83 official Ryde cities**. The native Mac bridge uses
+the configured datacenter pool below; the original Mac connection is held after
+an upstream refusal. A successful native map does not establish complete fleet
+coverage or an upstream request allowance.
 The operator explicitly waived the separate overnight gate: production is the
 continued uptime test. Existing public feeds keep 19 named city areas; the Mac
 bridge adds the other 64 (4 Norway, 25 Sweden, 15 Finland, 20 Germany). Each
@@ -51,6 +54,10 @@ request cost and city-by-city completeness remain production observations.
   certificate/PAC transport, addon readiness handshake. Its PAC removes DIRECT
   fallback for api.ryde.vip so a proxy restart cannot silently move a key rotation
   outside the bridge. Existing connections/PAC caches remain a live-test concern.
+- `egress.py`, `egress_addon.py`: private datacenter configuration and rolling-hour
+  HTTP accounting in local SQLite. Every Ryde HTTP attempt is charged before
+  forwarding, including startup, metadata, renewal, background and failed calls.
+  Counts survive process restarts. An upstream refusal holds the entire pool.
 - `worker.py`: one process lock, query deadline, app trigger, private result spool,
   outbound authenticated HTTPS broker polling (ScootRadar-Ryde-Worker client identifier), idempotent submission, held state
   on failure. Native key-renewal opportunities continue through idle relaunches.
@@ -69,6 +76,65 @@ request. Add account parallelism only after measured need and separate authorize
 sessions. No native token, DPoP proof, cookie, encryption key or hardware ID belongs
 on the cache server or in logs. The ID HMAC key is stable, mode 0600, on the Mac.
 E-bikes are excluded; battery/range/provider position-update time remain unknown.
+
+## Datacenter egress
+
+The supervised transport can route through the existing paid datacenter pool.
+It retains the same Ryde-only PAC and certificate scope. The private
+`producer/egress-config.json` is mode 0600 and has this shape (synthetic values):
+
+```json
+{
+  "version": 1,
+  "maxRequestsPerHour": 200,
+  "gateways": [
+    { "host": "192.0.2.10", "port": 8000, "username": "example", "password": "example" }
+  ]
+}
+```
+
+Use fixed datacenter IP addresses, one entry per distinct IP, at most 100.
+The installed transport's private `config.json` also sets
+`datacenterEgressRequired: true`. A missing or invalid pool then fails closed;
+it cannot restore direct Mac egress. Proxy authentication is added only to the
+upstream CONNECT request and never to Ryde's HTTP request or command arguments.
+The native request proof, response translation and recovery protocol are unchanged.
+
+After gracefully quitting Ryde, the worker selects the least-used IP with room
+for 50 calls and pins it for that launch. Connections are pooled by their upstream
+gateway, so reusing a native connection cannot silently reuse a different IP.
+Each actual HTTP request is separately checked against **200 in a rolling hour**.
+The selected launch expires after 150 seconds; background traffic outside it is
+refused locally. The 50-call headroom is conservative and is not a claim that an
+app launch always makes exactly that many requests. Native startup has already
+been observed to make about 30–40 calls per map, rather than just a map and two
+fence requests. All calls count, including ones without a successful response.
+
+When no launch fits, the worker waits before asking the broker for another job.
+A real Ryde 403/429 pauses the entire pool for at least 15 minutes, in addition
+to the worker's increasing refusal backoff; it does not immediately move the
+refused request to another IP. Failed accounting also prevents forwarding.
+
+Inspect private, credential-free counters with:
+
+```sh
+python3 ~/.local/share/scootradar/ryde-bridge/egress.py
+```
+
+Output contains hashed gateway identities, rolling request counts and HTTP byte
+counters. Byte counters exclude TLS/proxy overhead and are not the provider's
+billed bandwidth. `egress.sqlite3` retains approximately one day of attempts;
+the endpoint/status journal rotates at 8 MiB with one previous file. Credentials,
+proofs and payloads are absent from this journal. Operating-fence response caching
+is not implemented: the native app still fetches its metadata normally.
+
+To pause collection, boot out only `com.scootradar.ryde-worker`. Keep the proxy,
+the required-route setting, pool config and session recovery files. For rollback,
+leave the worker paused and preserve datacenter routing while recovering native
+key ownership; do not remove the pool config to force a direct connection.
+The normal clean-stop operation still needs an available egress budget and may
+need to wait for a refusal hold to end. Resume with the existing install command
+after verifying the route, session and proxy readiness.
 
 ## Install and resume
 

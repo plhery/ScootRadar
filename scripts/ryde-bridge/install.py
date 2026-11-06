@@ -8,7 +8,7 @@ import shutil
 import subprocess
 import sys
 
-FILES=['producer_addon.py','producer_runner.py','native_protocol.py','bridge_crypto.py','worker.py','shadow.py']
+FILES=['producer_addon.py','producer_runner.py','native_protocol.py','bridge_crypto.py','worker.py','shadow.py','egress.py','egress_addon.py']
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--restart',action='store_true');p.add_argument('--shadow-hours',type=float);p.add_argument('--worker',action='store_true');args=p.parse_args()
@@ -70,6 +70,9 @@ def main():
             'StandardOutPath':str(root/'producer/worker.log'),'StandardErrorPath':str(root/'producer/worker.log')}
         target.write_bytes(plistlib.dumps(value))
         subprocess.run(['launchctl','bootout',uid+'/'+label],capture_output=True)
+        # An operator pause may have left a persistent launchd disabled override.
+        # --worker is an explicit resume, so enable this agent before bootstrapping it.
+        subprocess.run(['launchctl','enable',uid+'/'+label],check=True)
         fcntl.flock(lock,fcntl.LOCK_UN)
         subprocess.run(['launchctl','bootstrap',uid,str(target)],check=True)
         print('Production worker started under normal-user launchd.')
