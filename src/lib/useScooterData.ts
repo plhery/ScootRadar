@@ -51,6 +51,8 @@ export interface ScooterData {
   failure: LoadFailure | null;
   /** The scooters were removed because they expired and could not be refreshed. */
   outOfDate: boolean;
+  /** Nobody has touched the page for IDLE_PAUSE_MS, so it no longer refreshes on its own; the next touch refreshes it. */
+  paused: boolean;
   /** Fetches at once, for "Try again" and "Refresh". Resolves to whether it succeeded. */
   refresh: () => Promise<boolean>;
 }
@@ -80,6 +82,8 @@ function createScooterDataController() {
   let refreshTimer: number | null = null;
   let parkingTimer: number | null = null;
   let onOutOfDate: (() => void) | undefined;
+  // The last touch, click, key or return to the foreground: the map pauses IDLE_PAUSE_MS after it.
+  let lastInteractionAt = Date.now();
   const listeners = new Set<() => void>();
 
   const apply = (event: ScooterDataEvent) => {
@@ -113,8 +117,10 @@ function createScooterDataController() {
       returning,
       requestInFlight: request !== null || debounceTimer !== null,
       hasQuery: query !== null,
+      lastInteractionAt,
     });
-    if (decision.action === 'refresh') void load();
+    if (decision.action === 'pause') apply({ type: 'paused', paused: true });
+    else if (decision.action === 'refresh') void load();
     else if (decision.at !== null) refreshTimer = window.setTimeout(() => schedule(), Math.max(0, decision.at - now));
   };
 
@@ -182,7 +188,18 @@ function createScooterDataController() {
     return response !== null;
   };
 
+  // Any touch, click, wheel or key counts, wherever it lands: a paused map refreshes at once.
+  const onInteraction = () => {
+    lastInteractionAt = Date.now();
+    if (!state.paused) return;
+    apply({ type: 'paused', paused: false });
+    schedule(true);
+  };
+  const INTERACTIONS = ['pointerdown', 'keydown', 'wheel', 'touchstart'] as const;
+
   const onVisibilityChange = () => {
+    if (document.visibilityState === 'visible') lastInteractionAt = Date.now();
+    if (state.paused && document.visibilityState === 'visible') apply({ type: 'paused', paused: false });
     apply({ type: 'parkingChecked', now: Date.now() });
     syncParkingTimer();
     // Back in the foreground: refresh at once when due, and keep what is on
@@ -200,12 +217,15 @@ function createScooterDataController() {
     start() {
       active = true;
       document.addEventListener('visibilitychange', onVisibilityChange);
+      for (const type of INTERACTIONS) window.addEventListener(type, onInteraction, { capture: true, passive: true });
+      lastInteractionAt = Date.now();
       syncParkingTimer();
       schedule();
     },
     stop() {
       active = false;
       document.removeEventListener('visibilitychange', onVisibilityChange);
+      for (const type of INTERACTIONS) window.removeEventListener(type, onInteraction, { capture: true });
       // Whatever was cancelled here is requested again if the page starts over.
       if (request || debounceTimer !== null) wantedKey = null;
       request?.controller.abort();
@@ -276,6 +296,7 @@ export function useScooterData(query: ScooterDataQuery | null, options: ScooterD
     answersQuery,
     failure: state.failure,
     outOfDate: state.outOfDate,
+    paused: state.paused,
     refresh: controller.refresh,
   }), [answersQuery, controller, loading, state]);
 }

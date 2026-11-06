@@ -2230,6 +2230,14 @@ svg {
 .load-banner > svg {
   color: var(--danger-ink);
 }
+/* Paused after half an hour without a touch (IDLE_PAUSE_MS): no error, and no button, as any touch refreshes. */
+.load-banner.paused-banner {
+  min-height: 44px;
+  padding-right: 14px;
+}
+.load-banner.paused-banner > svg {
+  color: var(--ink-2);
+}
 .load-banner button {
   flex-shrink: 0;
   min-height: 44px;

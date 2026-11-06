@@ -14,6 +14,8 @@ interface MapNoticesProps {
   loading: boolean;
   /** Why the last attempt to locate failed; null once it is dismissed or retried. */
   locationError: LiveLocationError | null;
+  /** Nobody has touched the page for half an hour, so the scooters no longer refresh until a touch. */
+  paused?: boolean;
   hidden: boolean;
   onRetryLoad: () => void;
   onRetryLocate: () => void;
@@ -30,6 +32,7 @@ export default function MapNotices({
   loadFailure,
   loading,
   locationError,
+  paused = false,
   hidden,
   onRetryLoad,
   onRetryLocate,
@@ -74,6 +77,13 @@ export default function MapNotices({
       {/* Always there: a screen reader says what comes to stand in an announcing
           element that is already on the page, not one that arrives with its text. */}
       <div className="map-status" role="status">
+        {/* Any touch, click or key refreshes, wherever it lands (useScooterData). */}
+        {paused && !loadFailure && (
+          <div className="load-banner paused-banner glass">
+            <Icon name="refresh" size={17} strokeWidth={2.2} />
+            <span>{t('dock.paused')}</span>
+          </div>
+        )}
         {locationError && (
           <div className="location-card glass">
             <span className="location-card-symbol">

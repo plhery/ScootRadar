@@ -392,6 +392,7 @@ export default function Home() {
     answersQuery,
     failure,
     outOfDate,
+    paused,
     refresh,
   } = useScooterData(scooterQuery, { onOutOfDate: clearSelection });
   const zoneData = useZoneData(mapQuery, zonesOn);
@@ -1013,6 +1014,7 @@ export default function Home() {
         loadFailure={failureSurface({ failure, hasData, outOfDate }) === 'banner' ? failure : null}
         loading={loading !== null}
         locationError={locating || locationNoticeDismissed ? null : locationError}
+        paused={paused}
         hidden={searchExpanded}
         onRetryLoad={retryLoad}
         onRetryLocate={handleLocateMe}

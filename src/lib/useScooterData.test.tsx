@@ -158,6 +158,37 @@ describe('useScooterData', () => {
     expect(result.current).toMatchObject({ hasData: true, failure: null, outOfDate: false });
   });
 
+  it('stops refreshing half an hour after the last touch, says so, and refreshes at the next touch', async () => {
+    fetcher.mockImplementation(ok());
+    const { result } = mount();
+    await advance(180);
+    // A refresh a minute after each answer: the 30th falls past the half hour from the mount, so it pauses.
+    await advance(30 * 60_000);
+    expect(fetcher).toHaveBeenCalledTimes(30);
+    expect(result.current.paused).toBe(true);
+    await advance(3 * 60 * 60_000);
+    expect(fetcher).toHaveBeenCalledTimes(30);
+
+    act(() => { window.dispatchEvent(new Event('pointerdown')); });
+    await advance(0);
+    expect(fetcher).toHaveBeenCalledTimes(31);
+    expect(result.current.paused).toBe(false);
+    await advance(60_000);
+    expect(fetcher).toHaveBeenCalledTimes(32);
+  });
+
+  it('refreshes at once, unpaused, when the page comes back to the foreground', async () => {
+    fetcher.mockImplementation(ok());
+    const { result } = mount();
+    await advance(180 + 30 * 60_000);
+    expect(result.current.paused).toBe(true);
+    act(() => setVisibility('hidden'));
+    act(() => setVisibility('visible'));
+    await advance(0);
+    expect(fetcher).toHaveBeenCalledTimes(31);
+    expect(result.current.paused).toBe(false);
+  });
+
   it('refreshes at the interval the server names', async () => {
     fetcher.mockImplementation(ok());
     mount();

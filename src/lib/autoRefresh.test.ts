@@ -3,6 +3,7 @@ import {
   EXPIRY_LEAD_MS,
   MIN_ATTEMPT_GAP_MS,
   nextRefreshAt,
+  IDLE_PAUSE_MS,
   refreshDecision,
   refreshDueAt,
   type RefreshContext,
@@ -82,6 +83,15 @@ describe('refreshDueAt', () => {
 });
 
 describe('refreshDecision', () => {
+  it('pauses a refresh that is due half an hour after the last touch, and waits as before until then', () => {
+    expect(refreshDecision(context({ now: T0 + 60_000, lastInteractionAt: T0 + 60_000 - IDLE_PAUSE_MS + 1 })))
+      .toEqual({ action: 'refresh' });
+    expect(refreshDecision(context({ now: T0 + 60_000, lastInteractionAt: T0 + 60_000 - IDLE_PAUSE_MS })))
+      .toEqual({ action: 'pause' });
+    expect(refreshDecision(context({ now: T0 + 59_999, lastInteractionAt: T0 - IDLE_PAUSE_MS })))
+      .toEqual({ action: 'wait', at: T0 + 60_000 });
+  });
+
   it('waits until the refresh is due, then refreshes', () => {
     expect(refreshDecision(context({ now: T0 + 59_999 }))).toEqual({ action: 'wait', at: T0 + 60_000 });
     expect(refreshDecision(context({ now: T0 + 60_000 }))).toEqual({ action: 'refresh' });

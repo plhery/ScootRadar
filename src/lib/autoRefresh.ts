@@ -14,6 +14,13 @@ export const MIN_FOLLOW_UP_MS = 200;
 /** Refresh this long before the scooters on screen expire. */
 export const EXPIRY_LEAD_MS = 5_000;
 export const DEFAULT_REFRESH_AFTER_MS = 60_000;
+/**
+ * After this long without a touch, a click, a key or the page coming back to the foreground, the
+ * map stops refreshing on its own and says so; the next touch refreshes it. A map left open where
+ * nobody looks kept asking for the same view every minute, as one on Berlin from 3 to 6 November
+ * 2026 that kept Lime's shared rider-map accounts busy (docs/OBSERVABILITY.md).
+ */
+export const IDLE_PAUSE_MS = 30 * 60_000;
 
 export interface RefreshSchedule {
   /** When the data on screen was received; null before the first success. */
@@ -60,12 +67,16 @@ export interface RefreshContext extends RefreshSchedule {
   requestInFlight: boolean;
   /** The map has told us what to load. */
   hasQuery: boolean;
+  /** When someone last touched, clicked or typed on the page, or brought it back to the foreground; never pauses without. */
+  lastInteractionAt?: number;
 }
 
 export type RefreshDecision =
   | { action: 'refresh' }
   /** `at` is when to decide again; null when only an event can change the answer. */
-  | { action: 'wait'; at: number | null };
+  | { action: 'wait'; at: number | null }
+  /** A refresh is due, but nobody has touched the page for IDLE_PAUSE_MS: only a touch refreshes it. */
+  | { action: 'pause' };
 
 /**
  * Evaluated whenever a request finishes, a timer fires or the page changes
@@ -77,6 +88,7 @@ export function refreshDecision(context: RefreshContext): RefreshDecision {
   if (!context.visible || !context.hasQuery || context.requestInFlight) return { action: 'wait', at: null };
   const at = nextRefreshAt(context);
   if (at === null) return { action: 'wait', at: null };
-  if (context.now >= (context.returning ? refreshDueAt(context) : at)) return { action: 'refresh' };
-  return { action: 'wait', at };
+  if (context.now < (context.returning ? refreshDueAt(context) : at)) return { action: 'wait', at };
+  return context.lastInteractionAt !== undefined && context.now - context.lastInteractionAt >= IDLE_PAUSE_MS
+    ? { action: 'pause' } : { action: 'refresh' };
 }

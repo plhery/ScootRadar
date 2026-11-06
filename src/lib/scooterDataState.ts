@@ -65,6 +65,8 @@ export interface ScooterDataState {
   failure: LoadFailure | null;
   /** The scooters expired and the request made after that failed, so they were removed. */
   outOfDate: boolean;
+  /** Nobody has touched the page for a while, so it no longer refreshes on its own (IDLE_PAUSE_MS). */
+  paused: boolean;
 }
 
 export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
@@ -88,6 +90,7 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   requestInFlight: false,
   failure: null,
   outOfDate: false,
+  paused: false,
 };
 
 export type ScooterDataEvent =
@@ -97,7 +100,9 @@ export type ScooterDataEvent =
   | { type: 'failed'; failure: LoadFailure; now: number }
   /** The running request was cancelled without a replacement. */
   | { type: 'aborted' }
-  | { type: 'parkingChecked'; now: number };
+  | { type: 'parkingChecked'; now: number }
+  /** Automatic refreshes stop until a touch (paused: true), or start again (false). */
+  | { type: 'paused'; paused: boolean };
 
 export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEvent): ScooterDataState {
   switch (event.type) {
@@ -144,6 +149,8 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         requestInFlight: false,
         failure: null,
         outOfDate: false,
+        // A load the map asked for, as a view that moved, leaves a pause as it is: only a touch ends it.
+        paused: state.paused,
       };
     }
 
@@ -156,6 +163,9 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
 
     case 'aborted':
       return state.requestInFlight ? { ...state, requestKey: null, requestInFlight: false } : state;
+
+    case 'paused':
+      return state.paused === event.paused ? state : { ...state, paused: event.paused };
 
     case 'parkingChecked':
       return state.parking.length > 0 && isExpired(state.parkingExpiresAt, event.now)
