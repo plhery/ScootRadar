@@ -106,6 +106,16 @@
       "noDataState": "KeepLast",
       "summary": "Address searches sent Geoapify over 2,400 requests in 24 hours.",
       "description": "Geoapify's free plan allows 3,000 a day. Past it, searches fall back to komoot's public Photon, slower (geoapify_fallback in the Worker's logs). Look at the Worker's /api/geocode traffic in Cloudflare for a burst from one client; for growth, a paid plan or our own Photon (DEPLOY.md)."
+    },
+    {
+      "uid": "scootradar-possible-scraper",
+      "title": "ScootRadar possible scraper",
+      "expr": "((sum(increase(scootradar_visitor_areas_total{job=\"scootradar-cache\", areas=~\"32-63|64\\\\+\"}[1h])) or vector(0)) > bool 0.5) + ((sum(increase(scootradar_unwatched_requests_total{job=\"scootradar-cache\"}[1h])) or vector(0)) > bool 50) + ((sum(increase(scootradar_scooter_zoom_lowered_total{job=\"scootradar-cache\"}[1h])) or vector(0)) > bool 20)",
+      "for": "5m",
+      "severity": "warning",
+      "noDataState": "KeepLast",
+      "summary": "In the last hour a visitor swept 32 areas or more in a quarter hour, over 50 requests went uncollected, or over 20 asked for a box no screen shows.",
+      "description": "A scraper, or one of our own audits sweeping towns through /api/scooters. It stays in Grafana and clears an hour after. The cache keeps no address: find the client in Cloudflare's GraphQL by the hour (docs/OBSERVABILITY.md, \"Scraping\"), tell it from our own traffic, and block it in Cloudflare's WAF if it is one."
     }
   ]
 }

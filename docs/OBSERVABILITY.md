@@ -111,6 +111,25 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   2,160 an hour most hours, while the refreshes counted here stayed about 1,600 a day.
   A map left open shows instead as a few groups collected through the night, e.g.
   `topk(5, sum by (feed)(increase(scootradar_feed_collections_total{provider="lime",feed=~".*_app_.*"}[3h])))`.
+- `scootradar_visitors_total{requests="1-15|16-60|61-300|301+"}` and
+  `scootradar_visitor_areas_total{areas="1|2-3|4-7|8-15|16-31|32-63|64+"}`: the
+  visitors of each closed UTC quarter hour, by the requests for scooters they made in
+  it and by the areas their requests at a zoom past the city totals asked for (an area
+  is a cell of half a degree, the cell of the box's middle: about 55 by 35 km in
+  Zürich). A visitor is told apart by a hash of their address, or of its /64 for
+  IPv6, salted afresh by each process and kept only that quarter hour
+  (`server/visitorLedger.ts`); past 10,000 in a quarter hour the others are not
+  counted. A map is looked at in one area or a few; 32 or more is a sweep (see
+  [Scraping](#scraping)). Since 6 November 2026.
+- `scootradar_unwatched_requests_total`: requests for scooters answered from what the
+  cache holds without collecting their view: their visitor had already asked for 32
+  other areas that quarter hour.
+- `scootradar_scooter_zoom_lowered_total`: requests for scooters whose box is wider or
+  taller than 16,384 pixels at their zoom, which no screen shows, answered at the
+  highest zoom it fits (`scooterAnswerZoom`). The map's own requests never are.
+- `scootradar_visitor_max_requests` and `scootradar_visitor_max_areas` (gauges): the
+  most requests, and the most areas (up to 64), one visitor made in the last closed
+  quarter hour, as the container Prometheus reads counted them.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
@@ -270,6 +289,7 @@ The alert rules:
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 2.7 GB, or a V8 heap over 1.5 GB, for 15 minutes (the container's limit is 3072 MiB, of which Node gives the heap 1632 MiB, and the heap runs out first) |
 | ScootRadar Geoapify near its daily limit | address searches sent Geoapify over 2,400 requests in 24 hours (its free plan allows 3,000 a day); a rolling day, so it fires no later than the calendar day does |
+| ScootRadar possible scraper | in the last hour a visitor asked for 32 areas or more in a quarter hour, over 50 requests went uncollected past a visitor's areas, or over 20 asked for a box no screen shows (see [Scraping](#scraping)); a warning, which clears an hour after |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
 "target down" keeps its last state rather than resolving and firing again. So every
@@ -377,6 +397,80 @@ while waiting. A Swiss system comes from sharedmobility.ch or `OPERATOR_SWISS_SY
 not a catalog: add its id to `LEFT_OUT_SWISS_SYSTEMS` in `src/lib/feedCoverage.ts`, and
 remove it from `OPERATOR_SWISS_SYSTEMS` if it is there, and its town from
 `data/swiss-scooter-areas.json` if no other operator serves it.
+
+## Scraping
+
+Every scooter position the map shows is public: a scraper is someone collecting them
+with requests a map would not make, for a copy of the map or for the operators'
+data. Since 6 November 2026:
+
+- The Worker limits each visitor, an IPv4 address or an IPv6 /64, to 60 requests for
+  scooters a minute at each Cloudflare location, and the cache to 60 a minute.
+- A box wider or taller than 16,384 pixels at its zoom, which no screen shows (four 4K
+  screens across), is answered at the highest zoom it fits: clusters, or the city
+  totals for a country, rather than every scooter in it. One request holds a town's
+  positions at most. Without a zoom (unclustered), a box gets every scooter only where
+  it fits at zoom 16 (`scooterAnswerZoom` in `src/lib/scooterQuery.ts`).
+- A visitor keeps the feeds of 32 areas collected in a quarter hour. Their requests
+  for any other area are answered from what the cache holds, collecting nothing, until
+  the quarter hour ends: a sweep of a country takes no more of the operators' accounts
+  than 32 towns, and its positions grow old. Our own audits through `/api/scooters`
+  are held to it too: pace a sweep of many towns to 32 a quarter hour.
+- `/feeds` and the detail of `/health` and `/ready` on scooter-data.plhery.com, which
+  name the operators' apps the cache reads, need the metrics token ([DEPLOY.md](../DEPLOY.md)).
+
+Not done on purpose: Bot Fight Mode or a JavaScript challenge on `/api`, which the
+iPhone and Android apps cannot pass, and a lower limit: a map waiting for its feeds asks
+every 3 seconds, 20 times a minute.
+
+### Daily check
+
+The controller lane checks the day before (UTC) each day:
+
+```bash
+npm run check:scrapers                    # yesterday; --date=2026-11-05 for another day
+npm run check:scrapers -- --json          # the same as JSON
+```
+
+It reads the cache's counters above from Prometheus over `ssh netcup` and, from
+Cloudflare's analytics with wrangler's login (or `CLOUDFLARE_API_TOKEN`), the
+`/api/scooters` requests of the busiest outside clients, an IPv6 one by its /64, and
+of those limited (429). It sets apart our own traffic: this machine (its address by
+`scootradar.com/cdn-cgi/trace`), `2a06:98c0:3600::103` (the Worker's own cache
+writes, PUT 204), user agents `scootradar-*` (our scripts), okhttp from `2001:4860:`
+(Google Play's pre-launch robots), and the addresses given with `--own=`. It exits 1
+on a suspicion, 2 when a source could not be read:
+
+- a visitor who asked for 32 areas or more in a quarter hour, a request not collected
+  past them, or a box no screen shows;
+- an outside network with 1,500 requests in the day or more (on 1–6 November 2026 the
+  busiest browser made about 2,600, most under 900; a map now stops refreshing half an
+  hour after the last touch);
+- one with 100 requests or more under a user agent neither a browser's
+  (`Mozilla/5.0 …`) nor our apps' (`ScootRadar/… CFNetwork`, `okhttp/…`);
+- one limited 20 times or more.
+
+Cloudflare's Free plan gives the client's address, country, user agent, path and
+status, not its network (ASN) or query: `whois <address>` names the network, a
+datacenter rather than a home or a phone being the sign of a script. Android CI on
+GitHub's runners shows as okhttp from Microsoft (AS8075). Its counts are sampled.
+The cache keeps no address: a sweep in its counters has to be matched to Cloudflare's
+clients by the hour, e.g. the clients of one hour:
+
+```graphql
+{ viewer { zones(filter: {zoneTag: "79c6a39db1a26ea42f9c97eb7d6cef3e"}) {
+  httpRequestsAdaptiveGroups(limit: 20, orderBy: [count_DESC], filter: {
+    datetime_geq: "2026-11-05T14:00:00Z", datetime_lt: "2026-11-05T15:00:00Z", clientRequestPath: "/api/scooters"
+  }) { count dimensions { clientIP clientCountryName userAgent } } } } }
+```
+
+sent to `https://api.cloudflare.com/client/v4/graphql` with the same token, about 25
+queries every 5 minutes at most. `npx wrangler tail swiss-scooters --format json` shows
+the live requests in full (boxes, zooms, network); delete what it captured, which holds
+coordinates. Report the verdict (nothing, a suspicion, a scraper) with the network,
+country, user agent, count and hours. A scraper is blocked by a Cloudflare WAF custom
+rule on its address or network, with the user's say-so: an address can be a school's
+or a company's.
 
 ## Sentry
 
