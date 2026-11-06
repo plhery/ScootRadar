@@ -88,7 +88,7 @@ const guide: Guide = {
               ['Nebeneinander gefahren', '15 €, bis 30 €', 'Erlaubt, wenn niemand behindert wird'],
               ['Zu zweit gefahren', '10 €', '25 €'],
               ['Rote Ampel', '60 € und 1 Punkt; länger als 1 Sekunde rot: 100 € und 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt'],
               ['Unzulässig auf Geh- oder Radweg geparkt', 'Behindernd 20 €, gefährdend 30 €', '55 €, mit Behinderung 70 €'],
             ],
           },
