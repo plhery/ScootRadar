@@ -99,6 +99,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     var lastSeenStatuses: [ScooterProvider: ScooterLastSeenStatus] {
         isPausedForIdle ? lastSeenReports.mapValues(\.idle) : lastSeenReports
     }
+    /// Of the last answer, while stale: each app whose positions shown are being collected again or could
+    /// not be renewed, with when the oldest of them were seen, on this device's clock
+    /// (ScooterResponse.staleProviderTimes). Nil when the answer does not name them.
+    private var staleReports: [ScooterProvider: Date]?
+    /// The same, of the apps switched on: an app filtered out delays nothing shown.
+    private var staleApps: [ScooterProvider: Date]? {
+        staleReports?.filter { enabledProviders.contains($0.key) }
+    }
     private(set) var parking: [ScooterParking] = []
     /// The bays drawn on the map: zoom 16 and closer, for the providers that
     /// are shown, and the bay walked to wherever the map is.
@@ -781,7 +789,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             chips: dockChips,
             lead: isOverview ? nil : dockLead,
             everyProviderDown: everyProviderDown,
-            fadedApps: fadedApps
+            fadedApps: fadedApps,
+            staleApps: staleApps
         ))
     }
 
@@ -803,9 +812,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if case let .refreshFailed(failure, showing) = loadIssue {
             return failure == .offline ? .offline(showing: showing) : .refreshFailed(showing: showing)
         }
-        guard responseMetadata?.stale == true, let lastUpdated, !isFilling,
-              clock().timeIntervalSince(lastUpdated) >= ScooterDockStatus.delayedAfter else { return nil }
-        return .delayed(showing: lastUpdated)
+        guard let lastUpdated, !isFilling else { return nil }
+        return ScooterDockStatus.delayed(
+            isStale: responseMetadata?.stale == true, showing: lastUpdated, staleApps: staleApps, at: clock()
+        )
     }
 
     /// What VoiceOver is told when the dock turns into a card, which happens far
@@ -1618,6 +1628,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 let generatedAt = Self.apiDate(response.meta?.generatedAt, clockOffset: response.clockOffset)
                 lastUpdated = min(generatedAt ?? receivedAt, receivedAt)
                 lastSeenReports = response.lastSeenStatuses(receivedAt: receivedAt)
+                staleReports = response.staleProviderTimes(receivedAt: receivedAt)
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt
                 // The server is collecting feeds of this answer again: ask again when it says (followUpMs), at
@@ -1672,6 +1683,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         lastSeenVehicles = []
         lastSeenClusters = []
         lastSeenReports = [:]
+        staleReports = nil
         selectedScooterID = nil
         selectedParkingID = nil
         queryBounds = nil
@@ -2252,6 +2264,11 @@ extension ScooterMapModel {
             self.walk = walk
             follow(to: successor.id)
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
+            return
+        }
+        // Faded where it was last seen while its app is collected again: neither seen nor taken until the
+        // app's new positions say which.
+        if lastSeenVehicles.contains(where: { $0.id == scooter.id }) || successor(of: scooter, among: lastSeenVehicles) != nil {
             return
         }
         cancelRouteRequest()

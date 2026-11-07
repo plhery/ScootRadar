@@ -122,6 +122,7 @@
 "Paused to save data · tap to refresh" = "En pausa para ahorrar datos · toca para actualizar";
 "You’re offline · showing %@" = "Sin conexión · datos de las %@";
 "Data delayed · showing %@" = "Datos con retraso · actualizados a las %@";
+"%1$@ data delayed · showing %2$@" = "Datos de %1$@ con retraso · actualizados a las %2$@";
 "%1$@ updating · faded ones seen at %2$@" = "%1$@ actualizando · los tenues, vistos a las %2$@";
 "%1$@ and %2$@ updating · faded ones seen at %3$@" = "%1$@ y %2$@ actualizando · los tenues, vistos a las %3$@";
 "Updating · faded ones seen at %@" = "Actualizando · los tenues, vistos a las %@";

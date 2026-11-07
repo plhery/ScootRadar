@@ -809,6 +809,20 @@ struct ScooterResponse: Sendable {
         }
         return statuses
     }
+
+    /// Of a stale answer that names them (meta.staleProviders): each app whose positions shown are being
+    /// collected again or could not be renewed, with when the oldest of them were seen, on this device's
+    /// clock and never later than `receivedAt`. An app this build does not know, or a time it cannot read,
+    /// is left out. Nil when the answer does not name them: its data is then delayed or not as a whole.
+    func staleProviderTimes(receivedAt: Date = .distantFuture) -> [ScooterProvider: Date]? {
+        guard let meta, meta.stale, let named = meta.staleProviders else { return nil }
+        var times: [ScooterProvider: Date] = [:]
+        for (id, value) in named {
+            guard let provider = ScooterProvider(rawValue: id), let seenAt = ScooterServerTime.date(value) else { continue }
+            times[provider] = min(seenAt.addingTimeInterval(clockOffset), receivedAt)
+        }
+        return times
+    }
 }
 
 /// Of an app with scooters drawn faded where they were last seen: when they were seen, and whether new
@@ -911,6 +925,10 @@ struct ScooterResponseMetadata: Sendable {
     let followUpMs: Int?
     /// When the oldest of the last-seen scooters were seen, while there are any.
     let lastSeenAt: String?
+    /// While stale, an answer of scooters names each app whose positions shown are being collected again
+    /// or could not be renewed, with when the oldest of them were seen: "lime": "2026-11-07T15:44:00Z".
+    /// Nil from city totals, a server that does not say and the answer it kept from before.
+    let staleProviders: [String: String]?
     let parkingStatus: String?
     let expiresAt: String?
     let parkingExpiresAt: String?
@@ -933,6 +951,7 @@ struct ScooterResponseMetadata: Sendable {
         refreshing: Bool = false,
         followUpMs: Int? = nil,
         lastSeenAt: String? = nil,
+        staleProviders: [String: String]? = nil,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
         parkingExpiresAt: String? = nil,
@@ -952,6 +971,7 @@ struct ScooterResponseMetadata: Sendable {
         self.refreshing = refreshing
         self.followUpMs = followUpMs
         self.lastSeenAt = lastSeenAt
+        self.staleProviders = staleProviders
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
         self.parkingExpiresAt = parkingExpiresAt
@@ -1022,6 +1042,7 @@ extension ScooterResponseMetadataPayload {
             refreshing: refreshing ?? false,
             followUpMs: followUpMs,
             lastSeenAt: lastSeenAt,
+            staleProviders: staleProviders,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
             parkingExpiresAt: parkingExpiresAt,
@@ -1846,6 +1867,10 @@ struct ScooterDockSummary: Equatable, Sendable {
     /// The apps whose scooters are drawn faded in view where they were last seen, in catalogue order:
     /// the status line says whose they are, and whether new positions are on their way.
     var fadedApps: [ScooterFadedApp] = []
+    /// Of delayed data that names them, the apps switched on whose positions shown are being collected
+    /// again or could not be renewed, with when the oldest of them were seen (ScooterDockStatus.delayed).
+    /// Nil when the answer does not name them.
+    var staleApps: [ScooterProvider: Date]? = nil
 
     /// "scooters nearby" or "scooters on this map"; the view renders the number.
     var countLabel: String { countContext.label(for: count) }
@@ -1864,8 +1889,10 @@ struct ScooterDockSummary: Equatable, Sendable {
         if let updating = ScooterDockStatus.updating(fadedApps) { return updating }
         let age = max(0, now.timeIntervalSince(lastUpdated))
         // Delayed data says so at every zoom, city totals included, once it is late:
-        // before that its age or its time says enough.
-        if isDelayed, age >= ScooterDockStatus.delayedAfter { return .delayed(showing: lastUpdated) }
+        // before that its age or its time says enough. One app late is named.
+        if let delayed = ScooterDockStatus.delayed(
+            isStale: isDelayed, showing: lastUpdated, staleApps: staleApps, at: now
+        ) { return delayed }
         if isOverview { return .cityTotals }
         // Faded scooters nothing is collecting stand as they were last seen, perhaps days ago, as Lime's
         // groups a wide view leaves idle: the line says so rather than "Live" over them.
@@ -1930,7 +1957,8 @@ enum ScooterDockStatus: Equatable, Sendable {
     case refreshFailed(showing: Date)
     case offline(showing: Date)
     case cityTotals
-    case delayed(showing: Date)
+    /// "Data delayed · showing 16:44", or with the one app late, "Lime data delayed · showing 16:44".
+    case delayed(showing: Date, app: ScooterProvider? = nil)
     /// With a spinner: scooters stand faded where they were last seen, and new positions of the apps
     /// named are on their way.
     case updating(ScooterLastSeenLine)
@@ -1945,6 +1973,28 @@ enum ScooterDockStatus: Equatable, Sendable {
 
     /// Data the server could not renew reads "Data delayed" from this age (DELAYED_MIN_AGE_MS on the web).
     static let delayedAfter: TimeInterval = 5 * 60
+
+    /// Delayed data, nil when nothing shown is late, as on the web (delayedApps in dockModel.ts). A stale
+    /// answer that names the apps it could not renew in time (`staleApps`, of those switched on) is delayed
+    /// while one of them is `delayedAfter` late or more: that one is named, with its own time; two or more
+    /// are not, and the oldest's time is shown. One that does not name them is delayed as a whole, from
+    /// its own time.
+    static func delayed(
+        isStale: Bool,
+        showing lastUpdated: Date,
+        staleApps: [ScooterProvider: Date]?,
+        at now: Date
+    ) -> ScooterDockStatus? {
+        guard isStale else { return nil }
+        guard let staleApps else {
+            return now.timeIntervalSince(lastUpdated) >= delayedAfter ? .delayed(showing: lastUpdated) : nil
+        }
+        let late = staleApps
+            .mapValues { min($0, now) }
+            .filter { now.timeIntervalSince($0.value) >= delayedAfter }
+        guard let oldest = late.min(by: { $0.value < $1.value }) else { return nil }
+        return .delayed(showing: oldest.value, app: late.count == 1 ? oldest.key : nil)
+    }
 
     /// Failed refreshes use the warning style.
     var isWarning: Bool {
@@ -1986,8 +2036,9 @@ enum ScooterDockStatus: Equatable, Sendable {
             String(format: String(localized: "You’re offline · showing %@"), Self.clockTime(date))
         case .cityTotals:
             String(localized: "City totals · refreshed hourly")
-        case let .delayed(date):
-            String(format: String(localized: "Data delayed · showing %@"), Self.clockTime(date))
+        case let .delayed(date, app):
+            app.map { String(format: String(localized: "%1$@ data delayed · showing %2$@"), $0.name, Self.clockTime(date)) }
+                ?? String(format: String(localized: "Data delayed · showing %@"), Self.clockTime(date))
         case let .updating(line):
             line.text(updating: true)
         case let .lastSeen(line):

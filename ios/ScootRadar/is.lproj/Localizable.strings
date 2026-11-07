@@ -122,6 +122,7 @@
 "Paused to save data · tap to refresh" = "Gert hlé til að spara gögn · ýttu til að uppfæra";
 "You’re offline · showing %@" = "Engin nettenging · staðan kl. %@";
 "Data delayed · showing %@" = "Seinkun á gögnum · staðan kl. %@";
+"%1$@ data delayed · showing %2$@" = "Seinkun á gögnum frá %1$@ · staðan kl. %2$@";
 "%1$@ updating · faded ones seen at %2$@" = "%1$@ uppfærist · daufar sáust kl. %2$@";
 "%1$@ and %2$@ updating · faded ones seen at %3$@" = "%1$@ og %2$@ uppfærast · daufar sáust kl. %3$@";
 "Updating · faded ones seen at %@" = "Uppfærist · daufar sáust kl. %@";

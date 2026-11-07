@@ -467,6 +467,51 @@ final class ScooterWalkTests: XCTestCase {
         }
     }
 
+    func testAScooterStandingFadedWhileItsAppIsCollectedAgainIsNotTaken() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let other = scooter("s2", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [other])
+        // Its app is being collected again: the scooter stands faded where it was last seen, under its id,
+        // or under another a few metres from where it stood.
+        let faded = [target, scooter("s1-new", at: point(east: 305, north: 0))]
+
+        for (index, seen) in faded.enumerated() {
+            await h.api.setResponse(ScooterResponse(
+                vehicles: [other],
+                lastSeenVehicles: [seen],
+                meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
+            ))
+            h.model.refresh()
+            let loaded = await waitUntil { await h.api.calls == index + 2 && !h.model.isLoading }
+            XCTAssertTrue(loaded)
+
+            // Neither seen nor taken: the walk goes on as it was.
+            XCTAssertEqual(h.model.walk?.phase, .shown, seen.id)
+            XCTAssertEqual(h.model.walk?.target, .scooter(target), seen.id)
+            XCTAssertEqual(h.model.selectedScooterID, target.id, seen.id)
+            XCTAssertNil(h.model.walkNote(for: .scooter(target)), seen.id)
+            XCTAssertTrue(h.model.isWalking, seen.id)
+        }
+
+        // Faded, another app's where it stood is not it, nor one of its app further away: taken.
+        await h.api.setResponse(ScooterResponse(
+            vehicles: [other],
+            lastSeenVehicles: [
+                scooter("b1", provider: "bird", at: point(east: 302, north: 0)),
+                scooter("s3", at: point(east: 330, north: 0))
+            ],
+            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
+        ))
+        h.model.refresh()
+        let gone = await waitUntil { h.model.walk?.phase == .gone }
+        XCTAssertTrue(gone)
+        XCTAssertEqual(h.model.walkNote(for: .scooter(target)), .gone)
+        XCTAssertEqual(
+            h.model.walkAnnouncement?.text,
+            String(localized: "No longer on the map. Someone may have taken it.")
+        )
+    }
+
     func testAPlainCardStaysOnItsScooterUnderANewIDAndClosesWhenItIsTaken() async throws {
         let target = scooter("s1", at: point(east: 300, north: 0))
         let neighbour = scooter("s2", at: point(east: 308, north: 0))

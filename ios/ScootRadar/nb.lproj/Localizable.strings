@@ -122,6 +122,7 @@
 "Paused to save data · tap to refresh" = "Satt på pause for å spare data · trykk for å oppdatere";
 "You’re offline · showing %@" = "Du er frakoblet · data fra kl. %@";
 "Data delayed · showing %@" = "Forsinket · data fra kl. %@";
+"%1$@ data delayed · showing %2$@" = "%1$@ er forsinket · data fra kl. %2$@";
 "%1$@ updating · faded ones seen at %2$@" = "%1$@ oppdateres · bleke: sett kl. %2$@";
 "%1$@ and %2$@ updating · faded ones seen at %3$@" = "%1$@ og %2$@ oppdateres · bleke: sett kl. %3$@";
 "Updating · faded ones seen at %@" = "Oppdaterer · bleke: sett kl. %@";

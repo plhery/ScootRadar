@@ -2306,6 +2306,71 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.cardStatus, .delayed(showing: delayedAt))
     }
 
+    func testTheDockAndACardNameTheOneAppLateAndNothingWhenOnlyAnAppFilteredOutIs() async throws {
+        let clock = TestClock()
+        let formatter = ISO8601DateFormatter()
+        // Lime's positions shown are 12 minutes old; Voi's, collected again, a minute old.
+        let limeSeen = clock.now.addingTimeInterval(-12 * 60)
+        let api = StubScooterAPI(response: ScooterResponse(
+            vehicles: [scooter(id: "one", provider: "lime"), scooter(id: "two", provider: "voi")],
+            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [], staleProviders: [
+                "lime": formatter.string(from: limeSeen),
+                "voi": formatter.string(from: clock.now.addingTimeInterval(-60))
+            ])
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.refresh()
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.status(at: clock.now), .delayed(showing: limeSeen, app: .lime))
+        // The line above an open card says the same, of an answer that is itself a moment old.
+        model.selectScooter("voi:two")
+        XCTAssertEqual(model.cardStatus, .delayed(showing: limeSeen, app: .lime))
+        model.clearSelection()
+
+        // Only Lime, switched off, is late: nothing shown is delayed.
+        model.showProviders([.voi])
+        guard case let .summary(filtered) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(filtered.status(at: clock.now), .live)
+        model.selectScooter("voi:two")
+        XCTAssertNil(model.cardStatus)
+        model.clearSelection()
+
+        // Both late: the data is, from the older's time.
+        model.resetFilters()
+        let voiSeen = clock.now.addingTimeInterval(-7 * 60)
+        await api.setResponse(ScooterResponse(
+            vehicles: [scooter(id: "one", provider: "lime"), scooter(id: "two", provider: "voi")],
+            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [], staleProviders: [
+                "lime": formatter.string(from: limeSeen),
+                "voi": formatter.string(from: voiSeen)
+            ])
+        ))
+        model.refresh()
+        let both = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(both)
+        guard case let .summary(late) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(late.status(at: clock.now), .delayed(showing: limeSeen))
+
+        // An answer that does not name them is delayed as a whole, from its own time, once it is late.
+        await api.setResponse(ScooterResponse(
+            vehicles: [scooter(id: "one", provider: "lime")],
+            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
+        ))
+        model.refresh()
+        let unnamed = await waitUntil { await api.snapshot().calls == 3 && !model.isLoading }
+        XCTAssertTrue(unnamed)
+        let shownAt = try XCTUnwrap(model.lastUpdated)
+        guard case let .summary(whole) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(whole.status(at: clock.now), .live)
+        XCTAssertEqual(
+            whole.status(at: shownAt.addingTimeInterval(ScooterDockStatus.delayedAfter)),
+            .delayed(showing: shownAt)
+        )
+    }
+
     func testACardThatOpensInTheDockIsAnnouncedAndTheCountIsNot() async throws {
         let clock = TestClock()
         let formatter = ISO8601DateFormatter()

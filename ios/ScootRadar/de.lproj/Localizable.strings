@@ -122,6 +122,7 @@
 "Paused to save data · tap to refresh" = "Pausiert, um Daten zu sparen · zum Aktualisieren tippen";
 "You’re offline · showing %@" = "Du bist offline · Stand %@";
 "Data delayed · showing %@" = "Daten verzögert · Stand %@";
+"%1$@ data delayed · showing %2$@" = "%1$@-Daten verzögert · Stand %2$@";
 "%1$@ updating · faded ones seen at %2$@" = "%1$@ wird aktualisiert · blasse Scooter: Stand %2$@";
 "%1$@ and %2$@ updating · faded ones seen at %3$@" = "%1$@ und %2$@ werden aktualisiert · blasse Scooter: Stand %3$@";
 "Updating · faded ones seen at %@" = "Wird aktualisiert · blasse Scooter: Stand %@";

@@ -1327,6 +1327,109 @@ extension ScooterModelsTests {
         XCTAssertTrue(body.hasSuffix(ScooterLoadFailure.offline.message))
     }
 
+    func testDelayedDataNamesTheOneAppLateWithItsOwnTime() throws {
+        let now = Date(timeIntervalSince1970: 1_790_000_000)
+        func ago(_ minutes: Double) -> Date { now.addingTimeInterval(-minutes * 60) }
+        func status(
+            _ staleApps: [ScooterProvider: Date]?,
+            stale: Bool = true,
+            answeredAt: Date = now.addingTimeInterval(-12 * 60)
+        ) -> ScooterDockStatus? {
+            var summary = ScooterDockSummary(
+                count: 22, countContext: .nearby, lastUpdated: answeredAt, refreshFailure: nil,
+                isOverview: false, isDelayed: stale, notices: [], hint: nil, chips: []
+            )
+            summary.staleApps = staleApps
+            return summary.status(at: now)
+        }
+
+        // Lime's positions 12 minutes old; Voi's, collected again, a minute old: Lime is named, with its own time.
+        XCTAssertEqual(status([.lime: ago(12), .voi: ago(1)]), .delayed(showing: ago(12), app: .lime))
+        // Its time, even in an answer of a minute ago.
+        XCTAssertEqual(status([.lime: ago(9)], answeredAt: ago(1)), .delayed(showing: ago(9), app: .lime))
+        // From five minutes late, as the answer as a whole.
+        XCTAssertEqual(status([.lime: ago(5)]), .delayed(showing: ago(5), app: .lime))
+        XCTAssertEqual(status([.lime: now.addingTimeInterval(-299)]), .updatedMinutesAgo(12))
+        // Two late or more: the data is, from the oldest's time.
+        XCTAssertEqual(status([.lime: ago(7), .voi: ago(12)]), .delayed(showing: ago(12)))
+        XCTAssertEqual(status([.lime: ago(7), .voi: ago(12), .bolt: ago(30)]), .delayed(showing: ago(30)))
+        // None late: stale for an app with nothing shown yet, or renewed on time, or a time ahead of this
+        // clock, which is now's. Not delayed: the answer's age says enough.
+        XCTAssertEqual(status([:]), .updatedMinutesAgo(12))
+        XCTAssertEqual(status([.voi: ago(1)]), .updatedMinutesAgo(12))
+        XCTAssertEqual(status([.lime: now.addingTimeInterval(600)]), .updatedMinutesAgo(12))
+        // An answer that does not name them, as city totals, an older server's or the one kept from before:
+        // delayed as a whole, from its own time, as before.
+        XCTAssertEqual(status(nil), .delayed(showing: ago(12)))
+        XCTAssertEqual(status(nil, answeredAt: ago(4)), .updatedMinutesAgo(4))
+        // Not stale: nothing is delayed.
+        XCTAssertEqual(status([.lime: ago(12)], stale: false), .updatedMinutesAgo(12))
+        XCTAssertEqual(status(nil, stale: false), .updatedMinutesAgo(12))
+
+        // The line names the app, with the time as the other delayed line writes it, and is no warning.
+        let named = ScooterDockStatus.delayed(showing: ago(12), app: .lime)
+        let time = ScooterDockStatus.clockTime(ago(12))
+        XCTAssertEqual(named.text, String(
+            format: String(localized: "%1$@ data delayed · showing %2$@"), ScooterProvider.lime.name, time
+        ))
+        XCTAssertTrue(named.text.contains(ScooterProvider.lime.name), named.text)
+        XCTAssertTrue(named.text.contains(time), named.text)
+        XCTAssertEqual(named.briefText, named.text)
+        XCTAssertFalse(named.isWarning)
+        XCTAssertEqual(
+            ScooterDockStatus.delayed(showing: ago(12)).text,
+            String(format: String(localized: "Data delayed · showing %@"), time)
+        )
+
+        // Every language names the app and the time.
+        for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            let text = strings.localizedString(forKey: "%1$@ data delayed · showing %2$@", value: "?", table: nil)
+            XCTAssertNotEqual(text, "?", language)
+            for placeholder in ["%1$@", "%2$@"] {
+                XCTAssertEqual(text.components(separatedBy: placeholder).count, 2, "\(language): \(text)")
+            }
+            XCTAssertEqual(text.matches(of: /%(\d\$)?(@|lld)/).count, 2, "\(language): \(text)")
+            XCTAssertTrue(text.contains(" · "), "\(language): \(text)")
+        }
+    }
+
+    func testAStaleAnswerNamesTheAppsLateOnThisDevicesClock() throws {
+        let iso = ISO8601DateFormatter()
+        let limeAt = try XCTUnwrap(iso.date(from: "2026-11-07T15:44:00Z"))
+        let voiAt = try XCTUnwrap(iso.date(from: "2026-11-07T15:55:30Z"))
+        func response(stale: Bool, staleProviders: String?) throws -> ScooterResponse {
+            let field = staleProviders.map { #", "staleProviders": \#($0)"# } ?? ""
+            return try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: Data(#"""
+            {"vehicles": [], "clusters": [], "providers": {}, "meta": {"partial": false, "stale": \#(stale),
+             "failedSources": [], "sources": {}, "generatedAt": "2026-11-07T15:58:00.000Z",
+             "truncated": false, "totalVehicles": 0, "mode": "vehicles"\#(field)}}
+            """#.utf8)).model
+        }
+
+        let named = try response(stale: true, staleProviders: #"""
+            {"lime": "2026-11-07T15:44:00.000Z", "voi": "2026-11-07T15:55:30Z",
+             "an-app-unknown-here": "2026-11-07T15:40:00Z", "bird": "not a time"}
+            """#)
+        XCTAssertEqual(named.meta?.staleProviders?["lime"], "2026-11-07T15:44:00.000Z")
+        // Each app's, on this device's clock; an app this build does not know, or a time it cannot read, is left out.
+        XCTAssertEqual(named.staleProviderTimes(), [.lime: limeAt, .voi: voiAt])
+        var ahead = named
+        ahead.clockOffset = 120
+        XCTAssertEqual(ahead.staleProviderTimes()?[.lime], limeAt.addingTimeInterval(120))
+        // Never later than the answer came.
+        let received = limeAt.addingTimeInterval(60)
+        XCTAssertEqual(ahead.staleProviderTimes(receivedAt: received), [.lime: received, .voi: received])
+        // Stale for apps with nothing shown yet: none named, which is not the same as none said.
+        XCTAssertEqual(try response(stale: true, staleProviders: "{}").staleProviderTimes(), [:])
+        // A server that does not say, and an answer that is not stale.
+        XCTAssertNil(try response(stale: true, staleProviders: nil).staleProviderTimes())
+        XCTAssertNil(try response(stale: true, staleProviders: nil).meta?.staleProviders)
+        XCTAssertNil(try response(stale: false, staleProviders: #"{"lime": "2026-11-07T15:44:00Z"}"#).staleProviderTimes())
+    }
+
     func testCountLabelsHaveSingularAndPluralFormsForBothContexts() {
         XCTAssertEqual(ScooterCountContext.nearby.label(for: 1), String(localized: "scooter nearby"))
         XCTAssertEqual(ScooterCountContext.nearby.label(for: 22), String(localized: "scooters nearby"))

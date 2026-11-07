@@ -122,6 +122,7 @@
 "Paused to save data · tap to refresh" = "Gepauzeerd om data te besparen · tik om bij te werken";
 "You’re offline · showing %@" = "Je bent offline · data van %@";
 "Data delayed · showing %@" = "Data vertraagd · bijgewerkt om %@";
+"%1$@ data delayed · showing %2$@" = "Data van %1$@ vertraagd · bijgewerkt om %2$@";
 "%1$@ updating · faded ones seen at %2$@" = "%1$@ wordt bijgewerkt · vervaagd: gezien om %2$@";
 "%1$@ and %2$@ updating · faded ones seen at %3$@" = "%1$@ en %2$@ worden bijgewerkt · vervaagd: gezien om %3$@";
 "Updating · faded ones seen at %@" = "Bijwerken · vervaagd: gezien om %@";

@@ -122,6 +122,7 @@
 "Paused to save data · tap to refresh" = "Paused to save data · tap to refresh";
 "You’re offline · showing %@" = "You’re offline · showing %@";
 "Data delayed · showing %@" = "Data delayed · showing %@";
+"%1$@ data delayed · showing %2$@" = "%1$@ data delayed · showing %2$@";
 "%1$@ updating · faded ones seen at %2$@" = "%1$@ updating · faded ones seen at %2$@";
 "%1$@ and %2$@ updating · faded ones seen at %3$@" = "%1$@ and %2$@ updating · faded ones seen at %3$@";
 "Updating · faded ones seen at %@" = "Updating · faded ones seen at %@";
