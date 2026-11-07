@@ -418,6 +418,18 @@ the search stopped for 15 minutes, as it should, and the research reader
 accepts the brand since, as it does those of two Bird partners, though the
 cache does not.
 
+Bird's only ridden European fleets being in Spain, Portugal, Italy, France,
+Switzerland, Israel and Austria, the search went on there to every town of
+5,000 to 14,999 people: 1,637 reads from 10:37 UTC on 6 November to 00:59 UTC
+on the 7th, then 74 in Austria to 01:38 UTC. They listed 12 new areas, three
+of them minor (a helmet test area and a warehouse in Rome, a service centre in
+Turin). Only Pájara's area at Costa Calma held scooters within 5 km of its
+centre, 119, each within 40 m of one in Bird's public Pájara feed.
+Anguillara Sabazia's, Riano's, Corralejo's and Fiumicino's two held none, nor
+did the test area by Buchs, swept whole on 6 November as Feldkirch's.
+Águeda's two, 21.5 and 12.3 km across, held none either when swept whole from
+01:38 to 01:43 UTC.
+
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.
 
