@@ -62,6 +62,7 @@ import {
 import { lightsOrigin } from '@/lib/mapLights';
 import { useLiveLocation } from '@/lib/useLiveLocation';
 import { useWalkRoute } from '@/lib/useWalkRoute';
+import { appUpdateHold } from '@/lib/serviceWorkerUpdates';
 import { walkEstimate, type WalkEstimate, type WalkOrigin } from '@/lib/walking';
 import { WALK_ROUTE_MAX_M } from '@/lib/walkRoute';
 import type { WalkFrom } from '@/lib/walkState';
@@ -372,6 +373,9 @@ export default function Home() {
   // The walk to the selected scooter or bay, which Directions starts and its card ends.
   const walk = useWalkRoute(walkFrom);
   const { end: endWalk } = walk;
+  // A new release waits while a walk, a card or the search is open: reloading for it would lose them.
+  const updateHeld = Boolean(walk.state || selectedVehicleKey || selectedParkingId || searchExpanded);
+  useEffect(() => (updateHeld ? appUpdateHold.hold() : undefined), [updateHeld]);
   // The scooter or bay walked to, as it was when Directions was pressed: it stays
   // on the map and in the dock while it is out of view or counted in a group.
   const [walkPin, setWalkPin] = useState<WalkPin | null>(null);

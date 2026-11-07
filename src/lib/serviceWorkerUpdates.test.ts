@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   SERVICE_WORKER_LAST_RELOAD_KEY,
   createServiceWorkerReloader,
+  createUpdateHold,
   isAppUpdateMessage,
 } from '@/lib/serviceWorkerUpdates';
 
@@ -43,6 +44,54 @@ describe('service-worker updates', () => {
     });
 
     expect(reloadForUpdate()).toBe(false);
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it('waits while a walk, a card or the search holds the page, then reloads once all are closed', () => {
+    const reload = vi.fn();
+    const hold = createUpdateHold();
+    const reloadForUpdate = createServiceWorkerReloader({
+      storage: { getItem: () => null, setItem: vi.fn() },
+      reload,
+      now: () => 20_000,
+      hold,
+    });
+    const releaseWalk = hold.hold();
+    const releaseSearch = hold.hold();
+
+    expect(reloadForUpdate()).toBe(false);
+    // The worker says so again at each check while the update waits.
+    expect(reloadForUpdate()).toBe(false);
+    releaseWalk();
+    releaseWalk();
+    expect(reload).not.toHaveBeenCalled();
+    releaseSearch();
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('reloads at once when nothing holds the page, and closing a card later does nothing', () => {
+    const reload = vi.fn();
+    const hold = createUpdateHold();
+    const release = hold.hold();
+    release();
+    const reloadForUpdate = createServiceWorkerReloader({
+      storage: { getItem: () => null, setItem: vi.fn() },
+      reload,
+      now: () => 20_000,
+      hold,
+    });
+
+    expect(reloadForUpdate()).toBe(true);
+    hold.hold()();
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not reload when the page is closed without an update waiting', () => {
+    const reload = vi.fn();
+    const hold = createUpdateHold();
+    createServiceWorkerReloader({ storage: { getItem: () => null, setItem: vi.fn() }, reload, hold });
+
+    hold.hold()();
     expect(reload).not.toHaveBeenCalled();
   });
 });

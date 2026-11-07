@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import {
+  appUpdateHold,
   createServiceWorkerReloader,
   isAppUpdateMessage,
 } from "@/lib/serviceWorkerUpdates";
@@ -29,6 +30,8 @@ export default function ServiceWorkerRegistration() {
         setItem: (key, value) => window.sessionStorage.setItem(key, value),
       },
       reload: () => window.location.reload(),
+      // A walk, a card or the search open on the map keeps the old release until it is closed.
+      hold: appUpdateHold,
     });
 
     const handleControllerChange = () => {
