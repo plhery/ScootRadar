@@ -418,6 +418,11 @@ data class ScooterWalk(
     /** New paths asked for on the way, and when the last path was asked for. */
     val reroutes: Int = 0,
     val lastRequestAt: Instant? = null,
+    /**
+     * When data that would list the scooter walked to first didn't, under any id: from a second, later such
+     * update it was taken. Cleared as soon as data lists it again.
+     */
+    val missedAt: Instant? = null,
 ) {
     /**
      * Locating, finding or showing the path. The scooter or the bay stays selected and on the map wherever

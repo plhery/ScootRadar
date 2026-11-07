@@ -1341,7 +1341,9 @@ class ScooterMapController(
                 val cardScooter = selectedScooter?.takeUnless { scooter ->
                     walk.value?.let { it.holdsCard && it.target == ScooterWalkTarget.Scooter(scooter) } == true
                 }
-                val previousIDs = if (cardScooter == null) emptySet() else vehiclesByID.keys.toSet()
+                val previousIDs = if (cardScooter == null && walk.value == null) emptySet() else vehiclesByID.keys.toSet()
+                val generatedAt = apiDate(response.meta?.generatedAt, clockOffset = response.clockOffset)
+                val observedAt = minOf(generatedAt ?: receivedAt, receivedAt)
                 _vehicles.value = response.vehicles
                 _clusters.value = response.clusters
                 _lastSeenVehicles.value = response.lastSeenVehicles
@@ -1353,15 +1355,14 @@ class ScooterMapController(
                 queryZoom = zoom
                 queryMinimumBattery = requestMinimumBattery
                 rebuildVehicleIndex()
-                followWalkTarget(response.meta, loadedFor = bounds)
+                followWalkTarget(response.meta, loadedFor = bounds, observedAt = observedAt, previousIDs = previousIDs)
                 if (cardScooter != null) followCardScooter(cardScooter, previousIDs = previousIDs)
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()
                 rebuildVisibleCounts()
                 distanceOrigin = fetchOrigin
-                val generatedAt = apiDate(response.meta?.generatedAt, clockOffset = response.clockOffset)
-                _lastUpdated.value = minOf(generatedAt ?: receivedAt, receivedAt)
+                _lastUpdated.value = observedAt
                 _lastSeenProviders.value = lastSeenStatuses(response, receivedAt = receivedAt)
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt

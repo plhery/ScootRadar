@@ -36,6 +36,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -542,8 +543,21 @@ class ScooterWalkTest {
             ),
         )
 
+        // Missing from one update: it may be back with the next, so the way stays.
         h.model.refresh()
+        val missedOnce = waitUntil { h.api.calls == 2 && !h.model.isLoading.value }
+        assertTrue(missedOnce)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        assertNotNull(h.model.walkTrail)
+        // The same data again says nothing new.
+        h.model.refresh()
+        val sameAgain = waitUntil { h.api.calls == 3 && !h.model.isLoading.value }
+        assertTrue(sameAgain)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
 
+        // Missing from a second, later update as well.
+        h.clock.advance(60.0)
+        h.model.refresh()
         val gone = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone }
         assertTrue(gone)
         assertEquals(target.id, h.model.selectedScooterID.value)
@@ -585,6 +599,46 @@ class ScooterWalkTest {
         assertEquals(ScooterDirectionsControl.HideRoute, h.model.directionsControl(ScooterWalkTarget.Scooter(renamed)))
         // The same choice, as for a plain card (d6c90d97's message; its test checks only the plain card).
         assertEquals("The same choice: the dock neither animates nor ticks", choices, h.model.scooterChoices.value)
+    }
+
+    @Test
+    fun theWalkIsNotHandedToAScooterOfItsAppListedBesideItBefore() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        // Some 9 m on, as at a parking spot.
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val h = shownWalk(to = target, others = listOf(neighbour))
+        h.api.setResponse(ScooterResponse(vehicles = listOf(neighbour)))
+
+        h.model.refresh()
+        val missedOnce = waitUntil { h.api.calls == 2 && !h.model.isLoading.value }
+        assertTrue(missedOnce)
+        assertEquals(target.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterWalkTarget.Scooter(target), h.model.walk.value?.target)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+        h.clock.advance(60.0)
+        h.model.refresh()
+        val gone = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone }
+        assertTrue(gone)
+        assertEquals(target.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
+    }
+
+    @Test
+    fun aScooterMissingFromOneUpdateAndBackOnTheNextIsStillWalkedTo() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val other = scooter("s2", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(other))
+
+        for ((index, vehicles) in listOf(listOf(other), listOf(target, other), listOf(other)).withIndex()) {
+            h.clock.advance(60.0)
+            h.api.setResponse(ScooterResponse(vehicles = vehicles))
+            h.model.refresh()
+            val loaded = waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value }
+            assertTrue(loaded)
+            assertEquals("update ${index + 1}", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+            assertEquals("update ${index + 1}", target.id, h.model.selectedScooterID.value)
+        }
     }
 
     @Test
@@ -636,7 +690,8 @@ class ScooterWalkTest {
             assertNotEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
         }
 
-        // Its app's new positions are in, without it; another app's faded scooter where it stood is not it: taken.
+        // Its app's new positions are in, without it; another app's faded scooter where it stood is not it: from two
+        // updates, taken.
         val neighbour = scooter("b1", provider = "bird", at = point(east = 302, north = 0))
         h.api.setResponse(
             ScooterResponse(
@@ -645,6 +700,12 @@ class ScooterWalkTest {
                 meta = ScooterResponseMetadata(partial = false, failedSources = emptyList()),
             ),
         )
+        val before = h.api.calls
+        h.model.refresh()
+        val missedOnce = waitUntil { h.api.calls > before && !h.model.isLoading.value }
+        assertTrue(missedOnce)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        h.clock.advance(60.0)
         h.model.refresh()
 
         val gone = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone }

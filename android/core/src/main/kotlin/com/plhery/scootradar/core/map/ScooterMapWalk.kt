@@ -21,6 +21,7 @@ import com.plhery.scootradar.core.model.distance
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.core.model.timeIntervalSince
+import java.time.Instant
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -283,11 +284,18 @@ private fun ScooterMapController.reportArrival(target: ScooterWalkTarget) {
 
 /**
  * Fresh data about the scooter walked to. It may have moved, and the route then follows it; or data that
- * would list it no longer does, which mostly means someone took it. Scooters get new ids now and then, so one
- * of the same provider standing where it stood is that scooter. Standing faded where it was last seen, while
- * its app is collected again, it is neither: the walk goes on until the app's new positions say which.
+ * would list it no longer does twice, from two updates of the data, which mostly means someone took it: one
+ * missing from one update comes back. Scooters get new ids now and then, so one of the same provider standing
+ * where it stood, under an id the data before didn't list ([previousIDs]), is that scooter; one listed before is
+ * another, which the walk is not handed to. Standing faded where it was last seen, while its app is collected
+ * again, it is neither: the walk goes on until the app's new positions say which.
  */
-internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata?, loadedFor: GeoBounds) {
+internal fun ScooterMapController.followWalkTarget(
+    meta: ScooterResponseMetadata?,
+    loadedFor: GeoBounds,
+    observedAt: Instant,
+    previousIDs: Set<String>,
+) {
     val walk = walk.value ?: return
     if (!walk.holdsCard) return
     val scooter = (walk.target as? ScooterWalkTarget.Scooter)?.scooter ?: return
@@ -298,8 +306,8 @@ internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata
             setWalk(null)
             return
         }
-        if (fresh == scooter) return
-        setWalk(walk.copy(target = ScooterWalkTarget.Scooter(fresh)))
+        if (fresh == scooter && walk.missedAt == null) return
+        setWalk(walk.copy(target = ScooterWalkTarget.Scooter(fresh), missedAt = null))
         val userLocation = userLocation.value
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
@@ -308,15 +316,22 @@ internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata
     if (!walk.isUnderway || !listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) {
         return
     }
-    val successor = successor(of = scooter)
+    val successor = successor(of = scooter, among = vehicles.value.filter { it.id !in previousIDs })
     if (successor != null) {
-        setWalk(walk.copy(target = ScooterWalkTarget.Scooter(successor)))
+        setWalk(walk.copy(target = ScooterWalkTarget.Scooter(successor), missedAt = null))
         follow(to = successor.id)
         val userLocation = userLocation.value
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
     }
     if (standsFaded(scooter)) return
+    val missedAt = walk.missedAt
+    if (missedAt == null) {
+        setWalk(walk.copy(missedAt = observedAt))
+        return
+    }
+    // The same data again says nothing new.
+    if (missedAt == observedAt) return
     cancelRouteRequest()
     setWalk(walk.copy(phase = ScooterWalkPhase.Gone, route = null))
     announceWalk(ScooterWalkNote.Gone.text)

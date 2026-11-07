@@ -707,6 +707,10 @@ private fun walked(controllers: TestControllers, clock: TestClock, end: ScooterW
     if (end == ScooterWalkPhase.Gone) {
         assertTrue(controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Shown })
         vehicles = listOf(other)
+        // Taken once missing from two updates of the data, the second a minute on.
+        model.refresh()
+        assertTrue(controllers.waitUntil { model.walk.value?.missedAt != null && !model.isLoading.value })
+        clock.advance(60.0)
         model.refresh()
     }
     // Located for nothing, the walk fails as Near me does, 5 s on.
