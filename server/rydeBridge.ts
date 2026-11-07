@@ -9,7 +9,7 @@ export interface RydeObservation { id: string; lat: number; lng: number }
 export interface RydeResult {
   version: 1; id: string; query: RydeJob; observedAt: number; coverage: 'unknown'; scooters: RydeObservation[]; returnedCount?: number;
 }
-interface Entry { job: RydeJob; key: string; urgent: () => boolean; leasedUntil: number; promise: Promise<RydeResult>;
+interface Entry { job: RydeJob; key: string; urgent: () => boolean; leasedUntil: number; owner?: object; promise: Promise<RydeResult>;
   resolve(value: RydeResult): void; reject(error: Error): void; timer: ReturnType<typeof setTimeout> }
 const validNumber = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
 export function validateRydeQuery(q: RydeQuery): void {
@@ -39,7 +39,7 @@ export class RydeBroker {
   private nextAt = 0;
   private readonly hash: Buffer;
   private readonly startedAt: number;
-  readonly stats = { queued: 0, completed: 0, expired: 0, failed: 0, rejected: 0, lastWorkerAt: 0 };
+  readonly stats = { queued: 0, completed: 0, expired: 0, failed: 0, cancelled: 0, rejected: 0, lastWorkerAt: 0 };
   constructor(token: string, private readonly now = Date.now, private readonly intervalMs = 5_000,
     private readonly deadlineMs = 120_000, private readonly maxQueue = 64) {
     if (token.length < 32) throw new Error('RYDE_BRIDGE_TOKEN must have at least 32 characters');
@@ -61,7 +61,7 @@ export class RydeBroker {
     const since = Math.max(this.stats.lastWorkerAt, this.restoredSilence ?? this.startedAt);
     return now - since >= RYDE_WORKER_SILENT_MS ? since : undefined;
   }
-  query(q: RydeQuery, urgent?: boolean): Promise<RydeResult> {
+  query(q: RydeQuery, urgent?: boolean, owner?: object): Promise<RydeResult> {
     validateRydeQuery(q);
     const collection = currentCollection();
     // A view can become watched while its native request is already queued.
@@ -69,6 +69,7 @@ export class RydeBroker {
     const key = JSON.stringify([q.cityId, q.latitude, q.longitude, q.radius]);
     const existing = this.entries.find(e => e.key === key);
     if (existing) {
+      if (existing.owner !== owner) existing.owner = undefined;
       const previous = existing.urgent;
       existing.urgent = () => previous() || priority();
       return existing.promise;
@@ -79,9 +80,20 @@ export class RydeBroker {
     const job: RydeJob = { ...q, version: 1, id: randomBytes(16).toString('hex'), expiresAt: (this.now() + this.deadlineMs) / 1000 };
     const timer = setTimeout(() => this.fail(job.id, 'Ryde worker deadline exceeded',true), this.deadlineMs);
     timer.unref?.();
-    this.entries.push({ job, key, urgent: priority, leasedUntil: 0, promise, resolve, reject, timer });
+    this.entries.push({ job, key, urgent: priority, leasedUntil: 0, owner, promise, resolve, reject, timer });
     this.stats.queued++;
     return promise;
+  }
+  /** Only the sole owner can withdraw a job, and never after the app has leased it. */
+  cancelQueued(q: RydeQuery, owner: object): boolean {
+    const key = JSON.stringify([q.cityId, q.latitude, q.longitude, q.radius]);
+    const entry = this.entries.find(e => e.key === key && e.owner === owner && e.leasedUntil === 0);
+    if (!entry) return false;
+    this.entries = this.entries.filter(e => e !== entry);
+    clearTimeout(entry.timer);
+    this.stats.cancelled++;
+    entry.reject(new Error('Ryde view superseded'));
+    return true;
   }
   private fail(id: string, reason: string, expired=false) {
     const entry = this.entries.find(e => e.job.id === id);
@@ -165,6 +177,7 @@ export class RydeBroker {
       `scootradar_ryde_bridge_jobs_total{outcome="completed"} ${this.stats.completed}\n` +
       `scootradar_ryde_bridge_jobs_total{outcome="expired"} ${this.stats.expired}\n` +
       `scootradar_ryde_bridge_jobs_total{outcome="failed"} ${this.stats.failed}\n` +
+      `scootradar_ryde_bridge_jobs_total{outcome="cancelled"} ${this.stats.cancelled}\n` +
       `scootradar_ryde_bridge_results_rejected_total ${this.stats.rejected}\n` +
       `scootradar_ryde_bridge_pending_jobs ${this.entries.length}\n` +
       `scootradar_ryde_bridge_worker_last_seen_seconds ${this.stats.lastWorkerAt ? this.stats.lastWorkerAt / 1000 : 0}\n`;

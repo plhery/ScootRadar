@@ -73,7 +73,8 @@ def relaunch(root=ROOT, after_quit=None):
     lifecycle_event('after-quit')
     egress.begin_cycle(root/'producer')
     if after_quit is not None: after_quit()
-    time.sleep(2)
+    # The lifecycle helper waits for confirmed process termination before returning.
+    # Routing and job arming above finish synchronously, so no additional fixed pause is needed.
     try:
         subprocess.run([str(helper),'open',str(Path(config['appBinary']).parent)],check=True,timeout=15)
     except subprocess.TimeoutExpired:

@@ -4,6 +4,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { clientNetwork } from '../src/lib/clientNetwork';
+import { scooterView } from '../src/lib/scooterView';
 import { parseScooterQuery, scooterAnswerZoom } from '../src/lib/scooterQuery';
 import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
@@ -238,6 +239,11 @@ export function createSnapshotServer(options: ServerOptions) {
     let comingSoon: Set<string> | undefined;
     const refresher = options.refresher;
     const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
+    const viewHeader = request.headers['x-scooter-view'];
+    const view = scooterView(typeof viewHeader === 'string' ? viewHeader : undefined);
+    const viewer = view && { ...view, id: createHash('sha256').update(`${key}:${view.id}`).digest('hex') };
+    // Start the native queue before awaiting other providers, then re-read its observations below.
+    options.rydeViews?.read(inView, parsed.query.bounds, watches, Date.now(), viewer);
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
       // all but the Lime groups past the few nearest the middle of the view, which Lime's pace could not keep up.
@@ -266,7 +272,7 @@ export function createSnapshotServer(options: ServerOptions) {
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
       comingSoon = new Set(quick.filter(id => refreshing!.has(id)));
     }
-    const rydeViews = options.rydeViews?.read(inView, parsed.query.bounds, watches, Date.now());
+    const rydeViews = options.rydeViews?.read(inView, parsed.query.bounds, watches, Date.now(), viewer);
     if (rydeViews) {
       refreshing ??= new Set();
       for (const id of rydeViews.refreshing) refreshing.add(id);

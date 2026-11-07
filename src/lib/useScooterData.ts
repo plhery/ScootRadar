@@ -79,6 +79,8 @@ function clearTimer(timer: number | null): null {
  * and a visibility change always see the same current state.
  */
 function createScooterDataController() {
+  let viewId: string | undefined;
+  let viewSequence = 0;
   let state = INITIAL_SCOOTER_DATA_STATE;
   let query: ScooterDataQuery | null = null;
   // The query a load has been queued or started for.
@@ -152,6 +154,7 @@ function createScooterDataController() {
       // Past the browser's cache: the response may be served stale while it is
       // revalidated, which would answer every refresh with the previous one.
       const res = await fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
+        headers: { 'X-Scooter-View': `${viewId ??= crypto.randomUUID()}.${++viewSequence}` },
         cache: 'no-store',
         signal: deadline.signal,
       });

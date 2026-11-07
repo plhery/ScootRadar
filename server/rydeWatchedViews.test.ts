@@ -20,6 +20,43 @@ const result = (query: RydeQuery, at: number, scooters = [{ id: 'a'.repeat(32), 
 const settle = async () => { await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); };
 
 describe('watched Ryde native views', () => {
+  it('reuses complete covering reads, including empty replies, but not capped, old or partly covering ones', async () => {
+    for (const count of [0, 1, 100]) {
+      let now = 1_000_000;
+      const query = vi.fn(async (q: RydeQuery) => ({ ...result(q, now, []), returnedCount: count }));
+      const views = new RydeWatchedViews({ query }, [area], '*', [system], () => now);
+      views.read([feed], bounds, true); await settle();
+      const small = { south: 48.364, north: 48.366, west: 10.894, east: 10.896 };
+      const reused = views.read([feed], small, true); await settle();
+      expect(query).toHaveBeenCalledTimes(count < 100 ? 1 : 2);
+      if (count < 100) expect(reused.awaitingView.size).toBe(0);
+      now += 60_000;
+      views.read([feed], small, true); await settle();
+      expect(query).toHaveBeenCalledTimes(count < 100 ? 2 : 3);
+      views.read([feed], { ...small, north: 48.38 }, true);
+      expect(query).toHaveBeenCalledTimes(count < 100 ? 3 : 4);
+    }
+  });
+
+  it('replaces abandoned queued views, ignores reordered requests, and preserves other viewers and active jobs', async () => {
+    for (const protection of ['none', 'viewer', 'anonymous', 'leased'] as const) {
+      const broker = new RydeBroker('test-token-'.repeat(5), () => 1_000_000, 0);
+      const views = new RydeWatchedViews(broker, [area], '*', [system], () => 1_000_000);
+      views.read([feed], bounds, true, 1_000_000, { id: 'a', sequence: 1 });
+      if (protection === 'viewer') views.read([feed], bounds, true, 1_000_000, { id: 'b', sequence: 1 });
+      if (protection === 'anonymous') views.read([feed], bounds, true);
+      const running = protection === 'leased' ? broker.lease() : null;
+      const moved = { ...bounds, west: 10.892, east: 10.902 };
+      views.read([feed], moved, true, 1_000_000, { id: 'a', sequence: 2 });
+      // A delayed earlier HTTP request must not replace the latest view again.
+      views.read([feed], bounds, true, 1_000_000, { id: 'a', sequence: 1 });
+      await settle();
+      const job = running ?? broker.lease()!;
+      expect(job.longitude).toBe(protection === 'none' ? 10.897 : 10.895);
+      expect(broker.stats.failed).toBe(0);
+      broker.close(); await settle();
+    }
+  });
   it('takes one urgent viewport read and coalesces polling and viewers for a minute', async () => {
     let now = 1_000_000;
     const query = vi.fn<(q: RydeQuery, urgent?: boolean) => Promise<RydeResult>>(async q => result(q, now));

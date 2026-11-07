@@ -112,6 +112,21 @@ request cost and city-by-city completeness remain production observations.
   a recent result (including a confirmed empty result), its routine renewal keeps the
   usual 60-second polling interval. These follow-ups read the shared cache and do not
   each launch a native request; per-view coalescing and all bridge budgets still apply.
+  Map clients can send `X-Scooter-View` (an in-memory random UUID and increasing
+  request number). The edge validates it and the origin scopes it to the authenticated
+  forwarded client network. The watched-view service keeps at most 4,096 identities
+  for two minutes, never logs or persists them, and ignores reordered older requests.
+  Moving a map releases its previous queued views. Work is cancelled only before
+  leasing, when no other tracked viewer needs it, no anonymous viewer has joined it,
+  and no other broker consumer has coalesced onto it. Older clients remain supported
+  and their work is conservatively retained. The web sends the header immediately;
+  the matching iOS client change requires an app release.
+  A complete response younger than a minute can also answer a different viewport
+  without another native read, provided its conservative confirmed circle covers
+  every corner of the view. Capped, old, or only partly covering responses cannot.
+  The origin starts Ryde collection before waiting for other providers, and reads
+  its latest observations again before responding. Cancellation has its own metrics
+  outcome and is not counted as a provider failure.
   `scootradar_ryde_watched_views_total` separates requested, completed and failed reads;
   `scootradar_ryde_watched_views_pending` reports current pending reads.
 - `server/rydeApp.ts`: bounded overlapping scans, adaptive subdivision, retained
@@ -124,6 +139,9 @@ sessions. No native token, DPoP proof, cookie, encryption key or hardware ID bel
 on the cache server or in logs. The ID HMAC key is stable, mode 0600, on the Mac.
 E-bikes are excluded; battery/range/provider position-update time remain unknown.
 
+The launch helper confirms termination before returning, so the worker no longer
+adds a fixed two-second pause between arming the job and opening Ryde. Proxy readiness,
+egress selection, termination and job arming still finish before the new launch.
 The reliable native request trigger still relaunches Ryde for each map query,
 with its window hidden. Reopening the existing process and hiding/unhiding it
 have not produced new map requests in bounded tests. Keeping the process alive

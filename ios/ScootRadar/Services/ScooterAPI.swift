@@ -46,6 +46,9 @@ actor ScooterAPI: ScooterAPIClient {
     }()
 
     private let baseURL: URL
+    // Ephemeral per-client map identity. Nothing is persisted or used for analytics.
+    private let viewID = UUID().uuidString.lowercased()
+    private var viewSequence = 0
     let session: any ScooterNetworkSession
 
     init(
@@ -57,6 +60,8 @@ actor ScooterAPI: ScooterAPIClient {
     }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+        viewSequence += 1
+        let view = "\(viewID).\(viewSequence)"
         let (data, httpResponse) = try await get("api/scooters", query: [
             URLQueryItem(name: "south", value: String(format: "%.5f", bounds.south)),
             URLQueryItem(name: "west", value: String(format: "%.5f", bounds.west)),
@@ -64,7 +69,7 @@ actor ScooterAPI: ScooterAPIClient {
             URLQueryItem(name: "east", value: String(format: "%.5f", bounds.east)),
             URLQueryItem(name: "zoom", value: String(zoom)),
             URLQueryItem(name: "minBattery", value: String(minimumBattery))
-        ])
+        ], view: view)
         // The server's times are compared with this device's clock, which may be wrong.
         let clockOffset = Self.clockOffset(
             dateHeader: httpResponse.value(forHTTPHeaderField: "Date"),
@@ -106,7 +111,7 @@ actor ScooterAPI: ScooterAPIClient {
     }
 
     /// A GET to the app's server, with what went wrong told apart as the dock reports it.
-    private func get(_ path: String, query: [URLQueryItem]) async throws -> (Data, HTTPURLResponse) {
+    private func get(_ path: String, query: [URLQueryItem], view: String? = nil) async throws -> (Data, HTTPURLResponse) {
         var components = URLComponents(
             url: baseURL.appending(path: path),
             resolvingAgainstBaseURL: false
@@ -120,6 +125,7 @@ actor ScooterAPI: ScooterAPIClient {
         var request = URLRequest(url: url)
         request.timeoutInterval = 20
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let view { request.setValue(view, forHTTPHeaderField: "X-Scooter-View") }
 
         let data: Data
         let response: URLResponse

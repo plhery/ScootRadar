@@ -5,6 +5,20 @@ import XCTest
 @testable import ScootRadar
 
 final class ScooterAPITests: XCTestCase {
+    func testMapIdentityIsEphemeralAndRequestsAreOrdered() async throws {
+        let session = StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData))
+        let api = ScooterAPI(session: session)
+        _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let first = await session.lastRequest?.value(forHTTPHeaderField: "X-Scooter-View")
+        _ = try await api.scooters(bounds: bounds, zoom: 17, minimumBattery: 0)
+        let second = await session.lastRequest?.value(forHTTPHeaderField: "X-Scooter-View")
+        XCTAssertTrue(first?.hasSuffix(".1") == true)
+        XCTAssertEqual(first?.split(separator: ".").first, second?.split(separator: ".").first)
+        XCTAssertTrue(second?.hasSuffix(".2") == true)
+        _ = try await ScooterAPI(session: session).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let separate = await session.lastRequest?.value(forHTTPHeaderField: "X-Scooter-View")
+        XCTAssertNotEqual(first, separate)
+    }
     func testParkingIsDecodedSeparatelyFromVehiclesAndLegacyResponsesStillWork() async throws {
         let data = Data(#"{"vehicles":[],"clusters":[],"providers":{},"parking":[{"id":"dott:bay","provider":"dott","name":"Place test","lat":45.75,"lng":4.85,"mandatory":true}],"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-09-08T12:00:00Z","truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"parkingStatus":"fresh"}}"#.utf8)
         let response = try await makeAPI(responseStatus: 200, data: data).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)

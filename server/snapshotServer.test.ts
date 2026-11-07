@@ -309,6 +309,19 @@ describe('collection on demand', () => {
   const stops: Array<() => void> = [];
   afterEach(() => { for (const stop of stops.splice(0)) stop(); });
 
+  it('starts Ryde before waiting for another provider and reads completed observations again afterwards', async () => {
+    const now = Date.now();
+    const old = feed('france:dott_fr_lyon', lyon, now - minutes(40), { collectionMs: 1 });
+    const read = vi.fn(() => ({ observations: [], refreshing: new Set<string>(), awaitingView: new Set<string>(), listed: [] }));
+    const views = { handles: () => false, read } as unknown as RydeWatchedViews;
+    const wait = vi.fn(async () => { expect(read).toHaveBeenCalledTimes(1); return false; });
+    const { port } = await start({ version: 1, updatedAt: now, feeds: [old], overview: buildCityOverview([old], now) }, {
+      rydeViews: views, refresher: { demand: ids => ids, refreshing: () => true, wait } });
+    await (await fetch(lyonUrl(port), { headers })).text();
+    expect(wait).toHaveBeenCalled();
+    expect(read).toHaveBeenCalledTimes(2);
+  });
+
   it('refreshes newly viewed Ryde cities without waiting for or waking exhaustive group scans', async () => {
     const now = Date.now();
     const augsburg = { south: 48.364, north: 48.369, west: 10.89, east: 10.90 };

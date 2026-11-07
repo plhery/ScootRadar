@@ -1,4 +1,5 @@
 import { clientNetwork } from '@/lib/clientNetwork';
+import { scooterView } from '@/lib/scooterView';
 import { parseScooterQuery } from '@/lib/scooterQuery';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
 import { VEHICLE_MAX_AGE_MS } from '@/lib/dataFreshness';
@@ -97,7 +98,9 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     if (!env.SCOOTER_SNAPSHOT_API_TOKEN) throw new Error('Missing origin credential');
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
+    const view = scooterView(request.headers.get('X-Scooter-View'));
     const response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
+      ...(view && !zones ? { 'X-Scooter-View': `${view.id}.${view.sequence}` } : {}),
       'X-Scooter-Client-IP': client }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
     // Workers support manual redirects; never forward the service credential to a redirect target.
     if ((response.status >= 300 && response.status < 400) || response.status >= 500 || response.status === 401 || response.status === 403) {

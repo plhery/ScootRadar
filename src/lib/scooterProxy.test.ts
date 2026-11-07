@@ -6,6 +6,15 @@ const env = { SCOOTER_SNAPSHOT_API_TOKEN: 'test-service-token', SCOOTER_SNAPSHOT
 const request = () => new Request('https://map.example/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13');
 
 describe('edge snapshot proxy', () => {
+  it('forwards only a bounded valid ephemeral view header', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ vehicles: [] }));
+    for (const value of ['12345678-1234-1234-1234-123456789abc.2', 'invalid', '12345678-1234-1234-1234-123456789abc.99999999999999999999']) {
+      const req = request(); req.headers.set('X-Scooter-View', value);
+      await proxyScooterSnapshot(req, env);
+      const forwarded = new Headers(fetcher.mock.lastCall?.[1]?.headers);
+      expect(forwarded.get('X-Scooter-View')).toBe(value.endsWith('.2') ? value : null);
+    }
+  });
   it('answers unsupported empty places even during an origin outage', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('offline'));
     const response = await proxyScooterSnapshot(new Request('https://map.example/api/scooters?south=43&west=1&north=43.1&east=1.1&zoom=15'), env);

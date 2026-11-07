@@ -89,6 +89,17 @@ afterEach(() => {
 });
 
 describe('useScooterData', () => {
+  it('orders requests within a map and gives another map an independent ephemeral identity', async () => {
+    fetcher.mockImplementation(ok());
+    const first = mount(); await advance(180);
+    const header = (index: number) => new Headers(fetcher.mock.calls[index][1].headers).get('X-Scooter-View')!;
+    const initial = header(0);
+    first.rerender({ query: BERN }); await advance(180);
+    expect(header(1)).toBe(`${initial.split('.')[0]}.2`);
+    const second = mount(); await advance(180);
+    expect(header(2).split('.')[0]).not.toBe(initial.split('.')[0]);
+    first.unmount(); second.unmount();
+  });
   it('reports the first load from the first render and loads once the map has a viewport', async () => {
     fetcher.mockImplementation(ok());
     const { result, rerender } = mount(null);

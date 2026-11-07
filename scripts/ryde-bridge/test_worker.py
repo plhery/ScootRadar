@@ -67,9 +67,15 @@ class WorkerTests(unittest.TestCase):
                 return subprocess.CompletedProcess(command,0,stdout='{"locked":false,"pids":[]}')
             def arm():
                 self.assertEqual(order,['quit']);save(root/'producer/job.json',job);order.append('armed')
-            with patch('worker.subprocess.run',side_effect=run),patch('worker.time.sleep'):
+            with patch('worker.subprocess.run',side_effect=run),patch('worker.time.sleep') as sleep:
                 relaunch(root,arm)
             self.assertEqual(order,['quit','armed','open'])
+            sleep.assert_not_called()
+            # A failed termination must still prevent both arming and opening the next job.
+            with patch('worker.subprocess.run',side_effect=subprocess.CalledProcessError(1,['helper','quit'])), \
+                 patch('worker.time.sleep'), patch('worker.egress.begin_cycle') as cycle:
+                with self.assertRaises(subprocess.CalledProcessError): relaunch(root,arm)
+                cycle.assert_not_called()
 
 def http_error(code):
     return urllib.error.HTTPError('https://cache.test/internal/ryde/job',code,'',{},io.BytesIO())

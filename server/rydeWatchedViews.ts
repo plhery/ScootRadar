@@ -11,7 +11,7 @@ const MAX_ENTRIES = 128;
 const MAX_CITIES = 2;
 interface Entry {
   area: RydeArea; query: RydeQuery; usedAt: number; retryAt: number; pending: boolean; failed: boolean;
-  result?: RydeResult;
+  result?: RydeResult; anonymous?: boolean; cancelled?: boolean;
 }
 export interface WatchedRydeViews {
   observations: FeedSnapshot[]; refreshing: Set<string>; awaitingView: Set<string>; listed: ListedArea[];
@@ -25,12 +25,14 @@ export interface WatchedRydeViews {
  */
 export class RydeWatchedViews {
   private readonly entries = new Map<string, Entry>();
+  // Ephemeral map instances, not IP addresses: tabs and people behind one NAT must not cancel each other.
+  private readonly viewers = new Map<string, { sequence: number; keys: Set<string>; at: number }>();
   private readonly areaOfFeed = new Map<string, RydeArea>();
   /** Each area's feeds and their reads of the view, which a read listing a circle speaks for. */
   private readonly feedsOfArea = new Map<string, Set<string>>();
   private readonly publicBounds = new Map<string, MapBounds[]>();
-  private readonly counts = { requested: 0, completed: 0, failed: 0 };
-  constructor(private readonly broker: Pick<RydeBroker, 'query'> & Partial<Pick<RydeBroker, 'silentSince'>>, areas: readonly RydeArea[], enabled: string,
+  private readonly counts = { requested: 0, completed: 0, failed: 0, cancelled: 0 };
+  constructor(private readonly broker: Pick<RydeBroker, 'query'> & Partial<Pick<RydeBroker, 'silentSince' | 'cancelQueued'>>, areas: readonly RydeArea[], enabled: string,
     systems: readonly RegionalScooterSystem[], private readonly clock = Date.now) {
     const selected = new Set(enabled.split(','));
     const byArea = new Map(areas.filter(area => selected.has('*') || selected.has(area.id)).map(area => [area.id, area]));
@@ -52,7 +54,7 @@ export class RydeWatchedViews {
   }
   handles(feed: { id: string }): boolean { return this.areaOfFeed.has(feed.id); }
 
-  read(feeds: readonly FeedSnapshot[], bounds: MapBounds, demand: boolean, now = this.clock()): WatchedRydeViews {
+  read(feeds: readonly FeedSnapshot[], bounds: MapBounds, demand: boolean, now = this.clock(), viewer?: { id: string; sequence: number }): WatchedRydeViews {
     for (const [key, entry] of this.entries) {
       if (!entry.pending && now - entry.usedAt > VEHICLE_MAX_AGE_MS) this.entries.delete(key);
     }
@@ -69,7 +71,7 @@ export class RydeWatchedViews {
     // With no worker asking for jobs, a read queued waits for a deadline, not for an answer: it is not said
     // to be on its way, and the map stops asking every few seconds for it.
     const silent = this.broker.silentSince?.(now) !== undefined;
-    for (const { area, feed } of [...candidates.values()].sort((a, b) => a.distance - b.distance).slice(0, MAX_CITIES)) {
+    const requests = [...candidates.values()].sort((a, b) => a.distance - b.distance).slice(0, MAX_CITIES).map(({ area, feed }) => {
       // A shared 100 m-ish grid coalesces nearby map requests. Include rounding in the radius;
       // a broad view is sampled at its centre, at most 5 km, and remains explicitly incomplete.
       const nearest = feed.coverage.reduce((a, b) => haversineM(lat, lng,
@@ -80,11 +82,38 @@ export class RydeWatchedViews {
       const radius = Math.min(5, Math.max(.25, Math.ceil(Math.max(...[bounds.south, bounds.north].flatMap(y =>
         [bounds.west, bounds.east].map(x => haversineM(latitude, longitude, y, x)))) / 250) * .25));
       const query = { cityId: area.cityId, latitude, longitude, radius };
-      const key = JSON.stringify(query);
+      return { area, feed, query, key: JSON.stringify(query) };
+    });
+    for (const [id, value] of this.viewers) if (now - value.at > 120_000) this.viewers.delete(id);
+    if (viewer && demand) {
+      const previous = this.viewers.get(viewer.id);
+      if (previous && previous.sequence > viewer.sequence) demand = false;
+      else if (previous || this.viewers.size < 4096) {
+        this.viewers.set(viewer.id, { sequence: viewer.sequence, keys: new Set(requests.map(r => r.key)), at: now });
+      } else viewer = undefined; // At capacity, preserve work conservatively as an anonymous viewer.
+    }
+    for (const [key, entry] of this.entries) {
+      if (entry.pending && !entry.anonymous && ![...this.viewers.values()].some(v => v.keys.has(key)) &&
+        this.broker.cancelQueued?.(entry.query, entry)) {
+        entry.cancelled = true;
+        this.counts.cancelled++;
+        this.entries.delete(key);
+      }
+    }
+    for (const { area, feed, query, key } of requests) {
+      // Only a complete recent read can save a new query. Use the same conservative circle as
+      // absence reconciliation, not the potentially much larger requested radius.
+      const covered = bounds.west <= bounds.east && bounds.east - bounds.west < 180 &&
+        [...this.entries.values()].some(e => e.area.id === area.id && e.result &&
+        now - e.result.observedAt * 1000 < REFRESH_MS &&
+        (e.result.returnedCount ?? e.result.scooters.length) < area.saturationCount &&
+        [bounds.south, bounds.north].every(y => [bounds.west, bounds.east].every(x =>
+          haversineM(e.query.latitude, e.query.longitude, y, x) <=
+            Math.min(e.query.radius * 1000, Math.SQRT2 * area.cellM / 2 * 1.1))));
       let entry = this.entries.get(key);
       const pending = [...this.entries.values()].filter(entry => entry.pending);
       const blocked = pending.length >= MAX_PENDING || pending.some(entry => entry.area.id === area.id);
-      if (demand && !entry && !blocked) {
+      if (demand && !covered && !entry && !blocked) {
         if (this.entries.size >= MAX_ENTRIES) {
           const oldest = [...this.entries].filter(([, e]) => !e.pending).sort((a, b) => a[1].usedAt - b[1].usedAt)[0];
           if (oldest) this.entries.delete(oldest[0]);
@@ -92,20 +121,20 @@ export class RydeWatchedViews {
         entry = { area, query, usedAt: now, retryAt: 0, pending: false, failed: false };
         this.entries.set(key, entry);
       }
-      if (entry) entry.usedAt = now;
-      if (demand && entry && !entry.pending && !blocked && now >= entry.retryAt &&
+      if (entry) { entry.usedAt = now; if (demand && !viewer) entry.anonymous = true; }
+      if (demand && !covered && entry && !entry.pending && !blocked && now >= entry.retryAt &&
         (!entry.result || now - entry.result.observedAt * 1000 >= REFRESH_MS)) {
         const current = entry;
         current.pending = true;
         this.counts.requested++;
-        void this.broker.query(query, true).then(result => {
+        void this.broker.query(query, true, current).then(result => {
           current.result = result; current.failed = false; this.counts.completed++;
-        }, () => { current.failed = true; current.retryAt = this.clock() + REFRESH_MS; this.counts.failed++; })
+        }, () => { if (current.cancelled) return; current.failed = true; current.retryAt = this.clock() + REFRESH_MS; this.counts.failed++; })
           .finally(() => { current.pending = false; });
       }
       const id = viewReadsOf(feed.id);
       const needsView = !entry?.result || now - entry.result.observedAt * 1000 > VEHICLE_MAX_AGE_MS;
-      const waiting = demand && !silent && (entry?.pending || (needsView && blocked));
+      const waiting = demand && !covered && !silent && (entry?.pending || (needsView && blocked));
       if (waiting) refreshing.add(id);
       // Observations from another part of this city do not answer the new viewport. Keep asking
       // for its first result promptly even while those nearby observations are still recent.

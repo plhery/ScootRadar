@@ -6,6 +6,17 @@ const broker=(...args: ConstructorParameters<typeof RydeBroker>)=>{const b=new R
 const q={cityId:43,latitude:59.744,longitude:10.205,radius:1};
 afterEach(()=>{for(const b of brokers) b.close();brokers.length=0;vi.useRealTimers();});
 describe('Ryde account broker',()=>{
+  it('cancels only exclusively owned unleased work, preserving coalesced routine consumers',async()=>{
+    const b=broker('x'.repeat(32),()=>100000,0), owner={};
+    const first=b.query(q,true,owner);const rejected=expect(first).rejects.toThrow('superseded');
+    expect(b.cancelQueued(q,{})).toBe(false);
+    expect(b.cancelQueued(q,owner)).toBe(true);await rejected;expect(b.lease()).toBeNull();
+    const shared=b.query(q,true,owner);b.query(q,false);
+    expect(b.cancelQueued(q,owner)).toBe(false);
+    const job=b.lease()!;expect(b.cancelQueued(q,owner)).toBe(false);
+    b.accept({version:1,id:job.id,query:job,coverage:'unknown',observedAt:100,scooters:[]});await shared;
+    expect(b.stats.failed).toBe(0);
+  });
   it('promotes a queued idle read when someone starts watching its collection',async()=>{
     const b=broker('x'.repeat(32),()=>100000,0);
     const routine=b.query({...q,cityId:6},false);
