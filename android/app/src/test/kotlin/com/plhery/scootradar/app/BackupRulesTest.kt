@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.R
+import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.MapDestination
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,8 +17,8 @@ import java.util.Properties
 
 /**
  * LOG-298: the settings go into the phone's backups and to a new phone, as the iPhone's UserDefaults go into its
- * backups, with the language chosen for the app; nothing else does. The rules are read from the app's resources and
- * the manifest as the build merged it.
+ * backups, with the language chosen for the app; nothing else does, not the last place chosen in the search. The rules
+ * are read from the app's resources and the manifest as the build merged it.
  */
 @RunWith(AndroidJUnit4::class)
 class BackupRulesTest {
@@ -73,6 +76,22 @@ class BackupRulesTest {
         assertEquals(File(context.cacheDir, "CityZones/v1"), AppContainer(context).cityZoneCache.directory)
         val rules = sections(R.xml.data_extraction_rules).values.flatten() + sections(R.xml.backup_rules).values.flatten()
         assertTrue(rules.all { it.tag == "include" && it.domain != "root" })
+    }
+
+    /**
+     * The last place chosen in the search is in a file of its own, RecentPlace.xml, which no rule names, so that it
+     * stays on the phone, as the iPhone keeps its file out of its backups; the next launch reads it back.
+     */
+    @Test
+    fun theRecentPlaceIsInAFileTheRulesLeaveOut() {
+        val place = MapDestination(title = "Paradeplatz", subtitle = "8001 Zürich", point = GeoPoint(47.3697, 8.5392))
+        AppContainer(context).recentPlace.save(place)
+        assertTrue(context.getSharedPreferences("RecentPlace", Context.MODE_PRIVATE).contains("recent-place-v1"))
+        val settings = context.getSharedPreferences("ScooterDefaults", Context.MODE_PRIVATE).all.values
+        assertFalse(settings.any { it.toString().contains("Paradeplatz") })
+        val rules = sections(R.xml.data_extraction_rules).values.flatten() + sections(R.xml.backup_rules).values.flatten()
+        assertTrue(rules.none { it.path.startsWith("RecentPlace") })
+        assertEquals(place, AppContainer(context).recentPlace.load())
     }
 
     @Test

@@ -14,6 +14,7 @@ import com.plhery.scootradar.core.model.MapFocusRequest
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.MapZoomRequest
 import com.plhery.scootradar.core.model.ProviderRidePass
+import com.plhery.scootradar.core.model.RecentPlaceStore
 import com.plhery.scootradar.core.model.RideEstimateDuration
 import com.plhery.scootradar.core.model.RidePriceEstimator
 import com.plhery.scootradar.core.model.RidePriceQuote
@@ -104,6 +105,11 @@ class ScooterMapController(
     internal val api: ScooterAPIClient,
     internal val locationManager: ScooterLocationManager,
     private val defaults: ScooterDefaults,
+    /**
+     * Where the last place chosen in the search is kept between launches: a SharedPreferences file of its own in
+     * the app, outside its backups, and memory in tests and previews.
+     */
+    private val recentPlaceStore: RecentPlaceStore = RecentPlaceStore(),
     /**
      * Where the controller's requests, timers and waits run: the screen's, on the main thread. Its dispatcher is
      * Dispatchers.Main, not Main.immediate, so that work starts after the call that asked for it returns, as a
@@ -261,11 +267,13 @@ class ScooterMapController(
     val searchedDestination: StateFlow<MapDestination?> = _searchedDestination.asStateFlow()
 
     /**
-     * Places chosen during this session, newest first. Never persisted: the privacy notice promises that
-     * precise origins are not stored.
+     * The last place the rider chose: a place found in the search, a city's chip, in the search or under the dock
+     * outside coverage, or this place itself again. The open search offers it until another is chosen or the rider
+     * forgets it. It is kept on the device between launches, outside its backups: the one precise place the app
+     * stores, as the privacy notice says. A city a link opens is not remembered.
      */
-    private val _recentPlaces = MutableStateFlow<List<MapDestination>>(emptyList())
-    val recentPlaces: StateFlow<List<MapDestination>> = _recentPlaces.asStateFlow()
+    private val _recentPlace = MutableStateFlow(recentPlaceStore.load())
+    val recentPlace: StateFlow<MapDestination?> = _recentPlace.asStateFlow()
 
     private val _focusRequest = MutableStateFlow<MapFocusRequest?>(null)
     val focusRequest: StateFlow<MapFocusRequest?> = _focusRequest.asStateFlow()
@@ -1019,13 +1027,32 @@ class ScooterMapController(
         requestLocationAccess()
     }
 
-    /** Chooses a place found in the search: it becomes the origin for walking times, is remembered for this session and the map moves there. */
+    /** Chooses a place found in the search: it becomes the origin for walking times, the search remembers it and the map moves there. */
     fun focusOnAddress(destination: MapDestination) {
         analytics?.track("search_select")
-        choosePlace(destination)
+        choosePlace(destination, remembers = true)
     }
 
-    private fun choosePlace(destination: MapDestination) {
+    /** The remembered place, chosen again in the open search: as a place found there. */
+    fun chooseRecentPlace() {
+        val place = recentPlace.value ?: return
+        analytics?.track("search_select", result = "recent")
+        choosePlace(place, remembers = true)
+    }
+
+    /**
+     * The ✕ of the remembered place: it is forgotten, here and on the device. The bar and the map stay as they are,
+     * also when they show it.
+     */
+    fun forgetRecentPlace() {
+        if (recentPlace.value == null) return
+        analytics?.track("search_forget")
+        _recentPlace.value = null
+        recentPlaceStore.save(null)
+    }
+
+    /** Makes [destination] the place, which is remembered when [remembers]: when the rider chose it. */
+    private fun choosePlace(destination: MapDestination, remembers: Boolean) {
         // A walk under way goes on from the new place when it is still a walk from there. Its route then shows
         // the place and the scooter, and the map fits it rather than move to the place first.
         val keepsWalk = walk.value?.let { it.isUnderway && WalkRoute.isWalk(from = destination.point, to = it.target.point) } ?: false
@@ -1035,7 +1062,7 @@ class ScooterMapController(
         }
         placeChoices += 1
         setSearchedDestination(destination)
-        rememberPlace(destination)
+        if (remembers) rememberPlace(destination)
         if (keepsWalk) return
         focusToken += 1
         _focusRequest.value = if (destination.kind == MapDestination.Kind.City) {
@@ -1052,7 +1079,7 @@ class ScooterMapController(
 
     /** A closest-city chip: the city becomes the place, like its chip in the search, so walking times start there and not at the place without data. */
     fun focusOnCity(city: ScooterCity) {
-        choosePlace(city.destination)
+        choosePlace(city.destination, remembers = true)
     }
 
     /**
@@ -1060,7 +1087,8 @@ class ScooterMapController(
      * carry, opens like the city chosen in the search; any other point moves the map there and clears a
      * place searched before, so the bar shows its placeholder as for a map the rider moved. Either way
      * the first fix of the rider's location leaves the map where the link put it, also when the link opened
-     * the app before locating began.
+     * the app before locating began. The search does not remember the city: the link chose it, not the rider, and the
+     * website does not remember it either.
      */
     fun open(link: ScooterMapLink) {
         link.minimumBattery?.let { setMinimumBattery(it.toDouble()) }
@@ -1073,7 +1101,7 @@ class ScooterMapController(
         val city = ScooterCityCatalog.city(linkedAt = origin, among = catalog.cities)
         if (city != null) {
             analytics?.track("link_open", result = "city")
-            choosePlace(city.destination)
+            choosePlace(city.destination, remembers = false)
         } else {
             analytics?.track("link_open", result = "place")
             // The bar says what the map shows: a place searched before is not where the map goes, so it
@@ -1084,10 +1112,11 @@ class ScooterMapController(
         }
     }
 
+    /** The place the open search offers again, in place of the one before, here and on the device. */
     private fun rememberPlace(destination: MapDestination) {
-        val places = recentPlaces.value.filter { it.id != destination.id }.toMutableList()
-        places.add(0, destination)
-        _recentPlaces.value = places.take(MAXIMUM_RECENT_PLACES)
+        if (destination == recentPlace.value) return
+        _recentPlace.value = destination
+        recentPlaceStore.save(destination)
     }
 
     /** The card header: centres the scooter and leaves the zoom as it is. */
@@ -1683,7 +1712,6 @@ class ScooterMapController(
         private const val RIDE_ESTIMATE_MINUTES_KEY = "ride-estimate-minutes-v1"
         private const val RIDE_PASSES_KEY = "provider-ride-passes-v1"
         private const val HAS_LOCATED_ONCE_KEY = "has-located-once"
-        private const val MAXIMUM_RECENT_PLACES = 3
 
         /** Date.distantFuture: the first day of the year 4001. */
         private val distantFuture: Instant = Instant.ofEpochSecond(64_092_211_200)

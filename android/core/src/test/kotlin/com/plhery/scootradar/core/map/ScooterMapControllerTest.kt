@@ -27,6 +27,7 @@ import com.plhery.scootradar.core.model.MapFocusRequest
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.PartsFlow
 import com.plhery.scootradar.core.model.ProviderRidePass
+import com.plhery.scootradar.core.model.RecentPlaceStore
 import com.plhery.scootradar.core.model.RentalCurfew
 import com.plhery.scootradar.core.model.RideEstimateDuration
 import com.plhery.scootradar.core.model.Scooter
@@ -1993,7 +1994,7 @@ class ScooterMapControllerTest {
         model.focusOnCity(cities[1].city)
         assertEquals(cities[1].city.center, model.focusRequest.value?.point)
         assertEquals(cities[1].city.destination, model.searchedDestination.value)
-        assertEquals(listOf(cities[1].city.destination), model.recentPlaces.value)
+        assertEquals(cities[1].city.destination, model.recentPlace.value)
     }
 
     @Test
@@ -2808,10 +2809,16 @@ class ScooterMapControllerTest {
         assertEquals(ScooterLocationIssue.Restricted, restricted.locationIssue.value)
     }
 
+    /**
+     * The search remembers the last place chosen, and that one only, across launches: a controller on the same store,
+     * as the app's next launch, offers it again, without the place in the bar. The settings never hold it.
+     */
     @Test
-    fun recentPlacesKeepTheLastThreeForThisSessionOnly() = runTest {
+    fun theLastPlaceChosenIsRememberedAcrossLaunches() = runTest {
         val defaults = RecordingDefaults()
-        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        val kept = InMemoryScooterDefaults()
+        fun launch() = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults, recentPlaceStore = RecentPlaceStore(kept))
+        val model = launch()
         val places = listOf("Zürich HB", "Bellevue", "Paradeplatz", "Stauffacher").mapIndexed { index, title ->
             MapDestination(
                 title = title,
@@ -2819,31 +2826,116 @@ class ScooterMapControllerTest {
                 point = GeoPoint(latitude = 47.37 + index.toDouble() / 1_000, longitude = 8.54),
             )
         }
-        assertTrue(model.recentPlaces.value.isEmpty())
+        assertNull(model.recentPlace.value)
 
         for (place in places) {
             model.focusOnAddress(place)
         }
-        assertEquals(listOf(places[3], places[2], places[1]), model.recentPlaces.value)
+        assertEquals(places[3], model.recentPlace.value)
         assertEquals(ScooterSearchBarState.Place(places[3]), model.searchBarState)
 
-        // Choosing a recent place again moves it to the front without repeating it.
-        model.focusOnAddress(places[2])
-        assertEquals(listOf(places[2], places[3], places[1]), model.recentPlaces.value)
+        // A city chosen, from its chip in the search or under the dock outside coverage, takes its place.
+        model.chooseCity(TestCatalog.bern)
+        assertEquals(TestCatalog.bern.destination, model.recentPlace.value)
+        model.focusOnCity(TestCatalog.zurich)
+        assertEquals(TestCatalog.zurich.destination, model.recentPlace.value)
+        model.focusOnAddress(places[1])
 
-        // Clearing the place keeps the list for the rest of the session.
+        // Clearing the place from the bar keeps it remembered.
         model.clearAddressSearch()
         assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
-        assertEquals(3, model.recentPlaces.value.size)
+        assertEquals(places[1], model.recentPlace.value)
 
+        // The next launch offers it again, and starts without a place in the bar.
+        val nextLaunch = launch()
+        assertEquals(places[1], nextLaunch.recentPlace.value)
+        assertNull(nextLaunch.searchedDestination.value)
+        assertEquals(ScooterSearchBarState.Empty, nextLaunch.searchBarState)
+
+        // Nor is it among the settings.
         val stored = defaults.writes.joinToString("\n")
-        assertFalse(stored.contains("Paradeplatz"))
+        assertFalse(stored.contains("Bellevue"))
         assertFalse(stored.contains("47.37"))
-        val nextSession = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
-        assertTrue(nextSession.recentPlaces.value.isEmpty())
-        // Nor the place searched: a new session starts without one.
-        model.focusOnAddress(places[0])
-        assertNull(makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults).searchedDestination.value)
+    }
+
+    /**
+     * Chosen again from the open search, the remembered place is the place, as a place found there: the map goes there
+     * and walking times start there, also when the bar already shows it.
+     */
+    @Test
+    fun theRememberedPlaceIsChosenAgainAsAPlaceFound() = runTest {
+        val kept = InMemoryScooterDefaults()
+        val bellevue = MapDestination(title = "Bellevue", subtitle = "8001 Zürich", point = GeoPoint(latitude = 47.3667, longitude = 8.545))
+        makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), recentPlaceStore = RecentPlaceStore(kept)).focusOnAddress(bellevue)
+
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), recentPlaceStore = RecentPlaceStore(kept))
+        model.chooseRecentPlace()
+        assertEquals(bellevue, model.searchedDestination.value)
+        assertEquals(NearbyOrigin.SearchedDestination(bellevue), model.activeOrigin)
+        val focus = unwrap(model.focusRequest.value)
+        assertEquals(bellevue.point, focus.point)
+        assertEquals(bellevue, model.recentPlace.value)
+
+        // Offered while the bar shows it, it brings the map back there.
+        model.chooseRecentPlace()
+        assertTrue(unwrap(model.focusRequest.value).token > focus.token)
+        assertEquals(bellevue, model.searchedDestination.value)
+    }
+
+    /**
+     * The ✕ forgets the place, here and on the device; the bar and the map keep it, and with nothing remembered there is
+     * nothing to choose.
+     */
+    @Test
+    fun forgettingThePlaceLeavesTheBarAndTheMapAsTheyAre() = runTest {
+        val kept = InMemoryScooterDefaults()
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), recentPlaceStore = RecentPlaceStore(kept))
+        val bellevue = MapDestination(title = "Bellevue", subtitle = "8001 Zürich", point = GeoPoint(latitude = 47.3667, longitude = 8.545))
+        model.focusOnAddress(bellevue)
+        assertNotNull(kept.string(forKey = "recent-place-v1"))
+        val focus = model.focusRequest.value
+
+        model.forgetRecentPlace()
+        assertNull(model.recentPlace.value)
+        assertNull(kept.string(forKey = "recent-place-v1"))
+        assertEquals(ScooterSearchBarState.Place(bellevue), model.searchBarState)
+        assertEquals(focus, model.focusRequest.value)
+        assertNull(makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), recentPlaceStore = RecentPlaceStore(kept)).recentPlace.value)
+
+        model.clearAddressSearch()
+        model.chooseRecentPlace()
+        assertNull(model.searchedDestination.value)
+        assertEquals(focus, model.focusRequest.value)
+    }
+
+    /** A link opens a city as the city chosen, but the search remembers what the rider chose, not where a link went. */
+    @Test
+    fun aLinkLeavesTheRememberedPlaceAsItIs() = runTest {
+        val kept = InMemoryScooterDefaults()
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), recentPlaceStore = RecentPlaceStore(kept))
+        model.open(ScooterMapLink(origin = TestCatalog.zurich.center))
+        assertEquals(TestCatalog.zurich.destination, model.searchedDestination.value)
+        assertNull(model.recentPlace.value)
+
+        val bellevue = MapDestination(title = "Bellevue", subtitle = "8001 Zürich", point = GeoPoint(latitude = 47.3667, longitude = 8.545))
+        model.focusOnAddress(bellevue)
+        model.open(ScooterMapLink(origin = TestCatalog.bern.center))
+        assertEquals(TestCatalog.bern.destination, model.searchedDestination.value)
+        model.open(ScooterMapLink(origin = GeoPoint(latitude = 46.2044, longitude = 6.1432)))
+        assertEquals(bellevue, model.recentPlace.value)
+        assertEquals(bellevue, RecentPlaceStore(kept).load())
+    }
+
+    /** What the store holds that is not a place, written by hand or broken on the way, is not offered. */
+    @Test
+    fun aStoredPlaceThatCannotBeReadIsNotOffered() = runTest {
+        val kept = InMemoryScooterDefaults()
+        kept.set("{\"title\":\"Bellevue\"", forKey = "recent-place-v1")
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), recentPlaceStore = RecentPlaceStore(kept))
+        assertNull(model.recentPlace.value)
+        assertNull(kept.string(forKey = "recent-place-v1"))
+        model.forgetRecentPlace()
+        assertNull(model.recentPlace.value)
     }
 
     @Test
@@ -2854,9 +2946,11 @@ class ScooterMapControllerTest {
         val kept = mutableListOf<List<String>>()
         // Umami's answer carries the token it wants back with the next event: the session keeps it in memory.
         val analytics = RecordingAnalytics(answer = { 200 to """{"cache":"umami-session-token"}""" }, defaults = defaults)
+        val recentPlace = InMemoryScooterDefaults()
         val model = makeController(
             api,
             defaults = defaults,
+            recentPlaceStore = RecentPlaceStore(recentPlace),
             locationManager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse),
             keepAppLanguages = { kept += it },
             analytics = analytics,
@@ -2901,6 +2995,8 @@ class ScooterMapControllerTest {
         // No position, place or scooter among the values.
         val stored = defaults.writes.joinToString("\n")
         for (secret in listOf("47.3", "8.5", "Paradeplatz", "s1", "umami-session-token")) assertFalse(secret, stored.contains(secret))
+        // The place chosen is in a store of its own, which no backup takes.
+        assertEquals("Paradeplatz", RecentPlaceStore(recentPlace).load()?.title)
         assertTrue(analytics.requests.size > 1)
         assertEquals("umami-session-token", analytics.requests.last().header("x-umami-cache"))
     }
@@ -2925,7 +3021,7 @@ class ScooterMapControllerTest {
         assertEquals("Bern", place.title)
         assertEquals(MapDestination.Kind.City, place.kind)
         assertEquals(NearbyOrigin.SearchedDestination(place), model.activeOrigin)
-        assertEquals(listOf(place), model.recentPlaces.value)
+        assertEquals(place, model.recentPlace.value)
         val focus = unwrap(model.focusRequest.value)
         assertEquals(MapFocusRequest.city(bern.center, token = focus.token), focus)
         assertTrue(focus.latitudinalMeters > 8_000)

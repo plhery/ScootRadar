@@ -83,7 +83,9 @@ class SearchScreenshotTest(private val state: SearchState, private val look: Loo
                             onShowFilters = {},
                             onShowSettings = {},
                             modifier = Modifier.align(Alignment.TopCenter).padding(top = 8.dp, start = 12.dp, end = 12.dp),
-                            recentPlaces = recentPlaces,
+                            // The place chosen last: one no operator serves, so that its No data tag is pictured
+                            // beside its ✕, and under its lines at large text.
+                            recentPlace = lyngen,
                             nearbyCities = cities,
                         )
                     }
@@ -154,8 +156,6 @@ private val lyngen = MapDestination(
     kind = MapDestination.Kind.Address,
     isCovered = false,
 )
-
-private val recentPlaces = listOf(bahnhofstrasse, lyngen)
 
 private val cities = listOf(
     city("zurich", "Zürich", 47.3769, 8.5417),

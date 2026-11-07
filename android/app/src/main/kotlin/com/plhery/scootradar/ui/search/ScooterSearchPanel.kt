@@ -71,6 +71,7 @@ import com.plhery.scootradar.core.search.SwissAddressSearchModel
 import com.plhery.scootradar.core.search.SwissAddressSearchStatus
 import com.plhery.scootradar.ui.Announcer
 import com.plhery.scootradar.ui.FitOrScroll
+import com.plhery.scootradar.ui.dock.BodySymbol
 import com.plhery.scootradar.ui.dock.SYMBOL_FRAME
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
@@ -89,8 +90,8 @@ import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.weight
 import kotlin.math.min
 
-// ScooterSearchPanel, SearchPlaceRow and SearchSymbolTile in ios/ScootRadar/Views/SwissAddressSearch.swift (ui.md
-// UI-013 to UI-025, UI-105).
+// ScooterSearchPanel, RecentPlaceRow, SearchPlaceRow and SearchSymbolTile in ios/ScootRadar/Views/SwissAddressSearch.swift
+// (ui.md UI-013 to UI-025, UI-105).
 
 /**
  * The open search: the field first, with Cancel beside it. Under it, ways to start while nothing is typed, and the
@@ -100,10 +101,13 @@ import kotlin.math.min
 @Composable
 internal fun ScooterSearchPanel(
     model: SwissAddressSearchModel,
-    recentPlaces: List<MapDestination>,
+    /** The last place chosen in the search, offered again while nothing is typed; none, null. */
+    recentPlace: MapDestination?,
     nearbyCities: List<ScooterCity>,
     bottomLimit: Dp,
     onSelect: (MapDestination) -> Unit,
+    onChooseRecentPlace: () -> Unit,
+    onForgetRecentPlace: () -> Unit,
     onChooseCity: (ScooterCity) -> Unit,
     onUseCurrentLocation: () -> Unit,
     onCancel: () -> Unit,
@@ -158,7 +162,19 @@ internal fun ScooterSearchPanel(
                 Modifier.onGloballyPositioned { contentTop = it.positionInWindow().y },
             ) {
                 when (val shown = status) {
-                    SwissAddressSearchStatus.Idle -> Suggestions(recentPlaces, nearbyCities, onSelect, onChooseCity, onUseCurrentLocation)
+                    SwissAddressSearchStatus.Idle -> Suggestions(
+                        recentPlace = recentPlace,
+                        nearbyCities = nearbyCities,
+                        onChooseRecentPlace = onChooseRecentPlace,
+                        onForgetRecentPlace = {
+                            onForgetRecentPlace()
+                            // The field keeps the focus and the keyboard, as after Clear search: the ✕ goes with
+                            // the row.
+                            focus.requestFocus()
+                        },
+                        onChooseCity = onChooseCity,
+                        onUseCurrentLocation = onUseCurrentLocation,
+                    )
                     SwissAddressSearchStatus.Searching -> Row(
                         Modifier.searchStatus(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -312,12 +328,13 @@ private fun TextButton(title: String, onClick: () -> Unit) {
     }
 }
 
-/** Nothing typed yet: your location, the places of this session and the covered cities nearest to the map. */
+/** Nothing typed yet: your location, the last place chosen and the covered cities nearest to the map. */
 @Composable
 private fun Suggestions(
-    recentPlaces: List<MapDestination>,
+    recentPlace: MapDestination?,
     nearbyCities: List<ScooterCity>,
-    onSelect: (MapDestination) -> Unit,
+    onChooseRecentPlace: () -> Unit,
+    onForgetRecentPlace: () -> Unit,
     onChooseCity: (ScooterCity) -> Unit,
     onUseCurrentLocation: () -> Unit,
 ) {
@@ -336,19 +353,10 @@ private fun Suggestions(
             Text(localized("Use my location"), style = ScootType.subheadline.weight(FontWeight.SemiBold), color = colors.actionText)
         }
 
-        if (recentPlaces.isNotEmpty()) {
-            SectionHeader(localized("Recent"))
-            recentPlaces.forEachIndexed { index, place ->
-                SearchPlaceRow(
-                    title = place.title,
-                    subtitle = place.subtitle,
-                    symbol = Symbols.history,
-                    isAccented = false,
-                    showsNoData = !place.isCovered,
-                    modifier = Modifier.plainButton { onSelect(place) },
-                )
-                if (index < recentPlaces.lastIndex) RowDivider()
-            }
+        // One place needs no heading: its clock says it was chosen before.
+        if (recentPlace != null) {
+            RowDivider()
+            RecentPlaceRow(recentPlace, onChoose = onChooseRecentPlace, onForget = onForgetRecentPlace)
         }
 
         if (nearbyCities.isNotEmpty()) {
@@ -376,6 +384,42 @@ private fun Suggestions(
         }
     }
 }
+
+/**
+ * The last place chosen, which a tap chooses again, and beside it the ✕ that forgets it: a button of its own, not one
+ * inside the row's, so that TalkBack, Switch Access and a keyboard reach each.
+ */
+@Composable
+private fun RecentPlaceRow(place: MapDestination, onChoose: () -> Unit, onForget: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        SearchPlaceRow(
+            title = place.title,
+            subtitle = place.subtitle,
+            symbol = Symbols.history,
+            isAccented = false,
+            showsNoData = !place.isCovered,
+            modifier = Modifier
+                .weight(1f)
+                .plainButton(label = recentPlaceLabel(place), shows = place.title, onClick = onChoose),
+        )
+        Box(
+            Modifier.size(44.dp).plainButton(label = localized("Forget this place"), onClick = onForget),
+            contentAlignment = Alignment.Center,
+        ) {
+            // It grows with the text as far as it fits in the button's 44 points.
+            BodySymbol(Symbols.close, 13f, maximum = 22f, scootColors.secondaryText)
+        }
+    }
+}
+
+/**
+ * What TalkBack reads for the remembered place, in place of its clock: "Recent, Bahnhofstrasse 12, 8001 Zürich,
+ * Switzerland", and "No data" after a place no operator serves, as the row shows it.
+ */
+private fun recentPlaceLabel(place: MapDestination): String =
+    listOf(localized("Recent"), place.title, place.subtitle, if (place.isCovered) "" else localized("No data"))
+        .filter { it.isNotEmpty() }
+        .joinToString(", ")
 
 @Composable
 private fun ResultRows(results: List<AddressSearchResult>, onChoose: (AddressSearchResult) -> Unit) {
@@ -433,7 +477,7 @@ private fun StatusText(text: String) {
     Text(text, style = ScootType.subheadline, color = scootColors.secondaryText)
 }
 
-/** A place in the search panel: a result, or a place chosen earlier. */
+/** A place in the search panel: a result, or the place chosen last. */
 @Composable
 internal fun SearchPlaceRow(
     title: String,
@@ -441,7 +485,7 @@ internal fun SearchPlaceRow(
     subtitle: String,
     modifier: Modifier = Modifier,
     symbol: ImageVector = Symbols.mapPin,
-    /** Blue for a place with scooter data, grey for one without and for recent places. */
+    /** Blue for a place with scooter data, grey for one without and for the place chosen last. */
     isAccented: Boolean = true,
     /** The neutral "No data" tag of a place no operator serves. */
     showsNoData: Boolean = false,

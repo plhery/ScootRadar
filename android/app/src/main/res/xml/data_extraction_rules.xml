@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- What a backup and a move to a new phone take (LOG-298): the settings, as the iPhone's UserDefaults go into its
      backups, and the app's own language, which AppCompat keeps in a file on Android 12. Nothing else: no tiles or
-     glyphs MapLibre kept, which are fetched again. -->
+     glyphs MapLibre kept, which are fetched again, and not RecentPlace.xml, the last place chosen in the search, which
+     is left out on purpose so that it stays on the phone, as the privacy notice says. -->
 <data-extraction-rules>
     <cloud-backup>
         <include domain="sharedpref" path="ScooterDefaults.xml" />

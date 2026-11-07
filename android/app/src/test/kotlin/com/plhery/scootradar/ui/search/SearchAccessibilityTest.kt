@@ -15,6 +15,7 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -58,6 +59,7 @@ class SearchAccessibilityTest {
     private var state by mutableStateOf<ScooterSearchBarState>(ScooterSearchBarState.Empty)
     private var hasActiveFilters by mutableStateOf(false)
     private var isSearching by mutableStateOf(false)
+    private var recentPlace by mutableStateOf<MapDestination?>(null)
 
     @Before
     fun setUp() {
@@ -71,7 +73,7 @@ class SearchAccessibilityTest {
         Locale.setDefault(locale)
     }
 
-    private fun show(recentPlaces: List<MapDestination> = emptyList(), nearbyCities: List<ScooterCity> = emptyList()) {
+    private fun show(nearbyCities: List<ScooterCity> = emptyList()) {
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = true) {
                 CompositionLocalProvider(LocalAddressSearch provides FoundPlaces) {
@@ -87,7 +89,7 @@ class SearchAccessibilityTest {
                             onShowFilters = {},
                             onShowSettings = {},
                             modifier = Modifier.align(Alignment.TopCenter).padding(top = 8.dp, start = 12.dp, end = 12.dp),
-                            recentPlaces = recentPlaces,
+                            recentPlace = recentPlace,
                             nearbyCities = nearbyCities,
                         )
                     }
@@ -168,21 +170,50 @@ class SearchAccessibilityTest {
     /** What TalkBack reads after the name, where VoiceOver reads a value. */
     private fun hasState(value: String?) = SemanticsMatcher("state $value") { it.config.getOrNull(SemanticsProperties.StateDescription) == value }
 
-    /** UI-258: "Recent" and "Cities with scooters" are headings. */
+    /**
+     * UI-258: "Cities with scooters" is a heading. The place chosen last has none over it, one row needing none: its
+     * row says "Recent" before its lines, as its clock does, which is not read.
+     */
     @Test
-    fun theSuggestionsHeadingsAreHeadings() {
+    fun theSuggestionsHeadingIsAHeading() {
         isSearching = true
+        recentPlace = place("Bahnhofplatz", isCovered = true).destination
         show(
-            recentPlaces = listOf(place("Bahnhofplatz", isCovered = true).destination),
             nearbyCities = listOf(
                 ScooterCity("ch:Zurich", "Zürich", "CH", GeoPoint(47.3769, 8.5417), GeoBounds(47.32, 8.45, 47.43, 8.62)),
             ),
         )
-        for (title in listOf("Recent", "Cities with scooters")) {
-            compose.onNode(hasText(title), useUnmergedTree = true).assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
-        }
+        compose.onNode(hasText("Cities with scooters"), useUnmergedTree = true)
+            .assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        compose.onNode(hasText("Recent"), useUnmergedTree = true).assertDoesNotExist()
+        compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading), useUnmergedTree = true).assertCountEquals(1)
         compose.onNode(hasText("Use my location"), useUnmergedTree = true)
             .assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.Heading))
+    }
+
+    /**
+     * The place chosen last is one button, read "Recent", then its lines, then "No data" where no operator serves it,
+     * with its name for Voice Access; its ✕ is a button of its own beside it, "Forget this place".
+     */
+    @Test
+    fun theRecentPlaceAndItsCrossAreTwoButtons() {
+        isSearching = true
+        recentPlace = MapDestination("Bahnhofplatz", "3011 Bern, Switzerland", GeoPoint(46.9481, 7.4396), MapDestination.Kind.Address, true)
+        show()
+        compose.onNodeWithContentDescription("Recent, Bahnhofplatz, 3011 Bern, Switzerland")
+            .assert(button and hasHint(null) and shows("Bahnhofplatz"))
+        compose.onNodeWithContentDescription("Forget this place").assert(button and shows(null))
+
+        compose.runOnIdle {
+            recentPlace = MapDestination("Lyngen", "Troms, Norway", GeoPoint(69.5779, 20.2198), MapDestination.Kind.Address, false)
+        }
+        compose.onNodeWithContentDescription("Recent, Lyngen, Troms, Norway, No data").assert(button and shows("Lyngen"))
+        // A place without a second line.
+        compose.runOnIdle { recentPlace = MapDestination("Zürich", "", GeoPoint(47.3769, 8.5417), MapDestination.Kind.City, true) }
+        compose.onNodeWithContentDescription("Recent, Zürich").assert(button)
+
+        compose.runOnIdle { recentPlace = null }
+        compose.onNodeWithContentDescription("Forget this place").assertDoesNotExist()
     }
 
     /**

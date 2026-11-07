@@ -108,8 +108,8 @@ fun ScooterSearchIsland(
     onShowFilters: () -> Unit,
     onShowSettings: () -> Unit,
     modifier: Modifier = Modifier,
-    /** Places chosen during this session, newest first. */
-    recentPlaces: List<MapDestination> = emptyList(),
+    /** The last place chosen in the search, which the open search offers again; none, null. */
+    recentPlace: MapDestination? = null,
     /** The covered cities nearest to the map centre. */
     nearbyCities: List<ScooterCity> = emptyList(),
     /** The map centre, rounded, when the map shows a city or less: places near it are found first. */
@@ -117,6 +117,10 @@ fun ScooterSearchIsland(
     /** Where the open panel has to end when no keyboard is up, in the window's coordinates. */
     bottomLimit: Dp = Dp.Infinity,
     onChooseCity: (ScooterCity) -> Unit = {},
+    /** The remembered place, chosen again: the search closes, as for a place found. */
+    onChooseRecentPlace: () -> Unit = {},
+    /** Its ✕: the search stays open. */
+    onForgetRecentPlace: () -> Unit = {},
     /** The collapsed bar's height in pixels, as it is measured: the room the island takes over the map. */
     onCollapsedHeightChange: (Int) -> Unit = {},
     /** The Filters button's frame in the window, in pixels, as it is placed: where a large window's popover points. */
@@ -193,13 +197,18 @@ fun ScooterSearchIsland(
                     SideEffect { model.near = near }
                     ScooterSearchPanel(
                         model = model,
-                        recentPlaces = recentPlaces,
+                        recentPlace = recentPlace,
                         nearbyCities = nearbyCities,
                         bottomLimit = bottomLimit,
                         onSelect = { destination ->
                             onSelect(destination)
                             onSearchingChange(false)
                         },
+                        onChooseRecentPlace = {
+                            onChooseRecentPlace()
+                            onSearchingChange(false)
+                        },
+                        onForgetRecentPlace = onForgetRecentPlace,
                         onChooseCity = { city ->
                             onChooseCity(city)
                             onSearchingChange(false)

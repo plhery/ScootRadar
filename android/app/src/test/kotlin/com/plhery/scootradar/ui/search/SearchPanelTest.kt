@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentDataType
@@ -21,8 +24,10 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
@@ -64,6 +69,8 @@ class SearchPanelTest {
     private val locale = Locale.getDefault()
     private val searching = mutableListOf<Boolean>()
     private val chosen = mutableListOf<MapDestination>()
+    private var recentPlace by mutableStateOf<MapDestination?>(null)
+    private var recentChoices = 0
 
     @Before
     fun setUp() {
@@ -92,12 +99,14 @@ class SearchPanelTest {
                             onSearchingChange = { searching += it },
                             hasActiveFilters = false,
                             onSelect = { chosen += it },
+                            onChooseRecentPlace = { recentChoices += 1 },
+                            onForgetRecentPlace = { recentPlace = null },
                             onClear = {},
                             onUseCurrentLocation = {},
                             onShowFilters = {},
                             onShowSettings = {},
                             modifier = Modifier.align(Alignment.TopCenter).padding(top = 8.dp, start = 12.dp, end = 12.dp),
-                            recentPlaces = emptyList(),
+                            recentPlace = recentPlace,
                             nearbyCities = emptyList(),
                         )
                     }
@@ -202,6 +211,31 @@ class SearchPanelTest {
         compose.onNodeWithText("No places found.", substring = true).assertExists()
         assertTrue(chosen.isEmpty())
         assertTrue(false !in searching)
+    }
+
+    /**
+     * The place chosen last is chosen again by its row, which closes the search, and forgotten by its ✕, a button of
+     * its own beside the row's: the row goes, the search stays open and the field keeps the focus.
+     */
+    @Test
+    fun theRecentPlacesRowChoosesItAndItsCrossForgetsIt() {
+        recentPlace = MapDestination("Bahnhofplatz", "3011 Bern, Switzerland", GeoPoint(46.9481, 7.4396), MapDestination.Kind.Address, true)
+        show("")
+        compose.onNodeWithContentDescription("Recent, Bahnhofplatz, 3011 Bern, Switzerland").performClick()
+        compose.waitForIdle()
+        assertEquals(1, recentChoices)
+        assertEquals(listOf(false), searching)
+        assertTrue(chosen.isEmpty())
+
+        searching.clear()
+        compose.onNodeWithContentDescription("Forget this place").performClick()
+        compose.waitForIdle()
+        assertNull(recentPlace)
+        assertEquals(1, recentChoices)
+        assertTrue(searching.isEmpty())
+        compose.onNodeWithContentDescription("Forget this place").assertDoesNotExist()
+        compose.onNodeWithText("Bahnhofplatz").assertDoesNotExist()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertIsFocused()
     }
 
     @OptIn(ExperimentalTestApi::class)

@@ -13,6 +13,7 @@ import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.CityZoneCache
+import com.plhery.scootradar.core.model.RecentPlaceStore
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterMapStart
@@ -37,6 +38,8 @@ class ScooterMapViewModel(
     container: AppContainer,
     /** The app's defaults, with a debug launch's arguments in front. */
     defaults: ScooterDefaults = container.defaults,
+    /** Where the last place chosen in the search is kept between launches. */
+    recentPlace: RecentPlaceStore = container.recentPlace,
     languageAtLaunch: ScooterLanguageChoice,
     /** The phone's location service, which the activity lets ask the rider, and the controller hears from. */
     val location: AndroidLocationManager = container.locationManager(),
@@ -76,6 +79,7 @@ class ScooterMapViewModel(
         api = api,
         locationManager = location,
         defaults = defaults,
+        recentPlaceStore = recentPlace,
         scope = scope,
         directions = container.directions,
         openInMaps = container::openInMaps,

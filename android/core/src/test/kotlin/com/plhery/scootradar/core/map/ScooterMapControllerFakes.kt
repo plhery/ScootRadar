@@ -9,6 +9,7 @@ import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.RecentPlaceStore
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterDefaults
@@ -356,6 +357,7 @@ internal fun TestScope.makeController(
     api: ScooterAPIClient,
     clock: TestClock? = null,
     defaults: ScooterDefaults = InMemoryScooterDefaults(),
+    recentPlaceStore: RecentPlaceStore = RecentPlaceStore(),
     locationManager: ScooterLocationManager = FakeLocationManager(),
     refreshPolicy: ScooterRefreshPolicy = ScooterRefreshPolicy.standard,
     locationTimeout: Duration = 5.seconds,
@@ -380,6 +382,7 @@ internal fun TestScope.makeController(
         api = api,
         locationManager = locationManager,
         defaults = defaults,
+        recentPlaceStore = recentPlaceStore,
         scope = backgroundScope,
         directions = directions,
         openInMaps = openInMaps,

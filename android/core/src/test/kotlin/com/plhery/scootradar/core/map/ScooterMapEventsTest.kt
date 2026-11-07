@@ -180,6 +180,26 @@ class ScooterMapEventsTest {
         assertEquals(city.destination, model.searchedDestination.value)
     }
 
+    /** The remembered place chosen again is a search_select from "recent"; its ✕ is search_forget, with nothing else. */
+    @Test
+    fun theRememberedPlaceChosenAgainOrForgottenIsCounted() = runTest {
+        val analytics = RecordingAnalytics()
+        val model = makeController(empty(), analytics = analytics)
+        val place = MapDestination(title = "Paradeplatz", subtitle = "Zürich", point = GeoPoint(latitude = 47.3698, longitude = 8.5392))
+
+        model.focusOnAddress(place)
+        model.chooseRecentPlace()
+        model.forgetRecentPlace()
+        // With nothing remembered, neither has anything to do.
+        model.chooseRecentPlace()
+        model.forgetRecentPlace()
+
+        assertEquals(
+            listOf(TrackedEvent("search_select"), TrackedEvent("search_select", result = "recent"), TrackedEvent("search_forget")),
+            analytics.events,
+        )
+    }
+
     @Test
     fun choosingAScooterSendsItsProviderAndClosingItSendsNone() = runTest {
         val analytics = RecordingAnalytics()

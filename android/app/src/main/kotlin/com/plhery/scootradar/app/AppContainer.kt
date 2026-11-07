@@ -17,6 +17,7 @@ import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScootRadarWalkingDirections
 import com.plhery.scootradar.core.api.mapsURL
 import com.plhery.scootradar.core.model.CityZoneCache
+import com.plhery.scootradar.core.model.RecentPlaceStore
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -38,6 +39,14 @@ import kotlinx.coroutines.SupervisorJob
 class AppContainer(private val context: Context) {
     val defaults: ScooterDefaults =
         SharedPreferencesScooterDefaults(context.getSharedPreferences("ScooterDefaults", Context.MODE_PRIVATE))
+
+    /**
+     * The last place chosen in the search, in a file of its own, RecentPlace.xml, so that no backup takes it: the
+     * backups take ScooterDefaults.xml and the app's language only (backup_rules.xml, data_extraction_rules.xml).
+     */
+    val recentPlace = RecentPlaceStore(
+        SharedPreferencesScooterDefaults(context.getSharedPreferences("RecentPlace", Context.MODE_PRIVATE)),
+    )
 
     val languages = AppLanguages(context)
 

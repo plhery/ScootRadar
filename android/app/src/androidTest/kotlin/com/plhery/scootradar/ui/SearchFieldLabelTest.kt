@@ -81,7 +81,6 @@ class SearchFieldLabelTest {
                                 onShowFilters = {},
                                 onShowSettings = {},
                                 modifier = Modifier.align(Alignment.TopCenter).padding(top = 48.dp, start = 12.dp, end = 12.dp),
-                                recentPlaces = emptyList(),
                                 nearbyCities = emptyList(),
                             )
                         }

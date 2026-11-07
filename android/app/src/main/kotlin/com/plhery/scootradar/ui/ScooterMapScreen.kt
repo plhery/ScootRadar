@@ -1470,7 +1470,7 @@ private fun SearchIsland(
     val changes = rememberControllerChanges(controller)
     val state = remember(controller, changes) { controller.searchBarState }
     val hasActiveFilters = remember(controller, changes) { controller.hasActiveFilters }
-    val recentPlaces by controller.recentPlaces.collectAsStateWithLifecycle()
+    val recentPlace by controller.recentPlace.collectAsStateWithLifecycle()
     val nearbyCities = remember(controller, changes, isSearching) {
         if (isSearching) controller.nearbyCities.map { it.city } else emptyList()
     }
@@ -1480,12 +1480,14 @@ private fun SearchIsland(
         isSearching = isSearching,
         onSearchingChange = onSearchingChange,
         hasActiveFilters = hasActiveFilters,
-        recentPlaces = recentPlaces,
+        recentPlace = recentPlace,
         nearbyCities = nearbyCities,
         near = near,
         bottomLimit = bottomLimit,
         onSelect = controller::focusOnAddress,
         onChooseCity = controller::chooseCity,
+        onChooseRecentPlace = controller::chooseRecentPlace,
+        onForgetRecentPlace = controller::forgetRecentPlace,
         onClear = controller::clearAddressSearch,
         onUseCurrentLocation = controller::focusOnUser,
         onShowFilters = onShowFilters,
