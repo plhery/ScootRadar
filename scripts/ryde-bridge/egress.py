@@ -9,6 +9,8 @@ import time
 
 WINDOW = 3600
 LAUNCH_RESERVE = 50  # observed cold launch: 39 calls; every actual call is also checked
+TRANSPORT_COOLDOWN = 15 * 60
+FAILED_STARTUP_SECONDS = 25
 
 
 class EgressWait(RuntimeError):
@@ -85,12 +87,39 @@ class Pool:
         if hold > now:
             raise EgressWait(hold)
         counts = self._counts(now)
-        choices = [k for k in self.gateways if counts.get(k, 0)+LAUNCH_RESERVE <= 200]
+        cooling = self._get('transportCooldowns', {})
+        choices = [k for k in self.gateways if counts.get(k, 0)+LAUNCH_RESERVE <= 200 and cooling.get(k, 0) <= now]
         if choices:
             return min(choices, key=lambda k: (counts.get(k, 0), k))
         # A minute of conservatism avoids relaunching at every single expiry.
         oldest = self.db.execute('SELECT min(at) FROM requests WHERE at>?', (now-WINDOW,)).fetchone()[0]
-        raise EgressWait((oldest or now)+WINDOW+60)
+        next_budget = (oldest or now)+WINDOW+60
+        raise EgressWait(min([next_budget]+[until for until in cooling.values() if until > now]))
+
+    def _cool_failed_startup(self, now):
+        """Called after the app quits. No HTTP response is a transport failure, never a Ryde denial.
+
+        A failed gateway charges only a few startup calls, so least-used selection otherwise picks
+        it repeatedly ahead of healthy gateways whose successful launches cost about 35 calls.
+        Require two settled failures, enough time for startup, and no HTTP response of any kind.
+        Client cancellations during a working launch must not cool a healthy route.
+        """
+        active = self._get('active', {})
+        # Existing active cycles predate startedAt; their lease was always exactly 150 seconds.
+        began = active.get('startedAt', active['until']-150 if 'until' in active else None)
+        if began is None or active.get('transportFailed') or now-began < FAILED_STARTUP_SECONDS:
+            return
+        failed, answered = self.db.execute('''SELECT coalesce(sum(status=0),0),
+            coalesce(sum(status>0),0) FROM requests WHERE gateway=? AND at>=?''',
+            (active.get('gateway'), began)).fetchone()
+        if failed < 2 or answered:
+            return
+        cooling = {key: until for key, until in self._get('transportCooldowns', {}).items() if until > now}
+        cooling[active['gateway']] = now+TRANSPORT_COOLDOWN
+        self._set('transportCooldowns', cooling)
+        self._set('active', dict(active, transportFailed=True))
+        self._set('lastTransportCooldown', {'at': now, 'gateway': active['gateway'],
+                  'failedRequests': failed, 'until': now+TRANSPORT_COOLDOWN})
 
     def available_at(self, now=None):
         self.db.execute('BEGIN IMMEDIATE')
@@ -108,11 +137,17 @@ class Pool:
         self.db.execute('BEGIN IMMEDIATE')
         try:
             now = self._now(now)
+            self._cool_failed_startup(now)
             identity = self._available(now)
-            self._set('active', {'gateway': identity, 'until': now+150})
+            self._set('active', {'gateway': identity, 'startedAt': now, 'until': now+150})
             self.db.execute('DELETE FROM requests WHERE at<?', (now-86400,))
             self.db.commit()
             return identity
+        except EgressWait:
+            # Preserve route health even if every route is unavailable. Otherwise a single
+            # broken route would be selected afresh by the next process after each failure.
+            self.db.commit()
+            raise
         except Exception:
             self.db.rollback()
             raise
@@ -157,6 +192,8 @@ class Pool:
         rows = self.db.execute('SELECT gateway,count(*),sum(request_bytes),sum(response_bytes),sum(status IN (403,429)) FROM requests GROUP BY gateway').fetchall()
         return {'at': now, 'gatewayCount': len(self.gateways), 'maxRequestsPerHour': 200,
                 'holdUntil': self._get('holdUntil', 0), 'active': self._get('active'),
+                'transportCooldowns': self._get('transportCooldowns', {}),
+                'lastTransportCooldown': self._get('lastTransportCooldown'),
                 'rollingHour': self._counts(now),
                 'lastDay': [{'gateway': r[0], 'requests': r[1], 'requestBytes': r[2],
                              'responseBytes': r[3], 'refusals': r[4] or 0} for r in rows]}

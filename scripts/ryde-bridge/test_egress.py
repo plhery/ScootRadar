@@ -72,6 +72,64 @@ class PoolTests(unittest.TestCase):
         self.pool.settle('failed', 0, 0, 1003)
         self.assertEqual(self.pool.snapshot(1004)['rollingHour'][key], 2)
 
+    def test_failed_startup_does_not_trap_least_used_selection_on_one_gateway(self):
+        bad = self.pool.begin_cycle(1000)
+        other = next(key for key in self.pool.gateways if key != bad)
+        # The healthy address is busier; without transport health, each launch chooses bad again.
+        for n in range(40):
+            self.pool.db.execute('INSERT INTO requests(id,gateway,at,status) VALUES (?,?,?,?)',
+                                 ('healthy-'+str(n), other, 1000, 200))
+        for n in range(2):
+            self.pool.charge('failed-'+str(n), 10, 1001)
+            self.pool.settle('failed-'+str(n), 0, 0, 1005)
+        # Installing this fix must also assess the cycle saved by the previous worker build.
+        active = self.pool._get('active'); del active['startedAt']; self.pool._set('active', active)
+        self.assertEqual(self.pool.begin_cycle(1031), other)
+        # Restarting either process preserves the temporary route health and the actual charges.
+        second = Pool(self.base)
+        try:
+            self.assertEqual(second.begin_cycle(1062), other)
+            self.assertEqual(second.snapshot(1062)['rollingHour'][bad], 2)
+            self.assertEqual(second.begin_cycle(1932), bad)
+        finally: second.close()
+
+    def test_a_working_launchs_cancelled_requests_do_not_cool_its_gateway(self):
+        key = self.pool.begin_cycle(1000)
+        for n, status in enumerate([0, 0, 200]):
+            self.pool.charge(str(n), 10, 1001)
+            self.pool.settle(str(n), status, 0, 1002)
+        self.pool.begin_cycle(1031)
+        self.assertNotIn(key, self.pool._get('transportCooldowns', {}))
+
+    def test_unauthorized_app_response_is_not_a_transport_failure(self):
+        key = self.pool.begin_cycle(1000)
+        for n, status in enumerate([0, 0, 401]):
+            self.pool.charge(str(n), 10, 1001)
+            self.pool.settle(str(n), status, 0, 1002)
+        self.pool.begin_cycle(1031)
+        self.assertNotIn(key, self.pool._get('transportCooldowns', {}))
+
+    def test_transport_health_never_bypasses_a_pool_wide_refusal(self):
+        self.pool.begin_cycle(1000)
+        for n, status in enumerate([0, 0, 429]):
+            self.pool.charge(str(n), 10, 1001)
+            self.pool.settle(str(n), status, 0, 1002)
+        with self.assertRaises(EgressWait): self.pool.begin_cycle(1031)
+
+    def test_all_transport_routes_cooling_wait_without_spending_more_requests(self):
+        self.config['gateways'] = self.config['gateways'][:1]; self.write_config()
+        single = Pool(self.base)
+        try:
+            single.begin_cycle(1000)
+            for n in range(2):
+                single.charge(str(n), 10, 1001); single.settle(str(n), 0, 0, 1002)
+            with self.assertRaises(EgressWait): single.begin_cycle(1031)
+            # The failed begin must retain the health result, not roll it back.
+            self.assertGreater(single.available_at(1032), 1032)
+            single.begin_cycle(1932)
+            self.assertEqual(sum(single.snapshot(1932)['rollingHour'].values()), 2)
+        finally: single.close()
+
     def test_concurrent_clients_cannot_exceed_the_same_ip_budget(self):
         key = self.pool.begin_cycle(1000)
         def send(prefix):

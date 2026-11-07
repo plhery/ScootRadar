@@ -60,6 +60,14 @@ request cost and city-by-city completeness remain production observations.
   HTTP accounting in local SQLite. Every Ryde HTTP attempt is charged before
   forwarding, including startup, metadata, renewal, background and failed calls.
   Counts survive process restarts. An upstream refusal holds the entire pool.
+  A startup lasting at least 25 seconds with two settled transport failures and
+  no HTTP response of any kind temporarily excludes that gateway for 15 minutes,
+  assessed only after the app quits. Without this, one unreachable gateway remains
+  least used and can trap consecutive launches, causing a service-wide AppFailing
+  hold (observed 7 November 2026). A working launch's cancelled requests do not
+  qualify; neither do HTTP errors, including authentication failures or 403/429.
+  The cooldown survives restarts, changes no request counts, and does not change
+  the gateway during a native launch. When every route is cooling, collection waits.
 - `worker.py`: one process lock, query deadline, app trigger, private result spool,
   outbound authenticated HTTPS broker polling (ScootRadar-Ryde-Worker client identifier), idempotent submission, held state
   on failure. Native key-renewal opportunities continue through idle relaunches.
