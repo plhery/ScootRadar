@@ -40,13 +40,26 @@ describe('Ryde account broker',()=>{
     let now=100000;const b=broker('x'.repeat(32),()=>now,0);
     const p=b.query(q);p.catch(()=>{});const job=b.lease();now+=50001;expect(b.lease()).toEqual(job);
   });
-  it('keeps a routine turn after each urgent query',async()=>{
+  it('lets three visible reads proceed before a routine turn without starving background scans',async()=>{
     const b=broker('x'.repeat(32),()=>100000,0);const promises=[];
     promises.push(b.query({...q,cityId:6},false));
     for(let n=1;n<=4;n++) promises.push(b.query({...q,radius:n},true));
     const order=[];
     for(let n=0;n<5;n++){const job=b.lease()!;order.push(job.cityId);b.accept({version:1,id:job.id,query:job,coverage:'unknown',observedAt:100,scooters:[]});}
-    expect(order).toEqual([43,6,43,43,43]);await Promise.all(promises);
+    expect(order).toEqual([43,43,43,6,43]);await Promise.all(promises);
+  });
+  it('preserves spacing and the active native lease while prioritizing visible reads',async()=>{
+    let now=100000;const b=broker('x'.repeat(32),()=>now,5000);
+    const promises=[b.query({...q,cityId:6},false),b.query(q,true),b.query({...q,radius:2},true)];
+    const first=b.lease()!;
+    expect(first.cityId).toBe(43);now+=2000;expect(b.lease()).toBeNull();
+    b.accept({version:1,id:first.id,query:first,coverage:'unknown',observedAt:now/1000,scooters:[]});
+    expect(b.lease()).toBeNull();now+=3000;
+    const second=b.lease()!;expect(second.cityId).toBe(43);
+    b.accept({version:1,id:second.id,query:second,coverage:'unknown',observedAt:now/1000,scooters:[]});
+    now+=5000;const routine=b.lease()!;expect(routine.cityId).toBe(6);
+    b.accept({version:1,id:routine.id,query:routine,coverage:'unknown',observedAt:now/1000,scooters:[]});
+    await Promise.all(promises);
   });
 });
 

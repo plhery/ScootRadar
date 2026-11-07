@@ -19,13 +19,14 @@ the same scooters. No riding zones or parking are inferred from these envelopes.
 The 1 km grids (2.5 km for Sola's envelope) contain 4,679 initial views in
 2,356 independently refreshed groups. At five seconds between job starts, plus
 native launch overhead, a full round needs roughly eight hours before adaptive
-subdivision. The initial idle interval is about 16 hours, reserving half the shared
-account turns for watched areas. Each background group has at most two initial
+subdivision. The initial idle interval is about 16 hours, originally sized for half
+the shared account turns. Under sustained visible demand, routine work now gets
+one in four turns and full rounds can take longer. Each background group has at most two initial
 views. The visible map uses a separate focused read, shared between viewers and
 refreshed at most once a minute, so switching cities does not wait for a group's
 adaptive scan to finish.
-The queue coalesces identical work and alternates urgent/routine turns while
-both wait. These are conservative operating settings, not an upstream quota.
+The queue coalesces identical work and serves up to three urgent reads before a
+routine read while both wait. These are conservative operating settings, not an upstream quota.
 Saturated cells subdivide within request/depth/time budgets (80 reads, three
 halvings, 30 minutes: `RYDE_SCAN_LIMITS`); unresolved groups fail and preserve
 prior observations. The reads bound a scan's cost; the time only stops one that
@@ -74,11 +75,16 @@ request cost and city-by-city completeness remain production observations.
 - `shadow.py`: bounded local sampler (maximum 24 hours, minimum 120 seconds
   spacing); stops on its first failed sample and never publishes production data.
 - `server/rydeBridge.ts`: account-wide bounded queue. Coalesces identical queries,
-  leases one job at a time, reserves every second contested turn for routine work,
+  leases one job at a time, reserves every fourth contested turn for routine work,
   spaces new jobs five seconds apart initially, and expires them after two minutes.
   Queued reads follow the collection's current watch priority, including a view
   opened after its idle read was queued.
   These are conservative configuration defaults, not measured upstream quotas.
+  Visible reads can take up to three consecutive turns while routine work waits;
+  an active native read is never interrupted. Idle periods still go entirely to
+  routine work. This shortens competing visitors' queues without increasing the
+  native request rate or changing the egress budget. It does not promise a
+  three-second collection: `followUpMs: 3000` is only the client's cache-check gap.
 - `server/rydeWatchedViews.ts`: one focused native read of the visible area, bypassing
   the scheduler's long group scans. Previously, two scans woken in an earlier city
   could hold both watched slots until they completed; switching cities then waited

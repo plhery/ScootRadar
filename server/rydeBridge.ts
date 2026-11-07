@@ -27,6 +27,9 @@ const sameQuery = (a: RydeJob, b: RydeJob) =>
  * when the cache does not answer; it holds off for 15 minutes or more once Ryde refuses it.
  */
 export const RYDE_WORKER_SILENT_MS = 10 * 60_000;
+// A person waiting on the map gets a short burst of turns, while routine scans
+// retain one in four contested turns. This changes order, never request pacing.
+const MAX_URGENT_TURNS = 3;
 
 /** One account, one outstanding native read. All city collectors share this broker. */
 export class RydeBroker {
@@ -96,7 +99,7 @@ export class RydeBroker {
     }
     if (now < this.nextAt) return null;
     const routine = this.entries.find(e => !e.urgent());
-    const entry = (routine && this.urgentTurns >= 1 ? routine : this.entries.find(e => e.urgent())) ?? this.entries[0];
+    const entry = (routine && this.urgentTurns >= MAX_URGENT_TURNS ? routine : this.entries.find(e => e.urgent())) ?? this.entries[0];
     if (!entry) return null;
     this.urgentTurns = entry.urgent() && routine ? this.urgentTurns + 1 : 0;
     entry.leasedUntil = now + 50_000; this.nextAt = now + this.intervalMs;
