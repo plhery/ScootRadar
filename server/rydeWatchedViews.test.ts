@@ -111,6 +111,38 @@ describe('watched Ryde native views', () => {
     expect(views.read([feed], bounds, false).observations[0].vehicles.map(v => v.vehicle_id)).toEqual(['ryde-app:inside']);
   });
 
+  it('lists the circle of a read short of the saturation count, where older positions of the city are gone', async () => {
+    const now = 1_000_000;
+    const other = { ...system, id: 'ryde_app_de_test_001' };
+    const query = vi.fn(async (q: RydeQuery) => result(q, now));
+    const views = new RydeWatchedViews({ query }, [area], '*', [system, other], () => now);
+    views.read([feed], bounds, true); await settle();
+    const [circle] = views.read([feed], bounds, false).listed;
+    expect(circle).toMatchObject({ at: now, lat: 48.365, lng: 10.895, radiusM: 750 });
+    // No wider than the circle a scan asks of one of the area's cells.
+    const wide = { south: 48.33, north: 48.40, west: 10.85, east: 10.94 };
+    const far = new RydeWatchedViews({ query }, [{ ...area, bounds: wide }], '*', [system], () => now);
+    far.read([{ ...feed, coverage: [wide] }], wide, true); await settle();
+    expect(far.read([{ ...feed, coverage: [wide] }], wide, false).listed[0].radiusM).toBeCloseTo(Math.SQRT2 * 1000 / 2 * 1.1);
+    expect([...circle.feeds].sort()).toEqual([feed.id, `${feed.id}_view`, `germany:${other.id}`, `germany:${other.id}_view`].sort());
+    // As many as the saturation count may be a part of them: a read that full lists nothing.
+    const full = vi.fn(async (q: RydeQuery) => ({ ...result(q, now), returnedCount: area.saturationCount }));
+    const saturated = new RydeWatchedViews({ query: full }, [area], '*', [system], () => now);
+    saturated.read([feed], bounds, true); await settle();
+    const answer = saturated.read([feed], bounds, false);
+    expect(answer.observations).toHaveLength(1);
+    expect(answer.listed).toEqual([]);
+  });
+
+  it('does not say a read is on its way while no worker asks for jobs', () => {
+    let silent: number | undefined = 1;
+    const query = vi.fn(() => new Promise<RydeResult>(() => {}));
+    const views = new RydeWatchedViews({ query, silentSince: () => silent }, [area], '*', [system], () => 1_000_000);
+    expect(views.read([feed], bounds, true).refreshing.size).toBe(0);
+    silent = undefined;
+    expect(views.read([feed], bounds, true).refreshing.size).toBe(1);
+  });
+
   it('backs off a failed focused read without ageing or changing a previous observation', async () => {
     let now = 1_000_000;
     const query = vi.fn(async (q: RydeQuery) => result(q, now));

@@ -321,8 +321,8 @@ describe('collection on demand', () => {
       expect(pending.cache).toBe('no-store');
       const fresh = await get(bounds);
       expect(fresh.body.vehicles.filter(v => v.provider === 'ryde')).toHaveLength(1);
-      // A positive-only view must retain an old scooter that the limited reply did not mention.
-      expect(fresh.body.lastSeen?.vehicles.map(v => v.vehicle_id)).toEqual(['old-not-returned']);
+      // A reply short of the area's saturation count listed its circle: an old scooter there it did not mention is gone.
+      expect(fresh.body.lastSeen).toBeUndefined();
       expect(fresh.body.meta.generatedAt).toBe(new Date(now).toISOString());
     }
     await get(augsburg);

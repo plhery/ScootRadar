@@ -87,10 +87,17 @@ request cost and city-by-city completeness remain production observations.
   share a quantized centre/radius and a 60-second refresh interval. At most two cities
   are sampled per answer, one read per city may be pending, eight in total, with 128
   recent views retained in memory. Results expire after 15 minutes, retaining their
-  actual observation times. They add positive observations to the answer only;
-  unmentioned scooters remain faded, and these reads never replace a full feed,
-  certify absence, update city totals or change the snapshot file. The sample radius
-  is at most 5 km, and a saturated reply can omit scooters. Full group scans continue
+  actual observation times. They add positive observations to the answer, and never
+  replace a full feed, update city totals or change the snapshot file. The sample radius
+  is at most 5 km, and a saturated reply can omit scooters. A reply short of the area's
+  saturation count is taken as the scans take a cell's (`scanRydeArea`): it lists every
+  scooter within its circle, bounded to the circle a scan asks of one of the area's cells
+  (about 0.78 km for 1 km cells). The answer then drops the city's older positions in it
+  that the reply did not mention, live or faded; elsewhere unmentioned scooters remain
+  faded, said to be last seen rather than updating. In Augsburg on 7 November 2026 the
+  old positions stood faded beside the scooters' new ones. While no worker has asked for
+  a job for `RYDE_WORKER_SILENT_MS`, a queued read is not said to be on its way, so the
+  map stops polling every 3 seconds for it. Full group scans continue
   on their routine schedule. A failed focused read waits a minute before retrying.
   `scootradar_ryde_watched_views_total` separates requested, completed and failed reads;
   `scootradar_ryde_watched_views_pending` reports current pending reads.

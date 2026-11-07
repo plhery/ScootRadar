@@ -1,6 +1,6 @@
 import { boundsCenter, boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { regionalSource, serviceAreas, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
-import { SLOW_COLLECTION_MS, VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
+import { SLOW_COLLECTION_MS, VEHICLE_MAX_AGE_MS, viewReadsOf, type FeedSnapshot, type ListedArea } from '../src/lib/scooterSnapshots';
 import type { MapBounds } from '../src/lib/types';
 import { rydeVehicles, type RydeArea } from './rydeApp';
 import type { RydeBroker, RydeQuery, RydeResult } from './rydeBridge';
@@ -13,24 +13,34 @@ interface Entry {
   area: RydeArea; query: RydeQuery; usedAt: number; retryAt: number; pending: boolean; failed: boolean;
   result?: RydeResult;
 }
-export interface WatchedRydeViews { observations: FeedSnapshot[]; refreshing: Set<string> }
+export interface WatchedRydeViews { observations: FeedSnapshot[]; refreshing: Set<string>; listed: ListedArea[] }
 
 /**
  * One native read of the visible area, independent of the scheduler's long, exhaustive group scans.
- * These are positive observations only: never a completed sweep, an absence claim or city totals.
+ * These are positive observations: never a completed sweep or city totals. The one absence they claim
+ * is within the circle of a read short of its area's saturation count, which the scans take as listing
+ * every scooter there (scanRydeArea): the city's older positions there are gone.
  */
 export class RydeWatchedViews {
   private readonly entries = new Map<string, Entry>();
   private readonly areaOfFeed = new Map<string, RydeArea>();
+  /** Each area's feeds and their reads of the view, which a read listing a circle speaks for. */
+  private readonly feedsOfArea = new Map<string, Set<string>>();
   private readonly publicBounds = new Map<string, MapBounds[]>();
   private readonly counts = { requested: 0, completed: 0, failed: 0 };
-  constructor(private readonly broker: Pick<RydeBroker, 'query'>, areas: readonly RydeArea[], enabled: string,
+  constructor(private readonly broker: Pick<RydeBroker, 'query'> & Partial<Pick<RydeBroker, 'silentSince'>>, areas: readonly RydeArea[], enabled: string,
     systems: readonly RegionalScooterSystem[], private readonly clock = Date.now) {
     const selected = new Set(enabled.split(','));
     const byArea = new Map(areas.filter(area => selected.has('*') || selected.has(area.id)).map(area => [area.id, area]));
     for (const system of systems) {
       const area = byArea.get(system.rydeAppArea ?? '');
-      if (area) this.areaOfFeed.set(`${regionalSource(system)}:${system.id}`, area);
+      const id = `${regionalSource(system)}:${system.id}`;
+      if (area) {
+        this.areaOfFeed.set(id, area);
+        const feeds = this.feedsOfArea.get(area.id) ?? new Set<string>();
+        feeds.add(id).add(viewReadsOf(id));
+        this.feedsOfArea.set(area.id, feeds);
+      }
       if (system.provider === 'ryde' && !system.rydeAppArea) {
         const bounds = this.publicBounds.get(system.country) ?? [];
         bounds.push(...serviceAreas(system).map(area => area.bounds));
@@ -53,7 +63,10 @@ export class RydeWatchedViews {
         Math.max(part.south, Math.min(part.north, lat)), Math.max(part.west, Math.min(part.east, lng)))));
       if (distance < (candidates.get(area.id)?.distance ?? Infinity)) candidates.set(area.id, { area, feed, distance });
     }
-    const observations: FeedSnapshot[] = [], refreshing = new Set<string>();
+    const observations: FeedSnapshot[] = [], refreshing = new Set<string>(), listed: ListedArea[] = [];
+    // With no worker asking for jobs, a read queued waits for a deadline, not for an answer: it is not said
+    // to be on its way, and the map stops asking every few seconds for it.
+    const silent = this.broker.silentSince?.(now) !== undefined;
     for (const { area, feed } of [...candidates.values()].sort((a, b) => a.distance - b.distance).slice(0, MAX_CITIES)) {
       // A shared 100 m-ish grid coalesces nearby map requests. Include rounding in the radius;
       // a broad view is sampled at its centre, at most 5 km, and remains explicitly incomplete.
@@ -88,8 +101,8 @@ export class RydeWatchedViews {
         }, () => { current.failed = true; current.retryAt = this.clock() + REFRESH_MS; this.counts.failed++; })
           .finally(() => { current.pending = false; });
       }
-      const id = `${feed.id}_view`;
-      const waiting = demand && (entry?.pending || (!entry && blocked));
+      const id = viewReadsOf(feed.id);
+      const waiting = demand && !silent && (entry?.pending || (!entry && blocked));
       if (waiting) refreshing.add(id);
       // Nearby views of this city may already have fresh observations. Keep their own times;
       // neither polling nor a new request makes an older response young again.
@@ -105,12 +118,17 @@ export class RydeWatchedViews {
             observedAt: result.observedAt * 1000, requests: 1, unfinished: 1, complete: false }),
           observedAt: result.observedAt * 1000, attemptedAt: result.observedAt * 1000,
           stale: true, failed: false, skipped: false, collectionMs: SLOW_COLLECTION_MS + 1 });
+        // Within the circle the scans ask of a cell, which they trust to hold all it lists: a read of a
+        // wider view may be answered for less than it asked.
+        if ((result.returnedCount ?? result.scooters.length) < area.saturationCount) listed.push({
+          feeds: this.feedsOfArea.get(area.id)!, at: result.observedAt * 1000, lat: cached.query.latitude,
+          lng: cached.query.longitude, radiusM: Math.min(cached.query.radius * 1000, Math.SQRT2 * area.cellM / 2 * 1.1) });
       }
       if (!recent.length && (waiting || entry?.failed)) observations.push({ id, source: feed.source, provider: 'ryde',
         coverage: [bounds], vehicles: [], observedAt: 0, attemptedAt: entry?.failed ? now : 0,
         stale: true, failed: !!entry?.failed, skipped: false, collectionMs: SLOW_COLLECTION_MS + 1 });
     }
-    return { observations, refreshing };
+    return { observations, refreshing, listed };
   }
   metrics(): string {
     return Object.entries(this.counts).map(([outcome, count]) =>

@@ -2,6 +2,7 @@ import { clusterVehicles, shouldClusterAtZoom } from '@/lib/clustering';
 import { MAX_SCOOTER_RESULTS } from '@/lib/scooterQuery';
 import type { ScooterFetchResult } from '@/lib/scooterFeeds';
 import { COUNTRY_DATA_ATTRIBUTION } from '@/generated/countries';
+import type { LastSeenProvider } from '@/generated/scooterApi';
 import type { ScooterResponse, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
@@ -11,13 +12,16 @@ export const MOBILITY_SOURCE = `${COUNTRY_DATA_ATTRIBUTION}; Lille parking: Metr
 /**
  * `lastSeen`: scooters of slow feeds being collected again, where they were last seen. They are
  * grouped as the others are, in groups of their own, within what is left of the result limit, and
- * counted nowhere: the map shows them faded until the sweep under way reaches them.
+ * counted nowhere: the map shows them faded until the sweep under way reaches them. `lastSeenProviders`
+ * says of each app when its were seen and whether new positions are on their way; the answer keeps
+ * those of the apps among the scooters it holds.
  */
 export function scooterResponse(
   result: ScooterFetchResult,
   zoom: number | null,
   metadata: Partial<ScooterResponseMeta> = {},
   lastSeen: Vehicle[] = [],
+  lastSeenProviders: Readonly<Record<string, LastSeenProvider>> = {},
 ): ScooterResponse {
   const clustered = zoom !== null && shouldClusterAtZoom(zoom);
   const represent = (list: Vehicle[]) => clustered ? clusterVehicles(list, zoom) : { vehicles: list, clusters: [] };
@@ -34,9 +38,12 @@ export function scooterResponse(
   const seenClusters = seen?.clusters.slice(0, Math.max(room, 0)).map(cluster => ({ ...cluster, id: `seen:${cluster.id}` })) ?? [];
   room -= seenClusters.length;
   const seenVehicles = seen?.vehicles.slice(0, Math.max(room, 0)) ?? [];
+  const held = new Set([...seenVehicles.map(vehicle => vehicle.provider), ...seenClusters.flatMap(cluster => Object.keys(cluster.providers))]);
+  const seenProviders = Object.fromEntries(Object.entries(lastSeenProviders).filter(([provider]) => held.has(provider)));
   return {
     vehicles, clusters, providers,
-    ...(seen ? { lastSeen: { vehicles: seenVehicles, clusters: seenClusters } } : {}),
+    ...(seen ? { lastSeen: { vehicles: seenVehicles, clusters: seenClusters,
+      ...(Object.keys(seenProviders).length ? { providers: seenProviders } : {}) } } : {}),
     meta: {
       expiresAt: new Date(Date.now() + VEHICLE_MAX_AGE_MS).toISOString(),
       ...result.meta,

@@ -267,7 +267,7 @@ export function createSnapshotServer(options: ServerOptions) {
     }
     const answeredAt = Date.now();
     const body = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
-      observations: rydeViews?.observations,
+      observations: rydeViews?.observations, listedAreas: rydeViews?.listed,
       lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, zoom, answeredAt, options.retention);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps

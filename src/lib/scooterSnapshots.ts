@@ -493,9 +493,27 @@ export function answerKeepUntil(snapshot: MobilitySnapshot, query: FeedQuery, zo
   return until.length ? Math.min(...until) : undefined;
 }
 
+/** The id of a feed's reads of the viewport, among the observations (rydeWatchedViews.ts). */
+export const viewReadsOf = (feedId: string) => `${feedId}_view`;
+
+/**
+ * A circle a read listed every scooter of some feeds in, at `at`: their positions seen there before it
+ * are gone, live or faded. In Augsburg on 7 November 2026 Ryde's read of the view drew its scooters
+ * where they now were, and their old positions stood faded beside them.
+ */
+export interface ListedArea {
+  feeds: ReadonlySet<string>;
+  at: number;
+  lat: number;
+  lng: number;
+  radiusM: number;
+}
+
 export interface SnapshotQueryOptions {
-  /** Recent positive observations of the viewport; never full-feed replacements or absence claims. */
+  /** Recent positive observations of the viewport; never full-feed replacements. */
   observations?: FeedSnapshot[];
+  /** Where the observations listed every scooter: the only absence they claim. */
+  listedAreas?: readonly ListedArea[];
   /**
    * Feeds being collected again for this request, which the response did not
    * wait for. It says so with meta.refreshing and asks to be polled again soon.
@@ -550,6 +568,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
       } : vehicle);
     }
   };
+  // A position seen before a read that listed its spot without it.
+  const gone = (feed: FeedSnapshot, at: number, vehicle: Vehicle) => options.listedAreas?.some(area =>
+    area.feeds.has(feed.id) && at < area.at && haversineM(area.lat, area.lng, vehicle.lat, vehicle.lng) <= area.radiusM) === true;
   const unique = new Map<string, Vehicle>();
   // Only viewport-observed identities need reconciliation with the full feeds. An observation
   // outside the box can still confirm that its old marker in the box has moved away.
@@ -580,19 +601,30 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     else if (sweep) shownSince.push(sweep.startedAt);
     else continue;
     const at = sweep?.startedAt ?? feed.observedAt;
-    pick(unique, sweep?.vehicles ?? feed.vehicles, (_vehicle, key) => at < (newest.get(key) ?? -Infinity));
+    pick(unique, sweep?.vehicles ?? feed.vehicles, (vehicle, key) => at < (newest.get(key) ?? -Infinity) || gone(feed, at, vehicle));
   }
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
   const lastSeenTimes: number[] = [];
+  // Per app, when its were seen and whether a collection on its way for this view replaces them: an idle
+  // feed's stand as they are until a visit has it collected, which the map says rather than that they are coming.
+  const lastSeenProviders = new Map<string, { seenAt: number; updating: boolean }>();
+  const comingIds = new Set(coming.map(feed => feed.id));
   const fading = { refreshing: options.refreshing, idle: options.idleInView };
   for (const feed of relevant) {
     if (!showsLastSeen(feed, now, fading, options.lastSeenMaxAgeMs?.(feed.id)) || quietInPause(feed, now, showing)) continue;
     const swept = shownSweep(feed, now)?.swept ?? [];
     const before = lastSeen.size;
     pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) || newest.has(key) ||
-      swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)));
-    if (lastSeen.size > before) lastSeenTimes.push(feed.observedAt);
+      swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)) || gone(feed, feed.observedAt, vehicle));
+    if (lastSeen.size === before) continue;
+    lastSeenTimes.push(feed.observedAt);
+    const known = lastSeenProviders.get(feed.provider);
+    const updating = comingIds.has(feed.id) || comingIds.has(viewReadsOf(feed.id));
+    lastSeenProviders.set(feed.provider, {
+      seenAt: Math.min(known?.seenAt ?? Infinity, feed.observedAt),
+      updating: (known?.updating ?? false) || updating,
+    });
   }
   const vehicles = [...unique.values()];
   const previous = [...lastSeen.values()];
@@ -607,7 +639,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     ...(lastSeenTimes.length ? { lastSeenAt: new Date(Math.min(...lastSeenTimes)).toISOString() } : {}),
     availableProviders: providersForViewport(query.bounds),
     ...seasonOverIn(snapshot, query.bounds),
-  }, previous);
+  }, previous, Object.fromEntries([...lastSeenProviders].map(([provider, { seenAt, updating }]) =>
+    [provider, { seenAt: new Date(seenAt).toISOString(), updating }])));
   if (zoom !== null && zoom >= PARKING_MIN_ZOOM) {
     // The app maps' feeds collect no parking, so none of theirs is missing.
     const systems = relevant.filter(collectsParking);

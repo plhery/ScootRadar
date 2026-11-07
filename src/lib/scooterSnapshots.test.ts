@@ -365,6 +365,55 @@ describe('feeds collected on demand', () => {
       .vehicles.map(v => v.lat)).toEqual([45.77]);
   });
 
+  it('drops older positions a read listed its circle without, live or faded, and only those of its feeds', () => {
+    const old = feed({ id: 'germany:ryde_app_test_000', provider: 'ryde', observedAt: now - minutes(40),
+      collectionMs: 30_000, vehicles: [vehicle('moved'), { ...vehicle('gone'), lat: 45.751 }, { ...vehicle('far'), lat: 45.85 }] });
+    const read = feed({ id: old.id + '_view', provider: 'ryde', stale: true, observedAt: now - 10_000,
+      vehicles: [{ ...vehicle('moved'), lat: 45.752 }] });
+    const circle = { feeds: new Set([old.id, read.id]), at: read.observedAt, lat: 45.75, lng: 4.85, radiusM: 1000 };
+    const answered = querySnapshot(snapshot([old]), query, 16, now,
+      { idleInView: new Set([old.id]), observations: [read], listedAreas: [circle] });
+    expect(answered.vehicles.map(v => v.vehicle_id)).toEqual(['moved']);
+    // Out of the circle a scooter was not looked for.
+    expect(answered.lastSeen?.vehicles.map(v => v.vehicle_id)).toEqual(['far']);
+    // A read speaks only for its own feeds, and not against positions seen after it.
+    const other = { ...old, id: 'germany:ryde_public' };
+    expect(querySnapshot(snapshot([other]), query, 16, now, { idleInView: new Set([other.id]), observations: [read],
+      listedAreas: [circle] }).lastSeen?.vehicles.map(v => v.vehicle_id)).toEqual(['gone', 'far']);
+    const live = { ...old, observedAt: now - 5_000 };
+    expect(querySnapshot(snapshot([live]), query, 16, now, { observations: [read], listedAreas: [circle] })
+      .vehicles.map(v => v.vehicle_id).sort()).toEqual(['far', 'gone', 'moved']);
+    const stale = { ...live, observedAt: now - minutes(2) };
+    expect(querySnapshot(snapshot([stale]), query, 16, now, { observations: [read], listedAreas: [circle] })
+      .vehicles.map(v => v.vehicle_id).sort()).toEqual(['far', 'moved']);
+  });
+
+  it('says of each app among the faded ones when they were seen and whether new positions are on their way', () => {
+    const ryde = feed({ id: 'germany:ryde_app_test_000', provider: 'ryde', observedAt: now - minutes(40),
+      collectionMs: 30_000, vehicles: [{ ...vehicle('r1'), provider: 'ryde' }] });
+    const lime = feed({ id: 'germany:lime_app_test', provider: 'lime', observedAt: now - minutes(90),
+      collectionMs: 30_000, vehicles: [{ ...vehicle('l1'), provider: 'lime' }] });
+    const waiting = feed({ id: ryde.id + '_view', provider: 'ryde', stale: true, observedAt: 0, attemptedAt: 0,
+      vehicles: [], collectionMs: 30_000 });
+    const idle = querySnapshot(snapshot([ryde, lime, voi]), query, 16, now, { idleInView: new Set([ryde.id, lime.id]) });
+    expect(idle.lastSeen?.providers).toEqual({
+      ryde: { seenAt: new Date(now - minutes(40)).toISOString(), updating: false },
+      lime: { seenAt: new Date(now - minutes(90)).toISOString(), updating: false },
+    });
+    expect(idle.meta.refreshing).toBeUndefined();
+    // Ryde's read of the view is on its way: its faded ones are updating, Lime's not.
+    const reading = querySnapshot(snapshot([ryde, lime, voi]), query, 16, now, { idleInView: new Set([ryde.id, lime.id]),
+      observations: [waiting], refreshing: new Set([waiting.id]) });
+    expect(reading.lastSeen?.providers?.ryde.updating).toBe(true);
+    expect(reading.lastSeen?.providers?.lime.updating).toBe(false);
+    expect(reading.meta).toMatchObject({ refreshing: true, followUpMs: 3_000 });
+    // A slow feed collected again for the request is updating its own.
+    const collecting = querySnapshot(snapshot([lime, voi]), query, 16, now, { refreshing: new Set([lime.id]) });
+    expect(collecting.lastSeen?.providers).toEqual({ lime: { seenAt: new Date(now - minutes(90)).toISOString(), updating: true } });
+    // No faded ones, no word of them.
+    expect(querySnapshot(snapshot([voi]), query, 16, now).lastSeen).toBeUndefined();
+  });
+
   describe('Lime\'s groups in a wide view', () => {
     const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
     const wide = { bounds: berlin, minBattery: 0 };

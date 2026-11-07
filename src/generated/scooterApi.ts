@@ -45,6 +45,12 @@ export interface Vehicle {
 export interface LastSeen {
   vehicles: Vehicle[];
   clusters: ScooterCluster[];
+  providers?: Record<string, LastSeenProvider>;
+}
+
+export interface LastSeenProvider {
+  seenAt: string;
+  updating: boolean;
 }
 
 export interface ScooterCluster {

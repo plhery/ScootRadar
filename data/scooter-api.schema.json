@@ -220,6 +220,24 @@
         "clusters": {
           "type": "array",
           "items": { "$ref": "#/$defs/ScooterCluster" }
+        },
+        "providers": {
+          "description": "Each app among them, by provider: when the oldest of its were seen, and whether new positions of its are being collected for this view. Those of an app not updating stand as they were last seen until a later visit has them collected; the map says so rather than that they are coming.",
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/LastSeenProvider" }
+        }
+      }
+    },
+    "LastSeenProvider": {
+      "x-swift-name": "ScooterLastSeenProviderPayload",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seenAt", "updating"],
+      "properties": {
+        "seenAt": { "type": "string", "format": "date-time" },
+        "updating": {
+          "description": "New positions of this app are being collected for this view: meta.refreshing is then true and asks to be polled again soon.",
+          "type": "boolean"
         }
       }
     },

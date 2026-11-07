@@ -78,6 +78,12 @@ struct ScooterVehiclePayload: Decodable, Sendable {
 struct ScooterLastSeenPayload: Decodable, Sendable {
     let vehicles: [ScooterVehiclePayload]
     let clusters: [ScooterClusterPayload]
+    let providers: [String: ScooterLastSeenProviderPayload]?
+}
+
+struct ScooterLastSeenProviderPayload: Decodable, Sendable {
+    let seenAt: String
+    let updating: Bool
 }
 
 struct ScooterClusterPayload: Decodable, Sendable {
