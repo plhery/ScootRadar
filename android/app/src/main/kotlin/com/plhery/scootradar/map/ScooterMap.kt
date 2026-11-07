@@ -51,6 +51,7 @@ import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.ui.Announcer
 import com.plhery.scootradar.ui.glass.LocalGlass
 import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.windowSizeClasses
@@ -366,9 +367,12 @@ fun ScooterMap(
     BoxWithConstraints(modifier.fillMaxSize()) {
         AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
         // The pin's callout, once a tap has selected the pin, among the map's markers under its ornaments (MAP-270), or a
-        // faded scooter's tip.
+        // faded scooter's tip, which TalkBack is told of as it opens.
         markers?.let { shown ->
-            shown.calloutTitle?.let { PinCallout(it, anchor = { shown.calloutAnchor }, dark = dark, subtitle = shown.calloutSubtitle) }
+            shown.calloutTitle?.let {
+                PinCallout(it, anchor = { shown.calloutAnchor }, dark = dark, subtitle = shown.calloutSubtitle, below = { shown.calloutBelow })
+            }
+            Announcer(shown.tipAnnouncement)
         }
         // MapKit's compass and scale, which the app adds itself, at the top of the map's sides (MAP-021, MAP-022).
         val mapBounds = ScreenRect(0.0, 0.0, maxWidth.value.toDouble(), maxHeight.value.toDouble())

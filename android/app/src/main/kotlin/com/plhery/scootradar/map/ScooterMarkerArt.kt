@@ -127,6 +127,9 @@ class ScooterMarkerArt(
 
         /** The picture of a group of scooters last seen. */
         val lastSeenID: String get() = "seen-group/${provider.part}/${diameter.roundToInt()}/${isDark.part}/$count"
+
+        /** Its picture while new positions of theirs are on their way: it breathes ([lastSeenBreathImage]). */
+        val lastSeenBreathID: String get() = "seen-group-breath/${provider.part}/${diameter.roundToInt()}/${isDark.part}/$count"
     }
 
     /** A parking bay's balloon, small at rest and large when selected. */
@@ -174,6 +177,13 @@ class ScooterMarkerArt(
     fun clusterImage(key: ClusterKey): Bitmap = clusters.kept(key) { draw(it) }
 
     fun lastSeenClusterImage(key: ClusterKey): Bitmap = lastSeenClusters.kept(key) { drawLastSeen(it) }
+
+    /**
+     * A faded group's picture as it breathes: its picture grown to [scale] of its size, with room to grow to its
+     * largest ([breathing]). Drawn [into] the bitmap it was drawn in before if given one, not kept.
+     */
+    fun lastSeenBreathImage(key: ClusterKey, scale: Double, into: Bitmap? = null): Bitmap =
+        breathing(lastSeenClusterImage(key), scale, largest = LastSeenBreath.GROUP_LARGEST, into = into)
 
     fun bayImage(key: BayKey): Bitmap = bays.getOrPut(key) { draw(key) }
 
@@ -559,6 +569,31 @@ class ScooterMarkerArt(
             }
             return bitmap
         }
+
+        /**
+         * A picture with what it shows grown or shrunk to [scale] of its size about its middle, as a layer's
+         * transform.scale does (ScooterLastSeenView), in a larger picture with room for it to grow to [largest]: of one
+         * size whatever the scale, so that MapLibre draws each in the place of the last under one name without laying
+         * anything out again, as for the light-up's [grown] copies. At its own size, its pixels are the picture's.
+         * Drawn [into] a bitmap of that size if given one, cleared first.
+         */
+        fun breathing(picture: Bitmap, scale: Double, largest: Double, into: Bitmap? = null): Bitmap {
+            val room = breathingRoom(picture, largest)
+            val width = picture.width + 2 * room
+            val height = picture.height + 2 * room
+            val bitmap = into?.apply { eraseColor(Color.TRANSPARENT) } ?: createBitmap(width, height)
+            require(bitmap.width == width && bitmap.height == height) { "a ${bitmap.width}x${bitmap.height} bitmap for a ${width}x$height picture" }
+            bitmap.density = picture.density
+            Canvas(bitmap).apply {
+                translate(room.toFloat(), room.toFloat())
+                if (scale != 1.0) scale(scale.toFloat(), scale.toFloat(), picture.width / 2f, picture.height / 2f)
+                drawBitmap(picture, 0f, 0f, Paint(Paint.FILTER_BITMAP_FLAG or Paint.ANTI_ALIAS_FLAG))
+            }
+            return bitmap
+        }
+
+        /** The pixels a [breathing] picture has on each side of the picture it grows, for it to grow to [largest]. */
+        fun breathingRoom(picture: Bitmap, largest: Double): Int = ceil(max(picture.width, picture.height) * (largest - 1) / 2 - 1e-9).toInt()
 
         /**
          * A faded scooter's dot, smaller than the others' dots, which stand out over it, as on the web: a circle layer

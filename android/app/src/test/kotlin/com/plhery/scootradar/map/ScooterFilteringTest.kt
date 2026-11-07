@@ -1,5 +1,7 @@
 package com.plhery.scootradar.map
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.View
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.test.core.app.ApplicationProvider
@@ -16,9 +18,11 @@ import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterPillSide
 import com.plhery.scootradar.core.model.ScreenPoint
+import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.ui.Announcement
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -32,6 +36,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 import java.time.Instant
 import java.util.Locale
+import kotlin.math.abs
 
 // The markers' tests of ios/ScootRadarTests/ScooterFilteringTests.swift, on the scene and the layers that take
 // the place of MapKit's annotations and their views. The map's camera tests are instrumented, in androidTest.
@@ -162,6 +167,10 @@ class ScooterFilteringTest {
         val groupFeature = MarkerFeatures.lastSeen(scene, art).single()
         assertTrue(groupFeature.isUpdating)
         assertTrue(MarkerFeatures.json(listOf(groupFeature)).contains("\"updating\":true"))
+        // In its breathing picture, which the markers draw again as it breathes.
+        val groupKey = ScooterMarkerArt.ClusterKey(ScooterProvider.Lime, 36.0, isDark = false, count = "5")
+        assertEquals(groupKey.lastSeenBreathID, groupFeature.image)
+        assertEquals(mapOf(groupKey.lastSeenBreathID to groupKey), MarkerFeatures.breathingGroups(scene))
 
         // Nothing on its way for Bird any more: they stand still, drawn again though the scooters are the same.
         val version = scene.lastSeenVersion
@@ -169,29 +178,133 @@ class ScooterFilteringTest {
         assertTrue(scene.lastSeenVersion > version)
         assertTrue(MarkerFeatures.fadedDots(scene).none { it.isUpdating })
         assertFalse(MarkerFeatures.lastSeen(scene, art).single().isUpdating)
+        assertEquals(groupKey.lastSeenID, MarkerFeatures.lastSeen(scene, art).single().image)
+        assertTrue(MarkerFeatures.breathingGroups(scene).isEmpty())
 
         // Those on their way breathe, one way in 1.4 s and back, all in step: a dot in strength from 0.25 to 0.75 and
-        // in size from 8 to 12 pt, a group in strength from 0.45 to 0.85. With Remove animations they stand at 0.55.
+        // in size from 8 to 12 pt, a group in strength from 0.45 to 0.85 and in size from 0.95 to 1.05 of its own. With
+        // Remove animations they stand at 0.55, at their own size.
         assertEquals(1.4, LastSeenBreath.BREATH, 0.0)
         val start = LastSeenBreath.drawn(at = 2800.0, animates = true)
         assertEquals(0.25f, start.dotStrength, 1e-4f)
         assertEquals(0.8f, start.dotScale, 1e-4f)
         assertEquals(0.45f, start.groupStrength, 1e-4f)
+        assertEquals(0.95, start.groupScale, 0.0)
         val strongest = LastSeenBreath.drawn(at = 2801.4, animates = true)
         assertEquals(0.75f, strongest.dotStrength, 1e-4f)
         assertEquals(1.2f, strongest.dotScale, 1e-4f)
         assertEquals(0.85f, strongest.groupStrength, 1e-4f)
+        assertEquals(1.05, strongest.groupScale, 0.0)
         val half = LastSeenBreath.drawn(at = 2800.7, animates = true)
         assertEquals(0.5f, half.dotStrength, 1e-3f)
         assertEquals(1f, half.dotScale, 1e-3f)
         assertEquals(0.65f, half.groupStrength, 1e-3f)
+        assertEquals(1.0, half.groupScale, 0.0)
         assertEquals(0.25f, LastSeenBreath.drawn(at = 2802.8, animates = true).dotStrength, 1e-4f)
-        assertEquals(LastSeenBreath.Drawn(0.55f, 1f, 0.55f), LastSeenBreath.drawn(at = 2801.4, animates = false))
+        assertEquals(0.95, LastSeenBreath.drawn(at = 2802.8, animates = true).groupScale, 0.0)
+        assertEquals(LastSeenBreath.Drawn(0.55f, 1f, 0.55f, 1.0), LastSeenBreath.drawn(at = 2801.4, animates = false))
+        // A group's picture is drawn at a hundredth of its size at a time, eleven sizes over a breath, a frame of
+        // sixty a second changing it at most once.
+        val sizes = (0..168).map { LastSeenBreath.drawn(at = 2800.0 + it / 60.0, animates = true).groupScale }
+        assertEquals((95..105).map { it / 100.0 }, sizes.distinct().sorted())
+        assertEquals(LastSeenBreath.GROUP_LARGEST, LastSeenBreath.groupScale(LastSeenBreath.GROUP_STEPS), 0.0)
+        assertTrue(sizes.zipWithNext().all { (a, b) -> abs(b - a) <= 0.01 + 1e-9 })
         // At its largest, 12 pt across inside its ring, grown with it.
         val largest = ScooterMarkerLayers.fadedDotSize(strongest.dotStrength, strongest.dotScale)
         assertEquals(6f, largest.getValue("circle-radius"), 1e-4f)
         assertEquals(1.8f, largest.getValue("circle-stroke-width"), 1e-4f)
         assertEquals(0.75f, largest.getValue("circle-stroke-opacity"), 1e-4f)
+    }
+
+    @Test
+    fun aBreathingGroupIsDrawnAgainInAPictureOfOneSize() {
+        val key = ScooterMarkerArt.ClusterKey(ScooterProvider.Lime, 36.0, isDark = false, count = "5")
+        val still = art.lastSeenClusterImage(key)
+        // 108 pixels across at 3 a point, with 3 more each side for it to grow to 1.05 of that, 113.4.
+        assertEquals(108, still.width)
+        assertEquals(3, ScooterMarkerArt.breathingRoom(still, LastSeenBreath.GROUP_LARGEST))
+        val whole = art.lastSeenBreathImage(key, 1.0)
+        assertEquals(114, whole.width)
+        assertEquals(114, whole.height)
+        assertEquals(still.density, whole.density)
+        // At its own size, its pixels are the picture's, where the picture is.
+        val stillPixels = IntArray(108 * 108).also { still.getPixels(it, 0, 108, 0, 0, 108, 108) }
+        val wholePixels = IntArray(108 * 108).also { whole.getPixels(it, 0, 108, 3, 3, 108, 108) }
+        assertTrue(stillPixels.contentEquals(wholePixels))
+
+        // Smaller and larger, in the same picture and the same bitmap, about the same middle.
+        fun shown(bitmap: Bitmap) = (0 until bitmap.height).sumOf { y -> (0 until bitmap.width).count { x -> Color.alpha(bitmap.getPixel(x, y)) > 0 } }
+        fun rows(bitmap: Bitmap) = (0 until bitmap.height).filter { y -> (0 until bitmap.width).any { x -> Color.alpha(bitmap.getPixel(x, y)) > 0 } }
+        val shownWhole = shown(whole)
+        val smallest = art.lastSeenBreathImage(key, 0.95)
+        assertTrue(shown(smallest) < shownWhole)
+        assertTrue(abs(rows(smallest).first() - (whole.height - 1 - rows(smallest).last())) <= 1)
+        val largest = art.lastSeenBreathImage(key, 1.05, into = smallest)
+        assertSame(smallest, largest)
+        assertEquals(114, largest.width)
+        assertTrue(shown(largest) > shownWhole)
+        assertTrue(rows(largest).first() < rows(whole).first())
+        assertTrue(abs(rows(largest).first() - (largest.height - 1 - rows(largest).last())) <= 1)
+    }
+
+    @Test
+    fun aFadedScootersTipGoesUnderItsDotWhereTheChromeLeavesNoRoomOverItAndTalkBackIsToldOfIt() {
+        val map = FlatMarkerMap()
+        val scene = scene()
+        val seenAt = Instant.now().minusSeconds(600)
+        val seen = map.at(195.0, 130.0)
+        val other = map.at(100.0, 500.0)
+        fun faded(updating: Boolean) = scene.reconcileLastSeen(
+            listOf(scooter("seen", "lime", at = seen), scooter("other", "lime", at = other)),
+            emptyList(),
+            revision = 1,
+            statuses = mapOf(ScooterProvider.Lime to ScooterLastSeenStatus(seenAt, updating)),
+        )
+        faded(updating = false)
+        scene.tap(map.point(seen), map)
+        val tip = scene.callout(map) ?: throw AssertionError("Expected the faded scooter's tip")
+        // It may go under its dot, pointing up at its foot, should it reach above the status bar's foot.
+        val below = tip.below ?: throw AssertionError("Expected a place under the dot")
+        assertEquals(map.point(seen).x, below.foot.x, 1e-6)
+        assertEquals(map.point(seen).y + 5, below.foot.y, 1e-6)
+        assertEquals(47.0, below.ceiling, 0.0)
+        // Under the search bar and its notices over the top of the map, it reaches no higher than their foot; chrome
+        // over the map's bottom half is no ceiling.
+        scene.parent = MarkerParent(interactionExclusionFrame = ScreenRect(16.0, 47.0, 358.0, 64.0))
+        assertEquals(111.0, scene.callout(map)?.below?.ceiling ?: 0.0, 0.0)
+        scene.parent = MarkerParent(interactionExclusionFrame = ScreenRect(16.0, 600.0, 358.0, 64.0))
+        assertEquals(47.0, scene.callout(map)?.below?.ceiling ?: 0.0, 0.0)
+        scene.parent = MarkerParent(interactionExclusionFrame = ScreenRect(16.0, 47.0, 0.0, 0.0))
+        assertEquals(47.0, scene.callout(map)?.below?.ceiling ?: 0.0, 0.0)
+
+        // TalkBack is told of it as it opens: its title, then the line under it, as VoiceOver is.
+        val time = ScooterDockStatus.seenTime(seenAt)
+        assertEquals("Lime · last seen $time. May have moved since", tip.announcement)
+        val told = TipAnnouncer()
+        assertEquals(Announcement("Lime · last seen $time. May have moved since", 1), told.next(scene.fadedTipID, scene.callout(map)))
+        // Not again while it shows the same, wherever the map takes it.
+        assertNull(told.next(scene.fadedTipID, scene.callout(map)))
+        assertNull(told.next(scene.fadedTipID, tip.copy(anchor = ScreenPoint(10.0, 10.0))))
+        // Again once what it says has changed.
+        faded(updating = true)
+        assertEquals(
+            Announcement("Lime · last seen $time. May have moved · new positions on the way", 2),
+            told.next(scene.fadedTipID, scene.callout(map)),
+        )
+        // Another scooter's tip is a new one, though it says the same.
+        val again = scene.callout(map)
+        scene.tap(map.point(other), map)
+        assertEquals("v:lime:other", scene.fadedTipID)
+        assertEquals(again?.announcement, scene.callout(map)?.announcement)
+        assertEquals(3, told.next(scene.fadedTipID, scene.callout(map))?.serial)
+        // Closed, then opened again, it is told again.
+        scene.closeFadedTip()
+        assertNull(told.next(scene.fadedTipID, scene.callout(map)))
+        scene.tap(map.point(other), map)
+        assertEquals(4, told.next(scene.fadedTipID, scene.callout(map))?.serial)
+        // The pin's callout is not announced, as MapKit's isn't.
+        assertNull(PinCalloutPlace("Bahnhofplatz", ScreenPoint(195.0, 256.0)).announcement)
+        assertNull(told.next(null, PinCalloutPlace("Bahnhofplatz", ScreenPoint(195.0, 256.0))))
     }
 
     @Test
@@ -219,29 +332,29 @@ class ScooterFilteringTest {
         scene.tap(map.point(seen), map)
         assertEquals(listOf<String?>(null), selections)
         val time = ScooterDockStatus.seenTime(seenAt)
-        val tip = scene.callout(map.projection) ?: throw AssertionError("Expected the faded scooter's tip")
+        val tip = scene.callout(map) ?: throw AssertionError("Expected the faded scooter's tip")
         assertEquals("Lime · last seen $time", tip.title)
         assertEquals("May have moved since", tip.subtitle)
         assertEquals(195.0, tip.anchor.x, 0.5)
         assertEquals(400.0 - 5, tip.anchor.y, 0.5)
         // New positions on their way: it says so.
         faded(updating = true)
-        assertEquals("May have moved · new positions on the way", scene.callout(map.projection)?.subtitle)
+        assertEquals("May have moved · new positions on the way", scene.callout(map)?.subtitle)
 
         // Another tap on it closes it, and one more opens it again; one elsewhere closes it, and so does the map
         // starting to move.
         scene.tap(map.point(seen), map)
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
         scene.tap(map.point(seen), map)
-        assertNotNull(scene.callout(map.projection))
+        assertNotNull(scene.callout(map))
         scene.tap(ScreenPoint(300.0, 250.0), map)
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
         scene.tap(map.point(seen), map)
         scene.closeFadedTip()
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
         // A group is not tapped.
         scene.tap(map.point(groups.single().coordinate), map)
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
 
         // A scooter of the map comes first: its card opens, and no tip shows.
         val near = scooter("near", "bird", at = map.at(200.0, 400.0))
@@ -249,15 +362,15 @@ class ScooterFilteringTest {
         scene.updateLook(map)
         scene.tap(map.point(seen), map)
         assertEquals("bird:near", selections.last())
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
         scene.reconcile(listOf(far), revision = 3)
         scene.updateLook(map)
 
         // The tip goes with its dot.
         scene.tap(map.point(seen), map)
-        assertNotNull(scene.callout(map.projection))
+        assertNotNull(scene.callout(map))
         faded(updating = true, revision = 2, among = emptyList())
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
         faded(updating = true, revision = 3)
 
         // TalkBack reads it by its tip's title, then what may have happened since; a double tap shows the tip. The
@@ -269,13 +382,13 @@ class ScooterFilteringTest {
         assertEquals("May have moved · new positions on the way", element.description.value)
         assertEquals(element, MarkerElements.at(map.point(seen), elements, scene, map))
         MarkerElements.activate(element, scene, map)
-        assertEquals("Lime · last seen $time", scene.callout(map.projection)?.title)
+        assertEquals("Lime · last seen $time", scene.callout(map)?.title)
 
         // Of an app whose last sight is not known, it shows nothing, and is not read.
         scene.closeFadedTip()
         scene.reconcileLastSeen(scooters, groups, revision = 4)
         scene.tap(map.point(seen), map)
-        assertNull(scene.callout(map.projection))
+        assertNull(scene.callout(map))
         assertEquals(listOf("v:voi:far"), MarkerElements.of(scene, map).map { it.key })
     }
 

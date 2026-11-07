@@ -162,11 +162,35 @@ object MarkerFeatures {
         )
     }
 
-    /** The faded groups: a dashed ring with their number. Their scooters' dots are [fadedDots]. */
-    fun lastSeen(scene: ScooterMarkerScene, art: ScooterMarkerArt): List<MarkerFeature> = scene.lastSeen.mapNotNull { mark ->
-        val kind = mark.mark as? LastSeenMark.Kind.Group ?: return@mapNotNull null
-        val key = ScooterMarkerArt.ClusterKey(kind.provider, ScooterMarkerScene.clusterDiameter(kind.count), scene.isDark, "${kind.count}")
-        MarkerFeature(mark.id, mark.coordinate, key.lastSeenID, { art.lastSeenClusterImage(key) }, isUpdating = mark.isUpdating)
+    /**
+     * The faded groups: a dashed ring with their number. Those whose new positions are on their way are drawn in
+     * their breathing pictures, at [groupScale] of their size ([LastSeenBreath]). Their scooters' dots are
+     * [fadedDots].
+     */
+    fun lastSeen(scene: ScooterMarkerScene, art: ScooterMarkerArt, groupScale: Double = 1.0): List<MarkerFeature> =
+        scene.lastSeen.mapNotNull { mark ->
+            val key = groupKey(scene, mark) ?: return@mapNotNull null
+            if (mark.isUpdating) {
+                MarkerFeature(mark.id, mark.coordinate, key.lastSeenBreathID, { art.lastSeenBreathImage(key, groupScale) }, isUpdating = true)
+            } else {
+                MarkerFeature(mark.id, mark.coordinate, key.lastSeenID, { art.lastSeenClusterImage(key) })
+            }
+        }
+
+    /** The breathing pictures of the faded groups whose new positions are on their way, by name. */
+    fun breathingGroups(scene: ScooterMarkerScene): Map<String, ScooterMarkerArt.ClusterKey> {
+        val groups = HashMap<String, ScooterMarkerArt.ClusterKey>()
+        for (mark in scene.lastSeen) {
+            if (!mark.isUpdating) continue
+            val key = groupKey(scene, mark) ?: continue
+            groups[key.lastSeenBreathID] = key
+        }
+        return groups
+    }
+
+    private fun groupKey(scene: ScooterMarkerScene, mark: LastSeenMark): ScooterMarkerArt.ClusterKey? {
+        val kind = mark.mark as? LastSeenMark.Kind.Group ?: return null
+        return ScooterMarkerArt.ClusterKey(kind.provider, ScooterMarkerScene.clusterDiameter(kind.count), scene.isDark, "${kind.count}")
     }
 
     /** The faded scooters: a small dot in the provider's colour, inside a thin ring of the ground's. */
@@ -688,8 +712,12 @@ data class MarkerBand(
  * The faded markers stand still, but for those whose new positions are on their way: they breathe, one way in 1.4 s
  * and back, eased, every one in step with the others whenever it appeared, as on the web (map.css); with Remove
  * animations they stand still too, a little stronger than the others. A dot breathes in strength and size, from 8 to
- * 12 pt: plain enough to be seen, small enough not to pass for a scooter. A group breathes in strength alone: its
- * picture's size is laid out, not painted, and would be laid out again at every frame for the web's 0.95 to 1.05.
+ * 12 pt: plain enough to be seen, small enough not to pass for a scooter. A group breathes in strength and in size,
+ * from 0.95 to 1.05 of its own, as the iPhone's (ScooterLastSeenView.groupBreath): a symbol's size is laid out, not
+ * painted, and MapLibre would lay out its source's tiles again, then place every marker of the map again, at each
+ * frame its icon-size changed, so its picture grows instead, a hundredth of its size at a time, drawn again under the
+ * same name in a picture of the same size, which MapLibre draws from its next frame without laying anything out
+ * (ScooterMarkerArt.breathing).
  */
 object LastSeenBreath {
     /** A faded dot and a faded group at rest: nothing is on its way for them. */
@@ -699,33 +727,46 @@ object LastSeenBreath {
     /** Those whose new positions are on their way, with Remove animations. */
     const val UPDATING_STILL = 0.55f
 
-    /** A breathing dot's strength and size, then a group's strength, from the start of a breath to its end. */
+    /** A breathing dot's strength and size, then a group's, from the start of a breath to its end. */
     const val DOT_FAINTEST = 0.25f
     const val DOT_STRONGEST = 0.75f
     const val DOT_SMALLEST = 0.8f
     const val DOT_LARGEST = 1.2f
     const val GROUP_FAINTEST = 0.45f
     const val GROUP_STRONGEST = 0.85f
+    const val GROUP_SMALLEST = 0.95
+    const val GROUP_LARGEST = 1.05
+
+    /**
+     * The sizes a breathing group is drawn at, a hundredth of its own apart, from its smallest to its largest: the
+     * ring of the smallest group grows by about a pixel a step at a phone's 2.625 pixels a point, each step a picture
+     * drawn again, some seven a second. Its strength changes at every frame.
+     */
+    const val GROUP_STEPS = 10
 
     /** One way, in seconds. */
     const val BREATH = 1.4
 
     private val easeInEaseOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
 
-    /** How those breathing are drawn at a moment: a dot's strength and scale, and a group's strength. */
-    data class Drawn(val dotStrength: Float, val dotScale: Float, val groupStrength: Float)
+    /** How those breathing are drawn at a moment: a dot's strength and scale, and a group's strength and scale. */
+    data class Drawn(val dotStrength: Float, val dotScale: Float, val groupStrength: Float, val groupScale: Double)
 
     /** Those breathing at a moment of the uptime clock, in seconds: a breath begins at each multiple of 2.8 s. */
     fun drawn(at: Double, animates: Boolean): Drawn {
-        if (!animates) return Drawn(UPDATING_STILL, 1f, UPDATING_STILL)
+        if (!animates) return Drawn(UPDATING_STILL, 1f, UPDATING_STILL, 1.0)
         val phase = ((at % (2 * BREATH)) + 2 * BREATH) % (2 * BREATH)
         val way = easeInEaseOut.transform((if (phase < BREATH) phase / BREATH else (2 * BREATH - phase) / BREATH).toFloat())
         return Drawn(
             dotStrength = DOT_FAINTEST + (DOT_STRONGEST - DOT_FAINTEST) * way,
             dotScale = DOT_SMALLEST + (DOT_LARGEST - DOT_SMALLEST) * way,
             groupStrength = GROUP_FAINTEST + (GROUP_STRONGEST - GROUP_FAINTEST) * way,
+            groupScale = groupScale(step = (way * GROUP_STEPS).roundToInt()),
         )
     }
+
+    /** A breathing group's size [step] hundredths over its smallest: whole halfway, exactly. */
+    fun groupScale(step: Int): Double = ((GROUP_SMALLEST * 100).roundToInt() + step) / 100.0
 }
 
 /**

@@ -25,6 +25,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.ui.Announcement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.merge
@@ -115,6 +116,20 @@ class ScooterMarkers(
     private var updates: Job? = null
     private var framesWanted = false
     private var breathing: LastSeenBreath.Drawn? = null
+
+    /** A faded group's breathing picture: the bitmap it is drawn in again, and the size it was last drawn at. */
+    private class GroupBreath(val key: ScooterMarkerArt.ClusterKey) {
+        var bitmap: Bitmap? = null
+        var scale: Double? = null
+    }
+
+    /** The breathing pictures the faded groups' source draws now, by name, and the size the breath has reached. */
+    private val groupBreaths = HashMap<String, GroupBreath>()
+    private var groupScale = 1.0
+
+    /** The breathing groups' pictures drawn again as they breathe: what their breath costs. */
+    internal var groupBreathsDrawn = 0
+        private set
 
     /** The sources whose markers fade, with the layers drawing them otherwise. */
     private val fadings = listOf(
@@ -334,6 +349,18 @@ class ScooterMarkers(
     var calloutAnchor by mutableStateOf(ScreenPoint(0.0, 0.0))
         private set
 
+    /** Where a faded scooter's tip goes instead, under its dot, where there is no room above it. */
+    var calloutBelow by mutableStateOf<CalloutBelow?>(null)
+        private set
+
+    /**
+     * What TalkBack says of a faded scooter's tip, as VoiceOver is told: as it opens, and again should what it says
+     * change while it shows (ScooterMapView.showFadedTip).
+     */
+    var tipAnnouncement by mutableStateOf<Announcement?>(null)
+        private set
+    private val tips = TipAnnouncer()
+
     /** The map starting to move or zoom, which closes a faded scooter's tip, as on the web. */
     private val moveStarted = MapLibreMap.OnCameraMoveStartedListener {
         if (scene.fadedTipID == null) return@OnCameraMoveStartedListener
@@ -435,6 +462,8 @@ class ScooterMarkers(
         moversQueued = null
         handedOver.clear()
         clearances.clear()
+        for (breath in groupBreaths.values) breath.bitmap?.recycle()
+        groupBreaths.clear()
         style = null
     }
 
@@ -545,10 +574,14 @@ class ScooterMarkers(
     /** Writes each source whose marks changed, with the pictures it needs, and starts what moves on its own. */
     private fun flush() {
         val style = style ?: return
-        val callout = scene.callout(projection)
+        val callout = scene.callout(markerMap)
         calloutTitle = callout?.title
         calloutSubtitle = callout?.subtitle
-        callout?.let { calloutAnchor = it.anchor }
+        callout?.let {
+            calloutAnchor = it.anchor
+            calloutBelow = it.below
+        }
+        tips.next(scene.fadedTipID, callout)?.let { tipAnnouncement = it }
         // The clusters under the chrome, or on the scooter held in the overview, are hidden before the source is
         // written: a new one is never seen there.
         val written = writtenMarkers
@@ -560,7 +593,9 @@ class ScooterMarkers(
         if (counts && writtenMarkers == written) accessibility.refresh()
         if (scene.lastSeenVersion != writtenLastSeen) {
             writtenLastSeen = scene.lastSeenVersion
-            write(style, ScooterMarkerLayers.LAST_SEEN_SOURCE, MarkerFeatures.lastSeen(scene, art))
+            // The breathing groups' pictures first, at the size their breath has reached, which the write then finds.
+            breatheGroups(style, MarkerFeatures.breathingGroups(scene))
+            write(style, ScooterMarkerLayers.LAST_SEEN_SOURCE, MarkerFeatures.lastSeen(scene, art, groupScale))
             style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.LAST_SEEN_DOTS_SOURCE)?.setGeoJson(MarkerFeatures.json(MarkerFeatures.fadedDots(scene)))
             // TalkBack reads the faded scooters too, by their tips' titles.
             accessibility.refresh()
@@ -712,10 +747,43 @@ class ScooterMarkers(
             val dot = ScooterMarkerLayers.fadedDotSize(breath.dotStrength, breath.dotScale)
             style.getLayer(ScooterMarkerLayers.LAST_SEEN_DOTS_UPDATING)
                 ?.setProperties(*dot.map { (name, value) -> PaintPropertyValue(name, value) }.toTypedArray<PropertyValue<*>>())
+            if (breath.groupScale != groupScale) {
+                groupScale = breath.groupScale
+                breatheGroups(style)
+            }
         }
         val moves = moveDots(style, now)
         val clears = writeClearances(style, now)
         return fades || breathes || moves || slides || clears
+    }
+
+    /**
+     * Draws the breathing groups' pictures at the size their breath has reached, those the style does not have at it:
+     * each a picture of the same size as the one it had under its name, which MapLibre draws from its next frame
+     * without laying anything out again, as the light-up's copies (Fading.grow). MapLibre takes their pixels as it is
+     * given them: each is drawn in again in its own bitmap. [groups], when given, are those the faded groups' source is
+     * about to draw; the bitmaps of the others are let go, and the style keeps their pictures until it is rid of those
+     * no layer draws (MAP-247).
+     */
+    private fun breatheGroups(style: Style, groups: Map<String, ScooterMarkerArt.ClusterKey>? = null) {
+        if (groups != null) {
+            val gone = groupBreaths.keys.filter { it !in groups }
+            for (name in gone) groupBreaths.remove(name)?.bitmap?.recycle()
+            for ((name, key) in groups) groupBreaths.getOrPut(name) { GroupBreath(key) }
+        }
+        if (groupBreaths.isEmpty()) return
+        val drawn = HashMap<String, Bitmap>()
+        for ((name, breath) in groupBreaths) {
+            if (breath.scale == groupScale && name in images) continue
+            val bitmap = art.lastSeenBreathImage(breath.key, groupScale, into = breath.bitmap)
+            breath.bitmap = bitmap
+            breath.scale = groupScale
+            drawn[name] = bitmap
+        }
+        if (drawn.isEmpty()) return
+        style.addImages(drawn)
+        images += drawn.keys
+        groupBreathsDrawn += drawn.size
     }
 
     /**

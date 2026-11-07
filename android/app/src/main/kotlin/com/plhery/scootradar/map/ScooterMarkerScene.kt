@@ -34,6 +34,7 @@ import com.plhery.scootradar.core.model.briefName
 import com.plhery.scootradar.core.model.distance
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.ui.Announcement
 import com.plhery.scootradar.ui.theme.easing
 import kotlin.math.PI
 import kotlin.math.abs
@@ -311,9 +312,40 @@ data class MarkerParent(
 
 /**
  * The pin's callout: the searched place's [title], and the top of the pin it points at, in the map's points. A faded
- * scooter's tip takes its place, with a [subtitle] under its title.
+ * scooter's tip takes its place, with a [subtitle] under its title, and goes [below] its dot where there is no room
+ * above it.
  */
-data class PinCalloutPlace(val title: String, val anchor: ScreenPoint, val subtitle: String? = null)
+data class PinCalloutPlace(val title: String, val anchor: ScreenPoint, val subtitle: String? = null, val below: CalloutBelow? = null) {
+    /**
+     * What TalkBack says as a faded scooter's tip opens, as VoiceOver is told (ScooterMapView.showFadedTip): its
+     * title, then the line under it. Nothing of the pin's callout, which MapKit does not announce.
+     */
+    val announcement: String? get() = subtitle?.let { "$title. $it" }
+}
+
+/**
+ * What TalkBack is told of the faded scooters' tips, as VoiceOver is (ScooterMapView.showFadedTip): a tip as it opens,
+ * that of another scooter as it takes its place, and a tip again should what it says change while it shows; nothing
+ * while one shows the same, nor of the pin's callout.
+ */
+class TipAnnouncer {
+    /** The tip showing, and what it was said to say. */
+    private var told: Pair<String, String>? = null
+    private var count = 0
+
+    /** What to say of the callout showing now, that of the faded scooter [id], or of none: null when nothing is new. */
+    fun next(id: String?, callout: PinCalloutPlace?): Announcement? {
+        val said = callout?.announcement
+        if (id == null || said == null) {
+            told = null
+            return null
+        }
+        if (told == id to said) return null
+        told = id to said
+        count += 1
+        return Announcement(said, count)
+    }
+}
 
 /**
  * The scooters, the bays and the faded markers of the iPhone's map coordinator, without a map of their own: it
@@ -434,23 +466,38 @@ class ScooterMarkerScene(
      * The pin's callout while it shows: the place's title, pointing at the top of the pin; else the faded scooter's
      * tip, pointing at the top of its dot.
      */
-    fun callout(projection: ScooterMapProjection): PinCalloutPlace? {
-        if (!showsCallout) return fadedTip(projection)
+    fun callout(map: MarkerMap): PinCalloutPlace? {
+        if (!showsCallout) return fadedTip(map)
         val place = destination ?: return null
-        val pin = destinationFrame(projection) ?: return null
+        val pin = destinationFrame(map.projection) ?: return null
         return PinCalloutPlace(place.title, ScreenPoint(pin.midX, pin.minY))
     }
 
     /**
      * The faded scooter's tip while it shows: "Lime · last seen 14:02", and that it may have moved since, or that new
      * positions are on their way. It has nothing to rent and no walk: the scooter's dot, once it is found again, has.
+     * It points at the top of the dot, or from under it at its foot where it would reach above [tipCeiling].
      */
-    fun fadedTip(projection: ScooterMapProjection): PinCalloutPlace? {
+    fun fadedTip(map: MarkerMap): PinCalloutPlace? {
         val mark = fadedTipID?.let { lastSeenByID[it] } ?: return null
         val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider ?: return null
         val status = lastSeenStatuses[provider] ?: return null
-        val point = projection.point(mark.coordinate)
-        return PinCalloutPlace(fadedTitle(provider, status), ScreenPoint(point.x, point.y - LAST_SEEN_RADIUS), fadedSubtitle(status))
+        val point = map.projection.point(mark.coordinate)
+        return PinCalloutPlace(
+            fadedTitle(provider, status),
+            ScreenPoint(point.x, point.y - LAST_SEEN_RADIUS),
+            fadedSubtitle(status),
+            below = CalloutBelow(ScreenPoint(point.x, point.y + LAST_SEEN_RADIUS), ceiling = tipCeiling(map)),
+        )
+    }
+
+    /**
+     * The top of the room a faded scooter's tip has over its dot: the status bar's foot, or that of the search bar and
+     * the notices under it when they are over the top of the map, as on the iPhone (ScooterMapView.placeFadedTip).
+     */
+    fun tipCeiling(map: MarkerMap): Double {
+        val chrome = parent.interactionExclusionFrame?.takeIf { !it.isEmpty && it.midY < map.projection.bounds.midY }
+        return max(map.safeTop, chrome?.maxY ?: map.safeTop)
     }
 
     /** The tip's line under its title: that the scooter may have moved since, or that new positions are on their way. */

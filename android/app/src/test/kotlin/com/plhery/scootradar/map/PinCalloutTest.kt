@@ -13,6 +13,8 @@ import androidx.compose.ui.test.getBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
@@ -27,6 +29,7 @@ import com.plhery.scootradar.ui.theme.screenshotOptions
 import com.plhery.scootradar.ui.theme.useFontScale
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -83,6 +86,90 @@ class PinCalloutTest {
         val rightOut = compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot()
         assertEquals(450f + 10 + 12, rightOut.right.value, 0.5f)
         assertTrue("$rightOut", rightOut.left.value > 300)
+    }
+
+    /**
+     * A faded scooter's tip hangs over its dot, as the pin's callout does, unless it would reach within 8 of the top
+     * of the room over the dot, under the status bar or the chrome: then it goes under the dot, its arrow pointing up
+     * at the dot's foot, as the iPhone's does (ScooterMapView.placeFadedTip).
+     */
+    @Test
+    fun aFadedScootersTipGoesUnderItsDotWithoutRoomOverIt() {
+        var anchor by mutableStateOf(ScreenPoint(150.0, 300.0))
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                Box(Modifier.size(300.dp, 400.dp)) {
+                    PinCallout(
+                        "Lime · last seen 14:02",
+                        anchor = { anchor },
+                        dark = false,
+                        subtitle = "May have moved since",
+                        below = { CalloutBelow(ScreenPoint(anchor.x, anchor.y + 10), ceiling = 100.0) },
+                    )
+                }
+            }
+        }
+        compose.onNodeWithText("May have moved since").assertExists()
+        val over = compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot()
+        // Room over it: over the dot, 2 above it, the arrow 10 tall between.
+        assertEquals(300f - 2 - 10 + 1, over.bottom.value, 1f)
+        val height = (over.bottom - over.top).value
+        assertTrue("two lines: $over", height > 40)
+        // Its top within 8 of the room's: under the dot, 2 under its foot, the arrow between, centred on it still.
+        anchor = ScreenPoint(150.0, 100.0 + 8 + 2 + 10 - 1 + height - 2)
+        compose.waitForIdle()
+        val under = compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot()
+        assertEquals(anchor.y.toFloat() + 10 + 2 + 10 - 1, under.top.value, 1f)
+        assertEquals(150f, (under.left + under.right).value / 2, 1f)
+        assertEquals(height, (under.bottom - under.top).value, 0.5f)
+        // Off the top of the map, under it too, inside the map's sides as over it.
+        anchor = ScreenPoint(40.0, 30.0)
+        compose.waitForIdle()
+        val corner = compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot()
+        assertEquals(30f + 10 + 2 + 10 - 1, corner.top.value, 1f)
+        assertEquals(8f, corner.left.value, 0.5f)
+    }
+
+    /** The pin's callout hangs over the pin wherever it is, however near the top of the map. */
+    @Test
+    fun thePinsCalloutStaysOverThePin() {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                Box(Modifier.size(300.dp, 400.dp)) {
+                    PinCallout("Bahnhofplatz", anchor = { ScreenPoint(150.0, 20.0) }, dark = false)
+                }
+            }
+        }
+        assertEquals(20f - 2 - 10 + 1, compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot().bottom.value, 1f)
+    }
+
+    /** The rule, in pixels: over what it points at, or under it given a place there and no room over it. */
+    @Test
+    fun aCalloutGoesUnderWhatItPointsAtOnlyWhenItIsToldWhereAndHasNoRoomOverIt() {
+        fun place(x: Int = 150, tip: Int = 200, tipBelow: Int? = null, ceiling: Int? = null) = CalloutPlacement.place(
+            x = x,
+            tip = tip,
+            tipBelow = tipBelow,
+            ceiling = ceiling,
+            bubble = IntSize(200, 60),
+            arrow = IntSize(20, 10),
+            width = 300,
+            margin = 8,
+            corner = 12,
+        )
+        // The arrow's tip at the tip, the bubble over the arrow, a pixel into it, so that no seam shows.
+        assertEquals(CalloutPlacement.Placed(IntOffset(50, 131), IntOffset(140, 190), isBelow = false), place())
+        // Without a place under it, over it however high.
+        assertEquals(-49, place(tip = 20).bubble.y)
+        assertFalse(place(tip = 20, ceiling = 100).isBelow)
+        // With room to the ceiling and 8 more, over it; a pixel less, under it, the arrow's tip at its place there,
+        // the bubble under the arrow, a pixel into it.
+        assertFalse(place(tipBelow = 220, ceiling = 123).isBelow)
+        assertEquals(CalloutPlacement.Placed(IntOffset(50, 229), IntOffset(140, 220), isBelow = true), place(tipBelow = 220, ceiling = 124))
+        // Inside the map's sides, under it as over it.
+        assertEquals(8, place(x = 30).bubble.x)
+        assertEquals(8, place(x = 30, tipBelow = 220, ceiling = 500).bubble.x)
+        assertEquals(20, place(x = 30, tipBelow = 220, ceiling = 500).arrow.x)
     }
 
     /** A long title on one line, cut short inside the map. */
