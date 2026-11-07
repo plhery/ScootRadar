@@ -46,6 +46,8 @@ import {
   type GroundTheme,
 } from '@/lib/quietGround';
 import { scooterTip } from '@/lib/scooterTip';
+import type { LastSeenStatus } from '@/lib/scooterDataState';
+import { formatUiText } from '@/lib/uiText';
 import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
@@ -177,6 +179,8 @@ const INTRO_MS = 1_800;
 // The dock takes 280 ms to grow to the height of a new card.
 const DOCK_SETTLE_MS = 320;
 const TIP_GAP = 8;
+/** Half the size of a faded scooter's light (map.css), from where its tip stands. */
+const FADED_RADIUS = 5;
 const TIP_MARGIN = 8;
 // A way is framed this far inside what can be seen of the map, clear of the
 // markers at its ends and of the name beside the scooter.
@@ -228,24 +232,27 @@ function createClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
 
 const clusterSize = (count: number) => count < 10 ? 34 : count < 100 ? 40 : count < 1000 ? 46 : count < 10_000 ? 52 : 58;
 
-/** A scooter where it was last seen, while it is collected again: a faded light in the colour of its app. */
-function createLastSeenIcon(provider: string): L.DivIcon {
+/**
+ * A scooter where it was last seen: a faded light in the colour of its app, breathing while new
+ * positions of its app are on their way, still when nothing is collecting them.
+ */
+function createLastSeenIcon(provider: string, updating: boolean): L.DivIcon {
   const color = providerSurfaceColor(provider, PROVIDERS[provider]?.color ?? '#999');
   return L.divIcon({
     className: 'last-seen-wrap',
-    html: `<div class="last-seen-light" style="--marker-color:${color}" aria-hidden="true"></div>`,
+    html: `<div class="last-seen-light${updating ? ' last-seen-updating' : ''}" style="--marker-color:${color}" aria-hidden="true"></div>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
   });
 }
 
 /** A group of them: their number in a dashed ring, in the colour of the app with most of them. */
-function createLastSeenClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
+function createLastSeenClusterIcon(cluster: ScooterCluster, count: string, updating: boolean): L.DivIcon {
   const largest = Object.entries(cluster.providers).reduce<[string, number] | null>((best, entry) => (!best || entry[1] > best[1] ? entry : best), null);
   const glow = largest ? providerSurfaceColor(largest[0], '#999') : '#999';
   return L.divIcon({
     className: 'last-seen-wrap',
-    html: `<div class="last-seen-cluster" style="--cluster-glow:${glow};--cluster-size:${clusterSize(cluster.count)}px" aria-hidden="true"><span>${count}</span></div>`,
+    html: `<div class="last-seen-cluster${updating ? ' last-seen-updating' : ''}" style="--cluster-glow:${glow};--cluster-size:${clusterSize(cluster.count)}px" aria-hidden="true"><span>${count}</span></div>`,
     iconSize: [58, 58],
     iconAnchor: [29, 29],
   });
@@ -354,6 +361,7 @@ function MapZoomControls({ mapRef }: { mapRef: { current: L.Map | null } }) {
 // The same empty lists on every render, so that a map without faded scooters does not draw them again.
 const NO_VEHICLES: Vehicle[] = [];
 const NO_CLUSTERS: ScooterCluster[] = [];
+const NO_LAST_SEEN: Readonly<Record<string, LastSeenStatus>> = {};
 const NO_RULE_ZONES: RuleZoneShape[] = [];
 
 interface MapComponentProps {
@@ -365,9 +373,14 @@ interface MapComponentProps {
   vehicles: Vehicle[];
   clusters: CityGroup[];
   clustered: boolean;
-  /** Where scooters still being collected again were last seen: drawn faded under the others, and never pressed. */
+  /**
+   * Where scooters were last seen: drawn faded under the others. A press on one that lands on no other
+   * scooter says whose it is and when it was seen; a press on a group of them goes through to the map.
+   */
   lastSeenVehicles?: Vehicle[];
   lastSeenClusters?: ScooterCluster[];
+  /** Of each app among them: when its were seen, and whether new positions are on their way, which they breathe for. */
+  lastSeenProviders?: Readonly<Record<string, LastSeenStatus>>;
   origin: [number, number];
   initialZoom: number;
   distanceOrigin: [number, number] | null;
@@ -440,6 +453,7 @@ export default function MapComponent({
   clustered,
   lastSeenVehicles = NO_VEHICLES,
   lastSeenClusters = NO_CLUSTERS,
+  lastSeenProviders = NO_LAST_SEEN,
   origin,
   initialZoom,
   distanceOrigin,
@@ -464,7 +478,8 @@ export default function MapComponent({
   theme = 'auto',
   mapStyle = 'calm',
 }: MapComponentProps) {
-  const { t, formatNumber, locale, region, nameLanguage } = useI18n();
+  const i18n = useI18n();
+  const { t, formatNumber, locale, region, nameLanguage } = i18n;
   const systemDark = useSyncExternalStore(subscribeToScheme, () => window.matchMedia(DARK_SCHEME).matches, () => false);
   const ground: GroundTheme = theme === 'dark' || (theme === 'auto' && systemDark) ? 'night' : 'day';
   const containerRef = useRef<HTMLDivElement>(null);
@@ -482,7 +497,11 @@ export default function MapComponent({
   // What each total stands for now: a group gains and loses cities as the map zooms.
   const clusterDataRef = useRef<Map<string, CityGroup>>(new Map());
   const parkingMarkersRef = useRef<Map<string, { marker: L.Marker; signature: string }>>(new Map());
-  const lastSeenMarkersRef = useRef<Map<string, { marker: L.Marker; signature: string }>>(new Map());
+  const lastSeenMarkersRef = useRef<Map<string, { marker: L.Marker; signature: string; vehicle?: Vehicle }>>(new Map());
+  const fadedTipRef = useRef<HTMLDivElement>(null);
+  /** The faded scooter whose tip is shown, by its key among lastSeenMarkersRef. */
+  const fadedTipKeyRef = useRef<string | null>(null);
+  const showFadedTipRef = useRef<(key: string) => void>(() => {});
   const markerSignaturesRef = useRef<Map<string, string>>(new Map());
   const vehicleDataRef = useRef<Map<string, Vehicle>>(new Map());
   const parkingDataRef = useRef<Map<string, ParkingLocation>>(new Map());
@@ -564,6 +583,19 @@ export default function MapComponent({
     return drawn;
   }, []);
 
+  /** The faded scooter a press at this point of the map means, if any, by its key. */
+  const fadedUnder = useCallback((point: L.Point, reach: number): string | null => {
+    const map = mapRef.current;
+    if (!map) return null;
+    const drawn: DrawnLight[] = [];
+    for (const [key, entry] of lastSeenMarkersRef.current) {
+      if (!entry.vehicle) continue;
+      const at = map.latLngToContainerPoint(entry.marker.getLatLng());
+      drawn.push({ key, x: at.x, y: at.y, diameter: FADED_RADIUS * 2 });
+    }
+    return lightAt(drawn, point.x, point.y, reach);
+  }, []);
+
   /** The scooter a press at this point of the map means, if any. */
   const lightUnder = useCallback((point: L.Point, reach: number): Vehicle | null => {
     const key = lightAt(drawnLights(), point.x, point.y, reach);
@@ -643,8 +675,24 @@ export default function MapComponent({
     map.on('click', event => {
       const reach = window.matchMedia('(pointer: coarse)').matches ? TAP_REACH : CLICK_REACH;
       const vehicle = lightUnder(event.containerPoint, reach);
-      if (vehicle) onVehicleSelectRef.current(vehicle);
-      else onMapClickRef.current?.();
+      const hideFadedTip = () => {
+        if (fadedTipRef.current) fadedTipRef.current.hidden = true;
+        fadedTipKeyRef.current = null;
+      };
+      if (vehicle) {
+        hideFadedTip();
+        onVehicleSelectRef.current(vehicle);
+        return;
+      }
+      // A scooter of the map always comes first: a faded one is only where nothing else is.
+      const faded = fadedUnder(event.containerPoint, reach);
+      onMapClickRef.current?.();
+      if (faded && faded !== fadedTipKeyRef.current) showFadedTipRef.current(faded);
+      else hideFadedTip();
+    });
+    map.on('movestart zoomstart', () => {
+      if (fadedTipRef.current) fadedTipRef.current.hidden = true;
+      fadedTipKeyRef.current = null;
     });
     const layoutLights = () => layoutLightsRef.current?.();
     // Turning the map moves the scooters around each other, and their names with
@@ -685,7 +733,7 @@ export default function MapComponent({
       delete container.dataset.zoom;
       delete container.dataset.intro;
     };
-  }, [initialZoom, lightUnder, reportViewport]);
+  }, [fadedUnder, initialZoom, lightUnder, reportViewport]);
 
   // Parking bays open in the dock, as scooters do: a tap selects, the page shows the card.
   useEffect(() => {
@@ -725,40 +773,80 @@ export default function MapComponent({
     }
   }, [frameLng, readyMap, parking, selectedParkingId, t]);
 
-  // Where scooters still being collected again were last seen: faded, under the others, until the
-  // collection reaches them and the server sends them as the others. A press goes through them.
+  // Where scooters were last seen: faded, under the others, until a collection reaches them and the
+  // server sends them as the others. Presses go through them to the map, which finds them (fadedUnder).
   useEffect(() => {
     const map = mapRef.current;
     if (!readyMap || !map) return;
     const markers = lastSeenMarkersRef.current;
-    const wanted = new Map<string, { at: [number, number]; signature: string; icon: () => L.DivIcon }>();
+    const updating = (provider: string) => lastSeenProviders[provider]?.updating === true;
+    const wanted = new Map<string, { at: [number, number]; signature: string; icon: () => L.DivIcon; vehicle?: Vehicle }>();
     for (const vehicle of lastSeenVehicles) {
+      const breathing = updating(vehicle.provider);
       wanted.set(`v:${vehicleMarkerKey(vehicle)}`, {
-        at: [vehicle.lat, lngNear(vehicle.lng, frameLng)], signature: vehicle.provider, icon: () => createLastSeenIcon(vehicle.provider),
+        at: [vehicle.lat, lngNear(vehicle.lng, frameLng)], signature: JSON.stringify([vehicle.provider, breathing]),
+        icon: () => createLastSeenIcon(vehicle.provider, breathing), vehicle,
       });
     }
     for (const cluster of clustered ? lastSeenClusters : []) {
       const count = formatNumber(cluster.count);
+      const breathing = Object.keys(cluster.providers).some(updating);
       wanted.set(`c:${cluster.id}`, {
-        at: [cluster.lat, lngNear(cluster.lng, frameLng)], signature: JSON.stringify([cluster.providers, count]),
-        icon: () => createLastSeenClusterIcon(cluster, count),
+        at: [cluster.lat, lngNear(cluster.lng, frameLng)], signature: JSON.stringify([cluster.providers, count, breathing]),
+        icon: () => createLastSeenClusterIcon(cluster, count, breathing),
       });
     }
     for (const [key, entry] of markers) {
       if (!wanted.has(key)) { entry.marker.remove(); markers.delete(key); }
     }
-    for (const [key, { at, signature, icon }] of wanted) {
+    for (const [key, { at, signature, icon, vehicle }] of wanted) {
       const existing = markers.get(key);
       if (existing) {
         if (!existing.marker.getLatLng().equals(at)) existing.marker.setLatLng(at);
         if (existing.signature !== signature) { existing.marker.setIcon(icon()); existing.signature = signature; }
+        existing.vehicle = vehicle;
         continue;
       }
       // Under every other marker, whatever its latitude.
       const marker = L.marker(at, { icon: icon(), interactive: false, keyboard: false, zIndexOffset: -100_000 }).addTo(map);
-      markers.set(key, { marker, signature });
+      markers.set(key, { marker, signature, vehicle });
     }
-  }, [clustered, formatNumber, frameLng, lastSeenClusters, lastSeenVehicles, readyMap]);
+    // The tip of one that has gone goes with it; that of one still there says what is now known.
+    const shown = fadedTipKeyRef.current;
+    if (shown !== null && fadedTipRef.current) {
+      if (markers.has(shown)) showFadedTipRef.current(shown);
+      else { fadedTipRef.current.hidden = true; fadedTipKeyRef.current = null; }
+    }
+  }, [clustered, formatNumber, frameLng, lastSeenClusters, lastSeenProviders, lastSeenVehicles, readyMap]);
+
+  // A faded scooter pressed: whose it is, when it was seen, and that it may have moved since. It has
+  // nothing to rent: the light of the scooter, when it is found again, has.
+  useEffect(() => {
+    showFadedTipRef.current = (key: string) => {
+      const map = mapRef.current;
+      const tip = fadedTipRef.current;
+      const entry = lastSeenMarkersRef.current.get(key);
+      const vehicle = entry?.vehicle;
+      const status = vehicle && lastSeenProviders[vehicle.provider];
+      if (!map || !tip || !entry || !vehicle || !status) return;
+      const weekday = new Date(status.seenAt).toDateString() !== new Date().toDateString();
+      const title = document.createElement('strong');
+      title.textContent = formatUiText({ key: 'lastSeen.tip', values: { name: PROVIDERS[vehicle.provider]?.name ?? vehicle.provider },
+        time: status.seenAt, ...(weekday ? { weekday } : {}) }, i18n);
+      const body = document.createElement('span');
+      body.textContent = t(status.updating ? 'lastSeen.tip.updating' : 'lastSeen.tip.moved');
+      tip.replaceChildren(title, body);
+      tip.hidden = false;
+      fadedTipKeyRef.current = key;
+      const box = map.getContainer().getBoundingClientRect();
+      const point = map.latLngToContainerPoint(entry.marker.getLatLng());
+      const x = box.left + point.x, y = box.top + point.y;
+      const centred = x - tip.offsetWidth / 2;
+      const above = y - FADED_RADIUS - TIP_GAP - tip.offsetHeight;
+      tip.style.left = `${Math.round(Math.max(TIP_MARGIN, Math.min(centred, window.innerWidth - tip.offsetWidth - TIP_MARGIN)))}px`;
+      tip.style.top = `${Math.round(above < TIP_MARGIN ? y + FADED_RADIUS + TIP_GAP : above)}px`;
+    };
+  }, [i18n, lastSeenProviders, t]);
 
   // The operators' zones and the cities' are drawn under the rest of what is drawn on the ground,
   // in panes inside the one that turns with the map: each kind's fills in a pane of its own that
@@ -1377,6 +1465,8 @@ export default function MapComponent({
         </svg>
       )}
       <div ref={tipRef} className="map-tip glass" aria-hidden="true" hidden />
+      {/* Announced when a faded scooter is pressed: it is not one of the map's buttons. */}
+      <div ref={fadedTipRef} className="last-seen-tip glass" role="status" hidden />
       {readyMap && popover && (
         <MarkerPopover
           cardRef={popoverRef}

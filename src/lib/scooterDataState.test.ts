@@ -3,6 +3,8 @@ import { MIN_FOLLOW_UP_MS, nextRefreshAt } from '@/lib/autoRefresh';
 import { isExpired } from '@/lib/dataExpiry';
 import {
   INITIAL_SCOOTER_DATA_STATE,
+  lastSeenStatuses,
+  notUpdating,
   scooterDataReducer,
   scooterLoading,
   scooterQueryKey,
@@ -311,6 +313,30 @@ describe('scooterDataReducer', () => {
     const running = scooterDataReducer(loaded, { type: 'started', key: 'b' });
     expect(scooterDataReducer(running, { type: 'aborted' })).toMatchObject({ requestInFlight: false, requestKey: null, hasData: true });
     expect(scooterDataReducer(loaded, { type: 'aborted' })).toBe(loaded);
+  });
+});
+
+describe('lastSeenStatuses', () => {
+  const ryde = { provider: 'ryde', vehicle_id: 'r', lat: 48.37, lng: 10.9, battery: null, range_m: null, distance_m: null, deep_link: null };
+
+  it('gives each app among the faded ones when its were seen, on this device\'s clock, and whether they are updating', () => {
+    const answer = { ...response({ refreshing: true }), lastSeen: { vehicles: [ryde], clusters: [],
+      providers: { ryde: { seenAt: iso(T0 - 600_000), updating: true }, lime: { seenAt: iso(T0 - 3_600_000), updating: false } } } };
+    // This device's clock is 5 seconds ahead of the server's.
+    expect(lastSeenStatuses(answer, 5_000)).toEqual({
+      ryde: { seenAt: T0 - 595_000, updating: true }, lime: { seenAt: T0 - 3_595_000, updating: false },
+    });
+    const state = run([{ type: 'succeeded', key: 'a', response: answer, now: T0 }]);
+    expect(state.lastSeenProviders.ryde.updating).toBe(true);
+    // Paused, none is on its way.
+    expect(notUpdating(state.lastSeenProviders).ryde).toEqual({ seenAt: T0 - 600_000, updating: false });
+  });
+
+  it('takes the oldest time for them all, and the answer refreshing for each, from a server that does not say', () => {
+    const answer = { ...response({ refreshing: true, lastSeenAt: iso(T0 - 600_000) }),
+      lastSeen: { vehicles: [ryde], clusters: [{ id: 'seen:c', lat: 47.38, lng: 8.54, count: 2, providers: { lime: 2 } }] } };
+    expect(lastSeenStatuses(answer)).toEqual({ ryde: { seenAt: T0 - 600_000, updating: true }, lime: { seenAt: T0 - 600_000, updating: true } });
+    expect(lastSeenStatuses(response())).toEqual({});
   });
 });
 

@@ -80,6 +80,8 @@ export function unfilteredCountInView({ meta, vehicles, clusters, viewport, serv
 export interface NothingToShowInput extends FilterState {
   /** Scooters shown in the viewport with the current filters. */
   count: number;
+  /** Scooters drawn faded there where they were last seen: the map is not empty, and the dock says whose they are. */
+  lastSeenCount?: number;
   loading: ScooterLoading | null;
   failure: LoadFailure | null;
   hasData: boolean;
@@ -103,7 +105,7 @@ export type NothingToShow =
  * answer it had.
  */
 export function nothingToShow(input: NothingToShowInput): NothingToShow | null {
-  if (input.count > 0 || input.loading === 'load' || input.failure || !input.hasData) return null;
+  if (input.count > 0 || (input.lastSeenCount ?? 0) > 0 || input.loading === 'load' || input.failure || !input.hasData) return null;
   if (input.viewportProviders.length === 0) {
     return {
       kind: 'outsideCoverage',

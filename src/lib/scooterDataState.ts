@@ -10,6 +10,39 @@ import type {
   Vehicle,
 } from '@/lib/types';
 
+/** Of an app with scooters drawn faded: when its were seen, on this device's clock, and whether new positions are on their way. */
+export interface LastSeenStatus {
+  seenAt: number;
+  updating: boolean;
+}
+
+/**
+ * Each app's among the faded scooters (response.lastSeen.providers). A server that does not say gives
+ * the oldest time of them all, and says them all updating while it is refreshing.
+ */
+export function lastSeenStatuses(response: ScooterResponse, clockOffsetMs = 0): Record<string, LastSeenStatus> {
+  const lastSeen = response.lastSeen;
+  if (!lastSeen) return {};
+  const statuses: Record<string, LastSeenStatus> = {};
+  if (lastSeen.providers) {
+    for (const [provider, { seenAt, updating }] of Object.entries(lastSeen.providers)) {
+      const at = deviceTime(seenAt, clockOffsetMs);
+      if (Number.isFinite(at)) statuses[provider] = { seenAt: at, updating };
+    }
+    return statuses;
+  }
+  const at = response.meta.lastSeenAt ? deviceTime(response.meta.lastSeenAt, clockOffsetMs) : NaN;
+  if (!Number.isFinite(at)) return {};
+  const providers = new Set([...lastSeen.vehicles.map(vehicle => vehicle.provider), ...lastSeen.clusters.flatMap(cluster => Object.keys(cluster.providers))]);
+  for (const provider of providers) statuses[provider] = { seenAt: at, updating: response.meta.refreshing === true };
+  return statuses;
+}
+
+/** The same, none on its way: a paused map asks for nothing. */
+export function notUpdating(statuses: Record<string, LastSeenStatus>): Record<string, LastSeenStatus> {
+  return Object.fromEntries(Object.entries(statuses).map(([provider, status]) => [provider, { ...status, updating: false }]));
+}
+
 export interface ScooterDataQuery {
   bounds: MapBounds;
   zoom: number;
@@ -39,6 +72,8 @@ export interface ScooterDataState {
   /** Where scooters still being collected again were last seen (response.lastSeen), drawn faded. */
   lastSeenVehicles: Vehicle[];
   lastSeenClusters: ScooterCluster[];
+  /** Of each app among them, from lastSeenStatuses(). */
+  lastSeenProviders: Record<string, LastSeenStatus>;
   parking: ParkingLocation[];
   /** Of the last successful response. Kept when the scooters go out of date. */
   meta: ScooterResponseMeta | null;
@@ -74,6 +109,7 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   clusters: [],
   lastSeenVehicles: [],
   lastSeenClusters: [],
+  lastSeenProviders: {},
   parking: [],
   meta: null,
   lastUpdated: null,
@@ -131,6 +167,7 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         clusters: response.clusters ?? [],
         lastSeenVehicles,
         lastSeenClusters,
+        lastSeenProviders: lastSeenStatuses(response, clockOffsetMs),
         parking: isExpired(expiry.parking, now) ? [] : response.parking ?? [],
         meta: response.meta,
         lastUpdated: Number.isFinite(generated) ? Math.min(generated, now) : now,
@@ -158,7 +195,7 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
       const next = { ...state, lastAttemptAt: event.now, requestInFlight: false, failure: event.failure,
         attemptGapMs: MIN_ATTEMPT_GAP_MS };
       if (failedRequestOutcome(state, event.now) !== 'out-of-date') return next;
-      return { ...next, vehicles: [], clusters: [], lastSeenVehicles: [], lastSeenClusters: [], hasData: false, dataKey: null, outOfDate: true };
+      return { ...next, vehicles: [], clusters: [], lastSeenVehicles: [], lastSeenClusters: [], lastSeenProviders: {}, hasData: false, dataKey: null, outOfDate: true };
     }
 
     case 'aborted':

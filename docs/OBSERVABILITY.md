@@ -235,6 +235,16 @@ town shares 36 requests a minute. The other groups in view stay idle; their old
 positions stand faded the same way, outside the answer's state
 ([lime-app-map.md](lime-app-map.md)).
 
+`lastSeen.providers` says of each app among the faded scooters when its were seen and
+whether its new positions are on their way (`updating`: a collection for this request
+is under way, a Ryde read of the view included). The map names those apps in the dock,
+"Ryde updating · faded ones seen at 02:46", or "Ryde: faded ones last seen at 02:46"
+when nothing is collecting them, gives their faded number in grey on their chips
+rather than 0, and lets only the updating ones breathe. A press on a faded scooter says
+whose it is and when it was seen, and that it may have moved; it has nothing to rent.
+While any stand faded the map never says the area is empty or that the filters hide
+everything.
+
 The cadence comes from the cache's environment, every value with a default:
 
 | Variable | Default | |

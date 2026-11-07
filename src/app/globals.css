@@ -650,6 +650,15 @@ svg {
   background: var(--success-ink);
   box-shadow: 0 0 0 2px var(--success-bg);
 }
+/* Scooters drawn faded that nothing is collecting: a hollow dot, as still as they are. */
+.faded-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-3);
+}
 /* "Try again" exists only where a failure is shown. While the request runs
    a spinner takes the place of the label, so the button keeps its size. */
 .dock-retry {
@@ -789,6 +798,24 @@ svg {
 }
 .chip-selected .chip-count {
   color: var(--chip-on-ink-2);
+}
+/* None counted, only faded ones where they were last seen: their number, greyed, after a spinner
+   while new positions are on their way. */
+.chip-count,
+.legend-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.chip-count-faded,
+.legend-count-faded {
+  opacity: 0.6;
+}
+.chip-count .mini-spinner,
+.legend-count .mini-spinner {
+  width: 9px;
+  height: 9px;
+  border-width: 1.5px;
 }
 /* A provider that is not sharing data and has nothing in view. */
 .chip-down {
@@ -2610,6 +2637,13 @@ svg {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+.legend-faded {
+  display: block;
+  color: var(--ink-2);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
 .legend-count {
   color: var(--ink-2);
   font-size: 12px;
@@ -2706,7 +2740,8 @@ svg {
   display: none;
 }
 /* What a scooter under the pointer is, just above it. */
-.map-tip {
+.map-tip,
+.last-seen-tip {
   position: fixed;
   left: 0;
   top: 0;
@@ -2720,8 +2755,18 @@ svg {
   white-space: nowrap;
   pointer-events: none;
 }
-.map-tip[hidden] {
+.map-tip[hidden],
+.last-seen-tip[hidden] {
   display: none;
+}
+/* A faded scooter's: whose and when on the first line, that it may have moved on the second. */
+.last-seen-tip {
+  display: grid;
+  gap: 1px;
+}
+.last-seen-tip span {
+  color: var(--ink-2);
+  font-weight: 500;
 }
 .key-hints {
   position: fixed;

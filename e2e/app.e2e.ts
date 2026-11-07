@@ -770,18 +770,30 @@ test('scooters being collected again stand faded where they were last seen until
   });
   await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.last-seen-light')).toHaveCount(2);
-  // None counted yet: the dock is still finding them, and does not call the area empty.
+  // A server that does not say whose are on their way says all of them while it is refreshing: they breathe.
+  await expect(page.locator('.last-seen-light.last-seen-updating')).toHaveCount(2);
+  // None counted yet: the dock is still finding them, says whose they are, and does not call the area empty.
   await expect(page.locator('.sheet-count')).toHaveText('Finding scooters…');
+  // 40 minutes ago is yesterday just after midnight, and then names its day: "Tue 23:28".
+  const seenLine = /^Lime updating · faded ones seen at (?:[A-Z][a-z]{2} )?\d\d:\d\d$/;
+  await expect(page.locator('.sheet .sheet-sub')).toHaveText(seenLine);
   await expect(page.getByText('No scooters here right now. Zoom out or move the map.')).toHaveCount(0);
-  // A press goes through them to the map.
+  // A press goes through them to the map, which says whose the one pressed is and when it was seen.
   await expect(page.locator('.last-seen-wrap').first()).toHaveCSS('pointer-events', 'none');
+  const lights = await Promise.all((await page.locator('.last-seen-light').all()).map(light => light.boundingBox()));
+  const highest = lights.filter((box): box is NonNullable<typeof box> => box !== null).sort((a, b) => a.y - b.y)[0];
+  await page.mouse.click(highest.x + highest.width / 2, highest.y + highest.height / 2);
+  const fadedTip = page.locator('.last-seen-tip');
+  await expect(fadedTip.locator('strong')).toHaveText(/^Lime · last seen (?:[A-Z][a-z]{2} )?\d\d:\d\d$/);
+  await expect(fadedTip.locator('span')).toHaveText('May have moved · new positions on the way');
+  // It has nothing to rent: no card opens.
+  await expect(page.locator('.dock-card')).toHaveCount(0);
 
   // The next answers, a few seconds apart, bring the scooters the sweep has found.
   stage = 'some';
   await expect(page.locator('.scooter-marker')).toHaveCount(3, { timeout: 10_000 });
   await expect(page.locator('.last-seen-light')).toHaveCount(1);
-  // 40 minutes ago is yesterday just after midnight, and then names its day: "Tue 23:28".
-  await expect(page.locator('.sheet .sheet-sub')).toHaveText(/^Updating · faded ones seen at (?:[A-Z][a-z]{2} )?\d\d:\d\d$/);
+  await expect(page.locator('.sheet .sheet-sub')).toHaveText(seenLine);
   stage = 'all';
   await expect(page.locator('.last-seen-light')).toHaveCount(0, { timeout: 10_000 });
   await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters on this map$/);

@@ -10,6 +10,7 @@ import type { RefObject } from 'react';
 import type { WalkView } from '@/lib/walkState';
 import type { MapPopover, MarkerLookup } from './MapComponent';
 import type { MapZone } from '@/lib/zones';
+import type { LastSeenStatus } from '@/lib/scooterDataState';
 import type { RuleZoneShape } from '@/lib/ruleZones';
 
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
@@ -23,6 +24,7 @@ interface MapWrapperProps {
   clustered: boolean;
   lastSeenVehicles?: Vehicle[];
   lastSeenClusters?: ScooterCluster[];
+  lastSeenProviders?: Readonly<Record<string, LastSeenStatus>>;
   origin: [number, number];
   initialZoom: number;
   distanceOrigin: [number, number] | null;

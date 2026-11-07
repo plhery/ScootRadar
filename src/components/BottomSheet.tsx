@@ -69,6 +69,7 @@ function StatusText({ status }: { status: DockStatus }) {
     <div className={`sheet-sub ${status.kind === 'failure' ? 'sheet-sub-warning' : ''}`}>
       {status.kind === 'live' && <span className="freshness-dot" aria-hidden="true" />}
       {status.kind === 'updating' && <span className="mini-spinner" aria-hidden="true" />}
+      {status.kind === 'lastSeen' && <span className="faded-dot" aria-hidden="true" />}
       {status.kind === 'failure' && <Icon name="warning" size={13} strokeWidth={2.2} />}
       <span>{formatUiText(status.text, i18n)}</span>
     </div>
@@ -168,28 +169,58 @@ function ProviderChips({ chips, onShowAll, onToggle }: {
           {chip.name}
           {chip.down
             ? <Icon name="warning" size={14} className="chip-warning" />
-            : <span className="chip-count">{formatNumber(chip.count)}</span>}
+            : <ChipCount chip={chip} className="chip-count" />}
         </button>
       ))}
     </div>
   );
 }
 
-/** The chip's accessible name: what the provider is, how many it has in view, and whether they are shown. */
+/**
+ * How many a provider has in view; with none counted but some faded where they were last seen, how
+ * many of those, greyed, after a spinner while new positions are on their way.
+ */
+function ChipCount({ chip, className }: { chip: DockChip; className: string }) {
+  const { formatNumber } = useI18n();
+  const faded = chip.count === 0 ? chip.faded : null;
+  return (
+    <span className={`${className}${faded ? ` ${className}-faded` : ''}`}>
+      {chip.faded?.updating && <span className="mini-spinner" aria-hidden="true" />}
+      {formatNumber(faded ? faded.count : chip.count)}
+    </span>
+  );
+}
+
+/** "02:46", or "Wed 02:46" when the faded ones were seen on another day. */
+function seenText(faded: NonNullable<DockChip['faded']>, key: 'providers.faded.seen' | 'providers.faded.label' | 'providers.faded.labelUpdating',
+  i18n: ReturnType<typeof useI18n>) {
+  const weekday = new Date(faded.seenAt).toDateString() !== new Date().toDateString();
+  return formatUiText({ key, numbers: { count: faded.count }, time: faded.seenAt, ...(weekday ? { weekday } : {}) }, i18n);
+}
+
+/**
+ * The chip's accessible name: what the provider is, how many it has in view, whether they are shown,
+ * and of its faded ones how many, since when, and whether they are being updated.
+ */
 function useChipLabel() {
-  const { t, formatNumber } = useI18n();
+  const i18n = useI18n();
+  const { t, formatNumber } = i18n;
   return (chip: DockChip) => chip.down
     ? t('dock.down.chip', { name: chip.name })
-    : t('providers.toggleLabel', {
-        name: chip.name,
-        count: formatNumber(chip.count),
-        state: t(chip.enabled ? 'providers.selected' : 'providers.notSelected'),
-      });
+    : [
+        t('providers.toggleLabel', {
+          name: chip.name,
+          count: formatNumber(chip.count),
+          state: t(chip.enabled ? 'providers.selected' : 'providers.notSelected'),
+        }),
+        ...(chip.faded ? [seenText(chip.faded, chip.faded.updating ? 'providers.faded.labelUpdating' : 'providers.faded.label', i18n)] : []),
+      ].join(' ');
 }
 
 /** The providers of the desktop dock: all in view without scrolling sideways, with the behaviour of the chips. */
 function ProviderLegend({ chips, onToggle }: { chips: DockChips; onToggle: (provider: string) => void }) {
-  const { t, formatNumber } = useI18n();
+  const i18n = useI18n();
+  const { t } = i18n;
   const chipLabel = useChipLabel();
   return (
     <div className="legend" role="group" aria-label={t('providers.filter')}>
@@ -207,10 +238,18 @@ function ProviderLegend({ chips, onToggle }: { chips: DockChips; onToggle: (prov
             style={{ background: providerSurfaceColor(chip.provider, PROVIDERS[chip.provider].color) }}
             aria-hidden="true"
           />
-          <span className="legend-name">{chip.name}</span>
+          <span className="legend-name">
+            {chip.name}
+            {/* Of its faded ones: being updated, or since when they stand as last seen. */}
+            {chip.faded && !chip.down && (
+              <small className="legend-faded">
+                {chip.faded.updating ? t('providers.faded.updating') : seenText(chip.faded, 'providers.faded.seen', i18n)}
+              </small>
+            )}
+          </span>
           {chip.down
             ? <Icon name="warning" size={14} className="chip-warning" />
-            : <span className="legend-count">{formatNumber(chip.count)}</span>}
+            : <ChipCount chip={chip} className="legend-count" />}
           {/* A check when shown, nothing when hidden, a dashed circle when chosen but without data. */}
           <span className="legend-check">
             {chip.enabled && !chip.down && <Icon name="check" size={16} strokeWidth={2.2} />}

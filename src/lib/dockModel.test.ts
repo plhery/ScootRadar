@@ -203,24 +203,59 @@ describe('dock status', () => {
       .toEqual({ kind: 'overview', text: { key: 'dock.cityTotals' } });
   });
 
-  it('says scooters are being updated while faded ones stand where they were last seen', () => {
+  it('says whose faded ones are being updated while they stand where they were last seen', () => {
     const seenAt = NOW - 40 * 60_000;
-    const filling = { meta: meta({ stale: true, refreshing: true, lastSeenAt: new Date(seenAt).toISOString() }), lastSeenCount: 12 };
+    const filling = { meta: meta({ stale: true, refreshing: true, lastSeenAt: new Date(seenAt).toISOString() }), lastSeenCount: 12,
+      fadedCounts: { ryde: 12 }, lastSeenProviders: { ryde: { seenAt, updating: true } }, enabledProviders: new Set([...ALL, 'ryde', 'lime', 'bolt']) };
     expect(summary({ ...filling, count: 3 })).toMatchObject({
-      phase: 'ready', count: { value: 3 }, status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt } },
+      phase: 'ready', count: { value: 3 }, status: { kind: 'updating', text: { key: 'dock.lastSeen', values: { name: 'Ryde' }, time: seenAt } },
     });
-    // None counted yet: still finding them, the faded ones and the chips on screen, and the notices kept.
+    // None counted yet: still finding them, the faded ones and the chips on screen, the notices kept, and the line saying whose.
     const curfew = summary({ ...filling, count: 0, providerCounts: {}, viewportCenter: [59.91, 10.75], now: Date.parse('2026-10-03T23:30:00.000Z') });
-    expect(curfew).toMatchObject({ phase: 'finding', count: { value: null, label: { key: 'dock.finding' } }, hint: null });
+    expect(curfew).toMatchObject({ phase: 'finding', count: { value: null, label: { key: 'dock.finding' } }, hint: null,
+      status: { kind: 'updating' } });
     expect(curfew.notices.map(notice => notice.kind)).toContain('curfew');
+    // Two apps are named, more are not; the time is the oldest of those named.
+    const two = { ryde: { seenAt, updating: true }, lime: { seenAt: seenAt - 60_000, updating: true } };
+    expect(summary({ ...filling, count: 3, fadedCounts: { ryde: 2, lime: 10 }, lastSeenProviders: two }).status?.text)
+      .toEqual({ key: 'dock.lastSeen.two', values: { first: 'Lime', second: 'Ryde' }, time: seenAt - 60_000 });
+    const three = { ...two, bolt: { seenAt, updating: true } };
+    expect(summary({ ...filling, count: 3, fadedCounts: { ryde: 2, lime: 10, bolt: 1 }, lastSeenProviders: three }).status?.text)
+      .toEqual({ key: 'dock.lastSeen.many', time: seenAt - 60_000 });
     // Delayed once the server stops collecting them, or with nothing faded in view, when the data is late.
     const late = NOW - 5 * 60_000;
-    expect(summary({ ...filling, meta: meta({ stale: true }), lastUpdated: late }).status?.kind).toBe('delayed');
+    expect(summary({ ...filling, meta: meta({ stale: true }), lastSeenProviders: { ryde: { seenAt, updating: false } }, lastUpdated: late })
+      .status?.kind).toBe('delayed');
     expect(summary({ ...filling, lastSeenCount: 0, lastUpdated: late }).status?.kind).toBe('delayed');
     // Seen on another day, as a Lime group swept days ago: with the day of the week.
     const daysAgo = NOW - 50 * 3_600_000;
-    expect(summary({ ...filling, count: 3, meta: meta({ refreshing: true, lastSeenAt: new Date(daysAgo).toISOString() }) }).status)
-      .toEqual({ kind: 'updating', text: { key: 'dock.lastSeen', time: daysAgo, weekday: true } });
+    expect(summary({ ...filling, count: 3, lastSeenProviders: { ryde: { seenAt: daysAgo, updating: true } } }).status)
+      .toEqual({ kind: 'updating', text: { key: 'dock.lastSeen', values: { name: 'Ryde' }, time: daysAgo, weekday: true } });
+  });
+
+  it('says whose faded ones nothing is collecting stand as last seen, rather than "Live" over them', () => {
+    const seenAt = NOW - 3 * 3_600_000;
+    const idle = { lastSeenCount: 40, fadedCounts: { lime: 40 }, lastSeenProviders: { lime: { seenAt, updating: false } } };
+    expect(summary(idle).status).toEqual({ kind: 'lastSeen', text: { key: 'dock.lastSeen.idle', values: { name: 'Lime' }, time: seenAt } });
+    // Not those of an app switched off, which are not drawn.
+    expect(summary({ ...idle, lastSeenCount: 0, enabledProviders: new Set(['voi']) }).status?.kind).toBe('live');
+    // With none counted and only faded ones: no "No scooters here", and no card of filters hiding them all.
+    const alone = summary({ ...idle, count: 0, providerCounts: {}, unfilteredCount: 0 });
+    expect(alone).toMatchObject({ phase: 'ready', count: { value: 0 }, hint: null, status: { kind: 'lastSeen' } });
+    const filtered = dockModel(input({ ...idle, count: 0, enabledProviders: new Set(['lime']), unfilteredCount: 44 }));
+    expect(filtered).toMatchObject({ kind: 'summary', status: { kind: 'lastSeen' } });
+    // A failure says first that the map could not refresh.
+    expect(summary({ ...idle, failure: 'timeout' }).status?.kind).toBe('failure');
+  });
+
+  it('gives each provider its faded ones, and whether they are being updated', () => {
+    const seenAt = NOW - 60_000;
+    const { providers } = dockChips({ viewportProviders: ['ryde', 'voi'], providerCounts: { voi: 3 }, enabledProviders: new Set(['ryde', 'voi']),
+      down: [], fadedCounts: { ryde: 44 }, lastSeenProviders: { ryde: { seenAt, updating: true } } });
+    expect(providers.map(chip => [chip.provider, chip.count, chip.faded])).toEqual([
+      ['voi', 3, null],
+      ['ryde', 0, { count: 44, seenAt, updating: true }],
+    ]);
   });
 
   it('describes the city overview without an age', () => {
@@ -429,7 +464,7 @@ describe('dock chips', () => {
     const { providers } = chips({ down: ['bird', 'publibike'], enabledProviders: new Set(['bird', 'lime']) });
     expect(providers.map(chip => chip.provider))
       .toEqual(['bird', 'publibike', 'voi', 'dott', 'lime', 'bolt', 'hopp']);
-    expect(providers[0]).toEqual({ provider: 'bird', name: 'Bird', count: 0, enabled: true, selected: false, down: true });
+    expect(providers[0]).toEqual({ provider: 'bird', name: 'Bird', count: 0, enabled: true, selected: false, down: true, faded: null });
     expect(providers[1]).toMatchObject({ provider: 'publibike', enabled: false, selected: false, down: true });
   });
 

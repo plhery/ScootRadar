@@ -391,9 +391,11 @@
 }
 
 /* ---------- Where scooters were last seen ---------- */
-/* While an app map is collected again, its scooters stand where they were last seen,
-   faded and breathing, under the others, until its sweep reaches them and they come
-   as the others do (scooterSnapshots.ts). A press goes through them to the map. */
+/* Scooters stand faded where they were last seen, under the others, until a collection
+   reaches them and they come as the others do (scooterSnapshots.ts). Those whose app is
+   being collected for the view breathe, in size and light: new positions are on their
+   way. The others stand still: nothing is coming for them. A press goes through them to
+   the map, which says whose one is and when it was seen (MapComponent). */
 .last-seen-wrap {
   display: grid !important;
   place-items: center;
@@ -408,7 +410,7 @@
   border-radius: 50%;
   background: var(--marker-color);
   box-shadow: 0 0 0 1.5px var(--light-ring);
-  animation: last-seen 1.6s ease-in-out infinite alternate;
+  opacity: 0.42;
 }
 
 .last-seen-cluster {
@@ -424,12 +426,26 @@
   font: 800 13px/1 var(--font-display, inherit);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
-  animation: last-seen 1.6s ease-in-out infinite alternate;
+  opacity: 0.6;
 }
 
+.last-seen-light.last-seen-updating {
+  animation: last-seen 1.4s ease-in-out infinite alternate;
+}
+
+.last-seen-cluster.last-seen-updating {
+  animation: last-seen-group 1.4s ease-in-out infinite alternate;
+}
+
+/* From 8 to 12 px of a 10 px light: plain enough to be seen, small enough not to pass for a scooter. */
 @keyframes last-seen {
-  from { opacity: 0.35; }
-  to { opacity: 0.65; }
+  from { opacity: 0.25; transform: scale(0.8); }
+  to { opacity: 0.75; transform: scale(1.2); }
+}
+
+@keyframes last-seen-group {
+  from { opacity: 0.45; transform: scale(0.95); }
+  to { opacity: 0.85; transform: scale(1.05); }
 }
 
 .destination-marker {
@@ -564,8 +580,8 @@
   .walk-route { transition: none; }
   .scooter-marker,
   .scooter-name { animation: none !important; }
-  .last-seen-light,
-  .last-seen-cluster { animation: none; opacity: 0.5; }
+  .last-seen-light.last-seen-updating,
+  .last-seen-cluster.last-seen-updating { animation: none; opacity: 0.55; }
 }
 
 /* Touch screens zoom with two fingers, and need the compass only to undo a rotation. */

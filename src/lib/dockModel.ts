@@ -9,7 +9,7 @@ import {
 } from '@/lib/nothingToShow';
 import { activeCurfew } from '@/lib/rentalCurfews';
 import { activeSeasonalPause } from '@/lib/seasonalPauses';
-import type { ScooterLoading } from '@/lib/scooterDataState';
+import type { LastSeenStatus, ScooterLoading } from '@/lib/scooterDataState';
 import type { ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
 import { formatCityDistance, walkingMinutes } from '@/lib/walking';
@@ -35,6 +35,11 @@ export interface DockChip {
   selected: boolean;
   /** Not sharing data, so nothing in view: dashed, never selected, with a warning icon. */
   down: boolean;
+  /**
+   * Its scooters drawn faded in the viewport where they were last seen, counted apart: how many, when,
+   * and whether new positions are on their way (a spinner). Null without any.
+   */
+  faded: { count: number; seenAt: number; updating: boolean } | null;
 }
 
 export interface DockChips {
@@ -50,12 +55,14 @@ function catalogueIndex(provider: string): number {
   return index < 0 ? PROVIDER_KEYS.length : index;
 }
 
-export function dockChips({ viewportProviders, providerCounts, enabledProviders, down }: {
+export function dockChips({ viewportProviders, providerCounts, enabledProviders, down, fadedCounts = {}, lastSeenProviders = {} }: {
   viewportProviders: readonly string[];
   providerCounts: Readonly<Record<string, number>>;
   enabledProviders: ReadonlySet<string>;
   /** Providers that are not sharing data, from providerHealth(). */
   down: readonly string[];
+  fadedCounts?: Readonly<Record<string, number>>;
+  lastSeenProviders?: Readonly<Record<string, LastSeenStatus>>;
 }): DockChips {
   const keys = [...new Set(viewportProviders)]
     .filter(key => PROVIDERS[key])
@@ -65,6 +72,8 @@ export function dockChips({ viewportProviders, providerCounts, enabledProviders,
     const count = providerCounts[provider] ?? 0;
     const enabled = enabledProviders.has(provider);
     const isDown = down.includes(provider);
+    const fadedCount = fadedCounts[provider] ?? 0;
+    const status = lastSeenProviders[provider];
     return {
       provider,
       name: PROVIDERS[provider].name,
@@ -72,6 +81,7 @@ export function dockChips({ viewportProviders, providerCounts, enabledProviders,
       enabled,
       selected: enabled && !allSelected && !isDown,
       down: isDown,
+      faded: fadedCount > 0 && status ? { count: fadedCount, ...status } : null,
     };
   });
   return {
@@ -94,6 +104,8 @@ export type DockStatus =
   | { kind: 'live'; text: UiText }
   /** With a spinner: scooters stand faded where they were last seen while they are collected again. */
   | { kind: 'updating'; text: UiText }
+  /** With a hollow dot: scooters stand faded where they were last seen, and nothing is on its way for them. */
+  | { kind: 'lastSeen'; text: UiText }
   | { kind: 'updated'; text: UiText };
 
 export interface DockNotice {
@@ -181,6 +193,10 @@ export interface DockInput {
   count: number;
   /** Scooters drawn faded in the viewport where they were last seen, counted apart (response.lastSeen). */
   lastSeenCount?: number;
+  /** Of those, per provider, before the provider filter. */
+  fadedCounts?: Readonly<Record<string, number>>;
+  /** Of each app among them (useScooterData): when its were seen, and whether new positions are on their way. */
+  lastSeenProviders?: Readonly<Record<string, LastSeenStatus>>;
   /** The origin for walking times (your location or the chosen place) lies inside the viewport. */
   originInViewport: boolean;
   /**
@@ -213,10 +229,35 @@ export interface DockInput {
   unfilteredCount: number | null;
 }
 
-type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now' | 'lastSeenCount'>;
+type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now' | 'lastSeenCount' | 'fadedCounts' |
+  'lastSeenProviders' | 'enabledProviders'>;
+
+/** The apps whose scooters are drawn faded on the map now, in catalogue order. */
+function fadedShown(input: Partial<StatusInput>): { provider: string; status: LastSeenStatus }[] {
+  if ((input.lastSeenCount ?? 0) === 0) return [];
+  return Object.entries(input.lastSeenProviders ?? {})
+    .filter(([provider]) => (input.fadedCounts?.[provider] ?? 0) > 0 && (input.enabledProviders?.has(provider) ?? true))
+    .sort(([a], [b]) => catalogueIndex(a) - catalogueIndex(b))
+    .map(([provider, status]) => ({ provider, status }));
+}
 
 /** Scooters stand faded where they were last seen while the server collects them again. */
-const filling = (input: StatusInput) => input.meta?.refreshing === true && (input.lastSeenCount ?? 0) > 0 && !input.failure;
+const filling = (input: StatusInput) => !input.failure && fadedShown(input).some(({ status }) => status.updating);
+
+/**
+ * "Ryde updating · faded ones seen at 02:46", or of apps not updating, "Ryde: faded ones last seen at
+ * 02:46": the oldest time of those named, with the day of the week when it is not today.
+ */
+function lastSeenText(apps: readonly { provider: string; status: LastSeenStatus }[], updating: boolean, now: number): UiText {
+  const time = Math.min(...apps.map(({ status }) => status.seenAt));
+  const names = apps.map(({ provider }) => PROVIDERS[provider]?.name ?? provider);
+  const base = updating ? 'dock.lastSeen' : 'dock.lastSeen.idle';
+  const weekday = new Date(time).toDateString() !== new Date(now).toDateString();
+  const when = { time, ...(weekday ? { weekday } : {}) };
+  if (names.length === 1) return { key: base, values: { name: names[0] }, ...when };
+  if (names.length === 2) return { key: `${base}.two`, values: { first: names[0], second: names[1] }, ...when };
+  return { key: `${base}.many`, ...when };
+}
 
 function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boolean } {
   const { failure, meta, lastUpdated, now } = input;
@@ -228,12 +269,9 @@ function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boo
     };
   }
   // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
-  const seenAt = meta?.lastSeenAt ? Date.parse(meta.lastSeenAt) : NaN;
-  if (filling(input) && Number.isFinite(seenAt)) {
-    // A slow feed collected less often, as Lime's, may have been seen days ago.
-    const weekday = new Date(seenAt).toDateString() !== new Date(now).toDateString();
-    return { status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt, ...(weekday ? { weekday } : {}) } }, retry: false };
-  }
+  const faded = fadedShown(input);
+  const updating = faded.filter(({ status }) => status.updating);
+  if (updating.length > 0) return { status: { kind: 'updating', text: lastSeenText(updating, true, now) }, retry: false };
   const age = Math.max(0, now - lastUpdated);
   // Delayed data says so at every zoom, city totals included, once it is late:
   // before that its age or its time says enough.
@@ -241,6 +279,9 @@ function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boo
     return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };
   }
   if (meta?.overview) return { status: { kind: 'overview', text: { key: 'dock.cityTotals' } }, retry: false };
+  // Faded scooters nothing is collecting stand as they were last seen, perhaps days ago, as Lime's
+  // groups a wide view leaves idle: the line says so rather than "Live" over them.
+  if (faded.length > 0) return { status: { kind: 'lastSeen', text: lastSeenText(faded, false, now) }, retry: false };
   if (age < LIVE_MAX_AGE_MS) return { status: { kind: 'live', text: { key: 'dock.live' } }, retry: false };
   return {
     status: {
@@ -329,7 +370,7 @@ export function dockModel(input: DockInput): DockModel {
   }
 
   // No count yet: one line, without a status or a hint, and without notices unless it lasts.
-  const pending = (phase: 'waiting' | 'finding', chips: DockChips | null, notices: DockNotice[] = []): DockModel => ({
+  const pending = (phase: 'waiting' | 'finding', chips: DockChips | null, notices: DockNotice[] = []): Extract<DockModel, { kind: 'summary' }> => ({
     kind: 'summary',
     phase,
     count: { value: null, label: { key: phase === 'waiting' ? 'dock.waiting' : 'dock.finding' } },
@@ -382,7 +423,10 @@ export function dockModel(input: DockInput): DockModel {
   // A failure already explains an empty view, so it never reads "Finding scooters…".
   if (input.loading === 'load' && input.count === 0 && !input.failure) return pending('finding', chips);
   // None counted yet, only faded ones: the server's sweep is finding them, which may take a minute or two.
-  if (filling(input) && input.count === 0) return pending('finding', chips, dockNotices(input, health));
+  // The line under says whose and since when.
+  if (filling(input) && input.count === 0) {
+    return { ...pending('finding', chips, dockNotices(input, health)), status: dockStatus(input).status };
+  }
 
   const scope = input.originInViewport ? 'nearby' : 'onMap';
   // Every provider here is down: the notice explains the empty map, which is then

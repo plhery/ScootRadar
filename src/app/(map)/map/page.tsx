@@ -385,6 +385,7 @@ export default function Home() {
     clusters,
     lastSeenVehicles,
     lastSeenClusters,
+    lastSeenProviders,
     parking,
     meta: responseMeta,
     lastUpdated,
@@ -539,18 +540,22 @@ export default function Home() {
   ]);
 
   // Where scooters still being collected again were last seen, filtered as those above but counted nowhere.
+  // Per provider before the provider filter, as the chips count the others: whose they are, in the dock.
   const lastSeenData = useMemo(() => {
     const visibleVehicles: Vehicle[] = [];
     const visibleClusters: ScooterCluster[] = [];
-    if (!viewportBounds) return { visibleVehicles, visibleClusters, count: 0 };
+    const byProvider: Record<string, number> = {};
+    if (!viewportBounds) return { visibleVehicles, visibleClusters, count: 0, byProvider };
     for (const vehicle of lastSeenVehicles) {
-      if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng) || !enabledProviders.has(vehicle.provider)) continue;
+      if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
       if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
-      visibleVehicles.push(vehicle);
+      byProvider[vehicle.provider] = (byProvider[vehicle.provider] ?? 0) + 1;
+      if (enabledProviders.has(vehicle.provider)) visibleVehicles.push(vehicle);
     }
     if (responseMeta?.mode === 'clusters') {
       for (const cluster of lastSeenClusters) {
         if (!viewportContainsPoint(viewportBounds, cluster.lat, cluster.lng)) continue;
+        for (const [provider, value] of Object.entries(cluster.providers)) byProvider[provider] = (byProvider[provider] ?? 0) + value;
         const providers = Object.fromEntries(
           Object.entries(cluster.providers).filter(([provider]) => enabledProviders.has(provider))
         );
@@ -559,7 +564,7 @@ export default function Home() {
       }
     }
     const count = visibleVehicles.length + visibleClusters.reduce((total, cluster) => total + cluster.count, 0);
-    return { visibleVehicles, visibleClusters, count };
+    return { visibleVehicles, visibleClusters, count, byProvider };
   }, [enabledProviders, lastSeenClusters, lastSeenVehicles, minBattery, responseMeta?.mode, viewportBounds]);
 
   // Zoomed out, a country, a state or province, or neighbouring cities are drawn as one total.
@@ -781,6 +786,8 @@ export default function Home() {
   const dockInput: DockInput = {
     count: viewportData.totalCount,
     lastSeenCount: lastSeenData.count,
+    fadedCounts: lastSeenData.byProvider,
+    lastSeenProviders,
     originInViewport: originInViewport(walkOrigin?.point ?? null, viewportBounds),
     nearest: nearestVehicle && {
       provider: nearestVehicle.vehicle.provider,
@@ -1058,6 +1065,7 @@ export default function Home() {
         clustered={responseMeta?.mode === 'clusters'}
         lastSeenVehicles={lastSeenData.visibleVehicles}
         lastSeenClusters={lastSeenData.visibleClusters}
+        lastSeenProviders={lastSeenProviders}
         origin={initialCenter}
         initialZoom={initialZoom}
         distanceOrigin={lightsOrigin(walkOrigin?.point ?? null, viewportBounds)}

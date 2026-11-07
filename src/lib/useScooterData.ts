@@ -8,6 +8,7 @@ import { classifyLoadFailure, type LoadFailure } from '@/lib/loadFailure';
 import { requestDeadline } from '@/lib/requestDeadline';
 import {
   INITIAL_SCOOTER_DATA_STATE,
+  notUpdating,
   scooterDataReducer,
   scooterLoading,
   scooterQueryKey,
@@ -16,6 +17,7 @@ import {
   type ScooterDataQuery,
   type ScooterDataState,
   type ScooterLoading,
+  type LastSeenStatus,
 } from '@/lib/scooterDataState';
 import type {
   ParkingLocation,
@@ -37,6 +39,11 @@ export interface ScooterData {
   /** Where scooters still being collected again were last seen: drawn faded, counted nowhere. */
   lastSeenVehicles: Vehicle[];
   lastSeenClusters: ScooterCluster[];
+  /**
+   * Of each app among the faded scooters: when its were seen, and whether new positions are on their
+   * way, which they are not while the map is paused.
+   */
+  lastSeenProviders: Record<string, LastSeenStatus>;
   parking: ParkingLocation[];
   /** Of the last successful response; kept in the out-of-date state. */
   meta: ScooterResponseMeta | null;
@@ -288,6 +295,7 @@ export function useScooterData(query: ScooterDataQuery | null, options: ScooterD
     clusters: state.clusters,
     lastSeenVehicles: state.lastSeenVehicles,
     lastSeenClusters: state.lastSeenClusters,
+    lastSeenProviders: state.paused ? notUpdating(state.lastSeenProviders) : state.lastSeenProviders,
     parking: state.parking,
     meta: state.meta,
     lastUpdated: state.lastUpdated,
