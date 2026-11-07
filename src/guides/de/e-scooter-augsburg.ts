@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'augsburg',
   name: 'E-Scooter Augsburg: Anbieter, Preise, Parken',
   title: 'E-Scooter Augsburg 2026: Anbieter, Preise, Parken, Tram',
-  description: 'E-Scooter Augsburg: wer verleiht, was eine Fahrt kostet, wo du fahren und parken darfst, was in Innenstadt und Parks gilt und warum die Tram tabu ist.',
+  description: 'E-Scooter Augsburg: Voi, Lime, Bolt und Ryde, Voi 0,21 € pro Minute (Stand November 2026), wo du fahren und parken darfst, Parks und warum die Tram tabu ist.',
   headline: 'E-Scooter Augsburg: Anbieter, Preise, Parken und Regeln',
-  lede: 'E-Scooter in Augsburg leihst du ohne Führerschein bei Voi, Lime oder Bolt; Bolt vermietet erst ab 18, einen eigenen E-Scooter darfst du schon ab 14 fahren. Auch Hopp führt Augsburg auf seiner Website. Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du laut Grünanlagensatzung nicht.',
+  lede: 'E-Scooter in Augsburg leihst du in der App von Voi, Lime, Bolt oder Ryde, ohne Führerschein; auch Hopp führt Augsburg auf seiner Website. Bolt und Hopp vermieten erst ab 18, einen eigenen E-Scooter darfst du schon ab 14 fahren. Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026): Zehn Minuten kosten bei Voi 2,10 €, bei Hopp 2,50 €, zwanzig Minuten 4,20 € und 4,50 €. Bei Lime, Bolt und Ryde zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du laut Grünanlagensatzung nicht.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Augsburg',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Augsburg?',
       blocks: [
         'In Augsburg verleihen **Voi**, **Lime** und **Bolt** E-Scooter: Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Augsburg](map:de:Augsburg) rund 680 Voi-Scooter, die zu diesem Zeitpunkt frei waren, am Sonntag gegen 14 Uhr rund 790 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntagmorgen rund 960 Lime-Scooter nach der letzten Zählung.',
-        'Im April 2025 zählte Voi Augsburg zu seinen sieben Städten in Bayern. **Bolt** nennt auf seiner Augsburg-Seite unter «Verfügbare Dienste in Augsburg» «E-Scooter auf Abruf». **Hopp** führt auf seiner Standortseite den Franchise-Betrieb «Hopp Augsburg» mit E-Scootern (Stand November 2026).',
+        'Im April 2025 zählte Voi Augsburg zu seinen sieben Städten in Bayern. **Bolt** nennt auf seiner Augsburg-Seite unter «Verfügbare Dienste in Augsburg» «E-Scooter auf Abruf». **Ryde** führt Augsburg auf seiner Standortseite unter Deutschland, **Hopp** auf seiner Standortseite den Franchise-Betrieb «Hopp Augsburg» mit E-Scootern (Stand November 2026).',
         'Gemietet wird in der App des Anbieters, bei Bolt und Hopp laut ihren Bedingungen erst ab 18. Steht ein Scooter falsch, schickt die Stadt laut eigener Seite Umparkaufträge «an alle Anbieter». Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
@@ -28,15 +28,16 @@ const guide: Guide = {
         {
           table: {
             caption: 'Preise in Augsburg (Stand November 2026)',
-            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '15 Minuten'],
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi', '0,00 €', '0,21 €', '2,10 €', '3,15 €'],
-              ['Hopp', '0,50 €', '0,20 €', '2,50 €', '3,50 €'],
+              ['Voi', '0,00 €', '0,21 €', '2,10 €', '4,20 €'],
+              ['Hopp', '0,50 €', '0,20 €', '2,50 €', '4,50 €'],
             ],
           },
         },
-        'Bolt nennt für Deutschland Minutenpreise ab 0,15 € plus eine kleine Freischaltungsgebühr; der Minutentarif hängt vom Ort ab. Dazu verkauft Bolt Wochen- und Monatspässe und ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat. Bei Lime und Bolt siehst du den Augsburger Preis in der App; verbindlich ist bei allen, was die App vor dem Entsperren zeigt.',
-        'Teuer wird es bei Bolt, wenn du falsch parkst: 15 € Parkgebühr, wenn der Scooter nicht nach Bolts Fahrregeln steht und kein deutliches Foto am Fahrtende das belegt, und bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026).',
+        'Für zehn wie für zwanzig Minuten ist Voi in Augsburg günstiger als Hopp.',
+        'Bolt nennt für Deutschland Minutenpreise ab 0,15 € plus eine kleine Freischaltungsgebühr (Stand November 2026); der Minutentarif hängt vom Ort ab. Dazu verkauft Bolt Wochen- und Monatspässe und ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat.',
+        'Ab 1. Dezember 2026 wird es bei Bolt teuer, wenn du falsch parkst: Nach seinen dann geltenden Bedingungen kostet es 15 € Parkgebühr, wenn der Scooter nicht nach Bolts Fahrregeln steht und kein deutliches Foto am Fahrtende das belegt, und bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs.',
       ],
     },
     {
@@ -70,7 +71,7 @@ const guide: Guide = {
           list: [
             'einen Leih-Scooter in der Innenstadt ausserhalb der markierten Flächen;',
             'auf der Fahrbahn und im Wartebereich vor Ampeln (Stadt);',
-            'in städtischen Parks (unsere Lesart der Grünanlagensatzung) und auf dem Gelände der WWK Arena ausserhalb der vorgesehenen Plätze (FCA);',
+            'in städtischen Parks (Grünanlagensatzung) und auf dem Gelände der WWK Arena ausserhalb der vorgesehenen Plätze (FCA);',
             'so, dass Fussgänger, Rollstühle oder das Blindenleitsystem behindert werden.',
           ],
         },
@@ -87,7 +88,7 @@ const guide: Guide = {
           list: [
             '**Gehweg oder Fussgängerzone:** 15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden; ab 1. März 2027 25 €, bis 40 €.',
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €. **Ohne Versicherungsplakette:** 40 €.',
-            '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** 100 € und ein Punkt; ab März 2027 neu geregelt, der Betrag ist noch nicht offiziell erläutert.',
+            '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** 100 € und ein Punkt.',
             '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille.',
             '**Falsch geparkt auf Geh- oder Radweg:** behindernd 20 €, gefährdend 30 €; ab 1. März 2027 55 €, mit Behinderung 70 €.',
           ],
@@ -115,11 +116,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Augsburg?',
-      answer: 'Die von Voi, Lime und Bolt; Hopp führt auf seiner Website «Hopp Augsburg» mit E-Scootern (Stand November 2026). Einen Führerschein brauchst du nicht, Bolt und Hopp vermieten aber erst ab 18.',
+      answer: 'Die von Voi, Lime, Bolt und Ryde; Hopp führt auf seiner Website «Hopp Augsburg» mit E-Scootern (Stand November 2026). Einen Führerschein brauchst du nicht, Bolt und Hopp vermieten aber erst ab 18.',
     },
     {
       question: 'Was kostet ein E-Scooter in Augsburg?',
-      answer: 'Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026). Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Freischaltungsgebühr.',
+      answer: 'Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026): Zehn Minuten kosten 2,10 € oder 2,50 €, zwanzig 4,20 € oder 4,50 €, Voi ist also günstiger. Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Freischaltungsgebühr.',
     },
     {
       question: 'Darf ich mit dem E-Scooter in die WWK Arena?',
@@ -158,12 +159,13 @@ const guide: Guide = {
     { title: 'Deutschlandtarif: Tarifbedingungen, Teil A, Stand 14. Juni 2026 (PDF)', url: 'https://www.deutschlandtarifverbund.de/wp-content/uploads/2026/06/20260528_A-1-TB-DT-Grundsaetze_Juni2026.pdf' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'Bayerische Regiobahn: Fahrradmitnahme', url: 'https://www.brb.de/de/tickets/fahrradmitnahme' },
-    { title: 'Voi: Tarif und Zonen für Augsburg (NeTEx, Stand 4. November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/162/netex.xml' },
+    { title: 'Voi: Tarif und Zonen für Augsburg (NeTEx, Stand 7. November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/162/netex.xml' },
     { title: 'Voi: Voi startet in Regensburg (29. April 2025, PDF)', url: 'https://storage.mfn.se/7985fb60-e679-4774-acb8-42a86e1b5711/e-scooter-anbieter-voi-startet-in-regensburg.pdf' },
     { title: 'Bolt: Augsburg', url: 'https://bolt.eu/de-de/cities/augsburg/' },
     { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Hopp: Locations (englisch)', url: 'https://hopp.bike/locations' },
+    { title: 'Ryde: Locations (englisch)', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Hopp: Terms of Service für Deutschland (englisch)', url: 'https://hopp.bike/tos?group=389FGQfb9eqWNoxBiQlENu' },
   ],
 };

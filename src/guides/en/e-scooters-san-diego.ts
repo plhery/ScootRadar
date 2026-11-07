@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'san-diego',
   name: 'E-scooters in San Diego, California',
   title: 'E-scooters in San Diego 2026: Spin, prices, where to ride',
-  description: 'E-scooters in San Diego: Spin at UC San Diego and SDSU, what a ride costs, why rentals left the city, the boardwalk ban, sidewalks and parking.',
+  description: 'E-scooters in San Diego: Spin at UC San Diego and SDSU, how to rent, prices as of November 2026, the boardwalk ban, sidewalks and parking.',
   headline: 'E-scooters in San Diego: Spin on campus, what a ride costs, and where you can’t ride',
-  lede: 'In San Diego, Spin rents e-scooters on two campuses, UC San Diego and San Diego State, and the City’s contractors had all pulled out by November 2023. At UC San Diego a ride costs $1 to unlock plus $0.30 a minute with a campus email; others see the price in the app. State law asks for a driving licence and caps scooters at 15 mph, sidewalks are off limits, and the City bans every motorised scooter, rented or owned, from its beach boardwalks.',
+  lede: 'In San Diego, Spin rents e-scooters on two campuses, UC San Diego and San Diego State; the City’s contractors had all pulled out by November 2023. Sign up in the Spin app, with your @ucsd.edu address at UC San Diego, scan the QR code to unlock and end the ride in a campus parking spot. As of November 2026 a ride costs $1 to unlock plus $0.40 a minute at UC San Diego for @ucsd.edu accounts, and from $0.50 to unlock plus $0.34 a minute at San Diego State; anyone else sees the price in the app before unlocking. State law asks for a driving licence and caps scooters at 15 mph, sidewalks are off limits, and the City bans every motorised scooter, rented or owned, from its beach boardwalks.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'us:ca:San Diego',
@@ -20,7 +20,7 @@ const guide: Guide = {
         'A plan to soften the rules was withdrawn in January 2024, and in April 2026 the City’s Mobility Board was still urging the Council to waive operator fees and ease the geofencing and parking rules. The campus fleets carry on:',
         {
           list: [
-            '**UC San Diego**: about 800 Spin scooters and 24 e-bikes, meant for students, faculty and staff on campus. Take one off campus and bring it back the same day.',
+            '**UC San Diego**: about 1,000 Spin e-scooters and e-bikes, meant for students, faculty and staff on campus. Take one off campus and bring it back the same day.',
             '**San Diego State**: “Spin @ SDSU”, with its own prices and parking spots.',
           ],
         },
@@ -34,20 +34,19 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'Spin prices on the campuses’ own pages (UC San Diego, updated 6 October 2026; SDSU, updated 17 June 2026)',
+            caption: 'Spin prices on the campuses’ own pages as of November 2026',
             head: ['Ride', 'UC San Diego (@ucsd.edu account)', 'San Diego State'],
             rows: [
               ['Unlock', '$1', 'From $0.50'],
-              ['Per minute', '$0.30', '$0.34'],
-              ['10 minutes', '$4', 'From $3.90'],
-              ['20 minutes', '$7', 'From $7.30'],
+              ['Per minute', '$0.40', '$0.34'],
+              ['10 minutes', '$5', 'From $3.90'],
+              ['20 minutes', '$9', 'From $7.30'],
               ['Unlock pass', '$3 for 30 days', '$5 a month'],
               ['Spin Access (low income)', '$0.50 to unlock, $0.10 a minute', 'Discounted fares if you qualify'],
             ],
           },
         },
         'UC San Diego’s rates are for @ucsd.edu accounts, e-bikes included; new students get $5 off with the code TRITON5. Spin Access covers Pell Grant and CalFresh recipients, among others, and lets you unlock without a smartphone. At SDSU, $0.25 comes off a ride when you park correctly and another $0.25 for a helmet selfie, and Admissions gives visitors ride credits.',
-        'The app shows the price before you unlock.',
       ],
     },
     {
@@ -59,7 +58,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in San Diego in October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '18 to ride a Spin; under 16, no motorised scooter at all on Port land', 'Spin’s terms; Port (§ 8.07)'],
+              ['Age', '16 or over for any e-scooter, on Port land too; 18 to ride a Spin', 'City; Port (§ 8.07); Spin’s terms'],
               ['Licence', 'A valid driving licence or instruction permit', 'CVC § 21235'],
               ['Helmet', 'Required under 18', 'CVC § 21235; Port'],
               ['Speed', '15 mph at most, even where the posted limit is higher', 'CVC § 22411'],
@@ -134,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Spin scooter cost at UC San Diego?',
-      answer: '$1 to unlock and $0.30 a minute for @ucsd.edu accounts, on UCSD’s page updated 6 October 2026: 10 minutes cost $4. A 30-day unlock pass costs $3. Other riders see the price in the app.',
+      answer: '$1 to unlock and $0.40 a minute for @ucsd.edu accounts, as of November 2026 on UC San Diego’s page: 10 minutes cost $5. A 30-day unlock pass costs $3.',
     },
     {
       question: 'Can you ride an e-scooter on the Pacific Beach or Mission Beach boardwalk?',

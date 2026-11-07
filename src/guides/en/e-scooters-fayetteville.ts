@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'fayetteville',
   name: 'E-scooters in Fayetteville, Arkansas',
   title: 'E-scooters in Fayetteville, AR: Veo, Spin, prices, rules',
-  description: 'E-scooters in Fayetteville, AR: renting from Veo and Spin, what a ride costs, the sidewalk and trail rules, and parking at the University of Arkansas.',
+  description: 'E-scooters in Fayetteville, AR: Veo at $1 + $0.38 a minute (November 2026) and Spin, how to rent, the sidewalk and trail rules, parking on campus.',
   headline: 'E-scooters in Fayetteville, Arkansas: Veo and Spin, what a ride costs, and where to ride and park',
-  lede: 'E-scooters in Fayetteville are rented from Veo and Spin, the two operators the University of Arkansas names for the city and its campus. Veo charges $1 to unlock plus $0.38 a minute plus tax (its published rate on 26 October 2026); Spin’s app shows its price before you unlock. Arkansas law holds e-scooters to 15 mph and riders to 16 or over, Spin requires 18, and no one may ride on a sidewalk that abuts a building.',
+  lede: 'E-scooters in Fayetteville are rented from Veo and Spin, the two operators the University of Arkansas names for the city and its campus: get the Veo or Spin app and scan the scooter’s QR code to unlock it. As of November 2026 Veo charges $1 to unlock plus $0.38 a minute, plus tax, so 10 minutes cost $4.80; Spin’s app shows its price before you unlock. Arkansas law holds e-scooters to 15 mph and riders to 16 or over, Spin requires 18, and no one may ride on a sidewalk that abuts a building. On the University of Arkansas campus, leave a scooter only near a bike rack or in a marked corral.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:ar:Fayetteville',
@@ -32,10 +32,10 @@ const guide: Guide = {
     {
       heading: 'How much does a Veo or Spin scooter cost in Fayetteville?',
       blocks: [
-        'Since January 2021 the City Code has required every price an operator charges, promotions included, to be approved by the City. Veo publishes its rates in its open data, the same for every vehicle; Spin’s app shows its price before you unlock.',
+        'Since January 2021 the City Code has required every price an operator charges, promotions included, to be approved by the City. Veo’s open data gives its rates, the same for its scooters and e-bikes.',
         {
           table: {
-            caption: 'Veo’s published prices in Fayetteville, 26 October 2026 (plus tax)',
+            caption: 'Veo’s prices in Fayetteville as of November 2026 (plus tax)',
             head: ['Ride', 'Any Veo vehicle'],
             rows: [
               ['Unlock', '$1'],
@@ -133,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Veo scooter in Fayetteville?',
-      answer: '$1 to unlock plus $0.38 a minute plus tax, Veo’s published rate on 26 October 2026, so a 10-minute ride costs $4.80 before tax. Its other vehicles cost the same. Spin’s app shows its price before you unlock.',
+      answer: '$1 to unlock plus $0.38 a minute, plus tax, as of November 2026 in Veo’s open data, so a 10-minute ride costs $4.80 before tax. Its e-bikes cost the same.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Fayetteville?',

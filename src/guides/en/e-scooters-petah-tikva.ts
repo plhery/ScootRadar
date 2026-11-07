@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'petah-tikva',
   name: 'E-scooters in Petah Tikva, Israel',
   title: 'E-scooters Petah Tikva 2026: Lime, Dott, rules and parking',
-  description: 'E-scooters in Petah Tikva: Lime and Dott, the City’s permit terms, prices, the licence or test, helmet fines, parking bays and the Red Line.',
+  description: 'E-scooters in Petah Tikva: Lime and Dott, Dott’s ₪5 + ₪1.25/min, how to rent, the licence or test, helmet fines, parking bays and the Red Line.',
   headline: 'E-scooters in Petah Tikva: Lime and Dott, the City’s tenders, parking bays, the Red Line and Shabbat',
-  lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott. Each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
+  lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott: sign up in the app, which scans your ID to check your age, scan the scooter’s QR code to unlock it, and end the ride in a marked bay when one is near. As of November 2026 Dott charges ₪5 to unlock and ₪1.25 a minute, so 10 minutes cost ₪17.50; Lime’s app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. The City’s 2023 contract had the companies rent around the clock, Shabbat included, but not on Yom Kippur, and its 2026 tender keeps that.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'il:Petah Tikva',
@@ -25,7 +25,7 @@ const guide: Guide = {
             head: ['Company', 'On our map at 04:27', 'Price', 'City permit'],
             rows: [
               ['Lime', '671', 'In the app', 'Won the 2023 tender'],
-              ['Dott', '395', '₪5 to unlock, ₪1.25 a minute, on the map', 'Won the 2023 tender'],
+              ['Dott', '395', '₪5 to unlock, ₪1.25 a minute (November 2026)', 'Won the 2023 tender'],
             ],
           },
         },
@@ -51,7 +51,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Petah Tikva?',
       blocks: [
-        'Our map shows Dott’s price in Petah Tikva: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. Lime’s app shows its unlock fee and rate before you start.',
+        'As of November 2026 Dott’s open data gives one price across its Tel Aviv-area towns, Petah Tikva included: ₪5 to unlock, then ₪1.25 a minute, so 10 minutes cost ₪17.50 and 20 minutes ₪30.',
         'Fines cost far more than rides. Since 1 August 2024 every e-scooter in Israel has had to be registered and carry an ID plate, a duty that falls on its owner, Ice reported, so on a shared scooter it’s the company’s. On a scooter of your own, riding without a plate has cost ₪750 since 1 September 2026, Maariv reported.',
       ],
     },
@@ -131,10 +131,6 @@ const guide: Guide = {
       answer: 'Lime and Dott, the two companies PTNews named in September 2025. The [Petah Tikva map](map:il:Petah Tikva) showed 671 Lime and 395 Dott scooters inside the city at 04:27 on 30 October 2026.',
     },
     {
-      question: 'How much does a Lime scooter cost in Petah Tikva?',
-      answer: 'Lime’s app shows its unlock fee and rate before you start. Dott’s price is on our map: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026.',
-    },
-    {
       question: 'Do I need a licence to ride an e-scooter in Petah Tikva as a tourist?',
       answer: 'Yes. Every rider needs a driving licence or, without one, a passed test, Ice reported in 2024: carry yours and follow what the app asks for.',
     },
@@ -161,6 +157,7 @@ const guide: Guide = {
     { title: 'PTNews: over 100 new scooter bays, with the list (14 September 2025), Hebrew', url: 'https://www.ptnews.co.il/44028' },
     { title: 'PTNews: Lime’s free rides in Petah Tikva on election day (22 February 2024), Hebrew', url: 'https://www.ptnews.co.il/23634' },
     { title: 'Kipa: Dott’s free election-day rides in its seven towns (25 October 2026), Hebrew', url: 'https://www.kipa.co.il/%D7%97%D7%93%D7%A9%D7%95%D7%AA/1234569-0/' },
+    { title: 'Dott: Tel Aviv area pricing, open data (GBFS), read 7 November 2026', url: 'https://gbfs.api.ridedott.com/public/v2/tel-aviv/system_pricing_plans.json' },
     { title: 'Ice: Transport Ministry campaign for e-scooter ID plates from 1 August (10 July 2024), Hebrew', url: 'https://www.ice.co.il/auto/news/article/1020163' },
     { title: 'Ice: e-scooter and e-bike registration from 1 August 2024 (24 July 2024), Hebrew', url: 'https://www.ice.co.il/auto/news/article/1022195' },
     { title: 'Srugim: Economy Committee approves ₪1,000 fine for riding without a helmet (13 June 2022), Hebrew', url: 'https://www.srugim.co.il/682043' },

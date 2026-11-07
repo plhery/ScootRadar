@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'reutlingen',
   name: 'E-Scooter Reutlingen: Voi, Bolt, Preise, Parken',
   title: 'E-Scooter Reutlingen 2026: Voi, Bolt, Preise, Parken',
-  description: 'E-Scooter Reutlingen: Voi und Bolt kosten laut Datenfeed 0,20 € pro Minute ohne Entsperrgebühr. Wo du in der Altstadt abstellen darfst und was im Bus gilt.',
+  description: 'E-Scooter Reutlingen: Voi und Bolt kosten 0,20 € pro Minute ohne Entsperrgebühr (Stand November 2026). Wo du in der Altstadt abstellen darfst, was im Bus gilt.',
   headline: 'E-Scooter Reutlingen: Preise, Sperrzonen und Abstellregeln von der Wilhelmstrasse bis zur Pomologie',
-  lede: 'Einen E-Scooter in Reutlingen leihst du ab 18 und ohne Führerschein bei Voi, Bolt oder Dott. Voi und Bolt verlangten laut ihren Datenfeeds am 23. und 24. Oktober 2026 keine Entsperrgebühr und 0,20 € pro Minute, zehn Minuten kosten also 2,00 €. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Altstadt rund um Wilhelmstrasse und Marktplatz, in Pomologie und Volkspark beendest du keine Fahrt, am Hauptbahnhof schon.',
+  lede: 'Einen E-Scooter in Reutlingen leihst du in der App von Voi, Bolt oder Dott, ab 18 und ohne Führerschein. Voi und Bolt vermieten rund um die Uhr und verlangen keine Entsperrgebühr und 0,20 € pro Minute (Stand November 2026): Zehn Minuten kosten bei beiden 2,00 €, zwanzig 4,00 €. Bei Dott zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Altstadt rund um Wilhelmstrasse und Marktplatz, in Pomologie und Volkspark beendest du keine Fahrt, am Hauptbahnhof schon.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'de:Reutlingen',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Leih-Scooter gibt es in Reutlingen laut Stadt seit Mitte Dezember 2020. Heute vermieten hier **Voi** und **Bolt**, beide mit offenem Datenfeed im Landesportal MobiData BW. Voi kam laut eigener Mitteilung am 21. März 2025 dazu. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '[Auf der ScootRadar-Karte](map:de:Reutlingen) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 340 freie Scooter in Reutlingen: rund 180 von Voi und rund 165 von Bolt. Das ist eine Momentaufnahme, nicht die Grösse der Flotten. Die Selbstverpflichtung der Anbieter nennt «zunächst höchstens 150» Scooter je Anbieter, mehr nur «in beiderseitigem Einvernehmen»; im Januar 2026 nannte die Verwaltung eine «Obergrenze von 150 Rollern je Verleihfirma».',
-        'Im Januar 2026 schrieb die Verwaltung dem Gemeinderat: «Aktuell gibt es in Reutlingen fünf Anbieter mit insgesamt bis zu 750 E-Scootern». **Dott** führt Reutlingen und Pfullingen in seiner Standortliste. Die Karte zeigt seine Scooter seit dem 24. Oktober 2026: an diesem Samstag um 13:26 Uhr rund 140. Den Preis zeigt die Dott-App.',
+        'Im Januar 2026 schrieb die Verwaltung dem Gemeinderat: «Aktuell gibt es in Reutlingen fünf Anbieter mit insgesamt bis zu 750 E-Scootern». **Dott** führt Reutlingen und Pfullingen in seiner Standortliste. Die Karte zeigt seine Scooter seit dem 24. Oktober 2026: an diesem Samstag um 13:26 Uhr rund 140.',
       ],
     },
     {
@@ -26,16 +26,16 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Reutlingen (Stand und Quelle in der ersten Spalte)',
+            caption: 'E-Scooter-Preise in Reutlingen (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi (Datenfeed bei MobiData BW, 23. Oktober 2026)', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
-              ['Bolt (Datenfeed bei MobiData BW, 24. Oktober 2026)', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
+              ['Voi', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
+              ['Bolt', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
             ],
           },
         },
-        'Die Seite der Stadt nennt noch einen Euro Startgebühr, die Feeds 0,00 €. Voi warb zum Start im März 2025 mit «Tarifen ab 17 Cent pro Minute» und Pässen ab 4,99 €. Pässe und den verbindlichen Preis zeigt die App.',
-        'In [Tübingen](map:de:Tübingen) nannten die Feeds von Voi und Bolt am 23. und 24. Oktober 2026 denselben Tarif, in [Stuttgart](map:de:Stuttgart) Vois Feed am 23. Oktober dagegen 0,49 € plus 0,24 € pro Minute.',
+        'Voi und Bolt kosten in Reutlingen also gleich viel, für kurze wie für längere Fahrten.',
+        'In [Tübingen](map:de:Tübingen) verlangen Voi und Bolt denselben Tarif, in [Stuttgart](map:de:Stuttgart) Voi dagegen 0,49 € plus 0,24 € pro Minute (Stand November 2026).',
       ],
     },
     {
@@ -46,7 +46,7 @@ const guide: Guide = {
         '**Parks:** In Grünanlagen fährst du laut Stadt nur auf beschilderten Radwegen.',
         '**Geschäftsgebiet:** Laut ihren Feeds vom 23. und 24. Oktober 2026 decken Voi und Bolt die Kernstadt, Betzingen, Orschel-Hagen, Sondelfingen und das Industriegebiet West ab, Bolt zusätzlich Rommelsbach. Die meisten Bezirksgemeinden wie Ohmenhausen, Gönningen, Altenburg und Mittelstadt liegen ausserhalb, ebenso Pfullingen und Eningen. Ausserhalb seines Gebiets lässt Voi laut Feed nicht einmal das Weiterfahren zu. Die genauen Grenzen zeigt die App.',
         '**Nach Tübingen:** Zwischen den Gebieten liegen Kilometer; mit Voi kommst du laut Feed nicht in einer Fahrt hinüber. Mehr im [Ratgeber für Tübingen](guide:tubingen).',
-        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h; als Betriebszeit geben beide Feeds «24/7» an.',
+        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h; als Betriebszeit geben beide Feeds «24/7» an (Stand November 2026).',
       ],
     },
     {
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Was kostet ein E-Scooter in Reutlingen?',
-      answer: 'Bei Voi und Bolt laut ihren Datenfeeds im Landesportal MobiData BW (23. und 24. Oktober 2026) 0,20 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,00 €. Verbindlich ist, was die App vor dem Entsperren zeigt.',
+      answer: 'Bei Voi und Bolt 0,20 € pro Minute ohne Entsperrgebühr (Stand November 2026): zehn Minuten 2,00 €, zwanzig 4,00 €, bei beiden gleich.',
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Reutlingen?',
@@ -155,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Reutlingen ein Nachtfahrverbot für E-Scooter?',
-      answer: 'Bei Voi und Bolt nicht: Beide Datenfeeds geben als Betriebszeit «24/7» an (Stand 24. Oktober 2026).',
+      answer: 'Bei Voi und Bolt nicht: Beide Datenfeeds geben als Betriebszeit «24/7» an (Stand November 2026).',
     },
   ],
   sources: [

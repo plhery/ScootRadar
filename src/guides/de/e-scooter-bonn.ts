@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'bonn',
   name: 'E-Scooter Bonn: Anbieter, Preise, Parken',
   title: 'E-Scooter Bonn 2026: Anbieter, Preise, Parken, Rheinaue',
-  description: 'E-Scooter Bonn: die Anbieter, was zehn Minuten bei Voi kosten, wo du am Rhein, im Hofgarten und in der Rheinaue nicht parkst und was die SWB verbietet.',
+  description: 'E-Scooter Bonn: Dott, Lime, RideMovi, Ryde und Voi, Voi 0,18 € pro Minute (Stand November 2026), Parkverbote am Rhein, in Hofgarten und Rheinaue, Bus und Bahn.',
   headline: 'E-Scooter Bonn: Anbieter, Preise, Parkverbote und was in Parks, am Rhein und in Bus und Bahn gilt',
-  lede: 'Einen E-Scooter in Bonn leihst du ohne Führerschein und in der Regel ab 18 bei Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten bei Voi nach seinem veröffentlichten Bonner Tarif (Stand 24. Oktober 2026) 1,80 €, bei den anderen zeigt die App den Preis. Du fährst auf dem Radweg oder der Fahrbahn, durch Grünanlagen wie Hofgarten und Rheinaue nur, wo es ausdrücklich erlaubt ist. Abstellen darfst du nicht in der Fussgängerzone rund um Markt und Münsterplatz, am Rheinufer, in Hofgarten, Stadtgarten und Rheinaue und auf Friedhöfen. In Bahnen und Bussen der SWB sind E-Scooter seit März 2024 verboten.',
+  lede: 'Einen E-Scooter in Bonn leihst du in der App von Dott, Lime, RideMovi, Ryde oder Voi, ohne Führerschein und in der Regel ab 18. Voi verlangt in Bonn 0,18 € pro Minute ohne Entsperrgebühr (Stand November 2026): Zehn Minuten kosten 1,80 €, zwanzig 3,60 €. Bei Dott, Lime, RideMovi und Ryde zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg oder der Fahrbahn, durch Grünanlagen wie Hofgarten und Rheinaue nur, wo es ausdrücklich erlaubt ist. Abstellen darfst du nicht in der Fussgängerzone rund um Markt und Münsterplatz, am Rheinufer, in Hofgarten, Stadtgarten und Rheinaue und auf Friedhöfen. In Bahnen und Bussen der SWB sind E-Scooter seit März 2024 verboten.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Bonn',
@@ -26,17 +26,17 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Bonn?',
       blocks: [
-        'Voi veröffentlicht seinen Bonner Tarif in seinem offenen Datenfeed bei NRW.Mobidrom, dem Mobilitätsdatenportal des Landes.',
+        'Voi nennt seinen Bonner Tarif:',
         {
           table: {
-            caption: 'E-Scooter-Preise in Bonn (Vois veröffentlichter Bonner Tarif, Stand 24. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Bonn (Voi, Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
             ],
           },
         },
-        'Eine Viertelstunde kostet bei Voi damit 2,70 €. Das ist deutlich weniger als in Köln, wo Voi am selben Tag 0,30 € pro Minute verlangte. Laut Datenfeed gilt der Bonner Tarif auch in Sankt Augustin und Siegburg. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Eine Viertelstunde kostet bei Voi damit 2,70 €, deutlich weniger als in Köln, wo Voi 0,30 € pro Minute verlangt (Stand November 2026). Laut Datenfeed gilt der Bonner Tarif auch in Sankt Augustin und Siegburg.',
         'Mit einem VRS-Abo, auch einem Deutschlandticket mit VRS-Chipkarte, fährst du kurze Wege oft billiger mit dem Leihrad Welo: Mit dem normalen Rad sind die ersten 30 Minuten dann gratis (siehe unten). Den nächsten Scooter und für Voi eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Bonn](map:de:Bonn).',
       ],
     },
@@ -143,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Bonn?',
-      answer: 'Bei Voi kosten zehn Minuten 1,80 €: Entsperren gratis, dann 0,18 € pro Minute (veröffentlichter Bonner Tarif, Stand 24. Oktober 2026). Dott, Lime, RideMovi und Ryde zeigen ihren Preis in der App.',
+      answer: 'Bei Voi kosten zehn Minuten 1,80 € und zwanzig 3,60 €: Entsperren gratis, dann 0,18 € pro Minute (Stand November 2026).',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Rheinaue oder den Hofgarten fahren?',
@@ -156,10 +156,6 @@ const guide: Guide = {
     {
       question: 'Darf ich einen E-Scooter in Bus und Bahn in Bonn mitnehmen?',
       answer: 'Nicht bei SWB Bus und Bahn: In den Bahnen sind E-Tretroller seit dem 1. März 2024 verboten, in den Bussen seit dem 13. März 2024. In S-Bahn und Regionalzug entscheidet jedes Verkehrsunternehmen selbst. Leih-Scooter darfst du nie mitnehmen.',
-    },
-    {
-      question: 'Wie regelt Bonn die E-Scooter-Anbieter?',
-      answer: 'Die Anbieter brauchen eine Sondernutzungserlaubnis der Stadt und zahlen 6,22 € pro Scooter und Monat. Im Dezember 2024 hat der Rat zudem beschlossen, nach Bedarf feste Abstellflächen zu markieren, etwa am Hauptbahnhof.',
     },
   ],
   sources: [
@@ -176,7 +172,8 @@ const guide: Guide = {
     { title: 'SWB Bus und Bahn: Mitnahme von E-Tretrollern in Bahnen nicht mehr gestattet', url: 'https://www.swb-busundbahn.de/aktuelle-meldungen/details/mitnahme-von-e-tretrollern-in-bahnen-nicht-mehr-gestattet/' },
     { title: 'VRS: Mitnahmeregeln und Services', url: 'https://www.vrs.de/tickets/ticketwissen/mitnahmeregeln-und-services' },
     { title: 'Welo: Tarife und Rückgabe', url: 'https://www.welo-bike.de/de/' },
-    { title: 'NRW.Mobidrom: Mobilitätsdaten NRW', url: 'https://www.mobilitaetsdaten.nrw' },
+    { title: 'Voi: Tarif und Zonen für Bonn, Sankt Augustin und Siegburg (NeTEx, Stand 7. November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/279/netex.xml' },
+    { title: 'Voi: Tarif für Köln (NeTEx, Stand 7. November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/240/netex.xml' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Ryde: Locations', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Ryde: Geschäftsbedingungen für Deutschland', url: 'https://www.ryde-technology.com/terms-conditions-germany' },

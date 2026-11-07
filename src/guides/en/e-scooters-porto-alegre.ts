@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-porto-alegre',
   topic: 'porto-alegre',
   name: 'Renting an e-scooter in Porto Alegre',
-  title: 'E-scooters Porto Alegre 2026: JET, Whoosh, prices and rules',
-  description: 'E-scooters in Porto Alegre: JET and Whoosh, what a ride costs in R$, where you may ride and park, and the city’s new rules for riders from July 2026.',
-  headline: 'E-scooters in Porto Alegre: JET and Whoosh, what a ride costs, where to ride and where to park',
-  lede: 'You can rent an e-scooter in Porto Alegre from Whoosh or from JET, whose app in Brazil is Go Jet. Each app shows its price before you ride; the last rate the city published, Whoosh’s in July 2024, was R$2 to unlock plus R$0.80 a minute. You must be 18. Since July 2026 a city decree lets you ride on cycle lanes at 20 km/h, on the Orla do Guaíba at 10 km/h and on pavements at walking pace, and you may park only at the spots your app shows.',
+  title: 'E-scooters Porto Alegre 2026: JET, Whoosh, renting, rules',
+  description: 'E-scooters in Porto Alegre: JET and Whoosh, how to rent and pay, where you may ride and park, and the city’s new rules for riders from July 2026.',
+  headline: 'E-scooters in Porto Alegre: JET and Whoosh, how to rent, where to ride and where to park',
+  lede: 'You can rent an e-scooter in Porto Alegre from Whoosh or from JET, whose app in Brazil is Go Jet: sign up in the app, scan the scooter’s QR code and end the ride at a parking spot the app shows, the only places you may leave it. Both charge a fee to start plus a rate per minute that changes with demand, and each app shows the price before you ride. You must be 18. Since July 2026 a city decree lets you ride on cycle lanes at 20 km/h, on the Orla do Guaíba at 10 km/h and on pavements at walking pace.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'br:Porto Alegre',
@@ -31,8 +31,13 @@ const guide: Guide = {
     {
       heading: 'How much does electric scooter rental in Porto Alegre cost?',
       blocks: [
-        'Each app shows the price before you start. Prices change with demand, and JET charges paused time like riding time.',
-        'The last figure the city published is Whoosh’s pay-as-you-go rate, in an EPTC notice of 17 July 2024: R$2 to unlock plus R$0.80 a minute, or R$10 for a 10-minute ride. That is over two years old. Whoosh adds accident insurance unless you switch it off. A Whoosh Pass (7 days, 30 days or a year) removes the unlock fee, not the per-minute price.',
+        'Each operator sets its own price, and both vary it with demand:',
+        {
+          list: [
+            '**Whoosh** charges a fixed fee to unlock, then for every minute begun, at a rate that can depend on demand and on the scooter’s battery level. It adds accident insurance unless you switch it off. A Whoosh Pass (7 days, 30 days or a year) removes the unlock fee, not the per-minute price.',
+            '**JET** charges an activation fee, then a rate per minute that varies with the day of the week and demand but stays the same once you set off; paused time costs as much as riding. Its insurance is extra and can be switched off before you start. The app also sells an hour at a fixed price, packs of minutes and a Plus subscription with free activation.',
+          ],
+        },
         {
           table: {
             caption: 'What Whoosh charges in Brazil when a ride goes wrong (terms updated 21 March 2025)',
@@ -147,10 +152,6 @@ const guide: Guide = {
       answer: 'Whoosh and JET, in its Go Jet app. A third authorised firm, Adventure, had left by July 2025.',
     },
     {
-      question: 'How much does an e-scooter cost in Porto Alegre?',
-      answer: 'The app shows the price before you ride, and it changes with demand. The last rate the city published, in July 2024, was Whoosh’s R$2 to unlock plus R$0.80 a minute.',
-    },
-    {
       question: 'Can you ride an e-scooter on the pavement in Porto Alegre?',
       answer: 'Yes, at walking pace (6 km/h), giving way to pedestrians, and you must get off and push across pedestrian crossings. On cycle lanes you may ride at 20 km/h, and on the Orla do Guaíba at 10 km/h.',
     },
@@ -172,7 +173,7 @@ const guide: Guide = {
     { title: 'Decree 23.848 of 9 July 2026: rules for e-scooter riders, Portuguese', url: 'https://dopaonlineupload.procempa.com.br/dopaonlineupload/6096_ce_618741_1.pdf' },
     { title: 'SMMU: operators’ accreditation opens (8 October 2026), Portuguese', url: 'https://prefeitura.poa.br/smmu/noticias/prefeitura-abre-credenciamento-para-servico-de-bicicletas-e-patinetes-compartilhados' },
     { title: 'Prefeitura: 650 JET scooters from 6 April 2024, Portuguese', url: 'https://prefeitura.poa.br/gp/noticias/capital-tera-mais-650-patinetes-eletricos-compartilhados-partir-deste-sabado' },
-    { title: 'EPTC: e-scooters back after the floods, with Whoosh’s price (17 July 2024), Portuguese', url: 'https://prefeitura.poa.br/eptc/noticias/patinetes-eletricas-voltam-operar-apos-enchente' },
+    { title: 'EPTC: e-scooters back after the floods (17 July 2024), Portuguese', url: 'https://prefeitura.poa.br/eptc/noticias/patinetes-eletricas-voltam-operar-apos-enchente' },
     { title: 'EPTC: three authorised operators (10 April 2024), Portuguese', url: 'https://prefeitura.poa.br/eptc/noticias/treinamento-gratuito-orienta-usuarios-sobre-conducao-de-patinetes' },
     { title: 'EPTC: guidance for riders on the Orla (26 November 2023), Portuguese', url: 'https://prefeitura.poa.br/eptc/noticias/eptc-orienta-frequentadores-da-orla-para-uso-correto-dos-patinetes-eletricos' },
     { title: 'EPTC: riding advice on the Orla (16 November 2024), Portuguese', url: 'https://prefeitura.poa.br/eptc/noticias/atividade-educativa-na-orla-orienta-sobre-uso-de-patinetes-eletricas' },

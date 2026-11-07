@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'le-havre',
   name: 'Louer une trottinette électrique au Havre',
   title: 'Trottinette électrique au Havre en 2026 : Voi, prix, zones',
-  description: 'Trottinette électrique au Havre : Voi, seul opérateur, 1 € puis 0,22 € la minute. Où se garer, zones interdites, tram, funiculaire, gare et LiAvélos.',
+  description: 'Trottinette électrique au Havre : Voi, seul opérateur, 1 € puis 0,22 € la minute en novembre 2026. Où se garer, zones interdites, tram, funiculaire et gare.',
   headline: 'Trottinette électrique au Havre : Voi, prix, zones et stationnement en 2026',
-  lede: 'Pour louer une trottinette électrique au Havre, il n’y a qu’un opérateur : **Voi**, qui a succédé à Lime le 15 janvier 2025. Comptez 1 € pour déverrouiller, puis 0,22 € la minute, soit 3,20 € les 10 minutes (novembre 2026). La location ne se termine que sur un emplacement Voi. En octobre 2026, de nouvelles zones interdites entourent aussi plusieurs lycées et l’Hôtel de Ville.',
+  lede: 'Pour louer une trottinette électrique au Havre, il n’y a qu’un opérateur : **Voi**, qui a succédé à Lime le 15 janvier 2025. Installez l’app Voi, créez un compte avec un moyen de paiement, puis scannez le QR code du guidon. Comptez 1 € pour déverrouiller, puis 0,22 € la minute, soit 3,20 € les 10 minutes et 5,40 € les 20 minutes (novembre 2026). La location ne se termine que sur un emplacement Voi. On roule à 25 km/h au plus, jamais sur le trottoir, et en octobre 2026, Voi a ajouté des zones interdites autour de plusieurs lycées et de l’Hôtel de Ville.',
   published: '2026-10-14',
   updated: '2026-10-15',
   city: 'fr:Le Havre',
@@ -38,7 +38,6 @@ const guide: Guide = {
             ],
           },
         },
-        '**Méfiez-vous des pages périmées.** Le déverrouillage à 0,49 € qu’affichent encore certains sites date du lancement, en janvier 2025.',
         'Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
       ],
     },
@@ -73,7 +72,7 @@ const guide: Guide = {
       heading: 'Âge, casque, amendes : les règles au Havre',
       blocks: [
         '**L’âge.** Voi annonçait **16 ans** minimum à son arrivée, en janvier 2025, et fait scanner une pièce d’identité pour le vérifier. Une trottinette personnelle se conduit dès 14 ans.',
-        '**Le casque.** Au 15 octobre 2026, aucun arrêté préfectoral ne l’impose en Seine-Maritime. La loi nationale ne l’exige que sur les routes à 80 km/h ouvertes aux trottinettes. Voi en distribue pourtant, à son Voi Store.',
+        '**Le casque.** En Seine-Maritime, il n’est obligatoire, en novembre 2026, que sur les routes à 80 km/h ouvertes aux trottinettes, comme le prévoit la loi nationale ; d’autres préfets l’imposent dans tout leur département. Voi en distribue à son Voi Store.',
         {
           table: {
             caption: 'Trottinette électrique au Havre : les règles nationales qui coûtent le plus cher (octobre 2026)',
@@ -110,9 +109,9 @@ const guide: Guide = {
             '**Le ferry de Portsmouth.** Le terminal de Brittany Ferries est dans la zone.',
             '**Les paquebots.** Les terminaux de croisière de la Pointe de Floride sont hors zone.',
             '**La ville haute.** Les escaliers vers le plateau sont réservés aux piétons : montez par la route, rue Félix-Faure par exemple.',
-            '**Les matchs du HAC.** Voi a deux emplacements de 90 et 60 places près du Stade CMA CGM Océane. Prochains matchs à domicile, selon le club au 15 octobre 2026 : 18 octobre à 17 h 15 (Auxerre), 30 octobre à 19 h (PSG), 8 novembre à 17 h 15 (Lorient), 28 novembre à 20 h 45 (Strasbourg). Les travaux du tram gênent l’accès au stade jusqu’à l’ouverture de la nouvelle ligne, prévue au second semestre 2027 : LiA renforce ses navettes gratuites.',
-            '**Ouest Park**, le festival annuel du Fort de Tourneville : pour l’édition 2026, les 16 et 17 octobre, le funiculaire roule jusqu’à minuit, gratuit dès 21 h.',
-            '**La Transat Café L’Or**, ex-Transat Jacques Vabre, est partie du Havre le 26 octobre 2025 ; la prochaine est attendue à l’automne 2027, date non annoncée.',
+            '**Les matchs du HAC.** Voi a deux emplacements de 90 et 60 places près du Stade CMA CGM Océane. Prochains matchs à domicile en Ligue 1, selon le club au 7 novembre 2026 : 8 novembre à 17 h 15 (Lorient), 28 novembre à 20 h 45 (Strasbourg), 12 décembre à 20 h 45 (Le Mans). Les travaux du tram gênent l’accès au stade jusqu’à l’ouverture de la nouvelle ligne, prévue au second semestre 2027 : LiA renforce ses navettes gratuites.',
+            '**Ouest Park**, le festival annuel du Fort de Tourneville : pour l’édition 2026, les 16 et 17 octobre, le funiculaire a roulé jusqu’à minuit, gratuit dès 21 h.',
+            '**La Transat Café L’Or**, ex-Transat Jacques Vabre, est partie du Havre le 26 octobre 2025 ; la prochaine est attendue à l’automne 2027.',
           ],
         },
       ],
@@ -162,11 +161,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en trottinette au Havre ?',
-      answer: 'Non : au 15 octobre 2026, aucun arrêté préfectoral ne l’impose en Seine-Maritime, et la loi nationale ne l’exige que sur les routes à 80 km/h ouvertes aux trottinettes. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire (35 €).',
-    },
-    {
-      question: 'Peut-on aller à Sainte-Adresse ou à Harfleur en trottinette Voi ?',
-      answer: 'Non : Voi ne dessert que Le Havre et Octeville-sur-Mer, plus un emplacement au bout nord de la plage, sur la limite de Sainte-Adresse.',
+      answer: 'Non, sauf sur les routes à 80 km/h ouvertes aux trottinettes : en novembre 2026, c’est la seule obligation en Seine-Maritime, celle de la loi nationale. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire (35 €).',
     },
   ],
   sources: [

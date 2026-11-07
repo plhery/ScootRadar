@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'italian-rules',
   name: 'Regole del monopattino elettrico in Italia',
   title: 'Monopattino elettrico, regole 2026 in Italia: targa e multe',
-  description: 'Regole del monopattino elettrico in Italia nel 2026: casco per tutti, targa, assicurazione, età, velocità, dove circolare, multe e sharing a Roma.',
+  description: 'Regole del monopattino elettrico in Italia: casco per tutti, targa dal 17 maggio 2026, assicurazione dal 16 luglio 2026, 14 anni, 20 km/h, strade e multe.',
   headline: 'Monopattino elettrico, regole 2026 in Italia: casco, targa, assicurazione e multe',
-  lede: 'Le regole del monopattino elettrico in Italia, nel 2026, si riassumono così: casco obbligatorio per tutti dal 14 dicembre 2024, contrassegno (la «targa») dal 17 maggio 2026 e assicurazione dal 16 luglio 2026. Si può guidare dai 14 anni, senza patente, a 20 km/h al massimo (6 nelle aree pedonali), solo su strade urbane con limite fino a 50 km/h e mai sul marciapiede. In sharing contrassegno e assicurazione spettano all’operatore, il casco lo porti tu.',
+  lede: 'In Italia il monopattino elettrico si guida dai 14 anni, senza patente, con il casco, obbligatorio per tutti dal 14 dicembre 2024, il contrassegno (la «targa»), obbligatorio dal 17 maggio 2026, e l’assicurazione, obbligatoria dal 16 luglio 2026. Si va a 20 km/h al massimo, 6 nelle aree pedonali, solo su strade urbane con limite fino a 50 km/h e mai sul marciapiede; per l’alcol vale il limite di 0,5 g/l, come in auto. Senza casco, sul marciapiede o oltre i 20 km/h la multa va da 50 a 250 euro; senza contrassegno o assicurazione da 100 a 400 euro. In sharing contrassegno e assicurazione spettano all’operatore, il casco lo porti tu.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'it:Roma',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Le regole dei monopattini non sono nel Codice della strada ma nella legge 160 del 2019, riscritta su questo punto dalla riforma del Codice (legge 177 del 2024) in vigore dal **14 dicembre 2024**.',
         {
           table: {
-            caption: 'Le regole principali, a ottobre 2026',
+            caption: 'Le regole principali, a novembre 2026',
             head: ['Regola', 'Cosa prevede'],
             rows: [
               ['Casco', 'Obbligatorio per tutti, a ogni età, anche in sharing, dal 14 dicembre 2024'],
@@ -39,7 +39,7 @@ const guide: Guide = {
     {
       heading: 'Casco obbligatorio per tutti, anche in sharing',
       blocks: [
-        'Dal 14 dicembre 2024, e non da maggio 2026 come scrive qualche articolo, il casco è obbligatorio per chiunque guidi un monopattino elettrico, non più solo per i minorenni. Deve rispettare la norma UNI EN 1078 (caschi da bici) o UNI EN 1080 (caschi per bambini). Senza casco la multa va da **50 a 250 euro**.',
+        'Dal 14 dicembre 2024 il casco è obbligatorio per chiunque guidi un monopattino elettrico, non più solo per i minorenni. Deve rispettare la norma UNI EN 1078 (caschi da bici) o UNI EN 1080 (caschi per bambini). Senza casco la multa va da **50 a 250 euro**.',
         { note: 'Il casco vale anche in sharing, e di solito gli operatori non lo danno: come ricorda Roma Servizi per la Mobilità, tocca all’utente portarlo, perché i monopattini non hanno un vano porta-casco come i motorini. Se pensi di noleggiare, porta il tuo.' },
       ],
     },
@@ -47,7 +47,7 @@ const guide: Guide = {
       heading: 'Targa del monopattino: il contrassegno dal 17 maggio 2026',
       blocks: [
         'Quella che tutti chiamano «targa» o «targhino» è il **contrassegno identificativo**: un adesivo plastificato e non rimovibile, stampato dal Poligrafico dello Stato, con un codice unico. Se circoli senza, o con un contrassegno non visibile, alterato o falso, la multa va da **100 a 400 euro**.',
-        'Molti siti, e a volte lo stesso Ministero dei Trasporti, indicano il 16 maggio; il decreto e la circolare del Ministero dell’Interno dicono **17 maggio 2026**. Ormai poco importa: l’obbligo è in vigore.',
+        'Per circolare il contrassegno è obbligatorio dal **17 maggio 2026**.',
         'La richiesta la fa il proprietario: un privato, un’azienda o, per un figlio dai 14 anni in su, un genitore. La pratica:',
         {
           steps: [
@@ -106,7 +106,7 @@ const guide: Guide = {
         'Se paghi entro 5 giorni, di solito la multa si riduce del 30%.',
         {
           table: {
-            caption: 'Multe per il monopattino, a ottobre 2026 (commi dell’art. 1 della legge 160/2019, salvo dove indicato)',
+            caption: 'Multe per il monopattino, a novembre 2026 (commi dell’art. 1 della legge 160/2019, salvo dove indicato)',
             head: ['Infrazione', 'Multa', 'Norma'],
             rows: [
               ['Senza casco', 'da 50 a 250 euro', 'c. 75-novies'],
@@ -153,9 +153,9 @@ const guide: Guide = {
     {
       heading: 'Monopattini in sharing a Roma',
       blocks: [
-        'A Roma i monopattini in sharing sono di **Bird, Dott e Lime**, secondo Roma Servizi per la Mobilità (pagina aggiornata a luglio 2026). Le regole del Comune: iscrizione dai 18 anni con un documento d’identità, 20 km/h al massimo e 6 km/h automatici nelle aree pedonali. Gli abbonati annuali Metrebus Roma o Lazio con la zona A hanno diritto a corse gratuite o quasi, alle condizioni di ciascun operatore. Tutto su prezzi, zone e parcheggio nella guida ai [monopattini in sharing a Roma](guide:rome).',
-        'Le autorizzazioni dei tre operatori scadevano il 31 agosto 2026. Il Comune le ha prorogate per il tempo necessario a scegliere i nuovi: secondo la stampa, fino al **31 ottobre 2026**.',
-        'Le domande per il nuovo bando si chiudono il **26 ottobre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini per tre anni, e chi vince avrà fino a 150 giorni per avviare il servizio. Il bando premia chi mette su ogni monopattino un casco sbloccabile dall’app.',
+        'A Roma i monopattini in sharing sono di **Bird, Dott e Lime**, secondo Roma Servizi per la Mobilità (pagina aggiornata il 14 ottobre 2026). Le regole del Comune: iscrizione dai 18 anni con un documento d’identità, 20 km/h al massimo e 6 km/h automatici nelle aree pedonali. Gli abbonati annuali Metrebus Roma o Lazio con la zona A hanno diritto a corse gratuite o quasi, alle condizioni di ciascun operatore. Tutto su prezzi, zone e parcheggio nella guida ai [monopattini in sharing a Roma](guide:rome).',
+        'Le autorizzazioni dei tre operatori scadevano il 31 agosto 2026. Il Comune le ha prorogate per il tempo necessario a scegliere i nuovi: secondo la stampa, la proroga arrivava al 31 ottobre 2026.',
+        'Le domande per il nuovo bando, dopo una proroga del termine, si sono chiuse il **2 novembre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini per tre anni, e chi vince avrà fino a 150 giorni per avviare il servizio. Il bando premia chi mette su ogni monopattino un casco sbloccabile dall’app.',
         'Sabato 24 ottobre 2026 alle 13:26, sulla mappa intorno a Roma c’erano circa 4.200 monopattini Bird e altrettanti di Dott; domenica 25 ottobre verso le 16 quelli di Lime erano circa 4.300. [Apri la mappa su Roma](map:it:Roma). Sulla mappa trovi anche i monopattini di [Palermo](map:it:Palermo), [Napoli](map:it:Napoli), [Catania](map:it:Catania), [Milano](map:it:Milano) e [Torino](map:it:Torino).',
       ],
     },
@@ -173,14 +173,6 @@ const guide: Guide = {
       question: 'Serve il patentino per guidare un monopattino elettrico?',
       answer: 'No. Basta avere 14 anni: la legge non chiede né il patentino né altre patenti. Per noleggiare, però, Comuni e operatori possono chiedere di più: a Roma servono 18 anni.',
     },
-    {
-      question: 'Si può andare in monopattino fuori città?',
-      answer: 'Non sulle strade extraurbane: il monopattino può circolare solo su strade urbane con limite fino a 50 km/h. Per le piste ciclabili fuori città la legge non è chiara: la vecchia norma le ammetteva, il testo del 2024 non le nomina più.',
-    },
-    {
-      question: 'Un turista deve mettere il casco sul monopattino in sharing?',
-      answer: 'Sì. L’obbligo vale per chiunque guidi in Italia, residente o no, e di solito gli operatori non danno il casco: portalo da casa. Secondo i giornali, ai primi controlli a Roma sono stati multati anche turisti.',
-    },
   ],
   sources: [
     { title: 'Legge 160/2019, art. 1, commi 75 e seguenti, testo vigente (Normattiva)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
@@ -188,6 +180,7 @@ const guide: Guide = {
     { title: 'Portale dell’Automobilista: contrassegno identificativo dei monopattini', url: 'https://www.ilportaledellautomobilista.it/web/portale-automobilista/monopattini-contrassegno-identificativo' },
     { title: 'Ministero delle infrastrutture e dei trasporti: FAQ sul contrassegno (20 luglio 2026)', url: 'https://www.ilportaledellautomobilista.it/documents/56611/57319/210726_20260720_FAQ+Monopattini_PdA.pdf/6e2832cb-a7e5-4334-aa09-1d8c6809e7dc' },
     { title: 'Ministero delle infrastrutture e dei trasporti: comunicato sul contrassegno (14 maggio 2026)', url: 'https://www.mit.gov.it/node/22065' },
+    { title: 'Ministero delle infrastrutture e dei trasporti: assicurazione obbligatoria dal 16 luglio (22 aprile 2026)', url: 'https://www.mit.gov.it/node/21967' },
     { title: 'Decreto ministeriale 6 ottobre 2025 n. 250 sul prezzo del contrassegno (ACI)', url: 'https://rivistagiuridica.aci.it/fileadmin/Documenti/2025/Normativa/Decreti_Ministeriali/prezzo_contrassegni_monopattini.pdf' },
     { title: 'ACI, Rivista giuridica: monopattini, stato di ebbrezza, contrassegno e assicurazione', url: 'https://rivistagiuridica.aci.it/fileadmin/Documenti/2026/Dottrina_e_Approfondimenti/monopattini_stato_ebbrezza_contrassegno_assicurazione.pdf' },
     { title: 'Roma Servizi per la Mobilità: nuovo Codice della strada, cosa cambia per i monopattini', url: 'https://romamobilita.it/primo-piano/nuovo-codice-della-strada-cosa-cambia-per-luso-dei-monopattini-elettrici/' },

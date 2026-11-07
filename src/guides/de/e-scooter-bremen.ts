@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-bremen',
   topic: 'bremen',
-  name: 'E-Scooter Bremen: Anbieter, Preise, Parken',
-  title: 'E-Scooter Bremen 2026: Anbieter, Preise, Parken, BSAG',
-  description: 'E-Scooter Bremen: wer verleiht, was eine Fahrt kostet, wo du fährst und parkst, warum der Bürgerpark tabu ist und was in Bahn und Bus der BSAG gilt.',
-  headline: 'E-Scooter Bremen: Anbieter, Preise, Parken und die Regeln der Stadt',
-  lede: 'E-Scooter in Bremen leihst du ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Den Preis zeigt die App. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
+  name: 'E-Scooter Bremen: Anbieter, Parken, Regeln',
+  title: 'E-Scooter Bremen 2026: Dott, Lime, Parken, Bürgerpark, BSAG',
+  description: 'E-Scooter Bremen: Dott und Lime, ab 18, wo du fährst und parkst, was Falschparken kostet, warum der Bürgerpark tabu ist und was in Bahn und Bus gilt.',
+  headline: 'E-Scooter Bremen: Anbieter, Parken und die Regeln der Stadt',
+  lede: 'E-Scooter in Bremen leihst du bei Dott oder Lime in der App, ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Den Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. Abstellen darfst du meist frei auf dem Gehweg, parallel zur Fahrbahn und mit 1,80 m Platz; wer falsch parkt, zahlt dem Anbieter ab dem zweiten Mal 15 €. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Bremen',
@@ -39,19 +39,18 @@ const guide: Guide = {
           },
         },
         'Für Bremen-Nord hob die Stadt die Grenze um 200 Scooter an, weil Scooter dort «insbesondere in den Abendstunden» gut als Anschluss an Bus und Bahn angenommen würden und Bremen-Nord «bisher nicht vollständig erschlossen» sei.',
-        'Wo in deinem Stadtteil gerade ein Scooter steht und wo du die Fahrt beenden darfst, zeigt die App des Anbieters. Bremerhaven ist eine eigene Stadt und zählt nicht zu Bremen: mehr im [Ratgeber für Bremerhaven](guide:bremerhaven).',
+        'Wo in deinem Stadtteil gerade ein Scooter steht, zeigt die [Live-Karte von Bremen](map:de:Bremen), wo du die Fahrt beenden darfst, die App des Anbieters. Bremerhaven ist eine eigene Stadt und zählt nicht zu Bremen: mehr im [Ratgeber für Bremerhaven](guide:bremerhaven).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Bremen?',
       blocks: [
-        'Dott nennt seinen Preis in der App: «In der Dott-App siehst du den Preis, der in deiner Region gilt» (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
+        'Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
         {
           table: {
             caption: 'Dott in Deutschland: Gebühren laut Bedingungen (letzte Aktualisierung 23. September 2025)',
             head: ['Fall', 'Was Dott verlangt'],
             rows: [
-              ['Fahrt', 'Preis in der App, nach Dauer, je nach Tarif mit Freischaltgebühr'],
               ['Scooter falsch geparkt oder nicht richtig gesperrt', 'bis zu 300 € Rückholkosten'],
               ['Bussgeld, das Dott für dich zahlt', 'das Bussgeld plus 50 € Verwaltungsgebühr'],
               ['Verstoss gegen die Bedingungen', 'Dott kann 50 € verlangen'],
@@ -73,7 +72,7 @@ const guide: Guide = {
               ['Bürgerpark und Stadtwald', 'Mit E-Scootern «auf allen Wegen grundsätzlich nicht gestattet»; Radfahren nur auf freigegebenen Wegen', 'Bürgerparkverein, Parkordnung vom August 2025, in Übereinstimmung mit der Stadt'],
               ['Alle Grünanlagen', 'Fahrt beenden oder pausieren nicht möglich, ausser der Verantwortliche lässt das Abstellen zu', 'Stadt, Erlaubnis der Anbieter'],
               ['Innenstadt', 'Parkverbotszonen («Negativzonen») laut Protokoll des Beirats Hemelingen vom Oktober 2025; wo genau, zeigt die App', 'Stadt, Erlaubnis der Anbieter'],
-              ['Flughafen', 'Abstellverbot laut Beirat Neustadt, der im April 2025 eine Ausnahme nahe Terminal 1 forderte; ob es sie gibt, zeigt die App', 'Ordnungsamt und Mobilitätsbehörde (laut Beirat)'],
+              ['Flughafen', 'Abstellverbot laut Beirat Neustadt, der im April 2025 eine Ausnahme nahe Terminal 1 forderte', 'Ordnungsamt und Mobilitätsbehörde (laut Beirat)'],
               ['Fussgängerzone', 'Absteigen und schieben, ausser ein Schild erlaubt das Fahren', 'Bund'],
             ],
           },
@@ -145,18 +144,6 @@ const guide: Guide = {
         'Einen Anspruch auf Mitnahme hast du nicht. Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor der Haltestelle, nicht an ihr, und miete am Ziel neu.',
       ],
     },
-    {
-      heading: 'Uni, Constructor University, Hauptbahnhof und Flughafen: Tipps',
-      blocks: [
-        {
-          list: [
-            '**Universität, Constructor University, Hauptbahnhof, Marktplatz, Weserstadion:** Ob du dort abstellen darfst, zeigt dir die App vor dem Beenden der Fahrt.',
-            '**Flughafen:** Laut Beirat Neustadt gilt am Flughafen ein Abstellverbot; beende die Fahrt vorher.',
-          ],
-        },
-        'Freie Dott- und Lime-Scooter in deiner Nähe zeigt die [Live-Karte von Bremen](map:de:Bremen).',
-      ],
-    },
   ],
   faq: [
     {
@@ -164,8 +151,8 @@ const guide: Guide = {
       answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost. Bolt, im April 2025 noch dabei, nennt auf seiner Bremen-Seite heute nur Fahrten mit Fahrer und Taxis.',
     },
     {
-      question: 'Was kostet ein E-Scooter in Bremen?',
-      answer: 'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten und ab dem zweiten Verstoss 15 €, die der Anbieter nach Vorgabe der Stadt verlangt.',
+      question: 'Was kostet Falschparken mit einem Leih-Scooter in Bremen?',
+      answer: 'Beim ersten Mal verwarnt dich der Anbieter, ab dem zweiten Verstoss verlangt er nach Vorgabe der Stadt 15 €, ab dem dritten sperrt er dich zusätzlich, beim fünften dauerhaft. Bei Dott kommen laut Bedingungen bis zu 300 € Rückholkosten dazu, wenn der Scooter falsch steht.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Bürgerpark fahren?',
@@ -195,7 +182,6 @@ const guide: Guide = {
     { title: 'Bürgerparkverein: Parkordnung für den Bremer Bürgerpark und Stadtwald (August 2025, PDF)', url: 'https://www.buergerpark-bremen.de/bilder/Parkordnung.pdf' },
     { title: 'VBN: Tarifbestimmungen und Beförderungsbedingungen 2026 (PDF)', url: 'https://www.vbn.de/fileadmin/content/_Tickets/Tarifbestimmungen/Tarifbestimmungen_und_Befoerderungsbedingungen_2026.pdf' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
-    { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
     { title: 'Bolt: Bremen', url: 'https://bolt.eu/de-de/cities/bremen/' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],

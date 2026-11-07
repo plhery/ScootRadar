@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'palermo',
   name: 'Monopattini sharing a Palermo',
   title: 'Monopattini sharing Palermo 2026: Bird, Dott, Lime e regole',
-  description: 'Monopattini sharing a Palermo nel 2026: Bird, Dott e Lime, età e casco, orari di via Maqueda e del Cassaro, dove lasciarli, Mondello, treni e multe.',
+  description: 'Monopattini sharing a Palermo: Bird, Dott e Lime, come noleggiarli, 18 anni e casco, orari di via Maqueda e del Cassaro, dove lasciarli, Mondello e multe.',
   headline: 'Monopattini in sharing a Palermo: operatori, orari in centro, parcheggio e multe nel 2026',
-  lede: 'I monopattini sharing a Palermo, a ottobre 2026, sono quelli di Bird, Dott e Lime, gli unici tre operatori autorizzati dal Comune. Per noleggiarli servono 18 anni e un documento d’identità; il casco, obbligatorio per tutti, lo porti tu, e il prezzo lo vedi nell’app prima di sbloccare. In centro conta l’ora: su via Maqueda, tra via Cavour e piazza Bellini, e sul Cassaro i monopattini passano solo dalle 5 alle 10 del mattino, anche se l’app di Bird non te lo impedisce.',
+  lede: 'A Palermo i monopattini in sharing sono quelli di Bird, Dott e Lime, gli unici tre operatori autorizzati dal Comune, per cinque anni dal 2025, e il servizio funziona giorno e notte. Per noleggiarne uno scarichi l’app, ti iscrivi con un documento d’identità e una carta (servono 18 anni) e inquadri il QR code; il prezzo te lo mostra l’app prima dello sblocco. Il casco, obbligatorio per tutti, lo porti tu. In centro conta l’ora: su via Maqueda, tra via Cavour e piazza Bellini, e sul Cassaro i monopattini passano solo dalle 5 alle 10 del mattino, anche se l’app di Bird non te lo impedisce.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'it:Palermo',
@@ -16,20 +16,9 @@ const guide: Guide = {
     {
       heading: 'Quali monopattini in sharing ci sono a Palermo',
       blocks: [
-        'A Palermo possono offrire monopattini in sharing solo gli operatori scelti dal Comune: a ottobre 2026 sono **Bird**, **Dott** e **Lime**, autorizzati per cinque anni dal 2025. Per sceglierli ci sono voluti quattro avvisi e più di due anni di ricorsi al TAR; gli esclusi, come Link e Ridemovi, dovevano lasciare la città entro il 28 settembre 2025. Gli articoli su Bit, Helbiz o Link sono superati.',
-        {
-          table: {
-            caption: 'Gli operatori di Palermo e dove trovarli, a ottobre 2026',
-            head: ['Operatore', 'Sulla mappa di ScootRadar', 'Prezzo'],
-            rows: [
-              ['Bird', 'Sì', 'Nell’app: nessuna tariffa pubblicata'],
-              ['Dott', 'Sì, dal 24 ottobre 2026', 'Nell’app'],
-              ['Lime', 'Sì, dal 25 ottobre 2026', 'Nell’app'],
-            ],
-          },
-        },
-        'Il 13 ottobre 2026 sulla [mappa di Palermo](map:it:Palermo) c’erano circa 1.160 monopattini Bird: una fotografia di quel momento, non la flotta ufficiale. Il giorno dopo quasi la metà era tra il Politeama, via Libertà e via Notarbartolo. Dal 24 ottobre la mappa mostra anche Dott, circa 580 quel giorno alle 13:26, e dal 25 ottobre Lime, circa 850 quel giorno verso le 15:20, letti dalla mappa della sua app.',
-        'Il Comune prevede da 500 a 1.000 monopattini per operatore, 3.000 in tutto, e può alzare il tetto fino a 1.500 ciascuno: quanti ne abbia concessi a ognuno non l’ha pubblicato. Nella ZTL del centro ogni operatore può tenerne al massimo 100. Il servizio funziona giorno e notte.',
+        'A Palermo possono offrire monopattini in sharing solo gli operatori scelti dal Comune: **Bird**, **Dott** e **Lime**, autorizzati per cinque anni dal 2025. Per sceglierli ci sono voluti quattro avvisi e più di due anni di ricorsi al TAR; gli esclusi, come Link e Ridemovi, dovevano lasciare la città entro il 28 settembre 2025.',
+        'Il 13 ottobre 2026 sulla [mappa di Palermo](map:it:Palermo) c’erano circa 1.160 monopattini Bird: una fotografia di quel momento, non la flotta ufficiale. Il giorno dopo quasi la metà era tra il Politeama, via Libertà e via Notarbartolo. Dal 24 ottobre la mappa mostra anche Dott, circa 580 quel giorno alle 13:26, e dal 25 ottobre Lime, circa 850 quel giorno verso le 15:20.',
+        'Il Comune prevede da 500 a 1.000 monopattini per operatore, 3.000 in tutto, e può alzare il tetto fino a 1.500 ciascuno. Nella ZTL del centro ogni operatore può tenerne al massimo 100. Il servizio funziona giorno e notte.',
       ],
     },
     {
@@ -45,14 +34,8 @@ const guide: Guide = {
           ],
         },
         { note: 'Il casco lo porti tu. È obbligatorio per chiunque guidi un monopattino, anche in sharing, dal 14 dicembre 2024, e gli operatori non lo danno. Va bene un casco da bici (UNI EN 1078); senza, la multa va da 50 a 250 euro.' },
+        '**Abbonamenti.** Nella gara il Comune ha chiesto agli operatori abbonamenti settimanali, mensili e annuali, e ha premiato gli sconti per chi usa i mezzi pubblici.',
         'Tutti i passaggi sono nella guida su [come noleggiare un monopattino](guide:how-to-rent).',
-      ],
-    },
-    {
-      heading: 'Noleggio monopattini a Palermo: quanto costa',
-      blocks: [
-        'Di solito paghi uno sblocco più una tariffa al minuto, ma a Palermo nessuno dei tre pubblica le tariffe, nemmeno Bird nei dati aperti: le vedi solo nell’app prima di sbloccare, e la mappa non può stimarle. Le cifre in rete sono del 2021 e del 2022.',
-        'Nella gara il Comune ha chiesto agli operatori abbonamenti settimanali, mensili e annuali, e ha premiato gli sconti per chi usa i mezzi pubblici: se ci sono, li trovi nell’app.',
       ],
     },
     {
@@ -71,7 +54,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Fuori orario scendi e porta il monopattino a mano; nei tratti pedonali, anche al mattino, vai a 6 km/h. L’app di Bird non applica questi orari: a metà ottobre 2026 ti lasciava passare e chiudere la corsa a qualunque ora anche tra il Teatro Massimo e i Quattro Canti e davanti alla Cattedrale. Vale il cartello, e chi non lo rispetta rischia la multa.',
+        'Fuori orario scendi e porta il monopattino a mano; nei tratti pedonali, anche al mattino, vai a 6 km/h. L’app di Bird non applica questi orari: il 7 novembre 2026 le sue zone ti lasciavano percorrere via Maqueda e il Cassaro a qualunque ora. Vale il cartello, e chi non lo rispetta rischia la multa.',
       ],
     },
     {
@@ -93,7 +76,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Le zone di Dott e Lime non le conosciamo, e quelle di Bird possono cambiare: fa fede la mappa dell’app.',
+        'Le zone possono cambiare: fa fede la mappa dell’app.',
       ],
     },
     {
@@ -109,7 +92,6 @@ const guide: Guide = {
             rows: [
               ['Treni regionali Trenitalia, passante e Trinacria Express compresi', 'Gratis se piegato e spento, fino a 120×80×45 cm', 'No'],
               ['Bus AMAT', 'Vietato da marzo 2021 (nota AMAT citata dai giornali)', 'No'],
-              ['Tram AMAT', 'Nessuna regola esplicita: non contarci', 'No'],
             ],
           },
         },
@@ -121,7 +103,7 @@ const guide: Guide = {
         'A Palermo valgono le regole nazionali, spiegate nella [guida alle regole del monopattino elettrico](guide:italian-rules), più gli orari del centro storico e i 18 anni per lo sharing.',
         {
           table: {
-            caption: 'Le regole principali e le multe, a ottobre 2026',
+            caption: 'Le regole principali e le multe, a novembre 2026',
             head: ['Regola', 'Cosa prevede', 'Multa'],
             rows: [
               ['Casco', 'Per tutti dal 14 dicembre 2024, anche in sharing', '50-250 euro'],
@@ -143,11 +125,11 @@ const guide: Guide = {
     {
       heading: 'Mondello, basole, scirocco ed eventi: consigli pratici',
       blocks: [
-        '**Mondello.** D’estate (nel 2026 dall’8 maggio al 30 settembre) il lungomare di viale Regina Elena è pedonale e ammette bici elettriche e «analoghi dispositivi ad alimentazione elettrica» solo nei giorni feriali, sabato compreso, a 6 km/h. L’ordinanza non nomina i monopattini, ma la legge li equipara alle bici: la domenica e nei festivi portalo a mano.',
+        '**Mondello.** D’estate il lungomare di viale Regina Elena diventa pedonale (nel 2026 dall’8 maggio al 30 settembre) e ammette bici elettriche e «analoghi dispositivi ad alimentazione elettrica» solo nei giorni feriali, sabato compreso, a 6 km/h. La legge equipara i monopattini alle bici: la domenica e nei festivi portalo a mano.',
         '**Basole.** Il centro storico è lastricato di basole di pietra lavica, che fanno sobbalzare il monopattino e con la pioggia scivolano: rallenta ed evita le frenate brusche.',
         '**Salite e caldo.** Il centro è in piano; Monte Pellegrino no, e il santuario di Santa Rosalia è fuori dall’area di Bird. D’estate, con lo scirocco, evita le ore più calde; con vento forte o maltempo il servizio può essere sospeso.',
         '**Eventi.** Per il Festino di Santa Rosalia, il 14 e 15 luglio, il Comune vieta bici e monopattini, anche a noleggio, nelle zone degli eventi (ordinanza dell’8 luglio 2026): controlla quella dell’anno. La Maratona di Palermo (la prossima il 15 novembre 2026) parte e arriva in piazza Ruggero Settimo, al Politeama; nel 2025 erano chiuse anche via Libertà e la Favorita.',
-        '**Alternative.** Il bike sharing dell’AMAT ha chiuso il 1° aprile 2025. Le bici elettriche di Dott e Lime erano una sperimentazione triennale partita nel 2022, senza proroga pubblicata: guarda le loro app; la nostra mappa mostra solo monopattini. Restano bus e tram AMAT e il passante ferroviario.',
+        '**Alternative.** Il bike sharing dell’AMAT ha chiuso il 1° aprile 2025. Le bici elettriche di Dott e Lime sono partite nel 2022 come sperimentazione triennale. Poi ci sono bus e tram AMAT e il passante ferroviario.',
       ],
     },
     {
@@ -166,23 +148,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quale monopattino scegliere a Palermo: Bird, Dott o Lime?',
-      answer: 'Le regole sono le stesse per tutti: contano il mezzo più vicino e il prezzo, che vedi solo nelle app. La mappa di ScootRadar li mostra tutti e tre: conviene avere le tre app.',
+      answer: 'Le regole e i limiti del Comune sono gli stessi per tutti e tre: conta il mezzo più vicino, quindi conviene avere le tre app.',
     },
     {
       question: 'Si può andare in monopattino in via Maqueda?',
       answer: 'Tra via Cavour e piazza Bellini, cioè dal Teatro Massimo a poco dopo i Quattro Canti, solo dalle 5 alle 10 del mattino; da piazza Bellini a piazza Sant’Antonino sempre, a 6 km/h. L’app di Bird non ti ferma: vale il cartello.',
     },
     {
-      question: 'A che età si può noleggiare un monopattino a Palermo? Serve la patente?',
-      answer: 'Servono 18 anni: il Comune riserva lo sharing ai maggiorenni, anche se la legge permette di guidare dai 14. All’iscrizione carichi un documento d’identità; la patente non serve.',
-    },
-    {
       question: 'Ci sono monopattini a Mondello?',
       answer: 'Sì: l’area di Bird arriva a Mondello, e puoi chiudere la corsa in piazza Mondello o a Valdesi, non sulla spiaggia. Fuori stagione ne trovi pochi: a metà ottobre 2026 ce n’erano un paio. D’estate, la domenica e nei festivi, sul lungomare pedonale conviene portarlo a mano.',
-    },
-    {
-      question: 'Si può portare il monopattino sul treno per l’aeroporto?',
-      answer: 'Il tuo sì: sui regionali Trenitalia, Trinacria Express compreso, viaggia gratis se è piegato e spento e non supera 120×80×45 cm. Quello in sharing no, e a Punta Raisi non ce ne sono: chiudi la corsa in città e prendi il treno.',
     },
   ],
   sources: [

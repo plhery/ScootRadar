@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'culver-city',
   name: 'E-scooters in Culver City, California',
   title: 'E-scooters in Culver City, CA 2026: Bird, rules, parking',
-  description: 'E-scooters in Culver City, CA: Bird’s City agreement, no sidewalks, where to park, Ballona Creek, the E Line and West LA College.',
+  description: 'E-scooters in Culver City, CA: renting a Bird under the City’s agreement, no sidewalks, where to park, Ballona Creek, the E Line and West LA College.',
   headline: 'E-scooters in Culver City, California: Bird, the City’s rules, and where to ride and park',
-  lede: 'E-scooters in Culver City come from Bird, which holds the City’s only operating agreement (July 2026 to June 2027). Lime’s app draws its Los Angeles area over the city too. Bird’s riders must be 18 with a driving licence, keep to 15 mph, stay off sidewalks and park upright in the furniture zone. The Bird app shows the price before you unlock.',
+  lede: 'E-scooters in Culver City come from Bird, which holds the City’s only operating agreement (July 2026 to June 2027); Lime’s app draws its Los Angeles area over the city too. To rent, open the Bird app and scan the scooter’s QR code: the app shows the price before you unlock, and the City must approve Bird’s rates. Riders must be 18 with a driving licence, keep to 15 mph, stay off sidewalks and end the ride upright in the furniture zone, by a bike rack or in a drop zone, with a photo in the app.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:ca:Culver City',
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'How much does a Bird scooter cost in Culver City?',
       blocks: [
-        'The City’s agreement makes Bird show its rates before each ride, have them approved by the City and give 14 days’ notice of any change, and it requires low-income rates. Bird’s US rental agreement (updated 30 August 2024) says a ride may include a start fee, a charge by time or distance, and a minimum fee. Check the app before you unlock.',
+        'The City’s agreement makes Bird show its rates before each ride, have them approved by the City and give 14 days’ notice of any change, and it requires low-income rates. Bird’s US rental agreement (updated 30 August 2024) says a ride may include a start fee, a charge by time or distance, with time rounded up to the nearest minute, and a minimum fee.',
       ],
     },
     {
@@ -119,10 +119,6 @@ const guide: Guide = {
     {
       question: 'Are there Lime scooters in Culver City?',
       answer: 'Lime’s app area covers the whole city, and 19 Lime scooters stood inside it on 31 October 2026. But the City’s only agreement is with Bird (July 2026 to June 2027); Lime held an interim one in the City’s first pilot, which ended in March 2020.',
-    },
-    {
-      question: 'How much does a Bird scooter cost in Culver City?',
-      answer: 'The Bird app shows the rate before you unlock, and the City must approve it. Bird’s US terms allow a start fee, a time or distance charge and a minimum fee.',
     },
     {
       question: 'Can you ride a scooter on the Ballona Creek Bike Path?',

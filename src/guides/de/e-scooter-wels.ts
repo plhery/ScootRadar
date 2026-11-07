@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-wels',
   topic: 'wels',
   name: 'E-Scooter Wels: Dott, Lime und der Verhaltenskodex der Stadt',
-  title: 'E-Scooter Wels 2026: Abstellverbote, Tempo und Regeln',
-  description: 'E-Scooter in Wels: Dott und Lime, was der Verhaltenskodex von 2021 zwischen Stadt und Verleihern zu Abstellen und Tempo festlegt, und die StVO seit Mai 2026.',
+  title: 'E-Scooter Wels 2026: Dott, Lime, Abstellverbote und Regeln',
+  description: 'E-Scooter in Wels: Dott und Lime, wie du mietest, was der Verhaltenskodex zu Abstellen und Tempo festlegt und die StVO-Regeln seit Mai 2026.',
   headline: 'E-Scooter Wels: der Verhaltenskodex der Stadt, die Abstellverbote und die Regeln seit Mai 2026',
-  lede: 'Auf der Karte rund um Wels stehen Leih-Scooter von Dott und Lime; was eine Fahrt kostet und ab welchem Alter du mietest, prüfst du in der App. Für die Verleihfirmen gibt es einen Verhaltenskodex, laut Amtsblatt vom April 2021 eine verbindliche Vereinbarung mit der Stadt. Danach dürfen Leih-Scooter etwa nicht auf Gehsteigen unter 2,5 Meter Breite, auf Radwegen oder in Haltestellen stehen, die Firmen sperren die Rückgabe in Burggarten, Pollheimerpark und mehreren Fussgängerzonen und drosseln ihre Roller in den Fussgängerzonen auf 10 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
+  lede: 'In Wels leihst du E-Scooter von Dott und Lime in deren App: Konto anlegen, Zahlungsmittel hinterlegen, QR-Code am Lenker scannen. Dott vermietet laut seinen Bedingungen für Österreich ab 18, den Preis zeigt die App vor dem Entsperren. Für die Verleihfirmen gibt es einen Verhaltenskodex, laut Amtsblatt vom April 2021 eine verbindliche Vereinbarung mit der Stadt. Danach dürfen Leih-Scooter etwa nicht auf Gehsteigen unter 2,5 Meter Breite, auf Radwegen oder in Haltestellen stehen, die Firmen sperren die Rückgabe in Burggarten, Pollheimerpark und mehreren Fussgängerzonen und drosseln ihre Roller in den Fussgängerzonen auf 10 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-11-03',
   updated: '2026-11-03',
   city: 'at:Wels',
@@ -17,11 +17,11 @@ const guide: Guide = {
       heading: 'E-Scooter mieten in Wels: Dott und Lime',
       blocks: [
         'Am Dienstag, 3. November 2026, zeigte die [Karte rund um Wels](map:at:Wels) um 4:49 Uhr rund 200 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und rund 90 Lime-Scooter nach der letzten Zählung.',
-        'Entsperrgebühr, Minutenpreis und Mindestalter legt jeder Anbieter selbst fest. Schau vor der ersten Fahrt in der App von Dott oder Lime nach; verbindlich ist, was dort vor dem Entsperren steht.',
+        '**Dott** führt Wels, Thalheim bei Wels und Gunskirchen in seiner Standortliste (Stand November 2026). Laut seinen Bedingungen für Österreich mietest du ab 18; zum Preis nach Fahrzeit kann eine Freischaltgebühr kommen, und wer falsch parkt oder den Roller nicht richtig sperrt, zahlt bis zu 300 € für die Rückholung.',
         {
           steps: [
             'Einen freien Scooter auf der [Live-Karte von Wels](map:at:Wels) suchen und die App des Anbieters öffnen.',
-            'Konto anlegen, Zahlungsmittel hinterlegen, Preis und Mindestalter in der App prüfen.',
+            'Konto anlegen und ein Zahlungsmittel hinterlegen.',
             'QR-Code am Lenker scannen, losfahren und die Fahrt ausserhalb der Verbotszonen beenden. Ausführlich erklärt das der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
           ],
         },
@@ -45,7 +45,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter abstellen in Wels: wo es verboten ist',
       blocks: [
-        'Laut Amtsblatt vom April 2021 zählt der Kodex Orte im ganzen Stadtgebiet auf, an denen kein Leih-Scooter stehen darf, und Zonen, in denen die App die Rückgabe sperrt. Diese Zonen galten damals «einstweilen»; machen andere Orte Probleme, kann die Liste länger werden. Im August 2023 führte die Stadt die gesperrten Zonen und die Abstellverbote erneut als Teil des Kodex an, ohne die Zonen einzeln zu nennen. Prüfe vor dem Abstellen in der App, ob du die Fahrt dort beenden kannst.',
+        'Laut Amtsblatt vom April 2021 zählt der Kodex Orte im ganzen Stadtgebiet auf, an denen kein Leih-Scooter stehen darf, und Zonen, in denen die App die Rückgabe sperrt. Diese Zonen galten damals «einstweilen»; machen andere Orte Probleme, kann die Liste länger werden. Im August 2023 führte die Stadt die gesperrten Zonen und die Abstellverbote erneut als Teil des Kodex an. Prüfe vor dem Abstellen in der App, ob du die Fahrt dort beenden kannst.',
         {
           table: {
             caption: 'Abstellverbote für Leih-E-Scooter in Wels laut Verhaltenskodex (Amtsblatt April 2021)',
@@ -82,7 +82,7 @@ const guide: Guide = {
       heading: 'Was die Stadt Wels noch plant',
       blocks: [
         'Im August 2023 arbeitete die Stadt nach eigenen Angaben an einem neuen Vertrag, der den Kodex ergänzen sollte: Leih-Scooter sollten in der Innenstadt und an Brennpunkten der Stadtteile nur noch auf markierten Flächen abgestellt werden. Wer anderswo abstellt, könnte die Fahrt dann nicht beenden und müsste weiterzahlen. Mobilitätsstadtrat Stefan Ganzert befürwortete damals ausserdem eine Kennzeichenpflicht, wie sie laut Stadt gerade in Wien eingeführt worden war. Beides war ein Plan, keine Regel.',
-        'In der Sitzung des Gemeinderats vom 16. März 2026 sagte Stadtrat Ganzert: «Wir haben begonnen mit den Scooter-Abstellflächen.» Wo sie liegen und ob eine Fahrt nur dort enden darf, geht aus dem Protokoll nicht hervor; wo du abstellen darfst, prüfst du vor dem Beenden der Fahrt in der App.',
+        'In der Sitzung des Gemeinderats vom 16. März 2026 sagte Stadtrat Ganzert: «Wir haben begonnen mit den Scooter-Abstellflächen.»',
       ],
     },
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Wels?',
-      answer: 'Auf der Karte rund um Wels stehen Dott und Lime: am Dienstag, 3. November 2026, um 4:49 Uhr rund 200 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und rund 90 Lime-Scooter nach der letzten Zählung. Preis und Mindestalter prüfst du in der App.',
+      answer: 'Auf der Karte rund um Wels stehen Dott und Lime: am Dienstag, 3. November 2026, um 4:49 Uhr rund 200 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und rund 90 Lime-Scooter nach der letzten Zählung. Dott vermietet laut seinen Bedingungen ab 18.',
     },
     {
       question: 'Wo darf ich in Wels einen Leih-Scooter nicht abstellen?',
@@ -139,6 +139,8 @@ const guide: Guide = {
     { title: 'Stadt Wels, Amtsblatt April 2021, S. 15: E-Scooter: Verhaltenskodex für den Verleih und Verkehr in Kraft getreten (PDF)', url: 'https://www.wels.gv.at/fileadmin/data/Pressecorner/Amtsblatt/2021/Amtsblatt_April_2021.pdf' },
     { title: 'Stadt Wels: Wels für Kennzeichenpflicht und Abstellzonen für E-Scooter (10.8.2023)', url: 'https://www.wels.gv.at/news/detail/wels-fuer-kennzeichenpflicht-und-abstellzonen-fuer-e-scooter/' },
     { title: 'Stadt Wels: Verhandlungsschrift der 43. Sitzung des Gemeinderates vom 16.3.2026 (PDF)', url: 'https://www.wels.gv.at/fileadmin/data/Politik/Gemeinderat/TOP_und_Gemeinderatsprotokolle/TOP_und_Gemeinderatsprotokolle_2026/43._Gemeinderatssitzung_16032026_Protokoll.pdf' },
+    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Österreich', url: 'https://ridedott.com/de/allgemeine/oesterreich/' },
     { title: 'RIS: Strassenverkehrsordnung 1960, geltende Fassung', url: 'https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011336' },
     { title: 'RIS: Kraftfahrgesetz 1967, § 1 (Anwendungsbereich)', url: 'https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=1' },
     { title: 'RIS: Verwaltungsstrafgesetz 1991, § 50 (Organstrafverfügungen)', url: 'https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10005770&Paragraf=50' },
