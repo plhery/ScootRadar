@@ -20,8 +20,10 @@ The 1 km grids (2.5 km for Sola's envelope) contain 4,679 initial views in
 2,356 independently refreshed groups. At five seconds between job starts, plus
 native launch overhead, a full round needs roughly eight hours before adaptive
 subdivision. The initial idle interval is about 16 hours, reserving half the shared
-account turns for watched areas. A watched group has at most two initial views;
-it uses the normal one-minute active refresh cadence and a two-minute watch.
+account turns for watched areas. Each background group has at most two initial
+views. The visible map uses a separate focused read, shared between viewers and
+refreshed at most once a minute, so switching cities does not wait for a group's
+adaptive scan to finish.
 The queue coalesces identical work and alternates urgent/routine turns while
 both wait. These are conservative operating settings, not an upstream quota.
 Saturated cells subdivide within request/depth/time budgets (80 reads, three
@@ -67,11 +69,23 @@ request cost and city-by-city completeness remain production observations.
   leases one job at a time, reserves every second contested turn for routine work,
   spaces new jobs five seconds apart initially, and expires them after two minutes.
   Queued reads follow the collection's current watch priority, including a view
-  opened after its idle read was queued. Each map request watches two Ryde groups,
-  starting with the faded groups nearest its centre and moving on as each batch
-  finishes; the rest keep their routine cadence, preventing a
-  wide city view from queuing every group ahead of the next street view.
+  opened after its idle read was queued.
   These are conservative configuration defaults, not measured upstream quotas.
+- `server/rydeWatchedViews.ts`: one focused native read of the visible area, bypassing
+  the scheduler's long group scans. Previously, two scans woken in an earlier city
+  could hold both watched slots until they completed; switching cities then waited
+  minutes even though the worker was healthy. Viewport reads use the same broker,
+  native session, routine-turn reservation and durable egress budget. Nearby viewers
+  share a quantized centre/radius and a 60-second refresh interval. At most two cities
+  are sampled per answer, one read per city may be pending, eight in total, with 128
+  recent views retained in memory. Results expire after 15 minutes, retaining their
+  actual observation times. They add positive observations to the answer only;
+  unmentioned scooters remain faded, and these reads never replace a full feed,
+  certify absence, update city totals or change the snapshot file. The sample radius
+  is at most 5 km, and a saturated reply can omit scooters. Full group scans continue
+  on their routine schedule. A failed focused read waits a minute before retrying.
+  `scootradar_ryde_watched_views_total` separates requested, completed and failed reads;
+  `scootradar_ryde_watched_views_pending` reports current pending reads.
 - `server/rydeApp.ts`: bounded overlapping scans, adaptive subdivision, retained
   parent observations, stable pseudonyms and a separate coverage-validation gate.
   An unfinished scan fails collection, preserving the old snapshot. The private production pilot explicitly bypasses preproduction coverage/uptime gates.
@@ -403,8 +417,8 @@ coverage promise. Existing Entur/Skyss areas remain on their existing feeds.
 
 The production plan is the existing app-map scheduling pattern: independently
 refreshed spatial groups, a two-hour idle target where measured costs fit, and
-watched viewport groups prioritized for approximately 30–60-second refreshes
-under available capacity. Coalesce viewers of the same group, publish positive
+watched viewport reads prioritized for approximately 30–60-second refreshes
+under available capacity. Coalesce viewers of the same area, publish positive
 observations progressively, and retain old ages/last-seen data elsewhere. Reserve
 routine turns so interactive traffic cannot starve background coverage.
 

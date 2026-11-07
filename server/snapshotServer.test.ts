@@ -10,6 +10,10 @@ import { boundsCenter } from '../src/lib/geo';
 import { buildCityOverview, LIME_GROUPS_PER_REQUEST, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
+import { RydeWatchedViews } from './rydeWatchedViews';
+import type { RydeQuery } from './rydeBridge';
+import type { RydeArea } from './rydeApp';
+import rydeAreas from '../data/ryde-bridge-areas.json';
 
 const token = 'a-test-origin-token-with-at-least-32-characters';
 const servers: Server[] = [];
@@ -285,6 +289,47 @@ describe('collection on demand', () => {
   }
   const stops: Array<() => void> = [];
   afterEach(() => { for (const stop of stops.splice(0)) stop(); });
+
+  it('refreshes newly viewed Ryde cities without waiting for or waking exhaustive group scans', async () => {
+    const now = Date.now();
+    const augsburg = { south: 48.364, north: 48.369, west: 10.89, east: 10.90 };
+    const drammen = { south: 59.742, north: 59.747, west: 10.20, east: 10.21 };
+    const make = (area: string, bounds: typeof augsburg, source: FeedSnapshot['source']) => {
+      const system = REGIONAL_SCOOTER_SYSTEMS.find(s => s.rydeAppArea === area)!;
+      const [lat, lng] = boundsCenter(bounds);
+      return feed(`${source}:${system.id}`, bounds, now - minutes(40), { provider: 'ryde', source,
+        collectionMs: 30_000, vehicles: [{ ...vehicle('old-not-returned'), provider: 'ryde', lat, lng }] });
+    };
+    const feeds = [make('de-augsburg', augsburg, 'germany'), make('drammen', drammen, 'norway')];
+    const query = vi.fn(async (q: RydeQuery) => ({ version: 1 as const, id: 'a'.repeat(32),
+      query: { ...q, version: 1 as const, id: 'a'.repeat(32), expiresAt: now / 1000 + 120 },
+      observedAt: now / 1000, coverage: 'unknown' as const,
+      scooters: [{ id: String(q.cityId).padStart(32, '0'), lat: q.latitude, lng: q.longitude }] }));
+    const views = new RydeWatchedViews({ query }, rydeAreas.areas as unknown as RydeArea[], '*', REGIONAL_SCOOTER_SYSTEMS);
+    const demand = vi.fn<(ids: string[]) => string[]>(() => []);
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, {
+      rydeViews: views, refresher: { demand, refreshing: () => true, wait: async () => false } });
+    const get = async (bounds: typeof augsburg) => {
+      const params = new URLSearchParams(Object.entries(bounds).map(([key, value]) => [key, String(value)]));
+      const r = await fetch(`http://127.0.0.1:${port}/api/scooters?${params}&zoom=17`, { headers });
+      expect(r.status).toBe(200);
+      return { body: await r.json() as ScooterResponse, cache: r.headers.get('X-Scooter-Public-Cache-Control') };
+    };
+    for (const bounds of [augsburg, drammen]) {
+      const pending = await get(bounds);
+      expect(pending.body.meta.refreshing).toBe(true);
+      expect(pending.cache).toBe('no-store');
+      const fresh = await get(bounds);
+      expect(fresh.body.vehicles.filter(v => v.provider === 'ryde')).toHaveLength(1);
+      // A positive-only view must retain an old scooter that the limited reply did not mention.
+      expect(fresh.body.lastSeen?.vehicles.map(v => v.vehicle_id)).toEqual(['old-not-returned']);
+      expect(fresh.body.meta.generatedAt).toBe(new Date(now).toISOString());
+    }
+    await get(augsburg);
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(demand.mock.calls.every(([ids]) => ids.length === 0)).toBe(true);
+    expect(feeds.every(f => f.observedAt === now - minutes(40))).toBe(true);
+  });
 
   it('marks as watched the feeds whose positions answer a request, and none for the city totals', async () => {
     const now = Date.now();

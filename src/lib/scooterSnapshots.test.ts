@@ -344,6 +344,27 @@ describe('feeds collected on demand', () => {
     expect(next.every(g=>!completed.has(g.id))).toBe(true);
   });
 
+  it('uses the latest positive observation of a scooter without deleting unmentioned last-seen positions', () => {
+    const old = feed({ id: 'france:ryde_app_test_000', provider: 'ryde', observedAt: now - minutes(40),
+      collectionMs: 30_000, vehicles: [vehicle('moved'), vehicle('unmentioned')] });
+    const extra = feed({ id: old.id + '_view', provider: 'ryde', stale: true,
+      vehicles: [{ ...vehicle('moved'), lat: 45.76 }] });
+    const answered = querySnapshot(snapshot([old]), query, 16, now,
+      { idleInView: new Set([old.id]), observations: [extra] });
+    expect(answered.vehicles.map(v => [v.vehicle_id, v.lat])).toEqual([['moved', 45.76]]);
+    expect(answered.lastSeen?.vehicles.map(v => v.vehicle_id)).toEqual(['unmentioned']);
+    // A confirmed move outside the view must not leave the same scooter at its old location.
+    const outside = { ...extra, vehicles: [{ ...vehicle('moved'), lat: 46.2 }] };
+    const gone = querySnapshot(snapshot([old]), query, 16, now,
+      { idleInView: new Set([old.id]), observations: [outside] });
+    expect(gone.vehicles).toEqual([]);
+    expect(gone.lastSeen?.vehicles.map(v => v.vehicle_id)).toEqual(['unmentioned']);
+    // A newer completed group beats an older focused read, even if appended later.
+    const newer = { ...old, observedAt: now, vehicles: [{ ...vehicle('moved'), lat: 45.77 }] };
+    expect(querySnapshot(snapshot([newer]), query, 16, now, { observations: [{ ...extra, observedAt: now - 1000 }] })
+      .vehicles.map(v => v.lat)).toEqual([45.77]);
+  });
+
   describe('Lime\'s groups in a wide view', () => {
     const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
     const wide = { bounds: berlin, minBattery: 0 };

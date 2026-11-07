@@ -494,6 +494,8 @@ export function answerKeepUntil(snapshot: MobilitySnapshot, query: FeedQuery, zo
 }
 
 export interface SnapshotQueryOptions {
+  /** Recent positive observations of the viewport; never full-feed replacements or absence claims. */
+  observations?: FeedSnapshot[];
   /**
    * Feeds being collected again for this request, which the response did not
    * wait for. It says so with meta.refreshing and asks to be polled again soon.
@@ -517,7 +519,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   options: SnapshotQueryOptions = {}): ScooterResponse {
   if (query.outsideCoverage) return scooterResponse({ vehicles: [], meta: emptyHealth() }, zoom, { availableProviders: [] });
   if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return overviewResponse(snapshot, query, zoom, now);
-  const relevant = feedsForQuery(snapshot, query, zoom);
+  const relevant = [...feedsForQuery(snapshot, query, zoom), ...(options.observations ?? [])];
   const counted = relevant.filter(feed => !options.idleInView?.has(feed.id) || showsPositions(feed, now));
   const meta = healthFor(counted, now, undefined, options.refreshing);
   const showing = (feed: FeedSnapshot) => showsPositions(feed, now);
@@ -549,6 +551,26 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     }
   };
   const unique = new Map<string, Vehicle>();
+  // Only viewport-observed identities need reconciliation with the full feeds. An observation
+  // outside the box can still confirm that its old marker in the box has moved away.
+  const newest = new Map<string, number>();
+  for (const feed of options.observations ?? []) {
+    if (feed.skipped || !showsPositions(feed, now)) continue;
+    for (const vehicle of feed.vehicles) {
+      const key = vehicleKey(vehicle);
+      newest.set(key, Math.max(feed.observedAt, newest.get(key) ?? -Infinity));
+    }
+  }
+  if (newest.size) for (const feed of relevant) {
+    if (feed.skipped) continue;
+    const sweep = shownSweep(feed, now);
+    const at = sweep?.startedAt ?? feed.observedAt;
+    if (!showsPositions(feed, now) && !sweep) continue;
+    for (const vehicle of sweep?.vehicles ?? feed.vehicles) {
+      const key = vehicleKey(vehicle);
+      if (newest.has(key)) newest.set(key, Math.max(at, newest.get(key)!));
+    }
+  }
   // When each feed's positions shown were seen: its last collection's, or its sweep's under way.
   const shownSince: number[] = [];
   for (const feed of relevant) {
@@ -557,7 +579,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     if (showsPositions(feed, now)) shownSince.push(feed.observedAt);
     else if (sweep) shownSince.push(sweep.startedAt);
     else continue;
-    pick(unique, sweep?.vehicles ?? feed.vehicles);
+    const at = sweep?.startedAt ?? feed.observedAt;
+    pick(unique, sweep?.vehicles ?? feed.vehicles, (_vehicle, key) => at < (newest.get(key) ?? -Infinity));
   }
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
@@ -567,7 +590,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     if (!showsLastSeen(feed, now, fading, options.lastSeenMaxAgeMs?.(feed.id)) || quietInPause(feed, now, showing)) continue;
     const swept = shownSweep(feed, now)?.swept ?? [];
     const before = lastSeen.size;
-    pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) ||
+    pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) || newest.has(key) ||
       swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)));
     if (lastSeen.size > before) lastSeenTimes.push(feed.observedAt);
   }

@@ -1,4 +1,5 @@
 import type { RydeBroker } from './rydeBridge';
+import type { RydeWatchedViews } from './rydeWatchedViews';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
@@ -47,6 +48,7 @@ export const JOIN_WAIT_MS = 300;
 
 interface ServerOptions {
   rydeBridge?: RydeBroker;
+  rydeViews?: RydeWatchedViews;
   snapshot: () => MobilitySnapshot | undefined;
   token?: string;
   production?: boolean;
@@ -188,7 +190,8 @@ export function createSnapshotServer(options: ServerOptions) {
         response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return;
       }
       response.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4; charset=utf-8' });
-      response.end(options.metrics.render(snapshot, now, url.searchParams.get('only') === 'counters') + (options.rydeBridge?.metrics() ?? ''));
+      response.end(options.metrics.render(snapshot, now, url.searchParams.get('only') === 'counters') +
+        (options.rydeBridge?.metrics() ?? '') + (options.rydeViews?.metrics() ?? ''));
       return;
     }
     const zones = url.pathname === ZONES_PATH && options.zones;
@@ -228,11 +231,12 @@ export function createSnapshotServer(options: ServerOptions) {
     let idleInView: Set<string> | undefined;
     let comingSoon: Set<string> | undefined;
     const refresher = options.refresher;
+    const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
       // all but the Lime groups past the few nearest the middle of the view, which Lime's pace could not keep up.
-      const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
-      const watched = watches ? demandedFeeds(inView, parsed.query.bounds, now) : [];
+      // Ryde's watched reads bypass long full-group scans. Keep those scans on their idle schedule.
+      const watched = watches ? demandedFeeds(inView.filter(feed => !options.rydeViews?.handles(feed)), parsed.query.bounds, now) : [];
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
       const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds));
@@ -256,8 +260,14 @@ export function createSnapshotServer(options: ServerOptions) {
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
       comingSoon = new Set(quick.filter(id => refreshing!.has(id)));
     }
+    const rydeViews = options.rydeViews?.read(inView, parsed.query.bounds, watches, Date.now());
+    if (rydeViews) {
+      refreshing ??= new Set();
+      for (const id of rydeViews.refreshing) refreshing.add(id);
+    }
     const answeredAt = Date.now();
     const body = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
+      observations: rydeViews?.observations,
       lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, zoom, answeredAt, options.retention);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps

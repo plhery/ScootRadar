@@ -1,5 +1,7 @@
 import { RydeBroker } from './rydeBridge';
-import { loadRydeRuntimeConfig, withRydeAppCollectors } from './rydeApp';
+import { RydeWatchedViews } from './rydeWatchedViews';
+import { loadRydeRuntimeConfig, withRydeAppCollectors, type RydeArea } from './rydeApp';
+import rydeAreas from '../data/ryde-bridge-areas.json';
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
@@ -51,6 +53,8 @@ import { readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps } fro
 
 const rydeConfig=loadRydeRuntimeConfig();
 const rydeBridge=rydeConfig ? new RydeBroker(rydeConfig.token) : undefined;
+const rydeViews=rydeBridge && rydeConfig ? new RydeWatchedViews(rydeBridge, rydeAreas.areas as unknown as RydeArea[],
+  rydeConfig.areas, REGIONAL_SCOOTER_SYSTEMS) : undefined;
 const RYDE_WORKER = 'Ryde bridge';
 /** The Ryde bridge worker's silence once Sentry has heard of it, saved with the feed states for a restart to go on with. */
 function workerSilences(now: number): Record<string, number> | undefined {
@@ -169,7 +173,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visi
   limeAccountRequests,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
     evictions: upstreamJsonCache.evictions }) });
-const server = createSnapshotServer({ rydeBridge, snapshot: () => snapshot,
+const server = createSnapshotServer({ rydeBridge, rydeViews, snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors,
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
