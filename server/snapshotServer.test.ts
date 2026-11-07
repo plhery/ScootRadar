@@ -218,6 +218,7 @@ describe('snapshot origin boundary', () => {
     const { port } = await start(undefined, { metrics: createSnapshotMetrics('abc123'), metricsToken });
     await (await fetch(`http://127.0.0.1:${port}/api/scooters?south=47.3&west=8.5&north=47.4&east=8.6&zoom=16`)).text();
     await (await fetch(`http://127.0.0.1:${port}/elsewhere?south=47.3`)).text();
+    await (await fetch(`http://127.0.0.1:${port}/internal/ryde/job`)).text();
     expect((await fetch(`http://127.0.0.1:${port}/metrics`, { headers: { Authorization: `Bearer ${token}` } })).status).toBe(401);
     const response = await fetch(`http://127.0.0.1:${port}/metrics`, { headers: { Authorization: `Bearer ${metricsToken}` } });
     expect(response.status).toBe(200);
@@ -226,6 +227,7 @@ describe('snapshot origin boundary', () => {
     expect(text).toContain('scootradar_build_info{version="abc123"} 1');
     expect(text).toContain('scootradar_http_requests_total{route="/api/scooters",status="401"} 1');
     expect(text).toContain('scootradar_http_requests_total{route="other",status="404"} 1');
+    expect(text).toContain('scootradar_http_requests_total{route="/internal/ryde/job",status="404"} 1');
     expect(text).toContain('scootradar_http_requests_total{route="/metrics",status="401"} 1');
     expect(text).not.toContain('47.3');
     const counters = await (await fetch(`http://127.0.0.1:${port}/metrics?only=counters`,

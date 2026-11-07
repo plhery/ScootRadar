@@ -89,7 +89,9 @@ interface ServerOptions {
 // The Worker's address searches report here how many requests they sent to Geoapify.
 const GEOCODE_USAGE_PATH = '/api/geocode-usage';
 const ZONES_PATH = '/api/zones';
-const ROUTES = new Set(['/api/scooters', ZONES_PATH, GEOCODE_USAGE_PATH, '/health', '/ready', '/feeds', '/metrics']);
+// The Ryde bridge's two paths are listed too (rydeBridge.ts): until 7 November 2026 they counted as 'other'.
+const ROUTES = new Set(['/api/scooters', ZONES_PATH, GEOCODE_USAGE_PATH, '/health', '/ready', '/feeds', '/metrics',
+  '/internal/ryde/job', '/internal/ryde/result']);
 
 export function createSnapshotServer(options: ServerOptions) {
   if (options.production && (!options.token || options.token.length < 32)) {
