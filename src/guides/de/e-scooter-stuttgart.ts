@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Stuttgart 2026: Ausleihen, Preise, Regeln, Parken',
   description: 'E-Scooter in Stuttgart ausleihen: Voi, Dott, Lime und Bolt, zehn Minuten ab 2,89 € (Stand November 2026), die Regeln, Parken in der City, Bus und Bahn.',
   headline: 'E-Scooter Stuttgart: Anbieter, Preise, Parkzonen und was auf dem Wasen gilt',
-  lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt, jeweils über deren App: Sie zeigt freie Scooter auf einer Karte, und mit ihr entsperrst du einen. Zehn Minuten kosten zwischen 2,89 € bei Voi und 3,39 € bei Dott (Stand November 2026); bis etwa 25 Minuten ist Voi am günstigsten, bei längeren Fahrten sind es Bolt und Lime. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
+  lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt, jeweils über deren App: Sie zeigt freie Scooter auf einer Karte, und mit ihr entsperrst du einen. Zehn Minuten kosten 2,89 € bei Voi, 3,19 € bei Bolt und 3,39 € bei Dott; Lime nennt 1,00 € plus 0,22 € pro Minute, zzgl. MwSt. (Stand November 2026). Bis etwa 25 Minuten ist Voi am günstigsten, bei längeren Fahrten Bolt. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
   published: '2026-10-13',
   updated: '2026-10-23',
   city: 'de:Stuttgart',
@@ -32,12 +32,12 @@ const guide: Guide = {
             rows: [
               ['Voi', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
               ['Bolt', '0,99 €', '0,22 €', '3,19 €', '5,39 €'],
-              ['Lime', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
+              ['Lime (zzgl. MwSt.)', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
               ['Dott', '0,99 €', '0,24 €', '3,39 €', '5,79 €'],
             ],
           },
         },
-        'Bis etwa 25 Minuten ist Voi wegen der niedrigen Entsperrgebühr am günstigsten, bei längeren Fahrten sind es Bolt und Lime mit 0,22 € pro Minute. Laut Stadt zählt jede angefangene Minute. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Bis etwa 25 Minuten ist Voi wegen der niedrigen Entsperrgebühr am günstigsten, bei längeren Fahrten Bolt mit 0,22 € pro Minute. Laut Stadt zählt jede angefangene Minute. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
         'Wo der nächste Scooter steht, zeigt die [Live-Karte von Stuttgart](map:de:Stuttgart).',
       ],
     },
@@ -167,11 +167,11 @@ const guide: Guide = {
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Stuttgart am günstigsten?',
-      answer: 'Für Fahrten bis etwa 25 Minuten Voi: 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026). Bei längeren Fahrten sind Bolt und Lime mit 0,22 € pro Minute günstiger. Noch billiger fährst du mit dem Leihrad RegioRad.',
+      answer: 'Für Fahrten bis etwa 25 Minuten Voi: 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026). Bei längeren Fahrten ist Bolt mit 0,22 € pro Minute günstiger. Noch billiger fährst du mit dem Leihrad RegioRad.',
     },
     {
       question: 'Was kostet Lime in Stuttgart?',
-      answer: 'Fast alle Lime-Scooter in Stuttgart kosten 1,00 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 3,20 € (Stand November 2026). Verbindlich ist der Preis in der Lime-App.',
+      answer: 'Fast alle Lime-Scooter in Stuttgart kosten 1,00 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 3,20 €, jeweils zzgl. MwSt. (Stand November 2026). Verbindlich ist der Preis in der Lime-App.',
     },
     {
       question: 'Darf ich einen E-Scooter in der S-Bahn in Stuttgart mitnehmen?',

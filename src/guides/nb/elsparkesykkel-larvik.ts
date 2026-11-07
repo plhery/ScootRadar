@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'larvik',
   name: 'Leie elsparkesykkel i Larvik',
   title: 'Elsparkesykkel Larvik 2026: Ryde, pris, soner og regler',
-  description: 'Elsparkesykkel i Larvik: Ryde tar 5,90 kr pluss 2,50 kr per minutt og stenger kl. 23–05. Soner i sentrum, stasjonen, ferja til Hirtshals og reglene.',
+  description: 'Elsparkesykkel i Larvik: Ryde, 5,90 kr pluss 2,50 kr/min (november 2026), stengt kl. 23–05. Soner i sentrum, stasjonen, ferja til Hirtshals og reglene.',
   headline: 'Elsparkesykkel i Larvik: Ryde, pris, nattestenging, soner og parkering',
-  lede: 'Vil du leie elsparkesykkel i Larvik, er det Ryde som gjelder: Ryde var det eneste selskapet som søkte om og fikk kommunens tillatelse for 2026 og 2027, skriver kommunen (mars 2026). Ifølge Rydes åpne data (1. november 2026) koster det 5,90 kr å låse opp og 2,50 kr per minutt, og du kan leie fra kl. 05 til 23. Kommunens forskrift stenger utleien fra kl. 23 til 05 hver natt. Rydes område dekket 1. november 2026 selve byen, fra Nanset til Østre Halsen, men ikke Stavern.',
+  lede: 'Vil du leie elsparkesykkel i Larvik, er det Ryde som gjelder: Ryde var det eneste selskapet som søkte om og fikk kommunens tillatelse for 2026 og 2027, skriver kommunen (mars 2026). Ifølge Rydes åpne data (november 2026) koster det 5,90 kr å låse opp og 2,50 kr per minutt, og du kan leie fra kl. 05 til 23. Kommunens forskrift stenger utleien fra kl. 23 til 05 hver natt, og Ryde skal fjerne sparkesyklene når vinterdriften krever det. Rydes område dekket 1. november 2026 selve byen, fra Nanset til Østre Halsen, men ikke Stavern.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'no:Larvik',
@@ -25,27 +25,26 @@ const guide: Guide = {
     {
       heading: 'Hva koster det å leie Ryde i Larvik?',
       blocks: [
-        'Ifølge Rydes åpne data (1. november 2026) koster det 5,90 kr å låse opp en Ryde i Larvik, og deretter 2,50 kr per minutt. Opplåsingen koster dermed 5 kr mindre enn i [Sandefjord](guide:sandefjord) og [Tønsberg](guide:tonsberg), der Ryde tar 10,90 kr. Prisene kan endres, så sjekk appen før du låser opp.',
+        'Ifølge Rydes åpne data (november 2026) koster det 5,90 kr å låse opp en Ryde i Larvik, og deretter 2,50 kr per minutt. Opplåsingen koster dermed 5 kr mindre enn i [Tønsberg](guide:tonsberg), der Ryde tar 10,90 kr. Prisene kan endres, så sjekk appen før du låser opp.',
         {
           table: {
-            caption: 'Ryde i Vestfold, ifølge Rydes åpne data 1. november 2026',
+            caption: 'Ryde i Larvik og Tønsberg, ifølge Rydes åpne data i november 2026',
             head: ['By', 'Opplåsing', 'Per minutt', 'Åpent'],
             rows: [
               ['Larvik', '5,90 kr', '2,50 kr', 'Kl. 05–23 alle dager'],
-              ['Sandefjord', '10,90 kr', '2,50 kr', 'Kl. 05–01 alle dager'],
               ['Tønsberg', '10,90 kr', '2,50 kr', 'Kl. 05–01, men 05–23 fredag og lørdag'],
             ],
           },
         },
-        'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. Statens vegvesen minner om at utleieselskapene kan ha høyere aldersgrense, for eksempel 16 eller 18 år, og hva Ryde krever, ser du i appen. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget er **ikke vedtatt**.',
+        'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. Statens vegvesen minner om at utleieselskapene kan ha høyere aldersgrense, for eksempel 16 eller 18 år, og hva Ryde krever, ser du i appen. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
       heading: 'Når kan du leie? Stengt fra kl. 23 til 05',
       blocks: [
-        'Forskriften for Larvik sier i § 6 g at utleie kan skje «alle dager, hele dagen, unntatt i tidsrommet mellom kl. 23.00–05.00». Rydes åpne data (1. november 2026) viser det samme: Du kan leie fra kl. 05 til 23, alle dager.',
+        'Forskriften for Larvik sier i § 6 g at utleie kan skje «alle dager, hele dagen, unntatt i tidsrommet mellom kl. 23.00–05.00». Rydes åpne data (november 2026) viser det samme: Du kan leie fra kl. 05 til 23, alle dager.',
         'Forskriften sier også at alarmer med lyd skal være slått av fra kl. 20 til 07 natt til hverdager, og fra kl. 20 til 09 natt til lørdager, søndager og helligdager.',
-        'Forskriften har ingen fast vinterpause. Men utleieren skal på eget initiativ fjerne sparkesyklene når veieier eller grunneier har drifts- og vedlikeholdsoppgaver som krever det, som ved vinterdrift, og kommunen kan i tillegg sette egne frister for rydding og fjerning. Søndag 1. november 2026 sto de fortsatt ute. Tar Ryde dem inn, blir [kartet over Larvik](map:no:Larvik) tomt. Tidene i andre byer står i guiden om [åpningstider for elsparkesykler](guide:opening-hours).',
+        '**Vinter:** Etter forskriften (§ 6 k) skal utleieren på eget initiativ fjerne sparkesyklene når veieier eller grunneier har drifts- og vedlikeholdsoppgaver som krever det, som ved vinterdrift, og kommunen kan i tillegg sette egne frister for rydding og fjerning. Tidene i andre byer står i guiden om [åpningstider for elsparkesykler](guide:opening-hours).',
       ],
     },
     {
@@ -87,7 +86,7 @@ const guide: Guide = {
             '**Ferja til Hirtshals:** Ifølge Color Line (november 2026) ligger terminalen i Revet 8, rundt 2,5 km fra tog og buss, og overfarten med SuperSpeed tar 3 timer og 45 minutter. Ved terminalen kan du ikke avslutte en Ryde-tur (1. november 2026), og nærmeste sted der du kan, er rundt 300 meter unna i luftlinje. En egen elsparkesykkel kan bare fraktes på bildekket, og lading om bord er ikke tillatt, skriver Color Line.',
           ],
         },
-        'Ryde kjører også i nabobyene: Se guidene for [Sandefjord](guide:sandefjord), [Tønsberg](guide:tonsberg) og [Skien](guide:skien).',
+        'Om Ryde i nabobyene: Se guidene for [Sandefjord](guide:sandefjord), [Tønsberg](guide:tonsberg) og [Skien](guide:skien).',
       ],
     },
     {
@@ -135,11 +134,11 @@ const guide: Guide = {
     },
     {
       question: 'Hva koster det å leie Ryde i Larvik?',
-      answer: 'Ifølge Rydes åpne data (1. november 2026) koster det 5,90 kr å låse opp og 2,50 kr per minutt. Sjekk prisen i appen før du låser opp.',
+      answer: 'Ifølge Rydes åpne data (november 2026) koster det 5,90 kr å låse opp og 2,50 kr per minutt. Sjekk prisen i appen før du låser opp.',
     },
     {
       question: 'Når stenger utleien om natten i Larvik?',
-      answer: 'Fra kl. 23 til 05 hver natt. Det står i kommunens forskrift, og Rydes åpne data (1. november 2026) viser de samme tidene.',
+      answer: 'Fra kl. 23 til 05 hver natt. Det står i kommunens forskrift, og Rydes åpne data (november 2026) viser de samme tidene.',
     },
     {
       question: 'Kan jeg leie elsparkesykkel i Stavern?',
@@ -154,9 +153,8 @@ const guide: Guide = {
     { title: 'Larvik kommune: Elsparkesykler (publisert 10. mars 2026, oppdatert 12. mars 2026)', url: 'https://www.larvik.kommune.no/vann-vei-og-renovasjon/vei-og-trafikk/elsparkesykler/' },
     { title: 'Larvik kommune: Elsparkesykler, presentasjon 2. juni 2026 (PDF, med forskriften og kartet over restriksjonsområder)', url: 'https://www.larvik.kommune.no/media/ei3jaz1v/20260602-rmnf-elsparkesyklerpptx.pdf' },
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy på offentlig grunn, Larvik kommune, Vestfold', url: 'https://lovdata.no/dokument/LF/forskrift/2025-06-18-1805' },
-    { title: 'Entur: Rydes åpne data for Larvik (GBFS, 1. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydelarvik/gbfs' },
-    { title: 'Entur: Rydes åpne data for Sandefjord (GBFS, 1. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydesandefjord/gbfs' },
-    { title: 'Entur: Rydes åpne data for Tønsberg (GBFS, 1. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetonsberg/gbfs' },
+    { title: 'Entur: Rydes åpne data for Larvik (GBFS, 7. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydelarvik/gbfs' },
+    { title: 'Entur: Rydes åpne data for Tønsberg (GBFS, 7. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetonsberg/gbfs' },
     { title: 'VKT: Ha med om bord', url: 'https://www.vkt.no/reise/ha-med-ombord/' },
     { title: 'VKT: Ta bussen til Torp Sandefjord lufthavn (2. oktober 2026)', url: 'https://www.vkt.no/torp/' },
     { title: 'Bane NOR: Larvik stasjon', url: 'https://www.banenor.no/reise-og-trafikk/stasjoner/-l-/larvik/' },
@@ -164,6 +162,7 @@ const guide: Guide = {
     { title: 'Color Line: Larvik–Hirtshals, fakta', url: 'https://www.colorline.no/larvik-hirtshals/fakta' },
     { title: 'Color Line: Sikkerhet om bord', url: 'https://www.colorline.no/praktisk-informasjon/sikkerhet-om-bord' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
     { title: 'Samferdselsdepartementet: Regjeringen foreslår å heve aldersgrensen for bruk av elsparkesykler til 16 år (5. oktober 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19092540/regjeringen-foreslar-a-heve-aldersgrensen-for-bruk-av-elsparkesykler-til-16-ar?lang=no' },
   ],
 };

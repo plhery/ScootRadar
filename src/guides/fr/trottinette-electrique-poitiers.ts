@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'poitiers',
   name: 'Louer une trottinette électrique à Poitiers',
   title: 'Trottinette électrique Poitiers 2026 : Pony, règles, zones',
-  description: 'Trottinette électrique à Poitiers : Pony, les emplacements où finir son trajet, la zone à 10 km/h du centre-ville, l’âge, les trottoirs et les amendes.',
+  description: 'Trottinette électrique à Poitiers : Pony à 1 € + 0,23 €/min (novembre 2026), où finir son trajet, la zone à 10 km/h du centre-ville, l’âge et les amendes.',
   headline: 'Trottinette électrique à Poitiers : Pony, où se garer, où rouler et à quelle vitesse en 2026',
-  lede: 'À Poitiers, les trottinettes électriques en libre-service sont celles de **Pony**, l’opérateur retenu par Grand Poitiers, qui les exploite depuis octobre 2022 ; le prix et l’âge minimum se vérifient dans l’application. Selon Grand Poitiers, l’usager ne peut finir son trajet que sur un emplacement autorisé, une station Pony marquée au sol ou un appui-vélo de Grand Poitiers, et la trottinette Pony ne dépasse pas 10 km/h dans le centre-ville. Le Code de la route fixe le reste : 25 km/h au plus, 14 ans minimum, une seule personne, et pas de trottoir sauf autorisation du maire.',
+  lede: 'À Poitiers, les trottinettes électriques en libre-service sont celles de **Pony**, l’opérateur retenu par Grand Poitiers, qui les exploite depuis octobre 2022. En novembre 2026, une trottinette Pony coûte 1 € au déverrouillage puis 0,23 € la minute, selon les données ouvertes de Pony ; l’âge minimum se vérifie dans l’application. Selon Grand Poitiers, l’usager ne peut finir son trajet que sur un emplacement autorisé, une station Pony marquée au sol ou un appui-vélo de Grand Poitiers, et la trottinette Pony ne dépasse pas 10 km/h dans le centre-ville. Le Code de la route fixe le reste : 25 km/h au plus, 14 ans minimum, une seule personne, et pas de trottoir sauf autorisation du maire.',
   published: '2026-11-03',
   updated: '2026-11-03',
   city: 'fr:Poitiers',
@@ -34,7 +34,7 @@ const guide: Guide = {
             '**Garer la trottinette sur un emplacement autorisé** et envoyer une photo : c’est cette photo qui clôt le trajet.',
           ],
         },
-        '**Le prix.** Pony facture le déverrouillage puis la minute, et propose des forfaits et abonnements, dont un pour les moins de 26 ans. Les montants peuvent changer : vérifiez-les dans l’application avant de partir. Première location ? Lisez [comment louer une trottinette électrique](guide:how-to-rent).',
+        '**Le prix.** En novembre 2026, Pony facture 1 € le déverrouillage puis 0,23 € la minute, selon ses données ouvertes. Il propose aussi des forfaits et abonnements, dont un pour les moins de 26 ans : l’application en affiche le prix. Première location ? Lisez [comment louer une trottinette électrique](guide:how-to-rent).',
         '**Un problème ?** Le service client de Pony répond au 05 64 21 15 56, numéro que donne Grand Poitiers.',
       ],
     },
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelle trottinette électrique louer à Poitiers ?',
-      answer: 'Pony, l’opérateur retenu par Grand Poitiers, qui exploite des trottinettes et des vélos à assistance électrique en libre-service depuis octobre 2022. Le prix et l’âge exigé se vérifient dans l’application.',
+      answer: 'Pony, l’opérateur retenu par Grand Poitiers, qui exploite des trottinettes et des vélos à assistance électrique en libre-service depuis octobre 2022. En novembre 2026, la trottinette coûte 1 € au déverrouillage puis 0,23 € la minute ; l’âge exigé se vérifie dans l’application.',
     },
     {
       question: 'Où garer une trottinette Pony à Poitiers ?',
@@ -160,6 +160,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Grand Poitiers : Pony, vélos et trottinettes en libre-service', url: 'https://www.grandpoitiers.fr/au-quotidien/deplacements/velos-et-mobilites-actives/pony-velos-et-trottinettes-en-libre-service' },
+    { title: 'Pony : flux de données public (GBFS) de Poitiers, tarifs', url: 'https://proxy.transport.data.gouv.fr/resource/pony-poitiers-gbfs/system_pricing_plans.json' },
     { title: 'Service-public.gouv.fr : Circulation à trottinette électrique, hoverboard, gyropode, rollers ou skateboard (F308, vérifié le 11 août 2026)', url: 'https://www.service-public.gouv.fr/particuliers/vosdroits/F308' },
   ],
 };

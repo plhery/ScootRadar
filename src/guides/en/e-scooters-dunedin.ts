@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'dunedin',
   name: 'Renting an e-scooter in Dunedin, New Zealand',
   title: 'Dunedin e-scooters: Flamingo, prices and the rules',
-  description: 'E-scooter hire in Dunedin: Flamingo charges NZ$1 + 45c a minute, $5.50 for 10 minutes. No licence needed; no helmet law, but Flamingo requires one.',
+  description: 'E-scooter hire in Dunedin: Flamingo charges NZ$1 + 45c a minute (November 2026), $5.50 for 10 minutes. No licence; no helmet law, but Flamingo needs one.',
   headline: 'E-scooters in Dunedin, New Zealand: Flamingo, prices, the rules, the University and Baldwin Street',
-  lede: 'You can rent an e-scooter in Dunedin, New Zealand, from Flamingo, which won the city council’s 2024 tender to be its sole e-scooter operator. Flamingo charges NZ$1 to unlock plus 45c a minute, 24 hours a day (published rate, 31 October 2026), so a 10-minute ride costs $5.50. You need no driving licence, and no law requires a helmet, though Flamingo’s terms do. You may ride on the footpath with care, on shared paths and on the road, and since 1 October 2026 in cycle lanes, but Flamingo keeps its scooters off Baldwin Street, the Botanic Garden and the heart of the University of Otago’s campus.',
+  lede: 'You can rent an e-scooter in Dunedin, New Zealand, in the Flamingo app: Flamingo won the city council’s 2024 tender to be its sole e-scooter operator. As of November 2026 it charges NZ$1 to unlock plus 45c a minute, 24 hours a day, so a 10-minute ride costs $5.50; it may pause the service in severe winter conditions. You need no driving licence, and no law requires a helmet, though Flamingo’s terms do. You may ride on the footpath with care, on shared paths and on the road, and since 1 October 2026 in cycle lanes, but Flamingo keeps its scooters off Baldwin Street, the Botanic Garden and the heart of the University of Otago’s campus.',
   published: '2026-10-31',
   updated: '2026-10-31',
   city: 'nz:ota:Dunedin',
@@ -17,17 +17,17 @@ const guide: Guide = {
       heading: 'Which e-scooter apps work in Dunedin?',
       blocks: [
         'One company runs shared e-scooters in Ōtepoti Dunedin in 2026: **Flamingo**. Since 2021 a scooter-share company has needed a permit to trade on Dunedin’s streets under the council’s Trading in Public Places Bylaw. In March 2024 the Dunedin City Council asked for one operator to be the city’s sole provider from 1 July 2024, and on 30 May 2024 it awarded the permit to Flamingo.',
-        'At 12.03pm on Saturday 31 October 2026 the [map of Dunedin](map:nz:ota:Dunedin) showed 346 Flamingo scooters free to rent at that moment. That total covers Flamingo’s whole Dunedin area, which reaches from the St Clair and St Kilda beaches up to hill suburbs such as Halfway Bush and Māori Hill, and out to Green Island and Port Chalmers: it has marked parking spots in each. The map shows each scooter’s place, its range and Flamingo’s price; zoom in and it also draws Flamingo’s zones and marked spots, but the app has the final word.',
-        '**Lime, Neuron and Beam don’t rent shared scooters here.** Lime brought the first ones in January 2019 and left in June 2021, when it chose not to apply for a new permit. Neuron, which arrived in February 2021 and was the sole operator from July 2021, ran until 30 June 2024, and Flamingo took over the next day.',
+        'At 12.03pm on Saturday 31 October 2026 the [map of Dunedin](map:nz:ota:Dunedin) showed 346 Flamingo scooters free to rent at that moment. That total covers Flamingo’s whole Dunedin area, which reaches from the St Clair and St Kilda beaches up to hill suburbs such as Halfway Bush and Māori Hill, and out to Green Island and Port Chalmers: it has marked parking spots in each.',
+        '**Before Flamingo: Lime and Neuron.** Lime brought the first shared scooters in January 2019 and left in June 2021, when it chose not to apply for a new permit. Neuron, which arrived in February 2021 and was the sole operator from July 2021, ran until 30 June 2024, and Flamingo took over the next day.',
       ],
     },
     {
       heading: 'How much does a Flamingo scooter cost in Dunedin?',
       blocks: [
-        'Flamingo’s Dunedin rate is NZ$1 to unlock and 45c a minute, 24 hours a day, every day. It publishes that single plan for the city, and the price shows on each scooter on the map.',
+        'As of November 2026, Flamingo’s Dunedin rate is NZ$1 to unlock and 45c a minute, 24 hours a day, every day: the one plan in its open data for the city, and the rate on its Dunedin page.',
         {
           table: {
-            caption: 'Flamingo in Dunedin (published rate, 31 October 2026)',
+            caption: 'Flamingo in Dunedin, as of November 2026',
             head: ['Ride', 'Price'],
             rows: [
               ['5 minutes', '$3.25'],
@@ -103,7 +103,7 @@ const guide: Guide = {
       heading: 'Orbus buses and Forsyth Barr Stadium',
       blocks: [
         '**Orbus.** The Otago Regional Council’s buses take scooters carried on by hand, folded where possible; one that doesn’t fold is at the driver’s discretion. Mobility and motorised scooters aren’t allowed, so ask the driver before you bring your own e-scooter aboard. A shared Flamingo stays outside: end your ride before you board.',
-        '**Forsyth Barr Stadium.** The stadium’s conditions of entry set no scooter rule. Logan Park, beside it, is a Flamingo no-ride zone. The nearest marked spot is at Unipol, next to the stadium.',
+        '**Forsyth Barr Stadium.** Logan Park, beside it, is a Flamingo no-ride zone. The nearest marked spot is at Unipol, next to the stadium.',
       ],
     },
     {
@@ -123,7 +123,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much is a Flamingo scooter per minute in Dunedin?',
-      answer: '45c a minute plus NZ$1 to unlock, 24 hours a day: 10 minutes cost $5.50 (published rate, 31 October 2026). Tertiary students and SuperGold, Community Services, Total Mobility and Hāpai Access card holders get up to 50% off.',
+      answer: '45c a minute plus NZ$1 to unlock, 24 hours a day: 10 minutes cost $5.50 (as of November 2026). Tertiary students and SuperGold, Community Services, Total Mobility and Hāpai Access card holders get up to 50% off.',
     },
     {
       question: 'Which e-scooter companies operate in Dunedin?',
@@ -153,6 +153,7 @@ const guide: Guide = {
   sources: [
     { title: 'Dunedin City Council: Micromobility (e-scooter) Operator, Permit to Operate in Dunedin (GETS tender 29071836, 2024)', url: 'https://www.gets.govt.nz/DCC/ExternalTenderDetails.htm?id=29071836' },
     { title: 'Flamingo: Dunedin prices, hours and zones', url: 'https://rideflamingo.com/city/dunedin' },
+    { title: 'Flamingo: open data for Dunedin (GBFS)', url: 'https://data.rideflamingo.com/gbfs/3/dunedin/gbfs.json' },
     { title: 'Flamingo: community and student discounts', url: 'https://rideflamingo.com/discounts' },
     { title: 'Flamingo: AA member benefit', url: 'https://rideflamingo.com/aa' },
     { title: 'Flamingo: free helmets', url: 'https://rideflamingo.com/helmets' },

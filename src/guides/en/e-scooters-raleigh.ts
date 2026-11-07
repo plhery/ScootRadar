@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Raleigh, NC 2026: Spin, Lime, prices, hours',
   description: 'E-scooters in Raleigh, NC: Spin and Lime, the NC State price, the 11 p.m. stop, no sidewalks, downtown parking corrals, Dix Park, greenways and GoRaleigh.',
   headline: 'E-scooters in Raleigh, North Carolina: Spin and Lime, the 11 p.m. stop, and where to ride and park',
-  lede: 'You can rent an e-scooter in Raleigh from Spin or Lime, the two companies with City agreements, in the Spin or Lime app. As of November 2026 a Spin ride that starts on NC State’s campus costs $1 to unlock and $0.30 a minute, NC State says; off campus, and on Lime, the app shows the price before you unlock. NC State says Spin’s scooters can be ridden from 6 a.m. to 11 p.m., seven days a week, and you must be 18 to ride one. A 2018 City ordinance keeps scooters off sidewalks and greenway trails and puts them in bike lanes, and downtown you end your ride in a painted corral if one is within 320 feet.',
+  lede: 'You can rent an e-scooter in Raleigh from Spin or Lime, the two companies with City agreements, in the Spin or Lime app. A Spin ride that starts on NC State’s campus costs $1 to unlock and $0.30 a minute, as NC State published it in July 2026; off campus, and on Lime, the app shows the price before you unlock. NC State says Spin’s scooters can be ridden from 6 a.m. to 11 p.m., seven days a week, and you must be 18 to ride one. A 2018 City ordinance keeps scooters off sidewalks and greenway trails and puts them in bike lanes, and downtown you end your ride in a painted corral if one is within 320 feet.',
   published: '2026-10-27',
   updated: '2026-11-02',
   city: 'us:nc:Raleigh',
@@ -27,7 +27,7 @@ const guide: Guide = {
         'NC State’s Transportation department lists the “NC State Rate” for Spin rides that start on campus, and on 11 September 2026 the Technician quoted a university planner giving the same $1 to unlock and 30 cents a minute.',
         {
           table: {
-            caption: 'Spin’s NC State Rate, for rides that start on NC State’s campus, as of November 2026 (NC State Transportation; prices “subject to change”)',
+            caption: 'Spin’s NC State Rate, for rides that start on NC State’s campus, as NC State Transportation published it in July 2026 (prices “subject to change”)',
             head: ['Option', 'Price'],
             rows: [
               ['Pay as you go', '$1 to unlock + $0.30 a minute'],
@@ -136,7 +136,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Spin scooter cost at NC State?',
-      answer: 'As of November 2026, for a ride that starts on campus, $1 to unlock and $0.30 a minute, NC State says; Spin Access riders pay $0.50 to unlock and $0.10 a minute, and a monthly pass costs $5.99, then $0.30 a minute with no unlock fee.',
+      answer: 'For a ride that starts on campus, $1 to unlock and $0.30 a minute, as NC State published it in July 2026; Spin Access riders pay $0.50 to unlock and $0.10 a minute, and a monthly pass costs $5.99, then $0.30 a minute with no unlock fee.',
     },
     {
       question: 'Where do you park a scooter in downtown Raleigh?',
@@ -154,7 +154,7 @@ const guide: Guide = {
   sources: [
     { title: 'City of Raleigh: Manager’s Update 2026-35, Shared Micromobility Responsibilities & Parking Compliance, 4 September 2026 (PDF)', url: 'https://cityofraleigh0drupal.blob.core.usgovcloudapi.net/drupal-prod/COR13/managers-update-2026-35.pdf' },
     { title: 'City of Raleigh: Capital Area Greenway map, March 2018 (PDF)', url: 'https://cityofraleigh0drupal.blob.core.usgovcloudapi.net/drupal-prod/COR24/raleigh-greenway-map.pdf' },
-    { title: 'NC State Transportation: Spin E-Scooters & E-Bikes', url: 'https://transportation.ncsu.edu/spin-e-scooters-e-bikes/' },
+    { title: 'NC State Transportation: Spin E-Scooters & E-Bikes (updated July 2026)', url: 'https://transportation.ncsu.edu/spin-e-scooters-e-bikes/' },
     { title: 'NC State: POL 07.60.01, Parking and Transportation Ordinances', url: 'https://policies.ncsu.edu/policy/pol-07-60-01/' },
     { title: 'Technician: Park it here? E-bike and scooter rules differ across NC State, 11 September 2026', url: 'https://technicianonline.com/162505/news/park-it-here-e-bike-and-scooter-rules-differ-across-nc-state/' },
     { title: 'ABC11: Raleigh City Council allows motorized scooters in bike lanes, 21 November 2018', url: 'https://abc11.com/post/raleigh-city-council-allows-motorized-scooters-in-bike-lanes/4728140/' },

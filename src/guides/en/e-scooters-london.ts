@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter hire London 2026: Lime, Voi, boroughs and rules',
   description: 'E-scooter hire in London with Lime and Voi: how to rent at 18 with a driving licence, the 11 boroughs, parking bays, the Royal Parks and the ban on your own.',
   headline: 'E-scooter hire in London: Lime and Voi, the 11 boroughs, and where you can ride and park',
-  lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. To rent, download either app, verify that you are 18 or over with a full or provisional driving licence, complete the in-app lesson, then scan the scooter’s QR code. The scooters are capped at 12.5 mph, and every ride starts and ends in a marked parking bay. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
+  lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. To rent, download either app, verify that you are 18 or over with a full or provisional driving licence, complete the in-app lesson, then scan the scooter’s QR code. Prices vary by operator: Lime and Voi set their own, and each app shows its rate before you unlock. The scooters are capped at 12.5 mph, and every ride starts and ends in a marked parking bay. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'gb:London',
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in London?',
       blocks: [
-        'Lime and Voi set their own prices; each app shows the current rate before you unlock. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'The fare depends on which company’s scooter you take, so if both have one near you, compare the two apps. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'There are cheaper ways in:',
         {
           list: [

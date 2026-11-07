@@ -84,19 +84,19 @@ const guide: Guide = {
           ],
         },
         'Phase 3 started on 21 September 2026, again with Lime and Voi, for an initial two years, subject to the Department for Transport’s timescales (the trials are legal until May 2028); TfL’s tender lets it extend the contract by up to four years. Both operators are bringing in new scooters whose technology is meant to spot riding two up or on the pavement, the trade site Micromobility Industries reported.',
-        'The second phase logged 6.4 million trips from September 2023 to September 2026, and by September 2025, 379 riders had been banned for poor riding or anti-social behaviour. Use the Lime or Voi app, or TfL’s Santander Cycles if you’d rather pedal.',
+        'The second phase logged 6.4 million trips from September 2023 to September 2026, and by September 2025, 379 riders had been banned for poor riding or anti-social behaviour. Prices vary by operator: Lime and Voi set their own, and each app shows its rate before you unlock. Use the Lime or Voi app, or TfL’s Santander Cycles if you’d rather pedal.',
       ],
     },
     {
       heading: 'How much does e-scooter hire cost?',
       blocks: [
-        'Pay-as-you-go rates as of November 2026, cheapest first, each from the operator’s open data or the council’s page. The app shows the final price.',
+        'Pay-as-you-go rates, cheapest first, each from the operator’s open data or the council’s page: as of November 2026, except Salford’s, which Salford City Council published in July 2025. The app shows the final price.',
         {
           table: {
-            caption: 'Pay-as-you-go e-scooter prices as of November 2026, and what 15 minutes cost',
+            caption: 'Pay-as-you-go e-scooter prices as of November 2026 (Salford: as published in July 2025), and what 15 minutes cost',
             head: ['Unlock + per minute', 'Operator and area', '15 minutes'],
             rows: [
-              ['£1 + 17p', 'Lime: Salford (the council’s page)', '£3.55'],
+              ['£1 + 17p', 'Lime: Salford (Salford City Council, as published in July 2025)', '£3.55'],
               ['£1 + 20p', 'Lime: West Midlands. Beryl: Brighton and Hove on weekdays', '£4.00'],
               ['£1 + 22p', 'Beryl: Bournemouth, Christchurch and Poole, Cornwall, Leeds, Norwich, Plymouth, and Brighton and Hove at weekends. Voi: Slough (the council’s June 2026 prices)', '£4.30'],
               ['£0 + 29p', 'Dott: Nottingham', '£4.35'],
@@ -107,7 +107,7 @@ const guide: Guide = {
             ],
           },
         },
-        '**Cheapest for 10 and 20 minutes:** Lime in Salford, at £2.70 for 10 minutes and £4.40 for 20. Next come Dott in Nottingham for 10 minutes, at £2.90 with no unlock fee, and Lime in the West Midlands and Beryl in Brighton and Hove on weekdays for 20 minutes, at £5.00.',
+        '**Cheapest for 10 and 20 minutes, as of November 2026:** Dott in Nottingham for 10 minutes, at £2.90 with no unlock fee, and Lime in the West Midlands and Beryl in Brighton and Hove on weekdays for 20 minutes, at £5.00. Salford City Council’s price for Lime, as published in July 2025, comes to less: £2.70 for 10 minutes and £4.40 for 20.',
         'If you ride often, bundles and passes cost less: Beryl’s day pass in Leeds is £8 for 100 minutes, Lime’s West Midlands passes start at £2.99 for 30 minutes, Dott’s 2 Ride Pass in Bristol and Bath is £3.99 for two 20-minute rides within 24 hours, and Slough Borough Council lists Voi bundles from £4.49 for 30 minutes within a day.',
       ],
     },
@@ -154,7 +154,7 @@ const guide: Guide = {
             '**Pavements:** never, not even for a few metres: a £50 fixed penalty.',
             '**Passengers:** one rider only. In the West of England, Dott bans riders caught riding two up, and in Liverpool, Bolt can suspend or ban an account that breaks its terms.',
             '**Phone and drink:** using a phone in your hand costs £200 and 6 points, and the drink-drive limit for cars applies. In Liverpool, Bolt’s app asks for a reaction test before a ride at night.',
-            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Oxford and the West of England, and in Norwich and the BCP area (Bournemouth, Christchurch and Poole) according to Beryl’s help page. In Leeds, Beryl said on 8 July 2026 that its scooters would go up from 12.5 to 15.5 mph, with the Department for Transport’s approval. In Cornwall, Beryl’s page says 15.5 mph, though the council’s page says 12.5 mph; in the Go Slow Zones on each Cornish town’s pedestrianised streets it’s 7.5 mph.',
+            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Oxford and the West of England, and in Norwich, Norfolk County Council said in March 2026. In Leeds, Beryl said on 8 July 2026 that its scooters would go up from 12.5 to 15.5 mph, with the Department for Transport’s approval. In Cornwall, Beryl’s page says 15.5 mph, though the council’s page says 12.5 mph; in the Go Slow Zones on each Cornish town’s pedestrianised streets it’s 7.5 mph.',
             '**Hours:** many areas run around the clock, Liverpool, Oxford and the West of England among them, but Beryl’s e-scooters can’t be hired from 10pm to 5am in Bournemouth, Christchurch and Poole or from midnight to 5am in Brighton, and in Northampton, the council says, Voi’s are available from 4am to 11pm daily.',
           ],
         },
@@ -175,7 +175,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does it cost to hire an e-scooter in the UK?',
-      answer: 'As of November 2026, pay as you go: £1 to unlock and 20p a minute with Lime in the West Midlands; £1 and 22p with Beryl in Bournemouth, Christchurch and Poole, Cornwall, Leeds, Norwich and Plymouth; no unlock fee and 29p a minute with Dott in Nottingham; 99p and 24p with Voi in Oxford; £1 and 24p with Dott in Milton Keynes; and £1 and 25p with Bolt in Liverpool and Dott in Bristol and Bath. In London, Lime and Voi show their prices in the app.',
+      answer: 'As of November 2026, pay as you go: £1 to unlock and 20p a minute with Lime in the West Midlands; £1 and 22p with Beryl in Bournemouth, Christchurch and Poole, Cornwall, Leeds, Norwich and Plymouth; no unlock fee and 29p a minute with Dott in Nottingham; 99p and 24p with Voi in Oxford; £1 and 24p with Dott in Milton Keynes; and £1 and 25p with Bolt in Liverpool and Dott in Bristol and Bath. Salford City Council gives £1 and 17p for Lime, as published in July 2025. In London, prices vary by operator: Lime and Voi each show theirs in the app before you unlock.',
     },
     {
       question: 'What are the main rules for riding a hire e-scooter?',
@@ -241,7 +241,6 @@ const guide: Guide = {
     { title: 'Beryl: E-scooters in Cornwall', url: 'https://beryl.cc/e-scooters-cornwall' },
     { title: 'Beryl: E-scooters in Plymouth', url: 'https://beryl.cc/e-scooters-plymouth' },
     { title: 'Beryl Help Centre: Who can hire a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11711908-who-can-hire-a-beryl-e-scooter' },
-    { title: 'Beryl Help Centre: Riding a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11706501-riding-a-beryl-e-scooter' },
     { title: 'Beryl Help Centre: When are Beryl e-scooters available to hire (27 July 2026)', url: 'https://help-bikes.beryl.cc/en/articles/16098480-when-are-beryl-e-scooters-available-to-hire' },
     { title: 'Beryl Help Centre: Brighton pricing guide (23 July 2026)', url: 'https://help-bikes.beryl.cc/en/articles/11654747-brighton-pricing-guide' },
     { title: 'Beryl Help Centre: BCP pricing guide (22 July 2026)', url: 'https://help-bikes.beryl.cc/en/articles/11654559-bcp-pricing-guide' },
@@ -252,6 +251,7 @@ const guide: Guide = {
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
     { title: 'Oxfordshire County Council: E-bike hire in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/e-bike-hire-oxford' },
     { title: 'Slough Borough Council: Using Voi e-scooters (June 2026 prices)', url: 'https://www.slough.gov.uk/parking-roads-travel/e-scooter-trial/4' },
+    { title: 'Salford City Council: E-scooter trial (last updated 2 July 2025)', url: 'https://www.salford.gov.uk/parking-roads-and-travel/e-scooters' },
     { title: 'Cambridgeshire County Council: Cycling', url: 'https://www.cambridgeshire.gov.uk/residents/travel-roads-and-parking/active-travel-in-cambridgeshire/getting-started/cycling' },
     { title: 'Buckinghamshire Council: Buckinghamshire electric scooter trial', url: 'https://www.buckinghamshire.gov.uk/parking-roads-and-transport/bus-passes-and-travel/buckinghamshire-electric-scooter-trial/' },
   ],

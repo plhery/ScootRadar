@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'santa-cruz-de-tenerife',
   name: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife',
   title: 'Alquiler patinete eléctrico Santa Cruz de Tenerife: Dott',
-  description: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife con Dott: cómo aparcar, sus multas, el casco obligatorio, la ordenanza de 1985 y el tranvía.',
+  description: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife con Dott: cómo alquilar y aparcar, sus multas, el casco, la ordenanza de 1985 y el tranvía.',
   headline: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife: Dott, sus normas, la ordenanza, el casco y el tranvía',
-  lede: 'Para el alquiler de patinete eléctrico en Santa Cruz de Tenerife tienes Dott: a las 22:23 del 1 de noviembre de 2026, el mapa mostraba unos 150 patinetes suyos libres en ese momento. Dott te muestra su precio en la app, antes de desbloquear. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y el patinete no sube al tranvía, donde, según Metrotenerife, está «prohibido transportar patinetas eléctricas a bordo».',
+  lede: 'Para el alquiler de patinete eléctrico en Santa Cruz de Tenerife tienes Dott: descarga su app, añade un método de pago, desbloquea el patinete desde el móvil y cierra el viaje en la app al terminar. La app te muestra el precio antes de desbloquear, y pagas hasta que cierras el viaje. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco, también en los de alquiler: lleva el tuyo. Nunca por la acera, y el patinete no sube al tranvía, donde, según Metrotenerife, está «prohibido transportar patinetas eléctricas a bordo».',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'es:Santa Cruz de Tenerife',
@@ -16,7 +16,6 @@ const guide: Guide = {
     {
       heading: '¿Qué patinetes de alquiler hay en Santa Cruz de Tenerife?',
       blocks: [
-        'Esta guía va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos; no de los scooters de movilidad reducida ni de las motos.',
         'En Santa Cruz alquila **Dott**, que incluye la ciudad en su lista de sedes de España. A las 22:23 (hora canaria) del 1 de noviembre de 2026, el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife) mostraba unos 150 patinetes de Dott libres en ese momento.',
         'La app de ISLA Ride, publicada en diciembre de 2025, anuncia también patinetas eléctricas de alquiler en Tenerife.',
       ],
@@ -30,9 +29,9 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Precio, aparcamiento y multas de Dott',
+      heading: 'Cómo alquilar un Dott: pasos, aparcamiento y multas',
       blocks: [
-        'Dott te muestra la tarifa en la app antes de desbloquear. Pagas desde que lo desbloqueas hasta que cierras el viaje y la app te lo confirma; si lo dejas sin cerrar, sigues pagando.',
+        'Pagas desde que lo desbloqueas hasta que cierras el viaje y la app te lo confirma; si lo dejas sin cerrar, sigues pagando.',
         {
           steps: [
             '**Descarga la app de Dott**, regístrate y añade un método de pago; al aceptar sus condiciones, declaras tener al menos 18 años.',
@@ -64,7 +63,7 @@ const guide: Guide = {
     {
       heading: 'Normativa del patinete eléctrico en Santa Cruz: ordenanza, casco y acera',
       blocks: [
-        'La ordenanza municipal de circulación que el Ayuntamiento da como vigente en su sede electrónica, a 1 de noviembre de 2026, es de 1985 (BOP nº 96, 12 de agosto de 1985). Su artículo 1 dice que, en lo que no regula expresamente, «se aplicará el Código de la Circulación y demás normas de general aplicación».',
+        'La ordenanza municipal de circulación que el Ayuntamiento da como vigente en su sede electrónica, en noviembre de 2026, es de 1985 (BOP nº 96, 12 de agosto de 1985). Su artículo 1 dice que, en lo que no regula expresamente, «se aplicará el Código de la Circulación y demás normas de general aplicación».',
         'Rige, además, la normativa de toda España, que cambió el 1 de octubre de 2026. No necesitas carné, y el registro en la DGT y el seguro son cosa del operador.',
         {
           table: {
@@ -120,10 +119,6 @@ const guide: Guide = {
   ],
   faq: [
     {
-      question: '¿Cuánto cuesta alquilar un patinete eléctrico en Santa Cruz de Tenerife?',
-      answer: 'Dott te muestra la tarifa en la app antes de desbloquear: consúltala allí cada vez. Pagas hasta que cierras el viaje; si lo dejas sin cerrar, sigues pagando.',
-    },
-    {
       question: '¿Es obligatorio el casco en patinete en Santa Cruz de Tenerife?',
       answer: 'Sí. Desde el 1 de octubre de 2026 es obligatorio en toda España, a cualquier edad y también en los de alquiler. Sin casco, la multa es de 200 € y los agentes pueden inmovilizar el patinete; además, el seguro de accidentes de Dott, donde lo da, no cubre las lesiones en la cabeza.',
     },
@@ -143,7 +138,7 @@ const guide: Guide = {
   sources: [
     { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'BOE: Real Decreto 518/2026, reforma del Reglamento General de Circulación', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
-    { title: 'Ayuntamiento de Santa Cruz de Tenerife, sede electrónica: Ordenanza municipal de circulación (BOP nº 96, 12 de agosto de 1985), vigente a 1 de noviembre de 2026', url: 'https://sede.santacruzdetenerife.es/sede/normativa/n647' },
+    { title: 'Ayuntamiento de Santa Cruz de Tenerife, sede electrónica: Ordenanza municipal de circulación (BOP nº 96, 12 de agosto de 1985), vigente en noviembre de 2026', url: 'https://sede.santacruzdetenerife.es/sede/normativa/n647' },
     { title: 'Dott: términos y condiciones para España (23 de septiembre de 2025)', url: 'https://ridedott.com/es/terminos-condiciones/espana/' },
     { title: 'Dott: nuestras sedes', url: 'https://ridedott.com/es/nuestras-sedes/' },
     { title: 'ISLA Ride en el App Store', url: 'https://apps.apple.com/es/app/isla-ride/id6756137443' },

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'antwerp',
   name: 'Een deelstep huren in Antwerpen',
   title: 'Deelstep Antwerpen 2026: prijzen, dropzones en no-go zones',
-  description: 'Deelstep Antwerpen: wat Voi, Lime en Bolt kosten in november 2026, hoe je huurt, dropzones binnen de Leien, 8 km/u op de Meir, no-go zones, leeftijd en helm.',
+  description: 'Deelstep Antwerpen: wat Voi, Lime en Bolt kosten, hoe je huurt, dropzones binnen de Leien, 8 km/u op de Meir, no-go zones, leeftijd en helm.',
   headline: 'Deelstep Antwerpen: Voi, Lime en Bolt, wat een rit kost, dropzones binnen de Leien en waar je step stilvalt',
-  lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad: je installeert de app, maakt een account aan met je gsm-nummer en een betaalkaart, en scant de QR-code op het stuur. In november 2026 kost ontgrendelen bij alle drie € 0,99; daarna betaal je bij Voi € 0,25 per minuut, bij Lime € 0,27 per minuut en bij Bolt € 1,13 per kilometer. Per minuut is Voi het goedkoopst, € 3,49 voor 10 minuten tegen € 3,69 bij Lime; bij Bolt kost 2 km € 3,25. Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen, maar Bolt verhuurt pas vanaf 18.',
+  lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad: je installeert de app, maakt een account aan met je gsm-nummer en een betaalkaart, en scant de QR-code op het stuur. Bij Voi betaal je in november 2026 € 0,99 om te ontgrendelen en daarna € 0,25 per minuut. Lime vraagt € 0,99 plus € 0,27 per minuut en Bolt € 0,99 plus € 1,13 per kilometer, zoals de stad die prijzen publiceerde in juli 2026. Tien minuten kosten zo € 3,49 bij Voi en € 3,69 bij Lime; bij Bolt kost 2 km € 3,25. Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen, maar Bolt verhuurt pas vanaf 18.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'be:Antwerpen',
@@ -27,7 +27,7 @@ const guide: Guide = {
         'Bij Voi en Lime betaal je om te ontgrendelen en per minuut, ook als je stilstaat. Bolt rekent in Antwerpen per afgelegde kilometer, niet per minuut: het bedrijf hoopt dat je zo minder gehaast en veiliger rijdt.',
         {
           table: {
-            caption: 'Tarieven in Antwerpen in november 2026 (de app toont de eindprijs)',
+            caption: 'Tarieven in Antwerpen: Voi in november 2026, Lime en Bolt zoals de stad ze publiceerde in juli 2026 (de app toont de eindprijs)',
             head: ['Aanbieder', 'Ontgrendelen', 'Per minuut of per km', 'Voorbeeld'],
             rows: [
               ['Voi', '€ 0,99', '€ 0,25 per minuut', '10 minuten: € 3,49; 20 minuten: € 5,99'],
@@ -163,7 +163,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Stad Antwerpen, open data: dropzones voor deelmobiliteit', url: 'https://portaal-stadantwerpen.opendata.arcgis.com/datasets/b82fb66481584fbeb6aef1574cdd706f_33' },
-    { title: 'Slim naar Antwerpen: Deelsteps', url: 'https://www.slimnaarantwerpen.be/nl/deelmobiliteit/deelsteps' },
+    { title: 'Slim naar Antwerpen: Deelsteps, met de tarieven (bijgewerkt op 3 juli 2026)', url: 'https://www.slimnaarantwerpen.be/nl/deelmobiliteit/deelsteps' },
     { title: 'Voi: open data (GBFS) voor Antwerpen', url: 'https://api.voiapp.io/gbfs/be/7a4cb689-a2ee-409d-a5fe-49d2e8d50717/v2/335/gbfs.json' },
     { title: 'Slim naar Antwerpen: Uitbreiding no park zone voor deelsteps binnen de Leien (20 juni 2025)', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/uitbreiding-no-park-zone-voor-deelsteps-binnen-leien' },
     { title: 'Slim naar Antwerpen: Bolt lanceert elektrische deelsteps in Antwerpen', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/bolt-lanceert-elektrische-deelsteps-in-antwerpen' },

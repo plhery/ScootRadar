@@ -55,6 +55,7 @@ const guide: Guide = {
             ],
           },
         },
+        'Le 7 novembre 2026, toutes les trottinettes Bolt de Bruxelles étaient à ce tarif de 0,99 € plus 0,31 € la minute ; les données ouvertes de Bolt listent aussi un tarif à 0,75 € plus 0,22 €, qui ne s’appliquait à aucune.',
         '**Quelle trottinette est la moins chère ?** Celle de Bolt : 10 minutes coûtent 4,09 €, contre 4,70 € chez Dott, et 20 minutes 7,19 €, contre 8,40 €.',
         'Selon leurs conditions, Bolt et Dott peuvent aussi vendre des pass prépayés, dont l’app affiche le prix. À noter : le vélo électrique de Bolt coûte moins cher que n’importe quelle trottinette.',
       ],

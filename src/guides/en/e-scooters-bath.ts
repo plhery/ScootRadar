@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'bath',
   name: 'E-scooter hire in Bath',
   title: 'E-scooter Bath 2026: Dott prices, no-ride zones and bays',
-  description: 'E-scooter hire in Bath with Dott: £1 to unlock and 25p a minute, day and night, who can ride, the no-ride zones by the Abbey, parks and canal, and the bays.',
+  description: 'E-scooter hire in Bath with Dott: £1 to unlock and 25p a minute (November 2026), day and night, who can ride, no-ride zones by the Abbey and canal, bays.',
   headline: 'E-scooter hire in Bath: Dott’s prices, no-ride zones and where to park',
-  lede: 'You can hire an e-scooter in Bath from Dott, the only operator in the West of England trial, at any hour. It costs £1 to unlock and 25p a minute, so 10 minutes cost £3.50. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle routes but never on pavements, and end every ride in one of Dott’s parking bays. The scooter stops itself around the Roman Baths and the Abbey, in most parks and on the canal towpath.',
+  lede: 'You can hire an e-scooter in Bath from Dott, the only operator in the West of England trial, at any hour, in Dott’s app. As of November 2026 it costs £1 to unlock and 25p a minute, so 10 minutes cost £3.50. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle routes but never on pavements, and end every ride in one of Dott’s parking bays. The scooter stops itself around the Roman Baths and the Abbey, in most parks and on the canal towpath.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'gb:Bath',
@@ -17,17 +17,17 @@ const guide: Guide = {
       heading: 'Bath e-scooter hire: Dott, in the West of England trial',
       blocks: [
         'One company, **Dott**, rents e-scooters and e-bikes in Bath, under a contract with the West of England Mayoral Combined Authority (WECA). WECA runs the trial with Bath and North East Somerset Council (B&NES), Bristol and South Gloucestershire. Voi brought the first scooters to Bath in October 2020, Tier took over in 2023, and Dott replaced Tier on 3 September 2024.',
-        'At 10.19am on Saturday 24 October 2026 the [map of Bath](map:gb:Bath) showed about 310 Dott e-scooters free to rent. The map shows e-scooters only; Dott’s e-bikes, about 60 of them in its Bath data later that morning, are not on it.',
-        'Dott had dropped its midnight curfew in Bath by October 2025, and Travelwest, WECA’s travel site, says its vehicles are available 24/7. Dott’s contract with WECA ends in 2027, and on 25 August 2026 WECA invited tenders for the next one. Hire e-scooters also depend on the national trial, due to run until May 2028.',
+        'At 10.19am on Saturday 24 October 2026 the [map of Bath](map:gb:Bath) showed about 310 Dott e-scooters free to rent. Dott also rents e-bikes: about 60 were in its Bath data later that morning.',
+        'Dott had dropped its midnight curfew in Bath by October 2025, and in August 2026 WECA counted 24/7 access among the reasons for the scheme’s record use. Dott’s contract with WECA ends in 2027, and on 25 August 2026 WECA invited tenders for the next one. Hire e-scooters also depend on the national trial, due to run until May 2028.',
       ],
     },
     {
       heading: 'How much does a Dott e-scooter cost in Bath?',
       blocks: [
-        'Dott charges **£1 to unlock and 25p a minute** for e-scooters and e-bikes alike: the rate on Travelwest (updated 22 September 2026) and in Dott’s Bath data on 24 October 2026. Bath and Bristol share one price list, and the app shows the price before you unlock.',
+        'As of November 2026, Dott charges **£1 to unlock and 25p a minute** for e-scooters and e-bikes alike, in its Bath data and on Travelwest, WECA’s travel site (updated 22 September 2026). Bath and Bristol share one price list.',
         {
           table: {
-            caption: 'Dott prices in Bath, 24 October 2026',
+            caption: 'Dott prices in Bath as of November 2026',
             head: ['Option', 'Price', 'What you get'],
             rows: [
               ['Pay as you go', '£1 + 25p a minute', '10 minutes £3.50, 20 minutes £6.00'],
@@ -148,7 +148,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Dott 24 hours in Bath?',
-      answer: 'Yes. Dott had dropped its midnight curfew in Bath by October 2025, and Travelwest says its e-scooters and e-bikes are available 24/7 across the West of England. Drink-drive law applies at any hour.',
+      answer: 'Yes. Dott had dropped its midnight curfew in Bath by October 2025, and in August 2026 WECA cited 24/7 access to its e-scooters and e-bikes across the West of England. Drink-drive law applies at any hour.',
     },
     {
       question: 'Can I ride a Dott e-scooter from Bath to Bristol?',

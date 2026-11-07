@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'charlottesville',
   name: 'E-scooters in Charlottesville, Virginia',
   title: 'E-scooters Charlottesville, VA 2026: Veo, rules and parking',
-  description: 'E-scooters in Charlottesville, Virginia: Veo, the City’s permit rules, the 20 and 15 mph limits, the Downtown Mall, under-14s, parking and fines.',
+  description: 'E-scooters in Charlottesville, VA: Veo at $1 + $0.32 a minute (November 2026), the City’s permit rules, the 20 and 15 mph limits, the Downtown Mall.',
   headline: 'E-scooters in Charlottesville, Virginia: Veo, the speed limits, the slow zones and parking',
-  lede: 'You can rent a Veo e-scooter in Charlottesville, Virginia; check the fare and Veo’s minimum age for renting in the app. Virginia’s Code sets the rules for every e-scooter: never faster than 20 mph, no Interstates, and riders under 14 only with someone 18 or older watching over them. The City’s permit rules hold shared scooters to 15 mph, slow them to 5 mph or less where riding and parking are barred, such as the Downtown Mall, and give the company an hour to move one that’s badly parked.',
+  lede: 'You can rent a Veo e-scooter in Charlottesville, Virginia: get the Veo app and scan the scooter’s QR code to unlock it. As of November 2026 Veo charges $1 to unlock plus $0.32 a minute, plus tax, so 10 minutes cost $4.20; Veo’s minimum age for renting is in the app. Virginia’s Code sets the rules for every e-scooter: never faster than 20 mph, no Interstates, a white headlight and a red reflector between sunset and sunrise, and riders under 14 only with someone 18 or older watching over them. The City’s permit rules hold shared scooters to 15 mph, slow them to 5 mph or less where riding and parking are barred, such as the Downtown Mall, and give the company an hour to move one that’s badly parked.',
   published: '2026-11-03',
   updated: '2026-11-03',
   city: 'us:va:Charlottesville',
@@ -26,7 +26,7 @@ const guide: Guide = {
             '**An app that works with a screen reader** and is fully accessible to people with disabilities (IV(E)(5)).',
           ],
         },
-        'Check the fare, and Veo’s minimum age for renting, in the app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Veo’s price.** As of November 2026, Veo’s open data gives $1 to unlock plus $0.32 a minute for its scooters, plus tax, so 10 minutes cost $4.20 and 20 minutes $7.40; its e-bikes cost $1 plus $0.35 a minute. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -140,6 +140,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of Charlottesville: Dockless Mobility Permit Program Regulations, updated as of 29 August 2025 (PDF)', url: 'https://www.charlottesville.gov/DocumentCenter/View/1343/2025-Dockless-Mobility-Permits-PDF' },
+    { title: 'Veo: open data for Charlottesville (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/cvl/gbfs' },
     { title: 'Code of Virginia § 46.2-100: Definitions', url: 'https://law.lis.virginia.gov/vacode/title46.2/chapter1/section46.2-100/' },
     { title: 'Code of Virginia § 46.2-903: Riding or driving vehicles on sidewalks; exceptions', url: 'https://law.lis.virginia.gov/vacode/title46.2/chapter8/section46.2-903/' },
     { title: 'Code of Virginia § 46.2-904: Sidewalks, crosswalks and shared-use paths; local ordinances', url: 'https://law.lis.virginia.gov/vacode/title46.2/chapter8/section46.2-904/' },

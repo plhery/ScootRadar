@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tokyo',
   name: 'E-scooters in Tokyo',
   title: 'E-scooters Tokyo 2026: LUUP, Lime, rules and parking',
-  description: 'E-scooters in Tokyo: LUUP and Lime, who may ride (16 or over, no licence), the 6 km/h pavement mode, Japan’s on-the-spot penalties and where to park.',
+  description: 'E-scooters in Tokyo: LUUP and Lime, LUUP’s price, who may ride (16 or over, no licence), the 6 km/h pavement mode, Japan’s penalties and where to park.',
   headline: 'E-scooters in Tokyo: who rents them, who may ride, where to ride and where to park',
-  lede: 'Yes: you can rent e-scooters in Tokyo from LUUP and Lime and, if you are 16 or over, ride one without a driving licence. Since 1 July 2023 Japanese law has put e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own, the specified small motorised bicycle (特定小型原動機付自転車), and it asks riders only to try to wear a helmet. Ride at the left edge of the road or on a cycle track, and on the pavement only where a sign lets bicycles on it, in the scooter’s 6 km/h mode. Japan’s guideline asks rental companies to make you end the ride at a rental point.',
+  lede: 'Yes: you can rent e-scooters in Tokyo from LUUP and Lime, in their apps, and, if you are 16 or over, ride one without a driving licence. As of November 2026, LUUP charges ¥50 to start a ride and ¥25 a minute in Tokyo, so 10 minutes cost ¥300; Lime’s app shows its price before you unlock. Since 1 July 2023 Japanese law has put e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own, the specified small motorised bicycle (特定小型原動機付自転車), and it asks riders only to try to wear a helmet. Ride at the left edge of the road or on a cycle track, and on the pavement only where a sign lets bicycles on it, in the scooter’s 6 km/h mode. Japan’s guideline asks rental companies to have you pass a rules test or watch a video before your first ride, and to make you end each ride at a rental point.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'jp:Tokyo',
@@ -23,7 +23,8 @@ const guide: Guide = {
             '**Lime**: a full scan of Lime’s Tokyo zone, which finished at 09:32 on Monday 26 October, found about 2,300 Lime scooters: a separate count, not part of that snapshot.',
           ],
         },
-        'LUUP also rents e-bikes and seated scooters, and docomo bike share rents e-assist bicycles. Each app shows its price before you start.',
+        '**What a ride costs.** As of November 2026, LUUP’s site gives ¥50 to start a ride plus ¥25 a minute in Tokyo, so 10 minutes cost ¥300; it adds that prices differ in some areas.',
+        'LUUP also rents e-bikes and seated scooters, and docomo bike share rents e-assist bicycles.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -116,7 +117,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Tokyo?',
-      answer: 'LUUP and Lime. Each app shows its price before you start.',
+      answer: 'LUUP and Lime. As of November 2026, LUUP charges ¥50 to start a ride and ¥25 a minute in Tokyo.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Japan?',
@@ -157,6 +158,7 @@ const guide: Guide = {
     { title: 'Sumida City: collecting removed bicycles (Japanese)', url: 'https://www.city.sumida.lg.jp/kurashi/jitensha/bicycle/tac0300020.html' },
     { title: 'Yoyogi Park: prohibited activities (Japanese)', url: 'https://www.tokyo-park.or.jp/park/yoyogi/assets/files/yoyogi-kinshi20230919.pdf' },
     { title: 'docomo bike share (Japanese)', url: 'https://docomo-cycle.jp/' },
+    { title: 'LUUP: home page, with its prices (Japanese)', url: 'https://luup.sc/' },
   ],
 };
 

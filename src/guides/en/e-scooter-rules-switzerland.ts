@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'swiss-rules',
   name: 'E-scooter rules in Switzerland',
   title: 'E-scooter rules in Switzerland 2026: age, helmet, fines',
-  description: 'E-scooter rules in Switzerland as of October 2026: age and licence, where to ride and park, helmet, the 0.5‰ limit, fines in CHF, SBB trains and rentals.',
+  description: 'E-scooter rules in Switzerland as of November 2026: age and licence, where to ride and park, helmet, the 0.5‰ limit, fines in CHF, SBB trains and rentals.',
   headline: 'E-scooter rules in Switzerland: who may ride, where, and what gets you fined',
-  lede: 'Under the e-scooter rules in Switzerland, an e-scooter is a light moped ridden by the rules for cyclists: its motor may assist up to 20 km/h, and it needs no plate or compulsory insurance. You may ride from 16 without a licence, or from 14 with a category M licence, on bike lanes or the road, never the pavement; rental operators require 18. As of October 2026 a helmet is optional, lights stay on day and night, passengers are banned and the alcohol limit is 0.5‰.',
+  lede: 'Under the e-scooter rules in Switzerland, an e-scooter is a light moped ridden by the rules for cyclists: its motor may assist up to 20 km/h, and it needs no plate or compulsory insurance. You may ride from 16 without a licence, or from 14 with a category M licence, on bike lanes or the road, never the pavement; rental operators require 18. As of November 2026 a helmet is optional, lights stay on day and night, passengers are banned and the alcohol limit is 0.5‰.',
   published: '2026-10-12',
   updated: '2026-10-13',
   sections: [
@@ -18,7 +18,7 @@ const guide: Guide = {
         'Yes. In Swiss law a stand-up e-scooter, the E-Trottinett, is a **light moped** (Leicht-Motorfahrrad): a motor vehicle whose rider follows the rules for cyclists. What that means for you:',
         {
           table: {
-            caption: 'E-scooter rules in Switzerland at a glance, as of October 2026',
+            caption: 'E-scooter rules in Switzerland at a glance, as of November 2026',
             head: ['Topic', 'The rule'],
             rows: [
               ['Minimum age', '16 without a licence, 14 with a category M or G licence; 18 to rent'],
@@ -43,7 +43,7 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'Who may ride an e-scooter in Switzerland, as of October 2026',
+            caption: 'Who may ride an e-scooter in Switzerland, as of November 2026',
             head: ['Age', 'Your own e-scooter', 'A shared e-scooter'],
             rows: [
               ['Under 14', 'No', 'No'],
@@ -61,7 +61,7 @@ const guide: Guide = {
       heading: 'Do you need a helmet? Lights, bell and reflector',
       blocks: [
         '**A helmet is not compulsory.** The helmet rule for mopeds exempts electric ones whose motor assists up to 25 km/h, so its CHF 30 fine doesn’t apply to you. The BFU, the Swiss council for accident prevention, strongly recommends a helmet all the same, and Dott warns that head injuries may not be covered if you ride without one.',
-        'On 30 April 2026 the National Council rejected a motion for a helmet and licence requirement on e-mopeds (“E-Roller”) and similar vehicles, by 122 votes to 33 with 33 abstentions. On 19 August the Federal Council said it is ready to put a helmet requirement for e-scooters up for discussion in the consultation on a future revision of the ordinance. A consultation on seven road traffic ordinances, including the Traffic Regulations Ordinance (VRV) and the Road Traffic Licensing Ordinance (VZV), is planned from December 2026 to March 2027 (as of November 2026).',
+        'On 30 April 2026 the National Council rejected a motion for a helmet and licence requirement on e-mopeds (“E-Roller”) and similar vehicles, by 122 votes to 33 with 33 abstentions. On 19 August the Federal Council said it is ready to put a helmet requirement for e-scooters up for discussion in the consultation on a future revision of the ordinance. A consultation on seven road traffic ordinances, including the Traffic Regulations Ordinance (VRV) and the Road Traffic Licensing Ordinance (VZV), is planned from 1 December 2026 to 1 March 2027 (as of November 2026).',
         'What the law does require:',
         {
           list: [

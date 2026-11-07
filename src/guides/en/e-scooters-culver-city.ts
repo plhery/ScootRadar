@@ -53,7 +53,7 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Parking a scooter in Culver City: the agreement and the zones on the map',
+      heading: 'Parking a scooter in Culver City: the agreement and Bird’s zones',
       blocks: [
         'The agreement sets where Bird’s scooters may stand, and so where you end your ride:',
         {
@@ -63,8 +63,8 @@ const guide: Guide = {
             '**Off the street only with permission:** parks, plazas, parking lots, transit stations and private property only where the owner has agreed and a sign or the app says so.',
           ],
         },
-        'Bird’s open data listed 13 small no-parking zones inside Culver City on 27 October 2026, and the map draws them at street zoom. They cover Veterans Memorial Park, government land along Culver Boulevard by Elenda Street and just east of City Hall, and a handful of blocks of homes, shops and offices. You may ride through them, but not start or end a ride there.',
-        'The same data mark a no-ride area of about 15 square miles (40 km²), mostly in Los Angeles and Marina del Rey, which takes in Culver City’s western tip along Washington Boulevard; the map draws it too. Yet at 10:44 a.m. 16 available Birds stood in that tip and some 560 in the Los Angeles part. Follow the Bird app there.',
+        'Bird’s open data listed 13 small no-parking zones inside Culver City on 27 October 2026. They cover Veterans Memorial Park, government land along Culver Boulevard by Elenda Street and just east of City Hall, and a handful of blocks of homes, shops and offices. You may ride through them, but not start or end a ride there.',
+        'The same data mark a no-ride area of about 15 square miles (40 km²), mostly in Los Angeles and Marina del Rey, which takes in Culver City’s western tip along Washington Boulevard. Yet at 10:44 a.m. 16 available Birds stood in that tip and some 560 in the Los Angeles part. Follow the Bird app there.',
       ],
     },
     {
@@ -118,7 +118,7 @@ const guide: Guide = {
     },
     {
       question: 'Are there Lime scooters in Culver City?',
-      answer: 'Lime’s app area covers the whole city, and 19 Lime scooters stood inside it on 31 October 2026. But the City’s only agreement is with Bird (July 2026 to June 2027); Lime held an interim one in the City’s first pilot, which ended in March 2020.',
+      answer: 'Lime’s app draws its Los Angeles area over the whole city, but the City’s only agreement is with Bird (July 2026 to June 2027); Lime held an interim one in the City’s first pilot, which ended in March 2020.',
     },
     {
       question: 'Can you ride a scooter on the Ballona Creek Bike Path?',

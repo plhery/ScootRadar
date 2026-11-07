@@ -129,7 +129,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Hamm?',
-      answer: 'Die von Dott (Stand Oktober 2026). Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Dott (Stand November 2026). Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet ein E-Scooter in Hamm?',

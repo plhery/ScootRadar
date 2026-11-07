@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'hamilton',
   name: 'E-scooters in Hamilton, New Zealand',
   title: 'E-scooters in Hamilton, New Zealand: Lime and the rules',
-  description: 'E-scooters in Hamilton NZ: Lime is the one company the council lists. The rules, and where you can’t ride: Garden Place, Hamilton Gardens, the lake.',
+  description: 'E-scooters in Hamilton NZ: Lime, the one company the council lists, how to rent one, the rules, and where you can’t ride: Garden Place, the Gardens, the lake.',
   headline: 'E-scooters in Hamilton, New Zealand: Lime, the rules, Garden Place, Hamilton Gardens and the river path',
-  lede: 'Shared e-scooters in Hamilton, New Zealand, come from Lime, the one company Hamilton City Council lists; Lime shows its price in its app. You need no driving licence, and no law requires a helmet. You may ride on the footpath with care, on the road and, since 1 October 2026, in cycle lanes, but not in Garden Place, inside Hamilton Gardens or on part of the Hamilton Lake walkway.',
+  lede: 'Shared e-scooters in Hamilton, New Zealand, come from Lime, the one company Hamilton City Council lists: download Lime’s app, sign up, add a payment card and scan the scooter’s QR code. The app shows the price before you unlock. You need no driving licence, and no law requires a helmet. You may ride on the footpath with care (the council asks for 15 km/h or less), on the road and, since 1 October 2026, in cycle lanes, but not in Garden Place, inside Hamilton Gardens or on part of the Hamilton Lake walkway.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'nz:wko:Hamilton',
@@ -16,17 +16,17 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Hamilton?',
       blocks: [
-        'One company rents shared e-scooters in Kirikiriroa Hamilton in 2026: **Lime**. Hamilton City Council’s micro-mobility page names it as the only company renting e-scooters and e-bikes in the city, and Flamingo’s list of cities doesn’t include Hamilton. Neuron, which joined Lime in July 2021, was no longer on the council’s list by June 2022.',
-        '**The council’s permit.** Running a micro-mobility rental scheme counts as trading in a public place under the council’s Trading in Public Places Bylaw 2016, amended on 17 September 2026, so it needs a council permit, which comes with conditions. Today’s permit terms (its cap, end date and hours) aren’t published. The last reported are from July 2021, when Lime and Neuron each got a 12-month permit for up to 500 e-scooters and e-bikes, and the low-speed zones, “off-street times” and no-scooter zones stayed in place, the NZ Herald reported on 1 July 2021.',
-        'At 9.23am on Friday 30 October 2026 the [Hamilton map](map:nz:wko:Hamilton) showed about 680 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. The total covers Lime’s whole Hamilton area, about 67 km² from around Rototuna in the north to Glenview in the south and east past the University of Waikato; it reaches no neighbouring town.',
-        'The map shows each scooter’s position and charge, but no price; scooters on a ride aren’t shown, nor are e-bikes. **Hamilton, Ontario** is another town, in Canada: this guide is about Hamilton in the Waikato.',
+        'One company rents shared e-scooters in Kirikiriroa Hamilton in 2026: **Lime**. Hamilton City Council’s micro-mobility page, last updated in June 2022, names it as the only company renting e-scooters and e-bikes in the city. Neuron, which joined Lime in July 2021, was no longer on the council’s list by June 2022.',
+        '**The council’s permit.** Running a micro-mobility rental scheme counts as trading in a public place under the council’s Trading in Public Places Bylaw 2016, amended on 17 September 2026, so it needs a council permit, which comes with conditions. The last permit terms reported are from July 2021, when Lime and Neuron each got a 12-month permit for up to 500 e-scooters and e-bikes, and the low-speed zones, “off-street times” and no-scooter zones stayed in place, the NZ Herald reported on 1 July 2021.',
+        'At 9.23am on Friday 30 October 2026 the [Hamilton map](map:nz:wko:Hamilton) showed about 680 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. The total covers Lime’s whole Hamilton area, about 67 km² from around Rototuna in the north to Glenview in the south and east past the University of Waikato.',
+        '**Hamilton, Ontario** is another town, in Canada: this guide is about Hamilton in the Waikato.',
       ],
     },
     {
-      heading: 'How much does a Lime scooter cost in Hamilton?',
+      heading: 'How to rent a Lime scooter in Hamilton',
       blocks: [
-        'Lime’s Hamilton price shows in its app before you unlock. Its age rule is in the app too. When Lime arrived in 2019, the council said its terms let anyone aged 18 or older ride.',
-        'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent): download the app, add a payment card, then scan the scooter’s QR code.',
+        'Download Lime’s app from the App Store or Google Play and sign up in it; the app and the scooters carry instructions on how to hire one, the council says. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Lime’s age rule is in the app. When Lime arrived in 2019, the council said its terms let anyone aged 18 or older ride.',
       ],
     },
     {
@@ -85,10 +85,9 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'University of Waikato, Waikato Hospital, buses and trains',
+      heading: 'University of Waikato, buses and trains',
       blocks: [
         '**University of Waikato.** Its Parking and Traffic Regulations 2025, in force since 1 January 2025, cover e-scooters on campus: 20 km/h at most on campus roads, 15 km/h on paths shared with people walking, who have priority, and no riding on signposted pedestrian access-ways. A shared e-scooter may be parked only where signs mark e-scooter parking, and never taken into a building, halls of residence included.',
-        '**Waikato Hospital.** No e-scooter rule for the hospital’s grounds is published: check Lime’s zones in the app and park clear of entrances.',
         '**Busit and Te Huia.** On Busit, the buses Waikato Regional Council runs, and Te Huia, the train to [Auckland](guide:auckland), ask before bringing a scooter of your own. A Lime has to stay in Lime’s Hamilton area: end your ride before you board.',
       ],
     },
@@ -110,10 +109,6 @@ const guide: Guide = {
     {
       question: 'Which e-scooter company operates in Hamilton, New Zealand?',
       answer: 'Lime, the one company Hamilton City Council lists. At 9.23am on 30 October 2026 our [Hamilton map](map:nz:wko:Hamilton) showed about 680 of its scooters, as last counted.',
-    },
-    {
-      question: 'How much is a Lime scooter in Hamilton?',
-      answer: 'Lime shows its Hamilton price in its app before you unlock.',
     },
     {
       question: 'Can you ride an e-scooter on the footpath in Hamilton?',

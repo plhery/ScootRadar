@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'fuerteventura',
   name: 'Alquiler de patinete eléctrico en Fuerteventura',
   title: 'Alquiler patinete eléctrico Fuerteventura 2026: Hoppy y Bird',
-  description: 'Alquiler de patinete eléctrico en Fuerteventura con Hoppy y Bird: en qué pueblos, precios, casco obligatorio, la ordenanza de cada municipio y dónde aparcar.',
+  description: 'Alquiler de patinete eléctrico en Fuerteventura con Hoppy y Bird: en qué pueblos, cómo alquilar, precios de noviembre de 2026, casco y dónde aparcar.',
   headline: 'Alquiler de patinete eléctrico en Fuerteventura: Hoppy y Bird pueblo a pueblo, precios, casco y ordenanzas',
-  lede: 'Para el alquiler de patinete eléctrico en Fuerteventura tienes Hoppy y Bird en Caleta de Fuste, Hoppy en Corralejo y Bird en Costa Calma y Morro Jable. En noviembre de 2026, diez minutos en un Hoppy cuestan de 4,20 a 4,90 €, y Bird te enseña su precio en la app. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, también en los de alquiler, así que llévate uno. Y cada municipio tiene sus normas: Antigua y Pájara prohíben los patinetes en paseos y zonas peatonales, Pájara solo los deja ir por la calzada en las zonas 30, y La Oliva aprobó inicialmente la suya en febrero de 2026.',
+  lede: 'Para el alquiler de patinete eléctrico en Fuerteventura tienes Hoppy y Bird en Caleta de Fuste, Hoppy en Corralejo y Bird en Costa Calma y Morro Jable. Descarga la app, añade una tarjeta y escanea el código QR del patinete; con Hoppy, el viaje empieza y acaba en uno de sus puntos, a cualquier hora. En noviembre de 2026, un Hoppy cuesta 1 € por desbloquear en Caleta de Fuste y 1,20 € en Corralejo, más 0,32 a 0,37 € por minuto, así que diez minutos salen por 4,20 a 4,90 €; Bird te enseña su precio en la app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, también en los de alquiler, así que llévate uno. Y cada municipio tiene sus normas: Antigua y Pájara prohíben los patinetes en paseos y zonas peatonales, Pájara solo los deja ir por la calzada en las zonas 30, y La Oliva aprobó inicialmente la suya en febrero de 2026.',
   published: '2026-10-14',
   updated: '2026-10-15',
   city: 'es:Caleta de Fuste',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Hay dos operadores de patinetes eléctricos compartidos (las patinetas, como las llaman Tiadhe y el Ayuntamiento de La Oliva), cada uno con su app:',
         {
           table: {
-            caption: 'Patinetes compartidos en Fuerteventura por pueblo (tarde del 14 de octubre de 2026)',
+            caption: 'Patinetes compartidos en Fuerteventura por pueblo, según los datos abiertos de Hoppy y Bird (noviembre de 2026)',
             head: ['Pueblo (municipio)', 'Operadores'],
             rows: [
               ['[Caleta de Fuste](map:es:Caleta de Fuste) (Antigua)', 'Hoppy y Bird'],
@@ -29,21 +29,20 @@ const guide: Guide = {
             ],
           },
         },
-        'Esa tarde había en Caleta de Fuste 314 patinetes libres en ese momento: 167 de Hoppy y 147 de Bird. Allí necesitas las dos apps para verlos todos.',
+        'La tarde del 14 de octubre de 2026 había en Caleta de Fuste 314 patinetes libres en ese momento: 167 de Hoppy y 147 de Bird. Allí necesitas las dos apps para verlos todos.',
       ],
     },
     {
       heading: 'Precios del alquiler de patinete eléctrico en Fuerteventura',
       blocks: [
-        'La tarifa de Hoppy cambia según el pueblo y el patinete; la app te enseña la del que escaneas. Bird te enseña la suya en la app antes de desbloquear.',
+        'La tarifa de Hoppy cambia según el pueblo y el patinete: la app te enseña la del que escaneas.',
         {
           table: {
-            caption: 'Precios del alquiler de patinete en Fuerteventura, en noviembre de 2026',
+            caption: 'Precios de Hoppy en Fuerteventura, en noviembre de 2026 (sus datos abiertos)',
             head: ['Operador y pueblo', 'Desbloqueo', 'Minuto', '10 min', '20 min'],
             rows: [
               ['Hoppy, Caleta de Fuste', '1 €', '0,32-0,37 € (la mayoría, 0,35-0,37 €)', '4,20-4,70 €', '7,40-8,40 €'],
               ['Hoppy, Corralejo', '1,20 €', '0,35-0,37 € (la mayoría, 0,37 €)', '4,70-4,90 €', '8,20-8,60 €'],
-              ['Bird, Caleta de Fuste, Costa Calma y Morro Jable', 'En la app', 'En la app', 'En la app', 'En la app'],
             ],
           },
         },
@@ -58,7 +57,7 @@ const guide: Guide = {
             '**Descarga la app** (Hoppy Mobility, en Google Play) y regístrate con tu móvil. Sus condiciones prohíben registrar un número ajeno.',
             '**Añade una tarjeta** de crédito o débito: sin ella no puedes registrarte. El saldo se recarga solo, salvo que lo desactives en tu cuenta.',
             '**Ponte el casco** y escanea el código QR del patinete.',
-            '**Termina en un punto Hoppy.** Solo puedes empezar y acabar el viaje en sus puntos: 98 en Caleta de Fuste y 34 en Corralejo, a 3 de noviembre de 2026. Busca el más cercano antes de salir: pagas hasta cerrar el viaje.',
+            '**Termina en un punto Hoppy.** Solo puedes empezar y acabar el viaje en sus puntos: 98 en Caleta de Fuste y 34 en Corralejo, en noviembre de 2026. Busca el más cercano antes de salir: pagas hasta cerrar el viaje.',
           ],
         },
         '**Con Bird**, aparca dentro de su zona, de pie y sin estorbar, donde el mapa de la app te deje terminar. Sus condiciones prohíben dejarlo en una propiedad privada, en un recinto cerrado o donde la app marque que no se puede aparcar. Para registrarte te pide una tarjeta de crédito, débito o prepago, u otro medio de pago que acepte.',
@@ -129,7 +128,7 @@ const guide: Guide = {
         {
           list: [
             '**Guagua.** Tiadhe prohíbe desde el 27 de marzo de 2024 subir patinetes eléctricos a todas sus guaguas. La línea 06 une el muelle de Corralejo con Puerto del Rosario (3,40 €), y la 05, Costa Calma con Morro Jable (2,70 €).',
-            '**Aeropuerto.** Ninguna zona llega: el 14 de octubre de 2026, el patinete libre más cercano estaba a unos 4 km, en Caleta de Fuste, y por la FV-2 no se puede ir. Coge la guagua 03, que para en el aeropuerto entre Puerto del Rosario y Caleta de Fuste cada 15 a 30 minutos de lunes a sábado, más o menos de 6:00 a 23:00, y con menos frecuencia los domingos; o un taxi.',
+            '**Aeropuerto.** Ninguna zona llega, y por la FV-2, que lo une con Caleta de Fuste, no se puede ir. Coge la guagua 03, que para en el aeropuerto entre Puerto del Rosario y Caleta de Fuste cada 15 a 30 minutos de lunes a sábado, más o menos de 6:00 a 23:00, y con menos frecuencia los domingos; o un taxi.',
             '**Dunas.** Los puntos de Hoppy acaban en el borde sur de Corralejo, donde empieza el Parque Natural de Corralejo, y la FV-1 que lo cruza está prohibida a los patinetes.',
             '**Barco a Lanzarote.** Las taquillas de Armas, Fred. Olsen y Líneas Romero, en el puerto de Corralejo, están en una zona prohibida de Hoppy, a más de 500 m del punto más cercano, y el patinete de alquiler se queda en tierra: cierra el viaje antes de embarcar.',
           ],
@@ -166,11 +165,11 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Qué app necesito para alquilar un patinete en Fuerteventura?',
-      answer: 'Hoppy en Caleta de Fuste y Corralejo, Bird en Caleta de Fuste, Costa Calma y Morro Jable. Los mapas de [Caleta de Fuste](map:es:Caleta de Fuste) y [Corralejo](map:es:Corralejo) muestran los libres; desbloqueas y pagas en la app, que te enseña antes el precio.',
+      answer: 'Hoppy en Caleta de Fuste y Corralejo, Bird en Caleta de Fuste, Costa Calma y Morro Jable. Los mapas de [Caleta de Fuste](map:es:Caleta de Fuste) y [Corralejo](map:es:Corralejo) muestran los libres; desbloqueas y pagas en la app.',
     },
     {
       question: '¿Cuánto cuesta un patinete Hoppy en Corralejo o Caleta de Fuste?',
-      answer: 'En noviembre de 2026, en Caleta de Fuste, 1 € por desbloquear y de 0,32 a 0,37 € por minuto; en Corralejo, 1,20 € y de 0,35 a 0,37 €. Diez minutos salen por 4,20 a 4,90 €. El precio de Bird lo ves en su app.',
+      answer: 'En noviembre de 2026, en Caleta de Fuste, 1 € por desbloquear y de 0,32 a 0,37 € por minuto; en Corralejo, 1,20 € y de 0,35 a 0,37 €. Diez minutos salen por 4,20 a 4,90 €, y veinte, por 7,40 a 8,60 €.',
     },
     {
       question: '¿Es obligatorio el casco en patinete en Fuerteventura?',
@@ -186,7 +185,7 @@ const guide: Guide = {
     },
     {
       question: '¿Se puede ir en patinete al aeropuerto o a las dunas?',
-      answer: 'No. Ninguna zona de patinetes llega al aeropuerto ni a las dunas, y la FV-1 y la FV-2 están prohibidas a los patinetes; el 14 de octubre de 2026, el patinete libre más cercano al aeropuerto estaba a unos 4 km. Al aeropuerto va la guagua 03.',
+      answer: 'No. Ninguna zona de patinetes llega al aeropuerto ni a las dunas, y la FV-1 y la FV-2 están prohibidas a los patinetes. Al aeropuerto va la guagua 03.',
     },
   ],
   sources: [

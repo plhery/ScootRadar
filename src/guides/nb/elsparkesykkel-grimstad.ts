@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'grimstad',
   name: 'Leie elsparkesykkel i Grimstad',
   title: 'Elsparkesykkel Grimstad 2026: Voi, nattestenging og regler',
-  description: 'Elsparkesykkel i Grimstad: Voi i sentrum og ut til Støle, Landvik og Fjære, stengt kl. 00–04 hver natt. Parkering, UiA, bussen og reglene.',
+  description: 'Elsparkesykkel i Grimstad: Voi i sentrum og ut til Støle, Landvik og Fjære, stengt kl. 00–04 hver natt og ved snø og is. Parkering, UiA, bussen og reglene.',
   headline: 'Elsparkesykkel i Grimstad: Voi, nattestengingen, hvor du kan kjøre og parkere, UiA og bussen',
-  lede: 'Vil du leie elsparkesykkel i Grimstad, er det Voi som gjelder: Voi vant anbudet og har en toårig avtale med kommunen og Agder kollektivtrafikk (AKT), skriver kommunen (januar 2026). Foreløpig kan du bruke sparkesyklene i sentrum og ut til Støle, Landvik og Fjære, og i gågaten i sentrum går de ikke fortere enn 6 km/t. Etter kommunens forskrift er utleien stengt fra midnatt til kl. 04 hver natt. Prisen ser du i Voi-appen før du låser opp.',
+  lede: 'Vil du leie elsparkesykkel i Grimstad, er det Voi som gjelder: Voi vant anbudet og har en toårig avtale med kommunen og Agder kollektivtrafikk (AKT), skriver kommunen (januar 2026). Foreløpig kan du bruke sparkesyklene i sentrum og ut til Støle, Landvik og Fjære, og i gågaten i sentrum går de ikke fortere enn 6 km/t. Etter kommunens forskrift er utleien stengt fra midnatt til kl. 04 hver natt, og sparkesyklene skal tas inn når det er fare for snø og is. Prisen ser du i Voi-appen før du låser opp.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'no:Grimstad',
@@ -25,7 +25,7 @@ const guide: Guide = {
       heading: 'Hva koster det å leie Voi i Grimstad?',
       blocks: [
         'Prisen ser du i Voi-appen før du låser opp. Betaler du per tur, er det vanligvis en fast oppstartspris pluss en pris per minutt, og prisene kan variere noe med sted og etterspørsel, skriver AKT. Pakker med forhåndsbetalte minutter eller abonnement finnes i enkelte byer, og prismodellene står i appene.',
-        'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. AKT skriver at du vanligvis må være over 18 år for å leie, men at andre aldersgrenser kan gjelde, og hva Voi krever, ser du i appen.',
+        'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**. AKT skriver at du vanligvis må være over 18 år for å leie, men at andre aldersgrenser kan gjelde, og hva Voi krever, ser du i appen.',
         'Når du leier, er du i de fleste tilfeller forsikret med ansvarsforsikring, ulykkesforsikring eller begge, skriver AKT. Hvilke forsikringer som gjelder, ser du i appen.',
       ],
     },
@@ -34,7 +34,7 @@ const guide: Guide = {
       blocks: [
         'Etter kommunens forskrift om utleie av små elektriske kjøretøy på offentlig grunn er utleien stengt fra midnatt til kl. 04, hver natt. Når Voi selv stenger og åpner igjen, ser du i appen. AKT skriver at driftstidene og tilgjengeligheten varierer fra by til by og med sesongen.',
         'Nabobyene har andre tider. I Lillesand er utleien stengt kl. 23–05 hver natt, etter Lillesands forskrift, og i Arendal og Kristiansand gjelder egne regler. Alle tidene står i guiden om [åpningstider for elsparkesykler](guide:opening-hours).',
-        'Tar Voi sparkesyklene inn for vinteren, blir [kartet over Grimstad](map:no:Grimstad) tomt. Mandag 2. november 2026 var de fortsatt på kartet.',
+        '**Vinter:** Etter forskriften (§ 6 c) skal sparkesyklene tas inn når det er fare for snø og is, slik at vinterdriften kan gå som den skal.',
       ],
     },
     {
@@ -115,7 +115,7 @@ const guide: Guide = {
     },
     {
       question: 'Når er utleien stengt i Grimstad?',
-      answer: 'Etter kommunens forskrift er utleien stengt fra midnatt til kl. 04 hver natt. Når Voi selv stenger og åpner igjen, ser du i appen.',
+      answer: 'Etter kommunens forskrift er utleien stengt fra midnatt til kl. 04 hver natt, og sparkesyklene skal tas inn når det er fare for snø og is. Når Voi selv stenger og åpner igjen, ser du i appen.',
     },
     {
       question: 'Hvor kan jeg kjøre Voi i Grimstad?',
@@ -140,6 +140,7 @@ const guide: Guide = {
     { title: 'Universitetet i Agder: Slik kommer du deg til Campus Grimstad', url: 'https://www.uia.no/om-uia/finn-fram/campus-grimstad/index.html' },
     { title: 'Entur: Avganger fra Grimstad Odden (2. november 2026)', url: 'https://entur.no/nearby-stop-place-detail?id=NSR:StopPlace:25611' },
     { title: 'Entur: Avganger fra Universitetet, Grimstad (2. november 2026)', url: 'https://entur.no/nearby-stop-place-detail?id=NSR:StopPlace:21930' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
   ],
 };

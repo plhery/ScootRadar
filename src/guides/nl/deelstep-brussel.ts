@@ -55,6 +55,7 @@ const guide: Guide = {
             ],
           },
         },
+        'Op 7 november 2026 stonden alle deelsteps van Bolt in Brussel op dat tarief van € 0,99 plus € 0,31 per minuut; de open data van Bolt vermelden ook een tarief van € 0,75 plus € 0,22, maar dat gold voor geen enkele step.',
         '**Welke deelstep is het goedkoopst?** Die van Bolt: 10 minuten kosten er € 4,09, tegen € 4,70 bij Dott, en 20 minuten € 7,19, tegen € 8,40.',
         'Volgens hun voorwaarden kunnen Bolt en Dott ook voorafbetaalde pakketten of passen verkopen; de prijs daarvan toont de app. Opvallend: de elektrische deelfiets van Bolt is goedkoper dan elke deelstep.',
       ],

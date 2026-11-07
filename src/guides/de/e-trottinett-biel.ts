@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Trottinett Biel/Bienne 2026: Voi, PubliBike, Preise, Zonen',
   description: 'E-Trottinett Biel: Voi und PubliBike im Vergleich, was 10 Minuten kosten, wo Fahrverbot und Tempo 10 gelten und wo du in Biel/Bienne parkierst.',
   headline: 'E-Trottinett Biel/Bienne: Voi und PubliBike mieten, Preise, Sperrzonen und Parkieren',
-  lede: 'Ein E-Trottinett in Biel/Bienne mietest du bei Voi oder bei PubliBike, bei beiden ab 18. Voi stellt seit dem 30. März 2026 mit einer Bewilligung der Stadt bis zu 160 Trottis frei im Stadtgebiet auf und verlangt CHF 1.– plus 39 Rappen pro Minute, zehn Minuten kosten also CHF 4.90 (Stand November 2026). Die 80 E-Scooter von PubliBike leihst du an einer Velostation aus, für CHF 1.– plus 20 Rappen pro Minute. Am Bahnhof, im Stadtpark, im Elfenaupark und auf den Friedhöfen gilt für Voi Fahr- und Parkverbot; in der Altstadt, der Innenstadt, auf der Schüssinsel und am Strandboden fährst du höchstens 10 km/h und parkierst nur auf Veloplätzen.',
+  lede: 'Ein E-Trottinett in Biel/Bienne mietest du bei Voi oder bei PubliBike, bei beiden ab 18. Voi stellt seit dem 30. März 2026 mit einer Bewilligung der Stadt bis zu 160 Trottis frei im Stadtgebiet auf und verlangt CHF 1.– plus 39 Rappen pro Minute, zehn Minuten kosten also CHF 4.90 (Stand November 2026). Günstiger sind die 80 E-Scooter von PubliBike, die du an einer Velostation ausleihst: CHF 1.– plus 20 Rappen pro Minute, zehn Minuten also CHF 3.–. Am Bahnhof, im Stadtpark, im Elfenaupark und auf den Friedhöfen gilt für Voi Fahr- und Parkverbot; in der Altstadt, der Innenstadt, auf der Schüssinsel und am Strandboden fährst du höchstens 10 km/h und parkierst nur auf Veloplätzen.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'ch:biel',
@@ -45,10 +45,10 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Biel?',
       blocks: [
-        'Voi verlangt in Biel CHF 1.– fürs Entsperren und 39 Rappen pro Minute (Stand November 2026). PubliBike nennt auf seiner Preisliste (Stand 24. Oktober 2026) für E-Scooter in Zürich und Biel/Bienne CHF 1.– Freischaltgebühr und 20 Rappen pro Minute, auch ohne Abo. Den Endpreis zeigt jeweils die App.',
+        'Voi verlangt in Biel CHF 1.– fürs Entsperren und 39 Rappen pro Minute (Stand November 2026). PubliBike nennt auf seiner Preisliste (Stand November 2026) für E-Scooter in Zürich und Biel/Bienne CHF 1.– Freischaltgebühr und 20 Rappen pro Minute, auch ohne Abo. Den Endpreis zeigt jeweils die App.',
         {
           table: {
-            caption: 'E-Trottinett und Leihvelo in Biel im Vergleich (Voi: Stand November 2026; PubliBike: Stand 24. Oktober 2026)',
+            caption: 'E-Trottinett und Leihvelo in Biel im Vergleich (Stand November 2026)',
             head: ['Angebot', 'Grundpreis', 'Danach pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi, E-Trottinett', 'CHF 1.– fürs Entsperren', '39 Rappen', 'CHF 4.90', 'CHF 8.80'],
@@ -59,7 +59,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Eine halbe Stunde kostet bei Voi CHF 12.70, bei PubliBike CHF 7.–. Das Jahresabo B-Fit Local Biel/Bienne für CHF 69.– macht die E-Scooter nicht billiger, nur Velo (die ersten 30 Minuten gratis) und E-Bike.',
+        'Günstiger fährst du mit PubliBike: Zehn Minuten kosten dort CHF 3.– statt CHF 4.90 bei Voi, eine halbe Stunde CHF 7.– statt CHF 12.70. Dafür holst du den E-Scooter an einer Station und bringst ihn an eine zurück. Das Jahresabo B-Fit Local Biel/Bienne für CHF 69.– macht die E-Scooter nicht billiger, nur Velo (die ersten 30 Minuten gratis) und E-Bike.',
         'Pässe, Pakete und Gebühren von Voi zeigt die App. In [Bern](map:ch:bern) verlangt Voi 42 Rappen pro Minute. Alle Tarife im Überblick: [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },

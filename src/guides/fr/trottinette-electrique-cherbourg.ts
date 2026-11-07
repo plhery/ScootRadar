@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'cherbourg',
   name: 'Louer une trottinette électrique à Cherbourg',
   title: 'Trottinette électrique Cherbourg 2026 : Bird, prix, zones',
-  description: 'Trottinette électrique à Cherbourg : Bird, 1 € puis 0,23 € la minute, dès 18 ans. Où se garer, zones interdites, casque obligatoire, bus, ferry, vélos.',
+  description: 'Trottinette électrique à Cherbourg : Bird, 1 € puis 0,23 €/min (Ville, août 2026), dès 18 ans. Où se garer, zones interdites, casque obligatoire, bus, ferry.',
   headline: 'Trottinette électrique à Cherbourg : Bird, prix, stationnement et casque en 2026',
-  lede: 'Pour louer une trottinette électrique à Cherbourg-en-Cotentin, vous passerez par **Bird**, présent depuis 2022. Comptez 1 € pour déverrouiller, puis 0,23 € la minute, soit 3,30 € les 10 minutes, selon la Ville en août 2026 ; l’app affiche le prix en vigueur, et il faut avoir 18 ans. La location ne se termine que sur un emplacement Bird marqué au sol, et depuis le 1er septembre 2026, le casque et le gilet réfléchissant sont obligatoires dans la Manche, location comprise.',
+  lede: 'Pour louer une trottinette électrique à Cherbourg-en-Cotentin, vous passerez par **Bird**, présent depuis 2022. Comptez 1 € pour déverrouiller, puis 0,23 € la minute, soit 3,30 € les 10 minutes, selon les tarifs publiés par la Ville en août 2026 ; l’app affiche le prix en vigueur, et il faut avoir 18 ans. La location ne se termine que sur un emplacement Bird marqué au sol, et depuis le 1er septembre 2026, le casque et le gilet réfléchissant sont obligatoires dans la Manche, location comprise.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'fr:Cherbourg-en-Cotentin',
@@ -104,7 +104,7 @@ const guide: Guide = {
     {
       heading: 'Trottinette dans le bus Cap Cotentin et le train',
       blocks: [
-        'Dans les bus et cars Cap Cotentin, « **seuls les vélos et trottinettes pliants sont acceptés à bord** », tenus à la main, selon le règlement d’exploitation du 8 juillet 2025. Cap Cotentin le met à jour le 2 novembre 2026. Une Bird, qui ne se plie pas, reste dehors : terminez la location près de l’arrêt.',
+        'Dans les bus et cars Cap Cotentin, « **seuls les vélos et trottinettes pliants sont acceptés à bord** », tenus à la main, selon le règlement d’exploitation en vigueur depuis le 2 novembre 2026. Une Bird, qui ne se plie pas, reste dehors : terminez la location près de l’arrêt.',
         'Le trajet en bus coûte **1 €** (ticket valable une heure, 1,50 € s’il est acheté à bord). Avec un titre Cap Cotentin, le train entre Cherbourg et Valognes coûte aussi 1 €, mais ces titres ne sont vendus ni en gare ni à bord.',
       ],
     },
@@ -149,7 +149,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Combien coûte une trottinette Bird à Cherbourg ?',
-      answer: '1 € pour déverrouiller, puis 0,23 € la minute, selon la Ville en août 2026 : 3,30 € les 10 minutes, 5,60 € les 20 minutes. Bird propose aussi des forfaits aller-retour, à la semaine ou au mois, dont le prix s’affiche dans l’app.',
+      answer: '1 € pour déverrouiller, puis 0,23 € la minute, selon les tarifs publiés par la Ville en août 2026 : 3,30 € les 10 minutes, 5,60 € les 20 minutes. Bird propose aussi des forfaits aller-retour, à la semaine ou au mois, dont le prix s’affiche dans l’app.',
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Cherbourg ?',
@@ -179,8 +179,7 @@ const guide: Guide = {
     { title: 'Office de tourisme du Cotentin : vélos et trottinettes en accès libre à Cherbourg (19 juillet 2022)', url: 'https://www.encotentin.fr/velos-et-trottinettes-en-acces-libre-a-cherbourg/' },
     { title: 'DREAL Normandie : les trottinettes électriques (2026)', url: 'https://www.normandie.developpement-durable.gouv.fr/IMG/pdf/onde_2026_-_les_trottinettes_electriques.pdf' },
     { title: 'ICI Cotentin : Bird souhaite une dérogation pour ses trottinettes (7 septembre 2026)', url: 'https://www.ici.fr/emissions/l-info-d-ici-ici-cotentin/casque-obligatoire-a-cherbourg-la-societe-bird-souhaite-une-derogation-pour-les-trottinettes-en-libre-service-7274891' },
-    { title: 'Cap Cotentin : règlement d’exploitation (8 juillet 2025)', url: 'https://storage.googleapis.com/is-wp-74-prod/uploads-prod/2025/07/Reglement-exploitation-v15_080725.pdf' },
-    { title: 'Cap Cotentin : mise à jour du règlement d’exploitation (19 octobre 2026)', url: 'https://www.capcotentin.fr/actualites/mis-a-jour-des-cgv-et-reglement-dexploitation-2026/' },
+    { title: 'Cap Cotentin : règlement d’exploitation (2 novembre 2026)', url: 'https://storage.googleapis.com/is-wp-74-prod/uploads-prod/2026/11/Reglement-exploitation-v16_021126.pdf' },
     { title: 'Cap Cotentin : le Cotentin pour 1 € (6 octobre 2026)', url: 'https://www.capcotentin.fr/actualites/le-cotentin-pour-1e/' },
     { title: 'Cap Cotentin : navettes ferries et croisières', url: 'https://www.capcotentin.fr/bateau/' },
     { title: 'Cap Cotentin : vélo électrique en libre-service', url: 'https://www.capcotentin.fr/velo-electrique-en-libre-service/' },

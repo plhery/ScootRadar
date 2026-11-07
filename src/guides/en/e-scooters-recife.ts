@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Recife 2026: JET, Whoosh, rules and parking',
   description: 'E-scooters in Recife: JET and Whoosh in the city’s pilot, how they charge, where you may ride and park, and the rules for riders in 2026.',
   headline: 'E-scooters in Recife: JET and Whoosh, how they charge, where to ride and where to park',
-  lede: 'You can rent an e-scooter in Recife from JET, whose app in Brazil is Go Jet, or from Whoosh: the two firms in the Prefeitura’s 12-month pilot, which began on 22 March 2026. Each app shows its price before you ride, and you must be 18. Under the pilot’s rules, as the Diario de Pernambuco reported them, you ride on cycle lanes and on streets with a limit of 40 km/h or less at up to 20 km/h, slow to 6 km/h where people walk, and park only at the points your app shows.',
+  lede: 'You can rent an e-scooter in Recife from JET, whose app in Brazil is Go Jet, or from Whoosh: the two firms in the Prefeitura’s 12-month pilot, which began on 22 March 2026. Sign up in the app, which validates your account (you must be 18) and shows the price before you ride; prices change with demand. Under the pilot’s rules, as the Diario de Pernambuco reported them, you ride on cycle lanes and on streets with a limit of 40 km/h or less at up to 20 km/h, slow to 6 km/h where people walk, and park only at the points your app shows, with a photo to end the ride. Get off and push across pedestrian crossings.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'br:Recife',
@@ -24,14 +24,14 @@ const guide: Guide = {
           ],
         },
         'The Prefeitura (the city government) launched the service on Sunday 22 March 2026 as an experiment it would follow for 12 months, the Diario de Pernambuco and Folha de Pernambuco reported. Both firms were chosen through EITA! Labs, the Prefeitura’s innovation programme, and accredited to run it at their own cost, with the city only setting the rules. At the launch there were about 90 parking points in 19 bairros (districts): Bairro do Recife, Boa Viagem, Pina, Santo Antônio, São José, Boa Vista, Santo Amaro, Graças, Aflitos, Espinheiro, Casa Forte, Santana, Poço da Panela, Parnamirim, Jaqueira, Torre, Madalena, Derby and Paissandu. In May 2026 the Prefeitura told a court the scheme could grow to more than 400 points and about 4,000 scooters, the Diario reported.',
-        'Those rules are the pilot’s, not a city law. In its Technical Note 002/2026, signed on 30 April 2026, Pernambuco’s state traffic council, CETRAN-PE, found no complete municipal regulation of shared scooters around Recife and recommended that the state’s towns write one. A councillor asked a court to suspend the pilot; on 13 May 2026 the judge refused, and the case goes on.',
+        'Those rules are the pilot’s, not a city law. In its Technical Note 002/2026, signed on 30 April 2026, Pernambuco’s state traffic council, CETRAN-PE, found no complete municipal regulation of shared scooters around Recife and recommended that the state’s towns write one. A councillor asked a court to suspend the pilot; on 13 May 2026 the judge refused.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does electric scooter rental in Recife cost?',
       blocks: [
-        'Each app shows the price before you start. JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time. A Whoosh Pass (7 days, 30 days or a year) removes Whoosh’s unlock fee but not the per-minute price, which also moves with demand. Whoosh may hold up to R$25 on your card when you start.',
+        'JET says its rates vary by city, day of the week and demand, and it charges paused time like riding time. A Whoosh Pass (7 days, 30 days or a year) removes Whoosh’s unlock fee but not the per-minute price, which also moves with demand. Whoosh may hold up to R$25 on your card when you start.',
         {
           table: {
             caption: 'What Whoosh charges in Brazil when a ride goes wrong (terms updated 21 March 2025)',
@@ -121,7 +121,7 @@ const guide: Guide = {
       heading: 'The metro, the buses and the city’s bikes',
       blocks: [
         'Don’t take a shared scooter aboard the Metrô do Recife, run by the federal CBTU, or the buses of the Grande Recife Consórcio de Transporte: Whoosh charges R$80 for the metro and R$40 for a bus, and Go Jet’s terms forbid carrying its scooter in any vehicle. End the ride at a point near your station or stop.',
-        'Recife’s orange docked bikes are run by Tembici and rented in the Bike Itaú app. Bike Itaú’s Recife page, updated on 22 October 2026, lists 79 stations and 830 bikes: a day pass on the mechanical bikes costs R$9.75, with rides of up to 60 minutes (two hours on Sundays and holidays), and the pedal-assisted e-bikes, from 24 October, R$0.90 a minute with no unlock fee but a 15-minute minimum (R$13.50). In July 2026 Floresta Notícias reported that the Prefeitura was replacing the state’s Bike PE with its own Bike Recife, again run by Tembici.',
+        'Recife’s orange docked bikes are run by Tembici and rented in the Bike Itaú app. Bike Itaú’s Recife page, updated on 6 November 2026, lists 79 stations and 830 bikes: a day pass on the mechanical bikes costs R$9.75, with rides of up to 60 minutes (two hours on Sundays and holidays), and the pedal-assisted e-bikes, since 24 October, R$0.90 a minute with no unlock fee but a 15-minute minimum (R$13.50). In July 2026 Floresta Notícias reported that the Prefeitura was replacing the state’s Bike PE with its own Bike Recife, again run by Tembici.',
       ],
     },
     {
@@ -141,10 +141,6 @@ const guide: Guide = {
     {
       question: 'Which companies rent e-scooters in Recife?',
       answer: 'JET, in its Go Jet app, and Whoosh: the two firms in the Prefeitura’s pilot since 22 March 2026. Find both on the [map of Recife](map:br:Recife).',
-    },
-    {
-      question: 'How much does an e-scooter cost in Recife?',
-      answer: 'The app shows the price before you ride, and it changes with demand. Whoosh charges R$40 if you end a ride away from a “P” parking point.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Recife?',

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Paderborn 2026: Voi, Dott, Bolt, Preise, Parken',
   description: 'E-Scooter Paderborn: Voi, Dott und Bolt, was Voi pro Minute kostet, wo du in Innenstadt und Parks nicht parkst und warum der Roller nicht in den Bus darf.',
   headline: 'E-Scooter Paderborn: Anbieter, Preise, Parken und Verbote',
-  lede: 'E-Scooter in Paderborn leihst du laut Stadt bei Voi, Dott und Bolt; sie vermieten erst ab 18, einen Führerschein brauchst du nicht. Voi verlangt laut seinem veröffentlichten Tarif 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand 25. Oktober 2026); Dott und Bolt zeigen ihren Preis in der App. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone um Westernstrasse und Marienplatz. Abstellen dürfen die Verleiher laut Stadt nicht in Fussgängerzonen und Parks, an Haltestellen, auf Brücken und auf dem Vorplatz des Hauptbahnhofs; im Inneren Ring gelten die Abstellzonen der App. In die Busse von PaderSprinter darfst du seit 1. April 2024 keinen E-Scooter mehr mitnehmen.',
+  lede: 'E-Scooter in Paderborn leihst du laut Stadt bei Voi, Dott und Bolt; sie vermieten erst ab 18, einen Führerschein brauchst du nicht. Voi verlangt laut seinem veröffentlichten Tarif 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026); Dott und Bolt zeigen ihren Preis in der App. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone um Westernstrasse und Marienplatz. Abstellen dürfen die Verleiher laut Stadt nicht in Fussgängerzonen und Parks, an Haltestellen, auf Brücken und auf dem Vorplatz des Hauptbahnhofs; im Inneren Ring gelten die Abstellzonen der App. In die Busse von PaderSprinter darfst du seit 1. April 2024 keinen E-Scooter mehr mitnehmen.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'de:Paderborn',
@@ -27,7 +27,7 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'E-Scooter-Preise in Paderborn (Stand 25. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Paderborn (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi (veröffentlichter Tarif)', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
@@ -135,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Paderborn?',
-      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 €, laut Vois veröffentlichtem Tarif vom 25. Oktober 2026. Bei Dott und Bolt zeigt dir die App den Preis.',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 €, laut Vois veröffentlichtem Tarif (Stand November 2026). Bei Dott und Bolt zeigt dir die App den Preis.',
     },
     {
       question: 'Wo darf ich in Paderborn einen E-Scooter abstellen?',
@@ -163,6 +163,7 @@ const guide: Guide = {
     { title: 'Stadt Paderborn: Mitnahmeverbot von Elektro-Tretrollern in den PaderSprinter-Bussen (15. März 2024)', url: 'https://www.paderborn.de/pressearbeit/pressemitteilungen/2024/maerz/109010100000276695.php' },
     { title: 'Stadt Paderborn: Libori 2027', url: 'https://www.paderborn.de/veranstaltungen/events/2027_07_23_Libori.php' },
     { title: 'Voi: Start in Paderborn (April 2025, PDF)', url: 'https://storage.mfn.se/1eecc5e2-9a12-4fa1-8e61-b5afd6e5182a/e-scooter-anbieter-voi-startet-in-paderborn.pdf' },
+    { title: 'Voi: Tarif und Zonen für Paderborn in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/362/netex.xml' },
     { title: 'NRW.Mobidrom: Mobilitätsdatenportal NRW', url: 'https://www.mobilitaetsdaten.nrw' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },

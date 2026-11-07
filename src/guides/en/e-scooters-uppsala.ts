@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-uppsala',
   topic: 'uppsala',
   name: 'E-scooters in Uppsala, Sweden',
-  title: 'E-scooters Uppsala 2026: Voi, Lime, Ryde and rules',
-  description: 'E-scooters in Uppsala: Voi, Lime and Ryde, the 4,500 cap, 15 km/h and a reaction test at night, where to ride and park, buses, trains and fines.',
+  title: 'E-scooters Uppsala 2026: Voi, Lime, Ryde, prices and rules',
+  description: 'E-scooters in Uppsala: Voi at SEK 5 + SEK 2.50 a minute (November 2026), Lime and Ryde, the night rules, where to ride and park, buses and fines.',
   headline: 'E-scooters in Uppsala: Voi, Lime and Ryde, the night rules and where to park',
-  lede: 'E-scooters in Uppsala are rented from Voi, Lime and Ryde, the three companies the municipality lists. Ride on cycle lanes or the road, never on the pavement, and from 23:00 to 05:00 expect hire scooters in the centre to slow to 15 km/h and to ask for a reaction test. End your ride in a cycle rack or e-scooter parking, and photograph the scooter.',
+  lede: 'E-scooters in Uppsala are rented from Voi, Lime and Ryde, the three companies the municipality lists: download one of their apps, find a scooter and unlock it in the app. As of November 2026 a Voi costs SEK 5 to unlock and SEK 2.50 a minute, so 10 minutes cost SEK 30; Lime’s and Ryde’s apps show their price before you unlock. Ride on cycle lanes or the road, never on the pavement; under-15s must wear a helmet. From 23:00 to 05:00 expect hire scooters in the centre to slow to 15 km/h and to ask for a reaction test, and during an orange or red SMHI warning for ice, snow or heavy rain the companies must switch them off. End your ride in a cycle rack or e-scooter parking, and photograph the scooter.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Uppsala',
@@ -16,14 +16,14 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Uppsala: Voi, Lime and Ryde',
       blocks: [
-        'Electric scooter rental in Uppsala needs a permit to use public land, granted by the police for a year at a time, and Uppsala kommun (the municipality) backs an application only if the company meets its local conditions. Its e-scooter page lists three rental companies (read 29 October 2026): **Voi**, **Lime** and **Ryde**, which also lists Uppsala among its towns.',
+        'Electric scooter rental in Uppsala needs a permit to use public land, granted by the police for a year at a time, and Uppsala kommun (the municipality) backs an application only if the company meets its local conditions. Its e-scooter page lists three rental companies as of November 2026: **Voi**, **Lime** and **Ryde**, which also lists Uppsala among its towns.',
         'At 04:51 on Thursday 29 October 2026 the [map of Uppsala](map:se:Uppsala) showed about 1,250 Voi and about 700 Lime scooters as they stood at that moment: a snapshot, not the fleet size. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
-      heading: 'How much does a Voi or Lime scooter cost in Uppsala?',
+      heading: 'How much does an e-scooter cost in Uppsala?',
       blocks: [
-        '**The app shows the price** before you unlock.',
+        'As of November 2026 Voi’s open data gives SEK 5 to unlock and SEK 2.50 a minute in Uppsala, for its scooters and e-bikes alike, so 10 minutes cost SEK 30 and 20 minutes SEK 55.',
         'Ryde’s Swedish terms let you ride from 15. Check each app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'Uppsala’s permit conditions: the cap, night rules and weather',
       blocks: [
-        'The municipality’s street and urban environment committee (gatu- och samhällsmiljönämnden) adopted new conditions for renting out e-scooters on public land on 22 April 2026. Upsala Nya Tidning, the local paper, reported on 27 April 2026 that they would apply from 1 July. The municipality’s page gives them as today’s rules (read 29 October 2026):',
+        'The municipality’s street and urban environment committee (gatu- och samhällsmiljönämnden) adopted new conditions for renting out e-scooters on public land on 22 April 2026. Upsala Nya Tidning, the local paper, reported on 27 April 2026 that they would apply from 1 July. The municipality’s page gives them as today’s rules (November 2026):',
         {
           table: {
             caption: 'Uppsala’s conditions for hire e-scooters, adopted 22 April 2026',
@@ -138,7 +138,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Uppsala?',
-      answer: 'The municipality lists Voi, Lime and Ryde (October 2026). Find Voi’s and Lime’s on the [Uppsala map](map:se:Uppsala) and Ryde’s in the Ryde app.',
+      answer: 'The municipality lists Voi, Lime and Ryde (November 2026). Find Voi’s and Lime’s on the [Uppsala map](map:se:Uppsala) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Is there a speed limit for e-scooters at night in Uppsala?',
@@ -162,12 +162,13 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Uppsala kommun: Elsparkcyklar i Uppsala (read 29 October 2026)', url: 'https://www.uppsala.se/gator-trafik-och-resor/trafiksakerhet-och-regler/trafiksakerhet-for-dig-som-cyklar/elsparkcyklar' },
+    { title: 'Uppsala kommun: Elsparkcyklar i Uppsala (read 7 November 2026)', url: 'https://www.uppsala.se/gator-trafik-och-resor/trafiksakerhet-och-regler/trafiksakerhet-for-dig-som-cyklar/elsparkcyklar' },
     { title: 'Uppsala kommun: Committee minutes, 22 April 2026, § 35', url: 'https://www.uppsala.se/contentassets/673a65bc3b0e4b3480d5ea37e75060c9/protokoll-gatu--och-samhallsmiljonamnden-2026-04-22---uppsala.se.pdf' },
     { title: 'Uppsala kommun: Proposed conditions and zone map (31 March 2026)', url: 'https://www.uppsala.se/contentassets/b61c2f7c8377425da0a81693e1e5749a/5.-nya-villkor-vid-markupplatelse-for-elsparkcyklar.pdf' },
     { title: 'Uppsala kommun: Committee minutes, 10 June 2026, §§ 48 and 52', url: 'https://www.uppsala.se/contentassets/1947595cbb854658a58a86003697fd40/protokoll-gatu--och-samhallsmiljonamnden-2026-06-10---uppsala.se.pdf' },
     { title: 'Uppsala kommun: Cycle street on Svartbäcksgatan, 0380 2026:436 (in force 22 September 2026)', url: 'https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=1134bca0-6810-4d7c-bc28-7e6eb8dac9b7' },
     { title: 'Upsala Nya Tidning: New e-scooter rules in Uppsala this summer (27 April 2026)', url: 'https://www.unt.se/nyheter/uppsala/artikel/nya-regler-for-elsparkcyklar-i-uppsala-i-sommar/r4p77z0r' },
+    { title: 'Voi: Open data for Uppsala, zone 48 (NeTEx, published 7 November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/48/netex.xml' },
     { title: 'Ryde: Locations', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Ryde: Terms and conditions, Sweden', url: 'https://www.ryde-technology.com/terms-conditions-sweden' },
     { title: 'Transportstyrelsen: Elsparkcykel (updated 14 August 2026)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordonsregler/regler-for-olika-fordonsslag/elsparkcykel/' },

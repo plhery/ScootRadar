@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Noleggio monopattini a Roma 2026: operatori, bando, casco',
   description: 'A Roma Bird, Dott e Lime lavorano in proroga in attesa dei nuovi operatori. Servono 18 anni e il casco, che porti tu. Pacchetti di corse con l’annuale Metrebus.',
   headline: 'Monopattini sharing a Roma: operatori, casco, parcheggio e multe nel 2026',
-  lede: 'I monopattini sharing a Roma, a ottobre 2026, sono quelli di Bird, Dott e Lime: gli unici tre operatori autorizzati dal Comune, che lavorano in proroga mentre è in corso il nuovo bando. Per noleggiarli servono 18 anni e un documento d’identità, e il casco lo porti tu: è obbligatorio per tutti e nessun operatore lo fornisce. Il prezzo te lo mostra l’app prima dello sblocco, e al Colosseo, a Fontana di Trevi o in piazza San Pietro l’app di Bird non ti fa chiudere il noleggio.',
+  lede: 'I monopattini sharing a Roma, a ottobre 2026, sono quelli di Bird, Dott e Lime: gli unici tre operatori autorizzati dal Comune, in proroga per il tempo necessario a scegliere i nuovi operatori. Le domande per il nuovo bando si sono chiuse il 2 novembre 2026. Per noleggiarli servono 18 anni e un documento d’identità, e il casco lo porti tu: è obbligatorio per tutti e nessun operatore lo fornisce. Il prezzo te lo mostra l’app prima dello sblocco, e al Colosseo, a Fontana di Trevi o in piazza San Pietro l’app di Bird non ti fa chiudere il noleggio.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'it:Roma',
