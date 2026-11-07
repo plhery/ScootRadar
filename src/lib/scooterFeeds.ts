@@ -283,6 +283,11 @@ export interface CollectableScooterFeed {
    * for jobs, one report of its silence stands for its feeds' expiries (scooter-cache.ts).
    */
   worker?: { silentSince(now?: number): number | undefined };
+  /**
+   * How old its last positions may be to stand faded, when not until it is due again while nobody
+   * looks (lastSeenMaxAgeMs in server/scooter-cache.ts): Ryde's, whose groups wait hours for a scan.
+   */
+  lastSeenMaxAgeMs?: number;
 }
 
 // The persistent collector refreshes each system independently. A failing

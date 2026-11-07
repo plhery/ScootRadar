@@ -226,7 +226,8 @@ A slow feed's sweep can take minutes, so while one runs for a request:
   and keep asking every 3 seconds while they stand. They stand up to 3 hours old, or
   until the feed is due again while nobody looks for one collected less often: three
   days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
-  `server/scooter-cache.ts`). The dock gives the day of the week of a time on
+  `server/scooter-cache.ts`). Ryde's groups, due again after many hours, say 3 hours
+  in their definitions: a read of the view clears only its circle. The dock gives the day of the week of a time on
   another day. A feed quick to collect has none: it is waited for instead.
 
 A request collects again only the six Lime groups nearest the middle of its view,

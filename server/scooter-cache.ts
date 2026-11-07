@@ -149,6 +149,8 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
 // The expiry of the feeds collected less often on purpose (Lime, BinBin, GCOO), from their definitions.
 let ownIdleExpiry = ownIdleExpiries([]);
+// How old a feed's last positions may stand faded, of the feeds that say (Ryde's).
+let ownLastSeenMaxAge: (id: string) => number | undefined = () => undefined;
 // How long the data of Bird's, Spin's and Bolt's own feeds may be kept, from their definitions.
 let retentionCap = retentionCaps([]);
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
@@ -179,7 +181,7 @@ const server = createSnapshotServer({ rydeBridge, rydeViews, snapshot: () => sna
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors, vehicleIds: createPublicVehicleIds(),
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
   // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
-  lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining,
+  lastSeenMaxAgeMs: id => ownLastSeenMaxAge(id) ?? Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining,
   paused: pausedNow });
 // The city totals, built in two parts (cityOverview): those of the feeds without a retention cap, and
 // those of the capped feeds. The file keeps the first only.
@@ -347,6 +349,8 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
   collectable = definitions;
   workerOf = new Map(definitions.flatMap(feed => feed.worker ? [[feed.id, feed.worker] as const] : []));
   ownIdleExpiry = ownIdleExpiries(definitions, schedule.idleExpiryMs);
+  const lastSeenAges = new Map(definitions.flatMap(feed => feed.lastSeenMaxAgeMs ? [[feed.id, feed.lastSeenMaxAgeMs] as const] : []));
+  ownLastSeenMaxAge = id => lastSeenAges.get(id);
   retentionCap = retentionCaps(definitions);
   const active = new Set(definitions.map(feed => feed.id));
   for (const [id, feed] of records) if (!active.has(id) && retiresMissing(feed)) records.delete(id);

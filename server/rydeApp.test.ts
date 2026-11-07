@@ -67,6 +67,7 @@ it('enables only catalogued groups through an explicit production pilot and leav
     const feed=wrapped.find(f=>f.id.endsWith(':'+system.id))!;
     expect(feed.paced).toBe(true);expect(feed.keepsIdleTurns).toBe(true);expect(feed.worker).toBeDefined();
     expect(feed.idleIntervalMs).toBeGreaterThanOrEqual(2*60*60_000);
+    expect(feed.lastSeenMaxAgeMs).toBe(3*60*60_000);
     expect(system.rydeMapTiles!.length).toBeLessThanOrEqual(2);
   }
   for(let i=0;i<feeds.length;i++)if(!feeds[i].id.includes(':ryde_app_'))expect(wrapped[i]).toBe(feeds[i]);

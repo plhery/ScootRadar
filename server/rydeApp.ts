@@ -5,6 +5,7 @@ import catalog from '../data/ryde-bridge-areas.json';
 import { boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { LAST_SEEN_MAX_AGE_MS } from '../src/lib/dataFreshness';
 import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { ringsMeetBounds } from './nearestSweep';
 import { currentCollection, takeNearest } from './sweeps';
@@ -136,7 +137,9 @@ export function withRydeAppCollectors(feeds: CollectableScooterFeed[], broker: R
     const system=regions.get(feed.id);if(!system || (!selected.has('*') && !selected.has(system.rydeAppArea!)))return feed;
     const area=byArea.get(system.rydeAppArea!);if(!area)throw new Error('Missing Ryde market geometry');
     const excludeBounds=systems.filter(s=>s.country===area.country && s.provider==='ryde' && !s.rydeAppArea).flatMap(s=>s.areas?.map(a=>a.bounds) ?? [s.bounds]);
-    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs,watchMs:2*60_000,worker:broker,
+    // Its old positions go after 3 hours, not when a scan is due: a read of the view lists only its
+    // circle, and in a wide view of Augsburg on 7 November 2026 82 scooters stood faded 13 hours old.
+    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs,watchMs:2*60_000,worker:broker,lastSeenMaxAgeMs:LAST_SEEN_MAX_AGE_MS,
       collect:()=>collectRydeArea({...area,tiles:system.rydeMapTiles,excludeBounds},broker,productionPilot)};
   });
 }
