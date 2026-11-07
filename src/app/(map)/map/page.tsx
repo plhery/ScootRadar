@@ -598,7 +598,9 @@ export default function Home() {
   }, [enabledProviders, parking, viewportBounds, viewportZoom]);
 
   // The scooter walked to, as the latest data has it. Some apps give a scooter a
-  // new id now and then: one of the same app a few metres from where it was is it.
+  // new id now and then: one of the same app a few metres from where it was, listed
+  // under a key the answer before didn't have, is it. One already listed beside it is
+  // another scooter, which the walk is not handed to.
   // Held while the walk is under way, or to say it is gone; a walk that failed or
   // got there leaves the card to the view, as any other.
   const walkHolds = walk.state !== null && walk.state.phase !== 'failed' && walk.state.phase !== 'arrived';
@@ -606,13 +608,17 @@ export default function Home() {
   const pinnedParking = walkHolds && walkPin && 'parking' in walkPin ? walkPin.parking : null;
   const pinnedProvider = pinnedVehicle?.provider ?? null;
   const [walkLat, walkLng] = walk.state?.target.point ?? [null, null];
+  // The answer before this one, until this one has been looked at.
+  const [listedVehicles, setListedVehicles] = useState(vehicles);
   const liveWalkedVehicle = useMemo(() => {
     if (pinnedProvider === null || walkLat === null || walkLng === null) return null;
+    // Only a new answer can rename it.
+    const listedKeys = listedVehicles === vehicles ? null : new Set(listedVehicles.map(vehicleKey));
     let nearest: Vehicle | null = null;
     let nearestM = SAME_SCOOTER_M;
     for (const vehicle of vehicles) {
       if (vehicleKey(vehicle) === selectedVehicleKey) return vehicle;
-      if (vehicle.provider !== pinnedProvider) continue;
+      if (vehicle.provider !== pinnedProvider || !listedKeys || listedKeys.has(vehicleKey(vehicle))) continue;
       const distanceM = haversineM(walkLat, walkLng, vehicle.lat, vehicle.lng);
       if (distanceM <= nearestM) {
         nearest = vehicle;
@@ -620,7 +626,7 @@ export default function Home() {
       }
     }
     return nearest;
-  }, [pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
+  }, [listedVehicles, pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
   // Faded where it was last seen while its app is collected again: neither seen nor taken until the
   // app's new positions say which.
   const walkedFaded = useMemo(() => pinnedProvider !== null && walkLat !== null && walkLng !== null &&
@@ -637,7 +643,6 @@ export default function Home() {
   // Bird and Pony give every scooter a new id on each read, other apps after each ride. A card not walked to follows
   // its scooter too, but only to one listed under a key that wasn't there before: one already listed beside it is
   // another scooter, the first taken, and the card closes.
-  const [listedVehicles, setListedVehicles] = useState(vehicles);
   let followedCard = false;
   if (listedVehicles !== vehicles) {
     setListedVehicles(vehicles);

@@ -1005,6 +1005,25 @@ it('follows the scooter walked to when its app gives it a new id a few metres aw
   expect(walks).toHaveLength(1);
 });
 
+it('does not hand the walk to another scooter of its app already listed beside it', async () => {
+  // Some 9 m apart, as at a parking spot, the other almost flat.
+  const neighbour: Vehicle = { ...FAR, vehicle_id: 'neighbour', lat: FAR.lat + 0.00008, battery: 10 };
+  let vehicles = [FAR, neighbour];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  vehicles = [neighbour];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText('Battery 80%')).toBeInTheDocument();
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('gone 0 null');
+});
+
 it('keeps a card on its scooter when its app gives it a new id, and closes it when someone takes it', async () => {
   const neighbour: Vehicle = { ...FAR, vehicle_id: 'neighbour', lat: FAR.lat + 0.00009 };
   let vehicles = [FAR, neighbour];
