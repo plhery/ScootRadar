@@ -1742,6 +1742,60 @@ class ScooterModelsTest {
     }
 
     @Test
+    fun delayedDataNamesTheOneAppLateWhenTheServerSaysWhichAre() {
+        val now = Instant.ofEpochSecond(1_790_000_000)
+        val updated = now.addingTimeInterval(-720.0)
+        fun summary(apps: Map<ScooterProvider, Instant>?, delayed: Boolean = true): ScooterDockSummary = ScooterDockSummary(
+            count = 22, countContext = ScooterCountContext.Nearby, lastUpdated = updated, refreshFailure = null,
+            isOverview = false, isDelayed = delayed, notices = emptyList(), hint = null, chips = emptyList(),
+            staleApps = apps,
+        )
+        val minuteAgo = now.addingTimeInterval(-60.0)
+        val sevenMinutesAgo = now.addingTimeInterval(-420.0)
+
+        // Lime's positions 12 minutes old; Voi's, collected again, a minute old: Lime is named, from its own time.
+        val lime = ScooterDockStatus.Delayed(showing = updated, provider = ScooterProvider.Lime)
+        assertEquals(lime, summary(mapOf(ScooterProvider.Lime to updated, ScooterProvider.Voi to minuteAgo)).status(at = now))
+        assertEquals("Lime data delayed · showing ${ScooterDockStatus.clockTime(updated)}", lime.text)
+        assertEquals(lime.text, lime.briefText)
+        assertFalse(lime.isWarning)
+        assertFalse(lime.isLive)
+        // One late among the faded scooters' time: from its own, not the answer's.
+        assertEquals(
+            ScooterDockStatus.Delayed(showing = sevenMinutesAgo, provider = ScooterProvider.Voi),
+            summary(mapOf(ScooterProvider.Voi to sevenMinutesAgo)).status(at = now),
+        )
+        // A time ahead of the clock is taken as now: not late.
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(12), summary(mapOf(ScooterProvider.Voi to now.addingTimeInterval(600.0))).status(at = now))
+
+        // Two late: the data is, from the older's time, whatever their order.
+        val two = ScooterDockStatus.Delayed(showing = updated)
+        assertEquals(two, summary(mapOf(ScooterProvider.Voi to sevenMinutesAgo, ScooterProvider.Lime to updated)).status(at = now))
+        assertEquals("Data delayed · showing ${ScooterDockStatus.clockTime(updated)}", two.text)
+
+        // None late: of the apps named, none for five minutes, or none at all (one filtered out is not given).
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(12), summary(mapOf(ScooterProvider.Voi to minuteAgo)).status(at = now))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(12), summary(emptyMap()).status(at = now))
+
+        // Not named, as city totals, a kept answer or an older server: from the answer's own time, as before.
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(apps = null).status(at = now))
+        assertEquals(ScooterDockStatus.Live, summary(apps = null).status(at = updated.addingTimeInterval(60.0)))
+        // Data the server renewed is not delayed, whatever it names.
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(12), summary(mapOf(ScooterProvider.Lime to updated), delayed = false).status(at = now))
+        // A failure still comes first.
+        assertEquals(
+            ScooterDockStatus.Offline(showing = updated),
+            summary(mapOf(ScooterProvider.Lime to updated)).copy(refreshFailure = ScooterLoadFailure.Offline).status(at = now),
+        )
+
+        // In each language, with its own words.
+        ScooterLanguage.current = ScooterLanguage.Fr
+        assertEquals("Données Lime retardées · actualisées à ${ScooterDockStatus.clockTime(updated)}", lime.text)
+        ScooterLanguage.current = ScooterLanguage.De
+        assertEquals("Lime-Daten verzögert · Stand ${ScooterDockStatus.clockTime(updated)}", lime.text)
+    }
+
+    @Test
     fun dockStatusTextCarriesTheTimeOrTheMinutes() {
         val updated = Instant.ofEpochSecond(1_790_000_000)
         val time = ScooterDockStatus.clockTime(updated)

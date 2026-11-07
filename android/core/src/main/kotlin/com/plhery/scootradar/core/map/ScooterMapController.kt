@@ -176,6 +176,14 @@ class ScooterMapController(
     private val _lastSeenProviders = MutableStateFlow<Map<ScooterProvider, ScooterLastSeenStatus>>(emptyMap())
     val lastSeenProviders: StateFlow<Map<ScooterProvider, ScooterLastSeenStatus>> = _lastSeenProviders.asStateFlow()
 
+    /**
+     * The apps the answer shown names late (meta.staleProviders), with when the oldest of their positions shown were
+     * seen, on this device's clock. Null where it does not name them. Set with `responseMetadata`, which tells the
+     * chrome; `staleApps` is what the dock reads.
+     */
+    internal var staleProviders: Map<ScooterProvider, Instant>? = null
+        private set
+
     private val _parking = MutableStateFlow<List<ScooterParking>>(emptyList())
     val parking: StateFlow<List<ScooterParking>> = _parking.asStateFlow()
 
@@ -1339,6 +1347,7 @@ class ScooterMapController(
                 _lastSeenVehicles.value = response.lastSeenVehicles
                 _lastSeenClusters.value = response.lastSeenClusters
                 _parking.value = response.parking
+                staleProviders = staleProviderTimes(response, receivedAt = receivedAt)
                 _responseMetadata.value = response.meta
                 queryBounds = bounds
                 queryZoom = zoom
@@ -1778,6 +1787,21 @@ class ScooterMapController(
             val updating = response.meta?.refreshing == true
             val providers = response.lastSeenVehicles.map { it.provider } + response.lastSeenClusters.flatMap { it.providers.keys }
             return providers.mapNotNull(ScooterProvider::fromRawValue).associateWith { ScooterLastSeenStatus(seenAt = seenAt, updating = updating) }
+        }
+
+        /**
+         * The apps an answer names late (meta.staleProviders), on this device's clock and never later than the answer
+         * came; null where it does not name them, empty where it names none. An app this build does not know, which
+         * the map counts nowhere, and a time that cannot be read are left out.
+         */
+        internal fun staleProviderTimes(response: ScooterResponse, receivedAt: Instant): Map<ScooterProvider, Instant>? {
+            val named = response.meta?.staleProviders ?: return null
+            val times = LinkedHashMap<ScooterProvider, Instant>()
+            for ((providerID, value) in named) {
+                val provider = ScooterProvider.fromRawValue(providerID) ?: continue
+                times[provider] = apiDate(value, clockOffset = response.clockOffset)?.let { minOf(it, receivedAt) } ?: continue
+            }
+            return times
         }
 
         /** A time the server wrote, on the clock of this device: `clockOffset` is how far this clock is ahead of the server's. */

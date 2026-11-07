@@ -1977,6 +1977,56 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun delayedDataNamesTheOneAppLateFromItsOwnTime() = runTest {
+        val clock = TestClock()
+        val now = clock.now
+        val limeSeenAt = now.addingTimeInterval(-720.0)
+        val voiSeenAt = now.addingTimeInterval(-60.0)
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(scooter(id = "one", provider = "lime"), scooter(id = "two", provider = "voi")),
+                meta = ScooterResponseMetadata(
+                    partial = false, stale = true, failedSources = emptyList(), generatedAt = iso(limeSeenAt),
+                    // Lime's positions 12 minutes old; Voi's, collected again, a minute old. An app this build does
+                    // not know and a time that cannot be read are left out.
+                    staleProviders = mapOf(
+                        "lime" to iso(limeSeenAt),
+                        "voi" to iso(voiSeenAt),
+                        "newapp" to iso(now.addingTimeInterval(-1_200.0)),
+                        "bolt" to "yesterday",
+                    ),
+                ),
+            ),
+        )
+        val model = makeController(api, clock = clock)
+
+        model.refresh()
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+
+        assertTrue(loaded)
+        assertEquals(mapOf(Lime to limeSeenAt, Voi to voiSeenAt), model.staleApps)
+        val lime = ScooterDockStatus.Delayed(showing = limeSeenAt, provider = Lime)
+        assertEquals(lime, summaryOf(model.dock).status(at = now))
+        assertEquals("Lime data delayed · showing ${ScooterDockStatus.clockTime(limeSeenAt)}", lime.text)
+        // The line above an open card says the same, and is no warning.
+        model.selectScooter(model.mapScooters.value.first { it.provider == "voi" }.id)
+        assertEquals(lime, model.cardStatus)
+        assertFalse(lime.isWarning)
+        model.selectScooter(null)
+
+        // Four minutes on, Voi's are late too: the data is, from the older's time.
+        clock.advance(240.0)
+        assertEquals(ScooterDockStatus.Delayed(showing = limeSeenAt), summaryOf(model.dock).status(at = clock.now))
+
+        // With Lime switched off, Voi alone is late, and named. Before it was, only the app switched off was late:
+        // nothing shown is delayed, and the age of the data says enough.
+        model.toggle(Lime)
+        assertEquals(mapOf(Voi to voiSeenAt), model.staleApps)
+        assertEquals(ScooterDockStatus.Delayed(showing = voiSeenAt, provider = Voi), summaryOf(model.dock).status(at = clock.now))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(12), summaryOf(model.dock).status(at = now))
+    }
+
+    @Test
     fun outsideCoverageOffersTheThreeClosestCities() = runTest {
         val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
         val model = makeController(api)

@@ -94,6 +94,12 @@ data class ScooterResponseMetadata(
      * which the next request waits for. Null from a server that does not say.
      */
     val followUpMs: Int? = null,
+    /**
+     * With `stale`, in an answer of scooters: each app whose positions shown are being collected again or could not
+     * be renewed, by provider id, with when the oldest of them were seen. Null where the answer does not say: city
+     * totals, an answer the server kept from before, an older server.
+     */
+    val staleProviders: Map<String, String>? = null,
     /** When the oldest of the last-seen scooters were seen, while there are any. */
     val lastSeenAt: String? = null,
     val parkingStatus: String? = null,
@@ -165,6 +171,7 @@ val ScooterResponseMetadataPayload.model: ScooterResponseMetadata
         refreshAfterSeconds = refreshAfterSeconds?.saturated,
         refreshing = refreshing ?: false,
         followUpMs = followUpMs?.saturated,
+        staleProviders = staleProviders,
         lastSeenAt = lastSeenAt,
         parkingStatus = parkingStatus?.rawValue,
         expiresAt = expiresAt,

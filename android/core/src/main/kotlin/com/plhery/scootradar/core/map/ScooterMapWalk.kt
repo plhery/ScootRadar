@@ -284,7 +284,8 @@ private fun ScooterMapController.reportArrival(target: ScooterWalkTarget) {
 /**
  * Fresh data about the scooter walked to. It may have moved, and the route then follows it; or data that
  * would list it no longer does, which mostly means someone took it. Scooters get new ids now and then, so one
- * of the same provider standing where it stood is that scooter.
+ * of the same provider standing where it stood is that scooter. Standing faded where it was last seen, while
+ * its app is collected again, it is neither: the walk goes on until the app's new positions say which.
  */
 internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata?, loadedFor: GeoBounds) {
     val walk = walk.value ?: return
@@ -315,6 +316,7 @@ internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
     }
+    if (standsFaded(scooter)) return
     cancelRouteRequest()
     setWalk(walk.copy(phase = ScooterWalkPhase.Gone, route = null))
     announceWalk(ScooterWalkNote.Gone.text)
@@ -341,6 +343,17 @@ private fun ScooterMapController.successor(of: Scooter, among: List<Scooter> = v
         .filter { it.second <= WalkRoute.rebindDistance }
         .minByOrNull { it.second }
         ?.first
+}
+
+/**
+ * [scooter] is among the faded ones, which stand where they were last seen while their app is collected again:
+ * under its id, or one of its provider where it stood, as [successor] finds it among the others.
+ */
+private fun ScooterMapController.standsFaded(scooter: Scooter): Boolean {
+    val point = scooter.coordinate
+    return lastSeenVehicles.value.any {
+        it.id == scooter.id || (it.provider == scooter.provider && it.distance(from = point) <= WalkRoute.rebindDistance)
+    }
 }
 
 /**

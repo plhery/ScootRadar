@@ -218,6 +218,17 @@ val ScooterMapController.fadedApps: List<ScooterFadedApp>
         }
     }
 
+/**
+ * Of delayed data, the apps the answer names late (meta.staleProviders), of those switched on, with when the oldest of
+ * their positions shown were seen: the dock names the one late app. Null where the data is not delayed or the answer
+ * does not name them (city totals, an answer the server kept from before, an older server).
+ */
+val ScooterMapController.staleApps: Map<ScooterProvider, Instant>?
+    get() {
+        if (responseMetadata.value?.stale != true) return null
+        return staleProviders?.filterKeys { it in enabledProviders.value }
+    }
+
 /** The providers in the filter sheet, in catalogue order. */
 val ScooterMapController.filterProviders: List<ScooterProviderEntry>
     get() {
@@ -319,6 +330,7 @@ val ScooterMapController.dock: ScooterDockContent
                 lead = if (isOverview) null else dockLead,
                 everyProviderDown = everyProviderDown,
                 fadedApps = fadedApps,
+                staleApps = staleApps,
             ),
         )
     }
@@ -347,8 +359,7 @@ val ScooterMapController.cardStatus: ScooterDockStatus?
         }
         val lastUpdated = lastUpdated.value
         if (responseMetadata.value?.stale != true || lastUpdated == null || isFilling) return null
-        if (clock().timeIntervalSince(lastUpdated) < ScooterDockStatus.delayedAfter) return null
-        return ScooterDockStatus.Delayed(showing = lastUpdated)
+        return ScooterDockStatus.Delayed.of(showing = lastUpdated, apps = staleApps, at = clock())
     }
 
 /**

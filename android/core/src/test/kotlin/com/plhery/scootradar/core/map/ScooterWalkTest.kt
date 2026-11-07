@@ -614,6 +614,46 @@ class ScooterWalkTest {
     }
 
     @Test
+    fun aScooterStandingFadedWhileItsAppIsCollectedAgainIsNotTaken() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val other = scooter("b2", provider = "bird", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(other))
+        val collecting = ScooterResponseMetadata(partial = false, stale = true, failedSources = emptyList(), refreshing = true)
+        // Its app is collected again: it stands faded where it was last seen, under its id, then under another a few
+        // metres away, in updates in a row.
+        val faded = listOf(target, scooter("s1-seen", at = point(east = 305, north = 0)))
+
+        for ((index, lastSeen) in faded.withIndex()) {
+            h.api.setResponse(ScooterResponse(vehicles = listOf(other), lastSeenVehicles = listOf(lastSeen), meta = collecting))
+            h.model.refresh()
+            val loaded = waitUntil { h.api.calls >= index + 2 && !h.model.isLoading.value }
+            assertTrue(loaded)
+
+            assertEquals(lastSeen.id, ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+            assertEquals(ScooterWalkTarget.Scooter(target), h.model.walk.value?.target)
+            assertEquals(target, h.model.selectedScooter)
+            assertTrue(h.model.isWalking)
+            assertNotEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
+        }
+
+        // Its app's new positions are in, without it; another app's faded scooter where it stood is not it: taken.
+        val neighbour = scooter("b1", provider = "bird", at = point(east = 302, north = 0))
+        h.api.setResponse(
+            ScooterResponse(
+                vehicles = listOf(other),
+                lastSeenVehicles = listOf(neighbour),
+                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList()),
+            ),
+        )
+        h.model.refresh()
+
+        val gone = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone }
+        assertTrue(gone)
+        assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
+        assertEquals(localized("No longer on the map. Someone may have taken it."), h.model.walkAnnouncement.value?.text)
+    }
+
+    @Test
     fun aPlainCardStaysOnItsScooterUnderANewIDAndClosesWhenItIsTaken() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val neighbour = scooter("s2", at = point(east = 308, north = 0))

@@ -75,6 +75,13 @@ data class ScooterDockSummary(
      * positions of theirs are on their way, and since when they stand there.
      */
     val fadedApps: List<ScooterFadedApp> = emptyList(),
+    /**
+     * Of delayed data, the apps the server names late (meta.staleProviders), of those switched on, with when the
+     * oldest of their positions shown were seen: the line names the one late app. Null where the answer does not
+     * name them (city totals, an answer the server kept from before, an older server): the data is then late or
+     * not as a whole.
+     */
+    val staleApps: Map<ScooterProvider, Instant>? = null,
 ) {
     /** "scooters nearby" or "scooters on this map"; the view renders the number. */
     val countLabel: String get() = countContext.label(count)
@@ -95,8 +102,8 @@ data class ScooterDockSummary(
         ScooterDockStatus.Updating.of(fadedApps)?.let { return it }
         val age = maxOf(0.0, at.timeIntervalSince(lastUpdated))
         // Delayed data says so at every zoom, city totals included, once it is late:
-        // before that its age or its time says enough.
-        if (isDelayed && age >= ScooterDockStatus.delayedAfter) return ScooterDockStatus.Delayed(showing = lastUpdated)
+        // before that its age or its time says enough. One app late is named.
+        if (isDelayed) ScooterDockStatus.Delayed.of(showing = lastUpdated, apps = staleApps, at = at)?.let { return it }
         if (isOverview) return ScooterDockStatus.CityTotals
         // Faded scooters nothing is collecting stand as they were last seen, perhaps days ago, as Lime's groups a
         // wide view leaves idle: the line says so rather than "Live" over them.
@@ -117,7 +124,31 @@ sealed interface ScooterDockStatus {
 
     data object CityTotals : ScooterDockStatus
 
-    data class Delayed(val showing: Instant) : ScooterDockStatus
+    /**
+     * "Data delayed · showing 16:44", or with the one app late named: "Lime data delayed · showing 16:44", from the
+     * time of its positions.
+     */
+    data class Delayed(val showing: Instant, val provider: ScooterProvider? = null) : ScooterDockStatus {
+        companion object {
+            /**
+             * Of data the server could not renew, shown since [showing], once it is late: the one app late, named, or
+             * from the oldest's time where two or more are, and null where none is. [apps] are those the server names
+             * late, of those switched on, with when the oldest of their positions shown were seen (dockModel.ts's
+             * delayedApps); null where it does not name them, and the data is then late or not as a whole.
+             */
+            fun of(showing: Instant, apps: Map<ScooterProvider, Instant>?, at: Instant): Delayed? {
+                if (apps == null) {
+                    return Delayed(showing = showing).takeIf { at.timeIntervalSince(showing) >= ScooterDockStatus.delayedAfter }
+                }
+                val late = apps.map { (provider, seenAt) -> provider to minOf(seenAt, at) }
+                    .filter { (_, seenAt) -> at.timeIntervalSince(seenAt) >= ScooterDockStatus.delayedAfter }
+                    // Oldest first, then in catalogue order.
+                    .sortedWith(compareBy<Pair<ScooterProvider, Instant>> { it.second }.thenBy { it.first.ordinal })
+                val (provider, oldest) = late.firstOrNull() ?: return null
+                return Delayed(showing = oldest, provider = provider.takeIf { late.size == 1 })
+            }
+        }
+    }
 
     /**
      * With a spinner: scooters stand faded where they were last seen while new positions of their apps are
@@ -171,7 +202,11 @@ sealed interface ScooterDockStatus {
             is RefreshFailed -> stringFormat(localized("Couldn’t refresh · showing %@"), clockTime(showing))
             is Offline -> stringFormat(localized("You’re offline · showing %@"), clockTime(showing))
             CityTotals -> localized("City totals · refreshed hourly")
-            is Delayed -> stringFormat(localized("Data delayed · showing %@"), clockTime(showing))
+            is Delayed -> if (provider != null) {
+                stringFormat(localized("%1\$@ data delayed · showing %2\$@"), provider.displayName, clockTime(showing))
+            } else {
+                stringFormat(localized("Data delayed · showing %@"), clockTime(showing))
+            }
             is Updating -> when (providers.size) {
                 1 -> stringFormat(localized("%1\$@ updating · faded ones seen at %2\$@"), providers[0].displayName, seenTime(seenAt))
                 2 -> stringFormat(

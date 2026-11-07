@@ -110,6 +110,8 @@ class ScooterAPITest {
         val response = api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
 
         assertTrue(response.vehicles.isEmpty())
+        // Fresh data names no app late.
+        assertNull(response.meta?.staleProviders)
     }
 
     @Test
@@ -196,7 +198,7 @@ class ScooterAPITest {
 
     @Test
     fun responseHealthMetadataIsDecoded() = runBlocking<Unit> {
-        val data = """{"vehicles":[],"clusters":[],"providers":{},"meta":{"partial":true,"stale":true,"failedSources":["national"],"sources":{"national":"failed","hopp":"fresh"},"generatedAt":"2026-08-05T12:00:00.000Z","truncated":true,"totalVehicles":6200,"mode":"vehicles","zoom":null}}"""
+        val data = """{"vehicles":[],"clusters":[],"providers":{},"meta":{"partial":true,"stale":true,"failedSources":["national"],"sources":{"national":"failed","hopp":"fresh"},"generatedAt":"2026-08-05T12:00:00.000Z","truncated":true,"totalVehicles":6200,"mode":"vehicles","zoom":null,"staleProviders":{"hopp":"2026-08-05T11:48:00.000Z"}}}"""
         val api = makeAPI(responseStatus = 200, data = data)
 
         val response = api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
@@ -206,6 +208,7 @@ class ScooterAPITest {
         assertEquals(listOf("national"), response.meta?.failedSources)
         assertTrue(response.meta?.truncated == true)
         assertEquals(6_200, response.meta?.totalVehicles)
+        assertEquals(mapOf("hopp" to "2026-08-05T11:48:00.000Z"), response.meta?.staleProviders)
     }
 
     @Test
