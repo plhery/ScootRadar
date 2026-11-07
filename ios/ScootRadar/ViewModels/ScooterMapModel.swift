@@ -178,9 +178,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             if searchedDestination != oldValue { walkOriginDidChange() }
         }
     }
-    /// Places chosen during this session, newest first. Never persisted: the
-    /// privacy notice promises that precise origins are not stored.
-    private(set) var recentPlaces: [MapDestination] = []
+    /// The last place chosen in the search, which the search offers again while nothing is typed. It is
+    /// the one precise origin the app keeps, in its own file outside backups (RecentPlaceStore), as the
+    /// privacy notice says, until another place is chosen or the rider forgets it.
+    private(set) var recentPlace: MapDestination? {
+        didSet {
+            if recentPlace != oldValue { recentPlaceStore?.save(recentPlace) }
+        }
+    }
     var focusRequest: MapFocusRequest?
     /// A step in or out asked from the keyboard, ⌘+ and ⌘−.
     private(set) var zoomRequest: MapZoomRequest?
@@ -312,6 +317,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// one: said under the search bar.
     private(set) var isPausedForIdle = false
     @ObservationIgnored private let defaults: UserDefaults
+    /// Where the recent place is kept; without one, as in tests and previews, it lasts as long as the model.
+    @ObservationIgnored private let recentPlaceStore: RecentPlaceStore?
     @ObservationIgnored private let locationTimeout: Duration
     @ObservationIgnored private let refreshPolicy: ScooterRefreshPolicy
     @ObservationIgnored private let clock: () -> Date
@@ -410,7 +417,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
     private static let ridePassesKey = "provider-ride-passes-v1"
     private static let hasLocatedOnceKey = "has-located-once"
-    private static let maximumRecentPlaces = 3
     /// Locating shows about 350 m across, like zoom 17 on the web.
     static let userFocusMeters: CLLocationDistance = 350
     private static let userFocusZoom = 17
@@ -418,7 +424,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     override convenience init() {
         self.init(
             api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard, start: Self.start,
-            cityZoneCache: CityZoneCache.standard
+            cityZoneCache: CityZoneCache.standard, recentPlaceStore: RecentPlaceStore.standard
         )
     }
 
@@ -434,6 +440,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         iPhoneLanguages: @escaping () -> [String] = { ScooterLanguage.iPhoneLanguages },
         start: ScooterMapStart = .switzerland,
         cityZoneCache: CityZoneCache? = nil,
+        recentPlaceStore: RecentPlaceStore? = nil,
         builtInZones: @autoclosure @escaping () -> [CityRuleZone] = CityRuleZone.onMap
     ) {
         startCenter = start.center
@@ -449,6 +456,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         self.iPhoneLanguages = iPhoneLanguages
         self.locationManager = locationManager
         self.defaults = defaults
+        self.recentPlaceStore = recentPlaceStore
+        recentPlace = recentPlaceStore?.load()
         self.locationTimeout = locationTimeout
         self.refreshPolicy = refreshPolicy
         clock = now
@@ -1263,13 +1272,31 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     /// Chooses a place found in the search: it becomes the origin for walking
-    /// times, is remembered for this session and the map moves there.
+    /// times and the search's recent place, and the map moves there.
     func focusOnAddress(_ destination: MapDestination) {
         ScooterAnalytics.shared.track("search_select")
         choosePlace(destination)
     }
 
-    private func choosePlace(_ destination: MapDestination) {
+    /// The recent place's row in the search: chosen again like a result, also
+    /// when the bar shows it already, which brings the map back to it.
+    func chooseRecentPlace() {
+        guard let recentPlace else { return }
+        ScooterAnalytics.shared.track("search_select", result: "recent")
+        choosePlace(recentPlace)
+    }
+
+    /// The ✕ of the recent place: the search and the device forget it. A place
+    /// the bar shows stays there, and the map stays where it is.
+    func forgetRecentPlace() {
+        guard recentPlace != nil else { return }
+        ScooterAnalytics.shared.track("search_forget")
+        recentPlace = nil
+    }
+
+    /// `remembers`: whether the place becomes the search's recent place, as
+    /// every place the rider chose does; a link's city is not one of them.
+    private func choosePlace(_ destination: MapDestination, remembers: Bool = true) {
         // A walk under way goes on from the new place when it is still a walk
         // from there. Its route then shows the place and the scooter, and the
         // map fits it rather than move to the place first.
@@ -1282,7 +1309,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
         placeChoices += 1
         searchedDestination = destination
-        rememberPlace(destination)
+        if remembers { recentPlace = destination }
         guard !keepsWalk else { return }
         focusToken += 1
         focusRequest = destination.kind == .city
@@ -1303,7 +1330,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     /// A link to the map from the website (ScooterMapLink). A city's centre,
     /// which is what the site's links carry, opens like the city chosen in the
-    /// search; any other point moves the map there and clears a place searched
+    /// search, but does not replace the search's recent place, which the rider
+    /// chose; any other point moves the map there and clears a place searched
     /// before, so the bar shows its placeholder as for a map the rider moved.
     /// Either way the first fix of the rider's location leaves the map where
     /// the link put it, also when the link opened the app before locating began.
@@ -1316,7 +1344,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         keepsMapOnFirstFix = true
         if let city = ScooterCityCatalog.city(linkedAt: origin) {
             ScooterAnalytics.shared.track("link_open", result: "city")
-            choosePlace(city.destination)
+            choosePlace(city.destination, remembers: false)
         } else {
             ScooterAnalytics.shared.track("link_open", result: "place")
             // The bar says what the map shows: a place searched before is not
@@ -1324,14 +1352,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             searchedDestination = nil
             focusToken += 1
             focusRequest = .city(origin, token: focusToken)
-        }
-    }
-
-    private func rememberPlace(_ destination: MapDestination) {
-        recentPlaces.removeAll { $0.id == destination.id }
-        recentPlaces.insert(destination, at: 0)
-        if recentPlaces.count > Self.maximumRecentPlaces {
-            recentPlaces.removeLast(recentPlaces.count - Self.maximumRecentPlaces)
         }
     }
 

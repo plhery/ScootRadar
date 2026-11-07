@@ -85,7 +85,8 @@ in the bar with a button to clear it, and a place where no operator shares data
 does not promise scooters.
 
 **Search.** It opens on the field. Before you type: **Use my location**, the
-places chosen in this session and the six nearest cities with scooters. Typing
+last place you chose, with a ✕ to forget it, and the six nearest cities with
+scooters. A link to a city on the site opens it without replacing that place. Typing
 two characters or more lists places with a second line and a **No data** tag
 where no operator shares data; Return chooses the first. Streets and addresses
 are found in every country the app covers, typed in the country's own script
@@ -245,9 +246,10 @@ The filters, the appearance, the map style, whether the zones are shown, the lan
 length used for price estimates, the usage choice and whether the phone was
 ever located are kept in the app's settings, and for the rating prompt the
 number of days with a fresh feed, the last day something went wrong, the
-version and day of the last ask and the time of the last **Open in**. Your
-location, the places you searched and the text you typed are never stored;
-recent places live in memory until the app closes.
+version and day of the last ask and the time of the last **Open in**. The last
+place chosen in the search is kept in its own file in Application Support, left
+out of backups, until another is chosen or it is forgotten with its ✕. Your
+location, the other places you searched and the text you typed are never stored.
 
 ## Usage analytics
 

@@ -101,6 +101,7 @@
 /* UX alignment: search panel */
 "Cancel" = "Hætta við";
 "Recent" = "Nýlegt";
+"Forget this place" = "Gleyma þessum stað";
 "Cities with scooters" = "Staðir með rafskútum";
 "No data" = "Engin gögn";
 "Searching…" = "Leitar…";

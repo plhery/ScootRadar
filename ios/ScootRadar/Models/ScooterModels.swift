@@ -1398,7 +1398,7 @@ struct MapDestination: Equatable, Identifiable, Sendable {
     }
 
     let title: String
-    /// The second line of a recent place; may be empty.
+    /// The second line of the recent place; may be empty.
     let subtitle: String
     let point: GeoPoint
     let kind: Kind
@@ -1421,6 +1421,90 @@ struct MapDestination: Equatable, Identifiable, Sendable {
     }
 
     var id: String { "\(title)|\(point.latitude)|\(point.longitude)" }
+}
+
+/// The last place chosen in the search, kept in a small file of the app's Application Support until
+/// another place is chosen or the rider forgets it, so that the search can offer it again after a
+/// launch. The file is left out of the device's backups, as the privacy notice says: the place stays
+/// on this device. UserDefaults would go into iCloud and computer backups.
+struct RecentPlaceStore: Sendable {
+    let directory: URL
+
+    /// Library/Application Support/recent-place-v1.json.
+    static let standard: RecentPlaceStore? = FileManager.default
+        .urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+        .map { RecentPlaceStore(directory: $0) }
+
+    var file: URL { directory.appending(path: "recent-place-v1.json") }
+
+    /// What the file holds: the place's lines, its point, whether it is a city and whether it has data.
+    private struct Saved: Codable {
+        let title: String
+        let subtitle: String
+        let latitude: Double
+        let longitude: Double
+        /// "address" or "city".
+        let kind: String
+        let isCovered: Bool
+    }
+
+    /// The place saved, or nil when there is none. A file that does not hold one is deleted.
+    func load() -> MapDestination? {
+        guard let data = try? Data(contentsOf: file) else { return nil }
+        guard let place = Self.place(from: data) else {
+            try? FileManager.default.removeItem(at: file)
+            return nil
+        }
+        return place
+    }
+
+    private static func place(from data: Data) -> MapDestination? {
+        guard let saved = try? JSONDecoder().decode(Saved.self, from: data),
+              !saved.title.isEmpty,
+              (-90...90).contains(saved.latitude),
+              (-180...180).contains(saved.longitude) else { return nil }
+        let kind: MapDestination.Kind
+        switch saved.kind {
+        case "address": kind = .address
+        case "city": kind = .city
+        default: return nil
+        }
+        return MapDestination(
+            title: saved.title,
+            subtitle: saved.subtitle,
+            point: GeoPoint(latitude: saved.latitude, longitude: saved.longitude),
+            kind: kind,
+            isCovered: saved.isCovered
+        )
+    }
+
+    /// Writes the place over the one saved before, or deletes the file for nil.
+    func save(_ place: MapDestination?) {
+        guard let place else {
+            try? FileManager.default.removeItem(at: file)
+            return
+        }
+        let saved = Saved(
+            title: place.title,
+            subtitle: place.subtitle,
+            latitude: place.point.latitude,
+            longitude: place.point.longitude,
+            kind: place.kind == .city ? "city" : "address",
+            isCovered: place.isCovered
+        )
+        do {
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            try JSONEncoder().encode(saved).write(to: file, options: .atomic)
+            // An atomic write puts a new file in place, so each one is excluded again.
+            var values = URLResourceValues()
+            values.isExcludedFromBackup = true
+            var written = file
+            try written.setResourceValues(values)
+        } catch {
+            // A place that could not be kept, or kept outside backups, is not kept at all.
+            try? FileManager.default.removeItem(at: file)
+        }
+    }
 }
 
 extension ScooterCityCatalog {

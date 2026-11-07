@@ -10,8 +10,8 @@ struct ScooterSearchIsland: View {
     let state: ScooterSearchBarState
     @Binding var isSearching: Bool
     let hasActiveFilters: Bool
-    /// Places chosen during this session, newest first.
-    var recentPlaces: [MapDestination] = []
+    /// The last place chosen in the search, offered again while nothing is typed.
+    var recentPlace: MapDestination?
     /// The covered cities nearest to the map centre.
     var nearbyCities: [ScooterCity] = []
     /// The map centre, rounded, when the map shows a city or less: places near it are found first.
@@ -20,6 +20,8 @@ struct ScooterSearchIsland: View {
     var bottomLimit: CGFloat = .infinity
     let onSelect: (MapDestination) -> Void
     var onChooseCity: (ScooterCity) -> Void = { _ in }
+    var onChooseRecentPlace: () -> Void = {}
+    var onForgetRecentPlace: () -> Void = {}
     let onClear: () -> Void
     let onUseCurrentLocation: () -> Void
     let onShowFilters: () -> Void
@@ -31,7 +33,7 @@ struct ScooterSearchIsland: View {
         VStack(spacing: 0) {
             if isSearching {
                 ScooterSearchPanel(
-                    recentPlaces: recentPlaces,
+                    recentPlace: recentPlace,
                     nearbyCities: nearbyCities,
                     near: near,
                     bottomLimit: bottomLimit,
@@ -43,6 +45,11 @@ struct ScooterSearchIsland: View {
                         onChooseCity(city)
                         setSearching(false)
                     },
+                    onChooseRecentPlace: {
+                        onChooseRecentPlace()
+                        setSearching(false)
+                    },
+                    onForgetRecentPlace: onForgetRecentPlace,
                     onUseCurrentLocation: {
                         onUseCurrentLocation()
                         setSearching(false)
@@ -298,37 +305,44 @@ struct ScooterSearchPanel: View {
     @State private var contentTop: CGFloat = 0
     @State private var keyboardTop = CGFloat.infinity
     @FocusState private var fieldIsFocused: Bool
+    @AccessibilityFocusState private var fieldHasVoiceOverFocus: Bool
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    private let recentPlaces: [MapDestination]
+    private let recentPlace: MapDestination?
     private let nearbyCities: [ScooterCity]
     private let near: GeoPoint?
     private let bottomLimit: CGFloat
     private let autofocus: Bool
     private let onSelect: (MapDestination) -> Void
     private let onChooseCity: (ScooterCity) -> Void
+    private let onChooseRecentPlace: () -> Void
+    private let onForgetRecentPlace: () -> Void
     private let onUseCurrentLocation: () -> Void
     private let onCancel: () -> Void
 
     init(
         searchModel: SwissAddressSearchModel = SwissAddressSearchModel(),
-        recentPlaces: [MapDestination] = [],
+        recentPlace: MapDestination? = nil,
         nearbyCities: [ScooterCity] = [],
         near: GeoPoint? = nil,
         bottomLimit: CGFloat = .infinity,
         autofocus: Bool = true,
         onSelect: @escaping (MapDestination) -> Void,
         onChooseCity: @escaping (ScooterCity) -> Void = { _ in },
+        onChooseRecentPlace: @escaping () -> Void = {},
+        onForgetRecentPlace: @escaping () -> Void = {},
         onUseCurrentLocation: @escaping () -> Void,
         onCancel: @escaping () -> Void
     ) {
         _searchModel = State(initialValue: searchModel)
-        self.recentPlaces = recentPlaces
+        self.recentPlace = recentPlace
         self.nearbyCities = nearbyCities
         self.near = near
         self.bottomLimit = bottomLimit
         self.autofocus = autofocus
         self.onSelect = onSelect
         self.onChooseCity = onChooseCity
+        self.onChooseRecentPlace = onChooseRecentPlace
+        self.onForgetRecentPlace = onForgetRecentPlace
         self.onUseCurrentLocation = onUseCurrentLocation
         self.onCancel = onCancel
     }
@@ -410,6 +424,7 @@ struct ScooterSearchPanel: View {
 
             TextField("City or address", text: $searchModel.query)
                 .focused($fieldIsFocused)
+                .accessibilityFocused($fieldHasVoiceOverFocus)
                 // No address content type: with one, iOS offered the rider's
                 // own addresses in an AutoFill callout that covered Cancel at
                 // large text sizes. The search does not need them.
@@ -477,8 +492,8 @@ struct ScooterSearchPanel: View {
         }
     }
 
-    /// Nothing typed yet: your location, the places of this session and the
-    /// covered cities nearest to the map.
+    /// Nothing typed yet: your location, the last place chosen and the covered
+    /// cities nearest to the map.
     private var suggestions: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button(action: onUseCurrentLocation) {
@@ -496,27 +511,9 @@ struct ScooterSearchPanel: View {
             }
             .buttonStyle(.plain)
 
-            if !recentPlaces.isEmpty {
-                sectionHeader(String(localized: "Recent"))
-
-                ForEach(recentPlaces) { place in
-                    Button {
-                        onSelect(place)
-                    } label: {
-                        SearchPlaceRow(
-                            title: place.title,
-                            subtitle: place.subtitle,
-                            systemImage: "clock.arrow.circlepath",
-                            isAccented: false,
-                            showsNoData: !place.isCovered
-                        )
-                    }
-                    .buttonStyle(.plain)
-
-                    if place.id != recentPlaces.last?.id {
-                        rowDivider
-                    }
-                }
+            if let recentPlace {
+                rowDivider
+                recentPlaceRow(recentPlace)
             }
 
             if !nearbyCities.isEmpty {
@@ -542,6 +539,49 @@ struct ScooterSearchPanel: View {
                 }
                 .padding(.horizontal, 4)
                 .padding(.bottom, 4)
+            }
+        }
+    }
+
+    /// One row needs no "Recent" header: its grey clock says it is a place
+    /// chosen before, and VoiceOver says "Recent" before its name. The ✕ beside
+    /// it is a button of its own: the place goes, the search stays open with
+    /// the keyboard as it was, and VoiceOver moves to the field.
+    private func recentPlaceRow(_ place: MapDestination) -> some View {
+        HStack(spacing: 0) {
+            Button(action: onChooseRecentPlace) {
+                SearchPlaceRow(
+                    title: place.title,
+                    subtitle: place.subtitle,
+                    systemImage: "clock.arrow.circlepath",
+                    isAccented: false,
+                    showsNoData: !place.isCovered
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(
+                [
+                    String(localized: "Recent"), place.title, place.subtitle,
+                    place.isCovered ? "" : String(localized: "No data")
+                ]
+                .filter { !$0.isEmpty }
+                .joined(separator: ", ")
+            )
+
+            Button {
+                onForgetRecentPlace()
+                fieldHasVoiceOverFocus = true
+            } label: {
+                Image(systemName: "xmark")
+                    .designFont(12, .semibold, relativeTo: .subheadline, maximum: 18)
+                    .foregroundStyle(ScooterPalette.secondaryText)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Forget this place"))
+            .accessibilityShowsLargeContentViewer {
+                Label(String(localized: "Forget this place"), systemImage: "xmark")
             }
         }
     }
@@ -646,13 +686,13 @@ private extension View {
     }
 }
 
-/// A place in the search panel: a result, or a place chosen earlier.
+/// A place in the search panel: a result, or the place chosen last.
 struct SearchPlaceRow: View {
     let title: String
     /// May be empty; the second line is left out then.
     let subtitle: String
     var systemImage = "mappin.and.ellipse"
-    /// Blue for a place with scooter data, grey for one without and for recent places.
+    /// Blue for a place with scooter data, grey for one without and for the recent place.
     var isAccented = true
     /// The neutral "No data" tag of a place no operator serves.
     var showsNoData = false

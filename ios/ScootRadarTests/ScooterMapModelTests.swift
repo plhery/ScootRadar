@@ -2029,7 +2029,7 @@ extension ScooterMapModelTests {
         model.focusOnCity(cities[1].city)
         XCTAssertEqual(model.focusRequest?.point, cities[1].city.center)
         XCTAssertEqual(model.searchedDestination, cities[1].city.destination)
-        XCTAssertEqual(model.recentPlaces, [cities[1].city.destination])
+        XCTAssertEqual(model.recentPlace, cities[1].city.destination)
     }
 
     func testFiltersThatHideEverythingReportWhatIsHidden() async {
@@ -2854,15 +2854,21 @@ extension ScooterMapModelTests {
         XCTAssertEqual(restricted.locationIssue, .restricted)
     }
 
-    func testRecentPlacesKeepTheLastThreeForThisSessionOnly() throws {
+    func testTheRecentPlaceIsTheLastOneChosenAndOutlastsALaunch() throws {
         let suiteName = "ScootRadarTests.\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
         defaults.removePersistentDomain(forName: suiteName)
-        let model = ScooterMapModel(
-            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
-            locationManager: CLLocationManager(),
-            defaults: defaults
-        )
+        let store = recentPlaceStore()
+        func launch() -> ScooterMapModel {
+            ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: CLLocationManager(),
+                defaults: defaults,
+                recentPlaceStore: store,
+                builtInZones: []
+            )
+        }
+        let model = launch()
         let places = ["Zürich HB", "Bellevue", "Paradeplatz", "Stauffacher"].enumerated().map { index, title in
             MapDestination(
                 title: title,
@@ -2870,33 +2876,189 @@ extension ScooterMapModelTests {
                 point: GeoPoint(latitude: 47.37 + Double(index) / 1_000, longitude: 8.54)
             )
         }
-        XCTAssertTrue(model.recentPlaces.isEmpty)
+        XCTAssertNil(model.recentPlace)
 
+        // Only the last place chosen is kept.
         for place in places {
             model.focusOnAddress(place)
         }
-        XCTAssertEqual(model.recentPlaces, [places[3], places[2], places[1]])
+        XCTAssertEqual(model.recentPlace, places[3])
         XCTAssertEqual(model.searchBarState, .place(places[3]))
+        XCTAssertEqual(store.load(), places[3])
 
-        // Choosing a recent place again moves it to the front without repeating it.
-        model.focusOnAddress(places[2])
-        XCTAssertEqual(model.recentPlaces, [places[2], places[3], places[1]])
-
-        // Clearing the place keeps the list for the rest of the session.
+        // Clearing the place from the bar keeps it in the search.
         model.clearAddressSearch()
         XCTAssertEqual(model.searchBarState, .empty)
-        XCTAssertEqual(model.recentPlaces.count, 3)
+        XCTAssertEqual(model.recentPlace, places[3])
 
-        let stored = defaults.persistentDomain(forName: suiteName) ?? [:]
-        XCTAssertFalse(String(describing: stored).contains("Paradeplatz"))
-        XCTAssertFalse(String(describing: stored).contains("47.37"))
-        let nextSession = ScooterMapModel(
+        // The next launch offers it again, and its row chooses it as a result would.
+        let nextLaunch = launch()
+        XCTAssertEqual(nextLaunch.recentPlace, places[3])
+        nextLaunch.chooseRecentPlace()
+        XCTAssertEqual(nextLaunch.searchedDestination, places[3])
+        XCTAssertEqual(nextLaunch.activeOrigin, .searchedDestination(places[3]))
+        XCTAssertEqual(nextLaunch.focusRequest?.point, places[3].point)
+
+        // Shown in the bar already, it brings the map back there.
+        nextLaunch.focusRequest = nil
+        nextLaunch.chooseRecentPlace()
+        XCTAssertEqual(nextLaunch.focusRequest?.point, places[3].point)
+        XCTAssertEqual(nextLaunch.recentPlace, places[3])
+
+        // A city chip replaces it.
+        let bern = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bern" })
+        nextLaunch.chooseCity(bern)
+        XCTAssertEqual(nextLaunch.recentPlace, bern.destination)
+        XCTAssertEqual(launch().recentPlace, bern.destination)
+
+        // Nothing of the places goes into UserDefaults, which backups include.
+        let stored = String(describing: defaults.persistentDomain(forName: suiteName) ?? [:])
+        for text in ["Paradeplatz", "Stauffacher", "Bern", "47.37"] {
+            XCTAssertFalse(stored.contains(text), text)
+        }
+        defaults.removePersistentDomain(forName: suiteName)
+    }
+
+    func testWithoutAStoreTheRecentPlaceLastsAsLongAsTheModel() {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let place = MapDestination(title: "Zürich HB", point: GeoPoint(latitude: 47.3782, longitude: 8.5402))
+        model.focusOnAddress(place)
+        XCTAssertEqual(model.recentPlace, place)
+        XCTAssertNil(makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: []))).recentPlace)
+    }
+
+    func testForgettingTheRecentPlaceRemovesItFromTheDeviceAndLeavesTheBar() throws {
+        let store = recentPlaceStore()
+        let model = ScooterMapModel(
             api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
             locationManager: CLLocationManager(),
-            defaults: defaults
+            defaults: isolatedDefaults(),
+            recentPlaceStore: store,
+            builtInZones: []
         )
-        XCTAssertTrue(nextSession.recentPlaces.isEmpty)
-        defaults.removePersistentDomain(forName: suiteName)
+        let place = MapDestination(title: "Zürich HB", point: GeoPoint(latitude: 47.3782, longitude: 8.5402))
+        model.focusOnAddress(place)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: store.file.path))
+        let focus = model.focusRequest
+
+        model.forgetRecentPlace()
+        XCTAssertNil(model.recentPlace)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.file.path))
+        XCTAssertNil(store.load())
+        // The bar and the map are left as they were.
+        XCTAssertEqual(model.searchBarState, .place(place))
+        XCTAssertEqual(model.focusRequest, focus)
+
+        // Nothing is left to choose, and nothing comes back at the next launch.
+        model.chooseRecentPlace()
+        XCTAssertEqual(model.focusRequest, focus)
+        let nextLaunch = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: isolatedDefaults(),
+            recentPlaceStore: store,
+            builtInZones: []
+        )
+        XCTAssertNil(nextLaunch.recentPlace)
+    }
+
+    func testALinkToACityDoesNotReplaceTheRecentPlace() throws {
+        let store = recentPlaceStore()
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: isolatedDefaults(),
+            recentPlaceStore: store,
+            builtInZones: []
+        )
+        let bern = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bern" })
+        let link = ScooterMapLink(origin: GeoPoint(latitude: bern.center.latitude, longitude: bern.center.longitude))
+
+        // With no place chosen yet, a link leaves none.
+        model.open(link)
+        XCTAssertEqual(model.searchBarState, .place(bern.destination))
+        XCTAssertNil(model.recentPlace)
+        XCTAssertNil(store.load())
+
+        // Nor does it replace the place the rider chose.
+        let place = MapDestination(title: "Place Bellecour", point: GeoPoint(latitude: 45.7576, longitude: 4.8322))
+        model.focusOnAddress(place)
+        model.open(link)
+        XCTAssertEqual(model.searchBarState, .place(bern.destination))
+        XCTAssertEqual(model.recentPlace, place)
+        XCTAssertEqual(store.load(), place)
+    }
+
+    func testARecentPlaceFileThatHoldsNoPlaceIsIgnoredAndDeleted() throws {
+        let store = recentPlaceStore()
+        let place = #"{"title":"Zürich HB","subtitle":"","latitude":47.3782,"longitude":8.5402,"kind":"address","isCovered":true}"#
+        let files = [
+            "not json",
+            "{}",
+            #"{"title":"Zürich HB","latitude":47.3782,"longitude":8.5402,"kind":"address","isCovered":true}"#,
+            place.replacingOccurrences(of: #""title":"Zürich HB""#, with: #""title":"""#),
+            place.replacingOccurrences(of: "47.3782", with: "97.3782"),
+            place.replacingOccurrences(of: "8.5402", with: "-180.5"),
+            place.replacingOccurrences(of: #""address""#, with: #""station""#)
+        ]
+        for file in files {
+            try FileManager.default.createDirectory(at: store.directory, withIntermediateDirectories: true)
+            try Data(file.utf8).write(to: store.file)
+            let model = ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: CLLocationManager(),
+                defaults: isolatedDefaults(),
+                recentPlaceStore: store,
+                builtInZones: []
+            )
+            XCTAssertNil(model.recentPlace, file)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: store.file.path), file)
+        }
+
+        // The file as the store writes it.
+        try Data(place.utf8).write(to: store.file)
+        XCTAssertEqual(
+            store.load(),
+            MapDestination(title: "Zürich HB", point: GeoPoint(latitude: 47.3782, longitude: 8.5402), isCovered: true)
+        )
+    }
+
+    func testTheRecentPlaceFileIsLeftOutOfBackupsAndKeepsWhatThePlaceIs() throws {
+        let store = recentPlaceStore()
+        let uncovered = MapDestination(
+            title: "Paradeplatz",
+            subtitle: "Lungern OW",
+            point: GeoPoint(latitude: 46.7741, longitude: 8.1558),
+            isCovered: false
+        )
+        let bern = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bern" }).destination
+
+        // Each write puts a new file in place, which is excluded again.
+        for place in [uncovered, bern] {
+            store.save(place)
+            XCTAssertEqual(store.load(), place)
+            let values = try URL(filePath: store.file.path).resourceValues(forKeys: [.isExcludedFromBackupKey])
+            XCTAssertEqual(values.isExcludedFromBackup, true, place.title)
+        }
+        XCTAssertEqual(store.load()?.kind, .city)
+        XCTAssertEqual(store.load()?.subtitle, bern.subtitle)
+
+        store.save(nil)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.file.path))
+        XCTAssertNil(store.load())
+
+        // The app's own file is in Application Support, not in UserDefaults or the caches.
+        let standard = try XCTUnwrap(RecentPlaceStore.standard)
+        XCTAssertEqual(standard.file.lastPathComponent, "recent-place-v1.json")
+        XCTAssertEqual(standard.directory.lastPathComponent, "Application Support")
+    }
+
+    /// A store in a directory of its own, deleted when the test ends.
+    private func recentPlaceStore() -> RecentPlaceStore {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "RecentPlaceStoreTests-\(UUID().uuidString)", directoryHint: .isDirectory)
+        addTeardownBlock { try? FileManager.default.removeItem(at: directory) }
+        return RecentPlaceStore(directory: directory)
     }
 
     func testCitiesWithScootersAreTheSixNearestToTheMapCentre() throws {
@@ -2918,7 +3080,7 @@ extension ScooterMapModelTests {
         XCTAssertEqual(place.title, "Bern")
         XCTAssertEqual(place.kind, .city)
         XCTAssertEqual(model.activeOrigin, .searchedDestination(place))
-        XCTAssertEqual(model.recentPlaces, [place])
+        XCTAssertEqual(model.recentPlace, place)
         let focus = try XCTUnwrap(model.focusRequest)
         XCTAssertEqual(focus, .city(bern.center, token: focus.token))
         XCTAssertGreaterThan(focus.latitudinalMeters, 8_000)
@@ -3572,6 +3734,21 @@ extension ScooterMapModelTests {
                     onShowSettings: {}
                 ),
                 "search bar: \(state.title)"
+            )
+        }
+
+        // The open search with the place chosen last, with scooter data and without.
+        for place in [covered, uncovered] {
+            assertRenders(
+                ScooterSearchPanel(
+                    recentPlace: place,
+                    nearbyCities: Array(ScooterCityCatalog.cities.prefix(3)),
+                    autofocus: false,
+                    onSelect: { _ in },
+                    onUseCurrentLocation: {},
+                    onCancel: {}
+                ),
+                "open search: \(place.title)"
             )
         }
 
