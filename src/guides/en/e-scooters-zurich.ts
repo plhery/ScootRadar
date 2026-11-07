@@ -50,11 +50,11 @@ const guide: Guide = {
               ['Dott', 'CHF 1.00', 'CHF 0.41', 'CHF 5.10'],
               ['Bolt', 'CHF 1.00', 'CHF 0.42 (a few at CHF 0.48)', 'CHF 5.20'],
               ['Voi', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20'],
-              ['Lime', 'CHF 1.00', 'CHF 0.42 or CHF 0.49 (most at CHF 0.49)', 'CHF 5.20 or CHF 5.90'],
+              ['Lime (plus VAT)', 'CHF 1.00', 'CHF 0.42 or CHF 0.49 (most at CHF 0.49)', 'CHF 5.20 or CHF 5.90'],
             ],
           },
         },
-        'Bird’s app shows its price before you unlock. Lime’s feed marks its rates as excluding tax; its app shows the final price. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate. The average Zürich rental ride is about 1.5 km and 10 minutes long, says the city’s head of traffic safety. To compare with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Bird’s app shows its price before you unlock. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate. The average Zürich rental ride is about 1.5 km and 10 minutes long, says the city’s head of traffic safety. To compare with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {

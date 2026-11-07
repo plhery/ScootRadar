@@ -57,13 +57,13 @@ const guide: Guide = {
             'Busca el número de certificado y el número de serie: vienen en la placa del fabricante y en la ficha técnica.',
             'Entra en la [sede electrónica de la DGT](https://sede.dgt.gob.es/es/vehiculos/matriculaciones-de-vehiculos/inscripcion-vmp/index.html) con Cl@ve, DNI electrónico o certificado digital (si te atascas, llama al 060).',
             'Paga la tasa de **8,67 €**. Te dan un número de registro.',
-            'Encarga la **etiqueta** a un fabricante autorizado de placas de matrícula y pégala detrás, debajo de la luz trasera.',
+            'Encarga la **etiqueta** a un centro autorizado de expedición de placas de matrícula y pégala detrás, debajo de la luz trasera.',
             'Contrata el seguro: la inscripción es el paso previo.',
           ],
         },
         'La etiqueta lleva una M, cuatro cifras y tres consonantes (ni Ñ ni Q): es, en la práctica, la matrícula de tu patinete.',
-        '**¿Y si no tiene certificado?** Desde el 22 de enero de 2024 solo se pueden vender patinetes con certificado de la DGT. Si el tuyo es anterior y no lo tiene, puedes inscribirlo con su marca, modelo y número de serie: la DGT le asigna el certificado «Z000».',
-        { note: 'La inscripción de un patinete «Z000» deja de valer el **22 de enero de 2027**: desde ese día ya no podrás usarlo por la vía pública. Si compras uno de segunda mano, comprueba que tenga certificado.' },
+        '**¿Y si no tiene certificado?** Desde el 22 de enero de 2024 solo se pueden vender patinetes con certificado de la DGT. Si el tuyo es anterior y no lo tiene, puedes inscribirlo con su marca, modelo y número de serie.',
+        { note: 'La inscripción de un patinete sin certificado deja de valer el **22 de enero de 2027**: desde ese día ya no podrás usarlo por la vía pública. Si compras uno de segunda mano, comprueba que tenga certificado.' },
       ],
     },
     {
@@ -82,7 +82,7 @@ const guide: Guide = {
     {
       heading: '¿Por dónde puedes circular? Acera, carril bici y carretera',
       blocks: [
-        '**Por la acera, nunca.** Si tienes que pasar por una, bájate y llévalo a pie: entonces cuentas como peatón. La multa depende de la ordenanza; antes de la reforma, la DGT la fijaba en 200 €. Por calles peatonales, plazas o paseos solo puedes ir si tu ayuntamiento lo permite, dando prioridad a los peatones.',
+        '**Por la acera, nunca.** Si tienes que pasar por una, bájate y llévalo a pie: entonces cuentas como peatón. Antes de la reforma, la instrucción de la DGT de 2019 fijaba la multa en 200 €. Por calles peatonales, plazas o paseos solo puedes ir si tu ayuntamiento lo permite, dando prioridad a los peatones.',
         '**En ciudad**, el ayuntamiento decide por qué calles y zonas puedes circular. En la calzada, ve preferentemente por el centro del carril y, si hay dos o más por sentido, por el de la derecha; indica los giros con el brazo. El carril bici puedes usarlo donde la ordenanza o las señales lo permitan. Quien te adelante debe dejarte al menos 1,5 metros.',
         '**Nunca** puedes ir por autopistas, autovías ni carreteras interurbanas, ni por travesías (el tramo de carretera que cruza un pueblo), túneles urbanos ni carriles VAO. La novedad del 1 de octubre de 2026: puedes ir de un pueblo a otro por vías ciclistas, carriles bici, sendas ciclables y caminos cerrados al tráfico de motor, salvo que una señal lo prohíba. En 2024, las vías interurbanas sumaron el 3 % de los accidentes con víctimas en patinete, pero el 21 % de los fallecidos.',
         '**Aparcar.** Cada ayuntamiento decide si puedes dejar el patinete en la acera; nunca debe estorbar a los peatones.',
@@ -92,12 +92,11 @@ const guide: Guide = {
       heading: 'Alcohol, móvil, auriculares y pasajeros',
       blocks: [
         '**Alcohol y drogas.** Los límites son los generales: 0,5 g/l en sangre o 0,25 mg/l en aire espirado, y 0,0 si eres menor de edad. Superarlos cuesta 500 €, y 1000 € si pasas del doble o reincides en un año; dar positivo en drogas o negarte a la prueba, 1000 €. Los agentes pueden además inmovilizar el patinete.',
-        'Según el Tribunal Supremo (2022), ir bebido en un VMP no es delito contra la seguridad vial, pero si causas heridos o muertos puedes responder por imprudencia. La propuesta de bajar la tasa a 0,2 g/l, rechazada en el Congreso en marzo de 2026, no es ley.',
         {
           list: [
             '**Móvil:** 200 € si lo usas con la mano. Solo puedes hablar con manos libres, y sin auriculares.',
             '**Auriculares:** 200 €, aunque lleves uno solo.',
-            '**Pasajeros:** el patinete es de una plaza; ir dos cuesta 100 €.',
+            '**Pasajeros:** el patinete es de una plaza; ir dos cuesta 100 €, según la instrucción de la DGT de 2019.',
           ],
         },
       ],
@@ -116,8 +115,8 @@ const guide: Guide = {
               ['Sin luces de noche', '200 €'],
               ['Móvil en la mano', '200 €'],
               ['Auriculares, aunque sea uno', '200 €'],
-              ['Circular por la acera', 'Depende de la ordenanza; antes de la reforma, 200 €'],
-              ['Llevar a otra persona', '100 €'],
+              ['Circular por la acera', 'Antes de la reforma, 200 € (DGT, 2019)'],
+              ['Llevar a otra persona', '100 € (DGT, 2019)'],
               ['Alcohol por encima del límite', '500 €; 1000 € si pasas del doble o reincides en un año'],
               ['Drogas, o negarte a la prueba', '1000 €'],
               ['Sin seguro obligatorio', 'De unos 200 a 800 €'],
@@ -183,11 +182,11 @@ const guide: Guide = {
     },
     {
       question: '¿Cuánto cuesta registrar un patinete en la DGT?',
-      answer: 'La inscripción cuesta 8,67 € y se hace en la sede electrónica de la DGT. Luego encargas la etiqueta a un fabricante autorizado de placas de matrícula y la pegas detrás.',
+      answer: 'La inscripción cuesta 8,67 € y se hace en la sede electrónica de la DGT. Luego encargas la etiqueta a un centro autorizado de expedición de placas de matrícula y la pegas detrás.',
     },
     {
       question: '¿Qué pasa si mi patinete no está homologado?',
-      answer: 'Lo que exige la ley es un certificado de circulación de la DGT. Si compraste el patinete antes del 22 de enero de 2024 y no lo tiene, puedes inscribirlo como «Z000» y asegurarlo, pero desde el 22 de enero de 2027 ya no podrás circular con él.',
+      answer: 'Lo que exige la ley es un certificado de circulación de la DGT. Si compraste el patinete antes del 22 de enero de 2024 y no lo tiene, puedes inscribirlo y asegurarlo, pero desde el 22 de enero de 2027 ya no podrás circular con él.',
     },
     {
       question: '¿Puedo subir el patinete al tren o al metro?',
@@ -199,7 +198,11 @@ const guide: Guide = {
     { title: 'BOE: Real Decreto 52/2026, Registro de Vehículos Personales Ligeros', url: 'https://www.boe.es/eli/es/rd/2026/01/28/52' },
     { title: 'BOE: Ley 5/2025, seguro obligatorio de los vehículos personales ligeros (disposición adicional primera)', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2025-15424' },
     { title: 'BOE: Ley sobre Tráfico y Seguridad Vial (Real Decreto Legislativo 6/2015), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11722' },
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'BOE: Reglamento General de Circulación (Real Decreto 1428/2003), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2003-23514' },
+    { title: 'BOE: Reglamento General de Vehículos (Real Decreto 2822/1998), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1999-1826' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 5 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT, sede electrónica: inscripción de un VMP', url: 'https://sede.dgt.gob.es/es/vehiculos/matriculaciones-de-vehiculos/inscripcion-vmp/index.html' },
+    { title: 'DGT: entra en vigor la reforma del Reglamento General de Circulación (30 de septiembre de 2026)', url: 'https://www.dgt.es/comunicacion/notas-de-prensa/20260930-reforma-del-reglamento-de-circulacion-usuarios-vulnerables/' },
     { title: 'DGT: puesta en marcha del registro de vehículos personales ligeros (27 de enero de 2026)', url: 'https://www.dgt.es/comunicacion/notas-de-prensa/20260127-trafico-pone-en-marcha-registro-vehiculos-personales-ligeros/' },
     { title: 'DGT: Instrucción 2019/S-149 TV-108 sobre vehículos de movilidad personal', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/muevete-con-seguridad/normas-de-trafico/S-sanciones/Intruccion-VMP-y-otros-vehiculos-ligeros.pdf' },
     { title: 'DGT: Informe anual de siniestralidad vial 2024', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/dgt-en-cifras/publicaciones/Principales_Cifras_Siniestralidad/INF_ANUAL_2024_v4_FINAL.pdf' },

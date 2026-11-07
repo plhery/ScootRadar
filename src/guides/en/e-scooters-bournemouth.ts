@@ -61,7 +61,7 @@ const guide: Guide = {
               ['Phone', 'Not in your hand while riding', '£200 and 6 points'],
               ['Headphones', 'No headphones or earbuds', 'Against Beryl’s rules'],
               ['Drink and drugs', 'Drink-drive law applies: 80 mg of alcohol per 100 ml of blood', 'Court, a driving ban, possibly prison'],
-              ['Speed', 'Up to 12.5 mph, according to Beryl’s help page (March 2026), and slower in its slow zones', 'Below the 15.5 mph the law allows'],
+              ['Speed', 'Slower in Beryl’s slow zones', 'Below the 15.5 mph the law allows'],
               ['Helmet', 'Recommended, not compulsory', 'Beryl warns that riding without one may void its insurance'],
             ],
           },
