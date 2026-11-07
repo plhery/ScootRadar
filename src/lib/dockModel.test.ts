@@ -203,6 +203,23 @@ describe('dock status', () => {
       .toEqual({ kind: 'overview', text: { key: 'dock.cityTotals' } });
   });
 
+  it('names the one app delayed, from its own time, when the server says which are', () => {
+    const at = (ms: number) => new Date(NOW - ms).toISOString();
+    const late = (staleProviders: Record<string, string>) => meta({ stale: true, staleProviders });
+    // Lime's positions 12 minutes old; Voi's, collected again, a minute old.
+    expect(summary({ meta: late({ lime: at(12 * 60_000), voi: at(60_000) }), lastUpdated: NOW - 12 * 60_000 }).status)
+      .toEqual({ kind: 'delayed', text: { key: 'dock.delayed.one', values: { name: 'Lime' }, time: NOW - 12 * 60_000 } });
+    // Two late: the data is, from the older's time.
+    expect(summary({ meta: late({ lime: at(12 * 60_000), voi: at(7 * 60_000) }), lastUpdated: NOW - 12 * 60_000 }).status)
+      .toEqual({ kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 12 * 60_000 } });
+    // Only the app switched off is late: nothing shown is delayed, and the answer's age says enough.
+    expect(summary({ meta: late({ lime: at(12 * 60_000) }), lastUpdated: NOW - 12 * 60_000,
+      enabledProviders: new Set(ALL.filter(provider => provider !== 'lime')) }).status)
+      .toEqual({ kind: 'updated', text: { key: 'dock.updatedMinutes', numbers: { count: 12 } } });
+    // Stale for an app with nothing shown yet, and another's positions old but renewed on time: no app is late.
+    expect(summary({ meta: late({}), lastUpdated: NOW - 12 * 60_000 }).status?.kind).toBe('updated');
+  });
+
   it('says whose faded ones are being updated while they stand where they were last seen', () => {
     const seenAt = NOW - 40 * 60_000;
     const filling = { meta: meta({ stale: true, refreshing: true, lastSeenAt: new Date(seenAt).toISOString() }), lastSeenCount: 12,

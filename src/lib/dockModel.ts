@@ -259,6 +259,22 @@ function lastSeenText(apps: readonly { provider: string; status: LastSeenStatus 
   return { key: `${base}.many`, ...when };
 }
 
+/**
+ * The apps late in an answer of scooters, of those switched on: each the server is collecting again
+ * or could not renew, whose oldest positions shown are DELAYED_MIN_AGE_MS old or more, oldest first.
+ * Null when the answer does not name them (city totals, an answer kept from before, a server before
+ * staleProviders): its data is then delayed or not as a whole.
+ */
+function delayedApps(input: StatusInput): { provider: string; at: number }[] | null {
+  const named = input.meta?.staleProviders;
+  if (!input.meta?.stale || !named) return null;
+  return Object.entries(named)
+    .filter(([provider]) => input.enabledProviders?.has(provider) ?? true)
+    .map(([provider, at]) => ({ provider, at: Math.min(Date.parse(at), input.now) }))
+    .filter(({ at }) => Number.isFinite(at) && input.now - at >= DELAYED_MIN_AGE_MS)
+    .sort((a, b) => a.at - b.at || catalogueIndex(a.provider) - catalogueIndex(b.provider));
+}
+
 function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boolean } {
   const { failure, meta, lastUpdated, now } = input;
   if (lastUpdated === null) return { status: null, retry: false };
@@ -274,9 +290,15 @@ function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boo
   if (updating.length > 0) return { status: { kind: 'updating', text: lastSeenText(updating, true, now) }, retry: false };
   const age = Math.max(0, now - lastUpdated);
   // Delayed data says so at every zoom, city totals included, once it is late:
-  // before that its age or its time says enough.
-  if (meta?.stale && age >= DELAYED_MIN_AGE_MS) {
-    return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };
+  // before that its age or its time says enough. One app late is named.
+  const late = delayedApps(input);
+  if (late?.length === 1) {
+    const [{ provider, at }] = late;
+    return { status: { kind: 'delayed', text: { key: 'dock.delayed.one',
+      values: { name: PROVIDERS[provider]?.name ?? provider }, time: at } }, retry: false };
+  }
+  if (late ? late.length > 1 : meta?.stale && age >= DELAYED_MIN_AGE_MS) {
+    return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: late?.[0].at ?? lastUpdated } }, retry: false };
   }
   if (meta?.overview) return { status: { kind: 'overview', text: { key: 'dock.cityTotals' } }, retry: false };
   // Faded scooters nothing is collecting stand as they were last seen, perhaps days ago, as Lime's

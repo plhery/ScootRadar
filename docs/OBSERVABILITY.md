@@ -246,6 +246,12 @@ whose it is and when it was seen, and that it may have moved; it has nothing to 
 While any stand faded the map never says the area is empty or that the filters hide
 everything.
 
+A stale answer of scooters carries `meta.staleProviders`: each app whose positions
+shown are being collected again or could not be renewed, with when the oldest of them
+were seen. From 5 minutes the dock names the one late app, "Ryde data delayed · showing
+16:44", says "Data delayed" with the oldest time when two or more are, and nothing of
+an app filtered out. City totals and the proxy's kept answer go by the answer's time.
+
 The cadence comes from the cache's environment, every value with a default:
 
 | Variable | Default | |

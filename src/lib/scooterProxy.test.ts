@@ -108,7 +108,9 @@ describe('last good answer', () => {
 
   it('gives the last good answer again, marked stale, when the origin fails', async () => {
     const { entries, store, settled } = memory();
-    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer({ stale: false, generatedAt: '2026-10-22T00:00:00Z' }));
+    // Kept naming the app late then: given again, all of it is.
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer({ stale: true,
+      staleProviders: { ryde: '2026-10-21T23:50:00Z' }, generatedAt: '2026-10-22T00:00:00Z' }));
     expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
     await settled();
     expect([...entries.keys()]).toEqual(['https://map.example/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13']);

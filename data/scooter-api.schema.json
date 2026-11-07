@@ -309,6 +309,11 @@
           "type": "integer",
           "minimum": 0
         },
+        "staleProviders": {
+          "description": "With stale, in an answer of scooters: each app whose positions shown are being collected again or could not be renewed, by provider, with when the oldest of them were seen. The map names the one app delayed rather than saying the data is; an app with nothing shown yet is not among them.",
+          "type": "object",
+          "additionalProperties": { "type": "string", "format": "date-time" }
+        },
         "lastSeenAt": {
           "description": "When the oldest of the lastSeen scooters were seen.",
           "type": "string",

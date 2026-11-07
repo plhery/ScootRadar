@@ -414,6 +414,26 @@ describe('feeds collected on demand', () => {
     expect(querySnapshot(snapshot([voi]), query, 16, now).lastSeen).toBeUndefined();
   });
 
+  it('names each app whose positions shown make the answer stale, with when the oldest of them were seen', () => {
+    // A read of the view 12 minutes old, as Ryde's, is stale; Dott's feed a minute old is not.
+    const read = feed({ id: 'germany:ryde_app_test_000_view', provider: 'ryde', stale: true, observedAt: now - minutes(12),
+      vehicles: [{ ...vehicle('r1'), provider: 'ryde' }], collectionMs: 30_000 });
+    const dott = feed({ observedAt: now - minutes(1) });
+    // Voi's collected again, quick to collect, with nothing to show yet: it makes the answer stale,
+    // but has nothing shown to be late.
+    const coming = { ...voi, observedAt: now - minutes(20), collectionMs: 500 };
+    const answer = querySnapshot(snapshot([dott, coming]), query, 16, now, { observations: [read], refreshing: new Set([coming.id]) });
+    expect(answer.meta.stale).toBe(true);
+    expect(answer.meta.generatedAt).toBe(new Date(now - minutes(12)).toISOString());
+    expect(answer.meta.staleProviders).toEqual({ ryde: new Date(now - minutes(12)).toISOString() });
+    // A feed whose last collection failed while its positions still show is stale, its oldest time named.
+    const failed = feed({ failed: true, observedAt: now - minutes(6) });
+    expect(querySnapshot(snapshot([failed, voi]), query, 16, now).meta.staleProviders)
+      .toEqual({ dott: new Date(now - minutes(6)).toISOString() });
+    // Nothing stale, nothing named.
+    expect(querySnapshot(snapshot([dott, voi]), query, 16, now).meta.staleProviders).toBeUndefined();
+  });
+
   describe('Lime\'s groups in a wide view', () => {
     const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
     const wide = { bounds: berlin, minBattery: 0 };

@@ -41,8 +41,12 @@ async function lastGoodAnswer(store: LastGoodStore, kept: { key: string; seconds
     const age = stored ? Math.max(0, Math.floor((Date.now() - Number(stored.headers.get(STORED_AT))) / 1000)) : Number.NaN;
     if (!stored || !(age <= keepSeconds(stored.headers.get(KEEP_SECONDS), kept.seconds))) return null;
     const body = await stored.json() as { meta?: Record<string, unknown> };
-    // The apps already show a stale answer as delayed (dockModel.ts, ScooterMapModel.swift).
-    if (body.meta) body.meta.stale = true;
+    // The apps already show a stale answer as delayed (dockModel.ts, ScooterMapModel.swift): all of it,
+    // not the apps it named late when it was kept.
+    if (body.meta) {
+      body.meta.stale = true;
+      delete body.meta.staleProviders;
+    }
     return { age, response: Response.json(body, { headers: { ...headers,
       'X-Mobility-Data-Status': 'stale', 'X-Scooter-Last-Good-Age': String(age) } }) };
   } catch {

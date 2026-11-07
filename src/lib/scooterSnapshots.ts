@@ -596,12 +596,14 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   }
   // When each feed's positions shown were seen: its last collection's, or its sweep's under way.
   const shownSince: number[] = [];
+  const shownSinceByProvider = new Map<string, number>();
   for (const feed of relevant) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now);
     if (showsPositions(feed, now)) shownSince.push(feed.observedAt);
     else if (sweep) shownSince.push(sweep.startedAt);
     else continue;
+    shownSinceByProvider.set(feed.provider, Math.min(shownSinceByProvider.get(feed.provider) ?? Infinity, shownSince.at(-1)!));
     const at = sweep?.startedAt ?? feed.observedAt;
     pick(unique, sweep?.vehicles ?? feed.vehicles, (vehicle, key) => at < (newest.get(key) ?? -Infinity) || gone(feed, at, vehicle));
   }
@@ -632,7 +634,16 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const previous = [...lastSeen.values()];
   if (query.origin) for (const list of [vehicles, previous]) list.sort((a, b) => (a.distance_m ?? 0) - (b.distance_m ?? 0));
   const observedAt = Math.min(now, ...shownSince);
+  // The apps that make the answer stale (healthFor) and have positions shown, with the oldest's time:
+  // the map names the one late app, where in Augsburg on 7 November 2026 it said "Data delayed" without
+  // saying whose positions were 14 minutes old.
+  const staleApps = new Set(counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing) &&
+    (showsPositions(feed, now) ? feed.stale || feed.failed : !failedAtOperator(feed) && options.refreshing?.has(feed.id) === true))
+    .map(feed => feed.provider));
+  const staleProviders = Object.fromEntries([...shownSinceByProvider].filter(([provider]) => staleApps.has(provider))
+    .map(([provider, at]) => [provider, new Date(Math.min(now, at)).toISOString()]));
   const response = scooterResponse({ vehicles, meta }, zoom, {
+    ...(meta.stale ? { staleProviders } : {}),
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,
