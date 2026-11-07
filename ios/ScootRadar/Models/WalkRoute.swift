@@ -333,6 +333,9 @@ struct ScooterWalk: Equatable, Sendable {
     /// New paths asked for on the way, and when the last path was asked for.
     var reroutes = 0
     var lastRequestAt: Date?
+    /// When data that would list the scooter walked to first didn't, under any id: from a second, later such
+    /// update it was taken. Cleared as soon as data lists it again.
+    var missedAt: Date?
 
     init(target: ScooterWalkTarget, phase: ScooterWalkPhase, origin: ScooterWalkOrigin? = nil) {
         self.target = target

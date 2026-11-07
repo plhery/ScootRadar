@@ -1605,7 +1605,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 let cardScooter = selectedScooter.flatMap { scooter in
                     walk.map { $0.holdsCard && $0.target == .scooter(scooter) } == true ? nil : scooter
                 }
-                let previousIDs = cardScooter == nil ? [] : Set(vehiclesByID.keys)
+                let previousIDs = cardScooter == nil && walk == nil ? [] : Set(vehiclesByID.keys)
+                let generatedAt = Self.apiDate(response.meta?.generatedAt, clockOffset: response.clockOffset)
+                let observedAt = min(generatedAt ?? receivedAt, receivedAt)
                 isApplyingResponse = true
                 vehicles = response.vehicles
                 clusters = response.clusters
@@ -1618,15 +1620,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 queryZoom = zoom
                 queryMinimumBattery = requestMinimumBattery
                 rebuildVehicleIndex()
-                followWalkTarget(in: response.meta, loadedFor: bounds)
+                followWalkTarget(in: response.meta, loadedFor: bounds, observedAt: observedAt, previousIDs: previousIDs)
                 if let cardScooter { followCardScooter(cardScooter, previousIDs: previousIDs) }
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()
                 rebuildVisibleCounts()
                 distanceOrigin = fetchOrigin
-                let generatedAt = Self.apiDate(response.meta?.generatedAt, clockOffset: response.clockOffset)
-                lastUpdated = min(generatedAt ?? receivedAt, receivedAt)
+                lastUpdated = observedAt
                 lastSeenReports = response.lastSeenStatuses(receivedAt: receivedAt)
                 staleReports = response.staleProviderTimes(receivedAt: receivedAt)
                 lastSuccessAt = receivedAt
@@ -2238,10 +2239,18 @@ extension ScooterMapModel {
     }
 
     /// Fresh data about the scooter walked to. It may have moved, and the
-    /// route then follows it; or data that would list it no longer does,
-    /// which mostly means someone took it. Scooters get new ids now and then,
-    /// so one of the same provider standing where it stood is that scooter.
-    private func followWalkTarget(in meta: ScooterResponseMetadata?, loadedFor bounds: GeoBounds) {
+    /// route then follows it; or data that would list it no longer does
+    /// twice, from two updates of the data, which mostly means someone took
+    /// it: one missing from one update comes back. Scooters get new ids now
+    /// and then, so one of the same provider standing where it stood, under an
+    /// id the data before didn't list (`previousIDs`), is that scooter; one
+    /// listed before is another, which the walk is not handed to.
+    private func followWalkTarget(
+        in meta: ScooterResponseMetadata?,
+        loadedFor bounds: GeoBounds,
+        observedAt: Date,
+        previousIDs: Set<String>
+    ) {
         guard var walk, walk.holdsCard, case let .scooter(scooter) = walk.target else { return }
         if let fresh = vehiclesByID[scooter.id] {
             guard walk.phase != .gone else {
@@ -2249,8 +2258,9 @@ extension ScooterMapModel {
                 self.walk = nil
                 return
             }
-            guard fresh != scooter else { return }
+            guard fresh != scooter || walk.missedAt != nil else { return }
             walk.target = .scooter(fresh)
+            walk.missedAt = nil
             self.walk = walk
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
             return
@@ -2259,8 +2269,9 @@ extension ScooterMapModel {
         guard walk.isUnderway, Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else {
             return
         }
-        if let successor = successor(of: scooter) {
+        if let successor = successor(of: scooter, among: vehicles.filter { !previousIDs.contains($0.id) }) {
             walk.target = .scooter(successor)
+            walk.missedAt = nil
             self.walk = walk
             follow(to: successor.id)
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
@@ -2271,6 +2282,13 @@ extension ScooterMapModel {
         if lastSeenVehicles.contains(where: { $0.id == scooter.id }) || successor(of: scooter, among: lastSeenVehicles) != nil {
             return
         }
+        guard let missedAt = walk.missedAt else {
+            walk.missedAt = observedAt
+            self.walk = walk
+            return
+        }
+        // The same data again says nothing new.
+        guard missedAt != observedAt else { return }
         cancelRouteRequest()
         walk.phase = .gone
         walk.route = nil

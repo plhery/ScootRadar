@@ -401,8 +401,21 @@ final class ScooterWalkTests: XCTestCase {
             meta: ScooterResponseMetadata(partial: false, failedSources: [])
         ))
 
+        // Missing from one update: it may be back with the next, so the way stays.
         h.model.refresh()
+        let missedOnce = await waitUntil { await h.api.calls == 2 && !h.model.isLoading }
+        XCTAssertTrue(missedOnce)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        XCTAssertNotNil(h.model.walkTrail)
+        // The same data again says nothing new.
+        h.model.refresh()
+        let sameAgain = await waitUntil { await h.api.calls == 3 && !h.model.isLoading }
+        XCTAssertTrue(sameAgain)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
 
+        // Missing from a second, later update as well.
+        h.clock.advance(60)
+        h.model.refresh()
         let gone = await waitUntil { h.model.walk?.phase == .gone }
         XCTAssertTrue(gone)
         XCTAssertEqual(h.model.selectedScooterID, target.id)
@@ -440,6 +453,44 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.walk?.target, .scooter(renamed))
         XCTAssertEqual(h.model.dock, .scooter(renamed))
         XCTAssertEqual(h.model.directionsControl(for: .scooter(renamed)), .hideRoute)
+    }
+
+    func testTheWalkIsNotHandedToAScooterOfItsAppListedBesideItBefore() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        // Some 9 m on, as at a parking spot.
+        let neighbour = scooter("s2", at: point(east: 309, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour])
+        await h.api.setResponse(ScooterResponse(vehicles: [neighbour]))
+
+        h.model.refresh()
+        let missedOnce = await waitUntil { await h.api.calls == 2 && !h.model.isLoading }
+        XCTAssertTrue(missedOnce)
+        XCTAssertEqual(h.model.selectedScooterID, target.id)
+        XCTAssertEqual(h.model.walk?.target, .scooter(target))
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+
+        h.clock.advance(60)
+        h.model.refresh()
+        let gone = await waitUntil { h.model.walk?.phase == .gone }
+        XCTAssertTrue(gone)
+        XCTAssertEqual(h.model.selectedScooterID, target.id)
+        XCTAssertEqual(h.model.walkNote(for: .scooter(target)), .gone)
+    }
+
+    func testAScooterMissingFromOneUpdateAndBackOnTheNextIsStillWalkedTo() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let other = scooter("s2", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [other])
+
+        for (index, vehicles) in [[other], [target, other], [other]].enumerated() {
+            h.clock.advance(60)
+            await h.api.setResponse(ScooterResponse(vehicles: vehicles))
+            h.model.refresh()
+            let loaded = await waitUntil { await h.api.calls == index + 2 && !h.model.isLoading }
+            XCTAssertTrue(loaded)
+            XCTAssertEqual(h.model.walk?.phase, .shown, "update \(index + 1)")
+            XCTAssertEqual(h.model.selectedScooterID, target.id, "update \(index + 1)")
+        }
     }
 
     func testAScooterIsNotTakenWhenTheDataCannotTell() async throws {
@@ -493,7 +544,7 @@ final class ScooterWalkTests: XCTestCase {
             XCTAssertTrue(h.model.isWalking, seen.id)
         }
 
-        // Faded, another app's where it stood is not it, nor one of its app further away: taken.
+        // Faded, another app's where it stood is not it, nor one of its app further away: from two updates, taken.
         await h.api.setResponse(ScooterResponse(
             vehicles: [other],
             lastSeenVehicles: [
@@ -502,6 +553,11 @@ final class ScooterWalkTests: XCTestCase {
             ],
             meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
         ))
+        h.model.refresh()
+        let missedOnce = await waitUntil { await h.api.calls == faded.count + 2 && !h.model.isLoading }
+        XCTAssertTrue(missedOnce)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        h.clock.advance(60)
         h.model.refresh()
         let gone = await waitUntil { h.model.walk?.phase == .gone }
         XCTAssertTrue(gone)
