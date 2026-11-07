@@ -6,6 +6,7 @@ import { createSnapshotServer } from './snapshotServer';
 import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
 import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger } from './visitorLedger';
+import { createPublicVehicleIds } from './publicVehicleIds';
 import { boundsCenter } from '../src/lib/geo';
 import { buildCityOverview, LIME_GROUPS_PER_REQUEST, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
@@ -140,6 +141,24 @@ describe('snapshot origin boundary', () => {
     expect(((await street.json()) as ScooterResponse).vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['a', 'b']);
     const totals = (await (await fetch(view(6), { headers })).json()) as ScooterResponse;
     expect(totals.clusters.map(cluster => [cluster.id, cluster.count])).toEqual([['city:nz:bop:Tauranga', 2]]);
+  });
+
+  it("answers the scooters under ids of the cache's own, the same from one answer to the next", async () => {
+    const now = Date.now();
+    const scooter = (id: string, lng: number) => ({ vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70,
+      range_m: null, distance_m: null, deep_link: null });
+    const feeds: FeedSnapshot[] = [{ id: 'newzealand:flamingo_nz_tauranga', source: 'newzealand', provider: 'flamingo',
+      coverage: [{ south: -37.75, west: 176.05, north: -37.62, east: 176.37 }], vehicles: [scooter('a', 176.16), scooter('b', 176.2)],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false }];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) },
+      { vehicleIds: createPublicVehicleIds() });
+    const ids = async () => ((await (await fetch(`http://127.0.0.1:${port}/api/scooters?south=-37.72&west=176.1&north=-37.66&east=176.3&zoom=16`,
+      { headers: { Authorization: `Bearer ${token}` } })).json()) as ScooterResponse).vehicles.map(vehicle => vehicle.vehicle_id);
+    const first = await ids();
+    expect(first).toHaveLength(2);
+    expect(first).not.toContain('a');
+    expect(first).not.toContain('b');
+    expect(await ids()).toEqual(first);
   });
 
   it("tells the Worker how long it may keep an answer holding Bird's, Spin's or Bolt's data, and only then", async () => {

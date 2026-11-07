@@ -16,6 +16,7 @@ import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
 import type { SnapshotMetrics } from './metrics';
 import type { VisitorLedger } from './visitorLedger';
+import type { PublicVehicleIds } from './publicVehicleIds';
 import { reportError } from './errorReporting';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedStateLog';
 
@@ -64,6 +65,11 @@ interface ServerOptions {
    * collected (visitorLedger.ts). Without it every request may.
    */
   visitors?: VisitorLedger;
+  /**
+   * The ids the answers give scooters in place of the operators' own (publicVehicleIds.ts). Without it an
+   * answer names each scooter as its feed does.
+   */
+  vehicleIds?: PublicVehicleIds;
   /** How often each feed is meant to be collected, which /ready judges it by. */
   cadence?: FeedCadence;
   refresher?: FeedRefresher;
@@ -266,9 +272,10 @@ export function createSnapshotServer(options: ServerOptions) {
       for (const id of rydeViews.refreshing) refreshing.add(id);
     }
     const answeredAt = Date.now();
-    const body = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
+    const answer = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
       observations: rydeViews?.observations, listedAreas: rydeViews?.listed,
       lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
+    const body = options.vehicleIds?.publish(answer, answeredAt) ?? answer;
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, zoom, answeredAt, options.retention);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps
     // an answer holding a capped feed's data no longer than X-Scooter-Keep-Seconds (0: not at all).

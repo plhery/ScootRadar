@@ -418,6 +418,17 @@ data. Since 6 November 2026:
   are held to it too: pace a sweep of many towns to 32 a quarter hour.
 - `/feeds` and the detail of `/health` and `/ready` on scooter-data.plhery.com, which
   name the operators' apps the cache reads, need the metrics token ([DEPLOY.md](../DEPLOY.md)).
+- Since 7 November 2026 an answer names each scooter by a random id of the cache's own,
+  not the operator's (`server/publicVehicleIds.ts`). The operators' rider maps keep a
+  scooter's id from ride to ride, so their ids would let anyone rebuild every trip,
+  which an operator's GBFS feed prevents by giving a scooter a new id after each ride.
+  A scooter keeps its id while it stands within 100 m of where it got it and is in
+  the answers, and gets a new one once it has moved further or been missing for 5
+  minutes, as after a ride. The ids live in the cache's memory, so a restart renews
+  them all. The web, iPhone and Android apps follow a scooter to its new id (one of its
+  operator within 15 m of where it stood), as they did for Bird's and Pony's, which
+  change on every read. A rental link comes whole from the operator's feed and does
+  not use the id.
 
 Not done on purpose: Bot Fight Mode or a JavaScript challenge on `/api`, which the
 iPhone and Android apps cannot pass, and a lower limit: a map waiting for its feeds asks

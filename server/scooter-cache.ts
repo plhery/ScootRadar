@@ -23,6 +23,7 @@ import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { createVisitorLedger } from './visitorLedger';
+import { createPublicVehicleIds } from './publicVehicleIds';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
   restoreWorkerSilence } from './errorReporting';
@@ -175,7 +176,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visi
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ rydeBridge, rydeViews, snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
-  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors,
+  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors, vehicleIds: createPublicVehicleIds(),
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
   // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
   lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining,
