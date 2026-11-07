@@ -1,14 +1,13 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { COVERED_CITIES } from '@/lib/coveredCities';
 import {
-  MAX_RECENT_PLACES,
-  createRecentPlacesStore,
+  RECENT_PLACE_STORAGE_KEY,
+  createRecentPlaceStore,
   placeForCity,
-  recentPlaces,
   searchNear,
   splitDisplayName,
+  storedPlace,
   toPlace,
-  withRecentPlace,
   type Place,
 } from '@/lib/places';
 
@@ -122,79 +121,111 @@ describe('placeForCity', () => {
   });
 });
 
-describe('recent places', () => {
-  it('puts the most recent place first', () => {
-    expect(withRecentPlace([place('A')], place('B')).map(recent => recent.title)).toEqual(['B', 'A']);
+/** A Storage that keeps its items in a map, as a browser's localStorage does. */
+function memoryStorage(): Storage {
+  const items = new Map<string, string>();
+  return {
+    get length() { return items.size; },
+    clear: () => items.clear(),
+    getItem: key => items.get(key) ?? null,
+    key: index => [...items.keys()][index] ?? null,
+    removeItem: key => { items.delete(key); },
+    setItem: (key, value) => { items.set(key, String(value)); },
+  };
+}
+
+describe('storedPlace', () => {
+  it('reads back a place as it was stored', () => {
+    const city: Place = { ...place('Zürich'), subtitle: 'Switzerland', city: true };
+    expect(storedPlace(JSON.parse(JSON.stringify(city)))).toEqual(city);
+    expect(storedPlace(JSON.parse(JSON.stringify(place('Paradeplatz 2'))))).toEqual(place('Paradeplatz 2'));
   });
 
-  it('keeps three at most', () => {
-    const recent = ['A', 'B', 'C', 'D'].reduce<Place[]>((list, title) => withRecentPlace(list, place(title)), []);
-    expect(recent.map(entry => entry.title)).toEqual(['D', 'C', 'B']);
-    expect(recent).toHaveLength(MAX_RECENT_PLACES);
+  it('refuses what is not a place', () => {
+    for (const value of [
+      null, 'Zürich', 3, [], {},
+      { lat: 47.37, lng: 8.54 },
+      { lat: 47.37, lng: 8.54, title: '  ' },
+      { lat: '47.37', lng: 8.54, title: 'Zürich' },
+      { lat: 91, lng: 8.54, title: 'Zürich' },
+      { lat: 47.37, lng: Number.NaN, title: 'Zürich' },
+    ]) expect(storedPlace(value)).toBeNull();
   });
 
-  it('moves a place that is chosen again to the front instead of listing it twice', () => {
-    const recent = ['A', 'B', 'C', 'A'].reduce<Place[]>((list, title) => withRecentPlace(list, place(title)), []);
-    expect(recent.map(entry => entry.title)).toEqual(['A', 'C', 'B']);
-  });
-
-  it('tells places with the same name apart by where they are', () => {
-    const zurich = place('Paradeplatz', 47.369, 8.539);
-    const lungern = place('Paradeplatz', 46.7741, 8.1558);
-    expect(withRecentPlace([zurich], lungern)).toEqual([lungern, zurich]);
-    // The same spot to within a metre is the same place.
-    expect(withRecentPlace([zurich], place('Paradeplatz', 47.3690004, 8.5390004))).toHaveLength(1);
-  });
-
-  it('does not change the list it was given', () => {
-    const before = [place('A')];
-    withRecentPlace(before, place('B'));
-    expect(before.map(entry => entry.title)).toEqual(['A']);
+  it('fills in what an incomplete place leaves out', () => {
+    expect(storedPlace({ lat: 46.7741, lng: 8.1558, title: 'Lungern', city: 'yes' })).toEqual({
+      lat: 46.7741, lng: 8.1558, display_name: 'Lungern', title: 'Lungern', subtitle: '', covered: false,
+    });
   });
 });
 
-describe('recent places store', () => {
-  beforeEach(() => recentPlaces.clear());
-
-  it('starts empty and notifies subscribers of every change', () => {
-    const store = createRecentPlacesStore();
+describe('recent place store', () => {
+  it('remembers the last place chosen, one at a time, and tells its subscribers', () => {
+    const store = createRecentPlaceStore(memoryStorage);
     const listener = vi.fn();
     const unsubscribe = store.subscribe(listener);
-    expect(store.get()).toEqual([]);
+    expect(store.get()).toBeNull();
 
-    store.add(place('A'));
-    store.add(place('B'));
-    expect(store.get().map(entry => entry.title)).toEqual(['B', 'A']);
+    store.set(place('Paradeplatz 2'));
+    store.set(place('Zürich HB'));
+    expect(store.get()?.title).toBe('Zürich HB');
     expect(listener).toHaveBeenCalledTimes(2);
 
-    store.clear();
-    expect(store.get()).toEqual([]);
-    expect(listener).toHaveBeenCalledTimes(3);
-    store.clear();
-    expect(listener).toHaveBeenCalledTimes(3);
-
     unsubscribe();
-    store.add(place('C'));
-    expect(listener).toHaveBeenCalledTimes(3);
+    store.set(place('Bellevue'));
+    expect(listener).toHaveBeenCalledTimes(2);
   });
 
-  it('returns the same list until it changes, as React requires of a store snapshot', () => {
-    const store = createRecentPlacesStore();
-    store.add(place('A'));
+  it('returns the same place until it changes, as React requires of a store snapshot', () => {
+    const store = createRecentPlaceStore(memoryStorage);
+    store.set(place('A'));
     expect(store.get()).toBe(store.get());
   });
 
-  it('keeps separate stores separate', () => {
-    createRecentPlacesStore().add(place('A'));
-    expect(recentPlaces.get()).toEqual([]);
+  it('keeps the place for the next visit, under its own key and nothing else', () => {
+    const storage = memoryStorage();
+    createRecentPlaceStore(() => storage).set(place('Paradeplatz 2'));
+    expect(storage.length).toBe(1);
+    expect(JSON.parse(storage.getItem(RECENT_PLACE_STORAGE_KEY)!)).toEqual(place('Paradeplatz 2'));
+
+    // The page opened again.
+    expect(createRecentPlaceStore(() => storage).get()).toEqual(place('Paradeplatz 2'));
   });
 
-  it('never writes a place to browser storage', () => {
-    localStorage.clear();
-    const local = vi.spyOn(localStorage, 'setItem');
-    recentPlaces.add(place('Paradeplatz 2'));
-    recentPlaces.add(place('Zürich HB'));
-    expect(local).not.toHaveBeenCalled();
-    expect(localStorage.length).toBe(0);
+  it('forgets the place, in storage too', () => {
+    const storage = memoryStorage();
+    createRecentPlaceStore(() => storage).set(place('Paradeplatz 2'));
+    const store = createRecentPlaceStore(() => storage);
+    const listener = vi.fn();
+    store.subscribe(listener);
+
+    store.forget();
+    expect(store.get()).toBeNull();
+    expect(storage.getItem(RECENT_PLACE_STORAGE_KEY)).toBeNull();
+    expect(listener).toHaveBeenCalledTimes(1);
+    // Nothing left to forget.
+    store.forget();
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it('drops what it cannot read', () => {
+    for (const saved of ['{', '"Zürich"', '{"lat":47.37}']) {
+      const storage = memoryStorage();
+      storage.setItem(RECENT_PLACE_STORAGE_KEY, saved);
+      expect(createRecentPlaceStore(() => storage).get()).toBeNull();
+      expect(storage.getItem(RECENT_PLACE_STORAGE_KEY)).toBeNull();
+    }
+  });
+
+  it('remembers the place for the open page where storage is blocked or full', () => {
+    const blocked = createRecentPlaceStore(() => { throw new DOMException('denied', 'SecurityError'); });
+    blocked.set(place('Paradeplatz 2'));
+    expect(blocked.get()?.title).toBe('Paradeplatz 2');
+
+    const full = memoryStorage();
+    full.setItem = () => { throw new DOMException('full', 'QuotaExceededError'); };
+    const store = createRecentPlaceStore(() => full);
+    store.set(place('Zürich HB'));
+    expect(store.get()?.title).toBe('Zürich HB');
   });
 });

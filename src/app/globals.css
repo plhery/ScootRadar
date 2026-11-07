@@ -1356,6 +1356,23 @@ svg {
 .place-row-location .place-title {
   color: var(--blue-ink);
 }
+/* The place chosen last time, under your location, with the ✕ that forgets it. */
+.recent-place {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.recent-place::before {
+  content: '';
+  position: absolute;
+  inset: 0 6px auto;
+  height: 1px;
+  background: var(--hairline);
+}
+.recent-place .place-row {
+  flex: 1;
+  min-width: 0;
+}
 /* A name in Hebrew or Arabic reads right to left, at the left of the line as the
    rest of the app; cut short at its own end. */
 .place-title[dir='auto'],

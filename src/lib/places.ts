@@ -87,46 +87,114 @@ export function searchNear(center: readonly [number, number] | null, zoom: numbe
   return [Math.round(center[0] * 100) / 100, Math.round(center[1] * 100) / 100];
 }
 
-export const MAX_RECENT_PLACES = 3;
+/** Where this browser keeps the last place chosen in the search, and nothing else of it. */
+export const RECENT_PLACE_STORAGE_KEY = 'scooters-recent-place';
 
-function samePlace(a: Place, b: Place): boolean {
-  return a.title === b.title && a.lat.toFixed(5) === b.lat.toFixed(5) && a.lng.toFixed(5) === b.lng.toFixed(5);
+/** A place as an earlier visit stored it, or null for anything else: storage is not to be trusted. */
+export function storedPlace(value: unknown): Place | null {
+  if (!value || typeof value !== 'object') return null;
+  const { lat, lng, display_name: displayName, title, subtitle, covered, city } = value as Record<string, unknown>;
+  if (typeof lat !== 'number' || !Number.isFinite(lat) || Math.abs(lat) > 90) return null;
+  if (typeof lng !== 'number' || !Number.isFinite(lng) || Math.abs(lng) > 180) return null;
+  if (typeof title !== 'string' || !title.trim()) return null;
+  return {
+    lat,
+    lng,
+    display_name: typeof displayName === 'string' && displayName.trim() ? displayName : title,
+    title,
+    subtitle: typeof subtitle === 'string' ? subtitle : '',
+    covered: typeof covered === 'boolean' ? covered : isPointCovered(lat, lng),
+    ...(city === true ? { city: true as const } : {}),
+  };
 }
 
-/** Most recent first, each place once, three at most. */
-export function withRecentPlace(recent: readonly Place[], place: Place): Place[] {
-  return [place, ...recent.filter(other => !samePlace(other, place))].slice(0, MAX_RECENT_PLACES);
-}
-
-export interface RecentPlacesStore {
-  get: () => readonly Place[];
-  add: (place: Place) => void;
-  clear: () => void;
+export interface RecentPlaceStore {
+  /** The last place chosen in the search, or null. */
+  get: () => Place | null;
+  /** A place chosen in the search: it replaces the one remembered. */
+  set: (place: Place) => void;
+  /** The ✕ beside it: nothing is remembered any more. */
+  forget: () => void;
   subscribe: (listener: () => void) => () => void;
 }
 
+function browserStorage(): Storage | null {
+  try {
+    return typeof window === 'undefined' ? null : window.localStorage;
+  } catch {
+    // Storage blocked for this site: the place is remembered until the page is closed.
+    return null;
+  }
+}
+
 /**
- * Held in memory only. The privacy notice promises that precise origins are
- * not stored, so recent places must never reach localStorage, sessionStorage,
- * the URL or analytics; they are gone when the page is closed or reloaded.
+ * The search offers the last place chosen in it again, on later visits too.
+ * It stays in this browser's storage, under its own key, until another place
+ * is chosen or it is forgotten; the privacy notice says so. It never reaches
+ * the URL, analytics or a request of its own.
  */
-export function createRecentPlacesStore(): RecentPlacesStore {
-  let places: readonly Place[] = [];
+export function createRecentPlaceStore(storage: () => Storage | null = browserStorage): RecentPlaceStore {
+  let loaded = false;
+  let place: Place | null = null;
   const listeners = new Set<() => void>();
-  const set = (next: readonly Place[]) => {
-    places = next;
+
+  const parse = (saved: string) => {
+    try {
+      return storedPlace(JSON.parse(saved));
+    } catch {
+      return null;
+    }
+  };
+  const read = () => {
+    try {
+      const saved = storage()?.getItem(RECENT_PLACE_STORAGE_KEY) ?? null;
+      place = saved === null ? null : parse(saved);
+      // What could not be read is no place, and is not kept.
+      if (saved !== null && !place) storage()?.removeItem(RECENT_PLACE_STORAGE_KEY);
+    } catch {
+      place = null;
+    }
+    loaded = true;
+  };
+  const notify = () => {
     for (const listener of listeners) listener();
   };
+  const write = (next: Place | null) => {
+    place = next;
+    loaded = true;
+    try {
+      if (next) storage()?.setItem(RECENT_PLACE_STORAGE_KEY, JSON.stringify(next));
+      else storage()?.removeItem(RECENT_PLACE_STORAGE_KEY);
+    } catch { /* Full or blocked: it is remembered until the page is closed. */ }
+    notify();
+  };
+  // Another tab chose a place or forgot it.
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== RECENT_PLACE_STORAGE_KEY && event.key !== null) return;
+    read();
+    notify();
+  };
+
   return {
-    get: () => places,
-    add: place => set(withRecentPlace(places, place)),
-    clear: () => { if (places.length > 0) set([]); },
+    get: () => {
+      if (!loaded) read();
+      return place;
+    },
+    set: next => write(next),
+    forget: () => {
+      if (!loaded) read();
+      if (place) write(null);
+    },
     subscribe(listener) {
+      if (listeners.size === 0 && typeof window !== 'undefined') window.addEventListener('storage', onStorage);
       listeners.add(listener);
-      return () => { listeners.delete(listener); };
+      return () => {
+        listeners.delete(listener);
+        if (listeners.size === 0 && typeof window !== 'undefined') window.removeEventListener('storage', onStorage);
+      };
     },
   };
 }
 
-/** The places chosen since this page was opened. */
-export const recentPlaces = createRecentPlacesStore();
+/** The last place chosen in the search, in this browser. */
+export const recentPlace = createRecentPlaceStore();

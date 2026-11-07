@@ -19,13 +19,18 @@ export interface AddressResult {
 }
 
 interface AddressSearchProps {
-  /** Places chosen since the page was opened, most recent first. */
-  recentPlaces: readonly Place[];
+  /** The last place chosen in the search, kept by this browser. */
+  recentPlace: Place | null;
   /** The covered cities nearest to the map centre. */
   nearbyCities: readonly CoveredCity[];
   /** The map centre, rounded, when the map shows a city or less: places near it are found first. */
   near?: readonly [number, number] | null;
+  /** A place found, or a city with scooters. */
   onSelect: (place: Place) => void;
+  /** The place chosen last time, chosen again. */
+  onSelectRecent: (place: Place) => void;
+  /** The ✕ beside the place chosen last time. */
+  onForgetRecent: () => void;
   onLocate: () => void;
   onCancel: () => void;
 }
@@ -66,7 +71,12 @@ function PlaceRow({
     <button
       type="button"
       className="place-row"
-      aria-label={[isolated(place.title), place.subtitle && isolated(place.subtitle), noData && t('find.noData')].filter(Boolean).join(', ')}
+      aria-label={[
+        recent && t('find.recent'),
+        isolated(place.title),
+        place.subtitle && isolated(place.subtitle),
+        noData && t('find.noData'),
+      ].filter(Boolean).join(', ')}
       {...button}
     >
       {/* Blue for a place with scooter data; grey for one without and for a recent place. */}
@@ -85,10 +95,18 @@ function PlaceRow({
 
 /** The open search: the field first, with Cancel beside it; under it, ways to
     start while nothing is typed and the places found from two characters on. */
-export default function AddressSearch({ recentPlaces, nearbyCities, near = null, onSelect, onLocate, onCancel }: AddressSearchProps) {
+export default function AddressSearch({
+  recentPlace,
+  nearbyCities,
+  near = null,
+  onSelect,
+  onSelectRecent,
+  onForgetRecent,
+  onLocate,
+  onCancel,
+}: AddressSearchProps) {
   const { locale, region, t } = useI18n();
   const listboxId = useId();
-  const recentId = useId();
   const citiesId = useId();
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<SearchStatus>({ kind: 'idle' });
@@ -214,6 +232,12 @@ export default function AddressSearch({ recentPlaces, nearbyCities, near = null,
     onSelect(place);
   };
 
+  // The row leaves; the keyboard stays in the field.
+  const forgetRecent = () => {
+    onForgetRecent();
+    focusField();
+  };
+
   return (
     <div className="search-panel">
       <div className="search-head">
@@ -278,20 +302,20 @@ export default function AddressSearch({ recentPlaces, nearbyCities, near = null,
               <span className="place-title">{t('find.useLocation')}</span>
             </button>
 
-            {recentPlaces.length > 0 && (
-              <>
-                <p className="search-label" id={recentId}>{t('find.recent')}</p>
-                <div className="place-rows" role="group" aria-labelledby={recentId}>
-                  {recentPlaces.map((place) => (
-                    <PlaceRow
-                      key={`${place.lat}-${place.lng}-${place.display_name}`}
-                      place={place}
-                      recent
-                      onClick={() => choose(place)}
-                    />
-                  ))}
-                </div>
-              </>
+            {/* One place needs no heading: the clock says it was chosen before, and its name says so to a screen reader. */}
+            {recentPlace && (
+              <div className="recent-place">
+                <PlaceRow place={recentPlace} recent onClick={() => onSelectRecent(recentPlace)} />
+                <button
+                  type="button"
+                  className="field-btn"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={forgetRecent}
+                  aria-label={t('find.forget')}
+                >
+                  <Icon name="close" size={16} />
+                </button>
+              </div>
             )}
 
             {nearbyCities.length > 0 && (

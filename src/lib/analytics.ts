@@ -5,7 +5,7 @@ export const ANALYTICS_ENDPOINT = 'https://u.plhery.com/api/send';
 export const ANALYTICS_WEBSITE = '6e60b4ab-b4ee-4785-9699-a7f32127b358';
 export const ANALYTICS_HOST = 'scootradar.com';
 export type AnalyticsEvent =
-  | 'search_open' | 'search_close' | 'search_results' | 'search_error' | 'search_select' | 'search_clear'
+  | 'search_open' | 'search_close' | 'search_results' | 'search_error' | 'search_select' | 'search_clear' | 'search_forget'
   | 'filters_open' | 'settings_open' | 'panel_close' | 'provider_filter' | 'providers_all' | 'filters_reset'
   | 'battery_filter' | 'map_style' | 'zones_toggle' | 'language_change' | 'locate' | 'location_result'
   | 'vehicle_select' | 'vehicle_dismiss' | 'cluster_select' | 'parking_select' | 'directions_open' | 'rental_open'

@@ -9,7 +9,7 @@ import Home from './page';
 import { track as sendEvent } from '@/lib/analytics';
 import { I18nProvider } from '@/lib/i18n';
 import { COVERED_CITIES } from '@/lib/coveredCities';
-import { recentPlaces } from '@/lib/places';
+import { RECENT_PLACE_STORAGE_KEY, recentPlace } from '@/lib/places';
 import { formatClockTime } from '@/lib/uiText';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
@@ -55,13 +55,14 @@ vi.mock('@/components/MapWrapper', () => ({ default: function MapStub({
     {[15, 16].map(zoom => <button key={zoom} onClick={() => onViewportChange(viewport.bounds, zoom)}>Zoom to {zoom}</button>)}</>;
 } }));
 vi.mock('@/components/SearchIsland', () => ({ default: ({
-  place, placeHasData, locating, recentPlaces, nearbyCities, onExpandedChange, onSelect, onClear,
+  place, placeHasData, locating, recentPlace, nearbyCities, onExpandedChange, onSelect, onSelectRecent, onForgetRecent, onClear,
   expanded, onShowFilters,
 }: {
   expanded: boolean; onShowFilters: () => void;
   place: { title: string } | null; placeHasData: boolean; locating: boolean;
-  recentPlaces: { title: string }[]; nearbyCities: { city: string }[];
+  recentPlace: { title: string } | null; nearbyCities: { city: string }[];
   onExpandedChange: (expanded: boolean) => void; onSelect: (place: object) => void; onClear: () => void;
+  onSelectRecent: (place: object) => void; onForgetRecent: () => void;
 }) => <><button onClick={() => onSelect({ lat: 47.3779, lng: 8.5403, display_name: 'Zürich HB, Train', title: 'Zürich HB', subtitle: 'Train', covered: true })}>Search Zürich HB</button>
   <button onClick={() => onSelect({ lat: 46.7741, lng: 8.1558, display_name: 'Lungern, OW', title: 'Lungern', subtitle: 'OW', covered: false })}>Search Lungern</button>
   <button onClick={() => onSelect({ lat: 47.1662, lng: 8.5155, display_name: 'Zug, Switzerland', title: 'Zug', subtitle: 'Switzerland', covered: true, city: true })}>Choose the city of Zug</button>
@@ -69,7 +70,9 @@ vi.mock('@/components/SearchIsland', () => ({ default: ({
   <button onClick={onClear}>Clear the place</button><span data-testid="place-has-data">{String(placeHasData)}</span>
   <button onClick={onShowFilters}>Open the filters</button><span data-testid="search">{expanded ? 'open' : 'closed'}</span>
   <span data-testid="bar">{place ? place.title : locating ? 'locating' : 'search field'}</span>
-  <span data-testid="recent">{recentPlaces.map(recent => recent.title).join(', ')}</span>
+  <span data-testid="recent">{recentPlace?.title}</span>
+  {recentPlace && <button onClick={() => onSelectRecent(recentPlace)}>Choose the recent place</button>}
+  {recentPlace && <button onClick={onForgetRecent}>Forget the recent place</button>}
   <span data-testid="cities">{nearbyCities.map(city => city.city).join(', ')}</span></> }));
 vi.mock('@/components/ControlSheet', () => ({ default: ({
   showCount, providerCounts, downProviders, hasActiveFilters, theme, mapStyle,
@@ -128,8 +131,8 @@ const keepOnly = (...on: string[]) =>
 beforeEach(() => {
   vi.useFakeTimers();
   track.mockClear();
+  recentPlace.forget();
   localStorage.clear();
-  recentPlaces.clear();
   viewport.bounds = { south: 47.36, west: 8.52, north: 47.39, east: 8.57 };
   window.history.replaceState(null, '', '/map');
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -370,26 +373,51 @@ it('keeps the map on a place chosen while the location was on its way', async ()
   expect(screen.getByTestId('dot')).toHaveTextContent('shown');
 });
 
-it('remembers the places chosen during the visit, most recent first, and stores none of them', async () => {
+it('remembers the last place chosen for the next search, under its own key and nowhere else', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
   const first = mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByTestId('recent')).toHaveTextContent(/^$/);
 
-  for (const name of ['Search Zürich HB', 'Search Lungern', 'Choose the city of Zug', 'Search Lungern']) {
+  for (const name of ['Search Zürich HB', 'Search Lungern', 'Choose the city of Zug']) {
     fireEvent.click(screen.getByRole('button', { name }));
   }
-  expect(screen.getByTestId('recent')).toHaveTextContent(/^Lungern, Zug, Zürich HB$/);
-  // Clearing the place does not forget it.
+  expect(screen.getByTestId('recent')).toHaveTextContent(/^Zug$/);
+  // Clearing the place from the bar does not forget it.
   fireEvent.click(screen.getByRole('button', { name: 'Clear the place' }));
-  expect(screen.getByTestId('recent')).toHaveTextContent(/^Lungern, Zug, Zürich HB$/);
+  expect(screen.getByTestId('recent')).toHaveTextContent(/^Zug$/);
 
-  // The privacy notice promises that precise origins are not stored.
+  // The privacy notice says the last place chosen stays in this browser: there, and in nothing else.
   await act(async () => vi.advanceTimersByTimeAsync(1_000));
+  expect(JSON.parse(localStorage.getItem(RECENT_PLACE_STORAGE_KEY)!)).toMatchObject({ title: 'Zug', lat: 47.1662, lng: 8.5155, city: true });
   const kept = [localStorage, sessionStorage].flatMap(storage =>
-    Array.from({ length: storage.length }, (_, index) => `${storage.key(index)} ${storage.getItem(storage.key(index)!)}`));
+    Array.from({ length: storage.length }, (_, index) => storage.key(index)!)
+      .filter(key => storage !== localStorage || key !== RECENT_PLACE_STORAGE_KEY)
+      .map(key => `${key} ${storage.getItem(key)}`));
   expect([...kept, window.location.href, document.cookie].join(' ')).not.toMatch(/Lungern|Zug|Zürich|46\.77|47\.16|47\.37/);
+  expect(JSON.stringify(track.mock.calls)).not.toMatch(/Lungern|Zug|Zürich|46\.77|47\.16|47\.37/);
   first.unmount();
+});
+
+it('chooses the place chosen last time again, and forgets it on request', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  fireEvent.click(screen.getByRole('button', { name: 'Search Lungern' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Clear the place' }));
+  track.mockClear();
+
+  fireEvent.click(screen.getByRole('button', { name: 'Choose the recent place' }));
+  expect(track).toHaveBeenCalledWith('search_select', { result: 'recent' });
+  expect(screen.getByTestId('bar')).toHaveTextContent('Lungern');
+  expect(screen.getByTestId('focus')).toHaveTextContent('46.7741,8.1558 zoom null');
+
+  // Forgetting it leaves the place the map shows as it is.
+  fireEvent.click(screen.getByRole('button', { name: 'Forget the recent place' }));
+  expect(track).toHaveBeenCalledWith('search_forget');
+  expect(screen.getByTestId('recent')).toHaveTextContent(/^$/);
+  expect(localStorage.getItem(RECENT_PLACE_STORAGE_KEY)).toBeNull();
+  expect(screen.getByTestId('bar')).toHaveTextContent('Lungern');
 });
 
 it('shows a chosen city as a whole and any other place at street level', async () => {

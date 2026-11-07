@@ -18,14 +18,18 @@ interface SearchIslandProps {
   locating: boolean;
   expanded: boolean;
   hasActiveFilters: boolean;
-  /** Places chosen since the page was opened, most recent first. */
-  recentPlaces: readonly Place[];
+  /** The last place chosen in the search, kept by this browser. */
+  recentPlace: Place | null;
   /** The covered cities nearest to the map centre. */
   nearbyCities: readonly CoveredCity[];
   /** The map centre, rounded, when the map shows a city or less: the search finds places near it first. */
   near?: readonly [number, number] | null;
   onExpandedChange: (expanded: boolean) => void;
+  /** A place found, or a city with scooters. */
   onSelect: (place: Place) => void;
+  /** The place chosen last time, chosen again. */
+  onSelectRecent: (place: Place) => void;
+  onForgetRecent: () => void;
   onClear: () => void;
   onLocate: () => void;
   onShowFilters: () => void;
@@ -46,11 +50,13 @@ export default function SearchIsland({
   locating,
   expanded,
   hasActiveFilters,
-  recentPlaces,
+  recentPlace,
   nearbyCities,
   near,
   onExpandedChange,
   onSelect,
+  onSelectRecent,
+  onForgetRecent,
   onClear,
   onLocate,
   onShowFilters,
@@ -125,13 +131,18 @@ export default function SearchIsland({
       <div ref={contentRef} className="search-island-inner">
         {expanded ? (
           <AddressSearch
-            recentPlaces={recentPlaces}
+            recentPlace={recentPlace}
             nearbyCities={nearbyCities}
             near={near}
             onSelect={(chosen) => {
               onSelect(chosen);
               setExpanded(false);
             }}
+            onSelectRecent={(chosen) => {
+              onSelectRecent(chosen);
+              setExpanded(false);
+            }}
+            onForgetRecent={onForgetRecent}
             onLocate={() => {
               onLocate();
               setExpanded(false);

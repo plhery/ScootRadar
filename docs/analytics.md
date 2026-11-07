@@ -45,7 +45,7 @@ agent that doesn't name the app.
 | --- | --- | --- |
 | Site | `map_open` (web) | a link to the map followed from a page of the site (the landing page, a guide, a list of guides), counted under that page's address; `result`: `city` (a city's map) or `map` (the map) |
 | Lifecycle | `app_open`, `app_install` (PWA), `app_foreground` (iOS), `link_open` (iOS) | platform; for `link_open`, a scootradar.com link to the map opened in the app, `result`: `city` (a city's centre, chosen like a city in the search), `place` (another point) or `map` (no place) |
-| Search | `search_open`, `search_close`, `search_results`, `search_error`, `search_select`, `search_clear` | result count only (`count` web, `value` iOS) |
+| Search | `search_open`, `search_close`, `search_results`, `search_error`, `search_select`, `search_clear`, `search_forget` | result count only (`count` web, `value` iOS); for `search_select`, `result` `recent` when it is the place chosen last time |
 | Filters | `filters_open`, `provider_filter`, `providers_all`, `filters_reset`, `battery_filter` | provider, enabled/result, quick/filter source (web), value |
 | Preferences | `settings_open`, `panel_close`, `map_style`, `zones_toggle`, `language_change` | style (web: the appearance `auto`/`light`/`dark` or the map `calm`/`detailed`; iOS: the appearance `auto`/`light`/`dark` or the map `standard`/`quiet`/`satellite`, in `result`), whether the zones preview was turned on (`enabled`; iOS: `result` `enabled` or `disabled`), language (a code, or `auto` for Automatic, which follows the browser or the iPhone; iOS: in `result`) |
 | Location | `locate`, `location_result` | success/denied/unavailable |
@@ -72,8 +72,10 @@ What the events mean on the web:
   already has the permission, only `location_result` follows. Once a position is
   known, the page follows it; only a permission taken back is then reported, as
   `denied`, not a signal lost for a while.
-- `search_select` covers a result, a recent place and a "Cities with scooters"
-  chip alike; `search_clear` is the × that removes the chosen place.
+- `search_select` covers a result, the place chosen last time (with `result`
+  `recent`) and a "Cities with scooters" chip; `search_clear` is the × that
+  removes the chosen place from the bar, `search_forget` the × that has the
+  search forget the place chosen last time.
   `search_error` is a search that failed, not one the server put off for being
   one too many in a minute: that one is repeated and reports its own outcome.
 - `refresh` is a tap on "Try again" where a failure is shown, and

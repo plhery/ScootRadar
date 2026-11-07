@@ -21,10 +21,12 @@ function island(overrides: Partial<Props> = {}) {
         locating={false}
         expanded={false}
         hasActiveFilters={false}
-        recentPlaces={[]}
+        recentPlace={null}
         nearbyCities={[]}
         onExpandedChange={vi.fn()}
         onSelect={vi.fn()}
+        onSelectRecent={vi.fn()}
+        onForgetRecent={vi.fn()}
         onClear={vi.fn()}
         onLocate={vi.fn()}
         onShowFilters={vi.fn()}
@@ -207,14 +209,24 @@ describe('the open search', () => {
     expect(bar()).toHaveFocus();
   });
 
-  it('chooses a recent place again and closes', () => {
-    const onSelect = vi.fn();
-    render(<Harness recentPlaces={[lungern]} onSelect={onSelect} />);
+  it('chooses the place chosen last time again and closes', () => {
+    const onSelectRecent = vi.fn();
+    render(<Harness recentPlace={lungern} onSelectRecent={onSelectRecent} />);
 
     fireEvent.click(bar());
-    fireEvent.click(screen.getByRole('button', { name: 'Lungern, OW, No data' }));
-    expect(onSelect).toHaveBeenCalledExactlyOnceWith(lungern);
+    fireEvent.click(screen.getByRole('button', { name: 'Recent, Lungern, OW, No data' }));
+    expect(onSelectRecent).toHaveBeenCalledExactlyOnceWith(lungern);
     expect(screen.queryByRole('combobox')).toBeNull();
+  });
+
+  it('forgets the place chosen last time and stays open', () => {
+    const onForgetRecent = vi.fn();
+    render(<Harness recentPlace={lungern} onForgetRecent={onForgetRecent} />);
+
+    fireEvent.click(bar());
+    fireEvent.click(screen.getByRole('button', { name: 'Forget this place' }));
+    expect(onForgetRecent).toHaveBeenCalledOnce();
+    expect(screen.getByRole('combobox')).toHaveFocus();
   });
 
   it('locates from the open search and closes it', () => {

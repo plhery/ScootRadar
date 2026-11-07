@@ -40,10 +40,10 @@ import { RULE_ZONES, ruleZonesInView } from '@/lib/ruleZones';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
-import { placeForCity, recentPlaces, searchNear, type Place } from '@/lib/places';
+import { placeForCity, recentPlace, searchNear, type Place } from '@/lib/places';
 import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
-import { useRecentPlaces } from '@/lib/useRecentPlaces';
+import { useRecentPlace } from '@/lib/useRecentPlace';
 import { useCityZones } from '@/lib/useCityZones';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { useZoneData, zoneArea, zoneAreaKey } from '@/lib/useZoneData';
@@ -237,7 +237,7 @@ export default function Home() {
   // The origin for walking times until it is cleared; it wins over your location.
   const [searchedPlace, setSearchedPlace] = useState<Place | null>(null);
   const placeChoicesRef = useRef(0);
-  const recent = useRecentPlaces();
+  const recent = useRecentPlace();
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [locationHelpOpen, setLocationHelpOpen] = useState(false);
@@ -435,14 +435,14 @@ export default function Home() {
     setEnabledProviders(new Set(Object.keys(PROVIDERS)));
   };
 
-  // A search result, a recent place or a city with scooters: it becomes the origin
-  // for walking times, is remembered until the page is closed, and the map moves there.
+  // A search result, the place chosen last time or a city with scooters: it becomes the
+  // origin for walking times, is remembered for the next search, and the map moves there.
   const choosePlace = (place: Place) => {
     const location: [number, number] = [place.lat, place.lng];
     clearSelection();
     placeChoicesRef.current += 1;
     setSearchedPlace(place);
-    recentPlaces.add(place);
+    recentPlace.set(place);
     setFocusRequest(current => ({ location, zoom: place.city ? CITY_ZOOM : null, version: current.version + 1 }));
   };
 
@@ -1007,11 +1007,13 @@ export default function Home() {
         locating={locating}
         expanded={searchExpanded}
         hasActiveFilters={hasActiveFilters}
-        recentPlaces={recent}
+        recentPlace={recent}
         nearbyCities={nearbyCities}
         near={searchCentre}
         onExpandedChange={expanded => { track(expanded ? 'search_open' : 'search_close'); setSearchExpanded(expanded); }}
         onSelect={handlePlaceSelect}
+        onSelectRecent={place => { track('search_select', { result: 'recent' }); choosePlace(place); }}
+        onForgetRecent={() => { track('search_forget'); recentPlace.forget(); }}
         onClear={() => { track('search_clear'); setSearchedPlace(null); }}
         onLocate={handleLocateMe}
         onShowFilters={() => openPanel('filters')}

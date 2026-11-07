@@ -24,10 +24,10 @@ const lille: Place = { lat: 50.6292, lng: 3.0573, display_name: 'Lille, France',
 const lungern: Place = { lat: 46.7741, lng: 8.1558, display_name: 'Lungern, OW', title: 'Lungern', subtitle: 'OW', covered: false };
 
 function renderSearch(overrides: Partial<React.ComponentProps<typeof AddressSearch>> = {}) {
-  const props = { onSelect: vi.fn(), onLocate: vi.fn(), onCancel: vi.fn() };
+  const props = { onSelect: vi.fn(), onSelectRecent: vi.fn(), onForgetRecent: vi.fn(), onLocate: vi.fn(), onCancel: vi.fn() };
   render(
     <I18nProvider>
-      <AddressSearch recentPlaces={[]} nearbyCities={[]} {...props} {...overrides} />
+      <AddressSearch recentPlace={null} nearbyCities={[]} {...props} {...overrides} />
     </I18nProvider>
   );
   return { ...props, input: screen.getByRole('combobox', { name: 'City or address' }) };
@@ -64,8 +64,9 @@ describe('with nothing typed', () => {
     // Nothing to report yet; the place for it is there for screen readers.
     expect(screen.getByRole('status')).toBeEmptyDOMElement();
     expect(screen.queryByRole('button', { name: 'Filters' })).toBeNull();
-    // Nothing chosen during this visit and no city to offer: no empty sections.
-    expect(screen.queryByText('Recent')).toBeNull();
+    // Nothing chosen before and no city to offer: no empty sections.
+    expect(screen.queryByRole('button', { name: /^Recent/ })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Forget this place' })).toBeNull();
     expect(screen.queryByText('Cities with scooters')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull();
 
@@ -75,18 +76,42 @@ describe('with nothing typed', () => {
     expect(onCancel).toHaveBeenCalledOnce();
   });
 
-  it('lists the places chosen earlier and chooses one again', () => {
-    const { onSelect } = renderSearch({ recentPlaces: [lille, lungern] });
+  it('offers the place chosen last time, under your location, and chooses it again', () => {
+    const { input, onSelect, onSelectRecent } = renderSearch({ recentPlace: lille });
 
-    const rows = within(screen.getByRole('group', { name: 'Recent' })).getAllByRole('button');
-    // A place without scooter data says so here as well.
-    expect(rows.map(row => row.getAttribute('aria-label'))).toEqual(['Lille, France', 'Lungern, OW, No data']);
-    expect(within(rows[0]).getByText('France')).toBeVisible();
-    expect(within(rows[0]).queryByText('No data')).toBeNull();
-    expect(within(rows[1]).getByText('No data')).toBeVisible();
+    const buttons = screen.getAllByRole('button');
+    const row = screen.getByRole('button', { name: 'Recent, Lille, France' });
+    expect(buttons.indexOf(row)).toBe(buttons.indexOf(screen.getByRole('button', { name: 'Use my location' })) + 1);
+    // One place, no heading over it.
+    expect(screen.queryByText('Recent')).toBeNull();
+    expect(within(row).getByText('Lille')).toBeVisible();
+    expect(within(row).getByText('France')).toBeVisible();
+    expect(within(row).queryByText('No data')).toBeNull();
 
-    fireEvent.click(rows[0]);
-    expect(onSelect).toHaveBeenCalledExactlyOnceWith(lille);
+    fireEvent.click(row);
+    expect(onSelectRecent).toHaveBeenCalledExactlyOnceWith(lille);
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(input).toHaveFocus();
+  });
+
+  it('says so when the place chosen last time has no scooter data', () => {
+    renderSearch({ recentPlace: lungern });
+
+    const row = screen.getByRole('button', { name: 'Recent, Lungern, OW, No data' });
+    expect(within(row).getByText('No data')).toBeVisible();
+  });
+
+  it('forgets the place chosen last time with its ✕, and keeps the keyboard in the field', () => {
+    const { input, onForgetRecent, onSelectRecent } = renderSearch({ recentPlace: lille });
+
+    const forget = screen.getByRole('button', { name: 'Forget this place' });
+    // The ✕ is a button of its own, beside the place and not inside it.
+    expect(screen.getByRole('button', { name: 'Recent, Lille, France' })).not.toContainElement(forget);
+    expect(fireEvent.mouseDown(forget)).toBe(false);
+    fireEvent.click(forget);
+    expect(onForgetRecent).toHaveBeenCalledOnce();
+    expect(onSelectRecent).not.toHaveBeenCalled();
+    expect(input).toHaveFocus();
   });
 
   it('offers the cities with scooters as chips, and a chip chooses the city as a place', () => {
@@ -109,16 +134,17 @@ describe('typing', () => {
   it('waits for two characters before it searches', async () => {
     const fetcher = answer(PARADEPLATZ);
     vi.stubGlobal('fetch', fetcher);
-    const { input } = renderSearch({ recentPlaces: [lille] });
+    const { input } = renderSearch({ recentPlace: lille });
 
     await type(input, ' P ');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(screen.getByRole('group', { name: 'Recent' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Recent, Lille, France' })).toBeVisible();
 
     fireEvent.change(input, { target: { value: 'Pa' } });
     // Searching replaces the suggestions at once, before the request leaves.
     expect(screen.getByRole('status')).toHaveTextContent('Searching…');
-    expect(screen.queryByRole('group', { name: 'Recent' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Recent, Lille, France' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Forget this place' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'Use my location' })).toBeNull();
     expect(fetcher).not.toHaveBeenCalled();
     await act(async () => vi.advanceTimersByTimeAsync(350));
@@ -276,7 +302,7 @@ describe('typing', () => {
 
   it('empties the field with the clear button and brings the suggestions back', async () => {
     vi.stubGlobal('fetch', answer(PARADEPLATZ));
-    const { input, onSelect, onCancel } = renderSearch({ recentPlaces: [lille] });
+    const { input, onSelect, onCancel } = renderSearch({ recentPlace: lille });
     await type(input, 'Paradeplatz');
     expect(screen.getAllByRole('option')).toHaveLength(3);
 
@@ -284,7 +310,7 @@ describe('typing', () => {
     expect(input).toHaveValue('');
     expect(input).toHaveFocus();
     expect(screen.queryByRole('option')).toBeNull();
-    expect(screen.getByRole('group', { name: 'Recent' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Recent, Lille, France' })).toBeVisible();
     expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull();
     // Only the text goes: the search stays open and no place is chosen or dropped.
     expect(onSelect).not.toHaveBeenCalled();

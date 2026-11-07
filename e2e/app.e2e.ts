@@ -1779,7 +1779,7 @@ test('the bar keeps its second line whole beside the clear button in every langu
   }
 });
 
-test('the open search starts on the field and offers your location, recent places and cities with scooters', async ({ page }) => {
+test('the open search starts on the field and offers your location, the place chosen last time and cities with scooters', async ({ page }) => {
   await page.route('**/api/geocode', route => route.fulfill({ contentType: 'application/json', body: '[]' }));
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map');
@@ -1795,8 +1795,8 @@ test('the open search starts on the field and offers your location, recent place
   await expect(island.getByRole('heading')).toHaveCount(0);
   await expect(island.getByRole('button', { name: 'Filters' })).toHaveCount(0);
   expect((await input.boundingBox())!.y).toBeLessThan((await island.getByRole('button', { name: 'Use my location' }).boundingBox())!.y);
-  // Nothing has been chosen during this visit yet.
-  await expect(island.getByText('Recent')).toHaveCount(0);
+  // Nothing has been chosen yet.
+  await expect(island.getByRole('button', { name: /^Recent/ })).toHaveCount(0);
   // The six covered cities nearest to the middle of the map, which shows Switzerland.
   const cities = island.getByRole('group', { name: 'Cities with scooters' }).getByRole('button');
   await expect(cities).toHaveCount(6);
@@ -1813,16 +1813,32 @@ test('the open search starts on the field and offers your location, recent place
   await expect(map).toHaveAttribute('data-zoom', '13');
   await expect(page.locator('.destination-marker')).toBeVisible();
 
-  // The city is now a recent place, with the cities nearest to it underneath.
+  // The city is now the place chosen last time, under your location, with the cities nearest to it underneath.
   await bar.click();
-  const recent = island.getByRole('group', { name: 'Recent' }).getByRole('button');
-  await expect(recent).toHaveText(['WädenswilSwitzerland']);
-  await expect(recent.first()).toHaveAccessibleName('Wädenswil, Switzerland');
+  const recent = island.getByRole('button', { name: 'Recent, Wädenswil, Switzerland' });
+  await expect(recent).toHaveText('WädenswilSwitzerland');
+  const forget = island.getByRole('button', { name: 'Forget this place' });
+  await expect(forget).toBeVisible();
+  const location = (await island.getByRole('button', { name: 'Use my location' }).boundingBox())!;
+  const row = (await recent.boundingBox())!;
+  expect(row.y).toBeGreaterThanOrEqual(location.y + location.height - 1);
+  // The ✕ ends the row's line.
+  const cross = (await forget.boundingBox())!;
+  expect(cross.x).toBeGreaterThanOrEqual(row.x + row.width - 1);
+  expect(Math.abs(cross.y + cross.height / 2 - (row.y + row.height / 2))).toBeLessThan(2);
+  await expect(island.getByText('Recent')).toHaveCount(0);
   await expect(cities.first()).toHaveText('Wädenswil');
   await expectTouchTargets(page);
   expect((await accessibility()).violations).toEqual([]);
-  // Recent places are kept for this visit only: nothing about them is stored.
-  expect(await page.evaluate(() => JSON.stringify([{ ...localStorage }, { ...sessionStorage }, document.cookie]))).not.toMatch(/denswil|47\.22/);
+  // It stays in this browser under its own key, and nowhere else.
+  const stored = await page.evaluate(() => {
+    const local = { ...localStorage };
+    const recentPlace = local['scooters-recent-place'];
+    delete local['scooters-recent-place'];
+    return { recentPlace, elsewhere: JSON.stringify([local, { ...sessionStorage }, document.cookie]) };
+  });
+  expect(JSON.parse(stored.recentPlace)).toMatchObject({ title: 'Wädenswil', city: true });
+  expect(stored.elsewhere).not.toMatch(/denswil|47\.22/);
   expect(page.url()).not.toMatch(/denswil|47\.22/);
 
   // Cancel closes the search and leaves the place as it was.
@@ -1835,10 +1851,20 @@ test('the open search starts on the field and offers your location, recent place
   await input.press('Escape');
   await expect(bar).toBeFocused();
 
+  // The next visit offers it again; its ✕ forgets it, here and in storage, and the keyboard stays in the field.
   await page.reload();
   await page.getByRole('button', { name: 'Search city or address' }).click();
   await expect(cities).toHaveCount(6);
-  await expect(island.getByText('Recent')).toHaveCount(0);
+  await expect(recent).toBeVisible();
+  await forget.click();
+  await expect(recent).toHaveCount(0);
+  await expect(forget).toHaveCount(0);
+  await expect(input).toBeFocused();
+  expect(await page.evaluate(() => localStorage.getItem('scooters-recent-place'))).toBeNull();
+  await page.reload();
+  await page.getByRole('button', { name: 'Search city or address' }).click();
+  await expect(cities).toHaveCount(6);
+  await expect(island.getByRole('button', { name: /^Recent/ })).toHaveCount(0);
 });
 
 test('typing lists places with a second line, tags those without scooter data, and walking times start from the chosen place', async ({ page }) => {
@@ -1897,9 +1923,18 @@ test('typing lists places with a second line, tags those without scooter data, a
   await island.getByRole('button', { name: 'Clear place' }).click();
   await expect(card.getByRole('button', { name: 'Turn on location to see walking time' })).toBeVisible();
   await expect(island.getByRole('button', { name: 'Search city or address' })).toBeFocused();
-  // The search text and the place stay out of the address and of what is stored.
+  // The search text and the place stay out of the address, and the place is stored as the one chosen last
+  // time only, under its own key: what was typed is not kept at all.
   expect(page.url()).not.toMatch(/HB|47\.37/);
-  expect(await page.evaluate(() => JSON.stringify([{ ...localStorage }, { ...sessionStorage }]))).not.toMatch(/HB|47\.37/);
+  const stored = await page.evaluate(() => {
+    const local = { ...localStorage };
+    const recentPlace = local['scooters-recent-place'];
+    delete local['scooters-recent-place'];
+    return { recentPlace, elsewhere: JSON.stringify([local, { ...sessionStorage }]) };
+  });
+  expect(JSON.parse(stored.recentPlace)).toMatchObject({ title: 'Zürich HB', lat: 47.3779 });
+  expect(stored.recentPlace).not.toContain('Paradeplatz');
+  expect(stored.elsewhere).not.toMatch(/HB|Paradeplatz|47\.37/);
 });
 
 test('the address search itself finds a typed city with scooter data first, with its country in the language on screen', async ({ page }) => {
