@@ -644,6 +644,42 @@ test('a scooter that leaves the map while you walk to it is said to be gone, and
   await expect(card).toHaveCount(0);
 });
 
+test('a scooter that stands faded while its app is collected again is not said to be taken: the walk goes on', async ({ page }) => {
+  let faded = false;
+  let fadedAnswers = 0;
+  await page.route('**/api/scooters?**', async route => {
+    const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+    if (zoom <= 15 || !faded) return route.fallback();
+    fadedAnswers += 1;
+    const seenAt = new Date(Date.now() - 20 * 60_000).toISOString();
+    await route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      ...scooterResponse,
+      vehicles: scooterResponse.vehicles.filter(vehicle => vehicle.provider !== 'lime'),
+      providers: { bird: 1, bolt: 1 },
+      lastSeen: { vehicles: scooterResponse.vehicles.filter(vehicle => vehicle.provider === 'lime'), clusters: [],
+        providers: { lime: { seenAt, updating: true } } },
+      meta: { ...scooterResponse.meta, mode: 'vehicles', totalVehicles: 2, zoom, generatedAt: new Date().toISOString(),
+        stale: true, refreshing: true, refreshAfterSeconds: 3, lastSeenAt: seenAt },
+    }) });
+  });
+  await locateAt(page, HERE);
+  await answerWalks(page, { body: { path: WAY, distanceM: Math.round(WALK_M) } });
+  await page.goto('/map');
+  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  const card = await openLime(page);
+  await card.getByRole('button', { name: 'Directions', exact: true }).click();
+  await expect(card.getByRole('button', { name: 'Hide route', exact: true })).toBeVisible();
+
+  // Faded in two updates in a row, and more, of the part of the map where it was.
+  faded = true;
+  await zoomTo(page, 15);
+  await zoomTo(page, 16);
+  await expect.poll(() => fadedAnswers).toBeGreaterThanOrEqual(3);
+  await expect(card.getByRole('status')).toHaveText(/^Route shown: /);
+  await expect(card.locator('.walk-status-gone')).toHaveCount(0);
+  await expect(page.locator('path.walk-route-dots')).toBeVisible();
+});
+
 test.describe('on a desktop', () => {
   test.skip(({ isMobile }) => isMobile, 'The card is beside its marker only in a wide window with a mouse.');
 

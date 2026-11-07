@@ -617,6 +617,12 @@ export default function Home() {
     }
     return nearest;
   }, [pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
+  // Faded where it was last seen while its app is collected again: neither seen nor taken until the
+  // app's new positions say which.
+  const walkedFaded = useMemo(() => pinnedProvider !== null && walkLat !== null && walkLng !== null &&
+    lastSeenVehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey || (vehicle.provider === pinnedProvider &&
+      haversineM(walkLat, walkLng, vehicle.lat, vehicle.lng) <= SAME_SCOOTER_M)),
+  [lastSeenVehicles, pinnedProvider, selectedVehicleKey, walkLat, walkLng]);
   const liveWalkedParking = useMemo(
     () => pinnedParking && (parking.find(location => location.id === pinnedParking.id) ?? null),
     [parking, pinnedParking]
@@ -729,14 +735,15 @@ export default function Home() {
   }, [locating, locationError, walkLocationFailed, walkPhase]);
 
   // Taken while you walked to it: no longer in data that would have it, where
-  // single scooters are sent whatever their battery and its app's feed answered.
+  // single scooters are sent whatever their battery and its app's feed answered,
+  // nor standing faded where it was last seen.
   // Twice, from two updates of the data: a scooter missing from one comes back.
   const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
     answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
     (scooterQuery?.minBattery ?? 0) === 0 &&
     boundsContainPoint(mapQuery.bounds, walkLat, walkLng) &&
     !responseMeta.failedSources.some(source => providerForFailedSource(source) === pinnedVehicle.provider);
-  const walkedSeen = liveWalkedVehicle ? true : walkedCovered ? false : null;
+  const walkedSeen = liveWalkedVehicle ? true : walkedCovered && !walkedFaded ? false : null;
   const [walkMissedIn, setWalkMissedIn] = useState<number | null>(null);
   if (walkedSeen === false && walkMissedIn === null) setWalkMissedIn(lastUpdated);
   if (walkedSeen === true && walkMissedIn !== null) setWalkMissedIn(null);
