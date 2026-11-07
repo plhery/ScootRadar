@@ -273,7 +273,7 @@ export function createSnapshotServer(options: ServerOptions) {
     }
     const answeredAt = Date.now();
     const answer = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
-      observations: rydeViews?.observations, listedAreas: rydeViews?.listed,
+      observations: rydeViews?.observations, listedAreas: rydeViews?.listed, awaitingView: rydeViews?.awaitingView,
       lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
     const body = options.vehicleIds?.publish(answer, answeredAt) ?? answer;
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, zoom, answeredAt, options.retention);

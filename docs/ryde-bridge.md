@@ -99,6 +99,13 @@ request cost and city-by-city completeness remain production observations.
   a job for `RYDE_WORKER_SILENT_MS`, a queued read is not said to be on its way, so the
   map stops polling every 3 seconds for it. Full group scans continue
   on their routine schedule. A failed focused read waits a minute before retrying.
+  The first read of a newly panned or zoomed viewport asks clients to follow up every
+  3 seconds even if another viewport in that city has recent observations. Previously
+  those observations suppressed `refreshing`, telling iPhone and web clients to wait
+  60 seconds for results that could already be available. Once the exact viewport has
+  a recent result (including a confirmed empty result), its routine renewal keeps the
+  usual 60-second polling interval. These follow-ups read the shared cache and do not
+  each launch a native request; per-view coalescing and all bridge budgets still apply.
   `scootradar_ryde_watched_views_total` separates requested, completed and failed reads;
   `scootradar_ryde_watched_views_pending` reports current pending reads.
 - `server/rydeApp.ts`: bounded overlapping scans, adaptive subdivision, retained

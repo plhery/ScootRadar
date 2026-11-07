@@ -26,6 +26,7 @@ describe('watched Ryde native views', () => {
     const views = new RydeWatchedViews({ query }, [area], '*', [system], () => now);
     const pending = views.read([feed], bounds, true);
     expect(pending.refreshing.size).toBe(1);
+    expect(pending.awaitingView.size).toBe(1);
     expect(pending.observations[0].observedAt).toBe(0);
     views.read([feed], bounds, true);
     expect(query).toHaveBeenCalledTimes(1);
@@ -37,10 +38,13 @@ describe('watched Ryde native views', () => {
     const cached = views.read([feed], bounds, true);
     expect(query).toHaveBeenCalledTimes(1);
     expect(cached.refreshing.size).toBe(0);
+    expect(cached.awaitingView.size).toBe(0);
     expect(cached.observations[0]).toMatchObject({ observedAt: 1_000_000, stale: true, failed: false });
     expect(cached.observations[0].sweep).toBeUndefined();
     now += 1000;
-    views.read([feed], bounds, true);
+    const renewing = views.read([feed], bounds, true);
+    expect(renewing.refreshing.size).toBe(1);
+    expect(renewing.awaitingView.size).toBe(0);
     expect(query).toHaveBeenCalledTimes(2);
   });
 
@@ -68,10 +72,12 @@ describe('watched Ryde native views', () => {
     const views = new RydeWatchedViews({ query }, [area], '*', [system], () => 1_000_000);
     views.read([feed], bounds, true);
     const moved = { ...bounds, west: 10.892, east: 10.902 };
-    expect(views.read([feed], moved, true).refreshing.size).toBe(1);
+    expect(views.read([feed], moved, true).awaitingView.size).toBe(1);
     expect(query).toHaveBeenCalledTimes(1);
     finish(result(query.mock.calls[0][0], 1_000_000)); await settle();
-    views.read([feed], moved, true);
+    const moving = views.read([feed], moved, true);
+    expect(moving.awaitingView.size).toBe(1);
+    expect(moving.observations[0].observedAt).toBe(1_000_000);
     expect(query).toHaveBeenCalledTimes(2);
   });
 
@@ -139,6 +145,7 @@ describe('watched Ryde native views', () => {
     const query = vi.fn(() => new Promise<RydeResult>(() => {}));
     const views = new RydeWatchedViews({ query, silentSince: () => silent }, [area], '*', [system], () => 1_000_000);
     expect(views.read([feed], bounds, true).refreshing.size).toBe(0);
+    expect(views.read([feed], bounds, true).awaitingView.size).toBe(0);
     silent = undefined;
     expect(views.read([feed], bounds, true).refreshing.size).toBe(1);
   });

@@ -13,7 +13,9 @@ interface Entry {
   area: RydeArea; query: RydeQuery; usedAt: number; retryAt: number; pending: boolean; failed: boolean;
   result?: RydeResult;
 }
-export interface WatchedRydeViews { observations: FeedSnapshot[]; refreshing: Set<string>; listed: ListedArea[] }
+export interface WatchedRydeViews {
+  observations: FeedSnapshot[]; refreshing: Set<string>; awaitingView: Set<string>; listed: ListedArea[];
+}
 
 /**
  * One native read of the visible area, independent of the scheduler's long, exhaustive group scans.
@@ -63,7 +65,7 @@ export class RydeWatchedViews {
         Math.max(part.south, Math.min(part.north, lat)), Math.max(part.west, Math.min(part.east, lng)))));
       if (distance < (candidates.get(area.id)?.distance ?? Infinity)) candidates.set(area.id, { area, feed, distance });
     }
-    const observations: FeedSnapshot[] = [], refreshing = new Set<string>(), listed: ListedArea[] = [];
+    const observations: FeedSnapshot[] = [], refreshing = new Set<string>(), awaitingView = new Set<string>(), listed: ListedArea[] = [];
     // With no worker asking for jobs, a read queued waits for a deadline, not for an answer: it is not said
     // to be on its way, and the map stops asking every few seconds for it.
     const silent = this.broker.silentSince?.(now) !== undefined;
@@ -102,8 +104,13 @@ export class RydeWatchedViews {
           .finally(() => { current.pending = false; });
       }
       const id = viewReadsOf(feed.id);
-      const waiting = demand && !silent && (entry?.pending || (!entry && blocked));
+      const needsView = !entry?.result || now - entry.result.observedAt * 1000 > VEHICLE_MAX_AGE_MS;
+      const waiting = demand && !silent && (entry?.pending || (needsView && blocked));
       if (waiting) refreshing.add(id);
+      // Observations from another part of this city do not answer the new viewport. Keep asking
+      // for its first result promptly even while those nearby observations are still recent.
+      // Once this exact view has a result, its routine renewal keeps the normal polling interval.
+      if (waiting && needsView) awaitingView.add(id);
       // Nearby views of this city may already have fresh observations. Keep their own times;
       // neither polling nor a new request makes an older response young again.
       const recent = [...this.entries.values()].filter(e => e.area.id === area.id && e.result &&
@@ -128,7 +135,7 @@ export class RydeWatchedViews {
         coverage: [bounds], vehicles: [], observedAt: 0, attemptedAt: entry?.failed ? now : 0,
         stale: true, failed: !!entry?.failed, skipped: false, collectionMs: SLOW_COLLECTION_MS + 1 });
     }
-    return { observations, refreshing, listed };
+    return { observations, refreshing, awaitingView, listed };
   }
   metrics(): string {
     return Object.entries(this.counts).map(([outcome, count]) =>

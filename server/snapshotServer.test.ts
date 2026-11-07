@@ -350,6 +350,51 @@ describe('collection on demand', () => {
     expect(feeds.every(f => f.observedAt === now - minutes(40))).toBe(true);
   });
 
+  it('asks promptly for a panned Ryde view even with recent observations elsewhere in the city', async () => {
+    const now = Date.now();
+    const bounds = { south: 48.36, north: 48.39, west: 10.88, east: 10.92 };
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(s => s.rydeAppArea === 'de-augsburg')!;
+    const old = feed(`germany:${system.id}`, bounds, now - minutes(40), { provider: 'ryde', source: 'germany',
+      collectionMs: 30_000, vehicles: [] });
+    const replies: (() => void)[] = [];
+    const query = vi.fn((q: RydeQuery) => new Promise<import('./rydeBridge').RydeResult>(resolve => {
+      replies.push(() => resolve({ version: 1, id: 'a'.repeat(32),
+        query: { ...q, version: 1, id: 'a'.repeat(32), expiresAt: now / 1000 + 120 },
+        observedAt: now / 1000, coverage: 'unknown',
+        scooters: [{ id: 'b'.repeat(32), lat: q.latitude, lng: q.longitude }] }));
+    }));
+    const views = new RydeWatchedViews({ query }, rydeAreas.areas as unknown as RydeArea[], '*', REGIONAL_SCOOTER_SYSTEMS);
+    const { port } = await start({ version: 1, updatedAt: now, feeds: [old], overview: buildCityOverview([old], now) }, {
+      rydeViews: views, refresher: { demand: () => [], refreshing: () => false, wait: async () => false } });
+    const get = async (latitude: number) => {
+      const response = await fetch(`http://127.0.0.1:${port}/api/scooters?south=${latitude - .002}&north=${latitude + .002}&west=10.894&east=10.902&zoom=17`, { headers });
+      expect(response.status).toBe(200);
+      return { body: await response.json() as ScooterResponse, cache: response.headers.get('X-Scooter-Public-Cache-Control') };
+    };
+    await get(48.368);
+    replies.shift()!();
+    const initial = await get(48.368);
+    expect(initial.body.vehicles).toHaveLength(1);
+    expect(initial.body.meta.refreshing).toBeUndefined();
+    // The first observation is still fresh, but outside this new view. Previously that made the
+    // API say refreshAfterSeconds: 60, hiding a native result available seconds after the pan.
+    for (let i = 0; i < 3; i++) {
+      const moved = await get(48.379);
+      expect(moved.body.vehicles).toHaveLength(0);
+      expect(moved.body.meta).toMatchObject({ refreshing: true, followUpMs: 3000, refreshAfterSeconds: 3 });
+      expect(moved.cache).toBe('no-store');
+    }
+    expect(query).toHaveBeenCalledTimes(2);
+    replies.shift()!();
+    const completed = await get(48.379);
+    expect(completed.body.vehicles).toHaveLength(1);
+    expect(completed.body.meta.refreshing).toBeUndefined();
+    expect(completed.body.meta.refreshAfterSeconds).toBe(60);
+    // Returning to the first view reuses its observation without another native request.
+    expect((await get(48.368)).body.vehicles).toHaveLength(1);
+    expect(query).toHaveBeenCalledTimes(2);
+  });
+
   it('marks as watched the feeds whose positions answer a request, and none for the city totals', async () => {
     const now = Date.now();
     const feeds = [feed('france:dott_fr_lyon', lyon, now), feed('france:dott_fr_paris', paris, now),

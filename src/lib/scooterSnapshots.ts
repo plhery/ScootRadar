@@ -519,6 +519,8 @@ export interface SnapshotQueryOptions {
    * wait for. It says so with meta.refreshing and asks to be polled again soon.
    */
   refreshing?: ReadonlySet<string>;
+  /** First reads of a new viewport: recent observations elsewhere must not delay their follow-up. */
+  awaitingView?: ReadonlySet<string>;
   /**
    * Feeds in view the request left idle (demandedFeeds). One whose positions are too old to show
    * stands faded where its scooters were last seen, and counts neither as served nor as failed.
@@ -547,7 +549,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   // map left open on Zürich from 23:37 UTC on 31 October 2026 asking every 3 seconds for 14 hours,
   // about 1,250 requests an hour, by Lime's, Bolt's, Dott's and Bird's rider maps there.
   const coming = relevant.filter(feed => !feed.skipped && options.refreshing?.has(feed.id) && !quietInPause(feed, now, showing) &&
-    !(collectsSlowly(feed) && showsPositions(feed, now)));
+    !(collectsSlowly(feed) && showsPositions(feed, now) && !options.awaitingView?.has(feed.id)));
   const refreshing = coming.length > 0;
   // A city whose every feed is in its seasonal pause has nothing to show, which is no failure.
   const asked = counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing));
