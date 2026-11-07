@@ -229,6 +229,7 @@ internal fun DockStatusLabel(status: ScooterDockStatus, modifier: Modifier = Mod
         when {
             status.isLive -> LiveIndicator()
             status.isUpdating -> Spinner(SpinnerSize.Mini)
+            status.isLastSeen -> FadedDot()
             status.isWarning -> SymbolIcon(Symbols.warning, textSymbolSize(11f), color)
         }
         Text(status.text, style = ScootType.caption.monospacedDigit(), color = color)
@@ -500,10 +501,26 @@ internal fun LiveIndicator() {
     }
 }
 
-/** The sizes of SwiftUI's spinner: `.controlSize(.small)` and the regular one, and `.mini`. */
+/**
+ * Scooters drawn faded that nothing is collecting: a hollow dot, as still as they are, in front of "faded ones last
+ * seen" where a spinner stands while new positions are on their way.
+ */
+@Composable
+internal fun FadedDot() {
+    val color = scootColors.secondaryText
+    Canvas(Modifier.size(7.dp).clearAndSetSemantics {}) {
+        val ring = 1.5.dp.toPx()
+        drawCircle(color, radius = (size.minDimension - ring) / 2, style = Stroke(ring))
+    }
+}
+
+/** The sizes of SwiftUI's spinner: `.controlSize(.small)` and the regular one, and `.mini`; and the chips' count's. */
 internal enum class SpinnerSize(val size: Dp) {
     Small(20.dp),
     Mini(16.dp),
+
+    /** Before the faded ones' number on a chip or in the list, while new positions of the provider are on their way. */
+    Count(9.dp),
 }
 
 /**

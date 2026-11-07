@@ -52,6 +52,7 @@ import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.allProviderCount
 import com.plhery.scootradar.core.map.allProvidersSelected
+import com.plhery.scootradar.core.model.ScooterFadedCount
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.theme.FocusRing
@@ -110,6 +111,7 @@ internal fun ProviderList(controller: ScooterMapController, chips: List<ScooterP
                     color = colors.providerAccent(entry.provider),
                     isShown = entry.isEnabled,
                     isDown = entry.isDown,
+                    faded = entry.faded,
                     hint = quickProviderHint(controller, entry.provider),
                     onClick = { controller.toggleQuickProvider(entry.provider) },
                     countRolls = rolls,
@@ -122,7 +124,9 @@ internal fun ProviderList(controller: ScooterMapController, chips: List<ScooterP
 
 /**
  * A row of the panel's providers: the provider's dot, its name, its count or a warning while it isn't sharing data,
- * and a check while it is shown, dashed while it is shown but down. 44 points high at least, under a line.
+ * and a check while it is shown, dashed while it is shown but down. 44 points high at least, under a line. Of its
+ * scooters drawn faded, a line under the name says whether they are being updated or since when they stand as last
+ * seen, and with none counted, the count is of them, greyed.
  */
 @Composable
 internal fun ProviderListRow(
@@ -136,6 +140,8 @@ internal fun ProviderListRow(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isDown: Boolean = false,
+    /** Its scooters drawn faded in view where they were last seen. */
+    faded: ScooterFadedCount? = null,
     hint: String? = null,
     countRolls: Boolean = false,
 ) {
@@ -143,7 +149,7 @@ internal fun ProviderListRow(
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val hovered by interaction.collectIsHoveredAsState()
-    val label = chipAccessibilityLabel(accessibilityTitle, count, isDown)
+    val label = chipAccessibilityLabel(accessibilityTitle, count, isDown, faded)
     val shown = if (isShown) localized("Shown") else localized("Hidden")
     // @ScaledMetric(relativeTo: .subheadline), whose text is 15 points.
     val checkSize = scaledMetric(20f, 15f)
@@ -169,17 +175,28 @@ internal fun ProviderListRow(
         if (color != null) {
             Box(Modifier.size(10.dp).clip(CircleShape).background(if (isDown) colors.dockQuiet else color))
         }
-        Text(
-            title,
-            style = designFont(14.5f, FontWeight.SemiBold),
-            color = if (isShown && !isDown) colors.dockText else colors.dockQuiet,
-            modifier = Modifier.weight(1f),
-        )
+        Column(Modifier.weight(1f)) {
+            Text(
+                title,
+                style = designFont(14.5f, FontWeight.SemiBold),
+                color = if (isShown && !isDown) colors.dockText else colors.dockQuiet,
+            )
+            // Of its faded ones: being updated, or since when they stand as last seen.
+            if (faded != null && !isDown) {
+                Text(
+                    if (faded.updating) ScooterFadedCount.updatingLine else faded.seenLine(),
+                    style = designFont(11.5f, FontWeight.Medium, tabular = true),
+                    color = colors.dockQuiet,
+                )
+            }
+        }
         if (isDown) {
             // `.caption.weight(.semibold)`, 12 points.
             SymbolIcon(Symbols.warning, textSymbolSize(12f), colors.warning)
         } else {
-            RollingCount(count, rolls = countRolls, style = designFont(12.5f, FontWeight.SemiBold, tabular = true), color = colors.dockQuiet)
+            FadedCount(count, faded, colors.dockQuiet) { shown, color ->
+                RollingCount(shown, rolls = countRolls, style = designFont(12.5f, FontWeight.SemiBold, tabular = true), color = color)
+            }
         }
         Box(Modifier.size(checkSize), contentAlignment = Alignment.Center) {
             when {

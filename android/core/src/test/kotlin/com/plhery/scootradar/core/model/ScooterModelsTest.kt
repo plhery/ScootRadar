@@ -12,6 +12,7 @@ import com.plhery.scootradar.core.map.ScooterHeadingPolicy
 import com.plhery.scootradar.core.map.ScooterInterfaceOrientation
 import com.plhery.scootradar.core.map.StubScooterAPI
 import com.plhery.scootradar.core.map.makeController
+import com.plhery.scootradar.core.map.unwrap
 import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
@@ -496,7 +497,11 @@ class ScooterModelsTest {
             "clusters": [
               {"id": "seen:13:4290:2868", "lat": 47.38, "lng": 8.54, "count": 9, "providers": {"lime": 9}},
               {"id": "seen:13:4291:2868", "lat": 47.39, "lng": 8.56, "count": 3, "city": "Zürich", "providers": {"bird": 2, "voi": 1}}
-            ]
+            ],
+            "providers": {
+              "lime": {"seenAt": "2026-10-25T09:40:00.000Z", "updating": true},
+              "bird": {"seenAt": "2026-10-25T09:58:00.000Z", "updating": false}
+            }
           },
           "providers": {},
           "meta": {
@@ -524,6 +529,14 @@ class ScooterModelsTest {
             response.lastSeenClusters,
         )
         assertEquals("2026-10-25T09:40:00.000Z", response.meta?.lastSeenAt)
+        // Each app's time and whether new positions of its are on their way.
+        assertEquals(
+            mapOf(
+                "lime" to ScooterLastSeenProvider(seenAt = "2026-10-25T09:40:00.000Z", updating = true),
+                "bird" to ScooterLastSeenProvider(seenAt = "2026-10-25T09:58:00.000Z", updating = false),
+            ),
+            response.lastSeenProviders,
+        )
 
         // Without them, as from a server that sends none.
         val plain = ScooterAPIJson.decodeFromString<ScooterAPIResponsePayload>(
@@ -536,6 +549,7 @@ class ScooterModelsTest {
         assertTrue(plain.lastSeenVehicles.isEmpty())
         assertTrue(plain.lastSeenClusters.isEmpty())
         assertNull(plain.meta?.lastSeenAt)
+        assertNull(plain.lastSeenProviders)
         // Nor an overview, a refresh under way or a season over.
         val meta = checkNotNull(plain.meta)
         assertFalse(meta.overview)
@@ -1601,6 +1615,45 @@ class ScooterModelsTest {
     }
 
     @Test
+    fun theDockNamesTheFadedAppsWithTheOldestTimeOfThoseNamed() {
+        ScooterLanguage.current = ScooterLanguage.En
+        val now = Instant.ofEpochSecond(1_790_000_000)
+        fun app(provider: ScooterProvider, minutesAgo: Long, updating: Boolean) =
+            ScooterFadedApp(provider, ScooterLastSeenStatus(now.minusSeconds(minutesAgo * 60), updating))
+        val bird = app(ScooterProvider.Bird, minutesAgo = 5, updating = true)
+        val lime = app(ScooterProvider.Lime, minutesAgo = 12, updating = true)
+        val voi = app(ScooterProvider.Voi, minutesAgo = 30, updating = true)
+        val time = { minutesAgo: Long -> ScooterDockStatus.seenTime(now.minusSeconds(minutesAgo * 60)) }
+
+        // One, two, then any number of them updating.
+        val one = unwrap(ScooterDockStatus.Updating.of(listOf(bird)))
+        assertEquals("Bird updating · faded ones seen at ${time(5)}", one.text)
+        val two = unwrap(ScooterDockStatus.Updating.of(listOf(bird, lime)))
+        assertEquals("Bird and Lime updating · faded ones seen at ${time(12)}", two.text)
+        val three = unwrap(ScooterDockStatus.Updating.of(listOf(bird, lime, voi)))
+        assertEquals(ScooterDockStatus.Updating(listOf(ScooterProvider.Bird, ScooterProvider.Lime, ScooterProvider.Voi), now.minusSeconds(30 * 60)), three)
+        assertEquals("Updating · faded ones seen at ${time(30)}", three.text)
+
+        // Those updating are named, at their own oldest time, not the others'.
+        val idleVoi = voi.copy(status = voi.status.copy(updating = false))
+        assertEquals(ScooterDockStatus.Updating(listOf(ScooterProvider.Bird), bird.status.seenAt), ScooterDockStatus.Updating.of(listOf(bird, idleVoi)))
+        assertNull(ScooterDockStatus.Updating.of(listOf(idleVoi)))
+        assertNull(ScooterDockStatus.Updating.of(emptyList()))
+
+        // None updating: whose they are and when they were seen.
+        val idleBird = bird.copy(status = bird.status.copy(updating = false))
+        val idleLime = lime.copy(status = lime.status.copy(updating = false))
+        assertEquals("Voi: faded ones last seen at ${time(30)}", unwrap(ScooterDockStatus.LastSeen.of(listOf(idleVoi))).text)
+        assertEquals("Bird and Lime: faded ones last seen at ${time(12)}", unwrap(ScooterDockStatus.LastSeen.of(listOf(idleBird, idleLime))).text)
+        assertEquals("Faded ones last seen at ${time(30)}", unwrap(ScooterDockStatus.LastSeen.of(listOf(idleBird, idleLime, idleVoi))).text)
+        assertNull(ScooterDockStatus.LastSeen.of(emptyList()))
+
+        // In each language, with its own words.
+        ScooterLanguage.current = ScooterLanguage.Fr
+        assertEquals("Bird et Lime en mise à jour · en pâle, vues à ${time(12)}", two.text)
+    }
+
+    @Test
     fun dockStatusPrefersFailureThenDelayThenCityTotalsThenAge() {
         val updated = Instant.ofEpochSecond(1_790_000_000)
         fun summary(
@@ -1650,15 +1703,34 @@ class ScooterModelsTest {
         val downDelayed = summary(delayed = true).copy(everyProviderDown = true)
         assertEquals(ScooterDockStatus.Delayed(showing = updated), downDelayed.status(at = later))
 
-        // While scooters stand faded where they were last seen, an update rather than a delay; a failure first.
+        // While scooters stand faded where they were last seen and new positions are on their way, an update rather
+        // than a delay or the city totals; a failure first.
         val seenAt = updated.addingTimeInterval(-900.0)
-        val updating = summary(overview = true, delayed = true).copy(lastSeenAt = seenAt)
-        assertEquals(ScooterDockStatus.Updating(seenAt = seenAt), updating.status(at = later))
+        val bird = ScooterFadedApp(ScooterProvider.Bird, ScooterLastSeenStatus(seenAt, updating = true))
+        val updating = summary(overview = true, delayed = true).copy(fadedApps = listOf(bird))
+        assertEquals(ScooterDockStatus.Updating(listOf(ScooterProvider.Bird), seenAt = seenAt), updating.status(at = later))
         assertEquals(true, updating.status(at = later)?.isUpdating)
         assertEquals(false, updating.status(at = later)?.isWarning)
-        val updatingFailed = summary(failure = ScooterLoadFailure.Timeout).copy(lastSeenAt = seenAt)
+        val updatingFailed = summary(failure = ScooterLoadFailure.Timeout).copy(fadedApps = listOf(bird))
         assertEquals(ScooterDockStatus.RefreshFailed(showing = updated), updatingFailed.status(at = later))
         assertEquals(false, ScooterDockStatus.Live.isUpdating)
+
+        // Nothing on its way for them: after a delay and the city totals, before the age of the data.
+        val idle = ScooterFadedApp(ScooterProvider.Bird, ScooterLastSeenStatus(seenAt, updating = false))
+        val lastSeen = ScooterDockStatus.LastSeen(listOf(ScooterProvider.Bird), seenAt = seenAt)
+        assertEquals(lastSeen, summary().copy(fadedApps = listOf(idle)).status(at = later))
+        assertEquals(lastSeen, summary().copy(fadedApps = listOf(idle)).status(at = updated))
+        assertEquals(true, lastSeen.isLastSeen)
+        assertEquals(false, lastSeen.isUpdating)
+        assertEquals(false, lastSeen.isWarning)
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(delayed = true).copy(fadedApps = listOf(idle)).status(at = later))
+        assertEquals(ScooterDockStatus.CityTotals, summary(overview = true).copy(fadedApps = listOf(idle)).status(at = later))
+        assertEquals(
+            ScooterDockStatus.RefreshFailed(showing = updated),
+            summary(failure = ScooterLoadFailure.Timeout).copy(fadedApps = listOf(idle)).status(at = later),
+        )
+        // Said even with every provider here down: the faded ones are theirs.
+        assertEquals(lastSeen, summary().copy(everyProviderDown = true, fadedApps = listOf(idle)).status(at = later))
 
         // Seen on another day, as a Lime group swept days ago: with the day of the week.
         val utc = ZoneOffset.UTC

@@ -34,12 +34,14 @@ import com.plhery.scootradar.core.model.ScooterFollowUpQuery
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterLinks
+import com.plhery.scootradar.core.model.ScooterLastSeenStatus
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
+import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterReviewPrompt
 import com.plhery.scootradar.core.model.ScooterStartPlace
@@ -167,9 +169,12 @@ class ScooterMapController(
     private val _lastSeenClusters = MutableStateFlow<List<ScooterCluster>>(emptyList())
     val lastSeenClusters: StateFlow<List<ScooterCluster>> = _lastSeenClusters.asStateFlow()
 
-    /** When the oldest of them were seen, on this device's clock. */
-    private val _lastSeenAt = MutableStateFlow<Instant?>(null)
-    val lastSeenAt: StateFlow<Instant?> = _lastSeenAt.asStateFlow()
+    /**
+     * Of each app among them, as the server said: when its were seen, on this device's clock, and whether new
+     * positions of its are on their way. `lastSeenStatuses` is what the map says, none on its way while it is paused.
+     */
+    private val _lastSeenProviders = MutableStateFlow<Map<ScooterProvider, ScooterLastSeenStatus>>(emptyMap())
+    val lastSeenProviders: StateFlow<Map<ScooterProvider, ScooterLastSeenStatus>> = _lastSeenProviders.asStateFlow()
 
     private val _parking = MutableStateFlow<List<ScooterParking>>(emptyList())
     val parking: StateFlow<List<ScooterParking>> = _parking.asStateFlow()
@@ -512,6 +517,10 @@ class ScooterMapController(
     /** The faded scooters in view that pass the filters, counted apart from the others. */
     private val _visibleLastSeenCount = MutableStateFlow(0)
     val visibleLastSeenCount: StateFlow<Int> = _visibleLastSeenCount.asStateFlow()
+
+    /** The faded scooters in view per provider, past the battery filter and before the provider filter, as the chips count the others. */
+    private val _visibleLastSeenProviderCounts = MutableStateFlow<Map<ScooterProvider, Int>>(emptyMap())
+    val visibleLastSeenProviderCounts: StateFlow<Map<ScooterProvider, Int>> = _visibleLastSeenProviderCounts.asStateFlow()
 
     private val _visibleProviderCounts = MutableStateFlow<Map<ScooterProvider, Int>>(emptyMap())
     val visibleProviderCounts: StateFlow<Map<ScooterProvider, Int>> = _visibleProviderCounts.asStateFlow()
@@ -1238,19 +1247,26 @@ class ScooterMapController(
         unfilteredVisibleCount = unfilteredCount
         unfilteredVisibleProviders = unfilteredProviders
 
-        var lastSeenCount = ScooterFiltering.visibleSummary(
+        val lastSeen = ScooterFiltering.visibleSummary(
             vehicles = lastSeenVehicles.value,
             viewport = viewport.value,
             minimumBattery = minimumBattery.value,
             enabledProviders = enabledProviders.value,
-        ).count
+        )
+        var lastSeenCount = lastSeen.count
+        val lastSeenProviders = lastSeen.providerCounts.toMutableMap()
         if (responseMetadata.value?.mode == "clusters") {
             for (cluster in lastSeenClusters.value) {
                 if (!viewport.value.contains(cluster.latitude, cluster.longitude)) continue
                 lastSeenCount += cluster.filtered(enabledProviders.value)?.count ?: 0
+                for ((providerID, providerCount) in cluster.providers) {
+                    val provider = ScooterProvider.fromRawValue(providerID) ?: continue
+                    lastSeenProviders[provider] = (lastSeenProviders[provider] ?: 0) + providerCount
+                }
             }
         }
         _visibleLastSeenCount.value = lastSeenCount
+        _visibleLastSeenProviderCounts.value = lastSeenProviders
     }
 
     internal val representedVehicleCount: Int
@@ -1337,7 +1353,7 @@ class ScooterMapController(
                 distanceOrigin = fetchOrigin
                 val generatedAt = apiDate(response.meta?.generatedAt, clockOffset = response.clockOffset)
                 _lastUpdated.value = minOf(generatedAt ?: receivedAt, receivedAt)
-                _lastSeenAt.value = apiDate(response.meta?.lastSeenAt, clockOffset = response.clockOffset)?.let { minOf(it, receivedAt) }
+                _lastSeenProviders.value = lastSeenStatuses(response, receivedAt = receivedAt)
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt
                 // The server is collecting feeds of this answer again: ask again when it says (followUpMs), at
@@ -1383,7 +1399,7 @@ class ScooterMapController(
         setClusters(emptyList())
         setLastSeenVehicles(emptyList())
         setLastSeenClusters(emptyList())
-        _lastSeenAt.value = null
+        _lastSeenProviders.value = emptyMap()
         setSelectedScooterID(null)
         setSelectedParkingID(null)
         queryBounds = null
@@ -1740,6 +1756,28 @@ class ScooterMapController(
             return storedPasses.entries.mapNotNull { (providerID, pass) ->
                 ScooterProvider.fromRawValue(providerID)?.let { it to pass }
             }.toMap()
+        }
+
+        /**
+         * Each app's among the faded scooters of an answer (lastSeen.providers), on this device's clock and never later
+         * than the answer came. A server that does not say gives the oldest time of them all, and says them all
+         * updating while it is refreshing.
+         */
+        internal fun lastSeenStatuses(response: ScooterResponse, receivedAt: Instant): Map<ScooterProvider, ScooterLastSeenStatus> {
+            fun deviceTime(value: String?): Instant? = apiDate(value, clockOffset = response.clockOffset)?.let { minOf(it, receivedAt) }
+            response.lastSeenProviders?.let { said ->
+                val statuses = LinkedHashMap<ScooterProvider, ScooterLastSeenStatus>()
+                for ((providerID, status) in said) {
+                    val provider = ScooterProvider.fromRawValue(providerID) ?: continue
+                    val seenAt = deviceTime(status.seenAt) ?: continue
+                    statuses[provider] = ScooterLastSeenStatus(seenAt = seenAt, updating = status.updating)
+                }
+                return statuses
+            }
+            val seenAt = deviceTime(response.meta?.lastSeenAt) ?: return emptyMap()
+            val updating = response.meta?.refreshing == true
+            val providers = response.lastSeenVehicles.map { it.provider } + response.lastSeenClusters.flatMap { it.providers.keys }
+            return providers.mapNotNull(ScooterProvider::fromRawValue).associateWith { ScooterLastSeenStatus(seenAt = seenAt, updating = updating) }
         }
 
         /** A time the server wrote, on the clock of this device: `clockOffset` is how far this clock is ahead of the server's. */

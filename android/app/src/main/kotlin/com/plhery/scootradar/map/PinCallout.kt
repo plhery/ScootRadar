@@ -6,6 +6,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,10 +40,11 @@ import com.plhery.scootradar.ui.theme.iosShadow
  * on one line, its arrow on the top of the pin at [anchor] (in the map's points, read as the map moves). It keeps
  * inside the map as far as its arrow can stay under its straight edge, and leaves the map with the pin. It pops in, at
  * once under Remove animations. It takes the taps on it, the arrow's too, as MapKit's does, so that they don't close
- * it.
+ * it. A faded scooter's tip is drawn so too, with a [subtitle] under its title, in MapKit's callout's secondary
+ * colour.
  */
 @Composable
-fun PinCallout(title: String, anchor: () -> ScreenPoint, dark: Boolean, modifier: Modifier = Modifier) {
+fun PinCallout(title: String, anchor: () -> ScreenPoint, dark: Boolean, modifier: Modifier = Modifier, subtitle: String? = null) {
     val fill = if (dark) Color(0xFF2C2C2E) else Color.White
     val ink = if (dark) Color.White else Color.Black
     val shape = RoundedCornerShape(CORNER.dp)
@@ -69,7 +71,16 @@ fun PinCallout(title: String, anchor: () -> ScreenPoint, dark: Boolean, modifier
                     .pointerInput(Unit) { detectTapGestures {} }
                     .padding(horizontal = 12.dp, vertical = 11.dp),
             ) {
-                Text(title, style = ScootType.headline, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (subtitle == null) {
+                    Text(title, style = ScootType.headline, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                } else {
+                    Column {
+                        Text(title, style = ScootType.headline, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        // UIKit's secondaryLabel.
+                        val secondary = if (dark) Color(0x99EBEBF5) else Color(0x993C3C43)
+                        Text(subtitle, style = ScootType.subheadline, color = secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    }
+                }
             }
         },
         modifier = modifier.graphicsLayer {

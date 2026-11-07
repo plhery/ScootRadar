@@ -34,9 +34,9 @@ fun rememberControllerChanges(controller: ScooterMapController): Int {
  * which only the map follows, and which change many times a second.
  */
 private fun ScooterMapController.chromeStates(): List<StateFlow<*>> = listOf(
-    vehicles, clusters, lastSeenVehicles, lastSeenClusters, lastSeenAt, parking,
+    vehicles, clusters, lastSeenVehicles, lastSeenClusters, lastSeenProviders, parking,
     viewport, viewportZoom, viewportZoomLevel,
-    isLoading, isLocating, loadIssue, lastUpdated, responseMetadata,
+    isLoading, isLocating, loadIssue, lastUpdated, responseMetadata, isPausedForIdle,
     userLocation, hasLocatedOnce, locationIssue,
     enabledProviders, selectedScooterID, scooterChoices, selectedParkingID, isPanelCollapsed,
     searchedDestination, recentPlace,
@@ -46,7 +46,7 @@ private fun ScooterMapController.chromeStates(): List<StateFlow<*>> = listOf(
     appearance, languageChoice, language,
     rideEstimateMinutes, ridePasses,
     mapScootersRevision, mapClustersRevision, mapLastSeenRevision,
-    visibleScooterCount, visibleLastSeenCount, visibleProviderCounts,
+    visibleScooterCount, visibleLastSeenCount, visibleLastSeenProviderCounts, visibleProviderCounts,
 )
 
 /** The time the chrome's statuses are told at: the phone's, or a test's clock. */

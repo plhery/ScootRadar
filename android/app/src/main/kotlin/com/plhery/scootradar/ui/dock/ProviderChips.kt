@@ -54,6 +54,7 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.allProviderCount
 import com.plhery.scootradar.core.map.allProvidersSelected
+import com.plhery.scootradar.core.model.ScooterFadedCount
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
@@ -120,6 +121,7 @@ internal fun ProviderChips(controller: ScooterMapController, chips: List<Scooter
                 color = colors.providerAccent(entry.provider),
                 isSelected = entry.isSelected,
                 isDown = entry.isDown,
+                faded = entry.faded,
                 accessibilityIsShown = entry.isEnabled,
                 hint = quickProviderHint(controller, entry.provider),
                 onClick = { controller.toggleQuickProvider(entry.provider) },
@@ -147,8 +149,9 @@ internal fun quickProviderHint(controller: ScooterMapController, provider: Scoot
 
 /**
  * A provider's chip, or "All": its dot, its name and its count. A chosen chip is filled with the text colour and
- * written in the ground's; a provider not sharing data is dashed, with a warning in place of its count. It dims
- * under the finger, and a little under a mouse's pointer.
+ * written in the ground's; a provider not sharing data is dashed, with a warning in place of its count. With none
+ * counted but some drawn faded where they were last seen, the count is of those, greyed, after a spinner while new
+ * positions are on their way. It dims under the finger, and a little under a mouse's pointer.
  */
 @Composable
 internal fun QuickProviderFilterChip(
@@ -162,6 +165,8 @@ internal fun QuickProviderFilterChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isDown: Boolean = false,
+    /** Its scooters drawn faded in view where they were last seen. */
+    faded: ScooterFadedCount? = null,
     hint: String? = null,
     /** A new count rolls to its place rather than taking the old one's. */
     countRolls: Boolean = false,
@@ -181,7 +186,7 @@ internal fun QuickProviderFilterChip(
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val hovered by interaction.collectIsHoveredAsState()
-    val label = chipAccessibilityLabel(accessibilityTitle, count, isDown)
+    val label = chipAccessibilityLabel(accessibilityTitle, count, isDown, faded)
     val shown = if (accessibilityIsShown) localized("Shown") else localized("Hidden")
     Row(
         modifier
@@ -225,21 +230,52 @@ internal fun QuickProviderFilterChip(
         if (isDown) {
             SymbolIcon(Symbols.warning, textSymbolSize(12f), colors.warning)
         } else {
-            RollingCount(
-                count,
-                rolls = countRolls,
-                style = designFont(11.5f, FontWeight.Bold, tabular = true),
-                color = if (isSelected) foreground.copy(alpha = 0.6f) else colors.dockQuiet,
-            )
+            val countColor = if (isSelected) foreground.copy(alpha = 0.6f) else colors.dockQuiet
+            FadedCount(count, faded, countColor) { shown, color ->
+                RollingCount(
+                    shown,
+                    rolls = countRolls,
+                    style = designFont(11.5f, FontWeight.Bold, tabular = true),
+                    color = color,
+                )
+            }
         }
     }
 }
 
-/** "Lime, 12 scooters", or what is said of a provider that isn't sharing data. */
-internal fun chipAccessibilityLabel(title: String, count: Int, isDown: Boolean): String = when {
-    isDown -> title
-    count == 1 -> stringFormat(localized("%@, one scooter"), title)
-    else -> stringFormat(localized("%@, %lld scooters"), title, count.toLong())
+/**
+ * A provider's count, or with none counted but some faded where they were last seen, how many of those, greyed
+ * (60%), after a 9-point spinner while new positions of the provider's are on their way.
+ */
+@Composable
+internal fun FadedCount(count: Int, faded: ScooterFadedCount?, color: Color, number: @Composable (Int, Color) -> Unit) {
+    val inPlace = if (count == 0) faded else null
+    val shownColor = if (inPlace != null) color.copy(alpha = color.alpha * FADED_COUNT_ALPHA) else color
+    if (faded?.updating != true) {
+        number(inPlace?.count ?: count, shownColor)
+        return
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
+        Spinner(SpinnerSize.Count, color = shownColor)
+        number(inPlace?.count ?: count, shownColor)
+    }
+}
+
+/** How much of its colour the number of faded ones keeps, as the web's chip-count-faded. */
+internal const val FADED_COUNT_ALPHA = 0.6f
+
+/**
+ * "Lime, 12 scooters", or what is said of a provider that isn't sharing data; then of its faded ones, how many,
+ * since when, and whether they are being updated: "Lime, 0 scooters, 44 faded, last seen at 14:02, updating."
+ */
+internal fun chipAccessibilityLabel(title: String, count: Int, isDown: Boolean, faded: ScooterFadedCount? = null): String {
+    val label = when {
+        isDown -> title
+        count == 1 -> stringFormat(localized("%@, one scooter"), title)
+        else -> stringFormat(localized("%@, %lld scooters"), title, count.toLong())
+    }
+    if (faded == null || isDown) return label
+    return "$label, ${faded.accessibilityLabel()}"
 }
 
 /**

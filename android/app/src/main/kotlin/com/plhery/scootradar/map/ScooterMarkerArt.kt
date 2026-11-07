@@ -129,11 +129,6 @@ class ScooterMarkerArt(
         val lastSeenID: String get() = "seen-group/${provider.part}/${diameter.roundToInt()}/${isDark.part}/$count"
     }
 
-    /** A scooter where it was last seen, while the server collects it again. */
-    data class LastSeenKey(val provider: ScooterProvider?, val isDark: Boolean) {
-        val id: String get() = "seen/${provider.part}/${isDark.part}"
-    }
-
     /** A parking bay's balloon, small at rest and large when selected. */
     data class BayKey(val provider: ScooterProvider?, val isSelected: Boolean) {
         val id: String get() = "bay/${provider.part}/${isSelected.part}"
@@ -157,7 +152,6 @@ class ScooterMarkerArt(
     private val dots = HashMap<Key, Bitmap>()
     private val dotIDs = HashMap<Key, String>()
     private val clusters = HashMap<ClusterKey, Bitmap>()
-    private val lastSeenDots = HashMap<LastSeenKey, Bitmap>()
     private val lastSeenClusters = HashMap<ClusterKey, Bitmap>()
     private val bays = HashMap<BayKey, Bitmap>()
     private val addresses = HashMap<Boolean, Bitmap>()
@@ -178,8 +172,6 @@ class ScooterMarkerArt(
 
     /** Every count is a picture of its own, so they are not all kept either. */
     fun clusterImage(key: ClusterKey): Bitmap = clusters.kept(key) { draw(it) }
-
-    fun lastSeenImage(key: LastSeenKey): Bitmap = lastSeenDots.getOrPut(key) { draw(key) }
 
     fun lastSeenClusterImage(key: ClusterKey): Bitmap = lastSeenClusters.kept(key) { drawLastSeen(it) }
 
@@ -341,18 +333,6 @@ class ScooterMarkerArt(
             }
             drawCircle(x, y, (radius - 0.75).toFloat(), ring)
             count(key, x, y)
-        }
-    }
-
-    /** The dot in the provider's colour inside a thin ring, without a glow or a shadow. */
-    private fun draw(key: LastSeenKey): Bitmap {
-        val ring = 1.5
-        val side = LAST_SEEN_DIAMETER + 2 * ring
-        val ground = if (key.isDark) ScooterMapLook.darkGround else ScooterMapLook.white
-        return picture(side, side) { x, y ->
-            drawCircle(x, y, (side / 2).toFloat(), Paint(Paint.ANTI_ALIAS_FLAG).apply { color = ground.toInt() })
-            val dot = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = ScooterMapLook.dotColor(key.provider, key.isDark).toInt() }
-            drawCircle(x, y, (LAST_SEEN_DIAMETER / 2).toFloat(), dot)
         }
     }
 
@@ -580,7 +560,10 @@ class ScooterMarkerArt(
             return bitmap
         }
 
-        /** Smaller than the others' dots, which stand out over it, as on the web. */
+        /**
+         * A faded scooter's dot, smaller than the others' dots, which stand out over it, as on the web: a circle layer
+         * draws it (ScooterMarkerLayers.fadedDots), with its ring.
+         */
         const val LAST_SEEN_DIAMETER: Double = 10.0
 
         /** The room around a pill's frame in its picture, for its shadow. */

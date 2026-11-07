@@ -18,6 +18,7 @@ import com.google.gson.JsonObject
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.isWalking
+import com.plhery.scootradar.core.map.lastSeenStatuses
 import com.plhery.scootradar.core.map.mapOrigin
 import com.plhery.scootradar.core.map.walkRemainingMetres
 import com.plhery.scootradar.core.model.GeoPoint
@@ -32,6 +33,7 @@ import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.expressions.Expression
+import org.maplibre.android.style.layers.CircleLayer
 import org.maplibre.android.style.layers.LayoutPropertyValue
 import org.maplibre.android.style.layers.PaintPropertyValue
 import org.maplibre.android.style.layers.PropertyValue
@@ -112,7 +114,7 @@ class ScooterMarkers(
 
     private var updates: Job? = null
     private var framesWanted = false
-    private var breathing: Float? = null
+    private var breathing: LastSeenBreath.Drawn? = null
 
     /** The sources whose markers fade, with the layers drawing them otherwise. */
     private val fadings = listOf(
@@ -320,13 +322,24 @@ class ScooterMarkers(
     /** TalkBack's virtual views of the markers. */
     private val accessibility = ScooterMarkerAccessibility(view, scene, markerMap, view.pixelRatio) { flush() }
 
-    /** The pin's title while its callout shows, a tap having selected the pin (MAP-270). */
+    /** The pin's title while its callout shows, a tap having selected the pin (MAP-270), or a faded scooter's tip's. */
     var calloutTitle by mutableStateOf<String?>(null)
+        private set
+
+    /** The faded scooter's tip's line under its title: that it may have moved since. */
+    var calloutSubtitle by mutableStateOf<String?>(null)
         private set
 
     /** Where the callout points, the top of the pin, in the map's points: it follows the map as it moves. */
     var calloutAnchor by mutableStateOf(ScreenPoint(0.0, 0.0))
         private set
+
+    /** The map starting to move or zoom, which closes a faded scooter's tip, as on the web. */
+    private val moveStarted = MapLibreMap.OnCameraMoveStartedListener {
+        if (scene.fadedTipID == null) return@OnCameraMoveStartedListener
+        scene.closeFadedTip()
+        flush()
+    }
 
     /** The visible region changing, a frame at a time while the map moves: mapViewDidChangeVisibleRegion. */
     private val moved = MapLibreMap.OnCameraMoveListener {
@@ -371,6 +384,7 @@ class ScooterMarkers(
             update()
         }
         view.addOnWillStartRenderingMapListener(rendererStarts)
+        map.addOnCameraMoveStartedListener(moveStarted)
         map.addOnCameraMoveListener(moved)
         map.addOnCameraIdleListener(idle)
         view.tap = { x, y -> tap(x, y) }
@@ -382,6 +396,8 @@ class ScooterMarkers(
                 controller.mapScootersRevision,
                 controller.mapClustersRevision,
                 controller.mapLastSeenRevision,
+                controller.lastSeenProviders,
+                controller.isPausedForIdle,
                 controller.parking,
                 controller.viewport,
                 controller.viewportZoom,
@@ -401,6 +417,7 @@ class ScooterMarkers(
         updates?.cancel()
         Choreographer.getInstance().removeFrameCallback(frame)
         framesWanted = false
+        map.removeOnCameraMoveStartedListener(moveStarted)
         map.removeOnCameraMoveListener(moved)
         map.removeOnCameraIdleListener(idle)
         view.tap = null
@@ -498,7 +515,12 @@ class ScooterMarkers(
         scene.updateClusteringMode(level, markerMap)
         val added = scene.reconcile(controller.mapScooters.value, controller.mapScootersRevision.value)
         scene.reconcileClusters(controller.mapClusters.value, controller.mapClustersRevision.value)
-        scene.reconcileLastSeen(controller.mapLastSeenScooters.value, controller.mapLastSeenClusters.value, controller.mapLastSeenRevision.value)
+        scene.reconcileLastSeen(
+            controller.mapLastSeenScooters.value,
+            controller.mapLastSeenClusters.value,
+            controller.mapLastSeenRevision.value,
+            controller.lastSeenStatuses,
+        )
         scene.reconcileParking(controller.mapParking)
         scene.applySelection(controller.selectedScooterID.value, markerMap)
         scene.applyParkingSelection(controller.selectedParkingID.value)
@@ -525,6 +547,7 @@ class ScooterMarkers(
         val style = style ?: return
         val callout = scene.callout(projection)
         calloutTitle = callout?.title
+        calloutSubtitle = callout?.subtitle
         callout?.let { calloutAnchor = it.anchor }
         // The clusters under the chrome, or on the scooter held in the overview, are hidden before the source is
         // written: a new one is never seen there.
@@ -538,6 +561,9 @@ class ScooterMarkers(
         if (scene.lastSeenVersion != writtenLastSeen) {
             writtenLastSeen = scene.lastSeenVersion
             write(style, ScooterMarkerLayers.LAST_SEEN_SOURCE, MarkerFeatures.lastSeen(scene, art))
+            style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.LAST_SEEN_DOTS_SOURCE)?.setGeoJson(MarkerFeatures.json(MarkerFeatures.fadedDots(scene)))
+            // TalkBack reads the faded scooters too, by their tips' titles.
+            accessibility.refresh()
         }
         wantFrames()
     }
@@ -603,12 +629,15 @@ class ScooterMarkers(
 
     private fun addLayers(style: Style) {
         style.addSource(GeoJsonSource(ScooterMarkerLayers.LAST_SEEN_SOURCE))
+        style.addSource(GeoJsonSource(ScooterMarkerLayers.LAST_SEEN_DOTS_SOURCE))
         style.addSource(GeoJsonSource(ScooterMarkerLayers.MARKERS_SOURCE))
         // The names are few and move with their dots: written at once, they are never a frame behind them.
         style.addSource(GeoJsonSource(ScooterMarkerLayers.PILLS_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
         // So are the dots easing, at every frame.
         style.addSource(GeoJsonSource(ScooterMarkerLayers.MOVING_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
         for (spec in ScooterMarkerLayers.specs) addLayer(style, spec)
+        // The faded scooters' dots over the faded groups, under the scooters.
+        for (spec in ScooterMarkerLayers.fadedDots) addLayer(style, spec, below = ScooterMarkerLayers.MARKERS)
         // The rider above them all, but for the cities' totals.
         ScooterRider.addLayers(style)
         addLayer(style, ScooterMarkerLayers.cities)
@@ -623,6 +652,19 @@ class ScooterMarkers(
         // A strength set each frame is shown at once, not eased over the style's 0.3 s.
         layer.iconOpacityTransition = TransitionOptions(0, 0)
         if (below == null) style.addLayer(layer) else style.addLayerBelow(layer, below)
+    }
+
+    private fun addLayer(style: Style, spec: CircleLayerSpec, below: String) {
+        val layer = CircleLayer(spec.id, spec.source)
+        spec.filter?.let { layer.setFilter(Expression.raw(it)) }
+        layer.setProperties(*spec.paint.map { (name, value) -> PaintPropertyValue(name, value(value)) }.toTypedArray<PropertyValue<*>>())
+        // A breath set each frame is shown at once, not eased over the style's 0.3 s.
+        val now = TransitionOptions(0, 0)
+        layer.circleRadiusTransition = now
+        layer.circleStrokeWidthTransition = now
+        layer.circleOpacityTransition = now
+        layer.circleStrokeOpacityTransition = now
+        style.addLayerBelow(layer, below)
     }
 
     private fun value(value: Any): Any = when (value) {
@@ -650,8 +692,8 @@ class ScooterMarkers(
         wantFrames()
     }
 
-    /** The faded markers breathe while there are some, on screen, with animations on. */
-    private fun breathes(): Boolean = scene.lastSeen.isNotEmpty() && ValueAnimator.areAnimatorsEnabled() && markerMap.isShown
+    /** The faded markers whose new positions are on their way breathe while there are some, on screen, with animations on. */
+    private fun breathes(): Boolean = ValueAnimator.areAnimatorsEnabled() && markerMap.isShown && scene.lastSeen.any { it.isUpdating }
 
     /** A frame of the names, of the fades and of the breath. Returns whether anything still moves. */
     private fun drawFrame(style: Style): Boolean {
@@ -663,10 +705,13 @@ class ScooterMarkers(
         for (fading in fadings.values) fades = fading.frame(style, time) || fades
         if (!fades && held == null) late = 0.0
         val breathes = breathes()
-        val strength = LastSeenBreath.strength(at = now, animates = breathes)
-        if (strength != breathing) {
-            breathing = strength
-            style.getLayer(ScooterMarkerLayers.LAST_SEEN)?.setProperties(PaintPropertyValue("icon-opacity", strength))
+        val breath = LastSeenBreath.drawn(at = now, animates = breathes)
+        if (breath != breathing) {
+            breathing = breath
+            style.getLayer(ScooterMarkerLayers.LAST_SEEN_UPDATING)?.setProperties(PaintPropertyValue("icon-opacity", breath.groupStrength))
+            val dot = ScooterMarkerLayers.fadedDotSize(breath.dotStrength, breath.dotScale)
+            style.getLayer(ScooterMarkerLayers.LAST_SEEN_DOTS_UPDATING)
+                ?.setProperties(*dot.map { (name, value) -> PaintPropertyValue(name, value) }.toTypedArray<PropertyValue<*>>())
         }
         val moves = moveDots(style, now)
         val clears = writeClearances(style, now)

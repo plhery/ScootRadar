@@ -8,6 +8,7 @@ import androidx.compose.animation.core.CubicBezierEasing
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterDotState
+import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScreenPoint
 import kotlin.math.ceil
 import kotlin.math.max
@@ -34,7 +35,16 @@ class MarkerFeature(
     val size: Double = 1.0,
     /** Over the rider: a city's total, in the overview. */
     val isOver: Boolean = false,
+    /** A faded group whose new positions are on their way: its own layer breathes. */
+    val isUpdating: Boolean = false,
 )
+
+/**
+ * A faded scooter's dot, which a circle layer draws rather than a picture: it grows and shrinks as it breathes, and a
+ * circle's size is painted at each frame where a picture's would be laid out again. In its provider's [color] inside a
+ * ring of the [ground]'s, colours as ARGB.
+ */
+class FadedDotFeature(val id: String, val coordinate: GeoPoint, val color: Long, val ground: Long, val isUpdating: Boolean)
 
 /** What each layer draws, from the scene's marks: the iPhone's annotation views, drawn by MapLibre. */
 object MarkerFeatures {
@@ -152,18 +162,48 @@ object MarkerFeatures {
         )
     }
 
-    /** The faded markers: a small dot for a scooter, a dashed ring with its number for a group. */
-    fun lastSeen(scene: ScooterMarkerScene, art: ScooterMarkerArt): List<MarkerFeature> = scene.lastSeen.map { mark ->
-        when (val kind = mark.mark) {
-            is LastSeenMark.Kind.Single -> {
-                val key = ScooterMarkerArt.LastSeenKey(kind.provider, scene.isDark)
-                MarkerFeature(mark.id, mark.coordinate, key.id, { art.lastSeenImage(key) })
-            }
-            is LastSeenMark.Kind.Group -> {
-                val key = ScooterMarkerArt.ClusterKey(kind.provider, ScooterMarkerScene.clusterDiameter(kind.count), scene.isDark, "${kind.count}")
-                MarkerFeature(mark.id, mark.coordinate, key.lastSeenID, { art.lastSeenClusterImage(key) })
-            }
+    /** The faded groups: a dashed ring with their number. Their scooters' dots are [fadedDots]. */
+    fun lastSeen(scene: ScooterMarkerScene, art: ScooterMarkerArt): List<MarkerFeature> = scene.lastSeen.mapNotNull { mark ->
+        val kind = mark.mark as? LastSeenMark.Kind.Group ?: return@mapNotNull null
+        val key = ScooterMarkerArt.ClusterKey(kind.provider, ScooterMarkerScene.clusterDiameter(kind.count), scene.isDark, "${kind.count}")
+        MarkerFeature(mark.id, mark.coordinate, key.lastSeenID, { art.lastSeenClusterImage(key) }, isUpdating = mark.isUpdating)
+    }
+
+    /** The faded scooters: a small dot in the provider's colour, inside a thin ring of the ground's. */
+    fun fadedDots(scene: ScooterMarkerScene): List<FadedDotFeature> {
+        val ground = if (scene.isDark) ScooterMapLook.darkGround else ScooterMapLook.white
+        return scene.lastSeen.mapNotNull { mark ->
+            val kind = mark.mark as? LastSeenMark.Kind.Single ?: return@mapNotNull null
+            FadedDotFeature(mark.id, mark.coordinate, ScooterMapLook.dotColor(kind.provider, scene.isDark), ground, mark.isUpdating)
         }
+    }
+
+    /** The faded scooters' dots as GeoJSON, their colours as CSS's, which the style reads. */
+    fun json(dots: List<FadedDotFeature>): String = buildString(dots.size * 160 + 40) {
+        val kept = numbers.get()!!
+        append("{\"type\":\"FeatureCollection\",\"features\":[")
+        for ((index, dot) in dots.withIndex()) {
+            if (index > 0) append(',')
+            append("{\"type\":\"Feature\",\"id\":")
+            string(dot.id)
+            append(",\"geometry\":{\"type\":\"Point\",\"coordinates\":[")
+            number(GeoBounds.wrapped(dot.coordinate.longitude), kept)
+            append(',')
+            number(dot.coordinate.latitude, kept)
+            append("]},\"properties\":{\"color\":")
+            string(css(dot.color))
+            append(",\"ground\":")
+            string(css(dot.ground))
+            if (dot.isUpdating) append(",\"updating\":true")
+            append("}}")
+        }
+        append("]}")
+    }
+
+    /** An ARGB colour as CSS writes it, as the style's colours are read: "rgba(255,255,255,1)". */
+    internal fun css(argb: Long): String {
+        val alpha = ((argb ushr 24) and 0xFF) / 255.0
+        return "rgba(${(argb ushr 16) and 0xFF},${(argb ushr 8) and 0xFF},${argb and 0xFF},${"%.3f".format(java.util.Locale.ROOT, alpha).trimEnd('0').trimEnd('.')})"
     }
 
     /**
@@ -193,6 +233,7 @@ object MarkerFeatures {
             number(feature.opacity, kept)
             if (feature.isRaised) append(",\"raised\":true")
             if (feature.isOver) append(",\"over\":true")
+            if (feature.isUpdating) append(",\"updating\":true")
             if (feature.size != 1.0) {
                 append(",\"size\":")
                 number(feature.size)
@@ -296,6 +337,14 @@ data class SymbolLayerSpec(
     data class Json(val text: String)
 }
 
+/** A circle layer as data, as MapLibre is given it: the faded scooters' dots. Values as [SymbolLayerSpec]'s. */
+data class CircleLayerSpec(
+    val id: String,
+    val source: String,
+    val filter: String? = null,
+    val paint: Map<String, Any>,
+)
+
 /**
  * The markers' layers, above the whole ground, bottom to top: the faded markers under everything (MKAnnotation's
  * zPriority min), the dots and the bays in the order of their zPriority, the selected one above them, the names,
@@ -305,7 +354,13 @@ data class SymbolLayerSpec(
  * the others of theirs, and the scooters' own layers leave them unseen.
  */
 object ScooterMarkerLayers {
+    /** The faded groups at rest, and those whose new positions are on their way, which breathe. */
     const val LAST_SEEN = "scooters-last-seen"
+    const val LAST_SEEN_UPDATING = "scooters-last-seen-updating"
+
+    /** The faded scooters' dots, over the faded groups: at rest, and breathing. */
+    const val LAST_SEEN_DOTS = "scooters-last-seen-dots"
+    const val LAST_SEEN_DOTS_UPDATING = "scooters-last-seen-dots-updating"
     const val MARKERS = "scooters"
     const val RAISED = "scooters-selected"
     const val PILLS = "scooter-names"
@@ -332,6 +387,7 @@ object ScooterMarkerLayers {
     const val RIDER = "rider"
 
     const val LAST_SEEN_SOURCE = "scooters-last-seen"
+    const val LAST_SEEN_DOTS_SOURCE = "scooters-last-seen-dots"
     const val MARKERS_SOURCE = "scooters"
     const val PILLS_SOURCE = "scooter-names"
     const val MOVING_SOURCE = "scooters-moving"
@@ -390,7 +446,12 @@ object ScooterMarkerLayers {
     /** The rider's layers, bottom to top, which ScooterRider adds above the markers'. */
     val riderLayers = listOf(RIDER_HALO, RIDER_BEAM, RIDER_RING, RIDER)
 
-    val order = listOf(LAST_SEEN, MARKERS, MOVING, RAISED, MOVING_RAISED, PILLS) + riderLayers + CITIES
+    /** Whether a faded marker breathes, its new positions being on their way. */
+    const val UPDATING = "[\"has\",\"updating\"]"
+    const val NOT_UPDATING = "[\"!\",[\"has\",\"updating\"]]"
+
+    val order = listOf(LAST_SEEN, LAST_SEEN_UPDATING, LAST_SEEN_DOTS, LAST_SEEN_DOTS_UPDATING, MARKERS, MOVING, RAISED, MOVING_RAISED, PILLS) +
+        riderLayers + CITIES
 
     /** What every marker layer shares: a picture of its own at its place, never hidden, never turned or tilted. */
     private fun pictures(anchor: String) = mapOf(
@@ -405,7 +466,14 @@ object ScooterMarkerLayers {
     )
 
     val specs: List<SymbolLayerSpec> = listOf(
-        SymbolLayerSpec(LAST_SEEN, LAST_SEEN_SOURCE, layout = pictures("center"), paint = mapOf("icon-opacity" to LastSeenBreath.STILL)),
+        SymbolLayerSpec(LAST_SEEN, LAST_SEEN_SOURCE, filter = NOT_UPDATING, layout = pictures("center"), paint = mapOf("icon-opacity" to LastSeenBreath.GROUP_STILL)),
+        SymbolLayerSpec(
+            LAST_SEEN_UPDATING,
+            LAST_SEEN_SOURCE,
+            filter = UPDATING,
+            layout = pictures("center"),
+            paint = mapOf("icon-opacity" to LastSeenBreath.UPDATING_STILL),
+        ),
         SymbolLayerSpec(
             MARKERS,
             MARKERS_SOURCE,
@@ -436,6 +504,40 @@ object ScooterMarkerLayers {
         ),
         SymbolLayerSpec(PILLS, PILLS_SOURCE, layout = pictures("top-left"), paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH))),
     )
+
+    /**
+     * The faded scooters' dots, added over the faded groups and under the scooters: 10 pt across inside a ring of
+     * 1.5, never turned or tilted, at rest, and breathing, whose size and strength are set at each frame
+     * ([LastSeenBreath]).
+     */
+    val fadedDots: List<CircleLayerSpec> = listOf(
+        CircleLayerSpec(LAST_SEEN_DOTS, LAST_SEEN_DOTS_SOURCE, filter = NOT_UPDATING, paint = fadedDot(LastSeenBreath.DOT_STILL, scale = 1f)),
+        CircleLayerSpec(
+            LAST_SEEN_DOTS_UPDATING,
+            LAST_SEEN_DOTS_SOURCE,
+            filter = UPDATING,
+            paint = fadedDot(LastSeenBreath.UPDATING_STILL, scale = 1f),
+        ),
+    )
+
+    /** A faded dot's paint at a strength and a scale. */
+    fun fadedDot(strength: Float, scale: Float): Map<String, Any> = fadedDotSize(strength, scale) + mapOf(
+        "circle-color" to SymbolLayerSpec.Json("[\"to-color\",[\"get\",\"color\"]]"),
+        "circle-stroke-color" to SymbolLayerSpec.Json("[\"to-color\",[\"get\",\"ground\"]]"),
+        "circle-pitch-alignment" to "viewport",
+        "circle-pitch-scale" to "viewport",
+    )
+
+    /** What a faded dot's breath changes: its radius and ring, and their strength. */
+    fun fadedDotSize(strength: Float, scale: Float): Map<String, Float> = mapOf(
+        "circle-radius" to (ScooterMarkerScene.LAST_SEEN_RADIUS * scale).toFloat(),
+        "circle-stroke-width" to (FADED_RING * scale).toFloat(),
+        "circle-opacity" to strength,
+        "circle-stroke-opacity" to strength,
+    )
+
+    /** The ring of the ground's colour around a faded dot, in points. */
+    const val FADED_RING = 1.5
 
     /** The cities' totals' layer, added over the rider's: those of the scooters' source written over it. */
     val cities = SymbolLayerSpec(
@@ -583,23 +685,46 @@ data class MarkerBand(
 }
 
 /**
- * The faded markers breathe between two strengths, one way in 1.6 s and back, eased, every one in step with the
- * others whenever it appeared, as on the web; with Remove animations they stand still (ScooterLastSeenView).
+ * The faded markers stand still, but for those whose new positions are on their way: they breathe, one way in 1.4 s
+ * and back, eased, every one in step with the others whenever it appeared, as on the web (map.css); with Remove
+ * animations they stand still too, a little stronger than the others. A dot breathes in strength and size, from 8 to
+ * 12 pt: plain enough to be seen, small enough not to pass for a scooter. A group breathes in strength alone: its
+ * picture's size is laid out, not painted, and would be laid out again at every frame for the web's 0.95 to 1.05.
  */
 object LastSeenBreath {
-    const val FAINTEST = 0.35f
-    const val STRONGEST = 0.65f
-    const val BREATH = 1.6
-    const val STILL = 0.5f
+    /** A faded dot and a faded group at rest: nothing is on its way for them. */
+    const val DOT_STILL = 0.42f
+    const val GROUP_STILL = 0.6f
+
+    /** Those whose new positions are on their way, with Remove animations. */
+    const val UPDATING_STILL = 0.55f
+
+    /** A breathing dot's strength and size, then a group's strength, from the start of a breath to its end. */
+    const val DOT_FAINTEST = 0.25f
+    const val DOT_STRONGEST = 0.75f
+    const val DOT_SMALLEST = 0.8f
+    const val DOT_LARGEST = 1.2f
+    const val GROUP_FAINTEST = 0.45f
+    const val GROUP_STRONGEST = 0.85f
+
+    /** One way, in seconds. */
+    const val BREATH = 1.4
 
     private val easeInEaseOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
 
-    /** The strength at a moment of the uptime clock, in seconds: the breath begins at each multiple of 3.2 s. */
-    fun strength(at: Double, animates: Boolean): Float {
-        if (!animates) return STILL
+    /** How those breathing are drawn at a moment: a dot's strength and scale, and a group's strength. */
+    data class Drawn(val dotStrength: Float, val dotScale: Float, val groupStrength: Float)
+
+    /** Those breathing at a moment of the uptime clock, in seconds: a breath begins at each multiple of 2.8 s. */
+    fun drawn(at: Double, animates: Boolean): Drawn {
+        if (!animates) return Drawn(UPDATING_STILL, 1f, UPDATING_STILL)
         val phase = ((at % (2 * BREATH)) + 2 * BREATH) % (2 * BREATH)
-        val way = if (phase < BREATH) phase / BREATH else (2 * BREATH - phase) / BREATH
-        return FAINTEST + (STRONGEST - FAINTEST) * easeInEaseOut.transform(way.toFloat())
+        val way = easeInEaseOut.transform((if (phase < BREATH) phase / BREATH else (2 * BREATH - phase) / BREATH).toFloat())
+        return Drawn(
+            dotStrength = DOT_FAINTEST + (DOT_STRONGEST - DOT_FAINTEST) * way,
+            dotScale = DOT_SMALLEST + (DOT_LARGEST - DOT_SMALLEST) * way,
+            groupStrength = GROUP_FAINTEST + (GROUP_STRONGEST - GROUP_FAINTEST) * way,
+        )
     }
 }
 

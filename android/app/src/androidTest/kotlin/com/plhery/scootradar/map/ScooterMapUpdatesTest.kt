@@ -24,6 +24,7 @@ import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneKind
+import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterZoneLook
 import com.plhery.scootradar.core.model.ScooterZoneResponse
 import com.plhery.scootradar.core.model.ScooterZoneState
@@ -129,12 +130,12 @@ class ScooterMapUpdatesTest {
             }
             waitFor("the route is shown") { shown.phone.onMain { controller.walk.value?.phase == ScooterWalkPhase.Shown } }
             settle()
-            waitFor("every kind of marker is drawn") { kinds(shown) == setOf("dot", "cluster", "seen", "seen-group") }
+            waitFor("every kind of marker is drawn") { kinds(shown) == setOf("dot", "cluster", "seen-group") && fadedGrounds(shown).isNotEmpty() }
             assertDrawn(shown, dark = false)
 
             for (dark in listOf(true, false)) {
                 shown.phone.onMain { shown.dark.value = dark }
-                waitFor("the markers drawn with dark $dark") { images(shown).all { isDark(it) == dark } }
+                waitFor("the markers drawn with dark $dark") { images(shown).all { isDark(it) == dark } && fadedGrounds(shown) == setOf(ground(dark)) }
                 settle()
                 assertDrawn(shown, dark)
             }
@@ -199,12 +200,21 @@ class ScooterMapUpdatesTest {
     /** Zürich's centre at street level, where each scooter is a dot of its own. */
     private val streetStart = ScooterMapStart(MapRegion.around(GeoPoint(47.3769, 8.5417), 900.0, 900.0), zoom = 16)
 
-    /** The pictures the markers' and the faded markers' sources draw now. */
+    /** The pictures the markers' and the faded groups' sources draw now. */
     private fun images(shown: ThemedMap): List<String> = shown.phone.onMain {
         listOf(ScooterMarkerLayers.MARKERS_SOURCE, ScooterMarkerLayers.LAST_SEEN_SOURCE).flatMap { id ->
             shown.style().getSourceAs<GeoJsonSource>(id)!!.querySourceFeatures(Expression.literal(true)).mapNotNull { it.getStringProperty("image") }
-        }.filter { it.substringBefore('/') in setOf("dot", "cluster", "seen", "seen-group") }.distinct()
+        }.filter { it.substringBefore('/') in setOf("dot", "cluster", "seen-group") }.distinct()
     }
+
+    /** The colours of the rings the faded scooters' dots, circles rather than pictures, are drawn in now. */
+    private fun fadedGrounds(shown: ThemedMap): Set<String> = shown.phone.onMain {
+        shown.style().getSourceAs<GeoJsonSource>(ScooterMarkerLayers.LAST_SEEN_DOTS_SOURCE)!!
+            .querySourceFeatures(Expression.literal(true)).mapNotNull { it.getStringProperty("ground") }.toSet()
+    }
+
+    /** The ground's colour, as the faded dots' source writes it. */
+    private fun ground(dark: Boolean): String = MarkerFeatures.css(if (dark) ScooterMapLook.darkGround else ScooterMapLook.white)
 
     private fun kinds(shown: ThemedMap): Set<String> = images(shown).map { it.substringBefore('/') }.toSet()
 
@@ -221,8 +231,9 @@ class ScooterMapUpdatesTest {
     /** Every marker, zone and the walk's trail as they are drawn in the appearance. */
     private fun assertDrawn(shown: ThemedMap, dark: Boolean) {
         val images = images(shown)
-        assertEquals(setOf("dot", "cluster", "seen", "seen-group"), images.map { it.substringBefore('/') }.toSet())
+        assertEquals(setOf("dot", "cluster", "seen-group"), images.map { it.substringBefore('/') }.toSet())
         assertTrue("$images", images.all { isDark(it) == dark })
+        assertEquals(setOf(ground(dark)), fadedGrounds(shown))
         shown.phone.onMain {
             val style = shown.style()
             fun opaque(color: Long) = (0xFF000000 or (color and 0xFFFFFF)).toInt()

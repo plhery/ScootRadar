@@ -6,12 +6,16 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCluster
+import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDotState
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterLastSeenStatus
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterPillSide
+import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
@@ -26,6 +30,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
+import java.time.Instant
 import java.util.Locale
 
 // The markers' tests of ios/ScootRadarTests/ScooterFilteringTests.swift, on the scene and the layers that take
@@ -101,44 +106,177 @@ class ScooterFilteringTest {
     }
 
     @Test
-    fun scootersLastSeenLieFadedUnderTheOthersAndAreNeitherTappedNorRead() {
-        val order = ScooterMarkerLayers.order
-        assertEquals(ScooterMarkerLayers.LAST_SEEN, order.first())
-        assertTrue(order.indexOf(ScooterMarkerLayers.LAST_SEEN) < order.indexOf(ScooterMarkerLayers.MARKERS))
-        val layer = ScooterMarkerLayers.specs.first { it.id == ScooterMarkerLayers.LAST_SEEN }
-        assertEquals(true, layer.layout["icon-allow-overlap"])
-        assertEquals(LastSeenBreath.STILL, layer.paint["icon-opacity"])
-
-        // A 10 pt dot inside a ring of 1.5 pt.
-        val single = art.lastSeenImage(ScooterMarkerArt.LastSeenKey(ScooterProvider.Lime, isDark = false))
-        assertEquals(13f, single.width / density)
-        assertEquals(13f, single.height / density)
+    fun scootersLastSeenLieFadedUnderTheOthersAndBreatheOnlyWhileTheyUpdate() {
+        // The groups, then the scooters' dots, at rest and breathing, under every other marker.
+        assertEquals(
+            listOf(
+                ScooterMarkerLayers.LAST_SEEN,
+                ScooterMarkerLayers.LAST_SEEN_UPDATING,
+                ScooterMarkerLayers.LAST_SEEN_DOTS,
+                ScooterMarkerLayers.LAST_SEEN_DOTS_UPDATING,
+                ScooterMarkerLayers.MARKERS,
+            ),
+            ScooterMarkerLayers.order.take(5),
+        )
+        val groups = ScooterMarkerLayers.specs.first { it.id == ScooterMarkerLayers.LAST_SEEN }
+        assertEquals(true, groups.layout["icon-allow-overlap"])
+        assertEquals(ScooterMarkerLayers.NOT_UPDATING, groups.filter)
+        assertEquals(0.6f, groups.paint["icon-opacity"])
+        assertEquals(ScooterMarkerLayers.UPDATING, ScooterMarkerLayers.specs.first { it.id == ScooterMarkerLayers.LAST_SEEN_UPDATING }.filter)
         val group = art.lastSeenClusterImage(ScooterMarkerArt.ClusterKey(ScooterProvider.Lime, 40.0, isDark = true, count = "12"))
         assertEquals(40f, group.width / density)
         assertEquals(40f, group.height / density)
 
-        // A tap on it goes through to the map, which closes the card.
+        // A dot of 10 pt inside a ring of 1.5, never tilted, at 0.42 at rest.
+        val dots = ScooterMarkerLayers.fadedDots.first { it.id == ScooterMarkerLayers.LAST_SEEN_DOTS }
+        assertEquals(ScooterMarkerLayers.NOT_UPDATING, dots.filter)
+        assertEquals(5f, dots.paint["circle-radius"])
+        assertEquals(1.5f, dots.paint["circle-stroke-width"])
+        assertEquals(0.42f, dots.paint["circle-opacity"])
+        assertEquals(0.42f, dots.paint["circle-stroke-opacity"])
+        assertEquals("viewport", dots.paint["circle-pitch-alignment"])
+        assertEquals("viewport", dots.paint["circle-pitch-scale"])
+        assertEquals(ScooterMarkerLayers.UPDATING, ScooterMarkerLayers.fadedDots.first { it.id == ScooterMarkerLayers.LAST_SEEN_DOTS_UPDATING }.filter)
+
+        // Each in its provider's colour inside a ring of the ground's; those whose new positions are on their way,
+        // and a group with one app on its way, written to breathe.
+        val map = FlatMarkerMap()
+        val scene = scene()
+        val seenAt = Instant.now().minusSeconds(600)
+        val scooters = listOf(scooter("a", "bird", at = map.at(100.0, 100.0)), scooter("b", "lime", at = map.at(200.0, 100.0)))
+        val clusters = listOf(map.at(300.0, 300.0).let { ScooterCluster("g", it.latitude, it.longitude, count = 5, providers = mapOf("lime" to 3, "bird" to 2)) })
+        val bird = ScooterLastSeenStatus(seenAt, updating = true)
+        val lime = ScooterLastSeenStatus(seenAt, updating = false)
+        scene.reconcileLastSeen(scooters, clusters, revision = 1, statuses = mapOf(ScooterProvider.Bird to bird, ScooterProvider.Lime to lime))
+        val features = MarkerFeatures.fadedDots(scene).associateBy { it.id }
+        assertEquals(setOf("v:bird:a", "v:lime:b"), features.keys)
+        assertTrue(features.getValue("v:bird:a").isUpdating)
+        assertFalse(features.getValue("v:lime:b").isUpdating)
+        assertEquals(ScooterMapLook.dotColor(ScooterProvider.Lime, isDark = false), features.getValue("v:lime:b").color)
+        assertEquals(ScooterMapLook.white, features.getValue("v:lime:b").ground)
+        val json = MarkerFeatures.json(features.values.toList())
+        assertEquals(1, Regex("\"updating\":true").findAll(json).count())
+        assertTrue(json, json.contains("\"ground\":\"rgba(255,255,255,1)\""))
+        assertEquals("rgba(11,14,20,1)", MarkerFeatures.css(ScooterMapLook.darkGround))
+        assertEquals("rgba(0,0,0,0.502)", MarkerFeatures.css(0x80000000))
+        val groupFeature = MarkerFeatures.lastSeen(scene, art).single()
+        assertTrue(groupFeature.isUpdating)
+        assertTrue(MarkerFeatures.json(listOf(groupFeature)).contains("\"updating\":true"))
+
+        // Nothing on its way for Bird any more: they stand still, drawn again though the scooters are the same.
+        val version = scene.lastSeenVersion
+        scene.reconcileLastSeen(scooters, clusters, revision = 1, statuses = mapOf(ScooterProvider.Bird to bird.copy(updating = false), ScooterProvider.Lime to lime))
+        assertTrue(scene.lastSeenVersion > version)
+        assertTrue(MarkerFeatures.fadedDots(scene).none { it.isUpdating })
+        assertFalse(MarkerFeatures.lastSeen(scene, art).single().isUpdating)
+
+        // Those on their way breathe, one way in 1.4 s and back, all in step: a dot in strength from 0.25 to 0.75 and
+        // in size from 8 to 12 pt, a group in strength from 0.45 to 0.85. With Remove animations they stand at 0.55.
+        assertEquals(1.4, LastSeenBreath.BREATH, 0.0)
+        val start = LastSeenBreath.drawn(at = 2800.0, animates = true)
+        assertEquals(0.25f, start.dotStrength, 1e-4f)
+        assertEquals(0.8f, start.dotScale, 1e-4f)
+        assertEquals(0.45f, start.groupStrength, 1e-4f)
+        val strongest = LastSeenBreath.drawn(at = 2801.4, animates = true)
+        assertEquals(0.75f, strongest.dotStrength, 1e-4f)
+        assertEquals(1.2f, strongest.dotScale, 1e-4f)
+        assertEquals(0.85f, strongest.groupStrength, 1e-4f)
+        val half = LastSeenBreath.drawn(at = 2800.7, animates = true)
+        assertEquals(0.5f, half.dotStrength, 1e-3f)
+        assertEquals(1f, half.dotScale, 1e-3f)
+        assertEquals(0.65f, half.groupStrength, 1e-3f)
+        assertEquals(0.25f, LastSeenBreath.drawn(at = 2802.8, animates = true).dotStrength, 1e-4f)
+        assertEquals(LastSeenBreath.Drawn(0.55f, 1f, 0.55f), LastSeenBreath.drawn(at = 2801.4, animates = false))
+        // At its largest, 12 pt across inside its ring, grown with it.
+        val largest = ScooterMarkerLayers.fadedDotSize(strongest.dotStrength, strongest.dotScale)
+        assertEquals(6f, largest.getValue("circle-radius"), 1e-4f)
+        assertEquals(1.8f, largest.getValue("circle-stroke-width"), 1e-4f)
+        assertEquals(0.75f, largest.getValue("circle-stroke-opacity"), 1e-4f)
+    }
+
+    @Test
+    fun aTapOnAFadedScooterSaysWhoseItIsAndWhenItWasSeenWhereNoOtherMarkerIsMeant() {
         val map = FlatMarkerMap()
         val selections = mutableListOf<String?>()
         val scene = scene(selections)
+        val seenAt = Instant.now().minusSeconds(600)
         val seen = map.at(195.0, 400.0)
-        scene.reconcileLastSeen(listOf(scooter("seen", "lime", at = seen)), emptyList(), revision = 1)
-        scene.reconcile(listOf(scooter("far", "voi", at = map.at(60.0, 700.0))), revision = 1)
+        val scooters = listOf(scooter("seen", "lime", at = seen))
+        val groups = listOf(map.at(300.0, 600.0).let { ScooterCluster("g", it.latitude, it.longitude, count = 4, providers = mapOf("lime" to 4)) })
+        fun faded(updating: Boolean, revision: Int = 1, among: List<Scooter> = scooters) = scene.reconcileLastSeen(
+            among,
+            groups,
+            revision = revision,
+            statuses = mapOf(ScooterProvider.Lime to ScooterLastSeenStatus(seenAt, updating)),
+        )
+        faded(updating = false)
+        val far = scooter("far", "voi", at = map.at(60.0, 700.0))
+        scene.reconcile(listOf(far), revision = 1)
         scene.applySelection("voi:far", map)
+
+        // The tap closes the card, as any on the map, and shows a tip over the dot: whose it is and when it was seen,
+        // with nothing to rent and no walk.
         scene.tap(map.point(seen), map)
         assertEquals(listOf<String?>(null), selections)
-        // TalkBack finds only the scooter that is there.
-        assertEquals(listOf("v:voi:far"), MarkerElements.of(scene, map).map { it.key })
+        val time = ScooterDockStatus.seenTime(seenAt)
+        val tip = scene.callout(map.projection) ?: throw AssertionError("Expected the faded scooter's tip")
+        assertEquals("Lime · last seen $time", tip.title)
+        assertEquals("May have moved since", tip.subtitle)
+        assertEquals(195.0, tip.anchor.x, 0.5)
+        assertEquals(400.0 - 5, tip.anchor.y, 0.5)
+        // New positions on their way: it says so.
+        faded(updating = true)
+        assertEquals("May have moved · new positions on the way", scene.callout(map.projection)?.subtitle)
 
-        // It breathes, one way in 1.6 s and back, in step with every other, and stands still with Remove animations.
-        assertEquals(0.35f, LastSeenBreath.FAINTEST)
-        assertEquals(0.65f, LastSeenBreath.STRONGEST)
-        assertEquals(1.6, LastSeenBreath.BREATH, 0.0)
-        assertEquals(LastSeenBreath.FAINTEST, LastSeenBreath.strength(at = 3200.0, animates = true), 1e-4f)
-        assertEquals(LastSeenBreath.STRONGEST, LastSeenBreath.strength(at = 3201.6, animates = true), 1e-4f)
-        assertEquals(0.5f, LastSeenBreath.strength(at = 3200.8, animates = true), 1e-3f)
-        assertEquals(LastSeenBreath.FAINTEST, LastSeenBreath.strength(at = 3203.2, animates = true), 1e-4f)
-        assertEquals(LastSeenBreath.STILL, LastSeenBreath.strength(at = 3201.6, animates = false))
+        // Another tap on it closes it, and one more opens it again; one elsewhere closes it, and so does the map
+        // starting to move.
+        scene.tap(map.point(seen), map)
+        assertNull(scene.callout(map.projection))
+        scene.tap(map.point(seen), map)
+        assertNotNull(scene.callout(map.projection))
+        scene.tap(ScreenPoint(300.0, 250.0), map)
+        assertNull(scene.callout(map.projection))
+        scene.tap(map.point(seen), map)
+        scene.closeFadedTip()
+        assertNull(scene.callout(map.projection))
+        // A group is not tapped.
+        scene.tap(map.point(groups.single().coordinate), map)
+        assertNull(scene.callout(map.projection))
+
+        // A scooter of the map comes first: its card opens, and no tip shows.
+        val near = scooter("near", "bird", at = map.at(200.0, 400.0))
+        scene.reconcile(listOf(far, near), revision = 2)
+        scene.updateLook(map)
+        scene.tap(map.point(seen), map)
+        assertEquals("bird:near", selections.last())
+        assertNull(scene.callout(map.projection))
+        scene.reconcile(listOf(far), revision = 3)
+        scene.updateLook(map)
+
+        // The tip goes with its dot.
+        scene.tap(map.point(seen), map)
+        assertNotNull(scene.callout(map.projection))
+        faded(updating = true, revision = 2, among = emptyList())
+        assertNull(scene.callout(map.projection))
+        faded(updating = true, revision = 3)
+
+        // TalkBack reads it by its tip's title, then what may have happened since; a double tap shows the tip. The
+        // group it does not read.
+        val elements = MarkerElements.of(scene, map)
+        assertEquals(listOf("f:v:lime:seen", "v:voi:far"), elements.map { it.key })
+        val element = elements.first()
+        assertEquals("Lime · last seen $time", element.description.label)
+        assertEquals("May have moved · new positions on the way", element.description.value)
+        assertEquals(element, MarkerElements.at(map.point(seen), elements, scene, map))
+        MarkerElements.activate(element, scene, map)
+        assertEquals("Lime · last seen $time", scene.callout(map.projection)?.title)
+
+        // Of an app whose last sight is not known, it shows nothing, and is not read.
+        scene.closeFadedTip()
+        scene.reconcileLastSeen(scooters, groups, revision = 4)
+        scene.tap(map.point(seen), map)
+        assertNull(scene.callout(map.projection))
+        assertEquals(listOf("v:voi:far"), MarkerElements.of(scene, map).map { it.key })
     }
 
     @Test
@@ -235,7 +373,14 @@ class ScooterFilteringTest {
         }
         // Above every scooter, bay, cluster and name; under the cities' totals of the overview alone, which it would
         // otherwise hide the digits of (CountsClearOfTheChromeTest).
-        assertEquals(order, ScooterMarkerLayers.specs.map { it.id } + ScooterMarkerLayers.riderLayers + ScooterMarkerLayers.CITIES)
+        // The faded scooters' dots, circles, are added under the scooters' layer (ScooterMarkers.addLayers).
+        val symbols = ScooterMarkerLayers.specs.map { it.id }
+        val markers = symbols.indexOf(ScooterMarkerLayers.MARKERS)
+        assertEquals(
+            order,
+            symbols.take(markers) + ScooterMarkerLayers.fadedDots.map { it.id } + symbols.drop(markers) +
+                ScooterMarkerLayers.riderLayers + ScooterMarkerLayers.CITIES,
+        )
         // The rider's halo, beam and ring under its dot, all above the names (ScooterRider).
         assertEquals(
             listOf(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.RIDER_BEAM, ScooterMarkerLayers.RIDER_RING, ScooterMarkerLayers.RIDER),

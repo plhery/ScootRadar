@@ -22,9 +22,14 @@ sealed interface ScooterDockContent {
     /**
      * The answer for this view is on its way: "Finding scooters…" instead of a count. The chips are empty
      * until something has loaded. While the server collects an app's map again and only faded scooters
-     * stand in view, which can last a minute or two, the notices show as well.
+     * stand in view, which can last a minute or two, the notices show as well, and the status line says
+     * whose they are and since when.
      */
-    data class Finding(val chips: List<ScooterProviderEntry>, val notices: List<ScooterDockNotice> = emptyList()) : ScooterDockContent
+    data class Finding(
+        val chips: List<ScooterProviderEntry>,
+        val notices: List<ScooterDockNotice> = emptyList(),
+        val status: ScooterDockStatus? = null,
+    ) : ScooterDockContent
 
     /** Nothing has loaded and the load failed: "Waiting for scooter data", no count, no chips. */
     data object Waiting : ScooterDockContent
@@ -65,8 +70,11 @@ data class ScooterDockSummary(
      * neither live nor merely empty.
      */
     val everyProviderDown: Boolean = false,
-    /** Set while scooters stand faded where they were last seen, at that time: the server is collecting them again. */
-    val lastSeenAt: Instant? = null,
+    /**
+     * The apps whose scooters are drawn faded in view where they were last seen, in catalogue order: whether new
+     * positions of theirs are on their way, and since when they stand there.
+     */
+    val fadedApps: List<ScooterFadedApp> = emptyList(),
 ) {
     /** "scooters nearby" or "scooters on this map"; the view renders the number. */
     val countLabel: String get() = countContext.label(count)
@@ -84,12 +92,15 @@ data class ScooterDockSummary(
             }
         }
         // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
-        if (lastSeenAt != null) return ScooterDockStatus.Updating(seenAt = lastSeenAt)
+        ScooterDockStatus.Updating.of(fadedApps)?.let { return it }
         val age = maxOf(0.0, at.timeIntervalSince(lastUpdated))
         // Delayed data says so at every zoom, city totals included, once it is late:
         // before that its age or its time says enough.
         if (isDelayed && age >= ScooterDockStatus.delayedAfter) return ScooterDockStatus.Delayed(showing = lastUpdated)
         if (isOverview) return ScooterDockStatus.CityTotals
+        // Faded scooters nothing is collecting stand as they were last seen, perhaps days ago, as Lime's groups a
+        // wide view leaves idle: the line says so rather than "Live" over them.
+        ScooterDockStatus.LastSeen.of(fadedApps)?.let { return it }
         // "Live", or an age, would be of no scooters at all.
         if (everyProviderDown) return null
 
@@ -108,8 +119,34 @@ sealed interface ScooterDockStatus {
 
     data class Delayed(val showing: Instant) : ScooterDockStatus
 
-    /** Scooters stand faded where they were last seen while they are collected again. */
-    data class Updating(val seenAt: Instant) : ScooterDockStatus
+    /**
+     * With a spinner: scooters stand faded where they were last seen while new positions of their apps are
+     * collected. Those apps, in catalogue order, and the oldest time of theirs.
+     */
+    data class Updating(val providers: List<ScooterProvider>, val seenAt: Instant) : ScooterDockStatus {
+        companion object {
+            /** Of the apps among these that are updating; null when none is. */
+            fun of(apps: List<ScooterFadedApp>): Updating? {
+                val updating = apps.filter { it.status.updating }
+                if (updating.isEmpty()) return null
+                return Updating(providers = updating.map { it.provider }, seenAt = updating.minOf { it.status.seenAt })
+            }
+        }
+    }
+
+    /**
+     * With a hollow dot: scooters stand faded where they were last seen, and nothing is collecting them. Their
+     * apps, in catalogue order, and the oldest time of theirs.
+     */
+    data class LastSeen(val providers: List<ScooterProvider>, val seenAt: Instant) : ScooterDockStatus {
+        companion object {
+            /** Of these apps; null without any. */
+            fun of(apps: List<ScooterFadedApp>): LastSeen? {
+                if (apps.isEmpty()) return null
+                return LastSeen(providers = apps.map { it.provider }, seenAt = apps.minOf { it.status.seenAt })
+            }
+        }
+    }
 
     data object Live : ScooterDockStatus
 
@@ -126,13 +163,35 @@ sealed interface ScooterDockStatus {
     /** The small spinner in front of "Updating". */
     val isUpdating: Boolean get() = this is Updating
 
+    /** The hollow dot in front of "faded ones last seen". */
+    val isLastSeen: Boolean get() = this is LastSeen
+
     val text: String
         get() = when (this) {
             is RefreshFailed -> stringFormat(localized("Couldn’t refresh · showing %@"), clockTime(showing))
             is Offline -> stringFormat(localized("You’re offline · showing %@"), clockTime(showing))
             CityTotals -> localized("City totals · refreshed hourly")
             is Delayed -> stringFormat(localized("Data delayed · showing %@"), clockTime(showing))
-            is Updating -> stringFormat(localized("Updating · faded ones seen at %@"), seenTime(seenAt))
+            is Updating -> when (providers.size) {
+                1 -> stringFormat(localized("%1\$@ updating · faded ones seen at %2\$@"), providers[0].displayName, seenTime(seenAt))
+                2 -> stringFormat(
+                    localized("%1\$@ and %2\$@ updating · faded ones seen at %3\$@"),
+                    providers[0].displayName,
+                    providers[1].displayName,
+                    seenTime(seenAt),
+                )
+                else -> stringFormat(localized("Updating · faded ones seen at %@"), seenTime(seenAt))
+            }
+            is LastSeen -> when (providers.size) {
+                1 -> stringFormat(localized("%1\$@: faded ones last seen at %2\$@"), providers[0].displayName, seenTime(seenAt))
+                2 -> stringFormat(
+                    localized("%1\$@ and %2\$@: faded ones last seen at %3\$@"),
+                    providers[0].displayName,
+                    providers[1].displayName,
+                    seenTime(seenAt),
+                )
+                else -> stringFormat(localized("Faded ones last seen at %@"), seenTime(seenAt))
+            }
             Live -> localized("Live")
             is UpdatedMinutesAgo -> stringFormat(localized("Updated %lld min ago"), minutes.toLong())
             is UpdatedAt -> stringFormat(localized("Updated %@"), clockTime(date))
@@ -181,6 +240,9 @@ sealed interface ScooterDockStatus {
             "${stringFormat(localized("Last update %@."), clockTime(lastUpdate))} ${failure.message}"
     }
 }
+
+/** An app whose scooters are drawn faded in view where they were last seen, for the dock's status line. */
+data class ScooterFadedApp(val provider: ScooterProvider, val status: ScooterLastSeenStatus)
 
 /** What the dock shows, in one line: the panel of a large window, folded, shows it under its search bar. "23 m · Bird · 1 min · Live". */
 data class ScooterDockLine(

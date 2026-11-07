@@ -2,6 +2,7 @@ package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.generated.ScooterProvider
 import java.text.BreakIterator
+import java.time.Instant
 
 // ios/ScootRadar/Models/ScooterFiltering.swift.
 
@@ -97,11 +98,48 @@ data class ScooterProviderEntry(
      * selected, with a warning icon in the dock and "Not sharing data right now" in the filter sheet.
      */
     val isDown: Boolean,
+    /**
+     * Its scooters drawn faded in view where they were last seen, counted apart: how many, when, and whether new
+     * positions are on their way (a spinner). Null without any.
+     */
+    val faded: ScooterFadedCount? = null,
 ) {
     val id: String get() = provider.id
 
     /** "Bird: not sharing data right now", the accessibility label of a down chip. */
     val downLabel: String get() = stringFormat(localized("%@: not sharing data right now"), provider.displayName)
+
+    /** The faded ones' number, greyed, where the provider has none counted in view; null otherwise. */
+    val fadedInPlaceOfCount: ScooterFadedCount? get() = if (count == 0) faded else null
+}
+
+/** A provider's scooters drawn faded in view where they were last seen, which the chips and the list count apart. */
+data class ScooterFadedCount(
+    /** In view, past the battery filter, whether or not the provider is shown. */
+    val count: Int,
+    /** When the oldest of them were seen, on this device's clock. */
+    val seenAt: Instant,
+    /** New positions of the provider's are on their way. */
+    val updating: Boolean,
+) {
+    /** "last seen 14:02", or "last seen Fri 14:02" on another day: under the provider's name in the list. */
+    fun seenLine(now: Instant = Instant.now()): String =
+        stringFormat(localized("last seen %@"), ScooterDockStatus.seenTime(seenAt, now = now))
+
+    /** What TalkBack reads after the chip's or row's own label: "44 faded, last seen at 14:02, updating." */
+    fun accessibilityLabel(now: Instant = Instant.now()): String {
+        val time = ScooterDockStatus.seenTime(seenAt, now = now)
+        return if (updating) {
+            stringFormat(localized("%1\$lld faded, last seen at %2\$@, updating."), count.toLong(), time, locale = ScooterLanguage.current.locale)
+        } else {
+            stringFormat(localized("%1\$lld faded, last seen at %2\$@."), count.toLong(), time, locale = ScooterLanguage.current.locale)
+        }
+    }
+
+    companion object {
+        /** "updating…", under the provider's name in the list while new positions are on their way. */
+        val updatingLine: String get() = localized("updating…")
+    }
 }
 
 /** Why the filters leave nothing on the map, for the "hidden by your filters" card. */

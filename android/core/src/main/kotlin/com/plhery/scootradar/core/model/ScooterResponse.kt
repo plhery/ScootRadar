@@ -5,6 +5,7 @@ import com.plhery.scootradar.core.generated.ScooterClusterPayload
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterResponseMetadataPayload
 import com.plhery.scootradar.core.generated.ScooterVehiclePayload
+import java.time.Instant
 
 // ScooterParking, ScooterResponse, ScooterResponseMetadata and the models of the server's answer, from
 // ios/ScootRadar/Models/ScooterModels.swift.
@@ -43,6 +44,12 @@ data class ScooterResponse(
      */
     val lastSeenVehicles: List<Scooter> = emptyList(),
     val lastSeenClusters: List<ScooterCluster> = emptyList(),
+    /**
+     * Each app among them, by provider id: when the oldest of its were seen, and whether new positions of its are
+     * being collected for this view. Null from a server that does not say, which gives `meta.lastSeenAt` and
+     * `meta.refreshing` for them all.
+     */
+    val lastSeenProviders: Map<String, ScooterLastSeenProvider>? = null,
     val providers: Map<String, Int> = emptyMap(),
     val meta: ScooterResponseMetadata? = null,
     val parking: List<ScooterParking> = emptyList(),
@@ -52,6 +59,21 @@ data class ScooterResponse(
      */
     val clockOffset: Double = 0.0,
 )
+
+/** Of an app among the faded scooters, as the server says it (response.lastSeen.providers). */
+data class ScooterLastSeenProvider(
+    /** When the oldest of its were seen, by the server's clock. */
+    val seenAt: String,
+    /** New positions of this app are being collected for this view: `meta.refreshing` is then true. */
+    val updating: Boolean,
+)
+
+/**
+ * Of an app with scooters drawn faded where they were last seen: when its were seen, on this device's clock, and
+ * whether new positions of its are on their way. Those of an app not updating stand as they were last seen until a
+ * later visit has them collected.
+ */
+data class ScooterLastSeenStatus(val seenAt: Instant, val updating: Boolean)
 
 data class ScooterResponseMetadata(
     val partial: Boolean,
@@ -156,6 +178,7 @@ val ScooterAPIResponsePayload.model: ScooterResponse
         clusters = clusters.map { it.model },
         lastSeenVehicles = lastSeen?.vehicles.orEmpty().map { it.model },
         lastSeenClusters = lastSeen?.clusters.orEmpty().map { it.model },
+        lastSeenProviders = lastSeen?.providers?.mapValues { ScooterLastSeenProvider(seenAt = it.value.seenAt, updating = it.value.updating) },
         providers = providers.saturated,
         meta = meta.model,
         parking = parking.orEmpty().map {

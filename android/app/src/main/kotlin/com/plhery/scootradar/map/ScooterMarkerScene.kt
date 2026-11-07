@@ -15,10 +15,12 @@ import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterDistance
+import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDotLook
 import com.plhery.scootradar.core.model.ScooterDotState
 import com.plhery.scootradar.core.model.ScooterGridClustering
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterLastSeenStatus
 import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterMapProjection
@@ -121,13 +123,16 @@ class ScooterMark(scooter: Scooter) {
 
 /**
  * A scooter, or a group of them, where it was last seen while the server collects it again
- * (ScooterLastSeenAnnotation): faded under every other marker, neither tapped nor read.
+ * (ScooterLastSeenAnnotation): faded under every other marker. It breathes while new positions of its provider, or
+ * of one of the group's, are on their way, and stands still otherwise. A tap where no other marker is meant shows a
+ * scooter's tip, whose it is and when it was seen, and TalkBack reads it so; a group is neither tapped nor read.
  */
 class LastSeenMark(
     /** "v:" and the scooter's id, or "c:" and the group's. */
     val id: String,
     coordinate: GeoPoint,
     mark: Kind,
+    isUpdating: Boolean = false,
 ) {
     sealed interface Kind {
         data class Single(val provider: ScooterProvider?) : Kind
@@ -145,11 +150,16 @@ class LastSeenMark(
     var mark: Kind = mark
         private set
 
-    fun update(coordinate: GeoPoint, mark: Kind): Boolean {
+    /** New positions of its provider, or of one of the group's, are on their way: it breathes. */
+    var isUpdating: Boolean = isUpdating
+        private set
+
+    fun update(coordinate: GeoPoint, mark: Kind, isUpdating: Boolean = this.isUpdating): Boolean {
         val moved = this.coordinate.latitude != coordinate.latitude || this.coordinate.longitude != coordinate.longitude
-        if (!moved && this.mark == mark) return false
+        if (!moved && this.mark == mark && this.isUpdating == isUpdating) return false
         if (moved) this.coordinate = coordinate
         this.mark = mark
+        this.isUpdating = isUpdating
         return true
     }
 }
@@ -299,8 +309,11 @@ data class MarkerParent(
     val creditsFrame: ScreenRect? = null,
 )
 
-/** The pin's callout: the searched place's [title], and the top of the pin it points at, in the map's points. */
-data class PinCalloutPlace(val title: String, val anchor: ScreenPoint)
+/**
+ * The pin's callout: the searched place's [title], and the top of the pin it points at, in the map's points. A faded
+ * scooter's tip takes its place, with a [subtitle] under its title.
+ */
+data class PinCalloutPlace(val title: String, val anchor: ScreenPoint, val subtitle: String? = null)
 
 /**
  * The scooters, the bays and the faded markers of the iPhone's map coordinator, without a map of their own: it
@@ -341,6 +354,14 @@ class ScooterMarkerScene(
     private var reconciledParking: List<ScooterParking> = emptyList()
     private val lastSeenByID = HashMap<String, LastSeenMark>()
     private var reconciledLastSeenRevision: Int? = null
+
+    /** When each app's faded scooters were seen, and whether new positions of theirs are on their way. */
+    var lastSeenStatuses: Map<ScooterProvider, ScooterLastSeenStatus> = emptyMap()
+        private set
+
+    /** The faded scooter whose tip shows, a tap or TalkBack having chosen it: one at most. */
+    var fadedTipID: String? = null
+        private set
     private var reconciledScooterRevision: Int? = null
 
     var appliedSelectionID: String? = null
@@ -409,11 +430,57 @@ class ScooterMarkerScene(
     var showsCallout = false
         private set
 
-    /** The pin's callout while it shows: the place's title, pointing at the top of the pin. */
+    /**
+     * The pin's callout while it shows: the place's title, pointing at the top of the pin; else the faded scooter's
+     * tip, pointing at the top of its dot.
+     */
     fun callout(projection: ScooterMapProjection): PinCalloutPlace? {
-        val place = destination?.takeIf { showsCallout } ?: return null
+        if (!showsCallout) return fadedTip(projection)
+        val place = destination ?: return null
         val pin = destinationFrame(projection) ?: return null
         return PinCalloutPlace(place.title, ScreenPoint(pin.midX, pin.minY))
+    }
+
+    /**
+     * The faded scooter's tip while it shows: "Lime · last seen 14:02", and that it may have moved since, or that new
+     * positions are on their way. It has nothing to rent and no walk: the scooter's dot, once it is found again, has.
+     */
+    fun fadedTip(projection: ScooterMapProjection): PinCalloutPlace? {
+        val mark = fadedTipID?.let { lastSeenByID[it] } ?: return null
+        val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider ?: return null
+        val status = lastSeenStatuses[provider] ?: return null
+        val point = projection.point(mark.coordinate)
+        return PinCalloutPlace(fadedTitle(provider, status), ScreenPoint(point.x, point.y - LAST_SEEN_RADIUS), fadedSubtitle(status))
+    }
+
+    /** The tip's line under its title: that the scooter may have moved since, or that new positions are on their way. */
+    fun fadedSubtitle(status: ScooterLastSeenStatus): String =
+        if (status.updating) localized("May have moved · new positions on the way") else localized("May have moved since")
+
+    /** The tip's title, which TalkBack reads of the faded scooter: "Lime · last seen 14:02", or "… Fri 14:02". */
+    fun fadedTitle(provider: ScooterProvider, status: ScooterLastSeenStatus): String =
+        stringFormat(localized("%1\$@ · last seen %2\$@"), provider.displayName, ScooterDockStatus.seenTime(status.seenAt))
+
+    /** The faded scooters TalkBack reads, those of the apps whose last sight is known, by their tips' titles. */
+    fun fadedTitle(mark: LastSeenMark): String? {
+        val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider ?: return null
+        return lastSeenStatuses[provider]?.let { fadedTitle(provider, it) }
+    }
+
+    /**
+     * A faded scooter chosen by TalkBack: its tip shows, and the pin's callout closes, as a tap on it closes the card
+     * unless a walk is under way.
+     */
+    fun showFadedTip(mark: LastSeenMark, map: MarkerMap) {
+        if (fadedTitle(mark) == null) return
+        showsCallout = false
+        if (!parent.isWalking) clearSelection(map)
+        fadedTipID = mark.id
+    }
+
+    /** The faded scooter's tip closes, as the map starts moving: it would no longer point at its dot. */
+    fun closeFadedTip() {
+        fadedTipID = null
     }
 
     /**
@@ -423,6 +490,7 @@ class ScooterMarkerScene(
     fun selectPin(map: MarkerMap) {
         if (destination == null) return
         showsCallout = true
+        fadedTipID = null
         if (!parent.isWalking) clearSelection(map)
     }
 
@@ -555,24 +623,44 @@ class ScooterMarkerScene(
         markersVersion += 1
     }
 
-    /** The faded markers, one for each scooter and group, moved or drawn again in place when they change. */
-    fun reconcileLastSeen(scooters: List<Scooter>, clusters: List<ScooterCluster>, revision: Int) {
-        if (revision == reconciledLastSeenRevision) return
+    /**
+     * The faded markers, one for each scooter and group, moved or drawn again in place when they change, breathing
+     * while [statuses] say new positions of theirs are on their way. The tip of one gone goes with it; that of one
+     * still there says what is known now.
+     */
+    fun reconcileLastSeen(
+        scooters: List<Scooter>,
+        clusters: List<ScooterCluster>,
+        revision: Int,
+        statuses: Map<ScooterProvider, ScooterLastSeenStatus> = emptyMap(),
+    ) {
+        if (revision == reconciledLastSeenRevision && statuses == lastSeenStatuses) return
         reconciledLastSeenRevision = revision
-        val incoming = HashMap<String, Pair<GeoPoint, LastSeenMark.Kind>>(scooters.size + clusters.size)
-        for (scooter in scooters) incoming["v:${scooter.id}"] = scooter.coordinate to LastSeenMark.Kind.Single(scooter.providerInfo)
-        for (cluster in clusters) incoming["c:${cluster.id}"] = cluster.coordinate to LastSeenMark.Kind.group(of = cluster)
+        val previous = lastSeenStatuses
+        lastSeenStatuses = statuses
+        val updating = statuses.filterValues { it.updating }.keys
+        val incoming = HashMap<String, Triple<GeoPoint, LastSeenMark.Kind, Boolean>>(scooters.size + clusters.size)
+        for (scooter in scooters) {
+            val provider = scooter.providerInfo
+            incoming["v:${scooter.id}"] = Triple(scooter.coordinate, LastSeenMark.Kind.Single(provider), provider in updating)
+        }
+        for (cluster in clusters) {
+            val breathes = updating.isNotEmpty() && updating.any { it.rawValue in cluster.providers }
+            incoming["c:${cluster.id}"] = Triple(cluster.coordinate, LastSeenMark.Kind.group(of = cluster), breathes)
+        }
         var changed = lastSeenByID.keys.retainAll(incoming.keys)
         for ((id, entry) in incoming) {
             val mark = lastSeenByID[id]
             if (mark != null) {
-                if (mark.update(entry.first, entry.second)) changed = true
+                if (mark.update(entry.first, entry.second, entry.third)) changed = true
             } else {
-                lastSeenByID[id] = LastSeenMark(id, entry.first, entry.second)
+                lastSeenByID[id] = LastSeenMark(id, entry.first, entry.second, entry.third)
                 changed = true
             }
         }
-        if (changed) lastSeenVersion += 1
+        if (fadedTipID?.let { lastSeenByID[it] }?.let { fadedTitle(it) } == null) fadedTipID = null
+        // TalkBack reads the faded scooters of the apps whose last sight is known: told again as they change.
+        if (changed || statuses.keys != previous.keys) lastSeenVersion += 1
     }
 
     /** The scooter the controller has selected, which takes its ring. */
@@ -964,6 +1052,9 @@ class ScooterMarkerScene(
      */
     fun tap(point: ScreenPoint, map: MarkerMap) {
         if (isExcludedFromMapInteraction(point)) return
+        // Any tap closes a faded scooter's tip; one where nothing else is meant may open another's, below.
+        val tipped = fadedTipID
+        fadedTipID = null
         val scooter = scooterMark(at = point, map = map)
         // A cluster under the touch is meant, unless the touch is on a dot itself: it opens and zooms in, and a dot
         // within reach is not chosen as well. On the dot, the dot is chosen and the cluster stays shut.
@@ -983,9 +1074,33 @@ class ScooterMarkerScene(
         when {
             bay != null -> select(bay)
             mark != null -> select(mark, map)
-            // During a walk the card stays open: the map is for looking around.
-            !parent.isWalking -> clearSelection(map)
+            else -> {
+                // During a walk the card stays open: the map is for looking around.
+                if (!parent.isWalking) clearSelection(map)
+                // A faded scooter, under every other marker, is meant only where none is: its tip shows, or closes
+                // if it was showing.
+                if (!showsCallout) fadedTipID = fadedMark(at = point, map = map)?.id?.takeIf { it != tipped }
+            }
         }
+    }
+
+    /**
+     * The faded scooter a touch means, of an app whose last sight is known: the nearest within reach, as for the
+     * scooters' dots. The groups are not tapped.
+     */
+    fun fadedMark(at: ScreenPoint, map: MarkerMap): LastSeenMark? {
+        if (lastSeenStatuses.isEmpty()) return null
+        val projection = map.projection
+        val bounds = projection.bounds
+        val dots = mutableListOf<ScooterMapLook.TouchableDot>()
+        for (mark in lastSeenByID.values) {
+            val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider ?: continue
+            if (provider !in lastSeenStatuses) continue
+            val centre = projection.point(mark.coordinate)
+            if (!isNear(centre, bounds)) continue
+            dots += ScooterMapLook.TouchableDot(mark.id, centre, TAP_REACH)
+        }
+        return ScooterMapLook.nearestDot(to = at, among = dots)?.let { lastSeenByID[it.id] }
     }
 
     /**
@@ -1002,6 +1117,7 @@ class ScooterMarkerScene(
     /** A scooter chosen, by a tap or by TalkBack: its card opens and its dot takes the ring, and the pin's callout closes. */
     fun select(mark: ScooterMark, map: MarkerMap) {
         showsCallout = false
+        fadedTipID = null
         publishSelection(mark)
         updateLook(map)
     }
@@ -1009,6 +1125,7 @@ class ScooterMarkerScene(
     /** A bay chosen: it opens in the dock, and the pin's callout closes. */
     fun select(bay: ScooterParking) {
         showsCallout = false
+        fadedTipID = null
         publishParkingSelection(bay)
     }
 
@@ -1135,6 +1252,7 @@ class ScooterMarkerScene(
     fun open(cluster: ClusterMark, map: MarkerMap) {
         // Selected in MapKit as any marker is, it deselects the pin.
         showsCallout = false
+        fadedTipID = null
         track("cluster_select", null)
         val members = cluster.members
         if (members != null) {
@@ -1275,6 +1393,9 @@ class ScooterMarkerScene(
 
         /** Half of the 44 pt a target needs. */
         const val TAP_REACH = 22.0
+
+        /** A faded scooter's dot, from its centre to its top, which its tip points at: 10 pt across. */
+        const val LAST_SEEN_RADIUS = ScooterMarkerArt.LAST_SEEN_DIAMETER / 2
 
         /**
          * One tap does one thing (MAP-209): on a cluster it zooms in, unless it is on a dot itself, which it then

@@ -365,8 +365,11 @@ fun ScooterMap(
     val backdrop = LocalGlass.current.backdrop
     BoxWithConstraints(modifier.fillMaxSize()) {
         AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
-        // The pin's callout, once a tap has selected the pin, among the map's markers under its ornaments (MAP-270).
-        markers?.let { shown -> shown.calloutTitle?.let { PinCallout(it, anchor = { shown.calloutAnchor }, dark = dark) } }
+        // The pin's callout, once a tap has selected the pin, among the map's markers under its ornaments (MAP-270), or a
+        // faded scooter's tip.
+        markers?.let { shown ->
+            shown.calloutTitle?.let { PinCallout(it, anchor = { shown.calloutAnchor }, dark = dark, subtitle = shown.calloutSubtitle) }
+        }
         // MapKit's compass and scale, which the app adds itself, at the top of the map's sides (MAP-021, MAP-022).
         val mapBounds = ScreenRect(0.0, 0.0, maxWidth.value.toDouble(), maxHeight.value.toDouble())
         val ornamentsTop by remember(chrome, safeArea, mapBounds) {

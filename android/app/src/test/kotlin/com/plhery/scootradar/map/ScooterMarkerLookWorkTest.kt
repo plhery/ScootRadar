@@ -2,9 +2,11 @@ package com.plhery.scootradar.map
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterMapLook
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -96,8 +98,10 @@ class ScooterMarkerLookWorkTest {
             listOf(ScooterCluster("10:536:359", 47.3750, 8.5390, count = 7, providers = mapOf("bolt" to 7))),
             revision = 1,
         )
-        assertEquals(setOf("dot", "cluster", "pill", "seen", "seen-group"), images().map { it.substringBefore('/') }.toSet())
+        // A faded scooter alone is a circle the layer paints from its feature's colours, not a picture.
+        assertEquals(setOf("dot", "cluster", "pill", "seen-group"), images().map { it.substringBefore('/') }.toSet())
         assertEquals(setOf(false), images().map(::isDark).toSet())
+        assertEquals(listOf(ScooterMapLook.white), MarkerFeatures.fadedDots(scene).map { it.ground })
 
         for (dark in listOf(true, false)) {
             val markers = scene.markersVersion
@@ -106,6 +110,9 @@ class ScooterMarkerLookWorkTest {
             scene.isDark = dark
             scene.updateLook(map)
             assertEquals(images().joinToString(), setOf(dark), images().map(::isDark).toSet())
+            val faded = MarkerFeatures.fadedDots(scene).single()
+            assertEquals(if (dark) ScooterMapLook.darkGround else ScooterMapLook.white, faded.ground)
+            assertEquals(ScooterMapLook.dotColor(ScooterProvider.Lime, isDark = dark), faded.color)
             assertTrue(scene.markersVersion > markers)
             assertTrue(scene.pillsVersion > pills)
             assertTrue(scene.lastSeenVersion > lastSeen)
@@ -143,7 +150,6 @@ class ScooterMarkerLookWorkTest {
         val part = when (parts[0]) {
             "dot" -> parts[5]
             "cluster", "seen-group", "pill" -> parts[3]
-            "seen" -> parts[2]
             else -> error(image)
         }
         return part == "1"

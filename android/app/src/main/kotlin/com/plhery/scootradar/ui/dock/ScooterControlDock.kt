@@ -311,13 +311,24 @@ private fun DockContent(controller: ScooterMapController, content: ScooterDockCo
         is ScooterDockContent.Parking -> ParkingBayCard(controller, content.parking)
         is ScooterDockContent.OutOfDate -> OutOfDateCard(controller, content.failure, content.lastUpdate)
         is ScooterDockContent.Finding -> Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Row(
-                Modifier.fillMaxWidth().heightIn(min = headerHeight),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Spinner(SpinnerSize.Small)
-                Text(localized("Finding scooters…"), style = ScootType.subheadline.weight(FontWeight.SemiBold), color = scootColors.dockText)
+            val finding = @Composable { modifier: Modifier ->
+                Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Spinner(SpinnerSize.Small)
+                    Text(localized("Finding scooters…"), style = ScootType.subheadline.weight(FontWeight.SemiBold), color = scootColors.dockText)
+                }
+            }
+            val status = content.status
+            if (status == null) {
+                finding(Modifier.fillMaxWidth().heightIn(min = headerHeight))
+            } else {
+                // Only faded scooters in view: the line under says whose they are and since when, as the count's does.
+                Column(
+                    Modifier.fillMaxWidth().heightIn(min = headerHeight),
+                    verticalArrangement = Arrangement.spacedBy(1.dp, Alignment.CenterVertically),
+                ) {
+                    finding(Modifier)
+                    DockStatusLabel(status)
+                }
             }
             if (content.notices.isNotEmpty()) NoticeRows(content.notices)
             if (content.chips.isNotEmpty()) ProviderFilters(controller, content.chips, layout)

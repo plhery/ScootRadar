@@ -45,12 +45,15 @@ import com.plhery.scootradar.core.model.ScooterDockLine
 import com.plhery.scootradar.core.model.ScooterDockNotice
 import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDockSummary
+import com.plhery.scootradar.core.model.ScooterFadedCount
 import com.plhery.scootradar.core.model.ScooterFilterSummary
 import com.plhery.scootradar.core.model.ScooterFiltering
 import com.plhery.scootradar.core.model.ScooterFold
 import com.plhery.scootradar.core.model.ScooterKeyCommand
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterLastSeenProvider
+import com.plhery.scootradar.core.model.ScooterLastSeenStatus
 import com.plhery.scootradar.core.model.ScooterLinks
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
@@ -2405,7 +2408,9 @@ class ScooterMapControllerTest {
 
         assertEquals(listOf("lime:found"), model.mapScooters.value.map { it.id })
         assertEquals(setOf("bird:seen-bird", "lime:seen-low", "voi:seen-far"), model.mapLastSeenScooters.value.map { it.id }.toSet())
-        assertEquals(seenAt, model.lastSeenAt.value)
+        // A server that says no app's own time gives its oldest to every app among them, updating while it refreshes.
+        val updating = ScooterLastSeenStatus(seenAt, updating = true)
+        assertEquals(mapOf(Bird to updating, Lime to updating, Voi to updating), model.lastSeenProviders.value)
         assertEquals("The faded ones are counted nowhere", 1, model.visibleCount)
         assertEquals(0, model.count(Bird))
         assertEquals(2, model.visibleLastSeenCount.value)
@@ -2429,7 +2434,7 @@ class ScooterMapControllerTest {
         assertTrue(model.lastSeenVehicles.value.isEmpty())
         assertTrue(model.mapLastSeenScooters.value.isEmpty())
         assertEquals(0, model.visibleLastSeenCount.value)
-        assertNull(model.lastSeenAt.value)
+        assertTrue(model.lastSeenProviders.value.isEmpty())
     }
 
     @Test
@@ -2546,6 +2551,10 @@ class ScooterMapControllerTest {
         assertFalse(finding.chips.isEmpty())
         assertEquals(ScooterDockNotice.Curfew(curfew), finding.notices.firstOrNull())
         assertEquals(localized("Finding scooters…"), model.dockLine(at = clock.now).title)
+        // Whose they are and since when, under it.
+        val updating = ScooterDockStatus.Updating(listOf(Voi), seenAt = clock.now.addingTimeInterval(-900.0))
+        assertEquals(updating, finding.status)
+        assertEquals(updating, model.dockLine(at = clock.now).status)
 
         // The sweep reached it: a count, without the status of an update.
         api.setResponse(
@@ -2560,7 +2569,7 @@ class ScooterMapControllerTest {
         assertTrue(found)
         val summary = summaryOf(model.dock)
         assertEquals(1, summary.count)
-        assertNull(summary.lastSeenAt)
+        assertTrue(summary.fadedApps.isEmpty())
         assertEquals(ScooterDockStatus.Live, summary.status(at = clock.now))
     }
 
@@ -2585,7 +2594,7 @@ class ScooterMapControllerTest {
 
         val summary = summaryOf(model.dock)
         assertEquals(1, summary.count)
-        assertEquals(ScooterDockStatus.Updating(seenAt = seenAt), summary.status(at = clock.now))
+        assertEquals(ScooterDockStatus.Updating(listOf(Bird), seenAt = seenAt), summary.status(at = clock.now))
         assertEquals(true, summary.status(at = clock.now)?.isUpdating)
         // A card says nothing of a delay that the dock reports as an update.
         model.selectScooter("lime:found")
@@ -2611,6 +2620,158 @@ class ScooterMapControllerTest {
         val offline = summaryOf(model.dock)
         assertEquals(ScooterDockStatus.Offline(showing = shownAt), offline.status(at = clock.now))
         assertEquals(ScooterDockStatus.Offline(showing = shownAt), model.cardStatus)
+    }
+
+    @Test
+    fun eachAppsFadedScootersSayWhenTheyWereSeenAndWhetherTheyUpdateButNoneWhilePaused() = runTest {
+        val clock = TestClock()
+        val birdSeen = clock.now.addingTimeInterval(-300.0)
+        val limeSeen = clock.now.addingTimeInterval(-1_200.0)
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(scooter(id = "found", provider = "voi")),
+                lastSeenVehicles = listOf(
+                    scooter(id = "seen-bird", provider = "bird", battery = 80),
+                    scooter(id = "seen-lime", provider = "lime", battery = 20),
+                ),
+                lastSeenProviders = mapOf(
+                    "bird" to ScooterLastSeenProvider(iso(birdSeen), updating = true),
+                    "lime" to ScooterLastSeenProvider(iso(limeSeen), updating = false),
+                ),
+                meta = ScooterResponseMetadata(
+                    partial = false,
+                    failedSources = emptyList(),
+                    generatedAt = iso(clock.now),
+                    refreshAfterSeconds = 3,
+                    refreshing = true,
+                    expiresAt = iso(clock.now.addingTimeInterval(7_200.0)),
+                ),
+            ),
+        )
+        val model = makeController(api, clock = clock)
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = waitUntil { api.calls >= 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        assertEquals(
+            mapOf(Bird to ScooterLastSeenStatus(birdSeen, updating = true), Lime to ScooterLastSeenStatus(limeSeen, updating = false)),
+            model.lastSeenProviders.value,
+        )
+
+        // The dock names the app on its way, at its own time; the chips count each app's faded ones apart, greyed in
+        // place of a count of none.
+        val summary = summaryOf(model.dock)
+        assertEquals(listOf(Bird, Lime), summary.fadedApps.map { it.provider })
+        assertEquals(ScooterDockStatus.Updating(listOf(Bird), seenAt = birdSeen), summary.status(at = clock.now))
+        fun chip(provider: ScooterProvider) = model.dockChips.first { it.provider == provider }
+        assertEquals(ScooterFadedCount(1, birdSeen, updating = true), chip(Bird).faded)
+        assertEquals(chip(Bird).faded, chip(Bird).fadedInPlaceOfCount)
+        assertEquals(ScooterFadedCount(1, limeSeen, updating = false), chip(Lime).faded)
+        assertNull(chip(Voi).faded)
+        assertEquals(1, chip(Voi).count)
+
+        // Past the battery filter: the Lime of 20% goes from the chip and from the line.
+        model.setMinimumBattery(30.0)
+        assertNull(chip(Lime).faded)
+        assertEquals(listOf(Bird), summaryOf(model.dock).fadedApps.map { it.provider })
+        model.resetFilters()
+
+        // Before the provider filter: a hidden app keeps its count on its chip, but the line names only those shown.
+        model.showProviders(setOf(Voi, Lime))
+        assertEquals(ScooterFadedCount(1, birdSeen, updating = true), chip(Bird).faded)
+        assertEquals(ScooterDockStatus.LastSeen(listOf(Lime), seenAt = limeSeen), summaryOf(model.dock).status(at = clock.now))
+        model.resetFilters()
+
+        // Paused for want of a touch, the map asks for nothing: none is on its way.
+        clock.advance(31 * 60.0)
+        model.autoRefreshIfNeeded()
+        settle()
+        assertTrue(model.isPausedForIdle.value)
+        assertTrue(model.lastSeenStatuses.values.none { it.updating })
+        assertEquals(ScooterDockStatus.LastSeen(listOf(Bird, Lime), seenAt = limeSeen), summaryOf(model.dock).status(at = clock.now))
+        assertEquals(false, chip(Bird).faded?.updating)
+    }
+
+    @Test
+    fun fadedStatusesComeFromEachAppOnThisDevicesClockOrElseFromTheAnswersOwnTime() {
+        val receivedAt = date("2026-10-25T10:02:30Z")
+        val said = ScooterResponse(
+            vehicles = emptyList(),
+            lastSeenVehicles = listOf(scooter(id = "seen", provider = "bird")),
+            lastSeenProviders = mapOf(
+                "bird" to ScooterLastSeenProvider("2026-10-25T09:40:00.000Z", updating = true),
+                // Later than the answer came, on this clock: when it came.
+                "lime" to ScooterLastSeenProvider("2026-10-25T10:05:00.000Z", updating = false),
+                // An app this build does not know, and a time it cannot read.
+                "nobody" to ScooterLastSeenProvider("2026-10-25T09:40:00.000Z", updating = true),
+                "voi" to ScooterLastSeenProvider("yesterday", updating = true),
+            ),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), refreshing = true, lastSeenAt = "2026-10-25T09:00:00.000Z"),
+            // This clock a minute ahead of the server's.
+            clockOffset = 60.0,
+        )
+        assertEquals(
+            mapOf(
+                Bird to ScooterLastSeenStatus(date("2026-10-25T09:41:00Z"), updating = true),
+                Lime to ScooterLastSeenStatus(receivedAt, updating = false),
+            ),
+            ScooterMapController.lastSeenStatuses(said, receivedAt),
+        )
+
+        // A server that does not say: its oldest time for every app among the faded scooters and groups, all updating
+        // while it refreshes.
+        val unsaid = ScooterResponse(
+            vehicles = emptyList(),
+            lastSeenVehicles = listOf(scooter(id = "seen", provider = "bird")),
+            lastSeenClusters = listOf(ScooterCluster("seen:13:1:1", 47.37, 8.54, count = 3, providers = mapOf("lime" to 2, "voi" to 1))),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), refreshing = true, lastSeenAt = "2026-10-25T09:00:00.000Z"),
+        )
+        val oldest = date("2026-10-25T09:00:00Z")
+        assertEquals(
+            listOf(Bird, Lime, Voi).associateWith { ScooterLastSeenStatus(oldest, updating = true) },
+            ScooterMapController.lastSeenStatuses(unsaid, receivedAt),
+        )
+        val resting = unsaid.copy(meta = unsaid.meta?.copy(refreshing = false))
+        assertTrue(ScooterMapController.lastSeenStatuses(resting, receivedAt).values.none { it.updating })
+        // Without a time, none.
+        assertTrue(ScooterMapController.lastSeenStatuses(unsaid.copy(meta = unsaid.meta?.copy(lastSeenAt = null)), receivedAt).isEmpty())
+    }
+
+    @Test
+    fun fadedScootersOnTheMapKeepTheDockOffTheCardsOfAnEmptyMap() = runTest {
+        val clock = TestClock()
+        val seenAt = clock.now.addingTimeInterval(-600.0)
+        val lungern = lungernRegion.center
+        fun answer(vehicles: List<Scooter>, seen: Scooter) = ScooterResponse(
+            vehicles = vehicles,
+            lastSeenVehicles = listOf(seen),
+            lastSeenProviders = mapOf("lime" to ScooterLastSeenProvider(iso(seenAt), updating = false)),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), generatedAt = iso(clock.now)),
+        )
+
+        // Where no app operates, a faded Lime: not "outside coverage", nor "no scooters here".
+        val api = StubScooterAPI(answer(emptyList(), scooter(id = "seen", provider = "lime", latitude = lungern.latitude, longitude = lungern.longitude)))
+        val model = makeController(api, clock = clock)
+        model.updateViewport(lungernRegion, zoom = 14)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        assertTrue(model.availableProviders.isEmpty())
+        val outside = summaryOf(model.dock)
+        assertEquals(0, outside.count)
+        assertNull(outside.hint)
+        assertEquals(ScooterDockStatus.LastSeen(listOf(Lime), seenAt = seenAt), outside.status(at = clock.now))
+
+        // With the filters leaving only faded ones: not "hidden by your filters", until they hide those too.
+        api.setResponse(answer(listOf(scooter(id = "found", provider = "bird")), scooter(id = "seen", provider = "lime")))
+        model.updateViewport(zurichRegion, zoom = 16)
+        val moved = waitUntil { api.calls == 2 && model.mapScooters.value.isNotEmpty() && !model.isLoading.value }
+        assertTrue(moved)
+        model.showProviders(setOf(Lime))
+        val filtered = summaryOf(model.dock)
+        assertEquals(0, filtered.count)
+        assertNull(filtered.hint)
+        assertEquals(ScooterDockStatus.LastSeen(listOf(Lime), seenAt = seenAt), filtered.status(at = clock.now))
+        model.showProviders(setOf(Voi))
+        assertTrue("${model.dock}", model.dock is ScooterDockContent.FiltersHideEverything)
     }
 
     // Location, search, filters and settings.

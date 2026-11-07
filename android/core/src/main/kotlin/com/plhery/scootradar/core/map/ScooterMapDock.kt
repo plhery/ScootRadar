@@ -17,9 +17,12 @@ import com.plhery.scootradar.core.model.ScooterDockLine
 import com.plhery.scootradar.core.model.ScooterDockNotice
 import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDockSummary
+import com.plhery.scootradar.core.model.ScooterFadedApp
+import com.plhery.scootradar.core.model.ScooterFadedCount
 import com.plhery.scootradar.core.model.ScooterFilterSummary
 import com.plhery.scootradar.core.model.ScooterFiltering
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterLastSeenStatus
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterParking
@@ -188,21 +191,54 @@ fun ScooterMapController.count(provider: ScooterProvider): Int = visibleProvider
 
 val ScooterMapController.allProviderCount: Int get() = visibleProviderCounts.value.values.sum()
 
+/**
+ * Of each app among the faded scooters: when its were seen, and whether new positions are on their way, which none
+ * is while the map is paused, as it asks for nothing.
+ */
+val ScooterMapController.lastSeenStatuses: Map<ScooterProvider, ScooterLastSeenStatus>
+    get() {
+        val statuses = lastSeenProviders.value
+        if (!isPausedForIdle.value) return statuses
+        return statuses.mapValues { (_, status) -> status.copy(updating = false) }
+    }
+
+/**
+ * The apps whose scooters are drawn faded on the map now, in catalogue order: in view, past the filters, and with
+ * a status from the server. Those the dock's status line names.
+ */
+val ScooterMapController.fadedApps: List<ScooterFadedApp>
+    get() {
+        if (visibleLastSeenCount.value == 0) return emptyList()
+        val statuses = lastSeenStatuses
+        val counts = visibleLastSeenProviderCounts.value
+        return ScooterProvider.entries.mapNotNull { provider ->
+            val status = statuses[provider] ?: return@mapNotNull null
+            if ((counts[provider] ?: 0) == 0 || provider !in enabledProviders.value) return@mapNotNull null
+            ScooterFadedApp(provider = provider, status = status)
+        }
+    }
+
 /** The providers in the filter sheet, in catalogue order. */
 val ScooterMapController.filterProviders: List<ScooterProviderEntry>
     get() {
         val down = providerHealth.downProviders.toSet()
         val isFilteringProviders = !allProvidersSelected
+        val statuses = lastSeenStatuses
+        val fadedCounts = visibleLastSeenProviderCounts.value
         return availableProviders.map { provider ->
             val count = count(provider)
             val isDown = provider in down
             val isEnabled = provider in enabledProviders.value
+            val fadedCount = fadedCounts[provider] ?: 0
             ScooterProviderEntry(
                 provider = provider,
                 count = count,
                 isEnabled = isEnabled,
                 isSelected = isFilteringProviders && isEnabled && !isDown,
                 isDown = isDown,
+                faded = statuses[provider]?.takeIf { fadedCount > 0 }?.let {
+                    ScooterFadedCount(count = fadedCount, seenAt = it.seenAt, updating = it.updating)
+                },
             )
         }
     }
@@ -241,21 +277,27 @@ val ScooterMapController.dock: ScooterDockContent
 
         // A failure already explains an empty map.
         val isEmpty = visibleCount == 0 && loadIssue == null
+        // Faded scooters on the map: it is not empty, and the status line says whose they are.
+        val hasFaded = visibleLastSeenCount.value > 0
+        val fadedApps = fadedApps
         if (isEmpty) {
             // No provider operates here, whatever the pending request answers.
-            if (availableProviders.isEmpty()) return ScooterDockContent.OutsideCoverage(closestCities)
+            if (availableProviders.isEmpty() && !hasFaded) return ScooterDockContent.OutsideCoverage(closestCities)
             // The data on the map is for another area: no count to show yet.
             if (!viewportIsLoaded) return ScooterDockContent.Finding(chips = dockChips)
-            hiddenByFilters?.let { return ScooterDockContent.FiltersHideEverything(it) }
+            if (!hasFaded) hiddenByFilters?.let { return ScooterDockContent.FiltersHideEverything(it) }
             // None counted yet, only faded ones: the server's sweep is finding them, which may take a minute or two.
-            if (isFilling) return ScooterDockContent.Finding(chips = dockChips, notices = dockNotices)
+            // The line under says whose and since when.
+            if (isFilling) {
+                return ScooterDockContent.Finding(chips = dockChips, notices = dockNotices, status = ScooterDockStatus.Updating.of(fadedApps))
+            }
         }
 
         val isOverview = responseMetadata.value?.overview == true
         val down = providerHealth.downProviders
         val everyProviderDown = down.isNotEmpty() && down.toSet().containsAll(availableProviders)
         val hint = if (isEmpty) {
-            if (everyProviderDown) null else ScooterDockHint.EmptyArea
+            if (everyProviderDown || hasFaded) null else ScooterDockHint.EmptyArea
         } else {
             if (isOverview && visibleCount > 0) ScooterDockHint.TapCity else null
         }
@@ -276,14 +318,14 @@ val ScooterMapController.dock: ScooterDockContent
                 chips = dockChips,
                 lead = if (isOverview) null else dockLead,
                 everyProviderDown = everyProviderDown,
-                lastSeenAt = if (isFilling) lastSeenAt.value else null,
+                fadedApps = fadedApps,
             ),
         )
     }
 
-/** Scooters stand faded where they were last seen while the server collects them again. */
+/** Scooters stand faded where they were last seen while the server collects new positions of their apps. */
 internal val ScooterMapController.isFilling: Boolean
-    get() = responseMetadata.value?.refreshing == true && visibleLastSeenCount.value > 0 && loadIssue.value == null
+    get() = loadIssue.value == null && fadedApps.any { it.status.updating }
 
 private val ScooterMapController.refreshFailure: ScooterLoadFailure?
     get() = (loadIssue.value as? ScooterLoadIssue.RefreshFailed)?.failure
@@ -304,7 +346,7 @@ val ScooterMapController.cardStatus: ScooterDockStatus?
             }
         }
         val lastUpdated = lastUpdated.value
-        if (responseMetadata.value?.stale != true || lastUpdated == null || (isFilling && lastSeenAt.value != null)) return null
+        if (responseMetadata.value?.stale != true || lastUpdated == null || isFilling) return null
         if (clock().timeIntervalSince(lastUpdated) < ScooterDockStatus.delayedAfter) return null
         return ScooterDockStatus.Delayed(showing = lastUpdated)
     }
@@ -368,7 +410,11 @@ fun ScooterMapController.dockLine(at: Instant): ScooterDockLine = when (val dock
         title = localized("These positions are out of date"),
         isWarning = true,
     )
-    is ScooterDockContent.Finding -> ScooterDockLine(mark = ScooterDockLine.Mark.Progress, title = localized("Finding scooters…"))
+    is ScooterDockContent.Finding -> ScooterDockLine(
+        mark = ScooterDockLine.Mark.Progress,
+        title = localized("Finding scooters…"),
+        status = dock.status,
+    )
     ScooterDockContent.Waiting -> ScooterDockLine(
         mark = ScooterDockLine.Mark.Symbol("hourglass"),
         title = localized("Waiting for scooter data"),

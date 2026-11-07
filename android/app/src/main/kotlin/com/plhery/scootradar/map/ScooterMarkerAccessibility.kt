@@ -64,14 +64,28 @@ sealed interface MarkerElement {
         override val key: String get() = cluster.featureID
         override val description: MarkerDescription get() = MarkerDescriptions.of(cluster.cluster)
     }
+
+    /**
+     * A faded scooter, in a square of 44 pt around its dot, read as its tip's title, "Lime · last seen 14:02", then
+     * that it may have moved since: a double tap shows the tip, as a tap does.
+     */
+    class Faded(val mark: LastSeenMark, override val frame: ScreenRect, private val scene: ScooterMarkerScene) : MarkerElement {
+        override val key: String get() = "f:${mark.id}"
+        override val description: MarkerDescription
+            get() {
+                val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider
+                val status = provider?.let { scene.lastSeenStatuses[it] } ?: return MarkerDescription("", value = null, hint = null)
+                return MarkerDescription(scene.fadedTitle(provider, status), value = scene.fadedSubtitle(status), hint = null)
+            }
+    }
 }
 
 object MarkerElements {
     /**
      * The markers on the map that TalkBack reads, top to bottom, then left to right (MAP-228, MAP-306). The
-     * names speak through their dots, and the faded markers of scooters last seen are not read (MAP-223), nor a
-     * count hidden under the chrome or off the scooter held in the overview, which a tap does not open either
-     * (ScooterMarkerScene.clearCounts).
+     * names speak through their dots. Of the faded markers of scooters last seen, the scooters of an app whose last
+     * sight is known are read, as a tap shows their tips; the groups are not (MAP-223), nor a count hidden under the
+     * chrome or off the scooter held in the overview, which a tap does not open either (ScooterMarkerScene.clearCounts).
      */
     fun of(scene: ScooterMarkerScene, map: MarkerMap): List<MarkerElement> {
         if (!map.isShown) return emptyList()
@@ -83,6 +97,10 @@ object MarkerElements {
             elements += MarkerElement.Dot(mark, square(centre, ScooterMarkerScene.MARKER_SIZE))
         }
         for (bay in scene.parking) elements += MarkerElement.Bay(bay, scene.bayFrame(bay, projection))
+        for (mark in scene.lastSeen) {
+            if (scene.fadedTitle(mark) == null) continue
+            elements += MarkerElement.Faded(mark, square(projection.point(mark.coordinate), ScooterMarkerScene.MARKER_SIZE), scene)
+        }
         for (cluster in scene.clusters()) {
             if (cluster.isHidden) continue
             elements += MarkerElement.Cluster(cluster, square(projection.point(cluster.cluster.coordinate), ScooterMarkerScene.CLUSTER_SIZE))
@@ -116,7 +134,7 @@ object MarkerElements {
                 cluster.featureID
             bay != null -> "p:${bay.id}"
             scooter != null -> scooter.first.featureID
-            else -> null
+            else -> scene.fadedMark(at = point, map = map)?.let { "f:${it.id}" }
         }
         return among.firstOrNull { it.key == key }
             ?: among.filter { it.frame.contains(point) }.minByOrNull { hypot(it.frame.midX - point.x, it.frame.midY - point.y) }
@@ -130,6 +148,7 @@ object MarkerElements {
             is MarkerElement.Cluster -> scene.open(element.cluster, map)
             // Selected, its callout shows the title (MAP-270).
             is MarkerElement.Pin -> scene.selectPin(map)
+            is MarkerElement.Faded -> scene.showFadedTip(element.mark, map)
             is MarkerElement.Rider -> Unit
         }
     }
@@ -138,7 +157,7 @@ object MarkerElements {
 }
 
 /**
- * TalkBack's view of the markers: one virtual view for each scooter, bay, cluster and city total on the map, with
+ * TalkBack's view of the markers: one virtual view for each scooter, bay, cluster, city total and faded scooter on the map, with
  * what VoiceOver reads of it. The markers call [refresh] when the map comes to rest, when they change and when a count
  * is hidden or shown again (ScooterMarkerScene.clearCounts), and the views are listed again where they are then; what
  * a view reads, and whether it is selected, is read as TalkBack asks for it.
@@ -286,7 +305,7 @@ class ScooterMarkerAccessibility(
         // The pin and the rider have their labels only, as MapKit gives VoiceOver. The pin is selected by a double
         // tap all the same, which TalkBack sends only to a node that offers a click.
         if (element is MarkerElement.Rider) return
-        if (element is MarkerElement.Pin) {
+        if (element is MarkerElement.Pin || element is MarkerElement.Faded) {
             node.isClickable = true
             node.addAction(AccessibilityActionCompat.ACTION_CLICK)
             return
