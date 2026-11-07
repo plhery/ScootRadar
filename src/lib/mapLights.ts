@@ -2,6 +2,19 @@
 // ones are named, how scooters parked on one spot are told apart, and where a
 // name goes so that it hides as little as it can.
 
+import { boundsContainPoint, expandBounds } from './geo';
+import type { MapBounds } from './types';
+
+/**
+ * The place the lights measure from: the origin while it is on the map or within half a map of it,
+ * as the apps' mapOrigin. From a place far out of sight every scooter shown is far: all would be
+ * dimmed alike and the nearest of each app named with a walk of hours, as Augsburg seen from
+ * Zürich on 7 November 2026, its scooters dimmed as the faded ones last seen and named "2,607 min".
+ */
+export function lightsOrigin(origin: [number, number] | null, viewport: MapBounds | null): [number, number] | null {
+  return origin && viewport && boundsContainPoint(expandBounds(viewport, 0.5), origin[0], origin[1]) ? origin : null;
+}
+
 /** From this zoom on a scooter is large enough to carry the initials of its app. */
 export const CLOSE_UP_ZOOM = 18;
 

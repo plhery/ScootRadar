@@ -6,10 +6,34 @@ import {
   lightAt,
   lightDiameter,
   lightStrength,
+  lightsOrigin,
   nearestOfEachProvider,
   placeNames,
   type DrawnLight,
 } from '@/lib/mapLights';
+
+describe('lightsOrigin', () => {
+  // Augsburg's middle, about a tenth of a degree each way.
+  const augsburg = { south: 48.32, west: 10.85, north: 48.42, east: 10.95 };
+
+  it('measures from a place on the map or within half a map of it', () => {
+    expect(lightsOrigin([48.37, 10.9], augsburg)).toEqual([48.37, 10.9]);
+    expect(lightsOrigin([48.46, 10.99], augsburg)).toEqual([48.46, 10.99]);
+  });
+
+  it('measures from nothing when the place is far out of sight, or before the map has a view', () => {
+    // Zürich, about 200 km from Augsburg.
+    expect(lightsOrigin([47.3769, 8.5417], augsburg)).toBeNull();
+    expect(lightsOrigin([48.48, 10.9], augsburg)).toBeNull();
+    expect(lightsOrigin([48.37, 10.9], null)).toBeNull();
+    expect(lightsOrigin(null, augsburg)).toBeNull();
+  });
+
+  it('keeps the same point, so the map does not draw its lights again for a pan', () => {
+    const origin: [number, number] = [48.37, 10.9];
+    expect(lightsOrigin(origin, augsburg)).toBe(origin);
+  });
+});
 
 describe('lightDiameter and lightStrength', () => {
   it('draws a scooter larger and brighter the shorter the walk to it', () => {

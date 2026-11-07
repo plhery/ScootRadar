@@ -59,6 +59,7 @@ import {
   viewportContainsPoint,
   type MapViewport,
 } from '@/lib/geo';
+import { lightsOrigin } from '@/lib/mapLights';
 import { useLiveLocation } from '@/lib/useLiveLocation';
 import { useWalkRoute } from '@/lib/useWalkRoute';
 import { walkEstimate, type WalkEstimate, type WalkOrigin } from '@/lib/walking';
@@ -1059,7 +1060,7 @@ export default function Home() {
         lastSeenClusters={lastSeenData.visibleClusters}
         origin={initialCenter}
         initialZoom={initialZoom}
-        distanceOrigin={walkOrigin?.point ?? null}
+        distanceOrigin={lightsOrigin(walkOrigin?.point ?? null, viewportBounds)}
         userLocation={userLocation}
         headingEnabled={headingPermission === 'granted' && locationError !== 'denied'}
         focusLocation={focusRequest.location}
