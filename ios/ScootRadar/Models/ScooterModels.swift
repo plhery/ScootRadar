@@ -757,6 +757,9 @@ struct ScooterResponse: Sendable {
     /// Drawn faded and counted nowhere.
     let lastSeenVehicles: [Scooter]
     let lastSeenClusters: [ScooterCluster]
+    /// Of each app among them (lastSeen.providers): when its were seen, on the server's clock, and
+    /// whether new positions of its are on their way for this request. Nil from a server that does not say.
+    let lastSeenProviders: [String: ScooterLastSeenStatus]?
     let providers: [String: Int]
     let meta: ScooterResponseMetadata?
     let parking: [ScooterParking]
@@ -769,6 +772,7 @@ struct ScooterResponse: Sendable {
         clusters: [ScooterCluster] = [],
         lastSeenVehicles: [Scooter] = [],
         lastSeenClusters: [ScooterCluster] = [],
+        lastSeenProviders: [String: ScooterLastSeenStatus]? = nil,
         providers: [String: Int] = [:],
         meta: ScooterResponseMetadata? = nil,
         parking: [ScooterParking] = [],
@@ -778,10 +782,113 @@ struct ScooterResponse: Sendable {
         self.clusters = clusters
         self.lastSeenVehicles = lastSeenVehicles
         self.lastSeenClusters = lastSeenClusters
+        self.lastSeenProviders = lastSeenProviders
         self.providers = providers
         self.meta = meta
         self.parking = parking
         self.clockOffset = clockOffset
+    }
+
+    /// Each app's among the faded scooters, on this device's clock and never later than `receivedAt`.
+    /// A server that does not say gives the oldest time of them all (meta.lastSeenAt) to each app among
+    /// them, the faded groups' included, updating while it is refreshing.
+    func lastSeenStatuses(receivedAt: Date = .distantFuture) -> [ScooterProvider: ScooterLastSeenStatus] {
+        func onThisClock(_ date: Date) -> Date { min(date.addingTimeInterval(clockOffset), receivedAt) }
+        var statuses: [ScooterProvider: ScooterLastSeenStatus] = [:]
+        if let lastSeenProviders {
+            for (id, status) in lastSeenProviders {
+                guard let provider = ScooterProvider(rawValue: id) else { continue }
+                statuses[provider] = ScooterLastSeenStatus(seenAt: onThisClock(status.seenAt), updating: status.updating)
+            }
+            return statuses
+        }
+        guard let seenAt = meta?.lastSeenAt.flatMap(ScooterServerTime.date) else { return [:] }
+        let ids = Set(lastSeenVehicles.map(\.provider) + lastSeenClusters.flatMap(\.providers.keys))
+        for provider in ids.compactMap(ScooterProvider.init(rawValue:)) {
+            statuses[provider] = ScooterLastSeenStatus(seenAt: onThisClock(seenAt), updating: meta?.refreshing == true)
+        }
+        return statuses
+    }
+}
+
+/// Of an app with scooters drawn faded where they were last seen: when they were seen, and whether new
+/// positions of its are on their way, which only then breathe.
+struct ScooterLastSeenStatus: Equatable, Sendable {
+    let seenAt: Date
+    let updating: Bool
+
+    /// The same with nothing on its way: a paused map asks for nothing.
+    var idle: ScooterLastSeenStatus { ScooterLastSeenStatus(seenAt: seenAt, updating: false) }
+}
+
+/// An app whose scooters are drawn faded in view, with what is known of them.
+struct ScooterFadedApp: Equatable, Sendable {
+    let provider: ScooterProvider
+    let status: ScooterLastSeenStatus
+}
+
+/// The apps a status line says faded scooters are of, and when the oldest of theirs were seen.
+struct ScooterLastSeenLine: Equatable, Sendable {
+    /// In catalogue order. Only one or two are named.
+    let providers: [ScooterProvider]
+    let seenAt: Date
+
+    init?(_ apps: [ScooterFadedApp]) {
+        guard let oldest = apps.map(\.status.seenAt).min() else { return nil }
+        providers = apps.map(\.provider)
+        seenAt = oldest
+    }
+
+    /// "Ryde updating · faded ones seen at 02:46", or of apps nothing is collecting, "Ryde: faded ones
+    /// last seen at 02:46"; with three apps or more, none named. The day of the week when it was not today.
+    func text(updating: Bool) -> String {
+        let time = ScooterDockStatus.seenTime(seenAt)
+        let names = providers.map(\.name)
+        switch (names.count, updating) {
+        case (1, true):
+            return String(format: String(localized: "%1$@ updating · faded ones seen at %2$@"), names[0], time)
+        case (2, true):
+            return String(
+                format: String(localized: "%1$@ and %2$@ updating · faded ones seen at %3$@"), names[0], names[1], time
+            )
+        case (_, true):
+            return String(format: String(localized: "Updating · faded ones seen at %@"), time)
+        case (1, false):
+            return String(format: String(localized: "%1$@: faded ones last seen at %2$@"), names[0], time)
+        case (2, false):
+            return String(
+                format: String(localized: "%1$@ and %2$@: faded ones last seen at %3$@"), names[0], names[1], time
+            )
+        case (_, false):
+            return String(format: String(localized: "Faded ones last seen at %@"), time)
+        }
+    }
+}
+
+/// What a faded scooter says when it is tapped: whose it is and when it was seen, then that it may have
+/// moved since, and that new positions are on their way while they are. VoiceOver reads it at its dot.
+struct ScooterLastSeenTip: Equatable, Sendable {
+    let title: String
+    let body: String
+
+    init(provider: ScooterProvider, status: ScooterLastSeenStatus, now: Date = .now) {
+        title = String(
+            format: String(localized: "%1$@ · last seen %2$@"),
+            provider.name,
+            ScooterDockStatus.seenTime(status.seenAt, now: now)
+        )
+        body = status.updating
+            ? String(localized: "May have moved · new positions on the way")
+            : String(localized: "May have moved since")
+    }
+}
+
+/// Times the server writes: ISO 8601, with or without fractions of a second.
+enum ScooterServerTime {
+    static func date(_ value: String) -> Date? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.date(from: value) ?? ISO8601DateFormatter().date(from: value)
     }
 }
 
@@ -930,6 +1037,9 @@ extension ScooterAPIResponsePayload {
             clusters: clusters.map(\.model),
             lastSeenVehicles: (lastSeen?.vehicles ?? []).map(\.model),
             lastSeenClusters: (lastSeen?.clusters ?? []).map(\.model),
+            lastSeenProviders: lastSeen?.providers?.compactMapValues { payload in
+                ScooterServerTime.date(payload.seenAt).map { ScooterLastSeenStatus(seenAt: $0, updating: payload.updating) }
+            },
             providers: providers,
             meta: meta.model,
             parking: (parking ?? []).map { ScooterParking(id: $0.id, provider: $0.provider,
@@ -1698,8 +1808,9 @@ enum ScooterDockContent: Equatable, Sendable {
     /// The answer for this view is on its way: "Finding scooters…" instead of
     /// a count. The chips are empty until something has loaded. While the
     /// server collects an app's map again and only faded scooters stand in
-    /// view, which can last a minute or two, the notices show as well.
-    case finding(chips: [ScooterProviderEntry], notices: [ScooterDockNotice] = [])
+    /// view, which can last a minute or two, the notices show as well, and
+    /// the status line under it says whose they are and when they were seen.
+    case finding(chips: [ScooterProviderEntry], notices: [ScooterDockNotice] = [], status: ScooterDockStatus? = nil)
     /// Nothing has loaded and the load failed: "Waiting for scooter data", no count, no chips.
     case waiting
     /// No provider operates here: the three closest covered cities.
@@ -1732,9 +1843,9 @@ struct ScooterDockSummary: Equatable, Sendable {
     /// Every provider in the viewport is down: the notice that says so explains the
     /// empty map, which is then neither live nor merely empty.
     var everyProviderDown = false
-    /// Set while scooters stand faded where they were last seen, at that time:
-    /// the server is collecting them again.
-    var lastSeenAt: Date? = nil
+    /// The apps whose scooters are drawn faded in view where they were last seen, in catalogue order:
+    /// the status line says whose they are, and whether new positions are on their way.
+    var fadedApps: [ScooterFadedApp] = []
 
     /// "scooters nearby" or "scooters on this map"; the view renders the number.
     var countLabel: String { countContext.label(for: count) }
@@ -1749,13 +1860,16 @@ struct ScooterDockSummary: Equatable, Sendable {
                 ? .offline(showing: lastUpdated)
                 : .refreshFailed(showing: lastUpdated)
         }
-        // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
-        if let lastSeenAt { return .updating(seenAt: lastSeenAt) }
+        // Rather than delayed: the faded scooters are the old positions, and new ones are on their way.
+        if let updating = ScooterDockStatus.updating(fadedApps) { return updating }
         let age = max(0, now.timeIntervalSince(lastUpdated))
         // Delayed data says so at every zoom, city totals included, once it is late:
         // before that its age or its time says enough.
         if isDelayed, age >= ScooterDockStatus.delayedAfter { return .delayed(showing: lastUpdated) }
         if isOverview { return .cityTotals }
+        // Faded scooters nothing is collecting stand as they were last seen, perhaps days ago, as Lime's
+        // groups a wide view leaves idle: the line says so rather than "Live" over them.
+        if let line = ScooterLastSeenLine(fadedApps) { return .lastSeen(line) }
         // "Live", or an age, would be of no scooters at all.
         if everyProviderDown { return nil }
 
@@ -1817,8 +1931,11 @@ enum ScooterDockStatus: Equatable, Sendable {
     case offline(showing: Date)
     case cityTotals
     case delayed(showing: Date)
-    /// Scooters stand faded where they were last seen while they are collected again.
-    case updating(seenAt: Date)
+    /// With a spinner: scooters stand faded where they were last seen, and new positions of the apps
+    /// named are on their way.
+    case updating(ScooterLastSeenLine)
+    /// With a hollow dot: scooters stand faded where they were last seen, and nothing is on its way for them.
+    case lastSeen(ScooterLastSeenLine)
     case live
     case updatedMinutesAgo(Int)
     case updatedAt(Date)
@@ -1848,6 +1965,19 @@ enum ScooterDockStatus: Equatable, Sendable {
         }
     }
 
+    /// The small hollow dot in front of faded scooters nothing is collecting.
+    var isLastSeen: Bool {
+        switch self {
+        case .lastSeen: true
+        default: false
+        }
+    }
+
+    /// Of the faded apps given, those whose new positions are on their way, named; nil when none is.
+    static func updating(_ apps: [ScooterFadedApp]) -> ScooterDockStatus? {
+        ScooterLastSeenLine(apps.filter(\.status.updating)).map(ScooterDockStatus.updating)
+    }
+
     var text: String {
         switch self {
         case let .refreshFailed(date):
@@ -1858,8 +1988,10 @@ enum ScooterDockStatus: Equatable, Sendable {
             String(localized: "City totals · refreshed hourly")
         case let .delayed(date):
             String(format: String(localized: "Data delayed · showing %@"), Self.clockTime(date))
-        case let .updating(date):
-            String(format: String(localized: "Updating · faded ones seen at %@"), Self.seenTime(date))
+        case let .updating(line):
+            line.text(updating: true)
+        case let .lastSeen(line):
+            line.text(updating: false)
         case .live:
             String(localized: "Live")
         case let .updatedMinutesAgo(minutes):

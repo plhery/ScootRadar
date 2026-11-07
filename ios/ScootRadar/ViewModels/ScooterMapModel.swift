@@ -92,8 +92,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             rebuildVisibleCounts()
         }
     }
-    /// When the oldest of them were seen, on this device's clock.
-    private(set) var lastSeenAt: Date?
+    /// Of each app among them, from the last answer: when its were seen, on this device's clock, and
+    /// whether new positions of its are on their way (ScooterResponse.lastSeenStatuses).
+    private var lastSeenReports: [ScooterProvider: ScooterLastSeenStatus] = [:]
+    /// The same, none on its way while the map is paused: a paused map asks for nothing.
+    var lastSeenStatuses: [ScooterProvider: ScooterLastSeenStatus] {
+        isPausedForIdle ? lastSeenReports.mapValues(\.idle) : lastSeenReports
+    }
     private(set) var parking: [ScooterParking] = []
     /// The bays drawn on the map: zoom 16 and closer, for the providers that
     /// are shown, and the bay walked to wherever the map is.
@@ -400,6 +405,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private(set) var visibleScooterCount = 0
     /// The faded scooters in view that pass the filters, counted apart from the others.
     private(set) var visibleLastSeenCount = 0
+    /// The faded scooters in view of each provider, before the provider filter and after the battery's,
+    /// groups included, as the chips count the others.
+    private(set) var visibleLastSeenProviderCounts: [ScooterProvider: Int] = [:]
     private(set) var visibleProviderCounts: [ScooterProvider: Int] = [:]
     private var unfilteredVisibleCount = 0
     private var unfilteredVisibleProviders = Set<ScooterProvider>()
@@ -660,17 +668,36 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     var filterProviders: [ScooterProviderEntry] {
         let down = Set(providerHealth.downProviders)
         let isFilteringProviders = !allProvidersSelected
+        let statuses = lastSeenStatuses
         return availableProviders.map { provider in
             let count = count(for: provider)
             let isDown = down.contains(provider)
             let isEnabled = enabledProviders.contains(provider)
+            let fadedCount = visibleLastSeenProviderCounts[provider, default: 0]
             return ScooterProviderEntry(
                 provider: provider,
                 count: count,
                 isEnabled: isEnabled,
                 isSelected: isFilteringProviders && isEnabled && !isDown,
-                isDown: isDown
+                isDown: isDown,
+                faded: statuses[provider].flatMap { status in
+                    fadedCount > 0
+                        ? ScooterProviderEntry.Faded(count: fadedCount, seenAt: status.seenAt, updating: status.updating)
+                        : nil
+                }
             )
+        }
+    }
+
+    /// The apps whose scooters are drawn faded in view now, in catalogue order: those shown by the
+    /// provider filter, with what is known of theirs.
+    var fadedApps: [ScooterFadedApp] {
+        guard visibleLastSeenCount > 0 else { return [] }
+        let statuses = lastSeenStatuses
+        return ScooterProvider.allCases.compactMap { provider in
+            guard let status = statuses[provider], visibleLastSeenProviderCounts[provider, default: 0] > 0,
+                  enabledProviders.contains(provider) else { return nil }
+            return ScooterFadedApp(provider: provider, status: status)
         }
     }
 
@@ -718,21 +745,27 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         // A failure already explains an empty map.
         let isEmpty = visibleCount == 0 && loadIssue == nil
+        // Faded scooters on screen: the map is not empty, and the status line says whose they are.
+        let showsFaded = visibleLastSeenCount > 0
+        let fadedApps = fadedApps
         if isEmpty {
             // No provider operates here, whatever the pending request answers.
-            if availableProviders.isEmpty { return .outsideCoverage(closestCities) }
+            if availableProviders.isEmpty, !showsFaded { return .outsideCoverage(closestCities) }
             // The data on the map is for another area: no count to show yet.
             guard viewportIsLoaded else { return .finding(chips: dockChips) }
-            if let filterSummary = hiddenByFilters { return .filtersHideEverything(filterSummary) }
-            // None counted yet, only faded ones: the server's sweep is finding them, which may take a minute or two.
-            if isFilling { return .finding(chips: dockChips, notices: dockNotices) }
+            if !showsFaded, let filterSummary = hiddenByFilters { return .filtersHideEverything(filterSummary) }
+            // None counted yet, only faded ones: the server's sweep is finding them, which may take a minute
+            // or two. The line under says whose and since when.
+            if let status = ScooterDockStatus.updating(fadedApps) {
+                return .finding(chips: dockChips, notices: dockNotices, status: status)
+            }
         }
 
         let isOverview = responseMetadata?.overview == true
         let down = providerHealth.downProviders
         let everyProviderDown = !down.isEmpty && Set(availableProviders).isSubset(of: down)
         let hint: ScooterDockHint? = if isEmpty {
-            everyProviderDown ? nil : .emptyArea
+            everyProviderDown || showsFaded ? nil : .emptyArea
         } else {
             isOverview && visibleCount > 0 ? .tapCity : nil
         }
@@ -748,13 +781,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             chips: dockChips,
             lead: isOverview ? nil : dockLead,
             everyProviderDown: everyProviderDown,
-            lastSeenAt: isFilling ? lastSeenAt : nil
+            fadedApps: fadedApps
         ))
     }
 
-    /// Scooters stand faded where they were last seen while the server collects them again.
+    /// Scooters stand faded where they were last seen, and new positions of theirs are on their way.
     private var isFilling: Bool {
-        responseMetadata?.refreshing == true && visibleLastSeenCount > 0 && loadIssue == nil
+        loadIssue == nil && fadedApps.contains(where: \.status.updating)
     }
 
     private var refreshFailure: ScooterLoadFailure? {
@@ -770,7 +803,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if case let .refreshFailed(failure, showing) = loadIssue {
             return failure == .offline ? .offline(showing: showing) : .refreshFailed(showing: showing)
         }
-        guard responseMetadata?.stale == true, let lastUpdated, !(isFilling && lastSeenAt != nil),
+        guard responseMetadata?.stale == true, let lastUpdated, !isFilling,
               clock().timeIntervalSince(lastUpdated) >= ScooterDockStatus.delayedAfter else { return nil }
         return .delayed(showing: lastUpdated)
     }
@@ -829,8 +862,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 title: String(localized: "These positions are out of date"),
                 isWarning: true
             )
-        case .finding:
-            return ScooterDockLine(mark: .progress, title: String(localized: "Finding scooters…"))
+        case let .finding(_, _, status):
+            return ScooterDockLine(mark: .progress, title: String(localized: "Finding scooters…"), status: status)
         case .waiting:
             return ScooterDockLine(mark: .symbol("hourglass"), title: String(localized: "Waiting for scooter data"))
         case .outsideCoverage:
@@ -1474,16 +1507,23 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         unfilteredVisibleCount = unfilteredCount
         unfilteredVisibleProviders = unfilteredProviders
 
-        var lastSeenCount = ScooterFiltering.visibleSummary(
+        let lastSeen = ScooterFiltering.visibleSummary(
             for: lastSeenVehicles, viewport: viewport, minimumBattery: minimumBattery,
             enabledProviders: enabledProviders
-        ).count
+        )
+        var lastSeenCount = lastSeen.count
+        var lastSeenProviders = lastSeen.providerCounts
         if responseMetadata?.mode == "clusters" {
             for cluster in lastSeenClusters where viewport.contains(latitude: cluster.latitude, longitude: cluster.longitude) {
                 lastSeenCount += cluster.filtered(to: enabledProviders)?.count ?? 0
+                for (providerID, providerCount) in cluster.providers where providerCount > 0 {
+                    guard let provider = ScooterProvider(rawValue: providerID) else { continue }
+                    lastSeenProviders[provider, default: 0] += providerCount
+                }
             }
         }
         visibleLastSeenCount = lastSeenCount
+        visibleLastSeenProviderCounts = lastSeenProviders
     }
 
     private var representedVehicleCount: Int {
@@ -1577,8 +1617,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 distanceOrigin = fetchOrigin
                 let generatedAt = Self.apiDate(response.meta?.generatedAt, clockOffset: response.clockOffset)
                 lastUpdated = min(generatedAt ?? receivedAt, receivedAt)
-                lastSeenAt = Self.apiDate(response.meta?.lastSeenAt, clockOffset: response.clockOffset)
-                    .map { min($0, receivedAt) }
+                lastSeenReports = response.lastSeenStatuses(receivedAt: receivedAt)
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt
                 // The server is collecting feeds of this answer again: ask again when it says (followUpMs), at
@@ -1632,7 +1671,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         clusters = []
         lastSeenVehicles = []
         lastSeenClusters = []
-        lastSeenAt = nil
+        lastSeenReports = [:]
         selectedScooterID = nil
         selectedParkingID = nil
         queryBounds = nil
@@ -1658,10 +1697,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// how far this clock is ahead of the server's.
     private static func apiDate(_ value: String?, clockOffset: TimeInterval) -> Date? {
         guard let value else { return nil }
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let date = formatter.date(from: value) ?? ISO8601DateFormatter().date(from: value)
-        return date?.addingTimeInterval(clockOffset)
+        return ScooterServerTime.date(value)?.addingTimeInterval(clockOffset)
     }
 
     /// The server's times are moved onto this device's clock first: a clock

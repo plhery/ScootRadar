@@ -287,7 +287,7 @@ final class ScooterFilteringTests: XCTestCase {
     }
 
     @MainActor
-    func testScootersLastSeenLieFadedUnderTheOthersAndAreNeitherTappedNorRead() throws {
+    func testScootersLastSeenLieFadedUnderTheOthersAndAreNotTappedThemselves() throws {
         let annotation = ScooterLastSeenAnnotation(
             id: "v:lime:seen",
             coordinate: CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417),
@@ -316,23 +316,110 @@ final class ScooterFilteringTests: XCTestCase {
             CGSize(width: 40, height: 40)
         )
 
-        // It breathes once it is on screen, and stands still with Reduce Motion.
+        // Nothing known of its app, or nothing on its way for it: it stands still, even on screen.
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
         window.addSubview(view)
         let faded = try XCTUnwrap(view.subviews.first)
+        XCTAssertNil(faded.layer.animation(forKey: "breath"))
+        XCTAssertEqual(faded.layer.opacity, ScooterLastSeenView.idleDot)
+        let seenAt = Date().addingTimeInterval(-600)
+        annotation.update(coordinate: annotation.coordinate, mark: .scooter(.lime, status: ScooterLastSeenStatus(seenAt: seenAt, updating: false)))
+        view.refreshAppearance()
+        XCTAssertNil(faded.layer.animation(forKey: "breath"))
+        XCTAssertEqual(faded.layer.opacity, ScooterLastSeenView.idleDot)
+        // VoiceOver reads it as its tip says it, now that its app is known.
+        let idleTip = ScooterLastSeenTip(provider: .lime, status: ScooterLastSeenStatus(seenAt: seenAt, updating: false))
+        XCTAssertTrue(view.isAccessibilityElement)
+        XCTAssertFalse(view.accessibilityElementsHidden)
+        XCTAssertEqual(view.accessibilityLabel, idleTip.title)
+        XCTAssertEqual(view.accessibilityValue, idleTip.body)
+
+        // New positions on their way: it breathes in light and size, and stands still with Reduce Motion.
+        let updating = ScooterLastSeenStatus(seenAt: seenAt, updating: true)
+        annotation.update(coordinate: annotation.coordinate, mark: .scooter(.lime, status: updating))
+        view.refreshAppearance()
+        XCTAssertEqual(view.accessibilityValue, ScooterLastSeenTip(provider: .lime, status: updating).body)
         if UIAccessibility.isReduceMotionEnabled {
             XCTAssertNil(faded.layer.animation(forKey: "breath"))
             XCTAssertEqual(faded.layer.opacity, ScooterLastSeenView.still)
         } else {
-            let breath = try XCTUnwrap(faded.layer.animation(forKey: "breath") as? CABasicAnimation)
-            XCTAssertEqual(breath.fromValue as? Float, ScooterLastSeenView.faintest)
-            XCTAssertEqual(breath.toValue as? Float, ScooterLastSeenView.strongest)
-            XCTAssertEqual(breath.duration, 1.6)
+            let breath = try XCTUnwrap(faded.layer.animation(forKey: "breath") as? CAAnimationGroup)
+            XCTAssertEqual(breath.duration, 1.4)
             XCTAssertTrue(breath.autoreverses)
+            XCTAssertEqual(breath.repeatCount, .infinity)
+            let parts = try XCTUnwrap(breath.animations as? [CABasicAnimation])
+            let light = try XCTUnwrap(parts.first { $0.keyPath == "opacity" })
+            XCTAssertEqual(light.fromValue as? Float, 0.25)
+            XCTAssertEqual(light.toValue as? Float, 0.75)
+            let size = try XCTUnwrap(parts.first { $0.keyPath == "transform.scale" })
+            XCTAssertEqual(size.fromValue as? CGFloat, 0.8)
+            XCTAssertEqual(size.toValue as? CGFloat, 1.2)
         }
         view.removeFromSuperview()
         XCTAssertNil(faded.layer.animation(forKey: "breath"))
+
+        // Back to nothing on its way: still again.
+        window.addSubview(view)
+        annotation.update(coordinate: annotation.coordinate, mark: .scooter(.lime, status: updating.idle))
+        view.refreshAppearance()
+        XCTAssertNil(faded.layer.animation(forKey: "breath"))
+        XCTAssertEqual(faded.layer.opacity, ScooterLastSeenView.idleDot)
+        view.removeFromSuperview()
+
+        // A group is passed by.
+        let group = ScooterLastSeenView(
+            annotation: ScooterLastSeenAnnotation(
+                id: "c:seen", coordinate: annotation.coordinate, mark: .group(count: 12, provider: .lime, updating: true)
+            ),
+            reuseIdentifier: nil
+        )
+        XCTAssertFalse(group.isAccessibilityElement)
+        XCTAssertTrue(group.accessibilityElementsHidden)
+    }
+
+    @MainActor
+    func testOnlyFadedMarkersWhoseNewPositionsAreOnTheirWayBreathe() {
+        let updating = ScooterLastSeenStatus(seenAt: Date(timeIntervalSince1970: 1_790_000_000), updating: true)
+        typealias Look = ScooterLastSeenView
+        XCTAssertEqual(Look.pose(for: .scooter(.ryde, status: updating), reduceMotion: false), .breathing(Look.dotBreath))
+        XCTAssertEqual(Look.pose(for: .scooter(.ryde, status: updating), reduceMotion: true), .still(Look.still))
+        XCTAssertEqual(Look.pose(for: .scooter(.ryde, status: updating.idle), reduceMotion: false), .still(Look.idleDot))
+        XCTAssertEqual(Look.pose(for: .scooter(.ryde), reduceMotion: false), .still(Look.idleDot))
+        XCTAssertEqual(Look.pose(for: .group(count: 9, provider: .lime, updating: true), reduceMotion: false), .breathing(Look.groupBreath))
+        XCTAssertEqual(Look.pose(for: .group(count: 9, provider: .lime, updating: true), reduceMotion: true), .still(Look.still))
+        XCTAssertEqual(Look.pose(for: .group(count: 9, provider: .lime), reduceMotion: false), .still(Look.idleGroup))
+
+        XCTAssertEqual(Look.dotBreath, .init(faintest: 0.25, strongest: 0.75, smallest: 0.8, largest: 1.2))
+        XCTAssertEqual(Look.groupBreath, .init(faintest: 0.45, strongest: 0.85, smallest: 0.95, largest: 1.05))
+        XCTAssertEqual(Look.idleDot, 0.42)
+        XCTAssertEqual(Look.idleGroup, 0.6)
+        XCTAssertEqual(Look.still, 0.55)
+
+        // A group breathes while any app among it is updating.
+        let cluster = ScooterCluster(id: "seen", latitude: 47.38, longitude: 8.54, count: 12, providers: ["lime": 5, "bird": 7])
+        XCTAssertEqual(ScooterLastSeenAnnotation.Mark.group(of: cluster, statuses: [.lime: updating]),
+                       .group(count: 12, provider: .bird, updating: true))
+        XCTAssertEqual(ScooterLastSeenAnnotation.Mark.group(of: cluster, statuses: [.lime: updating.idle]),
+                       .group(count: 12, provider: .bird, updating: false))
+    }
+
+    @MainActor
+    func testAChipWithNoneOfItsOwnCountedShowsItsFadedOnesGreyedAndSaysSo() {
+        let seenAt = Date().addingTimeInterval(-600)
+        let updating = ScooterProviderEntry.Faded(count: 44, seenAt: seenAt, updating: true)
+        XCTAssertEqual(ScooterProviderEntry.Faded.shown(count: 0, faded: updating), updating)
+        XCTAssertNil(ScooterProviderEntry.Faded.shown(count: 3, faded: updating))
+        XCTAssertNil(ScooterProviderEntry.Faded.shown(count: 0, faded: nil))
+
+        XCTAssertEqual(updating.note, String(localized: "updating…"))
+        let idle = ScooterProviderEntry.Faded(count: 44, seenAt: seenAt, updating: false)
+        XCTAssertEqual(idle.note, String(format: String(localized: "last seen %@"), ScooterDockStatus.seenTime(seenAt)))
+        for faded in [updating, idle] {
+            XCTAssertTrue(faded.accessibilityText.contains("44"), faded.accessibilityText)
+            XCTAssertTrue(faded.accessibilityText.contains(ScooterDockStatus.seenTime(seenAt)), faded.accessibilityText)
+        }
+        XCTAssertNotEqual(updating.accessibilityText, idle.accessibilityText)
     }
 
     @MainActor
@@ -381,6 +468,76 @@ final class ScooterFilteringTests: XCTestCase {
 
         coordinator.reconcileLastSeen([], [], revision: 3, on: mapView)
         XCTAssertTrue(faded().isEmpty)
+
+        // What is known of their apps changes their marks at the same revision.
+        let updating = ScooterLastSeenStatus(seenAt: Date().addingTimeInterval(-600), updating: true)
+        coordinator.reconcileLastSeen([seen], [group], revision: 4, on: mapView)
+        coordinator.reconcileLastSeen([seen], [group], revision: 4, statuses: [.lime: updating], on: mapView)
+        let third = faded()
+        XCTAssertEqual(third[0].mark, .group(count: 12, provider: .bird, updating: true))
+        XCTAssertEqual(third[1].mark, .scooter(.lime, status: updating))
+    }
+
+    @MainActor
+    func testATappedFadedScooterOpensItsTipWhichFollowsWhatIsKnownAndGoesWithIt() throws {
+        let parent = ScooterMapView(
+            scooters: [],
+            scooterRevision: 0,
+            clusters: [],
+            clusterRevision: 0,
+            usesServerClusters: true,
+            mapStyle: .standard,
+            showsUserLocation: false,
+            focusRequest: nil,
+            destination: nil,
+            selectedScooterID: nil,
+            onRegionChange: { _, _, _ in },
+            onSelectionChange: { _ in }
+        )
+        let coordinator = ScooterMapView.Coordinator(parent: parent)
+        let mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        let seen = scooter(id: "seen", provider: "ryde", battery: 80)
+        let group = ScooterCluster(id: "seen:13:4290:2868", latitude: 47.38, longitude: 8.54, count: 12, providers: ["ryde": 12])
+        let updating = ScooterLastSeenStatus(seenAt: Date().addingTimeInterval(-600), updating: true)
+        coordinator.reconcileLastSeen([seen], [group], revision: 1, statuses: [.ryde: updating], on: mapView)
+        let annotations = mapView.annotations.compactMap { $0 as? ScooterLastSeenAnnotation }
+        let dot = try XCTUnwrap(annotations.first { $0.id == "v:ryde:seen" })
+        let ring = try XCTUnwrap(annotations.first { $0.id.hasPrefix("c:") })
+
+        coordinator.showFadedTip(for: dot, on: mapView)
+        let tip = try XCTUnwrap(coordinator.fadedTipView)
+        XCTAssertTrue(tip.superview === mapView)
+        XCTAssertFalse(tip.isHidden)
+        XCTAssertFalse(tip.isUserInteractionEnabled, "The map under it keeps its touches")
+        XCTAssertEqual(tip.tip, ScooterLastSeenTip(provider: .ryde, status: updating))
+        XCTAssertEqual(tip.accessibilityLabel, tip.tip?.title)
+        XCTAssertEqual(coordinator.fadedTipID, dot.id)
+        XCTAssertLessThanOrEqual(tip.bounds.width, ScooterLastSeenTipView.maximumWidth)
+        XCTAssertGreaterThanOrEqual(tip.frame.minX, ScooterLastSeenTipView.margin)
+        XCTAssertLessThanOrEqual(tip.frame.maxX, mapView.bounds.width - ScooterLastSeenTipView.margin)
+
+        // It says what is now known: nothing more on its way.
+        coordinator.reconcileLastSeen([seen], [group], revision: 1, statuses: [.ryde: updating.idle], on: mapView)
+        XCTAssertEqual(tip.tip?.body, String(localized: "May have moved since"))
+        XCTAssertFalse(tip.isHidden)
+
+        // A group has no tip.
+        coordinator.showFadedTip(for: ring, on: mapView)
+        XCTAssertTrue(tip.isHidden)
+        XCTAssertNil(coordinator.fadedTipID)
+
+        // The scooter gone, its tip goes with it.
+        coordinator.showFadedTip(for: dot, on: mapView)
+        XCTAssertFalse(tip.isHidden)
+        coordinator.reconcileLastSeen([], [], revision: 2, statuses: [.ryde: updating.idle], on: mapView)
+        XCTAssertTrue(tip.isHidden)
+        XCTAssertNil(coordinator.fadedTipID)
+
+        // Of a scooter whose app is not known, none.
+        coordinator.reconcileLastSeen([seen], [], revision: 3, on: mapView)
+        let unknown = try XCTUnwrap(mapView.annotations.compactMap { $0 as? ScooterLastSeenAnnotation }.first)
+        coordinator.showFadedTip(for: unknown, on: mapView)
+        XCTAssertTrue(tip.isHidden)
     }
 
     @MainActor

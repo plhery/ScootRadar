@@ -93,7 +93,8 @@ struct ScooterMapScreen: View {
                     zonesRevision: model.mapZonesRevision,
                     lastSeenScooters: model.mapLastSeenScooters,
                     lastSeenClusters: model.mapLastSeenClusters,
-                    lastSeenRevision: model.mapLastSeenRevision
+                    lastSeenRevision: model.mapLastSeenRevision,
+                    lastSeenStatuses: model.lastSeenStatuses
                 )
                 .ignoresSafeArea()
                 // The open search is over it: VoiceOver reads the search alone.

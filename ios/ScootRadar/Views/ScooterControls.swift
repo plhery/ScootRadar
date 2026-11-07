@@ -335,14 +335,20 @@ struct ScooterControlDock: View {
             ParkingBayCard(model: model, parking: parking)
         case let .outOfDate(failure, lastUpdate):
             outOfDateCard(failure, lastUpdate: lastUpdate)
-        case let .finding(chips, notices):
+        case let .finding(chips, notices, status):
             VStack(alignment: .leading, spacing: 10) {
-                HStack(spacing: 8) {
-                    ProgressView()
-                        .controlSize(.small)
-                        .accessibilityHidden(true)
-                    Text(String(localized: "Finding scooters…"))
-                        .font(.subheadline.weight(.semibold))
+                VStack(alignment: .leading, spacing: 1) {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                            .controlSize(.small)
+                            .accessibilityHidden(true)
+                        Text(String(localized: "Finding scooters…"))
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    // Only faded scooters in view: whose they are, and when they were seen.
+                    if let status {
+                        DockStatusLabel(status: status)
+                    }
                 }
                 .frame(maxWidth: .infinity, minHeight: Self.headerHeight, alignment: .leading)
 
@@ -514,6 +520,7 @@ struct ScooterControlDock: View {
             color: providerAccent(entry.provider, colorScheme: colorScheme),
             isSelected: entry.isSelected,
             isDown: entry.isDown,
+            faded: entry.faded,
             accessibilityIsShown: entry.isEnabled
         ) {
             model.toggleQuickProvider(entry.provider)
@@ -544,7 +551,8 @@ struct ScooterControlDock: View {
                     count: entry.count,
                     color: providerAccent(entry.provider, colorScheme: colorScheme),
                     isShown: entry.isEnabled,
-                    isDown: entry.isDown
+                    isDown: entry.isDown,
+                    faded: entry.faded
                 ) {
                     model.toggleQuickProvider(entry.provider)
                 }
@@ -779,6 +787,12 @@ private struct DockStatusLabel: View {
             } else if status.isUpdating {
                 ProgressView()
                     .controlSize(.mini)
+                    .accessibilityHidden(true)
+            } else if status.isLastSeen {
+                // As still as the faded scooters nothing is collecting.
+                Circle()
+                    .strokeBorder(ScooterPalette.dockQuiet, lineWidth: 1.5)
+                    .frame(width: 7, height: 7)
                     .accessibilityHidden(true)
             } else if status.isWarning {
                 Image(systemName: "exclamationmark.triangle")
@@ -1095,6 +1109,8 @@ private struct QuickProviderFilterChip: View {
     let isSelected: Bool
     /// Not sharing data and none in view: dashed, with a warning instead of a count.
     var isDown = false
+    /// Its scooters drawn faded in view: their number, greyed, when none of its own is counted.
+    var faded: ScooterProviderEntry.Faded? = nil
     let accessibilityIsShown: Bool
     let action: () -> Void
 
@@ -1119,11 +1135,13 @@ private struct QuickProviderFilterChip: View {
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(ScooterPalette.warning)
                 } else {
-                    Text(count, format: .number)
-                        .designFont(11.5, .bold, relativeTo: .caption2)
-                        .monospacedDigit()
-                        .foregroundStyle(isSelected ? foreground.opacity(0.6) : ScooterPalette.dockQuiet)
-                        .contentTransition(.numericText())
+                    ProviderCount(
+                        count: count,
+                        faded: faded,
+                        color: isSelected ? foreground.opacity(0.6) : ScooterPalette.dockQuiet
+                    ) {
+                        $0.designFont(11.5, .bold, relativeTo: .caption2)
+                    }
                 }
             }
             .foregroundStyle(foreground)
@@ -1164,21 +1182,63 @@ private struct QuickProviderFilterChip: View {
     }
 
     private var accessibilityLabel: String {
-        Self.accessibilityLabel(title: accessibilityTitle, count: count, isDown: isDown)
+        Self.accessibilityLabel(title: accessibilityTitle, count: count, isDown: isDown, faded: faded)
     }
 
     /// "Lime, 12 scooters", or what is said of a provider that isn't sharing
-    /// data. The rows of the panel's list read the same.
-    static func accessibilityLabel(title: String, count: Int, isDown: Bool) -> String {
+    /// data; of one with faded scooters in view, how many, since when and whether they are being
+    /// updated as well: "Ryde, 0 scooters 44 faded, last seen at 02:46, updating." The rows of the
+    /// panel's list read the same.
+    static func accessibilityLabel(
+        title: String,
+        count: Int,
+        isDown: Bool,
+        faded: ScooterProviderEntry.Faded? = nil
+    ) -> String {
         if isDown { return title }
-        if count == 1 {
-            return String(format: String(localized: "%@, one scooter"), title)
+        let label = count == 1
+            ? String(format: String(localized: "%@, one scooter"), title)
+            : String(format: String(localized: "%@, %lld scooters"), title, Int64(count))
+        guard let faded else { return label }
+        return "\(label) \(faded.accessibilityText)"
+    }
+}
+
+/// A provider's count; with none of its own counted but some drawn faded where they were last seen,
+/// how many of those, greyed. A small spinner goes before it while new positions are on their way.
+private struct ProviderCount<Styled: View>: View {
+    let count: Int
+    let faded: ScooterProviderEntry.Faded?
+    let color: Color
+    /// The size and weight of the number where it stands.
+    let style: (Text) -> Styled
+    @ScaledMetric(relativeTo: .caption2) private var spinnerSize: CGFloat = 9
+
+    init(count: Int, faded: ScooterProviderEntry.Faded?, color: Color, style: @escaping (Text) -> Styled) {
+        self.count = count
+        self.faded = faded
+        self.color = color
+        self.style = style
+    }
+
+    var body: some View {
+        let shown = ScooterProviderEntry.Faded.shown(count: count, faded: faded)
+        HStack(spacing: 4) {
+            if faded?.updating == true {
+                // A mini spinner is about 13 pt; scaled to the size of the number.
+                ProgressView()
+                    .controlSize(.mini)
+                    .scaleEffect(spinnerSize / 13)
+                    .frame(width: spinnerSize, height: spinnerSize)
+                    .tint(color)
+                    .accessibilityHidden(true)
+            }
+            style(Text(shown?.count ?? count, format: .number))
+                .monospacedDigit()
+                .foregroundStyle(color)
+                .opacity(shown == nil ? 1 : 0.6)
+                .contentTransition(.numericText())
         }
-        return String(
-            format: String(localized: "%@, %lld scooters"),
-            title,
-            Int64(count)
-        )
     }
 }
 
@@ -1195,6 +1255,9 @@ private struct ProviderListRow: View {
     /// Shown on the map: the check, and the selected state for VoiceOver.
     let isShown: Bool
     var isDown = false
+    /// Its scooters drawn faded in view: a line under the name says whether they are being updated or
+    /// since when they stand, and their number, greyed, stands for the count while none is counted.
+    var faded: ScooterProviderEntry.Faded? = nil
     let action: () -> Void
     @ScaledMetric(relativeTo: .subheadline) private var checkSize: CGFloat = 20
 
@@ -1207,23 +1270,29 @@ private struct ProviderListRow: View {
                         .frame(width: 10, height: 10)
                 }
 
-                Text(title)
-                    .designFont(14.5, .semibold, relativeTo: .subheadline)
-                    .foregroundStyle(isShown && !isDown ? ScooterPalette.dockText : ScooterPalette.dockQuiet)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(title)
+                        .designFont(14.5, .semibold, relativeTo: .subheadline)
+                        .foregroundStyle(isShown && !isDown ? ScooterPalette.dockText : ScooterPalette.dockQuiet)
+                    if let faded, !isDown {
+                        Text(faded.note)
+                            .designFont(11.5, .medium, relativeTo: .caption2)
+                            .monospacedDigit()
+                            .foregroundStyle(ScooterPalette.dockQuiet)
+                    }
+                }
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 if isDown {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(ScooterPalette.warning)
                 } else {
-                    Text(count, format: .number)
-                        .designFont(12.5, .semibold, relativeTo: .footnote)
-                        .monospacedDigit()
-                        .foregroundStyle(ScooterPalette.dockQuiet)
-                        .contentTransition(.numericText())
+                    ProviderCount(count: count, faded: faded, color: ScooterPalette.dockQuiet) {
+                        $0.designFont(12.5, .semibold, relativeTo: .footnote)
+                    }
                 }
 
                 check
@@ -1242,7 +1311,9 @@ private struct ProviderListRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            QuickProviderFilterChip.accessibilityLabel(title: accessibilityTitle, count: count, isDown: isDown)
+            QuickProviderFilterChip.accessibilityLabel(
+                title: accessibilityTitle, count: count, isDown: isDown, faded: faded
+            )
         )
         .accessibilityValue(isShown ? String(localized: "Shown") : String(localized: "Hidden"))
         .accessibilityAddTraits(isShown ? .isSelected : [])

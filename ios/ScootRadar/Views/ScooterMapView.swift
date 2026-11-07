@@ -273,11 +273,14 @@ struct ScooterMapView: UIViewRepresentable {
     /// The operators' zones, under everything else drawn on the map, while they are turned on.
     var zones: [ScooterZone] = []
     var zonesRevision = 0
-    /// Where scooters still being collected again were last seen: drawn faded
-    /// under the other markers, never selected and passed by VoiceOver.
+    /// Where scooters were last seen: drawn faded under the other markers and never selected. A tap on
+    /// one that lands on no other marker says whose it is and when it was seen; a group lets taps through.
     var lastSeenScooters: [Scooter] = []
     var lastSeenClusters: [ScooterCluster] = []
     var lastSeenRevision = 0
+    /// Of each app among them: when its were seen, and whether new positions are on their way, which
+    /// they breathe for.
+    var lastSeenStatuses: [ScooterProvider: ScooterLastSeenStatus] = [:]
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -359,7 +362,9 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.updateClusteringMode(on: mapView)
         context.coordinator.reconcile(scooters, revision: scooterRevision, on: mapView)
         context.coordinator.reconcile(clusters, revision: clusterRevision, on: mapView)
-        context.coordinator.reconcileLastSeen(lastSeenScooters, lastSeenClusters, revision: lastSeenRevision, on: mapView)
+        context.coordinator.reconcileLastSeen(
+            lastSeenScooters, lastSeenClusters, revision: lastSeenRevision, statuses: lastSeenStatuses, on: mapView
+        )
         context.coordinator.reconcileParking(parking, on: mapView)
         context.coordinator.applyDestination(destination, on: mapView)
         context.coordinator.applySelection(selectedScooterID, on: mapView)
@@ -388,6 +393,10 @@ struct ScooterMapView: UIViewRepresentable {
         private var reconciledParking: [ScooterParking] = []
         private var lastSeenAnnotationsByID: [String: ScooterLastSeenAnnotation] = [:]
         private var reconciledLastSeenRevision: Int?
+        private var reconciledLastSeenStatuses: [ScooterProvider: ScooterLastSeenStatus] = [:]
+        /// The tip of the faded scooter last tapped, and the id of its marker while it is shown.
+        private(set) var fadedTipView: ScooterLastSeenTipView?
+        private(set) var fadedTipID: String?
         private(set) var lastFocusToken: Int?
         /// How many times SwiftUI has updated the map, and how many times the
         /// map has come to rest somewhere new. A screen at rest adds to neither.
@@ -653,23 +662,26 @@ struct ScooterMapView: UIViewRepresentable {
         }
 
         /// The faded markers, one for each scooter and group, moved or drawn
-        /// again in place when they change.
+        /// again in place when they change, or when what is known of their apps does.
         func reconcileLastSeen(
             _ scooters: [Scooter],
             _ clusters: [ScooterCluster],
             revision: Int,
+            statuses: [ScooterProvider: ScooterLastSeenStatus] = [:],
             on mapView: MKMapView
         ) {
-            guard revision != reconciledLastSeenRevision else { return }
+            guard revision != reconciledLastSeenRevision || statuses != reconciledLastSeenStatuses else { return }
             reconciledLastSeenRevision = revision
+            reconciledLastSeenStatuses = statuses
 
             var incoming: [String: (coordinate: CLLocationCoordinate2D, mark: ScooterLastSeenAnnotation.Mark)] = [:]
             incoming.reserveCapacity(scooters.count + clusters.count)
             for scooter in scooters {
-                incoming["v:\(scooter.id)"] = (scooter.coordinate, .scooter(scooter.providerInfo))
+                let provider = scooter.providerInfo
+                incoming["v:\(scooter.id)"] = (scooter.coordinate, .scooter(provider, status: provider.flatMap { statuses[$0] }))
             }
             for cluster in clusters {
-                incoming["c:\(cluster.id)"] = (cluster.coordinate, .group(of: cluster))
+                incoming["c:\(cluster.id)"] = (cluster.coordinate, .group(of: cluster, statuses: statuses))
             }
 
             let removedAnnotations = lastSeenAnnotationsByID.compactMap { id, annotation in
@@ -699,6 +711,76 @@ struct ScooterMapView: UIViewRepresentable {
             if !additions.isEmpty {
                 mapView.addAnnotations(additions)
             }
+
+            // The tip of one that has gone goes with it; that of one still there says what is now known.
+            if let fadedTipID {
+                if let annotation = lastSeenAnnotationsByID[fadedTipID] {
+                    showFadedTip(for: annotation, on: mapView)
+                } else {
+                    hideFadedTip()
+                }
+            }
+        }
+
+        // MARK: Faded scooters' tips
+
+        /// A faded scooter tapped: whose it is, when it was seen, and that it may have moved since, in a
+        /// small tip above it. It has nothing to rent: the scooter's own dot, once it is found again, has.
+        func showFadedTip(for annotation: ScooterLastSeenAnnotation, on mapView: MKMapView) {
+            guard case let .scooter(provider?, status?) = annotation.mark else {
+                hideFadedTip()
+                return
+            }
+            let tip = ScooterLastSeenTip(provider: provider, status: status)
+            let view = fadedTipView ?? ScooterLastSeenTipView()
+            fadedTipView = view
+            if view.superview !== mapView { mapView.addSubview(view) }
+            let isNew = fadedTipID != annotation.id || view.isHidden || view.tip != tip
+            fadedTipID = annotation.id
+            view.show(
+                tip,
+                isDark: isDark(mapView),
+                textScale: ScooterMapLook.textScale(for: mapView.traitCollection.preferredContentSizeCategory)
+            )
+            view.isHidden = false
+            placeFadedTip(view, at: mapView.convert(annotation.coordinate, toPointTo: mapView), on: mapView)
+            // It is not one of the map's buttons: VoiceOver says it as it opens.
+            if isNew, UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .announcement, argument: "\(tip.title). \(tip.body)")
+            }
+        }
+
+        func hideFadedTip() {
+            fadedTipView?.isHidden = true
+            fadedTipID = nil
+        }
+
+        /// Above the dot, or under it where the chrome at the top of the map would cover it, and within
+        /// the map's edges.
+        private func placeFadedTip(_ view: ScooterLastSeenTipView, at point: CGPoint, on mapView: MKMapView) {
+            let size = view.bounds.size
+            let margin = ScooterLastSeenTipView.margin
+            let reach = ScooterDotArt.lastSeenDiameter / 2 + ScooterLastSeenTipView.gap
+            var top = mapView.safeAreaInsets.top
+            let chrome = parent.interactionExclusionFrame
+            if !chrome.isNull, !chrome.isEmpty {
+                let frame = mapView.convert(chrome, from: nil)
+                if frame.midY < mapView.bounds.midY { top = max(top, frame.maxY) }
+            }
+            let above = point.y - reach - size.height
+            let x = min(max(point.x - size.width / 2, margin), max(margin, mapView.bounds.width - size.width - margin))
+            let y = above < top + margin ? point.y + reach : above
+            view.frame = CGRect(origin: CGPoint(x: x.rounded(), y: y.rounded()), size: size)
+        }
+
+        /// The faded scooter a tap means, where no other marker is: the nearest of their dots within reach.
+        private func fadedAnnotation(at point: CGPoint, on mapView: MKMapView) -> ScooterLastSeenAnnotation? {
+            var dots: [(id: String, centre: CGPoint, reach: CGFloat)] = []
+            for annotation in lastSeenAnnotationsByID.values {
+                guard case .scooter = annotation.mark else { continue }
+                dots.append((annotation.id, mapView.convert(annotation.coordinate, toPointTo: mapView), Self.tapReach))
+            }
+            return ScooterMapLook.nearestDot(to: point, among: dots).flatMap { lastSeenAnnotationsByID[$0.id] }
         }
 
         func applySelection(_ selectedID: String?, on mapView: MKMapView) {
@@ -1179,6 +1261,8 @@ struct ScooterMapView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
             // The person moving the map ends the move to a place asked for.
             if focusUnderWay != nil, Self.isMovedByHand(mapView) { focusUnderWay = nil }
+            // A faded scooter's tip stands where its dot was.
+            hideFadedTip()
         }
 
         /// Whether one of the map's gestures, a pan, a pinch, a turn, a tilt
@@ -1672,6 +1756,7 @@ struct ScooterMapView: UIViewRepresentable {
             // A cluster under the touch is meant, unless the touch is on a dot itself: MapKit selects
             // it and zooms in, and a dot within reach is not chosen as well.
             if Self.tapMeansCluster(isOnCluster: isOnClusterView(point, on: mapView), isOnDot: isOnDot) {
+                hideFadedTip()
                 registerDirectMapTap(selectionID: nil)
                 if !parent.isWalking {
                     clearSelection(on: mapView)
@@ -1680,6 +1765,7 @@ struct ScooterMapView: UIViewRepresentable {
             }
             // So is a bay, unless the touch is on a dot itself.
             if !isOnDot, let parking = parkingAnnotation(at: point, on: mapView) {
+                hideFadedTip()
                 // Like a scooter: publish the tap at once, whatever MapKit resolves later.
                 registerDirectMapTap(selectionID: nil)
                 publishParkingSelection(parking)
@@ -1691,15 +1777,25 @@ struct ScooterMapView: UIViewRepresentable {
             registerDirectMapTap(selectionID: annotation?.scooter.id)
 
             if let annotation {
+                hideFadedTip()
                 publishSelection(annotation)
                 mapView.selectAnnotation(
                     annotation,
                     animated: !UIAccessibility.isReduceMotionEnabled
                 )
                 updateLook(on: mapView)
-            } else if !parent.isWalking {
+                return
+            }
+            if !parent.isWalking {
                 // During a walk the card stays open: the map is for looking around.
                 clearSelection(on: mapView)
+            }
+            // A scooter of the map always comes first: a faded one is only where nothing else is. A second
+            // tap on it closes its tip, as a tap anywhere else does.
+            if let faded = fadedAnnotation(at: point, on: mapView), faded.id != fadedTipID {
+                showFadedTip(for: faded, on: mapView)
+            } else {
+                hideFadedTip()
             }
         }
 
@@ -2294,18 +2390,31 @@ final class ScooterLastSeenAnnotation: NSObject, MKAnnotation {
     static let reuseIdentifier = "last-seen-scooter"
 
     enum Mark: Equatable {
-        case scooter(ScooterProvider?)
-        /// The number in the ring, and the provider with the most of them, whose colour the ring takes.
-        case group(count: Int, provider: ScooterProvider?)
+        /// With what is known of its app's faded scooters: what its tip says, and whether it breathes.
+        case scooter(ScooterProvider?, status: ScooterLastSeenStatus? = nil)
+        /// The number in the ring, and the provider with the most of them, whose colour the ring takes;
+        /// it breathes while new positions of any app among them are on their way.
+        case group(count: Int, provider: ScooterProvider?, updating: Bool = false)
 
-        static func group(of cluster: ScooterCluster) -> Mark {
+        static func group(of cluster: ScooterCluster, statuses: [ScooterProvider: ScooterLastSeenStatus] = [:]) -> Mark {
             let leading = ScooterProvider.allCases.max { first, second in
                 (cluster.providers[first.rawValue] ?? 0) < (cluster.providers[second.rawValue] ?? 0)
             }
             return .group(
                 count: cluster.count,
-                provider: leading.flatMap { cluster.providers[$0.rawValue] == nil ? nil : $0 }
+                provider: leading.flatMap { cluster.providers[$0.rawValue] == nil ? nil : $0 },
+                updating: cluster.providers.keys.contains { id in
+                    ScooterProvider(rawValue: id).flatMap { statuses[$0]?.updating } == true
+                }
             )
+        }
+
+        /// New positions of its app, or of an app among the group, are on their way.
+        var isUpdating: Bool {
+            switch self {
+            case let .scooter(_, status): status?.updating == true
+            case let .group(_, _, updating): updating
+            }
         }
     }
 
@@ -2737,16 +2846,28 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
     }
 }
 
-/// A scooter where it was last seen, or a group of them, while the server
-/// collects it again: faded and breathing under every other marker. A tap goes
-/// through it to the map, and VoiceOver passes it by, as it is counted nowhere.
+/// A scooter where it was last seen, or a group of them: faded under every other marker, breathing in
+/// size and light while new positions of its app are on their way, and still when nothing is coming
+/// for it. A tap goes through it to the map, which opens the tip of a single one (Coordinator.showFadedTip);
+/// VoiceOver reads a single one as its tip says it, and passes a group by.
 final class ScooterLastSeenView: MKAnnotationView {
-    /// The light breathes between these, one way in `breath` seconds and back, as on the web.
-    static let faintest: Float = 0.35
-    static let strongest: Float = 0.65
-    static let breath: CFTimeInterval = 1.6
-    /// With Reduce Motion it stands still.
-    static let still: Float = 0.5
+    /// How it breathes: between these strengths and sizes, one way in `breath` seconds and back, as on the web.
+    struct Breath: Equatable {
+        let faintest: Float
+        let strongest: Float
+        let smallest: CGFloat
+        let largest: CGFloat
+    }
+
+    /// From 8 to 12 pt of a 10 pt light: plain enough to be seen, small enough not to pass for a scooter.
+    static let dotBreath = Breath(faintest: 0.25, strongest: 0.75, smallest: 0.8, largest: 1.2)
+    static let groupBreath = Breath(faintest: 0.45, strongest: 0.85, smallest: 0.95, largest: 1.05)
+    static let breath: CFTimeInterval = 1.4
+    /// Nothing is on its way for it: it stands still.
+    static let idleDot: Float = 0.42
+    static let idleGroup: Float = 0.6
+    /// New positions are on their way, and Reduce Motion is on: it stands still, a little stronger.
+    static let still: Float = 0.55
 
     /// The picture and the number, which breathe together.
     private let content = UIView()
@@ -2787,6 +2908,7 @@ final class ScooterLastSeenView: MKAnnotationView {
         isUserInteractionEnabled = false
         isAccessibilityElement = false
         accessibilityElementsHidden = true
+        accessibilityTraits = .staticText
         backgroundColor = .clear
 
         content.isUserInteractionEnabled = false
@@ -2836,10 +2958,16 @@ final class ScooterLastSeenView: MKAnnotationView {
         guard let annotation = annotation as? ScooterLastSeenAnnotation else { return }
         let image: UIImage
         switch annotation.mark {
-        case let .scooter(provider):
+        case let .scooter(provider, status):
             image = ScooterDotArt.lastSeenImage(for: .init(provider: provider, isDark: usesDarkArt))
             countLabel.isHidden = true
-        case let .group(count, provider):
+            // As its tip says it: "Ryde · last seen 02:46", "May have moved since".
+            let tip = provider.flatMap { provider in status.map { ScooterLastSeenTip(provider: provider, status: $0) } }
+            isAccessibilityElement = tip != nil
+            accessibilityElementsHidden = tip == nil
+            accessibilityLabel = tip?.title
+            accessibilityValue = tip?.body
+        case let .group(count, provider, _):
             image = ScooterDotArt.lastSeenClusterImage(for: .init(
                 provider: provider,
                 diameter: ScooterClusterAnnotationView.diameter(count: count),
@@ -2848,6 +2976,10 @@ final class ScooterLastSeenView: MKAnnotationView {
             countLabel.text = "\(count)"
             countLabel.textColor = ScooterClusterAnnotationView.countColor(isDark: usesDarkArt)
             countLabel.isHidden = false
+            isAccessibilityElement = false
+            accessibilityElementsHidden = true
+            accessibilityLabel = nil
+            accessibilityValue = nil
         }
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -2856,28 +2988,56 @@ final class ScooterLastSeenView: MKAnnotationView {
         artLayer.bounds = CGRect(origin: .zero, size: image.size)
         CATransaction.commit()
         setNeedsLayout()
+        breathe()
     }
 
-    /// Every faded marker breathes in step with the others, whenever it appeared.
+    /// How it stands now: breathing, or still at a strength.
+    enum Pose: Equatable {
+        case breathing(Breath)
+        case still(Float)
+    }
+
+    /// Breathing only while new positions of its app are on their way, and never with Reduce Motion.
+    static func pose(for mark: ScooterLastSeenAnnotation.Mark, reduceMotion: Bool) -> Pose {
+        let isGroup = if case .group = mark { true } else { false }
+        guard mark.isUpdating else { return .still(isGroup ? idleGroup : idleDot) }
+        if reduceMotion { return .still(still) }
+        return .breathing(isGroup ? groupBreath : dotBreath)
+    }
+
+    /// Every faded marker that breathes does so in step with the others, whenever it appeared,
+    /// so starting its breath again does not show.
     private func breathe() {
+        guard let mark = (annotation as? ScooterLastSeenAnnotation)?.mark else { return }
         let layer = content.layer
         layer.removeAnimation(forKey: "breath")
-        guard window != nil, !UIAccessibility.isReduceMotionEnabled else {
-            layer.opacity = Self.still
-            return
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        defer { CATransaction.commit() }
+        switch Self.pose(for: mark, reduceMotion: UIAccessibility.isReduceMotionEnabled) {
+        case let .still(strength):
+            layer.opacity = strength
+        case let .breathing(breath):
+            layer.opacity = breath.faintest
+            // The breath stops out of a window; didMoveToWindow starts it again.
+            guard window != nil else { return }
+            let light = CABasicAnimation(keyPath: "opacity")
+            light.fromValue = breath.faintest
+            light.toValue = breath.strongest
+            let size = CABasicAnimation(keyPath: "transform.scale")
+            size.fromValue = breath.smallest
+            size.toValue = breath.largest
+            let group = CAAnimationGroup()
+            group.animations = [light, size]
+            group.duration = Self.breath
+            group.autoreverses = true
+            group.repeatCount = .infinity
+            group.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            // Kept while the app is away, and begun at the same moment as every other's.
+            group.isRemovedOnCompletion = false
+            let now = layer.convertTime(CACurrentMediaTime(), from: nil)
+            group.beginTime = now - now.truncatingRemainder(dividingBy: 2 * Self.breath)
+            layer.add(group, forKey: "breath")
         }
-        layer.opacity = Self.faintest
-        let breath = CABasicAnimation(keyPath: "opacity")
-        breath.fromValue = Self.faintest
-        breath.toValue = Self.strongest
-        breath.duration = Self.breath
-        breath.autoreverses = true
-        breath.repeatCount = .infinity
-        breath.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        // Kept while the app is away, and begun at the same moment as every other's.
-        breath.isRemovedOnCompletion = false
-        let now = layer.convertTime(CACurrentMediaTime(), from: nil)
-        breath.beginTime = now - now.truncatingRemainder(dividingBy: 2 * Self.breath)
-        layer.add(breath, forKey: "breath")
     }
 }

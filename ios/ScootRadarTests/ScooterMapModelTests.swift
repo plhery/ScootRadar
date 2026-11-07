@@ -2420,15 +2420,32 @@ extension ScooterMapModelTests {
 
         XCTAssertEqual(model.mapScooters.map(\.id), ["lime:found"])
         XCTAssertEqual(Set(model.mapLastSeenScooters.map(\.id)), ["bird:seen-bird", "lime:seen-low", "voi:seen-far"])
-        XCTAssertEqual(model.lastSeenAt, seenAt)
+        // From a server that does not say each app's: the oldest time for every app, updating while it refreshes.
+        let status = ScooterLastSeenStatus(seenAt: seenAt, updating: true)
+        XCTAssertEqual(model.lastSeenStatuses, [.bird: status, .lime: status, .voi: status])
         XCTAssertEqual(model.visibleCount, 1, "The faded ones are counted nowhere")
         XCTAssertEqual(model.count(for: .bird), 0)
         XCTAssertEqual(model.visibleLastSeenCount, 2)
+
+        // Apart: each app's faded ones in view, before the provider filter, for its chip.
+        XCTAssertEqual(model.visibleLastSeenProviderCounts, [.bird: 1, .lime: 1])
+        XCTAssertEqual(model.fadedApps.map(\.provider), [.bird, .lime])
+        let birdChip = try XCTUnwrap(model.filterProviders.first { $0.provider == .bird })
+        XCTAssertEqual(birdChip.count, 0)
+        XCTAssertEqual(birdChip.faded, ScooterProviderEntry.Faded(count: 1, seenAt: seenAt, updating: true))
+        XCTAssertEqual(ScooterProviderEntry.Faded.shown(count: birdChip.count, faded: birdChip.faded)?.count, 1)
+        let limeChip = try XCTUnwrap(model.filterProviders.first { $0.provider == .lime })
+        XCTAssertEqual(limeChip.count, 1)
+        XCTAssertNil(ScooterProviderEntry.Faded.shown(count: limeChip.count, faded: limeChip.faded), "Its own count first")
+        XCTAssertNil(model.filterProviders.first { $0.provider == .voi }?.faded, "None of its in view")
 
         let revision = model.mapLastSeenRevision
         model.showProviders([.lime])
         XCTAssertEqual(model.mapLastSeenScooters.map(\.id), ["lime:seen-low"])
         XCTAssertGreaterThan(model.mapLastSeenRevision, revision)
+        // The app the filter hides is named nowhere, though its chip still counts its faded ones.
+        XCTAssertEqual(model.fadedApps.map(\.provider), [.lime])
+        XCTAssertEqual(model.filterProviders.first { $0.provider == .bird }?.faded?.count, 1)
         model.setMinimumBattery(30)
         XCTAssertTrue(model.mapLastSeenScooters.isEmpty)
         XCTAssertEqual(model.visibleLastSeenCount, 0)
@@ -2448,7 +2465,113 @@ extension ScooterMapModelTests {
         XCTAssertTrue(model.lastSeenVehicles.isEmpty)
         XCTAssertTrue(model.mapLastSeenScooters.isEmpty)
         XCTAssertEqual(model.visibleLastSeenCount, 0)
-        XCTAssertNil(model.lastSeenAt)
+        XCTAssertEqual(model.lastSeenStatuses, [:])
+        XCTAssertEqual(model.fadedApps, [])
+    }
+
+    func testAPausedMapSaysNothingIsOnItsWayForItsFadedScootersUntilTheNextTouch() async throws {
+        let clock = TestClock()
+        let seenAt = clock.now.addingTimeInterval(-600)
+        let api = StubScooterAPI(response: fillingResponse(
+            vehicles: [scooter(id: "found", provider: "lime")],
+            lastSeen: [scooter(id: "seen", provider: "bird")],
+            seenAt: seenAt,
+            generatedAt: clock.now
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        XCTAssertEqual(model.lastSeenStatuses[.bird]?.updating, true)
+
+        clock.advance(31 * 60)
+        model.autoRefreshIfNeeded()
+        await settle()
+        XCTAssertTrue(model.isPausedForIdle)
+        XCTAssertEqual(model.lastSeenStatuses, [.bird: ScooterLastSeenStatus(seenAt: seenAt, updating: false)])
+        XCTAssertEqual(model.filterProviders.first { $0.provider == .bird }?.faded?.updating, false)
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        let status = try XCTUnwrap(summary.status(at: clock.now))
+        XCTAssertTrue(status.isLastSeen, "\(status)")
+        XCTAssertFalse(status.isUpdating)
+
+        await api.setResponse(fillingResponse(
+            vehicles: [scooter(id: "found", provider: "lime")],
+            lastSeen: [scooter(id: "seen", provider: "bird")],
+            seenAt: seenAt,
+            generatedAt: clock.now
+        ))
+        model.noteInteraction()
+        XCTAssertEqual(model.lastSeenStatuses[.bird]?.updating, true)
+        let refreshed = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(refreshed)
+    }
+
+    func testFadedScootersOnScreenNeverReadAsAnEmptyMapOrAsHiddenByTheFilters() async throws {
+        let clock = TestClock()
+        let seenAt = clock.now.addingTimeInterval(-3_600)
+        // A found Bird, a faded Lime that nothing is collecting.
+        let api = StubScooterAPI(response: fillingResponse(
+            vehicles: [scooter(id: "found", provider: "bird")],
+            lastSeen: [scooter(id: "seen", provider: "lime")],
+            seenAt: seenAt,
+            generatedAt: clock.now,
+            refreshing: false,
+            providers: ["lime": ScooterLastSeenStatus(seenAt: seenAt, updating: false)]
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        // Only Lime's shown: no scooter counted, but not "hidden by your filters" over the faded one.
+        model.showProviders([.lime])
+        XCTAssertEqual(model.visibleCount, 0)
+        XCTAssertEqual(model.visibleLastSeenCount, 1)
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary, got \(model.dock)") }
+        XCTAssertEqual(summary.count, 0)
+        XCTAssertNil(summary.hint, "Not an empty area")
+        XCTAssertEqual(summary.status(at: clock.now)?.isLastSeen, true)
+        XCTAssertEqual(summary.fadedApps.map(\.provider), [.lime])
+        let limeChip = try XCTUnwrap(model.filterProviders.first { $0.provider == .lime })
+        XCTAssertEqual(ScooterProviderEntry.Faded.shown(count: limeChip.count, faded: limeChip.faded)?.count, 1)
+        assertRenders(ScooterControlDock(model: model), "faded ones nothing collects")
+
+        // Its new positions on their way: finding them, with the line that says whose.
+        await api.setResponse(fillingResponse(
+            vehicles: [scooter(id: "found", provider: "bird")],
+            lastSeen: [scooter(id: "seen", provider: "lime")],
+            seenAt: seenAt,
+            generatedAt: clock.now,
+            providers: ["lime": ScooterLastSeenStatus(seenAt: seenAt, updating: true)]
+        ))
+        model.refresh()
+        let refreshed = await waitUntil { await api.snapshot().calls >= 2 && !model.isLoading }
+        XCTAssertTrue(refreshed)
+        guard case let .finding(_, _, status) = model.dock else { return XCTFail("Expected Finding scooters…, got \(model.dock)") }
+        XCTAssertEqual(status?.isUpdating, true)
+        XCTAssertTrue(status?.text.contains("Lime") == true, "\(String(describing: status))")
+        assertRenders(ScooterControlDock(model: model), "finding with faded ones updating")
+
+        // Where no app operates, faded ones are still not "outside coverage".
+        let atSea = GeoPoint(latitude: 30, longitude: -40)
+        await api.setResponse(fillingResponse(
+            lastSeen: [scooter(id: "adrift", provider: "lime", latitude: atSea.latitude, longitude: atSea.longitude)],
+            seenAt: seenAt,
+            generatedAt: clock.now,
+            refreshing: false,
+            providers: ["lime": ScooterLastSeenStatus(seenAt: seenAt, updating: false)]
+        ))
+        model.resetFilters()
+        model.updateViewport(MKCoordinateRegion(
+            center: atSea.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        ), zoom: 16)
+        model.refresh()
+        let atSeaLoaded = await waitUntil { model.visibleLastSeenCount == 1 && !model.isLoading }
+        XCTAssertTrue(atSeaLoaded)
+        XCTAssertTrue(ScooterProviderCoverage.providers(in: model.viewport).isEmpty)
+        if case .outsideCoverage = model.dock { XCTFail("Faded scooters on screen are not outside coverage") }
     }
 
     func testGroupsLastSeenKeepTheProvidersShownAndGoWithTheGroupsWhenTheMinimumChanges() async throws {
@@ -2547,11 +2670,20 @@ extension ScooterMapModelTests {
         XCTAssertTrue(loaded)
 
         let curfew = try XCTUnwrap(RentalCurfew.active(at: model.viewport.center, on: clock.now))
-        guard case let .finding(chips, notices) = model.dock else { return XCTFail("Expected Finding scooters…") }
+        guard case let .finding(chips, notices, status) = model.dock else { return XCTFail("Expected Finding scooters…") }
         XCTAssertEqual(chips, model.dockChips)
         XCTAssertFalse(chips.isEmpty)
         XCTAssertEqual(notices.first, .curfew(curfew))
+        // With the line that says whose they are and when they were seen.
+        XCTAssertEqual(status?.isUpdating, true)
+        XCTAssertTrue(status?.text.contains("Voi") == true, "\(String(describing: status))")
         XCTAssertEqual(model.dockLine(at: clock.now).title, String(localized: "Finding scooters…"))
+        XCTAssertEqual(model.dockLine(at: clock.now).status, status)
+        // Voi's chip: none of its counted, its faded one greyed, and a spinner.
+        let voi = try XCTUnwrap(chips.first { $0.provider == .voi })
+        XCTAssertEqual(voi.count, 0)
+        XCTAssertEqual(ScooterProviderEntry.Faded.shown(count: voi.count, faded: voi.faded)?.count, 1)
+        XCTAssertEqual(voi.faded?.updating, true)
         assertRenders(ScooterControlDock(model: model), "finding with a night ban")
 
         // The sweep reached it: a count, without the status of an update.
@@ -2566,7 +2698,7 @@ extension ScooterMapModelTests {
         XCTAssertTrue(found)
         guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
         XCTAssertEqual(summary.count, 1)
-        XCTAssertNil(summary.lastSeenAt)
+        XCTAssertEqual(summary.fadedApps, [])
         XCTAssertEqual(summary.status(at: clock.now), .live)
     }
 
@@ -2588,7 +2720,8 @@ extension ScooterMapModelTests {
 
         guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
         XCTAssertEqual(summary.count, 1)
-        XCTAssertEqual(summary.status(at: clock.now), .updating(seenAt: seenAt))
+        let birdUpdating = ScooterFadedApp(provider: .bird, status: ScooterLastSeenStatus(seenAt: seenAt, updating: true))
+        XCTAssertEqual(summary.status(at: clock.now), .updating(try XCTUnwrap(ScooterLastSeenLine([birdUpdating]))))
         XCTAssertEqual(summary.status(at: clock.now)?.isUpdating, true)
         assertRenders(ScooterControlDock(model: model), "updating")
         // A card says nothing of a delay that the dock reports as an update.
@@ -2624,19 +2757,22 @@ extension ScooterMapModelTests {
         lastSeen: [Scooter],
         seenAt: Date?,
         generatedAt: Date,
-        stale: Bool = false
+        stale: Bool = false,
+        refreshing: Bool = true,
+        providers: [String: ScooterLastSeenStatus]? = nil
     ) -> ScooterResponse {
         let formatter = ISO8601DateFormatter()
         return ScooterResponse(
             vehicles: vehicles,
             lastSeenVehicles: lastSeen,
+            lastSeenProviders: providers,
             meta: ScooterResponseMetadata(
                 partial: false,
                 stale: stale,
                 failedSources: [],
                 generatedAt: formatter.string(from: generatedAt),
                 refreshAfterSeconds: 3,
-                refreshing: true,
+                refreshing: refreshing,
                 lastSeenAt: seenAt.map(formatter.string(from:)),
                 expiresAt: formatter.string(from: generatedAt.addingTimeInterval(300))
             )

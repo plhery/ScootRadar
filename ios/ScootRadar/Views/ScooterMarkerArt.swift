@@ -410,3 +410,109 @@ final class ScooterNamePillView: UIView {
         )
     }
 }
+
+/// What a faded scooter's tap opens above its dot, in the material of the names: "Ryde · last seen 02:46"
+/// and "May have moved since". It answers no touch, so the map under it keeps them.
+final class ScooterLastSeenTipView: UIView {
+    /// From the map's edges, and between the tip and its dot.
+    static let margin: CGFloat = 8
+    static let gap: CGFloat = 8
+    static let maximumWidth: CGFloat = 260
+
+    private static let padding = UIEdgeInsets(top: 7, left: 11, bottom: 8, right: 11)
+    private static let lineGap: CGFloat = 1
+
+    private let material = UIVisualEffectView(effect: nil)
+    private let titleLabel = UILabel()
+    private let bodyLabel = UILabel()
+    private(set) var tip: ScooterLastSeenTip?
+    private var drawn: (tip: ScooterLastSeenTip, isDark: Bool, textScale: CGFloat)?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configureView()
+    }
+
+    private func configureView() {
+        isUserInteractionEnabled = false
+        isAccessibilityElement = true
+        accessibilityTraits = .staticText
+        layer.cornerCurve = .continuous
+        layer.borderWidth = 1
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowRadius = 7
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+
+        material.layer.cornerCurve = .continuous
+        material.clipsToBounds = true
+        addSubview(material)
+
+        for label in [titleLabel, bodyLabel] {
+            label.numberOfLines = 0
+            label.lineBreakMode = .byWordWrapping
+            addSubview(label)
+        }
+    }
+
+    func show(_ tip: ScooterLastSeenTip, isDark: Bool, textScale: CGFloat) {
+        if let drawn, drawn.tip == tip, drawn.isDark == isDark, drawn.textScale == textScale { return }
+        drawn = (tip, isDark, textScale)
+        self.tip = tip
+        let text = isDark
+            ? UIColor(red: 0.957, green: 0.961, blue: 0.969, alpha: 1)
+            : UIColor(red: 0.063, green: 0.075, blue: 0.102, alpha: 1)
+        let quiet = isDark
+            ? UIColor(red: 0.639, green: 0.659, blue: 0.702, alpha: 1)
+            : UIColor(red: 0.4, green: 0.439, blue: 0.502, alpha: 1)
+
+        titleLabel.font = .systemFont(ofSize: 12 * textScale, weight: .bold)
+        bodyLabel.font = .systemFont(ofSize: 12 * textScale, weight: .medium)
+        titleLabel.text = tip.title
+        bodyLabel.text = tip.body
+        titleLabel.textColor = text
+        bodyLabel.textColor = quiet
+        accessibilityLabel = tip.title
+        accessibilityValue = tip.body
+
+        material.effect = UIBlurEffect(style: isDark ? .systemThinMaterialDark : .systemThinMaterialLight)
+        // The material alone lets a bright map through the small text.
+        material.contentView.backgroundColor = isDark
+            ? UIColor(red: 0.063, green: 0.075, blue: 0.102, alpha: 0.62)
+            : UIColor.white.withAlphaComponent(0.66)
+        layer.borderColor = (isDark ? UIColor.white : text).withAlphaComponent(0.1).cgColor
+        layer.shadowOpacity = isDark ? 0.3 : 0.16
+
+        let padding = Self.padding
+        let room = CGSize(width: Self.maximumWidth - padding.left - padding.right, height: .greatestFiniteMagnitude)
+        let title = titleLabel.sizeThatFits(room)
+        let body = bodyLabel.sizeThatFits(room)
+        let width = ceil(min(room.width, max(title.width, body.width))) + padding.left + padding.right
+        let height = ceil(title.height) + Self.lineGap + ceil(body.height) + padding.top + padding.bottom
+        bounds = CGRect(x: 0, y: 0, width: width, height: height)
+        let radius = min(12 * textScale, height / 2)
+        layer.cornerRadius = radius
+        material.layer.cornerRadius = radius
+        setNeedsLayout()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        material.frame = bounds
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
+        let padding = Self.padding
+        let width = max(0, bounds.width - padding.left - padding.right)
+        let title = ceil(titleLabel.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude)).height)
+        titleLabel.frame = CGRect(x: padding.left, y: padding.top, width: width, height: title)
+        bodyLabel.frame = CGRect(
+            x: padding.left,
+            y: titleLabel.frame.maxY + Self.lineGap,
+            width: width,
+            height: max(0, bounds.height - padding.bottom - titleLabel.frame.maxY - Self.lineGap)
+        )
+    }
+}

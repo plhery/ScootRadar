@@ -159,7 +159,12 @@ final class ScooterModelsTests: XCTestCase {
           "clusters": [],
           "lastSeen": {
             "vehicles": [{"provider": "lime", "lat": 47.3769, "lng": 8.5417, "battery": 64, "vehicle_id": "seen-1"}],
-            "clusters": [{"id": "seen:13:4290:2868", "lat": 47.38, "lng": 8.54, "count": 9, "providers": {"lime": 9}}]
+            "clusters": [{"id": "seen:13:4290:2868", "lat": 47.38, "lng": 8.54, "count": 9, "providers": {"lime": 9}}],
+            "providers": {
+              "lime": {"seenAt": "2026-10-25T09:40:00.000Z", "updating": true},
+              "bird": {"seenAt": "2026-10-25T09:55:00Z", "updating": false},
+              "an-app-unknown-here": {"seenAt": "2026-10-25T09:50:00Z", "updating": true}
+            }
           },
           "providers": {},
           "meta": {
@@ -178,6 +183,20 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertEqual(response.lastSeenVehicles.first?.battery, 64)
         XCTAssertEqual(response.lastSeenClusters.map(\.id), ["seen:13:4290:2868"])
         XCTAssertEqual(response.meta?.lastSeenAt, "2026-10-25T09:40:00.000Z")
+        // Each app's, on this device's clock; an app this build does not know is left out.
+        let iso = ISO8601DateFormatter()
+        let limeSeen = try XCTUnwrap(iso.date(from: "2026-10-25T09:40:00Z"))
+        let birdSeen = try XCTUnwrap(iso.date(from: "2026-10-25T09:55:00Z"))
+        XCTAssertEqual(response.lastSeenStatuses(), [
+            .lime: ScooterLastSeenStatus(seenAt: limeSeen, updating: true),
+            .bird: ScooterLastSeenStatus(seenAt: birdSeen, updating: false)
+        ])
+        var ahead = response
+        ahead.clockOffset = 120
+        XCTAssertEqual(ahead.lastSeenStatuses()[.lime], ScooterLastSeenStatus(seenAt: limeSeen.addingTimeInterval(120), updating: true))
+        // Never later than the answer came.
+        let received = limeSeen.addingTimeInterval(60)
+        XCTAssertEqual(ahead.lastSeenStatuses(receivedAt: received)[.bird]?.seenAt, received)
 
         // Without them, as from a server that sends none.
         let plain = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: Data(#"""
@@ -188,6 +207,28 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertTrue(plain.lastSeenVehicles.isEmpty)
         XCTAssertTrue(plain.lastSeenClusters.isEmpty)
         XCTAssertNil(plain.meta?.lastSeenAt)
+        XCTAssertEqual(plain.lastSeenStatuses(), [:])
+    }
+
+    func testAServerThatDoesNotSayEachAppsGivesEveryFadedAppTheOldestTimeAndItsRefresh() throws {
+        let seenAt = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-25T09:40:00Z"))
+        func response(refreshing: Bool, lastSeenAt: String? = "2026-10-25T09:40:00.000Z") throws -> ScooterResponse {
+            ScooterResponse(
+                vehicles: [],
+                lastSeenVehicles: [try makeScooter(provider: "lime", latitude: 47.37, longitude: 8.54, vehicleID: "seen")],
+                lastSeenClusters: [ScooterCluster(id: "seen:13:4290:2868", latitude: 47.38, longitude: 8.54,
+                    count: 9, providers: ["bird": 6, "voi": 3, "an-app-unknown-here": 1])],
+                meta: ScooterResponseMetadata(partial: false, failedSources: [], refreshing: refreshing,
+                    lastSeenAt: lastSeenAt),
+                clockOffset: -30
+            )
+        }
+
+        let refreshing = try response(refreshing: true).lastSeenStatuses()
+        XCTAssertEqual(Set(refreshing.keys), [.lime, .bird, .voi])
+        XCTAssertTrue(refreshing.values.allSatisfy { $0 == ScooterLastSeenStatus(seenAt: seenAt.addingTimeInterval(-30), updating: true) })
+        XCTAssertTrue(try response(refreshing: false).lastSeenStatuses().values.allSatisfy { !$0.updating })
+        XCTAssertEqual(try response(refreshing: true, lastSeenAt: nil).lastSeenStatuses(), [:])
     }
 
     func testCoordinateIdentityIsUsedWhenVehicleIDIsMissing() throws {
@@ -1094,15 +1135,16 @@ extension ScooterModelsTests {
         downDelayed.everyProviderDown = true
         XCTAssertEqual(downDelayed.status(at: later), .delayed(showing: updated))
 
-        // While scooters stand faded where they were last seen, an update rather than a delay; a failure first.
+        // While scooters stand faded where they were last seen and new positions of theirs are on their way,
+        // an update rather than a delay or city totals; a failure first.
         let seenAt = updated.addingTimeInterval(-900)
         var updating = summary(overview: true, delayed: true)
-        updating.lastSeenAt = seenAt
-        XCTAssertEqual(updating.status(at: later), .updating(seenAt: seenAt))
+        updating.fadedApps = [ScooterFadedApp(provider: .lime, status: ScooterLastSeenStatus(seenAt: seenAt, updating: true))]
+        XCTAssertEqual(updating.status(at: later), .updating(try XCTUnwrap(ScooterLastSeenLine(updating.fadedApps))))
         XCTAssertEqual(updating.status(at: later)?.isUpdating, true)
         XCTAssertEqual(updating.status(at: later)?.isWarning, false)
         var updatingFailed = summary(failure: .timeout)
-        updatingFailed.lastSeenAt = seenAt
+        updatingFailed.fadedApps = updating.fadedApps
         XCTAssertEqual(updatingFailed.status(at: later), .refreshFailed(showing: updated))
         XCTAssertEqual(ScooterDockStatus.live.isUpdating, false)
 
@@ -1117,15 +1159,144 @@ extension ScooterModelsTests {
     }
 
     func testEveryLanguageSaysWhenTheFadedScootersWereSeen() throws {
+        // Each key with the placeholders its translations must keep, in any order the language needs.
+        let keys: [(key: String, placeholders: [String])] = [
+            ("Updating · faded ones seen at %@", ["%@"]),
+            ("%1$@ updating · faded ones seen at %2$@", ["%1$@", "%2$@"]),
+            ("%1$@ and %2$@ updating · faded ones seen at %3$@", ["%1$@", "%2$@", "%3$@"]),
+            ("%1$@: faded ones last seen at %2$@", ["%1$@", "%2$@"]),
+            ("%1$@ and %2$@: faded ones last seen at %3$@", ["%1$@", "%2$@", "%3$@"]),
+            ("Faded ones last seen at %@", ["%@"]),
+            ("updating…", []),
+            ("last seen %@", ["%@"]),
+            ("%1$lld faded, last seen at %2$@.", ["%1$lld", "%2$@"]),
+            ("%1$lld faded, last seen at %2$@, updating.", ["%1$lld", "%2$@"]),
+            ("%1$@ · last seen %2$@", ["%1$@", "%2$@"]),
+            ("May have moved since", []),
+            ("May have moved · new positions on the way", [])
+        ]
         for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
             let strings = try XCTUnwrap(
                 Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
             )
-            let text = strings.localizedString(forKey: "Updating · faded ones seen at %@", value: "?", table: nil)
-            XCTAssertNotEqual(text, "?", language)
-            XCTAssertEqual(text.components(separatedBy: "%@").count, 2, "\(language): \(text)")
-            XCTAssertTrue(text.contains(" · "), "\(language): \(text)")
+            for (key, placeholders) in keys {
+                let text = strings.localizedString(forKey: key, value: "?", table: nil)
+                XCTAssertNotEqual(text, "?", "\(language): \(key)")
+                for placeholder in placeholders {
+                    XCTAssertEqual(text.components(separatedBy: placeholder).count, 2, "\(language): \(text)")
+                }
+                let all = text.matches(of: /%(\d\$)?(@|lld)/).count
+                XCTAssertEqual(all, placeholders.count, "\(language): \(text)")
+            }
+            let updating = strings.localizedString(forKey: "Updating · faded ones seen at %@", value: "?", table: nil)
+            XCTAssertTrue(updating.contains(" · "), "\(language): \(updating)")
         }
+    }
+
+    func testTheDockNamesTheFadedAppsUpdatingOrNotAndTheOldestTimeOfThem() throws {
+        let updated = Date(timeIntervalSince1970: 1_790_000_000)
+        let early = updated.addingTimeInterval(-1_800)
+        let late = updated.addingTimeInterval(-600)
+        func app(_ provider: ScooterProvider, _ seenAt: Date, updating: Bool) -> ScooterFadedApp {
+            ScooterFadedApp(provider: provider, status: ScooterLastSeenStatus(seenAt: seenAt, updating: updating))
+        }
+        func summary(_ apps: [ScooterFadedApp], overview: Bool = false, delayed: Bool = false) -> ScooterDockSummary {
+            ScooterDockSummary(
+                count: 3, countContext: .nearby, lastUpdated: updated, refreshFailure: nil,
+                isOverview: overview, isDelayed: delayed, notices: [], hint: nil, chips: [], fadedApps: apps
+            )
+        }
+        func line(_ status: ScooterDockStatus?) throws -> ScooterLastSeenLine {
+            switch try XCTUnwrap(status) {
+            case let .updating(line), let .lastSeen(line):
+                return line
+            default:
+                return try XCTUnwrap(nil as ScooterLastSeenLine?, "Expected a line of faded scooters, got \(String(describing: status))")
+            }
+        }
+
+        // One app updating, named.
+        let one = summary([app(.ryde, late, updating: true)]).status(at: updated)
+        XCTAssertEqual(one?.isUpdating, true)
+        XCTAssertEqual(try line(one).providers, [.ryde])
+        XCTAssertTrue(try XCTUnwrap(one).text.contains("Ryde"))
+        XCTAssertTrue(try XCTUnwrap(one).text.contains(ScooterDockStatus.seenTime(late)))
+
+        // Two, named both, with the oldest time of them.
+        let two = summary([app(.bird, late, updating: true), app(.lime, early, updating: true)]).status(at: updated)
+        XCTAssertEqual(try line(two).providers, [.bird, .lime])
+        XCTAssertEqual(try line(two).seenAt, early)
+        let twoText = try XCTUnwrap(two).text
+        XCTAssertTrue(twoText.contains("Bird") && twoText.contains("Lime"), twoText)
+        XCTAssertTrue(twoText.contains(ScooterDockStatus.seenTime(early)), twoText)
+
+        // Three or more, none named.
+        let many = summary([app(.bird, late, updating: true), app(.lime, late, updating: true), app(.voi, early, updating: true)])
+            .status(at: updated)
+        XCTAssertEqual(try XCTUnwrap(many).text, String(
+            format: String(localized: "Updating · faded ones seen at %@"), ScooterDockStatus.seenTime(early)
+        ))
+
+        // Only the apps updating are named, and only their time is given.
+        let mixed = summary([app(.bird, early, updating: false), app(.lime, late, updating: true)]).status(at: updated)
+        XCTAssertEqual(mixed?.isUpdating, true)
+        XCTAssertEqual(try line(mixed).providers, [.lime])
+        XCTAssertEqual(try line(mixed).seenAt, late)
+        XCTAssertFalse(try XCTUnwrap(mixed).text.contains("Bird"))
+
+        // Nothing on its way: a hollow dot and the last time seen, rather than "Live" or an age.
+        let idleApps = [app(.lime, early, updating: false)]
+        let idle = summary(idleApps).status(at: updated)
+        XCTAssertEqual(idle, .lastSeen(try XCTUnwrap(ScooterLastSeenLine(idleApps))))
+        XCTAssertEqual(idle?.isLastSeen, true)
+        XCTAssertEqual(idle?.isUpdating, false)
+        XCTAssertEqual(idle?.isLive, false)
+        let idleText = try XCTUnwrap(idle).text
+        XCTAssertTrue(idleText.contains("Lime") && idleText.contains(ScooterDockStatus.seenTime(early)), idleText)
+        XCTAssertNotEqual(idleText, try XCTUnwrap(one).text)
+        XCTAssertEqual(summary(idleApps).status(at: updated.addingTimeInterval(3_600))?.isLastSeen, true)
+        let idleTwo = summary([app(.bird, late, updating: false), app(.lime, early, updating: false)]).status(at: updated)
+        XCTAssertTrue(try XCTUnwrap(idleTwo).text.contains("Bird"))
+        let idleMany = summary([app(.bird, late, updating: false), app(.lime, late, updating: false),
+                                app(.voi, early, updating: false)]).status(at: updated)
+        XCTAssertEqual(try XCTUnwrap(idleMany).text, String(
+            format: String(localized: "Faded ones last seen at %@"), ScooterDockStatus.seenTime(early)
+        ))
+        // A delay, once late, and city totals, come before it; an update before a delay.
+        let later = updated.addingTimeInterval(ScooterDockStatus.delayedAfter)
+        XCTAssertEqual(summary(idleApps, delayed: true).status(at: later), .delayed(showing: updated))
+        XCTAssertEqual(summary(idleApps, overview: true).status(at: updated), .cityTotals)
+        XCTAssertEqual(summary([app(.lime, early, updating: true)], delayed: true).status(at: later)?.isUpdating, true)
+        // Without faded apps, as before.
+        XCTAssertEqual(summary([]).status(at: updated), .live)
+        XCTAssertNil(ScooterLastSeenLine([]))
+        XCTAssertNil(ScooterDockStatus.updating([app(.lime, early, updating: false)]))
+    }
+
+    func testAFadedScooterTappedSaysWhoseItIsWhenItWasSeenAndThatItMayHaveMoved() {
+        let now = Date(timeIntervalSince1970: 1_790_000_000)
+        let seenAt = now.addingTimeInterval(-600)
+        let idle = ScooterLastSeenTip(provider: .ryde, status: ScooterLastSeenStatus(seenAt: seenAt, updating: false), now: now)
+        XCTAssertEqual(idle.title, String(
+            format: String(localized: "%1$@ · last seen %2$@"), "Ryde", ScooterDockStatus.seenTime(seenAt, now: now)
+        ))
+        XCTAssertTrue(idle.title.hasPrefix("Ryde"))
+        XCTAssertEqual(idle.body, String(localized: "May have moved since"))
+        let updating = ScooterLastSeenTip(provider: .ryde, status: ScooterLastSeenStatus(seenAt: seenAt, updating: true), now: now)
+        XCTAssertEqual(updating.title, idle.title)
+        XCTAssertEqual(updating.body, String(localized: "May have moved · new positions on the way"))
+        XCTAssertNotEqual(updating.body, idle.body)
+        // Seen on another day: with the day of the week.
+        let daysAgo = ScooterLastSeenTip(
+            provider: .lime,
+            status: ScooterLastSeenStatus(seenAt: now.addingTimeInterval(-50 * 3_600), updating: false),
+            now: now
+        )
+        XCTAssertTrue(daysAgo.title.contains(ScooterDockStatus.seenTime(now.addingTimeInterval(-50 * 3_600), now: now)))
+        XCTAssertNotEqual(
+            ScooterDockStatus.seenTime(now.addingTimeInterval(-50 * 3_600), now: now),
+            ScooterDockStatus.clockTime(now.addingTimeInterval(-50 * 3_600))
+        )
     }
 
     func testDockStatusTextCarriesTheTimeOrTheMinutes() {

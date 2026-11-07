@@ -98,8 +98,42 @@ struct ScooterProviderEntry: Identifiable, Equatable, Sendable {
     /// dashed and never selected, with a warning icon in the dock and
     /// "Not sharing data right now" in the filter sheet.
     let isDown: Bool
+    /// Its scooters drawn faded in view where they were last seen, counted apart; nil without any.
+    var faded: Faded? = nil
 
     var id: String { provider.id }
+
+    /// How many of a provider's scooters stand faded in view, before the provider filter and after
+    /// the battery's, when they were seen, and whether new positions of its are on their way.
+    struct Faded: Equatable, Sendable {
+        let count: Int
+        let seenAt: Date
+        let updating: Bool
+
+        /// None of the provider's own counted, the number the chip shows instead, greyed.
+        static func shown(count: Int, faded: Faded?) -> Faded? {
+            count == 0 ? faded : nil
+        }
+
+        /// Under the provider's name in the panel's list: "updating…", or "last seen 14:02".
+        var note: String {
+            updating
+                ? String(localized: "updating…")
+                : String(format: String(localized: "last seen %@"), ScooterDockStatus.seenTime(seenAt))
+        }
+
+        /// What VoiceOver adds to the chip: "44 faded, last seen at 14:02, updating."
+        var accessibilityText: String {
+            String(
+                format: updating
+                    ? String(localized: "%1$lld faded, last seen at %2$@, updating.")
+                    : String(localized: "%1$lld faded, last seen at %2$@."),
+                locale: ScooterLanguage.current.locale,
+                Int64(count),
+                ScooterDockStatus.seenTime(seenAt)
+            )
+        }
+    }
 
     /// "Bird: not sharing data right now", the accessibility label of a down chip.
     var downLabel: String {
