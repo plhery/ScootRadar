@@ -347,7 +347,12 @@ paused for the cold, snowy months. The ride-sharing pilot program will return
 in spring 2027"; its rider-map area held 124 on 1 November and none from 4
 November. The catalog pauses it from 2 November until 1 April, Toronto time,
 when the city's spring notice brought the scooters back: check in late March
-2027.
+2027. Brampton's area followed: Bird's rider map held 103 there on 1
+November, 56 on 2 and 3 November, 7 on 5 November and none from the evening
+of 6 November. The city sets the season each year (1 April to 16 November in
+2025) and gave 2026's, which opened on 1 April, no end, so the catalog pauses
+it from 7 November until 1 April, Toronto time, the day the 2026 season
+opened: check in late March 2027 for the city's 2027 dates.
 
 Elsewhere the winter stop is announced each year, or is the operator's own,
 so the catalog sets no window, and an empty feed shows as an empty town (see
@@ -409,7 +414,7 @@ above):
   bylaws set no dates. Paused from 1 November 2026 (above).
 - **Brampton** set its seasons each year: 1 May to 30 November in 2024, 1
   April to 16 November in 2025; the 2026 season opened on 1 April with no
-  end date. **Oshawa**'s ran from April to 1 December in 2023 and 2024, and
+  end date (paused from 7 November 2026, above). **Oshawa**'s ran from April to 1 December in 2023 and 2024, and
   Bird "paused for the cold, snowy months" in 2025 and again from 2 November
   2026 (paused, above).
 - **Cochrane** runs "through the warmer months, weather permitting" (paused

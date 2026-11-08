@@ -200,7 +200,12 @@
         "east": -79.65081
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "674ea69f-cc3a-47d2-b22e-1c6de0ee2f57"
+      "birdAppArea": "674ea69f-cc3a-47d2-b22e-1c6de0ee2f57",
+      "seasonal": {
+        "from": "11-07",
+        "until": "04-01",
+        "timeZone": "America/Toronto"
+      }
     },
     {
       "id": "bird_ca_app_cochrane",

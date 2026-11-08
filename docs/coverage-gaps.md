@@ -1791,7 +1791,9 @@ Bonaire had feeds to add. Survey files are in
   On 2 November Kamloops held 143, Vernon 94, Oshawa 50, Brampton 56,
   Bloomington 239 and Mankato 38. Oshawa held none from 4 November, its city saying the
   program "paused for the cold, snowy months" as of 2 November, and is paused
-  from that day until 1 April (below).
+  from that day until 1 April (below). Brampton held 7 on 5 November and
+  none from the evening of 6 November, and is paused from 7 November until 1
+  April; its city gave the 2026 season no end.
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));

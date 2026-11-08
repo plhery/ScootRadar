@@ -187,7 +187,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Vaughan\'s scooters, Lime\'s and Bird\'s, are away from 1 November until 1 May, Windsor\'s from 1 November and Oshawa\'s from 2 November until 1 April', () => {
+  it('says Vaughan\'s scooters, Lime\'s and Bird\'s, are away from 1 November until 1 May, Windsor\'s from 1 November, Oshawa\'s from 2 November and Brampton\'s from 7 November until 1 April', () => {
     // The City of Vaughan pauses its shared e-scooters from 1 November 2026; they came back on 1 May 2026.
     const vaughan: [number, number] = [43.7955, -79.5323];
     // 23:30 on 31 October in Vaughan (UTC-4) is still in season; 00:30 on 1 November is not.
@@ -216,6 +216,16 @@ describe('Canada', () => {
     expect(activeSeasonalPause(windsor, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Windsor, ON', month: 4 });
     expect(activeSeasonalPause(windsor, Date.UTC(2027, 3, 1, 18))).toBeNull();
     expect(feedPaused('canada:bird_ca_windsor', winter)).toBe(true);
+    // Brampton sets its season each year (1 April to 16 November in 2025) and gave 2026 no end; Bird's feed fell from 103
+    // on 2 November to none from 7 November. Mississauga's bounds take in the middle of Brampton, so the pause is read
+    // in its north end, outside them.
+    const brampton: [number, number] = [43.76, -79.77];
+    // 23:30 on 6 November in Brampton (UTC-5) is still in season; 00:30 on the 7th is not.
+    expect(activeSeasonalPause(brampton, Date.UTC(2026, 10, 7, 4, 30))).toBeNull();
+    expect(activeSeasonalPause(brampton, Date.UTC(2026, 10, 7, 5, 30))).toEqual({ city: 'Brampton, ON', month: 4 });
+    expect(activeSeasonalPause(brampton, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Brampton, ON', month: 4 });
+    expect(activeSeasonalPause(brampton, Date.UTC(2027, 3, 1, 18))).toBeNull();
+    expect(feedPaused('canada:bird_ca_app_brampton', winter)).toBe(true);
   });
 
   it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s, Pickering\'s, Medicine Hat\'s and Waterloo Region\'s from 1 November and Cochrane\'s, Cranbrook\'s and Okotoks\'s from 2 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
@@ -315,7 +325,7 @@ describe('Canada', () => {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:on:Vaughan', 'ca:on:Windsor', 'ca:ab:Cochrane', 'ca:bc:Cranbrook',
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:on:Vaughan', 'ca:on:Windsor', 'ca:on:Brampton', 'ca:ab:Cochrane', 'ca:bc:Cranbrook',
         'ca:ab:Medicine Hat', 'ca:ab:Okotoks', 'ca:on:Oshawa', 'ca:bc:Penticton', 'ca:on:Pickering', 'ca:ab:Spruce Grove', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:on:Waterloo Region', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
   });
 
