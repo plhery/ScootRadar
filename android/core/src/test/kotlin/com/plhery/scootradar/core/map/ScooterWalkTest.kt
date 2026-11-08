@@ -441,6 +441,59 @@ class ScooterWalkTest {
     }
 
     @Test
+    fun locationTakenBackEndsTheWalkFromTheRiderAndDirectionsNeverAsksFromWhereTheyWere() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val h = shownWalk(to = target)
+        assertEquals(1, h.directions.requests.size)
+
+        // Location turned off for the app in Settings, or for the whole phone, while it stays open.
+        h.manager.status = ScooterAuthorizationStatus.Denied
+        h.model.authorizationChanged()
+
+        assertNull(h.model.userLocation.value)
+        assertNull(h.model.walk.value)
+        assertNull(h.model.walkTrail)
+        assertEquals(ScooterDirectionsControl.Directions, h.model.directionsControl(ScooterWalkTarget.Scooter(target)))
+
+        h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
+        runCurrent()
+
+        assertEquals(ScooterWalkPhase.Failed(ScooterWalkFailure.NoLocation), h.model.walk.value?.phase)
+        assertEquals(1, h.directions.requests.size)
+    }
+
+    @Test
+    fun locationRefusedByTheLocationServiceIsForgottenToo() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val h = shownWalk(to = target)
+
+        h.manager.status = ScooterAuthorizationStatus.Denied
+        h.model.locationFailed(ScooterLocationError.Denied)
+
+        assertNull(h.model.userLocation.value)
+        assertNull(h.model.walk.value)
+    }
+
+    @Test
+    fun locationTakenBackLeavesAWalkFromASearchedPlace() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val h = harness(vehicles = listOf(target), rider = rider)
+        h.model.focusOnAddress(MapDestination(title = "Paradeplatz", point = point(east = 0, north = 50)))
+        h.model.selectScooter(target.id)
+        h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
+        val shown = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Shown }
+        assertTrue(shown)
+
+        h.manager.status = ScooterAuthorizationStatus.Denied
+        h.model.authorizationChanged()
+
+        assertNull(h.model.userLocation.value)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        assertEquals(1, h.directions.requests.size)
+        assertEquals(point(east = 0, north = 50), h.directions.requests.firstOrNull()?.origin)
+    }
+
+    @Test
     fun aRouteFromASearchedPlaceDoesNotFollowTheRider() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val h = harness(vehicles = listOf(target), rider = null)

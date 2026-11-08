@@ -1532,6 +1532,7 @@ class ScooterMapController(
         if (!status.isAuthorized) {
             stopHeadingUpdates()
         }
+        if (status == ScooterAuthorizationStatus.Denied || status == ScooterAuthorizationStatus.Restricted) forgetUserLocation()
         // The location service can deliver the current authorization state as soon as it is listened to. Wait
         // until the app has actually requested a location so that setting up cannot unexpectedly recentre
         // the map.
@@ -1643,6 +1644,7 @@ class ScooterMapController(
     /** The location service could not locate the phone. */
     fun locationFailed(error: ScooterLocationError) {
         if (error == ScooterLocationError.Denied) {
+            forgetUserLocation()
             when (locationManager.authorizationStatus) {
                 ScooterAuthorizationStatus.Denied -> setLocationProblem(ScooterLocationIssue.Denied)
                 ScooterAuthorizationStatus.Restricted -> setLocationProblem(ScooterLocationIssue.Restricted)
@@ -1653,6 +1655,18 @@ class ScooterMapController(
         if (error == ScooterLocationError.LocationUnknown && locationTimeoutTask != null) return
         _isLocating.value = false
         finishLocationAttemptWithoutFix()
+    }
+
+    /**
+     * Location taken back in Settings or turned off for the whole phone, or refused by the location service: where
+     * the rider was goes with it, so that nothing goes on using it, a walk from there, the next Directions or the
+     * scooters asked for around it, until location is allowed again. A searched place stays, and its walk with it.
+     */
+    private fun forgetUserLocation() {
+        bestLocationCandidate = null
+        _locationAccuracy.value = 0.0
+        distanceOrigin = startCenter
+        setUserLocation(null)
     }
 
     private fun beginLocationTimeout() {
