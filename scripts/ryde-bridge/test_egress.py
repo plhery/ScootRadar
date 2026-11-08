@@ -72,6 +72,39 @@ class PoolTests(unittest.TestCase):
         self.pool.settle('failed', 0, 0, 1003)
         self.assertEqual(self.pool.snapshot(1004)['rollingHour'][key], 2)
 
+    def test_readiness_does_not_wait_for_a_concurrent_writer(self):
+        self.pool.begin_cycle(1000)
+        writer = Pool(self.base)
+        try:
+            writer.db.execute('BEGIN IMMEDIATE')
+            self.pool.db.execute('PRAGMA busy_timeout=0')
+            self.assertEqual(self.pool.available_at(1001), 1001)
+            # The real charge still fails closed while another writer owns accounting.
+            import sqlite3
+            with self.assertRaises(sqlite3.OperationalError): self.pool.charge('busy', 10, 1001)
+        finally:
+            writer.db.rollback(); writer.close()
+        self.assertEqual(sum(self.pool.snapshot(1002)['rollingHour'].values()), 0)
+
+    def test_old_retained_requests_do_not_make_hot_budget_checks_scan_the_day(self):
+        key = self.pool.begin_cycle(10000)
+        self.pool.db.executemany('INSERT INTO requests(id,gateway,at) VALUES(?,?,?)',
+                                ((str(n), key, 5000) for n in range(20000)))
+        self.pool.charge('recent', 10, 10001)
+        # Bound SQLite work, rather than relying on a machine-specific elapsed time.
+        # Scanning the retained rows exceeds this allowance even if all are in memory.
+        def budget():
+            steps = [0]
+            def progress():
+                steps[0] += 100
+                return steps[0] > 5000
+            self.pool.db.set_progress_handler(progress, 100)
+        try:
+            budget(); self.assertEqual(self.pool.available_at(10002), 10002)
+            budget(); self.pool.charge('another', 10, 10002)
+        finally: self.pool.db.set_progress_handler(None, 0)
+        self.assertEqual(self.pool.snapshot(10003)['rollingHour'][key], 2)
+
     def test_failed_startup_does_not_trap_least_used_selection_on_one_gateway(self):
         bad = self.pool.begin_cycle(1000)
         other = next(key for key in self.pool.gateways if key != bad)

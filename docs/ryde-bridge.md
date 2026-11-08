@@ -184,6 +184,10 @@ When no launch fits, the worker waits before asking the broker for another job.
 A real Ryde 403/429 pauses the entire pool for at least 15 minutes, in addition
 to the worker's increasing refusal backoff; it does not immediately move the
 refused request to another IP. Failed accounting also prevents forwarding.
+Readiness checks use a read transaction; actual selection and charging recheck the
+budget under the write lock. Time-indexed rolling counts and gateway-specific
+charges avoid scanning the retained day for each native request. Local database
+contention retries after five seconds without crashing or triggering an app-failure hold.
 
 Inspect private, credential-free counters with:
 

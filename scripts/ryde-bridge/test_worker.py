@@ -138,4 +138,19 @@ class ServeTests(unittest.TestCase):
             broker.assert_not_called()
             self.assertEqual(json.loads((base/'worker-status.json').read_text())['reason'],'DatacenterBudget')
 
+    def test_accounting_lock_retries_without_crashing_or_holding_the_app(self):
+        import sqlite3
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name); waits=[]
+            def stop(seconds,path):
+                waits.append(seconds)
+                if len(waits)==5:path.write_text('{}')
+            with patch('worker.egress.available_at',side_effect=sqlite3.OperationalError('database is locked')), \
+                 patch('worker.broker') as broker,patch('worker.relaunch') as relaunch, \
+                 patch('worker.wait_interval',side_effect=stop):
+                serve({},base)
+            self.assertEqual(waits,[5]*5)
+            broker.assert_not_called(); relaunch.assert_not_called()
+            self.assertEqual(json.loads((base/'worker-status.json').read_text())['reason'],'DatacenterAccounting')
+
 if __name__=='__main__':unittest.main()

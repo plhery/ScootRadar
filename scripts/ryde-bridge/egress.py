@@ -60,6 +60,7 @@ class Pool:
                 status INTEGER, request_bytes INTEGER NOT NULL DEFAULT 0,
                 response_bytes INTEGER NOT NULL DEFAULT 0);
             CREATE INDEX IF NOT EXISTS requests_gateway_at ON requests(gateway,at);
+            CREATE INDEX IF NOT EXISTS requests_at ON requests(at);
             CREATE TABLE IF NOT EXISTS state (key TEXT PRIMARY KEY, value TEXT NOT NULL);
         ''')
 
@@ -80,7 +81,9 @@ class Pool:
         return now
 
     def _counts(self, now):
-        return dict(self.db.execute('SELECT gateway,count(*) FROM requests WHERE at>? GROUP BY gateway', (now-WINDOW,)))
+        # The gateway-first index makes GROUP BY cheap but scans the entire retained day.
+        # Bound this hot query to the rolling hour before grouping its results.
+        return dict(self.db.execute('SELECT gateway,count(*) FROM requests INDEXED BY requests_at WHERE at>? GROUP BY gateway', (now-WINDOW,)))
 
     def _available(self, now):
         hold = self._get('holdUntil', 0)
@@ -122,9 +125,11 @@ class Pool:
                   'failedRequests': failed, 'until': now+TRANSPORT_COOLDOWN})
 
     def available_at(self, now=None):
-        self.db.execute('BEGIN IMMEDIATE')
+        # This is only a readiness hint. Actual selection and charging still acquire the
+        # write lock and recheck the budget; polling must not compete with proxy writes.
+        self.db.execute('BEGIN')
         try:
-            now = self._now(now)
+            now = max(time.time() if now is None else now, self._get('clock', 0))
             self._available(now)
             return now
         except EgressWait as error:
@@ -163,7 +168,8 @@ class Pool:
             identity = active.get('gateway')
             if identity not in self.gateways or active.get('until', 0) <= now:
                 raise EgressWait(now+60)
-            count = self._counts(now).get(identity, 0)
+            count = self.db.execute('SELECT count(*) FROM requests WHERE gateway=? AND at>?',
+                                    (identity, now-WINDOW)).fetchone()[0]
             if count >= 200:
                 raise EgressWait(now+WINDOW)
             self.db.execute('INSERT INTO requests(id,gateway,at,request_bytes) VALUES(?,?,?,?)',

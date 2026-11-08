@@ -12,6 +12,7 @@ import http.client
 import uuid
 import math
 import re
+import sqlite3
 import egress
 
 ROOT=Path.home()/'.local/share/scootradar/ryde-bridge'
@@ -174,11 +175,11 @@ def serve(config, base):
         if time.time()<hold_until:
             save(base/'worker-status.json',{'state':'held','reason':reason,'until':hold_until,'at':time.time()})
             wait_interval(hold_until-time.time(),stop);continue
-        available=egress.available_at(base)
-        if available>time.time():
-            save(base/'worker-status.json',{'state':'held','reason':'DatacenterBudget','until':available,'at':time.time()})
-            wait_interval(available-time.time(),stop);continue
         try:
+            available=egress.available_at(base)
+            if available>time.time():
+                save(base/'worker-status.json',{'state':'held','reason':'DatacenterBudget','until':available,'at':time.time()})
+                wait_interval(available-time.time(),stop);continue
             job=broker(config,'GET','/internal/ryde/job')
             retry=BROKER_RETRY
             if job:
@@ -197,6 +198,11 @@ def serve(config, base):
                 relaunch();last_trigger=time.time() # allow due native key renewals
             save(base/'worker-status.json',{'state':'ready','at':time.time()})
             wait_interval(0 if job else 2,stop)
+        except sqlite3.OperationalError:
+            # Local accounting contention is neither an app failure nor an upstream denial.
+            # Keep routing closed and retry promptly without killing the worker.
+            save(base/'worker-status.json',{'state':'held','reason':'DatacenterAccounting','at':time.time()})
+            wait_interval(BROKER_RETRY,stop)
         except BrokerError as error:
             save(base/'worker-status.json',{'state':'held','reason':'BrokerError','detail':str(error),'at':time.time()})
             wait_interval(retry,stop);retry=min(retry*2,BROKER_RETRY_MAX)
