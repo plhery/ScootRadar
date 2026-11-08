@@ -53,6 +53,8 @@ const RULE_KINDS: RuleKind[] = [...KINDS, 'parking', 'racksOnly', 'pavement'];
 
 const NOTES: Partial<Record<ZoneDataState, TranslationKey>> = {
   zoomIn: 'zones.zoomIn',
+  // Some zones were left out of the area's answer: those drawn are named, and zoomed in, all are.
+  partial: 'zones.zoomIn',
   failed: 'zones.failed',
 };
 
@@ -105,7 +107,7 @@ export default function ZoneLegend({ state, zones, rules = [] }: {
   const count = zones.length;
   const note = state === 'off' ? null
     : NOTES[state] ?? (state === 'shown' && count === 0 && !rules.length ? 'zones.none' : null);
-  const kinds = new Set<RuleKind>(note || state === 'off' || (state === 'shown' && count === 0) ? [] : KINDS);
+  const kinds = new Set<RuleKind>((note && state !== 'partial') || state === 'off' || (state === 'shown' && count === 0) ? [] : KINDS);
   // The limits "Slow" names: the operators' slow zones' while their kinds are named, and those of the cities'
   // slow rules that hold at all hours; a city's line names its own.
   const slowSpeeds = kinds.has('slow') ? zones.flatMap(zone => zone.kind === 'slow' ? [zone.maxSpeedKph] : []) : [];

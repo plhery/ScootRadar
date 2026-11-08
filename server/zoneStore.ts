@@ -12,6 +12,8 @@ interface Entry {
   zones: StoredZone[];
   loadedAt: number;
   failed: boolean;
+  /** Whether any read of the feed's zones succeeded: a failure alone leaves its rules unknown, not absent. */
+  read: boolean;
   wantedAt: number;
 }
 
@@ -41,11 +43,13 @@ export function createZoneStore(options: ZoneStoreOptions = {}) {
 
   function load(feed: ZoneFeed) {
     const done = feed.load().then(zones => {
-      entries.set(feed.id, { zones, loadedAt: now(), failed: false, wantedAt: entries.get(feed.id)?.wantedAt ?? now() });
+      entries.set(feed.id, { zones, loadedAt: now(), failed: false, read: true, wantedAt: entries.get(feed.id)?.wantedAt ?? now() });
     }, (error: unknown) => {
       // The zones read before stay until those of the next try.
       const old = entries.get(feed.id);
-      entries.set(feed.id, { zones: old?.zones ?? [], loadedAt: now(), failed: true, wantedAt: old?.wantedAt ?? now() });
+      entries.set(feed.id, {
+        zones: old?.zones ?? [], loadedAt: now(), failed: true, read: old?.read ?? false, wantedAt: old?.wantedAt ?? now(),
+      });
       options.onError?.(feed.id, error);
     }).finally(() => loading.delete(feed.id));
     loading.set(feed.id, done);
@@ -67,6 +71,10 @@ export function createZoneStore(options: ZoneStoreOptions = {}) {
     pending(ids: string[]): boolean {
       return ids.some(id => loading.has(id) && !entries.has(id));
     },
+    /** Whether any of these feeds' zones failed to be read and none were read before, even while tried again. */
+    unavailable(ids: string[]): boolean {
+      return ids.some(id => { const entry = entries.get(id); return entry !== undefined && !entry.read; });
+    },
     /** Resolves once these feeds' zones are read, or after timeoutMs. */
     async wait(ids: string[], timeoutMs: number): Promise<void> {
       const waiting = ids.flatMap(id => loading.get(id) ?? []);
@@ -85,7 +93,9 @@ export type ZoneStore = ReturnType<typeof createZoneStore>;
 
 /**
  * The zones of the feeds whose areas reach into the query's, waiting up to
- * waitMs for those not read yet; an answer without them says it is pending.
+ * waitMs for those not read yet; an answer without them says it is pending,
+ * and one without those that failed with none read before says they are
+ * unavailable.
  */
 export async function answerZones(store: ZoneStore, definitions: readonly CollectableScooterFeed[], query: FeedQuery,
   waitMs: number, load = fetchFeedZones): Promise<ZoneResponse> {
@@ -95,5 +105,5 @@ export async function answerZones(store: ZoneStore, definitions: readonly Collec
   const ids = feeds.map(feed => feed.id);
   store.demand(feeds);
   await store.wait(ids, waitMs);
-  return zoneResponse(store.zones(ids), query.bounds, store.pending(ids));
+  return zoneResponse(store.zones(ids), query.bounds, { pending: store.pending(ids), unavailable: store.unavailable(ids) });
 }

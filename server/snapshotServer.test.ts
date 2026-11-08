@@ -659,7 +659,10 @@ describe('collection on demand', () => {
     expect((await fetch(`http://127.0.0.1:${(await start()).port}/api/zones?${view}&zoom=15`,
       { headers: { Authorization: `Bearer ${token}` } })).status).toBe(404);
     let pending = false;
-    const zones = vi.fn(async () => ({ zones: [], meta: { generatedAt: new Date().toISOString(), pending, truncated: false } }));
+    let unavailable = false;
+    const zones = vi.fn(async () => ({
+      zones: [], meta: { generatedAt: new Date().toISOString(), pending, unavailable, truncated: false },
+    }));
     const { port } = await start(undefined, { zones });
     const url = (query: string) => `http://127.0.0.1:${port}/api/zones?${query}`;
     const headers = { Authorization: `Bearer ${token}` };
@@ -673,6 +676,10 @@ describe('collection on demand', () => {
     expect(complete.headers.get('X-Scooter-Public-Cache-Control')).toBe('public, max-age=300');
     expect(zones).toHaveBeenCalledWith(expect.objectContaining({ bounds: { south: 47.36, west: 8.53, north: 47.38, east: 8.55 } }));
     pending = true;
+    expect((await fetch(url(`${view}&zoom=15`), { headers })).headers.get('X-Scooter-Public-Cache-Control')).toBe('private, no-store');
+    // Nor is one without the zones of a feed that failed: kept, it would say there are none for five minutes.
+    pending = false;
+    unavailable = true;
     expect((await fetch(url(`${view}&zoom=15`), { headers })).headers.get('X-Scooter-Public-Cache-Control')).toBe('private, no-store');
   });
 });

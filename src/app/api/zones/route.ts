@@ -18,13 +18,13 @@ export async function GET(request: NextRequest) {
   const error = parsed.ok ? zoneQueryError(parsed.zoom, parsed.query.bounds) : parsed.error;
   if (!parsed.ok || error) return NextResponse.json({ error }, { status: 400, headers });
   const { query } = parsed;
-  if (query.outsideCoverage) return NextResponse.json(zoneResponse([], query.bounds, false), { headers });
+  if (query.outsideCoverage) return NextResponse.json(zoneResponse([], query.bounds, { pending: false }), { headers });
   try {
     const feeds = (await discoverCollectableFeeds()).filter(feed => feed.zoneSource &&
       (!query.providers || query.providers.has(feed.provider)) && coverageIntersects(feed.coverage, query.bounds));
     const zones = await Promise.allSettled(feeds.map(feed => fetchFeedZones(feed.id, feed.provider, feed.zoneSource!)));
     return NextResponse.json(zoneResponse(zones.flatMap(result => result.status === 'fulfilled' ? result.value : []),
-      query.bounds, false), { headers });
+      query.bounds, { pending: false, unavailable: zones.some(result => result.status === 'rejected') }), { headers });
   } catch (failure) {
     console.error(JSON.stringify({ event: 'zones_api_failure', message: failure instanceof Error ? failure.message : String(failure) }));
     return NextResponse.json({ error: 'Zones are temporarily unavailable.' }, { status: 503, headers: { ...headers, 'Retry-After': '30' } });

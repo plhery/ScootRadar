@@ -9,7 +9,8 @@ vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
 
 const view = { bounds: { south: 47.3612, west: 8.5321, north: 47.3788, east: 8.5507 }, zoom: 16 };
 const zone: MapZone = { id: 'f:0', provider: 'dott', kind: 'noRide', polygons: [] };
-const answer = (pending: boolean) => Response.json({ zones: [zone], meta: { generatedAt: '', pending, truncated: false } });
+const answer = (pending: boolean, meta: { unavailable?: boolean; truncated?: boolean } = {}) =>
+  Response.json({ zones: [zone], meta: { generatedAt: '', pending, unavailable: false, truncated: false, ...meta } });
 
 beforeEach(() => vi.useFakeTimers());
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.mocked(track).mockClear(); });
@@ -31,11 +32,42 @@ it('asks for the area rounded out to its grid, and again while the answer is pen
   expect(result.current.state).toBe('loading');
   await act(() => vi.advanceTimersByTimeAsync(250));
   expect(String(fetcher.mock.calls[0][0])).toBe('/api/zones?south=47.36&west=8.52&north=47.38&east=8.56&zoom=14');
-  expect(result.current).toEqual({ zones: [zone], state: 'shown' });
+  // What came is drawn meanwhile; that there are no others is not known yet.
+  expect(result.current).toEqual({ zones: [zone], state: 'loading' });
   await act(() => vi.advanceTimersByTimeAsync(3000));
   expect(fetcher).toHaveBeenCalledTimes(2);
+  expect(result.current).toEqual({ zones: [zone], state: 'shown' });
   await act(() => vi.advanceTimersByTimeAsync(10_000));
   expect(fetcher).toHaveBeenCalledTimes(2);
+});
+
+it('says the zones are unavailable where some are still on their way after the last try', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => answer(true));
+  const { result } = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250 + 3 * 3000));
+  expect(fetcher).toHaveBeenCalledTimes(4);
+  expect(result.current).toEqual({ zones: [zone], state: 'failed' });
+});
+
+it('says the zones are unavailable where some feeds\' could not be read, and asks again once the cache tries them again', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer(false, { unavailable: true }))
+    .mockResolvedValue(answer(false));
+  const { result } = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250));
+  // Those read are drawn, and the area is not said to have no others.
+  expect(result.current).toEqual({ zones: [zone], state: 'failed' });
+  await act(() => vi.advanceTimersByTimeAsync(59_000));
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await act(() => vi.advanceTimersByTimeAsync(1000));
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  expect(result.current).toEqual({ zones: [zone], state: 'shown' });
+});
+
+it('says some zones were left out of a truncated answer', async () => {
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(answer(false, { truncated: true }));
+  const { result } = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250));
+  expect(result.current).toEqual({ zones: [zone], state: 'partial' });
 });
 
 it('says the zones are unavailable when the answer fails', async () => {

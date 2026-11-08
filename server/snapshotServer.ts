@@ -222,9 +222,10 @@ export function createSnapshotServer(options: ServerOptions) {
       const error = zoneQueryError(parsed.zoom, parsed.query.bounds);
       if (error) { response.writeHead(400); response.end(JSON.stringify({ error })); return; }
       const body = await zones(parsed.query);
-      // Zones change rarely: a complete answer may be kept for five minutes.
+      // Zones change rarely: a complete answer may be kept for five minutes. One that lacks some feeds' zones,
+      // on their way or failed, is not kept: asked again, it has them.
       response.writeHead(200, { 'Cache-Control': 'private, no-store',
-        'X-Scooter-Public-Cache-Control': body.meta.pending ? 'private, no-store' : 'public, max-age=300' });
+        'X-Scooter-Public-Cache-Control': body.meta.pending || body.meta.unavailable ? 'private, no-store' : 'public, max-age=300' });
       response.end(JSON.stringify(body));
       return;
     }

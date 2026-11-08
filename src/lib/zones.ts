@@ -52,6 +52,11 @@ export interface ZoneResponse {
     generatedAt: string;
     /** Some feeds' zones are still on their way: ask again in a few seconds. */
     pending: boolean;
+    /**
+     * Some feeds' zones could not be read, and none were before: their rules are unknown, not absent. Asked for
+     * again, the next read is tried a minute after the last.
+     */
+    unavailable: boolean;
     /** Zones were left out to keep the answer small. */
     truncated: boolean;
   };
@@ -220,7 +225,11 @@ export function zoneQueryError(zoom: number | null, bounds: MapBounds): string |
     ? 'Zones are asked for a smaller area' : null;
 }
 
-export function zoneResponse(zones: Iterable<StoredZone>, bounds: MapBounds, pending: boolean, now = Date.now()): ZoneResponse {
+export function zoneResponse(zones: Iterable<StoredZone>, bounds: MapBounds,
+  { pending, unavailable = false }: { pending: boolean; unavailable?: boolean }, now = Date.now()): ZoneResponse {
   const found = zonesInBounds(zones, bounds);
-  return { zones: found.zones, meta: { generatedAt: new Date(now).toISOString(), pending, truncated: found.truncated } };
+  return {
+    zones: found.zones,
+    meta: { generatedAt: new Date(now).toISOString(), pending, unavailable, truncated: found.truncated },
+  };
 }

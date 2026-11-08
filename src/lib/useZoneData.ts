@@ -10,6 +10,8 @@ const QUERY_DEBOUNCE_MS = 250;
 /** While some feeds' zones are still being read, the same area is asked for again this much later, a few times. */
 const PENDING_RETRY_MS = 3_000;
 const PENDING_RETRIES = 3;
+/** Where some feeds' zones could not be read, as soon as the cache tries them again (zoneStore.ts), as many times. */
+const UNAVAILABLE_RETRY_MS = 60_000;
 /**
  * The area asked for is rounded out to a grid of 1/50° (about 2 km), so that views near
  * each other ask the same address and the browser's copy of its answer (kept five
@@ -36,7 +38,12 @@ export function zoneArea(key: string): { bounds: MapBounds; zoom: number } {
   return { bounds: { south: value('south'), west: value('west'), north: value('north'), east: value('east') }, zoom: value('zoom') };
 }
 
-export type ZoneDataState = 'off' | 'zoomIn' | 'loading' | 'shown' | 'failed';
+/**
+ * "partial": some zones were left out to keep the answer small; zoomed in, the area is smaller. "failed": some or
+ * all of the area's zones are unknown, its answer having failed, or some feeds' zones being still on their way or
+ * unreadable; those drawn stay drawn.
+ */
+export type ZoneDataState = 'off' | 'zoomIn' | 'loading' | 'shown' | 'partial' | 'failed';
 
 export interface ZoneData {
   zones: MapZone[];
@@ -53,7 +60,7 @@ const NO_ZONES: MapZone[] = [];
 export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, enabled: boolean): ZoneData {
   const key = enabled ? zoneAreaKey(query) : null;
   const wanted = key !== null;
-  const [answer, setAnswer] = useState<{ key: string; zones: MapZone[]; failed: boolean } | null>(null);
+  const [answer, setAnswer] = useState<{ key: string; zones: MapZone[]; state: 'loading' | 'shown' | 'partial' | 'failed' } | null>(null);
 
   useEffect(() => {
     if (!key) return;
@@ -65,11 +72,19 @@ export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, e
         const response = await fetch(`/api/zones?${key}`, { signal: controller.signal, headers: { Accept: 'application/json' } });
         if (!response.ok) { status = response.status; throw new Error(`HTTP ${response.status}`); }
         const body = await response.json() as ZoneResponse;
-        setAnswer({ key, zones: Array.isArray(body.zones) ? body.zones : [], failed: false });
-        if (body.meta?.pending && retries > 0) timer = window.setTimeout(() => void load(retries - 1), PENDING_RETRY_MS);
+        const pending = Boolean(body.meta?.pending) && retries > 0;
+        // An area whose zones are partly unknown says so: it would otherwise read as one with none.
+        const unknown = Boolean(body.meta?.unavailable) || Boolean(body.meta?.pending);
+        setAnswer({
+          key,
+          zones: Array.isArray(body.zones) ? body.zones : [],
+          state: pending ? 'loading' : unknown ? 'failed' : body.meta?.truncated ? 'partial' : 'shown',
+        });
+        if (pending) timer = window.setTimeout(() => void load(retries - 1), PENDING_RETRY_MS);
+        else if (body.meta?.unavailable && retries > 0) timer = window.setTimeout(() => void load(retries - 1), UNAVAILABLE_RETRY_MS);
       } catch {
         if (controller.signal.aborted) return;
-        setAnswer(current => ({ key, zones: current?.key === key ? current.zones : [], failed: true }));
+        setAnswer(current => ({ key, zones: current?.key === key ? current.zones : [], state: 'failed' }));
         // The kind of failure alone, neither the area nor anything of the visitor: a status apart
         // tells the limit the zones share with the scooters (429) from the cache failing (503).
         track('zones_error', { result: status ? `status_${status}` : 'request_failed' });
@@ -84,5 +99,5 @@ export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, e
   // Those of the area before stay drawn while the new area's are on their way.
   const zones = answer?.zones ?? NO_ZONES;
   if (answer?.key !== key) return { zones, state: 'loading' };
-  return { zones, state: answer.failed ? 'failed' : 'shown' };
+  return { zones, state: answer.state };
 }

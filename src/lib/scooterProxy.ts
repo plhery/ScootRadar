@@ -82,7 +82,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     // The zones of the map's layer come the same way, from the same origin (src/lib/zones.ts).
     const zones = url.pathname === '/api/zones';
     if (parsed.query.outsideCoverage) return Response.json(zones ? {
-      zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, truncated: false },
+      zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, unavailable: false, truncated: false },
     } : {
       vehicles: [], clusters: [], providers: {},
       meta: { partial: false, stale: false, failedSources: [],

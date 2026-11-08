@@ -39,6 +39,21 @@ function listed(container: HTMLElement) {
   };
 }
 
+it('says there are none only of an area whose zones are all known, and to zoom in where some were left out', () => {
+  const note = (container: HTMLElement) => container.querySelector('.zone-legend-note')?.textContent;
+  const { container, rerender } = render(<I18nProvider><ZoneLegend state="shown" zones={[]} /></I18nProvider>);
+  expect(note(container)).toBe('No zones published here');
+  // Unknown rules are not no rules.
+  rerender(<I18nProvider><ZoneLegend state="failed" zones={[]} /></I18nProvider>);
+  expect(note(container)).toBe('Zones unavailable right now');
+  rerender(<I18nProvider><ZoneLegend state="loading" zones={[]} /></I18nProvider>);
+  expect(note(container)).toBeUndefined();
+  // Those drawn are named still.
+  rerender(<I18nProvider><ZoneLegend state="partial" zones={[{ kind: 'noRide' }]} /></I18nProvider>);
+  expect(note(container)).toBe('Zoom in to see the zones');
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow']);
+});
+
 it('names each of a city\'s kinds once, the strongest first, and credits the city once, linked to where it says so', () => {
   const rules = [
     bergen('parking-1', 'parking'), bergen('no-parking-1', 'noParking'), bergen('slow-1', 'slow'),

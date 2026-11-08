@@ -46,12 +46,38 @@ describe('zone store', () => {
     await store.wait(['a'], 1000);
     expect(onError).toHaveBeenCalledWith('a', expect.any(Error));
     expect(store.zones(['a']).map(item => item.id)).toEqual(['a:0']);
+    // They were read once: they stand for the feed's rules meanwhile.
+    expect(store.unavailable(['a'])).toBe(false);
     clock += 59_000;
     store.demand([{ id: 'a', load }]);
     expect(load).toHaveBeenCalledTimes(2);
     clock += 1000;
     store.demand([{ id: 'a', load }]);
     expect(load).toHaveBeenCalledTimes(3);
+  });
+
+  it('says a feed whose first read failed is unavailable, not without zones, until a read succeeds', async () => {
+    let clock = 0;
+    const load = vi.fn<() => Promise<StoredZone[]>>().mockRejectedValueOnce(new Error('HTTP 502'))
+      .mockRejectedValueOnce(new Error('HTTP 502')).mockResolvedValue([zone('a:0')]);
+    const store = createZoneStore({ now: () => clock, onError: () => {} });
+    store.demand([{ id: 'a', load }]);
+    expect(store.unavailable(['a'])).toBe(false);
+    await store.wait(['a'], 1000);
+    expect(store.pending(['a'])).toBe(false);
+    expect(store.unavailable(['a', 'b'])).toBe(true);
+    expect(store.unavailable(['b'])).toBe(false);
+    // Tried again a minute later, it is still unknown while that read is on its way, and after it fails too.
+    clock = 60_000;
+    store.demand([{ id: 'a', load }]);
+    expect(store.unavailable(['a'])).toBe(true);
+    await store.wait(['a'], 1000);
+    expect(store.unavailable(['a'])).toBe(true);
+    clock = 120_000;
+    store.demand([{ id: 'a', load }]);
+    await store.wait(['a'], 1000);
+    expect(store.unavailable(['a'])).toBe(false);
+    expect(store.zones(['a']).map(item => item.id)).toEqual(['a:0']);
   });
 
   it('stops waiting for a slow feed, and lets go of zones nobody asks for', async () => {
@@ -84,7 +110,18 @@ describe('zones answer', () => {
       { ...feed('far', 'dott'), coverage: [{ south: 46, west: 7, north: 46.1, east: 7.1 }] }];
     const answer = await answerZones(createZoneStore(), feeds, { ...query, providers: new Set(['dott', 'tier']) }, 1000, load);
     expect(load.mock.calls.map(([id]) => id)).toEqual(['dott']);
-    expect(answer).toMatchObject({ zones: [{ id: 'dott:0' }], meta: { pending: false, truncated: false } });
+    expect(answer).toMatchObject({ zones: [{ id: 'dott:0' }], meta: { pending: false, unavailable: false, truncated: false } });
+  });
+
+  it('says the zones of a feed whose first read failed are unavailable, beside those of the others', async () => {
+    const load = vi.fn(async (id: string, provider: string) => {
+      if (id === 'lime') throw new Error('HTTP 502');
+      return [zone(`${id}:0`, provider)];
+    });
+    const answer = await answerZones(createZoneStore({ onError: () => {} }), [feed('dott', 'dott'), feed('lime', 'lime')],
+      query, 1000, load);
+    // Dott's are drawn; Lime's rules are unknown, which is not the same as none.
+    expect(answer).toMatchObject({ zones: [{ id: 'dott:0' }], meta: { pending: false, unavailable: true } });
   });
 
   it('says it is pending while a feed it waited for is still being read', async () => {
