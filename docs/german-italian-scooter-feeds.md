@@ -470,7 +470,13 @@ Bolt and Lime publish no Italian feed; Lime's Catania scooters come from its
   sources, Bolt's, Lime's, nextbike's, cambio's and SIGO's too: 52 of its
   58 manifests answered 503 ("Required Feed 'source-voi-koeln' is missing")
   or 500. The cache changed nothing in how it reads them; Sentry groups
-  these stops as SCOOTRADAR-CACHE-5V.
+  these stops as SCOOTRADAR-CACHE-5V. All twelve expired together again on
+  8 November from about 21:42 UTC, for 54 minutes. Voi publishes no public feed of its own for
+  these towns to fall back on: on 9 November 2026 MobilityData's registry
+  listed Voi's own GBFS in Belgium and France only, and in Germany MobiData
+  BW's eight Baden-Württemberg towns; Mobidrom's combined bundle stops with
+  it. So Sentry hears of such a stall only after 3 hours
+  ([OBSERVABILITY.md](OBSERVABILITY.md)); Grafana shows it as it happens.
 - **Scooters:** through the cache's own code at 14:12, Voi had 16,455
   available scooters: Köln 4,074, Düsseldorf / Neuss 2,192, Bonn / Siegburg /
   Sankt Augustin 1,803, Dortmund 1,393, Duisburg / Oberhausen 1,293, Essen

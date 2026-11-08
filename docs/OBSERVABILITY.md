@@ -549,7 +549,14 @@ Tracing is off, and no trace headers go to the operators' feeds.
   often on purpose for an hour or more, as the app maps: its sweep runs late while views
   someone watches take its client's turns, or after a deploy, and a new feed's first
   collection may fail, as Whoosh's Recife, BinBin's Sakarya and a new Lime group in Rome
-  did on 25 October 2026, each back within 10 minutes), outside its seasonal pause. Under a night ban at all its
+  did on 25 October 2026, each back within 10 minutes; 3 hours for a feed from
+  NRW.Mobidrom while the platform still answers it, its last collection having succeeded,
+  refused the status document for its time or got a 404 or a server error: its stalls
+  kept Voi's twelve feeds there expired together for 130, 128 and 136 minutes on 25 and
+  26 October 2026 and 54 on 8 November, back on their own each time, and Voi publishes no feed of its own
+  for those towns to fall back on, so Grafana's "feed stopped" shows such a stall and
+  Sentry hears of it once it outlasts any seen; a refused token (401, 403), a 429 or no
+  answer is told after 5 minutes, as it may be ours), outside its seasonal pause. Under a night ban at all its
   service areas, it waits for the ban to end and tells only if the feed is still expired
   30 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
   Entur keeps serving as it last was, and brought it back 7.5 minutes after the ban on

@@ -85,6 +85,8 @@ export interface FeedFailure {
   message: string;
   /** Set when the status document's time was why (StatusTimestampError). */
   statusAgeSeconds?: number | null;
+  /** The status an operator answered with (UpstreamHttpError). */
+  httpStatus?: number;
 }
 
 /** The failure's rejected status document's age, when it has one. */
@@ -131,9 +133,36 @@ const SLOW_SWEEP_EXPIRY_MS = 60 * 60_000;
  */
 export const SLOW_SWEEP_REPORT_DELAY_MS = 30 * 60_000;
 
-/** How long this feed stays expired before Sentry hears of it, given its own idle expiry if it has one. */
-export function expiredReportDelay(feed: FeedSnapshot, ownIdleExpiryMs = 0): number {
-  return EXPIRED_REPORT_DELAYS_MS[feed.id] ??
+/**
+ * Longer for a feed whose host still answers while its data has stopped (stalledAt), where the stall is the
+ * platform's and nothing on our side or the operator's can be done. NRW.Mobidrom, which publishes Voi's twelve feeds
+ * in North Rhine-Westphalia, stalled so that all twelve stayed expired together for 130, 128 and 136 minutes on 25
+ * and 26 October 2026 and 54 on 8 November (SCOOTRADAR-CACHE-5V), each time back on its own, while Voi's other German
+ * feeds ran on. Voi publishes
+ * no feed of its own for these towns to fall back on: its public GBFS covers Belgium and France, and its other German
+ * towns come from MobiData BW and its rider map. Prometheus and Grafana's "feed stopped" show such a stall; Sentry
+ * hears of it only once it outlasts any seen.
+ */
+const STALL_REPORT_DELAYS_MS: Readonly<Record<string, number>> = { 'www.mobilitaetsdaten.nrw': 3 * 3600_000 };
+
+/**
+ * Whether a feed's last collection says its host answered while its data had stopped: it succeeded, and its data
+ * then aged past the limit; it refused the status document for its time; or the platform answered 404 or a server
+ * error, as NRW.Mobidrom's documents and manifests did on 26 October 2026. A refused token (401, 403), a refusal for
+ * asking too often (429) or no answer at all may be ours, and is reported as usual.
+ */
+export function stalledAt(feed: FeedSnapshot, host: string | undefined, failure: FeedFailure | undefined): string | undefined {
+  const status = failure?.httpStatus;
+  const answered = !feed.failed || failure?.statusAgeSeconds !== undefined || status === 404 || (status !== undefined && status >= 500);
+  return answered ? host : undefined;
+}
+
+/**
+ * How long this feed stays expired before Sentry hears of it, given its own idle expiry if it has one, and its
+ * host when that still answers (stalledAt).
+ */
+export function expiredReportDelay(feed: FeedSnapshot, ownIdleExpiryMs = 0, stalledHost?: string): number {
+  return (stalledHost === undefined ? undefined : STALL_REPORT_DELAYS_MS[stalledHost]) ?? EXPIRED_REPORT_DELAYS_MS[feed.id] ??
     (ownIdleExpiryMs >= SLOW_SWEEP_EXPIRY_MS ? SLOW_SWEEP_REPORT_DELAY_MS : EXPIRED_REPORT_DELAY_MS);
 }
 

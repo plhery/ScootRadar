@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ALWAYS_FAST, createFeedStateLog, expiredBeside, expiredReportDelay, feedState, parkingUp, waitOutCurfew, type FeedCadence,
-  type FeedStateEntry, type StillExpired } from './feedStateLog';
+import { ALWAYS_FAST, createFeedStateLog, expiredBeside, expiredReportDelay, feedState, parkingUp, stalledAt, waitOutCurfew,
+  type FeedCadence, type FeedFailure, type FeedStateEntry, type StillExpired } from './feedStateLog';
 import { feedCurfewed } from '../src/lib/seasonalPauses';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 
@@ -373,4 +373,29 @@ it('gives a failed feed\'s change the age of the status document its last collec
     { feed: 'germany:voi_de_bonn', state: 'ok' },
     { feed: 'germany:voi_de_essen', state: 'ok' },
   ]);
+});
+
+it('tells Sentry of NRW.Mobidrom\'s stalls only once they outlast any seen, and of what may be ours as usual', () => {
+  const nrw = 'www.mobilitaetsdaten.nrw';
+  const koeln = feed({ id: 'germany:voi_de_koeln', source: 'germany', failed: true });
+  const delay = (failure: FeedFailure | undefined, changes: Partial<FeedSnapshot> = {}, host: string | null = nrw) =>
+    expiredReportDelay({ ...koeln, ...changes }, 0, stalledAt({ ...koeln, ...changes }, host ?? undefined, failure)) / 60_000;
+  const timestamp = 'Status timestamp is missing or out of date';
+  // NRW still answers: documents too old, ahead or without a time, data aged since a collection that succeeded, a
+  // missing document or a server error.
+  expect([
+    delay({ message: timestamp, statusAgeSeconds: 1699 }), delay({ message: timestamp, statusAgeSeconds: -400 }),
+    delay({ message: timestamp, statusAgeSeconds: null }), delay(undefined, { failed: false }),
+    delay({ message: 'GBFS request failed with HTTP 404', httpStatus: 404 }), delay({ message: 'GBFS request failed with HTTP 503', httpStatus: 503 }),
+  ]).toEqual(Array(6).fill(180));
+  // A refused token, asking too often, no answer or an error of ours: as usual.
+  expect([
+    delay({ message: 'GBFS request failed with HTTP 401', httpStatus: 401 }), delay({ message: 'GBFS request failed with HTTP 403', httpStatus: 403 }),
+    delay({ message: 'GBFS request failed with HTTP 429', httpStatus: 429 }), delay({ message: 'fetch failed' }),
+    delay({ message: 'Token request to www.mobilitaetsdaten.nrw failed with HTTP 503' }), delay(undefined),
+  ]).toEqual(Array(6).fill(5));
+  // Another host's stall, and a feed out of the catalog, as before.
+  expect(delay({ message: timestamp, statusAgeSeconds: 1699 }, {}, 'api.mobidata-bw.de')).toBe(5);
+  expect(delay({ message: timestamp, statusAgeSeconds: 1699 }, {}, null)).toBe(5);
+  expect(delay({ message: timestamp, statusAgeSeconds: 1699 }, { id: 'national:voiscooters.com' }, 'api.sharedmobility.ch')).toBe(15);
 });

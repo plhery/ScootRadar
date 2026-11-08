@@ -13,7 +13,7 @@ import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
-import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
+import { upstreamCacheEntriesFor, upstreamJsonCache, UpstreamHttpError } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { statusAge } from '../src/lib/feedValidation';
 import { FeedScheduler, type CollectionAttention } from './feedScheduler';
@@ -21,7 +21,8 @@ import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedFailure, type FeedStateEntry } from './feedStateLog';
+import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, stalledAt, waitOutCurfew, type FeedCadence, type FeedFailure,
+  type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { createVisitorLedger } from './visitorLedger';
 import { createPublicVehicleIds } from './publicVehicleIds';
@@ -124,6 +125,8 @@ const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regio
 let collectable: CollectableScooterFeed[] = [];
 // The worker each feed collected through one is collected through, as the Ryde bridge's (setDefinitions).
 let workerOf = new Map<string, NonNullable<CollectableScooterFeed['worker']>>();
+// The host each feed is collected from (setDefinitions); a feed without one is out of the catalog.
+let hostOf = new Map<string, string>();
 /** Whether the feed is collected through a worker that has stopped asking for jobs, as the Ryde bridge's paused on its Mac. */
 const workerSilent = (feedId: string, now: number) => workerOf.get(feedId)?.silentSince(now) !== undefined;
 /**
@@ -336,7 +339,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
       failed = true;
       metrics.recordCollection(definition, true, (performance.now() - started) / 1000);
       lastErrors.set(definition.id, { message: (error instanceof Error ? error.message : String(error)).slice(0, 300),
-        ...statusAge(error) });
+        ...statusAge(error), ...(error instanceof UpstreamHttpError ? { httpStatus: error.status } : {}) });
       throw error;
     }
   };
@@ -356,6 +359,7 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
   const definitions = withRetentionCaps(collected, schedule.idleIntervalMs);
   collectable = definitions;
   workerOf = new Map(definitions.flatMap(feed => feed.worker ? [[feed.id, feed.worker] as const] : []));
+  hostOf = new Map(definitions.map(feed => [feed.id, feed.host]));
   ownIdleExpiry = ownIdleExpiries(definitions, schedule.idleExpiryMs);
   const lastSeenAges = new Map(definitions.flatMap(feed => feed.lastSeenMaxAgeMs ? [[feed.id, feed.lastSeenMaxAgeMs] as const] : []));
   ownLastSeenMaxAge = id => lastSeenAges.get(id);
@@ -461,10 +465,11 @@ const restoredNational = [...records.values()].filter(feed => feed.source === 'n
 setDefinitions(withAppCollectors([...listedNationalFeeds(restoredNational), ...independentCollectableFeeds()]), feed => feed.source !== 'national');
 scheduler.start();
 void discover();
-// Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, or 30 for one
-// swept slowly on purpose, as the app maps (expiredReportDelay). A restart goes on from the states
-// saved before it (restoredFeedStates).
-const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: feed => expiredReportDelay(feed, ownIdleExpiry(feed.id)),
+// Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, 30 for one swept
+// slowly on purpose, as the app maps, or 3 hours for NRW.Mobidrom's while it still answers
+// (expiredReportDelay). A restart goes on from the states saved before it (restoredFeedStates).
+const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: feed => expiredReportDelay(feed,
+  ownIdleExpiry(feed.id), stalledAt(feed, hostOf.get(feed.id), lastErrors.get(feed.id))),
   // Under a night ban, an operator may take its feed down until morning, as Dott did in Trondheim
   // on 16 October 2026: Sentry hears of it only if it is not back 30 minutes after the ban.
   wait: waitOutCurfew(feedCurfewed),
@@ -474,7 +479,6 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     // is expected to stop; the log still says it did.
     const now = Date.now();
     if (pausedNow(feed, now)) return;
-    const hostOf = new Map(collectable.map(definition => [definition.id, definition.host]));
     // Without one, the feed is out of the catalog, and so are the others listed with it.
     const host = hostOf.get(feed.id);
     const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
