@@ -1,3 +1,5 @@
+import { createServer, type Server } from 'node:http';
+import type { AddressInfo } from 'node:net';
 import { describe, expect, it, vi } from 'vitest';
 import { ClientCredentialsToken, UpstreamTokenError } from '@/lib/clientCredentialsToken';
 import { UpstreamHttpError, UpstreamJsonCache, type UpstreamJsonOptions } from '@/lib/upstreamJsonCache';
@@ -34,6 +36,27 @@ describe('ClientCredentialsToken', () => {
     await expect(token.authorization()).resolves.toBe('Bearer t2');
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(token.issued).toBe(2);
+  });
+
+  it.each([307, 308])('sends the secret nowhere a %i points to', async status => {
+    const listen = (handler: Parameters<typeof createServer>[1]) => new Promise<Server>(resolve => {
+      const server = createServer(handler);
+      server.listen(0, '127.0.0.1', () => resolve(server));
+    });
+    const port = (server: Server) => (server.address() as AddressInfo).port;
+    let elsewhere = 0;
+    const other = await listen((request, response) => { elsewhere++; response.end('{"access_token":"stolen"}'); });
+    const auth = await listen((request, response) => {
+      response.writeHead(status, { Location: `http://127.0.0.1:${port(other)}/token` });
+      response.end();
+    });
+    try {
+      const token = new ClientCredentialsToken({ tokenUrl: `http://127.0.0.1:${port(auth)}/token`, credentials });
+      await expect(token.authorization()).rejects.toThrow(`failed with HTTP ${status}`);
+      expect(elsewhere).toBe(0);
+    } finally {
+      await Promise.all([auth, other].map(server => new Promise(resolve => server.close(resolve))));
+    }
   });
 
   it('asks once for every request that needs a token at the same time', async () => {

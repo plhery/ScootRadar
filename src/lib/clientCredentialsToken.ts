@@ -65,6 +65,9 @@ export class ClientCredentialsToken implements UpstreamAuth {
       headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': 'scootradar/2.0 (scootradar.com)' },
       body: new URLSearchParams({ grant_type: 'client_credentials', client_id: clientId, client_secret: clientSecret }),
+      // A redirect is not followed: a 307 or 308 would send the secret on to wherever it points. It fails as any
+      // answer but a token does.
+      redirect: 'manual',
       cache: 'no-store',
       signal: AbortSignal.timeout(this.options.timeoutMs ?? 15_000),
     });
