@@ -17,7 +17,7 @@ async function arrive(page: ReactNode, banner?: string) {
     const tag = document.createElement('meta');
     tag.name = 'apple-itunes-app';
     tag.content = banner;
-    document.head.append(tag);
+    document.head.appendChild(tag);
   }
   const body = document.body.appendChild(document.createElement('div'));
   await act(async () => { root = hydrateRoot(body, page); });
