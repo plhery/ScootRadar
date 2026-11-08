@@ -1909,6 +1909,8 @@ test('the open search starts on the field and offers your location, the place ch
   await expect(recent).toHaveText('WädenswilSwitzerland');
   const forget = island.getByRole('button', { name: 'Forget this place' });
   await expect(forget).toBeVisible();
+  // Measured once the search has settled in: its content slides into place as it opens, between one measure and the next.
+  await island.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
   const location = (await island.getByRole('button', { name: 'Use my location' }).boundingBox())!;
   const row = (await recent.boundingBox())!;
   expect(row.y).toBeGreaterThanOrEqual(location.y + location.height - 1);
