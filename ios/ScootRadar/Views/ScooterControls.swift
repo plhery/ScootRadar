@@ -3118,11 +3118,13 @@ struct ZoneLegend: View {
         }
     }
 
-    /// What it says instead of the operators' kinds: never that no zones are published where a city's are drawn,
-    /// or where a city's are on their way or unavailable.
+    /// What it says instead of the operators' kinds, or beside them where some were left out: never that no zones
+    /// are published where a city's are drawn, or where a city's are on their way or unavailable, nor where the
+    /// area's are not all known.
     func note(hasRules: Bool) -> String? {
         switch state {
-        case .zoomIn: String(localized: "Zoom in to see the zones")
+        // Also where some zones were left out of the area's answer: those drawn are named, and zoomed in, all are.
+        case .zoomIn, .partial: String(localized: "Zoom in to see the zones")
         case .failed: String(localized: "Zones unavailable right now")
         case .shown where count == 0 && !hasRules && notices.isEmpty: String(localized: "No zones published here")
         default: nil
@@ -3158,7 +3160,8 @@ struct ZoneLegend: View {
     }
 
     private func namesOperatorKinds(besideNote: Bool) -> Bool {
-        !besideNote && state != .off && !(state == .shown && count == 0)
+        // An answer with zones left out asks to zoom in beside the kinds of those drawn, not instead of them.
+        (!besideNote || state == .partial) && state != .off && !(state == .shown && count == 0)
     }
 
     /// A line for each of the cities' rules whose hours set it apart, or that does not hold yet, by kind,

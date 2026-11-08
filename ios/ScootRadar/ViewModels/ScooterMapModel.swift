@@ -333,6 +333,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// Where the recent place is kept; without one, as in tests and previews, it lasts as long as the model.
     @ObservationIgnored private let recentPlaceStore: RecentPlaceStore?
     @ObservationIgnored private let locationTimeout: Duration
+    /// How long before an area whose zones are still on their way is asked for again (zonePendingRetry).
+    @ObservationIgnored private let zonePendingRetry: Duration
     @ObservationIgnored private let refreshPolicy: ScooterRefreshPolicy
     @ObservationIgnored private let clock: () -> Date
     @ObservationIgnored private let directions: any WalkingDirectionsClient
@@ -449,6 +451,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         locationManager: CLLocationManager,
         defaults: UserDefaults,
         locationTimeout: Duration = .seconds(5),
+        zonePendingRetry: Duration = ScooterMapModel.zonePendingRetry,
         refreshPolicy: ScooterRefreshPolicy = .standard,
         now: @escaping () -> Date = Date.init,
         directions: any WalkingDirectionsClient = MapKitWalkingDirections(),
@@ -475,6 +478,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         self.recentPlaceStore = recentPlaceStore
         recentPlace = recentPlaceStore?.load()
         self.locationTimeout = locationTimeout
+        self.zonePendingRetry = zonePendingRetry
         self.refreshPolicy = refreshPolicy
         clock = now
         lastInteractionAt = now()
@@ -2404,12 +2408,30 @@ extension ScooterMapModel {
 struct ScooterZoneAnswer: Sendable {
     let area: ScooterZoneArea
     let zones: [ScooterZone]
+    /// Asking failed, or some of the area's zones are unknown: some feeds' could not be read, or were still on
+    /// their way after the last try. Those that came are drawn all the same.
     let failed: Bool
-    /// Some feeds' zones were still on their way.
+    /// Some feeds' zones were still on their way, and the area is asked for again.
     let pending: Bool
+    /// Zones were left out to keep the answer small.
+    var truncated = false
     let receivedAt: Date
 
     var isComplete: Bool { !failed && !pending }
+
+    /// Whether it serves a view's `area`: any within its own, but for one with zones left out, which serves its own
+    /// alone, as a smaller area may have them all, and the legend asks to zoom in for them.
+    func serves(_ area: ScooterZoneArea) -> Bool {
+        truncated ? self.area == area : self.area.contains(area)
+    }
+
+    /// What the legend says of it: the rest still on the way is loading, and an answer with zones left out asks to
+    /// zoom in beside the kinds it names.
+    var state: ScooterZoneState {
+        if failed { return .failed }
+        if pending { return .loading }
+        return truncated ? .partial : .shown
+    }
 }
 
 extension ScooterMapModel {
@@ -2445,10 +2467,10 @@ extension ScooterMapModel {
             setZones(state: .shown)
             return
         }
-        if let answer = zoneAnswer, answer.area.contains(area) {
+        if let answer = zoneAnswer, answer.serves(area) {
             // Unless a pending answer is being asked for again, it stands; the
             // cities' zones follow the map either way.
-            if zoneTaskArea == nil { setZones(state: answer.failed ? .failed : .shown) } else { rebuildMapZones() }
+            if zoneTaskArea == nil { setZones(state: answer.state) } else { rebuildMapZones() }
             return
         }
         if let taskArea = zoneTaskArea, taskArea.contains(area) {
@@ -2458,10 +2480,10 @@ extension ScooterMapModel {
         }
         let now = clock()
         recentZoneAnswers.removeAll { now.timeIntervalSince($0.receivedAt) > Self.zoneAnswerLifetime }
-        if let recent = recentZoneAnswers.first(where: { $0.area.contains(area) }) {
+        if let recent = recentZoneAnswers.first(where: { $0.serves(area) }) {
             cancelZoneRequest()
             zoneAnswer = recent
-            setZones(state: .shown)
+            setZones(state: recent.state)
             return
         }
         requestZones(in: area, after: Self.zoneDebounce, retries: Self.zonePendingRetries)
@@ -2478,8 +2500,13 @@ extension ScooterMapModel {
             do {
                 let response = try await api.zones(in: area)
                 guard !Task.isCancelled, zoneTaskArea == area else { return }
+                let pending = response.pending && retries > 0
+                // An area whose zones are partly unknown says so, keeping those that came: it would otherwise read
+                // as one with none. Not complete, it is asked for again with the scooters.
+                let unknown = !pending && (response.unavailable || response.pending)
                 answer = ScooterZoneAnswer(
-                    area: area, zones: response.zones, failed: false, pending: response.pending, receivedAt: clock()
+                    area: area, zones: response.zones, failed: unknown, pending: pending, truncated: response.truncated,
+                    receivedAt: clock()
                 )
             } catch {
                 guard !Task.isCancelled, zoneTaskArea == area, !(error is CancellationError) else { return }
@@ -2488,9 +2515,9 @@ extension ScooterMapModel {
                 answer = ScooterZoneAnswer(area: area, zones: kept, failed: true, pending: false, receivedAt: clock())
             }
             zoneAnswer = answer
-            if answer.pending, retries > 0 {
+            if answer.pending {
                 // What came is drawn meanwhile.
-                requestZones(in: area, after: Self.zonePendingRetry, retries: retries - 1)
+                requestZones(in: area, after: zonePendingRetry, retries: retries - 1)
             } else {
                 zoneTask = nil
                 zoneTaskArea = nil
@@ -2500,13 +2527,14 @@ extension ScooterMapModel {
                 recentZoneAnswers.insert(answer, at: 0)
                 recentZoneAnswers = Array(recentZoneAnswers.prefix(Self.recentZoneAnswerLimit))
             }
-            setZones(state: answer.failed ? .failed : .shown)
+            setZones(state: answer.state)
         }
     }
 
     /// A failed answer for the zones stands while the map stays in its area, so each refresh of the scooters, on
-    /// its own or asked for, asks for them again: after a load lost to the network they come back with the scooters,
-    /// instead of staying unavailable until the map leaves the area. What was drawn stays drawn meanwhile.
+    /// its own or asked for, asks for them again: after a load lost to the network, or a feed the server could not
+    /// read and tries again a minute later, they come back with the scooters, instead of staying unavailable until
+    /// the map leaves the area. What was drawn stays drawn meanwhile.
     fileprivate func askAgainForFailedZones() {
         guard showsZones, zoneTaskArea == nil, let answer = zoneAnswer, answer.failed else { return }
         requestZones(in: answer.area, after: .zero, retries: Self.zonePendingRetries)

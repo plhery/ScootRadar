@@ -220,9 +220,15 @@ language it is shown in. With the zones on it reads `/api/zones` for the same
 area rounded out to 1/50° (about 2 km), written as the web writes it, so both
 apps ask the same addresses; an answer serves every view inside its area, and
 the last eight serve for five minutes, in memory. While the server is still
-reading some feeds' zones, the app asks again every 3 seconds, three times. An area across the 180° line, east of New Zealand, is
-asked for in one request whose west is greater than its east, as the web map
-does (`GeoBounds`). The endpoint is set in `Services/ScooterAPI.swift` if a
+reading some feeds' zones, the app asks again every 3 seconds, three times, while
+the legend names the kinds of those that came. Where some are still on their way
+after the last try, or a feed's zones could not be read (`meta.unavailable`), the
+legend says the zones are unavailable, not that none are published: those that
+came stay drawn, the answer is not kept, and the next refresh of the scooters
+asks for it again. An answer with zones left out to keep it small
+(`meta.truncated`) names the kinds drawn and asks to zoom in. An area across the
+180° line, east of New Zealand, is asked for in one request whose west is greater
+than its east, as the web map does (`GeoBounds`). The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
 
 The API covers Switzerland and the towns of the catalogs of the other countries

@@ -59,6 +59,34 @@ final class ScooterZonesTests: XCTestCase {
         XCTAssertEqual(response.zones[1].maxSpeedKph, 15)
     }
 
+    func testAnAnswerSaysWhetherSomeFeedsZonesCouldNotBeReadAndAnOlderServersSaysTheyAllWere() throws {
+        let unreadable = #"{"zones":[],"meta":{"generatedAt":"2026-11-08T10:00:00.000Z","pending":false,"unavailable":true,"truncated":false}}"#
+        XCTAssertTrue(try JSONDecoder().decode(ScooterZoneResponse.self, from: Data(unreadable.utf8)).unavailable)
+        // A server of before 8 November 2026 says nothing of it.
+        let older = #"{"zones":[],"meta":{"generatedAt":"2026-11-08T10:00:00.000Z","pending":false,"truncated":true}}"#
+        let response = try JSONDecoder().decode(ScooterZoneResponse.self, from: Data(older.utf8))
+        XCTAssertFalse(response.unavailable)
+        XCTAssertTrue(response.truncated)
+    }
+
+    @MainActor
+    func testTheLegendSaysThereAreNoneOnlyWhereAllTheAreasZonesAreKnownAndToZoomInWhereSomeWereLeftOut() {
+        XCTAssertEqual(ZoneLegend(state: .shown, count: 0).note(hasRules: false), String(localized: "No zones published here"))
+        // Unknown rules are not no rules.
+        let failed = ZoneLegend(state: .failed, count: 0)
+        XCTAssertEqual(failed.note(hasRules: false), String(localized: "Zones unavailable right now"))
+        XCTAssertEqual(failed.kinds(besideNote: true), [])
+        // Those that came are drawn, and named, while the rest are on their way.
+        let loading = ZoneLegend(state: .loading, count: 0)
+        XCTAssertNil(loading.note(hasRules: false))
+        XCTAssertEqual(loading.kinds(besideNote: false), ScooterZoneKind.operatorKinds)
+        // Those drawn are named still, beside the note.
+        let partial = ZoneLegend(state: .partial, count: 3, slowSpeeds: speeds(10))
+        XCTAssertEqual(partial.note(hasRules: false), String(localized: "Zoom in to see the zones"))
+        XCTAssertEqual(partial.kinds(besideNote: true), ScooterZoneKind.operatorKinds)
+        XCTAssertEqual(partial.kindSpeeds(besideNote: true).known, 10 ... 10)
+    }
+
     func testEveryLanguageNamesTheZones() throws {
         let keys = [
             "Ride and parking zones", "Zones", "No riding", "No parking", "Slow", "Parking",
@@ -482,8 +510,167 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertNil(other.mapOperatorSlowSpeeds.known)
     }
 
-    private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil, now: @escaping () -> Date = Date.init) -> ScooterMapModel {
-        ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(), now: now)
+    func testAnAreaWhoseZonesCouldNotBeReadSaysTheyAreUnavailableNotThatItHasNone() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(unavailable: true)
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let failed = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .failed }
+        XCTAssertTrue(failed)
+        // Those read are drawn, and the area is not said to have no others.
+        XCTAssertEqual(operatorZones(model).map(\.id), ["lime:0", "bird:0"])
+        let legend = ZoneLegend(state: model.zoneState, count: model.mapOperatorZoneCount)
+        XCTAssertEqual(legend.note(hasRules: false), String(localized: "Zones unavailable right now"))
+
+        // The next refresh of the scooters asks again, once the server has tried the feed again.
+        await api.setAnswer()
+        model.refresh()
+        let shown = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        XCTAssertEqual(operatorZones(model).count, 2)
+    }
+
+    func testAnAnswerWithZonesThatCouldNotBeReadIsNotKeptForTheMapToComeBackTo() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(unavailable: true)
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let failed = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .failed }
+        XCTAssertTrue(failed)
+
+        await api.setAnswer()
+        var bern = zurich
+        bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
+        model.updateViewport(bern, zoom: 16)
+        let second = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(second)
+
+        // Back in Zürich, its zones are asked for again, not said unavailable from memory.
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .loading)
+        let third = await waitUntil { await api.zoneAreas().count == 3 && model.zoneState == .shown }
+        XCTAssertTrue(third)
+    }
+
+    func testZonesStillOnTheirWayAreLoadingWithThoseThatCameDrawnUntilTheRestCome() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(pending: true)
+        let model = makeModel(api: api, zonePendingRetry: .milliseconds(300))
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let drawn = await waitUntil { await api.zoneAreas().count == 1 && model.mapOperatorZoneCount == 2 }
+        XCTAssertTrue(drawn)
+        // What came is drawn meanwhile; that there are no others is not known yet.
+        XCTAssertEqual(model.zoneState, .loading)
+
+        await api.setAnswer()
+        let shown = await waitUntil { model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        let areas = await api.zoneAreas()
+        XCTAssertGreaterThanOrEqual(areas.count, 2)
+        XCTAssertEqual(model.mapOperatorZoneCount, 2)
+    }
+
+    func testZonesStillOnTheirWayAfterTheLastTryAreSaidUnavailableAndAskedForAgainWithTheScooters() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(pending: true)
+        let model = makeModel(api: api, zonePendingRetry: .milliseconds(10))
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        // The first answer and three more tries.
+        let failed = await waitUntil { await api.zoneAreas().count == 4 && model.zoneState == .failed }
+        XCTAssertTrue(failed)
+        XCTAssertEqual(model.mapOperatorZoneCount, 2, "Those that came stay drawn")
+        try await Task.sleep(for: .milliseconds(100))
+        let tries = await api.zoneAreas()
+        XCTAssertEqual(tries.count, 4)
+
+        await api.setAnswer()
+        model.refresh()
+        let shown = await waitUntil { await api.zoneAreas().count == 5 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+    }
+
+    func testAnAnswerWithZonesLeftOutAsksToZoomInBesideTheKindsAndStillDoesFromMemory() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(truncated: true)
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let partial = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .partial }
+        XCTAssertTrue(partial)
+        XCTAssertEqual(model.mapOperatorZoneCount, 2)
+
+        // Further out and back, the answer at hand still says so.
+        model.updateViewport(MKCoordinateRegion(center: zurich.center, span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)), zoom: 13)
+        XCTAssertEqual(model.zoneState, .zoomIn)
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .partial)
+
+        await api.setAnswer()
+        var bern = zurich
+        bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
+        model.updateViewport(bern, zoom: 16)
+        let second = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(second)
+
+        // Back in Zürich, the answer of a moment ago serves, and still says some were left out.
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .partial)
+        XCTAssertEqual(model.mapOperatorZoneCount, 2)
+        try await Task.sleep(for: .milliseconds(400))
+        let areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 2)
+    }
+
+    func testAnAnswerWithZonesLeftOutServesItsOwnAreaAloneSoThatZoomingInAsksForTheRest() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(truncated: true)
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let partial = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .partial }
+        XCTAssertTrue(partial)
+
+        // Within the same area, the answer stands.
+        var nearby = zurich
+        nearby.center.longitude += 0.003
+        model.updateViewport(nearby, zoom: 16)
+        XCTAssertEqual(model.zoneState, .partial)
+        try await Task.sleep(for: .milliseconds(400))
+        var areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 1)
+
+        // Zoomed in, the smaller area within it is asked for, those drawn staying meanwhile.
+        await api.setAnswer()
+        model.updateViewport(MKCoordinateRegion(center: zurich.center, span: MKCoordinateSpan(latitudeDelta: 0.004, longitudeDelta: 0.004)), zoom: 17)
+        XCTAssertEqual(model.zoneState, .loading)
+        XCTAssertEqual(model.mapOperatorZoneCount, 2)
+        let shown = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        areas = await api.zoneAreas()
+        XCTAssertTrue(areas[0].contains(areas[1]) && areas[0] != areas[1])
+
+        // Back out, the answer of a moment ago serves its own area.
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .partial)
+        try await Task.sleep(for: .milliseconds(400))
+        areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 2)
+    }
+
+    private func makeModel(
+        api: any ScooterAPIClient,
+        defaults: UserDefaults? = nil,
+        zonePendingRetry: Duration = ScooterMapModel.zonePendingRetry,
+        now: @escaping () -> Date = Date.init
+    ) -> ScooterMapModel {
+        ScooterMapModel(
+            api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(),
+            zonePendingRetry: zonePendingRetry, now: now
+        )
     }
 
     /// The operators' zones drawn, without the city's: Zürich's own are drawn there too.
@@ -513,6 +700,10 @@ private actor ZoneStubAPI: ScooterAPIClient {
     private var failure: ScooterAPIError?
     private var areas: [ScooterZoneArea] = []
     private let more: [ScooterZone]
+    /// What the answers say besides their zones: some still on their way, unreadable, or left out.
+    private var pending = false
+    private var unavailable = false
+    private var truncated = false
 
     init(more: [ScooterZone] = []) {
         self.more = more
@@ -532,10 +723,16 @@ private actor ZoneStubAPI: ScooterAPIClient {
         return ScooterZoneResponse(zones: [
             ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]]),
             ScooterZone(id: "bird:0", provider: "bird", kind: .noParking, maxSpeedKph: nil, polygons: [[ring]])
-        ] + more, pending: false, truncated: false)
+        ] + more, pending: pending, unavailable: unavailable, truncated: truncated)
     }
 
     func zoneAreas() -> [ScooterZoneArea] { areas }
+
+    func setAnswer(pending: Bool = false, unavailable: Bool = false, truncated: Bool = false) {
+        self.pending = pending
+        self.unavailable = unavailable
+        self.truncated = truncated
+    }
 
     func setFailure(_ failure: ScooterAPIError?) {
         self.failure = failure

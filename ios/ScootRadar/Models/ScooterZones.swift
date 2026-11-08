@@ -78,6 +78,9 @@ struct ScooterZoneResponse: Equatable, Sendable {
     var zones: [ScooterZone]
     /// Some feeds' zones are still on their way: ask again in a few seconds.
     var pending: Bool
+    /// Some feeds' zones could not be read, and none were before: their rules are unknown, not absent. Asked for
+    /// again, the server tries the next read a minute after the last. Older servers leave it out.
+    var unavailable = false
     /// Zones were left out to keep the answer small.
     var truncated: Bool
 }
@@ -86,6 +89,7 @@ extension ScooterZoneResponse: Decodable {
     private enum CodingKeys: String, CodingKey { case zones, meta }
     private struct Meta: Decodable {
         let pending: Bool?
+        let unavailable: Bool?
         let truncated: Bool?
     }
     /// A zone as it comes, with a kind this version may not know.
@@ -101,6 +105,7 @@ extension ScooterZoneResponse: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let meta = try container.decodeIfPresent(Meta.self, forKey: .meta)
         pending = meta?.pending ?? false
+        unavailable = meta?.unavailable ?? false
         truncated = meta?.truncated ?? false
         // A kind added later is left out, and parking, which only cities set and the
         // operators' legend does not name, as is a ring with too few points.
@@ -186,12 +191,16 @@ struct ScooterZoneArea: Hashable, Sendable {
     }
 }
 
-/// What the zones' legend says while they are turned on.
+/// What the zones' legend says while they are turned on, as on the web (useZoneData.ts). "partial": some zones were
+/// left out to keep the answer small; zoomed in, the area is smaller. "failed": some or all of the area's zones are
+/// unknown, its answer having failed, or some feeds' zones being still on their way after the last try or unreadable;
+/// those drawn stay drawn.
 enum ScooterZoneState: Equatable, Sendable {
     case off
     case zoomIn
     case loading
     case shown
+    case partial
     case failed
 }
 
