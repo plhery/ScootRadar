@@ -7,11 +7,32 @@ import plistlib
 import shutil
 import subprocess
 import sys
+import tempfile
+import re
 
 FILES=['producer_addon.py','producer_runner.py','native_protocol.py','bridge_crypto.py','worker.py','shadow.py','egress.py','egress_addon.py']
 
+def install_map_control(root):
+    """Stable signed identity for the operator-approved, Ryde-only accessibility helper."""
+    identities=subprocess.check_output(['security','find-identity','-v','-p','codesigning'],text=True)
+    match=re.search(r'\b([A-F0-9]{40})\b',identities)
+    if not match: raise SystemExit('A local code-signing identity is required for stable map-control permissions')
+    with tempfile.TemporaryDirectory(dir=root) as name:
+        app=Path(name)/'Ryde Map Control.app';contents=app/'Contents';binary=contents/'MacOS/RydeMapControl'
+        binary.parent.mkdir(parents=True)
+        (contents/'Info.plist').write_bytes(plistlib.dumps({'CFBundleIdentifier':'com.scootradar.RydeMapControl',
+            'CFBundleName':'Ryde Map Control','CFBundleExecutable':'RydeMapControl','CFBundleVersion':'1',
+            'CFBundlePackageType':'APPL','LSUIElement':True,'LSMinimumSystemVersion':'13.0'}))
+        subprocess.run(['swiftc',str(Path(__file__).parent/'RydeMapControl.swift'),'-o',str(binary)],check=True)
+        subprocess.run(['codesign','--force','--sign',match[1],str(app)],check=True,capture_output=True)
+        subprocess.run(['codesign','--verify','--strict',str(app)],check=True,capture_output=True)
+        target=root/app.name
+        if target.exists():shutil.rmtree(target)
+        app.replace(target)
+    print('Installed signed Ryde Map Control; no permission was requested or granted.')
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--restart',action='store_true');p.add_argument('--shadow-hours',type=float);p.add_argument('--worker',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--restart',action='store_true');p.add_argument('--shadow-hours',type=float);p.add_argument('--worker',action='store_true');p.add_argument('--map-control',action='store_true');args=p.parse_args()
     if args.worker and args.shadow_hours is not None:raise SystemExit('Choose production or shadow mode')
     os.umask(0o077)
     if args.shadow_hours is not None and not 0<args.shadow_hours<=24:raise SystemExit('Shadow duration must be 0–24 h')
@@ -20,6 +41,9 @@ def main():
     if not config.get('persistentTransportApproved'): raise SystemExit('Install the authorized scoped transport first')
     state=json.loads((root/'transport-status.json').read_text())
     if state.get('mode') not in {'idle','producer'}: raise SystemExit('Finish any active experiment first')
+    if args.map_control:
+        if args.restart or args.worker or args.shadow_hours is not None:raise SystemExit('Install map control separately before enabling warm refresh')
+        install_map_control(root);return
     for name in FILES: shutil.copyfile(Path(__file__).parent/name,root/name)
     subprocess.run(['swiftc',str(Path(__file__).parent/'RydeLifecycle.swift'),'-o',str(root/'ryde-lifecycle')],check=True)
     agent=Path.home()/'Library/LaunchAgents/com.scootradar.ryde-bridge.plist'

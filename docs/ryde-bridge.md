@@ -142,13 +142,51 @@ E-bikes are excluded; battery/range/provider position-update time remain unknown
 The launch helper confirms termination before returning, so the worker no longer
 adds a fixed two-second pause between arming the job and opening Ryde. Proxy readiness,
 egress selection, termination and job arming still finish before the new launch.
-The unattended worker still relaunches Ryde for each map query, with its window
-hidden. Reopening the existing process does not trigger a map request. An
-interactive map pan, followed by recentering, does produce fresh authenticated
-requests in the same process; recentering an already centered map does not.
-This warm trigger is verified interactively. Replacing the worker's launch trigger
-requires app-specific automation that preserves window focus and handles map state,
-plus the existing routing lease and key-renewal checks.
+With `producer/warm-control.json` set to
+`{"enabled":true,"mode":"minimized-idle"}` (mode 0600), the worker prefers briefly
+activating the existing Ryde process **with its window minimized**. Activation
+triggers the app's own fresh map request. No map pan, scooter selection, synthetic
+mouse/keyboard event or private API is needed. After publishing each result, the
+worker prepares the next read by minimizing and unhiding the home map without
+activation. Keeping this window unhidden but minimized avoids hard suspension.
+
+Fast activation requires 15 seconds without keyboard or mouse activity, no held
+modifier or mouse button, an unlocked session, a single Ryde instance and the
+expected home map with no sheet. The helper checks activity again before activation
+and while waiting. Its window stays minimized, but keyboard focus briefly belongs
+to Ryde, for at most two seconds plus cleanup; the helper then restores the previous
+app. If the user switches apps in the meantime, their selection wins. The cursor
+is never moved. A failure to keep the window minimized or restore focus disables
+fast mode. This is a desktop helper, not a promise of entirely background execution.
+
+Install it with `python3 scripts/ryde-bridge/install.py --map-control`. Its bundle is
+`~/.local/share/scootradar/ryde-bridge/Ryde Map Control.app`. The operator must grant
+macOS **Device Control and Data Access** (called Accessibility on older macOS)
+to this app. The OS permission is broader than its fixed Ryde-only commands;
+the worker never requests or grants permissions. It launches the signed bundle
+through LaunchServices, without activation of the helper itself, and exchanges
+nonce-bound, short-lived commands and replies in private files. A command-line
+child can otherwise be attributed to the worker rather than the approved app. Removing the enable flag or
+revoking permission restores normal hidden restarts. No App Store update is needed.
+
+Opening the helper app pauses fast activation for five minutes, for example before
+screen sharing; normal collection continues by the restart path. The same pause is
+available with its executable's `pause` command, or set `pausedUntil` in the control
+file. `status` reports permission and idle eligibility. `show` is operator-only and
+unminimizes Ryde; pause collection first if inspecting its UI. A separate Space or
+monitor is unnecessary, and should not be relied on to isolate global app focus.
+
+Warm reads reuse the pinned egress only while it has 30 seconds of lease and the
+normal launch headroom remaining. They never extend a lease, reset counts, switch
+egress mid-cycle or bypass refusal holds. Periodic cold launches retain native
+key-renewal opportunities. If activation produces no map within eight seconds,
+the proxy first disarms that exact job on its native-hook event loop. It permits a
+restart only after assigned native maps and key renewals have finished, with no
+unresolved recipient; a live read keeps its deadline instead of being killed.
+Missing permission, a busy desktop, unavailable map or expired route falls back to
+the existing hidden launch path. Cold requests and queueing can still be slower. Private admission and trigger
+records distinguish an idle/permission refusal, a route boundary and a failed fast
+trigger. The bridge Python tests must be run explicitly; CI does not run that suite.
 
 ## Datacenter egress
 

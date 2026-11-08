@@ -13,7 +13,17 @@ if args.count == 2 && args[1] == "status" {
 } else if args.count == 2 && args[1] == "quit" {
     for app in apps { _ = app.terminate() }
     let deadline = Date().addingTimeInterval(10)
+    let wakeAt = Date().addingTimeInterval(0.5)
+    var woke = false
     while apps.contains(where: { !$0.isTerminated }) && Date() < deadline {
+        if !woke && Date() >= wakeAt {
+            // A hidden iPhone-on-Mac process can be suspended and ignore quit.
+            // Unhide without activation to let its queued termination run.
+            for app in apps where !app.isTerminated { _ = app.unhide() }
+            RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+            for app in apps where !app.isTerminated { _ = app.terminate() }
+            woke = true
+        }
         RunLoop.current.run(until: Date().addingTimeInterval(0.1))
     }
     if apps.contains(where: { !$0.isTerminated }) { exit(1) }

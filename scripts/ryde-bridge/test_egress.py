@@ -72,6 +72,17 @@ class PoolTests(unittest.TestCase):
         self.pool.settle('failed', 0, 0, 1003)
         self.assertEqual(self.pool.snapshot(1004)['rollingHour'][key], 2)
 
+    def test_warm_read_reuses_only_a_live_pinned_route_with_launch_headroom(self):
+        key=self.pool.begin_cycle(1000)
+        self.assertTrue(self.pool.warm_ready(1100))
+        self.assertFalse(self.pool.warm_ready(1121))
+        self.assertEqual(self.pool._get('active')['gateway'],key)
+        self.assertEqual(self.pool._get('active')['until'],1150)
+        for n in range(151):self.pool.charge(str(n),0,1001)
+        self.assertFalse(self.pool.warm_ready(1100))
+        self.pool.settle('0',429,0,1002)
+        self.assertFalse(self.pool.warm_ready(1003))
+
     def test_readiness_does_not_wait_for_a_concurrent_writer(self):
         self.pool.begin_cycle(1000)
         writer = Pool(self.base)

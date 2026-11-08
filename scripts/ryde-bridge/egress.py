@@ -157,6 +157,18 @@ class Pool:
             self.db.rollback()
             raise
 
+    def warm_ready(self, now=None):
+        """Reuse only the currently pinned cycle, with time/headroom for a bounded warm read."""
+        self.db.execute('BEGIN')
+        try:
+            now=max(time.time() if now is None else now,self._get('clock',0))
+            active=self._get('active',{});key=active.get('gateway')
+            if self._get('holdUntil',0)>now or key not in self.gateways or active.get('until',0)<now+30:
+                return False
+            count=self.db.execute('SELECT count(*) FROM requests WHERE gateway=? AND at>?',(key,now-WINDOW)).fetchone()[0]
+            return count+LAUNCH_RESERVE<=200
+        finally:self.db.commit()
+
     def charge(self, request_id, request_bytes, now=None):
         """Commit before forwarding, including failed requests. Never change IP mid-cycle."""
         self.db.execute('BEGIN IMMEDIATE')
@@ -224,6 +236,13 @@ def available_at(base):
     pool = Pool(base)
     try: return pool.available_at()
     finally: pool.close()
+
+
+def warm_ready(base):
+    if not configured(base):return False
+    pool=Pool(base)
+    try:return pool.warm_ready()
+    finally:pool.close()
 
 
 if __name__ == '__main__':

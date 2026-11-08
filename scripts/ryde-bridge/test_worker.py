@@ -8,11 +8,130 @@ import tempfile
 import unittest
 import uuid
 from unittest.mock import patch
-from worker import relaunch,save,wait_interval,query,serve
+from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control
 import time
 import urllib.error
 
 class WorkerTests(unittest.TestCase):
+    def warm_root(self,name):
+        root=Path(name);base=root/'producer';(base/'session').mkdir(parents=True);(base/'results').mkdir()
+        save(base/'session/status.json',{'bridgeStage':'bridge-active','paused':False})
+        job={'version':1,'id':'a'*32,'cityId':43,'latitude':59.744,'longitude':10.205,'radius':1,'expiresAt':time.time()+120}
+        return root,base,job
+
+    def test_map_control_uses_launchservices_and_accepts_only_its_nonce_reply(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name)
+            def launch(command,**kwargs):
+                self.assertEqual(command[:4],['/usr/bin/open','-n','-g','-W'])
+                self.assertEqual(command[4],str(root/'Ryde Map Control.app'))
+                self.assertEqual(command[5:7],['--args','run'])
+                request=json.loads((base/'map-control-request.json').read_text())
+                self.assertEqual(request['id'],command[7]);self.assertEqual(request['action'],'status')
+                self.assertLessEqual(request['expiresAt'],time.time()+12)
+                (base/'map-control-results').mkdir()
+                save(base/'map-control-results'/f"{request['id']}.json",{'trusted':True})
+            with patch('worker.subprocess.run',side_effect=launch):
+                self.assertEqual(run_map_control(root,'status'),{'trusted':True})
+            self.assertEqual(list((base/'map-control-results').iterdir()),[])
+            with self.assertRaises(ValueError):run_map_control(root,'show')
+
+    def test_map_control_does_not_reuse_a_stale_permission_reply(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name);(base/'map-control-results').mkdir()
+            save(base/'map-control-results'/('a'*32+'.json'),{'trusted':True})
+            with patch('worker.subprocess.run'):
+                with self.assertRaises(FileNotFoundError):run_map_control(root,'status')
+
+    def test_warm_admission_requires_opt_in_idle_permission_and_eligible_route(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name)
+            helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
+            good={'trusted':True,'singleInstance':True,'idleEligible':True,'minimizedRefresh':True,'locked':False}
+            with patch('worker.egress.warm_ready',return_value=True) as route,patch('worker.run_map_control') as run:
+                self.assertFalse(warm_available(root));route.assert_not_called()
+                save(base/'warm-control.json',{'enabled':True})
+                self.assertFalse(warm_available(root));route.assert_not_called()
+                save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle','pausedUntil':time.time()+300})
+                self.assertFalse(warm_available(root));route.assert_not_called()
+                save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
+                run.return_value=good
+                self.assertTrue(warm_available(root))
+                for key in good:
+                    run.return_value={**good,key:not good[key]}
+                    self.assertFalse(warm_available(root),key)
+                route.return_value=False;run.reset_mock()
+                self.assertFalse(warm_available(root));run.assert_not_called()
+
+    def test_prepare_failure_does_not_invalidate_an_already_published_map(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name)
+            helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
+            save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
+            with patch('worker.run_map_control',side_effect=subprocess.TimeoutExpired('prepare',3)) as run:
+                prepare_warm(root)
+            self.assertEqual(run.call_args.args[1],'prepare')
+
+    def test_warm_query_uses_a_fresh_job_without_quitting_or_changing_route(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]}
+            def run(_root,action):
+                self.assertEqual(action,'refresh')
+                self.assertEqual(json.loads((base/'job.json').read_text()),job)
+                save(base/'results'/f"{job['id']}.json",result)
+                return {'dispatched':True,'trigger':'minimized-activation','focusRestored':True,'stayedMinimized':True,'cursorPreserved':True}
+            with patch('worker.warm_available',return_value=True),patch('worker.run_map_control',side_effect=run),patch('worker.relaunch') as cold:
+                self.assertEqual(query(job,root),result)
+            cold.assert_not_called()
+
+    def test_interrupted_warm_trigger_never_quits_a_live_native_read(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]}
+            def pending(*args):
+                save(base/'results'/f"{job['id']}.json",result);return False
+            with patch('worker.warm_available',return_value=True),patch('worker.run_map_control',side_effect=subprocess.TimeoutExpired('refresh',5)), \
+                 patch('worker.cold_fallback_ready',side_effect=pending),patch('worker.relaunch') as cold:
+                self.assertEqual(query(job,root),result)
+            cold.assert_not_called()
+
+    def test_failed_warm_trigger_restarts_only_after_the_proxy_disarms_it(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]};order=[]
+            def safe(*args):order.append('proxy-disarmed');return True
+            def restart(_root,arm):
+                self.assertEqual(order,['proxy-disarmed']);arm();save(base/'results'/f"{job['id']}.json",result)
+            with patch('worker.warm_available',return_value=True),patch('worker.run_map_control',side_effect=subprocess.CalledProcessError(4,'refresh')), \
+                 patch('worker.cold_fallback_ready',side_effect=safe),patch('worker.relaunch',side_effect=restart):
+                self.assertEqual(query(job,root),result)
+
+    def test_silent_warm_trigger_falls_back_once_after_eight_seconds(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]}
+            clock=[time.time()];start=clock[0]
+            def restart(_root,arm):
+                self.assertGreaterEqual(clock[0]-start,8)
+                arm();save(base/'results'/f"{job['id']}.json",result)
+            reply={'dispatched':True,'focusRestored':True,'stayedMinimized':True,'cursorPreserved':True}
+            with patch('worker.warm_available',return_value=True),patch('worker.run_map_control',return_value=reply), \
+                 patch('worker.cold_fallback_ready',return_value=True) as disarm,patch('worker.relaunch',side_effect=restart) as cold, \
+                 patch('worker.time.time',side_effect=lambda:clock[0]),patch('worker.time.sleep',side_effect=lambda n:clock.__setitem__(0,clock[0]+n)):
+                self.assertEqual(query(job,root),result)
+            cold.assert_called_once();disarm.assert_called_once()
+
+    def test_slow_claimed_warm_read_is_never_restarted(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]}
+            clock=[time.time()];start=clock[0]
+            def sleep(n):
+                clock[0]+=n
+                if clock[0]-start>=10:save(base/'results'/f"{job['id']}.json",result)
+            reply={'dispatched':True,'focusRestored':True,'stayedMinimized':True,'cursorPreserved':True}
+            with patch('worker.warm_available',return_value=True),patch('worker.run_map_control',return_value=reply), \
+                 patch('worker.cold_fallback_ready',return_value=False),patch('worker.relaunch') as cold, \
+                 patch('worker.time.time',side_effect=lambda:clock[0]),patch('worker.time.sleep',side_effect=sleep):
+                self.assertEqual(query(job,root),result)
+            cold.assert_not_called()
+
     def test_long_idle_backoff_yields_to_an_operator_stop(self):
         with tempfile.TemporaryDirectory() as name:
             stop=Path(name)/'stop.json'

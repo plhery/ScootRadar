@@ -29,6 +29,69 @@ FAILURES_BEFORE_HOLD=3
 # two minutes after each deploy.
 BROKER_RETRY=5
 BROKER_RETRY_MAX=60
+WARM_WAIT=8
+
+def warm_helper(root):
+    return root/'Ryde Map Control.app/Contents/MacOS/RydeMapControl'
+
+def run_map_control(root,action):
+    if action not in {'status','refresh','prepare'}:raise ValueError('Unsupported map control action')
+    base=root/'producer';nonce=uuid.uuid4().hex
+    save(base/'map-control-request.json',{'id':nonce,'action':action,'expiresAt':time.time()+12})
+    path=base/'map-control-results'/f'{nonce}.json'
+    try:
+        # Running the executable as a CLI attributes TCC access to the worker.
+        # Launch the signed app without activating it, using its own OS permission.
+        subprocess.run(['/usr/bin/open','-n','-g','-W',str(root/'Ryde Map Control.app'),'--args','run',nonce],
+            check=True,capture_output=True,text=True,timeout=8)
+        value=json.loads(path.read_text())
+        if not isinstance(value,dict):raise ValueError('Invalid map control result')
+        if 'error' in value:raise ValueError('Map control unavailable: '+str(value['error']))
+        return value
+    finally:path.unlink(missing_ok=True)
+
+def warm_enabled(root):
+    try:
+        value=json.loads((root/'producer/warm-control.json').read_text())
+        return value.get('enabled') is True and value.get('mode')=='minimized-idle'
+    except (FileNotFoundError,ValueError,AttributeError):return False
+
+def warm_available(root):
+    base=root/'producer'
+    if not warm_enabled(root) or not warm_helper(root).exists():return False
+    def observed(eligible,reason,state=None):
+        save(base/'last-warm-admission.json',{'at':time.time(),'eligible':eligible,'reason':reason,
+            'helper':{k:state.get(k) for k in ['trusted','singleInstance','idleEligible','minimizedRefresh','locked']} if state else None})
+        return eligible
+    try:
+        value=json.loads((base/'warm-control.json').read_text())
+        if float(value.get('pausedUntil',0))>time.time():return observed(False,'operator-paused')
+        if not egress.warm_ready(base):return observed(False,'route-lease-or-budget')
+        state=run_map_control(root,'status')
+        eligible=all(state.get(k) is True for k in ['trusted','singleInstance','idleEligible','minimizedRefresh']) and state.get('locked') is False
+        return observed(eligible,'ready' if eligible else 'desktop-or-permission',state)
+    except (subprocess.SubprocessError,ValueError,TypeError,OSError,AttributeError):return observed(False,'helper-unavailable')
+
+def prepare_warm(root):
+    """After publishing, minimize the home map for the next read, without activation."""
+    if not warm_enabled(root) or not warm_helper(root).exists():return
+    try:
+        run_map_control(root,'prepare')
+    except (subprocess.SubprocessError,OSError,ValueError):pass # Never invalidate a submitted map.
+
+def cold_fallback_ready(job,root,end):
+    """The proxy acknowledges disarming on its native-hook event loop, never during a live job."""
+    base=root/'producer';nonce=uuid.uuid4().hex
+    save(base/'warm-disarm.json',{'id':job['id'],'nonce':nonce,'expiresAt':time.time()+5})
+    until=min(end,time.time()+3)
+    while time.time()<until:
+        if (base/'results'/f"{job['id']}.json").exists():return False
+        try:
+            ack=json.loads((base/'warm-disarm-ack.json').read_text())
+            if ack.get('id')==job['id'] and ack.get('nonce')==nonce and ack.get('safeToQuit') is True:return True
+        except (FileNotFoundError,ValueError):pass
+        time.sleep(.1)
+    return False
 
 def save(path, value):
     temp=path.with_suffix('.tmp')
@@ -100,12 +163,32 @@ def query(job, root=ROOT, timeout=60):
     state=json.loads((base/'session/status.json').read_text())
     if state['bridgeStage'] not in {'bridge-active','awaiting-first-rotation'}: raise RuntimeError('Ryde bridge needs a completed operator sign-in')
     if state.get('paused'): raise RuntimeError('Ryde bridge held after an upstream failure')
-    # Arm after termination: a spontaneous request just before quit could otherwise
-    # consume the job and be cancelled by that very quit.
-    relaunch(root,lambda:save(base/'job.json',job))
     end=min(time.time()+timeout,job['expiresAt'])
     path=base/'results'/f"{job['id']}.json"
-    retry_at=time.time()+30;retried=False
+    warm=warm_available(root)
+    if warm:
+        save(base/'job.json',job)
+        try:
+            details=run_map_control(root,'refresh')
+            if not details.get('dispatched'):raise ValueError('Warm trigger unavailable')
+            if (not details.get('stayedMinimized') or
+                (not details.get('userInterrupted') and (not details.get('focusRestored') or not details.get('cursorPreserved')))):
+                save(base/'warm-control.json',{'enabled':False,'reason':'desktop restoration failed','at':time.time()})
+            save(base/'last-trigger.json',{'mode':'warm','at':time.time(),'trigger':details.get('trigger'),
+                'pid':details.get('pid'),'focusRestored':details.get('focusRestored'),
+                'cursorPreserved':details.get('cursorPreserved'),'stayedMinimized':details.get('stayedMinimized'),
+                'userInterrupted':details.get('userInterrupted')})
+        except (subprocess.SubprocessError,ValueError,OSError):
+            # Even an interrupted helper may have activated the app. Disarm through the proxy
+            # before quitting; an in-flight native request is allowed to finish normally.
+            if cold_fallback_ready(job,root,end):warm=False
+        fallback_at=time.time()+WARM_WAIT
+    if not warm:
+        # Arm after termination: a spontaneous request just before quit must not claim
+        # the next job and be cancelled by that very quit.
+        relaunch(root,lambda:save(base/'job.json',job))
+        save(base/'last-trigger.json',{'mode':'restart','at':time.time()})
+    retry_at=time.time()+30;retried=False;fallback_checked=not warm
     while time.time()<end:
         status=json.loads((base/'session/status.json').read_text())
         if status['bridgeStage']=='needs-sign-in': raise RuntimeError('Ryde bridge needs operator sign-in')
@@ -114,7 +197,12 @@ def query(job, root=ROOT, timeout=60):
             result=json.loads(path.read_text())
             if 'error' in result: raise RuntimeError('Native map rejected or invalid; inspect local status')
             return result
-        if not retried and time.time()>=retry_at and (not status.get('pendingJob') or status.get('pendingUntil',0)<=time.time()):
+        if warm and not fallback_checked and time.time()>=fallback_at:
+            fallback_checked=True
+            if cold_fallback_ready(job,root,end):
+                relaunch(root,lambda:save(base/'job.json',job));warm=False;retry_at=time.time()+30
+                save(base/'last-trigger.json',{'mode':'restart-fallback','at':time.time()})
+        if not warm and not retried and time.time()>=retry_at and (not status.get('pendingJob') or status.get('pendingUntil',0)<=time.time()):
             # A client-cancelled request may never produce a response/error hook.
             # Retrigger once only when no live job is in flight; never retry a denial.
             retried=True;relaunch(root,lambda:save(base/'job.json',job))
@@ -193,6 +281,7 @@ def serve(config, base):
                     submit(config,{'version':1,'id':job['id'],'query':job,'error':'worker_failed'})
                     raise
                 submit(config,result)
+                prepare_warm(base.parent)
                 last_trigger=time.time();failures=0;holds=0
             elif time.time()-last_trigger>90:
                 relaunch();last_trigger=time.time() # allow due native key renewals

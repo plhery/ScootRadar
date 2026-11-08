@@ -68,7 +68,7 @@ class BridgeTrial:
         self.duration=max(1,min(900,int(os.environ.get('RYDE_TRIAL_SECONDS','300'))));self.started=time.time();self.stage='awaiting-login';self.token_hash=None
         self.key=None;self.app_public=None;self.restore_public=None
         self.bound=False;self.binding_sent=False;self.binding_rejected=False;self.restored=False;self.restore_verified=False;self.done=False;self.map_requested=False;self.map_saved=False
-        self.tls_failures=0;self.error=None;self.events=[];self.login_interval=None
+        self.tls_failures=0;self.last_error=None;self.events=[];self.login_interval=None
         self.status()
 
     def event(self,name,**details):
@@ -79,7 +79,7 @@ class BridgeTrial:
                 'expiresAt':self.started+self.duration,'captures':int(self.done),'tlsFailures':self.tls_failures,
                 'trialVersion':2,'bridgeStage':self.stage,'bridgeKeyAccepted':self.bound,'nativeRestorationServerAccepted':self.restored,'nativeBindingRestored':self.restore_verified,
                 'drammenMapCaptured':self.map_saved,'recoveryMayBeRequired':self.binding_sent and not self.binding_rejected and not self.restore_verified,
-                'lastError':self.error,'events':self.events}
+                'lastError':self.last_error,'events':self.events}
         private_json(self.directory/'status.json',public,replace=True)
         private_json(self.directory/'bridge-state.json',{'stage':self.stage,'tokenHash':self.token_hash,
             'appPublic':self.app_public,'bridgePublic':jwk(self.key) if self.key else None,
@@ -132,8 +132,8 @@ class BridgeTrial:
                 self.event('post-restoration-request',path=path,originalKeyRole=old_role,
                            identifierUpdated=old_role in {'original-app','bridge'})
         except Exception as e:
-            self.error='request validation: '+type(e).__name__
-            self.event('request-left-unchanged',path=path,error=self.error)
+            self.last_error='request validation: '+type(e).__name__
+            self.event('request-left-unchanged',path=path,error=self.last_error)
 
     def translate(self,value,recipient,found):
         if isinstance(value,dict):return {k:self.translate(v,recipient,found) for k,v in value.items()}
@@ -153,13 +153,13 @@ class BridgeTrial:
         raw=flow.response.content or b''
         action=flow.metadata.get('bridgeAction')
         if len(raw)>MAX_RESPONSE:
-            self.error='response exceeded size bound';self.status()
+            self.last_error='response exceeded size bound';self.status()
             if action=='translate':flow.kill()
             return
         try:reply=json.loads(raw)
         except (ValueError,UnicodeError):
             if action=='translate':
-                self.error='non-JSON bridge response';self.status();flow.kill()
+                self.last_error='non-JSON bridge response';self.status();flow.kill()
             return
         if path==LOGIN and self.stage=='awaiting-login' and success(flow,reply):
             token=reply.get('token')
@@ -183,15 +183,15 @@ class BridgeTrial:
                 self.restored=True;self.stage='awaiting-restored-map'
                 self.event('native-key-restored',normalIntervalSeconds=reply.get('rotateAfterSeconds'))
             else:
-                self.stage='bridge-active';self.error='native restoration rejected'
+                self.stage='bridge-active';self.last_error='native restoration rejected'
                 self.event('restoration-rejected',httpStatus=flow.response.status_code,appStatus=reply.get('status') if isinstance(reply,dict) else None)
         elif action=='translate':
             try:
                 found=[];translated=self.translate(reply,flow.metadata['appRecipient'],found)
                 if found:flow.response.content=json.dumps(translated,separators=(',',':')).encode()
             except Exception as e:
-                self.error='response translation: '+type(e).__name__
-                self.event('translation-failed',path=path,error=self.error)
+                self.last_error='response translation: '+type(e).__name__
+                self.event('translation-failed',path=path,error=self.last_error)
                 flow.kill() # Do not hand an undecryptable bridge envelope to the app.
         elif action in {'verify-restored','observe-restored-read'}:
             app_status=reply.get('status') if isinstance(reply,dict) else None

@@ -60,6 +60,62 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(len(result['scooters']),1);self.assertNotIn('123456789012345',json.dumps(result))
         self.assertEqual(json.loads(decrypt_envelope(self.app,json.loads(json.loads(f.response.content)['key'])))['scooters'][0]['memberByString'],'123456789012345')
         self.assertEqual((self.root/'session/recovery.json').stat().st_mode&0o077,0)
+
+    def test_warm_disarm_blocks_new_claims_and_waits_for_every_live_native_flow(self):
+        job=self.job();flow=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(flow)
+        self.assertIn(flow.id,self.producer.native_jobs)
+        command={'id':job['id'],'nonce':'a'*32,'expiresAt':time.time()+5}
+        (self.root/'warm-disarm.json').write_text(json.dumps(command))
+        # Expiring the public pending deadline must not permit quitting a real live flow.
+        self.producer.pending_deadline=0
+        self.producer.warm_control()
+        self.assertFalse((self.root/'job.json').exists())
+        self.assertFalse(json.loads((self.root/'warm-disarm-ack.json').read_text())['safeToQuit'])
+        other=self.flow(MAP,{'ekt':thumbprint(self.app)});self.producer.request(other)
+        self.assertNotIn('producerJob',other.metadata)
+        flow.response=Response.make(200,json.dumps({'status':200,'key':json.dumps(encrypt_envelope(self.producer.key.public_key(),b'{"scooters":[]}'))}).encode())
+        self.producer.response(flow);self.producer.warm_control()
+        self.assertTrue(json.loads((self.root/'warm-disarm-ack.json').read_text())['safeToQuit'])
+        self.assertFalse(self.producer.paused)
+        (self.root/'job.json').write_text(json.dumps(job))
+        self.producer.warm_control()
+        self.assertTrue((self.root/'job.json').exists())
+
+    def test_invalid_warm_control_never_disarms_a_job(self):
+        self.job()
+        for value in [[],{}, {'id':'a'*32,'nonce':'b'*32,'expiresAt':time.time()-1}]:
+            (self.root/'warm-disarm.json').write_text(json.dumps(value));self.producer.warm_control()
+            self.assertTrue((self.root/'job.json').exists())
+
+    def test_warm_fallback_waits_for_native_key_renewal(self):
+        job=self.job()
+        next_app=ec.generate_private_key(ec.SECP256R1())
+        flow=self.flow(ROTATE,{'encJwk':json.dumps(jwk(next_app)),'ekt':thumbprint(next_app)})
+        self.producer.request(flow)
+        (self.root/'warm-disarm.json').write_text(json.dumps({'id':job['id'],'nonce':'a'*32,'expiresAt':time.time()+5}))
+        self.producer.warm_control()
+        self.assertFalse(json.loads((self.root/'warm-disarm-ack.json').read_text())['safeToQuit'])
+        self.producer.response(flow);self.producer.warm_control()
+        self.assertTrue(json.loads((self.root/'warm-disarm-ack.json').read_text())['safeToQuit'])
+
+    def test_failed_renewal_keeps_fallback_closed_for_unresolved_recipient(self):
+        job=self.job();next_app=ec.generate_private_key(ec.SECP256R1())
+        flow=self.flow(ROTATE,{'encJwk':json.dumps(jwk(next_app)),'ekt':thumbprint(next_app)})
+        self.producer.request(flow);self.producer.error(flow)
+        (self.root/'warm-disarm.json').write_text(json.dumps({'id':job['id'],'nonce':'a'*32,'expiresAt':time.time()+5}))
+        self.producer.warm_control()
+        self.assertFalse(self.producer.native_renewals)
+        self.assertFalse(json.loads((self.root/'warm-disarm-ack.json').read_text())['safeToQuit'])
+
+    def test_transport_error_hook_remains_callable_and_retires_its_native_job(self):
+        job=self.job();flow=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(flow);self.producer.error(flow)
+        result=json.loads((self.root/'results'/f"{job['id']}.json").read_text())
+        self.assertEqual(result['error'],'TransportError')
+        self.assertFalse(self.producer.native_jobs)
+        self.assertIsNone(self.producer.pending)
+        self.assertTrue(json.loads((self.root/'session/status.json').read_text())['paused'])
     def test_abandoned_request_expires_and_late_reply_preserves_new_pending_job(self):
         first=self.job()
         a=self.flow(MAP,{'ekt':thumbprint(self.app)})

@@ -3,6 +3,8 @@ import hashlib
 import math
 import json
 import os
+import asyncio
+import re
 import time
 from pathlib import Path
 from urllib.parse import urlencode, parse_qsl, urlsplit
@@ -50,6 +52,9 @@ class Producer(BridgeTrial):
         self._initializing = False
         self.map_requested = True
         self.pending = None
+        self.native_jobs = set()
+        self.native_renewals = set()
+        self.last_warm_control = None
         self.pending_deadline = 0
         self.pending_public = saved.get('pendingPublic') if saved else None
         self.paused = bool(saved and saved.get('paused'))
@@ -73,6 +78,32 @@ class Producer(BridgeTrial):
         # Ready means addon recovery is complete, not merely that Popen returned.
         self.status()
         private_json(ROOT/'proxy-ready.json', {'pid':os.getpid(),'at':time.time()}, replace=True)
+        self.warm_control_task=asyncio.create_task(self.poll_warm_control())
+
+    def warm_control(self):
+        """Serialize disarming with native hooks before a warm timeout may quit the app."""
+        try:command=json.loads((ROOT/'warm-disarm.json').read_text())
+        except (FileNotFoundError,ValueError):return
+        if not isinstance(command,dict) or set(command)!={'id','nonce','expiresAt'} or not all(re.fullmatch('[a-f0-9]{32}',str(command[k])) for k in ['id','nonce']):return
+        if type(command['expiresAt']) not in (int,float) or not time.time()<command['expiresAt']<=time.time()+10:return
+        # Disarm once. After the acknowledgement, the worker may rearm the same
+        # job for a cold retry while this control message still exists on disk.
+        if not self.last_warm_control or self.last_warm_control[0]!=command['nonce']:
+            path=ROOT/'job.json'
+            try:
+                if json.loads(path.read_text()).get('id')==command['id']:path.unlink()
+            except (FileNotFoundError,ValueError):pass
+        safe=not self.native_jobs and not self.native_renewals and not self.pending_public
+        outcome=(command['nonce'],safe)
+        if outcome!=self.last_warm_control:
+            private_json(ROOT/'warm-disarm-ack.json',{'id':command['id'],'nonce':command['nonce'],
+                'safeToQuit':safe,'at':time.time()},replace=True)
+            self.last_warm_control=outcome
+
+    async def poll_warm_control(self):
+        while True:
+            self.warm_control()
+            await asyncio.sleep(.1)
 
     def request(self, flow):
         if flow.metadata.get('egressDenied'): return
@@ -110,6 +141,7 @@ class Producer(BridgeTrial):
             self.status() # record next app recipient before sending renewal
             flow.request.content = urlencode(fields).encode()
             flow.metadata['producerRenew'] = True
+            self.native_renewals.add(flow.id)
             return
         if path==MAP and self.pending_public and self.key:
             fields=verified_form(flow,self.token_hash)
@@ -142,10 +174,13 @@ class Producer(BridgeTrial):
         flow.request.content = urlencode(fields).encode()
         flow.metadata['producerJob'] = job
         self.pending = job['id']
+        self.native_jobs.add(flow.id)
         self.pending_deadline=min(job['expiresAt'],time.time()+30)
         self.event('job-assigned',jobId=job['id'],flowId=flow.id)
 
     def error(self, flow):
+        self.native_jobs.discard(flow.id)
+        self.native_renewals.discard(flow.id)
         job=flow.metadata.get('producerJob')
         self.event('native-flow-error',flowId=flow.id,jobId=job.get('id') if job else None)
         if job:
@@ -163,6 +198,8 @@ class Producer(BridgeTrial):
         self.event('upstream-refused',httpStatus=flow.response.status_code,path=urlsplit(flow.request.url).path[:80])
 
     def response(self, flow):
+        self.native_jobs.discard(flow.id)
+        self.native_renewals.discard(flow.id)
         if flow.metadata.get('egressDenied'): return
         self.note_refusal(flow)
         if origin_path(flow)==LOGIN and self.stage in {'needs-sign-in','native-restored'}:
