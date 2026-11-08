@@ -412,6 +412,12 @@ hours between 08:00 and 21:00 in Rome while nobody looks, every 30 minutes
 while someone does, never twice at once, through the client every area
 shares. Replayed over the scooters of 8 November, such a sweep took 20 to 22
 requests where the west area whole took 15 or 16 of its 18, so about 24.
+In production the first, from 22:50 to 23:34 UTC on 8 November, took 25,
+spaced out by the sweeps the restart had made due elsewhere while nobody
+looked at Rome: it found 1,679 scooters and added 543 to the feed's 3,161,
+and from the Vatican to Trastevere (41.896 to 41.910 N, 12.452 to 12.478 E)
+the map showed 155 where it had shown 64, against the research map's 165 at
+22:00.
 The map's scooters that none of the feed's stood within 40 m of, one each, on
 the first fresh read after a sweep, are added as `bird:<id>` for as long as
 none of the feed's stands on one, and for at most two and a half hours after

@@ -71,7 +71,7 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBirdAppCollectors(current, systems, id => records.get(id)?.vehicles),
-  // Rome's public Bird feed, with the scooters Bird's map shows by the Vatican and the feed leaves out.
+  // Rome's public Bird feed, with the scooters Bird's map shows within 4.5 km of the centre and the feed leaves out.
   withBirdSupplements,
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withRidemoviAppCollectors(current, systems, id => records.get(id)?.vehicles),
