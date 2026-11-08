@@ -23,7 +23,7 @@ const LIME_WAKE_WINDOW_MS = 15 * 60_000;
 const LIME_WAKE_BUCKETS: [string, number][] = [['1', 1], ['2-3', 3], ['4-7', 7], ['8-15', 15], ['16+', Infinity]];
 const LIME_WAKE_MAX_CLIENTS = 10_000;
 /** The bounds, in seconds, of the buckets of the refreshes' times. */
-export const REFRESH_BUCKETS = [1, 2, 3, 5, 7.5, 10, 15, 20, 30, 45, 60, 90, 120, 300];
+export const REFRESH_BUCKETS = [1, 2, 3, 5, 7.5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 300, 600, 1200];
 /** A refresh asked for whose collection has not ended after this is forgotten. */
 const REFRESH_FORGET_MS = 60 * 60_000;
 /**
