@@ -433,6 +433,11 @@ data. Since 6 November 2026:
   the quarter hour ends: a sweep of a country takes no more of the operators' accounts
   than 32 towns, and its positions grow old. Our own audits through `/api/scooters`
   are held to it too: pace a sweep of many towns to 32 a quarter hour.
+- Since 8 November 2026 a request keeps collected only the feeds within about 80 km
+  of the middle of its view (`DEMAND_REACH_DEGREES` in `src/lib/scooterSnapshots.ts`),
+  as far as a 1920 by 1080 screen shows at zoom 11. A box as wide as a country, which
+  is answered at zoom 11 as clusters and charged for the one area its middle is in,
+  had every feed in it collected every minute: 181 in one, 122 of them rider apps.
 - `/feeds` and the detail of `/health` and `/ready` on scooter-data.plhery.com, which
   name the operators' apps the cache reads, need the metrics token ([DEPLOY.md](../DEPLOY.md)).
 - Since 7 November 2026 an answer names each scooter by a random id of the cache's own,

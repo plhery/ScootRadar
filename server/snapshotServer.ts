@@ -247,7 +247,8 @@ export function createSnapshotServer(options: ServerOptions) {
     options.rydeViews?.read(inView, parsed.query.bounds, watches, Date.now(), viewer);
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
-      // all but the Lime groups past the few nearest the middle of the view, which Lime's pace could not keep up.
+      // those within DEMAND_REACH_DEGREES of the middle of the view, the area its visitor is charged for and around it,
+      // but the Lime groups past the few nearest that middle, which Lime's pace could not keep up.
       // Ryde's watched reads bypass long full-group scans. Keep those scans on their idle schedule.
       const watched = watches ? demandedFeeds(inView.filter(feed => !options.rydeViews?.handles(feed)), parsed.query.bounds, now) : [];
       const demanded = new Set(watched.map(feed => feed.id));

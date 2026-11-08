@@ -107,7 +107,8 @@ open API responses. The Worker overwrites the forwarded client IP using
 Cloudflare's trusted header, an IPv6 one as its /64 (`src/lib/clientNetwork.ts`),
 so a client cannot change addresses within its network to pass the limits. A box
 too large for its zoom is answered at the zoom it fits, and a visitor who has asked
-for 32 areas in a quarter hour no longer keeps feeds collected. Answers name
+for 32 areas in a quarter hour no longer keeps feeds collected; a request keeps
+collected only the feeds within about 80 km of its view's middle. Answers name
 scooters by the cache's own ids, renewed after a move or a gap, not the operators'; see
 [Scraping](docs/OBSERVABILITY.md#scraping). Origin responses are private/no-store; only the
 Worker publishes the public response cache policy.

@@ -449,6 +449,16 @@ export const LIME_GROUPS_PER_REQUEST = 6;
 /** Native Ryde reads share one worker; a wide map must not queue a whole town ahead of its street view. */
 export const RYDE_GROUPS_PER_REQUEST = 2;
 
+/**
+ * How far from the middle of the view a feed a request collects again may be, in degrees of latitude
+ * (about 80 km). A 1920 by 1080 screen's view at zoom 11, or a 4K one's at 12, fits in it whole but within
+ * 8° of the equator, and none centred on a town of the catalog leaves a feed out. A visitor is charged for the area the middle
+ * of their view is in (server/visitorLedger.ts), and a box as wide as a country, which no screen shows
+ * but which is answered at zoom 11 as clusters (scooterAnswerZoom), otherwise had every feed in it
+ * collected every minute: 181 in one such box checked in November 2026, 122 of them operators' rider apps.
+ */
+export const DEMAND_REACH_DEGREES = 0.75;
+
 /** How far the feed's coverage is from a point, in degrees of latitude: 0 for one that holds it. */
 function offPoint(feed: FeedSnapshot, [lat, lng]: [number, number]): number {
   const scale = Math.cos(lat * Math.PI / 180);
@@ -457,14 +467,14 @@ function offPoint(feed: FeedSnapshot, [lat, lng]: [number, number]): number {
 }
 
 /**
- * The feeds in view that a request collects again: the nearest bounded set of Lime and Ryde groups,
- * plus other feeds. The remaining groups stay idle and the answer shows them as they are.
+ * The feeds in view that a request collects again: those within DEMAND_REACH_DEGREES of its middle, of
+ * which only the nearest few Lime and Ryde groups. The others stay idle and the answer shows them as they are.
  */
 export function demandedFeeds(feeds: FeedSnapshot[], bounds: MapBounds, now = Date.now()): FeedSnapshot[] {
   const middle = boundsCenter(bounds);
-  let selected = feeds;
+  let selected = feeds.filter(feed => offPoint(feed, middle) <= DEMAND_REACH_DEGREES);
   for (const [matches, limit] of [[isLimeGroupFeed, LIME_GROUPS_PER_REQUEST], [isRydeGroupFeed, RYDE_GROUPS_PER_REQUEST]] as const) {
-    const groups = feeds.filter(matches);
+    const groups = selected.filter(matches);
     if (groups.length <= limit) continue;
     // Once a Ryde batch is fresh, move on to the faded groups still in view rather
     // than refreshing the same centre forever. Pending/partial batches retain their

@@ -3,6 +3,7 @@ import { skippedSources } from '@/lib/scooterSources';
 import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
+import { scooterAnswerZoom } from './scooterQuery';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
 import { providersForViewport, mapRepresentationsMatch } from './mapCoverage';
 import type { Vehicle } from './types';
@@ -342,6 +343,23 @@ describe('feeds collected on demand', () => {
     const next=demandedFeeds(after,augsburg,now);
     expect(next).toHaveLength(RYDE_GROUPS_PER_REQUEST);
     expect(next.every(g=>!completed.has(g.id))).toBe(true);
+  });
+
+  it('has a box as wide as a country collect again only the feeds around its middle, as far as a screen shows', () => {
+    const town = (id: string, lat: number, lng: number, size = 0.05) => feed({ id: `france:dott_fr_${id}`,
+      coverage: [{ south: lat - size, north: lat + size, west: lng - size, east: lng + size }] });
+    const [lyon, saintEtienne, geneva, marseille, paris] = [town('lyon', 45.76, 4.84), town('saint_etienne', 45.43, 4.39),
+      town('geneva', 46.2, 6.14), town('marseille', 43.3, 5.37), town('paris', 48.86, 2.35)];
+    // About 16,000 pixels across at zoom 11, which is answered at that zoom: France and around it, Lyon in the middle.
+    const country = { south: 42.5, north: 49, west: -0.7, east: 10.4 };
+    expect(scooterAnswerZoom(11, country)).toBe(11);
+    expect(demandedFeeds([lyon, saintEtienne, geneva, marseille, paris], country)).toEqual([lyon, saintEtienne]);
+    // A 1920 by 1080 screen's view at zoom 11 has every feed in it collected, to its corners.
+    const degrees = 360 / (256 * 2 ** 11);
+    const [halfWidth, halfHeight] = [960 * degrees, 540 * degrees * Math.cos(45.75 * Math.PI / 180)];
+    const desktop = { south: 45.75 - halfHeight, north: 45.75 + halfHeight, west: 4.85 - halfWidth, east: 4.85 + halfWidth };
+    const corners = [town('north_east', desktop.north, desktop.east, 0.005), town('south_west', desktop.south, desktop.west, 0.005)];
+    expect(demandedFeeds([lyon, ...corners], desktop)).toEqual([lyon, ...corners]);
   });
 
   it('uses the latest positive observation of a scooter without deleting unmentioned last-seen positions', () => {
