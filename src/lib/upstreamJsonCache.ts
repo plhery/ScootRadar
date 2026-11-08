@@ -1,4 +1,5 @@
 import type { UpstreamAuth } from './clientCredentialsToken';
+import { statusAge } from './feedValidation';
 
 // The floor for a process that never says how many feeds it collects, such as a web worker.
 const DEFAULT_MAX_ENTRIES = 2048;
@@ -65,6 +66,8 @@ interface CacheEntry {
   retryAfter: number;
   hasValue: boolean;
   value?: unknown;
+  /** Why the held value is being served: the error of the last request, until one succeeds. */
+  failure?: unknown;
   pending?: Promise<CachedJson<unknown>>;
 }
 
@@ -72,6 +75,8 @@ export interface CachedJson<T> {
   data: T;
   stale: boolean;
   fetchedAt: number;
+  /** For a stale answer, the error of the request that failed (fetchedStatusObservedAt). */
+  failure?: unknown;
 }
 
 export interface UpstreamJsonOptions {
@@ -142,7 +147,7 @@ export class UpstreamJsonCache {
       return { data: entry.value as T, stale: false, fetchedAt: entry.fetchedAt };
     }
     if (entry?.hasValue && entry.staleUntil > now && entry.retryAfter > now) {
-      return { data: entry.value as T, stale: true, fetchedAt: entry.fetchedAt };
+      return { data: entry.value as T, stale: true, fetchedAt: entry.fetchedAt, failure: entry.failure };
     }
     if (entry?.pending) {
       return entry.pending as Promise<CachedJson<T>>;
@@ -261,20 +266,22 @@ export class UpstreamJsonCache {
       entry.freshUntil = Math.min(entry.keepUntil, completedAt + options.freshSeconds * 1000);
       entry.staleUntil = Math.min(entry.keepUntil, entry.freshUntil + options.staleIfErrorSeconds * 1000);
       entry.retryAfter = 0;
+      entry.failure = undefined;
       return { data, stale: false, fetchedAt: completedAt };
     } catch (error) {
       const failedAt = this.now();
       if (entry.hasValue && entry.staleUntil > failedAt) {
         entry.retryAfter = failedAt + this.errorRetryMs;
+        entry.failure = error;
         console.warn(JSON.stringify({
           event: 'upstream_stale_fallback',
           ...safeUpstreamTarget(url),
           ...(error instanceof UpstreamHttpError
             ? { httpStatus: error.status }
             : { errorType: error instanceof Error ? error.name : 'UnknownError', ...errorCode(error),
-                stage: answered ? 'body' : 'request' }),
+                stage: answered ? 'body' : 'request', ...statusAge(error) }),
         }));
-        return { data: entry.value as T, stale: true, fetchedAt: entry.fetchedAt };
+        return { data: entry.value as T, stale: true, fetchedAt: entry.fetchedAt, failure: error };
       }
 
       this.entries.delete(url);

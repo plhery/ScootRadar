@@ -1,4 +1,4 @@
-import { statusObservedAt, validateDiscovery, validateTypes, validateStations, validateStationStatus } from './feedValidation';
+import { fetchedStatusObservedAt, validateDiscovery, validateTypes, validateStations, validateStationStatus } from './feedValidation';
 import { feedBase, type RegionalScooterSystem } from './regionalScooterSystems';
 import { discoveryFeedEntries, discoveredFeedUrl, fetchJson } from './scooterFeeds';
 import { filterReturningParking, nextParkingRuleChange, normalizeParkingLocations,
@@ -38,7 +38,7 @@ export async function fetchRegionalParking(system: RegionalScooterSystem) {
     ? await fetchJson<ParkingStatusFeed>(statusUrl, { revalidate: 30, validate: validateStationStatus }) : { data: {} as ParkingStatusFeed, stale: false };
   if (statusUrl && cached.locations.length && !Array.isArray(status.data.data?.stations)) throw new Error('Invalid parking status');
   return { locations: filterReturningParking(cached.locations, status.data),
-    observedAt: statusUrl && cached.locations.length ? statusObservedAt(status.data)
+    observedAt: statusUrl && cached.locations.length ? fetchedStatusObservedAt(status)
       : Math.min(Date.now(), information.fetchedAt + 3600_000),
     stale: discovery.stale || information.stale || types.stale || zones.stale || status.stale };
 }

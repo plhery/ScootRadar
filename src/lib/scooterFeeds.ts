@@ -1,5 +1,5 @@
 import {
-  isAbandonedStatus, isEmptyUndatedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateStations, validateTypes, validateVehicleStatus,
+  fetchedStatusObservedAt, isAbandonedStatus, isEmptyUndatedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateStations, validateTypes, validateVehicleStatus,
 } from './feedValidation';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 import { PRICES_BEFORE_TAX } from '@/generated/countries';
@@ -1098,7 +1098,7 @@ async function fetchSystemVehicles(
   }
 
   return {
-    observedAt: statusObservedAt(status.data),
+    observedAt: fetchedStatusObservedAt(status),
     vehicles: await pricedScooters(plans, (prices, unlisted) => filterVehicles(
       system.id,
       rawVehicles(status.data),
@@ -1228,7 +1228,7 @@ async function fetchHoppTownVehicles(
   }
 
   return {
-    observedAt: statusObservedAt(status.data),
+    observedAt: fetchedStatusObservedAt(status),
     // Hopp's bike ids are UUIDs, unique across its towns, so they keep the plain "hopp" prefix.
     vehicles: await pricedScooters(plans, (prices, unlisted) => filterVehicles(
       'hopp',
@@ -1426,7 +1426,7 @@ async function fetchRegionalSystemFeeds(
   const raw = docked ? [...rawVehicles(status.data), ...docked.vehicles] : rawVehicles(status.data);
   const strayIds = strayVehicleIds(system, raw);
   return {
-    observedAt: Math.min(statusObservedAt(status.data), docked?.observedAt ?? Infinity),
+    observedAt: Math.min(fetchedStatusObservedAt(status), docked?.observedAt ?? Infinity),
     vehicles: (await pricedScooters(plans, (prices, unlisted) => filterVehicles(system.id, raw, typesById, {
       ...query,
       bounds,
@@ -1477,7 +1477,7 @@ async function fetchDockedScooters(
   ]);
   return {
     vehicles: dockedScooters(information.data, status.data, typeId => isElectricScooter(types.get(typeId), system.provider)),
-    observedAt: statusObservedAt(status.data),
+    observedAt: fetchedStatusObservedAt(status),
     stale: information.stale || status.stale,
   };
 }

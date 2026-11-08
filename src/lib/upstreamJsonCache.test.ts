@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { UpstreamJsonCache, upstreamCacheEntriesFor, type UpstreamJsonOptions } from '@/lib/upstreamJsonCache';
+import { fetchedStatusObservedAt, statusObservedAt } from '@/lib/feedValidation';
 
 const options: UpstreamJsonOptions = {
   headers: { Accept: 'application/json' },
@@ -115,7 +116,7 @@ describe('UpstreamJsonCache', () => {
     failing = true;
     await expect(cache.fetch(sensitiveUrl, options)).resolves.toEqual({
       data: { version: 1 },
-      stale: true, fetchedAt: 0,
+      stale: true, fetchedAt: 0, failure: new Error('upstream unavailable'),
     });
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(warning).toHaveBeenCalledOnce();
@@ -133,7 +134,7 @@ describe('UpstreamJsonCache', () => {
     now = 32_000;
     await expect(cache.fetch(sensitiveUrl, options)).resolves.toEqual({
       data: { version: 1 },
-      stale: true, fetchedAt: 0,
+      stale: true, fetchedAt: 0, failure: new Error('upstream unavailable'),
     });
     expect(fetcher).toHaveBeenCalledTimes(2);
 
@@ -276,7 +277,32 @@ it('rejects invalid HTTP 200 data before it can replace a good cached document',
   const validate = (value: unknown) => { if (!value || typeof value !== 'object' || !('version' in value)) throw Error('invalid feed'); };
   await cache.fetch('https://test.example/feed', { ...options, validate });
   now = 31_000;
-  await expect(cache.fetch('https://test.example/feed', { ...options, validate })).resolves.toEqual({ data: { version: 1 }, stale: true, fetchedAt: 0 });
+  await expect(cache.fetch('https://test.example/feed', { ...options, validate })).resolves.toEqual({ data: { version: 1 }, stale: true, fetchedAt: 0,
+    failure: new Error('invalid feed') });
+});
+
+it('logs the age of a status document refused for its time, and says why the copy it keeps is served until one passes', async () => {
+  let now = Date.parse('2026-11-08T21:40:00Z');
+  let lag = 130_000;
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+  const fetcher = vi.fn(async () => jsonResponse({ last_updated: (now - lag) / 1000, data: { bikes: [] } }));
+  const cache = new UpstreamJsonCache({ fetcher, now: () => now });
+  const status = { ...options, freshSeconds: 60, staleIfErrorSeconds: 900, validate: (value: unknown) => { statusObservedAt(value, now); } };
+  const url = 'https://www.mobilitaetsdaten.nrw/feed/free_bike_status.json';
+  await cache.fetch(url, status);
+  now += 61_000;
+  lag = 1_000_000;
+  const held = await cache.fetch(url, status);
+  expect(held).toMatchObject({ stale: true, failure: { message: 'Status timestamp is missing or out of date', statusAgeSeconds: 1000 } });
+  expect(JSON.parse(String(warning.mock.calls[0][0]))).toEqual({ event: 'upstream_stale_fallback', host: 'www.mobilitaetsdaten.nrw',
+    path: '/feed/free_bike_status.json', errorType: 'Error', stage: 'body', statusAgeSeconds: 1000 });
+  // Once the copy has aged out as well, the operator's refusal is the one a collection fails with.
+  now += 720_000;
+  expect(() => fetchedStatusObservedAt(held, now)).toThrow(expect.objectContaining({ statusAgeSeconds: 1000 }));
+  now += 60_000;
+  lag = 130_000;
+  await expect(cache.fetch(url, status)).resolves.toEqual({ data: expect.anything(), stale: false, fetchedAt: now });
+  warning.mockRestore();
 });
 
 describe('a host whose data may be kept 15 minutes', () => {

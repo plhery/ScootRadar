@@ -1,7 +1,8 @@
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { collectSnapshotFeed, smoothedCollectionMs } from './collectFeed';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { ParkingSnapshot } from '../src/lib/parking';
+import { StatusTimestampError } from '../src/lib/feedValidation';
 
 it('publishes fresh status despite stale metadata before optional parking completes', async () => {
   const now = Date.now();
@@ -73,4 +74,17 @@ it('times its collections, smoothed, and keeps the time through a failure', asyn
   await collectSnapshotFeed({ ...definition, collect: async () => { throw new Error('down'); } }, { ...published[0], collectionMs: 4_000 },
     record => published.push(record));
   expect(published[1]).toMatchObject({ failed: true, collectionMs: 4_000 });
+});
+
+it('logs the age of the status document a failed collection refused for its time', async () => {
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+  const definition = { id: 'germany:voi_de_koeln', provider: 'voi' as const, source: 'germany' as const, host: 'test', coverage: [] };
+  await collectSnapshotFeed({ ...definition, collect: async () => { throw new StatusTimestampError(1699); } }, undefined, () => undefined);
+  await collectSnapshotFeed({ ...definition, collect: async () => { throw new Error('GBFS request failed with HTTP 503'); } }, undefined,
+    () => undefined);
+  expect(warning.mock.calls.map(([line]) => JSON.parse(String(line)))).toEqual([
+    { event: 'snapshot_feed_failed', feed: 'germany:voi_de_koeln', error: 'Status timestamp is missing or out of date', statusAgeSeconds: 1699 },
+    { event: 'snapshot_feed_failed', feed: 'germany:voi_de_koeln', error: 'GBFS request failed with HTTP 503' },
+  ]);
+  warning.mockRestore();
 });

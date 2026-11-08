@@ -578,7 +578,12 @@ Tracing is off, and no trace headers go to the operators' feeds.
   between updates stays quiet. Its `feed` context has the `snapshot_feed_state` figures of
   its expiry and the last collection error, or says that the last collection succeeded and
   its data then aged past the limit; its `host` context lists the host's other feeds
-  expired by then. A feed the catalog no longer has, which nothing collects, is of host
+  expired by then. `observationAgeSeconds` is the age of the last observation we
+  accepted, not of what the operator sends: for a collection that refused the status
+  document for its time ("Status timestamp is missing or out of date", whether missing,
+  old or ahead), `statusAgeSeconds` is that document's own age then, negative when it was
+  ahead of our clock and null when it gave no time. On 8 November 2026 NRW's Voi feeds
+  expired with an observation 2,602 seconds old, which said nothing of NRW's documents. A feed the catalog no longer has, which nothing collects, is of host
   `unknown`, and says so.
 - **Unexpected errors**: the restore and persistence of the snapshot and of the feed
   states (a missing file is not one), feed discovery, a request
@@ -603,7 +608,9 @@ Routine feed failures are not sent; the metrics and logs cover them.
 ## Logs
 
 `snapshot_feed_state` (a feed changing state), `snapshot_feed_failed`,
-`parking_feed_failed` and `swiss_app_map_failed` (with the error), and `snapshot_health` (every minute, with the
+`parking_feed_failed` and `swiss_app_map_failed` (with the error, and for a status
+document refused for its time its own age, `statusAgeSeconds`, which a failed feed's
+`snapshot_feed_state` carries too), and `snapshot_health` (every minute, with the
 feeds on each cadence, `warmingFeeds` not collected yet and not counted as failed or
 expired, `unobservedFeeds` with no positions yet, and `oldestObservationAgeSeconds` over
 the feeds that have some, null when none has) are JSON lines, as is `feed_states_restored`
@@ -615,7 +622,9 @@ once at least are counted as `pausedFeeds`, as the metric covers them. So is `up
 operator that failed while an earlier answer could still be served: its host and path,
 and the HTTP status, or the error's type, Node's code for a network error (`errorCode`,
 as `ECONNRESET` or `UND_ERR_SOCKET`) and whether it failed before the operator answered
-or while reading what it sent (`stage`: `request` or `body`). A body the operator cuts
+or while reading what it sent (`stage`: `request` or `body`), with `statusAgeSeconds` for
+a status document refused for its time. When the copy served meanwhile ages past the
+limit too, the collection fails with the operator's refusal, so its age is the operator's. A body the operator cuts
 off (`UND_ERR_SOCKET` or `ECONNRESET` while reading it) is asked for once more at once,
 logged as `upstream_body_retry` with its host, path and `errorCode`; only a second cut
 falls back. sharedmobility.ch cuts Voi's Swiss vehicles off on some weekday mornings: about

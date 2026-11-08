@@ -70,10 +70,26 @@ export interface FeedStateChange {
   /** warming: not attempted yet, as a feed a deploy adds. */
   previous: FeedState | 'warming';
   secondsInPrevious: number;
-  /** null for a feed with no observation, rather than an age from 1970. */
+  /** Our last accepted observation's age; null for a feed with none, rather than an age from 1970. */
   observationAgeSeconds: number | null;
   attemptAgeSeconds: number;
+  /**
+   * When the last collection failed on the status document's time, that document's own age then (StatusTimestampError):
+   * negative when ahead of our clock, null when it gave no time.
+   */
+  statusAgeSeconds?: number | null;
 }
+
+/** A collection's error, as kept for a feed until one succeeds. */
+export interface FeedFailure {
+  message: string;
+  /** Set when the status document's time was why (StatusTimestampError). */
+  statusAgeSeconds?: number | null;
+}
+
+/** The failure's rejected status document's age, when it has one. */
+export const statusAgeOf = (failure: FeedFailure | undefined): Pick<FeedFailure, 'statusAgeSeconds'> =>
+  failure && failure.statusAgeSeconds !== undefined ? { statusAgeSeconds: failure.statusAgeSeconds } : {};
 
 /** A feed that has stayed expired for `afterMs`, told once for each time it expires. */
 export interface StillExpired {
@@ -154,10 +170,14 @@ export interface FeedStateEntry {
  * `restored` holds the entries an earlier run saved (`saved()`), by feed: each is its feed's
  * previous state, so an expiry still to be told keeps its wait and one already told stays quiet
  * across a restart. An entry for a feed the first call is not handed goes, as any feed's that leaves.
+ *
+ * `failure` gives the last collection error of a failed feed (scooter-cache.ts), whose rejected status document's
+ * age the change carries (`statusAgeSeconds`).
  */
 export function createFeedStateLog(log: (line: string) => void = console.log,
   onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST,
-  stillExpired?: StillExpired, restored: Readonly<Record<string, FeedStateEntry>> = {}) {
+  stillExpired?: StillExpired, restored: Readonly<Record<string, FeedStateEntry>> = {},
+  failure?: (feedId: string) => FeedFailure | undefined) {
   const known = new Map(Object.entries(restored).map(([id, entry]) => [id, { ...entry }]));
   const logStates = (feeds: readonly FeedSnapshot[], now = Date.now()) => {
     const seen = new Set<string>();
@@ -185,7 +205,8 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
       const change: FeedStateChange = { event: 'snapshot_feed_state', feed: feed.id, state, previous: previous.state,
         secondsInPrevious: Math.round((now - previous.since) / 1000),
         observationAgeSeconds: feed.observedAt ? Math.round((now - feed.observedAt) / 1000) : null,
-        attemptAgeSeconds: Math.round((now - feed.attemptedAt) / 1000) };
+        attemptAgeSeconds: Math.round((now - feed.attemptedAt) / 1000),
+        ...(feed.failed ? statusAgeOf(failure?.(feed.id)) : {}) };
       known.set(feed.id, { state, since: now, change });
       log(JSON.stringify(change));
       onChange?.(change, feed);

@@ -15,12 +15,13 @@ import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src
 import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
+import { statusAge } from '../src/lib/feedValidation';
 import { FeedScheduler, type CollectionAttention } from './feedScheduler';
 import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
+import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedFailure, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { createVisitorLedger } from './visitorLedger';
 import { createPublicVehicleIds } from './publicVehicleIds';
@@ -116,8 +117,8 @@ let persisting: Promise<void> | undefined;
 let savedAt = 0;
 let lastHealthLogAt = 0;
 const records = new Map<string, FeedSnapshot>();
-// The last collection error of each failing feed, for its Sentry report should it expire.
-const lastErrors = new Map<string, string>();
+// The last collection error of each failing feed, for its state changes and its Sentry report should it expire.
+const lastErrors = new Map<string, FeedFailure>();
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
 // The feeds collected now, whose zones are read when someone asks for them.
 let collectable: CollectableScooterFeed[] = [];
@@ -334,7 +335,8 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
     } catch (error) {
       failed = true;
       metrics.recordCollection(definition, true, (performance.now() - started) / 1000);
-      lastErrors.set(definition.id, (error instanceof Error ? error.message : String(error)).slice(0, 300));
+      lastErrors.set(definition.id, { message: (error instanceof Error ? error.message : String(error)).slice(0, 300),
+        ...statusAge(error) });
       throw error;
     }
   };
@@ -477,8 +479,8 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     const host = hostOf.get(feed.id);
     const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
       !pausedNow(other, now) && expiredBeside(other, now, cadence)).map(other => other.id).sort();
-    reportFeedExpired(change, feed, lastErrors.get(feed.id), host, alsoExpired);
-  } }, restoredFeedStates);
+    reportFeedExpired(change, feed, lastErrors.get(feed.id)?.message, host, alsoExpired);
+  } }, restoredFeedStates, id => lastErrors.get(id));
 const persistenceTimer = setInterval(() => {
   const now = Date.now();
   if (dropExpiredData(now)) publish();

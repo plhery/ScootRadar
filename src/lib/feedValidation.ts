@@ -34,14 +34,49 @@ export function validateTypes(value: unknown): void {
   }
 }
 
+/**
+ * A status document whose time is missing, past its age limit or more than 5 minutes ahead of ours. The message is
+ * the same whichever it is, as Sentry has always had it; `statusAgeSeconds` tells them apart: the age the document
+ * gave itself when it was read, negative when ahead of our clock, null when it gave no time we can read. The feed's
+ * `observationAgeSeconds` is another figure, the age of the last observation we accepted: on 8 November 2026 NRW's
+ * Voi feeds expired with one 2,602 seconds old, which said nothing of what NRW was sending.
+ */
+export class StatusTimestampError extends Error {
+  readonly statusAgeSeconds: number | null;
+
+  constructor(statusAgeSeconds: number | null) {
+    super('Status timestamp is missing or out of date');
+    this.statusAgeSeconds = statusAgeSeconds;
+  }
+}
+
+/** For a log line: the rejected status document's age, when that is why `error` was thrown. */
+export function statusAge(error: unknown): { statusAgeSeconds?: number | null } {
+  return error instanceof StatusTimestampError ? { statusAgeSeconds: error.statusAgeSeconds } : {};
+}
+
 export function statusObservedAt(value: unknown, now = Date.now(), maximumAgeMs = VEHICLE_MAX_AGE_MS): number {
   const timestamp = object(value).last_updated;
   const updatedAt = typeof timestamp === 'number' ? timestamp * 1000
     : typeof timestamp === 'string' ? Date.parse(timestamp) : NaN;
   if (!Number.isFinite(updatedAt) || now - updatedAt > maximumAgeMs || updatedAt - now > 300_000) {
-    throw new Error('Status timestamp is missing or out of date');
+    throw new StatusTimestampError(Number.isFinite(updatedAt) ? Math.round((now - updatedAt) / 1000) : null);
   }
   return Math.min(now, updatedAt);
+}
+
+/**
+ * When a fetched status document was observed (statusObservedAt). A copy served because its request failed
+ * (upstreamJsonCache's `failure`) ages past the limit in turn: when that request failed on the operator's document's
+ * own time, its error is the one thrown, so the age it gives is that of what the operator sends, not of our copy.
+ */
+export function fetchedStatusObservedAt(status: { data: unknown; failure?: unknown }, now = Date.now(),
+  maximumAgeMs = VEHICLE_MAX_AGE_MS): number {
+  try {
+    return statusObservedAt(status.data, now, maximumAgeMs);
+  } catch (error) {
+    throw error instanceof StatusTimestampError && status.failure instanceof StatusTimestampError ? status.failure : error;
+  }
 }
 
 const ABANDONED_STATUS_AGE_MS = 7 * 24 * 3600_000;

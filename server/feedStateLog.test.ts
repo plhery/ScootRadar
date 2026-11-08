@@ -352,3 +352,25 @@ it('lists beside an expiry only the feeds collected before, not those a deploy a
   expect(expiredBeside(feed({ id: 'finland:ryde_app_fi_turku_030', failed: true, attemptedAt: now - 3_000 }), now)).toBe(true);
   expect(expiredBeside(feed({ observedAt: now - 60_000, attemptedAt: now - 30_000 }), now)).toBe(false);
 });
+
+it('gives a failed feed\'s change the age of the status document its last collection refused for its time', () => {
+  const lines: string[] = [];
+  const failures = new Map([['germany:voi_de_koeln', { message: 'Status timestamp is missing or out of date', statusAgeSeconds: 1699 }],
+    ['germany:voi_de_bonn', { message: 'GBFS request failed with HTTP 503' }]]);
+  const logStates = createFeedStateLog(line => lines.push(line), undefined, ALWAYS_FAST, undefined, {}, id => failures.get(id));
+  const now = 1_000_000_000;
+  const feeds = (failed: boolean, at: number) => ['germany:voi_de_koeln', 'germany:voi_de_bonn', 'germany:voi_de_essen'].map(id =>
+    feed({ id, observedAt: now - 600_000, attemptedAt: at, failed }));
+  logStates(feeds(false, now - 60_000), now);
+  logStates(feeds(true, now + 60_000), now + 60_000);
+  // Its failure kept, a feed that collects again without one says nothing of it.
+  logStates(feeds(false, now + 120_000), now + 120_000);
+  expect(lines.map(line => JSON.parse(line)).map(({ feed, state, statusAgeSeconds }) => ({ feed, state, statusAgeSeconds }))).toEqual([
+    { feed: 'germany:voi_de_koeln', state: 'failing', statusAgeSeconds: 1699 },
+    { feed: 'germany:voi_de_bonn', state: 'failing' },
+    { feed: 'germany:voi_de_essen', state: 'failing' },
+    { feed: 'germany:voi_de_koeln', state: 'ok' },
+    { feed: 'germany:voi_de_bonn', state: 'ok' },
+    { feed: 'germany:voi_de_essen', state: 'ok' },
+  ]);
+});
