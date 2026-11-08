@@ -271,8 +271,8 @@ class ScooterModelsTest {
                 assertEquals("${language.rawValue}: $text", key.contains("%@"), text!!.contains("%@"))
             }
         }
-        // Italian says Automatico of the appearance, Automatica of the language: "lingua" is feminine.
-        assertEquals("Automatico", strings("it")["Automatic"])
+        // Italian says Auto of the appearance, whose tile is narrow, and Automatica of the language: "lingua" is feminine.
+        assertEquals("Auto", strings("it")["Automatic"])
         assertEquals("Automatica", strings("it")["Automatic (language)"])
     }
 

@@ -719,7 +719,7 @@ final class ScooterMapModelTests: XCTestCase {
         // A language chosen again is kept again.
         model.languageChoice = .language(.it)
         XCTAssertEqual(defaults.persistentDomain(forName: suiteName)?["AppleLanguages"] as? [String], ["it"])
-        XCTAssertEqual(ScooterAppearance.sun.label, "Automatico")
+        XCTAssertEqual(ScooterAppearance.sun.label, "Auto")
         XCTAssertEqual(ScooterAppearance.system.label, "Sistema")
 
         // An iPhone in none of the app's languages is followed in English.

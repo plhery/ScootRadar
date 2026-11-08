@@ -36,7 +36,8 @@
 "Hidden" = "Skjult";
 "Map" = "Kart";
 "Appearance" = "Utseende";
-"Automatic" = "Automatisk";
+/* Settings › Appearance: the name of the tile that follows the sun. It stands beside a check on a tile a quarter of the sheet wide, about 49 points on a phone 360 wide, so "Auto" where the whole word doesn't fit. */
+"Automatic" = "Auto";
 "System" = "System";
 "Light" = "Lyst";
 "Dark" = "Mørkt";

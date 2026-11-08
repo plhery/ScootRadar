@@ -173,9 +173,9 @@ class SettingsTileNameTest {
     /**
      * The chosen tile's name reads whole beside its check on a phone 360 wide (ScootRadar_Phone_Min), the sheet floating
      * 8 in at its first height, at font scale 1.0: Automatic, the choice the app starts with, was cut to "Autom…" there
-     * (app-be's release smoke), its row 5 dp too narrow at three quarters of its size. Every name in English is whole,
-     * and every one in the other languages but their Automatic, which still needs 4 to 11 dp more at three quarters
-     * of its size: a lower floor, or the check off the name's row, is the lead's to choose (app-bf).
+     * (app-be's release smoke), its row 5 dp too narrow at three quarters of its size. Every name is whole in every
+     * language: Automatisch, Automatique, Automático, Automatico and Automatisk needed 4 to 11 dp more at three
+     * quarters of their size, so German, Dutch, French, Spanish, Italian, Portuguese and Norwegian say Auto (app-bg).
      */
     @Test
     fun theChosenTilesNameReadsWholeOnAPhone360Wide() {
@@ -215,11 +215,7 @@ class SettingsTileNameTest {
         }
         // Four tiles across a sheet 344 wide, its sections 16 in, 10 apart.
         assertEquals(setOf(70.5f), widths)
-        assertEquals(
-            "the chosen tiles' names cut short",
-            listOf("de Automatisch", "fr Automatique", "it Automatico", "nl Automatisch", "nb Automatisk", "pt Automático", "es Automático"),
-            cut,
-        )
+        assertEquals("the chosen tiles' names cut short", emptyList<String>(), cut)
     }
 
     /** The tiles' names laid out under Automatic at a font scale, 1.3 unless given, each with its layout. */

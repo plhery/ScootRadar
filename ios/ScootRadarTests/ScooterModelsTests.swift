@@ -1732,9 +1732,9 @@ extension ScooterModelsTests {
                 XCTAssertEqual(text.contains("%@"), key.contains("%@"), "\(language.rawValue): \(text)")
             }
         }
-        // Italian says Automatico of the appearance, Automatica of the language: "lingua" is feminine.
+        // Italian says Auto of the appearance, whose tile is narrow, and Automatica of the language: "lingua" is feminine.
         let italian = try XCTUnwrap(Bundle.main.path(forResource: "it", ofType: "lproj").flatMap(Bundle.init(path:)))
-        XCTAssertEqual(italian.localizedString(forKey: "Automatic", value: nil, table: nil), "Automatico")
+        XCTAssertEqual(italian.localizedString(forKey: "Automatic", value: nil, table: nil), "Auto")
         XCTAssertEqual(italian.localizedString(forKey: "Automatic (language)", value: nil, table: nil), "Automatica")
     }
 

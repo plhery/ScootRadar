@@ -869,7 +869,7 @@ class ScooterMapControllerTest {
         // A language chosen again is kept again.
         model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.It))
         assertEquals(listOf("it"), appLanguages)
-        assertEquals("Automatico", ScooterAppearance.Sun.label)
+        assertEquals("Auto", ScooterAppearance.Sun.label)
         assertEquals("Sistema", ScooterAppearance.System.label)
 
         // A phone in none of the app's languages is followed in English.
