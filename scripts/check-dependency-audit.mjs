@@ -71,30 +71,45 @@ export function checkAuditReport(report, packages) {
   return { failures, exceptions };
 }
 
-function main() {
-  const audit = spawnSync('npm', ['audit', '--json', '--audit-level=moderate'], {
-    cwd: new URL('..', import.meta.url),
+/**
+ * The trees audited: the website's, and the scooter cache's, which its image installs from server/package-lock.json
+ * (server/Dockerfile) apart from the website's, so that an advisory fixed in one can stand in the other. The cache's
+ * is read from its lockfile alone, as CI installs only the website's.
+ */
+const TREES = [
+  { name: 'website', directory: '../', lockOnly: false },
+  { name: 'scooter cache', directory: '../server/', lockOnly: true },
+];
+
+function auditTree({ name, directory, lockOnly }) {
+  const audit = spawnSync('npm', ['audit', '--json', '--audit-level=moderate', ...(lockOnly ? ['--package-lock-only'] : [])], {
+    cwd: new URL(directory, import.meta.url),
     encoding: 'utf8',
     maxBuffer: 10 * 1024 * 1024,
   });
   if (audit.error || ![0, 1].includes(audit.status)) {
-    throw new Error(audit.error?.message || audit.stderr || 'npm audit failed.');
+    throw new Error(`${name}: ${audit.error?.message || audit.stderr || 'npm audit failed.'}`);
   }
-  const lock = JSON.parse(readFileSync(new URL('../package-lock.json', import.meta.url), 'utf8'));
+  const lock = JSON.parse(readFileSync(new URL(`${directory}package-lock.json`, import.meta.url), 'utf8'));
   const report = JSON.parse(audit.stdout);
   const { failures, exceptions } = checkAuditReport(report, lock.packages);
   if (exceptions.length) {
     const urls = Object.values(lintAdvisories).map(advisory => advisory.url);
-    console.log(`Known development-only lint advisories: ${urls.join(', ')}`);
-    console.log(`Affected lint packages: ${exceptions.join(', ')}`);
+    console.log(`${name}: known development-only lint advisories: ${urls.join(', ')}`);
+    console.log(`${name}: affected lint packages: ${exceptions.join(', ')}`);
   }
-  if (failures.length) {
-    for (const name of failures) {
-      console.error(`${name}: ${JSON.stringify(report.vulnerabilities[name])}`);
-    }
+  for (const failure of failures) {
+    console.error(`${name}: ${failure}: ${JSON.stringify(report.vulnerabilities[failure])}`);
+  }
+  return failures.length === 0;
+}
+
+function main() {
+  const passed = TREES.map(auditTree).every(Boolean);
+  if (!passed) {
     process.exitCode = 1;
   } else {
-    console.log('Dependency audit passed: no unexcepted moderate or higher advisories.');
+    console.log(`Dependency audit passed for the ${TREES.map(tree => tree.name).join(' and the ')}: no unexcepted moderate or higher advisories.`);
   }
 }
 
