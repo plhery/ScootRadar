@@ -120,7 +120,10 @@ and **Directions**. Opening the provider's app does not reserve the scooter.
 Where the feed links no scooter, as Lime's, Bird's and PubliBike's never do, nor Voi's,
 Dott's and Bolt's rider maps, **Open in**
 opens the provider's app on its universal link, or its App Store page when the
-app is not installed; the app never asks iOS which apps are installed.
+app is not installed; the app never asks iOS which apps are installed. So does
+a link to the scooter that nothing opens, as Bolt's `bolt://` without Bolt's
+app. A tap that opens nothing at all, as for an operator without an App Store
+page in the catalog, ends in the error haptic.
 Tapping the header centres the scooter in the part of the map the card leaves
 visible.
 
@@ -189,7 +192,8 @@ the version, shown under it; map and data credits, Privacy with the usage switch
 and the privacy notice, and the source code on GitHub.
 
 **Rating.** The app asks for a rating only with Apple's prompt, and only when a
-rider is back from the operator's app 5 minutes to 2 hours after **Open in**:
+rider is back from the operator's app 5 minutes to 2 hours after **Open in**
+opened it or the scooter's page, not its App Store page:
 once the refresh shows a fresh feed, after 5 seconds on the map with nothing
 over it (no card in the dock or the panel, no search, sheet, popover or
 location card). It asks from the third day

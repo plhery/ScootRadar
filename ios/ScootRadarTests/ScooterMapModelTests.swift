@@ -5612,6 +5612,32 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.reviewMoments, 1)
     }
 
+    func testOnlyAnOpenInThatReachedTheScooterOrTheOperatorsAppIsARideToAskAfter() async {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+        // Bolt's feed gives only links in Bolt's own scheme.
+        let link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
+        let bolt = scooter(id: "bolt-1", provider: "bolt", rentalURIs: ScooterRentalURIs(ios: link, android: link, web: nil))
+
+        // Without Bolt's app nothing takes its link, and its App Store page opens: no ride to be back from.
+        let store = await model.openRental(bolt) { url, _ in url.host == "apps.apple.com" }
+        XCTAssertEqual(store, .store(URL(string: "https://apps.apple.com/app/id675033630")!))
+        await returnFromRide(model, api, after: 20 * 60, clock: clock, openIn: false)
+        XCTAssertEqual(model.reviewMoments, 0)
+
+        // Nor when nothing opened at all.
+        let nothing = await model.openRental(bolt) { _, _ in false }
+        XCTAssertNil(nothing)
+        await returnFromRide(model, api, after: 20 * 60, clock: clock, openIn: false)
+        XCTAssertEqual(model.reviewMoments, 0)
+
+        // With the app, the scooter opens in it as before, and the return from the ride is the moment.
+        let opened = await model.openRental(bolt) { url, _ in url.scheme == "bolt" }
+        XCTAssertEqual(opened, .link(URL(string: link)!))
+        await returnFromRide(model, api, after: 20 * 60, clock: clock, openIn: false)
+        XCTAssertEqual(model.reviewMoments, 1)
+    }
+
     func testAFailedRefreshKeepsTheRestOfTheDayFromAsking() async throws {
         let clock = TestClock()
         let (model, api) = await reviewModel(clock: clock)
@@ -5648,14 +5674,16 @@ extension ScooterMapModelTests {
         return (model, api)
     }
 
-    /// "Open in", the app in the background for `seconds`, then in front again until the refresh is in.
+    /// "Open in" (unless `openIn` is false: the test opened what it opened), the app in the background for
+    /// `seconds`, then in front again until the refresh is in.
     private func returnFromRide(
         _ model: ScooterMapModel,
         _ api: StubScooterAPI,
         after seconds: TimeInterval,
-        clock: TestClock
+        clock: TestClock,
+        openIn: Bool = true
     ) async {
-        model.rentalOpened()
+        if openIn { model.rentalOpened() }
         model.becameInactive()
         clock.advance(seconds)
         let calls = await api.snapshot().calls

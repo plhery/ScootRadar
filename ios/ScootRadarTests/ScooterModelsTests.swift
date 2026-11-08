@@ -495,24 +495,90 @@ final class ScooterModelsTests: XCTestCase {
 
         // Without Lime on the iPhone nothing handles its scheme: the web page opens instead.
         var tried: [String] = []
-        let opened = await scooter.openRental { url in
-            tried.append(url.absoluteString)
+        let opened = await scooter.openRental { url, appOnly in
+            tried.append("\(url.absoluteString) \(appOnly)")
             return url.scheme == "https"
         }
-        XCTAssertEqual(tried, ["limebike://vehicle/abc-123", "https://lime.bike/vehicle/abc-123"])
-        XCTAssertEqual(opened?.absoluteString, "https://lime.bike/vehicle/abc-123")
+        XCTAssertEqual(tried, ["limebike://vehicle/abc-123 false", "https://lime.bike/vehicle/abc-123 false"])
+        XCTAssertEqual(opened, .link(URL(string: "https://lime.bike/vehicle/abc-123")!))
+        XCTAssertEqual(opened?.mayLeadToARide, true)
 
         // With the app installed, its link is the only one tried.
         tried = []
-        await scooter.openRental { url in
+        let app = await scooter.openRental { url, _ in
             tried.append(url.absoluteString)
             return true
         }
         XCTAssertEqual(tried, ["limebike://vehicle/abc-123"])
+        XCTAssertEqual(app, .link(URL(string: "limebike://vehicle/abc-123")!))
 
-        // When nothing opens, nothing is reported as opened.
-        let nothing = await scooter.openRental { _ in false }
+        // When nothing opens, not even Lime's app or its App Store page, nothing is reported as opened.
+        tried = []
+        let nothing = await scooter.openRental { url, _ in
+            tried.append(url.absoluteString)
+            return false
+        }
         XCTAssertNil(nothing)
+        XCTAssertEqual(tried, [
+            "limebike://vehicle/abc-123",
+            "https://lime.bike/vehicle/abc-123",
+            "https://lime.bike/",
+            "https://apps.apple.com/app/id1199780189"
+        ])
+    }
+
+    @MainActor
+    func testOpeningARentalFallsBackToTheOperatorsStorePageWhenNoLinkOpens() async {
+        // Bolt's feed gives only links in Bolt's own scheme, which nothing opens without Bolt's app.
+        let link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
+        let scooter = Scooter(
+            provider: "bolt",
+            latitude: 47.3769,
+            longitude: 8.5417,
+            battery: 70,
+            rangeMeters: nil,
+            vehicleID: "bolt-1",
+            deepLink: link,
+            rentalURIs: ScooterRentalURIs(ios: link, android: link, web: nil),
+            distanceMeters: nil
+        )
+        XCTAssertEqual(scooter.rentalURLs.map(\.absoluteString), [link])
+        XCTAssertNil(scooter.operatorApp, "The card says rental_open without result app")
+
+        // Without the app, Bolt's universal link opens nothing either: its App Store page opens.
+        var tried: [String] = []
+        let store = await scooter.openRental { url, appOnly in
+            tried.append("\(url.absoluteString) \(appOnly)")
+            return url.host == "apps.apple.com"
+        }
+        XCTAssertEqual(tried, [
+            "\(link) false",
+            "https://bolt.sng.link/Epy3j/o9sr true",
+            "https://apps.apple.com/app/id675033630 false"
+        ])
+        XCTAssertEqual(store, .store(URL(string: "https://apps.apple.com/app/id675033630")!))
+        XCTAssertEqual(store?.mayLeadToARide, false)
+
+        // An operator the catalog gives no app has nothing to fall back on.
+        let hopp = Scooter(
+            provider: "bolt_hopp",
+            latitude: 47.3769,
+            longitude: 8.5417,
+            battery: 70,
+            rangeMeters: nil,
+            vehicleID: "hopp-1",
+            deepLink: nil,
+            rentalURIs: ScooterRentalURIs(ios: "bolt-hopp://vehicle/1", android: nil, web: nil),
+            distanceMeters: nil
+        )
+        XCTAssertNil(hopp.providerInfo?.app)
+        tried = []
+        let nothing = await hopp.openRental { url, _ in
+            tried.append(url.absoluteString)
+            return url.scheme == "https"
+        }
+        XCTAssertNil(nothing)
+        XCTAssertEqual(tried, ["bolt-hopp://vehicle/1"])
     }
 
     func testOpensTheOperatorsAppOrItsStorePageWhereTheFeedLinksNoScooter() async {
@@ -549,21 +615,23 @@ final class ScooterModelsTests: XCTestCase {
 
         // With Lime installed, its universal link opens it; only an app may take that link.
         var tried: [String] = []
-        let opened = await lime.openOperatorApp { url, appOnly in
+        let opened = await lime.openRental { url, appOnly in
             tried.append("\(url.absoluteString) \(appOnly)")
             return true
         }
         XCTAssertEqual(tried, ["https://lime.bike/ true"])
-        XCTAssertEqual(opened?.absoluteString, "https://lime.bike/")
+        XCTAssertEqual(opened, .app(URL(string: "https://lime.bike/")!))
+        XCTAssertEqual(opened?.mayLeadToARide, true)
 
         // Without it, the App Store page opens instead.
         tried = []
-        let store = await lime.openOperatorApp { url, appOnly in
+        let store = await lime.openRental { url, appOnly in
             tried.append("\(url.absoluteString) \(appOnly)")
             return !appOnly
         }
         XCTAssertEqual(tried, ["https://lime.bike/ true", "https://apps.apple.com/app/id1199780189 false"])
-        XCTAssertEqual(store?.absoluteString, "https://apps.apple.com/app/id1199780189")
+        XCTAssertEqual(store, .store(URL(string: "https://apps.apple.com/app/id1199780189")!))
+        XCTAssertEqual(store?.mayLeadToARide, false)
 
         // A scooter its feed links keeps that link, and other operators have no app to fall back on.
         let linked = scooter("lime", rentalURIs: ScooterRentalURIs(ios: "https://lime.bike/vehicle/1", android: nil, web: nil))

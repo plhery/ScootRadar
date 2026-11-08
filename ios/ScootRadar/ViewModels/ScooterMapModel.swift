@@ -2561,6 +2561,20 @@ extension ScooterMapModel {
 // MARK: - Rating
 
 extension ScooterMapModel {
+    /// "Open in" (Scooter.openRental). Only the scooter or the operator's app opening is noted for the rating, at
+    /// the tap, as the open may complete only once the app is in the background: not the App Store page, where the
+    /// app is still to install, nor a tap that opened nothing.
+    @discardableResult
+    func openRental(
+        _ scooter: Scooter,
+        using open: @MainActor (URL, _ appOnly: Bool) async -> Bool = Scooter.openURL
+    ) async -> ScooterRentalOpening? {
+        let tappedAt = clock()
+        let opened = await scooter.openRental(using: open)
+        if opened?.mayLeadToARide == true { reviewPrompt.noteRentalOpened(at: tappedAt) }
+        return opened
+    }
+
     /// "Open in" took the rider to the operator's app: the return from the ride may be the moment to ask for a rating.
     func rentalOpened() {
         reviewPrompt.noteRentalOpened(at: clock())

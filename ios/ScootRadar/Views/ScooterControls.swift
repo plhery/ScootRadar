@@ -1576,6 +1576,8 @@ private struct ScooterCard: View {
     /// The provider's tile, 40 pt across at the standard text size; it grows
     /// with the text up to 56, as the close button beside it does.
     @ScaledMetric(relativeTo: .body) private var tileSide: CGFloat = 40
+    /// Taps on "Open in" that opened nothing, for the error haptic.
+    @State private var failedOpens = 0
 
     var body: some View {
         let content = model.cardContent(for: scooter)
@@ -1624,17 +1626,19 @@ private struct ScooterCard: View {
             }
 
             // "Open in …" is the wider of the two. Where the feed links no scooter, as Lime's
-            // and Bird's never do, it opens the operator's app, or else its App Store page.
+            // and Bird's never do, it opens the operator's app, or else its App Store page, and
+            // so it does where no link to the scooter opens, as Bolt's bolt:// without its app.
             DockActionRow(weights: scooter.rentalURL == nil && scooter.operatorApp == nil ? [] : [1.5, 1]) {
                 if scooter.rentalURL != nil || scooter.operatorApp != nil {
                     Button {
-                        model.rentalOpened()
-                        if scooter.rentalURL != nil {
-                            ScooterAnalytics.shared.track("rental_open", provider: scooter.provider)
-                            Task { await scooter.openRental() }
-                        } else {
-                            ScooterAnalytics.shared.track("rental_open", provider: scooter.provider, result: "app")
-                            Task { await scooter.openOperatorApp() }
+                        // The tap, whatever opens: rental_open never says whether the operator's app is installed.
+                        ScooterAnalytics.shared.track(
+                            "rental_open",
+                            provider: scooter.provider,
+                            result: scooter.rentalURL == nil ? "app" : nil
+                        )
+                        Task {
+                            if await model.openRental(scooter) == nil { failedOpens += 1 }
                         }
                     } label: {
                         Label(
@@ -1643,6 +1647,9 @@ private struct ScooterCard: View {
                         )
                     }
                     .dockActionStyle(prominent: true)
+                    // Nothing opened, as an operator's own scheme without its app and with no App Store page to
+                    // fall back on: the tap is felt to fail rather than doing nothing.
+                    .sensoryFeedback(.error, trigger: failedOpens)
                 }
 
                 DirectionsButton(model: model, target: .scooter(scooter), prominent: false)

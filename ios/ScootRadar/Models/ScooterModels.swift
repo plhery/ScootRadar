@@ -86,39 +86,34 @@ struct Scooter: Identifiable, Hashable, Sendable {
         )
     }
 
-    /// Opens the scooter in its provider's app. A link in the app's own scheme
-    /// opens nothing when the app is not installed, so the next link, the
-    /// provider's web page, is tried then. Returns the link that opened.
-    @MainActor
-    @discardableResult
-    func openRental(
-        using open: @MainActor (URL) async -> Bool = { await UIApplication.shared.open($0) }
-    ) async -> URL? {
-        for url in rentalURLs where await open(url) {
-            return url
-        }
-        return nil
-    }
-
     /// The operator's app, where the feed links no scooter: Lime's, Bird's, PubliBike's and Spin's never do,
     /// nor Voi's, Dott's and Bolt's rider maps.
     var operatorApp: ScooterProvider.OperatorApp? {
         rentalURLs.isEmpty ? providerInfo?.app : nil
     }
 
-    /// Opens the operator's app on its universal link, which opens only an installed app;
-    /// without the app, its App Store page opens instead. Nothing asks iOS which apps are
-    /// installed. Returns the link that opened.
+    /// "Open in": the scooter in its provider's app. A link in the app's own scheme opens nothing when the app is
+    /// not installed, so the next link, the provider's web page, is tried then. Where no link opens, as Bolt's feed
+    /// gives only bolt:// ones, and where the feed links no scooter, the operator's app opens on its universal link,
+    /// which opens only an installed app, or else its App Store page. Nothing asks iOS which apps are installed.
+    /// Returns what opened: nil for nothing, as for an operator the catalog gives no app.
     @MainActor
     @discardableResult
-    func openOperatorApp(
-        using open: @MainActor (URL, _ appOnly: Bool) async -> Bool = { url, appOnly in
-            await UIApplication.shared.open(url, options: appOnly ? [.universalLinksOnly: true] : [:])
+    func openRental(
+        using open: @MainActor (URL, _ appOnly: Bool) async -> Bool = Scooter.openURL
+    ) async -> ScooterRentalOpening? {
+        for url in rentalURLs where await open(url, false) {
+            return .link(url)
         }
-    ) async -> URL? {
-        guard let app = operatorApp else { return nil }
-        if await open(app.link, true) { return app.link }
-        return await open(app.appStore, false) ? app.appStore : nil
+        guard let app = providerInfo?.app else { return nil }
+        if await open(app.link, true) { return .app(app.link) }
+        return await open(app.appStore, false) ? .store(app.appStore) : nil
+    }
+
+    /// Opens `url` in whatever takes it; with `appOnly`, only in an installed app that claims it.
+    @MainActor
+    static func openURL(_ url: URL, appOnly: Bool) async -> Bool {
+        await UIApplication.shared.open(url, options: appOnly ? [.universalLinksOnly: true] : [:])
     }
 
     /// "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the
@@ -159,6 +154,22 @@ struct Scooter: Identifiable, Hashable, Sendable {
         // there, as U+00A0 does in Norwegian.
         guard let gap = length.lastIndex(where: { $0 == "\u{00A0}" || $0 == "\u{202F}" }) else { return (length, nil) }
         return (String(length[..<gap]), String(length[length.index(after: gap)...]))
+    }
+}
+
+/// What "Open in" opened.
+enum ScooterRentalOpening: Equatable, Sendable {
+    /// One of the scooter's links: in its operator's app, or a web link wherever iOS opens it.
+    case link(URL)
+    /// The operator's app, on the universal link it claims.
+    case app(URL)
+    /// The operator's App Store page: the app is not installed.
+    case store(URL)
+
+    /// On the way to the operator, and maybe to a ride: not to the App Store, where the app is still to install.
+    var mayLeadToARide: Bool {
+        if case .store = self { return false }
+        return true
     }
 }
 
