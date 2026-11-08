@@ -142,10 +142,13 @@ E-bikes are excluded; battery/range/provider position-update time remain unknown
 The launch helper confirms termination before returning, so the worker no longer
 adds a fixed two-second pause between arming the job and opening Ryde. Proxy readiness,
 egress selection, termination and job arming still finish before the new launch.
-The reliable native request trigger still relaunches Ryde for each map query,
-with its window hidden. Reopening the existing process and hiding/unhiding it
-have not produced new map requests in bounded tests. Keeping the process alive
-therefore needs another proven trigger before replacing the existing one.
+The unattended worker still relaunches Ryde for each map query, with its window
+hidden. Reopening the existing process does not trigger a map request. An
+interactive map pan, followed by recentering, does produce fresh authenticated
+requests in the same process; recentering an already centered map does not.
+This warm trigger is verified interactively. Replacing the worker's launch trigger
+requires app-specific automation that preserves window focus and handles map state,
+plus the existing routing lease and key-renewal checks.
 
 ## Datacenter egress
 
