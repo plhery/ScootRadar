@@ -312,6 +312,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   let failed = false;
   let running = true;
   const startedAt = Date.now();
+  metrics.recordRefreshStarted(definition.id, startedAt);
   // An app map's scooters carry no price: they get the one listed for their system, if any.
   const priced = (vehicles: Vehicle[]) => system ? withListedPricing(system, vehicles, Date.now()) : vehicles;
   // What an app map's sweep has found so far, shown until it ends (sweeps.ts): the record it ends
@@ -321,6 +322,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
     if (!running || stopping || !record) return;
     records.set(definition.id, { ...record, sweep: { startedAt, vehicles: priced(vehicles), swept } });
     publish();
+    metrics.recordRefreshProgress(definition.id);
   };
   const timed = async () => {
     const started = performance.now();
@@ -342,7 +344,8 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
     records.set(definition.id, record);
     publish();
   }, system && !isAppMapSystem(system) ? () => fetchRegionalParking(system) : undefined)
-    .finally(() => stalls.ended(definition.id));
+    .catch(error => { failed = true; throw error; })
+    .finally(() => { stalls.ended(definition.id); metrics.recordRefreshEnded(definition.id, failed); });
   return { failed };
 }
 

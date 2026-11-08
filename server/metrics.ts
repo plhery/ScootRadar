@@ -22,6 +22,16 @@ const LIME_WAKE_WINDOW_MS = 15 * 60_000;
 // The visitors of a window by the Lime refreshes they set off in it: up to 1, 3, 7, 15, and more.
 const LIME_WAKE_BUCKETS: [string, number][] = [['1', 1], ['2-3', 3], ['4-7', 7], ['8-15', 15], ['16+', Infinity]];
 const LIME_WAKE_MAX_CLIENTS = 10_000;
+/** The bounds, in seconds, of the buckets of the refreshes' times. */
+export const REFRESH_BUCKETS = [1, 2, 3, 5, 7.5, 10, 15, 20, 30, 45, 60, 90, 120, 300];
+/** A refresh asked for whose collection has not ended after this is forgotten. */
+const REFRESH_FORGET_MS = 60 * 60_000;
+/**
+ * How long a visitor waited, from the request that asked for the feed: for its collection to start
+ * (a slot on its host or account), for its first scooters to be published (a sweep's nearest the
+ * view, or all of them), and for it to end.
+ */
+type RefreshPhase = 'start' | 'first' | 'done';
 
 interface MetricsSources {
   /** How often each feed is meant to be collected, which its state is judged by. */
@@ -77,6 +87,19 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
   const limeWakesOf = new Map<string, number>();
   const limeWakeClients = new Map(LIME_WAKE_BUCKETS.map(([bucket]) => [bucket, 0]));
   const limeWakes = new Map(LIME_WAKE_BUCKETS.map(([bucket]) => [bucket, 0]));
+  // The refreshes requests asked for, by feed, until their collection ends; and their times and outcomes, by kind.
+  const asked = new Map<string, { labels: Labels; at: number; startedAt?: number; firstAt?: number }>();
+  const refreshTimes = new Map<string, { labels: Labels; buckets: number[]; seconds: number; count: number }>();
+  const refreshOutcomes = new Map<string, { labels: Labels; count: number }>();
+  const observeRefresh = (labels: Labels, phase: RefreshPhase, ms: number) => {
+    const key = `${labels.provider} ${labels.map} ${labels.kind} ${phase}`;
+    const entry = refreshTimes.get(key) ?? { labels: { ...labels, phase }, buckets: REFRESH_BUCKETS.map(() => 0), seconds: 0, count: 0 };
+    const seconds = Math.max(0, ms) / 1000;
+    REFRESH_BUCKETS.forEach((bound, index) => { if (seconds <= bound) entry.buckets[index]++; });
+    entry.seconds += seconds;
+    entry.count++;
+    refreshTimes.set(key, entry);
+  };
   const closeLimeWindow = (now: number) => {
     const window = Math.floor(now / LIME_WAKE_WINDOW_MS);
     if (window === limeWindow) return;
@@ -115,6 +138,41 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     recordGeoapifyRequests(count: number) { geoapifyRequests += count; },
     /** A request for scooters whose box was too large for its zoom, answered at a lower one (scooterAnswerZoom). */
     recordLoweredZoom() { loweredZooms++; },
+    /**
+     * A request asked for the feed to be collected again, as its data was over a minute old: `cold` when it
+     * had no position recent enough to show, so the visitor waits for its scooters, else `warm`. The first
+     * request times the refresh; the others asking meanwhile join it.
+     */
+    recordRefreshAsked(feed: FeedLabels, app: boolean, cold: boolean, now = Date.now()) {
+      for (const [id, entry] of asked) if (now - entry.at > REFRESH_FORGET_MS) asked.delete(id);
+      if (asked.has(feed.id)) return;
+      asked.set(feed.id, { labels: { provider: feed.provider, map: app ? 'app' : 'feed', kind: cold ? 'cold' : 'warm' }, at: now });
+    },
+    /** The feed's collection started; one under way when the request came answers it from then. */
+    recordRefreshStarted(id: string, now = Date.now()) {
+      const entry = asked.get(id);
+      if (entry && entry.startedAt === undefined) entry.startedAt = now;
+    },
+    /** A sweep of the feed published the scooters it had found so far. */
+    recordRefreshProgress(id: string, now = Date.now()) {
+      const entry = asked.get(id);
+      if (entry && entry.firstAt === undefined) entry.firstAt = now;
+    },
+    /** The feed's collection ended and its scooters were published, or it failed. */
+    recordRefreshEnded(id: string, failed: boolean, now = Date.now()) {
+      const entry = asked.get(id);
+      if (!entry) return;
+      asked.delete(id);
+      const outcome = failed ? 'failed' : 'ok';
+      const key = `${entry.labels.provider} ${entry.labels.map} ${entry.labels.kind} ${outcome}`;
+      const counted = refreshOutcomes.get(key) ?? { labels: { ...entry.labels, outcome }, count: 0 };
+      counted.count++;
+      refreshOutcomes.set(key, counted);
+      if (failed) return;
+      observeRefresh(entry.labels, 'start', (entry.startedAt ?? entry.at) - entry.at);
+      observeRefresh(entry.labels, 'first', (entry.firstAt ?? now) - entry.at);
+      observeRefresh(entry.labels, 'done', now - entry.at);
+    },
     /** A visitor's request (`client`, its address) set off the refresh of `count` Lime rider-map feeds. */
     recordLimeWakes(client: string, count: number, now = Date.now()) {
       if (!count) return;
@@ -255,6 +313,18 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       metric('scootradar_geoapify_requests_total', 'counter',
         'Requests address searches sent to Geoapify, as the Worker reports them: its free plan allows 3,000 a day.',
         [[{ version }, geoapifyRequests]]);
+      metric('scootradar_refreshes_total', 'counter',
+        'Collections requests asked for, as the feed\'s data was over a minute old, by provider, map (app: a rider app\'s map; feed: a public feed), kind (cold: no position recent enough to show; warm: the map still showed its scooters) and outcome.',
+        [...refreshOutcomes.values()].map(entry => [entry.labels, entry.count]));
+      metric('scootradar_refresh_seconds', 'histogram',
+        'Of those that succeeded, the seconds from the request that asked for them until their collection started (phase start), published its first scooters (first: a sweep\'s nearest the view) and ended (done). The map asks again every 3 seconds while a feed refreshes.',
+        []);
+      for (const entry of refreshTimes.values()) {
+        REFRESH_BUCKETS.forEach((bound, index) => out.push(`scootradar_refresh_seconds_bucket${formatLabels({ ...entry.labels, le: String(bound) })} ${entry.buckets[index]}`));
+        out.push(`scootradar_refresh_seconds_bucket${formatLabels({ ...entry.labels, le: '+Inf' })} ${entry.count}`,
+          `scootradar_refresh_seconds_sum${formatLabels(entry.labels)} ${round(entry.seconds)}`,
+          `scootradar_refresh_seconds_count${formatLabels(entry.labels)} ${entry.count}`);
+      }
       metric('scootradar_feed_collections_total', 'counter', 'Feed collections by outcome.',
         [...collections.values()].flatMap(entry => [
           [{ ...entry.labels, outcome: 'ok' }, entry.ok] as [Labels, number],

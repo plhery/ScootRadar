@@ -101,7 +101,7 @@ it('renders just the counters for the scrape of each container, computing no gau
   expect(sample(text, 'scootradar_upstream_cache_evictions_total')).toBe('1');
   expect(text).toContain('process_cpu_seconds_total ');
   const types = text.split('\n').filter(line => line.startsWith('# TYPE ')).map(line => line.split(' ')[3]);
-  expect(new Set(types)).toEqual(new Set(['counter', 'summary']));
+  expect(new Set(types)).toEqual(new Set(['counter', 'histogram', 'summary']));
 });
 
 it('buckets visitors by the Lime refreshes they set off in each quarter hour', () => {
@@ -166,6 +166,38 @@ it('counts collections from zero by outcome, and requests by route and status', 
   expect(sample(text, 'scootradar_geoapify_requests_total{version="local"}')).toBe('0');
   expect(sample(text, 'scootradar_http_request_duration_seconds_count{route="/api/scooters"}')).toBe('3');
   expect(sample(text, 'scootradar_snapshot_updated_timestamp_seconds')).toBeUndefined();
+});
+
+it('times the refreshes requests ask for, from the first request to their start, first scooters and end, counters to each container', () => {
+  const metrics = createSnapshotMetrics('abc123');
+  const lime = { id: 'germany:lime_de_app_augsburg_001', source: 'germany', provider: 'lime' };
+  const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };
+  // A Lime group with nothing live to show, asked twice while it waits for its account's slot.
+  metrics.recordRefreshAsked(lime, true, true, now);
+  metrics.recordRefreshAsked(lime, true, true, now + 2_000);
+  metrics.recordRefreshStarted(lime.id, now + 4_000);
+  metrics.recordRefreshProgress(lime.id, now + 6_000);
+  metrics.recordRefreshProgress(lime.id, now + 9_000);
+  metrics.recordRefreshEnded(lime.id, false, now + 40_000);
+  // A feed still shown, joining a collection under way, which fails; and one nobody asked for.
+  metrics.recordRefreshAsked(voi, false, false, now);
+  metrics.recordRefreshEnded(voi.id, true, now + 1_000);
+  metrics.recordRefreshStarted('national:other', now);
+  metrics.recordRefreshEnded('national:other', false, now + 1_000);
+  const text = metrics.render(snapshot([]), now + 41_000, true);
+  const cold = 'provider="lime",map="app",kind="cold"';
+  expect(sample(text, `scootradar_refreshes_total{${cold},outcome="ok"}`)).toBe('1');
+  expect(sample(text, 'scootradar_refreshes_total{provider="voi",map="feed",kind="warm",outcome="failed"}')).toBe('1');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="start",le="3"}`)).toBe('0');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="start",le="5"}`)).toBe('1');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="first",le="5"}`)).toBe('0');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="first",le="7.5"}`)).toBe('1');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="done",le="30"}`)).toBe('0');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="done",le="45"}`)).toBe('1');
+  expect(sample(text, `scootradar_refresh_seconds_bucket{${cold},phase="done",le="+Inf"}`)).toBe('1');
+  expect(sample(text, `scootradar_refresh_seconds_sum{${cold},phase="done"}`)).toBe('40');
+  expect(sample(text, `scootradar_refresh_seconds_count{${cold},phase="done"}`)).toBe('1');
+  expect(text).not.toContain('provider="voi",map="feed",kind="warm",phase');
 });
 
 it('counts the scooters with a price, and the plans fetched again for plans scooters named', () => {

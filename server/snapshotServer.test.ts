@@ -491,6 +491,25 @@ describe('collection on demand', () => {
     expect(body.meta).toMatchObject({ refreshing: true, failedSources: [], partial: false });
   });
 
+  it('times each refresh a request asks for, from that request, as cold where nothing live is left to show', async () => {
+    const now = Date.now();
+    const groups = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.id.startsWith('lime_de_app_berlin_')).map(system => {
+      const coverage = serviceAreas(system).map(area => area.bounds);
+      return feed(`${regionalSource(system)}:${system.id}`, coverage[0], now - minutes(40), { source: 'germany', provider: 'lime', coverage });
+    });
+    const metrics = createSnapshotMetrics();
+    const demanded = new Set<string>();
+    const { port } = await start({ version: 1, updatedAt: now, feeds: groups, overview: buildCityOverview(groups, now) }, {
+      metrics, refresher: { demand: ids => { for (const id of ids) demanded.add(id); return ids; }, refreshing: id => demanded.has(id),
+        wait: async () => true } });
+    await (await fetch(`http://127.0.0.1:${port}/api/scooters?south=52.34&west=13.0&north=52.68&east=13.76&zoom=16`, { headers })).text();
+    expect(demanded.size).toBe(LIME_GROUPS_PER_REQUEST);
+    for (const id of demanded) metrics.recordRefreshEnded(id, false, Date.now() + 20_000);
+    const text = metrics.render(undefined, Date.now(), true);
+    expect(text).toContain(`scootradar_refreshes_total{provider="lime",map="app",kind="cold",outcome="ok"} ${LIME_GROUPS_PER_REQUEST}`);
+    expect(text).toContain(`scootradar_refresh_seconds_count{provider="lime",map="app",kind="cold",phase="done"} ${LIME_GROUPS_PER_REQUEST}`);
+  });
+
   it('counts the Lime refreshes each visitor sets off in a quarter hour, keeping no address', async () => {
     const now = Date.now();
     const groups = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.id.startsWith('lime_de_app_berlin_')).map(system => {

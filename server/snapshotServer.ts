@@ -254,6 +254,10 @@ export function createSnapshotServer(options: ServerOptions) {
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
       const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds));
+      // How long the visitor waits for each refresh: the first request asking times it (metrics.ts).
+      for (const feed of watched) {
+        if (refresher.refreshing(feed.id)) options.metrics?.recordRefreshAsked(feed, isAppMapFeed(feed), !showsPositions(feed, now), now);
+      }
       // Lime's rider-map accounts are shared by every visitor: how many of their refreshes each one sets off.
       options.metrics?.recordLimeWakes(key,
         watched.filter(feed => feed.provider === 'lime' && isAppMapFeed(feed) && started.has(feed.id)).length, now);

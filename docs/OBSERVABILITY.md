@@ -86,6 +86,26 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   before it would expire), `idle` and `retry` (an idle feed that failed).
 - `scootradar_request_waits_total{outcome="collected|timeout"}`: requests that waited for
   the collection of feeds whose positions were over 15 minutes old.
+- `scootradar_refreshes_total{provider,map,kind,outcome}` and
+  `scootradar_refresh_seconds{provider,map,kind,phase}` (a histogram): the
+  collections a request asked for because the feed's data was over a minute old,
+  and how long the visitor waited for them, from the first request asking. `map`
+  is `app` (a rider app's map) or `feed` (a public feed); `kind` is `cold` when
+  the feed had no position recent enough to show (15 minutes; a slow feed shows
+  its last positions faded meanwhile), so the map waits for its scooters, or
+  `warm` when it still showed them. `phase` is `start` (its collection started:
+  the wait for a slot on its host or account; 0 when one under way answers it),
+  `first` (its first scooters were published: a sweep's nearest the view, all of
+  them otherwise) and `done` (it ended). The map asks again every 3 seconds
+  while a feed refreshes, so it shows them up to 3 s later. Failed ones are in
+  the counter only. Since 8 November 2026. P50 and P90 of a week's cold waits by
+  provider:
+  `histogram_quantile(0.9, sum by (le, provider, map, phase) (increase(scootradar_refresh_seconds_bucket{kind="cold"}[7d])))`.
+  A long `start` says the host's or account's slots are taken (more accounts or
+  addresses would help); a `done` long past `first` a slow sweep; a long
+  `first` with a short `start`, a client's pace (its requests queue in it, as
+  Lime's per account). Ryde's views, which the Mac bridge reads
+  (`server/rydeWatchedViews.ts`), are not in it.
 - `scootradar_upstream_requests_total{kind="status|metadata"}`: requests sent to
   operators; status covers positions and parking, metadata what is kept an hour or more.
 - `scootradar_lime_account_requests_total{account,kind="status|metadata"}`:
