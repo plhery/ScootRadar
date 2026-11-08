@@ -84,11 +84,11 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    */
   birdAppArea?: string;
   /**
-   * A Bird operating area of data/bird-app-areas.json whose scooters a public Bird feed leaves out:
-   * the Node cache sweeps it now and then and adds to the feed those the feed does not list
-   * (server/birdSupplement.ts).
+   * Bird operating areas of data/bird-app-areas.json whose scooters a public Bird feed leaves out,
+   * within `withinM` of the system's centre: the Node cache sweeps that part of them now and then
+   * and adds to the feed those the feed does not list (server/birdSupplement.ts).
    */
-  birdAppSupplement?: string;
+  birdAppSupplement?: { areas: string[]; withinM: number };
   /** Beam rider-map city id, collected in bounded H3 cells by the Node cache. */
   beamAppCity?: number;
   /** Reviewed disjoint operating envelopes, to avoid querying empty gaps between campuses. */

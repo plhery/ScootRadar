@@ -1,4 +1,4 @@
-import { boundsContainPoint, pairWithin, polygonContainsPoint } from '../src/lib/geo';
+import { boundsContainPoint, clipRingToDisc, pairWithin, polygonContainsPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { localClock } from '../src/lib/rentalCurfews';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
@@ -9,18 +9,19 @@ import type { Ring } from './nearestSweep';
 import { currentCollection } from './sweeps';
 
 /*
- * Bird's public feed for Rome leaves out a quarter of the scooters its rider map shows west of the
- * Tiber and in the centre, ridden ones among them, and not the same ones from one read to the next:
- * 269 of the 1,057 in Bird's west area at 22:00 UTC on 8 November 2026, and of the scooters by the
- * Vatican that stood still from 11:25 to 20:56 UTC that day, 18 the feed had listed were left out
- * at the end (docs/bird-app-map.md). The feed's scooters stand, collected as before. A sweep of
- * Bird's operating area there adds the scooters its map listed and the feed did not, for as long as
+ * Bird's public feed for Rome leaves out scooters its rider map shows in the centre, ridden ones
+ * among them, and not the same ones from one read to the next: of the scooters in Bird's two areas
+ * there, swept from 21:52 to 22:18 UTC on 8 November 2026, 490 of the 1,673 within 4.5 km of the
+ * system's centre, against 62 of the 1,704 farther out; and of the scooters by the Vatican that stood
+ * still from 11:25 to 20:56 UTC that day, 18 the feed had listed were left out at the end
+ * (docs/bird-app-map.md). The feed's scooters stand, collected as before. A sweep of the areas'
+ * part within that distance adds the scooters its map listed and the feed did not, for as long as
  * none of the feed's stands on one.
  */
 
 /** How often an area nobody looks at is swept, by day in its town: an addition ridden away stands until the next. */
 export const SUPPLEMENT_IDLE_MS = 2 * 60 * 60_000;
-/** How often while someone looks at it: Rome's west area took 18 requests, nine minutes of Bird's one every 30 seconds. */
+/** How often while someone looks at it: Rome's centre takes about 24 requests, 12 minutes of Bird's one every 30 seconds. */
 export const SUPPLEMENT_WATCHED_MS = 30 * 60_000;
 /** How long a sweep's additions stand: past the next idle sweep's end, then none should it fail. */
 export const SUPPLEMENT_MAX_AGE_MS = SUPPLEMENT_IDLE_MS + 30 * 60_000;
@@ -36,7 +37,7 @@ export class BirdSupplement {
   private sweeping?: Promise<void>;
   private startedAt = -Infinity;
   private sweptAt?: number;
-  /** The last sweep's scooters of the feed's brand, inside the area and the feed's bounds. */
+  /** The last sweep's scooters of the feed's brand, inside the rings and the feed's bounds. */
   private scooters: BirdScooter[] = [];
   /** Those of them the feed did not list once the sweep had ended, from its first fresh collection after. */
   private added?: Set<string>;
@@ -104,15 +105,29 @@ export class BirdSupplement {
 
 const supplements = new Map<string, BirdSupplement>();
 
+/** The parts of a supplement's areas within its distance of the system's centre, or none should one be missing. */
+export function supplementRings(system: RegionalScooterSystem): Ring[] | undefined {
+  const supplement = system.birdAppSupplement;
+  if (!supplement) return undefined;
+  const areas = supplement.areas.map(birdAreaRings);
+  if (!areas.length || areas.some(rings => !rings)) return undefined;
+  const rings = areas.flatMap(rings => rings!.map(ring => clipRingToDisc(ring, system.center, supplement.withinM)))
+    .filter(ring => ring.length);
+  return rings.length ? rings : undefined;
+}
+
 /** The public Bird feeds whose system names a birdAppSupplement, with the scooters they leave out. */
 export function withBirdSupplements(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[],
   api: Pick<BirdClient, 'nearest'> = birdMapClient, kept = supplements): CollectableScooterFeed[] {
   const named = new Map(systems.filter(system => system.birdAppSupplement).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = named.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    const rings = system?.birdAppSupplement ? birdAreaRings(system.birdAppSupplement) : undefined;
-    if (!system || !rings || !system.timeZone || feed.provider !== system.provider || (system.provider !== 'bird' && system.provider !== 'spin')) return feed;
-    const supplement = kept.get(feed.id) ?? new BirdSupplement({ ...system, provider: system.provider, timeZone: system.timeZone }, rings, api);
+    if (!system || !system.timeZone || feed.provider !== system.provider || (system.provider !== 'bird' && system.provider !== 'spin')) return feed;
+    // Made once: the cache rebuilds its feeds on each discovery.
+    const rings = kept.has(feed.id) ? undefined : supplementRings(system);
+    const supplement = kept.get(feed.id) ??
+      (rings && new BirdSupplement({ ...system, provider: system.provider, timeZone: system.timeZone }, rings, api));
+    if (!supplement) return feed;
     kept.set(feed.id, supplement);
     const collect = feed.collect;
     return { ...feed, collect: () => supplement.collect(collect) };

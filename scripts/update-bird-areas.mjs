@@ -27,8 +27,8 @@ const catalogs = countries.filter(country => country.catalog).map(country => {
   const feedsPath = resolve(process.cwd(), country.catalog);
   return { feedsPath, feeds: JSON.parse(readFileSync(feedsPath, 'utf8')) };
 }).filter(({ feeds }) => feeds.systems.some(system => system.birdAppArea || system.birdAppSupplement));
-const areaOf = system => system.birdAppArea ?? system.birdAppSupplement;
-const systems = catalogs.flatMap(({ feeds }) => feeds.systems.filter(areaOf));
+const areasOf = system => system.birdAppArea ? [system.birdAppArea] : system.birdAppSupplement?.areas ?? [];
+const systems = catalogs.flatMap(({ feeds }) => feeds.systems.filter(system => areasOf(system).length));
 
 let next = 0;
 async function areasNear([latitude, longitude]) {
@@ -47,14 +47,14 @@ async function areasNear([latitude, longitude]) {
 }
 
 const areas = [];
-for (const id of [...new Set(systems.map(areaOf))].sort()) {
-  const system = systems.find(candidate => areaOf(candidate) === id);
+for (const id of [...new Set(systems.flatMap(areasOf))].sort()) {
+  const system = systems.find(candidate => areasOf(candidate).includes(id));
   const area = (await areasNear(system.center)).find(candidate => candidate?.id === id);
   if (!area) throw new Error(`Bird has no area ${id} within 25 km of ${system.id}`);
   if (!area.operational || !area.kinds?.includes('OPERATIONAL_AREA') || area.hide_birds) {
     throw new Error(`Bird's area ${id}, ${area.label}, is not an operating area`);
   }
-  // Rings are not told apart from holes: Rome's west area has 14 holes, swept and kept as part of the area.
+  // Rings are not told apart from holes: Rome's two areas have 14 and 67, swept and kept as part of them.
   const rings = (area.region?.rings ?? []).map(({ points }) => {
     const ring = points.map(({ latitude, longitude }) => [longitude, latitude]);
     // simplifyRing takes a closed GeoJSON ring.

@@ -5,11 +5,14 @@ import {
   boundsContainPoint,
   boundsIntersect,
   boundsIntersection,
+  clipRingToDisc,
   crossesDateLine,
   expandBounds,
+  haversineM,
   lngNear,
   lngSpan,
   pairWithin,
+  polygonContainsPoint,
   viewBounds,
   viewportContainsPoint,
   wrapLng,
@@ -242,6 +245,35 @@ describe('points standing on others', () => {
       expect(pairWithin([east(offset)], [east(offset + 39.9)], 40).size).toBe(1);
       expect(pairWithin([north(offset)], [north(offset - 39.9)], 40).size).toBe(1);
       expect(pairWithin([east(offset)], [east(offset + 40.1)], 40).size).toBe(0);
+    }
+  });
+});
+
+describe('the part of a ring within a distance of a point', () => {
+  const centre: [number, number] = [41.9028, 12.4964];
+  const metres = (lat: number, lng: number) => haversineM(centre[0], centre[1], lat, lng);
+  it('keeps a ring within the circle whole, drops one beyond it, and cuts one across it on the circle', () => {
+    const small: [number, number][] = [[41.90, 12.49], [41.91, 12.49], [41.91, 12.50], [41.90, 12.50]];
+    expect(clipRingToDisc(small, centre, 5_000)).toEqual(small);
+    expect(clipRingToDisc([[42.0, 12.6], [42.01, 12.6], [42.01, 12.61]], centre, 5_000)).toEqual([]);
+    // A square 20 km a side around the centre: what is left is the circle, all of it within 5 km.
+    const square: [number, number][] = [[41.81, 12.38], [41.99, 12.38], [41.99, 12.62], [41.81, 12.62]];
+    const disc = clipRingToDisc(square, centre, 5_000);
+    expect(disc).toHaveLength(64);
+    for (const [lat, lng] of disc) expect(metres(lat, lng)).toBeCloseTo(5_000, -1);
+    expect(polygonContainsPoint(disc, 41.9028 + 4_900 / 111_320, 12.4964)).toBe(true);
+    expect(polygonContainsPoint(disc, 41.9028 + 5_050 / 111_320, 12.4964)).toBe(false);
+  });
+
+  it('keeps both arms of a ring that leaves the circle and comes back, and nothing beyond it', () => {
+    // A U open to the north, its arms crossing the circle and joined beyond it.
+    const u: [number, number][] = [[41.86, 12.45], [41.96, 12.45], [41.96, 12.47], [41.88, 12.47], [41.88, 12.52],
+      [41.96, 12.52], [41.96, 12.54], [41.86, 12.54]];
+    const clipped = clipRingToDisc(u, centre, 5_000);
+    expect(clipped.every(([lat, lng]) => metres(lat, lng) <= 5_001)).toBe(true);
+    for (const [lat, lng, within] of [[41.92, 12.46, true], [41.92, 12.53, true], [41.87, 12.50, true], [41.92, 12.495, false],
+      [41.95, 12.46, false]] as const) {
+      expect(polygonContainsPoint(clipped, lat, lng)).toBe(within);
     }
   });
 });

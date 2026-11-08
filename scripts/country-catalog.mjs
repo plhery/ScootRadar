@@ -422,37 +422,57 @@ export function binbinAreasProblem(systems, { areas }) {
  * Why Bird's app map areas are wrong, or null. The cache sweeps an area's outline from
  * data/bird-app-areas.json for the Bird or Spin system naming it as its birdAppArea, and keeps that
  * brand's scooters inside. Most Bird and Spin systems are public feeds and name none; one may name
- * an area as its birdAppSupplement, whose scooters it leaves out are added to it, swept by day in
- * its time zone (server/birdSupplement.ts). An area is named once per brand, and its outline lies
- * within the system's bounds, around an app system's centre.
+ * areas as its birdAppSupplement, whose part within `withinM` of its centre is swept by day in its
+ * time zone, and the scooters there its feed leaves out added to it (server/birdSupplement.ts). An
+ * area is named once per brand, and its outline lies within the system's bounds, around an app
+ * system's centre, and within reach of a supplement's.
  */
 export function birdAreasProblem(systems, { areas }) {
   const byId = new Map(areas.map(area => [area.id, area]));
   const named = new Set();
   for (const system of systems) {
-    const id = system.birdAppArea ?? system.birdAppSupplement;
-    if (id === undefined) continue;
+    if (system.birdAppArea === undefined && system.birdAppSupplement === undefined) continue;
     const key = system.birdAppArea === undefined ? 'birdAppSupplement' : 'birdAppArea';
     if (system.provider !== 'bird' && system.provider !== 'spin') return `${system.id}: only a Bird or Spin system names a ${key}`;
     if (system.birdAppArea !== undefined && system.birdAppSupplement !== undefined) {
       return `${system.id}: a system names a birdAppArea or a birdAppSupplement, not both`;
     }
-    if (key === 'birdAppSupplement' && !system.timeZone) return `${system.id}: a birdAppSupplement is swept by day in its timeZone, which it lacks`;
-    const area = byId.get(id);
-    if (!area) return `${system.id}: data/bird-app-areas.json has no area ${id}`;
-    if (named.has(`${system.provider}:${area.id}`)) return `${system.id}: another system sweeps Bird's area ${area.id}`;
-    named.add(`${system.provider}:${area.id}`);
-    named.add(area.id);
-    const { south, west, north, east } = system.bounds;
-    if (!area.rings.flat().every(([lat, lng]) => lat >= south && lat <= north && lng >= west && lng <= east)) {
-      return `${system.id}: the outline of Bird's area ${area.id} reaches beyond its bounds`;
+    const supplement = system.birdAppSupplement;
+    if (supplement !== undefined) {
+      if (!Array.isArray(supplement.areas) || !supplement.areas.length || !supplement.areas.every(id => typeof id === 'string') ||
+        !Number.isFinite(supplement.withinM) || supplement.withinM <= 0 || supplement.withinM > 25_000 ||
+        Object.keys(supplement).some(name => name !== 'areas' && name !== 'withinM')) {
+        return `${system.id}: a birdAppSupplement names its areas and the metres from the centre, up to 25 km, it sweeps them within`;
+      }
+      if (!system.timeZone) return `${system.id}: a birdAppSupplement is swept by day in its timeZone, which it lacks`;
     }
-    if (key === 'birdAppArea' && !area.rings.some(ring => ringHolds(ring, system.center))) {
-      return `${system.id}: its centre is outside the outline of Bird's area ${area.id}`;
+    for (const id of supplement?.areas ?? [system.birdAppArea]) {
+      const area = byId.get(id);
+      if (!area) return `${system.id}: data/bird-app-areas.json has no area ${id}`;
+      if (named.has(`${system.provider}:${area.id}`)) return `${system.id}: another system sweeps Bird's area ${area.id}`;
+      named.add(`${system.provider}:${area.id}`);
+      named.add(area.id);
+      const { south, west, north, east } = system.bounds;
+      if (!area.rings.flat().every(([lat, lng]) => lat >= south && lat <= north && lng >= west && lng <= east)) {
+        return `${system.id}: the outline of Bird's area ${area.id} reaches beyond its bounds`;
+      }
+      const holds = area.rings.some(ring => ringHolds(ring, system.center));
+      if (!supplement && !holds) return `${system.id}: its centre is outside the outline of Bird's area ${area.id}`;
+      if (supplement && !holds && !area.rings.flat().some(point => metresBetween(point, system.center) <= supplement.withinM)) {
+        return `${system.id}: Bird's area ${area.id} lies farther than ${supplement.withinM} m from its centre`;
+      }
     }
   }
   const unnamed = areas.filter(area => !named.has(area.id)).map(area => area.id);
   return unnamed.length ? `data/bird-app-areas.json: no system sweeps ${unnamed.join(', ')}` : null;
+}
+
+/** Metres between two [lat, lng] points, on the 6,371 km sphere. */
+function metresBetween([lat1, lng1], [lat2, lng2]) {
+  const radians = Math.PI / 180;
+  const a = Math.sin((lat2 - lat1) * radians / 2) ** 2 +
+    Math.cos(lat1 * radians) * Math.cos(lat2 * radians) * Math.sin((lng2 - lng1) * radians / 2) ** 2;
+  return 2 * 6_371_000 * Math.asin(Math.sqrt(a));
 }
 
 /**

@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { COUNTRY_SOURCES } from '../src/generated/countries';
-import { haversineM } from '../src/lib/geo';
+import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds, type SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
-import { BIRD_PAGE, type BirdScooter } from './birdApp';
-import { BirdSupplement, SUPPLEMENT_IDLE_MS, SUPPLEMENT_MAX_AGE_MS, SUPPLEMENT_WATCHED_MS, withBirdSupplements } from './birdSupplement';
+import { BIRD_PAGE, birdAreaRings, type BirdScooter } from './birdApp';
+import { BirdSupplement, SUPPLEMENT_IDLE_MS, SUPPLEMENT_MAX_AGE_MS, SUPPLEMENT_WATCHED_MS, supplementRings, withBirdSupplements } from './birdSupplement';
 import { reportError } from './errorReporting';
 import type { Ring } from './nearestSweep';
 import { withinCollection } from './sweeps';
@@ -148,6 +148,23 @@ describe('Bird map scooters a public feed leaves out', () => {
     withBirdSupplements(independentCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS, api, kept);
     expect(kept.size).toBe(1);
     expect(kept.get(`${COUNTRY_SOURCES.IT}:bird_it_rome`)).toBe(supplement);
-    expect(ROME).toMatchObject({ provider: 'bird', timeZone: 'Europe/Rome', birdAppSupplement: '8c1c167f-8584-43eb-a2f8-f23258e352e4' });
+    expect(ROME).toMatchObject({ provider: 'bird', timeZone: 'Europe/Rome', birdAppSupplement: {
+      areas: ['8c1c167f-8584-43eb-a2f8-f23258e352e4', '8a1884d9-70eb-4636-86f9-af338e2f70b3'], withinM: 4_500 } });
+  });
+
+  it("sweeps the part of Rome's two areas within 4.5 km of its centre, and none should an area be missing", () => {
+    const rings = supplementRings(ROME)!;
+    const [lat0, lng0] = ROME.center;
+    expect(rings.flat().every(([lat, lng]) => haversineM(lat0, lng0, lat, lng) <= 4_501)).toBe(true);
+    const within = (lat: number, lng: number) => rings.some(ring => polygonContainsPoint(ring, lat, lng));
+    const whole = (lat: number, lng: number) => ROME.birdAppSupplement!.areas
+      .some(id => birdAreaRings(id)!.some(ring => polygonContainsPoint(ring, lat, lng)));
+    // Piazza San Pietro in the west area, Termini in the east one, both near enough; EUR in the east one, 7 km out.
+    for (const [lat, lng, near] of [[41.9022, 12.4568, true], [41.9010, 12.5016, true], [41.8339, 12.4717, false]] as const) {
+      expect(whole(lat, lng)).toBe(true);
+      expect(within(lat, lng)).toBe(near);
+    }
+    expect(supplementRings({ ...ROME, birdAppSupplement: { areas: [...ROME.birdAppSupplement!.areas, 'none'], withinM: 4_500 } })).toBeUndefined();
+    expect(supplementRings({ ...ROME, birdAppSupplement: undefined })).toBeUndefined();
   });
 });

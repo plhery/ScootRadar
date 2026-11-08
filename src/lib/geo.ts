@@ -97,6 +97,38 @@ export function polygonContainsPoint(ring: readonly [number, number][], lat: num
 }
 
 /**
+ * The part of a ring of [lat, lng] points within `metres` of a centre, the circle drawn as a polygon
+ * of `sides` corners on it (64 fall at most 0.12% of the radius inside it). Clipped edge by edge
+ * (Sutherland–Hodgman): where the ring leaves the circle and comes back, the parts are joined along
+ * it, which a point-in-polygon test does not see. Empty when no part of the ring lies within.
+ */
+export function clipRingToDisc(ring: readonly [number, number][], [lat0, lng0]: readonly [number, number], metres: number,
+  sides = 64): [number, number][] {
+  // 111,195 m a degree of latitude on the 6,371 km sphere haversineM measures on.
+  const dLat = metres / 111_195, dLng = dLat / Math.cos(lat0 * Math.PI / 180);
+  // Anticlockwise with longitude as x: a point is within an edge when it lies on its left.
+  const corners = Array.from({ length: sides }, (_, i): [number, number] =>
+    [lat0 + dLat * Math.sin(2 * Math.PI * i / sides), lng0 + dLng * Math.cos(2 * Math.PI * i / sides)]);
+  let clipped = ring.map(([lat, lng]): [number, number] => [lat, lng]);
+  for (let i = 0; i < sides && clipped.length; i++) {
+    const [aLat, aLng] = corners[i], [bLat, bLng] = corners[(i + 1) % sides];
+    const left = ([lat, lng]: [number, number]) => (bLng - aLng) * (lat - aLat) - (bLat - aLat) * (lng - aLng);
+    const points = clipped;
+    clipped = [];
+    for (let j = 0; j < points.length; j++) {
+      const from = points[(j + points.length - 1) % points.length], to = points[j];
+      const sideFrom = left(from), sideTo = left(to);
+      if ((sideFrom >= 0) !== (sideTo >= 0)) {
+        const t = sideFrom / (sideFrom - sideTo);
+        clipped.push([from[0] + t * (to[0] - from[0]), from[1] + t * (to[1] - from[1])]);
+      }
+      if (sideTo >= 0) clipped.push(to);
+    }
+  }
+  return clipped.length >= 3 ? clipped : [];
+}
+
+/**
  * Which point of `others` stands on each of `points`: within `metres`, one each, the nearest pairs
  * first, by the index of each in its list. Points are sorted into a grid of cells wider than
  * `metres`, so a pair is always in neighbouring cells; it does not wrap at the 180° line.

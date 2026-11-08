@@ -397,21 +397,33 @@ describe('the countries of data/countries.json', () => {
     expect(birdAreasProblem(catalogSystems(countries.countries, readCatalog), readJson('data/bird-app-areas.json'))).toBeNull();
   });
 
-  it('adds to a public Bird feed the scooters of one area, swept by day in its time zone, wherever its centre stands', () => {
+  it('adds to a public Bird feed the scooters of its areas near its centre, swept by day in its time zone', () => {
     const ring = [[41.9, 12.4], [41.95, 12.4], [41.95, 12.5], [41.9, 12.5]];
-    const feed = { id: 'bird_it_a', provider: 'bird', birdAppSupplement: 'x', timeZone: 'Europe/Rome', center: [41.89, 12.5],
-      bounds: { south: 41.8, west: 12.3, north: 42, east: 12.6 } };
-    const areas = { areas: [{ id: 'x', title: 'A', rings: [ring] }] };
+    const east = [[41.85, 12.51], [41.9, 12.51], [41.9, 12.55], [41.85, 12.55]];
+    const feed = { id: 'bird_it_a', provider: 'bird', birdAppSupplement: { areas: ['x', 'y'], withinM: 4_500 }, timeZone: 'Europe/Rome',
+      center: [41.89, 12.5], bounds: { south: 41.8, west: 12.3, north: 42, east: 12.6 } };
+    const areas = { areas: [{ id: 'x', title: 'A', rings: [ring] }, { id: 'y', title: 'B', rings: [east] }] };
     expect(birdAreasProblem([feed], areas)).toBeNull();
     expect(birdAreasProblem([{ ...feed, timeZone: undefined }], areas))
       .toBe('bird_it_a: a birdAppSupplement is swept by day in its timeZone, which it lacks');
+    for (const supplement of ['x', { areas: [], withinM: 4_500 }, { areas: ['x', 'y'] }, { areas: ['x', 'y'], withinM: 30_000 },
+      { areas: ['x', 'y'], withinM: 4_500, centre: [41.9, 12.5] }]) {
+      expect(birdAreasProblem([{ ...feed, birdAppSupplement: supplement }], areas))
+        .toBe('bird_it_a: a birdAppSupplement names its areas and the metres from the centre, up to 25 km, it sweeps them within');
+    }
     expect(birdAreasProblem([{ ...feed, provider: 'lime' }], areas)).toBe('bird_it_a: only a Bird or Spin system names a birdAppSupplement');
     expect(birdAreasProblem([{ ...feed, birdAppArea: 'x' }], areas)).toBe('bird_it_a: a system names a birdAppArea or a birdAppSupplement, not both');
-    expect(birdAreasProblem([{ ...feed, birdAppSupplement: 'y' }], areas)).toBe('bird_it_a: data/bird-app-areas.json has no area y');
+    expect(birdAreasProblem([{ ...feed, birdAppSupplement: { areas: ['x', 'z'], withinM: 4_500 } }], areas))
+      .toBe('bird_it_a: data/bird-app-areas.json has no area z');
     expect(birdAreasProblem([feed, { ...feed, id: 'bird_it_app_a', birdAppSupplement: undefined, birdAppArea: 'x', center: [41.92, 12.45] }], areas))
       .toBe('bird_it_app_a: another system sweeps Bird\'s area x');
     expect(birdAreasProblem([{ ...feed, bounds: { ...feed.bounds, north: 41.94 } }], areas))
       .toBe('bird_it_a: the outline of Bird\'s area x reaches beyond its bounds');
+    // The nearest corner of area x is 1.1 km from the centre, area y's 1.4 km.
+    expect(birdAreasProblem([{ ...feed, birdAppSupplement: { areas: ['x', 'y'], withinM: 1_200 } }], areas))
+      .toBe('bird_it_a: Bird\'s area y lies farther than 1200 m from its centre');
+    expect(birdAreasProblem([{ ...feed, birdAppSupplement: { areas: ['x'], withinM: 4_500 } }], areas))
+      .toBe('data/bird-app-areas.json: no system sweeps y');
   });
 
   it('adds only Lime app maps to Switzerland, each in the town of a Swiss area, and no town of its own', () => {

@@ -62,7 +62,13 @@
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/rome/gbfs.json",
       "timeZone": "Europe/Rome",
-      "birdAppSupplement": "8c1c167f-8584-43eb-a2f8-f23258e352e4",
+      "birdAppSupplement": {
+        "areas": [
+          "8c1c167f-8584-43eb-a2f8-f23258e352e4",
+          "8a1884d9-70eb-4636-86f9-af338e2f70b3"
+        ],
+        "withinM": 4500
+      },
       "aliases": [
         "Rome"
       ]
