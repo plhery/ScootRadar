@@ -40,6 +40,20 @@ region ids are exact app ids; city names were reviewed to avoid using a
 suburb returned for the centre of a large bounding box as the city name.
 Two separate Szczecin regions count under the same city.
 
+On 8 November 2026 the map was read over a box of about 8 km around each
+of the 110 places on Dott's [locations page](https://ridedott.com/locations/)
+that no catalog region held (Switzerland aside). 100 held no Dott scooter,
+among them 38 of the 39 Polish ones (Łódź, Toruń, Elbląg, Słupsk, Kalisz and
+the Baltic resorts), Frankfurt, Kassel, Lübeck, Wuppertal, Copenhagen and its
+suburbs, Murcia, Lorca, Ibiza, Lanzarote, Genova, Catania, Eindhoven and
+Groningen. The scooters at Markdorf, Quartu Sant'Elena, Salzgitter, Straszyn
+and Pörtschach belong to regions already read, and the map shows them. The rest
+are regions left out on purpose: Ras Al Khaimah (4), Malvik (14) and Melhus
+(13) ([coverage gaps](coverage-gaps.md)), Ghent, whose feed lists
+e-bikes (2 scooters on the map), and Aubervilliers (1). The locations page
+names many towns where the map held none, so the regions on the map, not the
+page, decide what the catalog reads.
+
 ## Protocol and collection
 
 The cache now uses Node 26, matching the project's toolchain. A deployment
@@ -130,6 +144,12 @@ collector asks for. Counted on the night of 24 to 25 October 2026:
   Sindelfingen until then. The box is split there, as Voi's is. Its west edge,
   8.972°, is the region's own: Maichingen station (8.9696°) lies just outside,
   and the westernmost scooter stood at 8.9771°, by Maichingen Nord station.
+- **Ludwigshafen am Rhein** (`oK3T6A7SFjqdO9VkywPD`): of 911 on the afternoon
+  of 8 November 2026, 733 stood in Mannheim, across the Rhine, and 172 in
+  Ludwigshafen, all counted under Ludwigshafen until then; Ilvesheim's 5 and
+  Frankenthal's 1 count under the nearest of these towns. The two areas
+  overlap between the Rhine's banks plus 1 km, as Bolt's and Voi's do there,
+  so a scooter in between counts under the nearer town centre.
 
 ### Widened boxes
 

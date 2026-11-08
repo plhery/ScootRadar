@@ -682,8 +682,13 @@ banned shared scooters, and feeds that were empty when checked.
 - **Germany** ([guide](german-italian-scooter-feeds.md#known-gaps)):
   - Dott closed most of its public regions in September 2026. Since 24 October,
     63 regions use its anonymous app map, including Hamburg, Bremen, Nürnberg,
-    Dortmund and Karlsruhe; Bochum uses its public GBFS feed again. Regions
-    absent from the app map, such as Mannheim, remain gaps.
+    Dortmund and Karlsruhe; Bochum uses its public GBFS feed again. Mannheim's
+    Dott scooters belong to its Ludwigshafen region, on the map since
+    24 October 2026 and counted under Mannheim since 8 November
+    ([towns inside a region](dott-app-map.md#towns-inside-a-region)). Of the
+    German towns on Dott's locations page that no catalog region holds,
+    Frankfurt, Kassel, Lübeck, Wuppertal and five more had no Dott scooter
+    on its map on 8 November 2026.
   - Bird München and Ulm list no vehicle; Bird left Ulm around 2022.
   - North Rhine-Westphalia's mobility data hub holds Bolt, Voi, Lime and Dott
     feeds for Köln, Düsseldorf, Essen, Dortmund and other towns, but only

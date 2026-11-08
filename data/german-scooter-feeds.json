@@ -1758,7 +1758,35 @@
         "east": 8.576
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
-      "dottAppRegion": "oK3T6A7SFjqdO9VkywPD"
+      "dottAppRegion": "oK3T6A7SFjqdO9VkywPD",
+      "areas": [
+        {
+          "city": "Ludwigshafen am Rhein",
+          "center": [
+            49.4812,
+            8.4464
+          ],
+          "bounds": {
+            "south": 49.4212,
+            "north": 49.556,
+            "west": 8.3441,
+            "east": 8.4907
+          }
+        },
+        {
+          "city": "Mannheim",
+          "center": [
+            49.4875,
+            8.466
+          ],
+          "bounds": {
+            "south": 49.4212,
+            "north": 49.556,
+            "west": 8.4004,
+            "east": 8.576
+          }
+        }
+      ]
     },
     {
       "id": "dott_de_minden",
