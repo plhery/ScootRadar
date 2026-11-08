@@ -397,6 +397,23 @@ describe('the countries of data/countries.json', () => {
     expect(birdAreasProblem(catalogSystems(countries.countries, readCatalog), readJson('data/bird-app-areas.json'))).toBeNull();
   });
 
+  it('adds to a public Bird feed the scooters of one area, swept by day in its time zone, wherever its centre stands', () => {
+    const ring = [[41.9, 12.4], [41.95, 12.4], [41.95, 12.5], [41.9, 12.5]];
+    const feed = { id: 'bird_it_a', provider: 'bird', birdAppSupplement: 'x', timeZone: 'Europe/Rome', center: [41.89, 12.5],
+      bounds: { south: 41.8, west: 12.3, north: 42, east: 12.6 } };
+    const areas = { areas: [{ id: 'x', title: 'A', rings: [ring] }] };
+    expect(birdAreasProblem([feed], areas)).toBeNull();
+    expect(birdAreasProblem([{ ...feed, timeZone: undefined }], areas))
+      .toBe('bird_it_a: a birdAppSupplement is swept by day in its timeZone, which it lacks');
+    expect(birdAreasProblem([{ ...feed, provider: 'lime' }], areas)).toBe('bird_it_a: only a Bird or Spin system names a birdAppSupplement');
+    expect(birdAreasProblem([{ ...feed, birdAppArea: 'x' }], areas)).toBe('bird_it_a: a system names a birdAppArea or a birdAppSupplement, not both');
+    expect(birdAreasProblem([{ ...feed, birdAppSupplement: 'y' }], areas)).toBe('bird_it_a: data/bird-app-areas.json has no area y');
+    expect(birdAreasProblem([feed, { ...feed, id: 'bird_it_app_a', birdAppSupplement: undefined, birdAppArea: 'x', center: [41.92, 12.45] }], areas))
+      .toBe('bird_it_app_a: another system sweeps Bird\'s area x');
+    expect(birdAreasProblem([{ ...feed, bounds: { ...feed.bounds, north: 41.94 } }], areas))
+      .toBe('bird_it_a: the outline of Bird\'s area x reaches beyond its bounds');
+  });
+
   it('adds only Lime app maps to Switzerland, each in the town of a Swiss area, and no town of its own', () => {
     const system = { id: 'lime_ch_app_kloten', provider: 'lime', country: 'CH', city: 'Kloten', center: [47.4659, 8.5887], limeAppMap: true };
     expect(swissCatalogProblem([system], swissAreas)).toBeNull();

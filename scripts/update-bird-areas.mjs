@@ -3,8 +3,8 @@ import { resolve } from 'node:path';
 import { simplifyRing, writeCatalog } from './boundaries.mjs';
 
 // Fills data/bird-app-areas.json with the operating areas of Bird's rider map, for each area a
-// system of a country catalog names by its birdAppArea, and sets that system's bounds to its
-// outline's. The cache sweeps an area's outline and keeps the system's brand inside it
+// system of a country catalog names by its birdAppArea or birdAppSupplement, and sets a birdAppArea
+// system's bounds to its outline's. The cache sweeps an area's outline and keeps the system's brand inside it
 // (server/birdApp.ts). Bird's map needs a rider's session, which this reads from a private file and
 // never prints, and never renews: one request per area, 30 seconds apart, the cache's own pace. Bird's
 // limit is the account's (docs/bird-app-map.md), so these count with the cache's: run nothing else on
@@ -26,8 +26,9 @@ const countries = JSON.parse(readFileSync(resolve(process.cwd(), 'data/countries
 const catalogs = countries.filter(country => country.catalog).map(country => {
   const feedsPath = resolve(process.cwd(), country.catalog);
   return { feedsPath, feeds: JSON.parse(readFileSync(feedsPath, 'utf8')) };
-}).filter(({ feeds }) => feeds.systems.some(system => system.birdAppArea));
-const systems = catalogs.flatMap(({ feeds }) => feeds.systems.filter(system => system.birdAppArea));
+}).filter(({ feeds }) => feeds.systems.some(system => system.birdAppArea || system.birdAppSupplement));
+const areaOf = system => system.birdAppArea ?? system.birdAppSupplement;
+const systems = catalogs.flatMap(({ feeds }) => feeds.systems.filter(areaOf));
 
 let next = 0;
 async function areasNear([latitude, longitude]) {
@@ -46,14 +47,14 @@ async function areasNear([latitude, longitude]) {
 }
 
 const areas = [];
-for (const id of [...new Set(systems.map(system => system.birdAppArea))].sort()) {
-  const system = systems.find(candidate => candidate.birdAppArea === id);
+for (const id of [...new Set(systems.map(areaOf))].sort()) {
+  const system = systems.find(candidate => areaOf(candidate) === id);
   const area = (await areasNear(system.center)).find(candidate => candidate?.id === id);
   if (!area) throw new Error(`Bird has no area ${id} within 25 km of ${system.id}`);
   if (!area.operational || !area.kinds?.includes('OPERATIONAL_AREA') || area.hide_birds) {
     throw new Error(`Bird's area ${id}, ${area.label}, is not an operating area`);
   }
-  // No operating area has had a hole; one would be swept and kept as part of its area.
+  // Rings are not told apart from holes: Rome's west area has 14 holes, swept and kept as part of the area.
   const rings = (area.region?.rings ?? []).map(({ points }) => {
     const ring = points.map(({ latitude, longitude }) => [longitude, latitude]);
     // simplifyRing takes a closed GeoJSON ring.

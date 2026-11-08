@@ -17,7 +17,8 @@ October 2026, after [the research reader](../scripts/bird-app-map.mjs) had
 shown the map's decoys could be told from real replies. Everything Bird
 and Spin publish stays read from their public feeds at `mds.bird.co` and
 `gbfs.spin.pm`, but for Getafe, whose feed lists fewer than half of its
-scooters ([Europe](#europe-november-2026)).
+scooters ([Europe](#europe-november-2026)). Rome's feed leaves out a quarter
+of them, which its map adds ([below](#rome-adds-the-scooters-its-feed-leaves-out)).
 
 ## What the cache reads
 
@@ -56,7 +57,9 @@ about half what it took. An area nobody looks at is swept once a day
 ten minutes after a day without a sweep. A request keeps an area watched for
 three minutes, and a watched area is swept again as soon as its sweep ends.
 The 44 areas took about 300 requests, so a day's round of them all takes
-about 150 of the client's 1,440 minutes.
+about 150 of the client's 1,440 minutes. Rome's additions take 18 requests
+every two hours by day, about 130 a day, and 18 every half hour while
+someone looks at Rome, nine of each 30 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
 cache waits two minutes, while the cache it replaces may still be sweeping.
 
@@ -384,8 +387,30 @@ the cache for the same circle:
   of the map's there in both reads. The left-out ones moved away more than
   the listed ones, and 18 listed scooters that had not moved were left out
   at 20:56, while 2 went the other way, so it is not the same scooters each
-  time. The cache does not add them yet. East Rome's feed missed one of
-  the map's scooters, then none.
+  time. Swept whole from 21:52 to 22:00 UTC that evening, in 18 requests,
+  Bird's west area ("Roma operating area": the centre and west of the
+  Tiber) held 1,057 scooters, and 269 of them (25%) had none of the feed's
+  within 40 m at 22:00, most in the historic centre, 7 to 9% beyond 4 km
+  from it. The cache adds them (below). East Rome's feed missed one of the
+  map's scooters, then none.
+
+#### Rome adds the scooters its feed leaves out
+
+Since 8 November 2026 `bird_it_rome` is read from its public feed as before,
+and Bird's west area, its `birdAppSupplement`, adds the scooters the feed
+leaves out ([`server/birdSupplement.ts`](../server/birdSupplement.ts)). The
+area is swept every two hours between 08:00 and 21:00 in Rome while nobody
+looks, every 30 minutes while someone does, never twice at once, through the
+client every area shares. The map's scooters that none of the feed's stood
+within 40 m of, one each, on the first fresh read after a sweep, are added as
+`bird:<id>` for as long as none of the feed's stands on one, and for at most
+two and a half hours after the sweep. A scooter the feed listed then is not
+added later on its old spot once ridden away, while one added and ridden away
+stands until the next sweep. While the map cannot be read the feed stands as
+it is, and Sentry hears once two sweeps in a row have failed
+(`bird-supplement:bird_it_rome`). The area's 15 rings are in
+[`data/bird-app-areas.json`](../data/bird-app-areas.json), from the European
+search of 4 November.
 
 ### The rest of the world, November 2026
 

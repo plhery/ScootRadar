@@ -421,17 +421,25 @@ export function binbinAreasProblem(systems, { areas }) {
 /**
  * Why Bird's app map areas are wrong, or null. The cache sweeps an area's outline from
  * data/bird-app-areas.json for the Bird or Spin system naming it as its birdAppArea, and keeps that
- * brand's scooters inside. Most Bird and Spin systems are public feeds and name none; an area is
- * named once per brand, and its outline lies within the system's bounds, around its centre.
+ * brand's scooters inside. Most Bird and Spin systems are public feeds and name none; one may name
+ * an area as its birdAppSupplement, whose scooters it leaves out are added to it, swept by day in
+ * its time zone (server/birdSupplement.ts). An area is named once per brand, and its outline lies
+ * within the system's bounds, around an app system's centre.
  */
 export function birdAreasProblem(systems, { areas }) {
   const byId = new Map(areas.map(area => [area.id, area]));
   const named = new Set();
   for (const system of systems) {
-    if (system.birdAppArea === undefined) continue;
-    if (system.provider !== 'bird' && system.provider !== 'spin') return `${system.id}: only a Bird or Spin system names a birdAppArea`;
-    const area = byId.get(system.birdAppArea);
-    if (!area) return `${system.id}: data/bird-app-areas.json has no area ${system.birdAppArea}`;
+    const id = system.birdAppArea ?? system.birdAppSupplement;
+    if (id === undefined) continue;
+    const key = system.birdAppArea === undefined ? 'birdAppSupplement' : 'birdAppArea';
+    if (system.provider !== 'bird' && system.provider !== 'spin') return `${system.id}: only a Bird or Spin system names a ${key}`;
+    if (system.birdAppArea !== undefined && system.birdAppSupplement !== undefined) {
+      return `${system.id}: a system names a birdAppArea or a birdAppSupplement, not both`;
+    }
+    if (key === 'birdAppSupplement' && !system.timeZone) return `${system.id}: a birdAppSupplement is swept by day in its timeZone, which it lacks`;
+    const area = byId.get(id);
+    if (!area) return `${system.id}: data/bird-app-areas.json has no area ${id}`;
     if (named.has(`${system.provider}:${area.id}`)) return `${system.id}: another system sweeps Bird's area ${area.id}`;
     named.add(`${system.provider}:${area.id}`);
     named.add(area.id);
@@ -439,7 +447,7 @@ export function birdAreasProblem(systems, { areas }) {
     if (!area.rings.flat().every(([lat, lng]) => lat >= south && lat <= north && lng >= west && lng <= east)) {
       return `${system.id}: the outline of Bird's area ${area.id} reaches beyond its bounds`;
     }
-    if (!area.rings.some(ring => ringHolds(ring, system.center))) {
+    if (key === 'birdAppArea' && !area.rings.some(ring => ringHolds(ring, system.center))) {
       return `${system.id}: its centre is outside the outline of Bird's area ${area.id}`;
     }
   }

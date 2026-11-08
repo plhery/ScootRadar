@@ -61,6 +61,8 @@
         "east": 12.7268
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/rome/gbfs.json",
+      "timeZone": "Europe/Rome",
+      "birdAppSupplement": "8c1c167f-8584-43eb-a2f8-f23258e352e4",
       "aliases": [
         "Rome"
       ]

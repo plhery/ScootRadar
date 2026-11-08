@@ -292,6 +292,13 @@ export const sweepBirdArea = (api: Pick<BirdClient, 'nearest'>, rings: readonly 
 
 interface Area { id: string; title: string; rings: Ring[] }
 const AREAS = new Map((areaCatalog.areas as unknown as Area[]).map(area => [area.id, area.rings]));
+/** The outline of a Bird operating area of data/bird-app-areas.json. */
+export const birdAreaRings = (id: string): readonly Ring[] | undefined => AREAS.get(id);
+/** A scooter of Bird's map as the cache publishes it, by the operator's own id, which the map keeps. */
+export const birdVehicle = (provider: 'bird' | 'spin', scooter: BirdScooter): Vehicle => ({
+  provider, vehicle_id: `${provider}:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
+  battery: scooter.battery, range_m: scooter.range, deep_link: null, distance_m: null,
+});
 type Published = { lat: number; lng: number; vehicle_id: string | null };
 export type PreviousPositions = (feedId: string) => readonly Published[] | undefined;
 
@@ -309,11 +316,9 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   const inside = (scooter: BirdScooter) => scooter.brand === system.provider &&
     areas.some(area => boundsContainPoint(area.bounds, scooter.lat, scooter.lng)) &&
     rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng));
-  const published = (scooters: Iterable<BirdScooter>): Vehicle[] => [...scooters].filter(inside).map(scooter => ({
-    // By the operator's own id, which the map keeps, so a scooter where two areas meet is shown once.
-    provider: system.provider, vehicle_id: `${system.provider}:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
-    battery: scooter.battery, range_m: scooter.range, deep_link: null, distance_m: null,
-  }));
+  // By the operator's own id, so a scooter where two areas meet is shown once.
+  const published = (scooters: Iterable<BirdScooter>): Vehicle[] =>
+    [...scooters].filter(inside).map(scooter => birdVehicle(system.provider as 'bird' | 'spin', scooter));
   const found = new Map<string, BirdScooter>();
   const progress = new SweepProgress(() => published(found.values()));
   const sweep = await sweepBirdArea(api, rings, previous, limits, found, part => progress.done(part));
@@ -322,14 +327,15 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   return { observedAt: sweep.startedAt, stale: false, vehicles: published(sweep.scooters) };
 }
 
-const client = new BirdClient({ startHoldMs: BIRD_START_HOLD_MS });
+/** The cache's one client, whose pace and holds every Bird request shares, the Rome feed's additions' too (birdSupplement.ts). */
+export const birdMapClient = new BirdClient({ startHoldMs: BIRD_START_HOLD_MS });
 let scriptClient: BirdClient | undefined;
 /** A sweep from nothing known, as scripts/check-french-feeds.mjs makes: it replaces no cache, so it waits for none. */
 export const collectBirdRegion = (system: RegionalScooterSystem) => collectBirdArea(system, [], scriptClient ??= new BirdClient());
 
 /** Each area's sweep is planned from the positions the cache last published for it. */
 export function withBirdAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[],
-  previous: PreviousPositions, api: Pick<BirdClient, 'nearest'> = client) {
+  previous: PreviousPositions, api: Pick<BirdClient, 'nearest'> = birdMapClient) {
   const areas = new Map(systems.filter(system => system.birdAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = areas.get(feed.id.slice(feed.id.indexOf(':') + 1));

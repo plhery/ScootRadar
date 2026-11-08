@@ -42,6 +42,7 @@ import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { limeAccountRequests, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 import { birdMapRequests, withBirdAppCollectors } from './birdApp';
+import { withBirdSupplements } from './birdSupplement';
 import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
 import { swingMapRequests, withSwingAppCollectors } from './swingApp';
@@ -70,6 +71,8 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBirdAppCollectors(current, systems, id => records.get(id)?.vehicles),
+  // Rome's public Bird feed, with the scooters Bird's map shows by the Vatican and the feed leaves out.
+  withBirdSupplements,
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withRidemoviAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
