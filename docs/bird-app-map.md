@@ -47,7 +47,7 @@ the `Retry-After` Bird asks, up to six hours.
 
 ## Pace and budget
 
-One client serves every area: one request every 30 seconds, 120 an hour at
+One client serves every area: two requests a minute, 120 an hour at
 most. On 27 October 2026 the map made up its scooters twice, both times after
 about 200 requests: in eleven minutes 2.5 to 3 seconds apart, and in 23
 minutes six seconds apart (20:52 and 21:48 UTC). Its limit counts requests

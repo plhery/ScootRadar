@@ -4,6 +4,7 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://sfr.swingmobility.dev/map/marker/vehicles';
 const APP_VERSION = '4.8.1';
@@ -102,10 +103,9 @@ export class SwingClient {
   private readonly secret: string | undefined;
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
   private readonly bodyTimeoutMs: number;
-  private nextStart = 0;
   private blockedUntil = 0;
   private readonly cache = new Map<string, { at: number; scooters: Promise<TimedScooters & { read: MapBounds }> }>();
 
@@ -113,7 +113,7 @@ export class SwingClient {
     this.secret = options.secret ?? process.env.SWING_TOTP_SECRET;
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 1000;
+    this.pace = new Pacer(options.intervalMs ?? 1000, this.now);
     this.timeoutMs = options.timeoutMs ?? 30_000;
     // The body has its own time once the headers are in. On 5 November 2026, from 05:30 UTC, netcup's route
     // to Swing's servers in Seoul carried about 15 KB a second while the Mac's carried 250: a town's
@@ -152,9 +152,7 @@ export class SwingClient {
   private async read(url: string): Promise<TimedScooters & { read: MapBounds }> {
     const key = this.key();
     if (this.now() < this.blockedUntil) throw new Error('Swing is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Swing is temporarily rate limited');
     swingMapRequests.status++;
     const at = this.now();
@@ -186,7 +184,7 @@ export class SwingClient {
     finally { clearTimeout(timer); }
     const { scooters, read, throttleMs } = parseSwingScooters(body, key);
     // The next request waits as long after this one as the server asks, up to a minute.
-    this.nextStart = Math.max(this.nextStart, at + Math.min(throttleMs, 60_000));
+    this.pace.holdUntil(at + Math.min(throttleMs, 60_000));
     return { scooters, read, at };
   }
 }

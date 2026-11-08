@@ -6,6 +6,7 @@ import { boundsContainPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://gateway.ridebeam.com/query';
 const RETRY_MS = 60_000;
@@ -81,12 +82,11 @@ export class BeamClient {
   private readonly sessionPath: string;
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
   private session?: Session;
   private loading?: Promise<Session>;
   private renewing?: Promise<Session>;
-  private nextStart = 0;
   private blockedUntil = 0;
   private retryAt = 0;
 
@@ -96,7 +96,7 @@ export class BeamClient {
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
     // Keep a fleet-wide startup sweep gentle: rapid bursts have returned transient empty maps.
-    this.intervalMs = options.intervalMs ?? 2000;
+    this.pace = new Pacer(options.intervalMs ?? 2000, this.now);
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
@@ -132,10 +132,8 @@ export class BeamClient {
   private async query(query: string, variables: Record<string, unknown>, center: readonly number[],
     token: string | undefined, kind: 'status' | 'metadata', deadline: number): Promise<Record<string, unknown>> {
     if (this.now() < this.blockedUntil) throw new Error('Beam requests are temporarily held off');
-    const wait = Math.max(0, this.nextStart - this.now());
-    if (this.now() + wait >= deadline) throw new Error('Beam collection timed out');
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    if (this.now() + this.pace.wait() >= deadline) throw new Error('Beam collection timed out');
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Beam requests are temporarily held off');
     const remaining = deadline - this.now();
     if (remaining <= 0) throw new Error('Beam collection timed out');

@@ -5,10 +5,12 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
 import { DottVehicleStream, watchRequest, type DottMapVehicle } from './dottProtocol';
+import { Pacer } from './sweeps';
 
 export const DOTT_MAP_URL = 'https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles';
 export const dottMapRequests = { status: 0, metadata: 0 };
-let nextStart = 0;
+// Spreads cold starts across this shared host: two a second, a minute's worth of which may start at once.
+const pace = new Pacer(500);
 
 // One bounded, anonymous map sync per region. The scheduler limits this host to two streams.
 export function readDottVehicles(bounds: MapBounds, timeoutMs = 20_000): Promise<DottMapVehicle[]> {
@@ -54,10 +56,7 @@ export function readDottVehicles(bounds: MapBounds, timeoutMs = 20_000): Promise
 }
 
 export async function collectDottRegion(system: RegionalScooterSystem): Promise<SourceVehicles> {
-  // Spread cold starts across this shared host, at no more than two calls a second.
-  const wait = Math.max(0, nextStart - Date.now());
-  nextStart = Date.now() + wait + 500;
-  if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+  await pace.turn();
   dottMapRequests.status++;
   const vehicles = await readDottVehicles(system.bounds);
   return { observedAt: Date.now(), stale: false,

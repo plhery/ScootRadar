@@ -6,6 +6,7 @@ import { boundsContainPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://api.gojet.app/api/v1/';
 const MAX_BYTES = 8 * 1024 * 1024;
@@ -60,9 +61,8 @@ export class JetClient {
   private readonly configPath: string;
   private readonly request: Request;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
-  private nextStart = 0;
   private blockedUntil = 0;
 
   constructor(options: ClientOptions = {}) {
@@ -70,7 +70,7 @@ export class JetClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'jet-config.json');
     this.request = options.request ?? requestJetMap;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 500;
+    this.pace = new Pacer(options.intervalMs ?? 500, this.now);
     this.timeoutMs = options.timeoutMs ?? 15_000;
   }
 
@@ -92,10 +92,8 @@ export class JetClient {
     jetMapTiles(bounds); // Validate before loading configuration or reserving a request slot.
     const config = await this.configuration();
     if (this.now() < this.blockedUntil) throw new Error('JET map requests are temporarily held off');
-    const wait = Math.max(0, this.nextStart - this.now());
-    if (this.now() + wait >= deadline) throw new Error('JET map collection timed out');
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    if (this.now() + this.pace.wait() >= deadline) throw new Error('JET map collection timed out');
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('JET map requests are temporarily held off');
     const remaining = deadline - this.now();
     if (remaining <= 0) throw new Error('JET map collection timed out');

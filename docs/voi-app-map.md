@@ -73,8 +73,8 @@ opens Voi's app on the link Voi's public feeds give every scooter,
 `https://lqfa.adj.st/closest_vehicle?…`, which the app claims; without the
 app, a phone goes on to its store (`data/providers.json`). A completed response is its observation time;
 the source supplies no independent position timestamp. The map's usual
-expiry and municipal night-ban rules still apply. Calls start no more than
-twice per second, with the scheduler's two concurrent slots per host; requests
+expiry and municipal night-ban rules still apply. At most 120 calls start
+in any 60 seconds, with the scheduler's two concurrent slots per host; requests
 have a 20-second deadline and bounded response bodies. App endpoints are
 excluded from GBFS discovery, parking and zone retrieval.
 

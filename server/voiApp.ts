@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { boundsContainPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
+import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://api.voiapp.io';
 const RETRY_MS = 60_000;
@@ -48,11 +49,10 @@ export class VoiClient {
   private readonly sessionPath: string;
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
   private lease?: Lease;
   private renewing?: Promise<Lease>;
-  private nextStart = 0;
   private blockedUntil = 0;
   private retryAt = 0;
   private failure?: Error;
@@ -62,7 +62,7 @@ export class VoiClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'voi-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 500;
+    this.pace = new Pacer(options.intervalMs ?? 500, this.now);
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
@@ -94,9 +94,7 @@ export class VoiClient {
 
   private async request(path: string, init: RequestInit, kind: 'status' | 'metadata') {
     if (this.now() < this.blockedUntil) throw new Error('Voi is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Voi is temporarily rate limited');
     voiMapRequests[kind]++;
     let response: Response;

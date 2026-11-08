@@ -6,6 +6,7 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
+import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://asia-northeast1-luup-prod.cloudfunctions.net';
 const RETRY_MS = 60_000;
@@ -49,13 +50,12 @@ export class LuupClient {
   private readonly sessionPath: string;
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
   private readonly readTimeoutMs: number;
   private refreshToken?: string;
   private lease?: Lease;
   private renewing?: Promise<Lease>;
-  private nextStart = 0;
   private blockedUntil = 0;
   private retryAt = 0;
 
@@ -66,7 +66,7 @@ export class LuupClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'luup-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 1000;
+    this.pace = new Pacer(options.intervalMs ?? 1000, this.now);
     this.timeoutMs = options.timeoutMs ?? 30_000;
     this.readTimeoutMs = options.readTimeoutMs ?? READ_TIMEOUT_MS;
   }
@@ -105,9 +105,7 @@ export class LuupClient {
 
   private async request(url: string, init: RequestInit, kind: 'status' | 'metadata', timeoutMs = this.timeoutMs) {
     if (this.now() < this.blockedUntil) throw new Error('LUUP is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('LUUP is temporarily rate limited');
     luupMapRequests[kind]++;
     let response: Response;

@@ -103,7 +103,7 @@ Retry-After. At the same time the session still returned scooters from the Mac,
 and public operating-area metadata still worked from Netcup. This points to an
 edge restriction on the server's map requests; the exact quota is unknown.
 
-Requests are now paced at least **five seconds apart**, with a 20-second timeout,
+Requests are now held to **twelve a minute** (five seconds apart until 8 November 2026), with a 20-second timeout,
 2 MiB body limit, no redirects, a 300-request / 15-minute sweep budget and
 Retry-After backoff. A generic HTTP 403 holds requests for at least 15 minutes,
 preserves the token and last snapshot, and does not request a new login.

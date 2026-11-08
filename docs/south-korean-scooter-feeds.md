@@ -148,8 +148,8 @@ quarter of a system's bounds around their centre, so one request reads the
 whole town; where the server read less, it reads the quarters again, down to
 sixteenths, and fails if a box is still not read whole. `VEHICLE=SCOOTER`
 with `selectedOnly=true` returns scooters only, and the collector still keeps
-only `type` `SCOOTER`. Requests start at least a second apart, and as long
-after one another as the server's `meta.throttleMs` asks, up to a minute.
+only `type` `SCOOTER`. At most 60 requests start in any 60 seconds, and
+none until as long after the last as the server's `meta.throttleMs` asks, up to a minute.
 
 A vehicle's id is its device's IMEI. The collector neither stores nor shows
 it: a scooter's id is the first 16 characters of an HMAC-SHA256 of the IMEI,
@@ -380,7 +380,8 @@ one of its towns. A round of every town takes about:
   round takes 4 to 8 minutes. Ulsan, the biggest, is 47 cells;
 - DART: one request, of about 850 kB, answered in 2.5 to 3.5 seconds.
 
-Each of the first four clients spaces the requests of all its towns, so the scheduler runs their
+Each of the first four clients paces the requests of all its towns,
+a minute's worth of the spacing above at once at most since 8 November 2026, so the scheduler runs their
 collections on two slots of their host and none of its six shared ones (see
 `DEPLOY.md`): the first rounds, on the shared slots, held back every other
 feed for over half an hour.

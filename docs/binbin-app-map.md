@@ -98,8 +98,9 @@ scooters a request; a reply lists ten at most. Their plans took 33 to
 
 ## Pace and failures
 
-One client serves every BinBin area: a request starts at least 250 ms after
-the one before, four a second at most. A sweep keeps three under way at once,
+One client serves every BinBin area: at most 240 requests start in any 60
+seconds, four a second on average; until 8 November 2026 each started 250 ms
+after the one before. A sweep keeps three under way at once,
 since a reply takes longer than 250 ms, each in a lane of its own: the points
 of the plan, then the open cells, are listed neighbours next to neighbours and
 split in three runs, and a lane that runs out takes the far end of the longest.

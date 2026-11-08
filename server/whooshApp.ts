@@ -361,7 +361,7 @@ export function withWhooshAppCollectors(feeds: CollectableScooterFeed[], systems
   const regions = new Map(systems.filter(system => system.whooshAppRegion).map(system => [system.id, system]));
   return feeds.map(feed => {
     const region = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    // Its client spaces every request, and sweeps take up to three minutes: idle every two hours.
+    // Its client paces every request, and sweeps take up to three minutes: idle every two hours.
     return region ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true, collect: () => collectWhooshRegion(region) } : feed;
   });
 }

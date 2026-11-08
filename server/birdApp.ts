@@ -17,7 +17,7 @@ export const BIRD_PAGE = 250;
 /** How far a request reaches: the research reader's verified limit (docs/bird-app-map.md). */
 export const BIRD_REACH_M = 5_000;
 /**
- * One request every 30 seconds for every Bird area together, 120 an hour. On 27 October 2026 the map
+ * Two requests a minute for every Bird area together, 120 an hour. On 27 October 2026 the map
  * made up its scooters twice after about 200 requests: in eleven minutes 2.5 to 3 seconds apart, and
  * in 23 minutes six seconds apart. So its limit counts requests over some period, not their pace,
  * and it is not published (docs/bird-app-map.md).
@@ -31,7 +31,7 @@ export const BIRD_START_HOLD_MS = 120_000;
 export const BIRD_IDLE_INTERVAL_MS = 24 * 60 * 60_000;
 /**
  * How long a request keeps an area watched: three minutes, not the cache's ten, as Lime's (LIME_WATCH_MS).
- * A watched area is swept again as soon as its sweep ends, on the one request every 30 seconds.
+ * A watched area is swept again as soon as its sweep ends, on the two requests a minute.
  */
 export const BIRD_WATCH_MS = 3 * 60_000;
 const RETRY_MS = 60_000;

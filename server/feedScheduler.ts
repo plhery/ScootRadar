@@ -9,7 +9,7 @@ export interface ScheduledFeed {
   /** How long a request keeps it watched, when not the scheduler's watchMs: less long under a tight quota. */
   watchMs?: number;
   /**
-   * Its client spaces every request on the host, whatever the collection: it waits on that pace,
+   * Its client paces every request on the host, whatever the collection: it waits on that pace,
    * not on the cache, so it takes one of its host's slots but none of the shared ones.
    */
   paced?: boolean;
@@ -347,7 +347,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private slotKey(feed: T): string { return feed.paced ? feed.concurrencyKey ?? feed.host : feed.host; }
 
   /**
-   * A paced client spaces its host's requests whatever runs, and gives a feed someone looks at
+   * A paced client paces its host's requests whatever runs, and gives a feed someone looks at
    * its turns first (sweeps.ts): such a feed asked for by a request has slots of its own on the
    * host, so a town opened while idle sweeps hold the others starts at once. Where the client keeps
    * turns for an idle sweep, one idle sweep starts even while the towns looked at hold the slots:

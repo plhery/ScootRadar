@@ -117,7 +117,7 @@ envelope. A dense São Paulo viewport and four subdivisions returned the same
 671 scooter ids after clipping, with no id missing in either direction. Other vehicle types and active rides are excluded. No fabricated
 range, price or per-scooter rental URL is added.
 
-The shared client spaces requests 500 ms apart, honors `Retry-After`, holds
+The shared client starts at most 120 requests a minute, honors `Retry-After`, holds
 off all regions after HTTP 401/403/429, caps replies at 8 MiB and bounds a
 collection to 90 seconds and 96 tiles. Larger envelopes require review. A tile
 whose request fails, stalls past 15 seconds or answers a 5xx is asked for once

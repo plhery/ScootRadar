@@ -452,8 +452,13 @@ hours before, and five round its edges 41 to 53 hours before, by day on 28
 October, which nobody had looked at since and whose sweeps were due on 31
 October. Lime's map was not stale: it answered the view's six at once.
 
-Calls start at most once every five seconds per configured account across its
-Lime feeds. HTTP 429 pauses that account's client for Retry-After, with a minimum one-minute cooldown. The
+Each configured account starts at most twelve calls in any 60 seconds across
+its Lime feeds, at once if they are asked for together: until 8 November 2026
+they started five seconds apart, and the eight views of a town took 35
+seconds. That evening the research account answered every one of a burst of
+eight calls, ten bursts of twelve a minute apart and then one of 24, all at
+once, in 0.3 to 0.8 seconds each. An account's first minute after the cache
+starts keeps the five seconds, as a deploy runs the old cache beside it. HTTP 429 pauses that account's client for Retry-After, with a minimum one-minute cooldown. The
 limit is the account's, not one client's: a second client beside the cache's
 sweeps, starting a call every six seconds and then every nine, received 429
 after 142 and 42 calls on 25 October 2026, without Retry-After. Requests

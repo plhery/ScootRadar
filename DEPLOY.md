@@ -351,9 +351,15 @@ The collector schedules each feed independently, with six concurrent systems
 and at most two per host. A slow host cannot monopolize collection slots, and a
 feed collected every minute takes the next free slot before any idle feed, so a
 deploy that adds hundreds of feeds does not hold Switzerland back. An app-map
-sweep whose client spaces every request to its host (Alpaca, BinBin, Beam, GCOO,
+sweep whose client paces every request to its host (Alpaca, BinBin, Beam, GCOO,
 Kickgoing, Lime, Qick, Swing and Whoosh) takes one of its host's two slots but none of
-the six: it waits on that pace, not on the cache. On 24 October 2026 such
+the six: it waits on that pace, not on the cache. Since 8 November 2026 each app
+map's client, these and Bird's, Bolt's, Dott's, JET's, LUUP's, RideMovi's, Skyss's
+and Voi's, lets a minute's worth of requests at its old spacing start at once, and
+no more in any 60 seconds (`Pacer` in `server/sweeps.ts`): twelve a minute for each
+Lime account, where they started five seconds apart and a town of eight views took
+35 seconds. A client's first minute keeps the old spacing, as a deploy runs the
+old cache beside the new one for about that long. On 24 October 2026 such
 sweeps held all six, and idle feeds elsewhere went uncollected for over half an
 hour. A sweep a request asked for has two slots of its own on its host, and its
 client gives it the next turn before idle sweeps: until 25 October 2026 a town
@@ -529,7 +535,7 @@ ATOM Mobility (`*.rideatom.com`: Hoppy, Ride Mobility, Yoio, Elerent, 3electra, 
 requests, so each of its hosts is paced at 500 ms, about two requests a second.
 
 Qick's authenticated ATOM rider map uses a separate, stricter queue on
-`app.rideatom.com`: one request every four seconds across all accounts.
+`app.rideatom.com`: 15 requests a minute across all accounts.
 Its two-kilometre views require a complete city sweep before publishing;
 a cold start across all ten cities takes several minutes, and watched
 cities can refresh more slowly than once a minute. A starting cache waits
@@ -543,7 +549,7 @@ verification](docs/atom-app-map.md#session-configuration-and-verification).
 Whoosh's rider map reads `/data/whoosh-session.json` (`WHOOSH_SESSION_PATH`
 overrides it), mode 0600, owned by Node UID 1000. It holds the rider refresh
 token and app identifiers; neither Git nor build variables holds them.
-All regions share one request per second. Ride-area views are subdivided when
+All regions share 60 requests a minute. Ride-area views are subdivided when
 capped, and an entire sweep must finish before publication; cold collection
 and watched regions can take several minutes. The operator's season flag
 produces a clean empty fleet for winter storage. See
@@ -552,14 +558,14 @@ produces a clean empty fleet for winter storage. See
 Beam's rider map reads mode-0600 `/data/beam-session.json`, owned by Node UID
 1000 (`BEAM_SESSION_PATH` overrides it). It holds Beam access and refresh tokens
 and the rider id, with no Google credentials. Renewals are saved atomically in
-the same private file. Its H3 batches share a 700 ms queue, and every batch of
+the same private file. Its H3 batches share 30 requests a minute, and every batch of
 a region must succeed before publication. See [coverage and renewal](docs/beam-app-map.md).
 
 Bolt's rider map reads mode-0600 `/data/bolt-session.json`, owned by Node UID
 1000 (`BOLT_SESSION_PATH` overrides it). It holds the rider refresh token and
 the app's device id; access tokens, which last an hour, stay in memory. A
 rotated refresh token is saved atomically in the same file. One request reads
-a whole market, and all markets share one request every half second. See
+a whole market, and all markets share 120 requests a minute. See
 [the session format and markets](docs/bolt-app-map.md).
 
 LUUP's Japanese rider map reads `LUUP_REFRESH_TOKEN` and `LUUP_FIREBASE_API_KEY`
@@ -572,13 +578,13 @@ saved rotation. See [coverage, renewal and verification](docs/luup-app-map.md).
 JET's Go Jet map needs no rider account. Its app signing configuration lives
 in mode-0600 `/data/jet-config.json`, owned by the cache's `node` user
 (`JET_CONFIG_PATH` overrides the path), never in Git, Worker or build variables.
-The Node collector uses TLS 1.2 and spaces map requests 500 ms apart across
-all regions. Every city's tiles must succeed before its snapshot is replaced; a
+The Node collector uses TLS 1.2 and starts at most 120 map requests a minute
+across all regions. Every city's tiles must succeed before its snapshot is replaced; a
 tile that stalls or answers a 5xx is asked for once more.
 See [the configuration format and verified coverage](docs/gojet-app-map.md).
 
-BinBin's Turkish guest map needs no secret. Its one client starts a request at
-most every 250 ms, four a second, across all 13 areas, with three of a sweep's
+BinBin's Turkish guest map needs no secret. Its one client starts at most 240
+requests a minute, four a second on average, across all 13 areas, with three of a sweep's
 under way at once and at most two sweeps on its host. A sweep asks ten
 scooters at a time until its area is proven complete. On 24 October 2026 the 13
 areas took 4,947 requests from nothing and 3,577 planned straight after from
@@ -594,7 +600,7 @@ Bird's rider map reads mode-0600 `/data/bird-session.json`, owned by Node UID
 1000 (`BIRD_SESSION_PATH` overrides it): the app's device id and a rider's
 access and refresh tokens, never in Git or build variables. The access token
 is renewed a day at a time and saved atomically in the same file. Every Bird
-area shares one request every 30 seconds, 120 an hour, about half the count
+area shares two requests a minute, 120 an hour, about half the count
 after which Bird's map made up its scooters on 27 October 2026; a made-up or
 refused reply holds every Bird request for 15 minutes. An idle area is swept
 once a day, by day in its town. Production and research share the account's

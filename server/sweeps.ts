@@ -21,9 +21,18 @@ const scope = new AsyncLocalStorage<CollectionScope>();
 export const withinCollection = <T>(collection: CollectionScope, run: () => Promise<T>): Promise<T> => scope.run(collection, run);
 export const currentCollection = (): CollectionScope | undefined => scope.getStore();
 
+/** The span a client's budget of requests covers. */
+export const PACE_WINDOW_MS = 60_000;
+
 /**
- * Spaces a client's requests to its host, intervalMs apart, whichever collections make them. A
- * collection someone is looking at goes first, and an idle sweep of another town waits for the
+ * Holds a client's requests to its host to a minute's worth at one every intervalMs, whichever
+ * collections make them: no more than 60 000 / intervalMs start in any 60 seconds, and they may start
+ * at once. Until 8 November 2026 they started intervalMs apart, so a town of eight Lime views took
+ * 35 seconds, though Lime answers a view in half a second, and answered 24 asked at once. The first
+ * minute after the client starts keeps the old spacing: a deploy runs the new cache beside the old
+ * one for about a minute, and two budgets spent at once would double the host's rate.
+ *
+ * A collection someone is looking at goes first, and an idle sweep of another town waits for the
  * turns it leaves. Until 25 October 2026 the turns went in the order asked, so a town opened while
  * idle sweeps ran shared Lime's one request every five seconds with them.
  *
@@ -33,16 +42,26 @@ export const currentCollection = (): CollectionScope | undefined => scope.getSto
  * quarter of an hour, and Linköping's sweep of 18 views, a minute's work, took 932 seconds.
  */
 export class Pacer {
-  private next: number;
+  /** How many requests may start in PACE_WINDOW_MS; unlimited for an interval of 0. */
+  private readonly perWindow: number;
+  /** When the requests of the last PACE_WINDOW_MS started, oldest first. */
+  private readonly started: number[] = [];
+  /** No request starts before this. */
+  private heldUntil: number;
   private readonly waiting: { urgent: boolean; began: number; go: () => void }[] = [];
   /** When each collection first asked for a turn. */
   private readonly began = new WeakMap<CollectionScope, number>();
   /** The turns given in a row to collections someone is looking at while an idle sweep waited. */
   private urgentTurns = 0;
   private timer?: ReturnType<typeof setTimeout>;
-  constructor(private readonly intervalMs: number, private readonly now: () => number = Date.now, startAt = 0,
+  constructor(intervalMs: number, private readonly now: () => number = Date.now, startAt = 0,
     private readonly routineEvery = Infinity) {
-    this.next = startAt;
+    this.heldUntil = startAt;
+    this.perWindow = intervalMs > 0 ? Math.max(1, Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
+    if (this.perWindow === Infinity) return;
+    // As if the minute before it starts had been spent at one request every intervalMs.
+    const from = Math.max(startAt, now());
+    for (let i = 0; i < this.perWindow; i++) this.started.push(from - PACE_WINDOW_MS + i * intervalMs);
   }
 
   /** Resolves when the next request may start. */
@@ -59,26 +78,38 @@ export class Pacer {
     });
   }
 
+  /** How long a request asked for now would wait, were nobody ahead of it. */
+  wait(): number {
+    return Math.max(0, this.nextStart(this.now()) - this.now());
+  }
+
   /** No request starts before `at`, as when the host asks to wait. */
   holdUntil(at: number): void {
-    if (at <= this.next) return;
-    this.next = at;
+    if (at <= this.heldUntil) return;
+    this.heldUntil = at;
     clearTimeout(this.timer);
     this.timer = undefined;
     this.release();
   }
 
+  /** When the budget next lets a request start. */
+  private nextStart(now: number): number {
+    while (this.started.length && this.started[0] <= now - PACE_WINDOW_MS) this.started.shift();
+    const free = this.started.length < this.perWindow ? now : this.started[this.started.length - this.perWindow] + PACE_WINDOW_MS;
+    return Math.max(this.heldUntil, free);
+  }
+
   private release(): void {
-    if (this.timer !== undefined || !this.waiting.length) return;
-    const start = Math.max(this.next, this.now());
-    const go = () => {
-      this.timer = undefined;
-      this.next = start + this.intervalMs;
+    while (this.timer === undefined && this.waiting.length) {
+      const now = this.now();
+      const start = this.nextStart(now);
+      if (start > now) {
+        this.timer = setTimeout(() => { this.timer = undefined; this.release(); }, start - now);
+        return;
+      }
+      if (this.perWindow !== Infinity) this.started.push(now);
       this.take()?.go();
-      this.release();
-    };
-    if (start <= this.now()) go();
-    else this.timer = setTimeout(go, start - this.now());
+    }
   }
 
   /** The first in line, but the idle sweep that began first when its turn is kept for it. */

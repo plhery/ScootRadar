@@ -3,6 +3,7 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://api.kickgoing.io/v4/kickscooters';
 const APP_VERSION = '2.11.23';
@@ -74,16 +75,15 @@ export function parseKickgoingScooters(payload: unknown): KickgoingScooter[] {
 export class KickgoingClient {
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
   private readonly cache = new Map<string, { at: number; scooters: Promise<TimedScooters> }>();
-  private nextStart = 0;
   private blockedUntil = 0;
 
   constructor(options: ClientOptions = {}) {
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 300;
+    this.pace = new Pacer(options.intervalMs ?? 300, this.now);
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
@@ -104,9 +104,7 @@ export class KickgoingClient {
 
   private async read(url: string): Promise<TimedScooters> {
     if (this.now() < this.blockedUntil) throw new Error('Kickgoing is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Kickgoing is temporarily rate limited');
     kickgoingMapRequests.status++;
     const at = this.now();
