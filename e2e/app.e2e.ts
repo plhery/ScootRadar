@@ -933,8 +933,8 @@ test('the map the service worker keeps holds no place of a link it was opened wi
   await expect.poll(() => asked.filter(url => new URL(url).pathname === '/map').length >= 2 && pending === 0).toBe(true);
   const before = asked.length;
   await page.goto('/map?origin=47.3769,8.5417');
-  // The first, which Safari reads; the worker writes the address it serves, scootradar.com's in production.
-  await expect(page.locator('meta[name="apple-itunes-app"]').first()).toHaveAttribute(
+  // The worker writes the address it serves, scootradar.com's in production.
+  await expect(page.locator('meta[name="apple-itunes-app"]')).toHaveAttribute(
     'content',
     /^app-id=6823614854, app-argument=[^,]*\/map\?origin=47\.3769%2C8\.5417, /,
   );
@@ -946,6 +946,36 @@ test('the map the service worker keeps holds no place of a link it was opened wi
     expect(entry.body).not.toContain('47.3769');
   }
   expect(asked.filter(url => url.includes('47.3769'))).toEqual([]);
+});
+
+test('a page opened from a link has one Smart App Banner, which opens the app on the link, and a page opened from there its own', async ({
+  page,
+}) => {
+  const banner = page.locator('meta[name="apple-itunes-app"]');
+  // Once React has taken up the tag the page came with, or added its own: it marks the nodes it holds.
+  const hydrated = () => page.waitForFunction(() => [...document.querySelectorAll('meta[name="apple-itunes-app"]')]
+    .some(tag => Object.keys(tag).some(key => key.startsWith('__reactFiber$'))));
+  const opening = (address: string) => `app-id=6823614854, app-argument=${address}, affiliate-data=pt=129628155&ct=web-banner`;
+
+  await page.goto('/map?origin=47.3769,8.5417');
+  await hydrated();
+  await expect(banner).toHaveCount(1);
+  await expect(banner).toHaveAttribute('content', /^app-id=6823614854, app-argument=[^,]*\/map\?origin=47\.3769%2C8\.5417, /);
+
+  await page.goto('/de?utm_source=newsletter');
+  await hydrated();
+  await expect(banner).toHaveCount(1);
+  await expect(banner).toHaveAttribute('content', opening('https://scootradar.com/de?utm_source=newsletter'));
+
+  await page.goto('/privacy?utm_source=app');
+  await hydrated();
+  await expect(banner).toHaveCount(1);
+  await expect(banner).toHaveAttribute('content', opening('https://scootradar.com/privacy?utm_source=app'));
+  // Back to the map without loading a page: the link the privacy notice was opened with goes with it.
+  await page.getByRole('link', { name: '← Back to ScootRadar' }).click();
+  await expect(page).toHaveURL(/\/map$/);
+  await expect(banner).toHaveAttribute('content', opening('https://scootradar.com/map'));
+  await expect(banner).toHaveCount(1);
 });
 
 test('says that location is off under the search bar, stays dismissed and leads to search', async ({ page }) => {

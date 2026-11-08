@@ -38,7 +38,7 @@ export const SMART_APP_BANNER = 'apple-itunes-app';
  * tag's fields are parted by commas, so those of the address are escaped. The
  * page is built with its own address; the Worker writes in the one it was asked
  * for, with the link's parameters, and the service worker does the same for the
- * map it keeps.
+ * map it keeps (components/SmartAppBanner.tsx).
  */
 export function smartAppBanner(page: string | URL): string {
   const address = new URL(page);

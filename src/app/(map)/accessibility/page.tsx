@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
-import { SMART_APP_BANNER, smartAppBanner } from '@/lib/appStore';
-import { MAP_SHARE_IMAGE, SITE_NAME, SITE_URL } from '@/lib/site';
+import SmartAppBanner from '@/components/SmartAppBanner';
+import { MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
 
 const TITLE = 'Accessibility — ScootRadar';
 const DESCRIPTION =
@@ -28,7 +28,6 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: [MAP_SHARE_IMAGE],
   },
-  other: { [SMART_APP_BANNER]: smartAppBanner(new URL('/accessibility', SITE_URL)) },
 };
 
 // Light whatever the appearance of the app, as the privacy notice is.
@@ -44,6 +43,7 @@ export const viewport: Viewport = {
 export default function AccessibilityPage() {
   return (
     <main className="legal-page">
+      <SmartAppBanner page="/accessibility" />
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Accessibility</h1>

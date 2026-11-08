@@ -8,7 +8,8 @@ import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
 import { APP_STORE_QR } from '@/generated/appStoreQr';
 import { PROVIDERS } from '@/generated/providers';
-import { appStoreUrl, smartAppBanner, SMART_APP_BANNER } from '@/lib/appStore';
+import SmartAppBanner from '@/components/SmartAppBanner';
+import { appStoreUrl } from '@/lib/appStore';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
 import type { TranslationKey } from '@/lib/i18n';
@@ -48,9 +49,7 @@ const TILE_COLORS: Record<string, string> = { bird: '#f4f5f7' };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = sitePageOf((await params).path);
-  if (!page) return {};
-  // Safari offers the iPhone app above every page, to open on it.
-  return { ...pageMetadata(page), other: { [SMART_APP_BANNER]: smartAppBanner(new URL(sitePagePath(page), SITE_URL)) } };
+  return page ? pageMetadata(page) : {};
 }
 
 function pageMetadata(page: SitePage): Metadata {
@@ -289,15 +288,15 @@ function Actions({ copy, android, campaign, qr = false }: {
 export default async function SitePage({ params }: Props) {
   const page = sitePageOf((await params).path);
   if (!page) notFound();
-
-  switch (page.kind) {
-    case 'landing':
-      return <LandingPage locale={page.locale} />;
-    case 'guides':
-      return <GuideIndex locale={page.locale} />;
-    case 'guide':
-      return <GuidePage guide={page.guide} />;
-  }
+  const path = sitePagePath(page);
+  return (
+    <>
+      {/* Safari offers the iPhone app above every page, to open on it. */}
+      <SmartAppBanner key={path} page={path} />
+      {page.kind === 'landing' ? <LandingPage locale={page.locale} />
+        : page.kind === 'guides' ? <GuideIndex locale={page.locale} /> : <GuidePage guide={page.guide} />}
+    </>
+  );
 }
 
 function LandingPage({ locale }: { locale: LandingLocale }) {

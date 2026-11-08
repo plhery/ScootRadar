@@ -70,6 +70,8 @@ import type { WalkFrom } from '@/lib/walkState';
 import { requestHeadingPermission, type HeadingPermission } from '@/lib/deviceHeading';
 import { deviceTimeZone, startCity } from '@/lib/startPlace';
 import { PLAY_TEST_ON } from '@/lib/playTest';
+import { MAP_PATH } from '@/lib/mapAddress';
+import SmartAppBanner from '@/components/SmartAppBanner';
 
 // Where the map opens for a time zone that has no covered city near: all of Switzerland.
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
@@ -987,6 +989,8 @@ export default function Home() {
       data-searching={searchExpanded}
       suppressHydrationWarning
     >
+      {/* Safari offers the iPhone app above the map, to open on the place of the link. */}
+      <SmartAppBanner page={MAP_PATH} />
       {/* One colour per system appearance; a chosen appearance holds in both. */}
       <meta
         name="theme-color"
