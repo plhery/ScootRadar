@@ -158,6 +158,12 @@ scooters all moved between its two reference views that night, leaving none to
 check the scan against; audited again at midday, 43 of its 97 stood still, and
 the scan found all of them.
 
+Read again on 8 November 2026, in 23 requests, the list held 264 regions and
+none that wasn't known. Six had left it: Vaughan, Waterloo Region, Saskatoon
+and Red Deer, closed for the winter since 1 November (their seasonal pauses),
+Stockholm, whose permits went to Voi and Bolt, and Oradea, which held a single
+scooter in October; neither of these two is in the catalog.
+
 Basel's, Uster's and Zurich's joined that catalog on 31 October 2026 as a standby
 for sharedmobility.ch, which stopped serving any provider that morning and took
 them off the map: Lime publishes no feed of its own for them. The national feeds
