@@ -352,7 +352,7 @@ describe('when there is nothing to list', () => {
     expect(screen.getByRole('status')).toBeEmptyDOMElement();
   });
 
-  it('keeps the places found before when a search is refused for being one too many, and searches again later', async () => {
+  it('keeps the places found before in view when a search is refused for being one too many, and searches again later', async () => {
     const refused = (retryAfter?: string) => async () => new Response('{"error":"Too many address searches."}', {
       status: 429, headers: retryAfter ? { 'Retry-After': retryAfter } : {},
     });
@@ -365,11 +365,11 @@ describe('when there is nothing to list', () => {
     await type(input, 'Parade');
     expect(screen.getAllByRole('option')).toHaveLength(3);
 
-    // Typing with pauses reaches the limit: nothing says so, and the places stay.
+    // Typing with pauses reaches the limit: it is not a failure, and the places stay to be tapped.
     await type(input, 'Paradeplatz 2');
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(screen.getAllByRole('option')).toHaveLength(3);
-    expect(screen.getByRole('status')).toBeEmptyDOMElement();
+    expect(screen.getByRole('status')).toHaveTextContent(/^Searching…$/);
     expect(screen.queryByText('Search isn’t available right now.')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Try again' })).toBeNull();
 
@@ -382,8 +382,66 @@ describe('when there is nothing to list', () => {
       body: JSON.stringify({ q: 'Paradeplatz 2', lang: 'en' }),
     }));
     expect(screen.getAllByRole('option').map(option => option.getAttribute('aria-label'))).toEqual(['Paradeplatz 2, 8001 Zürich']);
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
     fireEvent.keyDown(input, { key: 'Enter' });
-    expect(onSelect).toHaveBeenCalledOnce();
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith(PARADEPLATZ[1]);
+  });
+
+  it('chooses nothing found for another text with Enter while a search refused for being one too many waits', async () => {
+    const bern = { lat: 46.948, lng: 7.4474, display_name: 'Bern', title: 'Bern', subtitle: 'Switzerland', covered: true };
+    const fetcher = vi.fn()
+      .mockImplementationOnce(async () => Response.json(PARADEPLATZ))
+      .mockImplementationOnce(async () => new Response('{}', { status: 429, headers: { 'Retry-After': '5' } }))
+      .mockImplementation(async () => Response.json([bern]));
+    vi.stubGlobal('fetch', fetcher);
+    const { input, onSelect } = renderSearch();
+    await type(input, 'Paradeplatz');
+
+    // Another place pasted over it, whose search is refused: Zürich's places are not Bern's.
+    await type(input, 'Bern');
+    expect(screen.getAllByRole('option')).toHaveLength(3);
+    expect(screen.getAllByRole('option').map(option => option.getAttribute('aria-selected'))).toEqual(['false', 'false', 'false']);
+    expect(input).not.toHaveAttribute('aria-activedescendant');
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(onSelect).not.toHaveBeenCalled();
+
+    await act(async () => vi.advanceTimersByTimeAsync(5_000));
+    expect(screen.getAllByRole('option').map(option => option.getAttribute('aria-selected'))).toEqual(['true']);
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ title: 'Bern', lat: bern.lat }));
+  });
+
+  it('leaves Enter and the arrow keys to an input method while it composes a word, and searches the word it commits', async () => {
+    const fetcher = answer(PARADEPLATZ);
+    vi.stubGlobal('fetch', fetcher);
+    const { input, onSelect } = renderSearch();
+    await type(input, 'Parade');
+    expect(fetcher).toHaveBeenCalledOnce();
+
+    // The keys of a composition are not the search's: the browser marks them, and they are left to it.
+    expect(fireEvent.keyDown(input, { key: 'ArrowDown', isComposing: true })).toBe(true);
+    expect(fireEvent.keyDown(input, { key: 'Enter', isComposing: true })).toBe(true);
+    expect(onSelect).not.toHaveBeenCalled();
+
+    // What is being composed is not searched, however long the pause…
+    fireEvent.compositionStart(input);
+    await type(input, 'Parade とうきょう');
+    expect(fetcher).toHaveBeenCalledOnce();
+    // …and the word committed is, once the composition ends.
+    fireEvent.change(input, { target: { value: 'Parade 東京' } });
+    fireEvent.compositionEnd(input);
+    // Safari's Enter that committed it comes after the end, with key code 229.
+    expect(fireEvent.keyDown(input, { key: 'Enter', keyCode: 229 })).toBe(true);
+    await act(async () => vi.advanceTimersByTimeAsync(350));
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher).toHaveBeenLastCalledWith('/api/geocode', expect.objectContaining({
+      body: JSON.stringify({ q: 'Parade 東京', lang: 'en' }),
+    }));
+    expect(onSelect).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith(PARADEPLATZ[0]);
   });
 
   it('goes on searching when the first search is refused, and drops the wait when the text changes', async () => {

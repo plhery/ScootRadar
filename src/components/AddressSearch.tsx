@@ -39,9 +39,12 @@ interface AddressSearchProps {
 type SearchStatus =
   /** Fewer than two characters typed: ways to start without typing. */
   | { kind: 'idle' }
-  | { kind: 'searching' }
-  /** Never empty. Enter chooses the highlighted place, the first one to begin with. */
-  | { kind: 'results'; places: Place[] }
+  /** With the places found for an earlier text while a search refused for being one too many waits to be made again:
+      they stay to be tapped, but Enter and the arrow keys wait for the answer to the text now in the field. */
+  | { kind: 'searching'; earlier?: Place[] }
+  /** Never empty, and found for `query`, the text searched. Enter chooses the highlighted place, the first one to
+      begin with, while the field holds that text. */
+  | { kind: 'results'; places: Place[]; query: string }
   | { kind: 'noResults' }
   /** The search could not be reached; "Try again" repeats it. */
   | { kind: 'failed' };
@@ -117,7 +120,12 @@ export default function AddressSearch({
   const controllerRef = useRef<AbortController | null>(null);
   // The places found last, for a search that is refused because there were too many.
   const foundRef = useRef<Place[] | null>(null);
-  const places = status.kind === 'results' ? status.places : null;
+  // While an input method composes a word (Japanese, Chinese, Korean), the field holds what is not yet meant, and Enter
+  // and the arrow keys belong to it: the text is searched once the composition ends.
+  const composingRef = useRef(false);
+  const shown = status.kind === 'results' ? status.places : status.kind === 'searching' ? status.earlier ?? null : null;
+  // The places the keyboard can choose from: those found for the text in the field.
+  const places = status.kind === 'results' && status.query === query.trim() ? status.places : null;
 
   useEffect(() => () => {
     if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
@@ -163,12 +171,10 @@ export default function AddressSearch({
       if (response.status === 429) {
         if (controller.signal.aborted || controllerRef.current !== controller) return;
         // Too many searches in a minute, which typing with pauses can reach: not
-        // a failure to report. What was found last stays, and the same text is
-        // searched again once the server allows it, unless the text changes first.
-        if (foundRef.current) {
-          setActiveIndex(0);
-          setStatus({ kind: 'results', places: foundRef.current });
-        }
+        // a failure to report. The search goes on: what was found last stays in
+        // view, and the same text is searched again once the server allows it,
+        // unless the text changes first.
+        if (foundRef.current) setStatus({ kind: 'searching', earlier: foundRef.current });
         timeoutRef.current = window.setTimeout(() => {
           timeoutRef.current = null;
           void search(value);
@@ -182,7 +188,7 @@ export default function AddressSearch({
       track('search_results', { count: found.length });
       foundRef.current = found.length > 0 ? found : null;
       setActiveIndex(0);
-      setStatus(found.length > 0 ? { kind: 'results', places: found } : { kind: 'noResults' });
+      setStatus(found.length > 0 ? { kind: 'results', places: found, query: value } : { kind: 'noResults' });
     } catch {
       if (controller.signal.aborted || controllerRef.current !== controller) return;
       track('search_error');
@@ -196,6 +202,7 @@ export default function AddressSearch({
   const handleChange = (value: string) => {
     setQuery(value);
     resetPendingSearch();
+    if (composingRef.current) return;
 
     const normalized = value.trim();
     if (normalized.length < MIN_QUERY_LENGTH) {
@@ -257,12 +264,18 @@ export default function AddressSearch({
             aria-label={t('find.placeholder')}
             role="combobox"
             aria-autocomplete="list"
-            aria-expanded={places !== null}
-            aria-controls={places ? listboxId : undefined}
+            aria-expanded={shown !== null}
+            aria-controls={shown ? listboxId : undefined}
             aria-activedescendant={places ? `${listboxId}-${activeIndex}` : undefined}
             onChange={(event) => handleChange(event.target.value)}
+            onCompositionStart={() => { composingRef.current = true; }}
+            onCompositionEnd={(event) => {
+              composingRef.current = false;
+              handleChange(event.currentTarget.value);
+            }}
             onKeyDown={(event) => {
-              if (!places) return;
+              // Safari ends the composition before the keydown of the Enter that commits it, which it marks with key code 229.
+              if (event.nativeEvent.isComposing || event.keyCode === 229 || !places) return;
               if (event.key === 'ArrowDown') {
                 event.preventDefault();
                 setActiveIndex((index) => (index + 1) % places.length);
@@ -338,26 +351,10 @@ export default function AddressSearch({
           </>
         )}
 
-        {places && (
-          <div id={listboxId} className="place-rows" role="listbox" aria-label={t('find.results')}>
-            {places.map((place, index) => (
-              <PlaceRow
-                key={`${place.lat}-${place.lng}-${place.display_name}`}
-                place={place}
-                role="option"
-                id={`${listboxId}-${index}`}
-                aria-selected={activeIndex === index}
-                onMouseDown={(event) => event.preventDefault()}
-                onMouseMove={() => setActiveIndex(index)}
-                onClick={() => choose(place)}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Always there, so that screen readers announce what comes to stand in it. */}
+        {/* Always there, so that screen readers announce what comes to stand in it. Above the places found
+            for an earlier text, which stay while the search waits to be made again. */}
         <div role="status">
-          {status.kind !== 'idle' && !places && (
+          {status.kind !== 'idle' && status.kind !== 'results' && (
             <p className="search-status">
               {status.kind === 'searching' && <span className="mini-spinner" aria-hidden="true" />}
               {status.kind === 'failed' && <Icon name="warning" size={15} />}
@@ -374,6 +371,23 @@ export default function AddressSearch({
           >
             {t('find.retry')}
           </button>
+        )}
+
+        {shown && (
+          <div id={listboxId} className="place-rows" role="listbox" aria-label={t('find.results')}>
+            {shown.map((place, index) => (
+              <PlaceRow
+                key={`${place.lat}-${place.lng}-${place.display_name}`}
+                place={place}
+                role="option"
+                id={`${listboxId}-${index}`}
+                aria-selected={places !== null && activeIndex === index}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseMove={() => setActiveIndex(index)}
+                onClick={() => choose(place)}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>
