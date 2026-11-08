@@ -28,6 +28,7 @@ import {
   parseClientParams,
   parseStoredClientParams,
   serializeClientParams,
+  startingClientParams,
   type ClientParams,
   type MapStyleName,
   type ThemeName,
@@ -138,25 +139,9 @@ function readUrlParams(): ClientParams {
   if (typeof window === 'undefined') {
     return { origin: null, minBattery: undefined, theme: undefined, map: undefined, zones: undefined };
   }
-  const p = new URLSearchParams(window.location.search);
-  const hasUrlParams = p.toString().length > 0;
-
-  // If no URL params, try to restore from localStorage (PWA home screen launch)
-  if (!hasUrlParams) {
-    const stored = loadParamsFromStorage();
-    if (stored) {
-      const sp = serializeClientParams({
-        minBattery: stored.minBattery ?? 0,
-        theme: stored.theme ?? 'auto',
-        map: stored.map ?? 'calm',
-        zones: stored.zones,
-      });
-      window.history.replaceState(null, '', `?${sp.toString()}`);
-      return stored;
-    }
-  }
-
-  return parseClientParams(p);
+  // A launch from the home screen has no link: the settings are those saved. The address then shows them once
+  // they are set.
+  return startingClientParams(parseClientParams(new URLSearchParams(window.location.search)), loadParamsFromStorage());
 }
 
 // What the browser says of location before it is asked; null when it will not say.

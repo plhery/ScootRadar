@@ -91,6 +91,21 @@ export function parseStoredClientParams(raw: string | null): ClientParams | null
   }
 }
 
+/**
+ * The settings the map starts with: each one the link sets, over the one saved on this device. A link that sets
+ * none, as one with a place or a campaign's tag alone, leaves every saved setting as it is; the place itself is
+ * the link's alone, never saved.
+ */
+export function startingClientParams(link: ClientParams, saved: ClientParams | null): ClientParams {
+  return {
+    origin: link.origin,
+    minBattery: link.minBattery ?? saved?.minBattery,
+    theme: link.theme ?? saved?.theme,
+    map: link.map ?? saved?.map,
+    zones: link.zones ?? saved?.zones,
+  };
+}
+
 export function serializeClientParams({
   minBattery,
   theme,

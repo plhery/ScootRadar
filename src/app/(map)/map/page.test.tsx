@@ -1533,6 +1533,7 @@ it('carries settings from the old tile parameter over to theme and map', async (
   second.unmount();
 
   // The old light style is what nothing chosen means today.
+  localStorage.removeItem('scooters-params');
   window.history.replaceState(null, '', '/map?tile=light');
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
@@ -1578,6 +1579,30 @@ it('leaves Automatic to the system, and keeps a chosen appearance and map style 
   expect(document.head.querySelectorAll('meta[name="theme-color"]')).toHaveLength(2);
   view.unmount();
   expect(document.head.querySelectorAll('meta[name="theme-color"]')).toHaveLength(0);
+});
+
+it('keeps the settings saved on this device where a link sets none of them, and changes only those it sets', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  localStorage.setItem('scooters-params', JSON.stringify({ minBattery: '60', theme: 'dark' }));
+  // A shared place, then a campaign's tag: neither sets anything.
+  for (const search of ['?origin=47.3769,8.5417', '?utm_source=newsletter']) {
+    window.history.replaceState(null, '', `/map${search}`);
+    const view = mount();
+    await act(async () => vi.advanceTimersByTimeAsync(180));
+    expect(shell()).toHaveAttribute('data-theme', 'dark');
+    expect(screen.getByTestId('settings')).toHaveTextContent('dark calm');
+    expect(window.location.search).toBe('?minBattery=60&theme=dark');
+    expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minBattery: '60', theme: 'dark' });
+    view.unmount();
+  }
+
+  // A link with one setting changes that one alone, here and on the device.
+  window.history.replaceState(null, '', '/map?map=detailed');
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByTestId('settings')).toHaveTextContent('dark detailed');
+  expect(window.location.search).toBe('?minBattery=60&theme=dark&map=detailed');
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minBattery: '60', theme: 'dark', map: 'detailed' });
 });
 
 it('restores a chosen appearance and map style from the link', async () => {

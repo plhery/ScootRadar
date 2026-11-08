@@ -3,6 +3,7 @@ import {
   parseClientParams,
   parseStoredClientParams,
   serializeClientParams,
+  startingClientParams,
 } from '@/lib/clientParams';
 
 const parse = (query: string) => parseClientParams(new URLSearchParams(query));
@@ -96,6 +97,30 @@ describe('client params', () => {
       .toEqual({ origin: null, minBattery: undefined, theme: 'dark', map: undefined });
     // The old default says nothing the new defaults do not.
     expect(parseStoredClientParams(JSON.stringify({ tile: 'light' }))).toBeNull();
+  });
+
+  it('starts from the settings saved, where a link sets none of them', () => {
+    const saved = parseStoredClientParams(JSON.stringify({ minBattery: '60', theme: 'dark', zones: '0' }));
+    // A shared place: the place is the link's, the settings stay those of this device.
+    expect(startingClientParams(parse('origin=47.3769,8.5417'), saved))
+      .toEqual({ origin: [47.3769, 8.5417], minBattery: 60, theme: 'dark', map: undefined, zones: false });
+    // A campaign's tag, or anything else the map does not read, sets nothing.
+    expect(startingClientParams(parse('utm_source=newsletter&utm_medium=email'), saved))
+      .toEqual({ origin: null, minBattery: 60, theme: 'dark', map: undefined, zones: false });
+    expect(startingClientParams(parse(''), saved)).toEqual({ ...saved, origin: null });
+    expect(startingClientParams(parse('theme=neon'), saved)).toMatchObject({ theme: 'dark' });
+  });
+
+  it('changes only the settings a link sets', () => {
+    const saved = parseStoredClientParams(JSON.stringify({ minBattery: '60', theme: 'dark', zones: '0' }));
+    expect(startingClientParams(parse('map=detailed'), saved))
+      .toEqual({ origin: null, minBattery: 60, theme: 'dark', map: 'detailed', zones: false });
+    // Even back to what nothing chosen means.
+    expect(startingClientParams(parse('theme=auto&zones=1&minBattery=0'), saved))
+      .toEqual({ origin: null, minBattery: 0, theme: 'auto', map: undefined, zones: true });
+    // Nothing saved: the link's alone.
+    expect(startingClientParams(parse('tile=dark&minBattery=45'), null))
+      .toEqual({ origin: null, minBattery: 30, theme: 'dark', map: undefined, zones: undefined });
   });
 
   it('serializes only non-default settings', () => {

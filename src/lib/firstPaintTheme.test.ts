@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { parseClientParams, parseStoredClientParams } from '@/lib/clientParams';
+import { parseClientParams, parseStoredClientParams, startingClientParams } from '@/lib/clientParams';
 import { FIRST_PAINT_THEME_SCRIPT } from '@/lib/firstPaintTheme';
 
 /** The appearance the page has before the app starts, for a link and what is saved on the device. */
@@ -15,9 +15,7 @@ function firstPaint(search: string, saved: string | null): string | null {
 
 /** The appearance the app arrives at once it has started, as readUrlParams() in the page works it out. */
 function onceStarted(search: string, saved: string | null): string {
-  const link = new URLSearchParams(search);
-  const params = link.toString() ? parseClientParams(link) : parseStoredClientParams(saved);
-  return params?.theme ?? 'auto';
+  return startingClientParams(parseClientParams(new URLSearchParams(search)), parseStoredClientParams(saved)).theme ?? 'auto';
 }
 
 beforeEach(() => localStorage.clear());
@@ -40,8 +38,14 @@ describe('the appearance before the first paint', () => {
 
   it('follows the link before what is saved, as the app does', () => {
     expect(firstPaint('?theme=light', JSON.stringify({ theme: 'dark' }))).toBe('light');
-    // A link with parameters but without an appearance means Automatic, whatever is saved.
-    expect(firstPaint('?minBattery=60', JSON.stringify({ theme: 'dark' }))).toBe('auto');
+    expect(firstPaint('?theme=auto', JSON.stringify({ theme: 'dark' }))).toBe('auto');
+  });
+
+  it('is the one saved where the link sets none: a place, a campaign\'s tag, another setting', () => {
+    expect(firstPaint('?origin=47.3769,8.5417', JSON.stringify({ theme: 'dark' }))).toBe('dark');
+    expect(firstPaint('?utm_source=newsletter', JSON.stringify({ theme: 'dark' }))).toBe('dark');
+    expect(firstPaint('?minBattery=60', JSON.stringify({ theme: 'dark' }))).toBe('dark');
+    expect(firstPaint('?theme=neon', JSON.stringify({ theme: 'light' }))).toBe('light');
   });
 
   it('carries the dark map style of old links and settings over', () => {
@@ -71,6 +75,9 @@ describe('the appearance before the first paint', () => {
     ['?theme=neon&tile=dark', JSON.stringify({ theme: 'light' })],
     ['?origin=47.3769,8.5417', JSON.stringify({ theme: 'dark' })],
     ['?map=detailed', JSON.stringify({ theme: 'light' })],
+    ['?utm_source=newsletter', JSON.stringify({ tile: 'dark' })],
+    ['?tile=osm', JSON.stringify({ theme: 'dark' })],
+    ['?theme=auto', JSON.stringify({ theme: 'dark' })],
   ])('is what the app arrives at once it has started: link "%s", saved %s', (search, saved) => {
     expect(firstPaint(search, saved)).toBe(onceStarted(search, saved));
   });
