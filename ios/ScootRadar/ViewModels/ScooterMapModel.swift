@@ -1827,6 +1827,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if status != .authorizedAlways && status != .authorizedWhenInUse {
             stopHeadingUpdates()
         }
+        if status == .denied || status == .restricted { forgetUserLocation() }
         // CLLocationManager can deliver the current authorization state as soon as
         // its delegate is assigned. Wait until the app has actually requested a
         // location so model initialization cannot unexpectedly recenter the map.
@@ -1940,6 +1941,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         let code = (error as? CLError)?.code
         if code == .denied {
+            forgetUserLocation()
             switch manager.authorizationStatus {
             case .denied:
                 locationProblem = .denied
@@ -1953,6 +1955,17 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if code == .locationUnknown, locationTimeoutTask != nil { return }
         isLocating = false
         finishLocationAttemptWithoutFix()
+    }
+
+    /// Location taken back in Settings, or refused by Core Location: where the
+    /// rider was goes with it, so that nothing goes on using it, a walk from
+    /// there, the next Directions or the scooters asked for around it, until
+    /// location is allowed again. A searched place stays, and its walk with it.
+    private func forgetUserLocation() {
+        bestLocationCandidate = nil
+        locationAccuracy = 0
+        distanceOrigin = startCenter
+        userLocation = nil
     }
 
     private func beginLocationTimeout() {

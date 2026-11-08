@@ -314,6 +314,56 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.walkTrail?.reveals, true)
     }
 
+    func testLocationTakenBackEndsTheWalkFromTheRiderAndDirectionsNeverAsksFromWhereTheyWere() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let h = try await shownWalk(to: target)
+        XCTAssertEqual(h.directions.requests.count, 1)
+
+        // Location turned off for the app in Settings, while it stays open.
+        h.manager.status = .denied
+        h.model.locationManagerDidChangeAuthorization(h.manager)
+
+        XCTAssertNil(h.model.userLocation)
+        XCTAssertNil(h.model.walk)
+        XCTAssertNil(h.model.walkTrail)
+        XCTAssertEqual(h.model.directionsControl(for: .scooter(target)), .directions)
+
+        h.model.showWalkingRoute(to: .scooter(target))
+        await settle()
+
+        XCTAssertEqual(h.model.walk?.phase, .failed(.noLocation))
+        XCTAssertEqual(h.directions.requests.count, 1)
+    }
+
+    func testLocationRefusedByTheLocationServiceIsForgottenToo() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let h = try await shownWalk(to: target)
+
+        h.manager.status = .denied
+        h.model.locationManager(h.manager, didFailWithError: CLError(.denied))
+
+        XCTAssertNil(h.model.userLocation)
+        XCTAssertNil(h.model.walk)
+    }
+
+    func testLocationTakenBackLeavesAWalkFromASearchedPlace() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let h = try await harness(vehicles: [target], rider: rider)
+        h.model.focusOnAddress(MapDestination(title: "Paradeplatz", point: point(east: 0, north: 50)))
+        h.model.selectScooter(target.id)
+        h.model.showWalkingRoute(to: .scooter(target))
+        let shown = await waitUntil { h.model.walk?.phase == .shown }
+        XCTAssertTrue(shown)
+
+        h.manager.status = .denied
+        h.model.locationManagerDidChangeAuthorization(h.manager)
+
+        XCTAssertNil(h.model.userLocation)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        XCTAssertEqual(h.directions.requests.count, 1)
+        XCTAssertEqual(h.directions.requests.first?.origin, point(east: 0, north: 50))
+    }
+
     func testARouteFromASearchedPlaceDoesNotFollowTheRider() async throws {
         let target = scooter("s1", at: point(east: 300, north: 0))
         let h = try await harness(vehicles: [target], rider: nil)
@@ -835,7 +885,8 @@ private actor WalkStubAPI: ScooterAPIClient {
 }
 
 private final class WalkLocationManager: CLLocationManager {
-    private let status: CLAuthorizationStatus
+    /// Tests change it to take location back in Settings.
+    var status: CLAuthorizationStatus
 
     init(status: CLAuthorizationStatus) {
         self.status = status
