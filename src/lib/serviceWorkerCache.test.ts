@@ -25,11 +25,11 @@ const shell = (release: string) => new Response(`<script src="/_next/static/chun
   headers: { 'Content-Security-Policy': `script-src 'nonce-${release}'` },
 });
 
-function appWorker(server: Record<string, () => Response>) {
+function appWorker(server: Record<string, (request: Request) => Response>) {
   const listeners = new Map<string, (event: Record<string, unknown>) => void>();
   const caches = new Map<string, MemoryCache>();
   const pages = new Map<string, { url: string; navigate: ReturnType<typeof vi.fn> }>();
-  const fetch = vi.fn(async (request: Request) => server[new URL(request.url).pathname]?.() ?? new Response('Not found', { status: 404 }));
+  const fetch = vi.fn(async (request: Request) => server[new URL(request.url).pathname]?.(request) ?? new Response('Not found', { status: 404 }));
   const cache = (name: string) => {
     if (!caches.has(name)) caches.set(name, new MemoryCache());
     return caches.get(name)!;
@@ -168,4 +168,22 @@ it('names the link the kept map opens in its Smart App Banner, so the iPhone app
   // A link the map was opened with is no new release to reload for.
   expect(await worker.appCache().match('https://scootradar.com/__pwa-update-pending__')).toBeUndefined();
   expect(await bannerOf(await launch(worker, 'plain', shellUrl))).toBe(`${origin}/map`);
+});
+
+it('keeps the map without the place of the link that opened it, and names that link in its banner all the same', async () => {
+  // As the Worker answers: the banner names the address it was asked for.
+  const worker = appWorker({ '/map': request => linkedShell('same', request.url.replaceAll(',', '%2C').replaceAll('&', '&amp;')) });
+  const link = `${shellUrl}?origin=47.37,8.54&minBattery=60`;
+  const asked = () => worker.fetch.mock.calls.map(([request]) => request.url);
+
+  // Opened for the first time, from the server.
+  expect(await bannerOf(await launch(worker, 'first', link))).toBe(`${origin}/map?origin=47.37%2C8.54&amp;minBattery=60`);
+  expect(asked()).toEqual([shellUrl]);
+  expect([...worker.appCache().entries.keys()]).toEqual([shellUrl]);
+  expect(await (await worker.appCache().match(shellUrl))!.text()).not.toMatch(/47\.37|8\.54|minBattery/);
+
+  // And again, from what was kept, while it is asked for again.
+  expect(await bannerOf(await launch(worker, 'again', `${shellUrl}?origin=46.95,7.44`))).toBe(`${origin}/map?origin=46.95%2C7.44`);
+  expect(asked()).toEqual([shellUrl, shellUrl]);
+  expect(await (await worker.appCache().match(shellUrl))!.text()).not.toMatch(/46\.95|7\.44/);
 });

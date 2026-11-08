@@ -888,6 +888,66 @@ test('opening a link under the service worker does not look like a new version a
   await expect(page.locator('.app-shell')).toHaveAttribute('data-map', 'detailed');
 });
 
+test('the map the service worker keeps holds no place of a link it was opened with, whose banner still opens that place', async ({
+  page,
+  context,
+  browserName,
+}) => {
+  test.skip(browserName === 'webkit', 'service workers are blocked in the WebKit project');
+  const nonceOf = (policy: string | null | undefined) => policy?.match(/'nonce-([^']+)'/)?.[1];
+  // What the worker asks of the server, and the map it was given last.
+  const asked: string[] = [];
+  let pending = 0;
+  let lastMap: string | undefined;
+  context.on('request', request => {
+    if (!request.serviceWorker()) return;
+    asked.push(request.url());
+    pending += 1;
+  });
+  const settled = async (request: import('@playwright/test').Request) => {
+    if (!request.serviceWorker()) return;
+    if (new URL(request.url()).pathname === '/map') lastMap = nonceOf((await request.response())?.headers()['content-security-policy']);
+    pending -= 1;
+  };
+  context.on('requestfinished', settled);
+  context.on('requestfailed', settled);
+  // A link's place sent to the server is answered as slowly as a phone's network would: the page's own update
+  // check, once it has loaded, would wait for the same answer and keep it.
+  await context.route(url => url.pathname === '/map' && url.searchParams.has('origin'), async route => {
+    await new Promise(resolve => setTimeout(resolve, 2_000));
+    await route.continue();
+  });
+  // What the app cache holds, address and page; each map the server gives has a nonce of its own.
+  const kept = () => page.evaluate(async () => {
+    const cache = await caches.open('scooters-app-v6');
+    return Promise.all((await cache.keys()).map(async request => {
+      const response = (await cache.match(request))!;
+      return { url: request.url, policy: response.headers.get('Content-Security-Policy'), body: await response.text() };
+    }));
+  });
+
+  await page.goto('/map');
+  await page.waitForFunction(() => navigator.serviceWorker.controller);
+  // The map is kept when the worker installs, and again by the page's update check: a launch while that check is
+  // under way shares its answer.
+  await expect.poll(() => asked.filter(url => new URL(url).pathname === '/map').length >= 2 && pending === 0).toBe(true);
+  const before = asked.length;
+  await page.goto('/map?origin=47.3769,8.5417');
+  // The first, which Safari reads; the worker writes the address it serves, scootradar.com's in production.
+  await expect(page.locator('meta[name="apple-itunes-app"]').first()).toHaveAttribute(
+    'content',
+    /^app-id=6823614854, app-argument=[^,]*\/map\?origin=47\.3769%2C8\.5417, /,
+  );
+  // The launch asks for the map again and keeps it, as does the page's update check.
+  await expect.poll(async () => asked.length > before && pending === 0 &&
+    nonceOf((await kept()).find(entry => entry.url.endsWith('/map'))?.policy) === lastMap).toBe(true);
+  for (const entry of await kept()) {
+    expect(entry.url).not.toContain('47.3769');
+    expect(entry.body).not.toContain('47.3769');
+  }
+  expect(asked.filter(url => url.includes('47.3769'))).toEqual([]);
+});
+
 test('says that location is off under the search bar, stays dismissed and leads to search', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map');

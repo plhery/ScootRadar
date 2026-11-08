@@ -124,7 +124,7 @@ self.addEventListener("fetch", (event) => {
     url.origin === self.location.origin &&
     url.pathname === APP_SHELL_PATH
   ) {
-    const refresh = refreshAppShell(request);
+    const refresh = refreshAppShell();
     event.waitUntil(refresh.then(() => undefined));
     event.respondWith(serveAppShell(request, refresh, event.resultingClientId));
     return;
@@ -171,9 +171,7 @@ self.addEventListener("message", (event) => {
         return;
       }
 
-      await refreshAppShell(
-        new Request(APP_SHELL_URL, { cache: "no-store" })
-      );
+      await refreshAppShell();
     })()
   );
 });
@@ -213,8 +211,9 @@ async function serveAppShell(request, refresh, clientId) {
     return openedAt(cached, request.url);
   }
 
+  const fresh = await refresh;
+  if (fresh) return openedAt(fresh, request.url);
   return (
-    (await refresh) ??
     // A page that cannot be kept is shown all the same: only offline is there none.
     (await fetch(request).catch(() => null)) ??
     new Response("The app is unavailable offline until it has loaded once.", {
@@ -224,7 +223,11 @@ async function serveAppShell(request, refresh, clientId) {
   );
 }
 
-function refreshAppShell(request) {
+// The map is asked for at its own address, whatever link opened it: the
+// Worker writes the link into the banner of the page it answers, and a link's
+// place (?origin=) must not be kept on the device. openedAt gives the page
+// being opened its own link.
+function refreshAppShell() {
   if (shellRefreshPromise) return shellRefreshPromise;
 
   shellRefreshPromise = (async () => {
@@ -232,7 +235,7 @@ function refreshAppShell(request) {
     const cached = await cache.match(APP_SHELL_URL);
 
     try {
-      const fresh = await fetch(new Request(request, { cache: "no-store" }));
+      const fresh = await fetch(new Request(APP_SHELL_URL, { cache: "no-store" }));
 
       if (!fresh.ok || !responseNonce(fresh)) return null;
 
@@ -258,7 +261,7 @@ function refreshAppShell(request) {
   return shellRefreshPromise;
 }
 
-// The kept map was served for another link: its banner is given the link it
+// The kept map, asked for without a link: its banner is given the link it
 // opens now, as the Worker would have written it.
 async function openedAt(response, address) {
   const url = new URL(address);
