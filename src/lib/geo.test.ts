@@ -9,6 +9,7 @@ import {
   expandBounds,
   lngNear,
   lngSpan,
+  pairWithin,
   viewBounds,
   viewportContainsPoint,
   wrapLng,
@@ -217,5 +218,30 @@ describe('a turned view across the line', () => {
     expect(viewportContainsPoint(copy, -36.5, 179)).toBe(true);
     expect(viewportContainsPoint(copy, -36.5, -178)).toBe(true);
     expect(viewportContainsPoint(copy, -27, -165)).toBe(false);
+  });
+});
+
+describe('points standing on others', () => {
+  // Metres north of a point of Tromsø, where a degree of longitude is short.
+  const north = (metres: number, lat = 69.65, lng = 18.96) => ({ lat: lat + metres / 111_195, lng });
+  const east = (metres: number, lat = 69.65, lng = 18.96) => ({ lat, lng: lng + metres / (111_195 * Math.cos(lat * Math.PI / 180)) });
+
+  it('pairs each point with one other within the distance, the nearest pairs first', () => {
+    const points = [north(0), north(1), north(100)];
+    const others = [north(3), north(140), north(200)];
+    // The point at 1 m is nearer the other at 3 m, which leaves the point at 0 m none within 15 m.
+    expect([...pairWithin(points, others, 15)]).toEqual([[1, 0]]);
+    expect(pairWithin(points, others, 40)).toEqual(new Map([[1, 0], [2, 1]]));
+    expect(pairWithin([], others, 40).size).toBe(0);
+    expect(pairWithin(points, [], 40).size).toBe(0);
+  });
+
+  it('finds a pair across the cells it sorts them into, east and west as north and south', () => {
+    for (let step = 0; step < 50; step++) {
+      const offset = step * 7.3;
+      expect(pairWithin([east(offset)], [east(offset + 39.9)], 40).size).toBe(1);
+      expect(pairWithin([north(offset)], [north(offset - 39.9)], 40).size).toBe(1);
+      expect(pairWithin([east(offset)], [east(offset + 40.1)], 40).size).toBe(0);
+    }
   });
 });

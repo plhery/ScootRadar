@@ -1,7 +1,7 @@
 import type { ProviderKey } from '../src/generated/providers';
 import { VEHICLE_MAX_AGE_MS } from '../src/lib/dataFreshness';
 import { standbyNationalFeed } from '../src/lib/feedCoverage';
-import { boundsCenter, haversineM } from '../src/lib/geo';
+import { boundsCenter, haversineM, pairWithin } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
@@ -83,41 +83,14 @@ const SWISS_APP_MAPS: ReadonlyMap<string, SwissAppMap> = new Map([
 
 /** A scooter of the rider map is the national one standing within this of it, the nearest pairs first. */
 export const MATCH_METRES = 15;
-// Grid cells wider than MATCH_METRES at Swiss latitudes, so a match is in a cell's 3×3 block.
-const CELL_DEGREES = 0.0003;
 /** How long a collection waits for the national feed once the rider map has answered. */
 const NATIONAL_GRACE_MS = 2_000;
 /** How long a rider map fails before Sentry hears of it: the national feed stands meanwhile. */
 const FAILURE_REPORT_MS = 10 * 60_000;
 
-const cell = (lat: number, lng: number) => `${Math.floor(lat / CELL_DEGREES)}:${Math.floor(lng / CELL_DEGREES)}`;
-
 /** The rider map's scooters, given the attributes of the national ones standing on them. */
 export function mergeAppMap(app: readonly Vehicle[], national: readonly Vehicle[]): Vehicle[] {
-  const grid = new Map<string, number[]>();
-  national.forEach((vehicle, index) => {
-    const key = cell(vehicle.lat, vehicle.lng);
-    const indices = grid.get(key);
-    if (indices) indices.push(index); else grid.set(key, [index]);
-  });
-  const pairs: { app: number; national: number; metres: number }[] = [];
-  app.forEach((vehicle, index) => {
-    const row = Math.floor(vehicle.lat / CELL_DEGREES), column = Math.floor(vehicle.lng / CELL_DEGREES);
-    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
-      for (const other of grid.get(`${row + dr}:${column + dc}`) ?? []) {
-        const metres = haversineM(vehicle.lat, vehicle.lng, national[other].lat, national[other].lng);
-        if (metres <= MATCH_METRES) pairs.push({ app: index, national: other, metres });
-      }
-    }
-  });
-  pairs.sort((a, b) => a.metres - b.metres);
-  const matchOf = new Map<number, Vehicle>();
-  const taken = new Set<number>();
-  for (const pair of pairs) {
-    if (matchOf.has(pair.app) || taken.has(pair.national)) continue;
-    matchOf.set(pair.app, national[pair.national]);
-    taken.add(pair.national);
-  }
+  const matchOf = new Map([...pairWithin(app, national, MATCH_METRES)].map(([index, other]) => [index, national[other]]));
   const priced = app.flatMap((vehicle, index) => {
     const pricing = matchOf.get(index)?.pricing;
     return pricing ? [{ lat: vehicle.lat, lng: vehicle.lng, pricing }] : [];

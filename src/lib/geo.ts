@@ -97,6 +97,44 @@ export function polygonContainsPoint(ring: readonly [number, number][], lat: num
 }
 
 /**
+ * Which point of `others` stands on each of `points`: within `metres`, one each, the nearest pairs
+ * first, by the index of each in its list. Points are sorted into a grid of cells wider than
+ * `metres`, so a pair is always in neighbouring cells; it does not wrap at the 180° line.
+ */
+export function pairWithin(points: readonly { lat: number; lng: number }[], others: readonly { lat: number; lng: number }[],
+  metres: number): Map<number, number> {
+  const pairs = new Map<number, number>();
+  if (!points.length || !others.length) return pairs;
+  const farthest = Math.min(89, Math.max(...points.map(point => Math.abs(point.lat))) + 1);
+  const cellLat = metres / 111_000;
+  const cellLng = cellLat / Math.cos(farthest * Math.PI / 180);
+  const grid = new Map<string, number[]>();
+  others.forEach((other, index) => {
+    const key = `${Math.floor(other.lat / cellLat)}:${Math.floor(other.lng / cellLng)}`;
+    const cell = grid.get(key);
+    if (cell) cell.push(index); else grid.set(key, [index]);
+  });
+  const near: { point: number; other: number; metres: number }[] = [];
+  points.forEach((point, index) => {
+    const row = Math.floor(point.lat / cellLat), column = Math.floor(point.lng / cellLng);
+    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+      for (const other of grid.get(`${row + dr}:${column + dc}`) ?? []) {
+        const apart = haversineM(point.lat, point.lng, others[other].lat, others[other].lng);
+        if (apart <= metres) near.push({ point: index, other, metres: apart });
+      }
+    }
+  });
+  near.sort((a, b) => a.metres - b.metres);
+  const taken = new Set<number>();
+  for (const pair of near) {
+    if (pairs.has(pair.point) || taken.has(pair.other)) continue;
+    pairs.set(pair.point, pair.other);
+    taken.add(pair.other);
+  }
+  return pairs;
+}
+
+/**
  * What the screen shows of the map. A turned map shows less than its bounds,
  * which enclose the screen: then the corners of the screen say what is on it.
  */
