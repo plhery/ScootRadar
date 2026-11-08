@@ -46,33 +46,30 @@ data class Scooter(
         get() = ScooterRentalLinkPolicy.rentalURLs(provider = provider, rentalURIs = rentalURIs, legacyLink = deepLink)
 
     /**
-     * Opens the scooter in its provider's app. A link in the app's own scheme opens nothing when the app is
-     * not installed, so the next link, the provider's web page, is tried then. Returns the link that opened.
-     */
-    suspend fun openRental(open: suspend (URI) -> Boolean): URI? {
-        for (url in rentalURLs) {
-            if (open(url)) return url
-        }
-        return null
-    }
-
-    /**
      * The operator's app, where the feed links no scooter: Lime's, Bird's, PubliBike's and Spin's never do, nor Voi's,
      * Dott's and Bolt's rider maps.
      */
     val operatorApp: ScooterProvider.OperatorApp? get() = if (rentalURLs.isEmpty()) providerInfo?.app else null
 
     /**
-     * Opens the operator's app on its link, which with `appOnly` opens only an installed app
-     * (FLAG_ACTIVITY_REQUIRE_NON_BROWSER); without the app, the same link opens in the browser, whose page
-     * sends a phone to its store, as no operator's package is known yet. Nothing asks Android which apps
-     * are installed. Returns the link that opened.
+     * "Open in": the scooter in its provider's app, each link with [openRentalLink]. A link in the app's own scheme
+     * opens nothing when the app is not installed, so the next link, the provider's web page, is tried then. Where no
+     * link opens, as Bolt's feed gives only bolt:// ones, and where the feed links no scooter, the operator's app
+     * opens on its link with [openLink], which with `appOnly` opens only an installed app
+     * (FLAG_ACTIVITY_REQUIRE_NON_BROWSER); without the app, the same link opens in the browser, whose page sends a
+     * phone to its store, as no operator's package is known yet. Nothing asks Android which apps are installed.
+     * Returns what opened: null for nothing, as for an operator the catalog gives no app.
      */
-    suspend fun openOperatorApp(open: suspend (url: URI, appOnly: Boolean) -> Boolean): URI? {
-        val app = operatorApp ?: return null
-        val link = URI(app.link)
-        if (open(link, true)) return link
-        return if (open(link, false)) link else null
+    suspend fun openRental(
+        openRentalLink: suspend (URI) -> Boolean,
+        openLink: suspend (url: URI, appOnly: Boolean) -> Boolean,
+    ): ScooterRentalOpening? {
+        for (url in rentalURLs) {
+            if (openRentalLink(url)) return ScooterRentalOpening.Link(url)
+        }
+        val link = URI(providerInfo?.app?.link ?: return null)
+        if (openLink(link, true)) return ScooterRentalOpening.App(link)
+        return if (openLink(link, false)) ScooterRentalOpening.Store(link) else null
     }
 
     companion object {
@@ -139,6 +136,26 @@ data class Scooter(
         /** The spaces a locale writes between a number and its unit: no-break, narrow no-break, thin and plain. */
         private const val UNIT_SPACES = "\u00A0\u202F\u2009 "
     }
+}
+
+/** What "Open in" opened. */
+sealed interface ScooterRentalOpening {
+    val url: URI
+
+    /** One of the scooter's links: in its operator's app, or a web link in the browser where no app takes it. */
+    data class Link(override val url: URI) : ScooterRentalOpening
+
+    /** The operator's app, on the link it claims. */
+    data class App(override val url: URI) : ScooterRentalOpening
+
+    /**
+     * The operator's link in the browser, the app not being installed: its page sends the phone to the store, as
+     * the App Store page opens on the iPhone.
+     */
+    data class Store(override val url: URI) : ScooterRentalOpening
+
+    /** On the way to the operator, and maybe to a ride: not to the store, where the app is still to install. */
+    val mayLeadToARide: Boolean get() = this !is Store
 }
 
 enum class ScooterBatteryLevel {

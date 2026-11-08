@@ -7,8 +7,7 @@ import android.content.Intent
 import androidx.core.net.toUri
 import java.net.URI
 
-// UIApplication.open in openRental and openOperatorApp, ios/ScootRadar/Models/ScooterModels.swift (LOG-276 to
-// LOG-278).
+// UIApplication.open in openRental and openURL, ios/ScootRadar/Models/ScooterModels.swift (LOG-276 to LOG-278).
 
 /**
  * Opens one of a scooter's links, true if an app took it. A link in the operator's own scheme opens its app or

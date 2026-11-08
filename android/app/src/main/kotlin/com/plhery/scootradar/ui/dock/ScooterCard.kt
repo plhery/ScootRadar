@@ -34,11 +34,13 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -63,8 +65,8 @@ import com.plhery.scootradar.core.map.cardContent
 import com.plhery.scootradar.core.map.cardStatus
 import com.plhery.scootradar.core.map.directionsControl
 import com.plhery.scootradar.core.map.hideWalkingRoute
+import com.plhery.scootradar.core.map.openRental
 import com.plhery.scootradar.core.map.openWalkInMaps
-import com.plhery.scootradar.core.map.rentalOpened
 import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.map.straightLineDistance
 import com.plhery.scootradar.core.map.walkNote
@@ -465,24 +467,29 @@ internal fun priceLabel(quote: RidePriceQuote): String {
 }
 
 /**
- * Open in the provider's app: the scooter's own link where the feed gives one, or else the operator's app. The
- * return from the ride may be the moment to ask for a rating (rentalOpened).
+ * Open in the provider's app: the scooter's own link where the feed gives one, or else the operator's app, as also
+ * where no link to the scooter opens, as Bolt's bolt:// without its app. The return from a ride may be the moment to
+ * ask for a rating (openRental). A tap that opened nothing, as an operator's own scheme without its app and with no
+ * app in the catalog to fall back on, is felt to fail rather than doing nothing.
  */
 @Composable
 private fun OpenInButton(controller: ScooterMapController, scooter: Scooter) {
     val context = LocalContext.current
     val analytics = LocalAnalytics.current
+    val haptics = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
     DockActionButton(
         prominent = true,
         onClick = {
-            controller.rentalOpened()
-            if (scooter.rentalURL != null) {
-                analytics?.track("rental_open", provider = scooter.provider)
-                scope.launch { scooter.openRental { context.openRentalLink(it) } }
-            } else {
-                analytics?.track("rental_open", provider = scooter.provider, result = "app")
-                scope.launch { scooter.openOperatorApp { url, appOnly -> context.openLink(url, appOnly) } }
+            // The tap, whatever opens: rental_open never says whether the operator's app is installed.
+            analytics?.track("rental_open", provider = scooter.provider, result = if (scooter.rentalURL == null) "app" else null)
+            scope.launch {
+                val opened = controller.openRental(
+                    scooter,
+                    openRentalLink = { context.openRentalLink(it) },
+                    openLink = { url, appOnly -> context.openLink(url, appOnly) },
+                )
+                if (opened == null) haptics.performHapticFeedback(HapticFeedbackType.Reject)
             }
         },
     ) {

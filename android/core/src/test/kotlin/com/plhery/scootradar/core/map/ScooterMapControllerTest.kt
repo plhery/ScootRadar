@@ -64,6 +64,8 @@ import com.plhery.scootradar.core.model.ScooterMenuBar
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterProviderHealth
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
+import com.plhery.scootradar.core.model.ScooterRentalOpening
+import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterReviewPrompt
@@ -81,6 +83,7 @@ import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.core.search.KeyboardOverlap
+import java.net.URI
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -4039,6 +4042,37 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun onlyAnOpenInThatReachedTheScooterOrTheOperatorsAppIsARideToAskAfter() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+            // Bolt's feed gives only links in Bolt's own scheme.
+            val link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
+            val bolt = scooter(id = "bolt-1", provider = "bolt", rentalURIs = ScooterRentalURIs(ios = link, android = link, web = null))
+            val boltApp = URI(unwrap(Bolt.app).link)
+
+            // Without Bolt's app nothing takes its link, and Bolt's page opens in the browser, which sends the phone
+            // to the store: no ride to be back from.
+            val store = model.openRental(bolt, openRentalLink = { false }, openLink = { _, appOnly -> !appOnly })
+            assertEquals(ScooterRentalOpening.Store(boltApp), store)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock, openIn = false)
+            assertEquals(0, model.reviewMoments.value)
+
+            // Nor when nothing opened at all.
+            val nothing = model.openRental(bolt, openRentalLink = { false }, openLink = { _, _ -> false })
+            assertNull(nothing)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock, openIn = false)
+            assertEquals(0, model.reviewMoments.value)
+
+            // With the app, the scooter opens in it as before, and the return from the ride is the moment.
+            val opened = model.openRental(bolt, openRentalLink = { it.scheme == "bolt" }, openLink = { _, _ -> false })
+            assertEquals(ScooterRentalOpening.Link(URI(link)), opened)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock, openIn = false)
+            assertEquals(1, model.reviewMoments.value)
+        }
+    }
+
+    @Test
     fun aFailedRefreshKeepsTheRestOfTheDayFromAsking() = inUTC {
         runTest {
             val clock = TestClock()
@@ -4107,9 +4141,18 @@ class ScooterMapControllerTest {
         return model to api
     }
 
-    /** "Open in", the app in the background for `after` seconds, then in front again until the refresh is in. */
-    private fun TestScope.returnFromRide(model: ScooterMapController, api: StubScooterAPI, after: Double, clock: TestClock) {
-        model.rentalOpened()
+    /**
+     * "Open in" (unless `openIn` is false: the test opened what it opened), the app in the background for `after`
+     * seconds, then in front again until the refresh is in.
+     */
+    private fun TestScope.returnFromRide(
+        model: ScooterMapController,
+        api: StubScooterAPI,
+        after: Double,
+        clock: TestClock,
+        openIn: Boolean = true,
+    ) {
+        if (openIn) model.rentalOpened()
         model.becameInactive()
         clock.advance(after)
         val calls = api.calls

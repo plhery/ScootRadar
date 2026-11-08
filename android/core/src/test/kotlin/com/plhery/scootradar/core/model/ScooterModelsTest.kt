@@ -862,24 +862,108 @@ class ScooterModelsTest {
 
         // Without Lime on the phone nothing opens its link: the web page opens instead.
         val tried = mutableListOf<String>()
-        val opened = scooter.openRental { url ->
-            tried += url.toString()
-            url.toString() != android
-        }
+        val opened = scooter.openRental(
+            openRentalLink = { url ->
+                tried += url.toString()
+                url.toString() != android
+            },
+            openLink = { _, _ -> error("Lime's app is not tried while a link to the scooter opens") },
+        )
         assertEquals(listOf(android, web), tried)
-        assertEquals(web, opened?.toString())
+        assertEquals(ScooterRentalOpening.Link(URI(web)), opened)
+        assertTrue(opened!!.mayLeadToARide)
 
         // With the app installed, its link is the only one tried.
         tried.clear()
-        scooter.openRental { url ->
-            tried += url.toString()
-            true
-        }
+        val app = scooter.openRental(
+            openRentalLink = { url ->
+                tried += url.toString()
+                true
+            },
+            openLink = { _, _ -> error("Lime's app is not tried while a link to the scooter opens") },
+        )
         assertEquals(listOf(android), tried)
+        assertEquals(ScooterRentalOpening.Link(URI(android)), app)
 
-        // When nothing opens, nothing is reported as opened.
-        val nothing = scooter.openRental { false }
+        // When nothing opens, not even Lime's app or its page in the browser, nothing is reported as opened.
+        val lime = checkNotNull(ScooterProvider.Lime.app).link
+        tried.clear()
+        val nothing = scooter.openRental(
+            openRentalLink = { url ->
+                tried += url.toString()
+                false
+            },
+            openLink = { url, appOnly ->
+                tried += "$url $appOnly"
+                false
+            },
+        )
         assertNull(nothing)
+        assertEquals(listOf(android, web, "$lime true", "$lime false"), tried)
+    }
+
+    @Test
+    fun openingARentalFallsBackToTheOperatorsStorePageWhenNoLinkOpens() = runTest {
+        // Bolt's feed gives only links in Bolt's own scheme, which nothing opens without Bolt's app.
+        val link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
+        val scooter = Scooter(
+            provider = "bolt",
+            latitude = 47.3769,
+            longitude = 8.5417,
+            battery = 70,
+            rangeMeters = null,
+            vehicleID = "bolt-1",
+            deepLink = link,
+            rentalURIs = ScooterRentalURIs(ios = link, android = link, web = null),
+            distanceMeters = null,
+        )
+        assertEquals(listOf(link), scooter.rentalURLs.map(URI::toString))
+        assertNull("The card says rental_open without result app", scooter.operatorApp)
+        val bolt = checkNotNull(ScooterProvider.Bolt.app).link
+
+        // Without the app, Bolt's link opens nothing either, so it opens in the browser, whose page sends the phone
+        // to the store.
+        val tried = mutableListOf<String>()
+        val store = scooter.openRental(
+            openRentalLink = { url ->
+                tried += url.toString()
+                false
+            },
+            openLink = { url, appOnly ->
+                tried += "$url $appOnly"
+                !appOnly
+            },
+        )
+        assertEquals(listOf(link, "$bolt true", "$bolt false"), tried)
+        assertEquals(ScooterRentalOpening.Store(URI(bolt)), store)
+        assertFalse(store!!.mayLeadToARide)
+
+        // An operator the catalog gives no app has nothing to fall back on.
+        val hopp = Scooter(
+            provider = "bolt_hopp",
+            latitude = 47.3769,
+            longitude = 8.5417,
+            battery = 70,
+            rangeMeters = null,
+            vehicleID = "hopp-1",
+            deepLink = null,
+            rentalURIs = ScooterRentalURIs(ios = null, android = "bolt-hopp://vehicle/1", web = null),
+            distanceMeters = null,
+        )
+        assertNull(hopp.providerInfo?.app)
+        tried.clear()
+        val nothing = hopp.openRental(
+            openRentalLink = { url ->
+                tried += url.toString()
+                false
+            },
+            openLink = { url, _ ->
+                tried += url.toString()
+                true
+            },
+        )
+        assertNull(nothing)
+        assertEquals(listOf("bolt-hopp://vehicle/1"), tried)
     }
 
     @Test
@@ -910,31 +994,42 @@ class ScooterModelsTest {
 
         // With the app installed, its link opens it; only an app may take that link.
         val tried = mutableListOf<String>()
-        val opened = operator.openOperatorApp { url, appOnly ->
-            tried += "$url $appOnly"
-            true
-        }
+        val opened = operator.openRental(
+            openRentalLink = { error("The feed links no scooter") },
+            openLink = { url, appOnly ->
+                tried += "$url $appOnly"
+                true
+            },
+        )
         assertEquals(listOf("$link true"), tried)
-        assertEquals(link, opened?.toString())
+        assertEquals(ScooterRentalOpening.App(URI(link)), opened)
+        assertTrue(opened!!.mayLeadToARide)
 
         // Without it, the same link opens in the browser, whose page sends the phone to the store.
         tried.clear()
-        val store = operator.openOperatorApp { url, appOnly ->
-            tried += "$url $appOnly"
-            !appOnly
-        }
+        val store = operator.openRental(
+            openRentalLink = { error("The feed links no scooter") },
+            openLink = { url, appOnly ->
+                tried += "$url $appOnly"
+                !appOnly
+            },
+        )
         assertEquals(listOf("$link true", "$link false"), tried)
-        assertEquals(link, store?.toString())
+        assertEquals(ScooterRentalOpening.Store(URI(link)), store)
+        assertFalse(store!!.mayLeadToARide)
 
         // A scooter its feed links keeps that link, and an operator with no app has nothing to fall back on.
         val host = ScooterRentalLinkPolicy.policies.getValue(withApp.rawValue).httpsHosts.first()
         val linked = scooter(withApp.rawValue, rentalURIs = ScooterRentalURIs(ios = null, android = "https://$host/vehicle/1", web = null))
         assertEquals(listOf("https://$host/vehicle/1"), linked.rentalURLs.map(URI::toString))
         assertNull(linked.operatorApp)
-        assertNull(linked.openOperatorApp { _, _ -> true })
+        assertEquals(
+            ScooterRentalOpening.Link(URI("https://$host/vehicle/1")),
+            linked.openRental(openRentalLink = { true }, openLink = { _, _ -> true }),
+        )
         val withoutApp = ScooterProvider.entries.firstOrNull { it.app == null }
         assumeTrue("every operator has an app", withoutApp != null)
-        assertNull(scooter(withoutApp!!.rawValue).openOperatorApp { _, _ -> true })
+        assertNull(scooter(withoutApp!!.rawValue).openRental(openRentalLink = { true }, openLink = { _, _ -> true }))
     }
 
     // Ride prices and passes.

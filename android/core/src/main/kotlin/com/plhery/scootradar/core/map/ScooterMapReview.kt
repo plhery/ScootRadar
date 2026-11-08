@@ -1,8 +1,27 @@
 package com.plhery.scootradar.core.map
 
+import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterDockContent
+import com.plhery.scootradar.core.model.ScooterRentalOpening
+import java.net.URI
 
 // The rating of ios/ScootRadar/ViewModels/ScooterMapModel.swift.
+
+/**
+ * "Open in" ([Scooter.openRental]). Only the scooter or the operator's app opening is noted for the rating, at the
+ * tap: not the operator's page in the browser, which sends the phone to the store where the app is still to install,
+ * nor a tap that opened nothing.
+ */
+suspend fun ScooterMapController.openRental(
+    scooter: Scooter,
+    openRentalLink: suspend (URI) -> Boolean,
+    openLink: suspend (url: URI, appOnly: Boolean) -> Boolean,
+): ScooterRentalOpening? {
+    val tappedAt = clock()
+    val opened = scooter.openRental(openRentalLink, openLink)
+    if (opened?.mayLeadToARide == true) reviewPrompt.noteRentalOpened(at = tappedAt)
+    return opened
+}
 
 /** "Open in" took the rider to the operator's app: the return from the ride may be the moment to ask for a rating. */
 fun ScooterMapController.rentalOpened() {
