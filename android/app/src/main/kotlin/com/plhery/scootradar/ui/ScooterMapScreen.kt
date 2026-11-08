@@ -190,6 +190,7 @@ fun ScooterMapScreen(
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
+    val language by controller.language.collectAsStateWithLifecycle()
     val minute by everyMinute()
     // Automatic turns dark or light within the minute the sun has it.
     val style = remember(appearance, userLocation, minute) { controller.interfaceStyle }
@@ -280,6 +281,7 @@ fun ScooterMapScreen(
             LocalMapChrome provides chrome,
             LocalLocationSettings provides locationSettings,
             LocalScreenState provides screenState,
+            LocalLanguage provides language,
         ) {
             // The keys reach the screen before what has the focus in it, as a key command reaches the window before
             // the field being typed in; with nothing focused, the activity hands them over. A mouse's right click
@@ -377,7 +379,7 @@ fun ScooterMapScreen(
                     isPresented = filtersPresented && dock,
                     onDismiss = { filtersPresented = false },
                     detents = if (windowHeight < 700.dp) listOf(SheetDetent.Large) else listOf(SheetDetent.Medium, SheetDetent.Large),
-                    title = localized("Filters"),
+                    title = rememberLocalized("Filters"),
                 ) { bottomInset ->
                     ScooterFilterSheet(controller, bottomInset, onDone = { filtersPresented = false })
                 }
@@ -387,7 +389,7 @@ fun ScooterMapScreen(
                     isPresented = filtersPresented && !dock,
                     onDismiss = { filtersPresented = false },
                     anchor = filtersButton,
-                    title = localized("Filters"),
+                    title = rememberLocalized("Filters"),
                 ) {
                     ScooterFilterSheet(controller, bottomInset = 0.dp, onDone = { filtersPresented = false }, inPopover = true)
                 }
@@ -395,7 +397,7 @@ fun ScooterMapScreen(
                     isPresented = settingsPresented && dock,
                     onDismiss = { settingsPresented = false },
                     detents = listOf(SheetDetent.Medium, SheetDetent.Large),
-                    title = localized("Settings"),
+                    title = rememberLocalized("Settings"),
                 ) { bottomInset ->
                     ScooterSettingsSheet(
                         controller,
@@ -406,7 +408,7 @@ fun ScooterMapScreen(
                     )
                 }
                 // Beside a panel, a form at the trailing side, clear of the panel and of most of the map.
-                IosFormSheet(isPresented = settingsPresented && !dock, onDismiss = { settingsPresented = false }, title = localized("Settings")) {
+                IosFormSheet(isPresented = settingsPresented && !dock, onDismiss = { settingsPresented = false }, title = rememberLocalized("Settings")) {
                     ScooterSettingsSheet(
                         controller,
                         bottomInset = 0.dp,

@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
-import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.rememberLocalized
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.LocalScootColors
 import com.plhery.scootradar.ui.theme.SETTLED_FRACTION
@@ -96,6 +96,8 @@ fun IosFormSheet(
 
     val safe = WindowInsets.safeDrawing
     val colors = scootColors.elevated()
+    // In the language Settings changes while the form stays open.
+    val closeLabel = rememberLocalized("Close")
     Box(Modifier.fillMaxSize()) {
         // The dimmed window, which closes the sheet when tapped.
         Box(
@@ -110,7 +112,7 @@ fun IosFormSheet(
                             .pointerInput(Unit) { detectTapGestures { close() } }
                             .semantics {
                                 traversalIndex = 1f
-                                contentDescription = localized("Close")
+                                contentDescription = closeLabel
                                 onClick { close(); true }
                             }
                     } else {

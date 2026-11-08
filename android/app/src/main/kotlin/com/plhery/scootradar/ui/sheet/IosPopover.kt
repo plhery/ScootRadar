@@ -67,7 +67,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
-import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.rememberLocalized
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.LocalScootColors
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -120,6 +120,8 @@ fun IosPopover(
     val direction = LocalLayoutDirection.current
     val safe = WindowInsets.safeDrawing
     var origin by remember { mutableStateOf(Offset.Zero) }
+    // In the language chosen, should it change while the popover is open.
+    val closeLabel = rememberLocalized("Close")
     BoxWithConstraints(modifier.fillMaxSize().onGloballyPositioned { origin = it.positionInWindow() }) {
         val margin = with(density) { POPOVER_MARGIN.toPx() }
         val room = Rect(
@@ -147,7 +149,7 @@ fun IosPopover(
                     .pointerInput(Unit) { detectTapGestures { close() } }
                     .semantics {
                         traversalIndex = 1f
-                        contentDescription = localized("Close")
+                        contentDescription = closeLabel
                         onClick { close(); true }
                     },
             )

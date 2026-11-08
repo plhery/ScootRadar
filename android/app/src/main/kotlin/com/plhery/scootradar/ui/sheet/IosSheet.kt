@@ -63,7 +63,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
-import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.rememberLocalized
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.LocalScootColors
@@ -180,6 +180,11 @@ fun IosSheet(
     // How far inside the screen's edges the sheet is: it floats at the medium height and meets them at the large one.
     fun gap(): Float =
         if (hasMedium) inset * (1 - ((mediumTop - top()) / (mediumTop - largeTop)).coerceIn(0f, 1f)) else 0f
+    // What TalkBack reads of the sheet itself, in the language Settings changes while the sheet stays open.
+    val closeLabel = rememberLocalized("Close")
+    val grabberLabel = rememberLocalized("Sheet Grabber")
+    val expandedLabel = rememberLocalized("Sheet expanded")
+    val halfScreenLabel = rememberLocalized("Sheet at half screen")
 
     Box(Modifier.fillMaxSize()) {
         // The dimmed map, which closes the sheet when tapped.
@@ -195,7 +200,7 @@ fun IosSheet(
                             .pointerInput(Unit) { detectTapGestures { close() } }
                             .semantics {
                                 traversalIndex = 1f
-                                contentDescription = localized("Close")
+                                contentDescription = closeLabel
                                 onClick { close(); true }
                             }
                     } else {
@@ -268,8 +273,8 @@ fun IosSheet(
                     .align(Alignment.TopCenter)
                     .size(GRABBER_TARGET.width, GRABBER_TARGET.height)
                     .semantics {
-                        contentDescription = localized("Sheet Grabber")
-                        stateDescription = localized(if (expanded) "Sheet expanded" else "Sheet at half screen")
+                        contentDescription = grabberLabel
+                        stateDescription = if (expanded) expandedLabel else halfScreenLabel
                         role = Role.Button
                         onClick {
                             when {
