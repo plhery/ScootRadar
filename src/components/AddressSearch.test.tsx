@@ -412,7 +412,7 @@ describe('when there is nothing to list', () => {
     expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ title: 'Bern', lat: bern.lat }));
   });
 
-  it('leaves Enter and the arrow keys to an input method while it composes a word, and searches the word it commits', async () => {
+  it('leaves Enter and the arrow keys to an input method while it composes a word, and searches what the field holds after a pause', async () => {
     const fetcher = answer(PARADEPLATZ);
     vi.stubGlobal('fetch', fetcher);
     const { input, onSelect } = renderSearch();
@@ -424,20 +424,17 @@ describe('when there is nothing to list', () => {
     expect(fireEvent.keyDown(input, { key: 'Enter', isComposing: true })).toBe(true);
     expect(onSelect).not.toHaveBeenCalled();
 
-    // What is being composed is not searched, however long the pause…
+    // Korean composes each syllable until the next key: after a pause, the field is searched with the one being composed.
     fireEvent.compositionStart(input);
-    await type(input, 'Parade とうきょう');
-    expect(fetcher).toHaveBeenCalledOnce();
-    // …and the word committed is, once the composition ends.
-    fireEvent.change(input, { target: { value: 'Parade 東京' } });
-    fireEvent.compositionEnd(input);
-    // Safari's Enter that committed it comes after the end, with key code 229.
-    expect(fireEvent.keyDown(input, { key: 'Enter', keyCode: 229 })).toBe(true);
-    await act(async () => vi.advanceTimersByTimeAsync(350));
+    await type(input, 'Parade 서울');
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(fetcher).toHaveBeenLastCalledWith('/api/geocode', expect.objectContaining({
-      body: JSON.stringify({ q: 'Parade 東京', lang: 'en' }),
+      body: JSON.stringify({ q: 'Parade 서울', lang: 'en' }),
     }));
+    // The Enter that commits it chooses no place, nor Safari's, which comes after the end with key code 229.
+    expect(fireEvent.keyDown(input, { key: 'Enter', isComposing: true })).toBe(true);
+    fireEvent.compositionEnd(input);
+    expect(fireEvent.keyDown(input, { key: 'Enter', keyCode: 229 })).toBe(true);
     expect(onSelect).not.toHaveBeenCalled();
 
     fireEvent.keyDown(input, { key: 'Enter' });

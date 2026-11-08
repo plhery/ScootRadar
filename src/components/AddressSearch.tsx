@@ -120,9 +120,6 @@ export default function AddressSearch({
   const controllerRef = useRef<AbortController | null>(null);
   // The places found last, for a search that is refused because there were too many.
   const foundRef = useRef<Place[] | null>(null);
-  // While an input method composes a word (Japanese, Chinese, Korean), the field holds what is not yet meant, and Enter
-  // and the arrow keys belong to it: the text is searched once the composition ends.
-  const composingRef = useRef(false);
   const shown = status.kind === 'results' ? status.places : status.kind === 'searching' ? status.earlier ?? null : null;
   // The places the keyboard can choose from: those found for the text in the field.
   const places = status.kind === 'results' && status.query === query.trim() ? status.places : null;
@@ -202,7 +199,6 @@ export default function AddressSearch({
   const handleChange = (value: string) => {
     setQuery(value);
     resetPendingSearch();
-    if (composingRef.current) return;
 
     const normalized = value.trim();
     if (normalized.length < MIN_QUERY_LENGTH) {
@@ -268,13 +264,11 @@ export default function AddressSearch({
             aria-controls={shown ? listboxId : undefined}
             aria-activedescendant={places ? `${listboxId}-${activeIndex}` : undefined}
             onChange={(event) => handleChange(event.target.value)}
-            onCompositionStart={() => { composingRef.current = true; }}
-            onCompositionEnd={(event) => {
-              composingRef.current = false;
-              handleChange(event.currentTarget.value);
-            }}
             onKeyDown={(event) => {
-              // Safari ends the composition before the keydown of the Enter that commits it, which it marks with key code 229.
+              // While an input method composes a word (Japanese, Chinese, Korean), Enter and the arrow keys are its own:
+              // Enter commits the word, not a place. What the field holds is searched after a pause all the same, as
+              // Korean composes each syllable until the next key. Safari ends the composition before the keydown of the
+              // Enter that commits it, which it marks with key code 229.
               if (event.nativeEvent.isComposing || event.keyCode === 229 || !places) return;
               if (event.key === 'ArrowDown') {
                 event.preventDefault();
