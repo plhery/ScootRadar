@@ -362,6 +362,31 @@ candidates were swept whole twice, from 08:30 and 14:55 UTC on 4 November
   32 scooters that arrived since 15:09, against 86 of the 250 that stayed,
   so the 179 it left out barely moved (15 arrived). Vichy keeps its feed.
 
+Bird's public Naples and Rome feeds also list fewer scooters than its map: on
+4 November, 12 to 17% of the scooters the map held near the centres of
+Naples' area and Rome's west one had none of the cache's within 40 m. On 8
+November the research account read the 250 scooters nearest three centres
+at 11:25 and again at 20:56 UTC (9.5 hours), each time just after asking
+the cache for the same circle:
+
+| Circle | Feed's, of the map's 250 | Moved away: listed | Moved away: left out | Arrived over 150 m away, listed |
+| --- | ---: | ---: | ---: | ---: |
+| Naples (2.1 km) | 223 → 224 | 27 of 207 (13%) | 1 of 27 (4%) | 4 of 4 |
+| Rome, by the Vatican (1.7 km) | 189 → 186 | 61 of 183 (33%) | 25 of 57 (44%) | 10 of 10 |
+| Rome, east of the centre (2.1 km) | 249 → 250 | 113 of 239 (47%) | 1 of 1 | 18 of 18 |
+
+- **Naples:** as in Vichy, the scooters the feed leaves out stand idle: 25
+  of the 27 stood where they had, still left out, and none of the listed
+  ones that stayed dropped out. All 26 left out at 20:56 had a `bounty_id`,
+  a task Bird sets its chargers, against 40 of the 224 listed, and their
+  batteries' median was 51%, against 81%. Naples keeps its feed as it is.
+- **Rome, by the Vatican:** the feed leaves out ridden scooters, a quarter
+  of the map's there in both reads. The left-out ones moved away more than
+  the listed ones, and 18 listed scooters that had not moved were left out
+  at 20:56, while 2 went the other way, so it is not the same scooters each
+  time. The cache does not add them yet. East Rome's feed missed one of
+  the map's scooters, then none.
+
 ### The rest of the world, November 2026
 
 On 5 November 2026 the research account read the area list the same way at
