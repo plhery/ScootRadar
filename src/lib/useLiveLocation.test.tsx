@@ -158,8 +158,41 @@ describe('useLiveLocation', () => {
     act(() => geolocation.failWatch(1));
     expect(result.current.error).toBe('denied');
     expect(track).toHaveBeenCalledExactlyOnceWith('location_result', { result: 'denied' });
-    // Nothing is left to watch.
+    // Nothing is left to watch, nor where you were.
     await waitFor(() => expect(geolocation.clearWatch).toHaveBeenCalledWith(1));
+    expect(result.current.location).toBeNull();
+    expect(result.current.accuracyM).toBeNull();
+
+    // Allowed again: the next fix is taken whatever the last one was.
+    act(() => result.current.locate(() => {}));
+    act(() => geolocation.succeedCurrent(position(47.37691, 8.5417, 40)));
+    expect(result.current.location).toEqual([47.37691, 8.5417]);
+    expect(result.current.accuracyM).toBe(40);
+  });
+
+  it('forgets the location it had when locating again is refused', async () => {
+    const geolocation = installGeolocation();
+    const { result } = renderHook(() => useLiveLocation());
+    act(() => result.current.locate(() => {}));
+    act(() => geolocation.succeedCurrent(position(47.3769, 8.5417)));
+    await waitFor(() => expect(geolocation.watchPosition).toHaveBeenCalledOnce());
+
+    act(() => result.current.locate(() => {}));
+    act(() => geolocation.failCurrent({ code: 1, message: '', PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 }));
+    expect(result.current.location).toBeNull();
+    expect(result.current.accuracyM).toBeNull();
+  });
+
+  it('keeps the location it had when locating again cannot find one, which is no refusal', async () => {
+    const geolocation = installGeolocation();
+    const { result } = renderHook(() => useLiveLocation());
+    act(() => result.current.locate(() => {}));
+    act(() => geolocation.succeedCurrent(position(47.3769, 8.5417)));
+
+    act(() => result.current.locate(() => {}));
+    act(() => geolocation.failCurrent({ code: 3, message: '', PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 }));
+    expect(result.current.error).toBe('unavailable');
+    expect(result.current.location).toEqual([47.3769, 8.5417]);
   });
 
   it('distinguishes denied and temporarily unavailable positions', () => {

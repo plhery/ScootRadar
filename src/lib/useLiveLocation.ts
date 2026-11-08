@@ -71,7 +71,14 @@ export function useLiveLocation() {
     track('location_result', { result: denied ? 'denied' : 'unavailable' });
     setError(denied ? 'denied' : 'unavailable');
     setLocating(false);
-    if (denied) setTracking(false);
+    if (!denied) return;
+    // Taken back, or refused again: where you were goes with it, so that nothing
+    // goes on using it, a walk from there or the next Directions, until location
+    // is allowed again. A searched place stays.
+    setTracking(false);
+    acceptedFixRef.current = null;
+    setLocation(null);
+    setAccuracyM(null);
   }, []);
 
   useEffect(() => {

@@ -776,6 +776,39 @@ it('finds your location first when Directions is pressed without one, and asks f
   expect(screen.getByTestId('focus')).toHaveTextContent('none');
 });
 
+it('forgets your location when it is taken back while the map is open, so that Directions cannot send where you were', async () => {
+  const walks = stubServer(() => data([FAR]));
+  let watchFails: PositionErrorCallback | null | undefined;
+  // The first fix, and then a refusal.
+  const getCurrentPosition = vi.fn((success: PositionCallback, failure?: PositionErrorCallback | null) => {
+    if (getCurrentPosition.mock.calls.length === 1) success(position);
+    else failure?.(refused);
+  });
+  const watchPosition = vi.fn((_success: PositionCallback, failure?: PositionErrorCallback | null) => {
+    watchFails = failure;
+    return 1;
+  });
+  stubNavigator('geolocation', { getCurrentPosition, watchPosition, clearWatch: vi.fn() });
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Near me' })); });
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(walks).toEqual([{ method: 'POST', from: HERE, to: [FAR.lat, FAR.lng] }]);
+
+  // Location turned off for the site in the browser's settings.
+  await act(async () => { watchFails?.(refused); await vi.advanceTimersByTimeAsync(0); });
+  // The walk from where you were ends, and the card no longer measures from there.
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(within(scooterCard()).queryByText(/min walk/)).toBeNull();
+
+  // Directions asks for your location again, which is refused: the old one is not sent.
+  await pressDirections(scooterCard());
+  expect(getCurrentPosition).toHaveBeenCalledTimes(2);
+  expect(within(scooterCard()).getByText('Couldn’t find your location.')).toBeVisible();
+  expect(walks).toHaveLength(1);
+});
+
 it('says when Directions cannot find your location, and offers Google Maps instead', async () => {
   const walks = stubServer(() => data([FAR]));
   stubGeolocation(null);
