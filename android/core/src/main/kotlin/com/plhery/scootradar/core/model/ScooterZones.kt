@@ -108,6 +108,11 @@ data class ScooterZoneResponse(
     val zones: List<ScooterZone>,
     /** Some feeds' zones are still on their way: ask again in a few seconds. */
     val pending: Boolean,
+    /**
+     * Some feeds' zones could not be read, and none were before: their rules are unknown, not absent. Asked for again,
+     * the server tries the next read a minute after the last. Older servers leave it out.
+     */
+    val unavailable: Boolean = false,
     /** Zones were left out to keep the answer small. */
     val truncated: Boolean,
 ) {
@@ -122,6 +127,7 @@ data class ScooterZoneResponse(
                 // does not name, as is a ring with too few points.
                 zones = body.zones.mapNotNull(Payload::zone),
                 pending = body.meta?.pending ?: false,
+                unavailable = body.meta?.unavailable ?: false,
                 truncated = body.meta?.truncated ?: false,
             )
         }
@@ -134,7 +140,7 @@ data class ScooterZoneResponse(
     private class Body(val zones: List<Payload>, val meta: Meta? = null)
 
     @Serializable
-    private class Meta(val pending: Boolean? = null, val truncated: Boolean? = null)
+    private class Meta(val pending: Boolean? = null, val unavailable: Boolean? = null, val truncated: Boolean? = null)
 
     /** A zone as it comes, with a kind this version may not know. */
     @Serializable
@@ -227,8 +233,13 @@ data class ScooterZoneArea private constructor(
     }
 }
 
-/** What the zones' legend says while they are turned on. */
-enum class ScooterZoneState { Off, ZoomIn, Loading, Shown, Failed }
+/**
+ * What the zones' legend says while they are turned on, as on the web (useZoneData.ts). Partial: some zones were left
+ * out to keep the answer small; zoomed in, the area is smaller. Failed: some or all of the area's zones are unknown, its
+ * answer having failed, or some feeds' zones being still on their way after the last try or unreadable; those drawn
+ * stay drawn.
+ */
+enum class ScooterZoneState { Off, ZoomIn, Loading, Shown, Partial, Failed }
 
 /**
  * How each kind of zone is drawn, as on the web (ZoneLegend.tsx, map.css): how strongly it is filled, the

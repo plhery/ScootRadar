@@ -21,12 +21,36 @@ import kotlinx.coroutines.launch
 data class ScooterZoneAnswer(
     val area: ScooterZoneArea,
     val zones: List<ScooterZone>,
+    /**
+     * Asking failed, or some of the area's zones are unknown: some feeds' could not be read, or were still on their way
+     * after the last try. Those that came are drawn all the same.
+     */
     val failed: Boolean,
-    /** Some feeds' zones were still on their way. */
+    /** Some feeds' zones were still on their way, and the area is asked for again. */
     val pending: Boolean,
+    /** Zones were left out to keep the answer small. */
+    val truncated: Boolean = false,
     val receivedAt: Instant,
 ) {
     val isComplete: Boolean get() = !failed && !pending
+
+    /**
+     * Whether it serves a view's [area]: any within its own, but for one with zones left out, which serves its own
+     * alone, as a smaller area may have them all, and the legend asks to zoom in for them.
+     */
+    fun serves(area: ScooterZoneArea): Boolean = if (truncated) this.area == area else this.area.contains(area)
+
+    /**
+     * What the legend says of it: the rest still on the way is loading, and an answer with zones left out asks to zoom
+     * in beside the kinds it names.
+     */
+    val state: ScooterZoneState
+        get() = when {
+            failed -> ScooterZoneState.Failed
+            pending -> ScooterZoneState.Loading
+            truncated -> ScooterZoneState.Partial
+            else -> ScooterZoneState.Shown
+        }
 }
 
 /** Asks for the zones of the map's area, the area the scooters are asked for rounded out to the grid, unless an answer at hand covers it. */
@@ -52,9 +76,9 @@ internal fun ScooterMapController.updateZones() {
         return
     }
     val answer = zoneAnswer
-    if (answer != null && answer.area.contains(area)) {
+    if (answer != null && answer.serves(area)) {
         // Unless a pending answer is being asked for again, it stands; the cities' zones follow the map either way.
-        if (zoneTaskArea == null) setZones(if (answer.failed) ScooterZoneState.Failed else ScooterZoneState.Shown) else rebuildMapZones()
+        if (zoneTaskArea == null) setZones(answer.state) else rebuildMapZones()
         return
     }
     val taskArea = zoneTaskArea
@@ -65,11 +89,11 @@ internal fun ScooterMapController.updateZones() {
     }
     val now = clock()
     recentZoneAnswers = recentZoneAnswers.filter { now.timeIntervalSince(it.receivedAt) <= ScooterMapController.zoneAnswerLifetime }
-    val recent = recentZoneAnswers.firstOrNull { it.area.contains(area) }
+    val recent = recentZoneAnswers.firstOrNull { it.serves(area) }
     if (recent != null) {
         cancelZoneRequest()
         zoneAnswer = recent
-        setZones(ScooterZoneState.Shown)
+        setZones(recent.state)
         return
     }
     requestZones(area, after = ScooterMapController.zoneDebounce, retries = ScooterMapController.zonePendingRetries)
@@ -84,7 +108,14 @@ private fun ScooterMapController.requestZones(area: ScooterZoneArea, after: Dura
         val answer = try {
             val response = api.zonesIn(area)
             if (!isActive || zoneTaskArea != area) return@launch
-            ScooterZoneAnswer(area = area, zones = response.zones, failed = false, pending = response.pending, receivedAt = clock())
+            val pending = response.pending && retries > 0
+            // An area whose zones are partly unknown says so, keeping those that came: it would otherwise read as one
+            // with none. Not complete, it is asked for again with the scooters.
+            val unknown = !pending && (response.unavailable || response.pending)
+            ScooterZoneAnswer(
+                area = area, zones = response.zones, failed = unknown, pending = pending, truncated = response.truncated,
+                receivedAt = clock(),
+            )
         } catch (_: CancellationException) {
             return@launch
         } catch (_: Exception) {
@@ -94,7 +125,7 @@ private fun ScooterMapController.requestZones(area: ScooterZoneArea, after: Dura
             ScooterZoneAnswer(area = area, zones = kept, failed = true, pending = false, receivedAt = clock())
         }
         zoneAnswer = answer
-        if (answer.pending && retries > 0) {
+        if (answer.pending) {
             // What came is drawn meanwhile.
             requestZones(area, after = ScooterMapController.zonePendingRetry, retries = retries - 1)
         } else {
@@ -105,14 +136,15 @@ private fun ScooterMapController.requestZones(area: ScooterZoneArea, after: Dura
             recentZoneAnswers = (listOf(answer) + recentZoneAnswers.filter { it.area != area })
                 .take(ScooterMapController.RECENT_ZONE_ANSWER_LIMIT)
         }
-        setZones(if (answer.failed) ScooterZoneState.Failed else ScooterZoneState.Shown)
+        setZones(answer.state)
     }
 }
 
 /**
  * A failed answer for the zones stands while the map stays in its area, so each refresh of the scooters, on its own or
- * asked for, asks for them again: after a load lost to the network they come back with the scooters, instead of
- * staying unavailable until the map leaves the area. What was drawn stays drawn meanwhile.
+ * asked for, asks for them again: after a load lost to the network, or a feed the server could not read and tries again
+ * a minute later, they come back with the scooters, instead of staying unavailable until the map leaves the area. What
+ * was drawn stays drawn meanwhile.
  */
 internal fun ScooterMapController.askAgainForFailedZones() {
     if (!showsZones.value || zoneTaskArea != null) return

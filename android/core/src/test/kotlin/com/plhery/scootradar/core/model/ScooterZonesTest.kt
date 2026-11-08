@@ -1,6 +1,7 @@
 package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.api.ScooterAPI
+import com.plhery.scootradar.core.api.ScooterAPIJson
 import java.net.URI
 import java.time.Instant
 import java.util.Locale
@@ -93,6 +94,17 @@ class ScooterZonesTest {
             assertEquals(GeoPoint(latitude = 47.38, longitude = 8.54), response.zones[0].polygons[0][0][1])
             assertEquals(15.0, response.zones[1].maxSpeedKph)
         }
+    }
+
+    @Test
+    fun anAnswerSaysWhetherSomeFeedsZonesCouldNotBeReadAndAnOlderServersSaysTheyAllWere() {
+        fun decoded(body: String) = ScooterAPIJson.decodeFromString(ScooterZoneResponse.serializer(), body)
+        val unreadable = """{"zones":[],"meta":{"generatedAt":"2026-11-08T10:00:00.000Z","pending":false,"unavailable":true,"truncated":false}}"""
+        assertTrue(decoded(unreadable).unavailable)
+        // A server of before 8 November 2026 says nothing of it.
+        val older = decoded("""{"zones":[],"meta":{"generatedAt":"2026-11-08T10:00:00.000Z","pending":false,"truncated":true}}""")
+        assertFalse(older.unavailable)
+        assertTrue(older.truncated)
     }
 
     @Test

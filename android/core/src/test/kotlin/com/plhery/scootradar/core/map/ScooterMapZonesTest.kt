@@ -188,8 +188,8 @@ class ScooterMapZonesTest {
         advanceTimeBy(1)
         runCurrent()
         assertEquals(1, api.zoneAreas.size)
-        // What came is drawn while the rest is on its way.
-        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        // What came is drawn while the rest is on its way; that there are no others is not known yet.
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
         assertEquals(2, model.mapZones.value.size)
 
         for (asked in 2..4) {
@@ -204,7 +204,9 @@ class ScooterMapZonesTest {
         runCurrent()
         assertEquals("Three times more, then the answer stands", 4, api.zoneAreas.size)
         assertEquals(1, api.zoneAreas.toSet().size)
-        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        // Some still on their way after the last try: the area's rules are unknown, not absent, and those that came stay.
+        assertEquals(ScooterZoneState.Failed, model.zoneState.value)
+        assertEquals(2, model.mapZones.value.size)
     }
 
     @Test
@@ -357,6 +359,124 @@ class ScooterMapZonesTest {
         assertNull(other.mapOperatorSlowSpeeds.value.known)
     }
 
+    @Test
+    fun anAreaWhoseZonesCouldNotBeReadSaysTheyAreUnavailableNotThatItHasNone() = runTest {
+        val api = ZoneStubAPI()
+        api.unavailable = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val failed = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Failed }
+        assertTrue(failed)
+        // Those read are drawn, and the area is not said to have no others: the legend's note in this state is
+        // CityRuleZoneTest's.
+        assertEquals(listOf("lime:0", "bird:0"), model.mapZones.value.filter { it.provider != "city" }.map { it.id })
+
+        // The next refresh of the scooters asks again, once the server has tried the feed again.
+        api.unavailable = false
+        model.refresh()
+        val shown = waitUntil { api.zoneAreas.size == 2 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+        assertEquals(2, model.mapZones.value.filter { it.provider != "city" }.size)
+    }
+
+    @Test
+    fun anAnswerWithZonesThatCouldNotBeReadIsNotKeptForTheMapToComeBackTo() = runTest {
+        val api = ZoneStubAPI()
+        api.unavailable = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val failed = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Failed }
+        assertTrue(failed)
+
+        api.unavailable = false
+        val bern = zurich.copy(center = GeoPoint(latitude = 46.948, longitude = 7.4474))
+        model.updateViewport(bern, zoom = 16)
+        val second = waitUntil { api.zoneAreas.size == 2 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(second)
+
+        // Back in Zürich, its zones are asked for again, not said unavailable from memory.
+        model.updateViewport(zurich, zoom = 16)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+        val third = waitUntil { api.zoneAreas.size == 3 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(third)
+    }
+
+    @Test
+    fun zonesStillOnTheirWayAreLoadingWithThoseThatCameDrawnUntilTheRestCome() = runTest {
+        val api = ZoneStubAPI()
+        api.pending = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val drawn = waitUntil { api.zoneAreas.size == 1 && model.mapOperatorZoneCount.value == 2 }
+        assertTrue(drawn)
+        // What came is drawn meanwhile; that there are no others is not known yet.
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+
+        api.pending = false
+        val shown = waitUntil(attempts = 400) { model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+        assertEquals(2, api.zoneAreas.size)
+        assertEquals(2, model.mapOperatorZoneCount.value)
+    }
+
+    @Test
+    fun zonesStillOnTheirWayAfterTheLastTryAreSaidUnavailableAndAskedForAgainWithTheScooters() = runTest {
+        val api = ZoneStubAPI()
+        api.pending = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        // The first answer and three more tries.
+        advanceTimeBy(250 + 3 * 3_000)
+        runCurrent()
+        assertEquals(4, api.zoneAreas.size)
+        assertEquals(ScooterZoneState.Failed, model.zoneState.value)
+        assertEquals("Those that came stay drawn", 2, model.mapOperatorZoneCount.value)
+        advanceTimeBy(30_000)
+        runCurrent()
+        assertEquals(4, api.zoneAreas.size)
+
+        api.pending = false
+        model.refresh()
+        val shown = waitUntil { api.zoneAreas.size == 5 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+    }
+
+    @Test
+    fun anAnswerWithZonesLeftOutAsksToZoomInBesideTheKindsAndStillDoesFromMemory() = runTest {
+        val api = ZoneStubAPI()
+        api.truncated = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val partial = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Partial }
+        assertTrue(partial)
+        assertEquals(2, model.mapOperatorZoneCount.value)
+
+        // Further out and back, the answer at hand still says so.
+        model.updateViewport(zurich.copy(latitudeDelta = 0.08, longitudeDelta = 0.08), zoom = 13)
+        assertEquals(ScooterZoneState.ZoomIn, model.zoneState.value)
+        model.updateViewport(zurich, zoom = 16)
+        assertEquals(ScooterZoneState.Partial, model.zoneState.value)
+
+        api.truncated = false
+        val bern = zurich.copy(center = GeoPoint(latitude = 46.948, longitude = 7.4474))
+        model.updateViewport(bern, zoom = 16)
+        val second = waitUntil { api.zoneAreas.size == 2 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(second)
+
+        // Back in Zürich, the answer of a moment ago serves, and still says some were left out.
+        model.updateViewport(zurich, zoom = 16)
+        assertEquals(ScooterZoneState.Partial, model.zoneState.value)
+        assertEquals(2, model.mapOperatorZoneCount.value)
+        advanceTimeBy(400)
+        runCurrent()
+        assertEquals(2, api.zoneAreas.size)
+    }
+
     // Android's own: where the area the cities' zones are picked over ends, and the zoom they are picked from.
 
     /**
@@ -448,7 +568,47 @@ class ScooterMapZonesTest {
         model.updateViewport(porto, zoom = 16)
         assertEquals(1, api.zoneAreas.size)
         assertEquals(inView, model.mapRuleZones.value.map { it.rule.id })
-        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+    }
+    // Android's own: an answer with zones left out serves no smaller area than its own, which may have them all.
+
+    /**
+     * Zoomed in, the area asked for is smaller, and so is what the server finds in it: an answer with zones left out
+     * that served the areas within its own would keep "Zoom in to see the zones" whatever the zoom.
+     */
+    @Test
+    fun anAnswerWithZonesLeftOutServesItsOwnAreaAloneSoThatZoomingInAsksForTheRest() = runTest {
+        val api = ZoneStubAPI()
+        api.truncated = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val partial = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Partial }
+        assertTrue(partial)
+
+        // Within the same area, the answer stands.
+        val nearby = zurich.copy(center = GeoPoint(latitude = zurich.center.latitude, longitude = zurich.center.longitude + 0.003))
+        model.updateViewport(nearby, zoom = 16)
+        assertEquals(ScooterZoneState.Partial, model.zoneState.value)
+        advanceTimeBy(400)
+        runCurrent()
+        assertEquals(1, api.zoneAreas.size)
+
+        // Zoomed in, the smaller area within it is asked for, those drawn staying meanwhile.
+        api.truncated = false
+        model.updateViewport(zurich.copy(latitudeDelta = 0.004, longitudeDelta = 0.004), zoom = 17)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+        assertEquals(2, model.mapOperatorZoneCount.value)
+        val shown = waitUntil { api.zoneAreas.size == 2 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+        assertTrue(api.zoneAreas[0].contains(api.zoneAreas[1]) && api.zoneAreas[0] != api.zoneAreas[1])
+
+        // Back out, the answer of a moment ago serves its own area.
+        model.updateViewport(zurich, zoom = 16)
+        assertEquals(ScooterZoneState.Partial, model.zoneState.value)
+        advanceTimeBy(400)
+        runCurrent()
+        assertEquals(2, api.zoneAreas.size)
     }
 }
 
@@ -457,6 +617,12 @@ private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : S
     private var failure: ScooterAPIError? = null
     /** Whether some feeds' zones are still on their way. */
     var pending = false
+
+    /** Whether some feeds' zones could not be read. */
+    var unavailable = false
+
+    /** Whether zones were left out to keep the answer small. */
+    var truncated = false
     private val areas = mutableListOf<ScooterZoneArea>()
 
     val zoneAreas: List<ScooterZoneArea> get() = areas.toList()
@@ -477,7 +643,8 @@ private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : S
                 ScooterZone(id = "bird:0", provider = "bird", kind = ScooterZoneKind.NoParking, maxSpeedKph = null, polygons = listOf(listOf(ring))),
             ) + more,
             pending = pending,
-            truncated = false,
+            unavailable = unavailable,
+            truncated = truncated,
         )
     }
 

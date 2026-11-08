@@ -110,6 +110,29 @@ class CityRuleZoneTest {
     }
 
     /**
+     * "No zones published here" only of an area whose zones are all known: where some could not be read, or were still on
+     * their way after the last try, the legend says they are unavailable; where some were left out, it names the kinds
+     * drawn and asks to zoom in, as on the web (ZoneLegend.test.tsx). The iPhone's test is in its ScooterZonesTests.
+     */
+    @Test
+    fun theLegendSaysThereAreNoneOnlyWhereAllTheAreasZonesAreKnownAndToZoomInWhereSomeWereLeftOut() {
+        Locale.setDefault(Locale.forLanguageTag("en-CH"))
+        ScooterLanguage.current = ScooterLanguage.En
+        fun note(state: ScooterZoneState, count: Int) = zoneLegendNote(state, count, rules = false, notices = false)
+        assertEquals("No zones published here", note(ScooterZoneState.Shown, 0))
+        // Unknown rules are not no rules.
+        assertEquals("Zones unavailable right now", note(ScooterZoneState.Failed, 0))
+        assertEquals(emptyList<ScooterZoneKind>(), legendKinds(ScooterZoneState.Failed, 0, emptyList(), besideNote = true))
+        // Those that came are drawn, and named, while the rest are on their way.
+        assertNull(note(ScooterZoneState.Loading, 0))
+        assertEquals(ScooterZoneKind.operatorKinds, legendKinds(ScooterZoneState.Loading, 0, emptyList(), besideNote = false))
+        // Those drawn are named still, beside the note.
+        assertEquals("Zoom in to see the zones", note(ScooterZoneState.Partial, 3))
+        assertEquals(ScooterZoneKind.operatorKinds, legendKinds(ScooterZoneState.Partial, 3, emptyList(), besideNote = true))
+        assertEquals(10.0..10.0, legendKindSpeeds(ScooterZoneState.Partial, 3, speeds(10.0), emptyList(), besideNote = true).known)
+    }
+
+    /**
      * A street outside its hours: no kind of its own among the operators', and a line saying it is not now (5949217d).
      * The iPhone's test reads the catalog's Hongdae; this one has its own (LOG-370).
      */

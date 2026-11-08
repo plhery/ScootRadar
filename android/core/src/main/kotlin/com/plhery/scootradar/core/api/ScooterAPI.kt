@@ -44,7 +44,7 @@ interface ScooterAPIClient {
 
     /** The operators' zones that reach into the area. A client that knows no zones has none to give. */
     suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse =
-        ScooterZoneResponse(zones = emptyList(), pending = false, truncated = false)
+        ScooterZoneResponse(zones = emptyList(), pending = false, unavailable = false, truncated = false)
 
     /**
      * A file of the cities' zones the app downloads, under /zones/v1/: the index, or a city's
