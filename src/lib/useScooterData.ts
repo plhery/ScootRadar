@@ -44,6 +44,8 @@ export interface ScooterData {
    * way, which they are not while the map is paused.
    */
   lastSeenProviders: Record<string, LastSeenStatus>;
+  /** How far a full battery usually takes each app's scooters in view, in metres. */
+  fullRanges: Record<string, number>;
   parking: ParkingLocation[];
   /** Of the last successful response; kept in the out-of-date state. */
   meta: ScooterResponseMeta | null;
@@ -299,6 +301,7 @@ export function useScooterData(query: ScooterDataQuery | null, options: ScooterD
     lastSeenVehicles: state.lastSeenVehicles,
     lastSeenClusters: state.lastSeenClusters,
     lastSeenProviders: state.paused ? notUpdating(state.lastSeenProviders) : state.lastSeenProviders,
+    fullRanges: state.fullRanges,
     parking: state.parking,
     meta: state.meta,
     lastUpdated: state.lastUpdated,

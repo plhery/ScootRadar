@@ -203,6 +203,13 @@ describe('scooterDataReducer', () => {
     expect(state).toMatchObject({ lastUpdated: T0 + SKEW - 30_000, expiresAt: T0 + SKEW + 270_000 });
   });
 
+  it('keeps how far a full battery takes each app in view, or none from a server that does not say', () => {
+    const answered = scooterDataReducer(INITIAL_SCOOTER_DATA_STATE, { type: 'succeeded', key: 'a', now: 1_000,
+      response: { ...response(), fullRanges: { lime: 11_500, voi: 80_000 } } });
+    expect(answered.fullRanges).toEqual({ lime: 11_500, voi: 80_000 });
+    expect(scooterDataReducer(answered, { type: 'succeeded', key: 'a', now: 2_000, response: response() }).fullRanges).toEqual({});
+  });
+
   it('tolerates a response without clusters or parking', () => {
     const bare = { ...response({}, false), clusters: undefined } as unknown as ScooterResponse;
     const state = scooterDataReducer(INITIAL_SCOOTER_DATA_STATE, { type: 'succeeded', key: 'a', response: bare, now: T0 });

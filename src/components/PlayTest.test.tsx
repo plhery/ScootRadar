@@ -186,6 +186,7 @@ describe('Settings › About', () => {
           enabledProviders={new Set()}
           availableProviders={[]}
           providerCounts={{}}
+          fullRanges={{}}
           downProviders={[]}
           hasActiveFilters={false}
           showCount={0}

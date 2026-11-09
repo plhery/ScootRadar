@@ -144,6 +144,8 @@ const scooterResponse = {
   ],
   clusters: [],
   providers: { lime: 1, bird: 1, bolt: 1 },
+  // How far a full battery usually takes each app's, as the cache works it out.
+  fullRanges: { lime: 40_200, bird: 34_000, bolt: 61_000 },
   meta: {
     partial: false,
     stale: false,
@@ -1698,6 +1700,8 @@ test('the filters offer battery presets and providers with their counts, and say
   await expect(filters.getByRole('slider')).toHaveCount(0);
   const help = filters.getByText('Scooters without battery info are hidden while a minimum is set.');
   await expect(help).toHaveCount(0);
+  // How far a full battery usually takes the three apps' in view: Bird's 34 km to Bolt's 61.
+  await expect(battery).toHaveAccessibleDescription('100% usually allows about 34–61 km.');
   const sections = await filters.getByRole('heading', { level: 3 }).allTextContents();
   expect(sections).toEqual(['Battery', 'Providers']);
 
@@ -1707,6 +1711,9 @@ test('the filters offer battery presets and providers with their counts, and say
   await expect(reset).toBeEnabled();
   // Lime has 82% and Bird 64%; Bolt, at 58%, no longer counts.
   await expect(show).toHaveText('Show 2 scooters');
+  // Nor in the line: Lime's 24 km and Bird's 20 are within a quarter of each other.
+  await expect(battery).toHaveAccessibleDescription(
+    '60% usually allows about 22 km. Scooters without battery info are hidden while a minimum is set.');
   await expect(page.locator('.scooter-marker')).toHaveCount(2);
   await expect.poll(() => new URL(page.url()).searchParams.get('minBattery')).toBe('60');
 
