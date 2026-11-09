@@ -94,8 +94,9 @@ internal val TILE_SPACING = 10.dp
 /**
  * How far in from a tile's edges its name may reach: 1.5 clear of its 1.5 frame, where the iPhone's stands 6 in, the
  * tile's 4 and its own 2. Centred, a name that fits is drawn where the iPhone draws it, so this changes only one that
- * didn't fit: the chosen Automatic, beside its check at three quarters of its size, needs 48 of the 49 it leaves on a
- * phone 360 wide, the sheet floating, where 6 in left it 43 and cut it to "Autom…" (app-bf).
+ * didn't fit: the chosen Automatic, beside its check at three quarters of its size, needed 48 of the 49 it leaves on a
+ * phone 360 wide, the sheet floating, where 6 in left it 43 and cut it to "Autom…" (app-bf). English has said Auto
+ * since, as the iPhone's shared string does.
  */
 private val NAME_INSET = 3.dp
 
