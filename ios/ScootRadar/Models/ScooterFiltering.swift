@@ -10,8 +10,10 @@ struct VisibleScooterSummary: Equatable {
 }
 
 enum ScooterFiltering {
+    /// A scooter whose feed gives a range and no battery is judged by the battery the server estimates
+    /// from it, as the server judges it in the groups it counts.
     static func passesBattery(_ scooter: Scooter, minimumBattery: Double) -> Bool {
-        minimumBattery == 0 || (scooter.battery.map(Double.init) ?? -1) >= minimumBattery
+        minimumBattery == 0 || (scooter.filterBattery.map(Double.init) ?? -1) >= minimumBattery
     }
 
     static func mapScooters(
@@ -82,6 +84,86 @@ enum ScooterBatteryFilter {
 
     static func label(for preset: Int) -> String {
         preset == 0 ? String(localized: "Any") : "\(preset)%+"
+    }
+}
+
+/// How far a battery level usually takes the scooters chosen in view, in metres, from each app's usual range on
+/// a full battery (the answer's fullRanges) and its scooters in view: the line under the battery presets. The
+/// website works it out the same way (src/lib/battery.ts, batteryReach and formatBatteryReach).
+struct ScooterBatteryReach: Equatable, Sendable {
+    /// The shortest and the longest of their apps'.
+    let low: Double
+    let high: Double
+    /// Their apps' weighed by their scooters in view.
+    let mean: Double
+
+    /// How far `level`% usually takes the scooters in view of the apps switched on. An app with under a tenth
+    /// of them is left out unless it has the most, so that a handful of another app's at the edge of the view
+    /// does not stretch the line. Nil when no app switched on in view has a full range.
+    init?(
+        level: Int,
+        fullRanges: [ScooterProvider: Int],
+        counts: [ScooterProvider: Int],
+        enabled: (ScooterProvider) -> Bool
+    ) {
+        var apps: [(metres: Double, count: Int)] = []
+        for (provider, metres) in fullRanges {
+            let count = counts[provider, default: 0]
+            if metres > 0, count > 0, enabled(provider) { apps.append((Double(metres), count)) }
+        }
+        guard let most = apps.map(\.count).max() else { return nil }
+        let total = apps.reduce(0) { $0 + $1.count }
+        let kept = apps.filter { $0.count * 10 >= total || $0.count == most }
+        let scale = Double(level) / 100
+        let weight = kept.reduce(0) { $0 + $1.count }
+        low = (kept.map(\.metres).min() ?? 0) * scale
+        high = (kept.map(\.metres).max() ?? 0) * scale
+        mean = kept.reduce(0) { $0 + $1.metres * Double($1.count) } / Double(weight) * scale
+    }
+
+    /// "22 km", one length where the longest is at most a quarter longer than the shortest, or else
+    /// "12–80 km": in whole kilometres, or whole miles where lengths are in miles, never 0.
+    func formatted(locale: Locale = ScooterLanguage.current.locale) -> String {
+        let metric = locale.measurementSystem == .metric
+        let unit: UnitLength = metric ? .kilometers : .miles
+        let step = metric ? 1_000 : 1_609.344
+        // Halves go up, as Math.round does on the web.
+        func whole(_ metres: Double) -> Int { max(1, Int((metres / step).rounded())) }
+        let low = whole(self.low)
+        let high = whole(self.high)
+        if high * 4 <= low * 5 { return Scooter.formattedWhole(whole(mean), of: unit, locale: locale) }
+        return low.formatted(.number.locale(locale)) + "–" + Scooter.formattedWhole(high, of: unit, locale: locale)
+    }
+
+    /// Under the battery presets: "60% usually allows about 22 km.", or for Any how far a full battery takes
+    /// them, "100% usually allows about 12–80 km.". Nil when no app switched on in view has a full range.
+    static func line(
+        minimumBattery: Int,
+        fullRanges: [ScooterProvider: Int],
+        counts: [ScooterProvider: Int],
+        enabled: (ScooterProvider) -> Bool,
+        locale: Locale = ScooterLanguage.current.locale
+    ) -> String? {
+        let preset = ScooterBatteryFilter.snapped(minimumBattery)
+        let level = preset > 0 ? preset : 100
+        guard let reach = ScooterBatteryReach(level: level, fullRanges: fullRanges, counts: counts, enabled: enabled)
+        else { return nil }
+        return String(
+            format: String(localized: "%1$lld%% usually allows about %2$@."),
+            locale: locale,
+            Int64(level),
+            reach.formatted(locale: locale)
+        )
+    }
+
+    /// What the Filters say under the battery presets, and VoiceOver reads after them: the line, followed
+    /// while a minimum is set by the sentence that scooters without battery info are hidden. Nil for neither.
+    static func help(line: String?, minimumBattery: Int) -> String? {
+        let hidden = minimumBattery > 0
+            ? String(localized: "Scooters without battery info are hidden while a minimum is set.")
+            : nil
+        let sentences = [line, hidden].compactMap { $0 }
+        return sentences.isEmpty ? nil : sentences.joined(separator: " ")
     }
 }
 

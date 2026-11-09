@@ -2157,8 +2157,13 @@ struct ScooterFilterSheet: View {
         .frame(minWidth: inPopover ? 360 : nil, idealWidth: inPopover ? 400 : nil, idealHeight: inPopover ? wholeHeight : nil)
     }
 
+    /// The presets, and under them how far the minimum usually takes the scooters chosen in view and,
+    /// while a minimum is set, that scooters without battery info are hidden. VoiceOver reads it right after
+    /// the presets, as it read the sentence alone: as a hint of each preset it would be said four times, and
+    /// not at all with hints switched off.
     private var batteryFilters: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        let help = model.batteryHelp
+        return VStack(alignment: .leading, spacing: 10) {
             sectionHeader("Battery")
 
             batteryPresetLayout {
@@ -2174,8 +2179,8 @@ struct ScooterFilterSheet: View {
             .accessibilityElement(children: .contain)
             .accessibilityLabel(String(localized: "Battery"))
 
-            if model.minimumBattery > 0 {
-                Text(String(localized: "Scooters without battery info are hidden while a minimum is set."))
+            if let help {
+                Text(verbatim: help)
                     .font(.footnote)
                     .foregroundStyle(ScooterPalette.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)

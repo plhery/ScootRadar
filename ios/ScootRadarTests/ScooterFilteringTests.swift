@@ -1017,7 +1017,9 @@ final class ScooterFilteringTests: XCTestCase {
     private func scooter(
         id: String,
         provider: String,
-        battery: Int,
+        battery: Int?,
+        rangeMeters: Int? = nil,
+        batteryEstimate: Int? = nil,
         latitude: Double = 47.3769,
         longitude: Double = 8.5417
     ) -> Scooter {
@@ -1026,7 +1028,8 @@ final class ScooterFilteringTests: XCTestCase {
             latitude: latitude,
             longitude: longitude,
             battery: battery,
-            rangeMeters: nil,
+            rangeMeters: rangeMeters,
+            batteryEstimate: batteryEstimate,
             vehicleID: id,
             deepLink: nil,
             rentalURIs: nil,
@@ -1127,5 +1130,182 @@ extension ScooterFilteringTests {
         XCTAssertEqual(String(unknown.body.prefix(1)), unknown.parts[0].prefix(1).localizedUppercase)
         XCTAssertEqual(unknown.body.dropFirst(), unknown.parts[0].dropFirst())
         XCTAssertNotEqual(unknown.body, unknown.parts[0])
+    }
+}
+
+// The battery the server estimates from a range, and how far the minimum takes the scooters (issue #12).
+extension ScooterFilteringTests {
+    /// Lime and Voi give a range and no battery in Stuttgart: the server estimates one from it, which the
+    /// filter judges them by. A battery the feed gives is the one judged.
+    func testTheBatteryFilterJudgesAScooterWithoutABatteryByItsEstimate() {
+        let scooters = [
+            scooter(id: "lime-full", provider: "lime", battery: nil, rangeMeters: 9_000, batteryEstimate: 78),
+            scooter(id: "lime-flat", provider: "lime", battery: nil, rangeMeters: 2_000, batteryEstimate: 17),
+            scooter(id: "voi-unknown", provider: "voi", battery: nil),
+            scooter(id: "bolt-own", provider: "bolt", battery: 50, batteryEstimate: 90),
+            scooter(id: "bolt-full", provider: "bolt", battery: 90)
+        ]
+
+        let filtered = ScooterFiltering.mapScooters(
+            from: scooters, minimumBattery: 60, enabledProviders: Set(ScooterProvider.allCases)
+        )
+        XCTAssertEqual(filtered.map(\.id), ["lime:lime-full", "bolt:bolt-full"])
+
+        let summary = ScooterFiltering.visibleSummary(
+            for: scooters, viewport: viewport, minimumBattery: 60, enabledProviders: [.lime]
+        )
+        XCTAssertEqual(summary.count, 1)
+        XCTAssertEqual(summary.providerCounts, [.lime: 1, .bolt: 1])
+        XCTAssertEqual(summary.unfilteredCount, 5)
+
+        // At Any, every scooter is shown, with or without a battery.
+        XCTAssertEqual(ScooterFiltering.mapScooters(
+            from: scooters, minimumBattery: 0, enabledProviders: Set(ScooterProvider.allCases)
+        ).count, 5)
+        XCTAssertEqual(scooters[0].filterBattery, 78)
+        XCTAssertNil(scooters[0].battery, "The card and the marker never show the estimate")
+        XCTAssertEqual(scooters[3].filterBattery, 50)
+    }
+
+    /// The website's examples (src/lib/battery.ts): Lime's full battery reads 11.5 km, Voi's 80 and Bolt's 61.
+    func testHowFarABatteryLevelTakesTheScootersOfTheAppsSwitchedOnInView() throws {
+        let fullRanges: [ScooterProvider: Int] = [.lime: 11_500, .voi: 80_000, .bolt: 61_000]
+        let all: (ScooterProvider) -> Bool = { _ in true }
+
+        // One app: its full range, scaled to the level.
+        let voi = try XCTUnwrap(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: [.voi: 40], enabled: all))
+        XCTAssertEqual(voi.low, 80_000)
+        XCTAssertEqual(voi.high, 80_000)
+        XCTAssertEqual(voi.mean, 80_000)
+        XCTAssertEqual(plainSpaces(voi.formatted(locale: Self.metric)), "80 km")
+        let voi30 = try XCTUnwrap(ScooterBatteryReach(level: 30, fullRanges: fullRanges, counts: [.voi: 40], enabled: all))
+        XCTAssertEqual(plainSpaces(voi30.formatted(locale: Self.metric)), "24 km")
+
+        // Several apps apart by over a quarter: the shortest to the longest; an app with none in view is left out.
+        let counts: [ScooterProvider: Int] = [.lime: 30, .voi: 10, .bolt: 0]
+        let mixed = try XCTUnwrap(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: counts, enabled: all))
+        XCTAssertEqual(mixed.low, 11_500)
+        XCTAssertEqual(mixed.high, 80_000)
+        XCTAssertEqual(mixed.mean, 28_625, accuracy: 0.001)
+        XCTAssertEqual(plainSpaces(mixed.formatted(locale: Self.metric)), "12–80 km")
+        XCTAssertEqual(plainSpaces(mixed.formatted(locale: Self.miles)), "7–50 mi")
+
+        // An app switched off is left out, and so is one with under a tenth of the scooters.
+        let voiOff = try XCTUnwrap(ScooterBatteryReach(
+            level: 100, fullRanges: fullRanges, counts: counts, enabled: { $0 != .voi }
+        ))
+        XCTAssertEqual(plainSpaces(voiOff.formatted(locale: Self.metric)), "12 km")
+        let fewVoi = try XCTUnwrap(ScooterBatteryReach(
+            level: 100, fullRanges: fullRanges, counts: [.lime: 95, .voi: 5], enabled: all
+        ))
+        XCTAssertEqual(fewVoi.high, 11_500)
+        XCTAssertEqual(plainSpaces(fewVoi.formatted(locale: Self.metric)), "12 km")
+        // Unless it has the most: twelve apps with one scooter each are all under a tenth of them.
+        let twelve = Array(ScooterProvider.allCases.prefix(12))
+        let fewOfEach = try XCTUnwrap(ScooterBatteryReach(
+            level: 100,
+            fullRanges: Dictionary(uniqueKeysWithValues: twelve.map { ($0, $0 == twelve[0] ? 30_000 : 10_000) }),
+            counts: Dictionary(uniqueKeysWithValues: twelve.map { ($0, 1) }),
+            enabled: all
+        ))
+        XCTAssertEqual(fewOfEach.low, 10_000)
+        XCTAssertEqual(fewOfEach.high, 30_000)
+
+        // Nothing to say without an app in view that has a full range.
+        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: [.dott: 30], enabled: all))
+        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: [:], counts: counts, enabled: all))
+        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: [.voi: 40], enabled: { _ in false }))
+
+        // Stuttgart: Bolt's 300 and Lime's 1 200 at 60%.
+        let stuttgart: [ScooterProvider: Int] = [.lime: 11_500, .bolt: 61_000]
+        let stuttgartCounts: [ScooterProvider: Int] = [.bolt: 300, .lime: 1_200]
+        let both = try XCTUnwrap(ScooterBatteryReach(level: 60, fullRanges: stuttgart, counts: stuttgartCounts, enabled: all))
+        XCTAssertEqual(plainSpaces(both.formatted(locale: Self.metric)), "7–37 km")
+        let boltOff = try XCTUnwrap(ScooterBatteryReach(
+            level: 60, fullRanges: stuttgart, counts: stuttgartCounts, enabled: { $0 != .bolt }
+        ))
+        XCTAssertEqual(plainSpaces(boltOff.formatted(locale: Self.metric)), "7 km")
+    }
+
+    /// One length where the longest is at most a quarter longer than the shortest, their mean weighed by their
+    /// scooters; whole kilometres, halves going up as on the web, and never 0.
+    func testTheReachIsOneLengthWithinAQuarterInWholeUnitsAndNeverZero() throws {
+        let all: (ScooterProvider) -> Bool = { _ in true }
+        func reach(_ fullRanges: [ScooterProvider: Int], _ counts: [ScooterProvider: Int], level: Int = 100) throws -> String {
+            let reach = try XCTUnwrap(ScooterBatteryReach(
+                level: level, fullRanges: fullRanges, counts: counts, enabled: all
+            ))
+            return self.plainSpaces(reach.formatted(locale: Self.metric))
+        }
+        // 20 and 25 km are within a quarter: (20 × 3 + 25) / 4 = 21.25 km.
+        XCTAssertEqual(try reach([.lime: 20_000, .voi: 25_000], [.lime: 3, .voi: 1]), "21 km")
+        XCTAssertEqual(try reach([.lime: 20_000, .voi: 26_000], [.lime: 3, .voi: 1]), "20–26 km")
+        XCTAssertEqual(try reach([.voi: 2_500], [.voi: 1]), "3 km")
+        XCTAssertEqual(try reach([.voi: 2_499], [.voi: 1]), "2 km")
+        XCTAssertEqual(try reach([.voi: 400], [.voi: 1]), "1 km")
+        XCTAssertEqual(try reach([.voi: 3_000], [.voi: 1], level: 30), "1 km")
+        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: [.voi: 0], counts: [.voi: 4], enabled: all))
+    }
+
+    /// The line under the presets, "60% usually allows about 22 km.", in the app's language, and with it, while
+    /// a minimum is set, the sentence that scooters without battery info are hidden.
+    func testTheLineSaysHowFarTheMinimumOrAFullBatteryTakesTheScooters() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        let all: (ScooterProvider) -> Bool = { _ in true }
+        let bolt: [ScooterProvider: Int] = [.bolt: 36_700]
+        func line(
+            _ minimum: Int,
+            _ fullRanges: [ScooterProvider: Int],
+            _ counts: [ScooterProvider: Int],
+            locale: Locale = Locale(identifier: "en_CH")
+        ) -> String? {
+            ScooterBatteryReach.line(
+                minimumBattery: minimum, fullRanges: fullRanges, counts: counts, enabled: all, locale: locale
+            ).map { self.plainSpaces($0) }
+        }
+
+        XCTAssertEqual(line(60, bolt, [.bolt: 10]), "60% usually allows about 22 km.")
+        // Any is a full battery's.
+        let stuttgart: [ScooterProvider: Int] = [.lime: 11_500, .voi: 80_000]
+        XCTAssertEqual(line(0, stuttgart, [.lime: 30, .voi: 10]), "100% usually allows about 12–80 km.")
+        XCTAssertEqual(line(0, stuttgart, [.lime: 30, .voi: 10], locale: Self.miles), "100% usually allows about 7–50 mi.")
+        // A minimum that is not a preset is read as the one below it.
+        XCTAssertEqual(line(75, bolt, [.bolt: 10]), "60% usually allows about 22 km.")
+        XCTAssertNil(line(60, bolt, [.dott: 10]))
+
+        let sentence = "Scooters without battery info are hidden while a minimum is set."
+        XCTAssertEqual(
+            ScooterBatteryReach.help(line: "60% usually allows about 22 km.", minimumBattery: 60),
+            "60% usually allows about 22 km. " + sentence
+        )
+        XCTAssertEqual(ScooterBatteryReach.help(line: nil, minimumBattery: 60), sentence)
+        XCTAssertEqual(
+            ScooterBatteryReach.help(line: "100% usually allows about 80 km.", minimumBattery: 0),
+            "100% usually allows about 80 km."
+        )
+        XCTAssertNil(ScooterBatteryReach.help(line: nil, minimumBattery: 0))
+
+        ScooterLanguage.current = .de
+        XCTAssertEqual(
+            line(60, bolt, [.bolt: 10], locale: Locale(identifier: "de_DE")),
+            "Mit 60% kommt man meist etwa 22 km weit."
+        )
+        ScooterLanguage.current = .fr
+        XCTAssertEqual(
+            line(60, bolt, [.bolt: 10], locale: Locale(identifier: "fr_FR")),
+            "Avec 60 %, comptez en général environ 22 km."
+        )
+        XCTAssertEqual(
+            line(0, stuttgart, [.lime: 30, .voi: 10], locale: Locale(identifier: "fr_FR")),
+            "Avec 100 %, comptez en général environ 12–80 km."
+        )
+    }
+
+    private static let metric = Locale(identifier: "en_CH")
+    private static let miles = Locale(identifier: "en_US")
+
+    private func plainSpaces(_ text: String) -> String {
+        text.replacingOccurrences(of: "\u{00A0}", with: " ").replacingOccurrences(of: "\u{202F}", with: " ")
     }
 }

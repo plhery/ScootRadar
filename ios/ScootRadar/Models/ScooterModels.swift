@@ -10,6 +10,9 @@ struct Scooter: Identifiable, Hashable, Sendable {
     let longitude: Double
     let battery: Int?
     let rangeMeters: Int?
+    /// The battery the server estimates from the range where the feed gives a range and no battery
+    /// (battery_estimate). The battery filter judges the scooter by it; the card and the marker never show it.
+    let batteryEstimate: Int?
     let vehicleID: String?
     let deepLink: String?
     let rentalURIs: ScooterRentalURIs?
@@ -22,6 +25,7 @@ struct Scooter: Identifiable, Hashable, Sendable {
         longitude: Double,
         battery: Int?,
         rangeMeters: Int?,
+        batteryEstimate: Int? = nil,
         vehicleID: String?,
         deepLink: String?,
         rentalURIs: ScooterRentalURIs?,
@@ -33,6 +37,7 @@ struct Scooter: Identifiable, Hashable, Sendable {
         self.longitude = longitude
         self.battery = battery
         self.rangeMeters = rangeMeters
+        self.batteryEstimate = batteryEstimate
         self.vehicleID = vehicleID
         self.deepLink = deepLink
         self.rentalURIs = rentalURIs
@@ -71,6 +76,11 @@ struct Scooter: Identifiable, Hashable, Sendable {
     var formattedRange: String? {
         guard let rangeMeters else { return nil }
         return Self.formattedLength(meters: Double(rangeMeters))
+    }
+
+    /// The battery the battery filter judges the scooter by: its own, or else the server's estimate from its range.
+    var filterBattery: Int? {
+        battery ?? batteryEstimate
     }
 
     var rentalURL: URL? {
@@ -155,6 +165,18 @@ struct Scooter: Identifiable, Hashable, Sendable {
         // there, as U+00A0 does in Norwegian.
         guard let gap = length.lastIndex(where: { $0 == "\u{00A0}" || $0 == "\u{202F}" }) else { return (length, nil) }
         return (String(length[..<gap]), String(length[length.index(after: gap)...]))
+    }
+
+    /// Whole kilometres or miles, "61 km" or "38 mi": the closest cities and how far
+    /// the battery minimum takes the scooters, which never come in metres, feet or yards.
+    static func formattedWhole(_ value: Int, of unit: UnitLength, locale: Locale = ScooterLanguage.current.locale) -> String {
+        Measurement(value: Double(value), unit: unit).formatted(.measurement(
+            width: .abbreviated,
+            usage: .asProvided,
+            numberFormatStyle: .number.precision(.fractionLength(0))
+        ).locale(locale))
+        // A line never breaks between the number and its unit.
+        .replacingOccurrences(of: " ", with: "\u{00A0}")
     }
 }
 
@@ -773,6 +795,10 @@ struct ScooterResponse: Sendable {
     /// whether new positions of its are on their way for this request. Nil from a server that does not say.
     let lastSeenProviders: [String: ScooterLastSeenStatus]?
     let providers: [String: Int]
+    /// How far a full battery usually takes each app's scooters in view, in metres (fullRanges), whatever
+    /// the zoom and the provider filter. Empty from a server that does not say, and for apps this build
+    /// does not know.
+    let fullRanges: [ScooterProvider: Int]
     let meta: ScooterResponseMetadata?
     let parking: [ScooterParking]
     /// How far the clock of this device is ahead of the server's (negative when
@@ -786,6 +812,7 @@ struct ScooterResponse: Sendable {
         lastSeenClusters: [ScooterCluster] = [],
         lastSeenProviders: [String: ScooterLastSeenStatus]? = nil,
         providers: [String: Int] = [:],
+        fullRanges: [ScooterProvider: Int] = [:],
         meta: ScooterResponseMetadata? = nil,
         parking: [ScooterParking] = [],
         clockOffset: TimeInterval = 0
@@ -796,6 +823,7 @@ struct ScooterResponse: Sendable {
         self.lastSeenClusters = lastSeenClusters
         self.lastSeenProviders = lastSeenProviders
         self.providers = providers
+        self.fullRanges = fullRanges
         self.meta = meta
         self.parking = parking
         self.clockOffset = clockOffset
@@ -999,6 +1027,7 @@ extension ScooterVehiclePayload {
             longitude: longitude,
             battery: battery,
             rangeMeters: rangeMeters,
+            batteryEstimate: batteryEstimate,
             vehicleID: vehicleID,
             deepLink: deepLink,
             rentalURIs: rentalURIs.map {
@@ -1074,6 +1103,9 @@ extension ScooterAPIResponsePayload {
                 ScooterServerTime.date(payload.seenAt).map { ScooterLastSeenStatus(seenAt: $0, updating: payload.updating) }
             },
             providers: providers,
+            fullRanges: Dictionary(uniqueKeysWithValues: (fullRanges ?? [:]).compactMap { id, metres in
+                ScooterProvider(rawValue: id).flatMap { metres > 0 ? ($0, metres) : nil }
+            }),
             meta: meta.model,
             parking: (parking ?? []).map { ScooterParking(id: $0.id, provider: $0.provider,
                 name: $0.name, latitude: $0.lat, longitude: $0.lng, mandatory: $0.mandatory) }
@@ -1681,16 +1713,9 @@ extension ScooterCityDistance {
     }
 
     func formattedDistance(locale: Locale) -> String {
-        let length = locale.measurementSystem == .metric
-            ? Measurement(value: max(1, (distanceMeters / 1_000).rounded()), unit: UnitLength.kilometers)
-            : Measurement(value: max(1, (distanceMeters / 1_609.344).rounded()), unit: UnitLength.miles)
-        return length.formatted(.measurement(
-            width: .abbreviated,
-            usage: .asProvided,
-            numberFormatStyle: .number.precision(.fractionLength(0))
-        ).locale(locale))
-        // A line never breaks between the number and its unit.
-        .replacingOccurrences(of: " ", with: "\u{00A0}")
+        locale.measurementSystem == .metric
+            ? Scooter.formattedWhole(max(1, Int((distanceMeters / 1_000).rounded())), of: .kilometers, locale: locale)
+            : Scooter.formattedWhole(max(1, Int((distanceMeters / 1_609.344).rounded())), of: .miles, locale: locale)
     }
 
     /// "Bern · 61 km", the label of a closest-city chip.

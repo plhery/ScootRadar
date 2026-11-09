@@ -434,6 +434,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// groups included, as the chips count the others.
     private(set) var visibleLastSeenProviderCounts: [ScooterProvider: Int] = [:]
     private(set) var visibleProviderCounts: [ScooterProvider: Int] = [:]
+    /// How far a full battery usually takes each app's scooters in view, in metres, from the latest answer
+    /// (fullRanges); empty when it did not say.
+    private(set) var fullRanges: [ScooterProvider: Int] = [:]
     private var unfilteredVisibleCount = 0
     private var unfilteredVisibleProviders = Set<ScooterProvider>()
 
@@ -694,6 +697,23 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     var allProviderCount: Int { visibleProviderCounts.values.reduce(0, +) }
+
+    /// Under the battery presets: how far the minimum, or a full battery for Any, usually takes the scooters
+    /// of the apps switched on in view, counted as the provider rows count them, "60% usually allows about
+    /// 22 km.", followed while a minimum is set by the sentence that scooters without battery info are hidden.
+    /// VoiceOver reads it after the presets. Nil when there is nothing to say.
+    var batteryHelp: String? {
+        let minimum = Int(minimumBattery)
+        let locale = writing.locale
+        let line = ScooterBatteryReach.line(
+            minimumBattery: minimum,
+            fullRanges: fullRanges,
+            counts: visibleProviderCounts,
+            enabled: enabledProviders.contains,
+            locale: locale
+        )
+        return ScooterBatteryReach.help(line: line, minimumBattery: minimum)
+    }
 
     /// The providers in the filter sheet, in catalogue order.
     var filterProviders: [ScooterProviderEntry] {
@@ -1637,6 +1657,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 lastSeenVehicles = response.lastSeenVehicles
                 lastSeenClusters = response.lastSeenClusters
                 parking = response.parking
+                fullRanges = response.fullRanges
                 responseMetadata = response.meta
                 isApplyingResponse = false
                 queryBounds = bounds

@@ -862,6 +862,7 @@ final class ScooterMapModelTests: XCTestCase {
         longitude: Double = 8.5417,
         battery: Int? = 80,
         rangeMeters: Int? = nil,
+        batteryEstimate: Int? = nil,
         rentalURIs: ScooterRentalURIs? = nil
     ) -> Scooter {
         Scooter(
@@ -870,6 +871,7 @@ final class ScooterMapModelTests: XCTestCase {
             longitude: longitude,
             battery: battery,
             rangeMeters: rangeMeters,
+            batteryEstimate: batteryEstimate,
             vehicleID: id,
             deepLink: nil,
             rentalURIs: rentalURIs,
@@ -5690,6 +5692,73 @@ extension ScooterMapModelTests {
         model.becameActive()
         let refreshed = await waitUntil { await api.snapshot().calls == calls + 1 && !model.isLoading }
         XCTAssertTrue(refreshed)
+    }
+}
+
+// The battery filter's estimate and the line under its presets (issue #12).
+extension ScooterMapModelTests {
+    /// Stuttgart: Lime gives a range and no battery, which the server estimates one from, and Bolt a battery.
+    /// The map judges Lime's by the estimate, keeps the answer's full ranges, and the line under the presets
+    /// follows the minimum and the apps switched on, with the sentence that scooters without battery info are
+    /// hidden while a minimum is set.
+    func testTheMinimumJudgesAnEstimateAndTheLineFollowsTheMinimumTheAppsAndTheAnswer() async throws {
+        defer {
+            ScooterUnits.current = .automatic
+            ScooterLanguage.current = .atLaunch
+        }
+        ScooterLanguage.current = .en
+        let defaults = isolatedDefaults()
+        defaults.set("metric", forKey: "units")
+        let vehicles = [
+            scooter(id: "lime-full", provider: "lime", battery: nil, rangeMeters: 9_000, batteryEstimate: 78),
+            scooter(id: "lime-flat", provider: "lime", battery: nil, rangeMeters: 2_000, batteryEstimate: 17),
+            scooter(id: "lime-unknown", provider: "lime", battery: nil, rangeMeters: nil),
+            scooter(id: "bolt-full", provider: "bolt", battery: 90)
+        ]
+        let api = StubScooterAPI(response: ScooterResponse(
+            vehicles: vehicles, fullRanges: [.lime: 11_500, .bolt: 61_000]
+        ))
+        let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults, builtInZones: [])
+        XCTAssertTrue(model.fullRanges.isEmpty)
+        XCTAssertNil(model.batteryHelp, "Nothing to say before an answer")
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        XCTAssertEqual(model.fullRanges, [.lime: 11_500, .bolt: 61_000])
+
+        // Any: a full battery's, Lime's 11.5 km to Bolt's 61.
+        XCTAssertEqual(model.batteryHelp.map(plainSpaces), "100% usually allows about 12–61 km.")
+
+        model.setMinimumBattery(60)
+        XCTAssertEqual(Set(model.mapScooters.map(\.id)), ["lime:lime-full", "bolt:bolt-full"])
+        XCTAssertEqual(model.visibleCount, 2)
+        XCTAssertEqual(model.count(for: .lime), 1)
+        let hidden = "Scooters without battery info are hidden while a minimum is set."
+        XCTAssertEqual(model.batteryHelp.map(plainSpaces), "60% usually allows about 7–37 km. " + hidden)
+        // Filtered here, one by one: the server is not asked again.
+        let calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 1)
+
+        // Bolt switched off: Lime's alone, though the row still counts Bolt's.
+        model.toggle(provider: .bolt)
+        XCTAssertEqual(model.mapScooters.map(\.id), ["lime:lime-full"])
+        XCTAssertEqual(model.count(for: .bolt), 1)
+        XCTAssertEqual(model.batteryHelp.map(plainSpaces), "60% usually allows about 7 km. " + hidden)
+
+        model.units = .imperial
+        XCTAssertEqual(model.batteryHelp.map(plainSpaces), "60% usually allows about 4 mi. " + hidden)
+        model.units = .metric
+
+        // A later answer without full ranges leaves only the sentence.
+        await api.setResponse(ScooterResponse(vehicles: vehicles))
+        model.refresh()
+        let answered = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(answered)
+        XCTAssertTrue(model.fullRanges.isEmpty)
+        XCTAssertEqual(model.batteryHelp, hidden)
+
+        model.resetFilters()
+        XCTAssertNil(model.batteryHelp)
     }
 }
 

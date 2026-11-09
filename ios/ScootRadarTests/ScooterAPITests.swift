@@ -31,6 +31,26 @@ final class ScooterAPITests: XCTestCase {
         XCTAssertTrue(legacy.parking.isEmpty)
     }
 
+    /// A scooter whose feed gives a range and no battery comes with the battery the server estimates from it,
+    /// and the answer with how far a full battery usually takes each app's scooters in view (issue #12). An app
+    /// this build does not know is left out, and an answer from before both has neither.
+    func testTheEstimatedBatteryAndTheFullRangesAreDecoded() async throws {
+        let data = Data(#"{"vehicles":[{"provider":"lime","lat":48.7758,"lng":9.1829,"battery":null,"range_m":9000,"battery_estimate":78,"vehicle_id":"one"},{"provider":"bolt","lat":48.7759,"lng":9.183,"battery":64,"vehicle_id":"two"}],"clusters":[],"providers":{"lime":1,"bolt":1},"fullRanges":{"lime":11500,"bolt":61000,"future-provider":30000},"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-11-09T12:00:00Z","truncated":false,"totalVehicles":2,"mode":"vehicles","zoom":16}}"#.utf8)
+        let response = try await makeAPI(responseStatus: 200, data: data).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        XCTAssertEqual(response.fullRanges, [.lime: 11_500, .bolt: 61_000])
+        let lime = try XCTUnwrap(response.vehicles.first { $0.provider == "lime" })
+        XCTAssertNil(lime.battery)
+        XCTAssertEqual(lime.rangeMeters, 9_000)
+        XCTAssertEqual(lime.batteryEstimate, 78)
+        XCTAssertEqual(lime.filterBattery, 78)
+        let bolt = try XCTUnwrap(response.vehicles.first { $0.provider == "bolt" })
+        XCTAssertNil(bolt.batteryEstimate)
+        XCTAssertEqual(bolt.filterBattery, 64)
+
+        let legacy = try await makeAPI(responseStatus: 200, data: emptyResponseData).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        XCTAssertTrue(legacy.fullRanges.isEmpty)
+    }
+
     func testSuccessfulResponseIsDecoded() async throws {
         let api = makeAPI(responseStatus: 200, data: emptyResponseData)
 
