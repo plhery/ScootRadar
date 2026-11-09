@@ -168,7 +168,10 @@ fun ScooterMap(
     val language by controller.language.collectAsStateWithLifecycle()
     val look = GroundLook.of(mapStyle, dark, language.rawValue, hasImagery = imagery != null)
     val view = remember {
+        // The tiles among the app's caches (MAP-248), whose folder "Clear cache" may have taken.
+        MapTileCache.prepare(context)
         MapLibre.getInstance(context)
+        MapTileCache.use(context)
         val options = MapLibreMapOptions.createFromAttributes(context)
             .textureMode(true)
             .attributionEnabled(false)
