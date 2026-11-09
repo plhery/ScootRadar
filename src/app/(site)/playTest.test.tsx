@@ -100,7 +100,7 @@ describe('the landing page’s Android button', () => {
     await renderLanding(ANDROID);
     expect(shown()).toBe('quiet');
     expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
-    const button = screen.getByRole('button', { name: /^Try the Android app\s*Early$/ });
+    const button = screen.getByRole('button', { name: /^Android app\s*Early$/ });
     expect(button.parentElement).toHaveTextContent('Before anyone else, on Google Play');
     fireEvent.click(button);
     expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'landing' });
@@ -111,7 +111,7 @@ describe('the landing page’s Android button', () => {
     await renderLanding(DESKTOP);
     expect(shown()).toBeNull();
     expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
-    fireEvent.click(screen.getByRole('button', { name: /^Try the Android app/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^Android app/ }));
     expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'landing' });
     expect(sheet(PLAY_TEST_COPY.en.title)).toHaveProperty('open', true);
     fireEvent.click(within(sheet(PLAY_TEST_COPY.en.title)).getByRole('link', { name: 'Open' }));

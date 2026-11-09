@@ -61,7 +61,7 @@ export function PlayTestCard({ copy }: { copy: PlayTestCopy }) {
   );
 }
 
-/** The landing page's button, beside the iPhone app's: in its place on Android, and not on an iPhone. */
+/** The landing page's button, under the iPhone app's: in its place on Android, and not on an iPhone. */
 export function PlayTestButton({ copy }: { copy: PlayTestCopy }) {
   return (
     <span className="play-android">
@@ -72,7 +72,7 @@ export function PlayTestButton({ copy }: { copy: PlayTestCopy }) {
         onClick={() => { playTest.opened('landing'); openSheet(); }}
       >
         <Icon name="phone" size={20} />
-        {copy.landing}
+        {copy.app}
         <span className="play-badge">{copy.early}</span>
       </button>
       <small>{copy.landingNote}</small>

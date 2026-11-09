@@ -367,8 +367,9 @@ html[data-android-test='offer'] .play-card + .contents,
 .play-android {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
+  text-align: center;
 }
 .play-android .btn {
   border: 0;

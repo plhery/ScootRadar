@@ -266,8 +266,8 @@ function AppStoreQr({ copy }: { copy: LandingCopy }) {
 
 /**
  * The ways in: the map, the iPhone app, each link to it counted where it is,
- * and the Android app, whose button opens the steps of its test on Google Play
- * (src/lib/playTest.ts). A phone is shown its own app's button only.
+ * and under it the Android app, whose button opens the steps of its test on
+ * Google Play (src/lib/playTest.ts). A phone is shown its own app's button only.
  */
 function Actions({ copy, android, campaign, qr = false }: {
   copy: LandingCopy;
@@ -279,8 +279,11 @@ function Actions({ copy, android, campaign, qr = false }: {
   return (
     <div className="cta-row">
       <AppLink className="btn btn--solid" href={MAP_PATH}>{copy.openMap}</AppLink>
-      <a className="btn btn--line play-ios" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>
-      {PLAY_TEST_ON && <PlayTestButton copy={android} />}
+      {/* The two apps as one: the Android app's, still in its test, under the iPhone app's. */}
+      <div className="app-buttons">
+        <a className="btn btn--line play-ios" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>
+        {PLAY_TEST_ON && <PlayTestButton copy={android} />}
+      </div>
       {qr && <AppStoreQr copy={copy} />}
     </div>
   );

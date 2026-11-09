@@ -24,8 +24,7 @@ export interface PlayTestCopy {
   getEarly: string;
   /** Under the sheet's title. */
   sheetPitch: string;
-  /** The landing page's button on Android, in place of the iPhone app's, and the line under it. */
-  landing: string;
+  /** Under the landing page's button (app, below), where it stands alone, on Android. */
   landingNote: string;
   steps: readonly [PlayTestStepCopy, PlayTestStepCopy, PlayTestStepCopy];
   /** Read after a step whose link was followed. */
@@ -41,7 +40,7 @@ export interface PlayTestCopy {
   /** Once, on the map, after step 3. */
   thanks: string;
   close: string;
-  /** The row in Settings › About, beside the iPhone app's. */
+  /** The row in Settings › About, beside the iPhone app's, and the landing page's button, under the iPhone app's. */
   app: string;
 }
 
@@ -52,7 +51,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Before anyone else. Free, in a minute.',
     getEarly: 'Get it early',
     sheetPitch: 'Before anyone else. Free, about a minute, with your Google account.',
-    landing: 'Try the Android app',
     landingNote: 'Before anyone else, on Google Play',
     steps: [
       { title: 'Join the testers’ group', hint: 'Tap “Join group”, then come back.', action: 'Join' },
@@ -76,7 +74,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Vor allen anderen. Kostenlos, in einer Minute.',
     getEarly: 'Vorab testen',
     sheetPitch: 'Vor allen anderen. Kostenlos, in etwa einer Minute, mit deinem Google-Konto.',
-    landing: 'Android-App testen',
     landingNote: 'Vor allen anderen, auf Google Play',
     steps: [
       { title: 'Der Testgruppe beitreten', hint: 'Mit deinem Google-Konto beitreten, dann zurückkommen.', action: 'Beitreten' },
@@ -100,7 +97,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Avant tout le monde. Gratuit, en une minute.',
     getEarly: 'Tester en avant-première',
     sheetPitch: 'Avant tout le monde. Gratuit, en une minute environ, avec votre compte Google.',
-    landing: 'Essayer l’app Android',
     landingNote: 'Avant tout le monde, sur Google Play',
     steps: [
       { title: 'Rejoindre le groupe des testeurs', hint: 'Rejoignez-le avec votre compte Google, puis revenez.', action: 'Rejoindre' },
@@ -124,7 +120,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Prima di tutti. Gratis, in un minuto.',
     getEarly: 'Provala in anteprima',
     sheetPitch: 'Prima di tutti. Gratis, in circa un minuto, con il tuo account Google.',
-    landing: 'Prova l’app Android',
     landingNote: 'Prima di tutti, su Google Play',
     steps: [
       { title: 'Entra nel gruppo dei tester', hint: 'Unisciti con il tuo account Google, poi torna qui.', action: 'Entra' },
@@ -148,7 +143,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Eerder dan iedereen. Gratis, in een minuut.',
     getEarly: 'Nu al testen',
     sheetPitch: 'Eerder dan iedereen. Gratis, in ongeveer een minuut, met je Google-account.',
-    landing: 'Probeer de Android-app',
     landingNote: 'Eerder dan iedereen, op Google Play',
     steps: [
       { title: 'Word lid van de testgroep', hint: 'Word lid met je Google-account en kom dan terug.', action: 'Lid worden' },
@@ -172,7 +166,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Før alle andre. Gratis, på et minutt.',
     getEarly: 'Test den tidlig',
     sheetPitch: 'Før alle andre. Gratis, på omtrent et minutt, med Google-kontoen din.',
-    landing: 'Prøv Android-appen',
     landingNote: 'Før alle andre, på Google Play',
     steps: [
       { title: 'Bli med i testgruppen', hint: 'Meld deg inn med Google-kontoen din, og kom så tilbake.', action: 'Bli med' },
@@ -196,7 +189,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Antes de todos. Grátis, num minuto.',
     getEarly: 'Testar já',
     sheetPitch: 'Antes de todos. Grátis, em cerca de um minuto, com a sua conta Google.',
-    landing: 'Experimentar a app Android',
     landingNote: 'Antes de todos, no Google Play',
     steps: [
       { title: 'Aderir ao grupo de testadores', hint: 'Adira com a sua conta Google e depois volte aqui.', action: 'Aderir' },
@@ -220,7 +212,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Antes que nadie. Gratis, en un minuto.',
     getEarly: 'Probarla ya',
     sheetPitch: 'Antes que nadie. Gratis, en un minuto más o menos, con tu cuenta de Google.',
-    landing: 'Probar la app para Android',
     landingNote: 'Antes que nadie, en Google Play',
     steps: [
       { title: 'Únete al grupo de probadores', hint: 'Únete con tu cuenta de Google y vuelve aquí.', action: 'Unirme' },
@@ -244,7 +235,6 @@ export const PLAY_TEST_COPY: Record<LandingLocale, PlayTestCopy> = {
     pitch: 'Á undan öllum öðrum. Ókeypis, á einni mínútu.',
     getEarly: 'Prófa strax',
     sheetPitch: 'Á undan öllum öðrum. Ókeypis, á um það bil mínútu, með Google-reikningnum þínum.',
-    landing: 'Prófa Android-appið',
     landingNote: 'Á undan öllum öðrum, á Google Play',
     steps: [
       { title: 'Gakktu í prófunarhópinn', hint: 'Skráðu þig með Google-reikningnum þínum og komdu svo aftur.', action: 'Skrá mig' },

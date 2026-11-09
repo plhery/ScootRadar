@@ -252,14 +252,20 @@ test('the landing page leads to the iPhone app, with its code to scan beside the
   await expect(hero.locator('svg rect')).toHaveCount(1);
   await expect(hero.locator('svg')).toHaveAttribute('aria-hidden', 'true');
 
-  // The Android app's test beside it, both times, but not on an iPhone (this project's phone).
-  const android = (section: string) => page.locator(section).getByRole('button', { name: /^Android-App testen/ });
+  // The Android app's test under it, both times, but not on an iPhone (this project's phone).
+  const android = (section: string) => page.locator(section).getByRole('button', { name: /^Android-App/ });
   if (isMobile) {
     await expect(page.locator('html')).toHaveAttribute('data-iphone', '');
     await expect(android('.hero')).toBeHidden();
     await expect(android('.closing')).toBeHidden();
   } else {
     await expect(android('.hero')).toBeVisible();
+    // Under the iPhone app's, as wide.
+    const iphoneBox = (await hero.boundingBox())!;
+    const androidBox = (await android('.hero').boundingBox())!;
+    expect(androidBox.y).toBeGreaterThanOrEqual(iphoneBox.y + iphoneBox.height);
+    expect(androidBox.x).toBeCloseTo(iphoneBox.x, 0);
+    expect(androidBox.width).toBeCloseTo(iphoneBox.width, 0);
     await android('.closing').click();
     const sheet = page.getByRole('dialog', { name: 'Teste unsere Android-App' });
     await expect(sheet.getByRole('link')).toHaveText(['Beitreten', 'Öffnen', 'Installieren']);
@@ -322,7 +328,7 @@ test.describe('on Android', () => {
     const hero = page.locator('.hero');
     await expect(hero.getByRole('link', { name: 'Get the iPhone app' })).toBeHidden();
     await expect(hero.locator('.app-qr')).toBeHidden();
-    await hero.getByRole('button', { name: /^Try the Android app/ }).click();
+    await hero.getByRole('button', { name: /^Android app/ }).click();
     await expect(page.getByRole('dialog', { name: 'Try our Android app' })).toBeVisible();
     expect(heard).toEqual([]);
   });

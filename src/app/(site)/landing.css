@@ -233,6 +233,15 @@ img {
   transform: translateY(0) scale(0.98);
 }
 
+/* The two apps' buttons, one over the other and as wide as the wider: the
+   Android app's, in its test (components/playTest.css), under the iPhone app's. */
+.app-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
 /* The QR code of the App Store link, beside its button: on a computer, whose
    screen a phone can look at, and not on the phone itself. */
 .app-qr {
