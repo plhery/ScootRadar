@@ -140,15 +140,16 @@ internal fun FilterSheetContent(
             title = localized("Filters"),
             trailing = { SheetBarButton(localized("Reset"), onClick = onReset, enabled = hasActiveFilters) },
         )
-        Column(
-            Modifier
-                .weight(1f, fill = !inPopover)
-                .verticalScroll(rememberScrollState())
-                .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(22.dp),
-        ) {
-            BatteryFilters(minimumBattery, onChoose = onChooseMinimum)
-            ProviderFilters(entries, onToggle = onToggle)
+        // The margins are the list's own, inside what scrolls: TalkBack scrolls a page by the part of it in view, and
+        // margins between the two would shorten the page, its scroll back stopping short of the top.
+        Column(Modifier.weight(1f, fill = !inPopover).verticalScroll(rememberScrollState())) {
+            Column(
+                Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(22.dp),
+            ) {
+                BatteryFilters(minimumBattery, onChoose = onChooseMinimum)
+                ProviderFilters(entries, onToggle = onToggle)
+            }
         }
         // The list ends above the button instead of showing through and under it, and fades out just above it.
         Box(Modifier.zIndex(1f).background(colors.systemGroupedBackground).padding(bottom = bottomInset)) {

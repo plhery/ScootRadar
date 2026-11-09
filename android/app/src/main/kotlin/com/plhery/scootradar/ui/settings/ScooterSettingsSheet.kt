@@ -294,17 +294,20 @@ fun ScooterSettingsSheet(
                 Modifier
                     .fillMaxSize()
                     .background(colors.systemGroupedBackground)
-                    .verticalScroll(scrolls.getOrPut(shown.size) { ScrollState(0) })
-                    .padding(bottom = bottomInset + 20.dp),
+                    .verticalScroll(scrolls.getOrPut(shown.size) { ScrollState(0) }),
             ) {
-                when (val page = shown.last()) {
-                    SettingsPage.Root -> SettingsRoot(controller, providers, language, links, push)
-                    SettingsPage.Language -> LanguageSettings(controller, language)
-                    is SettingsPage.Pass -> PassEditor(controller, page.provider, language)
-                    SettingsPage.Credits -> CreditsList(sources ?: ScooterCreditsList.sources, language, links, push)
-                    SettingsPage.Privacy -> PrivacySettings(defaults, language, links)
-                    SettingsPage.Notices -> NoticesList(language, push)
-                    is SettingsPage.Licence -> LicenceText(page.notice)
+                // The room under the last row is the page's own, as the filters' margins are (ScooterFilterSheet):
+                // TalkBack's scroll back from the end then goes a whole page.
+                Column(Modifier.padding(bottom = bottomInset + 20.dp)) {
+                    when (val page = shown.last()) {
+                        SettingsPage.Root -> SettingsRoot(controller, providers, language, links, push)
+                        SettingsPage.Language -> LanguageSettings(controller, language)
+                        is SettingsPage.Pass -> PassEditor(controller, page.provider, language)
+                        SettingsPage.Credits -> CreditsList(sources ?: ScooterCreditsList.sources, language, links, push)
+                        SettingsPage.Privacy -> PrivacySettings(defaults, language, links)
+                        SettingsPage.Notices -> NoticesList(language, push)
+                        is SettingsPage.Licence -> LicenceText(page.notice)
+                    }
                 }
             }
         }

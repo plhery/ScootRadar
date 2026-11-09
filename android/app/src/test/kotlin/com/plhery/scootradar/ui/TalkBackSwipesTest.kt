@@ -45,6 +45,7 @@ import com.plhery.scootradar.ui.theme.PHONE
 import com.plhery.scootradar.zurichRegion
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -153,13 +154,40 @@ class TalkBackSwipesTest {
         val grabber = compose.onNode(hasContentDescription(localized("Sheet Grabber")))
         assertEquals(localized("Sheet at half screen"), grabber.state)
         val list = compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(localized("Appearance"))))
+        scrollsItsListAndNotItsSheet(list, grabber, localized("Sheet at half screen"))
+    }
 
-        // Past the last row in view, TalkBack scrolls the list forward, as it does through ScrollBy for a row it
-        // shows that is partly in view.
+    /** As Settings, Filters' list at half height: TalkBack's scrolls move the list, never the sheet (review-lead-1nov K7). */
+    @Test
+    fun talkBacksScrollMovesFiltersAndNotItsSheet() {
+        show(controllers.make(EmptyScooterAPI))
+        compose.onNode(hasContentDescription(localized("Filters")) and hasClickAction()).talkBack(AccessibilityNodeInfo.ACTION_CLICK)
+        val grabber = compose.onNode(hasContentDescription(localized("Sheet Grabber")))
+        val height = grabber.state
+        assertEquals(localized("Sheet at half screen"), height)
+        val list = compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(localized("Providers"))))
+        scrollsItsListAndNotItsSheet(list, grabber, height)
+    }
+
+    /**
+     * Backward at the top, TalkBack's scroll is refused and the sheet keeps its height; past the last row in view it
+     * scrolls the list forward, as it does through ScrollBy for a row it shows that is partly in view, and back to
+     * the top again, the sheet at [height] throughout. Filters' list goes to its end in one page, and came back 12 px
+     * short of its top while its margins were outside what scrolls.
+     */
+    private fun scrollsItsListAndNotItsSheet(list: SemanticsNodeInteraction, grabber: SemanticsNodeInteraction, height: String?) {
+        fun scrolled() = list.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].value()
+        assertFalse("a scroll back at the top", list.talkBack(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD))
+        assertEquals("the sheet after a scroll back at the top", height, grabber.state)
+        assertEquals(0f, scrolled())
+
         assertTrue(list.talkBack(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD))
-        assertEquals("the sheet after TalkBack's scroll", localized("Sheet at half screen"), grabber.state)
-        val scrolled = list.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].value()
-        assertTrue("Settings scrolled by TalkBack: $scrolled", scrolled > 0f)
+        assertEquals("the sheet after TalkBack's scroll", height, grabber.state)
+        assertTrue("scrolled by TalkBack: ${scrolled()}", scrolled() > 0f)
+
+        assertTrue(list.talkBack(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD))
+        assertEquals("the sheet after TalkBack's scroll back", height, grabber.state)
+        assertEquals(0f, scrolled())
     }
 
     /**
