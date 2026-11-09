@@ -1,4 +1,3 @@
-import { filterBattery, fullRangeByProvider, passesMinBattery, viewFullRanges } from '@/lib/batteryEstimate';
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
 import {
   REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isLimeGroupFeed, isRydeGroupFeed, isRegionalSource,
@@ -9,6 +8,8 @@ import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage'
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
 import { snapshotPaused } from '@/lib/seasonalPauses';
+import { effectiveRange, passesMinimums, reportsBatteryOnly } from '@/lib/range';
+import { addBatteryRanges, batteryFullRange } from '@/lib/batteryFullRanges';
 import { skippedSources } from '@/lib/scooterSources';
 import { outlinedTown } from '@/lib/townOutlines';
 import { ScooterFeedsUnavailableError, type FeedQuery, type FeedSourceStatus, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
@@ -60,8 +61,15 @@ interface CityTotals {
   city: string;
   lat: number;
   lng: number;
-  // Bins 0..100 hold known battery percentages; bin 101 is unknown.
+  // Bins 0..100 hold known battery percentages; bin 101 is unknown. The older apps' minBattery reads them.
   batteries: Record<string, number[]>;
+  // How far each can go as the range minimum judges it (range.ts): its range, or else its battery times its
+  // app's full battery range. Bins 0..99 hold k to k + 1 km; bin 100 is 100 km or more, bin 101 neither.
+  // Totals saved before they were counted so have none, and are built again (overviewNeedsRefresh).
+  effectiveRanges?: Record<string, number[]>;
+  // The apps with a scooter here that says its battery and not its range, for the answer's batteryRanges,
+  // in alphabetical order, so that totals built apart and joined are those built together.
+  batteryOnly?: string[];
   sources: ScooterFetchMetadata['sources'];
   failedSources: string[];
 }
@@ -176,6 +184,8 @@ export function overviewNeedsRefresh(snapshot: Pick<MobilitySnapshot, 'overview'
   counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now)): boolean {
   if (!snapshot || snapshot.overview.cities.length !== regionalCities.length + SWISS_SCOOTER_AREAS.length ||
     now - snapshot.overview.generatedAt >= OVERVIEW_REFRESH_MS) return true;
+  // Totals saved before the effective ranges were counted could not answer a range minimum.
+  if (snapshot.overview.cities.some(city => !city.effectiveRanges || !city.batteryOnly)) return true;
   // A feed discovered or retired since the totals were built would be missing from them or linger.
   // Totals saved before feedIds existed list none, so they refresh once.
   const built = new Set(snapshot.overview.feedIds);
@@ -310,7 +320,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
     const relevant = feeds.filter(feed => (countrySource ? feed.source === countrySource : isSwissSource(feed.source)) && coverageIntersects(feed.coverage, city.bounds));
     const health = healthFor(relevant, now, counts);
     totals.set(city.id, { id: city.id, city: city.city, lat: city.center[0], lng: city.center[1],
-      batteries: {}, sources: health.sources, failedSources: health.failedSources });
+      batteries: {}, effectiveRanges: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
     yield;
   }
   const seen = new Set<string>();
@@ -329,10 +339,15 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
       // Assign each scooter once, including where neighbouring service areas overlap.
       const total = totals.get(townOf(vehicle, cities, own).id)!;
       const bins = total.batteries[vehicle.provider] ??= Array<number>(102).fill(0);
-      bins[filterBattery(vehicle) ?? 101]++;
+      bins[vehicle.battery ?? 101]++;
+      const ranges = total.effectiveRanges![vehicle.provider] ??= Array<number>(102).fill(0);
+      const reach = effectiveRange(vehicle, batteryFullRange(vehicle.provider));
+      ranges[reach === null ? 101 : Math.min(100, Math.floor(reach / 1000))]++;
+      if (reportsBatteryOnly(vehicle) && !total.batteryOnly!.includes(vehicle.provider)) total.batteryOnly!.push(vehicle.provider);
     }
     yield;
   }
+  for (const total of totals.values()) total.batteryOnly!.sort();
   return { generatedAt: now, feedIds: feeds.map(feed => feed.id), cities: [...totals.values()].sort((a, b) => a.id.localeCompare(b.id)),
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
@@ -371,38 +386,26 @@ export function joinCityOverviews(a: MobilitySnapshot['overview'], b: MobilitySn
     cities: a.cities.map(city => {
       const other = others.get(city.id);
       if (!other) return city;
-      const batteries = { ...city.batteries };
-      for (const [provider, bins] of Object.entries(other.batteries)) {
-        batteries[provider] = batteries[provider]?.map((count, bin) => count + bins[bin]) ?? bins;
-      }
+      const joinBins = (mine: Record<string, number[]>, theirs: Record<string, number[]>) => {
+        const joined = { ...mine };
+        for (const [provider, bins] of Object.entries(theirs)) {
+          joined[provider] = joined[provider]?.map((count, bin) => count + bins[bin]) ?? bins;
+        }
+        return joined;
+      };
+      const batteries = joinBins(city.batteries, other.batteries);
+      // Without the effective ranges of either, the two together have none.
+      const counted = city.effectiveRanges && other.effectiveRanges && city.batteryOnly && other.batteryOnly;
+      const effectiveRanges = counted ? joinBins(city.effectiveRanges!, other.effectiveRanges!) : undefined;
+      const batteryOnly = counted ? [...new Set([...city.batteryOnly!, ...other.batteryOnly!])].sort() : undefined;
       const sources = { ...city.sources };
       for (const source of Object.keys(sources) as Array<keyof typeof sources>) {
         sources[source] = joinStatus(sources[source], other.sources[source] ?? 'skipped');
       }
-      return { ...city, batteries, sources, failedSources: [...city.failedSources, ...other.failedSources] };
+      return { ...city, batteries, effectiveRanges, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
     }),
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
-
-// Each app's full range over every feed (viewFullRanges' elsewhere), worked out again when the feeds change.
-const FULL_RANGES_EVERYWHERE = new WeakMap<readonly FeedSnapshot[], Map<string, number>>();
-
-/**
- * The response's fullRanges over the feeds covering `bounds`, `observations` with them: of every app
- * there, whichever the provider filter keeps, so the filters' line follows an app switched off at once.
- */
-function fullRangesIn(snapshot: MobilitySnapshot, bounds: MapBounds, observations: readonly FeedSnapshot[] = []): Record<string, number> {
-  let everywhere = FULL_RANGES_EVERYWHERE.get(snapshot.feeds);
-  if (!everywhere) {
-    everywhere = fullRangeByProvider(snapshot.feeds.filter(feed => !feed.skipped).map(feed => feed.vehicles));
-    FULL_RANGES_EVERYWHERE.set(snapshot.feeds, everywhere);
-  }
-  const covering = [...snapshot.feeds.filter(feed => coverageIntersects(feed.coverage, bounds)), ...observations];
-  return viewFullRanges(covering.filter(feed => !feed.skipped).map(feed => feed.vehicles), everywhere);
-}
-
-const withFullRanges = (response: ScooterResponse, fullRanges: Record<string, number>): ScooterResponse =>
-  Object.keys(fullRanges).length ? { ...response, fullRanges } : response;
 
 function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number, now: number): ScooterResponse {
   if (now - snapshot.overview.generatedAt > OVERVIEW_MAX_AGE_MS) {
@@ -410,13 +413,26 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
   }
   const clusters: ScooterCluster[] = [];
   const providers: Record<string, number> = {};
+  const batteryRanges: Record<string, number> = {};
   const meta = emptyHealth();
+  const minRange = query.minRange ?? 0;
+  // Whole kilometres from the first that reaches the minimum: exact for a minimum in kilometres, up to
+  // a kilometre short of one in miles, which the city totals of a zoomed-out map can be.
+  const fromKilometre = Math.ceil(minRange / 1000);
+  const sum = (bins: number[], from: number, to: number) => bins.slice(from, to).reduce((a, b) => a + b, 0);
   for (const city of snapshot.overview.cities) {
     if (!boundsContainPoint(query.bounds, city.lat, city.lng)) continue;
+    // Totals saved before the effective ranges were counted are built again within seconds: a range
+    // minimum is not answered with none meanwhile, as when the totals are too old.
+    if (minRange > 0 && !city.effectiveRanges) throw new ScooterFeedsUnavailableError(['city-overview']);
+    // Of every app, whichever the provider filter keeps.
+    for (const provider of city.batteryOnly ?? []) batteryRanges[provider] = batteryFullRange(provider);
     const counts: Record<string, number> = {};
     for (const [provider, bins] of Object.entries(city.batteries)) {
       if (query.providers && !query.providers.has(provider)) continue;
-      const count = bins.slice(query.minBattery, query.minBattery > 0 ? 101 : 102).reduce((a, b) => a + b, 0);
+      const charged = sum(bins, query.minBattery, query.minBattery > 0 ? 101 : 102);
+      // With both minimums, which the clients never ask for, the fewer of the two: no more than pass both.
+      const count = minRange > 0 ? Math.min(charged, sum(city.effectiveRanges?.[provider] ?? [], fromKilometre, 101)) : charged;
       if (count > 0) {
         counts[provider] = count;
         providers[provider] = (providers[provider] ?? 0) + count;
@@ -438,14 +454,30 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
   if (attempted.length > 0 && attempted.every(source => source === 'failed') && !meta.failedSources.some(id => failing.has(id))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
-  return withFullRanges({
+  return {
     vehicles: [], clusters, providers,
+    ...(Object.keys(batteryRanges).length ? { batteryRanges } : {}),
     meta: { ...meta, generatedAt: new Date(snapshot.overview.generatedAt).toISOString(),
       expiresAt: new Date(snapshot.overview.generatedAt + OVERVIEW_MAX_AGE_MS).toISOString(),
       truncated: false, totalVehicles: Object.values(providers).reduce((a, b) => a + b, 0),
       mode: 'clusters', zoom, overview: true, refreshAfterSeconds: 3600,
       availableProviders: providersForViewport(query.bounds), ...seasonOverIn(snapshot, query.bounds) },
-  }, fullRangesIn(snapshot, query.bounds));
+  };
+}
+
+/**
+ * The answer's batteryRanges at street zoom: of each app with a scooter in view that says its battery
+ * and not its range, `observations` with the feeds, whichever the provider filter and the minimum keep,
+ * so the filters say what battery each app's need as soon as it is switched on again.
+ */
+function batteryRangesIn(snapshot: MobilitySnapshot, bounds: MapBounds, observations: readonly FeedSnapshot[] = []): Record<string, number> {
+  const ranges: Record<string, number> = {};
+  for (const feed of [...snapshot.feeds.filter(feed => coverageIntersects(feed.coverage, bounds)), ...observations]) {
+    if (feed.skipped) continue;
+    addBatteryRanges(ranges, feed.vehicles, bounds);
+    if (feed.sweep) addBatteryRanges(ranges, feed.sweep.vehicles, bounds);
+  }
+  return ranges;
 }
 
 /**
@@ -593,7 +625,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const pick = (into: Map<string, Vehicle>, vehicles: Vehicle[], skip?: (vehicle: Vehicle, key: string) => boolean) => {
     for (const vehicle of vehicles) {
       if (!boundsContainPoint(query.bounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinBattery(vehicle, query.minBattery)) continue;
+      if (!passesMinimums(vehicle, query, batteryFullRange)) continue;
       const key = vehicleKey(vehicle);
       if (skip?.(vehicle, key)) continue;
       into.set(key, query.origin ? { ...vehicle,
@@ -673,7 +705,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     .map(feed => feed.provider));
   const staleProviders = Object.fromEntries([...shownSinceByProvider].filter(([provider]) => staleApps.has(provider))
     .map(([provider, at]) => [provider, new Date(Math.min(now, at)).toISOString()]));
-  const response = scooterResponse({ vehicles, meta }, zoom, {
+  const batteryRanges = batteryRangesIn(snapshot, query.bounds, options.observations);
+  const response = scooterResponse({ vehicles, meta, batteryRanges }, zoom, {
     ...(meta.stale ? { staleProviders } : {}),
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
@@ -685,8 +718,6 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     ...seasonOverIn(snapshot, query.bounds),
   }, previous, Object.fromEntries([...lastSeenProviders].map(([provider, { seenAt, updating }]) =>
     [provider, { seenAt: new Date(seenAt).toISOString(), updating }])));
-  const fullRanges = fullRangesIn(snapshot, query.bounds, options.observations);
-  if (Object.keys(fullRanges).length) response.fullRanges = fullRanges;
   if (zoom !== null && zoom >= PARKING_MIN_ZOOM) {
     // The app maps' feeds collect no parking, so none of theirs is missing.
     const systems = relevant.filter(collectsParking);

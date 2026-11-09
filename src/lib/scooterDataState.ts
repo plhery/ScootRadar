@@ -74,8 +74,6 @@ export interface ScooterDataState {
   lastSeenClusters: ScooterCluster[];
   /** Of each app among them, from lastSeenStatuses(). */
   lastSeenProviders: Record<string, LastSeenStatus>;
-  /** How far a full battery usually takes each app's scooters in view, in metres (response.fullRanges). */
-  fullRanges: Record<string, number>;
   parking: ParkingLocation[];
   /** Of the last successful response. Kept when the scooters go out of date. */
   meta: ScooterResponseMeta | null;
@@ -112,7 +110,6 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   lastSeenVehicles: [],
   lastSeenClusters: [],
   lastSeenProviders: {},
-  fullRanges: {},
   parking: [],
   meta: null,
   lastUpdated: null,
@@ -171,7 +168,6 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         lastSeenVehicles,
         lastSeenClusters,
         lastSeenProviders: lastSeenStatuses(response, clockOffsetMs),
-        fullRanges: response.fullRanges ?? {},
         parking: isExpired(expiry.parking, now) ? [] : response.parking ?? [],
         meta: response.meta,
         lastUpdated: Number.isFinite(generated) ? Math.min(generated, now) : now,

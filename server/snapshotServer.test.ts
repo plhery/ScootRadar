@@ -143,6 +143,35 @@ describe('snapshot origin boundary', () => {
     expect(totals.clusters.map(cluster => [cluster.id, cluster.count])).toEqual([['city:nz:bop:Tauranga', 2]]);
   });
 
+  it('answers a range minimum in the street and in the city totals, and refuses one that is not whole metres', async () => {
+    const now = Date.now();
+    const scooter = (id: string, range: number | null, battery: number | null = null) => ({ vehicle_id: id, lat: -37.69, lng: 176.16,
+      provider: 'flamingo', battery, range_m: range, distance_m: null, deep_link: null });
+    // Flamingo's full battery takes its scooters 18.3 km at the least: 30% goes 5,490 m, 25% 4,575.
+    const feeds: FeedSnapshot[] = [{ id: 'newzealand:flamingo_nz_tauranga', source: 'newzealand', provider: 'flamingo',
+      coverage: [{ south: -37.75, west: 176.05, north: -37.62, east: 176.37 }],
+      vehicles: [scooter('far', 21_000), scooter('near', 2_500, 90), scooter('unsaid', null), scooter('charged', null, 30),
+        scooter('low', null, 25)],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false }];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) });
+    const headers = { Authorization: `Bearer ${token}` };
+    const ask = (zoom: number, minimum: string) =>
+      fetch(`http://127.0.0.1:${port}/api/scooters?south=-37.72&west=176.1&north=-37.66&east=176.3&zoom=${zoom}&${minimum}`, { headers });
+    const street = (await (await ask(16, 'minRange=5000')).json()) as ScooterResponse;
+    expect(street.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(['charged', 'far']);
+    expect(street.batteryRanges).toEqual({ flamingo: 18_300 });
+    const totals = (await (await ask(6, 'minRange=5000')).json()) as ScooterResponse;
+    expect(totals.clusters.map(cluster => cluster.count)).toEqual([2]);
+    expect(totals.batteryRanges).toEqual({ flamingo: 18_300 });
+    expect(((await (await ask(6, 'minRange=0')).json()) as ScooterResponse).clusters.map(cluster => cluster.count)).toEqual([5]);
+    // The App Store iPhone app's battery minimum, by the battery alone.
+    const charged = (await (await ask(16, 'minBattery=30')).json()) as ScooterResponse;
+    expect(charged.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(['charged', 'near']);
+    expect(((await (await ask(6, 'minBattery=30')).json()) as ScooterResponse).clusters.map(cluster => cluster.count)).toEqual([2]);
+    expect((await ask(16, 'minRange=5000.5')).status).toBe(400);
+    expect((await ask(16, 'minRange=-1000')).status).toBe(400);
+  });
+
   it("answers the scooters under ids of the cache's own, the same from one answer to the next", async () => {
     const now = Date.now();
     const scooter = (id: string, lng: number) => ({ vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70,

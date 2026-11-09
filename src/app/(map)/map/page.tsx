@@ -1,6 +1,5 @@
 'use client';
 
-import { passesMinBattery } from '@/lib/batteryEstimate';
 import { track } from '@/lib/analytics';
 
 import { useState, useEffect, useEffectEvent, useCallback, useMemo, useRef } from 'react';
@@ -378,7 +377,6 @@ export default function Home() {
     lastSeenVehicles,
     lastSeenClusters,
     lastSeenProviders,
-    fullRanges,
     parking,
     meta: responseMeta,
     lastUpdated,
@@ -498,7 +496,7 @@ export default function Home() {
 
     for (const vehicle of vehicles) {
       if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinBattery(vehicle, minBattery)) continue;
+      if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
 
       providerCounts[vehicle.provider] = (providerCounts[vehicle.provider] ?? 0) + 1;
       if (enabledProviders.has(vehicle.provider)) visibleVehicles.push(vehicle);
@@ -541,7 +539,7 @@ export default function Home() {
     if (!viewportBounds) return { visibleVehicles, visibleClusters, count: 0, byProvider };
     for (const vehicle of lastSeenVehicles) {
       if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinBattery(vehicle, minBattery)) continue;
+      if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
       byProvider[vehicle.provider] = (byProvider[vehicle.provider] ?? 0) + 1;
       if (enabledProviders.has(vehicle.provider)) visibleVehicles.push(vehicle);
     }
@@ -1124,7 +1122,6 @@ export default function Home() {
         enabledProviders={enabledProviders}
         availableProviders={availableProviders}
         providerCounts={viewportData.providerCounts}
-        fullRanges={fullRanges}
         downProviders={providerHealth({
           meta: responseMeta,
           viewportProviders: availableProviders,

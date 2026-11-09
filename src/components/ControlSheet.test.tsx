@@ -20,7 +20,6 @@ function sheetProps(overrides: Partial<Props> = {}): Props {
     enabledProviders: new Set(PROVIDER_KEYS),
     availableProviders: ['lime', 'bird', 'dott', 'bolt'],
     providerCounts: { bolt: 4, dott: 2, lime: 1200 },
-    fullRanges: {},
     downProviders: [],
     hasActiveFilters: false,
     showCount: 14,
@@ -96,37 +95,6 @@ describe('ControlSheet filters', () => {
     expect(within(battery).getByRole('button', { name: '60%+' })).toHaveAttribute('aria-pressed', 'true');
     expect(within(battery).getByRole('button', { name: 'Any' })).toHaveAttribute('aria-pressed', 'false');
     expect(battery).toHaveAccessibleDescription('Scooters without battery info are hidden while a minimum is set.');
-  });
-
-  it('says how far the battery chosen usually takes the scooters chosen in view', () => {
-    // Stuttgart: Lime's full battery reads 11.5 km, Bolt's 61 km.
-    const fullRanges = { lime: 11_500, bolt: 61_000 };
-    const { rerender } = renderSheet({ fullRanges, providerCounts: { bolt: 300, dott: 2, lime: 1200 } });
-    const battery = screen.getByRole('group', { name: 'Battery' });
-    expect(battery).toHaveAccessibleDescription('100% usually allows about 12–61 km.');
-
-    rerender({ fullRanges, providerCounts: { bolt: 300, dott: 2, lime: 1200 }, minBattery: 60 });
-    expect(battery).toHaveAccessibleDescription(
-      '60% usually allows about 7–37 km. Scooters without battery info are hidden while a minimum is set.');
-    expect(screen.getByText('Scooters without battery info are hidden while a minimum is set.')).toBeVisible();
-
-    // Bolt switched off: Lime's alone.
-    rerender({ fullRanges, providerCounts: { bolt: 300, dott: 2, lime: 1200 }, minBattery: 60,
-      enabledProviders: new Set(['lime', 'dott']) });
-    expect(battery).toHaveAccessibleDescription(
-      '60% usually allows about 7 km. Scooters without battery info are hidden while a minimum is set.');
-
-    // No app in view whose full range is known: nothing is said of it.
-    rerender({ fullRanges: {}, providerCounts: { dott: 2 }, minBattery: 0 });
-    expect(battery).not.toHaveAccessibleDescription();
-    expect(screen.queryByText(/usually allows/)).toBeNull();
-  });
-
-  it('writes how far in miles where lengths are in miles', async () => {
-    // Read from the browser once the page is on screen.
-    localStorage.setItem('scooters-units', 'imperial');
-    renderSheet({ fullRanges: { voi: 80_000 }, providerCounts: { voi: 12 }, minBattery: 30 });
-    expect(await screen.findByText('30% usually allows about 15 mi.')).toBeVisible();
   });
 
   it('shows a minimum from the slider era as the preset below it', () => {

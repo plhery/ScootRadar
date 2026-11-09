@@ -278,33 +278,6 @@ describe('the United States', () => {
     })]);
   });
 
-  it('estimates the battery of Lime\'s scooters from their ranges, over the longest of their type', async () => {
-    const lime = system('lime_us_washington');
-    const base = 'https://data.lime.bike/api/partners/v2/gbfs/washington_dc/';
-    // Lime gives ranges and no batteries, and declares 40,233 m for a type whose scooters report up to 30 km.
-    const scooters = Array.from({ length: 30 }, (_, index) => ({ bike_id: `scooter-${index}`, lat: 38.878676, lon: -76.970962,
-      is_reserved: false, is_disabled: false, current_range_meters: 1000 * (index + 1), vehicle_type_id: '2',
-      last_reported: Math.floor(Date.now() / 1000) }));
-    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
-      if (url === lime.discoveryUrl) return response({ version: '2.2', ttl: 0, data: { en: { feeds: ['system_information',
-        'free_bike_status', 'vehicle_types'].map(name => ({ name, url: `${base}${name}` })) } } });
-      if (url === `${base}vehicle_types`) return response({ data: { vehicle_types: [
-        { vehicle_type_id: '2', form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 40233 },
-      ] } });
-      if (url === `${base}free_bike_status`) return response({ version: '2.2', ttl: 60, last_updated: Math.floor(Date.now() / 1000),
-        data: { bikes: scooters } });
-      throw new Error(`Unexpected upstream ${url}`);
-    }));
-    const bounds = { south: 38.85, west: -77.02, north: 38.95, east: -76.95 };
-    const result = await fetchScooters({ bounds, minBattery: 0, providers: new Set(['lime']) });
-    const byRange = new Map(result.vehicles.map(vehicle => [vehicle.range_m, vehicle]));
-    expect(byRange.get(15_000)).toMatchObject({ battery: null, battery_estimate: 50 });
-    expect(byRange.get(30_000)).toMatchObject({ battery: null, battery_estimate: 100 });
-    // The battery minimum judges them by it: 18 km and up reach 60%.
-    const charged = await fetchScooters({ bounds, minBattery: 60, providers: new Set(['lime']) });
-    expect(charged.vehicles.map(vehicle => vehicle.range_m).sort((a, b) => a! - b!)).toEqual(Array.from({ length: 13 }, (_, i) => 18_000 + 1000 * i));
-  });
-
   describe('Lyft in Chicago', () => {
     const lyftChicago = system('lyft_us_chicago');
     const base = 'https://gbfs.lyft.com/gbfs/2.3/chi/en/';

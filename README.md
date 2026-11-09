@@ -44,10 +44,7 @@ for the iPhone, and on Google Play for Android, where it is in a
   an address, in the country's own script too. Every provider's scooters are
   on the map, with the walking time to each.
 - **Will it get me there?** A scooter shows its battery and range when its
-  provider publishes them. Set a minimum and the flat ones disappear; the
-  filters say how far that much battery usually goes there ("60% usually
-  allows about 22 km"). Where a provider gives only a range, its battery is
-  estimated from it for the filter.
+  provider publishes them. Set a minimum and the flat ones disappear.
 - **What will the ride cost?** An estimate from the provider's published rates,
   for a ride of 5 to 30 minutes, before you walk over.
 - **Where can I leave it?** At street zoom, the operators' parking bays show as

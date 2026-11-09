@@ -14,7 +14,7 @@ export const MOBILITY_SOURCE = `${COUNTRY_DATA_ATTRIBUTION}; Lille parking: Metr
  * grouped as the others are, in groups of their own, within what is left of the result limit, and
  * counted nowhere: the map shows them faded until the sweep under way reaches them. `lastSeenProviders`
  * says of each app when its were seen and whether new positions are on their way; the answer keeps
- * those of the apps among the scooters it holds.
+ * those of the apps among the scooters it holds. The result's batteryRanges are given where it has any.
  */
 export function scooterResponse(
   result: ScooterFetchResult,
@@ -42,6 +42,7 @@ export function scooterResponse(
   const seenProviders = Object.fromEntries(Object.entries(lastSeenProviders).filter(([provider]) => held.has(provider)));
   return {
     vehicles, clusters, providers,
+    ...(result.batteryRanges && Object.keys(result.batteryRanges).length ? { batteryRanges: result.batteryRanges } : {}),
     ...(seen ? { lastSeen: { vehicles: seenVehicles, clusters: seenClusters,
       ...(Object.keys(seenProviders).length ? { providers: seenProviders } : {}) } } : {}),
     meta: {

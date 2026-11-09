@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, joinCityOverviews, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { scooterAnswerZoom } from './scooterQuery';
@@ -94,6 +94,123 @@ describe('persistent map snapshots', () => {
     expect(querySnapshot(cached, { ...query, providers: new Set(['pony']) }, 9, now).clusters).toEqual([]);
   });
 
+  describe('the range minimum', () => {
+    // Bolt and Dott give both in Stuttgart, Lime and Voi a range alone in some towns, a battery alone in others.
+    const ranged = feed({ vehicles: [
+      { ...vehicle('far', 90), range_m: 12_400 },
+      { ...vehicle('short', 80), range_m: 4_999 },
+      // A battery and no range: 80% of Dott's full 18.7 km, 14,960 m.
+      { ...vehicle('unknown', 80), range_m: null },
+      { ...vehicle('flat', 20), range_m: 9_000 },
+      { ...vehicle('unsaid', null), range_m: 30_000 },
+      { ...vehicle('blank', null), range_m: null },
+    ] });
+    // Lime's full battery takes its scooters 11.5 km at the least: 53% goes 6,095 m, 52% 5,980.
+    const limes = feed({ id: 'france:lime_lyon', provider: 'lime', vehicles: [
+      { ...vehicle('lime53', 53), provider: 'lime' }, { ...vehicle('lime52', 52), provider: 'lime' },
+    ] });
+    // Voi's give a range alone.
+    const vois = feed({ id: 'france:voi_lyon', provider: 'voi', vehicles: [{ ...vehicle('voi', null), provider: 'voi', range_m: 20_000 }] });
+    const ids = (response: { vehicles: Vehicle[] }) => response.vehicles.map(item => item.vehicle_id).sort();
+    // As saved before the effective ranges were counted.
+    const withoutRanges = (overview: MobilitySnapshot['overview']): MobilitySnapshot['overview'] => ({ ...overview,
+      cities: overview.cities.map(city => {
+        const saved = { ...city };
+        delete saved.effectiveRanges;
+        delete saved.batteryOnly;
+        return saved;
+      }) });
+
+    it('leaves out at street zoom the scooters that may not go that far, judging those without a range by their battery', () => {
+      const cached = snapshot([ranged, limes]);
+      expect(ids(querySnapshot(cached, { ...query, minRange: 6_000 }, 16, now))).toEqual(['far', 'flat', 'lime53', 'unknown', 'unsaid']);
+      expect(ids(querySnapshot(cached, { ...query, minRange: 12_400 }, 16, now))).toEqual(['far', 'unknown', 'unsaid']);
+      expect(ids(querySnapshot(cached, { ...query, minRange: 15_000 }, 16, now))).toEqual(['unsaid']);
+      // One that says neither is left out at 1 km already.
+      expect(ids(querySnapshot(cached, { ...query, minRange: 1_000 }, 16, now))).not.toContain('blank');
+      expect(ids(querySnapshot(cached, { ...query, minRange: 0 }, 16, now))).toHaveLength(8);
+    });
+
+    it('still judges the older apps’ battery minimum by the battery alone, and both together by both', () => {
+      const cached = snapshot([ranged, limes]);
+      expect(ids(querySnapshot(cached, { ...query, minBattery: 50 }, 16, now))).toEqual(['far', 'lime52', 'lime53', 'short', 'unknown']);
+      expect(ids(querySnapshot(cached, { ...query, minBattery: 50, minRange: 6_000 }, 16, now))).toEqual(['far', 'lime53', 'unknown']);
+      const count = (minBattery: number) => querySnapshot(cached, { ...query, minBattery }, 8, now).clusters[0]?.count ?? 0;
+      expect(count(50)).toBe(5);
+      expect(count(91)).toBe(0);
+    });
+
+    it('counts in the city totals each scooter’s range, or else its battery times its app’s full range, by whole kilometres', () => {
+      const cached = snapshot([ranged, limes]);
+      const lyonTotals = cached.overview.cities.find(city => city.city === 'Lyon')!;
+      expect(lyonTotals.effectiveRanges?.dott).toHaveLength(102);
+      expect(lyonTotals.effectiveRanges?.dott[4]).toBe(1);
+      expect(lyonTotals.effectiveRanges?.dott[12]).toBe(1);
+      expect(lyonTotals.effectiveRanges?.dott[14]).toBe(1);
+      expect(lyonTotals.effectiveRanges?.dott[101]).toBe(1);
+      expect(lyonTotals.effectiveRanges?.lime[6]).toBe(1);
+      expect(lyonTotals.effectiveRanges?.lime[5]).toBe(1);
+      expect(lyonTotals.batteryOnly?.sort()).toEqual(['dott', 'lime']);
+      const count = (minRange: number, minBattery = 0) =>
+        querySnapshot(cached, { ...query, minBattery, minRange }, 8, now).clusters[0]?.count ?? 0;
+      expect(count(0)).toBe(8);
+      // As at street zoom: the Lime at 53% and not the one at 52%.
+      expect(count(6_000)).toBe(5);
+      expect(querySnapshot(cached, { ...query, minRange: 6_000 }, 8, now).clusters[0].providers).toEqual({ dott: 4, lime: 1 });
+      expect(count(5_000)).toBe(6);
+      expect(count(15_000)).toBe(1);
+      // 3 miles, 4,828 m, from the fifth kilometre: the 4,999 m scooter is counted only at street zoom.
+      expect(count(4_828)).toBe(6);
+      expect(ids(querySnapshot(cached, { ...query, minRange: 4_828 }, 16, now))).toEqual(['far', 'flat', 'lime52', 'lime53', 'short', 'unknown', 'unsaid']);
+      expect(count(100_000)).toBe(0);
+      // Both: no more than either lets through.
+      expect(count(13_000, 50)).toBe(2);
+    });
+
+    it('gives the full range of each app with a scooter in view that says its battery and not its range, whatever the filters', () => {
+      const cached = snapshot([ranged, limes, vois]);
+      for (const zoom of [16, 14, 8]) {
+        expect(querySnapshot(cached, query, zoom, now).batteryRanges, `zoom ${zoom}`).toEqual({ dott: 18_700, lime: 11_500 });
+        // With Voi alone switched on and a minimum that shows nothing, Dott's and Lime's too: the filters' line follows either switched on again.
+        const filtered = querySnapshot(cached, { ...query, providers: new Set(['voi']), minRange: 30_000 }, zoom, now);
+        expect(filtered.batteryRanges, `zoom ${zoom}`).toEqual({ dott: 18_700, lime: 11_500 });
+      }
+      // None outside the view, and none where every scooter says its range.
+      const elsewhere = { south: 45.76, west: 4.86, north: 45.8, east: 4.9 };
+      expect(querySnapshot(cached, { ...query, bounds: elsewhere }, 16, now)).not.toHaveProperty('batteryRanges');
+      expect(querySnapshot(snapshot([vois]), query, 16, now)).not.toHaveProperty('batteryRanges');
+      expect(querySnapshot(snapshot([vois]), query, 8, now)).not.toHaveProperty('batteryRanges');
+    });
+
+    it('builds again totals saved before the effective ranges were counted, and answers no range minimum from them meanwhile', () => {
+      const built = snapshot([ranged]);
+      const saved: MobilitySnapshot = { ...built, overview: withoutRanges(built.overview) };
+      expect(overviewNeedsRefresh(built, built.feeds, now + 60_000)).toBe(false);
+      expect(overviewNeedsRefresh(saved, saved.feeds, now + 60_000)).toBe(true);
+      // Those of the first range minimum counted the ranges alone.
+      const first: MobilitySnapshot = { ...built, overview: { ...withoutRanges(built.overview),
+        cities: withoutRanges(built.overview).cities.map(city => ({ ...city, ranges: {} })) } };
+      expect(overviewNeedsRefresh(first, first.feeds, now + 60_000)).toBe(true);
+      expect(() => querySnapshot(saved, { ...query, minRange: 5_000 }, 8, now)).toThrow(ScooterFeedsUnavailableError);
+      // What they hold still answers the rest.
+      expect(querySnapshot(saved, query, 8, now).clusters[0].count).toBe(6);
+      expect(querySnapshot(saved, { ...query, minBattery: 50 }, 8, now).clusters[0].count).toBe(3);
+      expect(ids(querySnapshot(saved, { ...query, minRange: 5_000 }, 16, now))).toEqual(['far', 'flat', 'unknown', 'unsaid']);
+    });
+
+    it('joins the effective ranges of two sets of feeds as their batteries, and has none where either has none', () => {
+      const joined = joinCityOverviews(buildCityOverview([ranged], now), buildCityOverview([vois, limes, feed({ id: 'more',
+        vehicles: [{ ...vehicle('again'), range_m: 12_900 }] })], now));
+      const lyonTotals = joined.cities.find(city => city.city === 'Lyon')!;
+      expect(lyonTotals.effectiveRanges?.dott[12]).toBe(2);
+      expect(lyonTotals.effectiveRanges?.voi[20]).toBe(1);
+      expect(lyonTotals.effectiveRanges?.lime[6]).toBe(1);
+      expect(lyonTotals.batteryOnly?.sort()).toEqual(['dott', 'lime']);
+      const unranged = withoutRanges(buildCityOverview([vois], now));
+      expect(joinCityOverviews(buildCityOverview([ranged], now), unranged).cities.some(city => city.effectiveRanges || city.batteryOnly)).toBe(false);
+    });
+  });
+
   it('preserves a failing feed up to fifteen minutes but never offers older vehicles', () => {
     const cached = snapshot([feed({ failed: true, stale: true })]);
     const response = querySnapshot(cached, query, 16, now + 8 * 60_000);
@@ -166,39 +283,6 @@ describe('map coverage and zoom tiers', () => {
     expect(mapRepresentationsMatch(10, 11)).toBe(false);
     expect(mapRepresentationsMatch(12, 13)).toBe(false);
     expect(mapRepresentationsMatch(16, 19)).toBe(true);
-  });
-});
-
-describe('batteries estimated from ranges', () => {
-  // As Lime's GBFS gives them: ranges and no batteries, here 300 m to 12 km, estimated over the longest.
-  const limeVehicles = (prefix: string, lat = 45.75, lng = 4.85) => Array.from({ length: 40 }, (_, index): Vehicle => ({
-    ...vehicle(`${prefix}${index}`, null), provider: 'lime', lat, lng, range_m: 300 * (index + 1),
-    battery_estimate: Math.round((index + 1) / 40 * 100) }));
-  const lime = feed({ id: 'france:lime_fr_lyon', provider: 'lime', vehicles: limeVehicles('lime') });
-
-  it('are judged by the battery minimum zoomed in, in groups and in the city totals', () => {
-    const cached = snapshot([lime, feed()]);
-    // Lime's from 60% (7.2 km of 12 up), and Dott's one at 80%; its other gives no battery.
-    for (const zoom of [16, 13, 9]) {
-      expect(querySnapshot(cached, { ...query, minBattery: 60 }, zoom, now).providers).toEqual({ lime: 17, dott: 1 });
-    }
-  });
-
-  it('give each app in view the range of a full battery, whatever the provider filter', () => {
-    const cached = snapshot([lime, feed()]);
-    // Dott's have no range: it has none.
-    for (const zoom of [16, 13, 9]) expect(querySnapshot(cached, query, zoom, now).fullRanges).toEqual({ lime: 12_000 });
-    expect(querySnapshot(cached, { ...query, providers: new Set(['dott']) }, 13, now).fullRanges).toEqual({ lime: 12_000 });
-    expect(querySnapshot(cached, { ...query, bounds: zurich }, 13, now).fullRanges).toBeUndefined();
-  });
-
-  it('give an app whose feeds in view have no ranges the full range of its others', () => {
-    const marseille = { south: 43.2, west: 5.3, north: 43.4, east: 5.5 };
-    const ranges = feed({ id: 'france:lime_fr_marseille', provider: 'lime', coverage: [marseille], vehicles: limeVehicles('m', 43.3, 5.4) });
-    // Its rider map's in Lyon, with batteries and no ranges.
-    const rider = feed({ id: 'france:lime_app_lyon', provider: 'lime', vehicles: Array.from({ length: 30 }, (_, index) =>
-      ({ ...vehicle(`app${index}`, 70), provider: 'lime' })) });
-    expect(querySnapshot(snapshot([ranges, rider]), query, 13, now).fullRanges).toEqual({ lime: 12_000 });
   });
 });
 

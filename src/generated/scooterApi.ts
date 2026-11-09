@@ -35,7 +35,6 @@ export interface Vehicle {
   lng: number;
   battery: number | null;
   range_m: number | null;
-  battery_estimate?: number;
   vehicle_id: string | null;
   deep_link: string | null;
   rental_uris?: RentalUris;
@@ -92,7 +91,6 @@ export interface ScooterResponse {
   clusters: ScooterCluster[];
   lastSeen?: LastSeen;
   providers: Record<string, number>;
-  fullRanges?: Record<string, number>;
   batteryRanges?: Record<string, number>;
   meta: ScooterResponseMeta;
 }

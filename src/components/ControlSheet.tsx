@@ -4,7 +4,7 @@ import { track } from '@/lib/analytics';
 
 import { useId, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
-import { BATTERY_PRESETS, batteryPresetLabel, batteryReach, formatBatteryReach, snapBatteryPreset } from '@/lib/battery';
+import { BATTERY_PRESETS, batteryPresetLabel, snapBatteryPreset } from '@/lib/battery';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
 import { isSingular } from '@/lib/uiText';
@@ -69,8 +69,6 @@ interface ControlSheetProps {
   availableProviders: string[];
   /** Scooters per provider in the viewport with the battery choice, whether or not the provider is switched on. */
   providerCounts: Readonly<Record<string, number>>;
-  /** How far a full battery usually takes each app's scooters in view, in metres (response.fullRanges). */
-  fullRanges: Readonly<Record<string, number>>;
   /** Providers that are not sharing data right now and so have nothing in view, from providerHealth(). */
   downProviders: readonly string[];
   hasActiveFilters: boolean;
@@ -97,7 +95,6 @@ export default function ControlSheet({
   enabledProviders,
   availableProviders,
   providerCounts,
-  fullRanges,
   downProviders,
   hasActiveFilters,
   showCount,
@@ -112,7 +109,7 @@ export default function ControlSheet({
   onMapStyleChange,
   onZonesChange,
 }: ControlSheetProps) {
-  const { t, locale, localeChoice, region, units, setUnits, formatNumber } = useI18n();
+  const { t, locale, localeChoice, units, setUnits, formatNumber } = useI18n();
   const batteryHelpId = useId();
   const zonesHelpId = useId();
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -149,12 +146,6 @@ export default function ControlSheet({
   };
 
   const batteryPreset = snapBatteryPreset(minBattery);
-  // How far the minimum, or a full battery for Any, usually takes the scooters chosen in view.
-  const reachLevel = batteryPreset > 0 ? batteryPreset : 100;
-  const reach = batteryReach(reachLevel, fullRanges, providerCounts, provider => enabledProviders.has(provider));
-  const reachLine = reach ? t('filter.batteryReach', { percent: formatNumber(reachLevel),
-    length: formatBatteryReach(reach, { t, formatNumber, locale, region, units }) }) : null;
-  const batteryHelp = reachLine !== null || batteryPreset > 0;
   // In catalogue order, as the iOS filters list them.
   const providers = PROVIDER_KEYS.filter(key => availableProviders.includes(key)).map(key => {
     const count = providerCounts[key] ?? 0;
@@ -197,7 +188,7 @@ export default function ControlSheet({
               className="seg"
               role="group"
               aria-label={t('filter.battery')}
-              aria-describedby={batteryHelp ? batteryHelpId : undefined}
+              aria-describedby={batteryPreset > 0 ? batteryHelpId : undefined}
               style={
                 {
                   '--segment-index': BATTERY_PRESETS.indexOf(batteryPreset),
@@ -221,12 +212,8 @@ export default function ControlSheet({
                 </button>
               ))}
             </div>
-            {batteryHelp && (
-              <p id={batteryHelpId} className="filter-help">
-                {reachLine !== null && <span>{reachLine}</span>}
-                {reachLine !== null && batteryPreset > 0 && ' '}
-                {batteryPreset > 0 && <span>{t('filter.batteryHelp')}</span>}
-              </p>
+            {batteryPreset > 0 && (
+              <p id={batteryHelpId} className="filter-help">{t('filter.batteryHelp')}</p>
             )}
           </section>
           <section className="settings-section">
