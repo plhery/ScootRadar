@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { isIPhone } from './appStore';
 import {
+  IPHONE_ATTRIBUTE,
   PLAY_TEST_ATTRIBUTE,
   PLAY_TEST_LINKS,
   PLAY_TEST_SCRIPT,
@@ -130,6 +132,7 @@ describe('what this browser remembers', () => {
 describe('the script of the site, before the first paint', () => {
   const run = (userAgent: string, options: { memory?: PlayTestMemory; referrer?: string; hints?: { platform: string; platformVersion: string } } = {}) => {
     document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE);
+    document.documentElement.removeAttribute(IPHONE_ATTRIBUTE);
     if (options.memory) localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(options.memory));
     else localStorage.removeItem(PLAY_TEST_STORAGE_KEY);
     const nav = hinting(userAgent, options.hints);
@@ -138,7 +141,10 @@ describe('the script of the site, before the first paint', () => {
     new Function('navigator', 'document', PLAY_TEST_SCRIPT)(nav, page);
     return document.documentElement.getAttribute(PLAY_TEST_ATTRIBUTE);
   };
-  afterEach(() => document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE));
+  afterEach(() => {
+    document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE);
+    document.documentElement.removeAttribute(IPHONE_ATTRIBUTE);
+  });
 
   it('marks the page as playTestInvitation() and the user agent decide, for every browser and memory', () => {
     const now = Date.now();
@@ -152,6 +158,14 @@ describe('the script of the site, before the first paint', () => {
         expect(run(userAgent, { memory }), `${userAgent} ${JSON.stringify(memory)}`).toBe(expected);
       }
     }
+  });
+
+  it('marks an iPhone, as isIPhone() decides, where the landing page’s Android button gives way', () => {
+    for (const userAgent of Object.values(AGENTS)) {
+      run(userAgent);
+      expect(document.documentElement.hasAttribute(IPHONE_ATTRIBUTE), userAgent).toBe(isIPhone(userAgent));
+    }
+    expect(isIPhone(AGENTS.iPhone)).toBe(true);
   });
 
   it('says nothing to whoever comes from the app', () => {

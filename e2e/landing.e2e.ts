@@ -240,7 +240,7 @@ test('the landing page leads to the map, and to the map of a city', async ({ pag
   await expect(page.locator('.app-shell')).toBeVisible();
 });
 
-test('the landing page leads to the iPhone app, with its code to scan beside the first button on a computer', async ({ page, isMobile }) => {
+test('the landing page leads to the iPhone app, with its code to scan beside the first button on a computer, and to the Android app’s test', async ({ page, isMobile }) => {
   await page.goto('/de');
   const store = (campaign: string) => `https://apps.apple.com/app/apple-store/id6823614854?pt=129628155&ct=${campaign}&mt=8`;
   const hero = page.locator('.hero').getByRole('link', { name: 'iPhone-App laden' });
@@ -251,6 +251,21 @@ test('the landing page leads to the iPhone app, with its code to scan beside the
   // A phone drawn in outline beside the words, not Apple's mark.
   await expect(hero.locator('svg rect')).toHaveCount(1);
   await expect(hero.locator('svg')).toHaveAttribute('aria-hidden', 'true');
+
+  // The Android app's test beside it, both times, but not on an iPhone (this project's phone).
+  const android = (section: string) => page.locator(section).getByRole('button', { name: /^Android-App testen/ });
+  if (isMobile) {
+    await expect(page.locator('html')).toHaveAttribute('data-iphone', '');
+    await expect(android('.hero')).toBeHidden();
+    await expect(android('.closing')).toBeHidden();
+  } else {
+    await expect(android('.hero')).toBeVisible();
+    await android('.closing').click();
+    const sheet = page.getByRole('dialog', { name: 'Teste unsere Android-App' });
+    await expect(sheet.getByRole('link')).toHaveText(['Beitreten', 'Öffnen', 'Installieren']);
+    await page.keyboard.press('Escape');
+    await expect(sheet).toBeHidden();
+  }
 
   // A phone opens the link itself; a computer has a code for the phone to scan, which says so.
   const code = page.locator('.hero .app-qr');

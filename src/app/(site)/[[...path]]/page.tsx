@@ -265,8 +265,9 @@ function AppStoreQr({ copy }: { copy: LandingCopy }) {
 }
 
 /**
- * The two ways in: the map, and the iPhone app, each link to it counted where it is.
- * On Android, the iPhone app's button gives way to the Android app's test (src/lib/playTest.ts).
+ * The ways in: the map, the iPhone app, each link to it counted where it is,
+ * and the Android app, whose button opens the steps of its test on Google Play
+ * (src/lib/playTest.ts). A phone is shown its own app's button only.
  */
 function Actions({ copy, android, campaign, qr = false }: {
   copy: LandingCopy;

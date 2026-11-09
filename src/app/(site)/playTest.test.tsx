@@ -14,6 +14,7 @@ vi.mock('@/lib/playTest', async (importOriginal) => ({ ...(await importOriginal<
 
 const ANDROID = 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36';
 const DESKTOP = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36';
+const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1';
 const de = PLAY_TEST_COPY.de;
 const shown = () => document.documentElement.getAttribute(PLAY_TEST_ATTRIBUTE);
 const remembered = () => JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY) ?? '{}');
@@ -88,11 +89,15 @@ describe('a guide’s card', () => {
 });
 
 describe('the landing page’s Android button', () => {
-  it('stays for an Android visitor who asked for no more invitations, and opens the steps', async () => {
-    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(ANDROID);
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ never: true }));
+  async function renderLanding(userAgent: string) {
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent);
     render(<main><PlayTestButton copy={PLAY_TEST_COPY.en} /><PlayTestSite copy={PLAY_TEST_COPY.en} place="landing" /></main>);
     await act(async () => {});
+  }
+
+  it('stays for an Android visitor who asked for no more invitations, and opens the steps', async () => {
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ never: true }));
+    await renderLanding(ANDROID);
     expect(shown()).toBe('quiet');
     expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
     const button = screen.getByRole('button', { name: /^Try the Android app\s*Early$/ });
@@ -100,5 +105,22 @@ describe('the landing page’s Android button', () => {
     fireEvent.click(button);
     expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'landing' });
     expect(sheet(PLAY_TEST_COPY.en.title)).toHaveProperty('open', true);
+  });
+
+  it('is beside the iPhone app’s on a computer, counted there, and opens the same steps', async () => {
+    await renderLanding(DESKTOP);
+    expect(shown()).toBeNull();
+    expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
+    fireEvent.click(screen.getByRole('button', { name: /^Try the Android app/ }));
+    expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'landing' });
+    expect(sheet(PLAY_TEST_COPY.en.title)).toHaveProperty('open', true);
+    fireEvent.click(within(sheet(PLAY_TEST_COPY.en.title)).getByRole('link', { name: 'Open' }));
+    expect(track).toHaveBeenLastCalledWith('invite_optin', { place: 'landing' });
+  });
+
+  it('is not counted on an iPhone, where it gives way to the iPhone app’s', async () => {
+    await renderLanding(IPHONE);
+    expect(shown()).toBeNull();
+    expect(track).not.toHaveBeenCalled();
   });
 });

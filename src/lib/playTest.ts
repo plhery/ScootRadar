@@ -11,7 +11,10 @@
 //
 // The words are in playTestCopy.ts. The map shows a chip, after the visitor's
 // first touch, and a row in Settings › About; a guide shows a card under its
-// headline; the landing page's iPhone button becomes an Android one.
+// headline. The landing page names both apps to everyone, the Android one
+// opening the steps (the user's choice on 9 November 2026), and a phone only
+// its own: on Android the iPhone app's button gives way, on an iPhone the
+// Android app's.
 
 /**
  * The switch: off, the site says nothing of the test anywhere. On since 3 November 2026, once the
@@ -141,11 +144,13 @@ export function playTestInvitation(memory: PlayTestMemory, now: number, place: '
 /** The attribute of the site's <html> that shows the invitation's parts there: "offer" or "quiet". */
 export const PLAY_TEST_ATTRIBUTE = 'data-android-test';
 
+/** The attribute of the site's <html> on an iPhone, where the landing page's Android button gives way (appStore.ts's isIPhone). */
+export const IPHONE_ATTRIBUTE = 'data-iphone';
+
 /**
  * Runs in the head of every page of the site, before the first paint: the guide's
- * card and the landing page's Android button are in the page as built, hidden,
- * and this shows them to whom they are for, so that nothing moves when the page
- * has loaded. It follows seesPlayTest() and playTestInvitation() (the test keeps
+ * card and the landing page's two app buttons are in the page as built, and this
+ * shows each to whom it is for, so that nothing moves when the page has loaded. It follows seesPlayTest() and playTestInvitation() (the test keeps
  * them in step), and the client hints, which come later, can only take it back.
  * Written as text because it is not part of any bundle; the Worker gives it the
  * nonce of the response like every other script of the page.
@@ -153,6 +158,7 @@ export const PLAY_TEST_ATTRIBUTE = 'data-android-test';
 export const PLAY_TEST_SCRIPT = `(function () {
   try {
     var agent = navigator.userAgent;
+    if (/\\biPhone\\b/.test(agent)) document.documentElement.setAttribute(${JSON.stringify(IPHONE_ATTRIBUTE)}, '');
     if (!/\\bAndroid\\b/.test(agent) || document.referrer.indexOf(${JSON.stringify(APP_REFERRER)}) === 0) return;
     var told = /\\bAndroid 10; K\\)/.test(agent) ? 0 : Number((/\\bAndroid (\\d+)/.exec(agent) || [])[1]);
     if (told && told < ${MIN_ANDROID}) return;

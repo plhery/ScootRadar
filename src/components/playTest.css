@@ -265,20 +265,20 @@
 }
 
 /* The site: a guide's card under the headline, the landing page's button, and
-   the sheet both open. Each is in the page as built, and shown by the attribute
-   the head's script sets (PLAY_TEST_SCRIPT), so nothing moves as it loads. */
+   the sheet both open. Each is in the page as built, and shown or hidden by the
+   attributes the head's script sets (PLAY_TEST_SCRIPT), so nothing moves as it
+   loads. The landing page's two app buttons are both shown, but a phone's own
+   only: the iPhone app's (.play-ios) gives way on Android, the Android app's on
+   an iPhone. */
 
-.play-card,
-.play-android {
+.play-card {
   display: none;
 }
 html[data-android-test='offer'] .play-card {
   display: flex;
 }
-html[data-android-test] .play-android {
-  display: flex;
-}
-html[data-android-test] .play-ios {
+html[data-android-test] .play-ios,
+html[data-iphone] .play-android {
   display: none;
 }
 
@@ -365,6 +365,7 @@ html[data-android-test='offer'] .play-card + .contents,
 }
 
 .play-android {
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
@@ -380,9 +381,14 @@ html[data-android-test='offer'] .play-card + .contents,
   color: #9cc7ff;
   font-family: var(--body);
 }
+/* Where it stands alone, on Android: beside the iPhone app's, the badge says enough and the row stays level. */
 .play-android small {
+  display: none;
   font-size: 13.5px;
   color: var(--quiet);
+}
+html[data-android-test] .play-android small {
+  display: block;
 }
 
 .play-sheet {

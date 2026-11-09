@@ -34,8 +34,9 @@ ScootRadar reads the feeds the operators publish and puts every scooter on one
 map, so the nearest one is simply the nearest one.
 
 It's free, with no account and no ads. Use it in the browser, install it as a
-web app, or get the iPhone app on the
-[App Store](https://apps.apple.com/app/id6823614854).
+web app, or get the app: on the [App Store](https://apps.apple.com/app/id6823614854)
+for the iPhone, and on Google Play for Android, where it is in a
+[test you can join](#android-app) before its release.
 
 ## What it tells you
 
@@ -112,6 +113,28 @@ iOS 26 or newer. To build it yourself, open `ios/ScootRadar.xcodeproj` in Xcode
 26+, choose a development team, and run the `ScootRadar` scheme.
 [ios/README.md](ios/README.md) has the details.
 
+## Android app
+
+The app is in a closed test on Google Play before its release, for Android 12
+or newer. Anyone can join it, in about a minute, with one Google account:
+
+1. Join the [ScootRadar Android testers](https://groups.google.com/g/scootradar-android-testers)
+   group.
+2. Open [the test's page on Google Play](https://play.google.com/apps/testing/com.plhery.scootradar)
+   and tap **Become a tester**.
+3. [Install the app from Google Play](https://play.google.com/store/apps/details?id=com.plhery.scootradar),
+   and keep it for two weeks: Google Play opens it to everyone once 12 testers
+   have stayed in the test for 14 days.
+
+You can leave the test at any time, on the same page of Google Play. The site
+offers the same steps under its *Try the Android app* button.
+
+To build it yourself, run `npm ci` at the top of the repository first (the
+build writes the app's API models and provider catalog with the site's
+scripts), then open `android/` in Android Studio and run the `app`
+configuration, or connect a phone and run `./gradlew :app:installDebug` in
+`android/` with JDK 21.
+
 ## Host your own
 
 The included configuration targets Cloudflare Workers through OpenNext. Give
@@ -135,7 +158,7 @@ its own, or remove those steps.
 
 - [Data sources and attribution](DATA_SOURCES.md)
 - [Privacy](PRIVACY.md)
-- [Web and iOS analytics](docs/analytics.md)
+- [Web, iOS and Android analytics](docs/analytics.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md)
 
