@@ -72,7 +72,7 @@ class ScooterMapModelTest {
             pricing = ScooterRidePricing(currency = "CHF", unlockFeeMinorUnits = 100, minuteFeeMinorUnits = 35),
         )
         val api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = listOf(tall))
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = listOf(tall))
         }
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         try {

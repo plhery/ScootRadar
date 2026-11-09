@@ -10,8 +10,6 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterFiltering
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterProviderEntry
-import com.plhery.scootradar.core.model.ScooterRangeFilter
-import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
@@ -49,14 +47,12 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
     fun setUp() {
         Locale.setDefault(Locale.forLanguageTag("en-CH"))
         ScooterLanguage.current = ScooterLanguage.En
-        ScooterUnits.current = state.units
     }
 
     @After
     fun tearDown() {
         resetFontScale()
         ScooterLanguage.current = ScooterLanguage.atLaunch
-        ScooterUnits.current = ScooterUnits.Automatic
         Locale.setDefault(locale)
     }
 
@@ -70,15 +66,13 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
                     FilterSheetContent(
                         minimumBattery = state.minimumBattery,
                         entries = state.entries,
-                        hasActiveFilters = state.minimumBattery > 0 || state.minimumRange > 0 || state.entries.any { !it.isEnabled },
+                        hasActiveFilters = state.minimumBattery > 0 || state.entries.any { !it.isEnabled },
                         showResults = state.showResults(),
                         bottomInset = bottomInset,
                         onChooseMinimum = {},
                         onToggle = {},
                         onReset = {},
                         onDone = {},
-                        minimumRange = state.minimumRange,
-                        rangeUnit = ScooterRangeFilter.Unit.of(ScooterLanguage.current.locale),
                     )
                 }
             }
@@ -96,15 +90,11 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
 
 /**
  * The sheet's states: at the medium height a phone opens it at, at the large one a short phone does, with filters
- * chosen, with a provider not sharing data, where no provider operates, while the scooters are being found, and with
- * a minimum range in kilometres and in miles (issue #12).
+ * chosen, with a provider not sharing data, where no provider operates, and while the scooters are being found.
  */
 enum class FiltersState(
     val detents: List<SheetDetent> = listOf(SheetDetent.Medium, SheetDetent.Large),
     val minimumBattery: Int = 0,
-    /** In metres, a whole step of the [units]' slider. */
-    val minimumRange: Int = 0,
-    val units: ScooterUnits = ScooterUnits.Automatic,
     val entries: List<ScooterProviderEntry> = zurich,
     /** How many scooters the map shows; null while it is finding them. */
     private val shown: Int? = 32,
@@ -123,10 +113,7 @@ enum class FiltersState(
         shown = 29,
     ),
     NoProviders(entries = emptyList(), shown = 0),
-    Finding(shown = null),
-    Range(detents = listOf(SheetDetent.Large), minimumRange = 5_000, units = ScooterUnits.Metric, shown = 14),
-    RangeInMiles(detents = listOf(SheetDetent.Large), minimumRange = 4_828, units = ScooterUnits.Imperial, shown = 14),
-    ;
+    Finding(shown = null);
 
     val fileName: String get() = name.replaceFirstChar { it.lowercase() }
 

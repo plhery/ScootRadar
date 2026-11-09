@@ -13,9 +13,7 @@ import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterMapLink
-import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterResponse
-import com.plhery.scootradar.core.model.ScooterUnits
 import java.time.Instant
 import java.util.Locale
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,7 +45,6 @@ class ScooterMapEventsTest {
         ScooterLanguage.atLaunch = atLaunch
         ScooterLanguage.current = atLaunch
         ScooterLanguage.launchLocale = launchLocale
-        ScooterUnits.current = ScooterUnits.Automatic
     }
 
     private fun empty(): StubScooterAPI = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
@@ -82,56 +79,6 @@ class ScooterMapEventsTest {
                 TrackedEvent("provider_filter", provider = "lime", value = 1),
                 TrackedEvent("providers_all"),
                 TrackedEvent("battery_filter", value = 60),
-                TrackedEvent("filters_reset"),
-            ),
-            analytics.events,
-        )
-    }
-
-    /**
-     * The minimum range in metres, as the battery's in percent: a whole step of the slider's unit, sent a second after
-     * the slider's last step, so that a drag across many is one choice. The units chosen in Settings send nothing, nor
-     * does the other minimum set to Any.
-     */
-    @Test
-    fun theRangeFilterTellsItsMinimumInMetresWhereTheSliderRests() = runTest {
-        val analytics = RecordingAnalytics()
-        val model = makeController(empty(), analytics = analytics)
-
-        model.setMinimumBattery(30.0)
-        // 4.6 km in miles, as the US writes lengths: 3 mi.
-        model.setMinimumRange(4_600)
-        advanceTimeBy(1_001)
-        runCurrent()
-        // 4.9 km is 3 mi too: nothing changes, nothing is sent.
-        model.setMinimumRange(4_900)
-        model.setUnits(ScooterUnits.Metric)
-        // A drag from 4 km to 12 km, a step every tenth of a second.
-        for (steps in 4..12) {
-            model.setMinimumRange(ScooterRangeFilter.metres(steps = steps, unit = ScooterRangeFilter.Unit.Kilometres))
-            advanceTimeBy(100)
-        }
-        advanceTimeBy(1_001)
-        runCurrent()
-        model.setUnits(ScooterUnits.Automatic)
-        model.setMinimumBattery(60.0)
-        // A range the slider leaves within the second for a battery preset, or for Reset, was never chosen.
-        model.setMinimumRange(8_047)
-        advanceTimeBy(500)
-        model.setMinimumBattery(30.0)
-        model.setMinimumRange(8_047)
-        advanceTimeBy(500)
-        model.resetFilters()
-        advanceTimeBy(1_001)
-        runCurrent()
-
-        assertEquals(
-            listOf(
-                TrackedEvent("battery_filter", value = 30),
-                TrackedEvent("range_filter", value = 4_828),
-                TrackedEvent("range_filter", value = 12_000),
-                TrackedEvent("battery_filter", value = 60),
-                TrackedEvent("battery_filter", value = 30),
                 TrackedEvent("filters_reset"),
             ),
             analytics.events,

@@ -334,7 +334,7 @@ class DockOverTheMapTest {
         )
 
         val api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = scooters)
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = scooters)
         }
 
         fun scooter(id: String, provider: String, latitude: Double, longitude: Double) = Scooter(

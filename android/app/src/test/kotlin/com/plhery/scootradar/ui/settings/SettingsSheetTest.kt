@@ -34,7 +34,6 @@ import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
-import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.ui.LocalClock
 import com.plhery.scootradar.ui.sheet.IosSheet
@@ -163,7 +162,7 @@ class SettingsSheetTest {
         assertTrue(compose.onAllNodes(hasText("Satellite")).fetchSemanticsNodes().isEmpty())
     }
 
-    /** Issue #14: a segment chooses the units at once, for every length, the range filter's slider too. */
+    /** Issue #14: a segment chooses the units at once, for every length. */
     @Test
     fun aSegmentChoosesTheUnitsAtOnce() {
         show()
@@ -172,13 +171,11 @@ class SettingsSheetTest {
         compose.waitForIdle()
         assertEquals(ScooterUnits.Metric, model.units.value)
         assertEquals(ScooterUnits.Metric, ScooterUnits.current)
-        assertEquals(ScooterRangeFilter.Unit.Kilometres, model.rangeUnit)
         compose.onNodeWithContentDescription("Kilometres").assertIsSelected()
 
         compose.onNodeWithText("mi").performClick()
         compose.waitForIdle()
         assertEquals(ScooterUnits.Imperial, model.units.value)
-        assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
         compose.onNodeWithContentDescription("Miles").assertIsSelected()
 
         compose.onNodeWithContentDescription("Auto").performClick()

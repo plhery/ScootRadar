@@ -515,140 +515,15 @@ class ScooterFilteringTest {
         assertNotEquals(unknown.parts[0], unknown.body)
     }
 
-    // The minimum range (issue #12).
-
-    private fun ranged(id: String, provider: String = "lime", battery: Int? = null, range: Int?): Scooter = Scooter(
-        provider = provider, latitude = 47.3769, longitude = 8.5417, battery = battery, rangeMeters = range,
-        vehicleID = id, deepLink = null, rentalURIs = null, distanceMeters = 0.0,
-    )
-
-    /**
-     * Stuttgart's Lime and Voi give a range and no battery; a minimum range hides the scooters without one, as a
-     * minimum battery hides those without a battery.
-     */
+    /** Every language says the units of Settings. */
     @Test
-    fun rangeFilterHidesScootersWithoutARangeAndThoseThatGoLessFar() {
-        val scooters = listOf(
-            ranged("far", range = 12_000),
-            ranged("exact", provider = "voi", range = 5_000),
-            ranged("near", range = 4_999),
-            ranged("unknown", provider = "bolt", battery = 90, range = null),
-        )
-        assertTrue(scooters.all { ScooterFiltering.passesRange(it, minimumRange = 0) })
-
-        val filtered = ScooterFiltering.mapScooters(
-            from = scooters, minimumBattery = 0.0, minimumRange = 5_000, enabledProviders = ScooterProvider.entries.toSet(),
-        )
-        assertEquals(listOf("lime:far", "voi:exact"), filtered.map { it.id })
-
-        val summary = ScooterFiltering.visibleSummary(
-            vehicles = scooters, viewport = viewport, minimumBattery = 0.0, minimumRange = 5_000,
-            enabledProviders = setOf(ScooterProvider.Lime),
-        )
-        assertEquals(1, summary.count)
-        assertEquals(mapOf(ScooterProvider.Lime to 1, ScooterProvider.Voi to 1), summary.providerCounts)
-        // What the filters hide is counted too.
-        assertEquals(4, summary.unfilteredCount)
-        assertEquals(setOf(ScooterProvider.Lime, ScooterProvider.Voi, ScooterProvider.Bolt), summary.unfilteredProviders)
-    }
-
-    /** Whole kilometres up to 30 or whole miles up to 20, a mile being 1 609.344 m rounded to the metre. */
-    @Test
-    fun rangeFilterReadsItsMinimumInWholeStepsOfItsUnit() {
-        val kilometres = ScooterRangeFilter.Unit.Kilometres
-        val miles = ScooterRangeFilter.Unit.Miles
-        assertEquals(30, kilometres.maximumSteps)
-        assertEquals(20, miles.maximumSteps)
-        assertEquals(5_000, ScooterRangeFilter.metres(steps = 5, unit = kilometres))
-        assertEquals(4_828, ScooterRangeFilter.metres(steps = 3, unit = miles))
-        assertEquals(32_187, ScooterRangeFilter.metres(steps = 20, unit = miles))
-        assertEquals(30_000, ScooterRangeFilter.metres(steps = 99, unit = kilometres))
-
-        val inKilometres = listOf(
-            0 to 0, -5 to 0, 499 to 0, 500 to 1_000, 2_499 to 2_000, 4_828 to 5_000, 5_000 to 5_000,
-            31_000 to 30_000, 200_000 to 30_000,
-        )
-        for ((metres, snapped) in inKilometres) {
-            assertEquals("$metres m in km", snapped, ScooterRangeFilter.snapped(metres, kilometres))
-        }
-        // "3 mi+" is 4 828 m, not the 5 000 m it was set as in kilometres.
-        val inMiles = listOf(0 to 0, 804 to 0, 805 to 1_609, 5_000 to 4_828, 4_828 to 4_828, 30_000 to 30_578, 40_000 to 32_187)
-        for ((metres, snapped) in inMiles) {
-            assertEquals("$metres m in mi", snapped, ScooterRangeFilter.snapped(metres, miles))
-        }
-        assertEquals(3, ScooterRangeFilter.steps(4_828, miles))
-        assertEquals(5, ScooterRangeFilter.steps(4_828, kilometres))
-    }
-
-    /** "5 km+" or "3 mi+" beside the heading, never metres, feet or yards; "5 km or more" for TalkBack. */
-    @Test
-    fun rangeFilterSaysItsMinimumInWholeKilometresOrMiles() {
-        val swiss = Locale.forLanguageTag("en-CH")
-        val american = Locale.forLanguageTag("en-US")
-        assertEquals(ScooterRangeFilter.Unit.Kilometres, ScooterRangeFilter.Unit.of(swiss))
-        assertEquals(ScooterRangeFilter.Unit.Miles, ScooterRangeFilter.Unit.of(american))
-        assertEquals(ScooterRangeFilter.Unit.Miles, ScooterRangeFilter.Unit.of(Locale.forLanguageTag("en-GB")))
-
-        assertEquals(localized("Any"), ScooterRangeFilter.label(0, swiss))
-        assertEquals("5 km+", plainSpaces(ScooterRangeFilter.label(5_000, swiss)))
-        assertEquals("3 mi+", plainSpaces(ScooterRangeFilter.label(4_828, american)))
-        assertEquals("1 km+", plainSpaces(ScooterRangeFilter.label(1_000, swiss)))
-        assertEquals("30 km+", plainSpaces(ScooterRangeFilter.label(30_000, swiss)))
-        assertEquals("20 mi", plainSpaces(ScooterRangeFilter.distance(32_187, american)))
-        // A line never breaks between the number and its unit.
-        assertFalse(ScooterRangeFilter.label(5_000, swiss).contains(" "))
-
-        assertEquals(localized("Any"), ScooterRangeFilter.spokenValue(0, swiss))
-        assertEquals(
-            stringFormat(localized("%@ or more"), ScooterRangeFilter.distance(5_000, swiss)),
-            ScooterRangeFilter.spokenValue(5_000, swiss),
-        )
-        assertEquals("5 km or more", plainSpaces(ScooterRangeFilter.spokenValue(5_000, swiss)))
-    }
-
-    /** After the providers, as the battery's: "Lime only · range 5 km or more", and with a capital alone. */
-    @Test
-    fun filterSummaryDescribesAMinimumRange() {
-        try {
-            ScooterUnits.current = ScooterUnits.Metric
-            val both = ScooterFilterSummary(hiddenCount = 12, providers = listOf(ScooterProvider.Lime), minimumBattery = null, minimumRange = 5_000)
-            assertEquals(2, both.parts.size)
-            assertTrue(both.parts[0].contains("Lime"))
-            assertEquals(stringFormat(localized("range %@ or more"), ScooterRangeFilter.distance(5_000)), both.parts[1])
-            assertEquals(both.parts.joinToString(" · "), both.body)
-
-            val alone = ScooterFilterSummary(hiddenCount = null, providers = emptyList(), minimumBattery = null, minimumRange = 5_000)
-            assertEquals(1, alone.parts.size)
-            assertEquals(alone.parts[0].take(1).uppercase(ScooterLanguage.launchLocale()), alone.body.take(1))
-            assertEquals(alone.parts[0].drop(1), alone.body.drop(1))
-            assertEquals("Range 5 km or more", plainSpaces(alone.body))
-
-            // In miles the minimum is said in the whole miles the slider shows.
-            ScooterUnits.current = ScooterUnits.Imperial
-            val inMiles = ScooterFilterSummary(hiddenCount = null, providers = emptyList(), minimumBattery = null, minimumRange = 4_828)
-            assertTrue(plainSpaces(inMiles.body).contains("3 mi"))
-        } finally {
-            ScooterUnits.current = ScooterUnits.Automatic
-        }
-    }
-
-    /** Every language says the range filter and the units, with a distance where the sentence holds one. */
-    @Test
-    fun everyLanguageWritesTheRangeFilterAndTheUnits() {
-        val keys = listOf(
-            "Range", "Scooters without range info are hidden while a minimum is set.", "range %@ or more",
-            "%@ or more", "Units", "Kilometres", "Miles",
-        )
+    fun everyLanguageWritesTheUnits() {
         for (language in ScooterLanguage.entries) {
-            for (key in keys) {
-                val text = language.strings[key]
-                assertNotNull("${language.rawValue}: $key", text)
-                assertEquals("${language.rawValue}: $text", key.contains("%@"), text!!.contains("%@"))
+            for (key in listOf("Units", "Kilometres", "Miles")) {
+                assertNotNull("${language.rawValue}: $key", language.strings[key])
             }
         }
     }
-
-    private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
 
     /**
      * MKMapView under an MKMapCamera `distance` metres from its centre, facing `heading` degrees from north and

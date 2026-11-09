@@ -135,8 +135,8 @@ data class Scooter(
         }
 
         /**
-         * Whole kilometres or miles, "61 km" or "38 mi": the closest cities and the range filter's steps, which never
-         * come in metres, feet or yards.
+         * Whole kilometres or miles, "61 km" or "38 mi": the closest cities, which never come in metres, feet or
+         * yards.
          */
         fun formattedWhole(value: Int, unit: ScooterLengthUnit, locale: Locale = ScooterLanguage.current.locale): String =
             // A line never breaks between the number and its unit.

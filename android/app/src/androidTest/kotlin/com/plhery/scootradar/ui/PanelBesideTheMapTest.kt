@@ -410,7 +410,7 @@ class PanelBesideTheMapTest {
     /** A controller allowed to locate that hears only the fixes the test gives it, with `scooters` about. */
     private fun controller(location: TestLocation = TestLocation(), scooters: List<Scooter> = emptyList()) = ScooterMapController(
         api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = scooters)
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = scooters)
         },
         locationManager = location,
         defaults = InMemoryScooterDefaults(),

@@ -689,7 +689,7 @@ private fun walked(controllers: TestControllers, clock: TestClock, end: ScooterW
     val other = scooter(id = "b", provider = "voi", latitude = 47.3765, longitude = 8.5430)
     var vehicles = listOf(target, other)
     val api = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = vehicles)
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = vehicles)
     }
     val noRoute = Result.failure<List<GeoPoint>>(WalkingDirectionsError(WalkingDirectionsError.Reason.NoRoute))
     val directions = FakeWalkingDirections(result = if (end == ScooterWalkPhase.Gone) null else noRoute)

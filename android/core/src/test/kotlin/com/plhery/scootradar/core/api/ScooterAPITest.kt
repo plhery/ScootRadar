@@ -135,28 +135,6 @@ class ScooterAPITest {
         )
     }
 
-    /**
-     * The minimum range goes in whole metres, and only when there is one: a server from before it answers as it did,
-     * and the app filters by range itself.
-     */
-    @Test
-    fun requestSendsAMinimumRangeInMetresOnlyWhenOneIsSet() = runBlocking<Unit> {
-        val api = makeAPI(responseStatus = 200, data = emptyResponseData)
-        val bounds = GeoBounds(south = 47.36789, west = 8.5, north = 47.4, east = 8.61234)
-
-        api.scooters(bounds = bounds, zoom = 12, minimumBattery = 0, minimumRange = 4_828)
-        val ranged = server.takeRequest().url
-        assertEquals("4828", ranged.queryParameter("minRange"))
-        assertEquals("0", ranged.queryParameter("minBattery"))
-        assertEquals("minRange", ranged.queryParameterName(ranged.querySize - 1))
-
-        server.enqueue(answer(200, emptyResponseData, emptyMap()))
-        api.scooters(bounds = bounds, zoom = 12, minimumBattery = 30, minimumRange = 0)
-        val unranged = server.takeRequest().url
-        assertNull(unranged.queryParameter("minRange"))
-        assertEquals("30", unranged.queryParameter("minBattery"))
-    }
-
     @Test
     fun aViewAcrossTheDateLineIsAskedForWithItsWestGreaterThanItsEast() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 200, data = emptyResponseData)

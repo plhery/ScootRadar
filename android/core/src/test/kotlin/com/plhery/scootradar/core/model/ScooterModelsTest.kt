@@ -753,7 +753,6 @@ class ScooterModelsTest {
             assertEquals(locale.toLanguageTag(), ScooterMeasurementSystem.Metric, metric.measurementSystem)
             assertEquals(locale.language, metric.language)
             assertEquals(locale.country, metric.country)
-            assertEquals(ScooterRangeFilter.Unit.Kilometres, ScooterRangeFilter.Unit.of(metric))
             assertEquals(locale.toLanguageTag(), "300 m", plainSpaces(Scooter.formattedLength(meters = 300.0, locale = metric)))
             val kilometres = plainSpaces(Scooter.formattedLength(meters = 1_250.0, locale = metric))
             assertTrue(kilometres, kilometres == "1.3 km" || kilometres == "1,3 km")
@@ -789,9 +788,6 @@ class ScooterModelsTest {
             listOf(12.0, 300.0, 3_000.0).map { plainSpaces(Scooter.formattedLength(meters = it, locale = britishMiles)) },
         )
         assertEquals(ScooterMeasurementSystem.Us, ScooterUnits.Imperial.applied(american).measurementSystem)
-        for (locale in listOf(irishMiles, swissMiles, britishMiles)) {
-            assertEquals(locale.toLanguageTag(), ScooterRangeFilter.Unit.Miles, ScooterRangeFilter.Unit.of(locale))
-        }
         // Metric chosen over British miles, and back to Automatic, gives the locale it started from.
         assertEquals(british, ScooterUnits.Automatic.applied(british))
 

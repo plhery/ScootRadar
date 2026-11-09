@@ -66,17 +66,14 @@ internal class StubScooterAPI(
         private set
     var lastMinimumBattery: Int? = null
         private set
-    var lastMinimumRange: Int? = null
-        private set
     /** The area of each request, in order. */
     val askedBounds = mutableListOf<GeoBounds>()
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
         calls += 1
         askedBounds += bounds
         lastZoom = zoom
         lastMinimumBattery = minimumBattery
-        lastMinimumRange = minimumRange
         if (delaysFirstRequest && calls == 1) {
             try {
                 delay(30.seconds)
@@ -103,7 +100,7 @@ internal class DelayedSecondAPI : ScooterAPIClient {
 
     fun callCount(): Int = calls
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
         calls += 1
         val second = calls == 2
         if (second) delay(500.milliseconds)
@@ -126,7 +123,7 @@ internal class CancelledAPI : ScooterAPIClient {
 
     fun callCount(): Int = calls
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
         calls += 1
         throw CancellationException()
     }
@@ -153,7 +150,7 @@ internal class HeldScooterAPI(private val response: ScooterResponse) : ScooterAP
         held = null
     }
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
         calls += 1
         if (holdsNextRequest) {
             holdsNextRequest = false
