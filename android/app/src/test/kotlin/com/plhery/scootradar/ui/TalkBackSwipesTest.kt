@@ -57,6 +57,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.max
 
 /**
  * TalkBack's swipes through the screen, as VoiceOver's go (app-ai's TalkBack pass): Settings scrolled at half height,
@@ -172,8 +173,9 @@ class TalkBackSwipesTest {
     /**
      * Backward at the top, TalkBack's scroll is refused and the sheet keeps its height; past the last row in view it
      * scrolls the list forward, as it does through ScrollBy for a row it shows that is partly in view, and back to
-     * the top again, the sheet at [height] throughout. Filters' list goes to its end in one page, and came back 12 px
-     * short of its top while its margins were outside what scrolls.
+     * the top again, the sheet at [height] throughout. From its end, a page back is the list's whole height, the
+     * margin under its last row in view and all: while the margins were outside what scrolls, it was the margin
+     * short, and Filters' list, which goes to its end in one page, came back 12 px short of its top.
      */
     private fun scrollsItsListAndNotItsSheet(list: SemanticsNodeInteraction, grabber: SemanticsNodeInteraction, height: String?) {
         fun scrolled() = list.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].value()
@@ -188,6 +190,15 @@ class TalkBackSwipesTest {
         assertTrue(list.talkBack(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD))
         assertEquals("the sheet after TalkBack's scroll back", height, grabber.state)
         assertEquals(0f, scrolled())
+
+        var pages = 0
+        while (list.talkBack(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)) check(++pages < 20)
+        val end = scrolled()
+        assertEquals(list.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].maxValue(), end)
+        val page = list.fetchSemanticsNode().size.height.toFloat()
+        assertTrue(list.talkBack(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD))
+        assertEquals("a page back from the end, $page px high", max(0f, end - page), scrolled(), 0.5f)
+        assertEquals("the sheet after TalkBack's scrolls to the end and back", height, grabber.state)
     }
 
     /**
