@@ -286,3 +286,19 @@
 "Zones unavailable right now" = "Zones unavailable right now";
 "Loading %@’s zones…" = "Loading %@’s zones…";
 "%@’s zones unavailable right now" = "%@’s zones unavailable right now";
+
+/* Filters › Range and Settings › Units (issues #12 and #14) */
+/* Filters: the heading of the minimum range, a slider under the battery presets. Range is how far a scooter can go on its charge, as on its card ("Estimated range"). */
+"Range" = "Range";
+/* Filters: under the range slider while a minimum is set, as under the battery presets. */
+"Scooters without range info are hidden while a minimum is set." = "Scooters without range info are hidden while a minimum is set.";
+/* The "hidden by your filters" card, after the providers: "Lime only · range 5 km or more". %@ is a distance with its unit, "5 km" or "3 mi". Starts in lower case, as "battery %lld%% or more". */
+"range %@ or more" = "range %@ or more";
+/* Filters: what VoiceOver and TalkBack read as the range slider's value, %@ a distance with its unit: "5 km or more". */
+"%@ or more" = "%@ or more";
+/* Settings: the heading of the choice of distance units: Auto, km or mi. "km" and "mi" are written as they are in every language. */
+"Units" = "Units";
+/* Settings › Units: what VoiceOver and TalkBack read for the "km" segment. */
+"Kilometres" = "Kilometres";
+/* Settings › Units: what VoiceOver and TalkBack read for the "mi" segment. */
+"Miles" = "Miles";
