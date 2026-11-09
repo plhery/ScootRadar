@@ -2,8 +2,6 @@ import { RydeBroker } from './rydeBridge';
 import { RydeWatchedViews } from './rydeWatchedViews';
 import { loadRydeRuntimeConfig, withRydeAppCollectors, type RydeArea } from './rydeApp';
 import rydeAreas from '../data/ryde-bridge-areas.json';
-import { mkdir, rename, rm } from 'node:fs/promises';
-import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, listedNationalFeeds, planRefreshCounts,
   type CollectableScooterFeed } from '../src/lib/scooterFeeds';
@@ -19,7 +17,7 @@ import { statusAge } from '../src/lib/feedValidation';
 import { FeedScheduler, type CollectionAttention } from './feedScheduler';
 import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
-import { readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './snapshotFile';
+import { readFeedStates, readSnapshot, saveAtomically, writeFeedStates, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, stalledAt, waitOutCurfew, type FeedCadence, type FeedFailure,
   type FeedStateEntry } from './feedStateLog';
@@ -408,32 +406,20 @@ async function persist(final = false) {
   const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now);
   persisting = (async () => {
     try {
-      await saveAtomically(snapshotPath, 'scooters', path => writeSnapshot(path, saved));
+      await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
     } catch (error) {
       dirty = true;
       console.error('Snapshot persistence failed', error);
       reportError('persist', error);
     }
     try {
-      await saveAtomically(feedStatesPath, 'feed-states', path => writeFeedStates(path, states, now, discovered, silences));
+      await saveAtomically(feedStatesPath, temporaryDirectory, 'feed-states', path => writeFeedStates(path, states, now, discovered, silences));
     } catch (error) {
       console.error('Feed state persistence failed', error);
       reportError('persist:feed-states', error);
     }
   })();
   try { await persisting; } finally { persisting = undefined; }
-}
-
-/** Writes a file into temporaryDirectory, then renames it over `path`. */
-async function saveAtomically(path: string, name: string, write: (temporaryPath: string) => Promise<void>) {
-  const temporaryPath = join(temporaryDirectory, `${name}.${randomUUID()}.json.tmp`);
-  try {
-    await mkdir(temporaryDirectory, { recursive: true });
-    await write(temporaryPath);
-    await rename(temporaryPath, path);
-  } finally {
-    await rm(temporaryPath, { force: true }).catch(() => {});
-  }
 }
 
 let discoveryTimer: ReturnType<typeof setTimeout>;

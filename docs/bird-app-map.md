@@ -68,6 +68,12 @@ The 44 areas took about 300 requests, so a day's round of them all takes
 about 150 of the client's 1,440 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
 cache waits two minutes, while the cache it replaces may still be sweeping.
+Each sweep is saved after every reply, with where it stood and the scooters
+it had found, as `tmp/bird-sweep.<area>.tmp` beside the snapshot (the host's
+backup skips it, as it does the snapshot's own temporary files), and removed
+when it ends: the new cache, once its two minutes are over, goes on with a
+sweep the deploy stopped, from its start, if saved within ten minutes
+(`BIRD_CHECKPOINT_MAX_AGE_MS`), rather than starting it again.
 Rome's additions take about 24 requests every two hours by day, about 170 a
 day, and 24 every half hour while someone looks at Rome, 12 of each 30
 minutes ([below](#rome-adds-the-scooters-its-feed-leaves-out)).

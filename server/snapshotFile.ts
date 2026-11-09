@@ -1,5 +1,7 @@
+import { randomUUID } from 'node:crypto';
 import { createWriteStream } from 'node:fs';
-import { open, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { FeedStateEntry } from './feedStateLog';
@@ -130,4 +132,20 @@ export async function readFeedStates(path: string, now: number): Promise<{ ageMs
   return { ageMs, ...(discoveredAt ? { discoveredAt } : {}),
     ...(silences.length ? { workerSilences: Object.fromEntries(silences) } : {}), feeds: ageMs < FEED_STATES_MAX_AGE_MS
     ? Object.fromEntries(Object.entries(saved.feeds).filter(([, entry]) => isFeedStateEntry(entry))) : {} };
+}
+
+/**
+ * Writes a file into temporaryDirectory, then renames it over `path`, which a reader then finds whole
+ * or as it was. The directory must be on the same volume as the path, for the rename to be atomic.
+ */
+export async function saveAtomically(path: string, temporaryDirectory: string, name: string,
+  write: (temporaryPath: string) => Promise<void>): Promise<void> {
+  const temporaryPath = join(temporaryDirectory, `${name}.${randomUUID()}.json.tmp`);
+  try {
+    await mkdir(temporaryDirectory, { recursive: true });
+    await write(temporaryPath);
+    await rename(temporaryPath, path);
+  } finally {
+    await rm(temporaryPath, { force: true }).catch(() => {});
+  }
 }

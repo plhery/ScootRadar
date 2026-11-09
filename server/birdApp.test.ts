@@ -2,8 +2,10 @@ import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { BIRD_BRANDS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS, BIRD_WATCH_MS, BirdClient, BirdUntrustedMapError,
-  collectBirdArea, parseBirdReply, sweepBirdArea, withBirdAppCollectors } from './birdApp';
+import { BIRD_BRANDS, BIRD_CHECKPOINT_MAX_AGE_MS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS,
+  BIRD_WATCH_MS, BirdClient, BirdSweepCheckpoints, BirdUntrustedMapError, collectBirdArea, parseBirdReply, sweepBirdArea, withBirdAppCollectors,
+  type BirdScooter } from './birdApp';
+import type { NearestProgress } from './nearestSweep';
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
@@ -14,6 +16,8 @@ const SPIN = '37f4f15f-d73b-4f1e-8f52-5de2782bd447';
 // A level-9 cell of face 4, as the map lists them.
 const CELL = '-9114779870449106944';
 const at = { lat: 30.2672, lng: -97.7431 };
+/** How long the sweeps' tests wait for a sweep to reach a point: the whole suite's load can slow one past a second. */
+const WAIT = { timeout: 10_000, interval: 20 };
 let serial = 0;
 const id = () => `00000000-0000-4000-8000-${String(++serial).padStart(12, '0')}`;
 const bird = (lat: number, lng: number, extra: Record<string, unknown> = {}) => ({
@@ -240,6 +244,40 @@ describe('Bird area sweeps', () => {
     } };
     await expect(sweepBirdArea(decoyed, [L], [], noLimits)).rejects.toThrow('unverified map (brand)');
   });
+
+  it('goes on from where a stopped sweep stood, from its start and its requests, asking only where its replies did not reach', async () => {
+    const vehicles = fleet(1_500);
+    const inside = vehicles.filter(inL).map(vehicle => vehicle.id).sort();
+    const { api } = simulated(() => vehicles);
+    const cold = await sweepBirdArea(api, [L], [], noLimits);
+    for (const previous of [[], cold.scooters]) {
+      const whole = await sweepBirdArea(api, [L], previous, noLimits);
+      // Stopped as by a deploy: the request after half the sweep's goes unanswered, and so does any after it.
+      const half = Math.ceil(whole.requests / 2);
+      let calls = 0;
+      const stopped = { nearest: (lat: number, lng: number, radiusM?: number) =>
+        ++calls <= half ? api.nearest(lat, lng, radiusM) : new Promise<never>(() => undefined) };
+      const found = new Map<string, BirdScooter>();
+      let stood: NearestProgress | undefined;
+      void sweepBirdArea(stopped, [L], previous, noLimits, found, (_, progress) => { stood = progress; });
+      await vi.waitFor(() => expect(stood?.discs).toHaveLength(half), WAIT);
+      const resume = { ...stood! }, before = api.nearest.mock.calls.length;
+      let ended: NearestProgress | undefined;
+      const resumed = await sweepBirdArea(api, [L], previous, noLimits, found, (_, progress) => { ended = progress; }, resume);
+      const asked = api.nearest.mock.calls.slice(before).map(([lat, lng]) => [lat, lng]);
+      expect(resumed.startedAt).toBe(resume.startedAt);
+      expect(resumed.requests).toBe(resume.requests + asked.length);
+      expect(asked.some(([lat, lng]) => resume.discs.some(disc => disc.lat === lat && disc.lng === lng))).toBe(false);
+      expect(half + asked.length).toBeLessThanOrEqual(whole.requests + 2);
+      expect(resumed.scooters.map(scooter => scooter.id).sort()).toEqual(inside);
+      // Every point of the outline within a reply's circle, the resumed one's or those after.
+      const discs = ended!.discs;
+      expect(discs.slice(0, half)).toEqual(resume.discs);
+      for (let lat = 30.2005; lat < 30.308; lat += 0.002) for (let lng = -97.7995; lng < -97.6745; lng += 0.002) {
+        if (polygonContainsPoint(L, lat, lng)) expect(discs.some(disc => haversineM(disc.lat, disc.lng, lat, lng) <= disc.r)).toBe(true);
+      }
+    }
+  }, 30_000);
 });
 
 describe('Bird areas in the cache', () => {
@@ -259,7 +297,8 @@ describe('Bird areas in the cache', () => {
       { id: id(), brand_id: brand, lat: lat + 0.0002, lng, captive: true }, { id: id(), brand_id: brand, lat: lat + 3, lng }];
     const { api } = simulated(() => vehicles);
     const previous = vi.fn(() => []);
-    const wrapped = withBirdAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS, previous, api);
+    const directory = await mkdtemp(join(tmpdir(), 'bird-sweeps-'));
+    const wrapped = withBirdAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS, previous, api, new BirdSweepCheckpoints({ directory }));
     const ours = wrapped.find(candidate => candidate.id === feedId)!;
     const result = await ours.collect();
     expect(previous).toHaveBeenCalledWith(feedId);
@@ -274,6 +313,7 @@ describe('Bird areas in the cache', () => {
       // Swept between 08:00 and 21:00 in its town.
       expect(candidate.nightEnds).toBeTypeOf('function');
     }
+    await rm(directory, { recursive: true, force: true });
   });
 
   it('keeps only the scooters inside its service areas, when it has some, as where a public feed has the rest of the outline', async () => {
@@ -291,5 +331,112 @@ describe('Bird areas in the cache', () => {
     await expect(collectBirdArea({ ...system, birdAppArea: undefined }, [], api)).rejects.toThrow('Not a Bird app map area');
     await expect(collectBirdArea({ ...system, birdAppArea: 'none' }, [], api)).rejects.toThrow('Not a Bird app map area');
     await expect(collectBirdArea({ ...system, provider: 'lime' }, [], api)).rejects.toThrow('Not a Bird app map area');
+  });
+});
+
+describe('Bird sweeps resumed after a deploy', () => {
+  const austin = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'bird_us_app_austin')!;
+  const vehicles = fleet(1_000);
+  let directory: string;
+  let path: string;
+  let logged: Record<string, unknown>[];
+  beforeEach(async () => {
+    directory = await mkdtemp(join(tmpdir(), 'bird-sweeps-'));
+    path = new BirdSweepCheckpoints({ directory }).path(austin.id);
+    logged = [];
+    vi.spyOn(console, 'log').mockImplementation(line => { logged.push(JSON.parse(String(line))); });
+  });
+  afterEach(async () => {
+    vi.restoreAllMocks();
+    await rm(directory, { recursive: true, force: true });
+  });
+  const saved = async () => JSON.parse(await readFile(path, 'utf8'));
+  const gone = () => expect(stat(path)).rejects.toThrow('ENOENT');
+  /** A sweep's request that waits, once, until the sweep's checkpoint holds `replies` of its replies or more, and reads it. */
+  const reading = (replies: number, nearest: ReturnType<typeof simulated>['api']['nearest'], fail = false) => {
+    let calls = 0;
+    const read: { checkpoint?: Record<string, unknown> } = {};
+    const api = { nearest: async (lat: number, lng: number, radiusM?: number) => {
+      if (++calls === replies + 1) {
+        read.checkpoint = await vi.waitFor(async () => {
+          const checkpoint = await saved();
+          expect(checkpoint.discs.length).toBeGreaterThanOrEqual(replies);
+          return checkpoint;
+        }, WAIT);
+        if (fail) throw new Error('Bird map HTTP 400');
+      }
+      return nearest(lat, lng, radiusM);
+    } };
+    return { api, read };
+  };
+
+  it('saves where the sweep stands after each reply, and removes it once the sweep ends, done or failed', async () => {
+    const { api: map } = simulated(() => vehicles);
+    const checkpoints = new BirdSweepCheckpoints({ directory });
+    const done = reading(3, map.nearest);
+    const result = await collectBirdArea(austin, [], done.api, undefined, checkpoints);
+    expect(done.read.checkpoint).toMatchObject({ system: austin.id, startedAt: result.observedAt, discs: expect.any(Array) });
+    const checkpoint = done.read.checkpoint!;
+    expect(checkpoint.requests).toBeGreaterThanOrEqual(3);
+    expect(checkpoint.savedAt).toBeGreaterThanOrEqual(result.observedAt!);
+    // The scooters found so far, as the sweep holds them.
+    expect((checkpoint.scooters as BirdScooter[]).length).toBeGreaterThan(0);
+    expect(Object.keys((checkpoint.scooters as BirdScooter[])[0]).sort()).toEqual(['battery', 'brand', 'id', 'lat', 'lng', 'range']);
+    await gone();
+    const failed = reading(2, map.nearest, true);
+    await expect(collectBirdArea(austin, [], failed.api, undefined, checkpoints)).rejects.toThrow('HTTP 400');
+    expect((failed.read.checkpoint?.discs as unknown[]).length).toBeGreaterThanOrEqual(2);
+    await gone();
+  }, 30_000);
+
+  it('resumes a sweep a deploy stopped, from its start, for fewer requests, and starts again from a stale or broken one', async () => {
+    const { api: map } = simulated(() => vehicles);
+    const whole = await collectBirdArea(austin, [], map, undefined, new BirdSweepCheckpoints({ directory }));
+    const wholeRequests = map.nearest.mock.calls.length;
+    expect(logged.at(-1)).not.toHaveProperty('resumed');
+    // The old cache stops answering after five replies, as a deploy stops it.
+    let calls = 0;
+    const stopped = { nearest: (lat: number, lng: number, radiusM?: number) =>
+      ++calls <= 5 ? map.nearest(lat, lng, radiusM) : new Promise<never>(() => undefined) };
+    void collectBirdArea(austin, [], stopped, undefined, new BirdSweepCheckpoints({ directory }));
+    await vi.waitFor(async () => expect((await saved()).discs).toHaveLength(5), WAIT);
+    const checkpoint = await saved();
+
+    const before = map.nearest.mock.calls.length;
+    const resumed = await collectBirdArea(austin, [], map, undefined, new BirdSweepCheckpoints({ directory }));
+    const requests = map.nearest.mock.calls.length - before;
+    expect(requests).toBeLessThan(wholeRequests);
+    expect(resumed.observedAt).toBe(checkpoint.startedAt);
+    expect(resumed.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(whole.vehicles.map(vehicle => vehicle.vehicle_id).sort());
+    expect(logged.at(-1)).toMatchObject({ event: 'bird_sweep', system: austin.id, resumed: true, resumedRequests: checkpoint.requests,
+      requests: checkpoint.requests + requests });
+    await gone();
+
+    for (const left of [JSON.stringify({ ...checkpoint, savedAt: Date.now() - BIRD_CHECKPOINT_MAX_AGE_MS - 1 }),
+      JSON.stringify({ ...checkpoint, startedAt: Date.now() - 3 * 60 * 60_000 }), JSON.stringify({ ...checkpoint, system: 'bird_us_app_mesa' }),
+      JSON.stringify({ ...checkpoint, discs: [{ lat: 30.27 }] }), '{"system":']) {
+      await writeFile(path, left);
+      const from = map.nearest.mock.calls.length;
+      const fresh = await collectBirdArea(austin, [], map, undefined, new BirdSweepCheckpoints({ directory }));
+      expect(map.nearest.mock.calls.length - from).toBe(wholeRequests);
+      expect(fresh.observedAt).toBeGreaterThan(checkpoint.startedAt);
+      expect(logged.at(-1)).not.toHaveProperty('resumed');
+      await gone();
+    }
+  }, 30_000);
+
+  it('reads a checkpoint only once the start hold is over, by when the cache a deploy replaces has saved its last', async () => {
+    await writeFile(path, '{}');
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      const checkpoints = new BirdSweepCheckpoints({ directory, startHoldMs: 120_000 });
+      let read = false;
+      void checkpoints.resumable(austin.id, { requests: 200, milliseconds: 2 * 60 * 60_000, retryMs: 1 }).then(() => { read = true; });
+      await vi.advanceTimersByTimeAsync(119_000);
+      expect(read).toBe(false);
+      await vi.advanceTimersByTimeAsync(1_000);
+      vi.useRealTimers();
+      await vi.waitFor(() => expect(read).toBe(true));
+    } finally { vi.useRealTimers(); }
   });
 });

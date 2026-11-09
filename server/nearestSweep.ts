@@ -25,7 +25,8 @@ export interface NearestApi<T extends NearestScooter> { nearest(lat: number, lng
 
 export type Ring = [number, number][];
 interface Cell { south: number; west: number; north: number; east: number; inside: boolean; asked: boolean }
-interface Disc { lat: number; lng: number; r: number }
+/** A circle a reply lists every scooter of. */
+export interface Disc { lat: number; lng: number; r: number }
 const middle = (cell: Cell): [number, number] => [(cell.south + cell.north) / 2, (cell.west + cell.east) / 2];
 const corners = (cell: Cell): [number, number][] =>
   [[cell.south, cell.west], [cell.south, cell.east], [cell.north, cell.west], [cell.north, cell.east]];
@@ -336,9 +337,14 @@ export interface NearestSweep<T extends NearestScooter> { scooters: T[]; request
 // client's pacing, which alone then sets the pace.
 const IN_FLIGHT = 3;
 export interface SweepLimits { requests: number; milliseconds: number; retryMs: number }
+/**
+ * Where a sweep stands after a reply: when it started, the requests it has made and the circles its
+ * replies vouch for. A sweep stopped partway, by a deploy, resumes from it (birdApp.ts).
+ */
+export interface NearestProgress { startedAt: number; requests: number; discs: readonly Disc[] }
 
 /** The square inside the circle a reply lists every scooter of. */
-function heldSquare(lat: number, lng: number, radiusM: number): MapBounds {
+export function heldSquare(lat: number, lng: number, radiusM: number): MapBounds {
   const dLat = radiusM / Math.SQRT2 / 111_320;
   const dLng = dLat / Math.max(Math.cos(lat * Math.PI / 180), 0.01);
   return { south: lat - dLat, north: lat + dLat, west: lng - dLng, east: lng + dLng };
@@ -348,15 +354,21 @@ function heldSquare(lat: number, lng: number, radiusM: number): MapBounds {
  * A complete sweep of one service area: every point of its outline ends within a reply that
  * lists every scooter that near it. A sweep that cannot finish within its limits fails, and the
  * cache keeps the area's last sweep. Each scooter it sees, inside the outline or not, is in found
- * as soon as it is seen, and `done` hears of the square each reply answers for.
+ * as soon as it is seen, and `done` hears of the square each reply answers for and where the
+ * sweep then stands.
+ *
+ * Given where a sweep stopped partway, with the scooters it had found already in found, it goes on
+ * from there: from its start, so that its limits and the time its scooters are said to be seen
+ * hold, with its requests counted, and asking only where its replies did not reach.
  */
 export async function sweepNearestArea<T extends NearestScooter>(map: NearestMap, api: NearestApi<T>, rings: readonly Ring[],
   previous: readonly { lat: number; lng: number }[], limits: SweepLimits, found = new Map<string, T>(),
-  done?: (part: MapBounds) => void): Promise<NearestSweep<T>> {
-  const startedAt = Date.now();
+  done?: (part: MapBounds, progress: NearestProgress) => void, resume?: NearestProgress): Promise<NearestSweep<T>> {
+  const startedAt = resume?.startedAt ?? Date.now();
   const discs = new Discs();
+  for (const disc of resume?.discs ?? []) discs.add(disc);
   const piles = { count: 0 };
-  let requests = 0;
+  let requests = resume?.requests ?? 0;
   const ask = async (lat: number, lng: number) => {
     let reply: NearestReply<T> | undefined;
     for (let attempt = 0; !reply; attempt++) {
@@ -369,7 +381,7 @@ export async function sweepNearestArea<T extends NearestScooter>(map: NearestMap
     // The later of two sightings of a scooter ridden meanwhile wins.
     for (const scooter of reply.scooters) found.set(scooter.id, scooter);
     discs.add({ lat, lng, r: reply.completeM });
-    done?.(heldSquare(lat, lng, reply.completeM));
+    done?.(heldSquare(lat, lng, reply.completeM), { startedAt, requests, discs: [...discs.all] });
   };
   // Up to IN_FLIGHT at once, and none started once one has failed. Each lane works through its own
   // run of the items, which openCells lists neighbours next to neighbours: a reply can spare the
@@ -406,12 +418,27 @@ export async function sweepNearestArea<T extends NearestScooter>(map: NearestMap
   };
   const take = (queue: [number, number][]) => takeNearest(queue, ([lat, lng]) => ({ south: lat, north: lat, west: lng, east: lng }));
   const plan = await planNearestSweep(map, rings, previous);
-  await inTurn(plan, ([lat, lng]) => ask(lat, lng));
-  let cells = openCells(map, rings, startCells(map, rings), discs, piles);
+  // Resumed, the plan is made again from the same positions, and a point the replies before reach is not asked.
+  const reached = ([lat, lng]: [number, number]) => discs.near({ south: lat, west: lng, north: lat, east: lng, inside: false, asked: false })
+    .some(disc => haversineM(disc.lat, disc.lng, lat, lng) <= disc.r);
+  await inTurn(resume ? plan.filter(point => !reached(point)) : plan, ([lat, lng]) => ask(lat, lng));
+  // Resumed, the first cells are split around the plan's replies alone, as in a sweep not stopped,
+  // and one whose middle was asked before is not asked again. Split around every reply before, they
+  // came smaller than a reply reaches: simulated over Austin's outline, a sweep from nothing stopped
+  // after 3 of its 16 requests then took 24 in all, and 16 this way.
+  let first = discs;
+  if (resume) {
+    const planned = new Set(plan.map(point => point.join(',')));
+    first = new Discs();
+    for (const disc of discs.all) if (planned.has(`${disc.lat},${disc.lng}`)) first.add(disc);
+  }
+  let cells = openCells(map, rings, startCells(map, rings), first, piles);
+  const asked = new Set(resume?.discs.map(disc => `${disc.lat},${disc.lng}`));
+  for (const cell of cells) cell.asked = asked.has(middle(cell).join(','));
   while (cells.length) {
     await inLanes(cells, async cell => {
       // One of the replies before may have reached it.
-      if (discs.near(cell).some(disc => holds(disc, cell))) return;
+      if (cell.asked || discs.near(cell).some(disc => holds(disc, cell))) return;
       cell.asked = true;
       await ask(...middle(cell));
     });

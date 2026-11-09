@@ -165,8 +165,8 @@ export class SweepProgress {
   private reportedAt = 0;
   constructor(private readonly found: () => Vehicle[], private readonly now: () => number = Date.now) {}
 
-  done(part: MapBounds): void {
-    this.swept.push(part);
+  done(...parts: MapBounds[]): void {
+    this.swept.push(...parts);
     const collection = currentCollection();
     if (!collection || this.now() - this.reportedAt < PROGRESS_EVERY_MS) return;
     this.reportedAt = this.now();
