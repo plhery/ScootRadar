@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 7 November 2026
+Last updated: 9 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -33,8 +33,9 @@ searches.
 - Language, units, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS and Android apps, the ride passes entered are stored locally, as is the fact that the device has found its
   location before (a yes or no, never the position). For its rating prompt each of the
-  iOS and Android apps also keeps the number of days it was used, the time "Open in" was last
-  tapped and when it last asked. Precise map origins are not persisted, except the
+  iOS and Android apps also keeps the number of days it was used and when it last asked (up to
+  version 1.4.0 of the iOS app and 1.3.0 of the Android app, also the time "Open in" was last
+  tapped, which later versions delete). Precise map origins are not persisted, except the
   last place chosen in the search: it is kept on the device (in the iOS and Android
   apps, outside their backups) so that the search can offer it again, until another
   place is chosen or it is removed with its ×.
