@@ -1,0 +1,36 @@
+{
+  "$comment": [
+    "How far a full battery takes each app's scooters, pessimistically, in metres: the range filter judges a scooter that reports a battery and no range by its battery times its app's figure here (issue #12).",
+    "Each is the lowest full battery measured in any one feed of 50 scooters or more on the cache's snapshot of 9 November 2026: the median of range over battery where a feed gives both, or the 99th percentile of the ranges where it gives only ranges (Lime in Baden-Württemberg, 11.5 km, where its other feeds read about 40 km).",
+    "An app missing here, as those that report a battery and never a range (Jet, Beam, Xingxing, Binbin, Kickgoing, Qick, Alpaca), takes defaultMeters: 3 km needs 30%.",
+    "Better figures, for each city, can replace these later: the cache sends the ones it uses with each answer (batteryRanges)."
+  ],
+  "defaultMeters": 10000,
+  "providers": {
+    "beryl": 35000,
+    "bird": 33800,
+    "bolt": 29400,
+    "bolt_hopp": 61500,
+    "dart": 45700,
+    "dott": 18700,
+    "elerent": 54600,
+    "flamingo": 18300,
+    "gcoo": 29100,
+    "hopp": 36000,
+    "hoppy": 50400,
+    "lime": 11500,
+    "lyft": 36800,
+    "pony": 39600,
+    "ride_mobility": 25000,
+    "ridemovi": 44400,
+    "ryde": 49400,
+    "saham": 34000,
+    "spin": 33900,
+    "veo": 45200,
+    "voi": 72800,
+    "whoosh": 19500,
+    "yoio": 25700,
+    "zelectra": 22500,
+    "zeus": 29700
+  }
+}

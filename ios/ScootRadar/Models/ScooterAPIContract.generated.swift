@@ -136,5 +136,6 @@ struct ScooterAPIResponsePayload: Decodable, Sendable {
     let lastSeen: ScooterLastSeenPayload?
     let providers: [String: Int]
     let fullRanges: [String: Int]?
+    let batteryRanges: [String: Int]?
     let meta: ScooterResponseMetadataPayload
 }

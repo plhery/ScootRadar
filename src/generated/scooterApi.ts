@@ -93,5 +93,6 @@ export interface ScooterResponse {
   lastSeen?: LastSeen;
   providers: Record<string, number>;
   fullRanges?: Record<string, number>;
+  batteryRanges?: Record<string, number>;
   meta: ScooterResponseMeta;
 }
