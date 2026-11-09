@@ -1736,6 +1736,11 @@ extension ScooterModelsTests {
         let italian = try XCTUnwrap(Bundle.main.path(forResource: "it", ofType: "lproj").flatMap(Bundle.init(path:)))
         XCTAssertEqual(italian.localizedString(forKey: "Automatic", value: nil, table: nil), "Auto")
         XCTAssertEqual(italian.localizedString(forKey: "Automatic (language)", value: nil, table: nil), "Automatica")
+        // English says Auto too: on a phone 375 wide, Automatic was set at its smallest beside the check, and cut to
+        // "Autom…" from the first larger text size (9 November 2026). The language row keeps the whole word.
+        let english = try XCTUnwrap(Bundle.main.path(forResource: "en", ofType: "lproj").flatMap(Bundle.init(path:)))
+        XCTAssertEqual(english.localizedString(forKey: "Automatic", value: nil, table: nil), "Auto")
+        XCTAssertEqual(english.localizedString(forKey: "Automatic (language)", value: nil, table: nil), "Automatic")
     }
 
     func testFrenchAndItalianNameTheOperatorWithOneWordAndFrenchShowsNothingInTheSingular() throws {
