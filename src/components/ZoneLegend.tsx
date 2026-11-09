@@ -7,7 +7,7 @@ import { useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
 import type { RuleKind, RuleZoneShape } from '@/lib/ruleZones';
 import { formatWallTime } from '@/lib/uiText';
 import type { ZoneDataState } from '@/lib/useZoneData';
-import { measurementSystem } from '@/lib/walking';
+import { measurementSystem, type UnitsChoice } from '@/lib/walking';
 import type { MapZone, ZoneKind } from '@/lib/zones';
 
 /**
@@ -60,14 +60,18 @@ const NOTES: Partial<Record<ZoneDataState, TranslationKey>> = {
 
 const KM_PER_MILE = 1.609344;
 
+/** Walking pace, the speed a pavement zone allows (zones.pavement). */
+const PAVEMENT_KPH = 6;
+
 /**
  * The limits of the slow zones a line of the legend counts, given in km/h, as it says them: "6 km/h", or from the
- * least to the greatest, "6–15 km/h"; in mph where the region measures distances in miles, as walking.ts does, each
- * rounded to a whole number once converted (16.09 km/h is "10 mph"). Null where one of them has none, or none is
- * counted: the line then says "Slow" alone.
+ * least to the greatest, "6–15 km/h"; in mph where the units chosen, or else the region, measure distances in miles,
+ * as walking.ts does, each rounded to a whole number once converted (16.09 km/h is "10 mph"). Null where one of them
+ * has none, or none is counted: the line then says "Slow" alone.
  */
-export function formatSpeedLimits(speedsKph: readonly (number | undefined)[], locale: AppLocale, region?: string): string | null {
-  const miles = measurementSystem(region) !== 'metric';
+export function formatSpeedLimits(speedsKph: readonly (number | undefined)[], locale: AppLocale, region?: string,
+  units: UnitsChoice = 'auto'): string | null {
+  const miles = measurementSystem(region, units) !== 'metric';
   let least = Infinity;
   let greatest = -Infinity;
   for (const speed of speedsKph) {
@@ -102,7 +106,7 @@ export default function ZoneLegend({ state, zones, rules = [] }: {
   zones: readonly Pick<MapZone, 'kind' | 'maxSpeedKph'>[];
   rules?: RuleZoneShape[];
 }) {
-  const { t, locale, region } = useI18n();
+  const { t, locale, region, units } = useI18n();
   if (state === 'off' && !rules.length) return null;
   const count = zones.length;
   const note = state === 'off' ? null
@@ -129,8 +133,10 @@ export default function ZoneLegend({ state, zones, rules = [] }: {
     if (zone.rule === 'slow') speeds.push(zone.maxSpeedKph);
   }
   // "Slow: 6 km/h" where each slow zone counted has a limit, else the kind's name: the text screen readers read too.
+  // Riding on the pavement is at walking pace, 6 km/h, which is written in the units too: "4 mph".
   const label = (kind: RuleKind, speeds: readonly (number | undefined)[]) => {
-    const speed = kind === 'slow' ? formatSpeedLimits(speeds, locale, region) : null;
+    if (kind === 'pavement') return t(LABELS[kind], { speed: formatSpeedLimits([PAVEMENT_KPH], locale, region, units) ?? '' });
+    const speed = kind === 'slow' ? formatSpeedLimits(speeds, locale, region, units) : null;
     return speed ? t('zones.slowSpeed', { speed }) : t(LABELS[kind]);
   };
   return (

@@ -29,7 +29,10 @@ function bergenSlow(id: string, maxSpeedKph: number | undefined, hours?: { from:
   return { ...bergen(id, 'slow'), maxSpeedKph, hours, inForce };
 }
 
-beforeEach(() => localStorage.setItem('scooters-locale', 'en'));
+beforeEach(() => {
+  localStorage.setItem('scooters-locale', 'en');
+  localStorage.removeItem('scooters-units');
+});
 
 /** What the legend lists, item by item, and its credit. */
 function listed(container: HTMLElement) {
@@ -175,6 +178,23 @@ it('says the limits in mph where the region measures in miles', async () => {
   await vi.waitFor(() => expect(listed(container).items).toEqual([
     'No riding', 'No parking', 'Slow: 8–10 mph', 'Slow: 10 mph 10:00 PM–6:00 AM',
   ]));
+});
+
+it('says the limits, and the pavement\'s walking pace, in the units chosen over the region\'s', async () => {
+  vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-CH']);
+  localStorage.setItem('scooters-units', 'imperial');
+  const rules = [bergenSlow('slow-1', 16.09), bergen('pavement', 'pavement')];
+  const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
+  await vi.waitFor(() => expect(listed(container).items).toEqual(['Slow: 10 mph', 'Pavement riding at 4 mph']));
+});
+
+it('writes a limit in the units chosen: Automatic as the region does, else kilometres or miles anywhere', () => {
+  expect(formatSpeedLimits([16.09], 'en', 'US', 'auto')).toBe('10 mph');
+  expect(formatSpeedLimits([16.09], 'en', 'US', 'metric')).toBe('16 km/h');
+  expect(formatSpeedLimits([16.09], 'en', 'CH', 'imperial')).toBe('10 mph');
+  expect(formatSpeedLimits([16.09], 'en', 'GB', 'imperial')).toBe('10 mph');
+  expect(formatSpeedLimits([16.09], 'en', 'GB', 'metric')).toBe('16 km/h');
+  expect(formatSpeedLimits([6, 15], 'de', 'CH', 'imperial')).toBe('4–9 mi/h');
 });
 
 it('writes a limit in the language, as its region writes it, and in miles where it measures in them', () => {

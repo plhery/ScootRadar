@@ -189,7 +189,7 @@ const ROUTE_EDGE_VERTICAL = 28;
 
 /** As walking.ts writes it, with a decimal on every kilometre: "1.0 km", so the label keeps its width. */
 function formatDistance(meters: number, formatter: DistanceFormatter): string {
-  if (measurementSystem(formatter.region) !== 'metric') return formatWalkingDistance(meters, formatter);
+  if (measurementSystem(formatter.region, formatter.units) !== 'metric') return formatWalkingDistance(meters, formatter);
   const { t, formatNumber } = formatter;
   return meters < 1000
     ? t('distance.meters', { count: formatNumber(Math.round(meters)) })
@@ -479,7 +479,7 @@ export default function MapComponent({
   mapStyle = 'calm',
 }: MapComponentProps) {
   const i18n = useI18n();
-  const { t, formatNumber, locale, region, nameLanguage } = i18n;
+  const { t, formatNumber, locale, region, units, nameLanguage } = i18n;
   const systemDark = useSyncExternalStore(subscribeToScheme, () => window.matchMedia(DARK_SCHEME).matches, () => false);
   const ground: GroundTheme = theme === 'dark' || (theme === 'auto' && systemDark) ? 'night' : 'day';
   const containerRef = useRef<HTMLDivElement>(null);
@@ -1073,7 +1073,7 @@ export default function MapComponent({
         ? t('marker.scooter', { name })
         : t('marker.scooterAway', {
             name,
-            distance: formatDistance(distanceM, { t, formatNumber, locale, region }),
+            distance: formatDistance(distanceM, { t, formatNumber, locale, region, units }),
           });
     };
 
@@ -1301,6 +1301,7 @@ export default function MapComponent({
     routeRemainingM,
     scooterIcon,
     selectedVehicleKey,
+    units,
     walkedGone,
     t,
     vehicles,

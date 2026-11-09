@@ -8,6 +8,7 @@ import { BATTERY_PRESETS, batteryPresetLabel, snapBatteryPreset } from '@/lib/ba
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
 import { isSingular } from '@/lib/uiText';
+import type { UnitsChoice } from '@/lib/walking';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
 import { providerSurfaceColor } from '@/lib/providerColor';
 import { selectionFeedback } from '@/lib/feedback';
@@ -43,6 +44,13 @@ const THEMES: { name: ThemeName; label: TranslationKey }[] = [
   { name: 'auto', label: 'set.auto' },
   { name: 'light', label: 'set.light' },
   { name: 'dark', label: 'set.dark' },
+];
+
+// "km" and "mi" are written the same in every language, and spoken in full by their labels.
+const UNITS: { name: UnitsChoice; label: TranslationKey; symbol?: string }[] = [
+  { name: 'auto', label: 'set.auto' },
+  { name: 'metric', label: 'set.kilometres', symbol: 'km' },
+  { name: 'imperial', label: 'set.miles', symbol: 'mi' },
 ];
 
 const MAP_STYLES: { name: MapStyleName; label: TranslationKey }[] = [
@@ -101,7 +109,7 @@ export default function ControlSheet({
   onMapStyleChange,
   onZonesChange,
 }: ControlSheetProps) {
-  const { t, locale, localeChoice, formatNumber } = useI18n();
+  const { t, locale, localeChoice, units, setUnits, formatNumber } = useI18n();
   const batteryHelpId = useId();
   const zonesHelpId = useId();
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -339,6 +347,39 @@ export default function ControlSheet({
                   <Icon name="chevron" size={16} strokeWidth={2.2} />
                 </span>
               </button>
+            </div>
+          </section>
+          <section className="settings-section">
+            <h3>{t('set.units')}</h3>
+            {/* Automatic writes lengths and speeds as the region does (walking.ts). */}
+            <div
+              className="seg"
+              role="group"
+              aria-label={t('set.units')}
+              style={
+                {
+                  '--segment-index': UNITS.findIndex(({ name }) => name === units),
+                  '--segment-count': UNITS.length,
+                } as CSSProperties
+              }
+            >
+              <span className="seg-indicator" aria-hidden="true" />
+              {UNITS.map(({ name, label, symbol }) => (
+                <button
+                  key={name}
+                  type="button"
+                  aria-pressed={units === name}
+                  aria-label={symbol && t(label)}
+                  onClick={() => {
+                    if (units === name) return;
+                    selectionFeedback();
+                    track('units_change', { result: name });
+                    setUnits(name);
+                  }}
+                >
+                  {symbol ?? t(label)}
+                </button>
+              ))}
             </div>
           </section>
           <section className="settings-section">

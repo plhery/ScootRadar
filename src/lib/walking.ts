@@ -41,6 +41,8 @@ export interface DistanceFormatter {
   locale?: AppLocale;
   /** The format region, which picks the units; metric when absent. See formatLocale.ts. */
   region?: string;
+  /** The units chosen in the settings, over the region's; Automatic when absent. */
+  units?: UnitsChoice;
 }
 
 /**
@@ -51,14 +53,26 @@ export interface DistanceFormatter {
  */
 export type MeasurementSystem = 'metric' | 'us' | 'uk';
 
-export function measurementSystem(region: string | undefined): MeasurementSystem {
+/**
+ * The units chosen in the settings: Automatic, the region's, or kilometres or miles whatever the
+ * region, for a visitor whose browser asks for American English and who rides in kilometres.
+ */
+export type UnitsChoice = 'auto' | 'metric' | 'imperial';
+
+/**
+ * The units of every length and speed the map writes or decides on: the region's under Automatic.
+ * Miles chosen take yards under half a mile where the region is the UK's and feet everywhere else.
+ */
+export function measurementSystem(region: string | undefined, units: UnitsChoice = 'auto'): MeasurementSystem {
+  if (units === 'metric') return 'metric';
+  if (units === 'imperial') return region === 'GB' ? 'uk' : 'us';
   if (region === 'US' || region === 'LR' || region === 'MM') return 'us';
   return region === 'GB' ? 'uk' : 'metric';
 }
 
 const METERS_PER_FOOT = 0.3048;
 const METERS_PER_YARD = 0.9144;
-const METERS_PER_MILE = 1609.344;
+export const METERS_PER_MILE = 1609.344;
 
 interface ImperialLength {
   value: number;
@@ -91,7 +105,7 @@ function imperialFormat({ unit, maximumFractionDigits }: ImperialLength, { local
 
 /** The same figure in two parts, for where the unit is set smaller than the number. */
 export function distanceParts(meters: number, formatter: DistanceFormatter): { value: string; unit: string } {
-  const system = measurementSystem(formatter.region);
+  const system = measurementSystem(formatter.region, formatter.units);
   if (system !== 'metric') {
     const length = imperialLength(meters, system);
     const parts = imperialFormat(length, formatter).formatToParts(length.value);
@@ -111,7 +125,7 @@ export function distanceParts(meters: number, formatter: DistanceFormatter): { v
  * measures in miles, "1,000 ft" or "350 yd" below half a mile, then "1.9 mi".
  */
 export function formatDistance(meters: number, formatter: DistanceFormatter): string {
-  const system = measurementSystem(formatter.region);
+  const system = measurementSystem(formatter.region, formatter.units);
   if (system !== 'metric') {
     const length = imperialLength(meters, system);
     return imperialFormat(length, formatter).format(length.value);
@@ -122,11 +136,16 @@ export function formatDistance(meters: number, formatter: DistanceFormatter): st
     : t('distance.kilometers', { count: formatNumber(meters / 1000, { maximumFractionDigits: 1 }) });
 }
 
+/** A whole number of kilometres, or of miles where lengths are in miles: "5 km", "3 mi". */
+export function formatWholeLength(count: number, formatter: DistanceFormatter): string {
+  if (measurementSystem(formatter.region, formatter.units) === 'metric') {
+    return formatter.t('distance.kilometers', { count: formatter.formatNumber(count) });
+  }
+  return imperialFormat({ value: count, unit: 'mile', maximumFractionDigits: 0 }, formatter).format(count);
+}
+
 /** A city's distance in whole kilometres, or whole miles, never 0: "Bern · 61 km", "Bern · 38 mi". */
 export function formatCityDistance(meters: number, formatter: DistanceFormatter): string {
-  if (measurementSystem(formatter.region) === 'metric') {
-    return formatter.t('distance.kilometers', { count: formatter.formatNumber(Math.max(1, Math.round(meters / 1000))) });
-  }
-  const miles = { value: Math.max(1, Math.round(meters / METERS_PER_MILE)), unit: 'mile', maximumFractionDigits: 0 } as const;
-  return imperialFormat(miles, formatter).format(miles.value);
+  const unit = measurementSystem(formatter.region, formatter.units) === 'metric' ? 1000 : METERS_PER_MILE;
+  return formatWholeLength(Math.max(1, Math.round(meters / unit)), formatter);
 }

@@ -52,6 +52,7 @@ const grouped = (value: number) => new Intl.NumberFormat('en-CH').format(value);
 
 beforeEach(() => {
   localStorage.setItem('scooters-locale', 'en');
+  localStorage.removeItem('scooters-units');
   // jsdom has neither modal dialogs nor animations.
   HTMLDialogElement.prototype.showModal = function showModal() { this.open = true; };
   HTMLDialogElement.prototype.close = function close() { this.open = false; };
@@ -206,11 +207,11 @@ describe('ControlSheet settings', () => {
   const pressed = (group: HTMLElement) =>
     within(group).getAllByRole('button').map(button => `${button.textContent}:${button.getAttribute('aria-pressed')}`);
 
-  it('is a dialog named Settings with appearance, map, language and About, in that order', () => {
+  it('is a dialog named Settings with appearance, map, language, units and About, in that order', () => {
     settings();
     const dialog = screen.getByRole('dialog', { name: 'Settings' });
     expect(within(dialog).getAllByRole('heading', { level: 3 }).map(heading => heading.textContent))
-      .toEqual(['Appearance', 'Map', 'Language', 'About']);
+      .toEqual(['Appearance', 'Map', 'Language', 'Units', 'About']);
     // The sources live in the credits; nothing is left of the English-only footer.
     expect(within(dialog).queryByRole('link', { name: /MobiData BW/ })).toBeNull();
     expect(within(dialog).queryByRole('button', { name: 'Reset' })).toBeNull();
@@ -229,6 +230,41 @@ describe('ControlSheet settings', () => {
 
     rerender({ panel: 'settings', theme: 'dark' });
     expect(pressed(appearance)).toEqual(['Automatic:false', 'Light:false', 'Dark:true']);
+  });
+
+  it('offers the units as Automatic, km or mi, spoken in full, and keeps them', async () => {
+    settings();
+    const units = screen.getByRole('group', { name: 'Units' });
+    expect(pressed(units)).toEqual(['Automatic:true', 'km:false', 'mi:false']);
+    expect(within(units).getAllByRole('button').map(button => button.getAttribute('aria-label')))
+      .toEqual([null, 'Kilometres', 'Miles']);
+
+    fireEvent.click(within(units).getByRole('button', { name: 'Miles' }));
+    expect(track).toHaveBeenCalledExactlyOnceWith('units_change', { result: 'imperial' });
+    expect(localStorage.getItem('scooters-units')).toBe('imperial');
+    expect(pressed(units)).toEqual(['Automatic:false', 'km:false', 'mi:true']);
+    expect(units.style.getPropertyValue('--segment-index')).toBe('2');
+    // The units already chosen are not chosen again.
+    fireEvent.click(within(units).getByRole('button', { name: 'Miles' }));
+    expect(track).toHaveBeenCalledOnce();
+
+    fireEvent.click(within(units).getByRole('button', { name: 'Automatic' }));
+    expect(localStorage.getItem('scooters-units')).toBeNull();
+    cleanup();
+
+    localStorage.setItem('scooters-units', 'metric');
+    settings();
+    await vi.waitFor(() => expect(pressed(screen.getByRole('group', { name: 'Units' })))
+      .toEqual(['Automatic:false', 'km:true', 'mi:false']));
+  });
+
+  it('names the units in the language on screen, and writes km and mi in every one', async () => {
+    localStorage.setItem('scooters-locale', 'de');
+    settings();
+    const units = await screen.findByRole('group', { name: 'Einheiten' });
+    expect(within(units).getAllByRole('button').map(button => button.getAttribute('aria-label') ?? button.textContent))
+      .toEqual(['Automatisch', 'Kilometer', 'Meilen']);
+    expect(within(units).getAllByRole('button').map(button => button.textContent)).toEqual(['Automatisch', 'km', 'mi']);
   });
 
   it('offers the map as Calm or Detailed, each with a picture', () => {

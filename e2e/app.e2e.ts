@@ -469,6 +469,41 @@ test('a phone opens Voi’s, Dott’s and Bolt’s apps where their rider maps l
   }
 });
 
+test('the units chosen in the settings write every length in them, in a country that measures in kilometres, and stay', async ({ page }) => {
+  await page.goto('/map');
+  await allowLocationWithCompass(page, 'granted');
+  await pressNearMe(page);
+  await expect(page.locator('.scooter-marker')).toHaveCount(3);
+  const lead = page.locator('.dock-lead');
+  await expect(lead.locator('.dock-lead-figure')).toHaveText(/^\d+m$/);
+
+  const trigger = page.getByRole('button', { name: 'Settings', exact: true });
+  await trigger.click();
+  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
+  const units = settings.getByRole('group', { name: 'Units' });
+  await expect(units.getByRole('button')).toHaveText(['Automatic', 'km', 'mi']);
+  await expect(units.getByRole('button', { name: 'Automatic' })).toHaveAttribute('aria-pressed', 'true');
+  await units.getByRole('button', { name: 'Miles' }).click();
+  await expect(units.getByRole('button', { name: 'Miles' })).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Escape');
+  await expect(settings).toBeHidden();
+
+  // Feet under half a mile outside the UK, and miles from there: the card's range of 14 km.
+  await expect(lead.locator('.dock-lead-figure')).toHaveText(/^[\d,]+ft$/);
+  await lead.click();
+  const card = page.locator('.dock-card');
+  await expect(card.locator('.card-title p')).toHaveText('82% battery, 8.7 mi range');
+  // Kept with the language, not in the link.
+  expect(await page.evaluate(() => localStorage.getItem('scooters-units'))).toBe('imperial');
+  expect(new URL(page.url()).searchParams.has('units')).toBe(false);
+
+  await page.reload();
+  await trigger.click();
+  await expect(units.getByRole('button', { name: 'Miles' })).toHaveAttribute('aria-pressed', 'true');
+  await units.getByRole('button', { name: 'Automatic' }).click();
+  expect(await page.evaluate(() => localStorage.getItem('scooters-units'))).toBeNull();
+});
+
 test.describe('in a browser that asks for US English', () => {
   test.use({ locale: 'en-US' });
 
@@ -2350,7 +2385,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await trigger.click();
   const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
   await expect(settings).toBeVisible();
-  expect(await settings.getByRole('heading', { level: 3 }).allTextContents()).toEqual(['Appearance', 'Map', 'Language', 'About']);
+  expect(await settings.getByRole('heading', { level: 3 }).allTextContents()).toEqual(['Appearance', 'Map', 'Language', 'Units', 'About']);
 
   // One row for the language, which says that it is the browser's, and leads to the list of them.
   const languageRow = settings.getByRole('button', { name: 'English Automatic', exact: true });

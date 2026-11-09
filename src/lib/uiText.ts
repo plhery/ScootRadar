@@ -1,5 +1,6 @@
 import { formatLocale } from '@/lib/formatLocale';
 import type { AppLocale, TranslationKey } from '@/lib/i18n';
+import type { UnitsChoice } from '@/lib/walking';
 
 /** A sentence and its raw values, so the logic that picks it stays free of React and locale. */
 export interface UiText {
@@ -36,6 +37,8 @@ export interface UiTextFormatter {
   locale: AppLocale;
   /** The format region, Switzerland when absent; see formatLocale.ts. */
   region?: string;
+  /** The units chosen in the settings, over the region's; Automatic when absent. See walking.ts. */
+  units?: UnitsChoice;
   t: (key: TranslationKey, values?: Record<string, string | number>) => string;
   formatNumber: (value: number) => string;
 }

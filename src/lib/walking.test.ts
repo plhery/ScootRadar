@@ -5,10 +5,12 @@ import {
   distanceParts,
   formatCityDistance,
   formatDistance,
+  formatWholeLength,
   measurementSystem,
   walkEstimate,
   walkingDirectionsUrl,
   walkingMinutes,
+  type UnitsChoice,
 } from '@/lib/walking';
 
 describe('walkingMinutes', () => {
@@ -46,11 +48,12 @@ describe('walkingDirectionsUrl', () => {
   });
 });
 
-/** What useI18n() gives in this language and format region. */
-function formatterFor(locale: AppLocale, region?: string) {
+/** What useI18n() gives in this language and format region, with the units chosen in the settings. */
+function formatterFor(locale: AppLocale, region?: string, units?: UnitsChoice) {
   return {
     locale,
     region,
+    units,
     t: (key: TranslationKey, values?: Record<string, string | number>) => `${values?.count} ${key === 'distance.meters' ? 'm' : 'km'}`,
     formatNumber: (value: number, options?: Intl.NumberFormatOptions) =>
       new Intl.NumberFormat(formatLocale(locale, region), options).format(value),
@@ -77,9 +80,48 @@ describe('formatDistance', () => {
 
 describe('measurementSystem', () => {
   it('measures in miles in the US, Liberia, Myanmar and the UK, in metres everywhere else', () => {
-    expect(['US', 'LR', 'MM'].map(measurementSystem)).toEqual(['us', 'us', 'us']);
+    expect(['US', 'LR', 'MM'].map(region => measurementSystem(region))).toEqual(['us', 'us', 'us']);
     expect(measurementSystem('GB')).toBe('uk');
-    expect(['CH', 'CA', 'MX', 'IE', '419', undefined].map(measurementSystem)).toEqual(Array(6).fill('metric'));
+    expect(['CH', 'CA', 'MX', 'IE', '419', undefined].map(region => measurementSystem(region))).toEqual(Array(6).fill('metric'));
+    // Automatic is the region's.
+    expect(measurementSystem('US', 'auto')).toBe('us');
+    expect(measurementSystem('CH', 'auto')).toBe('metric');
+  });
+
+  it('measures in kilometres when they are chosen, wherever the region is', () => {
+    expect(['US', 'GB', 'CH', undefined].map(region => measurementSystem(region, 'metric'))).toEqual(Array(4).fill('metric'));
+  });
+
+  it('measures in miles when they are chosen, with yards in the UK and feet everywhere else', () => {
+    expect(measurementSystem('GB', 'imperial')).toBe('uk');
+    expect(['US', 'CH', 'DE', undefined].map(region => measurementSystem(region, 'imperial'))).toEqual(Array(4).fill('us'));
+  });
+});
+
+describe('distances in the units chosen', () => {
+  it('writes metres and kilometres for an American English page set to kilometres', () => {
+    const formatter = formatterFor('en', 'US', 'metric');
+    expect(formatDistance(300, formatter)).toBe('300 m');
+    expect(formatDistance(1449, formatter)).toBe('1.4 km');
+    expect(distanceParts(320, formatter)).toEqual({ value: '320', unit: 'm' });
+    expect(formatCityDistance(61_400, formatter)).toBe('61 km');
+    expect(formatWholeLength(5, formatter)).toBe('5 km');
+  });
+
+  it('writes feet and miles for a German page in Germany set to miles', () => {
+    const formatter = formatterFor('de', 'DE', 'imperial');
+    expect(plain(formatDistance(300, formatter))).toBe('1.000 ft');
+    expect(plain(formatDistance(3000, formatter))).toBe('1,9 mi');
+    expect(distanceParts(300, formatter)).toEqual({ value: '1.000', unit: 'ft' });
+    expect(plain(formatCityDistance(61_400, formatter))).toBe('38 mi');
+    expect(plain(formatWholeLength(3, formatter))).toBe('3 mi');
+  });
+
+  it('writes yards under half a mile for a British page set to miles, as under Automatic', () => {
+    expect(plain(formatDistance(300, formatterFor('en', 'GB', 'imperial')))).toBe('350 yd');
+    expect(plain(formatDistance(300, formatterFor('en', 'GB', 'auto')))).toBe('350 yd');
+    expect(plain(formatDistance(300, formatterFor('en', 'US', 'auto')))).toBe('1,000 ft');
+    expect(formatDistance(300, formatterFor('en', 'GB', 'metric'))).toBe('300 m');
   });
 });
 

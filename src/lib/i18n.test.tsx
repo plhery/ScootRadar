@@ -3,6 +3,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { I18nProvider, SUPPORTED_LOCALES, saysScooter, translate, useI18n } from '@/lib/i18n';
+import { formatDistance } from '@/lib/walking';
 
 function Probe() {
   const { locale, region, formatNumber } = useI18n();
@@ -21,6 +22,19 @@ function Choice() {
       <output>{`${locale} ${localeChoice} ${browserLocale}`}</output>
       <button type="button" onClick={() => setLocale('fr')}>Français</button>
       <button type="button" onClick={() => setLocale('auto')}>Automatic</button>
+    </>
+  );
+}
+
+/** The units chosen, and two miles as the app writes them. */
+function Units() {
+  const i18n = useI18n();
+  return (
+    <>
+      <output>{`${i18n.units} ${formatDistance(2 * 1609.344, i18n)}`}</output>
+      <button type="button" onClick={() => i18n.setUnits('imperial')}>Miles</button>
+      <button type="button" onClick={() => i18n.setUnits('metric')}>Kilometres</button>
+      <button type="button" onClick={() => i18n.setUnits('auto')}>Automatic</button>
     </>
   );
 }
@@ -107,6 +121,43 @@ describe('the language chosen', () => {
     browserLanguages(['es-ES']);
     fireEvent(window, new Event('languagechange'));
     await shows('fr fr es');
+  });
+});
+
+describe('the units chosen', () => {
+  const shows = (text: string) => waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(text));
+
+  it('are the region\'s until some are chosen, and again once Automatic is, which keeps nothing', async () => {
+    browserLanguages(['en-US']);
+    render(<I18nProvider><Units /></I18nProvider>);
+    await shows('auto 2 mi');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Kilometres' }));
+    expect(screen.getByRole('status')).toHaveTextContent('metric 3.2 km');
+    expect(localStorage.getItem('scooters-units')).toBe('metric');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Automatic' }));
+    expect(screen.getByRole('status')).toHaveTextContent('auto 2 mi');
+    expect(localStorage.getItem('scooters-units')).toBeNull();
+  });
+
+  it('write miles in a region that measures in kilometres, and come back with the page; others are none', async () => {
+    browserLanguages(['de-CH']);
+    localStorage.setItem('scooters-locale', 'en');
+    const { unmount } = render(<I18nProvider><Units /></I18nProvider>);
+    await shows('auto 3.2 km');
+    fireEvent.click(screen.getByRole('button', { name: 'Miles' }));
+    expect(screen.getByRole('status')).toHaveTextContent('imperial 2 mi');
+    expect(localStorage.getItem('scooters-units')).toBe('imperial');
+    unmount();
+
+    const { unmount: again } = render(<I18nProvider><Units /></I18nProvider>);
+    await shows('imperial 2 mi');
+    again();
+
+    localStorage.setItem('scooters-units', 'nautical');
+    render(<I18nProvider><Units /></I18nProvider>);
+    await shows('auto 3.2 km');
   });
 });
 

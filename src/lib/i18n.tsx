@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 import { isolated } from '@/lib/bidi';
 import { formatLocale, formatRegion, placeNameLanguage } from '@/lib/formatLocale';
+import type { UnitsChoice } from '@/lib/walking';
 
 export const SUPPORTED_LOCALES = ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en'] as const;
 export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -222,7 +223,7 @@ const en = {
   'zones.slowSpeed': 'Slow: {speed}',
   'zones.parking': 'Parking',
   'zones.racksOnly': 'Park only in racks or marked places',
-  'zones.pavement': 'Pavement riding at 6 km/h',
+  'zones.pavement': 'Pavement riding at {speed}',
   'zones.zoomIn': 'Zoom in to see the zones',
   'zones.none': 'No zones published here',
   'zones.failed': 'Zones unavailable right now',
@@ -231,6 +232,11 @@ const en = {
   'set.languageAuto': 'Automatic',
   'set.languageBrowser': '{language}, the language of your browser',
   'set.languageHelp': 'Follows your browser’s language, if you change it there.',
+  // Settings' choice of units: Automatic (set.auto), km and mi, which read the same in every language and are
+  // named to screen readers by set.kilometres and set.miles.
+  'set.units': 'Units',
+  'set.kilometres': 'Kilometres',
+  'set.miles': 'Miles',
   'set.about': 'About',
   'set.credits': 'Map & data credits',
   'set.iphoneApp': 'iPhone app',
@@ -462,7 +468,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Langsam: {speed}',
     'zones.parking': 'Parkplatz',
     'zones.racksOnly': 'Parken nur an Radständern oder markierten Flächen',
-    'zones.pavement': 'Auf dem Gehweg mit 6 km/h',
+    'zones.pavement': 'Auf dem Gehweg mit {speed}',
     'zones.zoomIn': 'Vergrössern, um die Zonen zu sehen',
     'zones.none': 'Hier sind keine Zonen veröffentlicht',
     'zones.failed': 'Zonen gerade nicht verfügbar',
@@ -471,6 +477,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automatisch',
     'set.languageBrowser': '{language}, die Sprache deines Browsers',
     'set.languageHelp': 'Folgt der Sprache deines Browsers, auch wenn du sie dort änderst.',
+    'set.units': 'Einheiten',
+    'set.kilometres': 'Kilometer',
+    'set.miles': 'Meilen',
     'set.about': 'Über',
     'set.credits': 'Karten- & Datenquellen',
     'set.iphoneApp': 'iPhone-App',
@@ -696,7 +705,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Vitesse réduite : {speed}',
     'zones.parking': 'Stationnement',
     'zones.racksOnly': 'Stationnement : arceaux ou places marquées',
-    'zones.pavement': 'Sur le trottoir à 6 km/h',
+    'zones.pavement': 'Sur le trottoir à {speed}',
     'zones.zoomIn': 'Zoomez pour voir les zones',
     'zones.none': 'Aucune zone publiée ici',
     'zones.failed': 'Zones indisponibles pour le moment',
@@ -705,6 +714,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automatique',
     'set.languageBrowser': '{language}, la langue de votre navigateur',
     'set.languageHelp': 'Suit la langue de votre navigateur, même si vous la changez.',
+    'set.units': 'Unités',
+    'set.kilometres': 'Kilomètres',
+    'set.miles': 'Miles',
     'set.about': 'À propos',
     'set.credits': 'Crédits de la carte et des données',
     'set.iphoneApp': 'App iPhone',
@@ -930,7 +942,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Velocità ridotta: {speed}',
     'zones.parking': 'Parcheggio',
     'zones.racksOnly': 'Sosta solo nelle rastrelliere o negli stalli segnalati',
-    'zones.pavement': 'Sul marciapiede a 6 km/h',
+    'zones.pavement': 'Sul marciapiede a {speed}',
     'zones.zoomIn': 'Ingrandisci per vedere le zone',
     'zones.none': 'Nessuna zona pubblicata qui',
     'zones.failed': 'Zone non disponibili al momento',
@@ -939,6 +951,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automatica',
     'set.languageBrowser': '{language}, la lingua del tuo browser',
     'set.languageHelp': 'Segue la lingua del tuo browser, anche se la cambi.',
+    'set.units': 'Unità',
+    'set.kilometres': 'Chilometri',
+    'set.miles': 'Miglia',
     'set.about': 'Informazioni',
     'set.credits': 'Fonti della mappa e dei dati',
     'set.iphoneApp': 'App per iPhone',
@@ -1164,7 +1179,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Lav fart: {speed}',
     'zones.parking': 'Parkering',
     'zones.racksOnly': 'Parkering kun i sykkelstativ eller på merkede plasser',
-    'zones.pavement': 'På fortauet i 6 km/t',
+    'zones.pavement': 'På fortauet i {speed}',
     'zones.zoomIn': 'Zoom inn for å se sonene',
     'zones.none': 'Ingen soner publisert her',
     'zones.failed': 'Sonene er ikke tilgjengelige nå',
@@ -1173,6 +1188,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automatisk',
     'set.languageBrowser': '{language}, språket i nettleseren din',
     'set.languageHelp': 'Følger språket i nettleseren din, også hvis du endrer det der.',
+    'set.units': 'Enheter',
+    'set.kilometres': 'Kilometer',
+    'set.miles': 'Miles',
     'set.about': 'Om',
     'set.credits': 'Kart- og datakilder',
     'set.iphoneApp': 'iPhone-app',
@@ -1398,7 +1416,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Langzaam: {speed}',
     'zones.parking': 'Parkeerplek',
     'zones.racksOnly': 'Parkeren alleen in fietsenrek of gemarkeerd vak',
-    'zones.pavement': 'Op de stoep met 6 km/u',
+    'zones.pavement': 'Op de stoep met {speed}',
     'zones.zoomIn': 'Zoom in om de zones te zien',
     'zones.none': 'Hier zijn geen zones gepubliceerd',
     'zones.failed': 'Zones nu niet beschikbaar',
@@ -1407,6 +1425,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automatisch',
     'set.languageBrowser': '{language}, de taal van je browser',
     'set.languageHelp': 'Volgt de taal van je browser, ook als je die daar wijzigt.',
+    'set.units': 'Eenheden',
+    'set.kilometres': 'Kilometer',
+    'set.miles': 'Mijl',
     'set.about': 'Over',
     'set.credits': 'Kaart- en databronnen',
     'set.iphoneApp': 'iPhone-app',
@@ -1632,7 +1653,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Velocidade reduzida: {speed}',
     'zones.parking': 'Estacionamento',
     'zones.racksOnly': 'Estacionar só em suportes ou lugares marcados',
-    'zones.pavement': 'No passeio a 6 km/h',
+    'zones.pavement': 'No passeio a {speed}',
     'zones.zoomIn': 'Aproxime para ver as zonas',
     'zones.none': 'Sem zonas publicadas aqui',
     'zones.failed': 'Zonas indisponíveis de momento',
@@ -1641,6 +1662,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automático',
     'set.languageBrowser': '{language}, o idioma do seu navegador',
     'set.languageHelp': 'Segue o idioma do seu navegador, mesmo que o altere.',
+    'set.units': 'Unidades',
+    'set.kilometres': 'Quilómetros',
+    'set.miles': 'Milhas',
     'set.about': 'Acerca de',
     'set.credits': 'Créditos do mapa e dos dados',
     'set.iphoneApp': 'App para iPhone',
@@ -1866,7 +1890,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Velocidad reducida: {speed}',
     'zones.parking': 'Aparcamiento',
     'zones.racksOnly': 'Aparcamiento: aparcabicis o plazas marcadas',
-    'zones.pavement': 'Por la acera a 6 km/h',
+    'zones.pavement': 'Por la acera a {speed}',
     'zones.zoomIn': 'Acerca el mapa para ver las zonas',
     'zones.none': 'Aquí no hay zonas publicadas',
     'zones.failed': 'Zonas no disponibles ahora',
@@ -1875,6 +1899,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Automático',
     'set.languageBrowser': '{language}, el idioma de tu navegador',
     'set.languageHelp': 'Sigue el idioma de tu navegador, aunque lo cambies.',
+    'set.units': 'Unidades',
+    'set.kilometres': 'Kilómetros',
+    'set.miles': 'Millas',
     'set.about': 'Información',
     'set.credits': 'Créditos del mapa y los datos',
     'set.iphoneApp': 'App para iPhone',
@@ -2100,7 +2127,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'zones.slowSpeed': 'Hægur akstur: {speed}',
     'zones.parking': 'Stæði',
     'zones.racksOnly': 'Aðeins má leggja í hjólagrindur eða merkt stæði',
-    'zones.pavement': 'Akstur á gangstétt, 6 km/klst.',
+    'zones.pavement': 'Akstur á gangstétt, {speed}',
     'zones.zoomIn': 'Þysjaðu inn til að sjá svæðin',
     'zones.none': 'Engin svæði birt hér',
     'zones.failed': 'Svæðin eru ekki tiltæk núna',
@@ -2109,6 +2136,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.languageAuto': 'Sjálfvirkt',
     'set.languageBrowser': '{language}, tungumál vafrans þíns',
     'set.languageHelp': 'Fylgir tungumáli vafrans þíns, líka ef þú breytir því þar.',
+    'set.units': 'Einingar',
+    'set.kilometres': 'Kílómetrar',
+    'set.miles': 'Mílur',
     'set.about': 'Um appið',
     'set.credits': 'Heimildir korts og gagna',
     'set.iphoneApp': 'iPhone-app',
@@ -2173,12 +2203,18 @@ interface I18nContextValue {
   nameLanguage: string;
   /** Shows the app in the language from now on, or in the browser's again with 'auto'. */
   setLocale: (choice: LocaleChoice) => void;
+  /** The units chosen in the settings, which every length and speed is written in: Automatic, the region's, until then. See walking.ts. */
+  units: UnitsChoice;
+  /** Writes lengths and speeds in the units from now on, or in the region's again with 'auto'. */
+  setUnits: (choice: UnitsChoice) => void;
   t: (key: TranslationKey, values?: TranslationValues) => string;
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
 }
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 const LOCALE_STORAGE_KEY = 'scooters-locale';
+const UNITS_STORAGE_KEY = 'scooters-units';
+const UNITS: ReadonlySet<string> = new Set<UnitsChoice>(['metric', 'imperial']);
 
 function supportedLocale(value: string | null | undefined): AppLocale | null {
   if (!value) return null;
@@ -2204,6 +2240,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   // Automatic and empty until mounted, so the first render is in English and matches the server's.
   const [localeChoice, setLocaleChoice] = useState<LocaleChoice>('auto');
   const [browserLanguages, setBrowserLanguages] = useState<readonly string[]>([]);
+  const [units, setUnitsChoice] = useState<UnitsChoice>('auto');
   const browserLocale = useMemo(() => preferredLocale(browserLanguages), [browserLanguages]);
   const locale = localeChoice === 'auto' ? browserLocale : localeChoice;
   const region = useMemo(() => formatRegion(locale, browserLanguages), [browserLanguages, locale]);
@@ -2212,10 +2249,13 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       let stored: string | null = null;
+      let storedUnits: string | null = null;
       try {
         stored = localStorage.getItem(LOCALE_STORAGE_KEY);
+        storedUnits = localStorage.getItem(UNITS_STORAGE_KEY);
       } catch {}
       setLocaleChoice(supportedLocale(stored) ?? 'auto');
+      setUnitsChoice(storedUnits !== null && UNITS.has(storedUnits) ? storedUnits as UnitsChoice : 'auto');
       setBrowserLanguages(navigatorLanguages());
     }, 0);
     // A browser whose languages are changed while the page is open says so: Automatic follows at once.
@@ -2240,6 +2280,15 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, []);
 
+  // The same for the units: Automatic follows the region on the next visit too.
+  const setUnits = useCallback((choice: UnitsChoice) => {
+    setUnitsChoice(choice);
+    try {
+      if (choice === 'auto') localStorage.removeItem(UNITS_STORAGE_KEY);
+      else localStorage.setItem(UNITS_STORAGE_KEY, choice);
+    } catch {}
+  }, []);
+
   const t = useCallback(
     (key: TranslationKey, values?: TranslationValues) => translate(locale, key, values, region),
     [locale, region]
@@ -2252,8 +2301,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ locale, localeChoice, browserLocale, region, nameLanguage, setLocale, t, formatNumber }),
-    [browserLocale, formatNumber, locale, localeChoice, nameLanguage, region, setLocale, t]
+    () => ({ locale, localeChoice, browserLocale, region, nameLanguage, setLocale, units, setUnits, t, formatNumber }),
+    [browserLocale, formatNumber, locale, localeChoice, nameLanguage, region, setLocale, setUnits, t, units]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
