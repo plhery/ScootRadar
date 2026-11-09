@@ -42,8 +42,9 @@ fun interface ReviewRequester {
 /**
  * A calm map that is the moment to ask for a rating (ScooterReviewPrompt): after it has rested a few seconds with
  * nothing over it and no touch, never from a button. Anything over the map or changing on it before then ends this
- * try, as does a touch (the controller's noteInteraction), and the next fresh load brings another; so does anything
- * over the map before the store answers its card, as the iPhone's sheet comes at once.
+ * try, as does a touch (the controller's noteInteraction), and the next fresh load brings another, which this try,
+ * ended by it, leaves waiting; so does anything over the map before the store answers its card, as the iPhone's sheet
+ * comes at once.
  */
 @Composable
 internal fun ReviewWhenTheMapRests(
@@ -55,14 +56,16 @@ internal fun ReviewWhenTheMapRests(
     val moments by controller.reviewMoments.collectAsStateWithLifecycle()
     val scooter by controller.selectedScooterID.collectAsStateWithLifecycle()
     val bay by controller.selectedParkingID.collectAsStateWithLifecycle()
+    // The moment this try waits for, as the keys saw it.
+    val moment = moments
     LaunchedEffect(moments, nothingOverTheMap, scooter, bay) {
         if (!controller.reviewDue) return@LaunchedEffect
-        if (!nothingOverTheMap) return@LaunchedEffect controller.dropReviewMoment()
+        if (!nothingOverTheMap) return@LaunchedEffect controller.dropReviewMoment(moment)
         requester.prepare()
         try {
             delay(ScooterReviewPrompt.settle)
         } catch (cancelled: CancellationException) {
-            controller.dropReviewMoment()
+            controller.dropReviewMoment(moment)
             throw cancelled
         }
         if (!controller.takeReviewMoment()) return@LaunchedEffect

@@ -18,10 +18,11 @@ fun ScooterMapController.takeReviewMoment(): Boolean {
 }
 
 /**
- * Something went over the map, or changed on it, before the wait was over: this moment asks no more, and the next
- * fresh load is the next one.
+ * Something went over the map, or changed on it, before the wait for [moment] was over: that moment asks no more, and
+ * the next fresh load is the next one. A wait ended by the next moment leaves that one waiting.
  */
-fun ScooterMapController.dropReviewMoment() {
+fun ScooterMapController.dropReviewMoment(moment: Int) {
+    if (moment != reviewMoments.value) return
     reviewDue = false
 }
 

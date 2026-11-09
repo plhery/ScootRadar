@@ -32,7 +32,7 @@ import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 
-// UI-060 and UI-128: ScooterMapScreen.swift:181-184 gives the dock's Filters sheet the large detent only in a window
+// UI-060 and UI-128: ScooterMapScreen.swift:188-193 gives the dock's Filters sheet the large detent only in a window
 // under 700 points tall (`windowHeight < 700 ? [.large] : [.medium, .large]`), the whole window's height.
 
 /**

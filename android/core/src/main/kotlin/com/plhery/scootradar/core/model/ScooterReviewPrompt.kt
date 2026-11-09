@@ -28,6 +28,11 @@ class ScooterReviewPrompt(
      */
     var alwaysDue: Boolean = false
 
+    /** Forgets the time of the last "Open in" that the app kept up to 1.3.0, which nothing reads any more. */
+    fun forgetLastOpenIn() {
+        defaults.removeObject(forKey = LAST_OPEN_IN_KEY)
+    }
+
     /** A fresh feed then: its calendar day counts as a day with use, once. */
     fun noteUse(at: Instant) {
         val day = day(of = at)
@@ -84,5 +89,7 @@ class ScooterReviewPrompt(
         private const val BAD_DAY_KEY = "review-bad-day"
         private const val ASKED_KEY = "review-asked-version"
         private const val ASKED_DAY_KEY = "review-asked-day"
+        /** The time of the last "Open in", kept up to 1.3.0, when the return from a ride was the moment to ask. */
+        private const val LAST_OPEN_IN_KEY = "review-rental-opened-at"
     }
 }

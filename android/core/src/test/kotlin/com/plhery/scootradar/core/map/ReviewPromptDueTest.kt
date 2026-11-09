@@ -12,7 +12,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * LOG-312 (ScooterReviewPrompt.swift:21-25, ScooterMapModel.swift:536-537): a debug build launched with
+ * LOG-312 (ScooterReviewPrompt.swift:21-25, ScooterMapModel.swift:509-510): a debug build launched with
  * `ReviewPromptDue` makes every calm moment due, and its first load one, with no day of use and the version asked
  * already; a release build, or a debug build launched without it, asks as ever. The days are counted in UTC.
  */

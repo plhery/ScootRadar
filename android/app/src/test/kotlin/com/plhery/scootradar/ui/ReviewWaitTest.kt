@@ -30,7 +30,7 @@ import org.junit.runner.RunWith
 import java.util.TimeZone
 
 /**
- * The screen's half of the ask for a rating (ui.md UI-106, ScooterMapScreen.swift:168-186): a calm map that is the
+ * The screen's half of the ask for a rating (ui.md UI-106, ScooterMapScreen.swift:168-187): a calm map that is the
  * moment asks once it has rested 5 seconds with nothing over it and no touch, and anything over the map or a touch
  * before then ends that try. The prompt's own rules are :core's (T346–T352).
  */
@@ -70,7 +70,7 @@ class ReviewWaitTest {
         compose.mainClock.advanceTimeBy(1_500)
         assertEquals(1, asked)
         assertFalse(model.reviewDue)
-        // LOG-330 (ScooterMapScreen.swift:185): the ask is counted, with the moment it came at.
+        // LOG-330 (ScooterMapScreen.swift:186): the ask is counted, with the moment it came at.
         assertEquals(listOf(TrackedEvent("review_ask", result = "calm_map")), analytics.events)
     }
 
@@ -89,6 +89,33 @@ class ReviewWaitTest {
         assertEquals(0, asked)
         assertFalse(model.reviewDue)
         assertEquals(emptyList<TrackedEvent>(), analytics.events)
+    }
+
+    /**
+     * The rider pans: a touch, then the fresh load of the place, within the 5 seconds. That load is the next moment,
+     * which the end of the first try leaves waiting, and the map asks once it has rested 5 seconds after it
+     * (review-app-bl 1).
+     */
+    @Test
+    fun aTouchThenAFreshLoadBeforeThenAsksOnceTheMapHasRestedAfterTheLoad() {
+        val model = calmOnTheThirdDay()
+        val analytics = RecordingAnalytics()
+        compose.mainClock.autoAdvance = false
+        compose.setContent {
+            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = analytics.analytics)
+        }
+        compose.mainClock.advanceTimeBy(1_000)
+        compose.runOnUiThread { model.noteInteraction() }
+        model.refresh()
+        assertTrue(controllers.waitUntil { model.reviewMoments.value == 2 && !model.isLoading.value })
+        assertTrue(model.reviewDue)
+        compose.mainClock.advanceTimeBy(4_500)
+        assertEquals(0, asked)
+        assertTrue(model.reviewDue)
+        compose.mainClock.advanceTimeBy(1_000)
+        assertEquals(1, asked)
+        assertFalse(model.reviewDue)
+        assertEquals(listOf(TrackedEvent("review_ask", result = "calm_map")), analytics.events)
     }
 
     /**

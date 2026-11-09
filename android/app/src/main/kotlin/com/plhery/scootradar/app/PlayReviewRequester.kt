@@ -15,8 +15,9 @@ import com.plhery.scootradar.ui.ReviewRequester
  * Google Play's card to rate the app, where the iPhone's app asks StoreKit's requestReview. Play shows it only so
  * often, and not at all in a copy of the app it didn't install or on a phone without its store; it never says
  * whether it showed or what was given, so nothing that fails is told to the rider. What the card needs is asked for
- * as the map starts to rest at a moment to ask ([prepare]), a rest that seldom ends early, so that the card comes
- * when it ends, in [activity]. Play's manager, from [managerOf], is made at the first of these, not as the app starts.
+ * as the map starts to rest at a moment to ask ([prepare]), so that the card comes when the rest ends, in [activity];
+ * a rest that a touch or something over the map ends early leaves it unused, and the next rest asks for it again.
+ * Play's manager, from [managerOf], is made at the first of these, not as the app starts.
  */
 class PlayReviewRequester(
     private val activity: Activity,

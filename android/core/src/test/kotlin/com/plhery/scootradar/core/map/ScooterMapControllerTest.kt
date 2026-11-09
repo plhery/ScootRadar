@@ -3191,7 +3191,7 @@ class ScooterMapControllerTest {
         model.refresh()
         settle()
 
-        // iOS's keys (ScooterMapModel.swift:370-377, ScooterReviewPrompt.swift:29-34), with the providers turned
+        // iOS's keys (ScooterMapModel.swift:441-454, ScooterReviewPrompt.swift:27-31), with the providers turned
         // off where iOS keeps those turned on; the language goes to Android's application locales, where iOS
         // keeps AppleLanguages.
         val allowed = setOf(
@@ -4113,6 +4113,72 @@ class ScooterMapControllerTest {
             assertEquals(2, model.reviewMoments.value)
             assertFalse(model.reviewDue)
         }
+    }
+
+    /**
+     * The screen's wait for one moment is ended by the next when a touch and a fresh load come within its 5 seconds,
+     * the rider panning: the end of that wait leaves the next moment waiting (review-app-bl 1).
+     */
+    @Test
+    fun aWaitEndedByTheNextMomentLeavesThatMomentWaiting() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+            model.noteInteraction()
+            reload(model, api)
+            assertEquals(2, model.reviewMoments.value)
+            model.dropReviewMoment(1)
+            assertTrue(model.reviewDue)
+            // Something over the map during the second wait ends it.
+            model.dropReviewMoment(2)
+            assertFalse(model.reviewDue)
+        }
+    }
+
+    @Test
+    fun aLinkEndsTheWaitAndTheNextCalmLoadIsTheNextMoment() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+            model.open(ScooterMapLink())
+            assertFalse(model.reviewDue)
+            reload(model, api)
+            assertEquals(2, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
+        }
+    }
+
+    @Test
+    fun delayedDataKeepsTheRestOfTheDayFromAsking() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+            model.noteInteraction()
+            val vehicles = listOf(scooter(id = "one", provider = "lime"))
+            api.setResponse(
+                ScooterResponse(vehicles = vehicles, meta = ScooterResponseMetadata(partial = false, stale = true, failedSources = emptyList())),
+            )
+            reload(model, api)
+            assertFalse(model.reviewDue)
+
+            // Up to date again later that day: still no ask.
+            api.setResponse(ScooterResponse(vehicles = vehicles))
+            clock.advance(3_600.0)
+            reload(model, api)
+            assertEquals(1, model.reviewMoments.value)
+            assertFalse(model.reviewDue)
+        }
+    }
+
+    /** Up to 1.3.0 the app kept the time of the last "Open in" for the ask; an updated app forgets it. */
+    @Test
+    fun theTimeOfTheLastOpenInKeptUpTo130IsForgotten() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set(Instant.now(), forKey = "review-rental-opened-at")
+        defaults.set(2, forKey = "review-use-days")
+        makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        assertNull(defaults.date(forKey = "review-rental-opened-at"))
+        assertEquals(2, defaults.integer(forKey = "review-use-days"))
     }
 
     /** A controller with a fresh feed on the map after `earlierDays` days with one: the third day by default. */

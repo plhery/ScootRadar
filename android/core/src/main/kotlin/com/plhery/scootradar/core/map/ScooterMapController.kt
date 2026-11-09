@@ -445,6 +445,7 @@ class ScooterMapController(
 
     /** Says when to ask for a rating (ScooterReviewPrompt). */
     internal val reviewPrompt: ScooterReviewPrompt = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
+        .also { it.forgetLastOpenIn() }
 
     // What the data on the map was requested for: the dock only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds? = null
@@ -1134,6 +1135,8 @@ class ScooterMapController(
      * website does not remember it either.
      */
     fun open(link: ScooterMapLink) {
+        // A link changes the map: a moment to ask for a rating waits for its fresh load.
+        reviewDue = false
         link.minimumBattery?.let { setMinimumBattery(it.toDouble()) }
         val origin = link.origin
         if (origin == null) {
