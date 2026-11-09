@@ -891,6 +891,18 @@ final class ScooterAnalyticsTests: XCTestCase {
         XCTAssertFalse(userAgent.localizedCaseInsensitiveContains("radar"))
     }
 
+    /// The language as the iPhone writes it, whatever the units chosen in Settings.
+    func testPayloadsLanguageLeavesOutTheUnitsChosen() {
+        defer { ScooterUnits.current = .automatic }
+        let automatic = ScooterAnalytics.payload(nil)["language"] as? String
+        for units in ScooterUnits.allCases {
+            ScooterUnits.current = units
+            let language = ScooterAnalytics.payload(nil)["language"] as? String
+            XCTAssertEqual(language, automatic, "\(units)")
+            XCTAssertFalse(language?.contains("measure") ?? true, "\(units)")
+        }
+    }
+
     func testPayloadGoesToTheAppsOwnWebsite() {
         XCTAssertEqual(ScooterAnalytics.payload(nil)["website"] as? String, "72c49567-e00d-4a92-bfaf-d1ae7b083fd8")
     }

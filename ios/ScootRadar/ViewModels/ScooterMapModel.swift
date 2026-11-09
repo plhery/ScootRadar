@@ -226,6 +226,21 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
+    /// The units lengths and speeds are written in: the iPhone's on Automatic, or those chosen in Settings,
+    /// which change them at once.
+    var units: ScooterUnits {
+        didSet {
+            guard oldValue != units else { return }
+            ScooterUnits.current = units
+            defaults.set(units.rawValue, forKey: Self.unitsKey)
+        }
+    }
+
+    /// The language and the units the text over the map is written in.
+    var writing: ScooterWriting {
+        ScooterWriting(language: language, units: units)
+    }
+
     var mapStyle: AppleMapStyle {
         didSet {
             if oldValue != mapStyle { ScooterAnalytics.shared.track("map_style", result: mapStyle.rawValue) }
@@ -423,6 +438,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private var unfilteredVisibleProviders = Set<ScooterProvider>()
 
     private static let minimumBatteryKey = "minimum-battery"
+    private static let unitsKey = "units"
     private static let mapStyleKey = "apple-map-style"
     private static let showsZonesKey = "map-zones"
     private static let appearanceKey = "appearance"
@@ -495,6 +511,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         let savedBattery = defaults.object(forKey: Self.minimumBatteryKey) as? Int ?? 0
         minimumBattery = Double(ScooterBatteryFilter.snapped(savedBattery))
+        let savedUnits = ScooterUnits(rawValue: defaults.string(forKey: Self.unitsKey) ?? "") ?? .automatic
+        units = savedUnits
+        ScooterUnits.current = savedUnits
 
         let savedStyle = defaults.string(forKey: Self.mapStyleKey)
         // The quiet ground is what the dots are made for; a style chosen in

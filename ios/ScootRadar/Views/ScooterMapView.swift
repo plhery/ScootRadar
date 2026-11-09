@@ -2,12 +2,15 @@ import MapKit
 import SwiftUI
 import UIKit
 
-/// Whether the map shows a scale while it zooms: where the region measures in
+/// Whether the map shows a scale while it zooms: where lengths are written in
 /// miles, so a rider can judge feet and miles on the map as Apple Maps lets
-/// them. Metric regions keep the map as it was.
+/// them. Metric regions, and kilometres chosen in Settings, keep the map as it
+/// was. MapKit draws its scale in the iPhone's own units, which no app can
+/// choose: where the iPhone measures in metres, miles chosen in Settings show
+/// no scale rather than one in metres.
 enum ScooterMapScalePolicy {
-    static func showsScale(locale: Locale) -> Bool {
-        locale.measurementSystem != .metric
+    static func showsScale(locale: Locale, iPhone: Locale = .current) -> Bool {
+        locale.measurementSystem != .metric && iPhone.measurementSystem != .metric
     }
 }
 
@@ -263,6 +266,8 @@ struct ScooterMapView: UIViewRepresentable {
     var origin: GeoPoint? = nil
     /// The names on the map and what VoiceOver reads of it are written in it.
     var language = ScooterLanguage.current
+    /// The units the distances on the map are written in, and whether it shows a scale.
+    var units = ScooterUnits.current
     /// The walking route to the selected scooter or bay, while one is shown.
     var walkTrail: WalkTrail? = nil
     /// A walk is under way: the selected scooter or bay stays selected and
@@ -295,7 +300,7 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applyMapStyle(mapStyle, to: mapView)
         mapView.showsUserLocation = false
         mapView.showsCompass = false
-        // The scale MapKit places itself would sit under the search bar; see installScale(on:).
+        // The scale MapKit places itself would sit under the search bar; see updateScale(on:).
         mapView.showsScale = false
         mapView.isPitchEnabled = true
         mapView.register(
@@ -341,7 +346,7 @@ struct ScooterMapView: UIViewRepresentable {
         }
         #endif
         context.coordinator.installCompass(on: mapView)
-        context.coordinator.installScale(on: mapView)
+        context.coordinator.updateScale(on: mapView)
         // The dots and the names are drawn for one appearance and one text size.
         mapView.registerForTraitChanges([UITraitUserInterfaceStyle.self, UITraitPreferredContentSizeCategory.self]) {
             [coordinator = context.coordinator] (mapView: MKMapView, _) in
@@ -379,6 +384,7 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applyTrail(walkTrail, on: mapView)
         context.coordinator.applyZones(on: mapView)
         context.coordinator.updateUserHeading(on: mapView, animated: true)
+        context.coordinator.updateScale(on: mapView)
         context.coordinator.updateCompass(on: mapView)
         context.coordinator.updateLook(on: mapView)
         // The dock may have grown over a name.
@@ -474,6 +480,7 @@ struct ScooterMapView: UIViewRepresentable {
             let scaleStep: Int
             let headingStep: Int
             let language: ScooterLanguage
+            let units: ScooterUnits
             /// The names grow with the reader's text size.
             let textScale: CGFloat
         }
@@ -499,10 +506,22 @@ struct ScooterMapView: UIViewRepresentable {
             updateCompass(on: mapView)
         }
 
-        /// A scale while the map zooms, for a region that measures in miles,
-        /// where Apple Maps shows one too, opposite the compass under the search bar.
-        func installScale(on mapView: MKMapView, locale: Locale = .current) {
-            guard ScooterMapScalePolicy.showsScale(locale: locale) else { return }
+        /// A scale while the map zooms, where lengths are written in miles, as
+        /// Apple Maps shows one, opposite the compass under the search bar. It
+        /// comes and goes as miles or kilometres are chosen in Settings.
+        func updateScale(on mapView: MKMapView) {
+            let shows = ScooterMapScalePolicy.showsScale(
+                locale: ScooterWriting(language: parent.language, units: parent.units).locale
+            )
+            guard shows != (scaleView != nil) else { return }
+            guard shows else {
+                scaleView?.removeFromSuperview()
+                scaleView = nil
+                scaleTopConstraint = nil
+                scaleBesideSafeArea = nil
+                scaleBesidePanel = nil
+                return
+            }
             let scale = MKScaleView(mapView: mapView)
             scale.translatesAutoresizingMaskIntoConstraints = false
             scale.scaleVisibility = .adaptive
@@ -1326,6 +1345,7 @@ struct ScooterMapView: UIViewRepresentable {
                 scaleStep: Int((log(metresPerPoint) / Self.scaleStep).rounded()),
                 headingStep: Int((Self.heading(of: mapView) / 3).rounded()),
                 language: parent.language,
+                units: parent.units,
                 textScale: ScooterMapLook.textScale(for: mapView.traitCollection.preferredContentSizeCategory)
             )
             guard inputs != appliedLook else { return }
@@ -1346,7 +1366,7 @@ struct ScooterMapView: UIViewRepresentable {
                     (mapView.view(for: annotation) as? ScooterLastSeenView)?.usesDarkArt = inputs.isDark
                 }
             }
-            if let previous, previous.language != inputs.language {
+            if let previous, previous.language != inputs.language || previous.units != inputs.units {
                 // What VoiceOver reads of the map was written when it was drawn.
                 for annotation in mapView.annotations {
                     switch mapView.view(for: annotation) {

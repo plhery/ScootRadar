@@ -86,6 +86,7 @@ struct ScooterMapScreen: View {
                     onParkingSelectionChange: model.selectParking,
                     origin: model.mapOrigin,
                     language: model.language,
+                    units: model.units,
                     walkTrail: model.walkTrail,
                     isWalking: model.isWalking,
                     walkRemainingMetres: model.walkRemainingMetres,
@@ -217,7 +218,7 @@ struct ScooterMapScreen: View {
         .background(TimelineView(.everyMinute) { _ in WindowAppearance(style: model.interfaceStyle) })
         .background(InterfaceOrientationProbe { model.setHeadingOrientation(ScooterHeadingPolicy.deviceOrientation(for: $0)) })
         .background(WindowTouchProbe { model.noteInteraction() })
-        .environment(\.locale, model.language.locale)
+        .environment(\.locale, model.writing.locale)
     }
 
     /// A phone's: the search bar and its notices at the top, the dock at the
@@ -264,9 +265,9 @@ struct ScooterMapScreen: View {
         .padding(.horizontal, 12)
         .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: chromeTop)
         .zIndex(20)
-        // Made anew in another language: much of what is over the
-        // map is text that was written when it was drawn.
-        .id(model.language)
+        // Made anew in another language or other units: much of what is
+        // over the map is text that was written when it was drawn.
+        .id(model.writing)
 
         VStack {
             Spacer()
@@ -299,7 +300,7 @@ struct ScooterMapScreen: View {
         .allowsHitTesting(!searchIsExpanded)
         .accessibilityHidden(searchIsExpanded)
         .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: searchIsExpanded)
-        .id(model.language)
+        .id(model.writing)
 
         VStack {
             Spacer()
@@ -327,7 +328,7 @@ struct ScooterMapScreen: View {
         .allowsHitTesting(!searchIsExpanded)
         .accessibilityHidden(searchIsExpanded)
         .animation(reduceMotion ? nil : .snappy(duration: 0.24), value: searchIsExpanded)
-        .id(model.language)
+        .id(model.writing)
     }
 
     /// A large window's, as the website's on a computer: the search bar, the
@@ -405,7 +406,7 @@ struct ScooterMapScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(16)
         .zIndex(20)
-        .id(model.language)
+        .id(model.writing)
 
         VStack {
             Spacer()
@@ -424,7 +425,7 @@ struct ScooterMapScreen: View {
         // Beside the open search they stay in view, but VoiceOver reads the
         // search alone, as the map's.
         .accessibilityHidden(searchIsExpanded)
-        .id(model.language)
+        .id(model.writing)
     }
 
     /// What the zones' colours mean, while they are on, and the cities' rules and zones over

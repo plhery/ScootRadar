@@ -5692,3 +5692,53 @@ extension ScooterMapModelTests {
         XCTAssertTrue(refreshed)
     }
 }
+
+// The units chosen in Settings (issue #14).
+extension ScooterMapModelTests {
+    /// Settings › Units: Automatic, as before there was a choice, or kilometres or miles, at once
+    /// everywhere and kept for the next launch.
+    func testChosenUnitsMeasureEveryLengthAtOnceAndAreKept() {
+        defer { ScooterUnits.current = .automatic }
+        let defaults = isolatedDefaults()
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+            defaults: defaults, builtInZones: []
+        )
+        XCTAssertEqual(model.units, .automatic)
+        XCTAssertEqual(ScooterUnits.current, .automatic)
+        XCTAssertEqual(ScooterLanguage.current.locale.measurementSystem, Locale.current.measurementSystem)
+
+        model.units = .metric
+        XCTAssertEqual(ScooterUnits.current, .metric)
+        XCTAssertEqual(defaults.string(forKey: "units"), "metric")
+        XCTAssertEqual(ScooterLanguage.current.locale.measurementSystem, .metric)
+        XCTAssertEqual(model.writing.locale.measurementSystem, .metric)
+        XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 320)), "320 m")
+
+        model.units = .imperial
+        XCTAssertNotEqual(ScooterLanguage.current.locale.measurementSystem, .metric)
+        XCTAssertTrue(plainSpaces(Scooter.formattedLength(meters: 300)).hasSuffix(" ft")
+            || plainSpaces(Scooter.formattedLength(meters: 300)).hasSuffix(" yd"))
+        XCTAssertTrue(plainSpaces(Scooter.formattedLength(meters: 3_000)).hasSuffix(" mi"))
+
+        let restored = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+            defaults: defaults, builtInZones: []
+        )
+        XCTAssertEqual(restored.units, .imperial)
+
+        restored.units = .automatic
+        XCTAssertEqual(defaults.string(forKey: "units"), "auto")
+        XCTAssertEqual(ScooterLanguage.current.locale.measurementSystem, Locale.current.measurementSystem)
+
+        defaults.set("furlongs", forKey: "units")
+        XCTAssertEqual(ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+            defaults: defaults, builtInZones: []
+        ).units, .automatic)
+    }
+
+    private func plainSpaces(_ text: String) -> String {
+        text.replacingOccurrences(of: "\u{00A0}", with: " ").replacingOccurrences(of: "\u{202F}", with: " ")
+    }
+}

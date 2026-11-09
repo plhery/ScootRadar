@@ -118,9 +118,10 @@ struct Scooter: Identifiable, Hashable, Sendable {
 
     /// "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the
     /// web. The system's rounding for roads would say "300 m" for the same scooter.
-    /// Where the region measures in miles, as in the US and the UK, the system
-    /// writes it as it does on its own roads: "1,000 ft" or "350 yd" under half a
-    /// mile, "1.9 mi" from there. src/lib/walking.ts rounds the same way.
+    /// Where the region measures in miles, as in the US and the UK, or miles are
+    /// chosen in Settings (ScooterUnits), the system writes it as it does on its
+    /// own roads: "1,000 ft" or "350 yd" under half a mile, "1.9 mi" from there.
+    /// src/lib/walking.ts rounds the same way.
     static func formattedLength(meters: Double, locale: Locale = ScooterLanguage.current.locale) -> String {
         let formatted: String
         if locale.measurementSystem == .metric {

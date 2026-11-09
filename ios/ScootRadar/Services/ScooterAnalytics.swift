@@ -39,7 +39,10 @@ final class ScooterAnalytics {
             "website": website, "hostname": "scootradar.com",
             "url": ["/", "/filters", "/settings"].contains(screen) ? screen : "/",
             "title": "ScootRadar", "referrer": "", "tag": "ios",
-            "language": ScooterLanguage.current.locale.identifier.replacingOccurrences(of: "_", with: "-")
+            // The language as the iPhone writes it, without the units chosen in Settings
+            // ("de-CH", not "de-CH@measure=ussystem"), as the Android app sends it.
+            "language": ScooterLanguage.current.locale(units: .automatic).identifier
+                .replacingOccurrences(of: "_", with: "-")
         ]
         if let name {
             var data: [String: Any] = ["platform": "ios"]

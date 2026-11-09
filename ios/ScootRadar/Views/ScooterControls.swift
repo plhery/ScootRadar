@@ -2422,7 +2422,7 @@ struct ScooterFilterSheet: View {
     }
 }
 
-/// Settings: how the app and its map look, the language, the rider's passes,
+/// Settings: how the app and its map look, the language and the units, the rider's passes,
 /// and About with a mail for feedback and the version, the credits, the privacy
 /// choice and the source code.
 struct ScooterSettingsSheet: View {
@@ -2478,6 +2478,22 @@ struct ScooterSettingsSheet: View {
                     }
                 } header: {
                     Text("Language")
+                        .foregroundStyle(ScooterPalette.secondaryText)
+                }
+
+                Section {
+                    // Auto, the iPhone's, or kilometres or miles whatever the language.
+                    Picker(String(localized: "Units"), selection: $model.units) {
+                        ForEach(ScooterUnits.allCases) { units in
+                            Text(verbatim: units.label)
+                                .accessibilityLabel(units.spokenLabel)
+                                .tag(units)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                } header: {
+                    Text("Units")
                         .foregroundStyle(ScooterPalette.secondaryText)
                 }
 
@@ -2567,6 +2583,7 @@ struct ScooterSettingsSheet: View {
             .sensoryFeedback(.selection, trigger: model.appearance)
             .sensoryFeedback(.selection, trigger: model.mapStyle)
             .sensoryFeedback(.selection, trigger: model.languageChoice)
+            .sensoryFeedback(.selection, trigger: model.units)
         }
     }
 

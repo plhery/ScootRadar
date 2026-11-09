@@ -185,6 +185,9 @@ will show.
 **Settings.** Three choices as tiles, the first two each under a small picture of
 what it gives: the appearance (Auto, dark from half an hour after sunset to half
 an hour before sunrise; System, which follows the iPhone; Light; Dark), the map style (Standard, Quiet, Satellite) and the language. Then the
+units (Automatic, which follows the iPhone's region, km or mi), which every
+length and speed the app writes follows at once; the map's scale, which MapKit
+draws in the iPhone's own units, shows only where both are in miles. Then the
 passes per provider (free unlock, free minutes, optional expiry date), listed
 for the providers that operate where the map is or that already have a pass;
 and About: **Send feedback**, a mail to hello@scootradar.com whose subject names

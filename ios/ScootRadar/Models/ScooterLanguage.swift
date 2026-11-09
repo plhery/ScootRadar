@@ -89,14 +89,24 @@ enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
     }
 
     /// The language in the region of the iPhone, as iOS makes it at launch:
-    /// "fr_CH" writes 1 288 where "de_CH" writes 1’288.
+    /// "fr_CH" writes 1 288 where "de_CH" writes 1’288. Its lengths and
+    /// speeds are in the units chosen in Settings (ScooterUnits).
     var locale: Locale {
-        guard self != Self.atLaunch else { return .current }
-        var components = Locale.Components(locale: .current)
+        locale(units: .current)
+    }
+
+    /// The same in the units given, as the screen model reads it for its own choice.
+    func locale(units: ScooterUnits) -> Locale {
+        units.applied(to: self == Self.atLaunch ? .current : written(in: .current))
+    }
+
+    /// The language in the region of a locale of the iPhone's.
+    func written(in iPhone: Locale) -> Locale {
+        var components = Locale.Components(locale: iPhone)
         components.languageComponents = Locale.Language.Components(
             languageCode: Locale.LanguageCode(rawValue),
             script: nil,
-            region: Locale.current.region
+            region: iPhone.region
         )
         return Locale(components: components)
     }
@@ -159,6 +169,73 @@ enum ScooterLanguageChoice: Hashable, Sendable {
     /// else Automatic.
     init(appDefaults: [String: Any], shown: ScooterLanguage) {
         self = appDefaults[Self.key] == nil ? .automatic : .language(shown)
+    }
+}
+
+/// What the text over the map is written in: the language and the units it
+/// measures in. What is made anew in another language is made anew in other units.
+struct ScooterWriting: Hashable, Sendable {
+    let language: ScooterLanguage
+    let units: ScooterUnits
+
+    var locale: Locale { language.locale(units: units) }
+}
+
+/// The units the app measures in, chosen in Settings › Units: the iPhone's
+/// on Automatic, as before there was a choice, or kilometres or miles
+/// whatever the region and the language. English need not mean miles.
+enum ScooterUnits: String, CaseIterable, Identifiable, Sendable {
+    case automatic = "auto"
+    case metric
+    case imperial
+
+    var id: String { rawValue }
+
+    private static let chosen = Mutex(ScooterUnits.automatic)
+
+    /// The units the app measures in now. Choosing others in Settings
+    /// changes them at once, everywhere a length or a speed is written.
+    static var current: ScooterUnits {
+        get { chosen.withLock { $0 } }
+        set { chosen.withLock { $0 = newValue } }
+    }
+
+    /// The system a locale in the region measures with: nil on Automatic,
+    /// which keeps the region's own. Miles are written in yards under half a
+    /// mile where the region is the UK's, as iOS writes them there, and in
+    /// feet everywhere else; speeds in mph.
+    func measurementSystem(in region: Locale.Region?) -> Locale.MeasurementSystem? {
+        switch self {
+        case .automatic: nil
+        case .metric: .metric
+        case .imperial: region == .unitedKingdom ? .uk : .us
+        }
+    }
+
+    /// The locale measuring in these units, its language and region kept.
+    func applied(to locale: Locale) -> Locale {
+        guard let system = measurementSystem(in: locale.region), system != locale.measurementSystem else { return locale }
+        var components = Locale.Components(locale: locale)
+        components.measurementSystem = system
+        return Locale(components: components)
+    }
+
+    /// Its segment in Settings: "Auto", and "km" and "mi" as every language writes them.
+    var label: String {
+        switch self {
+        case .automatic: String(localized: "Automatic")
+        case .metric: "km"
+        case .imperial: "mi"
+        }
+    }
+
+    /// What VoiceOver reads for its segment.
+    var spokenLabel: String {
+        switch self {
+        case .automatic: String(localized: "Automatic")
+        case .metric: String(localized: "Kilometres")
+        case .imperial: String(localized: "Miles")
+        }
     }
 }
 

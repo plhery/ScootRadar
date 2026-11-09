@@ -353,11 +353,20 @@ final class ScooterModelsTests: XCTestCase {
     }
 
     func testTheMapShowsItsScaleWhereTheRegionMeasuresInMiles() {
-        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_US")))
-        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_GB")))
-        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_CH")))
-        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "fr_CA")))
-        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "es_MX")))
+        let american = Locale(identifier: "en_US")
+        let british = Locale(identifier: "en_GB")
+        let swiss = Locale(identifier: "de_CH")
+        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: american, iPhone: american))
+        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: british, iPhone: british))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_CH"), iPhone: swiss))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "fr_CA"), iPhone: Locale(identifier: "fr_CA")))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "es_MX"), iPhone: Locale(identifier: "es_MX")))
+        // MapKit draws its scale in the iPhone's own units, whatever the app's: miles chosen in
+        // Settings show it only where the iPhone measures in miles too, and kilometres hide it.
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: ScooterUnits.imperial.applied(to: swiss), iPhone: swiss))
+        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: ScooterUnits.imperial.applied(to: swiss), iPhone: american))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: ScooterUnits.metric.applied(to: american), iPhone: american))
+        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: ScooterUnits.automatic.applied(to: british), iPhone: british))
     }
 
     func testTheHeadingIsTakenFromTheTopOfTheScreenAsItShows() {
@@ -2423,5 +2432,93 @@ extension ScooterModelsTests {
             let version = strings.localizedString(forKey: "Version %@", value: nil, table: nil)
             XCTAssertEqual(version.components(separatedBy: "%@").count, 2, "\(language): \(version)")
         }
+    }
+}
+
+// Settings › Units (issue #14): kilometres or miles whatever the region and the language.
+extension ScooterModelsTests {
+    func testChosenUnitsMeasureInKilometresOrMilesWhateverTheRegion() {
+        let swiss = Locale(identifier: "de_CH")
+        let irish = Locale(identifier: "en_IE")
+        let british = Locale(identifier: "en_GB")
+        let american = Locale(identifier: "en_US")
+
+        // Automatic keeps the region's own, the locale as it is.
+        for locale in [swiss, irish, british, american] {
+            XCTAssertEqual(ScooterUnits.automatic.applied(to: locale), locale)
+            XCTAssertEqual(ScooterUnits.automatic.applied(to: locale).measurementSystem, locale.measurementSystem)
+        }
+        XCTAssertNil(ScooterUnits.automatic.measurementSystem(in: .unitedKingdom))
+
+        // Kilometres, in Britain and the US too.
+        for locale in [swiss, irish, british, american] {
+            let metric = ScooterUnits.metric.applied(to: locale)
+            XCTAssertEqual(metric.measurementSystem, .metric, locale.identifier)
+            XCTAssertEqual(metric.language.languageCode, locale.language.languageCode)
+            XCTAssertEqual(metric.region, locale.region)
+            XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 300, locale: metric)), "300 m", locale.identifier)
+            XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 1_250, locale: metric)), "1.3 km", locale.identifier)
+        }
+
+        // Miles: in feet under half a mile outside the UK, as iOS writes them on roads, and in yards in it.
+        let irishMiles = ScooterUnits.imperial.applied(to: irish)
+        XCTAssertEqual(irishMiles.measurementSystem, .us)
+        XCTAssertEqual(irishMiles.region, irish.region)
+        XCTAssertEqual(
+            [12, 300, 3_000, 61_000].map { plainSpaces(Scooter.formattedLength(meters: $0, locale: irishMiles)) },
+            ["40 ft", "1,000 ft", "1.9 mi", "38 mi"]
+        )
+        let swissMiles = ScooterUnits.imperial.applied(to: swiss)
+        XCTAssertEqual(swissMiles.measurementSystem, .us)
+        XCTAssertEqual(swissMiles.language.languageCode, .german)
+        XCTAssertTrue(plainSpaces(Scooter.formattedLength(meters: 300, locale: swissMiles)).hasSuffix(" ft"))
+        XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 3_000, locale: swissMiles)), "1.9 mi")
+
+        let britishMiles = ScooterUnits.imperial.applied(to: british)
+        XCTAssertEqual(ScooterUnits.imperial.measurementSystem(in: .unitedKingdom), .uk)
+        XCTAssertEqual(britishMiles.measurementSystem, .uk)
+        XCTAssertEqual(
+            [12, 300, 3_000].map { plainSpaces(Scooter.formattedLength(meters: $0, locale: britishMiles)) },
+            ["10 yd", "350 yd", "1.9 mi"]
+        )
+        XCTAssertEqual(ScooterUnits.imperial.applied(to: american).measurementSystem, .us)
+
+        // The closest cities, in whole kilometres or miles as chosen.
+        let bern = ScooterCityCatalog.nearest(to: GeoPoint(latitude: 46.7741, longitude: 8.1558), count: 1)[0]
+        XCTAssertEqual(plainSpaces(bern.formattedDistance(locale: swissMiles)), "36 mi")
+        XCTAssertEqual(plainSpaces(bern.formattedDistance(locale: ScooterUnits.metric.applied(to: american))), "57 km")
+    }
+
+    @MainActor
+    func testChosenUnitsWriteTheZonesSpeedsInKilometresOrMilesAnHour() {
+        let swiss = Locale(identifier: "en_CH")
+        let american = Locale(identifier: "en_US")
+        XCTAssertEqual(ZoneLegend.speedText(12.87 ... 16.09, locale: ScooterUnits.imperial.applied(to: swiss)), "8–10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(6 ... 15, locale: ScooterUnits.metric.applied(to: american)), "6–15 km/h")
+        XCTAssertEqual(ZoneLegend.speedText(6 ... 15, locale: ScooterUnits.automatic.applied(to: swiss)), "6–15 km/h")
+    }
+
+    /// Every locale the app writes with, the language of the launch's and the others', is in the units chosen.
+    func testTheLanguageShownWritesInTheUnitsChosen() {
+        defer { ScooterUnits.current = .automatic }
+        let other = ScooterLanguage.allCases.first { $0 != ScooterLanguage.atLaunch } ?? .de
+
+        ScooterUnits.current = .automatic
+        XCTAssertEqual(ScooterLanguage.atLaunch.locale.measurementSystem, Locale.current.measurementSystem)
+        XCTAssertEqual(other.locale.measurementSystem, Locale.current.measurementSystem)
+
+        ScooterUnits.current = .metric
+        XCTAssertEqual(ScooterLanguage.atLaunch.locale.measurementSystem, .metric)
+        XCTAssertEqual(other.locale.measurementSystem, .metric)
+        XCTAssertEqual(other.locale.language.languageCode?.identifier, other.rawValue)
+        XCTAssertEqual(other.locale.region, Locale.current.region)
+
+        ScooterUnits.current = .imperial
+        XCTAssertNotEqual(ScooterLanguage.atLaunch.locale.measurementSystem, .metric)
+        XCTAssertNotEqual(other.locale.measurementSystem, .metric)
+        XCTAssertEqual(
+            ScooterWriting(language: other, units: .metric).locale.measurementSystem, .metric,
+            "The screen model's own choice, whatever the global one"
+        )
     }
 }
