@@ -79,7 +79,7 @@ class MapCompassTest {
     fun withAnimationsOffTheMapTurnsNorthAtOnce() = withPhoneMap { phone ->
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val camera = phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
+            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
             phone.map.moveCamera(CameraUpdateFactory.bearingTo(30.0))
             MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames, animationsOn = { false })
         }

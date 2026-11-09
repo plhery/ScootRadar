@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import com.plhery.scootradar.core.model.ScooterChromeLayout
-import com.plhery.scootradar.map.MapKitCamera
 import com.plhery.scootradar.ui.theme.TextSize
 
 // The size classes and the chrome layout of ScooterMapScreen's body, from ios/ScootRadar/Views/ScooterMapScreen.swift.
@@ -24,9 +23,6 @@ import com.plhery.scootradar.ui.theme.TextSize
 data class SizeClasses(val regularWidth: Boolean, val regularHeight: Boolean) {
     /** Regular both ways, as an iPad's full screen and its larger windows are. */
     val isRegular: Boolean get() = regularWidth && regularHeight
-
-    /** How MapKit's camera would stand on a map in the window: the iPad's in a window regular both ways. */
-    val mapKit: MapKitCamera get() = MapKitCamera.of(isRegular)
 
     companion object {
         /** The width, in dp, from which a window is regular across. */

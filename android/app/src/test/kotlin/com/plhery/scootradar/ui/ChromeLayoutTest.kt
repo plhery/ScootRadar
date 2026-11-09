@@ -3,7 +3,6 @@ package com.plhery.scootradar.ui
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterChromeLayout.Dock
 import com.plhery.scootradar.core.model.ScooterChromeLayout.Panel
-import com.plhery.scootradar.map.MapKitCamera
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -29,10 +28,6 @@ class ChromeLayoutTest {
         assertTrue(SizeClasses.of(1280.0, 800.0).isRegular)
         assertFalse(SizeClasses.of(412.0, 915.0).isRegular)
         assertFalse(SizeClasses.of(915.0, 412.0).isRegular)
-        // Only a window regular both ways takes the iPad's camera.
-        assertEquals(MapKitCamera.IPad, SizeClasses.of(1280.0, 800.0).mapKit)
-        assertEquals(MapKitCamera.IPhone, SizeClasses.of(915.0, 412.0).mapKit)
-        assertEquals(MapKitCamera.IPhone, SizeClasses.of(412.0, 915.0).mapKit)
     }
 
     @Test

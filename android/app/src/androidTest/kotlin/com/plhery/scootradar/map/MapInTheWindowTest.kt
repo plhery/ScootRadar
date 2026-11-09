@@ -845,7 +845,7 @@ class MapInTheWindowTest {
         Thread.sleep(800)
         val (tilted, most) = onMain {
             val position = map.cameraPosition
-            position.tilt to MapZoom.mostTilt(position.zoom, position.target!!.latitude, mapView.camera!!.mapKit)
+            position.tilt to MapZoom.mostTilt(position.zoom)
         }
         screenshot("tilted")
         Log.i(TAG, "${size()}: tilted from $tilt to $tilted, at most $most")

@@ -112,7 +112,7 @@ class ScooterZoneLayersTest {
             val (z1, w1) = pairs[upper]
             return w0 + (w1 - w0) * (2.0.pow(zoom - z0) - 1) / (2.0.pow(z1 - z0) - 1)
         }
-        for (zoom in listOf(0.0, 12.0, 15.0, 15.3, 15.5, 15.9, 16.0, 16.999, 21.0, 21.5)) {
+        for (zoom in listOf(MapZoom.minimum, 12.0, 15.0, 15.3, 15.5, 15.9, 16.0, 16.999, 19.5, MapZoom.maximum)) {
             val expected = 1.5 * 2.0.pow(zoom - floor(zoom) - 1)
             assertEquals("at $zoom", expected, width(zoom), 1e-9)
             // The clearance's scale grows with the map as the width does: a point drawn is so many map points.

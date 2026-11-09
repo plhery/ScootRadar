@@ -13,6 +13,7 @@ import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.tan
 
 // The coordinator's zoomLevel(on:) and the region regionDidChange reports, from
 // ios/ScootRadar/Views/ScooterMapView.swift.
@@ -26,11 +27,23 @@ object MapZoom {
     /** How far MapLibre's zoom is below the iPhone's. */
     const val mapLibreOffset: Double = 1.0
 
-    /** The closest the map goes, in MapLibre's zoom: the web ground's 22 (MAP-075, MAP-301). */
-    const val maximum: Double = 21.0
+    /**
+     * The closest the map goes, in MapLibre's zoom: MapKit's, the iPhone's zoom 21, 2 points a point of the flat map,
+     * for a pinch, a double tap and a move alike, on every map and style (MAP-301).
+     */
+    const val maximum: Double = 20.0
 
-    /** The furthest out it goes, in MapLibre's zoom. */
-    const val minimum: Double = 0.0
+    /**
+     * The furthest out it goes on a phone, in MapLibre's zoom: MapKit's pinch stops at the iPhone's zoom 2, a world
+     * 1024 points wide (MAP-301).
+     */
+    const val minimum: Double = 1.0
+
+    /**
+     * The furthest out a map `width` dp wide goes: on a wider map MapKit's pinch keeps the world at least twice as
+     * wide as the map, which on a phone it is already at [minimum] (MAP-301).
+     */
+    fun minimum(width: Double): Double = max(minimum, log2(width / 256))
 
     /** The iPhone's zoom at a zoom of MapLibre's camera. */
     fun level(mapLibreZoom: Double): Double = mapLibreZoom + mapLibreOffset
@@ -84,57 +97,39 @@ object MapZoom {
         2 * PI * 6_378_137.0 * cos(latitude * PI / 180) / (512 * 2.0.pow(zoom))
 
     /**
-     * How far MapKit's camera would stand from what it looks at, in metres, to show a map `height` dp tall at `zoom`,
-     * as `camera` stands.
+     * How far MapKit's camera stands from the point it looks at, its centerCoordinateDistance, in heights of the map
+     * it shows: its field of view is 30° from the map's top edge to its bottom one, so 1 / (2 tan 15°) heights. MapKit
+     * doesn't say; it was measured on the iOS 27 simulator, the same on maps 478 to 1912 points tall and 220 to 1032
+     * wide (tools/mapkit-probe/FINDINGS.md, MAP-301).
      */
-    fun mapKitDistance(zoom: Double, latitude: Double, height: Double, camera: MapKitCamera): Double =
-        camera.heights * height * metresPerPoint(zoom, latitude)
+    val mapKitHeights: Double = 1 / (2 * tan(PI / 12))
+
+    /** How far MapKit's camera would stand from what it looks at, in metres, to show a map `height` dp tall at `zoom`. */
+    fun mapKitDistance(zoom: Double, latitude: Double, height: Double): Double =
+        mapKitHeights * height * metresPerPoint(zoom, latitude)
 
     /**
      * MapLibre's zoom at which the map shows what MapKit's camera shows from `distance` metres away, on a map
-     * `height` dp tall, as `camera` stands (MAP-005).
+     * `height` dp tall (MAP-005).
      */
-    fun atDistance(distance: Double, latitude: Double, height: Double, camera: MapKitCamera): Double {
-        val metresPerPoint = distance / (camera.heights * height)
+    fun atDistance(distance: Double, latitude: Double, height: Double): Double {
+        val metresPerPoint = distance / (mapKitHeights * height)
         val circumference = 2 * PI * 6_378_137.0 * cos(latitude * PI / 180)
         return min(maximum, max(minimum, log2(circumference / (512 * metresPerPoint))))
     }
 
     /**
-     * The most MapKit tilts its camera at `zoom` (MAP-322): 75° close up, then 70°, 60° and 35° past camera distances
-     * of 0.377, 1.508 and 3.017 m for each point of the map's height, the same on the iPhone and the iPad. The iPad's
-     * camera stands closer to show the same map, so its edges come at zooms about 0.08 lower.
+     * The most MapKit tilts its camera at MapLibre's `zoom` (MAP-322): 75° from the iPhone's zoom 19, 70° from 17,
+     * 60° from 16 and 35° further out, at every latitude and on every map. MapKit doesn't say; the edges were found
+     * on the iOS 27 simulator.
      */
-    fun mapKitMostTilt(zoom: Double, latitude: Double, camera: MapKitCamera): Double {
-        val perPoint = camera.heights * metresPerPoint(zoom, latitude)
-        return when {
-            perPoint <= 0.3771 -> 75.0
-            perPoint <= 1.5084 -> 70.0
-            perPoint <= 3.0167 -> 60.0
-            else -> 35.0
-        }
+    fun mapKitMostTilt(zoom: Double): Double = when {
+        zoom >= 18.0 -> 75.0
+        zoom >= 16.0 -> 70.0
+        zoom >= 15.0 -> 60.0
+        else -> 35.0
     }
 
     /** The most the map tilts at `zoom`: MapKit's, where MapLibre goes that far, which is 60° at most. */
-    fun mostTilt(zoom: Double, latitude: Double, camera: MapKitCamera): Double =
-        min(mapKitMostTilt(zoom, latitude, camera), MapLibreConstants.MAXIMUM_TILT)
-}
-
-/**
- * How far MapKit's camera stands from the point it looks at, its centerCoordinateDistance, in heights of the flat
- * map it shows. MapKit doesn't say, and it is not the same on every map; it was measured on the iOS 27 simulator
- * (tools/mapkit-probe/FINDINGS.md). A window regular both ways, an iPad's, takes the iPad's; any other the iPhone's.
- */
-enum class MapKitCamera(val heights: Double) {
-    /** The iPhone 17 Pro Max's, a map 440×956 points. */
-    IPhone(2.0494),
-
-    /** The iPad's, a map 1032×1376 points. */
-    IPad(1.9384),
-    ;
-
-    companion object {
-        /** The camera of a window regular both ways, or not. */
-        fun of(regular: Boolean): MapKitCamera = if (regular) IPad else IPhone
-    }
+    fun mostTilt(zoom: Double): Double = min(mapKitMostTilt(zoom), MapLibreConstants.MAXIMUM_TILT)
 }

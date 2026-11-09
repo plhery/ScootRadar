@@ -54,7 +54,6 @@ import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.Announcer
 import com.plhery.scootradar.ui.glass.LocalGlass
 import com.plhery.scootradar.ui.theme.scootColors
-import com.plhery.scootradar.ui.windowSizeClasses
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.maps.MapLibreMapOptions
@@ -168,8 +167,6 @@ fun ScooterMap(
     val mapStyle by controller.mapStyle.collectAsStateWithLifecycle()
     val language by controller.language.collectAsStateWithLifecycle()
     val look = GroundLook.of(mapStyle, dark, language.rawValue, hasImagery = imagery != null)
-    // MapKit's camera stands closer on an iPad's map than on an iPhone's.
-    val mapKit = windowSizeClasses().mapKit
     val view = remember {
         MapLibre.getInstance(context)
         val options = MapLibreMapOptions.createFromAttributes(context)
@@ -181,11 +178,10 @@ fun ScooterMap(
             .foregroundLoadColor(GroundPalettes.of(look.theme).land.toColorInt())
             .minZoomPreference(MapZoom.minimum)
             .maxZoomPreference(MapZoom.maximum)
-            .camera(memory.position ?: MapCamera.opening(start, mapKit, screenshot))
+            .camera(memory.position ?: MapCamera.opening(start, screenshot))
         ScooterMapView(context, options).also { it.onCreate(null) }
     }
     val currentLook by rememberUpdatedState(look)
-    val currentMapKit by rememberUpdatedState(mapKit)
     var camera by remember { mutableStateOf<MapCamera?>(null) }
     var ground by remember { mutableStateOf<MapGround?>(null) }
     var markers by remember { mutableStateOf<ScooterMarkers?>(null) }
@@ -204,7 +200,6 @@ fun ScooterMap(
         view.getMapAsync { map ->
             drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
             val moving = MapCamera(map, view, controller, memory, scope).also {
-                it.mapKit = currentMapKit
                 made = it
                 camera = it
                 view.camera = it
@@ -247,7 +242,6 @@ fun ScooterMap(
     // Each update of the map by the screen, as SwiftUI's updateUIView: a screen at rest makes none (MAP-246).
     SideEffect { camera?.let { it.updates += 1 } }
     LaunchedEffect(ground, look) { ground?.show(look) }
-    LaunchedEffect(camera, mapKit) { camera?.mapKit = mapKit }
     LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
     // The launch is fully drawn once the map shows its first markers, which the startup benchmark measures (X-AD30).
     ReportDrawnWhen { markers?.markersShown == true }

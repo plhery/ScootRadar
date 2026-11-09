@@ -27,7 +27,7 @@ class MapMoveTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val (ground, camera) = phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
+            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
             // OpenFreeMap's ground where it can be reached, so that a recording shows the move over it.
             val day = GroundLook(GroundTheme.Day, GroundDetail.Calm, "en")
             MapGround(phone.map, day, GroundTiles.openFreeMap(OkHttpClient()), imagery = null, scope) to
@@ -46,7 +46,7 @@ class MapMoveTest {
             settle()
             val to = phone.onMain { phone.map.cameraPosition }
             // Some 3.4 levels in, which MapKit takes a second over; 1.1 km is less than a height of its camera.
-            val mapKit = MapCamera.moveMillis(from, to, 844.0, MapKitCamera.IPhone)
+            val mapKit = MapCamera.moveMillis(from, to, 844.0)
             assertEquals(1_000, mapKit)
             // From the first frame's step to the last's: the first frame of the move is drawn before its step.
             val took = steps.last() - steps.first()
@@ -72,7 +72,7 @@ class MapMoveTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val camera = phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
+            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
             MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames, animationsOn = { false })
         }
         settle()
