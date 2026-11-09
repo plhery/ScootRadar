@@ -75,6 +75,31 @@ class ReviewWaitTest {
         assertEquals(listOf(TrackedEvent("review_ask", result = "rental_return")), analytics.events)
     }
 
+    /**
+     * What the store needs is fetched as the rest begins, so that Play's card comes at its end, as the iPhone's sheet
+     * does; a try that ends early has fetched it for nothing and asks nothing.
+     */
+    @Test
+    fun theStoreIsReadiedAsTheRestBeginsAndAskedAtItsEnd() {
+        val model = backFromARide()
+        val calls = mutableListOf<String>()
+        val requester = object : ReviewRequester {
+            override fun prepare() {
+                calls += "prepare"
+            }
+
+            override fun request() {
+                calls += "request"
+            }
+        }
+        compose.mainClock.autoAdvance = false
+        compose.setContent { ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = requester, analytics = null) }
+        compose.mainClock.advanceTimeByFrame()
+        assertEquals(listOf("prepare"), calls)
+        compose.mainClock.advanceTimeBy(5_500)
+        assertEquals(listOf("prepare", "request"), calls)
+    }
+
     @Test
     fun somethingOverTheMapBeforeThenEndsThisTry() {
         val model = backFromARide()

@@ -18,10 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.AppLink
 import com.plhery.scootradar.app.HeadingOrientationWatcher
 import com.plhery.scootradar.app.LaunchArgumentDefaults
+import com.plhery.scootradar.app.PlayReviewRequester
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.app.ScreenOrientation
@@ -69,6 +71,9 @@ class MainActivity : AppCompatActivity() {
     @VisibleForTesting
     internal val links = Channel<ScooterMapLink>(Channel.CONFLATED)
     private val openedLinks = links.receiveAsFlow()
+
+    /** Google Play's card to rate the app, asked for when the map rests after a ride (UI-106). */
+    private val reviewRequester by lazy { PlayReviewRequester(ReviewManagerFactory.create(applicationContext), this) }
 
     /** What the screen's keys stand for now, which Android's keyboard shortcut helper lists. */
     @VisibleForTesting
@@ -125,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             links = openedLinks,
             shortcuts = shortcuts,
             screenState = model.screen,
+            reviewRequester = reviewRequester,
         )
     }
 

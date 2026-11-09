@@ -117,6 +117,9 @@ dependencies {
     implementation(libs.androidx.window)
     // Installs the Baseline Profile where Play does not, and lets the startup benchmark compile the app with it.
     implementation(libs.profileinstaller)
+    // Google Play's card to rate the app, as StoreKit's requestReview on the iPhone (X-AD27); its FakeReviewManager
+    // stands in for Play in the tests.
+    implementation(libs.play.review)
     baselineProfile(project(":baselineprofile"))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
@@ -153,7 +156,9 @@ dependencies {
 /**
  * LOG-331 (ScooterAnalytics.swift:4): the app reads no advertising id, as the iPhone's reads none. A build's merged
  * manifest asks for no AD_ID permission, which Play services' ads libraries merge in, and the libraries it ships hold
- * nothing of Play services or Firebase. The unit tests run once the debug and the release builds are checked.
+ * nothing of Play services or Firebase but the two that Google Play's review card is asked through (X-AD27): the Task
+ * API and the base it stands on, which read no id. The unit tests run once the debug and the release builds are
+ * checked.
  */
 abstract class AdvertisingIdCheck : DefaultTask() {
     @get:InputFile
@@ -171,14 +176,19 @@ abstract class AdvertisingIdCheck : DefaultTask() {
     fun check() {
         val merged = manifest.get().asFile
         if (merged.readText().contains(PERMISSION)) throw GradleException("$merged asks for $PERMISSION (LOG-331)")
-        val found = libraries.get().filter { library -> GROUPS.any { library.startsWith("$it:") } }.sorted()
+        val found = libraries.get().filter { library -> GROUPS.any { library.startsWith("$it:") } && library !in ALLOWED }.sorted()
         if (found.isNotEmpty()) throw GradleException("The build ships ${found.joinToString()} (LOG-331)")
-        checked.get().asFile.writeText("No $PERMISSION and none of ${GROUPS.joinToString()} among ${libraries.get().size} libraries.\n")
+        checked.get().asFile.writeText(
+            "No $PERMISSION and none of ${GROUPS.joinToString()} but ${ALLOWED.joinToString()} among ${libraries.get().size} libraries.\n",
+        )
     }
 
     companion object {
         const val PERMISSION = "com.google.android.gms.permission.AD_ID"
         val GROUPS = listOf("com.google.android.gms", "com.google.firebase")
+
+        /** What com.google.android.play:review stands on: Play services' Task API and its base, no id among them. */
+        val ALLOWED = setOf("com.google.android.gms:play-services-basement", "com.google.android.gms:play-services-tasks")
 
         /** Every library the dependency graph under [root] selects. */
         fun libraries(root: ResolvedComponentResult): Set<String> {

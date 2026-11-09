@@ -15,15 +15,22 @@ import kotlinx.coroutines.delay
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the ask for a rating, StoreKit's requestReview after the map has
 // rested (ui.md UI-106).
 
-/** What asks the rider to rate the app in the store: StoreKit's requestReview on the iPhone. */
+/**
+ * What asks the rider to rate the app in the store: StoreKit's requestReview on the iPhone, Google Play's card here
+ * (app/PlayReviewRequester).
+ */
 fun interface ReviewRequester {
+    /** Asks the store to show its card, which it may not: it shows it only so often, and says nothing either way. */
     fun request()
 
+    /**
+     * The map has started to rest at a moment to ask: what the store needs for its card may be fetched now, so the
+     * card comes when the rest ends, as the iPhone's sheet does.
+     */
+    fun prepare() {}
+
     companion object {
-        /**
-         * Asks nothing yet: Play's In-App Review needs Play services and an app listed in Play Console
-         * (NEEDS-USER #9), and the app takes nothing from Play services.
-         */
+        /** Asks nothing: a test's screen, or a screen with no store. */
         val none = ReviewRequester { }
     }
 }
@@ -46,6 +53,7 @@ internal fun ReviewWhenTheMapRests(
     LaunchedEffect(moments, nothingOverTheMap, scooter, bay) {
         if (!controller.reviewDue) return@LaunchedEffect
         if (!nothingOverTheMap) return@LaunchedEffect controller.dropReviewMoment()
+        requester.prepare()
         try {
             delay(ScooterReviewPrompt.settle)
         } catch (cancelled: CancellationException) {
