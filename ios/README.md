@@ -203,8 +203,8 @@ and the privacy notice, and the source code on GitHub.
 **Rating.** The app asks for a rating only with Apple's prompt, and only at a
 calm moment on the map: once a load shows a fresh feed, after 5 seconds with
 nothing over the map (no card in the dock or the panel, no search, sheet,
-popover or location card) and no touch, never from a button. A touch ends the
-wait, and the next fresh load starts another. It asks from the third day
+popover or location card) and no touch, never from a button. A touch or a link
+opened ends the wait, and the next fresh load starts another. It asks from the third day
 with a fresh feed, as a rider still using the app then likes it, once per
 version and 30 days apart at the soonest, and never on a day a load failed, the
 data was delayed, every provider in view was down or the rider was outside the
@@ -267,7 +267,8 @@ The filters, the appearance, the map style, whether the zones are shown, the lan
 length used for price estimates, the usage choice and whether the phone was
 ever located are kept in the app's settings, and for the rating prompt the
 number of days with a fresh feed, the last day something went wrong, the
-version and day of the last ask and the time of the last **Open in**. The last
+version and day of the last ask (up to 1.4.0 also the time of the last **Open in**,
+which later versions delete). The last
 place chosen in the search is kept in its own file in Application Support, left
 out of backups, until another is chosen or it is forgotten with its ✕. Your
 location, the other places you searched and the text you typed are never stored.

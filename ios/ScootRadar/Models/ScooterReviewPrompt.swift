@@ -29,6 +29,13 @@ struct ScooterReviewPrompt {
     private static let badDayKey = "review-bad-day"
     private static let askedKey = "review-asked-version"
     private static let askedDayKey = "review-asked-day"
+    /// The time of the last "Open in", kept up to 1.4.0, when the return from a ride was the moment to ask.
+    private static let lastOpenInKey = "review-rental-opened-at"
+
+    /// Forgets the time of the last "Open in" that the app kept up to 1.4.0, which nothing reads any more.
+    func forgetLastOpenIn() {
+        defaults.removeObject(forKey: Self.lastOpenInKey)
+    }
 
     /// A fresh feed at `date`: its calendar day counts as a day with use, once.
     func noteUse(at date: Date) {

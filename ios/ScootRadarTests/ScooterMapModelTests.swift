@@ -5682,6 +5682,61 @@ extension ScooterMapModelTests {
         XCTAssertFalse(model.reviewDue)
     }
 
+    /// The screen's wait for one moment is ended by the next when a touch and a fresh load come within its 5
+    /// seconds, the rider panning: the end of that wait leaves the next moment waiting (review-app-bl 1).
+    func testAWaitEndedByTheNextMomentLeavesThatMomentWaiting() async {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+        model.noteInteraction()
+        await reload(model, api)
+        XCTAssertEqual(model.reviewMoments, 2)
+        model.dropReviewMoment(1)
+        XCTAssertTrue(model.reviewDue)
+        // Something over the map during the second wait ends it.
+        model.dropReviewMoment(2)
+        XCTAssertFalse(model.reviewDue)
+    }
+
+    func testALinkEndsTheWaitAndTheNextCalmLoadIsTheNextMoment() async {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+        model.open(ScooterMapLink())
+        XCTAssertFalse(model.reviewDue)
+        await reload(model, api)
+        XCTAssertEqual(model.reviewMoments, 2)
+        XCTAssertTrue(model.reviewDue)
+    }
+
+    func testDelayedDataKeepsTheRestOfTheDayFromAsking() async {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+        model.noteInteraction()
+        let vehicles = [scooter(id: "one", provider: "lime")]
+        await api.setResponse(ScooterResponse(
+            vehicles: vehicles, meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
+        ))
+        await reload(model, api)
+        XCTAssertFalse(model.reviewDue)
+
+        // Up to date again later that day: still no ask.
+        await api.setResponse(ScooterResponse(vehicles: vehicles))
+        clock.advance(3_600)
+        await reload(model, api)
+        XCTAssertEqual(model.reviewMoments, 1)
+        XCTAssertFalse(model.reviewDue)
+    }
+
+    /// Up to 1.4.0 the app kept the time of the last "Open in" for the ask; an updated app forgets it.
+    func testTheTimeOfTheLastOpenInKeptUpTo140IsForgotten() async {
+        let defaults = isolatedDefaults()
+        defaults.set(Date(), forKey: "review-rental-opened-at")
+        defaults.set(2, forKey: "review-use-days")
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: []))
+        _ = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults)
+        XCTAssertNil(defaults.object(forKey: "review-rental-opened-at"))
+        XCTAssertEqual(defaults.integer(forKey: "review-use-days"), 2)
+    }
+
     /// A model with a fresh feed on the map after `earlierDays` days with one: the third day by default.
     private func reviewModel(clock: TestClock, earlierDays: Int = 2) async -> (ScooterMapModel, StubScooterAPI) {
         let defaults = isolatedDefaults()

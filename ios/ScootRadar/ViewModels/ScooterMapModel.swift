@@ -502,6 +502,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         knownAuthorizationStatus = locationManager.authorizationStatus
         hasLocatedOnce = defaults.bool(forKey: Self.hasLocatedOnceKey)
         reviewPrompt = ScooterReviewPrompt(defaults: defaults, version: ScooterLinks.appVersion)
+        reviewPrompt.forgetLastOpenIn()
         #if DEBUG
         // A screenshot's camera stays where it was set when the rider is located.
         keepsMapOnFirstFix = defaults.string(forKey: "ScreenshotCamera") != nil
@@ -1419,6 +1420,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// Either way the first fix of the rider's location leaves the map where
     /// the link put it, also when the link opened the app before locating began.
     func open(_ link: ScooterMapLink) {
+        // A link changes the map: a moment to ask for a rating waits for its fresh load.
+        reviewDue = false
         if let battery = link.minimumBattery { setMinimumBattery(Double(battery)) }
         guard let origin = link.origin else {
             ScooterAnalytics.shared.track("link_open", result: "map")
@@ -2650,9 +2653,10 @@ extension ScooterMapModel {
         return true
     }
 
-    /// Something went over the map, or changed on it, before the wait was over: this moment asks no more, and the
-    /// next fresh load is the next one.
-    func dropReviewMoment() {
+    /// Something went over the map, or changed on it, before the wait for `moment` was over: that moment asks no
+    /// more, and the next fresh load is the next one. A wait ended by the next moment leaves that one waiting.
+    func dropReviewMoment(_ moment: Int) {
+        guard moment == reviewMoments else { return }
         reviewDue = false
     }
 

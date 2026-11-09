@@ -170,16 +170,17 @@ struct ScooterMapScreen: View {
             nothingOver: nothingOverTheMap,
             scooter: model.selectedScooterID,
             bay: model.selectedParkingID
-        )) {
+        )) { [moment = model.reviewMoments] in
             // A calm map that is the moment to ask for a rating
             // (ScooterReviewPrompt): after it has rested a few seconds with
             // nothing over it and no touch, never from a button. Anything over
             // the map, changing on it or a touch before then ends this try,
-            // and the next fresh load brings another.
+            // and the next fresh load brings another, which this try, ended
+            // by it, leaves waiting.
             guard model.reviewDue else { return }
-            guard nothingOverTheMap else { return model.dropReviewMoment() }
+            guard nothingOverTheMap else { return model.dropReviewMoment(moment) }
             try? await Task.sleep(for: ScooterReviewPrompt.settle)
-            guard !Task.isCancelled else { return model.dropReviewMoment() }
+            guard !Task.isCancelled else { return model.dropReviewMoment(moment) }
             guard model.takeReviewMoment() else { return }
             requestReview()
             ScooterAnalytics.shared.track("review_ask", result: "calm_map")
