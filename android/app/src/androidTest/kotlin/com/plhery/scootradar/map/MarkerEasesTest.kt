@@ -63,7 +63,7 @@ class MarkerEasesTest {
     @Volatile
     private var served = ScooterResponse(vehicles = emptyList())
     private val api = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = served
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = served
     }
 
     /** Whether the markers ease, as Remove animations leaves it. */

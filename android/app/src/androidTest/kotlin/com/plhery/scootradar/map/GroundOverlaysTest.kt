@@ -478,7 +478,7 @@ class GroundOverlaysTest {
         val points = route()
         val target = Scooter(provider = "voi", latitude = points.last().latitude, longitude = points.last().longitude, battery = 80, vehicleID = "s1")
         val api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = listOf(target))
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = listOf(target))
         }
         val directions = object : WalkingDirectionsClient {
             override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = points
@@ -646,7 +646,7 @@ class GroundOverlaysTest {
 
     /** A server with a scooter at the end of the route. */
     private fun scooterAPI(points: List<GeoPoint>) = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = listOf(walkTarget(points)))
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = listOf(walkTarget(points)))
     }
 
     private fun walkTarget(points: List<GeoPoint>) =
@@ -714,7 +714,7 @@ class GroundOverlaysTest {
     }
 
     private fun zonesAPI(zones: List<ScooterZone>) = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = emptyList())
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = emptyList())
 
         override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
     }

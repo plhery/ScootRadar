@@ -14,12 +14,15 @@ import java.util.Locale
 // data, for the tests and the JVM.
 
 /** Locale.MeasurementSystem */
-enum class ScooterMeasurementSystem {
-    Metric,
+enum class ScooterMeasurementSystem(
+    /** The value of the `ms` keyword that names it in a locale: "en-US-u-ms-metric". */
+    val keyword: String,
+) {
+    Metric("metric"),
     /** Miles and feet. */
-    Us,
+    Us("ussystem"),
     /** Miles and yards. */
-    Uk,
+    Uk("uksystem"),
 }
 
 /**
@@ -29,11 +32,8 @@ enum class ScooterMeasurementSystem {
  */
 val Locale.measurementSystem: ScooterMeasurementSystem
     get() {
-        when (getUnicodeLocaleType("ms")) {
-            "metric" -> return ScooterMeasurementSystem.Metric
-            "ussystem" -> return ScooterMeasurementSystem.Us
-            "uksystem" -> return ScooterMeasurementSystem.Uk
-        }
+        val named = getUnicodeLocaleType("ms")
+        ScooterMeasurementSystem.entries.firstOrNull { it.keyword == named }?.let { return it }
         val region = country.ifEmpty { if (language == "en") "US" else "" }
         return when (region) {
             "US", "LR" -> ScooterMeasurementSystem.Us

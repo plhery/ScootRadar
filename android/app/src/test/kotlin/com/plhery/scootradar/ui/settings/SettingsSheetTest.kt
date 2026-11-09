@@ -34,6 +34,8 @@ import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterRangeFilter
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.ui.LocalClock
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
@@ -76,6 +78,7 @@ class SettingsSheetTest {
         controllers.close()
         ScooterLanguage.current = ScooterLanguage.atLaunch
         ScooterDateFormat.timeZone = ZoneId::systemDefault
+        ScooterUnits.current = ScooterUnits.Automatic
     }
 
     /** The web pages a row opened. */
@@ -123,7 +126,8 @@ class SettingsSheetTest {
     @Test
     fun aPageOpensFromItsRowAndBackTakesItAway() {
         show()
-        compose.onNodeWithText("Map & data credits").performClick()
+        // Under Units, below the fold of the page.
+        compose.onNodeWithText("Map & data credits").performScrollTo().performClick()
         compose.waitForIdle()
         compose.onNode(title("Map & data credits")).assertExists()
 
@@ -157,6 +161,30 @@ class SettingsSheetTest {
         compose.onNodeWithText("Dark").assertIsSelected()
         // Satellite stays out while the app has no imagery (NEEDS-USER #3).
         assertTrue(compose.onAllNodes(hasText("Satellite")).fetchSemanticsNodes().isEmpty())
+    }
+
+    /** Issue #14: a segment chooses the units at once, for every length, the range filter's slider too. */
+    @Test
+    fun aSegmentChoosesTheUnitsAtOnce() {
+        show()
+        assertEquals(ScooterUnits.Automatic, model.units.value)
+        compose.onNodeWithText("km").performScrollTo().performClick()
+        compose.waitForIdle()
+        assertEquals(ScooterUnits.Metric, model.units.value)
+        assertEquals(ScooterUnits.Metric, ScooterUnits.current)
+        assertEquals(ScooterRangeFilter.Unit.Kilometres, model.rangeUnit)
+        compose.onNodeWithContentDescription("Kilometres").assertIsSelected()
+
+        compose.onNodeWithText("mi").performClick()
+        compose.waitForIdle()
+        assertEquals(ScooterUnits.Imperial, model.units.value)
+        assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
+        compose.onNodeWithContentDescription("Miles").assertIsSelected()
+
+        compose.onNodeWithContentDescription("Auto").performClick()
+        compose.waitForIdle()
+        assertEquals(ScooterUnits.Automatic, model.units.value)
+        compose.onNodeWithContentDescription("Auto").assertIsSelected()
     }
 
     @Test

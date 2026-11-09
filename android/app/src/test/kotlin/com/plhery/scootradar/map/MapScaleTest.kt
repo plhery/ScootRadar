@@ -42,6 +42,7 @@ import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import com.plhery.scootradar.core.model.ScooterUnits
 import java.math.BigDecimal
 import java.util.Locale
 import kotlin.math.PI
@@ -69,6 +70,22 @@ class MapScaleTest {
         assertFalse(MapScale.showsScale(Locale.forLanguageTag("fr-FR")))
         assertFalse(MapScale.showsScale(Locale.forLanguageTag("en-CH")))
         assertFalse(MapScale.showsScale(Locale.forLanguageTag("en-CA")))
+    }
+
+    /**
+     * Issue #14: miles chosen in Settings show it in Switzerland too, kilometres hide it in the United States and the
+     * United Kingdom, and Auto leaves it to the region. MapLibre's scale is the app's own, unlike MapKit's, which
+     * the iPhone's settings decide.
+     */
+    @Test
+    fun whereTheUnitsChosenInSettingsAreMiles() {
+        assertTrue(MapScale.showsScale(ScooterUnits.Imperial.applied(swiss)))
+        assertTrue(MapScale.showsScale(ScooterUnits.Imperial.applied(Locale.forLanguageTag("en-CH"))))
+        assertFalse(MapScale.showsScale(ScooterUnits.Metric.applied(us)))
+        assertFalse(MapScale.showsScale(ScooterUnits.Metric.applied(uk)))
+        assertTrue(MapScale.showsScale(ScooterUnits.Automatic.applied(us)))
+        assertTrue(MapScale.showsScale(ScooterUnits.Automatic.applied(uk)))
+        assertFalse(MapScale.showsScale(ScooterUnits.Automatic.applied(swiss)))
     }
 
     /** The longest round length within 120 points: feet below a tenth of a mile, miles from there. */

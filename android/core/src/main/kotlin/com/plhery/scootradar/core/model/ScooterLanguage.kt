@@ -45,14 +45,16 @@ enum class ScooterLanguage(
 
     /**
      * The language in the region of the phone, as Locale.current makes it: "fr_CH" writes 1 288 where
-     * "de_CH" writes 1’288.
+     * "de_CH" writes 1’288. Its lengths and speeds are in the units chosen in Settings (ScooterUnits).
      */
-    val locale: Locale
-        get() {
-            val launch = launchLocale()
-            if (this == atLaunch) return launch
-            return Locale.Builder().setLocale(launch).setLanguage(rawValue).setScript("").build()
-        }
+    val locale: Locale get() = locale(ScooterUnits.current)
+
+    /** The same in the units given, as the screen reads it for its own choice. */
+    fun locale(units: ScooterUnits): Locale {
+        val launch = launchLocale()
+        if (this == atLaunch) return units.applied(launch)
+        return units.applied(Locale.Builder().setLocale(launch).setLanguage(rawValue).setScript("").build())
+    }
 
     /** Whether the language says "scooter" for Spain's "patinete" in the region. */
     fun saysScooter(region: () -> String?): Boolean =
@@ -164,6 +166,73 @@ sealed interface ScooterLanguageChoice {
          */
         fun of(appLanguages: List<String>, shown: ScooterLanguage): ScooterLanguageChoice =
             if (appLanguages.isEmpty()) Automatic else Language(shown)
+    }
+}
+
+/**
+ * The units the app measures in, chosen in Settings › Units: the phone's on Automatic, as before there was a
+ * choice, or kilometres or miles whatever the region and the language. A language chosen for the app keeps the
+ * phone's region, so German on a phone set to the US measured in miles until there was a choice (issue #14).
+ */
+enum class ScooterUnits(val rawValue: String) {
+    Automatic("auto"),
+    Metric("metric"),
+    Imperial("imperial"),
+    ;
+
+    val id: String get() = rawValue
+
+    /**
+     * The system a locale measures with in these units, where its region's own is [region]: none on Automatic,
+     * which keeps the region's. Miles are written in yards under half a mile where the region writes them so, as
+     * the UK and Myanmar do, and in feet everywhere else; speeds in mph.
+     */
+    fun measurementSystem(region: ScooterMeasurementSystem): ScooterMeasurementSystem? = when (this) {
+        Automatic -> null
+        Metric -> ScooterMeasurementSystem.Metric
+        Imperial -> if (region == ScooterMeasurementSystem.Uk) ScooterMeasurementSystem.Uk else ScooterMeasurementSystem.Us
+    }
+
+    /**
+     * The locale measuring in these units, its language and region kept: "de-CH-u-ms-ussystem" for miles in
+     * Switzerland. Locale.measurementSystem reads the keyword, and so does the map's scale.
+     */
+    fun applied(locale: Locale): Locale {
+        val regional = if (locale.getUnicodeLocaleType("ms") == null) {
+            locale
+        } else {
+            Locale.Builder().setLocale(locale).setUnicodeLocaleKeyword("ms", null).build()
+        }
+        val system = measurementSystem(regional.measurementSystem) ?: return locale
+        if (system == locale.measurementSystem) return locale
+        return Locale.Builder().setLocale(locale).setUnicodeLocaleKeyword("ms", system.keyword).build()
+    }
+
+    /** Its segment in Settings: "Auto", and "km" and "mi" as every language writes them. */
+    val label: String
+        get() = when (this) {
+            Automatic -> localized("Automatic")
+            Metric -> "km"
+            Imperial -> "mi"
+        }
+
+    /** What TalkBack reads for its segment. */
+    val spokenLabel: String
+        get() = when (this) {
+            Automatic -> localized("Automatic")
+            Metric -> localized("Kilometres")
+            Imperial -> localized("Miles")
+        }
+
+    companion object {
+        fun fromRawValue(rawValue: String): ScooterUnits? = entries.firstOrNull { it.rawValue == rawValue }
+
+        /**
+         * The units the app measures in now. Choosing others in Settings changes them at once, everywhere a length
+         * or a speed is written.
+         */
+        @Volatile
+        var current: ScooterUnits = Automatic
     }
 }
 

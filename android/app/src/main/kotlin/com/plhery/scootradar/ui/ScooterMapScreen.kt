@@ -479,7 +479,7 @@ private fun <T> OnChange(value: T, action: (T) -> Unit) {
  * the dock. The search bar starts [chromeTop] down: under the fold of a foldable standing like a laptop, so that all
  * of them are on the half lying flat, within reach. In a window whose caption bar the map runs under, the search bar
  * keeps to the top beside the caption's [captionButtons], and goes under the caption where it can't. Made anew in
- * another language, as much of it is text written when it was drawn.
+ * another language or other units, as much of it is text written when it was drawn.
  */
 @Composable
 private fun DockChrome(
@@ -493,6 +493,7 @@ private fun DockChrome(
     onShowSettings: () -> Unit,
 ) {
     val language by controller.language.collectAsStateWithLifecycle()
+    val units by controller.units.collectAsStateWithLifecycle()
     val scooterChoices by controller.scooterChoices.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
     val loadIssue by controller.loadIssue.collectAsStateWithLifecycle()
@@ -537,7 +538,7 @@ private fun DockChrome(
     val safeLeft = safe.calculateLeftPadding(direction)
     val safeRight = safe.calculateRightPadding(direction)
 
-    key(language) {
+    key(language, units) {
         BoxWithConstraints(Modifier.fillMaxSize().absolutePadding(left = safeLeft, right = safeRight)) {
             val searchBar = with(density) { searchBarHeight.intValue.toDp() }
             val notices = banner != null || locationIssue != null
@@ -804,7 +805,7 @@ private fun LocateRow(
  * taps, under the panel; the notices stay. Beside the fold of a foldable open like a book the panel keeps to its
  * half, [width] wide. In a window whose caption bar the map runs under, the panel keeps to the top, its search bar
  * beside the caption's [captionButtons], and goes under the caption where the bar can't. Made anew in another
- * language, as the phone's is.
+ * language or other units, as the phone's is.
  */
 @Composable
 private fun PanelChrome(
@@ -820,6 +821,7 @@ private fun PanelChrome(
     onFiltersButtonFrame: (Rect) -> Unit,
 ) {
     val language by controller.language.collectAsStateWithLifecycle()
+    val units by controller.units.collectAsStateWithLifecycle()
     val scooterChoices by controller.scooterChoices.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
     val loadIssue by controller.loadIssue.collectAsStateWithLifecycle()
@@ -846,7 +848,7 @@ private fun PanelChrome(
         }
     }
 
-    key(language) {
+    key(language, units) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val windowHeight = maxHeight
             val searchBar = with(density) { searchBarHeight.intValue.toDp() }

@@ -11,6 +11,7 @@ import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasAnyChild
 import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.AnnotatedString
@@ -58,6 +59,9 @@ class SettingsTileNameTest {
 
     private val controllers = TestControllers()
     private val model = controllers.make(EmptyScooterAPI, TestClock())
+
+    /** A tile, its name drawn under it: not a segment of Units, whose label is the segment's own. */
+    private val tile = isSelectable() and hasAnyChild(SemanticsMatcher.keyIsDefined(SemanticsProperties.Text))
 
     @Before
     fun setUp() {
@@ -154,7 +158,7 @@ class SettingsTileNameTest {
     @Config(qualifiers = "w360dp-h1000dp-xhdpi") // Tall enough for the medium detent to show the map's tiles.
     fun theChosenTileShowsACheckBeforeItsName() {
         showSettings()
-        val tiles = compose.onAllNodes(isSelectable(), useUnmergedTree = true).fetchSemanticsNodes()
+        val tiles = compose.onAllNodes(tile, useUnmergedTree = true).fetchSemanticsNodes()
         val (chosen, others) = tiles.partition { it.config[SemanticsProperties.Selected] }
         assertEquals("an appearance and a map chosen", 2, chosen.size)
         assertTrue("${others.size} tiles not chosen", others.size >= 3)
@@ -201,7 +205,7 @@ class SettingsTileNameTest {
                     shown += 1
                 }
                 compose.waitForIdle()
-                val chosen = compose.onAllNodes(isSelectable(), useUnmergedTree = true).fetchSemanticsNodes()
+                val chosen = compose.onAllNodes(tile, useUnmergedTree = true).fetchSemanticsNodes()
                     .filter { it.config[SemanticsProperties.Selected] }
                 assertEquals("an appearance and a map chosen", 2, chosen.size)
                 widths = widths + chosen.first().boundsInRoot.width / compose.density.density

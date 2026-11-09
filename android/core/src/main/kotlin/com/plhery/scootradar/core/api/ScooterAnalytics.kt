@@ -2,6 +2,7 @@ package com.plhery.scootradar.core.api
 
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterUnits
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
@@ -141,7 +142,8 @@ class ScooterAnalytics(
             put("title", "ScootRadar")
             put("referrer", "")
             put("tag", "android")
-            put("language", ScooterLanguage.current.locale.toLanguageTag())
+            // The language in the phone's region, without the units chosen in Settings: "de-CH", never "de-CH-u-ms-ussystem".
+            put("language", ScooterLanguage.current.locale(ScooterUnits.Automatic).toLanguageTag())
             if (name != null) {
                 put("name", name)
                 put(

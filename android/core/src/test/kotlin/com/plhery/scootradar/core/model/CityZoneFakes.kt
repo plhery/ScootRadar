@@ -45,7 +45,7 @@ internal class DownloadStubAPI(files: Map<String, ByteArray>) : ScooterAPIClient
     private val held = mutableMapOf<String, CompletableDeferred<Unit>>()
     val asked = mutableListOf<String>()
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse =
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse =
         ScooterResponse(vehicles = emptyList())
 
     override suspend fun cityZoneFile(name: String): ByteArray {

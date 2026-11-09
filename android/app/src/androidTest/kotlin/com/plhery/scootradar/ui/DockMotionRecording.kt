@@ -819,7 +819,7 @@ class DockMotionRecording {
         @Volatile var holds = false
         private var gate = CompletableDeferred<Unit>()
 
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse {
             if (holds) gate.await()
             failure?.let { throw it }
             return ScooterResponse(vehicles = scooters)

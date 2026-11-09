@@ -1,7 +1,6 @@
 package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.generated.ScooterProvider
-import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -196,8 +195,7 @@ data class ScooterCityDistance(val city: ScooterCity, val distanceMeters: Double
         val metric = locale.measurementSystem == ScooterMeasurementSystem.Metric
         val value = maxOf(1.0, (distanceMeters / (if (metric) 1_000.0 else 1_609.344)).roundedAwayFromZero())
         val unit = if (metric) ScooterLengthUnit.Kilometers else ScooterLengthUnit.Miles
-        // A line never breaks between the number and its unit.
-        return ScooterMeasureFormat.length(BigDecimal(value), unit, locale).replace(' ', '\u00A0')
+        return Scooter.formattedWhole(value.toInt(), unit, locale)
     }
 
     /** "Bern · 61 km", the label of a closest-city chip. */

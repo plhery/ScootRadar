@@ -5,6 +5,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -22,6 +26,7 @@ import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterLinks
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.theme.ScootTheme
 import org.junit.After
@@ -58,6 +63,7 @@ class SettingsAccessibilityTest {
         controllers.close()
         ScooterLanguage.current = ScooterLanguage.atLaunch
         ScooterLinks.appVersion = version
+        ScooterUnits.current = ScooterUnits.Automatic
     }
 
     private fun show(pages: List<SettingsPage>) {
@@ -133,6 +139,34 @@ class SettingsAccessibilityTest {
             assertEquals(style.rawValue, Role.RadioButton, tile.config[SemanticsProperties.Role])
             assertEquals(style.rawValue, style == model.mapStyle.value, tile.config[SemanticsProperties.Selected])
         }
+    }
+
+    /**
+     * Issue #14: the units are a group of three choices under the "Units" heading, shown "Auto", "km" and "mi" and
+     * read "Auto", "Kilometres" and "Miles", the chosen one selected, as Filters' presets are. What "km" and "mi"
+     * show is their text, which Voice Access answers to, as the presets' "30%+".
+     */
+    @Test
+    fun theUnitsAreAGroupOfChoicesReadInFullTheChosenOneSelected() {
+        model.setUnits(ScooterUnits.Metric)
+        show(listOf(SettingsPage.Root))
+        compose.onNode(hasText("Units"), useUnmergedTree = true).assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        val segments = listOf("Auto", "Kilometres", "Miles").map { label ->
+            compose.onNode(hasContentDescription(label) and isSelectable()).fetchSemanticsNode()
+        }
+        assertEquals(List(3) { Role.RadioButton }, segments.map { it.config[SemanticsProperties.Role] })
+        assertEquals(listOf(false, true, false), segments.map { it.config[SemanticsProperties.Selected] })
+        assertEquals(
+            listOf(null, "km", "mi"),
+            segments.map { segment -> segment.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text } },
+        )
+        assertTrue(segments.all { it.children.isEmpty() })
+        // Their group, with no stop of its own.
+        val groups = segments.map { segment ->
+            generateSequence(segment.parent) { it.parent }.first { SemanticsProperties.SelectableGroup in it.config }
+        }
+        assertEquals(1, groups.map { it.id }.distinct().size)
+        assertTrue(SemanticsProperties.ContentDescription !in groups.first().config)
     }
 
     /** UI-294: a row that leaves the app is one button, read by its title and its detail; its arrow is not read. */

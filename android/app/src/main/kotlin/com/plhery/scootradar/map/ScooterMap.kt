@@ -166,6 +166,8 @@ fun ScooterMap(
     val scope = rememberCoroutineScope()
     val mapStyle by controller.mapStyle.collectAsStateWithLifecycle()
     val language by controller.language.collectAsStateWithLifecycle()
+    // The scale's feet and miles follow the units chosen in Settings, as the rest of the app's lengths do.
+    val units by controller.units.collectAsStateWithLifecycle()
     val look = GroundLook.of(mapStyle, dark, language.rawValue, hasImagery = imagery != null)
     val view = remember {
         // The tiles among the app's caches (MAP-248), whose folder "Clear cache" may have taken.
@@ -440,7 +442,7 @@ fun ScooterMap(
         MapScaleBar(
             metresPerPoint = { watch?.let { MapScale.metresPerPoint(it.zoom, it.latitude) } ?: 0.0 },
             zoomChanges = { watch?.zoomChanges ?: 0 },
-            locale = language.locale,
+            locale = language.locale(units),
             dark = dark || look.satellite,
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -471,7 +473,7 @@ fun ScooterMap(
         // wait out of sight; above a fold across the map they are in its upright half, clear of the dock.
         val measurer = rememberTextMeasurer()
         val shownDensity = LocalDensity.current
-        val scaleFoot = if (remember(language.locale) { MapScale.showsScale(language.locale) }) {
+        val scaleFoot = if (remember(language, units) { MapScale.showsScale(language.locale(units)) }) {
             ornamentsTop + remember(measurer, shownDensity) { scaleHeight(measurer, shownDensity) }
         } else {
             null

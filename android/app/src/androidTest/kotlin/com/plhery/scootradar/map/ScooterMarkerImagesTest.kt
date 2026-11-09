@@ -49,7 +49,7 @@ class ScooterMarkerImagesTest {
         )
     }
     private val api = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = scooters)
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = scooters)
     }
 
     @Before

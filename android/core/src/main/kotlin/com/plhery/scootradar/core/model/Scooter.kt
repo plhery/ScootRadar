@@ -76,8 +76,9 @@ data class Scooter(
         /**
          * "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the web. The system's rounding
          * for roads would say "300 m" for the same scooter. Where the region measures in miles, as in the US
-         * and the UK, the system writes it as it does on its own roads: "1,000 ft" or "350 yd" under half a
-         * mile, "1.9 mi" from there. src/lib/walking.ts rounds the same way.
+         * and the UK, or miles are chosen in Settings (ScooterUnits), the system writes it as it does on its own
+         * roads: "1,000 ft" or "350 yd" under half a mile, "1.9 mi" from there. src/lib/walking.ts rounds the
+         * same way.
          */
         fun formattedLength(meters: Double, locale: Locale = ScooterLanguage.current.locale): String {
             val system = locale.measurementSystem
@@ -132,6 +133,14 @@ data class Scooter(
             if (unit.any(Char::isDigit)) return length to null
             return length.substring(0, space) to unit
         }
+
+        /**
+         * Whole kilometres or miles, "61 km" or "38 mi": the closest cities and the range filter's steps, which never
+         * come in metres, feet or yards.
+         */
+        fun formattedWhole(value: Int, unit: ScooterLengthUnit, locale: Locale = ScooterLanguage.current.locale): String =
+            // A line never breaks between the number and its unit.
+            ScooterMeasureFormat.length(BigDecimal(value), unit, locale).replace(' ', '\u00A0')
 
         /** The spaces a locale writes between a number and its unit: no-break, narrow no-break, thin and plain. */
         private const val UNIT_SPACES = "\u00A0\u202F\u2009 "

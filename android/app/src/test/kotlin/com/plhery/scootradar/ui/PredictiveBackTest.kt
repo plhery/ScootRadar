@@ -17,6 +17,7 @@ import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
@@ -368,6 +369,9 @@ class PredictiveBackTest {
     /** Settings alone, Privacy tapped and 200 ms on its way in, the clock held. */
     private fun privacyComingIn() {
         settingsSheet(listOf(SettingsPage.Root), reduceMotion = false)
+        // Below the fold, under Units.
+        compose.onNode(hasText("Privacy")).performScrollTo()
+        compose.waitForIdle()
         compose.mainClock.autoAdvance = false
         compose.onNode(hasText("Privacy")).performClick()
         // The tap's push begins once what it posted has run.
@@ -654,6 +658,8 @@ class PredictiveBackTest {
     @Test
     fun underRemoveAnimationsABackInTheFrameOfATappedPageTakesItAway() {
         settingsInASheet(listOf(SettingsPage.Root), reduceMotion = true)
+        compose.onNode(hasText("Privacy")).performScrollTo()
+        compose.waitForIdle()
         compose.mainClock.autoAdvance = false
         compose.onNode(hasText("Privacy")).performClick()
         // The tap's push is made once what it posted has run, the clock held.

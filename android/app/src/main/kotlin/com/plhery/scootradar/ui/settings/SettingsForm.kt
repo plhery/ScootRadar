@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -54,7 +57,9 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -76,10 +81,11 @@ import com.plhery.scootradar.ui.theme.iosShadow
 import com.plhery.scootradar.ui.theme.monospacedDigit
 import com.plhery.scootradar.ui.theme.motion
 import com.plhery.scootradar.ui.theme.scootColors
+import com.plhery.scootradar.ui.theme.shrinking
 import com.plhery.scootradar.ui.theme.weight
 import kotlin.math.roundToInt
 
-// SwiftUI's Form as iOS 26 draws it in a sheet, with its Toggle, Stepper and Label, and ExternalLinkRow in
+// SwiftUI's Form as iOS 26 draws it in a sheet, with its Toggle, Stepper, segmented Picker and Label, and ExternalLinkRow in
 // ios/ScootRadar/Views/ScooterControls.swift (ui.md UI-088, UI-404).
 
 /**
@@ -378,6 +384,77 @@ internal fun FormStepperRow(title: String, value: Int, valueText: String, range:
     }
 }
 
+/**
+ * A segmented Picker's row, as iOS 26 draws one in a Form: a capsule of a fill across the row, 32 high, with the
+ * chosen segment raised in it, white, or grey by night, and no line between the others. Each segment is a radio
+ * button for TalkBack, which reads [spokenLabel] where it shows [label], and takes taps the row's whole height.
+ */
+@Composable
+internal fun <T> FormSegmentedRow(
+    choices: List<T>,
+    selected: T,
+    label: (T) -> String,
+    spokenLabel: (T) -> String,
+    onSelect: (T) -> Unit,
+) {
+    val colors = scootColors
+    val fill = colors.tertiarySystemFill
+    val raised = if (colors.isDark) colors.systemGray2 else Color.White
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(min = ROW_HEIGHT)
+            .padding(horizontal = ROW_PADDING)
+            .drawBehind {
+                val inset = SEGMENTED_MARGIN.toPx()
+                val height = size.height - 2 * inset
+                drawRoundRect(fill, Offset(0f, inset), Size(size.width, height), CornerRadius(height / 2))
+            }
+            .padding(horizontal = SEGMENT_INSET)
+            .selectableGroup(),
+    ) {
+        choices.forEach { choice ->
+            val isSelected = choice == selected
+            val interaction = remember { MutableInteractionSource() }
+            val shown = label(choice)
+            val spoken = spokenLabel(choice)
+            Box(
+                Modifier
+                    .weight(1f)
+                    .selectable(isSelected, interaction, indication = null, role = Role.RadioButton) { onSelect(choice) }
+                    .semantics {
+                        contentDescription = spoken
+                        // Voice Access answers to "km" as shown; TalkBack reads "Kilometres".
+                        if (shown != spoken) text = AnnotatedString(shown)
+                    }
+                    .padding(vertical = SEGMENTED_MARGIN + SEGMENT_INSET),
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = SEGMENT_HEIGHT)
+                        .then(if (isSelected) Modifier.background(raised, CapsuleShape) else Modifier)
+                        .indication(interaction, FocusRing(CapsuleShape))
+                        .padding(horizontal = 6.dp, vertical = 4.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    val style = ScootType.footnote.weight(if (isSelected) IosWeight.medium else IosWeight.regular)
+                    Text(
+                        shown,
+                        style = style,
+                        color = colors.label,
+                        maxLines = 1,
+                        softWrap = false,
+                        textAlign = TextAlign.Center,
+                        autoSize = shrinking(style, 0.7f),
+                        modifier = Modifier.clearAndSetSemantics { },
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun StepperHalf(symbol: ImageVector, enabled: Boolean, onClick: () -> Unit) {
     Box(
@@ -411,6 +488,14 @@ internal val LABEL_TEXT_INSET = ROW_PADDING + LABEL_ICON + LABEL_GAP
 /** A cell of a list under the finger: systemGray4. */
 private val CELL_HIGHLIGHT_LIGHT = Color(0xFFD1D1D6)
 private val CELL_HIGHLIGHT_DARK = Color(0xFF3A3A3C)
+
+/**
+ * A segmented control's room above and below it in its row, which makes the row 61 high as the iPhone's, and its
+ * segments': 32 high in all, a segment 28 (iOS 26 on an iPhone 17 Pro Max, issue #14).
+ */
+private val SEGMENTED_MARGIN = 14.5.dp
+private val SEGMENT_INSET = 2.dp
+private val SEGMENT_HEIGHT = 28.dp
 
 private val SWITCH_WIDTH = 51.dp
 private val SWITCH_HEIGHT = 31.dp

@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneSpeeds
 import com.plhery.scootradar.core.model.ScooterZoneState
@@ -223,6 +224,24 @@ class CityRuleZoneTest {
         maxSpeedKph = kph, firstDay = "", hours = hours, source = "https://example.com/warsaw",
         lines = listOf(listOf(GeoPoint(52.23, 21.0), GeoPoint(52.23, 21.003))),
     )
+
+    /**
+     * Issue #14: the limits in the units chosen in Settings, whatever the region: mph in Switzerland, km/h in the
+     * United States and the United Kingdom, each speed rounded once converted; Auto leaves them to the region.
+     */
+    @Test
+    fun slowSaysItsLimitInTheUnitsChosen() {
+        ScooterLanguage.current = ScooterLanguage.En
+        val swiss = Locale.forLanguageTag("en-CH")
+        val us = Locale.forLanguageTag("en-US")
+        val uk = Locale.forLanguageTag("en-GB")
+        // 12 and 15 km/h are 7.5 and 9.3 mph.
+        assertEquals("Slow: 7–9 mph", plain(kindLabel(ScooterZoneKind.Slow, speeds(12.0, 15.0), ScooterUnits.Imperial.applied(swiss))))
+        assertEquals("Slow: 6–15 km/h", plain(kindLabel(ScooterZoneKind.Slow, speeds(6.0, 15.0), ScooterUnits.Metric.applied(us))))
+        assertEquals("Slow: 20 km/h", plain(kindLabel(ScooterZoneKind.Slow, speeds(20.0), ScooterUnits.Metric.applied(uk))))
+        assertEquals("Slow: 12 mph", plain(kindLabel(ScooterZoneKind.Slow, speeds(20.0), ScooterUnits.Automatic.applied(uk))))
+        assertEquals("Slow: 20 km/h", plain(kindLabel(ScooterZoneKind.Slow, speeds(20.0), ScooterUnits.Automatic.applied(swiss))))
+    }
 
     @Test
     fun slowSaysTheLimitOfTheSlowZonesItCounts() {

@@ -93,6 +93,7 @@ import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.ScooterLinks
 import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
@@ -151,9 +152,9 @@ sealed interface SettingsPage {
 }
 
 /**
- * Settings, on a sheet: how the app looks, the map, its language, the rider's passes and About, with pages of their
- * own for the language, each pass, the credits and privacy. A page slides in from the end, and Back or the back
- * button takes it away; Done closes the sheet. A choice applies at once.
+ * Settings, on a sheet: how the app looks, the map, its language and units, the rider's passes and About, with pages
+ * of their own for the language, each pass, the credits and privacy. A page slides in from the end, and Back or the
+ * back button takes it away; Done closes the sheet. A choice applies at once.
  */
 @Composable
 fun ScooterSettingsSheet(
@@ -267,9 +268,11 @@ fun ScooterSettingsSheet(
     val languageChoice by controller.languageChoice.collectAsState()
     // The sheet reads the language here, so that its titles are written again when another is chosen.
     val language by controller.language.collectAsState()
+    val units by controller.units.collectAsState()
     SelectionFeedback(appearance)
     SelectionFeedback(mapStyle)
     SelectionFeedback(languageChoice)
+    SelectionFeedback(units)
     val providers = passProviders ?: remember(controller, changes) { controller.passProviders }
 
     val links = rememberLinks()
@@ -482,6 +485,7 @@ private fun SettingsRoot(
     val mapStyle by controller.mapStyle.collectAsState()
     val showsZones by controller.showsZones.collectAsState()
     val languageChoice by controller.languageChoice.collectAsState()
+    val units by controller.units.collectAsState()
     val ridePasses by controller.ridePasses.collectAsState()
     val now = LocalClock.current()
 
@@ -541,6 +545,20 @@ private fun SettingsRoot(
                     }
                 }
             }
+        },
+    )
+
+    // Auto, the phone's, or kilometres or miles whatever the language (issue #14).
+    FormSection(
+        header = localized("Units"),
+        rows = listOf {
+            FormSegmentedRow(
+                choices = ScooterUnits.entries,
+                selected = units,
+                label = { it.label },
+                spokenLabel = { it.spokenLabel },
+                onSelect = controller::setUnits,
+            )
         },
     )
 

@@ -1,6 +1,9 @@
 package com.plhery.scootradar.ui.filters
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +20,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,11 +30,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -42,6 +52,7 @@ import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -54,6 +65,7 @@ import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
+import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.dock.SYMBOL_FRAME
@@ -78,13 +90,14 @@ import com.plhery.scootradar.ui.theme.monospacedDigit
 import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.shrinking
 import com.plhery.scootradar.ui.theme.weight
+import kotlin.math.roundToInt
 
 // ScooterFilterSheet in ios/ScootRadar/Views/ScooterControls.swift: the filters a phone opens over the dock
 // (ui.md UI-060, UI-062, UI-064 to UI-066, UI-175).
 
 /**
- * Filters: the battery minimum and the providers shown, which change the map at once, with Reset in the bar and
- * the button that closes the sheet on what the map now shows.
+ * Filters: the battery or range minimum and the providers shown, which change the map at once, with Reset in the bar
+ * and the button that closes the sheet on what the map now shows.
  */
 @Composable
 fun ScooterFilterSheet(
@@ -96,21 +109,33 @@ fun ScooterFilterSheet(
 ) {
     val changes = rememberControllerChanges(controller)
     val minimumBattery by controller.minimumBattery.collectAsState()
+    val minimumRange by controller.minimumRange.collectAsState()
+    // The range's steps are in the units lengths are written in, on Automatic the phone's region's, which may
+    // change while the filters are open.
+    val language by controller.language.collectAsState()
+    val units by controller.units.collectAsState()
+    val locales = LocalConfiguration.current.locales
+    val rangeUnit = remember(controller, language, units, locales) { controller.rangeUnit }
     val hasActiveFilters = remember(controller, changes) { controller.hasActiveFilters }
     val entries = remember(controller, changes) { controller.filterProviders }
     val showResults = remember(controller, changes) {
         // While the answer for a new minimum is on its way there is no count to promise.
         if (controller.dock is ScooterDockContent.Finding) localized("Finding scooters…") else controller.showResultsTitle
     }
-    // The dock ticks for the providers shown, which it shows under the sheet; the sheet for the battery (UI-217).
+    // The dock ticks for the providers shown, which it shows under the sheet; the sheet for the battery and the range
+    // (UI-217), a tick a step as the slider moves.
     SelectionFeedback(minimumBattery)
+    SelectionFeedback(minimumRange)
     FilterSheetContent(
         minimumBattery = minimumBattery.toInt(),
+        minimumRange = minimumRange,
+        rangeUnit = rangeUnit,
         entries = entries,
         hasActiveFilters = hasActiveFilters,
         showResults = showResults,
         bottomInset = bottomInset,
         onChooseMinimum = { controller.setMinimumBattery(it.toDouble()) },
+        onChooseRange = controller::setMinimumRange,
         onToggle = { controller.toggle(it.provider) },
         onReset = controller::resetFilters,
         onDone = onDone,
@@ -133,6 +158,12 @@ internal fun FilterSheetContent(
     onDone: () -> Unit,
     /** As tall as the filters, up to the room it is given, rather than all of it: the list scrolls only past that. */
     inPopover: Boolean = false,
+    /** The minimum range in metres, a whole step of [rangeUnit]; 0 for Any. */
+    minimumRange: Int = 0,
+    /** The range slider's unit: kilometres, or miles where lengths are written in miles. */
+    rangeUnit: ScooterRangeFilter.Unit = ScooterRangeFilter.Unit.Kilometres,
+    /** A minimum range in metres chosen on the slider. */
+    onChooseRange: (Int) -> Unit = {},
 ) {
     val colors = scootColors
     Column(if (inPopover) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
@@ -148,6 +179,7 @@ internal fun FilterSheetContent(
                 verticalArrangement = Arrangement.spacedBy(22.dp),
             ) {
                 BatteryFilters(minimumBattery, onChoose = onChooseMinimum)
+                RangeFilter(minimumRange, rangeUnit, onChoose = onChooseRange)
                 ProviderFilters(entries, onToggle = onToggle)
             }
         }
@@ -200,6 +232,117 @@ private fun BatteryFilters(minimum: Int, onChoose: (Int) -> Unit) {
         }
     }
 }
+
+/**
+ * "Range" with the minimum beside it, "Any" or "5 km+", over a slider in whole kilometres up to 30, or whole miles up
+ * to 20 where lengths are in miles. Moving it off Any sets the battery to Any.
+ */
+@Composable
+private fun RangeFilter(minimum: Int, unit: ScooterRangeFilter.Unit, onChoose: (Int) -> Unit) {
+    val colors = scootColors
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            SectionHeader(localized("Range"), Modifier.alignByBaseline())
+            Spacer(Modifier.weight(1f))
+            // The slider says it to TalkBack.
+            Text(
+                ScooterRangeFilter.label(minimum),
+                style = ScootType.subheadline.weight(if (minimum > 0) IosWeight.semibold else IosWeight.regular).monospacedDigit(),
+                color = if (minimum > 0) colors.label else colors.secondaryText,
+                modifier = Modifier.alignByBaseline().padding(horizontal = 4.dp).clearAndSetSemantics { },
+            )
+        }
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 52.dp)
+                .background(colors.tertiarySystemFill, SquircleShape(16.dp))
+                .padding(horizontal = 14.dp, vertical = 4.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            RangeSlider(minimum, unit, onChoose)
+        }
+        if (minimum > 0) {
+            Text(
+                localized("Scooters without range info are hidden while a minimum is set."),
+                style = ScootType.footnote,
+                color = colors.secondaryText,
+                modifier = Modifier.padding(horizontal = 4.dp),
+            )
+        }
+    }
+}
+
+/**
+ * The iPhone's Slider in the app's blue, a step a whole kilometre or mile: a white capsule of a thumb on a track
+ * across the card, blue up to the thumb and grey after it. Material's slider underneath takes the drags, taps and
+ * arrow keys, mirrors in a right-to-left language and gives TalkBack its steps: it reads "Range, 5 km or more" and
+ * moves a step a swipe. Its thumb and track of our own are still experimental in Material 1.4.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RangeSlider(minimum: Int, unit: ScooterRangeFilter.Unit, onChoose: (Int) -> Unit) {
+    val interaction = remember { MutableInteractionSource() }
+    val label = localized("Range")
+    val spoken = ScooterRangeFilter.spokenValue(minimum)
+    val steps = ScooterRangeFilter.steps(minimum, unit)
+    Slider(
+        value = steps.toFloat(),
+        onValueChange = { onChoose(ScooterRangeFilter.metres(it.roundToInt(), unit)) },
+        valueRange = 0f..unit.maximumSteps.toFloat(),
+        steps = unit.maximumSteps - 1,
+        interactionSource = interaction,
+        thumb = { RangeThumb(interaction) },
+        track = { RangeTrack(steps.toFloat() / unit.maximumSteps) },
+        modifier = Modifier.fillMaxWidth().semantics {
+            contentDescription = label
+            stateDescription = spoken
+        },
+    )
+}
+
+/** UISlider's thumb: white by day and by night, with the switch's knob's shadow. */
+@Composable
+private fun RangeThumb(interaction: MutableInteractionSource) {
+    Box(
+        Modifier
+            .size(RANGE_THUMB_WIDTH, RANGE_THUMB_HEIGHT)
+            .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.15f), radius = 8.dp, y = 3.dp)
+            .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.06f), radius = 1.dp, y = 3.dp)
+            .background(Color.White, CapsuleShape)
+            .indication(interaction, FocusRing(CapsuleShape)),
+    )
+}
+
+/**
+ * The track: blue from its start to the thumb's middle, [fraction] of the way the thumb goes, and grey on. Material
+ * lays it out from the thumb's middle at one end to its middle at the other; the iPhone's runs on under the thumb to
+ * the slider's ends, as this one is drawn.
+ */
+@Composable
+private fun RangeTrack(fraction: Float) {
+    val colors = scootColors
+    val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val rest = if (colors.isDark) RANGE_TRACK_DARK else RANGE_TRACK_LIGHT
+    Canvas(Modifier.fillMaxWidth().height(RANGE_TRACK_HEIGHT)) {
+        val radius = CornerRadius(size.height / 2)
+        val half = RANGE_THUMB_WIDTH.toPx() / 2
+        drawRoundRect(rest, Offset(-half, 0f), Size(size.width + 2 * half, size.height), radius)
+        // Under the thumb at Any.
+        val filled = half + size.width * fraction.coerceIn(0f, 1f)
+        val start = if (rtl) size.width + half - filled else -half
+        drawRoundRect(colors.actionFill, Offset(start, 0f), Size(filled, size.height), radius)
+    }
+}
+
+/** iOS 26's slider, measured on an iPhone 17 Pro Max: a thumb 36 by 24, a track 6 high. */
+private val RANGE_THUMB_WIDTH = 36.dp
+private val RANGE_THUMB_HEIGHT = 24.dp
+private val RANGE_TRACK_HEIGHT = 6.dp
+
+/** UIKit's systemFill, the grey of a slider's track past its thumb. */
+private val RANGE_TRACK_LIGHT = Color(0x33787880)
+private val RANGE_TRACK_DARK = Color(0x5C787880)
 
 /**
  * How far the label of a battery preset may shrink to stay on one line. 0.75 on the iPhone, whose narrowest is 375
@@ -414,12 +557,12 @@ private fun ShowResultsButton(title: String, onClick: () -> Unit) {
 }
 
 @Composable
-private fun SectionHeader(title: String) {
+private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
     Text(
         title,
         style = ScootType.subheadline.weight(IosWeight.semibold),
         color = scootColors.secondaryText,
-        modifier = Modifier.padding(horizontal = 4.dp).semantics { heading() },
+        modifier = modifier.padding(horizontal = 4.dp).semantics { heading() },
     )
 }
 

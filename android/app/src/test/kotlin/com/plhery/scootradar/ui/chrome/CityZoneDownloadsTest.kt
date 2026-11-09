@@ -120,7 +120,7 @@ class CityZoneDownloadsTest {
         private val held = mutableMapOf<String, CompletableDeferred<Unit>>()
         val asked = mutableListOf<String>()
 
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = emptyList())
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) = ScooterResponse(vehicles = emptyList())
 
         override suspend fun cityZoneFile(name: String): ByteArray {
             asked += name

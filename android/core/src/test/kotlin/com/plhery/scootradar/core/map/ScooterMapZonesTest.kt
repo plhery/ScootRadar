@@ -627,7 +627,7 @@ private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : S
 
     val zoneAreas: List<ScooterZoneArea> get() = areas.toList()
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse =
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse =
         ScooterResponse(vehicles = emptyList())
 
     override suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse {

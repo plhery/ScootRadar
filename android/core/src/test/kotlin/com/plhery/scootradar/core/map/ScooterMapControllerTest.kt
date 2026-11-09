@@ -63,6 +63,7 @@ import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterMenuBar
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterProviderHealth
+import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterRentalOpening
 import com.plhery.scootradar.core.model.ScooterRentalURIs
@@ -72,6 +73,7 @@ import com.plhery.scootradar.core.model.ScooterReviewPrompt
 import com.plhery.scootradar.core.model.ScooterRidePricing
 import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.core.model.ScooterSeasonalPause
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.ScreenSize
@@ -128,6 +130,7 @@ class ScooterMapControllerTest {
         ScooterLanguage.atLaunch = atLaunch
         ScooterLanguage.current = atLaunch
         ScooterLanguage.launchLocale = launchLocale
+        ScooterUnits.current = ScooterUnits.Automatic
     }
 
     @Test
@@ -4263,6 +4266,220 @@ class ScooterMapControllerTest {
     private fun iso(date: Instant): String = DateTimeFormatter.ISO_INSTANT.format(date.truncatedTo(ChronoUnit.SECONDS))
 
     private fun date(text: String): Instant = OffsetDateTime.parse(text).toInstant()
+
+    // The minimum range (issue #12) and the units chosen in Settings (issue #14).
+
+    /** Settings › Units: Automatic, as before there was a choice, or kilometres or miles, at once everywhere and kept. */
+    @Test
+    fun chosenUnitsMeasureEveryLengthAtOnceAndAreKept() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        assertEquals(ScooterUnits.Automatic, model.units.value)
+        assertEquals(ScooterUnits.Automatic, ScooterUnits.current)
+        assertEquals(Locale.US, ScooterLanguage.current.locale)
+        assertEquals("1,000 ft", plainSpaces(Scooter.formattedLength(meters = 300.0)))
+
+        model.setUnits(ScooterUnits.Metric)
+        assertEquals(ScooterUnits.Metric, ScooterUnits.current)
+        assertEquals("metric", defaults.string(forKey = "units"))
+        assertEquals("320 m", plainSpaces(Scooter.formattedLength(meters = 320.0)))
+        assertEquals(ScooterRangeFilter.Unit.Kilometres, model.rangeUnit)
+
+        model.setUnits(ScooterUnits.Imperial)
+        assertEquals("1,000 ft", plainSpaces(Scooter.formattedLength(meters = 300.0)))
+        assertTrue(plainSpaces(Scooter.formattedLength(meters = 3_000.0)).endsWith(" mi"))
+        assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
+
+        val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        assertEquals(ScooterUnits.Imperial, restored.units.value)
+        assertEquals(ScooterUnits.Imperial, ScooterUnits.current)
+
+        restored.setUnits(ScooterUnits.Automatic)
+        assertEquals("auto", defaults.string(forKey = "units"))
+        assertEquals(Locale.US, ScooterLanguage.current.locale)
+
+        defaults.set("furlongs", forKey = "units")
+        assertEquals(
+            ScooterUnits.Automatic,
+            makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults).units.value,
+        )
+    }
+
+    /**
+     * Stuttgart: Lime and Voi give a range and no battery, Bolt and Dott both. A minimum range hides the scooters
+     * without one and sets the battery to Any, and a minimum battery sets the range to Any.
+     */
+    @Test
+    fun rangeFilterHidesScootersWithoutARangeAndNeverHoldsWithTheBattery() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(
+                    scooter(id = "lime-far", provider = "lime", battery = null, rangeMeters = 9_000),
+                    scooter(id = "voi-near", provider = "voi", battery = null, rangeMeters = 2_000),
+                    scooter(id = "bolt-full", provider = "bolt", battery = 90, rangeMeters = 30_000),
+                    scooter(id = "dott-unknown", provider = "dott", battery = 70, rangeMeters = null),
+                ),
+            ),
+        )
+        val model = makeController(api, defaults = defaults)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        model.selectScooter("dott:dott-unknown")
+
+        model.setMinimumBattery(60.0)
+        assertEquals(setOf("bolt:bolt-full", "dott:dott-unknown"), model.mapScooters.value.map { it.id }.toSet())
+
+        // 4.6 km is read as the nearest whole kilometre, and the battery goes back to Any.
+        model.setMinimumRange(4_600)
+        assertEquals(5_000, model.minimumRange.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
+        assertEquals(setOf("lime:lime-far", "bolt:bolt-full"), model.mapScooters.value.map { it.id }.toSet())
+        assertEquals(2, model.visibleCount)
+        assertTrue(model.hasActiveFilters)
+        assertNull("The scooter without a range is hidden, and its card closes", model.selectedScooterID.value)
+        assertEquals(5_000, defaults.integer(forKey = "minimum-range"))
+        assertEquals(0, defaults.integer(forKey = "minimum-battery"))
+        // Filtered here, one by one: the server is not asked again.
+        settle()
+        assertEquals(1, api.calls)
+
+        model.setMinimumBattery(80.0)
+        assertEquals(0, model.minimumRange.value)
+        assertEquals(0, defaults.integer(forKey = "minimum-range"))
+        assertEquals(listOf("bolt:bolt-full"), model.mapScooters.value.map { it.id })
+
+        model.setMinimumRange(40_000)
+        assertEquals("No further than the slider's last step", 30_000, model.minimumRange.value)
+        model.showProviders(setOf(Voi))
+        assertEquals(
+            ScooterDockContent.FiltersHideEverything(
+                ScooterFilterSummary(hiddenCount = 4, providers = listOf(Voi), minimumBattery = null, minimumRange = 30_000),
+            ),
+            model.dock,
+        )
+
+        model.resetFilters()
+        assertEquals(0, model.minimumRange.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
+        assertFalse(model.hasActiveFilters)
+        assertEquals(4, model.mapScooters.value.size)
+    }
+
+    /**
+     * Zoomed out the server groups the scooters and filters them; it is asked with the minimum range in metres, and
+     * what it left out cannot be counted.
+     */
+    @Test
+    fun clusteredRangeFilterIsAppliedByTheServerWhichCannotCountWhatItHides() = runTest {
+        val cluster = ScooterCluster(
+            id = "12:1:1", latitude = 47.3769, longitude = 8.5417,
+            count = 10, providers = mapOf("lime" to 10),
+        )
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 12)
+        val api = StubScooterAPI(ScooterResponse(vehicles = emptyList(), clusters = listOf(cluster), meta = meta))
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("imperial", forKey = "units")
+        val model = makeController(api, defaults = defaults)
+        model.updateViewport(zurichRegion, zoom = 12)
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(0, api.lastMinimumRange)
+
+        api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta))
+        // 3 mi, as the slider sets it in miles.
+        model.setMinimumRange(ScooterRangeFilter.metres(steps = 3, unit = ScooterRangeFilter.Unit.Miles))
+        assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
+        assertEquals(12, api.lastZoom)
+        assertEquals(4_828, api.lastMinimumRange)
+        assertEquals(0, api.lastMinimumBattery)
+        assertEquals(
+            ScooterDockContent.FiltersHideEverything(
+                ScooterFilterSummary(hiddenCount = null, providers = emptyList(), minimumBattery = null, minimumRange = 4_828),
+            ),
+            model.dock,
+        )
+
+        // Kilometres chosen read the minimum as 5 km, which the server is asked for again.
+        model.setUnits(ScooterUnits.Metric)
+        assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
+        assertEquals(5_000, api.lastMinimumRange)
+
+        // A battery minimum takes its place, and is asked for alone.
+        model.setMinimumBattery(30.0)
+        assertTrue(waitUntil { api.calls == 4 && !model.isLoading.value })
+        assertEquals(30, api.lastMinimumBattery)
+        assertEquals(0, api.lastMinimumRange)
+    }
+
+    /**
+     * Kept in metres, read in whole steps of the unit shown: 5 km set reads "3 mi" in miles, and 5 km again once
+     * kilometres are chosen back. A stored value is read the same way.
+     */
+    @Test
+    fun minimumRangeIsReadInWholeStepsOfTheUnitsShown() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        model.setMinimumRange(5_000)
+        assertEquals(ScooterRangeFilter.Unit.Kilometres, model.rangeUnit)
+
+        model.setUnits(ScooterUnits.Imperial)
+        assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
+        assertEquals(4_828, model.minimumRange.value)
+        assertEquals("3 mi+", plainSpaces(ScooterRangeFilter.label(model.minimumRange.value)))
+        model.setUnits(ScooterUnits.Metric)
+        assertEquals(5_000, model.minimumRange.value)
+        // Automatic is the US's miles here.
+        model.setUnits(ScooterUnits.Automatic)
+        assertEquals(4_828, model.minimumRange.value)
+        // So is German, in the phone's region.
+        model.setUnits(ScooterUnits.Metric)
+        model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.De))
+        assertEquals(5_000, model.minimumRange.value)
+        model.setUnits(ScooterUnits.Automatic)
+        assertEquals(4_828, model.minimumRange.value)
+
+        val stored = listOf(
+            Triple(4_900, "metric", 5_000), Triple(5_000, "imperial", 4_828), Triple(99_000, "metric", 30_000),
+            Triple(-20, "metric", 0), Triple(1_609, "imperial", 1_609), Triple(5_000, "auto", 4_828),
+        )
+        for ((metres, units, expected) in stored) {
+            val restored = InMemoryScooterDefaults()
+            restored.set(metres, forKey = "minimum-range")
+            restored.set(units, forKey = "units")
+            val restoredModel = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = restored)
+            assertEquals("Stored $metres in $units", expected, restoredModel.minimumRange.value)
+        }
+
+        // A battery minimum kept beside a range, which the app never writes, wins as in a link.
+        val both = InMemoryScooterDefaults()
+        both.set(60, forKey = "minimum-battery")
+        both.set(5_000, forKey = "minimum-range")
+        val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = both)
+        assertEquals(60.0, restored.minimumBattery.value, 0.0)
+        assertEquals(0, restored.minimumRange.value)
+        // The range is forgotten: with the battery set to Any, none comes back at the next launch.
+        assertEquals(0, both.integer(forKey = "minimum-range"))
+    }
+
+    /** A link's minimum range takes the place of the rider's battery minimum, and a link with both keeps the battery's. */
+    @Test
+    fun aLinkSetsAMinimumRangeAndTheBatteryToAny() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        model.setMinimumBattery(30.0)
+        model.open(ScooterMapLink(minimumRange = 12_000))
+        assertEquals(12_000, model.minimumRange.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
+
+        model.open(ScooterMapLink(minimumBattery = 60, minimumRange = 5_000))
+        assertEquals(60.0, model.minimumBattery.value, 0.0)
+        assertEquals(0, model.minimumRange.value)
+    }
+
+    private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
 
     /** The dock's summary, or the test fails. */
     private fun summaryOf(dock: ScooterDockContent): ScooterDockSummary =

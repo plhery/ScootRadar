@@ -724,6 +724,115 @@ class ScooterModelsTest {
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("en-CH")))
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("fr-CA")))
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("es-MX")))
+        // The units chosen in Settings, whatever the region: the app draws the scale in its own feet and miles.
+        val swiss = Locale.forLanguageTag("de-CH")
+        val american = Locale.forLanguageTag("en-US")
+        assertTrue(ScooterMapScalePolicy.showsScale(locale = ScooterUnits.Imperial.applied(swiss)))
+        assertFalse(ScooterMapScalePolicy.showsScale(locale = ScooterUnits.Metric.applied(american)))
+        assertTrue(ScooterMapScalePolicy.showsScale(locale = ScooterUnits.Automatic.applied(Locale.forLanguageTag("en-GB"))))
+    }
+
+    // Settings › Units (issue #14): kilometres or miles whatever the region and the language.
+
+    @Test
+    fun chosenUnitsMeasureInKilometresOrMilesWhateverTheRegion() {
+        val swiss = Locale.forLanguageTag("de-CH")
+        val irish = Locale.forLanguageTag("en-IE")
+        val british = Locale.forLanguageTag("en-GB")
+        val american = Locale.forLanguageTag("en-US")
+
+        // Automatic keeps the region's own, the locale as it is.
+        for (locale in listOf(swiss, irish, british, american)) {
+            assertEquals(locale, ScooterUnits.Automatic.applied(locale))
+        }
+        assertNull(ScooterUnits.Automatic.measurementSystem(ScooterMeasurementSystem.Uk))
+
+        // Kilometres, in Britain and the US too.
+        for (locale in listOf(swiss, irish, british, american)) {
+            val metric = ScooterUnits.Metric.applied(locale)
+            assertEquals(locale.toLanguageTag(), ScooterMeasurementSystem.Metric, metric.measurementSystem)
+            assertEquals(locale.language, metric.language)
+            assertEquals(locale.country, metric.country)
+            assertEquals(ScooterRangeFilter.Unit.Kilometres, ScooterRangeFilter.Unit.of(metric))
+            assertEquals(locale.toLanguageTag(), "300 m", plainSpaces(Scooter.formattedLength(meters = 300.0, locale = metric)))
+            val kilometres = plainSpaces(Scooter.formattedLength(meters = 1_250.0, locale = metric))
+            assertTrue(kilometres, kilometres == "1.3 km" || kilometres == "1,3 km")
+        }
+        // Metric in Britain is spelt as Britain writes it otherwise.
+        assertEquals("1.3 km", plainSpaces(Scooter.formattedLength(meters = 1_250.0, locale = ScooterUnits.Metric.applied(british))))
+        assertEquals("1.3 km", plainSpaces(Scooter.formattedLength(meters = 1_250.0, locale = ScooterUnits.Metric.applied(american))))
+
+        // Miles: in feet under half a mile outside the UK, as the iPhone writes them on roads, and in yards in it.
+        val irishMiles = ScooterUnits.Imperial.applied(irish)
+        assertEquals(ScooterMeasurementSystem.Us, irishMiles.measurementSystem)
+        assertEquals(irish.country, irishMiles.country)
+        assertEquals(
+            listOf("40 ft", "1,000 ft", "1.9 mi", "38 mi"),
+            listOf(12.0, 300.0, 3_000.0, 61_000.0).map { plainSpaces(Scooter.formattedLength(meters = it, locale = irishMiles)) },
+        )
+        val swissMiles = ScooterUnits.Imperial.applied(swiss)
+        assertEquals(ScooterMeasurementSystem.Us, swissMiles.measurementSystem)
+        assertEquals("de", swissMiles.language)
+        assertEquals("CH", swissMiles.country)
+        assertTrue(plainSpaces(Scooter.formattedLength(meters = 300.0, locale = swissMiles)).endsWith(" ft"))
+        // In German as Switzerland writes it: its apostrophe groups the digits.
+        assertEquals("1\u2019000 ft", plainSpaces(Scooter.formattedLength(meters = 300.0, locale = swissMiles)))
+        assertEquals("1.9 mi", plainSpaces(Scooter.formattedLength(meters = 3_000.0, locale = swissMiles)))
+
+        val britishMiles = ScooterUnits.Imperial.applied(british)
+        assertEquals(ScooterMeasurementSystem.Uk, ScooterUnits.Imperial.measurementSystem(ScooterMeasurementSystem.Uk))
+        assertEquals(ScooterMeasurementSystem.Uk, britishMiles.measurementSystem)
+        // British English measures in miles already: the locale stays as it is.
+        assertEquals(british, britishMiles)
+        assertEquals(
+            listOf("10 yd", "350 yd", "1.9 mi"),
+            listOf(12.0, 300.0, 3_000.0).map { plainSpaces(Scooter.formattedLength(meters = it, locale = britishMiles)) },
+        )
+        assertEquals(ScooterMeasurementSystem.Us, ScooterUnits.Imperial.applied(american).measurementSystem)
+        for (locale in listOf(irishMiles, swissMiles, britishMiles)) {
+            assertEquals(locale.toLanguageTag(), ScooterRangeFilter.Unit.Miles, ScooterRangeFilter.Unit.of(locale))
+        }
+        // Metric chosen over British miles, and back to Automatic, gives the locale it started from.
+        assertEquals(british, ScooterUnits.Automatic.applied(british))
+
+        // The closest cities, in whole kilometres or miles as chosen.
+        val lungern = GeoPoint(latitude = 46.7741, longitude = 8.1558)
+        val bern = ScooterCityCatalog.nearest(to = lungern, count = 1, among = TestCatalog.catalog.cities).single()
+        assertEquals("36 mi", plainSpaces(bern.formattedDistance(locale = swissMiles)))
+        assertEquals("57 km", plainSpaces(bern.formattedDistance(locale = ScooterUnits.Metric.applied(american))))
+    }
+
+    /** Every locale the app writes with, the launch language's and the others', is in the units chosen. */
+    @Test
+    fun theLanguageShownWritesInTheUnitsChosen() {
+        ScooterLanguage.launchLocale = { Locale.forLanguageTag("en-CH") }
+        val other = ScooterLanguage.De
+        try {
+            ScooterUnits.current = ScooterUnits.Automatic
+            assertEquals(ScooterMeasurementSystem.Metric, ScooterLanguage.atLaunch.locale.measurementSystem)
+            assertEquals(ScooterMeasurementSystem.Metric, other.locale.measurementSystem)
+            assertEquals(Locale.forLanguageTag("en-CH"), ScooterLanguage.En.locale)
+
+            ScooterUnits.current = ScooterUnits.Imperial
+            assertEquals(ScooterMeasurementSystem.Us, ScooterLanguage.atLaunch.locale.measurementSystem)
+            assertEquals(ScooterMeasurementSystem.Us, other.locale.measurementSystem)
+            assertEquals("de", other.locale.language)
+            assertEquals("CH", other.locale.country)
+            assertTrue(plainSpaces(Scooter.formattedLength(meters = 3_000.0)).endsWith(" mi"))
+
+            ScooterLanguage.launchLocale = { Locale.US }
+            ScooterUnits.current = ScooterUnits.Metric
+            assertEquals(ScooterMeasurementSystem.Metric, ScooterLanguage.atLaunch.locale.measurementSystem)
+            assertEquals(ScooterMeasurementSystem.Metric, other.locale.measurementSystem)
+            assertEquals("320 m", plainSpaces(Scooter.formattedLength(meters = 320.0)))
+            assertEquals(
+                "The screen's own choice, whatever the one the app writes with",
+                ScooterMeasurementSystem.Us,
+                other.locale(ScooterUnits.Automatic).measurementSystem,
+            )
+        } finally {
+            ScooterUnits.current = ScooterUnits.Automatic
+        }
     }
 
     @Test

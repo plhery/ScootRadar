@@ -1,17 +1,29 @@
 package com.plhery.scootradar.ui.filters
 
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.EmptyScooterAPI
+import com.plhery.scootradar.TestControllers
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
 import com.plhery.scootradar.ui.theme.ScootTheme
@@ -38,10 +50,58 @@ class ScooterFilteringTest {
     @get:Rule
     val compose = createComposeRule()
 
+    private val controllers = TestControllers()
+
     @After
     fun tearDown() {
+        controllers.close()
         resetFontScale()
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterUnits.current = ScooterUnits.Automatic
+    }
+
+    /**
+     * Issue #12: the slider sets the controller's minimum range in metres and puts the battery back to Any, a preset
+     * puts the range back to Any, and Reset clears both. In miles, chosen in Settings, a step is a mile.
+     */
+    @Test
+    fun theSliderSetsTheRangeAndThePresetsAndResetPutItBackToAny() {
+        ScooterLanguage.current = ScooterLanguage.En
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = controllers.make(EmptyScooterAPI, defaults = defaults)
+        model.setMinimumBattery(60.0)
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                ScooterFilterSheet(model, bottomInset = 0.dp, onDone = {})
+            }
+        }
+        compose.waitForIdle()
+        fun preset(label: String) = compose.onNode(hasContentDescription(label) and isSelectable())
+        val slider = compose.onNodeWithContentDescription("Range")
+
+        slider.performSemanticsAction(SemanticsActions.SetProgress) { it(5f) }
+        compose.waitForIdle()
+        assertEquals(5_000, model.minimumRange.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
+        preset("Any").assertIsSelected()
+
+        preset("30 percent or more").performClick()
+        compose.waitForIdle()
+        assertEquals(0, model.minimumRange.value)
+        assertEquals(30.0, model.minimumBattery.value, 0.0)
+
+        model.setUnits(ScooterUnits.Imperial)
+        compose.waitForIdle()
+        slider.performSemanticsAction(SemanticsActions.SetProgress) { it(3f) }
+        compose.waitForIdle()
+        assertEquals(4_828, model.minimumRange.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
+
+        compose.onNode(hasText("Reset")).performClick()
+        compose.waitForIdle()
+        assertEquals(0, model.minimumRange.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
     }
 
     /**

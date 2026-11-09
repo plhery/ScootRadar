@@ -30,7 +30,7 @@ import java.time.Instant
 
 /** A server with nothing on its map. */
 object EmptyScooterAPI : ScooterAPIClient {
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse =
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse =
         ScooterResponse(vehicles = emptyList())
 }
 
@@ -72,7 +72,7 @@ class StubScooterAPI(private var response: ScooterResponse) : ScooterAPIClient {
     var calls = 0
         private set
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int): ScooterResponse {
         calls += 1
         failure?.let { throw it }
         return response
