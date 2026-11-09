@@ -127,7 +127,7 @@ or newer. Anyone can join it, in about a minute, with one Google account:
    have stayed in the test for 14 days.
 
 You can leave the test at any time, on the same page of Google Play. The site
-offers the same steps under its *Try the Android app* button.
+offers the same steps under its *Android app* button.
 
 To build it yourself, run `npm ci` at the top of the repository first (the
 build writes the app's API models and provider catalog with the site's
