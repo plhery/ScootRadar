@@ -47,7 +47,6 @@
 "Live" = "En direct";
 "Filters, active" = "Filtres actifs";
 "Active (filters)" = "Actifs";
-"%lld percent or more" = "%lld pour cent ou plus";
 "All providers" = "Tous les opérateurs";
 "Shows only this provider" = "Affiche uniquement cet opérateur";
 "Shows all providers" = "Affiche tous les opérateurs";
@@ -171,7 +170,6 @@
 "Show all %lld" = "Tout afficher (%lld)";
 "Edit filters" = "Modifier les filtres";
 "%@ only" = "%@ uniquement";
-"battery %lld%% or more" = "batterie %lld%% ou plus";
 
 /* UX alignment: scooter card */
 "≈%1$lld min walk · %2$@" = "≈%1$lld min à pied · %2$@";
@@ -207,7 +205,6 @@
 
 /* UX alignment: filters sheet */
 "Reset" = "Réinitialiser";
-"Scooters without battery info are hidden while a minimum is set." = "Les trottinettes sans niveau de batterie sont masquées tant qu’un minimum est défini.";
 "Not sharing data right now" = "Pas de données partagées pour le moment";
 "Show 0 scooters" = "Afficher 0 trottinette";
 "Show 1 scooter" = "Afficher 1 trottinette";

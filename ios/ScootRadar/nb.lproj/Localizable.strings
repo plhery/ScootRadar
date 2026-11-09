@@ -47,7 +47,6 @@
 "Live" = "Sanntid";
 "Filters, active" = "Filtre, på";
 "Active (filters)" = "På";
-"%lld percent or more" = "Minst %lld prosent";
 "All providers" = "Alle operatører";
 "Shows only this provider" = "Viser bare denne operatøren";
 "Shows all providers" = "Viser alle operatører";
@@ -171,7 +170,6 @@
 "Show all %lld" = "Vis alle %lld";
 "Edit filters" = "Endre filtre";
 "%@ only" = "Bare %@";
-"battery %lld%% or more" = "minst %lld%% batteri";
 
 /* UX alignment: scooter card */
 "≈%1$lld min walk · %2$@" = "≈%1$lld min gange · %2$@";
@@ -207,7 +205,6 @@
 
 /* UX alignment: filters sheet */
 "Reset" = "Tilbakestill";
-"Scooters without battery info are hidden while a minimum is set." = "Elsparkesykler uten batteriinfo skjules så lenge et minimum er valgt.";
 "Not sharing data right now" = "Deler ikke data akkurat nå";
 "Show 0 scooters" = "Vis 0 elsparkesykler";
 "Show 1 scooter" = "Vis 1 elsparkesykkel";

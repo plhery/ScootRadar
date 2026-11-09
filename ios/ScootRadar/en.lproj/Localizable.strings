@@ -47,7 +47,6 @@
 "Live" = "Live";
 "Filters, active" = "Filters, active";
 "Active (filters)" = "Active";
-"%lld percent or more" = "%lld percent or more";
 "All providers" = "All providers";
 "Shows only this provider" = "Shows only this provider";
 "Shows all providers" = "Shows all providers";
@@ -171,7 +170,6 @@
 "Show all %lld" = "Show all %lld";
 "Edit filters" = "Edit filters";
 "%@ only" = "%@ only";
-"battery %lld%% or more" = "battery %lld%% or more";
 
 /* UX alignment: scooter card */
 "≈%1$lld min walk · %2$@" = "≈%1$lld min walk · %2$@";
@@ -207,7 +205,6 @@
 
 /* UX alignment: filters sheet */
 "Reset" = "Reset";
-"Scooters without battery info are hidden while a minimum is set." = "Scooters without battery info are hidden while a minimum is set.";
 "Not sharing data right now" = "Not sharing data right now";
 "Show 0 scooters" = "Show 0 scooters";
 "Show 1 scooter" = "Show 1 scooter";

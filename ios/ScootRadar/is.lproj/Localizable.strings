@@ -47,7 +47,6 @@
 "Live" = "Í beinni";
 "Filters, active" = "Síur, virkar";
 "Active (filters)" = "Virkar";
-"%lld percent or more" = "%lld prósent eða meira";
 "All providers" = "Öll fyrirtæki";
 "Shows only this provider" = "Sýnir aðeins þetta fyrirtæki";
 "Shows all providers" = "Sýnir öll fyrirtæki";
@@ -171,7 +170,6 @@
 "Show all %lld" = "Sýna allar (%lld)";
 "Edit filters" = "Breyta síum";
 "%@ only" = "Aðeins %@";
-"battery %lld%% or more" = "hleðsla %lld%% eða meiri";
 
 /* UX alignment: scooter card */
 "≈%1$lld min walk · %2$@" = "≈%1$lld mín. gangur · %2$@";
@@ -207,7 +205,6 @@
 
 /* UX alignment: filters sheet */
 "Reset" = "Endurstilla";
-"Scooters without battery info are hidden while a minimum is set." = "Rafskútur án upplýsinga um hleðslu eru faldar á meðan lágmark er valið.";
 "Not sharing data right now" = "Deilir ekki gögnum eins og er";
 "Show 0 scooters" = "Sýna rafskútur (0)";
 "Show 1 scooter" = "Sýna rafskútu (1)";

@@ -47,7 +47,6 @@
 "Live" = "Live";
 "Filters, active" = "Filters, actief";
 "Active (filters)" = "Actief";
-"%lld percent or more" = "%lld procent of meer";
 "All providers" = "Alle aanbieders";
 "Shows only this provider" = "Toont alleen deze aanbieder";
 "Shows all providers" = "Toont alle aanbieders";
@@ -171,7 +170,6 @@
 "Show all %lld" = "Alle %lld tonen";
 "Edit filters" = "Filters wijzigen";
 "%@ only" = "Alleen %@";
-"battery %lld%% or more" = "batterij %lld%% of meer";
 
 /* UX alignment: scooter card */
 "≈%1$lld min walk · %2$@" = "≈%1$lld min te voet · %2$@";
@@ -207,7 +205,6 @@
 
 /* UX alignment: filters sheet */
 "Reset" = "Wissen";
-"Scooters without battery info are hidden while a minimum is set." = "Deelsteps zonder bekend batterijniveau worden verborgen zolang er een minimum is ingesteld.";
 "Not sharing data right now" = "Deelt nu geen data";
 "Show 0 scooters" = "0 deelsteps tonen";
 "Show 1 scooter" = "1 deelstep tonen";

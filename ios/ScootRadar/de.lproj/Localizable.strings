@@ -47,7 +47,6 @@
 "Live" = "Live";
 "Filters, active" = "Filter, aktiv";
 "Active (filters)" = "Aktiv";
-"%lld percent or more" = "%lld Prozent oder mehr";
 "All providers" = "Alle Anbieter";
 "Shows only this provider" = "Zeigt nur diesen Anbieter";
 "Shows all providers" = "Zeigt alle Anbieter";
@@ -171,7 +170,6 @@
 "Show all %lld" = "Alle %lld anzeigen";
 "Edit filters" = "Filter bearbeiten";
 "%@ only" = "Nur %@";
-"battery %lld%% or more" = "Akku ab %lld%%";
 
 /* UX alignment: scooter card */
 "≈%1$lld min walk · %2$@" = "≈%1$lld Min. zu Fuss · %2$@";
@@ -207,7 +205,6 @@
 
 /* UX alignment: filters sheet */
 "Reset" = "Zurücksetzen";
-"Scooters without battery info are hidden while a minimum is set." = "Scooter ohne Akkuangabe werden ausgeblendet, solange ein Mindestakku gewählt ist.";
 "Not sharing data right now" = "Liefert gerade keine Daten";
 "Show 0 scooters" = "0 Scooter anzeigen";
 "Show 1 scooter" = "1 Scooter anzeigen";

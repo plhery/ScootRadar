@@ -2,7 +2,7 @@
 // rendered on the server only, so none of this reaches the browser as script.
 //
 // The labels of the app the page redraws (the walk, the price, the two buttons,
-// the battery filter) are worded as src/lib/i18n.tsx words them. German is
+// the range filter) are worded as src/lib/i18n.tsx words them. German is
 // written the Swiss way, as the app is: "ss", never "ß". French has a no-break
 // space before a colon, a semicolon and a percent sign. Portuguese is written
 // the European way, with the 1990 spelling, and speaks to the reader in the
@@ -139,7 +139,8 @@ export interface LandingCopy {
       alt: string;
     };
     walk: { title: string; text: string };
-    charge: { title: string; text: string; any: string; control: string };
+    /** The app's range filter, set to RANGE_SHOWN: control is what a screen reader says of it. */
+    charge: { title: string; text: string; any: string; control: (distance: string) => string };
     /** "Ten minutes" is the ride the app estimates first, DEFAULT_RIDE_DURATION. */
     price: {
       title: string;
@@ -236,9 +237,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Skip the flat ones.',
-        text: 'A scooter shows its battery and remaining range when its provider publishes them. Set a minimum and the map keeps only the scooters that reach it; those with no battery info are hidden.',
+        text: 'A scooter shows its battery and remaining range when its provider publishes them. Set the distance you need and the map keeps only the scooters that can go that far; where only the battery is known, it plays safe.',
         any: 'Any',
-        control: 'The battery filter, set to 60% or more',
+        control: distance => `The range filter, set to ${distance} or more`,
       },
       price: {
         title: 'Price, before you commit.',
@@ -368,9 +369,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Leere Akkus ausblenden.',
-        text: 'Akkustand und Reichweite stehen bei jedem Scooter, dessen Anbieter sie veröffentlicht. Lege einen Mindestladestand fest, und die Karte zeigt nur noch Scooter, die ihn erreichen; solche ohne Akkuangabe blendet sie aus.',
+        text: 'Akkustand und Reichweite stehen bei jedem Scooter, dessen Anbieter sie veröffentlicht. Lege fest, wie weit du fahren willst, und die Karte zeigt nur noch Scooter, die so weit kommen; ist nur der Akkustand bekannt, rechnet sie vorsichtig.',
         any: 'Beliebig',
-        control: 'Der Akkufilter, auf 60 Prozent oder mehr gestellt',
+        control: distance => `Der Reichweitenfilter, auf ${distance} oder mehr gestellt`,
       },
       price: {
         title: 'Den Preis kennen, bevor du fährst.',
@@ -500,9 +501,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Écartez les batteries à plat.',
-        text: 'La batterie et l’autonomie sont indiquées pour chaque trottinette dont l’opérateur les publie. Fixez un minimum et la carte ne garde que les trottinettes qui l’atteignent ; celles sans niveau de batterie sont masquées.',
+        text: 'La batterie et l’autonomie sont indiquées pour chaque trottinette dont l’opérateur les publie. Indiquez la distance à parcourir et la carte ne garde que les trottinettes qui peuvent la couvrir ; quand seule la batterie est connue, elle reste prudente.',
         any: 'Indifférent',
-        control: 'Le filtre de batterie, réglé sur 60 % ou plus',
+        control: distance => `Le filtre d’autonomie, réglé sur ${distance} ou plus`,
       },
       price: {
         title: 'Le prix, avant de vous décider.',
@@ -632,9 +633,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Salta quelli scarichi.',
-        text: 'Batteria e autonomia compaiono per ogni monopattino il cui operatore le pubblica. Imposta un minimo e la mappa mostra solo i monopattini che lo raggiungono; quelli senza dati sulla batteria vengono nascosti.',
+        text: 'Batteria e autonomia compaiono per ogni monopattino il cui operatore le pubblica. Imposta la distanza che ti serve e la mappa mostra solo i monopattini che possono percorrerla; quando si conosce solo la batteria, la stima è prudente.',
         any: 'Qualsiasi',
-        control: 'Il filtro della batteria, impostato sul 60% o più',
+        control: distance => `Il filtro dell’autonomia, impostato su ${distance} o più`,
       },
       price: {
         title: 'Il prezzo, prima di decidere.',
@@ -764,9 +765,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Styr unna tomme batterier.',
-        text: 'En elsparkesykkel viser batteri og gjenværende rekkevidde når operatøren publiserer dem. Velg et minimum, så viser kartet bare elsparkesyklene som når det; de uten batteriinfo skjules.',
+        text: 'En elsparkesykkel viser batteri og gjenværende rekkevidde når operatøren publiserer dem. Velg hvor langt du skal, så viser kartet bare elsparkesyklene som kommer så langt; når bare batteriet er kjent, regner det forsiktig.',
         any: 'Alle',
-        control: 'Batterifilteret, satt til minst 60%',
+        control: distance => `Rekkeviddefilteret, satt til minst ${distance}`,
       },
       price: {
         title: 'Prisen, før du bestemmer deg.',
@@ -896,9 +897,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Sla de lege over.',
-        text: 'Een deelstep toont zijn batterijniveau en het resterende bereik als de aanbieder die publiceert. Stel een minimum in en de kaart houdt alleen de deelsteps over die het halen; deelsteps zonder bekend batterijniveau worden verborgen.',
+        text: 'Een deelstep toont zijn batterijniveau en het resterende bereik als de aanbieder die publiceert. Stel in hoe ver je moet en de kaart houdt alleen de deelsteps over die zo ver komen; is alleen het batterijniveau bekend, dan rekent ze voorzichtig.',
         any: 'Alle',
-        control: 'De batterijfilter, ingesteld op 60% of meer',
+        control: distance => `De bereikfilter, ingesteld op ${distance} of meer`,
       },
       price: {
         title: 'De prijs, voor je opstapt.',
@@ -1027,9 +1028,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Esqueça as descarregadas.',
-        text: 'Cada trotinete mostra a bateria e a autonomia restante quando o operador as publica. Defina um mínimo e o mapa só mostra as trotinetes que o atingem; as que não têm informação de bateria ficam ocultas.',
+        text: 'Cada trotinete mostra a bateria e a autonomia restante quando o operador as publica. Defina a distância de que precisa e o mapa só mostra as trotinetes que a conseguem percorrer; quando só se conhece a bateria, a estimativa é prudente.',
         any: 'Qualquer',
-        control: 'O filtro de bateria, definido para 60% ou mais',
+        control: distance => `O filtro de autonomia, definido para ${distance} ou mais`,
       },
       price: {
         title: 'O preço, antes de se decidir.',
@@ -1158,9 +1159,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Sáltate los descargados.',
-        text: 'Cada patinete muestra su batería y la autonomía que le queda cuando su operador las publica. Fija un mínimo y el mapa solo deja los patinetes que llegan a él; los que no tienen datos de batería se ocultan.',
+        text: 'Cada patinete muestra su batería y la autonomía que le queda cuando su operador las publica. Fija la distancia que necesitas y el mapa solo deja los patinetes que pueden recorrerla; cuando solo se conoce la batería, calcula con prudencia.',
         any: 'Todas',
-        control: 'El filtro de batería, fijado en el 60 % o más',
+        control: distance => `El filtro de autonomía, fijado en ${distance} o más`,
       },
       price: {
         title: 'El precio, antes de decidirte.',
@@ -1292,9 +1293,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       charge: {
         title: 'Slepptu þeim rafmagnslausu.',
-        text: 'Rafskúta sýnir hleðslu og drægni sem eftir er þegar fyrirtækið birtir þær upplýsingar. Veldu lágmark og kortið sýnir aðeins þær rafskútur sem ná því; þær sem vantar upplýsingar um hleðslu eru faldar.',
+        text: 'Rafskúta sýnir hleðslu og drægni sem eftir er þegar fyrirtækið birtir þær upplýsingar. Veldu hve langt þú ætlar og kortið sýnir aðeins þær rafskútur sem komast svo langt; þegar aðeins hleðslan er þekkt reiknar það varlega.',
         any: 'Allar',
-        control: 'Hleðslusían, stillt á 60% eða meira',
+        control: distance => `Drægnisían, stillt á ${distance} eða meira`,
       },
       price: {
         title: 'Verðið, áður en þú ákveður þig.',

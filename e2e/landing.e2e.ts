@@ -444,9 +444,9 @@ const drawn = (page: Page) => page.evaluate(() => {
   const style = (selector: string, pseudo?: string) => getComputedStyle(document.querySelector(selector)!, pseudo);
   const offset = (value: string) => (value === 'none' ? 0 : parseFloat(value));
   return {
-    // How far the battery filter has slid from "any", in its own widths.
-    thumb: style('.segments', '::before').translate,
-    stepLit: style('.segments .is-on').backgroundColor,
+    // How far along its track the range filter is set, from 0 ("any") to 1 (30 km).
+    reach: Math.round((document.querySelector('.reach-fill')!.getBoundingClientRect().width
+      / document.querySelector('.reach-track')!.getBoundingClientRect().width) * 100) / 100,
     title: style('.know .title').backgroundPositionX,
     titleInk: style('.know .title').webkitTextFillColor,
     lastWords: style('.closing .display').backgroundPositionX,
@@ -464,7 +464,7 @@ test('what follows the scroll starts unlit and ends as the page is at rest', asy
 
   // At the top nothing further down has happened yet.
   const before = await drawn(page);
-  expect(before.thumb).toBe('0%');
+  expect(before.reach).toBe(0);
   expect(before.title).toBe('100%');
   expect(before.tiles).toEqual(Array(7).fill('0'));
   expect(Number(before.figures[0])).toBeLessThan(0.3);
@@ -474,8 +474,8 @@ test('what follows the scroll starts unlit and ends as the page is at rest', asy
   await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
   await expect.poll(async () => (await drawn(page)).lastWords).toBe('0%');
   const after = await drawn(page);
-  // Two steps on, and the two gaps between them: "60%+".
-  expect(after.thumb).toBe('calc(200% + 8px)');
+  // A third of the way, at "10 km+".
+  expect(after.reach).toBe(0.33);
   expect(after.title).toBe('0%');
   expect(after.cells).toEqual(after.cells.map(() => '1'));
   expect(after.tiles).toEqual(Array(7).fill('1'));
@@ -493,8 +493,8 @@ test('without motion the landing page is at rest from the start', async ({ page 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const still = await drawn(page);
-  // The filter is drawn set, by the step itself; the titles are lit; nothing waits for the scroll.
-  expect(still.stepLit).toBe('rgb(244, 245, 247)');
+  // The filter is drawn set; the titles are lit; nothing waits for the scroll.
+  expect(still.reach).toBe(0.33);
   expect(still.titleInk).toBe('rgb(244, 245, 247)');
   expect(still.cells).toEqual(still.cells.map(() => '1'));
   expect(still.tiles).toEqual(Array(7).fill('1'));

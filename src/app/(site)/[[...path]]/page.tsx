@@ -39,9 +39,9 @@ import { formatDistance, walkingMinutes } from '@/lib/walking';
 
 type Props = Readonly<{ params: Promise<{ path?: string[] }> }>;
 
-// The steps of the app's battery filter; the page shows it set to the third.
-const BATTERY_STEPS = [30, 60, 80] as const;
-const BATTERY_STEP_SHOWN = 60;
+// The app's range filter runs from "any" to 30 km; the page shows it set to 10.
+const RANGE_TOP = 30_000;
+const RANGE_SHOWN = 10_000;
 
 // Bird's black would vanish on a page this dark: its marker is white on the
 // app's dark map, too.
@@ -415,20 +415,21 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
 
             <div className="cell">
               <div>
-                <p className="figure figure--charge">{BATTERY_STEP_SHOWN}%+</p>
+                <p className="figure figure--charge">{format.distance(RANGE_SHOWN)}+</p>
                 <div
-                  className="segments"
+                  className="reach"
                   role="img"
-                  aria-label={copy.know.charge.control}
-                  // How many steps from "any" the one that is on is: the page slides the control there.
-                  style={{ '--on': BATTERY_STEPS.indexOf(BATTERY_STEP_SHOWN) + 1 } as CSSProperties}
+                  aria-label={copy.know.charge.control(format.distance(RANGE_SHOWN))}
+                  // How far along its track the slider is set: the page slides it there.
+                  style={{ '--at': RANGE_SHOWN / RANGE_TOP } as CSSProperties}
                 >
-                  <span aria-hidden="true">{copy.know.charge.any}</span>
-                  {BATTERY_STEPS.map(step => (
-                    <span key={step} aria-hidden="true" className={step === BATTERY_STEP_SHOWN ? 'is-on' : undefined}>
-                      {step}%+
-                    </span>
-                  ))}
+                  <span className="reach-track" aria-hidden="true">
+                    <span className="reach-fill" />
+                  </span>
+                  <span className="reach-ends" aria-hidden="true">
+                    <span>{copy.know.charge.any}</span>
+                    <span>{format.distance(RANGE_TOP)}</span>
+                  </span>
                 </div>
               </div>
               <div>
