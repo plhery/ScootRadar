@@ -19,6 +19,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.AppLink
 import com.plhery.scootradar.app.HeadingOrientationWatcher
@@ -72,8 +73,17 @@ class MainActivity : AppCompatActivity() {
     internal val links = Channel<ScooterMapLink>(Channel.CONFLATED)
     private val openedLinks = links.receiveAsFlow()
 
-    /** Google Play's card to rate the app, asked for when the map rests after a ride (UI-106). */
-    private val reviewRequester by lazy { PlayReviewRequester(ReviewManagerFactory.create(applicationContext), this) }
+    /**
+     * Google Play's card to rate the app, asked for when the map rests after a ride (UI-106). A debug build launched
+     * with ReviewPromptDue asks Play's stand-in, which answers as Play would, as Play shows its card only in a copy it
+     * installed, and logs the ask (LOG-312).
+     */
+    private val reviewRequester = PlayReviewRequester(this) {
+        val due = BuildConfig.DEBUG &&
+            LaunchArgumentDefaults(LaunchArgumentDefaults.arguments(intent.extras), (application as ScooterApplication).container.defaults)
+                .bool(LaunchArgumentDefaults.REVIEW_PROMPT_DUE)
+        if (due) FakeReviewManager(applicationContext) else ReviewManagerFactory.create(applicationContext)
+    }
 
     /** What the screen's keys stand for now, which Android's keyboard shortcut helper lists. */
     @VisibleForTesting

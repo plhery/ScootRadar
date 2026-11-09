@@ -30,7 +30,7 @@ fun interface ReviewRequester {
     fun prepare() {}
 
     companion object {
-        /** Asks nothing: a test's screen, or a screen with no store. */
+        /** Asks nothing: a test's screen, or a preview's. */
         val none = ReviewRequester { }
     }
 }

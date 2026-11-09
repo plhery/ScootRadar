@@ -77,7 +77,7 @@ class ReviewWaitTest {
 
     /**
      * What the store needs is fetched as the rest begins, so that Play's card comes at its end, as the iPhone's sheet
-     * does; a try that ends early has fetched it for nothing and asks nothing.
+     * does (app/PlayReviewRequesterTest for what Play is asked).
      */
     @Test
     fun theStoreIsReadiedAsTheRestBeginsAndAskedAtItsEnd() {

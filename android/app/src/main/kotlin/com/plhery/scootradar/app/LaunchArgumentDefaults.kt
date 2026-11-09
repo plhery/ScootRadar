@@ -41,8 +41,11 @@ class LaunchArgumentDefaults(
          */
         const val ANALYTICS_SMOKE_TEST = "analytics-smoke-test"
 
+        /** Every calm moment the one to ask for a rating, and the first load after the launch one (LOG-312). */
+        const val REVIEW_PROMPT_DUE = "ReviewPromptDue"
+
         /** The launch arguments the debug build reads (ScooterScreenshotCamera, the review prompt, the smoke test). */
-        val keys: List<String> = listOf("ScreenshotCamera", "ScreenshotTerrain", "ReviewPromptDue", ANALYTICS_SMOKE_TEST)
+        val keys: List<String> = listOf("ScreenshotCamera", "ScreenshotTerrain", REVIEW_PROMPT_DUE, ANALYTICS_SMOKE_TEST)
 
         /** Those of [keys] among an intent's extras. */
         fun arguments(extras: Bundle?): Map<String, Any> {
