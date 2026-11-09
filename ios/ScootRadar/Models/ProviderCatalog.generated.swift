@@ -171,7 +171,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
 
     var uiColor: UIColor {
         switch self {
-        case .bolt: UIColor(red: 0.000000, green: 0.800000, blue: 0.266667, alpha: 1)
+        case .bolt: UIColor(red: 0.043137, green: 0.431373, blue: 0.309804, alpha: 1)
         case .bird: UIColor(red: 0.133333, green: 0.133333, blue: 0.133333, alpha: 1)
         case .dott: UIColor(red: 1.000000, green: 0.400000, blue: 0.000000, alpha: 1)
         case .hopp: UIColor(red: 0.000000, green: 0.737255, blue: 0.831373, alpha: 1)

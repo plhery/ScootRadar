@@ -2,7 +2,7 @@
   {
     "key": "bolt",
     "name": "Bolt",
-    "color": "#00cc44",
+    "color": "#0b6e4f",
     "initial": "B",
     "switzerland": true,
     "systemIds": { "prefixes": ["bolt"] },

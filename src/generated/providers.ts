@@ -9,7 +9,7 @@ export interface ProviderConfig {
 }
 
 const PROVIDER_DEFINITIONS = {
-  bolt: { name: "Bolt", color: "#00cc44", initial: "B", app: { link: "https://bolt.sng.link/Epy3j/o9sr", appStoreId: 675033630 } },
+  bolt: { name: "Bolt", color: "#0b6e4f", initial: "B", app: { link: "https://bolt.sng.link/Epy3j/o9sr", appStoreId: 675033630 } },
   bird: { name: "Bird", color: "#222222", initial: "Bi", app: { link: "https://ride.bird.co/", appStoreId: 1260842311 } },
   dott: { name: "Dott", color: "#ff6600", initial: "D", app: { link: "https://v.ridedott.com/", appStoreId: 1440301673 } },
   hopp: { name: "Hopp", color: "#00bcd4", initial: "H" },
