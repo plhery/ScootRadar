@@ -88,7 +88,7 @@ class ReviewWaitTest {
                 calls += "prepare"
             }
 
-            override fun request() {
+            override fun request(stillAsked: () -> Boolean) {
                 calls += "request"
             }
         }
@@ -122,6 +122,38 @@ class ReviewWaitTest {
         assertEquals(0, asked)
         assertFalse(model.reviewDue)
         assertEquals(emptyList<TrackedEvent>(), analytics.events)
+    }
+
+    /**
+     * The store answers late, a bind to Play away: something over the map by then, a scooter tapped as the rest
+     * ended, takes back the ask, and Play's card with it (review-app-bh2).
+     */
+    @Test
+    fun somethingOverTheMapBeforeTheStoreAnswersTakesBackItsCard() {
+        val model = backFromARide()
+        var nothingOver by mutableStateOf(true)
+        var stillAsked: (() -> Boolean)? = null
+        compose.mainClock.autoAdvance = false
+        compose.setContent {
+            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { stillAsked = it }, analytics = null)
+        }
+        compose.mainClock.advanceTimeBy(5_500)
+        assertTrue(stillAsked!!())
+        compose.mainClock.advanceTimeBy(1_000)
+        assertTrue("the map still at rest", stillAsked!!())
+        compose.runOnUiThread {
+            nothingOver = false
+            Snapshot.sendApplyNotifications()
+        }
+        compose.mainClock.advanceTimeByFrame()
+        assertFalse(stillAsked!!())
+        // Back at rest, the card is not asked again.
+        compose.runOnUiThread {
+            nothingOver = true
+            Snapshot.sendApplyNotifications()
+        }
+        compose.mainClock.advanceTimeBy(10_000)
+        assertFalse(stillAsked!!())
     }
 
     /**

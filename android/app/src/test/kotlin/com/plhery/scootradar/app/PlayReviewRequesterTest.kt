@@ -19,9 +19,9 @@ import org.robolectric.Robolectric
 import org.robolectric.Shadows.shadowOf
 
 /**
- * Google Play's card to rate the app (X-AD27, LOG-310, LOG-408): the card is asked for with what Play gave as the map
- * began to rest, in the activity that shows the map, and nothing is shown, or told, when Play can't give it or the
- * activity has gone. Play's own FakeReviewManager stands in for Play, as Google's guide has it. The activity is a
+ * Google Play's card to rate the app (X-AD27, LOG-310): the card is asked for with what Play gave as the map began to
+ * rest, in the activity that shows the map, and nothing is shown, or told, when Play can't give it, the activity has
+ * gone, or something has come over the map by the time Play answers. Play's own FakeReviewManager stands in for Play, as Google's guide has it. The activity is a
  * FragmentActivity, as MainActivity is, whose listeners the Task API ends with it.
  */
 @RunWith(AndroidJUnit4::class)
@@ -63,14 +63,14 @@ class PlayReviewRequesterTest {
         assertEquals(1, manager.asked)
         assertEquals(0, manager.shown.size)
 
-        requester.request()
+        requester.request { true }
         idle()
         assertEquals(1, manager.asked)
         assertEquals(1, manager.shown.size)
         assertSame(activity.get(), manager.shown.single().first)
 
         // The next ask readies its own, with the same manager.
-        requester.request()
+        requester.request { true }
         idle()
         assertEquals(2, manager.asked)
         assertEquals(2, manager.shown.size)
@@ -85,7 +85,7 @@ class PlayReviewRequesterTest {
         requester.prepare()
         idle()
         // What failed as the rest began is asked for again at its end, and fails again.
-        requester.request()
+        requester.request { true }
         idle()
         assertEquals(2, manager.asked)
         assertEquals(0, manager.shown.size)
@@ -97,7 +97,7 @@ class PlayReviewRequesterTest {
         val requester = PlayReviewRequester(activity.get()) { manager }
         requester.prepare()
         idle()
-        requester.request()
+        requester.request { true }
         idle()
         assertEquals(2, manager.asked)
         assertEquals(1, manager.shown.size)
@@ -109,10 +109,27 @@ class PlayReviewRequesterTest {
         val answer = TaskCompletionSource<ReviewInfo>()
         val manager = CountingReviewManager(answer.task)
         val requester = PlayReviewRequester(activity.get()) { manager }
-        requester.request()
+        requester.request { true }
         activity.pause().stop()
         answer.setResult(reviewInfo())
         idle()
+        assertEquals(0, manager.shown.size)
+    }
+
+    /** A scooter tapped, or the search opened, before Play answered: no card over it. */
+    @Test
+    fun somethingOverTheMapBeforePlayAnsweredShowsNoCard() {
+        val answer = TaskCompletionSource<ReviewInfo>()
+        val manager = CountingReviewManager(Tasks.forException(IllegalStateException("no connection")), answer.task)
+        val requester = PlayReviewRequester(activity.get()) { manager }
+        var asking = true
+        requester.prepare()
+        idle()
+        requester.request { asking }
+        asking = false
+        answer.setResult(reviewInfo())
+        idle()
+        assertEquals(2, manager.asked)
         assertEquals(0, manager.shown.size)
     }
 
@@ -121,7 +138,7 @@ class PlayReviewRequesterTest {
         val answer = TaskCompletionSource<ReviewInfo>()
         val manager = CountingReviewManager(answer.task)
         val requester = PlayReviewRequester(activity.get()) { manager }
-        requester.request()
+        requester.request { true }
         activity.pause().stop().destroy()
         answer.setResult(reviewInfo())
         idle()

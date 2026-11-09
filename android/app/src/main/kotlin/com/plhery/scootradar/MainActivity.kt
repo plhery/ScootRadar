@@ -79,11 +79,11 @@ class MainActivity : AppCompatActivity() {
      * installed, and logs the ask (LOG-312).
      */
     private val reviewRequester = PlayReviewRequester(this) {
-        val due = BuildConfig.DEBUG &&
-            LaunchArgumentDefaults(LaunchArgumentDefaults.arguments(intent.extras), (application as ScooterApplication).container.defaults)
-                .bool(LaunchArgumentDefaults.REVIEW_PROMPT_DUE)
-        if (due) FakeReviewManager(applicationContext) else ReviewManagerFactory.create(applicationContext)
+        if (askPlaysStandIn) FakeReviewManager(applicationContext) else ReviewManagerFactory.create(applicationContext)
     }
+
+    /** Whether the launch asked for Play's stand-in: read as the activity is made, not from a link it opens later. */
+    private var askPlaysStandIn = false
 
     /** What the screen's keys stand for now, which Android's keyboard shortcut helper lists. */
     @VisibleForTesting
@@ -92,6 +92,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        askPlaysStandIn = BuildConfig.DEBUG &&
+            LaunchArgumentDefaults(LaunchArgumentDefaults.arguments(intent.extras), (application as ScooterApplication).container.defaults)
+                .bool(LaunchArgumentDefaults.REVIEW_PROMPT_DUE)
         ScreenOrientation.apply(this)
         // AppCompat has put a language chosen for the app in the activity's configuration by now. An activity made
         // after the phone's languages changed in the background takes them, as one kept running does.

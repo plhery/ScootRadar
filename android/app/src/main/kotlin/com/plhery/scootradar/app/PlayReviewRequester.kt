@@ -33,13 +33,14 @@ class PlayReviewRequester(
 
     // The app keeps no log of its own, nor Timber: one line, in debug builds only, says the ask went (LOG-312).
     @SuppressLint("LogNotTimber")
-    override fun request() {
+    override fun request(stillAsked: () -> Boolean) {
         // One Play failed to answer is asked again.
         val asked = prepared?.takeUnless { it.isComplete && !it.isSuccessful } ?: manager.requestReviewFlow()
         prepared = null
-        // Heard only while the activity shows: one left before Play answered shows no card.
+        // Heard only while the activity shows: one left before Play answered shows no card, nor does a map with
+        // something come over it by then.
         asked.addOnCompleteListener(activity) { answer ->
-            if (!answer.isSuccessful || activity.isFinishing || activity.isDestroyed) return@addOnCompleteListener
+            if (!answer.isSuccessful || !stillAsked() || activity.isFinishing || activity.isDestroyed) return@addOnCompleteListener
             manager.launchReviewFlow(activity, answer.result).addOnCompleteListener {
                 if (BuildConfig.DEBUG) Log.i(TAG, "Google Play asked for its card to rate the app")
             }

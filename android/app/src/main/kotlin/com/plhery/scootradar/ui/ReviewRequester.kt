@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.map.dropReviewMoment
 import com.plhery.scootradar.core.map.takeReviewMoment
 import com.plhery.scootradar.core.model.ScooterReviewPrompt
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the ask for a rating, StoreKit's requestReview after the map has
@@ -20,8 +21,11 @@ import kotlinx.coroutines.delay
  * (app/PlayReviewRequester).
  */
 fun interface ReviewRequester {
-    /** Asks the store to show its card, which it may not: it shows it only so often, and says nothing either way. */
-    fun request()
+    /**
+     * Asks the store to show its card, which it may not: it shows it only so often, and says nothing either way.
+     * The store may answer late: it shows none once [stillAsked] says no.
+     */
+    fun request(stillAsked: () -> Boolean)
 
     /**
      * The map has started to rest at a moment to ask: what the store needs for its card may be fetched now, so the
@@ -38,7 +42,7 @@ fun interface ReviewRequester {
 /**
  * A return from a ride that is the moment to ask for a rating (ScooterReviewPrompt): after the map has rested a few
  * seconds with nothing over it, never from a button. Anything over the map or changing on it before then ends this
- * try.
+ * try, and before the store answers its card, as the iPhone's sheet comes at once.
  */
 @Composable
 internal fun ReviewWhenTheMapRests(
@@ -61,7 +65,13 @@ internal fun ReviewWhenTheMapRests(
             throw cancelled
         }
         if (!controller.takeReviewMoment()) return@LaunchedEffect
-        requester.request()
+        var asking = true
+        requester.request { asking }
         analytics?.track("review_ask", result = "rental_return")
+        try {
+            awaitCancellation()
+        } finally {
+            asking = false
+        }
     }
 }
