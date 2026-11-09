@@ -24,14 +24,15 @@ import kotlin.math.sqrt
 class BoldTextMarkersTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val voi = ScooterProvider.fromRawValue("voi")
+    private val day = ScooterMarkerArt.BalloonLook(isDark = false, highContrast = false)
 
     /** The pictures with text or a symbol in them, each drawn by an art. */
     private val pictures: List<Pair<String, (ScooterMarkerArt) -> Bitmap>> = listOf(
         "a scooter's initials" to { it.image(ScooterMarkerArt.Key(voi, diameter = 30.0, state = ScooterDotState.Plain, showsInitials = true, isDark = false)) },
         "a cluster's count" to { it.clusterImage(ScooterMarkerArt.ClusterKey(voi, diameter = 44.0, isDark = false, count = "128")) },
         "a group last seen's count" to { it.lastSeenClusterImage(ScooterMarkerArt.ClusterKey(voi, diameter = 44.0, isDark = true, count = "56")) },
-        "a bay's P" to { it.bayImage(ScooterMarkerArt.BayKey(voi, isSelected = false)) },
-        "the searched place's pin" to { it.addressImage(isDark = false) },
+        "a bay's P" to { it.bayImage(ScooterMarkerArt.BayKey(voi, isSelected = false, look = day)) },
+        "the searched place's pin" to { it.addressImage(day) },
     )
     private val pill = ScooterMarkerArt.PillContent(voi, "Voi", "3 min", isFilled = false, isDark = false)
     private val pillParts = listOf(

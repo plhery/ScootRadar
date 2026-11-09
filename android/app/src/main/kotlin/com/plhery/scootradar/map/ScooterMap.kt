@@ -251,6 +251,8 @@ fun ScooterMap(
     // With Increase Contrast, as the rest of the app follows it (ui.md UI-186, MAP-192).
     val highContrast = scootColors.isContrastIncreased
     LaunchedEffect(rider, dark, highContrast) { rider?.setLook(RiderArt.Look(dark = dark, highContrast = highContrast)) }
+    // MapKit's balloons follow the appearance, not the satellite picture, and their blue Increase Contrast (ui347).
+    LaunchedEffect(markers, dark, highContrast) { markers?.setBalloonLook(ScooterMarkerArt.BalloonLook(dark, highContrast)) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
     val points = density.density.toDouble()

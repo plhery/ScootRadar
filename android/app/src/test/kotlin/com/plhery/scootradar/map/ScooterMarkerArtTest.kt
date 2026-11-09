@@ -60,35 +60,77 @@ class ScooterMarkerArtTest {
     }
 
     /**
-     * The balloon's disc goes from its tint with some white at its top to a shade of it at its bottom, evenly in
-     * sRGB, as the iOS 27 simulator draws the searched place's in the system's blue (ui346): #6DA2FE to #006ED1 by
-     * day, #73AAFE to #0077D3 by night. A bay without a provider is drawn the same, its P in the middle.
+     * The balloon's disc goes evenly in sRGB from a lighter colour of its tint at its top to a darker one at its
+     * bottom, as the iOS 27 simulator draws them (ui346, ui347): the searched place's pin in the system's blue by
+     * day, by night and by night with Increase Contrast, and the bays of four providers, whose ends are the same in
+     * every look. A bay without a provider is drawn as the pin is, its P in the middle.
      */
     @Test
-    fun aBalloonInTheSystemsBlueIsLitAsMapKitsIs() {
+    fun aBalloonIsLitAsMapKitsIs() {
         val art = art()
-        for ((isDark, ends) in listOf(false to (0x6DA2FE to 0x006ED1), true to (0x73AAFE to 0x0077D3))) {
-            val bay = ScooterMarkerArt.BayKey(provider = null, isSelected = false, isDark = isDark)
-            val balloons = listOf(art.addressImage(isDark), art.bayImage(bay))
-            for (balloon in balloons) {
-                val shape = ScooterMarkerArt.BayShape.rest
-                // The picture hangs from its middle; the disc's centre is a rim and a radius below its top.
-                val x = balloon.width / 3.0 / 2
-                val centre = balloon.height / 3.0 / 2 - shape.above + shape.radius + shape.rim
-                // Left of the glyph, a third of the way up and down the disc.
-                for (row in listOf(centre - 6, centre + 6)) {
-                    val px = ((x - 10.5) * 3).toInt()
-                    val py = (row * 3).toInt()
-                    val share = ((py + 0.5) / 3 - (centre - shape.radius)) / (2 * shape.radius)
-                    val pixel = balloon.getPixel(px, py)
-                    for (shift in listOf(16, 8, 0)) {
-                        val top = ends.first shr shift and 0xFF
-                        val bottom = ends.second shr shift and 0xFF
-                        val expected = top + (bottom - top) * share
-                        val drawn = pixel shr shift and 0xFF
-                        val where = "dark $isDark, $share down, channel $shift"
-                        assertTrue("$where: $drawn against $expected", abs(drawn - expected) <= 2)
-                    }
+        fun look(isDark: Boolean, highContrast: Boolean = false) = ScooterMarkerArt.BalloonLook(isDark, highContrast)
+        val pins = listOf(
+            look(isDark = false) to (0x6DA2FE to 0x006ED1),
+            look(isDark = true) to (0x73AAFE to 0x0077D3),
+            look(isDark = true, highContrast = true) to (0xA4D0FE to 0x009EEA),
+        )
+        val balloons = pins.flatMap { (look, ends) ->
+            listOf(
+                "the pin, $look" to art.addressImage(look) to ends,
+                "a bay without a provider, $look" to art.bayImage(ScooterMarkerArt.BayKey(null, isSelected = false, look = look)) to ends,
+            )
+        } + listOf(
+            "voi" to (0xFE6DA9 to 0xD30077),
+            "ryde" to (0x3B9F19 to 0x23670C),
+            "pony" to (0x00C4BC to 0x008A84),
+            "bird" to (0x363636 to 0x090909),
+        ).flatMap { (provider, ends) ->
+            listOf(false, true).map { isDark ->
+                val key = ScooterMarkerArt.BayKey(ScooterProvider.fromRawValue(provider), isSelected = false, look = look(isDark))
+                "$provider, dark $isDark" to art.bayImage(key) to ends
+            }
+        }
+        val shape = ScooterMarkerArt.BayShape.rest
+        for ((named, ends) in balloons) {
+            val (name, balloon) = named
+            // The picture hangs from its middle; the disc's centre is a rim and a radius below its top.
+            val x = balloon.width / 3.0 / 2
+            val centre = balloon.height / 3.0 / 2 - shape.above + shape.radius + shape.rim
+            // Left of the glyph, a third of the way up and down the disc.
+            for (row in listOf(centre - 6, centre + 6)) {
+                val py = (row * 3).toInt()
+                val share = ((py + 0.5) / 3 - (centre - shape.radius)) / (2 * shape.radius)
+                val pixel = balloon.getPixel(((x - 10.5) * 3).toInt(), py)
+                for (shift in listOf(16, 8, 0)) {
+                    val top = ends.first shr shift and 0xFF
+                    val bottom = ends.second shr shift and 0xFF
+                    val expected = top + (bottom - top) * share
+                    val drawn = pixel shr shift and 0xFF
+                    assertTrue("$name, $share down, channel $shift: $drawn against $expected", abs(drawn - expected) <= 2.5)
+                }
+            }
+        }
+    }
+
+    /**
+     * The rim is white by day, over any ground, and by night #222834 at 0.81, the map showing through it but not the
+     * balloon's own shadow (ui347), with Increase Contrast too.
+     */
+    @Test
+    fun theRimIsWhiteByDayAndLetsTheMapThroughByNight() {
+        val art = art()
+        val shape = ScooterMarkerArt.BayShape.rest
+        for (highContrast in listOf(false, true)) {
+            for (isDark in listOf(false, true)) {
+                val balloon = art.addressImage(ScooterMarkerArt.BalloonLook(isDark, highContrast))
+                // The middle of the rim, straight above the disc.
+                val x = balloon.width / 2
+                val top = balloon.height / 3.0 / 2 - shape.above
+                val pixel = balloon.getPixel(x, ((top + shape.rim / 2) * 3).toInt())
+                val (alpha, colour) = if (isDark) 207 to 0x222834 else 255 to 0xFFFFFF
+                assertEquals("dark $isDark, IC $highContrast: alpha", alpha.toDouble(), (pixel ushr 24).toDouble(), 2.0)
+                for (shift in listOf(16, 8, 0)) {
+                    assertEquals("dark $isDark, IC $highContrast: channel $shift", (colour shr shift and 0xFF).toDouble(), (pixel shr shift and 0xFF).toDouble(), 2.0)
                 }
             }
         }

@@ -11,6 +11,8 @@ import android.graphics.DashPathEffect
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
@@ -30,6 +32,7 @@ import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.theme.SEARCH_BOLD_PATH
 import com.plhery.scootradar.ui.theme.SEARCH_PATH
+import kotlin.math.abs
 import kotlin.math.acos
 import kotlin.math.ceil
 import kotlin.math.exp
@@ -133,9 +136,20 @@ class ScooterMarkerArt(
         val lastSeenBreathID: String get() = "seen-group-breath/${provider.part}/${diameter.roundToInt()}/${isDark.part}/$count"
     }
 
-    /** A parking bay's balloon, small at rest and large when selected. */
-    data class BayKey(val provider: ScooterProvider?, val isSelected: Boolean, val isDark: Boolean = false) {
-        val id: String get() = "bay/${provider.part}/${isSelected.part}/${isDark.part}"
+    /**
+     * What MapKit's balloons follow: the app's appearance, not the satellite picture under them, and Increase
+     * Contrast, which changes the system's blue alone (ui347).
+     */
+    data class BalloonLook(val isDark: Boolean, val highContrast: Boolean) {
+        val part: String get() = "${isDark.part}/${highContrast.part}"
+    }
+
+    /**
+     * A parking bay's balloon, small at rest and large when selected. A provider's colour is the same with Increase
+     * Contrast, so only a bay without one needs [BalloonLook.highContrast] (MarkerFeatures leaves it off otherwise).
+     */
+    data class BayKey(val provider: ScooterProvider?, val isSelected: Boolean, val look: BalloonLook) {
+        val id: String get() = "bay/${provider.part}/${isSelected.part}/${look.part}"
     }
 
     /**
@@ -158,7 +172,7 @@ class ScooterMarkerArt(
     private val clusters = HashMap<ClusterKey, Bitmap>()
     private val lastSeenClusters = HashMap<ClusterKey, Bitmap>()
     private val bays = HashMap<BayKey, Bitmap>()
-    private val addresses = HashMap<Boolean, Bitmap>()
+    private val addresses = HashMap<BalloonLook, Bitmap>()
     private val pills = HashMap<PillContent, Bitmap>()
     private val pillWidths = HashMap<PillContent, Double>()
 
@@ -395,15 +409,16 @@ class ScooterMarkerArt(
     }
 
     /**
-     * MapKit's marker balloon, as it draws it on the Mac (MAP-300): a disc in the tint inside a white rim, lighter
-     * at its top and darker at its bottom, on a short point, with the glyph in the ink that reads on the tint, as the
-     * provider's initials are (ScooterMapView.swift:1575-1579). A bay without a provider is in the system's blue. Selected, it is larger, on a longer point, over a small dot where the
-     * bay is. The picture is as tall above the bay as below it, so that it hangs from its middle.
+     * MapKit's marker balloon (MAP-300), its sizes measured on the Mac and its colours on the iOS 27 simulator: a disc
+     * in the tint, lighter at its top and darker at its bottom, inside a rim, on a short point, with the glyph in the
+     * ink that reads on the tint, as the provider's initials are (ScooterMapView.swift:1575-1579). A bay without a
+     * provider is in the system's blue. Selected, it is larger, on a longer point, over a small dot where the bay is.
+     * The picture is as tall above the bay as below it, so that it hangs from its middle.
      */
     private fun draw(key: BayKey): Bitmap {
         val shape = BayShape.of(key.isSelected)
-        val tint = key.provider?.color ?: if (key.isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE
-        return balloon(tint, shape, key.isDark) { x, centre ->
+        val tint = key.provider?.color ?: systemBlue(key.look)
+        return balloon(tint, shape, key.look.isDark) { x, centre ->
             val paint = textPaint(TextFace(fonts.bold, shape.glyph.toFloat()), ScooterMapLook.ink(on = tint).toInt())
             text("P", paint, x - paint.measureText("P") / 2.0, centre - lineHeight(paint) / 2)
         }
@@ -413,9 +428,9 @@ class ScooterMarkerArt(
      * The searched place's pin (MAP-033): MapKit's balloon at rest in the system's blue, with a magnifying glass
      * for its glyph, heavier under Bold Text.
      */
-    fun addressImage(isDark: Boolean): Bitmap = addresses.getOrPut(isDark) {
+    fun addressImage(look: BalloonLook): Bitmap = addresses.getOrPut(look) {
         val shape = BayShape.rest
-        balloon(if (isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE, shape, isDark) { x, centre ->
+        balloon(systemBlue(look), shape, look.isDark) { x, centre ->
             // A Material symbol fills 20 of its 24 units, as an SF Symbol fills its point size (SYMBOL_FRAME).
             val side = (shape.glyph * 24 / 20).toFloat()
             val glyph = PathParser.createPathFromPathData(if (fonts.boldText) SEARCH_BOLD_PATH else SEARCH_PATH)
@@ -437,18 +452,22 @@ class ScooterMarkerArt(
         return picture(side, height) { x, anchor ->
             val centre = anchor - shape.above.toFloat() + outer.toFloat()
             val tip = anchor - shape.dotGap.toFloat()
-            val white = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            val outline = balloon(x, centre, outer.toFloat(), tip)
+            val shadowed = Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 color = Color.WHITE
                 setShadowLayer(shadowRadius(BAY_SHADOW_BLUR), 0f, 3f, Color.argb(0.3f, 0f, 0f, 0f))
             }
-            drawPath(balloon(x, centre, outer.toFloat(), tip), white)
-            // From the tint with some white at the disc's top to a shade of it at its bottom, both in linear light,
-            // evenly in sRGB between them, as the iOS 27 simulator draws systemBlue's (ui346).
-            val (lift, shade) = if (isDark) DARK_BALLOON else LIGHT_BALLOON
+            drawPath(outline, shadowed)
+            if (isDark) {
+                // By night the rim lets the map through it, but not its own shadow (ui347).
+                drawPath(outline, Paint(Paint.ANTI_ALIAS_FLAG).apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) })
+                drawPath(outline, Paint(Paint.ANTI_ALIAS_FLAG).apply { color = DARK_RIM })
+            }
+            // Evenly in sRGB from the disc's top edge to its bottom edge.
             val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 shader = LinearGradient(
                     0f, centre - shape.radius.toFloat(), 0f, centre + shape.radius.toFloat(),
-                    inLinearLight(tint) { it * (1 - lift) + lift }, inLinearLight(tint) { it * shade }, Shader.TileMode.CLAMP,
+                    balloonEnd(tint, BALLOON_TOP), balloonEnd(tint, BALLOON_BOTTOM), Shader.TileMode.CLAMP,
                 )
             }
             drawCircle(x, centre, shape.radius.toFloat(), fill)
@@ -621,11 +640,19 @@ class ScooterMarkerArt(
         private const val BAY_SHADOW_BLUR = 8.0
         private const val BAY_DOT_RADIUS = 3.0
 
-        /** UIColor.systemBlue as iOS 26 made it, the balloon's tint without a provider (UI-346). */
-        private const val SYSTEM_BLUE: Long = 0xFF0088FF
+        /**
+         * UIColor.systemBlue as iOS 26 made it, the balloon's tint without a provider, and its accessible variants
+         * with Increase Contrast (UI-346, ui347): ScootColors' accent in each look.
+         */
+        fun systemBlue(look: BalloonLook): Long = when {
+            look.highContrast && look.isDark -> 0xFF5CB8FF
+            look.highContrast -> 0xFF1E6EF4
+            look.isDark -> 0xFF0091FF
+            else -> 0xFF0088FF
+        }
 
-        /** UIColor.systemBlue in the dark. */
-        private const val SYSTEM_BLUE_DARK: Long = 0xFF0091FF
+        /** The balloon's rim by night, #222834 at 0.81 over the map (ui347); by day it is white. */
+        private val DARK_RIM = Color.argb(207, 0x22, 0x28, 0x34)
 
         private val RAISED_DARK = Color.argb(1f, 0.086f, 0.102f, 0.141f)
         private val COUNT_ON_DARK = Color.argb(1f, 0.957f, 0.961f, 0.969f)
@@ -649,22 +676,46 @@ class ScooterMarkerArt(
 
         private fun Long.withAlpha(alpha: Double): Int = (channel(alpha) shl 24) or (this and 0xFFFFFF).toInt()
 
-        /** The white mixed into a balloon's tint at its top, and the share of the tint left at its bottom, by day. */
-        private val LIGHT_BALLOON = 0.153 to 0.637
+        /** How far CIE L* rises at the top of a balloon's disc and falls at its bottom, in every look (ui347). */
+        private const val BALLOON_TOP = 9.85
+        private const val BALLOON_BOTTOM = -10.30
 
-        /** The same by night, a little lighter. */
-        private val DARK_BALLOON = 0.171 to 0.651
+        /** An sRGB channel, 0 to 1, in linear light. */
+        private fun decode(value: Double): Double = if (value <= 0.04045) value / 12.92 else ((value + 0.055) / 1.055).pow(2.4)
 
-        /** [color] with [change] made to each of its channels in linear light. */
-        private fun inLinearLight(color: Long, change: (Double) -> Double): Int {
-            fun part(shift: Int): Int {
-                val value = (color shr shift and 0xFF) / 255.0
-                val linear = if (value <= 0.04045) value / 12.92 else ((value + 0.055) / 1.055).pow(2.4)
-                val changed = change(linear).coerceIn(0.0, 1.0)
-                val encoded = if (changed <= 0.0031308) 12.92 * changed else 1.055 * changed.pow(1 / 2.4) - 0.055
-                return (encoded * 255).roundToInt()
+        /** A channel in linear light, 0 to 1, in sRGB. */
+        private fun encode(value: Double): Double = if (value <= 0.0031308) 12.92 * value else 1.055 * value.pow(1 / 2.4) - 0.055
+
+        /** CIE L*, 0 to 100, of a colour in linear light. */
+        private fun lightnessStar(red: Double, green: Double, blue: Double): Double {
+            val y = 0.2126 * red + 0.7152 * green + 0.0722 * blue
+            return if (y <= 216.0 / 24389) y * 24389 / 27 else 116 * Math.cbrt(y) - 16
+        }
+
+        /**
+         * One end of a balloon's disc in [tint], as MapKit draws it on iOS 27 for every tint measured, the providers'
+         * and the system's blue in each look (ui347): the tint's HSL taken in linear light, its hue and saturation
+         * kept, and its lightness moved until CIE L* has changed by [change].
+         */
+        internal fun balloonEnd(tint: Long, change: Double): Int {
+            val linear = listOf(16, 8, 0).map { decode((tint shr it and 0xFF) / 255.0) }
+            val most = linear.max()
+            val least = linear.min()
+            val lightness = (most + least) / 2
+            val saturation = if (most == least) 0.0 else (most - least) / (1 - abs(2 * lightness - 1))
+            val share = linear.map { if (most == least) 0.5 else (it - least) / (most - least) }
+            fun at(l: Double) = share.map { l + (1 - abs(2 * l - 1)) * saturation * (it - 0.5) }
+            val goal = lightnessStar(linear[0], linear[1], linear[2]) + change
+            var low = 0.0
+            var high = 1.0
+            // L* only rises with the lightness at a hue and saturation kept, so halving finds it.
+            repeat(40) {
+                val middle = (low + high) / 2
+                val c = at(middle)
+                if (lightnessStar(c[0], c[1], c[2]) < goal) low = middle else high = middle
             }
-            return Color.rgb(part(16), part(8), part(0))
+            val (red, green, blue) = at((low + high) / 2).map { (encode(it.coerceIn(0.0, 1.0)) * 255).roundToInt() }
+            return Color.rgb(red, green, blue)
         }
 
         /**

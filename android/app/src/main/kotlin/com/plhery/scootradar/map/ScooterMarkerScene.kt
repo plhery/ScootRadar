@@ -378,6 +378,9 @@ class ScooterMarkerScene(
     /** Dark appearance, and the satellite picture in either appearance. */
     var isDark = false
 
+    /** What MapKit's balloons follow: the appearance alone, and Increase Contrast (ui347). */
+    var balloons = ScooterMarkerArt.BalloonLook(isDark = false, highContrast = false)
+
     private val marksByID = HashMap<String, ScooterMark>()
     private var reconciledScooters: List<Scooter> = emptyList()
     private val serverClustersByID = LinkedHashMap<String, ClusterMark>()
@@ -569,6 +572,7 @@ class ScooterMarkerScene(
         /** Along the route to the selected scooter, while one is shown. */
         val walkMinutes: Int?,
         val isDark: Boolean,
+        val balloons: ScooterMarkerArt.BalloonLook,
         val isStreetLevel: Boolean,
         val usesServerClusters: Boolean,
         val scaleStep: Int,
@@ -756,6 +760,7 @@ class ScooterMarkerScene(
             selectedID = appliedSelectionID,
             walkMinutes = parent.walkRemainingMetres?.let { ScooterMapLook.walkingMinutes(it) },
             isDark = isDark,
+            balloons = balloons,
             // Zoomed out, the scooters gather into clusters.
             isStreetLevel = clusteringEnabled == false,
             usesServerClusters = parent.usesServerClusters,
@@ -774,8 +779,8 @@ class ScooterMarkerScene(
                 mark.metres = inputs.origin?.let { mark.scooter.distance(from = it) }
             }
         }
-        if (previous?.isDark != inputs.isDark) {
-            // The bays keep their colours; the clusters and the faded markers take the dark art.
+        if (previous?.isDark != inputs.isDark || previous?.balloons != inputs.balloons) {
+            // The clusters and the faded markers take the dark art, and the balloons their rim and the system's blue.
             markersVersion += 1
             lastSeenVersion += 1
         }

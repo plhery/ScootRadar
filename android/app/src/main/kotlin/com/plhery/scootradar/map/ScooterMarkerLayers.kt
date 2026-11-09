@@ -55,7 +55,9 @@ object MarkerFeatures {
         for (mark in scene.drawnMarks()) features += dot(mark, art)
         for (bay in scene.parking) {
             val isSelected = bay.id == scene.appliedParkingID
-            val key = ScooterMarkerArt.BayKey(bay.providerInfo, isSelected, scene.isDark)
+            // A provider's colour is the same with Increase Contrast: one picture serves both.
+            val look = if (bay.providerInfo == null) scene.balloons else scene.balloons.copy(highContrast = false)
+            val key = ScooterMarkerArt.BayKey(bay.providerInfo, isSelected, look)
             features += MarkerFeature(
                 id = "p:${bay.id}",
                 coordinate = bay.coordinate,
@@ -68,12 +70,12 @@ object MarkerFeatures {
         }
         for (cluster in clusters) features += cluster(cluster, scene.isDark, art, over = scene.parent.isOverview)
         scene.destination?.let { place ->
-            val isDark = scene.isDark
+            val look = scene.balloons
             features += MarkerFeature(
                 id = "a:${place.point.latitude}:${place.point.longitude}",
                 coordinate = place.point,
-                image = "address/${if (isDark) 1 else 0}",
-                picture = { art.addressImage(isDark) },
+                image = "address/${look.part}",
+                picture = { art.addressImage(look) },
                 // MKAnnotationViewZPriority's defaultUnselected (MAP-124, MAP-125).
                 sortKey = 500f,
             )

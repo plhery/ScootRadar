@@ -474,6 +474,13 @@ class ScooterMarkers(
         update()
     }
 
+    /** The appearance and Increase Contrast, which the balloons of the bays and the searched place follow. */
+    fun setBalloonLook(look: ScooterMarkerArt.BalloonLook) {
+        if (scene.balloons == look) return
+        scene.balloons = look
+        update()
+    }
+
     /** The chrome over the map, the panel's too: names keep clear of it, and wait while their dot is under it. */
     fun chromeDidChange(chrome: MapChrome) {
         if (chrome == this.chrome) return
