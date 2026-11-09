@@ -137,6 +137,23 @@ describe('last good answer', () => {
     expect(logged.mock.calls.map(([line]) => JSON.parse(line))).toEqual([{ event: 'scooter_origin_failure', status: 503, lastGoodAge: 0 }]);
   });
 
+  it('forwards a range minimum to the cache and keeps its answer apart from that of the same view without one', async () => {
+    const { entries, store, settled } = memory();
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => answer({ generatedAt: '2026-10-22T00:00:00Z' }));
+    const ranged = 'https://map.example/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13&minRange=4828';
+    await proxyScooterSnapshot(new Request(ranged), env, store);
+    await proxyScooterSnapshot(request(), env, store);
+    await settled();
+    expect(String(fetcher.mock.calls[0][0])).toBe('https://cache.example/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13&minRange=4828');
+    expect([...entries.keys()]).toEqual([
+      'https://map.example/api/scooters?east=4.9&minRange=4828&north=45.8&south=45.72&west=4.79&zoom=13',
+      'https://map.example/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13',
+    ]);
+    // One the cache could not take is refused here.
+    expect((await proxyScooterSnapshot(new Request(`${request().url}&minRange=5.5`), env, store)).status).toBe(400);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
   it('keeps the zones for a day, and gives them stale when the origin times out', async () => {
     const { store, settled } = memory();
     const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-10-22T00:00:00Z'));
