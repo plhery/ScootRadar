@@ -124,7 +124,7 @@ enum class FiltersState(
     ),
     NoProviders(entries = emptyList(), shown = 0),
     Finding(shown = null),
-    Range(detents = listOf(SheetDetent.Large), minimumRange = 5_000, shown = 14),
+    Range(detents = listOf(SheetDetent.Large), minimumRange = 5_000, units = ScooterUnits.Metric, shown = 14),
     RangeInMiles(detents = listOf(SheetDetent.Large), minimumRange = 4_828, units = ScooterUnits.Imperial, shown = 14),
     ;
 
