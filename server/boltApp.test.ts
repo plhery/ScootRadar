@@ -158,7 +158,15 @@ describe('Bolt map data', () => {
   it('refuses another market\'s answer, changed schemas and invalid positions, and keeps an empty market empty', () => {
     expect(parseBoltVehicles(map({ 25: [] }), system)).toEqual([]);
     expect(() => parseBoltVehicles(map({ 1: [vehicle(1, { vehicle_type: 'scooter_1' })] }), system)).toThrow('another market');
-    expect(() => parseBoltVehicles({ code: 503, data: { categories: [] } }, system)).toThrow('Invalid Bolt map response');
+    expect(() => parseBoltVehicles({ code: 503, data: { categories: [] } }, system))
+      .toThrow('Invalid Bolt map response (code 503, 0 categories)');
+    expect(() => parseBoltVehicles({ code: 1001, message: 'Service <b>unavailable</b>\nhere', data: {} }, system))
+      .toThrow('Invalid Bolt map response (code 1001, "Service b unavailable b here", no categories)');
+    expect(() => parseBoltVehicles({ code: 0, message: 'x'.repeat(300) }, system))
+      .toThrow(`Invalid Bolt map response (code 0, "${'x'.repeat(120)}", no data)`);
+    expect(() => parseBoltVehicles({ code: '0', data: { categories: Array(257).fill({}) } }, system))
+      .toThrow('Invalid Bolt map response (no code, 257 categories)');
+    expect(() => parseBoltVehicles([], system)).toThrow('Invalid Bolt map response (not an object)');
     expect(() => parseBoltVehicles({ code: 0, data: { categories: [{ id: 25 }] } }, system)).toThrow('Invalid Bolt vehicle category');
     expect(() => parseBoltVehicles(map({ 25: [{}] }), system)).toThrow('Invalid Bolt vehicle');
     expect(() => parseBoltVehicles(map({ 25: [vehicle(1, { location: { lat: NaN, lng: 24 } })] }), system)).toThrow('Invalid Bolt scooter');

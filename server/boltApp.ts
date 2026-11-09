@@ -192,6 +192,16 @@ export class BoltClient {
 }
 
 type BoltScooter = Vehicle & { vehicle_id: string };
+/** Bolt's own code and message, short and plain, so a refused map says what Bolt answered. */
+function boltAnswer(body: Record<string, unknown> | undefined, categories: unknown): string {
+  if (!body) return 'not an object';
+  const code = typeof body.code === 'number' && Number.isSafeInteger(body.code) ? `code ${body.code}` : 'no code';
+  const text = typeof body.message === 'string' ? body.message.replace(/[^\p{L}\p{N} .,:;'!?()_-]/gu, ' ')
+    .replace(/\s+/g, ' ').trim().slice(0, 120) : '';
+  const shape = Array.isArray(categories) ? `${categories.length} categories` :
+    body.data === undefined ? 'no data' : 'no categories';
+  return [code, text && `"${text}"`, shape].filter(Boolean).join(', ');
+}
 /**
  * The market's standing scooters inside the system's bounds. Each market has its own vehicle
  * categories, so one of the system's must answer, or the view landed in another market.
@@ -199,7 +209,9 @@ type BoltScooter = Vehicle & { vehicle_id: string };
 export function parseBoltVehicles(payload: unknown, system: RegionalScooterSystem): BoltScooter[] {
   const body = object(payload);
   const categories = object(body?.data)?.categories;
-  if (body?.code !== 0 || !Array.isArray(categories) || categories.length > 256) throw new Error('Invalid Bolt map response');
+  if (body?.code !== 0 || !Array.isArray(categories) || categories.length > 256) {
+    throw new Error(`Invalid Bolt map response (${boltAnswer(body, categories)})`);
+  }
   const known = new Set(system.boltAppCategories);
   let market = false;
   const vehicles = new Map<string, BoltScooter>();
