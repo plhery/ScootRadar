@@ -109,7 +109,7 @@ import com.plhery.scootradar.ui.marksSecondaryClicksEdge
 import com.plhery.scootradar.ui.primaryClicksOnly
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.SheetBackButton
-import com.plhery.scootradar.ui.sheet.SheetBarButton
+import com.plhery.scootradar.ui.sheet.SheetDoneButton
 import com.plhery.scootradar.ui.sheet.SheetTitleBar
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.ContentAtOnce
@@ -285,7 +285,7 @@ fun ScooterSettingsSheet(
                 SheetTitleBar(
                     title = page.title(),
                     leading = if (page != SettingsPage.Root) ({ SheetBackButton(onClick = pop) }) else null,
-                    trailing = if (page == SettingsPage.Root) ({ SheetBarButton(localized("Done"), onClick = onDone, color = scootColors.accent) }) else null,
+                    trailing = if (page == SettingsPage.Root) ({ SheetDoneButton(localized("Done"), onClick = onDone) }) else null,
                 )
             }
         }

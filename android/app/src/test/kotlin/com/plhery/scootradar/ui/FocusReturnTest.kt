@@ -160,8 +160,8 @@ class FocusReturnTest {
 
     private fun button(label: String) = compose.onNode(hasContentDescription(label) and hasClickAction())
 
-    /** Settings' Done, the word on a capsule of glass. */
-    private fun done() = compose.onNode(hasText(localized("Done")) and hasClickAction())
+    /** Settings' Done, a checkmark TalkBack reads by its label. */
+    private fun done() = button(localized("Done"))
 
     /** What closes a sheet or a popover from outside it: the dimmed map, or the room around the popover. */
     private fun outside() = button(localized("Close"))

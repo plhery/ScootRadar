@@ -28,6 +28,7 @@ import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.glass.glassEdge
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.Symbols
@@ -92,10 +93,7 @@ internal fun SheetTitleBar(
     }
 }
 
-/**
- * A text button of the toolbar, on a capsule of clear glass, as iOS 27 draws them: Filters' "Reset", and Settings'
- * "Done" in the app's blue (UI-089; screens/ui346/done_*).
- */
+/** A text button of the toolbar, on a capsule of glass: "Reset", or "Done". */
 @Composable
 internal fun SheetBarButton(
     title: String,
@@ -125,6 +123,31 @@ internal fun SheetBarButton(
             color = if (enabled) color else scootColors.tertiaryLabel,
             maxLines = 1,
         )
+    }
+}
+
+/**
+ * The toolbar's confirmation button, as iOS 26 draws "Done": a checkmark on a round of glass in the app's blue.
+ * TalkBack says its title. iOS 27 draws the word on clear glass instead; the app keeps iOS 26's look until the iPhone
+ * app is restyled for 27 (NEEDS-USER 12).
+ */
+@Composable
+internal fun SheetDoneButton(title: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier
+            .glassButton(
+                CircleShape,
+                glass = Modifier
+                    .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
+                    .background(scootColors.accent, CircleShape),
+                label = title,
+                focusRing = FocusRing(CircleShape, onTint = true),
+                onClick = onClick,
+            )
+            .size(44.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        FixedSymbol(Symbols.checkSystem, 17f, Color.White)
     }
 }
 
