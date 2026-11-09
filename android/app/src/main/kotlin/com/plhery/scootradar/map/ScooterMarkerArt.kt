@@ -453,13 +453,15 @@ class ScooterMarkerArt(
             val centre = anchor - shape.above.toFloat() + outer.toFloat()
             val tip = anchor - shape.dotGap.toFloat()
             val outline = balloon(x, centre, outer.toFloat(), tip)
+            // By night the rim lets the map through it, but not its own shadow (ui347): the shadow is cast by a clear
+            // paint, as the pills' is, and cleared under the rim. A white one would stay on the outline's soft edge,
+            // where CLEAR takes only part of a pixel, as a light ring round the balloon.
             val shadowed = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                color = Color.WHITE
+                color = if (isDark) Color.TRANSPARENT else Color.WHITE
                 setShadowLayer(shadowRadius(BAY_SHADOW_BLUR), 0f, 3f, Color.argb(0.3f, 0f, 0f, 0f))
             }
             drawPath(outline, shadowed)
             if (isDark) {
-                // By night the rim lets the map through it, but not its own shadow (ui347).
                 drawPath(outline, Paint(Paint.ANTI_ALIAS_FLAG).apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) })
                 drawPath(outline, Paint(Paint.ANTI_ALIAS_FLAG).apply { color = DARK_RIM })
             }

@@ -133,7 +133,7 @@ class ScooterMarkerImagesTest {
                     return crossed != null
                 }
                 loop@ for (dark in listOf(false, true)) {
-                    phone.onMain { markers.setDark(dark) }
+                    phone.onMain { markers.setLook(ScooterMarkers.Look(dark, ScooterMarkerArt.BalloonLook(dark, highContrast = false))) }
                     if (crosses("as dark is $dark")) break@loop
                     for (tenth in 150..166) {
                         phone.onMain { phone.map.moveCamera(CameraUpdateFactory.zoomTo(tenth / 10.0)) }

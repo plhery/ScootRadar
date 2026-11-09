@@ -182,6 +182,12 @@ fun ScooterMap(
         ScooterMapView(context, options).also { it.onCreate(null) }
     }
     val currentLook by rememberUpdatedState(look)
+    // With Increase Contrast, as the rest of the app follows it (ui.md UI-186, MAP-192).
+    val highContrast = scootColors.isContrastIncreased
+    // MapKit's balloons follow the appearance, not the satellite picture, and their blue follows Increase Contrast
+    // (ui347).
+    val markerLook = ScooterMarkers.Look(isDark = dark || look.satellite, balloons = ScooterMarkerArt.BalloonLook(dark, highContrast))
+    val currentMarkerLook by rememberUpdatedState(markerLook)
     var camera by remember { mutableStateOf<MapCamera?>(null) }
     var ground by remember { mutableStateOf<MapGround?>(null) }
     var markers by remember { mutableStateOf<ScooterMarkers?>(null) }
@@ -212,7 +218,7 @@ fun ScooterMap(
                 walking.mapDidRest(animated)
                 zoning.mapDidRest()
             }
-            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also {
+            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }, look = currentMarkerLook).also {
                 markers = it
                 view.markers = it
             }
@@ -242,17 +248,13 @@ fun ScooterMap(
     // Each update of the map by the screen, as SwiftUI's updateUIView: a screen at rest makes none (MAP-246).
     SideEffect { camera?.let { it.updates += 1 } }
     LaunchedEffect(ground, look) { ground?.show(look) }
-    LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
+    LaunchedEffect(markers, markerLook) { markers?.setLook(markerLook) }
     // The launch is fully drawn once the map shows its first markers, which the startup benchmark measures (X-AD30).
     ReportDrawnWhen { markers?.markersShown == true }
     LaunchedEffect(zones, dark, look.satellite) { zones?.setDark(dark || look.satellite) }
     LaunchedEffect(trail, dark, look.satellite) { trail?.setDark(dark || look.satellite) }
-    // The dot is the app's blue, whatever the ground.
-    // With Increase Contrast, as the rest of the app follows it (ui.md UI-186, MAP-192).
-    val highContrast = scootColors.isContrastIncreased
+    // The dot is the app's blue, whatever the ground, and Increase Contrast's.
     LaunchedEffect(rider, dark, highContrast) { rider?.setLook(RiderArt.Look(dark = dark, highContrast = highContrast)) }
-    // MapKit's balloons follow the appearance, not the satellite picture, and their blue Increase Contrast (ui347).
-    LaunchedEffect(markers, dark, highContrast) { markers?.setBalloonLook(ScooterMarkerArt.BalloonLook(dark, highContrast)) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
     val points = density.density.toDouble()

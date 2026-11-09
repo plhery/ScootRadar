@@ -66,7 +66,19 @@ class ScooterMarkers(
     move: (CameraMove) -> Unit,
     /** Whether the phone has its animations on, as Remove animations leaves them; a test may turn them off. */
     animates: () -> Boolean = { ValueAnimator.areAnimatorsEnabled() },
+    /** The look the first markers are drawn in, which the style may be loaded for before the screen hands it over. */
+    look: Look = Look.day,
 ) {
+    /**
+     * The markers' look: [isDark] for the dots, clusters and faded markers, dark over the satellite picture too, and
+     * [balloons] for the bays and the searched place, which follow the appearance and Increase Contrast (ui347).
+     */
+    data class Look(val isDark: Boolean, val balloons: ScooterMarkerArt.BalloonLook) {
+        companion object {
+            val day = Look(isDark = false, balloons = ScooterMarkerArt.BalloonLook(isDark = false, highContrast = false))
+        }
+    }
+
     private val projection = MapLibreProjection(map, view)
     val art = ScooterMarkerArt(view.pixelRatio, MarkerFonts.of(view.context), mapTextScale(view.context))
     val scene = ScooterMarkerScene(
@@ -398,6 +410,8 @@ class ScooterMarkers(
     private val rendererStarts = MapView.OnWillStartRenderingMapListener { writeClearancesAgain() }
 
     init {
+        scene.isDark = look.isDark
+        scene.balloons = look.balloons
         map.getStyle { loaded ->
             if (style != null) return@getStyle
             style = loaded
@@ -468,16 +482,11 @@ class ScooterMarkers(
     }
 
     /** Dark appearance, and the satellite picture in either appearance, which the dots are drawn for. */
-    fun setDark(dark: Boolean) {
-        if (scene.isDark == dark) return
-        scene.isDark = dark
-        update()
-    }
-
-    /** The appearance and Increase Contrast, which the balloons of the bays and the searched place follow. */
-    fun setBalloonLook(look: ScooterMarkerArt.BalloonLook) {
-        if (scene.balloons == look) return
-        scene.balloons = look
+    /** A new appearance, ground or Increase Contrast, in one write of the markers. */
+    fun setLook(look: Look) {
+        if (scene.isDark == look.isDark && scene.balloons == look.balloons) return
+        scene.isDark = look.isDark
+        scene.balloons = look.balloons
         update()
     }
 

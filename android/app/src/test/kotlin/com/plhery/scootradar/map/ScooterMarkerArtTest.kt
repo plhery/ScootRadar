@@ -61,9 +61,10 @@ class ScooterMarkerArtTest {
 
     /**
      * The balloon's disc goes evenly in sRGB from a lighter colour of its tint at its top to a darker one at its
-     * bottom, as the iOS 27 simulator draws them (ui346, ui347): the searched place's pin in the system's blue by
-     * day, by night and by night with Increase Contrast, and the bays of four providers, whose ends are the same in
-     * every look. A bay without a provider is drawn as the pin is, its P in the middle.
+     * bottom, as the iOS 27 simulator draws them (ui346, ui347): the searched place's pin in the system's blue in
+     * the four looks, and the bays of four providers, whose ends are the same in every look. A bay without a provider
+     * is drawn as the pin is, its P in the middle. The rule fits Increase Contrast's day blue worst, its top 5 levels
+     * of blue off (ui347), which its own tolerance allows.
      */
     @Test
     fun aBalloonIsLitAsMapKitsIs() {
@@ -72,6 +73,7 @@ class ScooterMarkerArtTest {
         val pins = listOf(
             look(isDark = false) to (0x6DA2FE to 0x006ED1),
             look(isDark = true) to (0x73AAFE to 0x0077D3),
+            look(isDark = false, highContrast = true) to (0x6089F9 to 0x1556C3),
             look(isDark = true, highContrast = true) to (0xA4D0FE to 0x009EEA),
         )
         val balloons = pins.flatMap { (look, ends) ->
@@ -106,7 +108,8 @@ class ScooterMarkerArtTest {
                     val bottom = ends.second shr shift and 0xFF
                     val expected = top + (bottom - top) * share
                     val drawn = pixel shr shift and 0xFF
-                    assertTrue("$name, $share down, channel $shift: $drawn against $expected", abs(drawn - expected) <= 2.5)
+                    val tolerance = if (name.endsWith(look(isDark = false, highContrast = true).toString())) 4.5 else 2.5
+                    assertTrue("$name, $share down, channel $shift: $drawn against $expected", abs(drawn - expected) <= tolerance)
                 }
             }
         }
@@ -114,7 +117,8 @@ class ScooterMarkerArtTest {
 
     /**
      * The rim is white by day, over any ground, and by night #222834 at 0.81, the map showing through it but not the
-     * balloon's own shadow (ui347), with Increase Contrast too.
+     * balloon's own shadow (ui347), with Increase Contrast too. It is read above the disc and at its side, where the
+     * shadow, cast 3 pt down, would show more.
      */
     @Test
     fun theRimIsWhiteByDayAndLetsTheMapThroughByNight() {
@@ -123,14 +127,51 @@ class ScooterMarkerArtTest {
         for (highContrast in listOf(false, true)) {
             for (isDark in listOf(false, true)) {
                 val balloon = art.addressImage(ScooterMarkerArt.BalloonLook(isDark, highContrast))
-                // The middle of the rim, straight above the disc.
-                val x = balloon.width / 2
-                val top = balloon.height / 3.0 / 2 - shape.above
-                val pixel = balloon.getPixel(x, ((top + shape.rim / 2) * 3).toInt())
-                val (alpha, colour) = if (isDark) 207 to 0x222834 else 255 to 0xFFFFFF
-                assertEquals("dark $isDark, IC $highContrast: alpha", alpha.toDouble(), (pixel ushr 24).toDouble(), 2.0)
-                for (shift in listOf(16, 8, 0)) {
-                    assertEquals("dark $isDark, IC $highContrast: channel $shift", (colour shr shift and 0xFF).toDouble(), (pixel shr shift and 0xFF).toDouble(), 2.0)
+                val x = balloon.width / 3.0 / 2
+                val centre = balloon.height / 3.0 / 2 - shape.above + shape.radius + shape.rim
+                val middle = shape.radius + shape.rim / 2
+                for ((place, point) in listOf("above" to (x to centre - middle), "beside" to (x - middle to centre))) {
+                    val pixel = balloon.getPixel((point.first * 3).toInt(), (point.second * 3).toInt())
+                    val (alpha, colour) = if (isDark) 207 to 0x222834 else 255 to 0xFFFFFF
+                    val named = "dark $isDark, IC $highContrast, $place"
+                    assertEquals("$named: alpha", alpha.toDouble(), (pixel ushr 24).toDouble(), 2.0)
+                    for (shift in listOf(16, 8, 0)) {
+                        assertEquals("$named: channel $shift", (colour shr shift and 0xFF).toDouble(), (pixel shr shift and 0xFF).toDouble(), 2.0)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * By night nothing round the disc is lighter than the rim: the rim's soft outer edge keeps no white from under it,
+     * which would ring the balloon with a light line over the dark map (review-app-bk). The shadow beyond it is black.
+     */
+    @Test
+    fun theNightRimHasNoLightEdge() {
+        val art = art()
+        val rest = ScooterMarkerArt.BayShape.rest
+        val balloons = listOf(
+            "the pin" to art.addressImage(ScooterMarkerArt.BalloonLook(isDark = true, highContrast = false)),
+            "voi's bay" to art.bayImage(ScooterMarkerArt.BayKey(ScooterProvider.fromRawValue("voi"), isSelected = false, look = ScooterMarkerArt.BalloonLook(isDark = true, highContrast = false))),
+            "voi's bay, selected" to art.bayImage(ScooterMarkerArt.BayKey(ScooterProvider.fromRawValue("voi"), isSelected = true, look = ScooterMarkerArt.BalloonLook(isDark = true, highContrast = false))),
+        )
+        for ((name, balloon) in balloons) {
+            val shape = if (name.endsWith("selected")) ScooterMarkerArt.BayShape.selected else rest
+            val x = balloon.width / 3.0 / 2
+            val centre = balloon.height / 3.0 / 2 - shape.above + shape.radius + shape.rim
+            // The selected bay's own dot, a gap under its point, is the provider's colour.
+            val dotTop = balloon.height / 3.0 / 2 - shape.dotGap + 1
+            for (py in 0 until balloon.height) {
+                for (px in 0 until balloon.width) {
+                    val (cx, cy) = (px + 0.5) / 3 to (py + 0.5) / 3
+                    if (Math.hypot(cx - x, cy - centre) <= shape.radius + 0.5 || (shape.dotGap > 0 && cy >= dotTop)) continue
+                    val pixel = balloon.getPixel(px, py)
+                    if (pixel ushr 24 == 0) continue
+                    for (shift in listOf(16, 8, 0)) {
+                        val over = (pixel shr shift and 0xFF) - (0x222834 shr shift and 0xFF)
+                        assertTrue("$name at ($px, $py), channel $shift: ${(pixel shr shift and 0xFF)}", over <= 3)
+                    }
                 }
             }
         }

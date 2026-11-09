@@ -779,11 +779,10 @@ class ScooterMarkerScene(
                 mark.metres = inputs.origin?.let { mark.scooter.distance(from = it) }
             }
         }
-        if (previous?.isDark != inputs.isDark || previous?.balloons != inputs.balloons) {
-            // The clusters and the faded markers take the dark art, and the balloons their rim and the system's blue.
-            markersVersion += 1
-            lastSeenVersion += 1
-        }
+        // The clusters and the faded markers take the dark art, and the balloons, which only the markers' source
+        // carries, their rim and the system's blue.
+        if (previous?.isDark != inputs.isDark || previous?.balloons != inputs.balloons) markersVersion += 1
+        if (previous?.isDark != inputs.isDark) lastSeenVersion += 1
 
         // A name needs single scooters to stand beside and an origin to be near.
         val heads = if (inputs.isStreetLevel) {

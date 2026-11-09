@@ -4,6 +4,7 @@ import androidx.compose.animation.core.CubicBezierEasing
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
@@ -94,6 +95,36 @@ class ScooterMarkerSceneTest {
         assertTrue(distance <= mark.look.footprint / 2 + 4)
         // Below the bay's point there is no balloon.
         assertNull(scene.parking(ScreenPoint(195.0, 402.0), map))
+    }
+
+    /**
+     * The balloons take the scene's look in one write of the markers' source: the searched place's pin with Increase
+     * Contrast, a provider's bay without it, as its colour doesn't change (ui347). The faded markers, which have no
+     * balloon, are written again for the dark art alone.
+     */
+    @Test
+    fun theBalloonsFollowTheLook() {
+        val bayPlace = map.at(195.0, 400.0)
+        scene.reconcileParking(listOf(ScooterParking("voi:bay", "voi", "Bahnhofplatz", bayPlace.latitude, bayPlace.longitude, mandatory = false)))
+        scene.applyDestination(MapDestination(title = "Zürich HB", point = map.at(195.0, 300.0)))
+        scene.updateLook(map)
+        fun images() = MarkerFeatures.markers(scene, art).map { it.image }.toSet()
+        assertEquals(setOf("bay/voi/0/0/0", "address/0/0"), images())
+        val markers = scene.markersVersion
+        val lastSeen = scene.lastSeenVersion
+
+        scene.balloons = ScooterMarkerArt.BalloonLook(isDark = false, highContrast = true)
+        scene.updateLook(map)
+        assertEquals(markers + 1, scene.markersVersion)
+        assertEquals(lastSeen, scene.lastSeenVersion)
+        assertEquals(setOf("bay/voi/0/0/0", "address/0/1"), images())
+
+        scene.isDark = true
+        scene.balloons = ScooterMarkerArt.BalloonLook(isDark = true, highContrast = true)
+        scene.updateLook(map)
+        assertEquals(markers + 2, scene.markersVersion)
+        assertEquals(lastSeen + 1, scene.lastSeenVersion)
+        assertEquals(setOf("bay/voi/0/1/0", "address/1/1"), images())
     }
 
     @Test
