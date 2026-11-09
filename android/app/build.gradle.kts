@@ -20,9 +20,9 @@ android {
         applicationId = "com.plhery.scootradar"
         minSdk = 31
         targetSdk = 37
-        versionCode = 6
+        versionCode = 7
         // The iPhone app's version (MARKETING_VERSION); versionCode goes up by one with each upload to Play.
-        versionName = "1.3.0"
+        versionName = "1.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
