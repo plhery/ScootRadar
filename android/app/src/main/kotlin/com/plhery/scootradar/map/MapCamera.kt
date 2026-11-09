@@ -205,8 +205,12 @@ class MapCamera(
      * twice as wide as a wide map (MAP-301).
      */
     private fun holdZoom() {
+        val least = MapZoom.minimum(projection.bounds.width)
         map.setMaxZoomPreference(MapZoom.maximum)
-        map.setMinZoomPreference(MapZoom.minimum(projection.bounds.width))
+        map.setMinZoomPreference(least)
+        // MapLibre raises a camera the new limit leaves below it in its native map alone, and reports the zoom it had
+        // until a frame is drawn, which the memory would keep: a move of the camera's own brings both there.
+        if (map.cameraPosition.zoom < least) jump(CameraPosition.Builder(map.cameraPosition).zoom(least).build())
     }
 
     /**
@@ -605,8 +609,10 @@ class MapCamera(
     /** Moves the camera, in MapKit's time and curve, or at once where it is asked to or the phone has animations off. */
     private fun animate(to: CameraPosition, animated: Boolean = true) {
         stopMotion()
-        // A tilt the camera can't keep where it lands is the most it can (MAP-322).
-        val target = CameraPosition.Builder(to).tilt(min(to.tilt, MapZoom.mostTilt(to.zoom))).build()
+        // A zoom past the map's limits is the limit, a wide map's own furthest too, and a tilt the camera can't keep
+        // where it lands is the most it can (MAP-301, MAP-322).
+        val zoom = to.zoom.coerceIn(MapZoom.minimum(projection.bounds.width), MapZoom.maximum)
+        val target = CameraPosition.Builder(to).zoom(zoom).tilt(min(to.tilt, MapZoom.mostTilt(zoom))).build()
         if (!animated || !animationsOn()) {
             jump(target)
             regionDidChange(animated = false)

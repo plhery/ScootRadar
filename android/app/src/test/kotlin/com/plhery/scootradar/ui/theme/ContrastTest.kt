@@ -5,9 +5,11 @@ import android.os.Build
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.map.RiderArt
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -110,6 +112,15 @@ class ContrastTest {
         // Without it, the two are systemBlue.
         assertEquals(listOf(Color(0xFF0088FF), Color(0xFF0088FF)), listOf(ScootColors.Light.accent, ScootColors.Light.accentColor))
         assertEquals(listOf(Color(0xFF0091FF), Color(0xFF0091FF)), listOf(ScootColors.Dark.accent, ScootColors.Dark.accentColor))
+        // The rider's beam keeps its own copy of the four, which follows the app's.
+        val rider = RiderArt(density = 1f)
+        for (dark in listOf(false, true)) {
+            for (highContrast in listOf(false, true)) {
+                val base = if (dark) ScootColors.Dark else ScootColors.Light
+                val colors = if (highContrast) base.withIncreasedContrast() else base
+                assertEquals(colors.accent.toArgb(), rider.blue(RiderArt.Look(dark, highContrast)))
+            }
+        }
     }
 
     /** A sheet's raised level, in the dark, keeps the higher contrast's backgrounds. */

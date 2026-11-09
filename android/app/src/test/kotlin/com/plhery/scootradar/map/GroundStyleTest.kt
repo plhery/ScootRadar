@@ -106,6 +106,27 @@ class GroundStyleTest {
         )
     }
 
+    /**
+     * The places the data names, as the web's detailed ground shows them (quietGround.ts, MAP-298, NEEDS-USER 8):
+     * from its 17, the stations left to their own layer, the best ranked first, in its small regular text.
+     */
+    @Test
+    fun placesAreNamedAsTheWebsDetailedGroundNamesThem() {
+        val poi = GroundStyle.layers(calmDay.copy(detail = GroundDetail.Detailed)).single { it.id == "poi" }
+        assertTrue(poi.visible)
+        assertEquals(16.0, poi.json["minzoom"]!!.jsonPrimitive.double, 0.0)
+        assertEquals(
+            Json.parseToJsonElement("""["!",["all",["==",["get","class"],"railway"],["==",["get","subclass"],"station"]]]"""),
+            poi.filter,
+        )
+        assertEquals(Json.parseToJsonElement("""["coalesce",["get","rank"],99]"""), poi.layout["symbol-sort-key"])
+        assertEquals(10.5, poi.layout["text-size"]!!.jsonPrimitive.double, 0.0)
+        assertEquals(Json.parseToJsonElement("""["Noto Sans Regular"]"""), poi.layout["text-font"])
+        assertEquals(14 * 0.55, poi.layout["text-max-width"]!!.jsonPrimitive.double, 1e-9)
+        // Only in the detailed ground.
+        assertFalse(GroundStyle.layers(calmDay).single { it.id == "poi" }.visible)
+    }
+
     @Test
     fun theLargerNamesAreOnTopAsTheWebPlacesThemFirst() {
         val names = GroundStyle.layers(calmDay).filter { it.type == "symbol" }.map { it.id }

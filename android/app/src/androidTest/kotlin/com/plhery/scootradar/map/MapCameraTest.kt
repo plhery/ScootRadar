@@ -71,27 +71,34 @@ class MapCameraTest {
 
     /** As close as MapKit's camera goes and as far out as its pinch, which keeps the world twice a wide map's width (MAP-301). */
     @Test
-    fun theMapGoesAsCloseAndAsFarOutAsMapKitsDoes() = withCamera { phone, _ ->
-        phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.zoomTo(22.0))
-            assertEquals(MapZoom.maximum, phone.map.cameraPosition.zoom, 1e-9)
-            phone.map.moveCamera(CameraUpdateFactory.zoomTo(0.0))
-            assertEquals(MapZoom.minimum, phone.map.cameraPosition.zoom, 1e-9)
-        }
-        // As wide as an iPad's map across.
-        phone.resize(1376, 1032)
-        settle()
-        phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.zoomTo(0.0))
-            assertEquals(MapZoom.minimum(1376.0), phone.map.cameraPosition.zoom, 1e-9)
-            assertEquals(2.426, phone.map.cameraPosition.zoom, 0.001)
-        }
-        // A phone's width again.
-        phone.resize(390, 844)
-        settle()
-        phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.zoomTo(0.0))
-            assertEquals(MapZoom.minimum, phone.map.cameraPosition.zoom, 1e-9)
+    fun theMapGoesAsCloseAndAsFarOutAsMapKitsDoes() {
+        val memory = MapCameraMemory()
+        withCamera(memory) { phone, _ ->
+            phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.zoomTo(22.0))
+                assertEquals(MapZoom.maximum, phone.map.cameraPosition.zoom, 1e-9)
+                phone.map.moveCamera(CameraUpdateFactory.zoomTo(0.0))
+                assertEquals(MapZoom.minimum, phone.map.cameraPosition.zoom, 1e-9)
+            }
+            settle()
+            // As wide as an iPad's map across: the map out as far as it went is brought in to the new limit, and the
+            // camera, as the memory, says so before anything else moves it.
+            phone.resize(1376, 1032)
+            settle()
+            phone.onMain {
+                assertEquals(MapZoom.minimum(1376.0), phone.map.cameraPosition.zoom, 1e-9)
+                assertEquals(MapZoom.minimum(1376.0), memory.position!!.zoom, 1e-9)
+                phone.map.moveCamera(CameraUpdateFactory.zoomTo(0.0))
+                assertEquals(MapZoom.minimum(1376.0), phone.map.cameraPosition.zoom, 1e-9)
+                assertEquals(2.426, phone.map.cameraPosition.zoom, 0.001)
+            }
+            // A phone's width again.
+            phone.resize(390, 844)
+            settle()
+            phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.zoomTo(0.0))
+                assertEquals(MapZoom.minimum, phone.map.cameraPosition.zoom, 1e-9)
+            }
         }
     }
 
@@ -192,7 +199,17 @@ class MapCameraTest {
         phone.onMain {
             assertEquals(14.0, phone.map.cameraPosition.zoom, 1e-6)
             assertEquals(35.0, phone.map.cameraPosition.tilt, 1e-6)
+            // MapKit's edge is at MapLibre's 15 at every latitude: 60° there, 35° just out of it.
+            phone.map.moveCamera(CameraUpdateFactory.zoomTo(15.0))
         }
+        settle()
+        phone.onMain {
+            phone.map.moveCamera(CameraUpdateFactory.tiltTo(85.0))
+            assertEquals(60.0, phone.map.cameraPosition.tilt, 1e-6)
+            phone.map.moveCamera(CameraUpdateFactory.zoomTo(14.99))
+        }
+        settle()
+        phone.onMain { assertEquals(35.0, phone.map.cameraPosition.tilt, 1e-6) }
     }
 
     @Test
@@ -350,12 +367,12 @@ class MapCameraTest {
     }
 
     /** The camera of a phone's map opened on Zürich, tilted as the app opens it. */
-    private fun withCamera(test: (PhoneMap, MapCamera) -> Unit) = withPhoneMap { phone ->
+    private fun withCamera(memory: MapCameraMemory = MapCameraMemory(), test: (PhoneMap, MapCamera) -> Unit) = withPhoneMap { phone ->
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val camera = phone.onMain {
             phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
-            MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames)
+            MapCamera(phone.map, phone.view, testController(scope), memory, frames)
         }
         settle()
         try {
