@@ -603,12 +603,12 @@ final class ScooterFilteringTests: XCTestCase {
     @MainActor
     func testProviderInitialsAreWrittenInTheInkOfTheirColour() {
         let white = UIColor.white
-        // White on the darker colours, near black on the bright ones.
-        for provider in [ScooterProvider.publibike, .ride_mobility, .yoio, .jet] {
+        // White on the darker colours, Bolt's deep green among them since issue #13, near black on the bright ones.
+        for provider in [ScooterProvider.publibike, .ride_mobility, .yoio, .jet, .bolt] {
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
         }
-        for provider in [ScooterProvider.lime, .bolt, .voi, .dott, .hopp] {
+        for provider in [ScooterProvider.lime, .voi, .dott, .hopp] {
             XCTAssertNotEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
             XCTAssertNotEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
         }
