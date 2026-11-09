@@ -1638,7 +1638,7 @@ private struct ScooterCard: View {
                             result: scooter.rentalURL == nil ? "app" : nil
                         )
                         Task {
-                            if await model.openRental(scooter) == nil { failedOpens += 1 }
+                            if await scooter.openRental() == nil { failedOpens += 1 }
                         }
                     } label: {
                         Label(

@@ -1,19 +1,17 @@
 import Foundation
 
 /// When the app asks for a rating with the system's prompt, which StoreKit shows at most three times a year and
-/// never in TestFlight: when the rider is back from the operator's app 5 minutes to 2 hours after "Open in", the end
-/// of a ride, and the map shows a healthy feed. Only from the third day with a fresh feed, once per version of the
-/// app, a month after the last ask at the soonest, and never on a day the feed or the rider's place had a problem.
-/// The days are counted on this device, in its time zone.
+/// never in TestFlight: when the map shows a fresh feed and rests, with nothing over it and no touch, never from a
+/// button. Only from the third day with a fresh feed, as a rider still using the app then likes it (riders seldom
+/// come back to the app after a ride, so the end of one no longer counts), once per version of the app, a month
+/// after the last ask at the soonest, and never on a day the feed or the rider's place had a problem. The days are
+/// counted on this device, in its time zone.
 struct ScooterReviewPrompt {
     /// Days with a fresh feed before the first ask.
     static let days = 3
     /// Days from one ask to the next, whatever the version.
     static let gap = 30
-    /// How long after "Open in" a return is the end of a ride: sooner, the rental mostly did not happen; later, it
-    /// is another trip.
-    static let rentalReturn: ClosedRange<TimeInterval> = 5 * 60 ... 2 * 3_600
-    /// How long the map rests with nothing over it before the ask.
+    /// How long the map rests with nothing over it and no touch before the ask.
     static let settle: Duration = .seconds(5)
 
     let defaults: UserDefaults
@@ -31,7 +29,6 @@ struct ScooterReviewPrompt {
     private static let badDayKey = "review-bad-day"
     private static let askedKey = "review-asked-version"
     private static let askedDayKey = "review-asked-day"
-    private static let rentalOpenedKey = "review-rental-opened-at"
 
     /// A fresh feed at `date`: its calendar day counts as a day with use, once.
     func noteUse(at date: Date) {
@@ -64,19 +61,6 @@ struct ScooterReviewPrompt {
     func asked(at date: Date) {
         defaults.set(version, forKey: Self.askedKey)
         defaults.set(day(of: date), forKey: Self.askedDayKey)
-    }
-
-    /// "Open in" took the rider to the operator's app at `date`. Kept on disk: iOS may close the app meanwhile.
-    func noteRentalOpened(at date: Date) {
-        defaults.set(date, forKey: Self.rentalOpenedKey)
-    }
-
-    /// The app is in front again at `date`: true when this is the end of a ride, 5 minutes to 2 hours after
-    /// "Open in". Each return is one try, so the time of the tap goes, whatever the answer.
-    func takeRentalReturn(at date: Date) -> Bool {
-        guard let opened = defaults.object(forKey: Self.rentalOpenedKey) as? Date else { return false }
-        defaults.removeObject(forKey: Self.rentalOpenedKey)
-        return Self.rentalReturn.contains(date.timeIntervalSince(opened))
     }
 
     /// The calendar day of `date` in the rider's time zone, as days since 1970.

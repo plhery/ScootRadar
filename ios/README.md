@@ -200,18 +200,20 @@ and About: **Send feedback**, a mail to hello@scootradar.com whose subject names
 the version, shown under it; map and data credits, Privacy with the usage switch
 and the privacy notice, and the source code on GitHub.
 
-**Rating.** The app asks for a rating only with Apple's prompt, and only when a
-rider is back from the operator's app 5 minutes to 2 hours after **Open in**
-opened it or the scooter's page, not its App Store page:
-once the refresh shows a fresh feed, after 5 seconds on the map with nothing
-over it (no card in the dock or the panel, no search, sheet, popover or
-location card). It asks from the third day
-with a fresh feed, once per version and 30 days apart at the soonest, and never
-on a day a load failed, the data was delayed, every provider in view was down or
-the rider was outside the area any operator covers
-(`Models/ScooterReviewPrompt.swift`). iOS shows the prompt at most three times a
-year, and never in TestFlight. A Debug build launched with `-ReviewPromptDue YES`
-asks on the first fresh feed, so a simulator shows the prompt.
+**Rating.** The app asks for a rating only with Apple's prompt, and only at a
+calm moment on the map: once a load shows a fresh feed, after 5 seconds with
+nothing over the map (no card in the dock or the panel, no search, sheet,
+popover or location card) and no touch, never from a button. A touch ends the
+wait, and the next fresh load starts another. It asks from the third day
+with a fresh feed, as a rider still using the app then likes it, once per
+version and 30 days apart at the soonest, and never on a day a load failed, the
+data was delayed, every provider in view was down or the rider was outside the
+area any operator covers (`Models/ScooterReviewPrompt.swift`). Up to 1.4.0 it
+asked only when the rider came back from the operator's app 5 minutes to 2 hours
+after **Open in**, which riders seldom did. iOS shows the prompt at most three
+times a year, and never in TestFlight. A Debug build launched with
+`-ReviewPromptDue YES` asks at every calm moment, the first fresh feed's too, so
+a simulator shows the prompt.
 
 The app is translated into English, German, French, Italian, Dutch, Norwegian,
 Portuguese, Spanish and Icelandic, and starts in the first of the iPhone's

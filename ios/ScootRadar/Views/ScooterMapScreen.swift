@@ -171,17 +171,18 @@ struct ScooterMapScreen: View {
             scooter: model.selectedScooterID,
             bay: model.selectedParkingID
         )) {
-            // A return from a ride that is the moment to ask for a rating
-            // (ScooterReviewPrompt): after the map has rested a few seconds
-            // with nothing over it, never from a button. Anything over the
-            // map or changing on it before then ends this try.
+            // A calm map that is the moment to ask for a rating
+            // (ScooterReviewPrompt): after it has rested a few seconds with
+            // nothing over it and no touch, never from a button. Anything over
+            // the map, changing on it or a touch before then ends this try,
+            // and the next fresh load brings another.
             guard model.reviewDue else { return }
             guard nothingOverTheMap else { return model.dropReviewMoment() }
             try? await Task.sleep(for: ScooterReviewPrompt.settle)
             guard !Task.isCancelled else { return model.dropReviewMoment() }
             guard model.takeReviewMoment() else { return }
             requestReview()
-            ScooterAnalytics.shared.track("review_ask", result: "rental_return")
+            ScooterAnalytics.shared.track("review_ask", result: "calm_map")
         }
         .sheet(isPresented: filtersSheetPresented) {
             ScooterFilterSheet(model: model)

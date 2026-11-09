@@ -366,8 +366,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var locationAccuracy: CLLocationAccuracy = 0
     /// Says when to ask for a rating (ScooterReviewPrompt).
     @ObservationIgnored private var reviewPrompt: ScooterReviewPrompt
-    /// The rider is back from a ride: the load that follows says whether this is the moment to ask.
-    @ObservationIgnored private var awaitsReviewLoad = false
     // What the data on the map was requested for. Observed, because the dock
     // only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds?
@@ -507,9 +505,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         #if DEBUG
         // A screenshot's camera stays where it was set when the rider is located.
         keepsMapOnFirstFix = defaults.string(forKey: "ScreenshotCamera") != nil
-        // The first fresh feed is a return from a ride, and the moment to ask.
+        // Every calm map with a fresh feed is the moment to ask, the first one too.
         reviewPrompt.alwaysDue = defaults.bool(forKey: "ReviewPromptDue")
-        awaitsReviewLoad = reviewPrompt.alwaysDue
         #endif
 
         let savedBattery = defaults.object(forKey: Self.minimumBatteryKey) as? Int ?? 0
@@ -1086,8 +1083,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func start() {
         guard !hasStarted else { return }
         hasStarted = true
-        // iOS may have closed the app during the ride.
-        noteReturnFromRide()
 
         switch locationManager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
@@ -1113,13 +1108,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         isPausedForIdle = false
         if hasStarted { startHeadingUpdates() }
         expireParkingIfNeeded()
-        noteReturnFromRide()
         // Back in the foreground a due refresh starts at once. The old data
         // stays on the map until the outcome is known.
         refreshIfDue(respectingAttemptGap: false)
-        // Data not due for a refresh is as fresh as one would make it. Before
-        // the first load, as while the first fix is found, that load decides.
-        if awaitsReviewLoad, fetchTask == nil, lastSuccessAt != nil { reviewAfterLoad() }
+        // Data not due for a refresh is as fresh as one would make it, and the
+        // map may be the moment to ask for a rating. Before the first load, as
+        // while the first fix is found, that load decides.
+        if fetchTask == nil, lastSuccessAt != nil { reviewAfterLoad() }
     }
 
     func becameInactive() {
@@ -1128,7 +1123,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         refreshTimerTask?.cancel()
         refreshTimerTask = nil
         // A moment to ask for a rating ends when the rider leaves.
-        awaitsReviewLoad = false
         reviewDue = false
     }
 
@@ -1211,6 +1205,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// if its data is due, and the automatic refreshes start again.
     func noteInteraction() {
         lastInteractionAt = clock()
+        // The ask for a rating waits for a map nobody touches: the next fresh
+        // load is the next moment.
+        reviewDue = false
         guard isPausedForIdle else { return }
         isPausedForIdle = false
         refreshIfDue(respectingAttemptGap: false)
@@ -2642,25 +2639,6 @@ extension ScooterMapModel {
 // MARK: - Rating
 
 extension ScooterMapModel {
-    /// "Open in" (Scooter.openRental). Only the scooter or the operator's app opening is noted for the rating, at
-    /// the tap, as the open may complete only once the app is in the background: not the App Store page, where the
-    /// app is still to install, nor a tap that opened nothing.
-    @discardableResult
-    func openRental(
-        _ scooter: Scooter,
-        using open: @MainActor (URL, _ appOnly: Bool) async -> Bool = Scooter.openURL
-    ) async -> ScooterRentalOpening? {
-        let tappedAt = clock()
-        let opened = await scooter.openRental(using: open)
-        if opened?.mayLeadToARide == true { reviewPrompt.noteRentalOpened(at: tappedAt) }
-        return opened
-    }
-
-    /// "Open in" took the rider to the operator's app: the return from the ride may be the moment to ask for a rating.
-    func rentalOpened() {
-        reviewPrompt.noteRentalOpened(at: clock())
-    }
-
     /// The screen asks for a rating now, once the map has rested since the moment came: true once, while the map is
     /// still calm and nothing went wrong meanwhile.
     func takeReviewMoment() -> Bool {
@@ -2672,25 +2650,20 @@ extension ScooterMapModel {
         return true
     }
 
-    /// Something went over the map, or changed on it, before the wait was over: this return asks no more.
+    /// Something went over the map, or changed on it, before the wait was over: this moment asks no more, and the
+    /// next fresh load is the next one.
     func dropReviewMoment() {
         reviewDue = false
     }
 
-    /// Back in front: a return 5 minutes to 2 hours after "Open in" waits for the next load.
-    private func noteReturnFromRide() {
-        if reviewPrompt.takeRentalReturn(at: clock()) { awaitsReviewLoad = true }
-    }
-
-    /// After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A return from a
-    /// ride that waited for this load is the moment to ask when the map is calm.
+    /// After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A calm map in
+    /// front, from the third day with a fresh feed, is then the moment to ask, once the screen has seen it rest; a
+    /// moment already waiting goes on waiting.
     private func reviewAfterLoad() {
         let now = clock()
         if loadIssue == nil, responseMetadata?.stale != true { reviewPrompt.noteUse(at: now) }
         if reviewTrouble { reviewPrompt.noteBadMoment(at: now) }
-        guard awaitsReviewLoad else { return }
-        awaitsReviewLoad = false
-        guard reviewPrompt.isDue(at: now, calm: reviewCalm) else { return }
+        guard isSceneActive, !reviewDue, reviewPrompt.isDue(at: now, calm: reviewCalm) else { return }
         reviewDue = true
         reviewMoments += 1
     }

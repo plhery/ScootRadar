@@ -5585,111 +5585,122 @@ private struct HingedScreen: View {
     }
 }
 
-// Asking for a rating when the rider is back from a ride.
+// Asking for a rating at a calm map, from the third day with a fresh feed (ctl-1841: riders seldom come back to the
+// app after a ride, and one still using it on the third day likes it).
 extension ScooterMapModelTests {
-    func testAReturnFromARideIsTheMomentOnceTheMapIsCalmWithAFreshFeed() async throws {
+    func testACalmMapWithAFreshFeedIsTheMomentFromTheThirdDay() async throws {
         let clock = TestClock()
+        let (second, _) = await reviewModel(clock: clock, earlierDays: 1)
+        XCTAssertEqual(second.reviewMoments, 0, "Not on the second day")
+        XCTAssertFalse(second.reviewDue)
+
+        // The third day's first fresh feed, on a map at rest: no ride to be back from.
         let (model, api) = await reviewModel(clock: clock)
-
-        // Back within minutes: the rental mostly did not happen.
-        await returnFromRide(model, api, after: 2 * 60, clock: clock)
-        XCTAssertEqual(model.reviewMoments, 0)
-
-        // Back to the card of a scooter still on the map: the rider is choosing.
-        let id = try XCTUnwrap(model.mapScooters.first?.id)
-        model.selectScooter(id)
-        await returnFromRide(model, api, after: 20 * 60, clock: clock)
-        XCTAssertEqual(model.reviewMoments, 0)
-
-        // That return was its one try; the next ride's return, to the map at rest, is the moment.
-        model.clearSelection()
-        await returnFromRide(model, api, after: 20 * 60, clock: clock)
         XCTAssertEqual(model.reviewMoments, 1)
         XCTAssertTrue(model.reviewDue)
+
+        // Loads while the screen waits leave its wait as it is.
+        await reload(model, api)
+        XCTAssertEqual(model.reviewMoments, 1)
         XCTAssertTrue(model.takeReviewMoment())
         XCTAssertFalse(model.takeReviewMoment())
 
         // This version asked.
-        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        await reload(model, api)
         XCTAssertEqual(model.reviewMoments, 1)
+        XCTAssertFalse(model.reviewDue)
     }
 
-    func testOnlyAnOpenInThatReachedTheScooterOrTheOperatorsAppIsARideToAskAfter() async {
+    func testATouchEndsTheWaitAndTheNextCalmLoadIsTheNextMoment() async throws {
         let clock = TestClock()
         let (model, api) = await reviewModel(clock: clock)
-        // Bolt's feed gives only links in Bolt's own scheme.
-        let link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
-        let bolt = scooter(id: "bolt-1", provider: "bolt", rentalURIs: ScooterRentalURIs(ios: link, android: link, web: nil))
+        model.noteInteraction()
+        XCTAssertFalse(model.reviewDue)
+        XCTAssertFalse(model.takeReviewMoment())
 
-        // Without Bolt's app nothing takes its link, and its App Store page opens: no ride to be back from.
-        let store = await model.openRental(bolt) { url, _ in url.host == "apps.apple.com" }
-        XCTAssertEqual(store, .store(URL(string: "https://apps.apple.com/app/id675033630")!))
-        await returnFromRide(model, api, after: 20 * 60, clock: clock, openIn: false)
-        XCTAssertEqual(model.reviewMoments, 0)
-
-        // Nor when nothing opened at all.
-        let nothing = await model.openRental(bolt) { _, _ in false }
-        XCTAssertNil(nothing)
-        await returnFromRide(model, api, after: 20 * 60, clock: clock, openIn: false)
-        XCTAssertEqual(model.reviewMoments, 0)
-
-        // With the app, the scooter opens in it as before, and the return from the ride is the moment.
-        let opened = await model.openRental(bolt) { url, _ in url.scheme == "bolt" }
-        XCTAssertEqual(opened, .link(URL(string: link)!))
-        await returnFromRide(model, api, after: 20 * 60, clock: clock, openIn: false)
+        // A scooter's card on the map: the rider is choosing.
+        let id = try XCTUnwrap(model.mapScooters.first?.id)
+        model.selectScooter(id)
+        await reload(model, api)
         XCTAssertEqual(model.reviewMoments, 1)
+        XCTAssertFalse(model.reviewDue)
+
+        model.clearSelection()
+        await reload(model, api)
+        XCTAssertEqual(model.reviewMoments, 2)
+        XCTAssertTrue(model.takeReviewMoment())
     }
 
-    func testAFailedRefreshKeepsTheRestOfTheDayFromAsking() async throws {
+    func testAFailedRefreshKeepsTheRestOfTheDayFromAsking() async {
         let clock = TestClock()
         let (model, api) = await reviewModel(clock: clock)
+        model.noteInteraction()
 
         await api.setFailure(.offline)
-        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        await reload(model, api)
         XCTAssertNotNil(model.loadIssue)
-        XCTAssertEqual(model.reviewMoments, 0)
+        XCTAssertFalse(model.reviewDue)
 
         // Back online later that day: still no ask.
         await api.setFailure(nil)
-        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        clock.advance(3_600)
+        await reload(model, api)
         XCTAssertNil(model.loadIssue)
-        XCTAssertEqual(model.reviewMoments, 0)
-
-        // The next day, a calm return asks.
-        clock.advance(86_400)
-        await returnFromRide(model, api, after: 20 * 60, clock: clock)
         XCTAssertEqual(model.reviewMoments, 1)
+
+        // The next day, a calm map asks.
+        clock.advance(86_400)
+        await reload(model, api)
+        XCTAssertEqual(model.reviewMoments, 2)
+        XCTAssertTrue(model.reviewDue)
     }
 
-    /// A model with a fresh feed on the map and two earlier days with one: the third day.
-    private func reviewModel(clock: TestClock) async -> (ScooterMapModel, StubScooterAPI) {
+    func testLeavingEndsTheMomentAndFreshDataOnTheReturnIsTheNext() async {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+        model.becameInactive()
+        XCTAssertFalse(model.reviewDue)
+        XCTAssertFalse(model.takeReviewMoment())
+
+        // Back seconds later: the data on the map is as fresh as a refresh would make it.
+        clock.advance(10)
+        let calls = await api.snapshot().calls
+        model.becameActive()
+        XCTAssertEqual(model.reviewMoments, 2)
+        XCTAssertTrue(model.reviewDue)
+        let asked = await api.snapshot().calls
+        XCTAssertEqual(asked, calls)
+
+        // Gone again before a refresh came in: that load is no moment.
+        model.becameInactive()
+        clock.advance(20 * 60)
+        model.becameActive()
+        model.becameInactive()
+        let refreshed = await waitUntil { await api.snapshot().calls == calls + 1 && !model.isLoading }
+        XCTAssertTrue(refreshed)
+        XCTAssertEqual(model.reviewMoments, 2)
+        XCTAssertFalse(model.reviewDue)
+    }
+
+    /// A model with a fresh feed on the map after `earlierDays` days with one: the third day by default.
+    private func reviewModel(clock: TestClock, earlierDays: Int = 2) async -> (ScooterMapModel, StubScooterAPI) {
         let defaults = isolatedDefaults()
         let earlier = ScooterReviewPrompt(defaults: defaults, version: ScooterLinks.appVersion)
-        earlier.noteUse(at: clock.now.addingTimeInterval(-2 * 86_400))
-        earlier.noteUse(at: clock.now.addingTimeInterval(-86_400))
+        for day in stride(from: earlierDays, to: 0, by: -1) {
+            earlier.noteUse(at: clock.now.addingTimeInterval(-Double(day) * 86_400))
+        }
         let api = StubScooterAPI(response: ScooterResponse(vehicles: [scooter(id: "one", provider: "lime")]))
         let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults, now: { clock.now })
         model.refresh()
         let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }
         XCTAssertTrue(loaded)
-        XCTAssertEqual(model.reviewMoments, 0, "Not without a ride")
         return (model, api)
     }
 
-    /// "Open in" (unless `openIn` is false: the test opened what it opened), the app in the background for
-    /// `seconds`, then in front again until the refresh is in.
-    private func returnFromRide(
-        _ model: ScooterMapModel,
-        _ api: StubScooterAPI,
-        after seconds: TimeInterval,
-        clock: TestClock,
-        openIn: Bool = true
-    ) async {
-        if openIn { model.rentalOpened() }
-        model.becameInactive()
-        clock.advance(seconds)
+    /// The map refreshed, until the refresh is in.
+    private func reload(_ model: ScooterMapModel, _ api: StubScooterAPI) async {
         let calls = await api.snapshot().calls
-        model.becameActive()
+        model.refresh()
         let refreshed = await waitUntil { await api.snapshot().calls == calls + 1 && !model.isLoading }
         XCTAssertTrue(refreshed)
     }

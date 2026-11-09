@@ -188,12 +188,6 @@ enum ScooterRentalOpening: Equatable, Sendable {
     case app(URL)
     /// The operator's App Store page: the app is not installed.
     case store(URL)
-
-    /// On the way to the operator, and maybe to a ride: not to the App Store, where the app is still to install.
-    var mayLeadToARide: Bool {
-        if case .store = self { return false }
-        return true
-    }
 }
 
 enum ScooterBatteryLevel: Equatable, Sendable {

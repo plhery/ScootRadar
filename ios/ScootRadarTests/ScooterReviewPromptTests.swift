@@ -2,8 +2,8 @@ import Foundation
 import XCTest
 @testable import ScootRadar
 
-/// When the app asks for a rating: on a calm return from a ride, from the third day with a fresh feed, never on a
-/// day something went wrong, once per version and a month apart at the soonest.
+/// When the app asks for a rating: at a calm moment, from the third day with a fresh feed, never on a day
+/// something went wrong, once per version and a month apart at the soonest.
 final class ScooterReviewPromptTests: XCTestCase {
     /// 09:00 UTC: the hours added below stay on the same day.
     private let start = ISO8601DateFormatter().date(from: "2026-10-01T09:00:00Z")!
@@ -120,35 +120,4 @@ final class ScooterReviewPromptTests: XCTestCase {
         }
     }
 
-    func testOnlyAReturnFiveMinutesToTwoHoursAfterOpenInIsTheEndOfARide() {
-        withDefaults { defaults in
-            let prompt = prompt(defaults)
-            // Nothing was opened.
-            XCTAssertFalse(prompt.takeRentalReturn(at: start))
-
-            // Back within minutes: the rental mostly did not happen, and the tap is used up.
-            prompt.noteRentalOpened(at: start)
-            XCTAssertFalse(prompt.takeRentalReturn(at: start.addingTimeInterval(4 * 60 + 59)))
-            XCTAssertFalse(prompt.takeRentalReturn(at: start.addingTimeInterval(20 * 60)))
-
-            for minutes in [5.0, 20, 120] {
-                prompt.noteRentalOpened(at: start)
-                XCTAssertTrue(prompt.takeRentalReturn(at: start.addingTimeInterval(minutes * 60)), "\(minutes) min")
-                // One try per return.
-                XCTAssertFalse(prompt.takeRentalReturn(at: start.addingTimeInterval(minutes * 60 + 1)))
-            }
-
-            // Later, it is another trip.
-            prompt.noteRentalOpened(at: start)
-            XCTAssertFalse(prompt.takeRentalReturn(at: start.addingTimeInterval(2 * 3_600 + 1)))
-
-            // The last tap is the one that counts, and it survives the app being closed.
-            prompt.noteRentalOpened(at: start)
-            prompt.noteRentalOpened(at: start.addingTimeInterval(30 * 60))
-            let reopened = ScooterReviewPrompt(defaults: defaults, version: "1.0.1", timeZone: .gmt)
-            XCTAssertFalse(reopened.takeRentalReturn(at: start.addingTimeInterval(33 * 60)))
-            prompt.noteRentalOpened(at: start.addingTimeInterval(30 * 60))
-            XCTAssertTrue(reopened.takeRentalReturn(at: start.addingTimeInterval(40 * 60)))
-        }
-    }
 }

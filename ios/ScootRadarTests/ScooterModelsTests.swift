@@ -510,7 +510,6 @@ final class ScooterModelsTests: XCTestCase {
         }
         XCTAssertEqual(tried, ["limebike://vehicle/abc-123 false", "https://lime.bike/vehicle/abc-123 false"])
         XCTAssertEqual(opened, .link(URL(string: "https://lime.bike/vehicle/abc-123")!))
-        XCTAssertEqual(opened?.mayLeadToARide, true)
 
         // With the app installed, its link is the only one tried.
         tried = []
@@ -566,7 +565,6 @@ final class ScooterModelsTests: XCTestCase {
             "https://apps.apple.com/app/id675033630 false"
         ])
         XCTAssertEqual(store, .store(URL(string: "https://apps.apple.com/app/id675033630")!))
-        XCTAssertEqual(store?.mayLeadToARide, false)
 
         // An operator the catalog gives no app has nothing to fall back on.
         let hopp = Scooter(
@@ -630,7 +628,6 @@ final class ScooterModelsTests: XCTestCase {
         }
         XCTAssertEqual(tried, ["https://lime.bike/ true"])
         XCTAssertEqual(opened, .app(URL(string: "https://lime.bike/")!))
-        XCTAssertEqual(opened?.mayLeadToARide, true)
 
         // Without it, the App Store page opens instead.
         tried = []
@@ -640,7 +637,6 @@ final class ScooterModelsTests: XCTestCase {
         }
         XCTAssertEqual(tried, ["https://lime.bike/ true", "https://apps.apple.com/app/id1199780189 false"])
         XCTAssertEqual(store, .store(URL(string: "https://apps.apple.com/app/id1199780189")!))
-        XCTAssertEqual(store?.mayLeadToARide, false)
 
         // A scooter its feed links keeps that link, and other operators have no app to fall back on.
         let linked = scooter("lime", rentalURIs: ScooterRentalURIs(ios: "https://lime.bike/vehicle/1", android: nil, web: nil))
