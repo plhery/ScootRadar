@@ -55,7 +55,7 @@ object MarkerFeatures {
         for (mark in scene.drawnMarks()) features += dot(mark, art)
         for (bay in scene.parking) {
             val isSelected = bay.id == scene.appliedParkingID
-            val key = ScooterMarkerArt.BayKey(bay.providerInfo, isSelected)
+            val key = ScooterMarkerArt.BayKey(bay.providerInfo, isSelected, scene.isDark)
             features += MarkerFeature(
                 id = "p:${bay.id}",
                 coordinate = bay.coordinate,

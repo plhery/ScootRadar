@@ -35,6 +35,7 @@ import kotlin.math.ceil
 import kotlin.math.exp
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
@@ -133,8 +134,8 @@ class ScooterMarkerArt(
     }
 
     /** A parking bay's balloon, small at rest and large when selected. */
-    data class BayKey(val provider: ScooterProvider?, val isSelected: Boolean) {
-        val id: String get() = "bay/${provider.part}/${isSelected.part}"
+    data class BayKey(val provider: ScooterProvider?, val isSelected: Boolean, val isDark: Boolean = false) {
+        val id: String get() = "bay/${provider.part}/${isSelected.part}/${isDark.part}"
     }
 
     /**
@@ -395,14 +396,14 @@ class ScooterMarkerArt(
 
     /**
      * MapKit's marker balloon, as it draws it on the Mac (MAP-300): a disc in the tint inside a white rim, lighter
-     * at its top, on a short point, with the glyph in the ink that reads on the tint, as the provider's initials
-     * are (ScooterMapView.swift:1575-1579). Selected, it is larger, on a longer point, over a small dot where the
+     * at its top and darker at its bottom, on a short point, with the glyph in the ink that reads on the tint, as the
+     * provider's initials are (ScooterMapView.swift:1575-1579). A bay without a provider is in the system's blue. Selected, it is larger, on a longer point, over a small dot where the
      * bay is. The picture is as tall above the bay as below it, so that it hangs from its middle.
      */
     private fun draw(key: BayKey): Bitmap {
         val shape = BayShape.of(key.isSelected)
-        val tint = key.provider?.color ?: SYSTEM_BLUE
-        return balloon(tint, shape) { x, centre ->
+        val tint = key.provider?.color ?: if (key.isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE
+        return balloon(tint, shape, key.isDark) { x, centre ->
             val paint = textPaint(TextFace(fonts.bold, shape.glyph.toFloat()), ScooterMapLook.ink(on = tint).toInt())
             text("P", paint, x - paint.measureText("P") / 2.0, centre - lineHeight(paint) / 2)
         }
@@ -414,7 +415,7 @@ class ScooterMarkerArt(
      */
     fun addressImage(isDark: Boolean): Bitmap = addresses.getOrPut(isDark) {
         val shape = BayShape.rest
-        balloon(if (isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE, shape) { x, centre ->
+        balloon(if (isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE, shape, isDark) { x, centre ->
             // A Material symbol fills 20 of its 24 units, as an SF Symbol fills its point size (SYMBOL_FRAME).
             val side = (shape.glyph * 24 / 20).toFloat()
             val glyph = PathParser.createPathFromPathData(if (fonts.boldText) SEARCH_BOLD_PATH else SEARCH_PATH)
@@ -428,7 +429,7 @@ class ScooterMarkerArt(
     }
 
     /** The balloon of [shape] in [tint], with its [glyph] drawn about the disc's centre. */
-    private fun balloon(tint: Long, shape: BayShape, glyph: Canvas.(x: Float, centre: Float) -> Unit): Bitmap {
+    private fun balloon(tint: Long, shape: BayShape, isDark: Boolean, glyph: Canvas.(x: Float, centre: Float) -> Unit): Bitmap {
         val outer = shape.radius + shape.rim
         val side = 2 * (outer + BAY_MARGIN)
         val height = 2 * shape.above + 2 * BAY_MARGIN
@@ -441,10 +442,13 @@ class ScooterMarkerArt(
                 setShadowLayer(shadowRadius(BAY_SHADOW_BLUR), 0f, 3f, Color.argb(0.3f, 0f, 0f, 0f))
             }
             drawPath(balloon(x, centre, outer.toFloat(), tip), white)
+            // From the tint with some white at the disc's top to a shade of it at its bottom, both in linear light,
+            // evenly in sRGB between them, as the iOS 27 simulator draws systemBlue's (ui346).
+            val (lift, shade) = if (isDark) DARK_BALLOON else LIGHT_BALLOON
             val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 shader = LinearGradient(
                     0f, centre - shape.radius.toFloat(), 0f, centre + shape.radius.toFloat(),
-                    mix(tint, ScooterMapLook.white, 0.3), mix(tint, 0xFF000000, 0.12), Shader.TileMode.CLAMP,
+                    inLinearLight(tint) { it * (1 - lift) + lift }, inLinearLight(tint) { it * shade }, Shader.TileMode.CLAMP,
                 )
             }
             drawCircle(x, centre, shape.radius.toFloat(), fill)
@@ -645,8 +649,21 @@ class ScooterMarkerArt(
 
         private fun Long.withAlpha(alpha: Double): Int = (channel(alpha) shl 24) or (this and 0xFFFFFF).toInt()
 
-        private fun mix(color: Long, with: Long, share: Double): Int {
-            fun part(shift: Int) = ((color shr shift and 0xFF) * (1 - share) + (with shr shift and 0xFF) * share).roundToInt()
+        /** The white mixed into a balloon's tint at its top, and the share of the tint left at its bottom, by day. */
+        private val LIGHT_BALLOON = 0.153 to 0.637
+
+        /** The same by night, a little lighter. */
+        private val DARK_BALLOON = 0.171 to 0.651
+
+        /** [color] with [change] made to each of its channels in linear light. */
+        private fun inLinearLight(color: Long, change: (Double) -> Double): Int {
+            fun part(shift: Int): Int {
+                val value = (color shr shift and 0xFF) / 255.0
+                val linear = if (value <= 0.04045) value / 12.92 else ((value + 0.055) / 1.055).pow(2.4)
+                val changed = change(linear).coerceIn(0.0, 1.0)
+                val encoded = if (changed <= 0.0031308) 12.92 * changed else 1.055 * changed.pow(1 / 2.4) - 0.055
+                return (encoded * 255).roundToInt()
+            }
             return Color.rgb(part(16), part(8), part(0))
         }
 

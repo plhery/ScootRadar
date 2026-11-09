@@ -17,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
+import kotlin.math.abs
 import kotlin.math.ceil
 
 /** The pictures the markers are drawn with: how many are kept, and the size of the text in them. */
@@ -56,6 +57,41 @@ class ScooterMarkerArtTest {
         assertNotSame(first, again)
         assertTrue(first.sameAs(again))
         assertNotSame(last, art.image(key(599)))
+    }
+
+    /**
+     * The balloon's disc goes from its tint with some white at its top to a shade of it at its bottom, evenly in
+     * sRGB, as the iOS 27 simulator draws the searched place's in the system's blue (ui346): #6DA2FE to #006ED1 by
+     * day, #73AAFE to #0077D3 by night. A bay without a provider is drawn the same, its P in the middle.
+     */
+    @Test
+    fun aBalloonInTheSystemsBlueIsLitAsMapKitsIs() {
+        val art = art()
+        for ((isDark, ends) in listOf(false to (0x6DA2FE to 0x006ED1), true to (0x73AAFE to 0x0077D3))) {
+            val bay = ScooterMarkerArt.BayKey(provider = null, isSelected = false, isDark = isDark)
+            val balloons = listOf(art.addressImage(isDark), art.bayImage(bay))
+            for (balloon in balloons) {
+                val shape = ScooterMarkerArt.BayShape.rest
+                // The picture hangs from its middle; the disc's centre is a rim and a radius below its top.
+                val x = balloon.width / 3.0 / 2
+                val centre = balloon.height / 3.0 / 2 - shape.above + shape.radius + shape.rim
+                // Left of the glyph, a third of the way up and down the disc.
+                for (row in listOf(centre - 6, centre + 6)) {
+                    val px = ((x - 10.5) * 3).toInt()
+                    val py = (row * 3).toInt()
+                    val share = ((py + 0.5) / 3 - (centre - shape.radius)) / (2 * shape.radius)
+                    val pixel = balloon.getPixel(px, py)
+                    for (shift in listOf(16, 8, 0)) {
+                        val top = ends.first shr shift and 0xFF
+                        val bottom = ends.second shr shift and 0xFF
+                        val expected = top + (bottom - top) * share
+                        val drawn = pixel shr shift and 0xFF
+                        val where = "dark $isDark, $share down, channel $shift"
+                        assertTrue("$where: $drawn against $expected", abs(drawn - expected) <= 2)
+                    }
+                }
+            }
+        }
     }
 
     @Test
