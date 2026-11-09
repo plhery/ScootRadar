@@ -4302,6 +4302,67 @@ class ScooterMapControllerTest {
         )
     }
 
+    // The battery filter's estimate and the answers' full ranges (issue #12).
+
+    /**
+     * Zoomed in the app filters the scooters itself, by their battery or else by the battery the server estimated
+     * from their range, as Lime's and Voi's feeds give only a range in Stuttgart. A minimum range kept by the build
+     * that had a range filter is ignored.
+     */
+    @Test
+    fun theBatteryMinimumJudgesAScooterByItsEstimateAndAStoredRangeIsIgnored() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set(5_000, forKey = "minimum-range")
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(
+                    scooter(id = "voi-estimated", provider = "voi", battery = null, rangeMeters = 56_000, batteryEstimate = 70),
+                    scooter(id = "lime-estimated", provider = "lime", battery = null, rangeMeters = 4_000, batteryEstimate = 35),
+                    scooter(id = "dott-unknown", provider = "dott", battery = null),
+                    scooter(id = "bolt-full", provider = "bolt", battery = 90, rangeMeters = 30_000),
+                ),
+            ),
+        )
+        val model = makeController(api, defaults = defaults)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertFalse(model.hasActiveFilters)
+        assertEquals(4, model.mapScooters.value.size)
+
+        model.setMinimumBattery(60.0)
+        assertEquals(setOf("voi:voi-estimated", "bolt:bolt-full"), model.mapScooters.value.map { it.id }.toSet())
+        assertEquals(2, model.visibleCount)
+        // Filtered here, one by one: the server is not asked again, and was asked with no minimum.
+        settle()
+        assertEquals(1, api.calls)
+        assertEquals(0, api.lastMinimumBattery)
+    }
+
+    /**
+     * Each answer's full ranges are kept, at street zoom as in groups, for the filters' line; an answer without them
+     * leaves none.
+     */
+    @Test
+    fun theLatestAnswersFullRangesAreKept() = runTest {
+        val api = StubScooterAPI(ScooterResponse(vehicles = emptyList(), fullRanges = mapOf("voi" to 80_000, "lime" to 11_500)))
+        val model = makeController(api)
+        assertTrue(model.fullRanges.value.isEmpty())
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(mapOf("voi" to 80_000, "lime" to 11_500), model.fullRanges.value)
+
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 12)
+        api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta, fullRanges = mapOf("voi" to 79_000)))
+        model.updateViewport(zurichRegion, zoom = 12)
+        assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
+        assertEquals(mapOf("voi" to 79_000), model.fullRanges.value)
+
+        api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta))
+        model.refresh()
+        assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
+        assertTrue(model.fullRanges.value.isEmpty())
+    }
+
     private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
 
     /** The dock's summary, or the test fails. */

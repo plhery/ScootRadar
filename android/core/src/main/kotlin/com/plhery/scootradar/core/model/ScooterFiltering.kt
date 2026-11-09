@@ -3,6 +3,7 @@ package com.plhery.scootradar.core.model
 import com.plhery.scootradar.core.generated.ScooterProvider
 import java.text.BreakIterator
 import java.time.Instant
+import java.util.Locale
 
 // ios/ScootRadar/Models/ScooterFiltering.swift.
 
@@ -16,8 +17,12 @@ data class VisibleScooterSummary(
 )
 
 object ScooterFiltering {
+    /**
+     * A minimum hides the scooters with less battery and those with none known, a scooter whose feed gives only its
+     * range being judged by the battery the server estimated from it, as the server filters them.
+     */
     fun passesBattery(scooter: Scooter, minimumBattery: Double): Boolean =
-        minimumBattery == 0.0 || (scooter.battery?.toDouble() ?: -1.0) >= minimumBattery
+        minimumBattery == 0.0 || (scooter.filteredBattery?.toDouble() ?: -1.0) >= minimumBattery
 
     fun mapScooters(
         from: List<Scooter>,
@@ -82,6 +87,83 @@ object ScooterBatteryFilter {
     fun snapped(value: Int): Int = presets.lastOrNull { it <= value } ?: 0
 
     fun label(preset: Int): String = if (preset == 0) localized("Any") else "$preset%+"
+}
+
+/**
+ * How far a battery level usually takes the scooters chosen in view, in metres, as src/lib/battery.ts works it out
+ * (batteryReach): from each app's usual range on a full battery, the answer's fullRanges, and its scooters in view.
+ */
+data class ScooterBatteryReach(
+    /** The shortest and the longest of their apps'. */
+    val low: Double,
+    val high: Double,
+    /** Their apps' weighed by their scooters in view. */
+    val mean: Double,
+) {
+    /**
+     * "22 km", or "12–80 km" where the longest is over a quarter longer than the shortest: in whole kilometres, or
+     * whole miles where lengths are in miles, never 0 (formatBatteryReach).
+     */
+    fun formatted(locale: Locale = ScooterLanguage.current.locale): String {
+        val metric = locale.measurementSystem == ScooterMeasurementSystem.Metric
+        val unit = if (metric) ScooterLengthUnit.Kilometers else ScooterLengthUnit.Miles
+        val length = if (metric) 1_000.0 else 1_609.344
+        // Halves go up, as Math.round takes them on the web.
+        fun whole(meters: Double): Int = maxOf(1.0, (meters / length).roundedAwayFromZero()).toInt()
+        val low = whole(low)
+        val high = whole(high)
+        if (high * 4 <= low * 5) return Scooter.formattedWhole(whole(mean), unit, locale)
+        return low.formatted(locale) + "–" + Scooter.formattedWhole(high, unit, locale)
+    }
+
+    companion object {
+        /**
+         * How far [level]% usually takes the scooters in view of the apps switched on, from each app's usual range on
+         * a full battery and its scooters in view ([counts]). An app with under a tenth of them is left out unless it
+         * has the most, so a handful of another app's at the edge of the view doesn't stretch the line. Null when no
+         * app switched on in view has a full range.
+         */
+        fun <K> of(level: Int, fullRanges: Map<K, Int>, counts: Map<K, Int>, enabled: (K) -> Boolean): ScooterBatteryReach? {
+            val apps = fullRanges.mapNotNull { (provider, meters) ->
+                val count = counts[provider] ?: 0
+                if (meters > 0 && enabled(provider) && count > 0) meters.toDouble() to count.toLong() else null
+            }
+            if (apps.isEmpty()) return null
+            val total = apps.sumOf { it.second }
+            val most = apps.maxOf { it.second }
+            val kept = apps.filter { (_, count) -> count * 10 >= total || count == most }
+            val scale = level / 100.0
+            val weight = kept.sumOf { it.second }
+            return ScooterBatteryReach(
+                low = kept.minOf { it.first } * scale,
+                high = kept.maxOf { it.first } * scale,
+                mean = kept.sumOf { (meters, count) -> meters * count } / weight * scale,
+            )
+        }
+
+        /**
+         * The line under the battery presets: how far the minimum chosen, or a full battery for Any, usually takes the
+         * scooters in view of the apps switched on, "60% usually allows about 22 km.", counted as the filters' provider
+         * rows count them, whatever the apps switched on. Null where no such app has a full range ([fullRanges], by
+         * provider id).
+         */
+        fun line(
+            minimumBattery: Int,
+            fullRanges: Map<String, Int>,
+            entries: List<ScooterProviderEntry>,
+            locale: Locale = ScooterLanguage.current.locale,
+        ): String? {
+            val level = ScooterBatteryFilter.snapped(minimumBattery).takeIf { it > 0 } ?: 100
+            val byID = entries.associateBy { it.provider.rawValue }
+            val reach = of(
+                level,
+                fullRanges,
+                counts = byID.mapValues { it.value.count },
+                enabled = { byID[it]?.isEnabled == true },
+            ) ?: return null
+            return stringFormat(localized("%1\$lld%% usually allows about %2\$@."), level.toLong(), reach.formatted(locale))
+        }
+    }
 }
 
 /** One provider in the dock chips or in the filter sheet's provider list. */

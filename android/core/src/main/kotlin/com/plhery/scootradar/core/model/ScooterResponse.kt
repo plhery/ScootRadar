@@ -54,6 +54,11 @@ data class ScooterResponse(
     val meta: ScooterResponseMetadata? = null,
     val parking: List<ScooterParking> = emptyList(),
     /**
+     * How far a full battery usually takes each app's scooters in view, in metres, by provider id: what the filters
+     * write under the battery presets. Empty from a server that does not say.
+     */
+    val fullRanges: Map<String, Int> = emptyMap(),
+    /**
      * How far the clock of this device is ahead of the server's (negative when it is behind), in seconds,
      * from the response's Date header. 0 without the header.
      */
@@ -130,6 +135,7 @@ val ScooterVehiclePayload.model: Scooter
         longitude = longitude,
         battery = battery?.saturated,
         rangeMeters = rangeMeters?.saturated,
+        batteryEstimate = batteryEstimate?.saturated,
         vehicleID = vehicleID,
         deepLink = deepLink,
         rentalURIs = rentalURIs?.let { ScooterRentalURIs(ios = it.ios, android = it.android, web = it.web) },
@@ -191,6 +197,7 @@ val ScooterAPIResponsePayload.model: ScooterResponse
         parking = parking.orEmpty().map {
             ScooterParking(id = it.id, provider = it.provider, name = it.name, latitude = it.lat, longitude = it.lng, mandatory = it.mandatory)
         },
+        fullRanges = fullRanges.orEmpty().saturated,
     )
 
 /**

@@ -172,6 +172,7 @@ fun scooter(
     rangeMeters: Int? = null,
     rentalURIs: ScooterRentalURIs? = null,
     pricing: ScooterRidePricing? = null,
+    batteryEstimate: Int? = null,
 ): Scooter = Scooter(
     provider = provider,
     latitude = latitude,
@@ -183,4 +184,5 @@ fun scooter(
     rentalURIs = rentalURIs,
     distanceMeters = 0.0,
     pricing = pricing,
+    batteryEstimate = batteryEstimate,
 )

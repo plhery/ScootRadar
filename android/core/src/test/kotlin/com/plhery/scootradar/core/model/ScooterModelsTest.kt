@@ -486,6 +486,43 @@ class ScooterModelsTest {
         )
     }
 
+    /**
+     * Issue #12: a scooter whose feed gives a range and no battery has the battery the server estimated from it, and
+     * the answer says how far a full battery usually takes each app's scooters in view; an older server says neither.
+     */
+    @Test
+    fun aBatteryEstimateAndTheFullRangesDecode() {
+        val json = """
+        {
+          "vehicles": [
+            {"provider": "voi", "lat": 48.7758, "lng": 9.1829, "battery": null, "range_m": 24000, "battery_estimate": 30, "vehicle_id": "v-1"},
+            {"provider": "bolt", "lat": 48.7758, "lng": 9.1829, "battery": 80, "range_m": 48800, "vehicle_id": "b-1"}
+          ],
+          "clusters": [],
+          "providers": {"voi": 1, "bolt": 1},
+          "fullRanges": {"voi": 80000, "bolt": 61000},
+          "meta": {
+            "partial": false, "stale": false, "failedSources": [], "sources": {},
+            "generatedAt": "2026-11-09T10:00:00.000Z", "truncated": false, "totalVehicles": 2, "mode": "vehicles", "zoom": null
+          }
+        }
+        """
+        val response = ScooterAPIJson.decodeFromString<ScooterAPIResponsePayload>(json).model
+        val (voi, bolt) = response.vehicles
+        assertNull(voi.battery)
+        assertEquals(30, voi.batteryEstimate)
+        assertEquals(30, voi.filteredBattery)
+        // The card still shows the range, not the estimate.
+        assertNull(voi.batteryLevel)
+        assertEquals(24_000, voi.rangeMeters)
+        assertNull(bolt.batteryEstimate)
+        assertEquals(80, bolt.filteredBattery)
+        assertEquals(mapOf("voi" to 80_000, "bolt" to 61_000), response.fullRanges)
+
+        val older = ScooterAPIJson.decodeFromString<ScooterAPIResponsePayload>(json.replace(""""fullRanges": {"voi": 80000, "bolt": 61000},""", "")).model
+        assertTrue(older.fullRanges.isEmpty())
+    }
+
     @Test
     fun scootersLastSeenDecodeAsTheOthersApart() {
         val json = """

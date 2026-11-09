@@ -36,7 +36,7 @@ fun rememberControllerChanges(controller: ScooterMapController): Int {
 private fun ScooterMapController.chromeStates(): List<StateFlow<*>> = listOf(
     vehicles, clusters, lastSeenVehicles, lastSeenClusters, lastSeenProviders, parking,
     viewport, viewportZoom, viewportZoomLevel,
-    isLoading, isLocating, loadIssue, lastUpdated, responseMetadata, isPausedForIdle,
+    isLoading, isLocating, loadIssue, lastUpdated, responseMetadata, fullRanges, isPausedForIdle,
     userLocation, hasLocatedOnce, locationIssue,
     enabledProviders, selectedScooterID, scooterChoices, selectedParkingID, isPanelCollapsed,
     searchedDestination, recentPlace,

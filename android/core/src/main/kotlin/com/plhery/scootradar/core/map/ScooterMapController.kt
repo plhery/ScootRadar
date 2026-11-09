@@ -234,6 +234,14 @@ class ScooterMapController(
     private val _responseMetadata = MutableStateFlow<ScooterResponseMetadata?>(null)
     val responseMetadata: StateFlow<ScooterResponseMetadata?> = _responseMetadata.asStateFlow()
 
+    /**
+     * How far a full battery usually takes each app's scooters in view, in metres, by provider id, as the latest
+     * answer said (fullRanges), at every zoom and whatever the provider filter; empty where it said nothing. The
+     * filters write from it how far the minimum chosen usually takes the scooters chosen (ScooterBatteryReach).
+     */
+    private val _fullRanges = MutableStateFlow<Map<String, Int>>(emptyMap())
+    val fullRanges: StateFlow<Map<String, Int>> = _fullRanges.asStateFlow()
+
     private val _userLocation = MutableStateFlow<GeoPoint?>(null)
     val userLocation: StateFlow<GeoPoint?> = _userLocation.asStateFlow()
 
@@ -1373,6 +1381,7 @@ class ScooterMapController(
                 _parking.value = response.parking
                 staleProviders = staleProviderTimes(response, receivedAt = receivedAt)
                 _responseMetadata.value = response.meta
+                _fullRanges.value = response.fullRanges
                 queryBounds = bounds
                 queryZoom = zoom
                 queryMinimumBattery = requestMinimumBattery

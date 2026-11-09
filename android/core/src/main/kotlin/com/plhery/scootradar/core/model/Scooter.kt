@@ -19,6 +19,11 @@ data class Scooter(
     val rentalURIs: ScooterRentalURIs? = null,
     val distanceMeters: Double? = null,
     val pricing: ScooterRidePricing? = null,
+    /**
+     * Where the feed gives a range and no battery, the battery the server estimated from it (battery_estimate), in
+     * percent. The battery filter judges the scooter by it; the card and the marker show the range, not this.
+     */
+    val batteryEstimate: Int? = null,
 ) {
     val id: String
         get() = if (vehicleID != null) "$provider:$vehicleID" else "$provider:${latitude.swiftDescription}:${longitude.swiftDescription}"
@@ -31,6 +36,9 @@ data class Scooter(
     val providerName: String get() = providerInfo?.displayName ?: provider.capitalized
 
     val batteryLevel: ScooterBatteryLevel? get() = battery?.let(ScooterBatteryLevel::of)
+
+    /** What the battery filter judges the scooter by: its battery, or else the one estimated from its range. */
+    val filteredBattery: Int? get() = battery ?: batteryEstimate
 
     /** In metres, along the ellipsoid as CLLocation measures it. */
     fun distance(from: GeoPoint): Double = from.distance(to = coordinate)
@@ -135,8 +143,8 @@ data class Scooter(
         }
 
         /**
-         * Whole kilometres or miles, "61 km" or "38 mi": the closest cities, which never come in metres, feet or
-         * yards.
+         * Whole kilometres or miles, "61 km" or "38 mi": the closest cities and how far a battery usually takes the
+         * scooters in view, which never come in metres, feet or yards.
          */
         fun formattedWhole(value: Int, unit: ScooterLengthUnit, locale: Locale = ScooterLanguage.current.locale): String =
             // A line never breaks between the number and its unit.

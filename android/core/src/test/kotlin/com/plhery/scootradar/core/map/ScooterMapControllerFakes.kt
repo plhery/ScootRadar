@@ -417,6 +417,7 @@ internal fun scooter(
     battery: Int? = 80,
     rangeMeters: Int? = null,
     rentalURIs: ScooterRentalURIs? = null,
+    batteryEstimate: Int? = null,
 ): Scooter = Scooter(
     provider = provider,
     latitude = latitude,
@@ -427,6 +428,7 @@ internal fun scooter(
     deepLink = null,
     rentalURIs = rentalURIs,
     distanceMeters = 0.0,
+    batteryEstimate = batteryEstimate,
 )
 
 /**

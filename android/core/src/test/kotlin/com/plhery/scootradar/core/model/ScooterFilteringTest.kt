@@ -515,6 +515,166 @@ class ScooterFilteringTest {
         assertNotEquals(unknown.parts[0], unknown.body)
     }
 
+    // The battery filter's estimate and the line under its presets (issue #12).
+
+    /**
+     * Lime's and Voi's feeds in Stuttgart give a range and no battery: the filter judges such a scooter by the battery
+     * the server estimated from it, and a scooter with a battery by its battery.
+     */
+    @Test
+    fun batteryFilterJudgesAScooterWithoutABatteryByItsEstimate() {
+        fun judged(id: String, provider: String, battery: Int?, estimate: Int?) = Scooter(
+            provider = provider, latitude = 47.3769, longitude = 8.5417, battery = battery, rangeMeters = 20_000,
+            vehicleID = id, batteryEstimate = estimate,
+        )
+        val scooters = listOf(
+            judged("estimated-high", "voi", battery = null, estimate = 70),
+            judged("estimated-low", "lime", battery = null, estimate = 50),
+            judged("battery-wins", "bolt", battery = 40, estimate = 90),
+            judged("unknown", "dott", battery = null, estimate = null),
+        )
+        assertTrue(scooters.all { ScooterFiltering.passesBattery(it, minimumBattery = 0.0) })
+        val filtered = ScooterFiltering.mapScooters(
+            from = scooters, minimumBattery = 60.0, enabledProviders = ScooterProvider.entries.toSet(),
+        )
+        assertEquals(listOf("voi:estimated-high"), filtered.map { it.id })
+
+        val summary = ScooterFiltering.visibleSummary(
+            vehicles = scooters, viewport = viewport, minimumBattery = 30.0, enabledProviders = setOf(ScooterProvider.Lime),
+        )
+        assertEquals(1, summary.count)
+        assertEquals(mapOf(ScooterProvider.Voi to 1, ScooterProvider.Lime to 1, ScooterProvider.Bolt to 1), summary.providerCounts)
+        assertEquals(4, summary.unfilteredCount)
+    }
+
+    /** Lime's full battery reads 11.5 km in Stuttgart, Voi's 80 and Bolt's 61, as the website's tests have them. */
+    private val stuttgart = mapOf("lime" to 11_500, "voi" to 80_000, "bolt" to 61_000)
+    private val swiss = Locale.forLanguageTag("en-CH")
+    private val american = Locale.forLanguageTag("en-US")
+
+    private fun reach(
+        level: Int,
+        counts: Map<String, Int>,
+        fullRanges: Map<String, Int> = stuttgart,
+        off: Set<String> = emptySet(),
+    ): ScooterBatteryReach? = ScooterBatteryReach.of(level, fullRanges, counts, enabled = { it !in off })
+
+    private fun line(reach: ScooterBatteryReach?, locale: Locale = swiss): String? = reach?.formatted(locale)?.let(::plainSpaces)
+
+    /**
+     * One app's full range, scaled by the level; several apps' from the shortest to the longest, in whole
+     * kilometres, or whole miles where lengths are in miles.
+     */
+    @Test
+    fun batteryReachOfOneAppAndOfSeveral() {
+        assertEquals("80 km", line(reach(100, mapOf("voi" to 40))))
+        assertEquals("24 km", line(reach(30, mapOf("voi" to 40))))
+
+        val several = reach(100, mapOf("lime" to 30, "voi" to 10, "bolt" to 0))
+        assertEquals(ScooterBatteryReach(low = 11_500.0, high = 80_000.0, mean = 28_625.0), several)
+        assertEquals("12–80 km", line(several))
+        assertEquals("7–50 mi", line(several, american))
+        // An en dash, no spaces around it, and none that breaks before the unit.
+        assertFalse(several!!.formatted(swiss).contains(' '))
+    }
+
+    /** An app switched off, or with under a tenth of the scooters in view, is left out, unless it has the most. */
+    @Test
+    fun batteryReachLeavesOutTheAppsSwitchedOffAndTheSmallOnes() {
+        assertEquals("12 km", line(reach(100, mapOf("lime" to 30, "voi" to 10), off = setOf("voi"))))
+        assertEquals("12 km", line(reach(100, mapOf("lime" to 95, "voi" to 5))))
+        // A tenth exactly is kept.
+        assertEquals("12–80 km", line(reach(100, mapOf("lime" to 90, "voi" to 10))))
+
+        val stuttgartNow = mapOf("lime" to 11_500, "bolt" to 61_000)
+        assertEquals("7–37 km", line(reach(60, mapOf("bolt" to 300, "lime" to 1_200), fullRanges = stuttgartNow)))
+        assertEquals("7 km", line(reach(60, mapOf("bolt" to 300, "lime" to 1_200), fullRanges = stuttgartNow, off = setOf("bolt"))))
+    }
+
+    /** Nothing is said where no app switched on in view has a full range. */
+    @Test
+    fun batteryReachIsNoneWithoutAFullRangeInView() {
+        assertNull(reach(100, mapOf("dott" to 30)))
+        assertNull(reach(100, mapOf("voi" to 30), fullRanges = emptyMap()))
+        assertNull(reach(100, mapOf("voi" to 30), off = setOf("voi")))
+        assertNull(reach(100, mapOf("voi" to 0)))
+    }
+
+    /**
+     * One length, the apps' weighed by their scooters, where the longest is at most a quarter longer than the
+     * shortest; halves go up, as Math.round takes them on the web, and it is never 0.
+     */
+    @Test
+    fun batteryReachIsOneLengthWithinAQuarterRoundedUpFromHalfAndNeverNone() {
+        val close = mapOf("lime" to 40_000, "voi" to 50_000)
+        assertEquals("45 km", line(reach(100, mapOf("lime" to 1, "voi" to 1), fullRanges = close)))
+        assertEquals("48 km", line(reach(100, mapOf("lime" to 1, "voi" to 3), fullRanges = close)))
+        assertEquals("40–51 km", line(reach(100, mapOf("lime" to 1, "voi" to 1), fullRanges = mapOf("lime" to 40_000, "voi" to 51_000))))
+        assertEquals("3 km", line(reach(100, mapOf("lime" to 1), fullRanges = mapOf("lime" to 2_500))))
+        assertEquals("2 km", line(reach(100, mapOf("lime" to 1), fullRanges = mapOf("lime" to 2_499))))
+        assertEquals("1 km", line(reach(30, mapOf("lime" to 1), fullRanges = mapOf("lime" to 400))))
+        assertEquals("1 mi", line(reach(30, mapOf("lime" to 1), fullRanges = mapOf("lime" to 400)), american))
+        assertEquals("1–2 km", line(reach(100, mapOf("lime" to 1, "voi" to 1), fullRanges = mapOf("lime" to 300, "voi" to 1_500))))
+    }
+
+    private fun entry(provider: ScooterProvider, count: Int, isEnabled: Boolean = true) =
+        ScooterProviderEntry(provider, count = count, isEnabled = isEnabled, isSelected = false, isDown = false)
+
+    /**
+     * The sentence under the presets: the minimum chosen, or 100% for Any, with how far it usually takes the
+     * scooters the provider rows count, of the apps switched on; in the language and the units shown.
+     */
+    @Test
+    fun batteryReachLineSaysTheMinimumOrAFullBatteryInEachLanguage() {
+        val zurich = listOf(entry(ScooterProvider.Lime, 30), entry(ScooterProvider.Voi, 10), entry(ScooterProvider.Bolt, 0))
+        ScooterLanguage.current = ScooterLanguage.En
+        assertEquals(
+            "100% usually allows about 12–80 km.",
+            ScooterBatteryReach.line(minimumBattery = 0, fullRanges = stuttgart, entries = zurich, locale = swiss)?.let(::plainSpaces),
+        )
+        val voi = listOf(entry(ScooterProvider.Voi, 40))
+        val ranges = mapOf("voi" to 36_000)
+        assertEquals(
+            "60% usually allows about 22 km.",
+            ScooterBatteryReach.line(minimumBattery = 60, fullRanges = ranges, entries = voi, locale = swiss)?.let(::plainSpaces),
+        )
+        // A stored minimum that is no preset is read as the preset it snaps to.
+        assertEquals(
+            "30% usually allows about 11 km.",
+            ScooterBatteryReach.line(minimumBattery = 45, fullRanges = ranges, entries = voi, locale = swiss)?.let(::plainSpaces),
+        )
+        assertEquals(
+            "60% usually allows about 13 mi.",
+            ScooterBatteryReach.line(minimumBattery = 60, fullRanges = ranges, entries = voi, locale = american)?.let(::plainSpaces),
+        )
+        // Voi switched off leaves Lime's; with no app in view that has a full range, nothing is said.
+        val voiOff = zurich.map { if (it.provider == ScooterProvider.Voi) it.copy(isEnabled = false) else it }
+        assertEquals(
+            "100% usually allows about 12 km.",
+            ScooterBatteryReach.line(minimumBattery = 0, fullRanges = stuttgart, entries = voiOff, locale = swiss)?.let(::plainSpaces),
+        )
+        assertNull(ScooterBatteryReach.line(minimumBattery = 60, fullRanges = stuttgart, entries = listOf(entry(ScooterProvider.Dott, 30))))
+        assertNull(ScooterBatteryReach.line(minimumBattery = 60, fullRanges = emptyMap(), entries = voi))
+
+        ScooterLanguage.current = ScooterLanguage.De
+        assertEquals(
+            "Mit 60% kommt man meist etwa 22 km weit.",
+            ScooterBatteryReach.line(minimumBattery = 60, fullRanges = ranges, entries = voi, locale = Locale.forLanguageTag("de-CH"))
+                ?.let(::plainSpaces),
+        )
+        ScooterLanguage.current = ScooterLanguage.Fr
+        assertEquals(
+            "Avec 60 %, comptez en général environ 22 km.",
+            ScooterBatteryReach.line(minimumBattery = 60, fullRanges = ranges, entries = voi, locale = Locale.forLanguageTag("fr-CH"))
+                ?.let(::plainSpaces),
+        )
+        assertEquals(
+            "Avec 100 %, comptez en général environ 12–80 km.",
+            ScooterBatteryReach.line(minimumBattery = 0, fullRanges = stuttgart, entries = zurich, locale = Locale.forLanguageTag("fr-FR"))
+                ?.let(::plainSpaces),
+        )
+    }
+
     /** Every language says the units of Settings. */
     @Test
     fun everyLanguageWritesTheUnits() {
@@ -524,6 +684,8 @@ class ScooterFilteringTest {
             }
         }
     }
+
+    private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
 
     /**
      * MKMapView under an MKMapCamera `distance` metres from its centre, facing `heading` degrees from north and

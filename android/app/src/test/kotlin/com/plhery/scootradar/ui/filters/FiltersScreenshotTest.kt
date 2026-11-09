@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterFiltering
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterProviderEntry
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
@@ -47,12 +48,15 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
     fun setUp() {
         Locale.setDefault(Locale.forLanguageTag("en-CH"))
         ScooterLanguage.current = ScooterLanguage.En
+        // The test's region writes lengths in miles.
+        ScooterUnits.current = ScooterUnits.Metric
     }
 
     @After
     fun tearDown() {
         resetFontScale()
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterUnits.current = ScooterUnits.Automatic
         Locale.setDefault(locale)
     }
 
@@ -73,6 +77,7 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
                         onToggle = {},
                         onReset = {},
                         onDone = {},
+                        fullRanges = state.fullRanges,
                     )
                 }
             }
@@ -90,7 +95,8 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
 
 /**
  * The sheet's states: at the medium height a phone opens it at, at the large one a short phone does, with filters
- * chosen, with a provider not sharing data, where no provider operates, and while the scooters are being found.
+ * chosen, with a provider not sharing data, where no provider operates, while the scooters are being found, and with
+ * how far the minimum usually takes the scooters in view under the presets (issue #12).
  */
 enum class FiltersState(
     val detents: List<SheetDetent> = listOf(SheetDetent.Medium, SheetDetent.Large),
@@ -98,6 +104,8 @@ enum class FiltersState(
     val entries: List<ScooterProviderEntry> = zurich,
     /** How many scooters the map shows; null while it is finding them. */
     private val shown: Int? = 32,
+    /** How far a full battery usually takes each app's scooters in view, in metres (the answer's fullRanges). */
+    val fullRanges: Map<String, Int> = emptyMap(),
 ) {
     Medium,
     Large(detents = listOf(SheetDetent.Large)),
@@ -113,7 +121,10 @@ enum class FiltersState(
         shown = 29,
     ),
     NoProviders(entries = emptyList(), shown = 0),
-    Finding(shown = null);
+    Finding(shown = null),
+    /** "60% usually allows about 7–37 km.": Lime's full battery reads 11.5 km in Stuttgart, Bolt's 61. */
+    Reach(detents = listOf(SheetDetent.Large), minimumBattery = 60, shown = 23, fullRanges = mapOf("lime" to 11_500, "bolt" to 61_000)),
+    ;
 
     val fileName: String get() = name.replaceFirstChar { it.lowercase() }
 

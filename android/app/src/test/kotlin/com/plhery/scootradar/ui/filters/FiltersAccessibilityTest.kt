@@ -16,15 +16,23 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
+import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterProviderEntry
+import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterUnits
+import com.plhery.scootradar.scooter
+import com.plhery.scootradar.zonesOffDefaults
+import com.plhery.scootradar.zurichRegion
 import com.plhery.scootradar.ui.dock.ProviderList
 import com.plhery.scootradar.ui.theme.ScootTheme
 import org.junit.After
@@ -65,16 +73,21 @@ class FiltersAccessibilityTest {
     fun tearDown() {
         controllers.close()
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterUnits.current = ScooterUnits.Automatic
     }
 
     private var hasActiveFilters by mutableStateOf(true)
+    private var minimum by mutableStateOf(30)
+    private var shownEntries by mutableStateOf(entries)
+    private var fullRanges by mutableStateOf(emptyMap<String, Int>())
 
     private fun showFilters(minimumBattery: Int = 30) {
+        minimum = minimumBattery
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = true) {
                 FilterSheetContent(
-                    minimumBattery = minimumBattery,
-                    entries = entries,
+                    minimumBattery = minimum,
+                    entries = shownEntries,
                     hasActiveFilters = hasActiveFilters,
                     showResults = "Show 13 scooters",
                     bottomInset = 0.dp,
@@ -82,6 +95,7 @@ class FiltersAccessibilityTest {
                     onToggle = {},
                     onReset = {},
                     onDone = {},
+                    fullRanges = fullRanges,
                 )
             }
         }
@@ -153,6 +167,85 @@ class FiltersAccessibilityTest {
 
         hasActiveFilters = true
         compose.onNode(hasText("Reset")).assertIsEnabled().assert(role(Role.Button))
+    }
+
+    /**
+     * What TalkBack reads next after the battery presets, in the sheet's order, its spaces plain: the paragraph under
+     * them, or the next section's heading where there is none.
+     */
+    private fun afterThePresets(): String {
+        compose.waitForIdle()
+        val group = compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.SelectableGroup)).fetchSemanticsNode()
+        val next = group.parent!!.children.dropWhile { it.id != group.id }.drop(1).first()
+        return plainSpaces(next.config[SemanticsProperties.Text].joinToString { it.text })
+    }
+
+    private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
+
+    private val hidden = "Scooters without battery info are hidden while a minimum is set."
+
+    /**
+     * Issue #12: under the presets, how far the minimum chosen, or a full battery for Any, usually takes the scooters
+     * of the apps switched on in view, followed while a minimum is set by what it hides: one paragraph, which TalkBack
+     * reads right after the presets as what describes them. Where no app in view has a full range, nothing is said at
+     * Any and only what a minimum hides at 60%.
+     */
+    @Test
+    fun underThePresetsOneParagraphSaysHowFarTheMinimumUsuallyTakesTheScootersChosen() {
+        ScooterUnits.current = ScooterUnits.Metric
+        shownEntries = listOf(
+            ScooterProviderEntry(ScooterProvider.Lime, count = 30, isEnabled = true, isSelected = false, isDown = false),
+            ScooterProviderEntry(ScooterProvider.Bolt, count = 10, isEnabled = true, isSelected = false, isDown = false),
+        )
+        showFilters(minimumBattery = 0)
+        assertEquals("Providers", afterThePresets())
+
+        fullRanges = mapOf("lime" to 11_500, "bolt" to 61_000)
+        assertEquals("100% usually allows about 12–61 km.", afterThePresets())
+
+        minimum = 60
+        assertEquals("60% usually allows about 7–37 km. $hidden", afterThePresets())
+
+        shownEntries = shownEntries.map { if (it.provider == ScooterProvider.Bolt) it.copy(isEnabled = false) else it }
+        assertEquals("60% usually allows about 7 km. $hidden", afterThePresets())
+
+        fullRanges = emptyMap()
+        assertEquals(hidden, afterThePresets())
+    }
+
+    /**
+     * The sheet writes the line from the controller's latest answer and what its provider rows count: Voi's scooter,
+     * which gives a range and no battery, counts at 60% by its estimated 70% and not at 80%.
+     */
+    @Test
+    fun theSheetWritesTheLineFromTheLatestAnswerAndTheScootersItCounts() {
+        val defaults = zonesOffDefaults().apply { set("metric", forKey = "units") }
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(
+                    scooter(id = "l1", provider = "lime", battery = 80),
+                    scooter(id = "l2", provider = "lime", battery = 90),
+                    scooter(id = "l3", provider = "lime", battery = 85),
+                    scooter(id = "v1", provider = "voi", battery = null, rangeMeters = 56_000, batteryEstimate = 70),
+                ),
+                fullRanges = mapOf("lime" to 40_000, "voi" to 80_000),
+            ),
+        )
+        val model = controllers.make(api, defaults = defaults)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                ScooterFilterSheet(model, bottomInset = 0.dp, onDone = {})
+            }
+        }
+        assertEquals("100% usually allows about 40–80 km.", afterThePresets())
+
+        compose.onNode(hasContentDescription("60 percent or more") and isSelectable()).performClick()
+        assertEquals("60% usually allows about 24–48 km. $hidden", afterThePresets())
+
+        compose.onNode(hasContentDescription("80 percent or more") and isSelectable()).performClick()
+        assertEquals("80% usually allows about 32 km. $hidden", afterThePresets())
     }
 
     /**

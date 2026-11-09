@@ -50,6 +50,7 @@ import com.plhery.scootradar.core.map.filterProviders
 import com.plhery.scootradar.core.map.hasActiveFilters
 import com.plhery.scootradar.core.map.showResultsTitle
 import com.plhery.scootradar.core.model.ScooterBatteryFilter
+import com.plhery.scootradar.core.model.ScooterBatteryReach
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterNumberFormat
@@ -83,8 +84,8 @@ import com.plhery.scootradar.ui.theme.weight
 // (ui.md UI-060, UI-062, UI-064 to UI-066, UI-175).
 
 /**
- * Filters: the battery minimum and the providers shown, which change the map at once, with Reset in the bar and
- * the button that closes the sheet on what the map now shows.
+ * Filters: the battery minimum, with how far it usually takes the scooters chosen in view, and the providers shown,
+ * which change the map at once, with Reset in the bar and the button that closes the sheet on what the map now shows.
  */
 @Composable
 fun ScooterFilterSheet(
@@ -96,6 +97,7 @@ fun ScooterFilterSheet(
 ) {
     val changes = rememberControllerChanges(controller)
     val minimumBattery by controller.minimumBattery.collectAsState()
+    val fullRanges by controller.fullRanges.collectAsState()
     val hasActiveFilters = remember(controller, changes) { controller.hasActiveFilters }
     val entries = remember(controller, changes) { controller.filterProviders }
     val showResults = remember(controller, changes) {
@@ -115,6 +117,7 @@ fun ScooterFilterSheet(
         onReset = controller::resetFilters,
         onDone = onDone,
         inPopover = inPopover,
+        fullRanges = fullRanges,
     )
 }
 
@@ -133,6 +136,11 @@ internal fun FilterSheetContent(
     onDone: () -> Unit,
     /** As tall as the filters, up to the room it is given, rather than all of it: the list scrolls only past that. */
     inPopover: Boolean = false,
+    /**
+     * How far a full battery usually takes each app's scooters in view, in metres, by provider id (the answer's
+     * fullRanges): the line under the battery presets.
+     */
+    fullRanges: Map<String, Int> = emptyMap(),
 ) {
     val colors = scootColors
     Column(if (inPopover) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
@@ -147,7 +155,7 @@ internal fun FilterSheetContent(
                 Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(22.dp),
             ) {
-                BatteryFilters(minimumBattery, onChoose = onChooseMinimum)
+                BatteryFilters(minimumBattery, reach = ScooterBatteryReach.line(minimumBattery, fullRanges, entries), onChoose = onChooseMinimum)
                 ProviderFilters(entries, onToggle = onToggle)
             }
         }
@@ -169,8 +177,13 @@ internal fun FilterSheetContent(
 /** The room the list fades out in above Show results. */
 private val FADE = 14.dp
 
+/**
+ * "Battery" over its presets and, under them, how far the minimum, or a full battery for Any, usually takes the
+ * scooters chosen in view ([reach], none where no app in view has a full range), followed while a minimum is set by
+ * the scooters it hides: one paragraph, which TalkBack reads after the presets, as both describe the choice.
+ */
 @Composable
-private fun BatteryFilters(minimum: Int, onChoose: (Int) -> Unit) {
+private fun BatteryFilters(minimum: Int, reach: String?, onChoose: (Int) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         SectionHeader(localized("Battery"))
         val isAccessibility = TextSize.isAccessibility
@@ -190,9 +203,13 @@ private fun BatteryFilters(minimum: Int, onChoose: (Int) -> Unit) {
                 ScooterBatteryFilter.presets.forEach { BatteryPreset(it, it == minimum, Modifier.weight(1f), onChoose) }
             }
         }
-        if (minimum > 0) {
+        val help = listOfNotNull(
+            reach,
+            localized("Scooters without battery info are hidden while a minimum is set.").takeIf { minimum > 0 },
+        )
+        if (help.isNotEmpty()) {
             Text(
-                localized("Scooters without battery info are hidden while a minimum is set."),
+                help.joinToString(" "),
                 style = ScootType.footnote,
                 color = scootColors.secondaryText,
                 modifier = Modifier.padding(horizontal = 4.dp),
