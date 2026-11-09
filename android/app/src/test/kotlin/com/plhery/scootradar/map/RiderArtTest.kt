@@ -42,7 +42,7 @@ class RiderArtTest {
         assertEquals(0.21 * 255, Color.alpha(beam.getPixel(middle, middle - (0.45 * 144).roundToInt())).toDouble(), 4.0)
         assertTrue(Color.alpha(beam.getPixel(middle, 1)) < 8)
         assertEquals(0x00, Color.red(beam.getPixel(middle, middle - 20)))
-        assertEquals(0x7A.toDouble(), Color.green(beam.getPixel(middle, middle - 20)).toDouble(), 2.0)
+        assertEquals(0x88.toDouble(), Color.green(beam.getPixel(middle, middle - 20)).toDouble(), 2.0)
         // Nothing behind the dot, nor outside its angle.
         assertEquals(0, Color.alpha(beam.getPixel(middle, middle + 30)))
         assertEquals(0, Color.alpha(at(beam, degrees = 30.0, distance = 40.0)))
@@ -59,23 +59,41 @@ class RiderArtTest {
         val beam = art.beam(halfAngle = 22.0, look = contrast)
         // 1.5 points from its point, the gradient has fallen a little from 0.65 towards half that.
         assertEquals(0.65 * (1 - 0.5 * 1.5 / (0.45 * 72)) * 255, Color.alpha(beam.getPixel(144, 141)).toDouble(), 8.0)
-        assertEquals(0xFF007AFF.toInt(), art.blue(light))
-        assertEquals(0xFF0A84FF.toInt(), art.blue(dark))
-        assertEquals(0xFF0040DD.toInt(), art.blue(contrast))
-        assertEquals(0xFF409CFF.toInt(), art.blue(RiderArt.Look(dark = true, highContrast = true)))
+        // iOS 26's systemBlue, and its accessible variants, for the beam and the halo.
+        val darkContrast = RiderArt.Look(dark = true, highContrast = true)
+        assertEquals(0xFF0088FF.toInt(), art.blue(light))
+        assertEquals(0xFF0091FF.toInt(), art.blue(dark))
+        assertEquals(0xFF1E6EF4.toInt(), art.blue(contrast))
+        assertEquals(0xFF5CB8FF.toInt(), art.blue(darkContrast))
+        // The dot: systemBlue, and MapKit's deeper blue with Increase Contrast, as measured on iOS 27.
+        assertEquals(art.blue(light), art.dot(light))
+        assertEquals(art.blue(dark), art.dot(dark))
+        assertEquals(0xFF1858C3.toInt(), art.dot(contrast))
+        assertEquals(0xFF4A93CC.toInt(), art.dot(darkContrast))
     }
 
     @Test
     fun theRingIsWhiteAndTheDotBreathesSlowly() {
         val ring = art.ring(light)
-        assertEquals(68, ring.width)
-        assertEquals(Color.WHITE, ring.getPixel(34, 34 - 20))
-        assertTrue("its shadow round it", Color.alpha(ring.getPixel(34, 34 - 24)) in 1..254)
+        assertEquals(100, ring.width)
+        assertEquals(Color.WHITE, ring.getPixel(50, 50 - 20))
+        assertTrue("its shadow round it", Color.alpha(ring.getPixel(50, 50 - 24)) in 1..254)
+        // MapKit's shadow still shows 7 points under the ring, past the 34-point picture the ring had.
+        assertTrue("its shadow's reach", Color.alpha(ring.getPixel(50, 50 + 2 * 18)) in 1..254)
         assertEquals(0, Color.alpha(ring.getPixel(0, 0)))
+        // In dark, the ring is a light grey, greyer with Increase Contrast.
+        assertEquals(0xFFC7C7CC.toInt(), art.ring(dark).getPixel(50, 50 - 20))
+        assertEquals(0xFFAEAEB2.toInt(), art.ring(RiderArt.Look(dark = true, highContrast = true)).getPixel(50, 50 - 20))
+        assertEquals(Color.WHITE, art.ring(RiderArt.Look(dark = false, highContrast = true)).getPixel(50, 50 - 20))
 
-        assertEquals(8.0, RiderArt.breathingRadius(0.0), 1e-9)
-        assertEquals(6.8, RiderArt.breathingRadius(1.5), 1e-9)
-        assertEquals(8.0, RiderArt.breathingRadius(3.0), 1e-9)
+        // Full size for a second and more, then in to 5/6 at the breath's middle and out again, every 3 s.
+        assertEquals(8.0, RiderArt.breathingRadius(0.0), 1e-3)
+        assertEquals(8.0, RiderArt.breathingRadius(0.45), 0.05)
+        assertEquals(8.0 * 5 / 6, RiderArt.breathingRadius(1.5), 1e-9)
+        assertEquals(8.0 * (1 - Math.exp(-0.5) / 6), RiderArt.breathingRadius(1.5 + 0.385), 1e-9)
+        assertEquals(RiderArt.breathingRadius(1.2), RiderArt.breathingRadius(1.8), 1e-9)
+        assertEquals(RiderArt.breathingRadius(1.5), RiderArt.breathingRadius(4.5), 1e-9)
+        assertEquals(8.0, RiderArt.breathingRadius(3.0), 1e-3)
     }
 
     @Test
@@ -130,7 +148,7 @@ class RiderArtTest {
             restore()
             val ring = art.ring(look)
             drawBitmap(ring, middle - ring.width / 2f, middle - ring.height / 2f, null)
-            drawCircle(middle, middle, (RiderArt.DOT_RADIUS * ratio).toFloat(), Paint(Paint.ANTI_ALIAS_FLAG).apply { color = art.blue(look) })
+            drawCircle(middle, middle, (RiderArt.DOT_RADIUS * ratio).toFloat(), Paint(Paint.ANTI_ALIAS_FLAG).apply { color = art.dot(look) })
         }
         return bitmap
     }

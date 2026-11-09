@@ -41,13 +41,14 @@ import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.ceil
 import kotlin.math.cos
+import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
 /**
  * The rider on MapLibre's map while the controller knows where they are (MAP-186), as MapKit draws its user
- * location: a blue disc in a white ring with a soft shadow, breathing slowly (MAP-187), in the halo of its fix's
+ * location: a blue disc in a white ring (light grey in dark) with a soft shadow, breathing slowly (MAP-187), in the halo of its fix's
  * accuracy, in metres on the ground (MAP-197), with the compass's beam behind it (MAP-191 to MAP-196); above every
  * marker and name (MAP-188). It follows each fix the controller takes.
  *
@@ -128,7 +129,7 @@ class ScooterRider(
         if (ringLook != look) {
             ringLook = look
             style.addImage(RING_IMAGE, art.ring(look))
-            style.getLayer(ScooterMarkerLayers.RIDER)?.setProperties(PropertyFactory.circleColor(art.blue(look)))
+            style.getLayer(ScooterMarkerLayers.RIDER)?.setProperties(PropertyFactory.circleColor(art.dot(look)))
             style.getLayer(ScooterMarkerLayers.RIDER_HALO)?.setProperties(PropertyFactory.circleColor(art.halo(look)))
         }
         if (place != writtenPlace) {
@@ -238,8 +239,9 @@ class ScooterRider(
 
         /**
          * The rider's source and layers, above every marker and name, bottom to top: the halo, the beam, the ring
-         * and the dot. Each is drawn whatever is near, and none is tilted with the map but the halo, which lies on
-         * the ground; the beam is turned with it.
+         * and the dot. Each is drawn whatever is near. The halo, the ring and the dot lie on a tilted map, as MapKit
+         * lays its dot on it (a 22 pt ring 20.7 high at 20°), their size the same however far the camera; the beam
+         * is turned with the map, upright on the screen.
          */
         fun addLayers(style: Style) {
             style.addSource(GeoJsonSource(ScooterMarkerLayers.RIDER_SOURCE))
@@ -261,13 +263,13 @@ class ScooterRider(
             style.addLayer(
                 SymbolLayer(ScooterMarkerLayers.RIDER_RING, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
                     PropertyFactory.iconImage(RING_IMAGE),
-                    *pictureProperties(),
+                    *pictureProperties(pitchAlignment = Property.ICON_PITCH_ALIGNMENT_MAP),
                 ),
             )
             style.addLayer(
                 CircleLayer(ScooterMarkerLayers.RIDER, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
                     PropertyFactory.circleRadius(RiderArt.DOT_RADIUS.toFloat()),
-                    PropertyFactory.circlePitchAlignment(Property.CIRCLE_PITCH_ALIGNMENT_VIEWPORT),
+                    PropertyFactory.circlePitchAlignment(Property.CIRCLE_PITCH_ALIGNMENT_MAP),
                     PropertyFactory.circlePitchScale(Property.CIRCLE_PITCH_SCALE_VIEWPORT),
                 ),
             )
@@ -278,30 +280,53 @@ class ScooterRider(
             (style.getLayer(ScooterMarkerLayers.RIDER_BEAM) as? SymbolLayer)?.iconOpacityTransition = TransitionOptions(0, 0)
         }
 
-        private fun pictureProperties(rotationAlignment: String = Property.ICON_ROTATION_ALIGNMENT_VIEWPORT) = arrayOf(
+        private fun pictureProperties(
+            rotationAlignment: String = Property.ICON_ROTATION_ALIGNMENT_VIEWPORT,
+            pitchAlignment: String = Property.ICON_PITCH_ALIGNMENT_VIEWPORT,
+        ) = arrayOf(
             PropertyFactory.iconAnchor(Property.ICON_ANCHOR_CENTER),
             PropertyFactory.iconAllowOverlap(true),
             PropertyFactory.iconIgnorePlacement(true),
             PropertyFactory.iconRotationAlignment(rotationAlignment),
-            PropertyFactory.iconPitchAlignment(Property.ICON_PITCH_ALIGNMENT_VIEWPORT),
+            PropertyFactory.iconPitchAlignment(pitchAlignment),
         )
     }
 }
 
 /**
  * The rider's pictures and colours, as MapKit draws its user location and ScooterHeadingBeamView its beam, at the
- * map's pixel ratio, in points.
+ * map's pixel ratio, in points. MapKit's were measured on iOS 27's simulator (9 Nov 2026, briefs/map187-report.md).
  */
 class RiderArt(private val density: Float) {
     /** The app's appearance, and whether Increase Contrast is on, as the app's colours follow it (ScootColors). */
     data class Look(val dark: Boolean, val highContrast: Boolean)
 
-    /** UIColor.systemBlue in each appearance, its accessible variants with Increase Contrast. */
+    /**
+     * UIColor.systemBlue in each appearance, its accessible variants with Increase Contrast, as iOS 26 made them: the
+     * beam's and the halo's.
+     */
     fun blue(look: Look): Int = when {
-        look.highContrast && look.dark -> 0xFF409CFF.toInt()
-        look.highContrast -> 0xFF0040DD.toInt()
-        look.dark -> 0xFF0A84FF.toInt()
-        else -> 0xFF007AFF.toInt()
+        look.highContrast && look.dark -> 0xFF5CB8FF.toInt()
+        look.highContrast -> 0xFF1E6EF4.toInt()
+        look.dark -> 0xFF0091FF.toInt()
+        else -> 0xFF0088FF.toInt()
+    }
+
+    /**
+     * The dot's blue: systemBlue, and with Increase Contrast MapKit's own, 0.8 of the accessible systemBlue's in
+     * each channel.
+     */
+    fun dot(look: Look): Int = when {
+        look.highContrast && look.dark -> 0xFF4A93CC.toInt()
+        look.highContrast -> 0xFF1858C3.toInt()
+        else -> blue(look)
+    }
+
+    /** The ring round the dot: white, and a light grey in dark, greyer with Increase Contrast. */
+    fun ringColor(look: Look): Int = when {
+        look.dark && look.highContrast -> 0xFFAEAEB2.toInt()
+        look.dark -> 0xFFC7C7CC.toInt()
+        else -> Color.WHITE
     }
 
     /** The accuracy halo's fill: the blue, faint. */
@@ -334,11 +359,11 @@ class RiderArt(private val density: Float) {
         drawPath(sector, paint)
     }
 
-    /** The white ring under the dot, with its soft shadow all round. */
+    /** The ring under the dot, with its soft shadow all round. */
     fun ring(look: Look): Bitmap = picture(RING_SIZE) { x, y ->
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.WHITE
-            setShadowLayer(SHADOW_RADIUS, 0f, SHADOW_OFFSET, Color.argb(if (look.dark) 0.5f else 0.3f, 0f, 0f, 0f))
+            color = ringColor(look)
+            setShadowLayer(SHADOW_RADIUS, 0f, SHADOW_OFFSET, Color.argb(if (look.dark) 0.3f else 0.25f, 0f, 0f, 0f))
         }
         drawCircle(x, y, RING_DIAMETER.toFloat() / 2, paint)
     }
@@ -364,20 +389,28 @@ class RiderArt(private val density: Float) {
         const val DOT_RADIUS = 8.0
         const val RING_DIAMETER = 22.0
 
-        /** The ring's picture, with room for its shadow. */
-        const val RING_SIZE = 34.0
+        /** The ring's picture, with room for its shadow: 14 points past the ring, three times the shadow's spread. */
+        const val RING_SIZE = 50.0
 
         const val BEAM_SIZE = 144.0
         private const val HALO_OPACITY = 0.15
-        private const val SHADOW_RADIUS = 4f
+
+        /** The shadow's blur, Android's radius for MapKit's spread of 4.5 points (σ = 0.577 × radius + 0.5), 1 down. */
+        private const val SHADOW_RADIUS = 7f
         private const val SHADOW_OFFSET = 1f
 
-        /** The dot's breath: in to 0.85 of its size and out again every 3 s, as MapKit's breathes. */
+        /**
+         * The dot's breath, as MapKit's breathes: every 3 s, at full size for about a second, then in to 5/6 of it
+         * and out again, a bell's curve 0.385 s wide each way of its middle.
+         */
         private const val BREATH_PERIOD = 3.0
-        private const val BREATH_DEPTH = 0.15
+        private const val BREATH_DEPTH = 1.0 / 6
+        private const val BREATH_SPREAD = 0.385
 
-        /** The dot's radius [time] seconds into its breath. */
-        fun breathingRadius(time: Double): Double =
-            DOT_RADIUS * (1 - BREATH_DEPTH * (1 - cos(2 * PI * time / BREATH_PERIOD)) / 2)
+        /** The dot's radius [time] seconds into its breath, the narrowest halfway. */
+        fun breathingRadius(time: Double): Double {
+            val fromMiddle = (time % BREATH_PERIOD + BREATH_PERIOD) % BREATH_PERIOD - BREATH_PERIOD / 2
+            return DOT_RADIUS * (1 - BREATH_DEPTH * exp(-fromMiddle * fromMiddle / (2 * BREATH_SPREAD * BREATH_SPREAD)))
+        }
     }
 }

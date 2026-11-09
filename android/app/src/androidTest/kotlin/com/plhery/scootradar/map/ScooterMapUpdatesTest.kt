@@ -180,7 +180,7 @@ class ScooterMapUpdatesTest {
             settle()
             val art = RiderArt(2f)
             fun blue(): Int = shown.phone.onMain { (shown.style().getLayer(ScooterMarkerLayers.RIDER) as CircleLayer).circleColorAsInt }
-            assertEquals(art.blue(RiderArt.Look(dark = false, highContrast = false)), blue())
+            assertEquals(art.dot(RiderArt.Look(dark = false, highContrast = false)), blue())
             val view = shown.phone.view
             for ((dark, contrast) in listOf(false to true, true to true, true to false, false to false)) {
                 shown.phone.onMain {
@@ -188,7 +188,7 @@ class ScooterMapUpdatesTest {
                     shown.contrast.value = contrast
                 }
                 waitFor("the rider's blue for dark $dark, contrast $contrast") {
-                    blue() == art.blue(RiderArt.Look(dark = dark, highContrast = contrast))
+                    blue() == art.dot(RiderArt.Look(dark = dark, highContrast = contrast))
                 }
             }
             assertTrue("the same map", shown.phone.view === view)

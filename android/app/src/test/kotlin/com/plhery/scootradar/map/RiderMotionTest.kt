@@ -186,7 +186,7 @@ class RiderMotionTest {
         // A frame each 66 ms or so, not each of the screen's sixty a second.
         assertTrue("$frames frames", frames in 10..16)
         assertTrue(layers.radii.size > 8)
-        assertTrue(layers.radii.all { it < RiderArt.DOT_RADIUS + 0.01 && it > RiderArt.DOT_RADIUS * 0.85 - 0.01 })
+        assertTrue(layers.radii.all { it < RiderArt.DOT_RADIUS + 0.01 && it > RiderArt.DOT_RADIUS * 5 / 6 - 0.01 })
 
         // The dot off the screen: no frame asked, and at rest full size.
         layers.breathing = false
@@ -200,10 +200,11 @@ class RiderMotionTest {
         assertEquals(0, frames)
         assertEquals(written, layers.radii.size)
 
-        // Back on the screen as the camera moves: it breathes again.
+        // Back on the screen as the camera moves: it breathes again. Its breath rests at full size for a second and
+        // more, when nothing is written, so a whole one.
         layers.breathing = true
         motion.cameraMoved()
-        run(500)
+        run(3_000)
         assertTrue(layers.radii.size > written + 5)
     }
 
