@@ -709,7 +709,7 @@ private actor ZoneStubAPI: ScooterAPIClient {
         self.more = more
     }
 
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) async throws -> ScooterResponse {
         ScooterResponse(vehicles: [])
     }
 

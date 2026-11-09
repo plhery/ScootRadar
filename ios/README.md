@@ -171,22 +171,29 @@ city's **Open the map** in a guide, opens in the app when it is installed
 (universal links: `public/.well-known/apple-app-site-association` and
 `ScootRadar.entitlements`). `Models/ScooterMapLink.swift` reads it as the web
 map does: a city's centre opens like the city chosen in the search, any other
-point moves the map there, and `minBattery` sets the battery filter. The first
-location fix after a link leaves the map where the link put it. Safari's Smart
+point moves the map there and `minRange` sets the range filter, in metres; the
+battery minimum of an older link, `minBattery`, is left out. The first location
+fix after a link leaves the map where the link put it. Safari's Smart
 App Banner on the site names the page it is on, with the link's parameters, so
 its **Open** lands in the same place. Try it with
 `xcrun simctl openurl booted "https://scootradar.com/map?origin=47.3769,8.5417"`.
 
-**Filters.** One battery choice (Any, 30%+, 60%+, 80%+) and one provider list
-with the count in view, or a note when a provider is not sharing data. A
-scooter whose feed gives a range and no battery is judged by the battery the
-server estimates from it (`battery_estimate`), which the card never shows.
-Under the choice, a line says how far the minimum, or a full battery for Any,
-usually takes the scooters of the apps switched on in view, from the answer's
-`fullRanges`: "60% usually allows about 22 km", or "100% usually allows about
-12–80 km" where the apps differ by over a quarter, in whole kilometres or
-miles, as the website writes it (`src/lib/battery.ts`). **Reset** is in the
-header and the button at the bottom says how many scooters the map will show.
+**Filters.** One minimum, a range slider (Any, then whole kilometres up to
+30 km, or whole miles up to 20 mi where lengths are in miles, as Settings ›
+Units has them), and one provider list with the count in view, or a note when a
+provider is not sharing data. A scooter whose feed gives a range needs that far.
+One that reports only its battery is judged pessimistically, by its battery
+times how far a full battery takes its app's scooters at the least, from the
+answer's `batteryRanges` (10 km for an app it does not name), in whole numbers:
+6 km needs 53% of a Lime, whose full battery reads 11.5 km. One with neither is
+hidden. Under the slider, while a minimum is set, one paragraph says the battery
+each app's battery-only scooters need, "Scooters that only report a battery need
+at least 9% (Voi), 21% (Bolt) and 53% (Lime).", the apps whose are all hidden as
+even a full battery may not reach the minimum, and that scooters with neither
+are hidden; VoiceOver reads it after the slider. Zoomed out, the server filters
+the groups it counts by the same rule (`minRange`); zoomed in, the app filters
+the scooters itself. **Reset** is in the header and the button at the bottom
+says how many scooters the map will show.
 
 **Settings.** Three choices as tiles, the first two each under a small picture of
 what it gives: the appearance (Auto, dark from half an hour after sunset to half

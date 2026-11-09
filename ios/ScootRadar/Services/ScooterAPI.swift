@@ -1,7 +1,8 @@
 import Foundation
 
 protocol ScooterAPIClient: Sendable {
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse
+    /// The scooters in the bounds that reach the minimum range in metres, 0 for Any (ScooterFiltering.passesRange).
+    func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) async throws -> ScooterResponse
     /// The operators' zones that reach into the area.
     func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse
     /// A file of the cities' zones the app downloads, under /zones/v1/: the index, or a city's
@@ -59,17 +60,22 @@ actor ScooterAPI: ScooterAPIClient {
         self.session = session
     }
 
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int = 0) async throws -> ScooterResponse {
         viewSequence += 1
         let view = "\(viewID).\(viewSequence)"
-        let (data, httpResponse) = try await get("api/scooters", query: [
+        var query = [
             URLQueryItem(name: "south", value: String(format: "%.5f", bounds.south)),
             URLQueryItem(name: "west", value: String(format: "%.5f", bounds.west)),
             URLQueryItem(name: "north", value: String(format: "%.5f", bounds.north)),
             URLQueryItem(name: "east", value: String(format: "%.5f", bounds.east)),
-            URLQueryItem(name: "zoom", value: String(zoom)),
-            URLQueryItem(name: "minBattery", value: String(minimumBattery))
-        ], view: view)
+            URLQueryItem(name: "zoom", value: String(zoom))
+        ]
+        // Only with a minimum, in whole metres: a server from before the range filter answers as it did, and
+        // the app filters the scooters itself. The filters have no battery minimum (minBattery) any more.
+        if minimumRange > 0 {
+            query.append(URLQueryItem(name: "minRange", value: String(minimumRange)))
+        }
+        let (data, httpResponse) = try await get("api/scooters", query: query, view: view)
         // The server's times are compared with this device's clock, which may be wrong.
         let clockOffset = Self.clockOffset(
             dateHeader: httpResponse.value(forHTTPHeaderField: "Date"),

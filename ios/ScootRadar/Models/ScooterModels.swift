@@ -10,9 +10,6 @@ struct Scooter: Identifiable, Hashable, Sendable {
     let longitude: Double
     let battery: Int?
     let rangeMeters: Int?
-    /// The battery the server estimates from the range where the feed gives a range and no battery
-    /// (battery_estimate). The battery filter judges the scooter by it; the card and the marker never show it.
-    let batteryEstimate: Int?
     let vehicleID: String?
     let deepLink: String?
     let rentalURIs: ScooterRentalURIs?
@@ -25,7 +22,6 @@ struct Scooter: Identifiable, Hashable, Sendable {
         longitude: Double,
         battery: Int?,
         rangeMeters: Int?,
-        batteryEstimate: Int? = nil,
         vehicleID: String?,
         deepLink: String?,
         rentalURIs: ScooterRentalURIs?,
@@ -37,7 +33,6 @@ struct Scooter: Identifiable, Hashable, Sendable {
         self.longitude = longitude
         self.battery = battery
         self.rangeMeters = rangeMeters
-        self.batteryEstimate = batteryEstimate
         self.vehicleID = vehicleID
         self.deepLink = deepLink
         self.rentalURIs = rentalURIs
@@ -76,11 +71,6 @@ struct Scooter: Identifiable, Hashable, Sendable {
     var formattedRange: String? {
         guard let rangeMeters else { return nil }
         return Self.formattedLength(meters: Double(rangeMeters))
-    }
-
-    /// The battery the battery filter judges the scooter by: its own, or else the server's estimate from its range.
-    var filterBattery: Int? {
-        battery ?? batteryEstimate
     }
 
     var rentalURL: URL? {
@@ -167,8 +157,8 @@ struct Scooter: Identifiable, Hashable, Sendable {
         return (String(length[..<gap]), String(length[length.index(after: gap)...]))
     }
 
-    /// Whole kilometres or miles, "61 km" or "38 mi": the closest cities and how far
-    /// the battery minimum takes the scooters, which never come in metres, feet or yards.
+    /// Whole kilometres or miles, "61 km" or "38 mi": the closest cities and the
+    /// range filter's steps, which never come in metres, feet or yards.
     static func formattedWhole(_ value: Int, of unit: UnitLength, locale: Locale = ScooterLanguage.current.locale) -> String {
         Measurement(value: Double(value), unit: unit).formatted(.measurement(
             width: .abbreviated,
@@ -789,10 +779,11 @@ struct ScooterResponse: Sendable {
     /// whether new positions of its are on their way for this request. Nil from a server that does not say.
     let lastSeenProviders: [String: ScooterLastSeenStatus]?
     let providers: [String: Int]
-    /// How far a full battery usually takes each app's scooters in view, in metres (fullRanges), whatever
-    /// the zoom and the provider filter. Empty from a server that does not say, and for apps this build
-    /// does not know.
-    let fullRanges: [ScooterProvider: Int]
+    /// How far a full battery takes each app's scooters at the least, in metres, for the apps with a scooter in
+    /// view that reports a battery and no range, whatever the provider filter and the minimum (batteryRanges):
+    /// the range filter judges those by it. Empty from a server that does not say, and its figures that are
+    /// not lengths are left out.
+    let batteryRanges: [String: Int]
     let meta: ScooterResponseMetadata?
     let parking: [ScooterParking]
     /// How far the clock of this device is ahead of the server's (negative when
@@ -806,7 +797,7 @@ struct ScooterResponse: Sendable {
         lastSeenClusters: [ScooterCluster] = [],
         lastSeenProviders: [String: ScooterLastSeenStatus]? = nil,
         providers: [String: Int] = [:],
-        fullRanges: [ScooterProvider: Int] = [:],
+        batteryRanges: [String: Int] = [:],
         meta: ScooterResponseMetadata? = nil,
         parking: [ScooterParking] = [],
         clockOffset: TimeInterval = 0
@@ -817,7 +808,7 @@ struct ScooterResponse: Sendable {
         self.lastSeenClusters = lastSeenClusters
         self.lastSeenProviders = lastSeenProviders
         self.providers = providers
-        self.fullRanges = fullRanges
+        self.batteryRanges = batteryRanges
         self.meta = meta
         self.parking = parking
         self.clockOffset = clockOffset
@@ -1021,7 +1012,6 @@ extension ScooterVehiclePayload {
             longitude: longitude,
             battery: battery,
             rangeMeters: rangeMeters,
-            batteryEstimate: batteryEstimate,
             vehicleID: vehicleID,
             deepLink: deepLink,
             rentalURIs: rentalURIs.map {
@@ -1097,9 +1087,7 @@ extension ScooterAPIResponsePayload {
                 ScooterServerTime.date(payload.seenAt).map { ScooterLastSeenStatus(seenAt: $0, updating: payload.updating) }
             },
             providers: providers,
-            fullRanges: Dictionary(uniqueKeysWithValues: (fullRanges ?? [:]).compactMap { id, metres in
-                ScooterProvider(rawValue: id).flatMap { metres > 0 ? ($0, metres) : nil }
-            }),
+            batteryRanges: (batteryRanges ?? [:]).filter { $0.value > 0 },
             meta: meta.model,
             parking: (parking ?? []).map { ScooterParking(id: $0.id, provider: $0.provider,
                 name: $0.name, latitude: $0.lat, longitude: $0.lng, mandatory: $0.mandatory) }
@@ -1722,7 +1710,7 @@ extension ScooterCityDistance {
 struct ScooterFollowUpQuery: Equatable, Sendable {
     let bounds: GeoBounds
     let zoom: Int
-    let minimumBattery: Int
+    let minimumRange: Int
 }
 
 /// When scooter data is refreshed automatically. Web and iOS follow the same rules.

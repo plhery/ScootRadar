@@ -583,18 +583,6 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(rangeOnly.figures[2].label, "range")
         XCTAssertNil(rangeOnly.facts)
 
-        // The battery the server estimates from the range is the filter's alone: the card shows the range.
-        let estimated = ScooterCardContent(
-            scooter: Scooter(
-                provider: "voi", latitude: 47.3769, longitude: 8.5417, battery: nil, rangeMeters: 39_000,
-                batteryEstimate: 49, vehicleID: "one", deepLink: nil, rentalURIs: nil, distanceMeters: 0
-            ),
-            metres: 400, quote: nil, locale: Self.swiss
-        )
-        XCTAssertEqual(estimated.figures.map(\.kind), [.walk, .distance, .range])
-        XCTAssertEqual(estimated.figures[2].value, "39")
-        XCTAssertNil(estimated.facts)
-
         let bare = ScooterCardContent(scooter: scooter(), metres: 400, quote: nil)
         XCTAssertEqual(bare.figures.map(\.kind), [.walk, .distance])
         XCTAssertNil(bare.facts)

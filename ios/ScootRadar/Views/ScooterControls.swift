@@ -2108,7 +2108,7 @@ enum RidePriceFormatter {
     private static let wholeUnitCurrencies: Set<String> = ["HUF"]
 }
 
-/// Filters: a minimum battery and the providers to show. Choices apply at
+/// Filters: a minimum range and the providers to show. Choices apply at
 /// once, so the button at the bottom can say what the map will show.
 struct ScooterFilterSheet: View {
     @Bindable var model: ScooterMapModel
@@ -2126,7 +2126,7 @@ struct ScooterFilterSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
-                    batteryFilters
+                    rangeFilter
                     providerFilters
                 }
                 .padding(.horizontal, 20)
@@ -2151,33 +2151,51 @@ struct ScooterFilterSheet: View {
                 wholeHeight = height
             }
             .sensoryFeedback(.selection, trigger: model.enabledProviders)
-            .sensoryFeedback(.selection, trigger: model.minimumBattery)
+            .sensoryFeedback(.selection, trigger: model.minimumRange)
         }
         // No least height: in a short window the popover gets less, and the list scrolls.
         .frame(minWidth: inPopover ? 360 : nil, idealWidth: inPopover ? 400 : nil, idealHeight: inPopover ? wholeHeight : nil)
     }
 
-    /// The presets, and under them how far the minimum usually takes the scooters chosen in view and,
-    /// while a minimum is set, that scooters without battery info are hidden. VoiceOver reads it right after
-    /// the presets, as it read the sentence alone: as a hint of each preset it would be said four times, and
-    /// not at all with hints switched off.
-    private var batteryFilters: some View {
-        let help = model.batteryHelp
+    /// "Range" with the minimum beside it, "Any" or "5 km+", over a slider in whole kilometres up to 30, or
+    /// whole miles up to 20 where lengths are in miles, and under it, while a minimum is set, the battery the
+    /// scooters that report only their battery need and that those with neither are hidden. VoiceOver reads
+    /// the paragraph right after the slider: as the slider's hint it would not be read with hints switched off.
+    private var rangeFilter: some View {
+        let unit = model.rangeUnit
+        let minimum = model.minimumRange
+        let help = model.rangeHelp
         return VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("Battery")
-
-            batteryPresetLayout {
-                ForEach(ScooterBatteryFilter.presets, id: \.self) { preset in
-                    batteryPreset(preset)
-                }
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                sectionHeader("Range")
+                Spacer(minLength: 0)
+                // The slider says it to VoiceOver.
+                Text(verbatim: ScooterRangeFilter.label(metres: minimum))
+                    .font(.subheadline.weight(minimum > 0 ? .semibold : .regular))
+                    .monospacedDigit()
+                    .foregroundStyle(minimum > 0 ? Color.primary : ScooterPalette.secondaryText)
+                    .padding(.horizontal, 4)
+                    .accessibilityHidden(true)
             }
-            .padding(4)
+
+            Slider(
+                value: Binding(
+                    get: { Double(ScooterRangeFilter.steps(metres: minimum, unit: unit)) },
+                    set: { model.setMinimumRange(ScooterRangeFilter.metres(steps: Int($0.rounded()), unit: unit)) }
+                ),
+                in: 0 ... Double(unit.maximumSteps),
+                step: 1
+            )
+            .tint(ScooterPalette.actionFill)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .frame(minHeight: 52)
             .background(
                 Color(uiColor: .tertiarySystemFill),
                 in: RoundedRectangle(cornerRadius: 16, style: .continuous)
             )
-            .accessibilityElement(children: .contain)
-            .accessibilityLabel(String(localized: "Battery"))
+            .accessibilityLabel(String(localized: "Range"))
+            .accessibilityValue(ScooterRangeFilter.spokenValue(metres: minimum))
 
             if let help {
                 Text(verbatim: help)
@@ -2188,57 +2206,6 @@ struct ScooterFilterSheet: View {
             }
         }
     }
-
-    /// Side by side; one above the other when the text is very large.
-    private var batteryPresetLayout: AnyLayout {
-        dynamicTypeSize.isAccessibilitySize
-            ? AnyLayout(VStackLayout(spacing: 4))
-            : AnyLayout(HStackLayout(spacing: 4))
-    }
-
-    private func batteryPreset(_ preset: Int) -> some View {
-        let selected = Int(model.minimumBattery) == preset
-        return Button {
-            model.setMinimumBattery(Double(preset))
-        } label: {
-            // "30%+" reads the same in every language; only "Any" is translated.
-            // "Indifférent" outgrows its segment before the presets stack: it
-            // shrinks a little rather than break in the middle of the word.
-            Text(verbatim: ScooterBatteryFilter.label(for: preset))
-                .font(.subheadline.weight(selected ? .semibold : .regular))
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(Self.presetMinimumScale)
-                .frame(maxWidth: .infinity, minHeight: 44)
-                .background {
-                    if selected {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Self.selectedPresetFill)
-                            .shadow(color: .black.opacity(0.1), radius: 2, y: 1)
-                    }
-                }
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(batteryPresetLabel(preset))
-        // Voice Control answers to "30%+" as shown, and to the spoken name.
-        .voiceControlNames([ScooterBatteryFilter.label(for: preset), batteryPresetLabel(preset)])
-        .accessibilityAddTraits(selected ? .isSelected : [])
-    }
-
-    private func batteryPresetLabel(_ preset: Int) -> String {
-        preset == 0
-            ? String(localized: "Any")
-            : String(format: String(localized: "%lld percent or more"), Int64(preset))
-    }
-
-    /// How far the label of a battery preset may shrink to stay on one line.
-    static let presetMinimumScale = 0.75
-
-    /// The raised segment of the chosen minimum, as in a segmented control.
-    private static let selectedPresetFill = Color(uiColor: UIColor { traits in
-        traits.userInterfaceStyle == .dark ? .systemGray2 : .white
-    })
 
     private var providerFilters: some View {
         VStack(alignment: .leading, spacing: 10) {

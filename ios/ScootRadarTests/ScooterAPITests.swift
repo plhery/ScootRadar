@@ -8,53 +8,33 @@ final class ScooterAPITests: XCTestCase {
     func testMapIdentityIsEphemeralAndRequestsAreOrdered() async throws {
         let session = StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData))
         let api = ScooterAPI(session: session)
-        _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        _ = try await api.scooters(bounds: bounds, zoom: 16)
         let first = await session.lastRequest?.value(forHTTPHeaderField: "X-Scooter-View")
-        _ = try await api.scooters(bounds: bounds, zoom: 17, minimumBattery: 0)
+        _ = try await api.scooters(bounds: bounds, zoom: 17)
         let second = await session.lastRequest?.value(forHTTPHeaderField: "X-Scooter-View")
         XCTAssertTrue(first?.hasSuffix(".1") == true)
         XCTAssertEqual(first?.split(separator: ".").first, second?.split(separator: ".").first)
         XCTAssertTrue(second?.hasSuffix(".2") == true)
-        _ = try await ScooterAPI(session: session).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        _ = try await ScooterAPI(session: session).scooters(bounds: bounds, zoom: 16)
         let separate = await session.lastRequest?.value(forHTTPHeaderField: "X-Scooter-View")
         XCTAssertNotEqual(first, separate)
     }
     func testParkingIsDecodedSeparatelyFromVehiclesAndLegacyResponsesStillWork() async throws {
         let data = Data(#"{"vehicles":[],"clusters":[],"providers":{},"parking":[{"id":"dott:bay","provider":"dott","name":"Place test","lat":45.75,"lng":4.85,"mandatory":true}],"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-09-08T12:00:00Z","truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"parkingStatus":"fresh"}}"#.utf8)
-        let response = try await makeAPI(responseStatus: 200, data: data).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let response = try await makeAPI(responseStatus: 200, data: data).scooters(bounds: bounds, zoom: 16)
         XCTAssertEqual(response.parking.count, 1)
         XCTAssertTrue(response.parking[0].mandatory)
         XCTAssertEqual(response.parking[0].coordinate.latitude, 45.75)
         XCTAssertEqual(response.meta?.parkingStatus, "fresh")
         XCTAssertTrue(response.vehicles.isEmpty)
-        let legacy = try await makeAPI(responseStatus: 200, data: emptyResponseData).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let legacy = try await makeAPI(responseStatus: 200, data: emptyResponseData).scooters(bounds: bounds, zoom: 16)
         XCTAssertTrue(legacy.parking.isEmpty)
-    }
-
-    /// A scooter whose feed gives a range and no battery comes with the battery the server estimates from it,
-    /// and the answer with how far a full battery usually takes each app's scooters in view (issue #12). An app
-    /// this build does not know is left out, and an answer from before both has neither.
-    func testTheEstimatedBatteryAndTheFullRangesAreDecoded() async throws {
-        let data = Data(#"{"vehicles":[{"provider":"lime","lat":48.7758,"lng":9.1829,"battery":null,"range_m":9000,"battery_estimate":78,"vehicle_id":"one"},{"provider":"bolt","lat":48.7759,"lng":9.183,"battery":64,"vehicle_id":"two"}],"clusters":[],"providers":{"lime":1,"bolt":1},"fullRanges":{"lime":11500,"bolt":61000,"future-provider":30000},"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-11-09T12:00:00Z","truncated":false,"totalVehicles":2,"mode":"vehicles","zoom":16}}"#.utf8)
-        let response = try await makeAPI(responseStatus: 200, data: data).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
-        XCTAssertEqual(response.fullRanges, [.lime: 11_500, .bolt: 61_000])
-        let lime = try XCTUnwrap(response.vehicles.first { $0.provider == "lime" })
-        XCTAssertNil(lime.battery)
-        XCTAssertEqual(lime.rangeMeters, 9_000)
-        XCTAssertEqual(lime.batteryEstimate, 78)
-        XCTAssertEqual(lime.filterBattery, 78)
-        let bolt = try XCTUnwrap(response.vehicles.first { $0.provider == "bolt" })
-        XCTAssertNil(bolt.batteryEstimate)
-        XCTAssertEqual(bolt.filterBattery, 64)
-
-        let legacy = try await makeAPI(responseStatus: 200, data: emptyResponseData).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
-        XCTAssertTrue(legacy.fullRanges.isEmpty)
     }
 
     func testSuccessfulResponseIsDecoded() async throws {
         let api = makeAPI(responseStatus: 200, data: emptyResponseData)
 
-        let response = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let response = try await api.scooters(bounds: bounds, zoom: 16)
 
         XCTAssertTrue(response.vehicles.isEmpty)
     }
@@ -66,20 +46,54 @@ final class ScooterAPITests: XCTestCase {
         ))
         let api = ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: session)
 
-        _ = try await api.scooters(bounds: bounds, zoom: 12, minimumBattery: 55)
+        _ = try await api.scooters(bounds: bounds, zoom: 12, minimumRange: 0)
 
         let request = await session.lastRequest
         let components = URLComponents(
             url: try XCTUnwrap(request?.url),
             resolvingAgainstBaseURL: false
         )
+        // No battery minimum: the filters have none since the range became their only minimum.
         let names = Set(components?.queryItems?.map(\.name) ?? [])
-        XCTAssertEqual(names, Set(["south", "west", "north", "east", "zoom", "minBattery"]))
+        XCTAssertEqual(names, Set(["south", "west", "north", "east", "zoom"]))
         let values = Dictionary(uniqueKeysWithValues: components?.queryItems?.compactMap { item in
             item.value.map { (item.name, $0) }
         } ?? [])
         XCTAssertEqual(values["zoom"], "12")
-        XCTAssertEqual(values["minBattery"], "55")
+    }
+
+    /// The minimum range goes in whole metres, and only when there is one: a server from before it
+    /// answers as it did, and the app filters by range itself. minBattery is never sent.
+    func testRequestSendsAMinimumRangeInMetresOnlyWhenOneIsSet() async throws {
+        let session = StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData))
+        let api = ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: session)
+
+        _ = try await api.scooters(bounds: bounds, zoom: 12, minimumRange: 4_828)
+        let ranged = await session.lastRequest?.url
+        var components = URLComponents(url: try XCTUnwrap(ranged), resolvingAgainstBaseURL: false)
+        XCTAssertEqual(components?.queryItems?.first { $0.name == "minRange" }?.value, "4828")
+        XCTAssertNil(components?.queryItems?.first { $0.name == "minBattery" })
+
+        _ = try await api.scooters(bounds: bounds, zoom: 12, minimumRange: 0)
+        let unranged = await session.lastRequest?.url
+        components = URLComponents(url: try XCTUnwrap(unranged), resolvingAgainstBaseURL: false)
+        XCTAssertNil(components?.queryItems?.first { $0.name == "minRange" })
+        XCTAssertNil(components?.queryItems?.first { $0.name == "minBattery" })
+    }
+
+    /// How far a full battery takes each app's scooters at the least, for those that report only a battery
+    /// (issue #12), is kept as the server names the apps, one this build does not know too; a figure that is
+    /// not a length is left out, and an answer from before it has none.
+    func testTheFullBatteryRangesAreDecoded() async throws {
+        let data = Data(#"{"vehicles":[{"provider":"lime","lat":52.52,"lng":13.405,"battery":53,"vehicle_id":"one"}],"clusters":[],"providers":{"lime":1},"batteryRanges":{"lime":11500,"bolt":29400,"future-provider":30000,"broken":0},"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-11-09T12:00:00Z","truncated":false,"totalVehicles":1,"mode":"vehicles","zoom":16}}"#.utf8)
+        let response = try await makeAPI(responseStatus: 200, data: data).scooters(bounds: bounds, zoom: 16)
+        XCTAssertEqual(response.batteryRanges, ["lime": 11_500, "bolt": 29_400, "future-provider": 30_000])
+        let lime = try XCTUnwrap(response.vehicles.first)
+        XCTAssertEqual(lime.battery, 53)
+        XCTAssertNil(lime.rangeMeters)
+
+        let legacy = try await makeAPI(responseStatus: 200, data: emptyResponseData).scooters(bounds: bounds, zoom: 16)
+        XCTAssertTrue(legacy.batteryRanges.isEmpty)
     }
 
     func testAViewAcrossTheDateLineIsAskedForWithItsWestGreaterThanItsEast() async throws {
@@ -90,7 +104,7 @@ final class ScooterAPITests: XCTestCase {
             span: MKCoordinateSpan(latitudeDelta: 21.08, longitudeDelta: 43)
         ))
 
-        _ = try await api.scooters(bounds: view, zoom: 6, minimumBattery: 0)
+        _ = try await api.scooters(bounds: view, zoom: 6)
 
         let request = await session.lastRequest
         let components = URLComponents(url: try XCTUnwrap(request?.url), resolvingAgainstBaseURL: false)
@@ -118,7 +132,7 @@ final class ScooterAPITests: XCTestCase {
         let data = Data(#"{"vehicles":[],"clusters":[],"providers":{},"meta":{"partial":true,"stale":true,"failedSources":["national"],"sources":{"national":"failed","hopp":"fresh"},"generatedAt":"2026-08-05T12:00:00.000Z","truncated":true,"totalVehicles":6200,"mode":"vehicles","zoom":null}}"#.utf8)
         let api = makeAPI(responseStatus: 200, data: data)
 
-        let response = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let response = try await api.scooters(bounds: bounds, zoom: 16)
 
         XCTAssertTrue(response.meta?.partial == true)
         XCTAssertTrue(response.meta?.stale == true)
@@ -131,7 +145,7 @@ final class ScooterAPITests: XCTestCase {
         let api = makeAPI(responseStatus: 503)
 
         do {
-            _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+            _ = try await api.scooters(bounds: bounds, zoom: 16)
             XCTFail("Expected an HTTP status error")
         } catch let error as ScooterAPIError {
             guard case .httpStatus(503) = error else {
@@ -147,7 +161,7 @@ final class ScooterAPITests: XCTestCase {
         let api = makeAPI(urlError: .notConnectedToInternet)
 
         do {
-            _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+            _ = try await api.scooters(bounds: bounds, zoom: 16)
             XCTFail("Expected an offline error")
         } catch let error as ScooterAPIError {
             guard case .offline = error else {
@@ -163,7 +177,7 @@ final class ScooterAPITests: XCTestCase {
         let api = makeAPI(urlError: .timedOut)
 
         do {
-            _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+            _ = try await api.scooters(bounds: bounds, zoom: 16)
             XCTFail("Expected a timeout error")
         } catch let error as ScooterAPIError {
             guard case .timedOut = error else {
@@ -179,7 +193,7 @@ final class ScooterAPITests: XCTestCase {
         let api = makeAPI(responseStatus: 200, data: Data("{}".utf8))
 
         do {
-            _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+            _ = try await api.scooters(bounds: bounds, zoom: 16)
             XCTFail("Expected a decoding error")
         } catch let error as ScooterAPIError {
             guard case .invalidData = error else {
@@ -222,7 +236,7 @@ final class ScooterAPITests: XCTestCase {
             (makeAPI(responseStatus: 200, data: Data("{}".utf8)), .failed)
         ] {
             do {
-                _ = try await api.scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+                _ = try await api.scooters(bounds: bounds, zoom: 16)
                 XCTFail("Expected a \(failure) failure")
             } catch {
                 XCTAssertEqual(ScooterLoadFailure(error), failure)
@@ -277,10 +291,10 @@ final class ScooterAPITests: XCTestCase {
             mode: .response(statusCode: 200, data: emptyResponseData),
             headers: ["Date": formatter.string(from: Date().addingTimeInterval(-1_200))]
         )
-        let fast = try await ScooterAPI(session: session).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        let fast = try await ScooterAPI(session: session).scooters(bounds: bounds, zoom: 16)
         XCTAssertEqual(fast.clockOffset, 1_200, accuracy: 5)
         let withoutHeader = try await makeAPI(responseStatus: 200, data: emptyResponseData)
-            .scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+            .scooters(bounds: bounds, zoom: 16)
         XCTAssertEqual(withoutHeader.clockOffset, 0)
     }
 

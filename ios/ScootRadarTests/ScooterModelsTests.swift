@@ -1615,11 +1615,8 @@ extension ScooterModelsTests {
             let strings = try XCTUnwrap(
                 Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
             )
-            // "82%" and "Akku ab 60%", like the presets "60%+" beside them.
+            // A scooter's battery, "82%", as the web writes it in every language.
             XCTAssertEqual(strings.localizedString(forKey: "%lld%%", value: nil, table: nil), "%lld%%", language)
-            let summary = strings.localizedString(forKey: "battery %lld%% or more", value: nil, table: nil)
-            XCTAssertTrue(summary.contains("%lld%%"), "\(language): \(summary)")
-            XCTAssertFalse(summary.contains(" %%"), "\(language): \(summary)")
         }
         let german = try XCTUnwrap(Bundle.main.path(forResource: "de", ofType: "lproj").flatMap(Bundle.init(path:)))
         XCTAssertEqual(german.localizedString(forKey: "Shown", value: nil, table: nil), "Eingeblendet")
@@ -2454,6 +2451,7 @@ extension ScooterModelsTests {
             XCTAssertEqual(metric.region, locale.region)
             XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 300, locale: metric)), "300 m", locale.identifier)
             XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 1_250, locale: metric)), "1.3 km", locale.identifier)
+            XCTAssertEqual(ScooterRangeFilter.Unit(locale: metric), .kilometres, locale.identifier)
         }
 
         // Miles: in feet under half a mile outside the UK, as iOS writes them on roads, and in yards in it.
@@ -2478,6 +2476,10 @@ extension ScooterModelsTests {
             ["10 yd", "350 yd", "1.9 mi"]
         )
         XCTAssertEqual(ScooterUnits.imperial.applied(to: american).measurementSystem, .us)
+
+        for locale in [irishMiles, swissMiles, britishMiles] {
+            XCTAssertEqual(ScooterRangeFilter.Unit(locale: locale), .miles, locale.identifier)
+        }
 
         // The closest cities, in whole kilometres or miles as chosen.
         let bern = ScooterCityCatalog.nearest(to: GeoPoint(latitude: 46.7741, longitude: 8.1558), count: 1)[0]

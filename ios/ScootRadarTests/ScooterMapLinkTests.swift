@@ -3,9 +3,9 @@ import XCTest
 
 final class ScooterMapLinkTests: XCTestCase {
     func testReadsTheMapLinksOfTheSite() throws {
-        let link = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?origin=47.3769,8.5417&minBattery=45&theme=dark")!))
+        let link = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?origin=47.3769,8.5417&minRange=5000&theme=dark")!))
         XCTAssertEqual(link.origin, GeoPoint(latitude: 47.3769, longitude: 8.5417))
-        XCTAssertEqual(link.minimumBattery, 30, "A slider-era value snaps down to a preset")
+        XCTAssertEqual(link.minimumRange, 5_000)
 
         XCTAssertEqual(ScooterMapLink(url: URL(string: "https://scootradar.com/map")!), ScooterMapLink())
         XCTAssertEqual(ScooterMapLink(url: URL(string: "https://www.scootradar.com/map/?origin=%2046.2%2C%206.15")!)?.origin,
@@ -34,10 +34,31 @@ final class ScooterMapLinkTests: XCTestCase {
         for origin in ["", "47.3", "47.3,", ",8.5", "91,8.5", "47.3,181", "abc,8.5", "47.3,8.5,1", "nan,8.5"] {
             XCTAssertNil(ScooterMapLink.coordinate(origin), origin)
         }
-        XCTAssertNil(ScooterMapLink.battery(""))
-        XCTAssertNil(ScooterMapLink.battery("lots"))
-        XCTAssertEqual(ScooterMapLink.battery("150"), 80)
-        XCTAssertEqual(ScooterMapLink.battery("-5"), 0)
+    }
+
+    /// A minimum range in whole metres. The filters have no battery minimum any more: a link's minBattery is
+    /// left out, beside a range or alone, and a link to "/" with it still opens the map.
+    func testReadsAMinimumRangeAndLeavesOutTheBatteryOfAnOlderLink() throws {
+        let link = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?origin=48.7758,9.1829&minRange=5000")!))
+        XCTAssertEqual(link.minimumRange, 5_000)
+        XCTAssertEqual(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minRange=4828")!)?.minimumRange, 4_828)
+        // The map was at "/" before minRange existed: the site reads it on the map alone, as zones (clientParams.ts).
+        XCTAssertNil(ScooterMapLink(url: URL(string: "https://scootradar.com/?minRange=4828")!))
+        XCTAssertEqual(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minRange=0")!)?.minimumRange, 0)
+
+        let both = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minBattery=60&minRange=5000")!))
+        XCTAssertEqual(both, ScooterMapLink(minimumRange: 5_000))
+        let battery = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?origin=47.3769,8.5417&minBattery=60")!))
+        XCTAssertEqual(battery, ScooterMapLink(origin: GeoPoint(latitude: 47.3769, longitude: 8.5417)))
+        XCTAssertEqual(ScooterMapLink(url: URL(string: "https://scootradar.com/?minBattery=60")!), ScooterMapLink())
+    }
+
+    func testIgnoresARangeThatIsNoWholeNumberOfMetres() {
+        for text in ["", "far", "-1000", "5000.5", "5e3", "nan", "5000m"] {
+            XCTAssertNil(ScooterMapLink.range(text), text)
+        }
+        XCTAssertEqual(ScooterMapLink.range(" 12000 "), 12_000)
+        XCTAssertNil(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minRange=-5")!)?.minimumRange)
     }
 
     func testFindsTheCityWhoseCentreALinkNames() throws {

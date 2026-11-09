@@ -3,22 +3,25 @@ import Foundation
 /// A link to the map on scootradar.com that iOS opened in the app rather than
 /// in Safari (universal links: public/.well-known/apple-app-site-association).
 /// It reads what the web map reads from a link (src/lib/clientParams.ts): the
-/// place to open on and the battery filter. The appearance and map style in a
-/// link are the website's own and are left out.
+/// place to open on and the minimum range. The appearance and map style in a
+/// link are the website's own and are left out, and so is the battery minimum
+/// of a link from before the range filter (minBattery): the filters have none.
 struct ScooterMapLink: Equatable, Sendable {
     static let hosts: Set<String> = ["scootradar.com", "www.scootradar.com"]
-    /// What a link to the map can carry, as on the web: the map at "/" before
-    /// the landing page took its place is a link to the map with one of them.
+    /// What a link to the map could carry, as on the web: the map at "/" before
+    /// the landing page took its place is a link to the map with one of them,
+    /// minBattery too, which opens the map as one without it.
+    /// Those added since, zones and minRange, are read on the map alone.
     static let parameters = ["origin", "minBattery", "theme", "map", "tile"]
 
     /// The place the map opens on: a city's centre on the site's own links.
     let origin: GeoPoint?
-    /// A battery preset, or nil to keep the rider's own.
-    let minimumBattery: Int?
+    /// A minimum range in metres, or nil to keep the rider's own.
+    let minimumRange: Int?
 
-    init(origin: GeoPoint? = nil, minimumBattery: Int? = nil) {
+    init(origin: GeoPoint? = nil, minimumRange: Int? = nil) {
         self.origin = origin
-        self.minimumBattery = minimumBattery
+        self.minimumRange = minimumRange
     }
 
     /// Nil for anything but a link to the map on the site.
@@ -44,7 +47,7 @@ struct ScooterMapLink: Equatable, Sendable {
 
         self.init(
             origin: value("origin").flatMap(Self.coordinate),
-            minimumBattery: value("minBattery").flatMap(Self.battery)
+            minimumRange: value("minRange").flatMap(Self.range)
         )
     }
 
@@ -59,10 +62,11 @@ struct ScooterMapLink: Equatable, Sendable {
         return GeoPoint(latitude: latitude, longitude: longitude)
     }
 
-    /// Links from the slider era hold any multiple of five; they snap down to a preset.
-    static func battery(_ text: String) -> Int? {
-        guard let value = Double(text.trimmingCharacters(in: .whitespaces)), value.isFinite else { return nil }
-        return ScooterBatteryFilter.snapped(Int(min(100, max(0, value))))
+    /// Whole metres, 0 or more, as the web writes them; anything else is left out. The map reads them in
+    /// whole steps of the unit it shows.
+    static func range(_ text: String) -> Int? {
+        guard let value = Int(text.trimmingCharacters(in: .whitespaces)), value >= 0 else { return nil }
+        return value
     }
 }
 

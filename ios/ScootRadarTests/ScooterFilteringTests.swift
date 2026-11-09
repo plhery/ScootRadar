@@ -8,7 +8,8 @@ final class ScooterFilteringTests: XCTestCase {
         span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
     ))
 
-    func testBatteryAndProviderFilteringForMapAnnotations() {
+    /// Batteries alone, judged with the 10 km of an app the answer names no figure for: 5 km needs 50%.
+    func testRangeAndProviderFilteringForMapAnnotations() {
         let scooters = [
             scooter(id: "lime-high", provider: "lime", battery: 80),
             scooter(id: "lime-low", provider: "lime", battery: 20),
@@ -18,7 +19,7 @@ final class ScooterFilteringTests: XCTestCase {
 
         let filtered = ScooterFiltering.mapScooters(
             from: scooters,
-            minimumBattery: 50,
+            minimumRange: 5_000,
             enabledProviders: [.lime]
         )
 
@@ -36,7 +37,7 @@ final class ScooterFilteringTests: XCTestCase {
         let summary = ScooterFiltering.visibleSummary(
             for: scooters,
             viewport: viewport,
-            minimumBattery: 50,
+            minimumRange: 5_000,
             enabledProviders: [.lime]
         )
 
@@ -49,7 +50,6 @@ final class ScooterFilteringTests: XCTestCase {
         let summary = ScooterFiltering.visibleSummary(
             for: [scooter(id: "unknown", provider: "future-provider", battery: 70)],
             viewport: viewport,
-            minimumBattery: 0,
             enabledProviders: Set(ScooterProvider.allCases)
         )
 
@@ -66,7 +66,6 @@ final class ScooterFilteringTests: XCTestCase {
 
         let filtered = ScooterFiltering.mapScooters(
             from: scooters,
-            minimumBattery: 0,
             enabledProviders: [.lime, .bird]
         )
 
@@ -1017,9 +1016,7 @@ final class ScooterFilteringTests: XCTestCase {
     private func scooter(
         id: String,
         provider: String,
-        battery: Int?,
-        rangeMeters: Int? = nil,
-        batteryEstimate: Int? = nil,
+        battery: Int,
         latitude: Double = 47.3769,
         longitude: Double = 8.5417
     ) -> Scooter {
@@ -1028,8 +1025,7 @@ final class ScooterFilteringTests: XCTestCase {
             latitude: latitude,
             longitude: longitude,
             battery: battery,
-            rangeMeters: rangeMeters,
-            batteryEstimate: batteryEstimate,
+            rangeMeters: nil,
             vehicleID: id,
             deepLink: nil,
             rentalURIs: nil,
@@ -1038,42 +1034,8 @@ final class ScooterFilteringTests: XCTestCase {
     }
 }
 
-// Filter presets and the filtered-out summary.
+// The filtered-out summary.
 extension ScooterFilteringTests {
-    func testBatteryFilterOffersFourPresetsAndSnapsOtherValuesDown() {
-        XCTAssertEqual(ScooterBatteryFilter.presets, [0, 30, 60, 80])
-
-        let examples = [(0, 0), (29, 0), (30, 30), (45, 30), (60, 60), (79, 60), (80, 80), (95, 80), (100, 80), (-10, 0)]
-        for (value, preset) in examples {
-            XCTAssertEqual(ScooterBatteryFilter.snapped(value), preset, "\(value)")
-        }
-        XCTAssertEqual(ScooterBatteryFilter.label(for: 0), String(localized: "Any"))
-        XCTAssertEqual(ScooterBatteryFilter.label(for: 60), "60%+")
-    }
-
-    /// "Indifférent" is the longest word for "Any". Side by side until the text
-    /// is very large, the presets must hold it on one line.
-    @MainActor
-    func testTheLongestBatteryPresetFitsItsSegmentAtTheLargestStandardTextSize() throws {
-        // A 375 pt phone: 20 pt margins, 4 pt inside the control and three 4 pt gaps.
-        let segment: CGFloat = (375 - 40 - 8 - 12) / 4
-        let traits = UITraitCollection(preferredContentSizeCategory: .extraExtraExtraLarge)
-        let pointSize = UIFont.preferredFont(forTextStyle: .subheadline, compatibleWith: traits).pointSize
-        let smallest = UIFont.systemFont(
-            ofSize: pointSize * ScooterFilterSheet.presetMinimumScale,
-            weight: .semibold
-        )
-
-        for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
-            let strings = try XCTUnwrap(
-                Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
-            )
-            let any = strings.localizedString(forKey: "Any", value: nil, table: nil)
-            let width = (any as NSString).size(withAttributes: [.font: smallest]).width
-            XCTAssertLessThanOrEqual(width, segment, "\(language): \(any)")
-        }
-    }
-
     func testVisibleSummaryAlsoCountsWhatTheFiltersHide() {
         let scooters = [
             scooter(id: "lime-inside", provider: "lime", battery: 80),
@@ -1086,7 +1048,7 @@ extension ScooterFilteringTests {
         let summary = ScooterFiltering.visibleSummary(
             for: scooters,
             viewport: viewport,
-            minimumBattery: 50,
+            minimumRange: 5_000,
             enabledProviders: [.lime]
         )
 
@@ -1107,203 +1069,340 @@ extension ScooterFilteringTests {
     }
 
     func testFilterSummaryDescribesTheActiveFilters() {
-        let both = ScooterFilterSummary(hiddenCount: 26, providers: [.lime], minimumBattery: 60)
+        let both = ScooterFilterSummary(hiddenCount: 26, providers: [.lime], minimumRange: 6_000)
 
         XCTAssertTrue(both.title.contains("26"))
         XCTAssertTrue(both.showAllTitle.contains("26"))
         XCTAssertEqual(both.parts.count, 2)
         XCTAssertTrue(both.parts[0].contains("Lime"))
-        XCTAssertTrue(both.parts[1].contains("60%"))
-        XCTAssertFalse(both.parts[1].contains("%%"))
+        XCTAssertTrue(both.parts[1].contains("6"))
+        XCTAssertFalse(both.parts[1].contains("%"))
         XCTAssertEqual(both.body, both.parts.joined(separator: " · "))
 
-        let one = ScooterFilterSummary(hiddenCount: 1, providers: [.bird, .voi], minimumBattery: nil)
+        let one = ScooterFilterSummary(hiddenCount: 1, providers: [.bird, .voi])
         XCTAssertEqual(one.title, String(localized: "1 scooter hidden by your filters"))
         XCTAssertEqual(one.parts.count, 1)
         XCTAssertTrue(one.body.contains("Bird") && one.body.contains("Voi"))
 
-        let unknown = ScooterFilterSummary(hiddenCount: nil, providers: [], minimumBattery: 80)
+        let unknown = ScooterFilterSummary(hiddenCount: nil, providers: [], minimumRange: 12_000)
         XCTAssertEqual(unknown.title, String(localized: "No scooters match your filters here"))
         XCTAssertEqual(unknown.showAllTitle, String(localized: "Show all"))
         XCTAssertEqual(unknown.parts.count, 1)
-        // On its own the battery part opens the line, so it starts with a capital.
+        // On its own the range part opens the line, so it starts with a capital.
         XCTAssertEqual(String(unknown.body.prefix(1)), unknown.parts[0].prefix(1).localizedUppercase)
         XCTAssertEqual(unknown.body.dropFirst(), unknown.parts[0].dropFirst())
         XCTAssertNotEqual(unknown.body, unknown.parts[0])
     }
 }
 
-// The battery the server estimates from a range, and how far the minimum takes the scooters (issue #12).
+// The minimum range (issue #12).
 extension ScooterFilteringTests {
-    /// Lime and Voi give a range and no battery in Stuttgart: the server estimates one from it, which the
-    /// filter judges them by. A battery the feed gives is the one judged.
-    func testTheBatteryFilterJudgesAScooterWithoutABatteryByItsEstimate() {
+    private func ranged(_ id: String, provider: String = "lime", battery: Int? = nil, range: Int?) -> Scooter {
+        Scooter(
+            provider: provider, latitude: 47.3769, longitude: 8.5417, battery: battery, rangeMeters: range,
+            vehicleID: id, deepLink: nil, rentalURIs: nil, distanceMeters: 0
+        )
+    }
+
+    /// A range where the feed gives one, else the battery times the app's full battery, else hidden; in whole
+    /// numbers, so the boundaries are exact (issue #12).
+    func testRangeFilterJudgesTheRangeElseTheBatteryTimesItsAppsFullBattery() {
+        let ranges = ["lime": 11_500, "bolt": 29_400, "voi": 72_800]
+        func passes(_ scooter: Scooter, _ minimum: Int) -> Bool {
+            ScooterFiltering.passesRange(scooter, minimumRange: minimum, batteryRanges: ranges)
+        }
+
+        // A range: 6 000 m reaches 6 km, 5 999 m doesn't.
+        XCTAssertTrue(passes(ranged("exact", provider: "voi", range: 6_000), 6_000))
+        XCTAssertFalse(passes(ranged("short", provider: "voi", range: 5_999), 6_000))
+        // The range is the feed's own word, a full battery beside it or not.
+        XCTAssertFalse(passes(ranged("both", battery: 100, range: 5_999), 6_000))
+        XCTAssertTrue(passes(ranged("both-far", battery: 10, range: 6_000), 6_000))
+
+        // A battery alone: 53 × 11 500 = 609 500 reaches 6 km, 52 × 11 500 = 598 000 doesn't.
+        XCTAssertTrue(passes(ranged("lime-53", battery: 53, range: nil), 6_000))
+        XCTAssertFalse(passes(ranged("lime-52", battery: 52, range: nil), 6_000))
+        XCTAssertTrue(passes(ranged("bolt-21", provider: "bolt", battery: 21, range: nil), 6_000))
+        XCTAssertFalse(passes(ranged("bolt-20", provider: "bolt", battery: 20, range: nil), 6_000))
+        // Even a full Lime may not reach 12 km.
+        XCTAssertFalse(passes(ranged("lime-full", battery: 100, range: nil), 12_000))
+        XCTAssertTrue(passes(ranged("voi-17", provider: "voi", battery: 17, range: nil), 12_000))
+
+        // An app the answer names no figure for takes 10 km: 3 km needs 30%.
+        XCTAssertEqual(ScooterRangeFilter.fullRange(of: "jet", in: ranges), 10_000)
+        XCTAssertTrue(passes(ranged("jet-30", provider: "jet", battery: 30, range: nil), 3_000))
+        XCTAssertFalse(passes(ranged("jet-29", provider: "jet", battery: 29, range: nil), 3_000))
+        XCTAssertTrue(ScooterFiltering.passesRange(ranged("lime-30", battery: 30, range: nil), minimumRange: 3_000))
+        XCTAssertFalse(ScooterFiltering.passesRange(ranged("lime-29", battery: 29, range: nil), minimumRange: 3_000))
+
+        // Neither is hidden at the first step.
+        let neither = ranged("neither", provider: "bolt", battery: nil, range: nil)
+        XCTAssertFalse(passes(neither, 1_000))
+
+        // Any shows them all.
+        for scooter in [neither, ranged("lime-0", battery: 0, range: nil), ranged("zero", range: 0)] {
+            XCTAssertTrue(passes(scooter, 0), scooter.id)
+        }
+        // A battery no feed gives does not overflow.
+        XCTAssertTrue(passes(ranged("huge", battery: .max, range: nil), 30_000))
+    }
+
+    /// The map's scooters and the counts in view follow the rule, with the figures of the answer.
+    func testRangeFilterHidesScootersThatGoLessFarAndThoseWithNeither() {
+        let ranges = ["lime": 11_500]
         let scooters = [
-            scooter(id: "lime-full", provider: "lime", battery: nil, rangeMeters: 9_000, batteryEstimate: 78),
-            scooter(id: "lime-flat", provider: "lime", battery: nil, rangeMeters: 2_000, batteryEstimate: 17),
-            scooter(id: "voi-unknown", provider: "voi", battery: nil),
-            scooter(id: "bolt-own", provider: "bolt", battery: 50, batteryEstimate: 90),
-            scooter(id: "bolt-full", provider: "bolt", battery: 90)
+            ranged("far", range: 12_000),
+            ranged("exact", provider: "voi", range: 5_000),
+            ranged("near", range: 4_999),
+            ranged("charged", battery: 44, range: nil),
+            ranged("low", battery: 43, range: nil),
+            ranged("unknown", provider: "bolt", battery: nil, range: nil)
         ]
+        XCTAssertTrue(scooters.allSatisfy { ScooterFiltering.passesRange($0, minimumRange: 0, batteryRanges: ranges) })
 
         let filtered = ScooterFiltering.mapScooters(
-            from: scooters, minimumBattery: 60, enabledProviders: Set(ScooterProvider.allCases)
+            from: scooters, minimumRange: 5_000, batteryRanges: ranges, enabledProviders: Set(ScooterProvider.allCases)
         )
-        XCTAssertEqual(filtered.map(\.id), ["lime:lime-full", "bolt:bolt-full"])
+        XCTAssertEqual(filtered.map(\.id), ["lime:far", "voi:exact", "lime:charged"])
+        // The same battery is judged with 10 km where the answer gives no figure: 44% is 4.4 km.
+        XCTAssertEqual(ScooterFiltering.mapScooters(
+            from: scooters, minimumRange: 5_000, enabledProviders: Set(ScooterProvider.allCases)
+        ).map(\.id), ["lime:far", "voi:exact"])
 
         let summary = ScooterFiltering.visibleSummary(
-            for: scooters, viewport: viewport, minimumBattery: 60, enabledProviders: [.lime]
+            for: scooters, viewport: viewport, minimumRange: 5_000, batteryRanges: ranges, enabledProviders: [.lime]
         )
-        XCTAssertEqual(summary.count, 1)
-        XCTAssertEqual(summary.providerCounts, [.lime: 1, .bolt: 1])
-        XCTAssertEqual(summary.unfilteredCount, 5)
-
-        // At Any, every scooter is shown, with or without a battery.
-        XCTAssertEqual(ScooterFiltering.mapScooters(
-            from: scooters, minimumBattery: 0, enabledProviders: Set(ScooterProvider.allCases)
-        ).count, 5)
-        XCTAssertEqual(scooters[0].filterBattery, 78)
-        XCTAssertNil(scooters[0].battery, "The card and the marker never show the estimate")
-        XCTAssertEqual(scooters[3].filterBattery, 50)
+        XCTAssertEqual(summary.count, 2)
+        XCTAssertEqual(summary.providerCounts, [.lime: 2, .voi: 1])
+        // What the filters hide is counted too.
+        XCTAssertEqual(summary.unfilteredCount, 6)
+        XCTAssertEqual(summary.unfilteredProviders, [.lime, .voi, .bolt])
     }
 
-    /// The website's examples (src/lib/battery.ts): Lime's full battery reads 11.5 km, Voi's 80 and Bolt's 61.
-    func testHowFarABatteryLevelTakesTheScootersOfTheAppsSwitchedOnInView() throws {
-        let fullRanges: [ScooterProvider: Int] = [.lime: 11_500, .voi: 80_000, .bolt: 61_000]
-        let all: (ScooterProvider) -> Bool = { _ in true }
-
-        // One app: its full range, scaled to the level.
-        let voi = try XCTUnwrap(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: [.voi: 40], enabled: all))
-        XCTAssertEqual(voi.low, 80_000)
-        XCTAssertEqual(voi.high, 80_000)
-        XCTAssertEqual(voi.mean, 80_000)
-        XCTAssertEqual(plainSpaces(voi.formatted(locale: Self.metric)), "80 km")
-        let voi30 = try XCTUnwrap(ScooterBatteryReach(level: 30, fullRanges: fullRanges, counts: [.voi: 40], enabled: all))
-        XCTAssertEqual(plainSpaces(voi30.formatted(locale: Self.metric)), "24 km")
-
-        // Several apps apart by over a quarter: the shortest to the longest; an app with none in view is left out.
-        let counts: [ScooterProvider: Int] = [.lime: 30, .voi: 10, .bolt: 0]
-        let mixed = try XCTUnwrap(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: counts, enabled: all))
-        XCTAssertEqual(mixed.low, 11_500)
-        XCTAssertEqual(mixed.high, 80_000)
-        XCTAssertEqual(mixed.mean, 28_625, accuracy: 0.001)
-        XCTAssertEqual(plainSpaces(mixed.formatted(locale: Self.metric)), "12–80 km")
-        XCTAssertEqual(plainSpaces(mixed.formatted(locale: Self.miles)), "7–50 mi")
-
-        // An app switched off is left out, and so is one with under a tenth of the scooters.
-        let voiOff = try XCTUnwrap(ScooterBatteryReach(
-            level: 100, fullRanges: fullRanges, counts: counts, enabled: { $0 != .voi }
-        ))
-        XCTAssertEqual(plainSpaces(voiOff.formatted(locale: Self.metric)), "12 km")
-        let fewVoi = try XCTUnwrap(ScooterBatteryReach(
-            level: 100, fullRanges: fullRanges, counts: [.lime: 95, .voi: 5], enabled: all
-        ))
-        XCTAssertEqual(fewVoi.high, 11_500)
-        XCTAssertEqual(plainSpaces(fewVoi.formatted(locale: Self.metric)), "12 km")
-        // Unless it has the most: twelve apps with one scooter each are all under a tenth of them.
-        let twelve = Array(ScooterProvider.allCases.prefix(12))
-        let fewOfEach = try XCTUnwrap(ScooterBatteryReach(
-            level: 100,
-            fullRanges: Dictionary(uniqueKeysWithValues: twelve.map { ($0, $0 == twelve[0] ? 30_000 : 10_000) }),
-            counts: Dictionary(uniqueKeysWithValues: twelve.map { ($0, 1) }),
-            enabled: all
-        ))
-        XCTAssertEqual(fewOfEach.low, 10_000)
-        XCTAssertEqual(fewOfEach.high, 30_000)
-
-        // Nothing to say without an app in view that has a full range.
-        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: [.dott: 30], enabled: all))
-        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: [:], counts: counts, enabled: all))
-        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: fullRanges, counts: [.voi: 40], enabled: { _ in false }))
-
-        // Stuttgart: Bolt's 300 and Lime's 1 200 at 60%.
-        let stuttgart: [ScooterProvider: Int] = [.lime: 11_500, .bolt: 61_000]
-        let stuttgartCounts: [ScooterProvider: Int] = [.bolt: 300, .lime: 1_200]
-        let both = try XCTUnwrap(ScooterBatteryReach(level: 60, fullRanges: stuttgart, counts: stuttgartCounts, enabled: all))
-        XCTAssertEqual(plainSpaces(both.formatted(locale: Self.metric)), "7–37 km")
-        let boltOff = try XCTUnwrap(ScooterBatteryReach(
-            level: 60, fullRanges: stuttgart, counts: stuttgartCounts, enabled: { $0 != .bolt }
-        ))
-        XCTAssertEqual(plainSpaces(boltOff.formatted(locale: Self.metric)), "7 km")
+    /// The battery an app's battery-only scooters need, rounded up; over 100 where a full one may not reach.
+    func testRangeFilterSaysTheBatteryAScooterThatReportsOnlyItsBatteryNeeds() {
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 6_000, fullRange: 72_800), 9)
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 6_000, fullRange: 29_400), 21)
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 6_000, fullRange: 11_500), 53)
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 4_828, fullRange: 11_500), 42)
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 3_000, fullRange: 10_000), 30)
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 11_500, fullRange: 11_500), 100)
+        XCTAssertEqual(ScooterRangeFilter.batteryNeeded(minimumRange: 12_000, fullRange: 11_500), 105)
+        XCTAssertEqual(ScooterRangeFilter.defaultFullRange, 10_000)
     }
 
-    /// One length where the longest is at most a quarter longer than the shortest, their mean weighed by their
-    /// scooters; whole kilometres, halves going up as on the web, and never 0.
-    func testTheReachIsOneLengthWithinAQuarterInWholeUnitsAndNeverZero() throws {
-        let all: (ScooterProvider) -> Bool = { _ in true }
-        func reach(_ fullRanges: [ScooterProvider: Int], _ counts: [ScooterProvider: Int], level: Int = 100) throws -> String {
-            let reach = try XCTUnwrap(ScooterBatteryReach(
-                level: level, fullRanges: fullRanges, counts: counts, enabled: all
-            ))
-            return self.plainSpaces(reach.formatted(locale: Self.metric))
-        }
-        // 20 and 25 km are within a quarter: (20 × 3 + 25) / 4 = 21.25 km.
-        XCTAssertEqual(try reach([.lime: 20_000, .voi: 25_000], [.lime: 3, .voi: 1]), "21 km")
-        XCTAssertEqual(try reach([.lime: 20_000, .voi: 26_000], [.lime: 3, .voi: 1]), "20–26 km")
-        XCTAssertEqual(try reach([.voi: 2_500], [.voi: 1]), "3 km")
-        XCTAssertEqual(try reach([.voi: 2_499], [.voi: 1]), "2 km")
-        XCTAssertEqual(try reach([.voi: 400], [.voi: 1]), "1 km")
-        XCTAssertEqual(try reach([.voi: 3_000], [.voi: 1], level: 30), "1 km")
-        XCTAssertNil(ScooterBatteryReach(level: 100, fullRanges: [.voi: 0], counts: [.voi: 4], enabled: all))
-    }
-
-    /// The line under the presets, "60% usually allows about 22 km.", in the app's language, and with it, while
-    /// a minimum is set, the sentence that scooters without battery info are hidden.
-    func testTheLineSaysHowFarTheMinimumOrAFullBatteryTakesTheScooters() throws {
+    /// The paragraph under the slider, with the website's examples (issue #12).
+    func testRangeFilterHelpSaysWhatEachAppsBatteryOnlyScootersNeed() {
         defer { ScooterLanguage.current = .atLaunch }
         ScooterLanguage.current = .en
-        let all: (ScooterProvider) -> Bool = { _ in true }
-        let bolt: [ScooterProvider: Int] = [.bolt: 36_700]
-        func line(
-            _ minimum: Int,
-            _ fullRanges: [ScooterProvider: Int],
-            _ counts: [ScooterProvider: Int],
-            locale: Locale = Locale(identifier: "en_CH")
+        let ranges = ["lime": 11_500, "bolt": 29_400, "voi": 72_800]
+        let all = Set(ScooterProvider.allCases)
+        let hidden = "Scooters without range or battery info are hidden while a minimum is set."
+        func help(
+            _ metres: Int,
+            _ ranges: [String: Int],
+            enabled: Set<ScooterProvider> = all,
+            locale: Locale = Self.metric
         ) -> String? {
-            ScooterBatteryReach.line(
-                minimumBattery: minimum, fullRanges: fullRanges, counts: counts, enabled: all, locale: locale
-            ).map { self.plainSpaces($0) }
+            ScooterRangeFilter.help(metres: metres, batteryRanges: ranges, enabledProviders: enabled, locale: locale)
+                .map { self.plainSpaces($0) }
         }
 
-        XCTAssertEqual(line(60, bolt, [.bolt: 10]), "60% usually allows about 22 km.")
-        // Any is a full battery's.
-        let stuttgart: [ScooterProvider: Int] = [.lime: 11_500, .voi: 80_000]
-        XCTAssertEqual(line(0, stuttgart, [.lime: 30, .voi: 10]), "100% usually allows about 12–80 km.")
-        XCTAssertEqual(line(0, stuttgart, [.lime: 30, .voi: 10], locale: Self.miles), "100% usually allows about 7–50 mi.")
-        // A minimum that is not a preset is read as the one below it.
-        XCTAssertEqual(line(75, bolt, [.bolt: 10]), "60% usually allows about 22 km.")
-        XCTAssertNil(line(60, bolt, [.dott: 10]))
-
-        let sentence = "Scooters without battery info are hidden while a minimum is set."
         XCTAssertEqual(
-            ScooterBatteryReach.help(line: "60% usually allows about 22 km.", minimumBattery: 60),
-            "60% usually allows about 22 km. " + sentence
-        )
-        XCTAssertEqual(ScooterBatteryReach.help(line: nil, minimumBattery: 60), sentence)
-        XCTAssertEqual(
-            ScooterBatteryReach.help(line: "100% usually allows about 80 km.", minimumBattery: 0),
-            "100% usually allows about 80 km."
-        )
-        XCTAssertNil(ScooterBatteryReach.help(line: nil, minimumBattery: 0))
-
-        ScooterLanguage.current = .de
-        XCTAssertEqual(
-            line(60, bolt, [.bolt: 10], locale: Locale(identifier: "de_DE")),
-            "Mit 60% kommt man meist etwa 22 km weit."
-        )
-        ScooterLanguage.current = .fr
-        XCTAssertEqual(
-            line(60, bolt, [.bolt: 10], locale: Locale(identifier: "fr_FR")),
-            "Avec 60 %, comptez en général environ 22 km."
+            help(6_000, ranges),
+            "Scooters that only report a battery need at least 9% (Voi), 21% (Bolt) and 53% (Lime). " + hidden
         )
         XCTAssertEqual(
-            line(0, stuttgart, [.lime: 30, .voi: 10], locale: Locale(identifier: "fr_FR")),
-            "Avec 100 %, comptez en général environ 12–80 km."
+            help(12_000, ranges),
+            "Scooters that only report a battery need at least 17% (Voi) and 41% (Bolt). "
+                + "Scooters from Lime that only report a battery are hidden, as a full battery may not reach 12 km. "
+                + hidden
         )
+        // 3 mi is 4 828 m.
+        XCTAssertEqual(
+            help(4_828, ranges, locale: Self.miles),
+            "Scooters that only report a battery need at least 7% (Voi), 17% (Bolt) and 42% (Lime). " + hidden
+        )
+        XCTAssertEqual(
+            help(ScooterRangeFilter.metres(steps: 8, unit: .miles), ranges, locale: Self.miles),
+            "Scooters that only report a battery need at least 18% (Voi) and 44% (Bolt). "
+                + "Scooters from Lime that only report a battery are hidden, as a full battery may not reach 8 mi. "
+                + hidden
+        )
+        // Listed as the region writes English: American English puts a comma before "and".
+        XCTAssertEqual(
+            help(6_000, ranges, locale: ScooterUnits.metric.applied(to: Locale(identifier: "en_US"))),
+            "Scooters that only report a battery need at least 9% (Voi), 21% (Bolt), and 53% (Lime). " + hidden
+        )
+        // An app switched off is left out.
+        XCTAssertEqual(
+            help(6_000, ranges, enabled: all.subtracting([.bolt])),
+            "Scooters that only report a battery need at least 9% (Voi) and 53% (Lime). " + hidden
+        )
+        // Apps that need the same are grouped, in the filters' order.
+        XCTAssertEqual(
+            help(3_000, ["voi": 72_800, "beam": 10_000, "jet": 10_000]),
+            "Scooters that only report a battery need at least 5% (Voi) and 30% (JET and Beam). " + hidden
+        )
+        // Every app hidden, two of them.
+        XCTAssertEqual(
+            help(30_000, ["lime": 11_500, "jet": 10_000, "voi": 72_800]),
+            "Scooters that only report a battery need at least 42% (Voi). "
+                + "Scooters from Lime and JET that only report a battery are hidden, as a full battery may not reach 30 km. "
+                + hidden
+        )
+        XCTAssertEqual(
+            help(12_000, ["lime": 11_500]),
+            "Scooters from Lime that only report a battery are hidden, as a full battery may not reach 12 km. " + hidden
+        )
+        // Where every app gives a range, as in Stuttgart, only the last sentence; and an app this build does not
+        // know is not named.
+        XCTAssertEqual(help(6_000, [:]), hidden)
+        XCTAssertEqual(help(6_000, ["future-provider": 20_000]), hidden)
+        XCTAssertEqual(help(6_000, ranges, enabled: [.dott]), hidden)
+        // Nothing for Any.
+        XCTAssertNil(help(0, ranges))
     }
 
-    private static let metric = Locale(identifier: "en_CH")
-    private static let miles = Locale(identifier: "en_US")
+    func testRangeFilterHelpIsWrittenInTheLanguageShown() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let ranges = ["lime": 11_500, "bolt": 29_400, "voi": 72_800]
+        func help(_ metres: Int, _ locale: Locale) -> String? {
+            ScooterRangeFilter.help(
+                metres: metres, batteryRanges: ranges, enabledProviders: Set(ScooterProvider.allCases), locale: locale
+            )
+        }
+
+        ScooterLanguage.current = .de
+        let german = Locale(identifier: "de_CH")
+        XCTAssertEqual(
+            help(6_000, german),
+            "Scooter, die nur ihren Akkustand melden, brauchen mindestens 9% (Voi), 21% (Bolt) und 53% (Lime). "
+                + "Scooter ohne Reichweiten- oder Akkuangabe werden ausgeblendet, solange eine Mindestreichweite gewählt ist."
+        )
+
+        ScooterLanguage.current = .fr
+        let french = Locale(identifier: "fr_CH")
+        let needs = help(6_000, french)
+        XCTAssertEqual(
+            needs.map { plainSpaces($0) },
+            "Les trottinettes qui n’indiquent que leur batterie doivent en avoir au moins 9 % (Voi), 21 % (Bolt) et "
+                + "53 % (Lime). Les trottinettes sans autonomie ni niveau de batterie indiqués sont masquées tant "
+                + "qu’un minimum est défini."
+        )
+        // The percent keeps to its number: the space before it is a no-break one, from the strings.
+        XCTAssertTrue(needs?.contains("9\u{00A0}%") == true || needs?.contains("9\u{202F}%") == true)
+        XCTAssertTrue(plainSpaces(help(12_000, french) ?? "").contains(
+            "Les trottinettes Lime qui n’indiquent que leur batterie sont masquées : une batterie pleine pourrait ne pas tenir 12 km."
+        ))
+    }
+
+    /// Whole kilometres up to 30 or whole miles up to 20, a mile being 1 609.344 m rounded to the metre.
+    func testRangeFilterReadsItsMinimumInWholeStepsOfItsUnit() {
+        XCTAssertEqual(ScooterRangeFilter.Unit.kilometres.maximumSteps, 30)
+        XCTAssertEqual(ScooterRangeFilter.Unit.miles.maximumSteps, 20)
+        XCTAssertEqual(ScooterRangeFilter.metres(steps: 5, unit: .kilometres), 5_000)
+        XCTAssertEqual(ScooterRangeFilter.metres(steps: 3, unit: .miles), 4_828)
+        XCTAssertEqual(ScooterRangeFilter.metres(steps: 20, unit: .miles), 32_187)
+        XCTAssertEqual(ScooterRangeFilter.metres(steps: 99, unit: .kilometres), 30_000)
+
+        let kilometres = [(0, 0), (-5, 0), (499, 0), (500, 1_000), (2_499, 2_000), (4_828, 5_000), (5_000, 5_000),
+                          (31_000, 30_000), (200_000, 30_000)]
+        for (metres, snapped) in kilometres {
+            XCTAssertEqual(ScooterRangeFilter.snapped(metres, unit: .kilometres), snapped, "\(metres) m in km")
+        }
+        // "3 mi+" is 4 828 m, not the 5 000 m it was set as in kilometres.
+        let miles = [(0, 0), (804, 0), (805, 1_609), (5_000, 4_828), (4_828, 4_828), (30_000, 30_578),
+                     (40_000, 32_187)]
+        for (metres, snapped) in miles {
+            XCTAssertEqual(ScooterRangeFilter.snapped(metres, unit: .miles), snapped, "\(metres) m in mi")
+        }
+        XCTAssertEqual(ScooterRangeFilter.steps(metres: 4_828, unit: .miles), 3)
+        XCTAssertEqual(ScooterRangeFilter.steps(metres: 4_828, unit: .kilometres), 5)
+    }
+
+    /// "5 km+" or "3 mi+" beside the heading, never metres, feet or yards; "5 km or more" for VoiceOver.
+    func testRangeFilterSaysItsMinimumInWholeKilometresOrMiles() {
+        let swiss = Locale(identifier: "en_CH")
+        let american = Locale(identifier: "en_US")
+        XCTAssertEqual(ScooterRangeFilter.Unit(locale: swiss), .kilometres)
+        XCTAssertEqual(ScooterRangeFilter.Unit(locale: american), .miles)
+        XCTAssertEqual(ScooterRangeFilter.Unit(locale: Locale(identifier: "en_GB")), .miles)
+
+        XCTAssertEqual(ScooterRangeFilter.label(metres: 0, locale: swiss), String(localized: "Any"))
+        XCTAssertEqual(plainSpaces(ScooterRangeFilter.label(metres: 5_000, locale: swiss)), "5 km+")
+        XCTAssertEqual(plainSpaces(ScooterRangeFilter.label(metres: 4_828, locale: american)), "3 mi+")
+        XCTAssertEqual(plainSpaces(ScooterRangeFilter.label(metres: 1_000, locale: swiss)), "1 km+")
+        XCTAssertEqual(plainSpaces(ScooterRangeFilter.label(metres: 30_000, locale: swiss)), "30 km+")
+        XCTAssertEqual(plainSpaces(ScooterRangeFilter.distance(metres: 32_187, locale: american)), "20 mi")
+        // A line never breaks between the number and its unit.
+        XCTAssertFalse(ScooterRangeFilter.label(metres: 5_000, locale: swiss).contains(" "))
+
+        XCTAssertEqual(ScooterRangeFilter.spokenValue(metres: 0, locale: swiss), String(localized: "Any"))
+        XCTAssertEqual(
+            ScooterRangeFilter.spokenValue(metres: 5_000, locale: swiss),
+            String(format: String(localized: "%@ or more"), ScooterRangeFilter.distance(metres: 5_000, locale: swiss))
+        )
+        if ScooterLanguage.current == .en {
+            XCTAssertEqual(plainSpaces(ScooterRangeFilter.spokenValue(metres: 5_000, locale: swiss)), "5 km or more")
+        }
+    }
+
+    /// After the providers: "Lime only · range 5 km or more", and with a capital alone.
+    func testFilterSummaryDescribesAMinimumRange() {
+        defer { ScooterUnits.current = .automatic }
+        ScooterUnits.current = .metric
+        let both = ScooterFilterSummary(hiddenCount: 12, providers: [.lime], minimumRange: 5_000)
+        XCTAssertEqual(both.parts.count, 2)
+        XCTAssertTrue(both.parts[0].contains("Lime"))
+        XCTAssertEqual(
+            both.parts[1],
+            String(format: String(localized: "range %@ or more"), ScooterRangeFilter.distance(metres: 5_000))
+        )
+        XCTAssertEqual(both.body, both.parts.joined(separator: " · "))
+
+        let alone = ScooterFilterSummary(hiddenCount: nil, providers: [], minimumRange: 5_000)
+        XCTAssertEqual(alone.parts.count, 1)
+        XCTAssertEqual(String(alone.body.prefix(1)), alone.parts[0].prefix(1).localizedUppercase)
+        XCTAssertEqual(alone.body.dropFirst(), alone.parts[0].dropFirst())
+        if ScooterLanguage.current == .en {
+            XCTAssertEqual(plainSpaces(alone.body), "Range 5 km or more")
+        }
+
+        // In miles the minimum is said in the whole miles the slider shows.
+        ScooterUnits.current = .imperial
+        XCTAssertTrue(plainSpaces(ScooterFilterSummary(
+            hiddenCount: nil, providers: [], minimumRange: 4_828
+        ).body).contains("3 mi"))
+    }
+
+    /// Every language says the range filter and the units, with the placeholders of each sentence.
+    func testEveryLanguageWritesTheRangeFilterAndTheUnits() throws {
+        let keys = [
+            "Range", "Scooters without range or battery info are hidden while a minimum is set.",
+            "Scooters that only report a battery need at least %@.", "%1$lld%% (%2$@)",
+            "Scooters from %1$@ that only report a battery are hidden, as a full battery may not reach %2$@.",
+            "range %@ or more", "%@ or more", "Units", "Kilometres", "Miles"
+        ]
+        let placeholder = #/%(?:[0-9]\$)?(?:lld|@|%)/#
+        func placeholders(_ text: String) -> [String] {
+            text.matches(of: placeholder).map { String($0.output) }.sorted()
+        }
+        for language in ScooterLanguage.allCases {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language.rawValue, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            for key in keys {
+                let text = strings.localizedString(forKey: key, value: "?", table: nil)
+                XCTAssertNotEqual(text, "?", "\(language.rawValue): \(key)")
+                XCTAssertEqual(placeholders(text), placeholders(key), "\(language.rawValue): \(text)")
+            }
+        }
+    }
+
+    /// British English, which lists "a, b and c" as the website's examples do, in kilometres and in miles.
+    private static let metric = ScooterUnits.metric.applied(to: Locale(identifier: "en_GB"))
+    private static let miles = Locale(identifier: "en_GB")
 
     private func plainSpaces(_ text: String) -> String {
         text.replacingOccurrences(of: "\u{00A0}", with: " ").replacingOccurrences(of: "\u{202F}", with: " ")

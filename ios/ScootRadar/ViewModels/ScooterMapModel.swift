@@ -216,23 +216,65 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// The moment to ask for a rating came, and the screen has not asked yet (`takeReviewMoment`).
     @ObservationIgnored private(set) var reviewDue = false
 
-    var minimumBattery: Double {
+    /// The minimum range in metres as it was set, kept as it is; 0 for Any. It is read in whole steps of the
+    /// unit shown (minimumRange), so that units chosen in Settings and chosen back give the same minimum.
+    private(set) var chosenMinimumRange: Int {
         didSet {
-            defaults.set(Int(minimumBattery), forKey: Self.minimumBatteryKey)
-            rebuildMapScooters()
-            rebuildMapLastSeen()
-            rebuildVisibleCounts()
-            clearSelectionIfHidden()
+            defaults.set(chosenMinimumRange, forKey: Self.minimumRangeKey)
+            filtersDidChange()
         }
     }
 
+    /// The minimum range in metres the map filters by and asks for: the one set, in the nearest whole
+    /// step of the slider's unit, no further than its last; 0 for Any.
+    var minimumRange: Int {
+        ScooterRangeFilter.snapped(chosenMinimumRange, unit: rangeUnit)
+    }
+
+    /// The range slider's unit: kilometres, or miles where lengths are written in miles.
+    var rangeUnit: ScooterRangeFilter.Unit {
+        ScooterRangeFilter.Unit(locale: writing.locale)
+    }
+
+    /// How far a full battery takes each app's scooters at the least, in metres, from the latest answer
+    /// (batteryRanges), at every zoom: the range filter judges by it the scooters that report a battery and no
+    /// range, and the paragraph under the slider names their apps. Empty where it did not say.
+    private(set) var batteryRanges: [String: Int] = [:] {
+        didSet {
+            guard !isApplyingResponse, batteryRanges != oldValue else { return }
+            filtersDidChange()
+        }
+    }
+
+    /// Under the range slider while a minimum is set, and read by VoiceOver after it: the battery the scooters
+    /// of each app switched on that report only their battery need, "Scooters that only report a battery need
+    /// at least 9% (Voi), 21% (Bolt) and 53% (Lime).", the apps whose such scooters are all hidden, and that
+    /// scooters with neither are hidden. Nil for Any.
+    var rangeHelp: String? {
+        ScooterRangeFilter.help(
+            metres: minimumRange,
+            batteryRanges: batteryRanges,
+            enabledProviders: enabledProviders,
+            locale: writing.locale
+        )
+    }
+
     /// The units lengths and speeds are written in: the iPhone's on Automatic, or those chosen in Settings,
-    /// which change them at once.
+    /// which change them at once, the range filter's steps with them.
     var units: ScooterUnits {
         didSet {
             guard oldValue != units else { return }
             ScooterUnits.current = units
             defaults.set(units.rawValue, forKey: Self.unitsKey)
+            // A minimum range is read in whole steps of the new unit: 5 km becomes 3 mi. Units that keep
+            // the slider's unit (km in Switzerland, mi in Britain) leave the map as it is.
+            let before = ScooterRangeFilter.snapped(
+                chosenMinimumRange,
+                unit: ScooterRangeFilter.Unit(locale: ScooterWriting(language: language, units: oldValue).locale)
+            )
+            guard minimumRange != before else { return }
+            filtersDidChange()
+            refetchFilteredClusters()
         }
     }
 
@@ -370,10 +412,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     // only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds?
     private var queryZoom: Int?
-    private var queryMinimumBattery: Int?
+    private var queryMinimumRange: Int?
     @ObservationIgnored private var pendingQueryBounds: GeoBounds?
     @ObservationIgnored private var pendingQueryZoom: Int?
-    @ObservationIgnored private var pendingQueryMinimumBattery: Int?
+    @ObservationIgnored private var pendingQueryMinimumRange: Int?
+    /// Counts the minimum range once the slider rests (setMinimumRange).
+    @ObservationIgnored private var rangeTracking: Task<Void, Never>?
     @ObservationIgnored private var fetchTask: Task<Void, Never>?
     @ObservationIgnored private var refreshTimerTask: Task<Void, Never>?
     @ObservationIgnored private var parkingExpiryTask: Task<Void, Never>?
@@ -428,17 +472,17 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private(set) var visibleScooterCount = 0
     /// The faded scooters in view that pass the filters, counted apart from the others.
     private(set) var visibleLastSeenCount = 0
-    /// The faded scooters in view of each provider, before the provider filter and after the battery's,
+    /// The faded scooters in view of each provider, before the provider filter and after the range's,
     /// groups included, as the chips count the others.
     private(set) var visibleLastSeenProviderCounts: [ScooterProvider: Int] = [:]
     private(set) var visibleProviderCounts: [ScooterProvider: Int] = [:]
-    /// How far a full battery usually takes each app's scooters in view, in metres, from the latest answer
-    /// (fullRanges); empty when it did not say.
-    private(set) var fullRanges: [ScooterProvider: Int] = [:]
     private var unfilteredVisibleCount = 0
     private var unfilteredVisibleProviders = Set<ScooterProvider>()
 
-    private static let minimumBatteryKey = "minimum-battery"
+    /// The battery minimum the filters had until the range became their only minimum (issue #12): no longer read,
+    /// and taken away at launch.
+    private static let legacyMinimumBatteryKey = "minimum-battery"
+    private static let minimumRangeKey = "minimum-range"
     private static let unitsKey = "units"
     private static let mapStyleKey = "apple-map-style"
     private static let showsZonesKey = "map-zones"
@@ -510,11 +554,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         reviewPrompt.alwaysDue = defaults.bool(forKey: "ReviewPromptDue")
         #endif
 
-        let savedBattery = defaults.object(forKey: Self.minimumBatteryKey) as? Int ?? 0
-        minimumBattery = Double(ScooterBatteryFilter.snapped(savedBattery))
         let savedUnits = ScooterUnits(rawValue: defaults.string(forKey: Self.unitsKey) ?? "") ?? .automatic
         units = savedUnits
         ScooterUnits.current = savedUnits
+        // Read in whole steps of the unit shown. A battery minimum an earlier version kept goes, unread.
+        chosenMinimumRange = max(0, defaults.object(forKey: Self.minimumRangeKey) as? Int ?? 0)
+        defaults.removeObject(forKey: Self.legacyMinimumBatteryKey)
 
         let savedStyle = defaults.string(forKey: Self.mapStyleKey)
         // The quiet ground is what the dots are made for; a style chosen in
@@ -658,18 +703,18 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     var hasActiveFilters: Bool {
-        minimumBattery > 0 || !allProvidersSelected
+        minimumRange > 0 || !allProvidersSelected
     }
 
     /// The providers that are not sharing data here: a feed of theirs failed, they
     /// operate in the viewport and the map holds none of their scooters in view,
     /// whatever the rider's filters hide. City totals name no one, and neither does
     /// data that cannot tell who has scooters here: loaded for another area, or
-    /// already without the scooters under the battery minimum, which the server
+    /// already without the scooters under the range minimum, which the server
     /// leaves out of clusters.
     var providerHealth: ScooterProviderHealth {
         guard let responseMetadata, responseMetadata.overview != true, viewportIsLoaded,
-              (queryMinimumBattery ?? 0) == 0 else { return .healthy }
+              (queryMinimumRange ?? 0) == 0 else { return .healthy }
         return ScooterProviderHealth(
             failedSources: responseMetadata.failedSources,
             operating: ScooterProviderCoverage.providers(in: viewport),
@@ -695,23 +740,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     var allProviderCount: Int { visibleProviderCounts.values.reduce(0, +) }
-
-    /// Under the battery presets: how far the minimum, or a full battery for Any, usually takes the scooters
-    /// of the apps switched on in view, counted as the provider rows count them, "60% usually allows about
-    /// 22 km.", followed while a minimum is set by the sentence that scooters without battery info are hidden.
-    /// VoiceOver reads it after the presets. Nil when there is nothing to say.
-    var batteryHelp: String? {
-        let minimum = Int(minimumBattery)
-        let locale = writing.locale
-        let line = ScooterBatteryReach.line(
-            minimumBattery: minimum,
-            fullRanges: fullRanges,
-            counts: visibleProviderCounts,
-            enabled: enabledProviders.contains,
-            locale: locale
-        )
-        return ScooterBatteryReach.help(line: line, minimumBattery: minimum)
-    }
 
     /// The providers in the filter sheet, in catalogue order.
     var filterProviders: [ScooterProviderEntry] {
@@ -955,8 +983,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private var hiddenByFilters: ScooterFilterSummary? {
         guard hasActiveFilters else { return nil }
         // The response cannot tell how many scooters there are once the server
-        // filtered clustered data by battery or cut the list short.
-        let isCountKnown = (queryMinimumBattery ?? 0) == 0 && responseMetadata?.truncated != true
+        // filtered clustered data by range or cut the list short.
+        let isCountKnown = (queryMinimumRange ?? 0) == 0 && responseMetadata?.truncated != true
         let hiddenCount: Int? = isCountKnown ? unfilteredVisibleCount : nil
         // Filters that hide nothing are not the reason the map is empty.
         if hiddenCount == 0 { return nil }
@@ -971,7 +999,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         return ScooterFilterSummary(
             hiddenCount: hiddenCount,
             providers: providers,
-            minimumBattery: minimumBattery > 0 ? Int(minimumBattery) : nil
+            minimumRange: minimumRange > 0 ? minimumRange : nil
         )
     }
 
@@ -1299,29 +1327,36 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     func resetFilters() {
         ScooterAnalytics.shared.track("filters_reset")
-        let batteryChanged = minimumBattery != 0
-        minimumBattery = 0
+        // A range the slider had not rested on was never chosen.
+        rangeTracking?.cancel()
+        let minimumChanged = minimumRange != 0
+        chosenMinimumRange = 0
         enabledProviders = Set(ScooterProvider.allCases)
-        if batteryChanged, ScooterClusteringPolicy.shouldCluster(at: viewportZoom) {
-            clusters = []
-            lastSeenClusters = []
-            scheduleFetch(for: viewport.expanded(by: 0.25), zoom: viewportZoom, debounce: true)
+        if minimumChanged { refetchFilteredClusters() }
+    }
+
+    /// Sets the minimum range in metres to the nearest whole step of the slider's unit (4 900 m → 5 km,
+    /// or 3 mi where lengths are in miles).
+    func setMinimumRange(_ metres: Int) {
+        let normalizedValue = ScooterRangeFilter.snapped(metres, unit: rangeUnit)
+        guard normalizedValue != minimumRange else { return }
+        chosenMinimumRange = normalizedValue
+        refetchFilteredClusters()
+        // A drag of the slider passes many steps and is one choice: the minimum is counted where it rests,
+        // in metres.
+        rangeTracking?.cancel()
+        rangeTracking = Task {
+            do { try await Task.sleep(for: .seconds(1)) } catch { return }
+            ScooterAnalytics.shared.track("range_filter", value: normalizedValue)
         }
     }
 
-    /// Sets the minimum battery to a preset; other values snap down (45 → 30).
-    func setMinimumBattery(_ value: Double) {
-        let normalizedValue = Double(ScooterBatteryFilter.snapped(
-            value.isFinite ? Int(min(100, max(0, value))) : 0
-        ))
-        guard normalizedValue != minimumBattery else { return }
-        ScooterAnalytics.shared.track("battery_filter", value: Int(normalizedValue))
-        minimumBattery = normalizedValue
-        if ScooterClusteringPolicy.shouldCluster(at: viewportZoom) {
-            clusters = []
-            lastSeenClusters = []
-            scheduleFetch(for: viewport.expanded(by: 0.25), zoom: viewportZoom, debounce: true)
-        }
+    /// The groups the server counted were counted with the minimums of before: they are asked for again.
+    private func refetchFilteredClusters() {
+        guard ScooterClusteringPolicy.shouldCluster(at: viewportZoom) else { return }
+        clusters = []
+        lastSeenClusters = []
+        scheduleFetch(for: viewport.expanded(by: 0.25), zoom: viewportZoom, debounce: true)
     }
 
     func focusOnUser() {
@@ -1422,7 +1457,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func open(_ link: ScooterMapLink) {
         // A link changes the map: a moment to ask for a rating waits for its fresh load.
         reviewDue = false
-        if let battery = link.minimumBattery { setMinimumBattery(Double(battery)) }
+        if let range = link.minimumRange { setMinimumRange(range) }
         guard let origin = link.origin else {
             ScooterAnalytics.shared.track("link_open", result: "map")
             return
@@ -1479,14 +1514,23 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         locationIssueDismissed = true
     }
 
-    private func passesBatteryFilter(_ scooter: Scooter) -> Bool {
-        ScooterFiltering.passesBattery(scooter, minimumBattery: minimumBattery)
+    private func passesMinimums(_ scooter: Scooter) -> Bool {
+        ScooterFiltering.passesRange(scooter, minimumRange: minimumRange, batteryRanges: batteryRanges)
+    }
+
+    /// The minimum range changed, the unit it is read in, or how far a full battery takes each app's scooters.
+    private func filtersDidChange() {
+        rebuildMapScooters()
+        rebuildMapLastSeen()
+        rebuildVisibleCounts()
+        clearSelectionIfHidden()
     }
 
     private func rebuildMapScooters() {
         var next = ScooterFiltering.mapScooters(
             from: vehicles,
-            minimumBattery: minimumBattery,
+            minimumRange: minimumRange,
+            batteryRanges: batteryRanges,
             enabledProviders: enabledProviders
         )
         // The scooter walked to stays on the map whatever the map shows around it.
@@ -1516,7 +1560,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private func rebuildMapLastSeen() {
         let scooters = ScooterFiltering.mapScooters(
             from: lastSeenVehicles,
-            minimumBattery: minimumBattery,
+            minimumRange: minimumRange,
+            batteryRanges: batteryRanges,
             enabledProviders: enabledProviders
         )
         let groups = responseMetadata?.mode == "clusters"
@@ -1537,7 +1582,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     private func rebuildVisibleCounts() {
         let summary = ScooterFiltering.visibleSummary(
-            for: vehicles, viewport: viewport, minimumBattery: minimumBattery,
+            for: vehicles, viewport: viewport, minimumRange: minimumRange, batteryRanges: batteryRanges,
             enabledProviders: enabledProviders
         )
         var count = summary.count
@@ -1561,7 +1606,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         unfilteredVisibleProviders = unfilteredProviders
 
         let lastSeen = ScooterFiltering.visibleSummary(
-            for: lastSeenVehicles, viewport: viewport, minimumBattery: minimumBattery,
+            for: lastSeenVehicles, viewport: viewport, minimumRange: minimumRange, batteryRanges: batteryRanges,
             enabledProviders: enabledProviders
         )
         var lastSeenCount = lastSeen.count
@@ -1593,7 +1638,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         let remainsVisible = viewport.contains(
             latitude: selectedScooter.latitude,
             longitude: selectedScooter.longitude
-        ) && passesBatteryFilter(selectedScooter) && (
+        ) && passesMinimums(selectedScooter) && (
             allProvidersSelected || selectedScooter.providerInfo.map(enabledProviders.contains) == true
         )
 
@@ -1609,13 +1654,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         let requestID = UUID()
         let fetchOrigin = userLocation ?? startCenter
-        let requestMinimumBattery = ScooterClusteringPolicy.shouldCluster(at: zoom)
-            ? Int(minimumBattery)
-            : 0
+        // Grouped by the server, the scooters are filtered there; one by one, here.
+        let clustered = ScooterClusteringPolicy.shouldCluster(at: zoom)
+        let requestMinimumRange = clustered ? minimumRange : 0
         activeRequestID = requestID
         pendingQueryBounds = bounds
         pendingQueryZoom = zoom
-        pendingQueryMinimumBattery = requestMinimumBattery
+        pendingQueryMinimumRange = requestMinimumRange
         fetchTask = Task { [weak self] in
             guard let self else { return }
 
@@ -1637,7 +1682,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 let response = try await api.scooters(
                     bounds: bounds,
                     zoom: zoom,
-                    minimumBattery: requestMinimumBattery
+                    minimumRange: requestMinimumRange
                 )
                 guard !Task.isCancelled, activeRequestID == requestID else { return }
                 // The backend preserves recent successful feeds independently.
@@ -1657,12 +1702,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 lastSeenVehicles = response.lastSeenVehicles
                 lastSeenClusters = response.lastSeenClusters
                 parking = response.parking
-                fullRanges = response.fullRanges
+                batteryRanges = response.batteryRanges
                 responseMetadata = response.meta
                 isApplyingResponse = false
                 queryBounds = bounds
                 queryZoom = zoom
-                queryMinimumBattery = requestMinimumBattery
+                queryMinimumRange = requestMinimumRange
                 rebuildVehicleIndex()
                 followWalkTarget(in: response.meta, loadedFor: bounds, observedAt: observedAt, previousIDs: previousIDs)
                 if let cardScooter { followCardScooter(cardScooter, previousIDs: previousIDs) }
@@ -1679,7 +1724,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 // The server is collecting feeds of this answer again: ask again when it says (followUpMs), at
                 // once while a quick feed is on its way. A server that does not say is asked once more soon, but
                 // only once in a row, unless scooters stand where they were last seen, which its sweeps replace.
-                let query = ScooterFollowUpQuery(bounds: bounds, zoom: zoom, minimumBattery: requestMinimumBattery)
+                let query = ScooterFollowUpQuery(
+                    bounds: bounds, zoom: zoom, minimumRange: requestMinimumRange
+                )
                 let refreshing = response.meta?.refreshing == true
                 let filling = !response.lastSeenVehicles.isEmpty || !response.lastSeenClusters.isEmpty
                 followUpGap = refreshPolicy.askedFollowUp(response.meta)
@@ -1729,6 +1776,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         lastSeenClusters = []
         lastSeenReports = [:]
         staleReports = nil
+        // The figures were those of the scooters cleared.
+        batteryRanges = [:]
         selectedScooterID = nil
         selectedParkingID = nil
         queryBounds = nil
@@ -1740,7 +1789,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         activeRequestID = nil
         pendingQueryBounds = nil
         pendingQueryZoom = nil
-        pendingQueryMinimumBattery = nil
+        pendingQueryMinimumRange = nil
         fetchTask = nil
         scheduleAutomaticRefresh()
     }
@@ -1807,17 +1856,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private func queryCovers(_ targetViewport: GeoBounds, zoom: Int, pending: Bool) -> Bool {
         let bounds = pending ? pendingQueryBounds : queryBounds
         let storedZoom = pending ? pendingQueryZoom : self.queryZoom
-        let storedMinimumBattery = pending
-            ? pendingQueryMinimumBattery
-            : self.queryMinimumBattery
+        let storedMinimumRange = pending ? pendingQueryMinimumRange : self.queryMinimumRange
         guard bounds?.contains(targetViewport) == true,
               let storedZoom,
               ScooterClusteringPolicy.representationsMatch(storedZoom, zoom) else { return false }
 
-        let targetMinimumBattery = ScooterClusteringPolicy.shouldCluster(at: zoom)
-            ? Int(minimumBattery)
-            : 0
-        return storedMinimumBattery == targetMinimumBattery
+        let clustered = ScooterClusteringPolicy.shouldCluster(at: zoom)
+        return storedMinimumRange == (clustered ? minimumRange : 0)
     }
 
     private var isLocationAuthorized: Bool {
