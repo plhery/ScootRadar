@@ -55,6 +55,7 @@ struct ScooterVehiclePayload: Decodable, Sendable {
     let longitude: Double
     let battery: Int?
     let rangeMeters: Int?
+    let batteryEstimate: Int?
     let vehicleID: String?
     let deepLink: String?
     let rentalURIs: ScooterRentalURIsPayload?
@@ -67,6 +68,7 @@ struct ScooterVehiclePayload: Decodable, Sendable {
         case longitude = "lng"
         case battery
         case rangeMeters = "range_m"
+        case batteryEstimate = "battery_estimate"
         case vehicleID = "vehicle_id"
         case deepLink = "deep_link"
         case rentalURIs = "rental_uris"
@@ -133,5 +135,6 @@ struct ScooterAPIResponsePayload: Decodable, Sendable {
     let clusters: [ScooterClusterPayload]
     let lastSeen: ScooterLastSeenPayload?
     let providers: [String: Int]
+    let fullRanges: [String: Int]?
     let meta: ScooterResponseMetadataPayload
 }

@@ -22,6 +22,7 @@ import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
 import { systemServesPoint } from '@/lib/townOutlines';
 import type { MapBounds, Vehicle } from '@/lib/types';
+import { passesMinBattery, withBatteryEstimates } from '@/lib/batteryEstimate';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
 import { ClientCredentialsToken, type UpstreamAuth } from '@/lib/clientCredentialsToken';
 import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
@@ -551,6 +552,7 @@ function filterVehicles(
   if (!provider || (query.providers && !query.providers.has(provider))) return [];
 
   const filtered: Vehicle[] = [];
+  const typeIds = new Map<Vehicle, string>();
   for (const raw of vehicles) {
     if (isSet(raw.is_disabled) || isSet(raw.is_reserved)) continue;
     if (!raw.vehicle_type_id || !isElectricScooter(types.get(raw.vehicle_type_id), provider)) continue;
@@ -566,8 +568,14 @@ function filterVehicles(
     const vehicle = toVehicle(systemId, provider, raw, query, plans, types.get(raw.vehicle_type_id), scooterPlanId, unlisted);
     if (!vehicle) continue;
     filtered.push(vehicle);
+    typeIds.set(vehicle, raw.vehicle_type_id);
   }
-  return filtered;
+  // A range and no battery: the battery estimated from the range over its type's longest (batteryEstimate.ts).
+  return withBatteryEstimates(filtered, vehicle => {
+    const id = typeIds.get(vehicle);
+    const declared = id ? types.get(id)?.max_range_meters : undefined;
+    return id ? { id, declared: declared !== undefined && declared <= MAX_SCOOTER_RANGE_M ? declared : undefined } : undefined;
+  });
 }
 
 /**
@@ -1639,10 +1647,7 @@ export async function fetchScooters(query: FeedQuery): Promise<ScooterFetchResul
   }
 
   const filtered = [...unique.values()]
-    .filter(vehicle => (
-      query.minBattery === 0 ||
-      (vehicle.battery !== null && vehicle.battery >= query.minBattery)
-    ))
+    .filter(vehicle => passesMinBattery(vehicle, query.minBattery))
     .sort(compareVehicles);
 
   const sources = Object.fromEntries(sourceResults.map(([source, result]) => [source, sourceStatus(result)])) as

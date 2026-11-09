@@ -27,6 +27,11 @@
       "type": "object",
       "additionalProperties": { "type": "integer", "minimum": 0 }
     },
+    "fullRanges": {
+      "description": "How far a full battery usually takes each app's scooters in view, in metres, by provider: the median of range over battery, at 40% or more, of its scooters in the feeds that cover the view, or else of every feed it has, so of 20 scooters or more. Only apps whose scooters in view mostly have a battery the filter can judge, given or estimated: the filters write from it how far the minimum chosen usually takes them. Whatever the provider filter, so the line changes as soon as an app is switched off or on.",
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 1 }
+    },
     "meta": { "$ref": "#/$defs/ScooterResponseMeta" }
   },
   "$defs": {
@@ -178,6 +183,13 @@
             { "type": "integer", "minimum": 0 },
             { "type": "null" }
           ]
+        },
+        "battery_estimate": {
+          "x-swift-name": "batteryEstimate",
+          "description": "Where the feed gives a range and no battery, the battery estimated from it: the range as a percentage of the longest its 20 or more scooters of that type report (their 99th percentile), or of the type's declared maximum where that percentile is within 15% under it. The battery filter judges the scooter by it as by a battery; the card shows the range, not this.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         },
         "vehicle_id": {
           "x-swift-name": "vehicleID",

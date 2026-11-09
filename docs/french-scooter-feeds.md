@@ -466,8 +466,12 @@ SIEMU and Versailles Grand Parc only.
   Other integrated operators use GBFS 2.2/2.3, localized discovery,
   `free_bike_status`, `data.bikes`, and Unix timestamps.
 - **Lime and Voi:** the sampled public feeds provide remaining range but no battery
-  percentage. The app retains `battery: null`; it does not invent a percentage
-  from vehicle range. A positive battery filter excludes unknown batteries.
+  percentage. The app retains `battery: null` and shows the range. The battery
+  filter judges these scooters by `battery_estimate`, their range over the
+  longest their type reports in the feed (the 99th percentile of 20 or more, or
+  the declared `max_range_meters` where that percentile is within 15% under
+  it: Voi's 80 km), from `src/lib/batteryEstimate.ts`. Scooters with neither a
+  battery nor an estimate are hidden while a minimum is set.
 - **Rental links:** Dott publishes vehicle links; Voi links to its nearest-vehicle
   flow; Pony links to its scanner. Bird and Lime supplied no vehicle rental links
   in these feeds. Only the supplied, provider-validated links are exposed, so

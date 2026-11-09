@@ -169,6 +169,39 @@ describe('map coverage and zoom tiers', () => {
   });
 });
 
+describe('batteries estimated from ranges', () => {
+  // As Lime's GBFS gives them: ranges and no batteries, here 300 m to 12 km, estimated over the longest.
+  const limeVehicles = (prefix: string, lat = 45.75, lng = 4.85) => Array.from({ length: 40 }, (_, index): Vehicle => ({
+    ...vehicle(`${prefix}${index}`, null), provider: 'lime', lat, lng, range_m: 300 * (index + 1),
+    battery_estimate: Math.round((index + 1) / 40 * 100) }));
+  const lime = feed({ id: 'france:lime_fr_lyon', provider: 'lime', vehicles: limeVehicles('lime') });
+
+  it('are judged by the battery minimum zoomed in, in groups and in the city totals', () => {
+    const cached = snapshot([lime, feed()]);
+    // Lime's from 60% (7.2 km of 12 up), and Dott's one at 80%; its other gives no battery.
+    for (const zoom of [16, 13, 9]) {
+      expect(querySnapshot(cached, { ...query, minBattery: 60 }, zoom, now).providers).toEqual({ lime: 17, dott: 1 });
+    }
+  });
+
+  it('give each app in view the range of a full battery, whatever the provider filter', () => {
+    const cached = snapshot([lime, feed()]);
+    // Dott's have no range: it has none.
+    for (const zoom of [16, 13, 9]) expect(querySnapshot(cached, query, zoom, now).fullRanges).toEqual({ lime: 12_000 });
+    expect(querySnapshot(cached, { ...query, providers: new Set(['dott']) }, 13, now).fullRanges).toEqual({ lime: 12_000 });
+    expect(querySnapshot(cached, { ...query, bounds: zurich }, 13, now).fullRanges).toBeUndefined();
+  });
+
+  it('give an app whose feeds in view have no ranges the full range of its others', () => {
+    const marseille = { south: 43.2, west: 5.3, north: 43.4, east: 5.5 };
+    const ranges = feed({ id: 'france:lime_fr_marseille', provider: 'lime', coverage: [marseille], vehicles: limeVehicles('m', 43.3, 5.4) });
+    // Its rider map's in Lyon, with batteries and no ranges.
+    const rider = feed({ id: 'france:lime_app_lyon', provider: 'lime', vehicles: Array.from({ length: 30 }, (_, index) =>
+      ({ ...vehicle(`app${index}`, 70), provider: 'lime' })) });
+    expect(querySnapshot(snapshot([ranges, rider]), query, 13, now).fullRanges).toEqual({ lime: 12_000 });
+  });
+});
+
 it('returns parking only at street zoom, separately from scooter counts and battery filters', () => {
   const location = { id: 'dott_fr_lyon:bay', name: 'Bay', provider: 'dott', lat: 45.75, lng: 4.85, mandatory: true };
   const cached = snapshot([feed({ parking: { locations: [location, { ...location, id: 'outside', lat: 47 }], observedAt: now, stale: false } })]);

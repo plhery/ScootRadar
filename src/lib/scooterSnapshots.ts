@@ -1,3 +1,4 @@
+import { filterBattery, fullRangeByProvider, passesMinBattery, viewFullRanges } from '@/lib/batteryEstimate';
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
 import {
   REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isLimeGroupFeed, isRydeGroupFeed, isRegionalSource,
@@ -328,7 +329,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
       // Assign each scooter once, including where neighbouring service areas overlap.
       const total = totals.get(townOf(vehicle, cities, own).id)!;
       const bins = total.batteries[vehicle.provider] ??= Array<number>(102).fill(0);
-      bins[vehicle.battery ?? 101]++;
+      bins[filterBattery(vehicle) ?? 101]++;
     }
     yield;
   }
@@ -383,6 +384,26 @@ export function joinCityOverviews(a: MobilitySnapshot['overview'], b: MobilitySn
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
 
+// Each app's full range over every feed (viewFullRanges' elsewhere), worked out again when the feeds change.
+const FULL_RANGES_EVERYWHERE = new WeakMap<readonly FeedSnapshot[], Map<string, number>>();
+
+/**
+ * The response's fullRanges over the feeds covering `bounds`, `observations` with them: of every app
+ * there, whichever the provider filter keeps, so the filters' line follows an app switched off at once.
+ */
+function fullRangesIn(snapshot: MobilitySnapshot, bounds: MapBounds, observations: readonly FeedSnapshot[] = []): Record<string, number> {
+  let everywhere = FULL_RANGES_EVERYWHERE.get(snapshot.feeds);
+  if (!everywhere) {
+    everywhere = fullRangeByProvider(snapshot.feeds.filter(feed => !feed.skipped).map(feed => feed.vehicles));
+    FULL_RANGES_EVERYWHERE.set(snapshot.feeds, everywhere);
+  }
+  const covering = [...snapshot.feeds.filter(feed => coverageIntersects(feed.coverage, bounds)), ...observations];
+  return viewFullRanges(covering.filter(feed => !feed.skipped).map(feed => feed.vehicles), everywhere);
+}
+
+const withFullRanges = (response: ScooterResponse, fullRanges: Record<string, number>): ScooterResponse =>
+  Object.keys(fullRanges).length ? { ...response, fullRanges } : response;
+
 function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number, now: number): ScooterResponse {
   if (now - snapshot.overview.generatedAt > OVERVIEW_MAX_AGE_MS) {
     throw new ScooterFeedsUnavailableError(['city-overview']);
@@ -417,14 +438,14 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
   if (attempted.length > 0 && attempted.every(source => source === 'failed') && !meta.failedSources.some(id => failing.has(id))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
-  return {
+  return withFullRanges({
     vehicles: [], clusters, providers,
     meta: { ...meta, generatedAt: new Date(snapshot.overview.generatedAt).toISOString(),
       expiresAt: new Date(snapshot.overview.generatedAt + OVERVIEW_MAX_AGE_MS).toISOString(),
       truncated: false, totalVehicles: Object.values(providers).reduce((a, b) => a + b, 0),
       mode: 'clusters', zoom, overview: true, refreshAfterSeconds: 3600,
       availableProviders: providersForViewport(query.bounds), ...seasonOverIn(snapshot, query.bounds) },
-  };
+  }, fullRangesIn(snapshot, query.bounds));
 }
 
 /**
@@ -572,7 +593,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const pick = (into: Map<string, Vehicle>, vehicles: Vehicle[], skip?: (vehicle: Vehicle, key: string) => boolean) => {
     for (const vehicle of vehicles) {
       if (!boundsContainPoint(query.bounds, vehicle.lat, vehicle.lng)) continue;
-      if (query.minBattery > 0 && (vehicle.battery === null || vehicle.battery < query.minBattery)) continue;
+      if (!passesMinBattery(vehicle, query.minBattery)) continue;
       const key = vehicleKey(vehicle);
       if (skip?.(vehicle, key)) continue;
       into.set(key, query.origin ? { ...vehicle,
@@ -664,6 +685,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     ...seasonOverIn(snapshot, query.bounds),
   }, previous, Object.fromEntries([...lastSeenProviders].map(([provider, { seenAt, updating }]) =>
     [provider, { seenAt: new Date(seenAt).toISOString(), updating }])));
+  const fullRanges = fullRangesIn(snapshot, query.bounds, options.observations);
+  if (Object.keys(fullRanges).length) response.fullRanges = fullRanges;
   if (zoom !== null && zoom >= PARKING_MIN_ZOOM) {
     // The app maps' feeds collect no parking, so none of theirs is missing.
     const systems = relevant.filter(collectsParking);

@@ -6,6 +6,7 @@ import {
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
 import { scooterResponse, scooterResponseHeaders } from '@/lib/scooterResponse';
+import { viewFullRanges } from '@/lib/batteryEstimate';
 import { skippedSources } from '@/lib/scooterSources';
 
 export async function GET(request: NextRequest) {
@@ -34,7 +35,9 @@ export async function GET(request: NextRequest) {
   const zoom = scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
   try {
     const result = await fetchScooters(parsed.query);
-    const body = scooterResponse(result, zoom);
+    // As the cache's, from the scooters in view alone: this route keeps no feeds.
+    const fullRanges = viewFullRanges([result.vehicles]);
+    const body = { ...scooterResponse(result, zoom), ...(Object.keys(fullRanges).length ? { fullRanges } : {}) };
     return NextResponse.json(body, { headers: scooterResponseHeaders(body) });
   } catch (error) {
     if (error instanceof ScooterFeedsUnavailableError) {

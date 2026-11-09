@@ -98,7 +98,10 @@ export function mergeAppMap(app: readonly Vehicle[], national: readonly Vehicle[
   return app.map((vehicle, index) => {
     const match = matchOf.get(index);
     if (match) {
+      // The national range's estimated battery where neither gives one (batteryEstimate.ts).
+      const estimate = vehicle.battery === null && match.battery === null ? match.battery_estimate : undefined;
       return { ...vehicle, battery: vehicle.battery ?? match.battery, range_m: match.range_m, deep_link: match.deep_link,
+        ...(estimate !== undefined ? { battery_estimate: estimate } : {}),
         ...(match.rental_uris ? { rental_uris: match.rental_uris } : {}), ...(match.pricing ? { pricing: match.pricing } : {}) };
     }
     let nearest: (typeof priced)[number] | undefined, nearestMetres = Infinity;
