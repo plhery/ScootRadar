@@ -248,12 +248,13 @@ class ScooterFilteringTest {
     @Test
     fun providerInitialsAreWrittenInTheInkOfTheirColour() {
         val white = 0xFFFFFFFF
-        // White on the darker colours, near black on the bright ones (357f0c2c).
-        for (provider in listOf(ScooterProvider.Publibike, ScooterProvider.RideMobility, ScooterProvider.Yoio, ScooterProvider.Jet)) {
+        // White on the darker colours, Bolt's deep green among them since issue #13, near black on the bright ones
+        // (357f0c2c).
+        for (provider in listOf(ScooterProvider.Publibike, ScooterProvider.RideMobility, ScooterProvider.Yoio, ScooterProvider.Jet, ScooterProvider.Bolt)) {
             assertEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = false))
             assertEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = true))
         }
-        for (provider in listOf(ScooterProvider.Lime, ScooterProvider.Bolt, ScooterProvider.Voi, ScooterProvider.Dott, ScooterProvider.Hopp)) {
+        for (provider in listOf(ScooterProvider.Lime, ScooterProvider.Voi, ScooterProvider.Dott, ScooterProvider.Hopp)) {
             assertNotEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = false))
             assertNotEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = true))
         }
