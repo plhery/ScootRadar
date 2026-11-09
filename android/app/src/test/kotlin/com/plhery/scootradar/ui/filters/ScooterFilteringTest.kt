@@ -1,25 +1,24 @@
 package com.plhery.scootradar.ui.filters
 
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onFirst
-import androidx.compose.ui.text.TextMeasurer
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.Density
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.EmptyScooterAPI
+import com.plhery.scootradar.TestControllers
+import com.plhery.scootradar.core.map.hasActiveFilters
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
-import com.plhery.scootradar.ui.sheet.IosSheet
-import com.plhery.scootradar.ui.sheet.SheetDetent
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.resetFontScale
-import com.plhery.scootradar.ui.theme.shrunk
-import com.plhery.scootradar.ui.theme.useFontScale
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -38,65 +37,48 @@ class ScooterFilteringTest {
     @get:Rule
     val compose = createComposeRule()
 
+    private val controllers = TestControllers()
+
     @After
     fun tearDown() {
+        controllers.close()
         resetFontScale()
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterUnits.current = ScooterUnits.Automatic
     }
 
     /**
-     * "Indifférent" is the longest word for "Any". Side by side until the text is very large, the presets must hold
-     * it on one line, shrunk at most as far as they may be, on the narrowest phone, at the largest text size that
-     * keeps them side by side: 1.3, the last of Android's sizes under the accessibility ones (UI-134). The segment
-     * is the one laid out in the sheet at its medium height, not a full width's.
+     * Issue #12: the slider sets the controller's minimum range in metres, the filters' only minimum, and Reset puts
+     * it back to Any. In miles, chosen in Settings, a step is a mile.
      */
     @Test
-    fun theLongestBatteryPresetFitsItsSegmentAtTheLargestStandardTextSize() {
-        val labels = listOf(
-            ScooterLanguage.En, ScooterLanguage.De, ScooterLanguage.Fr, ScooterLanguage.It, ScooterLanguage.Nl,
-            ScooterLanguage.Nb, ScooterLanguage.Pt, ScooterLanguage.Es, ScooterLanguage.Is,
-        ).associateWith { language ->
-            ScooterLanguage.current = language
-            batteryPresetLabel(0)
-        }
-        ScooterLanguage.current = ScooterLanguage.Fr
-        useFontScale(1.3f)
-
-        lateinit var measurer: TextMeasurer
-        lateinit var density: Density
+    fun theSliderSetsTheRangeAndResetPutsItBackToAny() {
+        ScooterLanguage.current = ScooterLanguage.En
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = controllers.make(EmptyScooterAPI, defaults = defaults)
         compose.setContent {
-            measurer = rememberTextMeasurer()
-            density = LocalDensity.current
-            ScootTheme(dark = false) {
-                IosSheet(isPresented = true, onDismiss = {}, detents = listOf(SheetDetent.Medium, SheetDetent.Large), title = "Filters") {
-                    FilterSheetContent(
-                        minimumBattery = 0,
-                        entries = emptyList(),
-                        hasActiveFilters = false,
-                        showResults = "Show 36 scooters",
-                        bottomInset = 0.dp,
-                        onChooseMinimum = {},
-                        onToggle = {},
-                        onReset = {},
-                        onDone = {},
-                    )
-                }
+            ScootTheme(dark = false, reduceMotion = true) {
+                ScooterFilterSheet(model, bottomInset = 0.dp, onDone = {})
             }
         }
         compose.waitForIdle()
+        val slider = compose.onNodeWithContentDescription("Range")
 
-        assertTrue(density.fontScale == 1.3f)
-        // 360 dp less the sheet's 8 dp each side, 20 dp margins, 4 dp inside the control and three 4 dp gaps.
-        val segment = compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton)).onFirst()
-            .fetchSemanticsNode().size.width
-        assertEquals((360 - 16 - 40 - 8 - 12) / 4f, segment / density.density, 0.5f)
-        val style = batteryPresetStyle(selected = true).let { it.copy(fontSize = shrunk(it.fontSize, PRESET_MINIMUM_SCALE, density)) }
-        for ((language, any) in labels) {
-            val width = measurer.measure(any, style, maxLines = 1, softWrap = false, density = density).size.width
-            assertTrue(
-                "${language.rawValue}: $any is ${width / density.density} dp wide, over ${segment / density.density}",
-                width <= segment,
-            )
-        }
+        slider.performSemanticsAction(SemanticsActions.SetProgress) { it(5f) }
+        compose.waitForIdle()
+        assertEquals(5_000, model.minimumRange.value)
+        assertTrue(model.hasActiveFilters)
+
+        model.setUnits(ScooterUnits.Imperial)
+        compose.waitForIdle()
+        slider.performSemanticsAction(SemanticsActions.SetProgress) { it(3f) }
+        compose.waitForIdle()
+        assertEquals(4_828, model.minimumRange.value)
+
+        compose.onNode(hasText("Reset")).performClick()
+        compose.waitForIdle()
+        assertEquals(0, model.minimumRange.value)
+        assertFalse(model.hasActiveFilters)
     }
 }

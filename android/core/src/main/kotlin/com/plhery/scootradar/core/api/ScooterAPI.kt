@@ -40,7 +40,11 @@ import okhttp3.Response
 // From ios/ScootRadar/Services/ScooterAPI.swift.
 
 interface ScooterAPIClient {
-    suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse
+    /**
+     * The scooters in the bounds with at least the range in metres, 0 for Any: a scooter that reports only its battery
+     * judged by how far a full battery takes its app's (the answer's batteryRanges).
+     */
+    suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int = 0): ScooterResponse
 
     /** The operators' zones that reach into the area. A client that knows no zones has none to give. */
     suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse =
@@ -92,18 +96,18 @@ class ScooterAPI(
         http.connectionPool.evictAll()
     }
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
-        val response = get(
-            "api/scooters",
-            listOf(
-                "south" to fiveDecimals(bounds.south),
-                "west" to fiveDecimals(bounds.west),
-                "north" to fiveDecimals(bounds.north),
-                "east" to fiveDecimals(bounds.east),
-                "zoom" to zoom.toString(),
-                "minBattery" to minimumBattery.toString(),
-            ),
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
+        val query = mutableListOf(
+            "south" to fiveDecimals(bounds.south),
+            "west" to fiveDecimals(bounds.west),
+            "north" to fiveDecimals(bounds.north),
+            "east" to fiveDecimals(bounds.east),
+            "zoom" to zoom.toString(),
         )
+        // Only with a minimum, in whole metres: a server from before the range filter answers as it did, and the app
+        // filters the scooters itself. The battery minimum of the builds before is no longer sent.
+        if (minimumRange > 0) query += "minRange" to minimumRange.toString()
+        val response = get("api/scooters", query)
         // The server's times are compared with this device's clock, which may be wrong.
         val clockOffset = clockOffset(dateHeader = response.headers["Date"], receivedAt = Instant.now())
 

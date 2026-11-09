@@ -20,7 +20,7 @@ class ScooterMapLinkTest {
     fun readsTheMapLinksOfTheSite() {
         val link = unwrap(link("https://scootradar.com/map?origin=47.3769,8.5417&minBattery=45&theme=dark"))
         assertEquals(GeoPoint(latitude = 47.3769, longitude = 8.5417), link.origin)
-        assertEquals("A slider-era value snaps down to a preset", 30, link.minimumBattery)
+        assertEquals("A minimum battery is no longer read", ScooterMapLink(origin = link.origin), link)
 
         assertEquals(ScooterMapLink(), link("https://scootradar.com/map"))
         assertEquals(
@@ -52,10 +52,32 @@ class ScooterMapLinkTest {
         for (origin in listOf("", "47.3", "47.3,", ",8.5", "91,8.5", "47.3,181", "abc,8.5", "47.3,8.5,1", "nan,8.5")) {
             assertNull(origin, ScooterMapLink.coordinate(origin))
         }
-        assertNull(ScooterMapLink.battery(""))
-        assertNull(ScooterMapLink.battery("lots"))
-        assertEquals(80, ScooterMapLink.battery("150"))
-        assertEquals(0, ScooterMapLink.battery("-5"))
+    }
+
+    /** A minimum range in whole metres, the filters' only minimum: a link's battery minimum beside it is not read. */
+    @Test
+    fun readsAMinimumRangeAndNotTheBattery() {
+        val link = unwrap(link("https://scootradar.com/map?origin=48.7758,9.1829&minRange=5000"))
+        assertEquals(5_000, link.minimumRange)
+        assertEquals(4_828, link("https://scootradar.com/map?minRange=4828")?.minimumRange)
+        // The map was at "/" before minRange existed: the site reads it on the map alone, as zones (clientParams.ts).
+        assertNull(link("https://scootradar.com/?minRange=4828"))
+        assertEquals(0, link("https://scootradar.com/map?minRange=0")?.minimumRange)
+
+        assertEquals(ScooterMapLink(minimumRange = 5_000), link("https://scootradar.com/map?minBattery=60&minRange=5000"))
+        assertEquals(ScooterMapLink(), link("https://scootradar.com/map?minBattery=60"))
+        // The map at "/", from before the landing page, is still a link to it with a battery minimum alone, left out.
+        assertEquals(ScooterMapLink(), link("https://scootradar.com/?minBattery=60"))
+    }
+
+    @Test
+    fun ignoresARangeThatIsNoWholeNumberOfMetres() {
+        for (text in listOf("", "far", "-1000", "5000.5", "5e3", "nan", "5000m", "\u0665\u0660\u0660\u0660")) {
+            assertNull(text, ScooterMapLink.range(text))
+        }
+        assertEquals(12_000, ScooterMapLink.range(" 12000 "))
+        assertEquals(12_000, ScooterMapLink.range("+12000"))
+        assertNull(link("https://scootradar.com/map?minRange=-5")?.minimumRange)
     }
 
     // Not an iPhone test: what ScooterMapLink.swift gives for these, compiled on a Mac, where Foundation's
@@ -64,9 +86,9 @@ class ScooterMapLinkTest {
     fun readsWhatFoundationReads() {
         // The first of a name counts, with no value without "=", none for bytes that are not UTF-8, and "+" kept.
         assertEquals(ScooterMapLink(), link("https://scootradar.com/map?origin&origin=3,4"))
-        assertEquals(ScooterMapLink(minimumBattery = 30), link("https://scootradar.com/map?minBattery=4e+1"))
+        assertEquals(ScooterMapLink(), link("https://scootradar.com/map?minRange=5000+"))
         assertNull(link("https://scootradar.com/?origin=%FF"))
-        assertEquals(ScooterMapLink(minimumBattery = 30), link("https://scootradar.com/map?origin=%FF&minBattery=4%35"))
+        assertEquals(ScooterMapLink(minimumRange = 5_000), link("https://scootradar.com/map?origin=%FF&minRange=5%30%30%30"))
         assertEquals(GeoPoint(latitude = 1.0, longitude = 2.0), link("https://scootradar.com/map?ori%67in=1,2")?.origin)
         assertEquals(ScooterMapLink(), link("https://scootradar.com/?origin="))
         assertNull(link("https://scootradar.com/?"))
@@ -76,7 +98,6 @@ class ScooterMapLinkTest {
         }
         // Numbers as Swift reads them: hexadecimal too, no suffix, spaces and tabs trimmed but not line breaks.
         assertEquals(GeoPoint(latitude = 47.0, longitude = 8.0), link("https://scootradar.com/map?origin=0x2F,0x1p3")?.origin)
-        assertEquals(listOf(0, 30, 30, null, null, 0, 30, 60), listOf("0x10", "47.", " 45", "5d", "1e400", "4.9e-400", "45.9", "\u00A060\t").map(ScooterMapLink::battery))
         assertEquals(GeoPoint(latitude = 47.3, longitude = 8.5), ScooterMapLink.coordinate("47.3,\t8.5"))
         assertNull(ScooterMapLink.coordinate("47.3,8.5\n"))
         assertEquals(GeoPoint(latitude = 0.5, longitude = -0.5), ScooterMapLink.coordinate(".5,-.5"))

@@ -49,7 +49,6 @@ import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.localized
-import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.testController
 import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
@@ -346,8 +345,8 @@ class SecondaryClickTest {
     }
 
     /**
-     * Beside a panel, Filters is a popover in the screen: a right click on a battery minimum chooses nothing, a left
-     * click chooses it.
+     * Beside a panel, Filters is a popover in the screen: a right click on a provider's row hides nothing, a left
+     * click hides the provider.
      */
     @Test
     @Config(qualifiers = "w1024dp-h768dp-mdpi")
@@ -356,15 +355,18 @@ class SecondaryClickTest {
         showTheScreen(controller)
         compose.onNodeWithContentDescription(localized("Filters")).performClick()
         compose.waitUntil { compose.onAllNodesWithTag(POPOVER_TAG).fetchSemanticsNodes().isNotEmpty() }
-        val sixty = compose.onNode(hasContentDescription(stringFormat(localized("%lld percent or more"), 60L)) and hasAnyAncestor(hasTestTag(POPOVER_TAG)))
-        val before = controller.minimumBattery.value
+        val bolt = compose.onNode(
+            hasContentDescription(ScooterProvider.Bolt.displayName, substring = true) and hasClickAction() and
+                hasAnyAncestor(hasTestTag(POPOVER_TAG)),
+        )
+        assertTrue(ScooterProvider.Bolt in controller.enabledProviders.value)
 
-        sixty.performMouseInput { rightClick() }
+        bolt.performMouseInput { rightClick() }
         compose.waitForIdle()
-        assertEquals("the minimum after a right click on 60%", before, controller.minimumBattery.value, 0.0)
-        sixty.performMouseInput { click() }
+        assertTrue("Bolt after a right click on its row", ScooterProvider.Bolt in controller.enabledProviders.value)
+        bolt.performMouseInput { click() }
         compose.waitForIdle()
-        assertEquals("the minimum after a left click", 60.0, controller.minimumBattery.value, 0.0)
+        assertFalse("Bolt after a left click", ScooterProvider.Bolt in controller.enabledProviders.value)
     }
 
     /** Bolt's pass, valid through 14 November 2026 at noon, its page shown and its calendar opened from the date. */

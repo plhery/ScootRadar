@@ -239,7 +239,7 @@ class SpokenTextTest {
             screen.filtersPresented = true
         }
         compose.waitForIdle()
-        compose.onNode(hasText(localized("Battery"))).assertExists()
+        compose.onNode(hasText(localized("Range"))).assertExists()
         assertEquals("Filters", emptyList<String>(), styledTexts())
 
         compose.runOnIdle {

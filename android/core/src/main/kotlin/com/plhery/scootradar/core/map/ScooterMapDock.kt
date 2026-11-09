@@ -147,18 +147,21 @@ val ScooterMapController.availableProviders: List<ScooterProvider>
         return ScooterProvider.entries.filter { it in providers }
     }
 
-val ScooterMapController.hasActiveFilters: Boolean get() = minimumBattery.value > 0 || !allProvidersSelected
+val ScooterMapController.hasActiveFilters: Boolean
+    get() = minimumRange.value > 0 || !allProvidersSelected
 
 /**
  * The providers that are not sharing data here: a feed of theirs failed, they operate in the viewport and
  * the map holds none of their scooters in view, whatever the rider's filters hide. City totals name no
  * one, and neither does data that cannot tell who has scooters here: loaded for another area, or already
- * without the scooters under the battery minimum, which the server leaves out of clusters.
+ * without the scooters under the range minimum, which the server leaves out of clusters.
  */
 val ScooterMapController.providerHealth: ScooterProviderHealth
     get() {
         val responseMetadata = responseMetadata.value
-        if (responseMetadata == null || responseMetadata.overview || !viewportIsLoaded || (queryMinimumBattery ?: 0) != 0) {
+        if (responseMetadata == null || responseMetadata.overview || !viewportIsLoaded ||
+            (queryMinimumRange ?: 0) != 0
+        ) {
             return ScooterProviderHealth.healthy
         }
         return ScooterProviderHealth(
@@ -472,8 +475,9 @@ private val ScooterMapController.hiddenByFilters: ScooterFilterSummary?
     get() {
         if (!hasActiveFilters) return null
         // The response cannot tell how many scooters there are once the server filtered clustered data by
-        // battery or cut the list short.
-        val isCountKnown = (queryMinimumBattery ?: 0) == 0 && responseMetadata.value?.truncated != true
+        // range or cut the list short.
+        val isCountKnown = (queryMinimumRange ?: 0) == 0 &&
+            responseMetadata.value?.truncated != true
         val hiddenCount: Int? = if (isCountKnown) unfilteredVisibleCount else null
         // Filters that hide nothing are not the reason the map is empty.
         if (hiddenCount == 0) return null
@@ -488,7 +492,7 @@ private val ScooterMapController.hiddenByFilters: ScooterFilterSummary?
         return ScooterFilterSummary(
             hiddenCount = hiddenCount,
             providers = providers,
-            minimumBattery = if (minimumBattery.value > 0) minimumBattery.value.toInt() else null,
+            minimumRange = if (minimumRange.value > 0) minimumRange.value else null,
         )
     }
 

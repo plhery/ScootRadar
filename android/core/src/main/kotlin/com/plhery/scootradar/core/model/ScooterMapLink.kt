@@ -7,29 +7,29 @@ import java.nio.ByteBuffer
 import java.nio.charset.CharacterCodingException
 import java.nio.charset.CodingErrorAction
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 // ios/ScootRadar/Models/ScooterMapLink.swift.
 
 /**
  * A link to the map on scootradar.com that the phone opened in the app rather than in the browser (App
  * Links, as the iPhone's universal links: public/.well-known/apple-app-site-association). It reads what
- * the web map reads from a link (src/lib/clientParams.ts): the place to open on and the battery filter.
- * The appearance and map style in a link are the website's own and are left out.
+ * the web map reads from a link (src/lib/clientParams.ts): the place to open on and the minimum range. The
+ * appearance and map style in a link are the website's own and are left out, and so is the battery minimum of the
+ * links from before the range became the filters' only minimum.
  */
 data class ScooterMapLink(
     /** The place the map opens on: a city's centre on the site's own links. */
     val origin: GeoPoint? = null,
-    /** A battery preset, or null to keep the rider's own. */
-    val minimumBattery: Int? = null,
+    /** A minimum range in metres, or null to keep the rider's own. */
+    val minimumRange: Int? = null,
 ) {
     companion object {
         val hosts: Set<String> = setOf("scootradar.com", "www.scootradar.com")
 
         /**
          * What a link to the map can carry, as on the web: the map at "/" before the landing page took its
-         * place is a link to the map with one of them.
+         * place is a link to the map with one of them, minBattery too, though its minimum is no longer read. Those
+         * added since, zones and minRange, are read on the map alone.
          */
         val parameters: List<String> = listOf("origin", "minBattery", "theme", "map", "tile")
 
@@ -50,7 +50,7 @@ data class ScooterMapLink(
 
             return ScooterMapLink(
                 origin = value("origin")?.let(::coordinate),
-                minimumBattery = value("minBattery")?.let(::battery),
+                minimumRange = value("minRange")?.let(::range),
             )
         }
 
@@ -105,11 +105,18 @@ data class ScooterMapLink(
             return GeoPoint(latitude = latitude, longitude = longitude)
         }
 
-        /** Links from the slider era hold any multiple of five; they snap down to a preset. */
-        fun battery(text: String): Int? {
-            val value = finiteNumber(text.trim(::isWhitespace)) ?: return null
-            return ScooterBatteryFilter.snapped(min(100.0, max(0.0, value)).toInt())
+        /**
+         * Whole metres, 0 or more, as the web writes them; anything else is left out, as Int(text) leaves it. The map
+         * reads them in whole steps of the unit it shows.
+         */
+        fun range(text: String): Int? {
+            val trimmed = text.trim(::isWhitespace)
+            if (!wholeNumber.matches(trimmed)) return null
+            return trimmed.toIntOrNull()?.takeIf { it >= 0 }
         }
+
+        /** What Int(text) reads: digits after an optional sign, ASCII ones only. */
+        private val wholeNumber = Regex("[+-]?[0-9]+")
 
         /** Swift's CharacterSet.whitespaces: spaces and the tab, not line breaks. */
         private fun isWhitespace(character: Char): Boolean =

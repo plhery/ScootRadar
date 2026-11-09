@@ -19,7 +19,8 @@ class AppLinkTest {
 
     @Test
     fun aLinkToTheMapOpensItsPlaceInTheApp() {
-        val zurich = AppLink.Map(ScooterMapLink(origin = GeoPoint(latitude = 47.3769, longitude = 8.5417), minimumBattery = 30))
+        // The battery minimum of the links from before the range was the filters' only minimum is left out.
+        val zurich = AppLink.Map(ScooterMapLink(origin = GeoPoint(latitude = 47.3769, longitude = 8.5417)))
         for (address in listOf(
             "https://scootradar.com/map?origin=47.3769,8.5417&minBattery=30",
             "https://scootradar.com/map/?origin=47.3769,8.5417&minBattery=30",
@@ -31,7 +32,8 @@ class AppLinkTest {
         }
         // The map as the rider left it.
         assertEquals(AppLink.Map(ScooterMapLink()), AppLink.of(view("https://scootradar.com/map")))
-        assertEquals(AppLink.Map(ScooterMapLink(minimumBattery = 30)), AppLink.of(view("https://scootradar.com/map/?minBattery=30")))
+        assertEquals(AppLink.Map(ScooterMapLink()), AppLink.of(view("https://scootradar.com/map/?minBattery=30")))
+        assertEquals(AppLink.Map(ScooterMapLink(minimumRange = 5_000)), AppLink.of(view("https://scootradar.com/map/?minRange=5000")))
     }
 
     @Test

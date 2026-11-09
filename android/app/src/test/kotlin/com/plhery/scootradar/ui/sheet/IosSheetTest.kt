@@ -176,12 +176,10 @@ class IosSheetTest {
         }
         show(listOf(SheetDetent.Medium, SheetDetent.Large)) {
             FilterSheetContent(
-                minimumBattery = 0,
                 entries = entries,
                 hasActiveFilters = false,
                 showResults = "Show 36 scooters",
                 bottomInset = 0.dp,
-                onChooseMinimum = {},
                 onToggle = {},
                 onReset = {},
                 onDone = {},

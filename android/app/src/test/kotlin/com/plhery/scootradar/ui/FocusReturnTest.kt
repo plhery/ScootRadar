@@ -170,7 +170,7 @@ class FocusReturnTest {
     fun filtersClosedPutsTheFocusBackOnItsButton() {
         show(controllers.make(EmptyScooterAPI))
         button("Filters").focusedByTalkBack().doubleTapped()
-        compose.onAllNodes(hasText("Battery")).onFirst().focusedByTalkBack()
+        compose.onAllNodes(hasText("Range")).onFirst().focusedByTalkBack()
         outside().focusedByTalkBack().doubleTapped()
         compose.waitForIdle()
         assertTrue("TalkBack's focus on Filters' button", button("Filters").isFocusedByTalkBack())
@@ -192,7 +192,7 @@ class FocusReturnTest {
         show(controllers.make(EmptyScooterAPI))
         button("Filters").focusedByTalkBack().doubleTapped()
         compose.onNodeWithTag(POPOVER_TAG).assertExists()
-        compose.onAllNodes(hasText("Battery")).onFirst().focusedByTalkBack()
+        compose.onAllNodes(hasText("Range")).onFirst().focusedByTalkBack()
         outside().focusedByTalkBack().doubleTapped()
         compose.waitForIdle()
         compose.onNodeWithTag(POPOVER_TAG).assertDoesNotExist()

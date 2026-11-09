@@ -70,9 +70,9 @@ class MainActivityRecreationTest {
     @Test
     fun aNewTextSizeKeepsFiltersOpen() {
         compose.onNodeWithContentDescription("Filters").performClick()
-        compose.onNodeWithText("Battery").assertIsDisplayed()
+        compose.onNodeWithText("Range").assertIsDisplayed()
         madeAgainForANewTextSize()
-        compose.onNodeWithText("Battery").assertIsDisplayed()
+        compose.onNodeWithText("Range").assertIsDisplayed()
     }
 
     @Test

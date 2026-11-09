@@ -77,16 +77,16 @@ class OpenedLinkTest {
         compose.onNodeWithContentDescription("Filters").performClick()
         compose.waitUntil { !searchBarShows() }
         val bern = TestCatalog.bern
-        links.trySend(ScooterMapLink(origin = bern.center, minimumBattery = 30))
+        links.trySend(ScooterMapLink(origin = bern.center, minimumRange = 8_047))
         compose.waitUntil { searchBarShows() }
         assertEquals(bern.destination, controller.searchedDestination.value)
-        assertEquals(30.0, controller.minimumBattery.value, 0.0)
+        assertEquals(8_047, controller.minimumRange.value)
 
         compose.onNodeWithContentDescription("Settings").performClick()
         compose.waitUntil { !searchBarShows() }
-        links.trySend(ScooterMapLink(minimumBattery = 0))
+        links.trySend(ScooterMapLink(minimumRange = 0))
         compose.waitUntil { searchBarShows() }
-        assertEquals(0.0, controller.minimumBattery.value, 0.0)
+        assertEquals(0, controller.minimumRange.value)
         // The place the last link chose stays.
         assertEquals(bern.destination, controller.searchedDestination.value)
     }

@@ -38,7 +38,7 @@ class MarkersUnderTheChromeTest {
     private val language = ScooterLanguage.current
     private val zurich = GeoPoint(47.3769, 8.5417)
     private val api = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = ScooterResponse(
             vehicles = listOf(
                 Scooter(
                     provider = "lime",

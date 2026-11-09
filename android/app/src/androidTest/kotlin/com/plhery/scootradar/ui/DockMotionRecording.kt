@@ -469,7 +469,7 @@ class DockMotionRecording {
             // A phone's dock has no panel to fold, as the iPhone's hasn't: nothing changes there.
             step(marked = panelLayout) { controller.setPanelCollapsed(true) }
             step(marked = panelLayout) { controller.setPanelCollapsed(false) }
-            step { controller.setMinimumBattery(75.0) }
+            step { controller.setMinimumRange(5_000) }
             step { controller.resetFilters() }
             api.scooters = if (warm) scooters else reordered
             step(marked = false) { controller.refresh() }
@@ -611,7 +611,7 @@ class DockMotionRecording {
     fun filtersSymbol() {
         val controller = show()
         val steps = {
-            main { controller.setMinimumBattery(75.0) }
+            main { controller.setMinimumRange(5_000) }
             Thread.sleep(1_500)
             main { controller.resetFilters() }
         }
@@ -819,7 +819,7 @@ class DockMotionRecording {
         @Volatile var holds = false
         private var gate = CompletableDeferred<Unit>()
 
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
             if (holds) gate.await()
             failure?.let { throw it }
             return ScooterResponse(vehicles = scooters)

@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
@@ -16,10 +17,10 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
@@ -28,6 +29,7 @@ import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterProviderEntry
+import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.scooter
@@ -77,25 +79,27 @@ class FiltersAccessibilityTest {
     }
 
     private var hasActiveFilters by mutableStateOf(true)
-    private var minimum by mutableStateOf(30)
-    private var shownEntries by mutableStateOf(entries)
-    private var fullRanges by mutableStateOf(emptyMap<String, Int>())
+    private var minimumRange by mutableStateOf(0)
+    private val chosenRanges = mutableListOf<Int>()
+    /** The latest answer's ranges of a full battery, and the apps switched on, that the paragraph is written from. */
+    private var batteryRanges by mutableStateOf(emptyMap<String, Int>())
+    private var enabledProviders by mutableStateOf(ScooterProvider.entries.toSet())
 
-    private fun showFilters(minimumBattery: Int = 30) {
-        minimum = minimumBattery
+    private fun showFilters(rangeUnit: ScooterRangeFilter.Unit = ScooterRangeFilter.Unit.Kilometres) {
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = true) {
                 FilterSheetContent(
-                    minimumBattery = minimum,
-                    entries = shownEntries,
+                    entries = entries,
                     hasActiveFilters = hasActiveFilters,
                     showResults = "Show 13 scooters",
                     bottomInset = 0.dp,
-                    onChooseMinimum = {},
                     onToggle = {},
                     onReset = {},
                     onDone = {},
-                    fullRanges = fullRanges,
+                    minimumRange = minimumRange,
+                    rangeUnit = rangeUnit,
+                    rangeHelp = ScooterRangeFilter.help(minimumRange, batteryRanges, enabledProviders),
+                    onChooseRange = { chosenRanges += it; minimumRange = it },
                 )
             }
         }
@@ -105,34 +109,6 @@ class FiltersAccessibilityTest {
     private fun role(role: Role) = SemanticsMatcher.expectValue(SemanticsProperties.Role, role)
 
     private val heading = SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading)
-
-    /**
-     * UI-289: the presets are a group of choices under the "Battery" heading, each read by its label alone, "Any"
-     * or "30 percent or more", and the chosen one selected. What each shows, "30%+", is its text, which Voice Access
-     * answers to as Voice Control answers to the iPhone's (b55719d0), and TalkBack leaves for the label.
-     */
-    @Test
-    fun theBatteryPresetsAreAGroupOfChoicesReadByTheirLabels() {
-        showFilters(minimumBattery = 30)
-        val presets = compose.onAllNodes(role(Role.RadioButton)).fetchSemanticsNodes()
-        assertEquals(
-            listOf("Any", "30 percent or more", "60 percent or more", "80 percent or more"),
-            presets.map { it.config[SemanticsProperties.ContentDescription].single() },
-        )
-        assertEquals(listOf(false, true, false, false), presets.map { it.config[SemanticsProperties.Selected] })
-        // "30%+" drawn, once, on the preset: none for "Any", which shows its label.
-        assertEquals(
-            listOf(null, "30%+", "60%+", "80%+"),
-            presets.map { preset -> preset.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text } },
-        )
-        // Their group, with no stop of its own.
-        val groups = presets.map { preset ->
-            generateSequence(preset.parent) { it.parent }.first { SemanticsProperties.SelectableGroup in it.config }
-        }
-        assertEquals(1, groups.map { it.id }.distinct().size)
-        assertTrue(SemanticsProperties.ContentDescription !in groups.first().config)
-        compose.onNode(hasText("Battery"), useUnmergedTree = true).assert(heading)
-    }
 
     /**
      * UI-290: a provider's row is one button, read by its name and count, or why it shares no data, then "Shown" or
@@ -156,12 +132,17 @@ class FiltersAccessibilityTest {
         }
     }
 
-    /** UI-291: the sections' titles are headings, Reset is off with no filter on, and Show results reads its text. */
+    /**
+     * UI-291: the sections' titles are headings, the range the only minimum, Reset is off with no filter on, and Show
+     * results reads its text.
+     */
     @Test
     fun theSectionsAreHeadingsAndResetIsOffWithNoFilterOn() {
         hasActiveFilters = false
         showFilters()
-        for (title in listOf("Battery", "Providers")) compose.onNode(hasText(title), useUnmergedTree = true).assert(heading)
+        for (title in listOf("Range", "Providers")) compose.onNode(hasText(title), useUnmergedTree = true).assert(heading)
+        assertTrue(compose.onAllNodes(hasText("Battery"), useUnmergedTree = true).fetchSemanticsNodes().isEmpty())
+        assertTrue(compose.onAllNodes(role(Role.RadioButton)).fetchSemanticsNodes().isEmpty())
         compose.onNode(hasText("Reset")).assertIsNotEnabled()
         compose.onNode(hasText("Show 13 scooters")).assert(role(Role.Button))
 
@@ -170,65 +151,120 @@ class FiltersAccessibilityTest {
     }
 
     /**
-     * What TalkBack reads next after the battery presets, in the sheet's order, its spaces plain: the paragraph under
-     * them, or the next section's heading where there is none.
+     * Issue #12: the minimum range is a slider under the "Range" heading, a whole kilometre a step up to 30 km, read
+     * by its title and its minimum, "5 km or more"; the value beside the heading is not read again. A swipe moves it
+     * a step, which is set in metres, and the help under it is there only while a minimum is set.
      */
-    private fun afterThePresets(): String {
+    @Test
+    fun theRangeSliderIsReadByItsTitleAndItsMinimumInWholeKilometres() {
+        ScooterUnits.current = ScooterUnits.Metric
+        minimumRange = 5_000
+        showFilters()
+        compose.onNode(hasText("Range"), useUnmergedTree = true).assert(heading)
+        val help = neither
+        compose.onNode(hasText(help)).assertExists()
+
+        val slider = compose.onNodeWithContentDescription("Range").fetchSemanticsNode()
+        assertEquals("5 km or more", plainSpaces(slider.config[SemanticsProperties.StateDescription]))
+        assertEquals(ProgressBarRangeInfo(5f, 0f..30f, steps = 29), slider.config[SemanticsProperties.ProgressBarRangeInfo])
+        // "5 km+" is drawn beside the heading, and not read: the slider says it.
+        assertTrue(
+            compose.onAllNodes(SemanticsMatcher("reads 5 km+") { node ->
+                node.config.getOrNull(SemanticsProperties.Text).orEmpty().any { plainSpaces(it.text) == "5 km+" }
+            }, useUnmergedTree = true).fetchSemanticsNodes().isEmpty(),
+        )
+
+        compose.onNodeWithContentDescription("Range").performSemanticsAction(SemanticsActions.SetProgress) { it(12f) }
         compose.waitForIdle()
-        val group = compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.SelectableGroup)).fetchSemanticsNode()
-        val next = group.parent!!.children.dropWhile { it.id != group.id }.drop(1).first()
-        return plainSpaces(next.config[SemanticsProperties.Text].joinToString { it.text })
+        assertEquals(listOf(12_000), chosenRanges)
+        assertEquals("12 km or more", plainSpaces(compose.onNodeWithContentDescription("Range").fetchSemanticsNode().config[SemanticsProperties.StateDescription]))
+
+        compose.onNodeWithContentDescription("Range").performSemanticsAction(SemanticsActions.SetProgress) { it(0f) }
+        compose.waitForIdle()
+        assertEquals(listOf(12_000, 0), chosenRanges)
+        assertEquals("Any", compose.onNodeWithContentDescription("Range").fetchSemanticsNode().config[SemanticsProperties.StateDescription])
+        assertTrue(compose.onAllNodes(hasText(help)).fetchSemanticsNodes().isEmpty())
+    }
+
+    /** Where lengths are in miles the slider goes a whole mile a step up to 20 mi, a step set in metres: 3 mi is 4,828 m. */
+    @Test
+    fun theRangeSliderGoesInWholeMilesWhereLengthsAreInMiles() {
+        ScooterUnits.current = ScooterUnits.Imperial
+        minimumRange = 4_828
+        showFilters(rangeUnit = ScooterRangeFilter.Unit.Miles)
+        val slider = compose.onNodeWithContentDescription("Range").fetchSemanticsNode()
+        assertEquals("3 mi or more", plainSpaces(slider.config[SemanticsProperties.StateDescription]))
+        assertEquals(ProgressBarRangeInfo(3f, 0f..20f, steps = 19), slider.config[SemanticsProperties.ProgressBarRangeInfo])
+
+        compose.onNodeWithContentDescription("Range").performSemanticsAction(SemanticsActions.SetProgress) { it(20f) }
+        compose.waitForIdle()
+        assertEquals(listOf(32_187), chosenRanges)
+        assertEquals("20 mi or more", plainSpaces(compose.onNodeWithContentDescription("Range").fetchSemanticsNode().config[SemanticsProperties.StateDescription]))
     }
 
     private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
 
-    private val hidden = "Scooters without battery info are hidden while a minimum is set."
+    private val neither = "Scooters without range or battery info are hidden while a minimum is set."
 
     /**
-     * Issue #12: under the presets, how far the minimum chosen, or a full battery for Any, usually takes the scooters
-     * of the apps switched on in view, followed while a minimum is set by what it hides: one paragraph, which TalkBack
-     * reads right after the presets as what describes them. Where no app in view has a full range, nothing is said at
-     * Any and only what a minimum hides at 60%.
+     * What TalkBack reads next after the slider, in the sheet's order, its spaces plain: the paragraph under it, or the
+     * next section's heading where there is none.
      */
-    @Test
-    fun underThePresetsOneParagraphSaysHowFarTheMinimumUsuallyTakesTheScootersChosen() {
-        ScooterUnits.current = ScooterUnits.Metric
-        shownEntries = listOf(
-            ScooterProviderEntry(ScooterProvider.Lime, count = 30, isEnabled = true, isSelected = false, isDown = false),
-            ScooterProviderEntry(ScooterProvider.Bolt, count = 10, isEnabled = true, isSelected = false, isDown = false),
-        )
-        showFilters(minimumBattery = 0)
-        assertEquals("Providers", afterThePresets())
-
-        fullRanges = mapOf("lime" to 11_500, "bolt" to 61_000)
-        assertEquals("100% usually allows about 12–61 km.", afterThePresets())
-
-        minimum = 60
-        assertEquals("60% usually allows about 7–37 km. $hidden", afterThePresets())
-
-        shownEntries = shownEntries.map { if (it.provider == ScooterProvider.Bolt) it.copy(isEnabled = false) else it }
-        assertEquals("60% usually allows about 7 km. $hidden", afterThePresets())
-
-        fullRanges = emptyMap()
-        assertEquals(hidden, afterThePresets())
+    private fun afterTheSlider(): String {
+        compose.waitForIdle()
+        val slider = compose.onNodeWithContentDescription("Range").fetchSemanticsNode()
+        fun walk(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::walk)
+        val nodes = walk(compose.onRoot().fetchSemanticsNode())
+        val next = nodes.drop(nodes.indexOfFirst { it.id == slider.id } + 1)
+            .filter { node -> generateSequence(node.parent) { it.parent }.none { it.id == slider.id } }
+            .first { SemanticsProperties.Text in it.config }
+        return plainSpaces(next.config[SemanticsProperties.Text].joinToString { it.text })
     }
 
     /**
-     * The sheet writes the line from the controller's latest answer and what its provider rows count: Voi's scooter,
-     * which gives a range and no battery, counts at 60% by its estimated 70% and not at 80%.
+     * Issue #12: under the slider, while a minimum is set, one paragraph says what battery the scooters that only
+     * report one need, from the latest answer's full battery's ranges and of the apps switched on, which apps' are all
+     * hidden, and that the scooters with neither are hidden. TalkBack reads it right after the slider, as what
+     * describes it; at Any the next section's heading follows.
      */
     @Test
-    fun theSheetWritesTheLineFromTheLatestAnswerAndTheScootersItCounts() {
+    fun underTheSliderOneParagraphSaysWhatTheMinimumHides() {
+        ScooterUnits.current = ScooterUnits.Metric
+        showFilters()
+        assertEquals("Providers", afterTheSlider())
+
+        minimumRange = 6_000
+        assertEquals(neither, afterTheSlider())
+
+        batteryRanges = mapOf("lime" to 11_500, "bolt" to 29_400, "voi" to 72_800)
+        assertEquals(
+            "Scooters that only report a battery need at least 9% (Voi), 21% (Bolt), and 53% (Lime). $neither",
+            afterTheSlider(),
+        )
+
+        enabledProviders = enabledProviders - ScooterProvider.Voi
+        minimumRange = 12_000
+        assertEquals(
+            "Scooters that only report a battery need at least 41% (Bolt). Scooters from Lime that only report a battery " +
+                "are hidden, as a full battery may not reach 12 km. $neither",
+            afterTheSlider(),
+        )
+
+        minimumRange = 0
+        assertEquals("Providers", afterTheSlider())
+    }
+
+    /**
+     * The sheet writes the paragraph from the controller's latest answer and the apps switched on: Lime's 11.5 km
+     * asks 53% at 6 km, and Lime switched off leaves only what the scooters with neither do.
+     */
+    @Test
+    fun theSheetWritesTheParagraphFromTheLatestAnswer() {
         val defaults = zonesOffDefaults().apply { set("metric", forKey = "units") }
         val api = StubScooterAPI(
             ScooterResponse(
-                vehicles = listOf(
-                    scooter(id = "l1", provider = "lime", battery = 80),
-                    scooter(id = "l2", provider = "lime", battery = 90),
-                    scooter(id = "l3", provider = "lime", battery = 85),
-                    scooter(id = "v1", provider = "voi", battery = null, rangeMeters = 56_000, batteryEstimate = 70),
-                ),
-                fullRanges = mapOf("lime" to 40_000, "voi" to 80_000),
+                vehicles = listOf(scooter(id = "l1", provider = "lime", battery = 80)),
+                batteryRanges = mapOf("lime" to 11_500),
             ),
         )
         val model = controllers.make(api, defaults = defaults)
@@ -239,13 +275,13 @@ class FiltersAccessibilityTest {
                 ScooterFilterSheet(model, bottomInset = 0.dp, onDone = {})
             }
         }
-        assertEquals("100% usually allows about 40–80 km.", afterThePresets())
+        assertEquals("Providers", afterTheSlider())
 
-        compose.onNode(hasContentDescription("60 percent or more") and isSelectable()).performClick()
-        assertEquals("60% usually allows about 24–48 km. $hidden", afterThePresets())
+        compose.onNodeWithContentDescription("Range").performSemanticsAction(SemanticsActions.SetProgress) { it(6f) }
+        assertEquals("Scooters that only report a battery need at least 53% (Lime). $neither", afterTheSlider())
 
-        compose.onNode(hasContentDescription("80 percent or more") and isSelectable()).performClick()
-        assertEquals("80% usually allows about 32 km. $hidden", afterThePresets())
+        compose.runOnIdle { model.toggle(ScooterProvider.Lime) }
+        assertEquals(neither, afterTheSlider())
     }
 
     /**

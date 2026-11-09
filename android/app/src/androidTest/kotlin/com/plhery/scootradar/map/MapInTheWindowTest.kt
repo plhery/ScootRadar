@@ -1005,7 +1005,7 @@ class MapInTheWindowTest {
         defaults: ScooterDefaults = InMemoryScooterDefaults(),
     ) = ScooterMapController(
         api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = served ?: ScooterResponse(vehicles = scooters)
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = served ?: ScooterResponse(vehicles = scooters)
 
             override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
         },

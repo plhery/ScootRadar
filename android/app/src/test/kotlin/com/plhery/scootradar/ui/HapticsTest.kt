@@ -82,7 +82,7 @@ class HapticsTest {
 
     /**
      * UI-216 and UI-217: with the filters open over the dock, a provider shown or hidden ticks once, not once for the
-     * dock and once for the sheet, and so does a battery minimum chosen.
+     * dock and once for the sheet, and so does a minimum range chosen.
      */
     @Test
     fun theFiltersTickOnceForEachChoice() {
@@ -97,10 +97,10 @@ class HapticsTest {
         assertEquals(1, haptics.ticks)
         change { model.toggle(ScooterProvider.Lime) }
         assertEquals(2, haptics.ticks)
-        change { model.setMinimumBattery(30.0) }
+        change { model.setMinimumRange(4_828) }
         assertEquals(3, haptics.ticks)
         // The same minimum again is no change.
-        change { model.setMinimumBattery(30.0) }
+        change { model.setMinimumRange(4_828) }
         assertEquals(3, haptics.ticks)
         assertEquals(listOf(HapticFeedbackType.SegmentTick), haptics.types.distinct())
     }

@@ -20,7 +20,6 @@ import com.plhery.scootradar.core.model.RidePriceEstimator
 import com.plhery.scootradar.core.model.RidePriceQuote
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
-import com.plhery.scootradar.core.model.ScooterBatteryFilter
 import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterCityCatalog
@@ -40,6 +39,7 @@ import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterParking
+import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
@@ -74,7 +74,6 @@ import java.util.TimeZone
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -235,12 +234,13 @@ class ScooterMapController(
     val responseMetadata: StateFlow<ScooterResponseMetadata?> = _responseMetadata.asStateFlow()
 
     /**
-     * How far a full battery usually takes each app's scooters in view, in metres, by provider id, as the latest
-     * answer said (fullRanges), at every zoom and whatever the provider filter; empty where it said nothing. The
-     * filters write from it how far the minimum chosen usually takes the scooters chosen (ScooterBatteryReach).
+     * How far a full battery takes, at the least, each app's scooters in view that report a battery and no range, in
+     * metres, by provider id, as the latest answer said (batteryRanges), at every zoom and whatever the filters; empty
+     * where it said nothing. The range filter judges such a scooter by it where the app filters the scooters itself,
+     * and the filters say from it what battery each app's need (ScooterRangeFilter.help).
      */
-    private val _fullRanges = MutableStateFlow<Map<String, Int>>(emptyMap())
-    val fullRanges: StateFlow<Map<String, Int>> = _fullRanges.asStateFlow()
+    private val _batteryRanges = MutableStateFlow<Map<String, Int>>(emptyMap())
+    val batteryRanges: StateFlow<Map<String, Int>> = _batteryRanges.asStateFlow()
 
     private val _userLocation = MutableStateFlow<GeoPoint?>(null)
     val userLocation: StateFlow<GeoPoint?> = _userLocation.asStateFlow()
@@ -326,14 +326,9 @@ class ScooterMapController(
     var reviewDue: Boolean = false
         internal set
 
-    private val _minimumBattery = MutableStateFlow(
-        ScooterBatteryFilter.snapped(defaults.int(forKey = MINIMUM_BATTERY_KEY) ?: 0).toDouble(),
-    )
-    val minimumBattery: StateFlow<Double> = _minimumBattery.asStateFlow()
-
     /**
      * The units lengths and speeds are written in: the phone's on Automatic, or those chosen in Settings, which change
-     * them at once.
+     * them at once, the range filter's steps with them.
      */
     private val _units = MutableStateFlow(
         ScooterUnits.fromRawValue(defaults.string(forKey = UNITS_KEY) ?: "") ?: ScooterUnits.Automatic,
@@ -343,6 +338,26 @@ class ScooterMapController(
     init {
         ScooterUnits.current = _units.value
     }
+
+    /**
+     * The minimum range in metres as it was set, kept as it is; 0 for Any. It is read in whole steps of the unit shown
+     * (minimumRange), so that units chosen in Settings and chosen back give the same minimum.
+     */
+    private var chosenMinimumRange: Int = max(0, defaults.int(forKey = MINIMUM_RANGE_KEY) ?: 0)
+
+    init {
+        // The battery minimum of the builds before, now that the range is the filters' only minimum, is forgotten.
+        defaults.removeObject(forKey = LEGACY_MINIMUM_BATTERY_KEY)
+    }
+
+    /**
+     * The minimum range in metres the map filters by and asks for: the one set, in the nearest whole step of the
+     * slider's unit, no further than its last; 0 for Any.
+     */
+    private val _minimumRange = MutableStateFlow(
+        ScooterRangeFilter.snapped(chosenMinimumRange, ScooterRangeFilter.Unit.of(ScooterLanguage.current.locale)),
+    )
+    val minimumRange: StateFlow<Int> = _minimumRange.asStateFlow()
 
     // The quiet ground is what the dots are made for; a style chosen in Settings is kept.
     private val _mapStyle = MutableStateFlow(
@@ -450,12 +465,14 @@ class ScooterMapController(
     // What the data on the map was requested for: the dock only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds? = null
     private var queryZoom: Int? = null
-    internal var queryMinimumBattery: Int? = null
+    internal var queryMinimumRange: Int? = null
         private set
     private var pendingQueryBounds: GeoBounds? = null
     private var pendingQueryZoom: Int? = null
-    private var pendingQueryMinimumBattery: Int? = null
+    private var pendingQueryMinimumRange: Int? = null
     private var fetchTask: Job? = null
+    /** `range_filter`, sent a second after the slider's last step. */
+    private var rangeTrackingTask: Job? = null
     private var refreshTimerTask: Job? = null
     private var parkingExpiryTask: Job? = null
 
@@ -548,7 +565,7 @@ class ScooterMapController(
     private val _visibleLastSeenCount = MutableStateFlow(0)
     val visibleLastSeenCount: StateFlow<Int> = _visibleLastSeenCount.asStateFlow()
 
-    /** The faded scooters in view per provider, past the battery filter and before the provider filter, as the chips count the others. */
+    /** The faded scooters in view per provider, past the range filter and before the provider filter, as the chips count the others. */
     private val _visibleLastSeenProviderCounts = MutableStateFlow<Map<ScooterProvider, Int>>(emptyMap())
     val visibleLastSeenProviderCounts: StateFlow<Map<ScooterProvider, Int>> = _visibleLastSeenProviderCounts.asStateFlow()
 
@@ -649,6 +666,24 @@ class ScooterMapController(
         if (oldValue == value) return
         ScooterUnits.current = value
         defaults.set(value.rawValue, forKey = UNITS_KEY)
+        // A minimum range is read in whole steps of the new unit: 5 km becomes 3 mi.
+        if (readMinimumRange()) refetchFilteredClusters()
+    }
+
+    /** The range slider's unit: kilometres, or miles where lengths are written in miles. */
+    val rangeUnit: ScooterRangeFilter.Unit
+        get() = ScooterRangeFilter.Unit.of(language.value.locale(units.value))
+
+    /**
+     * Reads the minimum range set in whole steps of the slider's unit, as it is now, and filters the map by it; whether
+     * it changed.
+     */
+    private fun readMinimumRange(): Boolean {
+        val next = ScooterRangeFilter.snapped(chosenMinimumRange, rangeUnit)
+        if (next == _minimumRange.value) return false
+        _minimumRange.value = next
+        filtersDidChange()
+        return true
     }
 
     fun setLanguageChoice(value: ScooterLanguageChoice) {
@@ -676,6 +711,8 @@ class ScooterMapController(
         ScooterLanguage.current = value
         // Countries are named in it.
         rebuildMapClusters()
+        // A language without a region measures as its language most likely means, as English does in miles.
+        if (readMinimumRange()) refetchFilteredClusters()
     }
 
     /** The language the app follows on Automatic: the first of the phone's languages it is translated into, or else English. */
@@ -689,6 +726,8 @@ class ScooterMapController(
      */
     fun phoneLanguagesChanged() {
         if (_languageChoice.value == ScooterLanguageChoice.Automatic) setLanguage(phoneLanguage)
+        // The phone's region may have changed with them, and with it the units of Automatic.
+        if (readMinimumRange()) refetchFilteredClusters()
     }
 
     /** Light or dark now. Automatic goes by the sun where the rider is, or where the map opened until they are located. */
@@ -744,9 +783,14 @@ class ScooterMapController(
         clearSelectionIfHidden()
     }
 
-    private fun assignMinimumBattery(value: Double) {
-        _minimumBattery.value = value
-        defaults.set(value.toInt(), forKey = MINIMUM_BATTERY_KEY)
+    private fun assignMinimumRange(metres: Int) {
+        chosenMinimumRange = metres
+        defaults.set(metres, forKey = MINIMUM_RANGE_KEY)
+        if (!readMinimumRange()) filtersDidChange()
+    }
+
+    /** The minimum range changed, or the unit it is read in. */
+    private fun filtersDidChange() {
         rebuildMapScooters()
         rebuildMapLastSeen()
         rebuildVisibleCounts()
@@ -1014,29 +1058,37 @@ class ScooterMapController(
 
     fun resetFilters() {
         analytics?.track("filters_reset")
-        val batteryChanged = minimumBattery.value != 0.0
-        assignMinimumBattery(0.0)
+        // A range the slider had not rested on was never chosen.
+        rangeTrackingTask?.cancel()
+        val minimumChanged = minimumRange.value != 0
+        assignMinimumRange(0)
         setEnabledProviders(ScooterProvider.entries.toSet())
-        if (batteryChanged && ScooterClusteringPolicy.shouldCluster(viewportZoom.value)) {
-            setClusters(emptyList())
-            setLastSeenClusters(emptyList())
-            scheduleFetch(viewport.value.expanded(by = 0.25), zoom = viewportZoom.value, debounce = true)
+        if (minimumChanged) refetchFilteredClusters()
+    }
+
+    /**
+     * Sets the minimum range in metres to the nearest whole step of the slider's unit (4 900 m → 5 km, or 3 mi where
+     * lengths are in miles).
+     */
+    fun setMinimumRange(metres: Int) {
+        val normalizedValue = ScooterRangeFilter.snapped(metres, rangeUnit)
+        if (normalizedValue == minimumRange.value) return
+        assignMinimumRange(normalizedValue)
+        refetchFilteredClusters()
+        // A drag of the slider passes many steps and is one choice: the minimum is counted where it rests, in metres.
+        rangeTrackingTask?.cancel()
+        rangeTrackingTask = scope.launch {
+            delay(1.seconds)
+            analytics?.track("range_filter", value = normalizedValue)
         }
     }
 
-    /** Sets the minimum battery to a preset; other values snap down (45 → 30). */
-    fun setMinimumBattery(value: Double) {
-        val normalizedValue = ScooterBatteryFilter.snapped(
-            if (value.isFinite()) min(100.0, max(0.0, value)).toInt() else 0,
-        ).toDouble()
-        if (normalizedValue == minimumBattery.value) return
-        analytics?.track("battery_filter", value = normalizedValue.toInt())
-        assignMinimumBattery(normalizedValue)
-        if (ScooterClusteringPolicy.shouldCluster(viewportZoom.value)) {
-            setClusters(emptyList())
-            setLastSeenClusters(emptyList())
-            scheduleFetch(viewport.value.expanded(by = 0.25), zoom = viewportZoom.value, debounce = true)
-        }
+    /** The groups the server counted were counted with the minimums of before: they are asked for again. */
+    private fun refetchFilteredClusters() {
+        if (!ScooterClusteringPolicy.shouldCluster(viewportZoom.value)) return
+        setClusters(emptyList())
+        setLastSeenClusters(emptyList())
+        scheduleFetch(viewport.value.expanded(by = 0.25), zoom = viewportZoom.value, debounce = true)
     }
 
     fun focusOnUser() {
@@ -1137,7 +1189,7 @@ class ScooterMapController(
     fun open(link: ScooterMapLink) {
         // A link changes the map: a moment to ask for a rating waits for its fresh load.
         reviewDue = false
-        link.minimumBattery?.let { setMinimumBattery(it.toDouble()) }
+        link.minimumRange?.let { setMinimumRange(it) }
         val origin = link.origin
         if (origin == null) {
             analytics?.track("link_open", result = "map")
@@ -1202,13 +1254,14 @@ class ScooterMapController(
         setLocationIssueDismissed(true)
     }
 
-    private fun passesBatteryFilter(scooter: Scooter): Boolean =
-        ScooterFiltering.passesBattery(scooter, minimumBattery = minimumBattery.value)
+    private fun passesMinimums(scooter: Scooter): Boolean =
+        ScooterFiltering.passesRange(scooter, minimumRange = minimumRange.value, batteryRanges = batteryRanges.value)
 
     internal fun rebuildMapScooters() {
         val next = ScooterFiltering.mapScooters(
             from = vehicles.value,
-            minimumBattery = minimumBattery.value,
+            minimumRange = minimumRange.value,
+            batteryRanges = batteryRanges.value,
             enabledProviders = enabledProviders.value,
         ).toMutableList()
         // The scooter walked to stays on the map whatever the map shows around it.
@@ -1237,7 +1290,8 @@ class ScooterMapController(
     private fun rebuildMapLastSeen() {
         val scooters = ScooterFiltering.mapScooters(
             from = lastSeenVehicles.value,
-            minimumBattery = minimumBattery.value,
+            minimumRange = minimumRange.value,
+            batteryRanges = batteryRanges.value,
             enabledProviders = enabledProviders.value,
         )
         val groups = if (responseMetadata.value?.mode == "clusters") {
@@ -1260,7 +1314,8 @@ class ScooterMapController(
         val summary = ScooterFiltering.visibleSummary(
             vehicles = vehicles.value,
             viewport = viewport.value,
-            minimumBattery = minimumBattery.value,
+            minimumRange = minimumRange.value,
+            batteryRanges = batteryRanges.value,
             enabledProviders = enabledProviders.value,
         )
         var count = summary.count
@@ -1287,7 +1342,8 @@ class ScooterMapController(
         val lastSeen = ScooterFiltering.visibleSummary(
             vehicles = lastSeenVehicles.value,
             viewport = viewport.value,
-            minimumBattery = minimumBattery.value,
+            minimumRange = minimumRange.value,
+            batteryRanges = batteryRanges.value,
             enabledProviders = enabledProviders.value,
         )
         var lastSeenCount = lastSeen.count
@@ -1319,7 +1375,7 @@ class ScooterMapController(
         val selectedScooter = selectedScooter ?: return
         if (walk.value?.heldScooter?.id == selectedScooter.id) return
         val remainsVisible = viewport.value.contains(selectedScooter.latitude, selectedScooter.longitude) &&
-            passesBatteryFilter(selectedScooter) &&
+            passesMinimums(selectedScooter) &&
             (allProvidersSelected || selectedScooter.providerInfo?.let { it in enabledProviders.value } == true)
 
         if (!remainsVisible) {
@@ -1335,11 +1391,13 @@ class ScooterMapController(
         fetchRequests += 1
         val requestID = fetchRequests
         val fetchOrigin = userLocation.value ?: startCenter
-        val requestMinimumBattery = if (ScooterClusteringPolicy.shouldCluster(zoom)) minimumBattery.value.toInt() else 0
+        // Grouped by the server, the scooters are filtered there; one by one, here.
+        val clustered = ScooterClusteringPolicy.shouldCluster(zoom)
+        val requestMinimumRange = if (clustered) minimumRange.value else 0
         activeRequestID = requestID
         pendingQueryBounds = bounds
         pendingQueryZoom = zoom
-        pendingQueryMinimumBattery = requestMinimumBattery
+        pendingQueryMinimumRange = requestMinimumRange
         fetchTask = scope.launch {
             try {
                 if (debounce) delay(180.milliseconds)
@@ -1347,7 +1405,11 @@ class ScooterMapController(
                 _isLoading.value = true
 
                 val response = try {
-                    api.scooters(bounds = bounds, zoom = zoom, minimumBattery = requestMinimumBattery)
+                    api.scooters(
+                        bounds = bounds,
+                        zoom = zoom,
+                        minimumRange = requestMinimumRange,
+                    )
                 } catch (_: CancellationException) {
                     return@launch
                 } catch (error: Exception) {
@@ -1380,10 +1442,10 @@ class ScooterMapController(
                 _parking.value = response.parking
                 staleProviders = staleProviderTimes(response, receivedAt = receivedAt)
                 _responseMetadata.value = response.meta
-                _fullRanges.value = response.fullRanges
+                _batteryRanges.value = response.batteryRanges
                 queryBounds = bounds
                 queryZoom = zoom
-                queryMinimumBattery = requestMinimumBattery
+                queryMinimumRange = requestMinimumRange
                 rebuildVehicleIndex()
                 followWalkTarget(response.meta, loadedFor = bounds, observedAt = observedAt, previousIDs = previousIDs)
                 if (cardScooter != null) followCardScooter(cardScooter, previousIDs = previousIDs)
@@ -1399,7 +1461,11 @@ class ScooterMapController(
                 // The server is collecting feeds of this answer again: ask again when it says (followUpMs), at
                 // once while a quick feed is on its way. A server that does not say is asked once more soon, but
                 // only once in a row, unless scooters stand where they were last seen, which its sweeps replace.
-                val query = ScooterFollowUpQuery(bounds = bounds, zoom = zoom, minimumBattery = requestMinimumBattery)
+                val query = ScooterFollowUpQuery(
+                    bounds = bounds,
+                    zoom = zoom,
+                    minimumRange = requestMinimumRange,
+                )
                 val refreshing = response.meta?.refreshing == true
                 val filling = response.lastSeenVehicles.isNotEmpty() || response.lastSeenClusters.isNotEmpty()
                 followUpGap = refreshPolicy.askedFollowUp(response.meta)
@@ -1451,7 +1517,7 @@ class ScooterMapController(
         activeRequestID = null
         pendingQueryBounds = null
         pendingQueryZoom = null
-        pendingQueryMinimumBattery = null
+        pendingQueryMinimumRange = null
         fetchTask = null
         scheduleAutomaticRefresh()
     }
@@ -1505,15 +1571,15 @@ class ScooterMapController(
     internal fun queryCovers(targetViewport: GeoBounds, zoom: Int, pending: Boolean): Boolean {
         val bounds = if (pending) pendingQueryBounds else queryBounds
         val storedZoom = if (pending) pendingQueryZoom else queryZoom
-        val storedMinimumBattery = if (pending) pendingQueryMinimumBattery else queryMinimumBattery
+        val storedMinimumRange = if (pending) pendingQueryMinimumRange else queryMinimumRange
         if (bounds?.contains(targetViewport) != true || storedZoom == null ||
             !ScooterClusteringPolicy.representationsMatch(storedZoom, zoom)
         ) {
             return false
         }
 
-        val targetMinimumBattery = if (ScooterClusteringPolicy.shouldCluster(zoom)) minimumBattery.value.toInt() else 0
-        return storedMinimumBattery == targetMinimumBattery
+        val clustered = ScooterClusteringPolicy.shouldCluster(zoom)
+        return storedMinimumRange == (if (clustered) minimumRange.value else 0)
     }
 
     private val isLocationAuthorized: Boolean get() = locationManager.authorizationStatus.isAuthorized
@@ -1774,7 +1840,9 @@ class ScooterMapController(
         const val zoneAnswerLifetime: Double = 300.0
         internal const val RECENT_ZONE_ANSWER_LIMIT = 8
 
-        private const val MINIMUM_BATTERY_KEY = "minimum-battery"
+        /** Where the builds with a battery filter kept its minimum. */
+        private const val LEGACY_MINIMUM_BATTERY_KEY = "minimum-battery"
+        private const val MINIMUM_RANGE_KEY = "minimum-range"
         private const val UNITS_KEY = "units"
         private const val MAP_STYLE_KEY = "apple-map-style"
         private const val SHOWS_ZONES_KEY = "map-zones"

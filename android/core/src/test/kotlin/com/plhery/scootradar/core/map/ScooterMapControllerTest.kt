@@ -63,6 +63,7 @@ import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterMenuBar
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterProviderHealth
+import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
@@ -143,7 +144,7 @@ class ScooterMapControllerTest {
         assertTrue(loaded)
         assertEquals(listOf(location), model.mapParking)
         assertEquals(0, model.visibleCount)
-        model.setMinimumBattery(100.0)
+        model.setMinimumRange(30_000)
         assertEquals(listOf(location), model.mapParking)
         model.toggle(Dott)
         assertTrue(model.mapParking.isEmpty())
@@ -352,47 +353,11 @@ class ScooterMapControllerTest {
         assertEquals(1, model.mapScooters.value.size + model.mapClusters.value.size)
         assertEquals(9_000, model.visibleCount)
         assertEquals(8, api.lastZoom)
-        assertEquals(0, api.lastMinimumBattery)
+        assertEquals(0, api.lastMinimumRange)
 
         model.toggle(Bird)
         assertEquals(6_000, model.mapClusters.value.firstOrNull()?.count)
         assertEquals(6_000, model.visibleCount)
-    }
-
-    @Test
-    fun clusteredBatteryFilterIsAppliedByTheServer() = runTest {
-        val api = StubScooterAPI(
-            ScooterResponse(
-                vehicles = emptyList(),
-                clusters = listOf(
-                    ScooterCluster(
-                        id = "8:134:89",
-                        latitude = ScooterMapController.switzerlandCenter.latitude,
-                        longitude = ScooterMapController.switzerlandCenter.longitude,
-                        count = 100,
-                        providers = mapOf("lime" to 100),
-                    ),
-                ),
-                meta = ScooterResponseMetadata(
-                    partial = false,
-                    failedSources = emptyList(),
-                    mode = "clusters",
-                    zoom = 8,
-                ),
-            ),
-        )
-        val model = makeController(api)
-
-        model.refresh()
-        val initialLoadFinished = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
-        assertTrue(initialLoadFinished)
-
-        model.setMinimumBattery(60.0)
-        val filteredLoadFinished = waitUntil { api.calls == 2 && !model.isLoading.value }
-
-        assertTrue(filteredLoadFinished)
-        assertEquals(8, api.lastZoom)
-        assertEquals(60, api.lastMinimumBattery)
     }
 
     @Test
@@ -425,11 +390,12 @@ class ScooterMapControllerTest {
         assertEquals(1, api.calls)
         assertEquals(listOf(group), model.clusters.value)
 
-        model.setMinimumBattery(60.0)
+        // 3 mi, as the US writes lengths.
+        model.setMinimumRange(4_828)
         assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
-        assertEquals(60, api.lastMinimumBattery)
+        assertEquals(4_828, api.lastMinimumRange)
 
-        // The server left out the groups' low batteries: they go at once, the faded ones too, and are asked for
+        // The server left out the groups' short ranges: they go at once, the faded ones too, and are asked for
         // again with all, 180 ms later, as after a move.
         model.resetFilters()
         assertTrue(model.clusters.value.isEmpty())
@@ -440,13 +406,14 @@ class ScooterMapControllerTest {
         runCurrent()
         assertEquals(3, api.calls)
         assertTrue(waitUntil { !model.isLoading.value })
-        assertEquals(0, api.lastMinimumBattery)
+        assertEquals(0, api.lastMinimumRange)
         assertEquals(listOf(group), model.clusters.value)
         assertEquals(listOf(faded), model.lastSeenClusters.value)
     }
 
+    /** A scooter that reports only its 40%, of a full battery's 10 km: 4 km. */
     @Test
-    fun batteryFilterSnapsDownToAPresetPersistsItAndClearsHiddenSelection() = runTest {
+    fun rangeFilterSnapsToAWholeStepPersistsItAndClearsHiddenSelection() = runTest {
         val scooter = Scooter(
             provider = "lime",
             latitude = 47.3769,
@@ -466,15 +433,16 @@ class ScooterMapControllerTest {
         assertTrue(loadingFinished)
 
         model.selectScooter(scooter.id)
-        model.setMinimumBattery(29.0)
+        // 2 mi, as the US writes lengths: 3 219 m.
+        model.setMinimumRange(3_500)
 
-        assertEquals(0.0, model.minimumBattery.value, 0.0)
+        assertEquals(3_219, model.minimumRange.value)
         assertEquals(scooter.id, model.selectedScooterID.value)
 
-        model.setMinimumBattery(75.0)
+        model.setMinimumRange(4_828)
 
-        assertEquals(60.0, model.minimumBattery.value, 0.0)
-        assertEquals(60, defaults.integer(forKey = "minimum-battery"))
+        assertEquals(4_828, model.minimumRange.value)
+        assertEquals(4_828, defaults.integer(forKey = "minimum-range"))
         assertNull(model.selectedScooterID.value)
         assertTrue(model.mapScooters.value.isEmpty())
     }
@@ -1751,7 +1719,7 @@ class ScooterMapControllerTest {
         assertEquals(Lime, model.dockChips.firstOrNull()?.provider)
 
         // The rider's own filters hide Lime's scooter; they do not make Lime look down.
-        model.setMinimumBattery(60.0)
+        model.setMinimumRange(4_828)
         model.showProviders(setOf(Voi))
         assertEquals(0, model.count(Lime))
         assertEquals(ScooterProviderHealth.healthy, model.providerHealth)
@@ -1816,7 +1784,7 @@ class ScooterMapControllerTest {
     }
 
     @Test
-    fun noProviderIsNamedAsDownWhereTheServerLeftOutLowBatteries() = runTest {
+    fun noProviderIsNamedAsDownWhereTheServerLeftOutShortRanges() = runTest {
         val api = StubScooterAPI(
             ScooterResponse(
                 vehicles = emptyList(),
@@ -1840,11 +1808,11 @@ class ScooterMapControllerTest {
         assertEquals(ScooterProviderHealth(downProviders = listOf(Bird), hasUnknownFailures = true), model.providerHealth)
 
         // With a minimum, the server leaves the scooters under it out of the clusters,
-        // which can no longer tell an absent provider from one whose scooters are low.
-        model.setMinimumBattery(60.0)
+        // which can no longer tell an absent provider from one whose scooters go less far.
+        model.setMinimumRange(4_828)
         loaded = waitUntil { api.calls == 2 && !model.isLoading.value }
         assertTrue(loaded)
-        assertEquals(60, api.lastMinimumBattery)
+        assertEquals(4_828, api.lastMinimumRange)
         assertEquals(ScooterProviderHealth.healthy, model.providerHealth)
         assertEquals(emptyList<ScooterDockNotice>(), model.dockNotices)
         assertTrue(model.dockChips.all { !it.isDown })
@@ -1860,7 +1828,7 @@ class ScooterMapControllerTest {
         model.updateViewport(zurichRegion, zoom = 16)
         loaded = waitUntil { api.calls == 3 && !model.isLoading.value }
         assertTrue(loaded)
-        assertEquals(0, api.lastMinimumBattery)
+        assertEquals(0, api.lastMinimumRange)
         assertEquals(0, model.count(Lime))
         assertEquals(listOf(Bird), model.providerHealth.downProviders)
         assertEquals(listOf(Bird), model.dockChips.filter { it.isDown }.map { it.provider })
@@ -2071,15 +2039,16 @@ class ScooterMapControllerTest {
 
         model.showProviders(setOf(Voi))
         assertEquals(
-            ScooterDockContent.FiltersHideEverything(ScooterFilterSummary(hiddenCount = 3, providers = listOf(Voi), minimumBattery = null)),
+            ScooterDockContent.FiltersHideEverything(ScooterFilterSummary(hiddenCount = 3, providers = listOf(Voi))),
             model.dock,
         )
 
+        // Bird's 70% of a full battery's 10 km does not reach 5 mi.
         model.showProviders(setOf(Bird))
-        model.setMinimumBattery(80.0)
+        model.setMinimumRange(8_047)
         val summary = (model.dock as? ScooterDockContent.FiltersHideEverything)?.summary
             ?: throw AssertionError("Expected the hidden-by-filters card, got ${model.dock}")
-        assertEquals(ScooterFilterSummary(hiddenCount = 3, providers = listOf(Bird), minimumBattery = 80), summary)
+        assertEquals(ScooterFilterSummary(hiddenCount = 3, providers = listOf(Bird), minimumRange = 8_047), summary)
         assertEquals(2, summary.parts.size)
         assertEquals(ScooterFiltering.showResultsTitle(count = 0), model.showResultsTitle)
 
@@ -2100,13 +2069,13 @@ class ScooterMapControllerTest {
         assertTrue(reloaded)
         model.showProviders(setOf(Voi))
         assertEquals(
-            ScooterDockContent.FiltersHideEverything(ScooterFilterSummary(hiddenCount = null, providers = listOf(Voi), minimumBattery = null)),
+            ScooterDockContent.FiltersHideEverything(ScooterFilterSummary(hiddenCount = null, providers = listOf(Voi))),
             model.dock,
         )
     }
 
     @Test
-    fun clusteredBatteryFilterCannotCountWhatItHides() = runTest {
+    fun clusteredRangeFilterCannotCountWhatItHides() = runTest {
         val cluster = ScooterCluster(
             id = "12:1:1", latitude = 47.3769, longitude = 8.5417,
             count = 10, providers = mapOf("lime" to 10),
@@ -2122,17 +2091,17 @@ class ScooterMapControllerTest {
         // Only the provider filter is active, so every scooter here is known.
         model.showProviders(setOf(Voi))
         assertEquals(
-            ScooterDockContent.FiltersHideEverything(ScooterFilterSummary(hiddenCount = 10, providers = listOf(Voi), minimumBattery = null)),
+            ScooterDockContent.FiltersHideEverything(ScooterFilterSummary(hiddenCount = 10, providers = listOf(Voi))),
             model.dock,
         )
         model.showAllProviders()
 
         api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta))
-        model.setMinimumBattery(80.0)
+        model.setMinimumRange(12_875)
         val filtered = waitUntil { api.calls == 2 && !model.isLoading.value }
 
         assertTrue(filtered)
-        val summary = ScooterFilterSummary(hiddenCount = null, providers = emptyList(), minimumBattery = 80)
+        val summary = ScooterFilterSummary(hiddenCount = null, providers = emptyList(), minimumRange = 12_875)
         assertEquals(ScooterDockContent.FiltersHideEverything(summary), model.dock)
         assertEquals(localized("No scooters match your filters here"), summary.title)
         assertEquals(localized("Show all"), summary.showAllTitle)
@@ -2471,7 +2440,7 @@ class ScooterMapControllerTest {
         model.showProviders(setOf(Lime))
         assertEquals(listOf("lime:seen-low"), model.mapLastSeenScooters.value.map { it.id })
         assertTrue(model.mapLastSeenRevision.value > revision)
-        model.setMinimumBattery(30.0)
+        model.setMinimumRange(4_828)
         assertTrue(model.mapLastSeenScooters.value.isEmpty())
         assertEquals(0, model.visibleLastSeenCount.value)
         model.resetFilters()
@@ -2526,12 +2495,12 @@ class ScooterMapControllerTest {
         assertEquals(5, model.visibleLastSeenCount.value)
 
         // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again.
-        model.setMinimumBattery(60.0)
+        model.setMinimumRange(4_828)
         assertTrue(model.mapLastSeenClusters.value.isEmpty())
         assertEquals(0, model.visibleLastSeenCount.value)
         val asked = waitUntil { api.calls == 2 && !model.isLoading.value }
         assertTrue(asked)
-        assertEquals(60, api.lastMinimumBattery)
+        assertEquals(4_828, api.lastMinimumRange)
     }
 
     @Test
@@ -2721,8 +2690,8 @@ class ScooterMapControllerTest {
         assertNull(chip(Voi).faded)
         assertEquals(1, chip(Voi).count)
 
-        // Past the battery filter: the Lime of 20% goes from the chip and from the line.
-        model.setMinimumBattery(30.0)
+        // Past the range filter: the Lime of 20%, of a full battery's 10 km, goes from the chip and from the line.
+        model.setMinimumRange(3_219)
         assertNull(chip(Lime).faded)
         assertEquals(listOf(Bird), summaryOf(model.dock).fadedApps.map { it.provider })
         model.resetFilters()
@@ -3173,7 +3142,7 @@ class ScooterMapControllerTest {
         assertTrue(loaded)
 
         // What a rider does in a session: every setting, a fix, a place, a scooter and the way to it, a ride.
-        model.setMinimumBattery(40.0)
+        model.setMinimumRange(3_219)
         model.setMapStyle(AppleMapStyle.Satellite)
         model.setShowsZones(false)
         model.setAppearance(ScooterAppearance.Dark)
@@ -3195,7 +3164,7 @@ class ScooterMapControllerTest {
         // off where iOS keeps those turned on; the language goes to Android's application locales, where iOS
         // keeps AppleLanguages.
         val allowed = setOf(
-            "minimum-battery", "apple-map-style", "map-zones", "appearance", "disabled-providers",
+            "minimum-range", "apple-map-style", "map-zones", "appearance", "disabled-providers",
             "ride-estimate-minutes-v1", "provider-ride-passes-v1", "has-located-once",
             "review-use-days", "review-last-use-day", "review-bad-day", "review-asked-version", "review-asked-day",
         )
@@ -3298,16 +3267,21 @@ class ScooterMapControllerTest {
         assertNull(ScooterCityCatalog.city(centredAt = GeoPoint(latitude = 30.0, longitude = -40.0)))
     }
 
+    /** The battery minimum the builds with a battery filter kept is forgotten: the range is the only minimum. */
     @Test
-    fun storedBatteryValuesSnapDownToAPreset() = runTest {
-        for ((stored, expected) in listOf(45 to 30.0, 95 to 80.0, 60 to 60.0, 10 to 0.0, -5 to 0.0)) {
-            val defaults = InMemoryScooterDefaults()
-            defaults.set(stored, forKey = "minimum-battery")
+    fun aStoredBatteryMinimumIsForgotten() = runTest {
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "low", provider = "lime", battery = 10))))
+        val defaults = InMemoryScooterDefaults()
+        defaults.set(60, forKey = "minimum-battery")
 
-            val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        val model = makeController(api, defaults = defaults)
 
-            assertEquals("Stored $stored", expected, model.minimumBattery.value, 0.0)
-        }
+        assertNull(defaults.int(forKey = "minimum-battery"))
+        assertEquals(0, model.minimumRange.value)
+        assertFalse(model.hasActiveFilters)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(listOf("lime:low"), model.mapScooters.value.map { it.id })
     }
 
     @Test
@@ -3453,12 +3427,12 @@ class ScooterMapControllerTest {
     fun aLinkToAnyOtherPointMovesTheMapWithoutChoosingAPlace() = runTest {
         val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
         val point = GeoPoint(latitude = 46.2, longitude = 6.15)
-        model.open(ScooterMapLink(origin = point, minimumBattery = 60))
+        model.open(ScooterMapLink(origin = point, minimumRange = 8_047))
         val focus = unwrap(model.focusRequest.value)
         assertEquals(point, focus.point)
         assertFalse(focus.keepsZoom)
         assertNull(model.searchedDestination.value)
-        assertEquals(60.0, model.minimumBattery.value, 0.0)
+        assertEquals(8_047, model.minimumRange.value)
     }
 
     @Test
@@ -3489,7 +3463,7 @@ class ScooterMapControllerTest {
         val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
         model.open(ScooterMapLink())
         assertNull(model.focusRequest.value)
-        assertEquals(0.0, model.minimumBattery.value, 0.0)
+        assertEquals(0, model.minimumRange.value)
     }
 
     @Test
@@ -4305,7 +4279,7 @@ class ScooterMapControllerTest {
 
     private fun date(text: String): Instant = OffsetDateTime.parse(text).toInstant()
 
-    // The units chosen in Settings (issue #14).
+    // The minimum range (issue #12) and the units chosen in Settings (issue #14).
 
     /** Settings › Units: Automatic, as before there was a choice, or kilometres or miles, at once everywhere and kept. */
     @Test
@@ -4321,10 +4295,12 @@ class ScooterMapControllerTest {
         assertEquals(ScooterUnits.Metric, ScooterUnits.current)
         assertEquals("metric", defaults.string(forKey = "units"))
         assertEquals("320 m", plainSpaces(Scooter.formattedLength(meters = 320.0)))
+        assertEquals(ScooterRangeFilter.Unit.Kilometres, model.rangeUnit)
 
         model.setUnits(ScooterUnits.Imperial)
         assertEquals("1,000 ft", plainSpaces(Scooter.formattedLength(meters = 300.0)))
         assertTrue(plainSpaces(Scooter.formattedLength(meters = 3_000.0)).endsWith(" mi"))
+        assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
 
         val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
         assertEquals(ScooterUnits.Imperial, restored.units.value)
@@ -4341,65 +4317,212 @@ class ScooterMapControllerTest {
         )
     }
 
-    // The battery filter's estimate and the answers' full ranges (issue #12).
-
     /**
-     * Zoomed in the app filters the scooters itself, by their battery or else by the battery the server estimated
-     * from their range, as Lime's and Voi's feeds give only a range in Stuttgart. A minimum range kept by the build
-     * that had a range filter is ignored.
+     * Stuttgart: Lime and Voi give a range and no battery, Bolt both, Dott only its battery, Hopp neither. A scooter
+     * that gives a range is read by it; one that only gives its battery by the share of a full battery's range the
+     * answer gives for its provider, 10 km when it gives none; one with neither is hidden while a minimum is set.
      */
     @Test
-    fun theBatteryMinimumJudgesAScooterByItsEstimateAndAStoredRangeIsIgnored() = runTest {
+    fun rangeFilterReadsTheRangeOrTheBatteryOfAFullBatterysRange() = runTest {
         val defaults = InMemoryScooterDefaults()
-        defaults.set(5_000, forKey = "minimum-range")
+        defaults.set("metric", forKey = "units")
         val api = StubScooterAPI(
             ScooterResponse(
                 vehicles = listOf(
-                    scooter(id = "voi-estimated", provider = "voi", battery = null, rangeMeters = 56_000, batteryEstimate = 70),
-                    scooter(id = "lime-estimated", provider = "lime", battery = null, rangeMeters = 4_000, batteryEstimate = 35),
-                    scooter(id = "dott-unknown", provider = "dott", battery = null),
-                    scooter(id = "bolt-full", provider = "bolt", battery = 90, rangeMeters = 30_000),
+                    scooter(id = "lime-far", provider = "lime", battery = null, rangeMeters = 9_000),
+                    scooter(id = "voi-near", provider = "voi", battery = null, rangeMeters = 2_000),
+                    // Its range is read, not its battery's 90% of Bolt's 29.4 km.
+                    scooter(id = "bolt-near", provider = "bolt", battery = 90, rangeMeters = 4_000),
+                    // 70% of Dott's 8 km: 5.6 km.
+                    scooter(id = "dott-battery", provider = "dott", battery = 70, rangeMeters = null),
+                    // 50% of the 10 km of a provider the answer leaves out: 5 km.
+                    scooter(id = "jet-battery", provider = "jet", battery = 50, rangeMeters = null),
+                    scooter(id = "hopp-unknown", provider = "hopp", battery = null, rangeMeters = null),
                 ),
+                batteryRanges = mapOf("dott" to 8_000, "bolt" to 29_400),
             ),
         )
         val model = makeController(api, defaults = defaults)
         model.updateViewport(zurichRegion, zoom = 16)
         assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
-        assertFalse(model.hasActiveFilters)
-        assertEquals(4, model.mapScooters.value.size)
+        assertEquals(mapOf("dott" to 8_000, "bolt" to 29_400), model.batteryRanges.value)
+        assertEquals(6, model.mapScooters.value.size)
+        model.selectScooter("hopp:hopp-unknown")
 
-        model.setMinimumBattery(60.0)
-        assertEquals(setOf("voi:voi-estimated", "bolt:bolt-full"), model.mapScooters.value.map { it.id }.toSet())
-        assertEquals(2, model.visibleCount)
-        // Filtered here, one by one: the server is not asked again, and was asked with no minimum.
+        // 4.6 km is read as the nearest whole kilometre.
+        model.setMinimumRange(4_600)
+        assertEquals(5_000, model.minimumRange.value)
+        assertEquals(
+            setOf("lime:lime-far", "dott:dott-battery", "jet:jet-battery"),
+            model.mapScooters.value.map { it.id }.toSet(),
+        )
+        assertEquals(3, model.visibleCount)
+        assertTrue(model.hasActiveFilters)
+        assertNull("The scooter with neither is hidden, and its card closes", model.selectedScooterID.value)
+        assertEquals(5_000, defaults.integer(forKey = "minimum-range"))
+        // Filtered here, one by one: the server is not asked again.
         settle()
         assertEquals(1, api.calls)
-        assertEquals(0, api.lastMinimumBattery)
+
+        model.setMinimumRange(6_000)
+        assertEquals(setOf("lime:lime-far"), model.mapScooters.value.map { it.id }.toSet())
+
+        model.setMinimumRange(40_000)
+        assertEquals("No further than the slider's last step", 30_000, model.minimumRange.value)
+        model.showProviders(setOf(Voi))
+        assertEquals(
+            ScooterDockContent.FiltersHideEverything(
+                ScooterFilterSummary(hiddenCount = 6, providers = listOf(Voi), minimumRange = 30_000),
+            ),
+            model.dock,
+        )
+
+        model.resetFilters()
+        assertEquals(0, model.minimumRange.value)
+        assertFalse(model.hasActiveFilters)
+        assertEquals(6, model.mapScooters.value.size)
     }
 
     /**
-     * Each answer's full ranges are kept, at street zoom as in groups, for the filters' line; an answer without them
-     * leaves none.
+     * The full battery's ranges are the latest answer's: each answer replaces them, and one without them leaves
+     * 10 km for every provider. Lime's 11.5 km: 53% reaches 6 km and 52% does not.
      */
     @Test
-    fun theLatestAnswersFullRangesAreKept() = runTest {
-        val api = StubScooterAPI(ScooterResponse(vehicles = emptyList(), fullRanges = mapOf("voi" to 80_000, "lime" to 11_500)))
-        val model = makeController(api)
-        assertTrue(model.fullRanges.value.isEmpty())
+    fun theLatestAnswersBatteryRangesAreKept() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val vehicles = listOf(
+            scooter(id = "lime-53", provider = "lime", battery = 53, rangeMeters = null),
+            scooter(id = "lime-52", provider = "lime", battery = 52, rangeMeters = null),
+        )
+        val api = StubScooterAPI(ScooterResponse(vehicles = vehicles, batteryRanges = mapOf("lime" to 11_500)))
+        val model = makeController(api, defaults = defaults)
+        model.setMinimumRange(6_000)
         model.updateViewport(zurichRegion, zoom = 16)
         assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
-        assertEquals(mapOf("voi" to 80_000, "lime" to 11_500), model.fullRanges.value)
+        assertEquals(mapOf("lime" to 11_500), model.batteryRanges.value)
+        assertEquals(listOf("lime:lime-53"), model.mapScooters.value.map { it.id })
+        // Zoomed in, the scooters are filtered here, one by one: the request carries no minimum.
+        assertEquals(0, api.lastMinimumRange)
 
-        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 12)
-        api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta, fullRanges = mapOf("voi" to 79_000)))
-        model.updateViewport(zurichRegion, zoom = 12)
+        // An answer without them: 10 km for Lime too, which neither reaches at 6 km.
+        api.setResponse(ScooterResponse(vehicles = vehicles))
+        model.refresh()
         assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
-        assertEquals(mapOf("voi" to 79_000), model.fullRanges.value)
+        assertEquals(emptyMap<String, Int>(), model.batteryRanges.value)
+        assertTrue(model.mapScooters.value.isEmpty())
 
-        api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta))
+        // 12 km for Lime: both reach it.
+        api.setResponse(ScooterResponse(vehicles = vehicles, batteryRanges = mapOf("lime" to 12_000)))
         model.refresh()
         assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
-        assertTrue(model.fullRanges.value.isEmpty())
+        assertEquals(setOf("lime:lime-53", "lime:lime-52"), model.mapScooters.value.map { it.id }.toSet())
+    }
+
+    /**
+     * Zoomed out the server groups the scooters and filters them; it is asked with the minimum range in metres, and
+     * what it left out cannot be counted.
+     */
+    @Test
+    fun clusteredRangeFilterIsAppliedByTheServerWhichCannotCountWhatItHides() = runTest {
+        val cluster = ScooterCluster(
+            id = "12:1:1", latitude = 47.3769, longitude = 8.5417,
+            count = 10, providers = mapOf("lime" to 10),
+        )
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 12)
+        val api = StubScooterAPI(ScooterResponse(vehicles = emptyList(), clusters = listOf(cluster), meta = meta))
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("imperial", forKey = "units")
+        val model = makeController(api, defaults = defaults)
+        model.updateViewport(zurichRegion, zoom = 12)
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(0, api.lastMinimumRange)
+
+        api.setResponse(ScooterResponse(vehicles = emptyList(), meta = meta))
+        // 3 mi, as the slider sets it in miles.
+        model.setMinimumRange(ScooterRangeFilter.metres(steps = 3, unit = ScooterRangeFilter.Unit.Miles))
+        assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
+        assertEquals(12, api.lastZoom)
+        assertEquals(4_828, api.lastMinimumRange)
+        assertEquals(
+            ScooterDockContent.FiltersHideEverything(
+                ScooterFilterSummary(hiddenCount = null, providers = emptyList(), minimumRange = 4_828),
+            ),
+            model.dock,
+        )
+
+        // Kilometres chosen read the minimum as 5 km, which the server is asked for again.
+        model.setUnits(ScooterUnits.Metric)
+        assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
+        assertEquals(5_000, api.lastMinimumRange)
+    }
+
+    /**
+     * Kept in metres, read in whole steps of the unit shown: 5 km set reads "3 mi" in miles, and 5 km again once
+     * kilometres are chosen back. A stored value is read the same way.
+     */
+    @Test
+    fun minimumRangeIsReadInWholeStepsOfTheUnitsShown() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        model.setMinimumRange(5_000)
+        assertEquals(ScooterRangeFilter.Unit.Kilometres, model.rangeUnit)
+
+        model.setUnits(ScooterUnits.Imperial)
+        assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
+        assertEquals(4_828, model.minimumRange.value)
+        assertEquals("3 mi+", plainSpaces(ScooterRangeFilter.label(model.minimumRange.value)))
+        model.setUnits(ScooterUnits.Metric)
+        assertEquals(5_000, model.minimumRange.value)
+        // Automatic is the US's miles here.
+        model.setUnits(ScooterUnits.Automatic)
+        assertEquals(4_828, model.minimumRange.value)
+        // So is German, in the phone's region.
+        model.setUnits(ScooterUnits.Metric)
+        model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.De))
+        assertEquals(5_000, model.minimumRange.value)
+        model.setUnits(ScooterUnits.Automatic)
+        assertEquals(4_828, model.minimumRange.value)
+
+        val stored = listOf(
+            Triple(4_900, "metric", 5_000), Triple(5_000, "imperial", 4_828), Triple(99_000, "metric", 30_000),
+            Triple(-20, "metric", 0), Triple(1_609, "imperial", 1_609), Triple(5_000, "auto", 4_828),
+        )
+        for ((metres, units, expected) in stored) {
+            val restored = InMemoryScooterDefaults()
+            restored.set(metres, forKey = "minimum-range")
+            restored.set(units, forKey = "units")
+            val restoredModel = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = restored)
+            assertEquals("Stored $metres in $units", expected, restoredModel.minimumRange.value)
+        }
+
+        // A battery minimum kept beside a range, by a build that had both, is forgotten and the range kept.
+        val both = InMemoryScooterDefaults()
+        both.set(60, forKey = "minimum-battery")
+        both.set(5_000, forKey = "minimum-range")
+        both.set("metric", forKey = "units")
+        val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = both)
+        assertEquals(5_000, restored.minimumRange.value)
+        assertNull(both.int(forKey = "minimum-battery"))
+    }
+
+    /** A link's minimum range takes the place of the rider's, and a link's minimum battery is not read. */
+    @Test
+    fun aLinkSetsAMinimumRange() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        model.setMinimumRange(3_000)
+        model.open(ScooterMapLink(minimumRange = 12_000))
+        assertEquals(12_000, model.minimumRange.value)
+
+        model.open(ScooterMapLink("https://scootradar.com/map?minBattery=60&minRange=5000") ?: error("A map link"))
+        assertEquals(5_000, model.minimumRange.value)
+
+        // A link that only gives a battery keeps the rider's range.
+        model.open(ScooterMapLink("https://scootradar.com/map?minBattery=60") ?: error("A map link"))
+        assertEquals(5_000, model.minimumRange.value)
     }
 
     private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')

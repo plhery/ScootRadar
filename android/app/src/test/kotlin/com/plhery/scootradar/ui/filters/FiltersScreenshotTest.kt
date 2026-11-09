@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterFiltering
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterProviderEntry
+import com.plhery.scootradar.core.model.ScooterRangeFilter
 import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.sheet.IosSheet
@@ -48,8 +49,7 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
     fun setUp() {
         Locale.setDefault(Locale.forLanguageTag("en-CH"))
         ScooterLanguage.current = ScooterLanguage.En
-        // The test's region writes lengths in miles.
-        ScooterUnits.current = ScooterUnits.Metric
+        ScooterUnits.current = state.units
     }
 
     @After
@@ -68,16 +68,16 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
                 Box(Modifier.fillMaxSize().background(if (look.dark) Color(0xFF2B2D30) else Color(0xFFF1EFEA)))
                 IosSheet(isPresented = true, onDismiss = {}, detents = state.detents, title = "Filters") { bottomInset ->
                     FilterSheetContent(
-                        minimumBattery = state.minimumBattery,
                         entries = state.entries,
-                        hasActiveFilters = state.minimumBattery > 0 || state.entries.any { !it.isEnabled },
+                        hasActiveFilters = state.minimumRange > 0 || state.entries.any { !it.isEnabled },
                         showResults = state.showResults(),
                         bottomInset = bottomInset,
-                        onChooseMinimum = {},
                         onToggle = {},
                         onReset = {},
                         onDone = {},
-                        fullRanges = state.fullRanges,
+                        minimumRange = state.minimumRange,
+                        rangeUnit = ScooterRangeFilter.Unit.of(ScooterLanguage.current.locale),
+                        rangeHelp = state.rangeHelp(),
                     )
                 }
             }
@@ -96,22 +96,26 @@ class FiltersScreenshotTest(private val state: FiltersState, private val look: L
 /**
  * The sheet's states: at the medium height a phone opens it at, at the large one a short phone does, with filters
  * chosen, with a provider not sharing data, where no provider operates, while the scooters are being found, and with
- * how far the minimum usually takes the scooters in view under the presets (issue #12).
+ * a minimum range in kilometres and in miles (issue #12), where every app in view gives a range, and where three
+ * have scooters that only report their battery.
  */
 enum class FiltersState(
     val detents: List<SheetDetent> = listOf(SheetDetent.Medium, SheetDetent.Large),
-    val minimumBattery: Int = 0,
+    /** In metres, a whole step of the [units]' slider. */
+    val minimumRange: Int = 0,
+    val units: ScooterUnits = ScooterUnits.Automatic,
     val entries: List<ScooterProviderEntry> = zurich,
+    /** The latest answer's ranges of a full battery, in metres, of the apps whose scooters may only report a battery. */
+    private val batteryRanges: Map<String, Int> = emptyMap(),
     /** How many scooters the map shows; null while it is finding them. */
     private val shown: Int? = 32,
-    /** How far a full battery usually takes each app's scooters in view, in metres (the answer's fullRanges). */
-    val fullRanges: Map<String, Int> = emptyMap(),
 ) {
     Medium,
     Large(detents = listOf(SheetDetent.Large)),
     Chosen(
         detents = listOf(SheetDetent.Large),
-        minimumBattery = 60,
+        minimumRange = 10_000,
+        units = ScooterUnits.Metric,
         entries = zurich.map { if (it.provider == ScooterProvider.Bird) it.copy(isEnabled = false) else it.copy(isSelected = true) },
         shown = 12,
     ),
@@ -122,11 +126,25 @@ enum class FiltersState(
     ),
     NoProviders(entries = emptyList(), shown = 0),
     Finding(shown = null),
-    /** "60% usually allows about 7–37 km.": Lime's full battery reads 11.5 km in Stuttgart, Bolt's 61. */
-    Reach(detents = listOf(SheetDetent.Large), minimumBattery = 60, shown = 23, fullRanges = mapOf("lime" to 11_500, "bolt" to 61_000)),
+    Range(detents = listOf(SheetDetent.Large), minimumRange = 5_000, units = ScooterUnits.Metric, shown = 14),
+    RangeInMiles(detents = listOf(SheetDetent.Large), minimumRange = 4_828, units = ScooterUnits.Imperial, shown = 14),
+    BatteryOnly(
+        detents = listOf(SheetDetent.Large),
+        minimumRange = 6_000,
+        units = ScooterUnits.Metric,
+        batteryRanges = mapOf("lime" to 11_500, "bolt" to 29_400, "voi" to 72_800),
+        shown = 11,
+    ),
     ;
 
     val fileName: String get() = name.replaceFirstChar { it.lowercase() }
+
+    /** The paragraph under the slider, of the apps not switched off. */
+    fun rangeHelp(): String? = ScooterRangeFilter.help(
+        minimumRange,
+        batteryRanges,
+        ScooterProvider.entries.toSet() - entries.filter { !it.isEnabled }.map { it.provider }.toSet(),
+    )
 
     fun showResults(): String = shown?.let { ScooterFiltering.showResultsTitle(it) } ?: localized("Finding scooters…")
 }

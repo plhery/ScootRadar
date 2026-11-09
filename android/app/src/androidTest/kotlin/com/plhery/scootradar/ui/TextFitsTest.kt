@@ -417,7 +417,7 @@ private class Fleet(private val vehicles: List<Scooter> = longNameVehicles) : Sc
     @Volatile
     var failure: ScooterAPIError? = null
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
         failure?.let { throw it }
         return ScooterResponse(vehicles = vehicles)
     }

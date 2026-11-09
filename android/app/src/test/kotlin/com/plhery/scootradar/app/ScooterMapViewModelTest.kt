@@ -179,7 +179,7 @@ class ScooterMapViewModelTest {
             private set
         val calls: Int get() = threads.size
 
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
             threads += Thread.currentThread()
             if (holds) {
                 try {

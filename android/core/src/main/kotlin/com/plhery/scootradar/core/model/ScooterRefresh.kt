@@ -8,7 +8,7 @@ import java.time.Instant
 // ios/ScootRadar/Models/ScooterModels.swift. Intervals are in seconds, as TimeInterval counts them.
 
 /** The query of a refreshing response whose quick follow-up was already granted. */
-data class ScooterFollowUpQuery(val bounds: GeoBounds, val zoom: Int, val minimumBattery: Int)
+data class ScooterFollowUpQuery(val bounds: GeoBounds, val zoom: Int, val minimumRange: Int)
 
 /** When scooter data is refreshed automatically. Web and iOS follow the same rules. */
 data class ScooterRefreshPolicy(

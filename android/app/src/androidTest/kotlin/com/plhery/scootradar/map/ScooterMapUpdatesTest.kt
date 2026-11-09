@@ -80,7 +80,7 @@ class ScooterMapUpdatesTest {
         val group = at(east = -220.0, north = -60.0)
         val seenGroup = at(east = 220.0, north = 260.0)
         val api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = ScooterResponse(
                 vehicles = listOf(target, other),
                 clusters = listOf(ScooterCluster("16:1:1", group.latitude, group.longitude, count = 12, providers = mapOf("voi" to 12))),
                 lastSeenVehicles = listOf(seen),

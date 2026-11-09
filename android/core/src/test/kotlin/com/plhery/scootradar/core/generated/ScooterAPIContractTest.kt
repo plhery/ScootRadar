@@ -59,7 +59,7 @@ class ScooterAPIContractTest {
         }.build()
         val api = ScooterAPI(baseURL = "https://scootradar.test/".toHttpUrl(), client = client)
         try {
-            api.scooters(GeoBounds(south = 47.3, west = 8.5, north = 47.4, east = 8.6), zoom = 16, minimumBattery = 0)
+            api.scooters(GeoBounds(south = 47.3, west = 8.5, north = 47.4, east = 8.6), zoom = 16)
             null
         } catch (error: CancellationException) {
             throw error

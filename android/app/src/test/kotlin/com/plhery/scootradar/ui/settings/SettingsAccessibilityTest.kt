@@ -121,8 +121,8 @@ class SettingsAccessibilityTest {
     }
 
     /**
-     * UI-292: the appearances and the map's looks are choices, read by their names, the chosen one selected, as
-     * Filters' presets are (PLAN §10, review-app-ai R3).
+     * UI-292: the appearances and the map's looks are choices, read by their names, the chosen one selected (PLAN §10,
+     * review-app-ai R3).
      */
     @Test
     fun anAppearanceAndAMapLookAreChoicesTheChosenOneSelected() {
@@ -143,8 +143,8 @@ class SettingsAccessibilityTest {
 
     /**
      * Issue #14: the units are a group of three choices under the "Units" heading, shown "Auto", "km" and "mi" and
-     * read "Auto", "Kilometres" and "Miles", the chosen one selected, as Filters' presets are. What "km" and "mi"
-     * show is their text, which Voice Access answers to, as the presets' "30%+".
+     * read "Auto", "Kilometres" and "Miles", the chosen one selected. What "km" and "mi" show is their text, which
+     * Voice Access answers to.
      */
     @Test
     fun theUnitsAreAGroupOfChoicesReadInFullTheChosenOneSelected() {

@@ -4,13 +4,14 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import java.text.BreakIterator
 import java.time.Instant
 import java.util.Locale
+import kotlin.math.roundToInt
 
 // ios/ScootRadar/Models/ScooterFiltering.swift.
 
 data class VisibleScooterSummary(
     val count: Int,
     val providerCounts: Map<ScooterProvider, Int>,
-    /** Scooters in the viewport before the battery and provider filters. */
+    /** Scooters in the viewport before the range and provider filters. */
     val unfilteredCount: Int,
     /** Providers with a scooter in the viewport before those filters. */
     val unfilteredProviders: Set<ScooterProvider>,
@@ -18,20 +19,27 @@ data class VisibleScooterSummary(
 
 object ScooterFiltering {
     /**
-     * A minimum hides the scooters with less battery and those with none known, a scooter whose feed gives only its
-     * range being judged by the battery the server estimated from it, as the server filters them.
+     * A minimum range in metres (0 for Any) keeps a scooter whose feed gives a range at least as long; one whose feed
+     * gives only its battery when that battery times how far a full battery takes its app's scooters at the least
+     * ([batteryRanges], by provider id, else 10 km) reaches it, in whole numbers as the server judges it: battery ×
+     * full ≥ minimum × 100, so 6 km needs 53% of a Lime whose full battery is 11.5 km; and hides one that gives neither.
      */
-    fun passesBattery(scooter: Scooter, minimumBattery: Double): Boolean =
-        minimumBattery == 0.0 || (scooter.filteredBattery?.toDouble() ?: -1.0) >= minimumBattery
+    fun passesRange(scooter: Scooter, minimumRange: Int, batteryRanges: Map<String, Int> = emptyMap()): Boolean {
+        if (minimumRange <= 0) return true
+        scooter.rangeMeters?.let { return it >= minimumRange }
+        val battery = scooter.battery ?: return false
+        return battery.toLong() * ScooterRangeFilter.fullBattery(scooter.provider, batteryRanges) >= minimumRange.toLong() * 100
+    }
 
     fun mapScooters(
         from: List<Scooter>,
-        minimumBattery: Double,
+        minimumRange: Int = 0,
+        batteryRanges: Map<String, Int> = emptyMap(),
         enabledProviders: Set<ScooterProvider>,
     ): List<Scooter> {
         val allProvidersEnabled = enabledProviders == ScooterProvider.entries.toSet()
         return from.filter { scooter ->
-            passesBattery(scooter, minimumBattery) &&
+            passesRange(scooter, minimumRange, batteryRanges) &&
                 (allProvidersEnabled || scooter.providerInfo?.let { it in enabledProviders } == true)
         }
     }
@@ -39,7 +47,8 @@ object ScooterFiltering {
     fun visibleSummary(
         vehicles: List<Scooter>,
         viewport: GeoBounds,
-        minimumBattery: Double,
+        minimumRange: Int = 0,
+        batteryRanges: Map<String, Int> = emptyMap(),
         enabledProviders: Set<ScooterProvider>,
     ): VisibleScooterSummary {
         var visibleCount = 0
@@ -52,7 +61,7 @@ object ScooterFiltering {
             if (!viewport.contains(scooter.latitude, scooter.longitude)) continue
             unfilteredCount += 1
             scooter.providerInfo?.let { unfilteredProviders += it }
-            if (!passesBattery(scooter, minimumBattery)) continue
+            if (!passesRange(scooter, minimumRange, batteryRanges)) continue
 
             scooter.providerInfo?.let { providerCounts[it] = (providerCounts[it] ?: 0) + 1 }
             if (allProvidersEnabled || scooter.providerInfo?.let { it in enabledProviders } == true) {
@@ -79,97 +88,125 @@ object ScooterFiltering {
     }
 }
 
-object ScooterBatteryFilter {
-    /** The only minimums offered: Any, 30%+, 60%+ and 80%+. */
-    val presets: List<Int> = listOf(0, 30, 60, 80)
-
-    /** Stored values that are not a preset snap down (45 → 30, 95 → 80). */
-    fun snapped(value: Int): Int = presets.lastOrNull { it <= value } ?: 0
-
-    fun label(preset: Int): String = if (preset == 0) localized("Any") else "$preset%+"
-}
-
 /**
- * How far a battery level usually takes the scooters chosen in view, in metres, as src/lib/battery.ts works it out
- * (batteryReach): from each app's usual range on a full battery, the answer's fullRanges, and its scooters in view.
+ * The filters' only minimum, a range on a slider: whole kilometres up to 30, or whole miles up to 20 where lengths are
+ * in miles, the region's or chosen in Settings. The minimum is kept in metres and read in whole steps of the unit
+ * shown, so that "3 mi+" is 4 828 m, not the 5 000 m of "5 km+" it was set as before. A scooter whose feed gives only
+ * its battery is judged by how far its battery takes it at the least (ScooterFiltering.passesRange).
  */
-data class ScooterBatteryReach(
-    /** The shortest and the longest of their apps'. */
-    val low: Double,
-    val high: Double,
-    /** Their apps' weighed by their scooters in view. */
-    val mean: Double,
-) {
-    /**
-     * "22 km", or "12–80 km" where the longest is over a quarter longer than the shortest: in whole kilometres, or
-     * whole miles where lengths are in miles, never 0 (formatBatteryReach).
-     */
-    fun formatted(locale: Locale = ScooterLanguage.current.locale): String {
-        val metric = locale.measurementSystem == ScooterMeasurementSystem.Metric
-        val unit = if (metric) ScooterLengthUnit.Kilometers else ScooterLengthUnit.Miles
-        val length = if (metric) 1_000.0 else 1_609.344
-        // Halves go up, as Math.round takes them on the web.
-        fun whole(meters: Double): Int = maxOf(1.0, (meters / length).roundedAwayFromZero()).toInt()
-        val low = whole(low)
-        val high = whole(high)
-        if (high * 4 <= low * 5) return Scooter.formattedWhole(whole(mean), unit, locale)
-        return low.formatted(locale) + "–" + Scooter.formattedWhole(high, unit, locale)
+object ScooterRangeFilter {
+    enum class Unit(
+        val length: ScooterLengthUnit,
+        /** A step of the slider, in metres. */
+        val step: Double,
+        /** The slider's last step: 30 km, or 20 mi. */
+        val maximumSteps: Int,
+    ) {
+        Kilometres(ScooterLengthUnit.Kilometers, 1_000.0, 30),
+        Miles(ScooterLengthUnit.Miles, 1_609.344, 20),
+        ;
+
+        companion object {
+            /** The unit of the slider where lengths are written by the locale. */
+            fun of(locale: Locale): Unit =
+                if (locale.measurementSystem == ScooterMeasurementSystem.Metric) Kilometres else Miles
+        }
     }
 
-    companion object {
-        /**
-         * How far [level]% usually takes the scooters in view of the apps switched on, from each app's usual range on
-         * a full battery and its scooters in view ([counts]). An app with under a tenth of them is left out unless it
-         * has the most, so a handful of another app's at the edge of the view doesn't stretch the line. Null when no
-         * app switched on in view has a full range.
-         */
-        fun <K> of(level: Int, fullRanges: Map<K, Int>, counts: Map<K, Int>, enabled: (K) -> Boolean): ScooterBatteryReach? {
-            val apps = fullRanges.mapNotNull { (provider, meters) ->
-                val count = counts[provider] ?: 0
-                if (meters > 0 && enabled(provider) && count > 0) meters.toDouble() to count.toLong() else null
+    /** The minimum of a step in metres, rounded to the metre: 3 mi is 4 828 m. */
+    fun metres(steps: Int, unit: Unit): Int = (steps.coerceIn(0, unit.maximumSteps) * unit.step).roundToInt()
+
+    /** The whole step nearest to a minimum in metres, within the slider. */
+    fun steps(metres: Int, unit: Unit): Int = (metres / unit.step).roundToInt().coerceIn(0, unit.maximumSteps)
+
+    /** A minimum as the slider reads it: the nearest whole step of the unit, no further than its last. */
+    fun snapped(metres: Int, unit: Unit): Int = metres(steps(metres, unit), unit)
+
+    /** "5 km" or "3 mi": the minimum in whole steps of its unit, never in metres, feet or yards. */
+    fun distance(metres: Int, locale: Locale = ScooterLanguage.current.locale): String {
+        val unit = Unit.of(locale)
+        return Scooter.formattedWhole(steps(metres, unit), unit.length, locale)
+    }
+
+    /** Beside the heading: "Any", or "5 km+". */
+    fun label(metres: Int, locale: Locale = ScooterLanguage.current.locale): String =
+        if (steps(metres, Unit.of(locale)) == 0) localized("Any") else distance(metres, locale) + "+"
+
+    /** What TalkBack reads as the slider's value: "Any", or "5 km or more". */
+    fun spokenValue(metres: Int, locale: Locale = ScooterLanguage.current.locale): String {
+        if (steps(metres, Unit.of(locale)) == 0) return localized("Any")
+        return stringFormat(localized("%@ or more"), distance(metres, locale))
+    }
+
+    /** How far a full battery takes an app's scooters at the least where an answer names no figure for it, in metres. */
+    const val DEFAULT_FULL_BATTERY: Int = 10_000
+
+    /**
+     * How far a full battery takes the scooters of [provider] (an id, "lime") that report only a battery, at the least,
+     * in metres: the latest answer's figure ([batteryRanges]), or else 10 km.
+     */
+    fun fullBattery(provider: String, batteryRanges: Map<String, Int>): Int =
+        batteryRanges[provider]?.takeIf { it > 0 } ?: DEFAULT_FULL_BATTERY
+
+    /**
+     * The battery in percent a scooter that reports only its battery needs to reach [minimumRange] metres, where a full
+     * battery takes it [fullBattery] metres: rounded up, 53 for 6 km on a Lime's 11.5 km. Over 100 where even a full
+     * battery may not reach it.
+     */
+    fun batteryNeeded(minimumRange: Int, fullBattery: Int): Long {
+        val needed = minimumRange.toLong() * 100
+        val full = fullBattery.coerceAtLeast(1).toLong()
+        return (needed + full - 1) / full
+    }
+
+    /**
+     * The paragraph under the slider while a minimum is set, null for Any: for the apps switched on with scooters in
+     * view that report only a battery ([batteryRanges]' keys), the battery each needs, the apps of one battery
+     * together and the lowest first, "Scooters that only report a battery need at least 9% (Voi), 21% (Bolt) and 53%
+     * (Lime)."; then those whose full battery may not reach the minimum, whose are all hidden; and last that scooters
+     * that give neither are hidden. Apps are named in the filters' order, the catalogue's.
+     */
+    fun help(
+        minimumRange: Int,
+        batteryRanges: Map<String, Int>,
+        enabledProviders: Set<ScooterProvider>,
+        locale: Locale = ScooterLanguage.current.locale,
+    ): String? {
+        if (minimumRange <= 0) return null
+        val apps = ScooterProvider.entries.filter { it in enabledProviders && it.rawValue in batteryRanges }
+        val needs = apps.associateWith { batteryNeeded(minimumRange, fullBattery(it.rawValue, batteryRanges)) }
+        fun names(providers: List<ScooterProvider>) = ScooterListFormat.and(providers.map { it.displayName }, locale)
+
+        val sentences = mutableListOf<String>()
+        val groups = apps.filter { needs.getValue(it) <= 100 }.groupBy { needs.getValue(it) }.toSortedMap()
+        if (groups.isNotEmpty()) {
+            val items = groups.map { (percent, providers) ->
+                stringFormat(localized("%1\$lld%% (%2\$@)"), percent, names(providers), locale = locale)
             }
-            if (apps.isEmpty()) return null
-            val total = apps.sumOf { it.second }
-            val most = apps.maxOf { it.second }
-            val kept = apps.filter { (_, count) -> count * 10 >= total || count == most }
-            val scale = level / 100.0
-            val weight = kept.sumOf { it.second }
-            return ScooterBatteryReach(
-                low = kept.minOf { it.first } * scale,
-                high = kept.maxOf { it.first } * scale,
-                mean = kept.sumOf { (meters, count) -> meters * count } / weight * scale,
+            sentences += stringFormat(
+                localized("Scooters that only report a battery need at least %@."),
+                ScooterListFormat.and(items, locale),
+                locale = locale,
             )
         }
-
-        /**
-         * The line under the battery presets: how far the minimum chosen, or a full battery for Any, usually takes the
-         * scooters in view of the apps switched on, "60% usually allows about 22 km.", counted as the filters' provider
-         * rows count them, whatever the apps switched on. Null where no such app has a full range ([fullRanges], by
-         * provider id).
-         */
-        fun line(
-            minimumBattery: Int,
-            fullRanges: Map<String, Int>,
-            entries: List<ScooterProviderEntry>,
-            locale: Locale = ScooterLanguage.current.locale,
-        ): String? {
-            val level = ScooterBatteryFilter.snapped(minimumBattery).takeIf { it > 0 } ?: 100
-            val byID = entries.associateBy { it.provider.rawValue }
-            val reach = of(
-                level,
-                fullRanges,
-                counts = byID.mapValues { it.value.count },
-                enabled = { byID[it]?.isEnabled == true },
-            ) ?: return null
-            return stringFormat(localized("%1\$lld%% usually allows about %2\$@."), level.toLong(), reach.formatted(locale))
+        val hidden = apps.filter { needs.getValue(it) > 100 }
+        if (hidden.isNotEmpty()) {
+            sentences += stringFormat(
+                localized("Scooters from %1\$@ that only report a battery are hidden, as a full battery may not reach %2\$@."),
+                names(hidden),
+                distance(minimumRange, locale),
+                locale = locale,
+            )
         }
+        sentences += localized("Scooters without range or battery info are hidden while a minimum is set.")
+        return sentences.joinToString(" ")
     }
 }
 
 /** One provider in the dock chips or in the filter sheet's provider list. */
 data class ScooterProviderEntry(
     val provider: ScooterProvider,
-    /** Scooters in view that pass the battery filter, whether or not the provider is shown. */
+    /** Scooters in view that pass the range filter, whether or not the provider is shown. */
     val count: Int,
     /** Included by the provider filter: the check in the filter sheet. */
     val isEnabled: Boolean,
@@ -197,7 +234,7 @@ data class ScooterProviderEntry(
 
 /** A provider's scooters drawn faded in view where they were last seen, which the chips and the list count apart. */
 data class ScooterFadedCount(
-    /** In view, past the battery filter, whether or not the provider is shown. */
+    /** In view, past the range filter, whether or not the provider is shown. */
     val count: Int,
     /** When the oldest of them were seen, on this device's clock. */
     val seenAt: Instant,
@@ -228,13 +265,13 @@ data class ScooterFadedCount(
 data class ScooterFilterSummary(
     /**
      * Scooters here before filtering; null when the response cannot tell, because the server already
-     * filtered by battery or cut the list short.
+     * filtered by range or cut the list short.
      */
     val hiddenCount: Int?,
     /** The providers the map is limited to; empty when every provider is shown. */
     val providers: List<ScooterProvider>,
-    /** The minimum battery in percent; null for Any. */
-    val minimumBattery: Int?,
+    /** The minimum range in metres, a whole step of the unit shown; null for Any. */
+    val minimumRange: Int? = null,
 ) {
     val title: String
         get() {
@@ -247,7 +284,7 @@ data class ScooterFilterSummary(
             )
         }
 
-    /** "Lime only" and "battery 60% or more", whichever apply. */
+    /** "Lime only" and "range 5 km or more", whichever apply. */
     val parts: List<String>
         get() {
             val parts = mutableListOf<String>()
@@ -257,18 +294,18 @@ data class ScooterFilterSummary(
                     ScooterListFormat.and(providers.map { it.displayName }, ScooterLanguage.current.locale),
                 )
             }
-            if (minimumBattery != null) {
-                parts += stringFormat(localized("battery %lld%% or more"), minimumBattery.toLong())
+            if (minimumRange != null) {
+                parts += stringFormat(localized("range %@ or more"), ScooterRangeFilter.distance(minimumRange))
             }
             return parts
         }
 
-    /** "Lime only · battery 60% or more" */
+    /** "Lime only · range 5 km or more" */
     val body: String
         get() {
             val line = parts.joinToString(" · ")
             if (line.isEmpty()) return line
-            // The battery part starts in lower case because it usually follows the providers.
+            // The range part starts in lower case because it usually follows the providers.
             val locale = ScooterLanguage.launchLocale()
             val first = BreakIterator.getCharacterInstance(locale).apply { setText(line) }.next()
             return line.substring(0, first).uppercase(locale) + line.substring(first)

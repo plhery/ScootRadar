@@ -24,7 +24,7 @@ import org.robolectric.android.controller.ActivityController
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityLinksTest {
-    private val mapLink = "https://scootradar.com/map?minBattery=30"
+    private val mapLink = "https://scootradar.com/map?minRange=5000"
     private val page = "https://scootradar.com/"
 
     private fun view(address: String) = Intent(Intent.ACTION_VIEW, Uri.parse(address))
@@ -44,7 +44,7 @@ class MainActivityLinksTest {
     fun aLinkThatStartsTheAppShowsItsPlaceOnceAndNotAgainWhenTheActivityIsMadeAgain() {
         val activity = created(view(mapLink))
 
-        assertEquals(ScooterMapLink(minimumBattery = 30), activity.get().shownLink)
+        assertEquals(ScooterMapLink(minimumRange = 5_000), activity.get().shownLink)
         assertNull(activity.get().startedActivity)
         assertFalse(activity.get().isFinishing)
 

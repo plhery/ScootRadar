@@ -456,7 +456,7 @@ class RightClickTest {
         )
 
         val oneScooter = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = listOf(scooter))
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = ScooterResponse(vehicles = listOf(scooter))
         }
 
         val noPlaces = object : AddressSearchAPIClient {

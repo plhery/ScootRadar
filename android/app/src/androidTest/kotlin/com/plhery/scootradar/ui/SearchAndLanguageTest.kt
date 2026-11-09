@@ -452,7 +452,7 @@ class SearchAndLanguageTest {
 
         /** One of Lime's scooters at the start of the map, to have a card open. */
         val scooters = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = ScooterResponse(
                 vehicles = listOf(
                     Scooter(
                         provider = "lime", latitude = 47.3772, longitude = 8.5421, battery = 70, rangeMeters = null,

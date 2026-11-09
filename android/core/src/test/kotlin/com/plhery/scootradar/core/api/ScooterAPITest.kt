@@ -93,13 +93,13 @@ class ScooterAPITest {
     @Test
     fun parkingIsDecodedSeparatelyFromVehiclesAndLegacyResponsesStillWork() = runBlocking<Unit> {
         val data = """{"vehicles":[],"clusters":[],"providers":{},"parking":[{"id":"dott:bay","provider":"dott","name":"Place test","lat":45.75,"lng":4.85,"mandatory":true}],"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-09-08T12:00:00Z","truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"parkingStatus":"fresh"}}"""
-        val response = makeAPI(responseStatus = 200, data = data).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        val response = makeAPI(responseStatus = 200, data = data).scooters(bounds = bounds, zoom = 16)
         assertEquals(1, response.parking.size)
         assertTrue(response.parking[0].mandatory)
         assertEquals(45.75, response.parking[0].coordinate.latitude, 0.0)
         assertEquals("fresh", response.meta?.parkingStatus)
         assertTrue(response.vehicles.isEmpty())
-        val legacy = makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        val legacy = makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16)
         assertTrue(legacy.parking.isEmpty())
     }
 
@@ -107,22 +107,23 @@ class ScooterAPITest {
     fun successfulResponseIsDecoded() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 200, data = emptyResponseData)
 
-        val response = api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        val response = api.scooters(bounds = bounds, zoom = 16)
 
         assertTrue(response.vehicles.isEmpty())
         // Fresh data names no app late.
         assertNull(response.meta?.staleProviders)
     }
 
+    /** No battery minimum any more, which the builds before sent: the range is the filters' only minimum. */
     @Test
-    fun requestSendsBoundsZoomAndFilterWithoutASeparateUserLocation() = runBlocking<Unit> {
+    fun requestSendsBoundsAndZoomWithoutASeparateUserLocation() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 200, data = emptyResponseData)
 
         // A point for the decimals whatever the phone's language.
         val defaultLocale = Locale.getDefault()
         Locale.setDefault(Locale.GERMANY)
         try {
-            api.scooters(bounds = GeoBounds(south = 47.36789, west = 8.5, north = 47.4, east = 8.61234), zoom = 12, minimumBattery = 55)
+            api.scooters(bounds = GeoBounds(south = 47.36789, west = 8.5, north = 47.4, east = 8.61234), zoom = 12)
         } finally {
             Locale.setDefault(defaultLocale)
         }
@@ -130,9 +131,31 @@ class ScooterAPITest {
         // In the iPhone's order.
         val url = server.takeRequest().url
         assertEquals(
-            listOf("south" to "47.36789", "west" to "8.50000", "north" to "47.40000", "east" to "8.61234", "zoom" to "12", "minBattery" to "55"),
+            listOf("south" to "47.36789", "west" to "8.50000", "north" to "47.40000", "east" to "8.61234", "zoom" to "12"),
             (0 until url.querySize).map { url.queryParameterName(it) to url.queryParameterValue(it) },
         )
+    }
+
+    /**
+     * The minimum range goes in whole metres, and only when there is one: a server from before it answers as it did,
+     * and the app filters by range itself.
+     */
+    @Test
+    fun requestSendsAMinimumRangeInMetresOnlyWhenOneIsSet() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 200, data = emptyResponseData)
+        val bounds = GeoBounds(south = 47.36789, west = 8.5, north = 47.4, east = 8.61234)
+
+        api.scooters(bounds = bounds, zoom = 12, minimumRange = 4_828)
+        val ranged = server.takeRequest().url
+        assertEquals("4828", ranged.queryParameter("minRange"))
+        assertNull(ranged.queryParameter("minBattery"))
+        assertEquals("minRange", ranged.queryParameterName(ranged.querySize - 1))
+
+        server.enqueue(answer(200, emptyResponseData, emptyMap()))
+        api.scooters(bounds = bounds, zoom = 12, minimumRange = 0)
+        val unranged = server.takeRequest().url
+        assertNull(unranged.queryParameter("minRange"))
+        assertNull(unranged.queryParameter("minBattery"))
     }
 
     @Test
@@ -142,7 +165,7 @@ class ScooterAPITest {
             region = MapRegion(center = GeoPoint(latitude = -36.52, longitude = -178.6), latitudeDelta = 21.08, longitudeDelta = 43.0),
         )
 
-        api.scooters(bounds = view, zoom = 6, minimumBattery = 0)
+        api.scooters(bounds = view, zoom = 6)
 
         val url = server.takeRequest().url
         assertEquals("159.90000", url.queryParameter("west"))
@@ -182,7 +205,7 @@ class ScooterAPITest {
         val waits = mutableListOf<List<Long>>()
         val answering = answeringClient(asked, waits)
 
-        failure { ScooterAPI(client = answering).scooters(bounds, zoom = 15, minimumBattery = 0) }
+        failure { ScooterAPI(client = answering).scooters(bounds, zoom = 15) }
         failure { ScooterAPI(client = answering).zonesIn(ScooterZoneArea(covering = bounds)!!) }
         failure { AddressSearchAPI(client = answering).search("Paradeplatz", language = "de", near = null) }
 
@@ -201,7 +224,7 @@ class ScooterAPITest {
         val data = """{"vehicles":[],"clusters":[],"providers":{},"meta":{"partial":true,"stale":true,"failedSources":["national"],"sources":{"national":"failed","hopp":"fresh"},"generatedAt":"2026-08-05T12:00:00.000Z","truncated":true,"totalVehicles":6200,"mode":"vehicles","zoom":null,"staleProviders":{"hopp":"2026-08-05T11:48:00.000Z"}}}"""
         val api = makeAPI(responseStatus = 200, data = data)
 
-        val response = api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        val response = api.scooters(bounds = bounds, zoom = 16)
 
         assertTrue(response.meta?.partial == true)
         assertTrue(response.meta?.stale == true)
@@ -215,7 +238,7 @@ class ScooterAPITest {
     fun httpStatusIsPreserved() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 503)
 
-        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16) }) {
             null -> fail("Expected an HTTP status error")
             is ScooterAPIError -> {
                 if (error !is ScooterAPIError.HttpStatus || error.statusCode != 503) fail("Expected HTTP 503, got $error")
@@ -229,7 +252,7 @@ class ScooterAPITest {
     fun offlineErrorIsToldApart() = runBlocking<Unit> {
         val api = makeAPI(failure = UnknownHostException("scootradar.com"), offline = true)
 
-        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16) }) {
             null -> fail("Expected an offline error")
             is ScooterAPIError -> {
                 if (error !is ScooterAPIError.Offline) fail("Expected offline, got $error")
@@ -243,7 +266,7 @@ class ScooterAPITest {
     fun timeoutIsToldApart() = runBlocking<Unit> {
         val api = makeAPI(failure = SocketTimeoutException("timeout"))
 
-        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16) }) {
             null -> fail("Expected a timeout error")
             is ScooterAPIError -> {
                 if (error !is ScooterAPIError.TimedOut) fail("Expected timedOut, got $error")
@@ -261,7 +284,7 @@ class ScooterAPITest {
     fun aTimeoutWithThePhoneOfflineIsOffline() = runBlocking<Unit> {
         val api = makeAPI(failure = SocketTimeoutException("timeout"), offline = true)
 
-        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16) }) {
             null -> fail("Expected an offline error")
             is ScooterAPIError -> {
                 if (error !is ScooterAPIError.Offline) fail("Expected offline, got $error")
@@ -292,7 +315,7 @@ class ScooterAPITest {
             }.build(),
             isOffline = { false },
         )
-        val load = async(Dispatchers.Default) { failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) } }
+        val load = async(Dispatchers.Default) { failure { api.scooters(bounds = bounds, zoom = 16) } }
         assertTrue("the load under way", started.await(5, TimeUnit.SECONDS))
 
         api.networkLost()
@@ -300,7 +323,7 @@ class ScooterAPITest {
         assertTrue("Expected offline, got $error", error is ScooterAPIError.Offline)
         assertEquals(ScooterLoadFailure.Offline, (error as ScooterAPIError).loadFailure)
 
-        assertTrue(api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0).vehicles.isEmpty())
+        assertTrue(api.scooters(bounds = bounds, zoom = 16).vehicles.isEmpty())
     }
 
     /**
@@ -322,20 +345,20 @@ class ScooterAPITest {
                 client = OkHttpClient.Builder().protocols(listOf(Protocol.H2_PRIOR_KNOWLEDGE)).build(),
                 isOffline = { false },
             )
-            api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            api.scooters(bounds = bounds, zoom = 16)
             assertEquals("the first request's connection", 0, h2.takeRequest().connectionIndex)
 
-            val load = async(Dispatchers.Default) { failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) } }
+            val load = async(Dispatchers.Default) { failure { api.scooters(bounds = bounds, zoom = 16) } }
             assertEquals("the held request, on the same connection", 0, checkNotNull(h2.takeRequest(5, TimeUnit.SECONDS)).connectionIndex)
             api.networkLost()
             val error = withTimeout(2_000) { load.await() }
             assertTrue("Expected offline, got $error", error is ScooterAPIError.Offline)
 
-            api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            api.scooters(bounds = bounds, zoom = 16)
             assertEquals("the request after the loss of one under way", 1, h2.takeRequest().connectionIndex)
 
             api.networkLost()
-            api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            api.scooters(bounds = bounds, zoom = 16)
             assertEquals("the request after the loss of an idle connection", 2, h2.takeRequest().connectionIndex)
         } finally {
             h2.close()
@@ -412,12 +435,12 @@ class ScooterAPITest {
             SSLException("Read error: ssl=0x7b2c4a10: I/O error during system call, Software caused connection abort"),
             IOException("unexpected end of stream", SocketException("Software caused connection abort")),
         )) {
-            val error = failure { makeAPI(failure = lost).scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }
+            val error = failure { makeAPI(failure = lost).scooters(bounds = bounds, zoom = 16) }
             assertTrue("$lost: expected offline, got $error", error is ScooterAPIError.Offline)
         }
 
         val resetAPI = makeAPI(failure = SocketException("Connection reset"))
-        val reset = failure { resetAPI.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }
+        val reset = failure { resetAPI.scooters(bounds = bounds, zoom = 16) }
         assertTrue("a connection the server reset: expected a failure, got $reset", reset is ScooterAPIError.Network)
     }
 
@@ -425,7 +448,7 @@ class ScooterAPITest {
     fun invalidJSONIsToldApart() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 200, data = "{}")
 
-        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16) }) {
             null -> fail("Expected a decoding error")
             is ScooterAPIError -> {
                 if (error !is ScooterAPIError.InvalidData) fail("Expected invalidData, got $error")
@@ -470,7 +493,7 @@ class ScooterAPITest {
             makeAPI(responseStatus = 502) to ScooterLoadFailure.Unavailable,
             makeAPI(responseStatus = 200, data = "{}") to ScooterLoadFailure.Failed,
         )) {
-            val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }
+            val error = failure { api.scooters(bounds = bounds, zoom = 16) }
             if (error == null) fail("Expected a $expected failure") else assertEquals(expected, ScooterLoadFailure(error))
         }
     }
@@ -494,10 +517,10 @@ class ScooterAPITest {
             responseStatus = 200,
             data = emptyResponseData,
             headers = mapOf("Date" to formatter.format(Instant.now().minusSeconds(1_200))),
-        ).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        ).scooters(bounds = bounds, zoom = 16)
         assertEquals(1_200.0, fast.clockOffset, 5.0)
         val withoutHeader = makeAPI(responseStatus = 200, data = emptyResponseData)
-            .scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            .scooters(bounds = bounds, zoom = 16)
         assertEquals(0.0, withoutHeader.clockOffset, 0.0)
     }
 
@@ -592,7 +615,7 @@ class ScooterAPITest {
 
     @Test
     fun theSiteIsAskedForJSONAtItsOwnAddresses() = runBlocking<Unit> {
-        makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16)
         server.enqueue(answer(200, """{"zones":[]}"""))
         ScooterAPI(baseURL = server.url("/"), client = client).zonesIn(area = ScooterZoneArea(covering = bounds)!!)
         server.enqueue(answer(200, "[]"))

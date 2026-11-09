@@ -141,7 +141,7 @@ class MainActivityProcessEndTest {
 
     private companion object {
         /** A row only Filters has. */
-        const val FILTERS = "Battery"
+        const val FILTERS = "Range"
 
         /** The Language page's first choice, which only that page has. */
         const val LANGUAGE_PAGE = "English, the language of your phone"
