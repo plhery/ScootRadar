@@ -75,16 +75,20 @@ vi.mock('@/components/SearchIsland', () => ({ default: ({
   {recentPlace && <button onClick={onForgetRecent}>Forget the recent place</button>}
   <span data-testid="cities">{nearbyCities.map(city => city.city).join(', ')}</span></> }));
 vi.mock('@/components/ControlSheet', () => ({ default: ({
-  showCount, providerCounts, downProviders, hasActiveFilters, theme, mapStyle,
-  onProviderToggle, onMinBatteryChange, onThemeChange, onMapStyleChange, open, onClose,
+  showCount, providerCounts, downProviders, hasActiveFilters, theme, mapStyle, minRange, batteryRanges,
+  onProviderToggle, onMinRangeChange, onResetFilters, onThemeChange, onMapStyleChange, open, onClose,
 }: {
   open: boolean; onClose: () => void;
   showCount: number | null; providerCounts: Record<string, number>; downProviders: string[]; hasActiveFilters: boolean;
-  theme: string; mapStyle: string;
-  onProviderToggle: (provider: string) => void; onMinBatteryChange: (value: number) => void;
+  theme: string; mapStyle: string; minRange: number; batteryRanges: Record<string, number>;
+  onProviderToggle: (provider: string) => void;
+  onMinRangeChange: (meters: number) => void; onResetFilters: () => void;
   onThemeChange: (theme: string) => void; onMapStyleChange: (style: string) => void;
 }) => <><button onClick={() => onProviderToggle('lime')}>Lime in the filters</button>
-  <button onClick={() => onMinBatteryChange(60)}>At least 60% in the filters</button>
+  <button onClick={() => onMinRangeChange(5000)}>At least 5 km in the filters</button>
+  <button onClick={onResetFilters}>Reset the filters</button>
+  <span data-testid="minimums">{`range ${minRange}`}</span>
+  <span data-testid="battery-ranges">{JSON.stringify(batteryRanges)}</span>
   <span data-testid="filters">{JSON.stringify({ show: showCount, counts: providerCounts, down: downProviders, active: hasActiveFilters })}</span>
   {['auto', 'light', 'dark'].map(name => <button key={name} onClick={() => onThemeChange(name)}>Appearance {name}</button>)}
   {['calm', 'detailed'].map(name => <button key={name} onClick={() => onMapStyleChange(name)}>Map {name}</button>)}
@@ -992,12 +996,12 @@ it('never takes the scooter walked to for gone from data that cannot tell', asyn
     expect(routeOnMap()).toHaveTextContent('shown 3 1');
   }
 
-  // Further out the server leaves out the scooters under the minimum battery.
+  // Further out the server leaves out the scooters under the minimum range.
   meta = {};
   fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' }));
-  fireEvent.click(screen.getByRole('button', { name: 'At least 60% in the filters' }));
+  fireEvent.click(screen.getByRole('button', { name: 'At least 5 km in the filters' }));
   await act(async () => vi.advanceTimersByTimeAsync(180));
-  expect(vi.mocked(fetch).mock.calls.at(-1)![0]).toContain('minBattery=60');
+  expect(vi.mocked(fetch).mock.calls.at(-1)![0]).toContain('minRange=5000');
   await refreshData();
   expect(screen.queryByText(TAKEN)).toBeNull();
   expect(routeOnMap()).toHaveTextContent('shown 3 1');
@@ -1188,9 +1192,10 @@ it('tells the filters what the map will show, what each provider has in view and
   expect(filters()).toEqual({ show: 2, counts: { lime: 1, voi: 1 }, down: ['bird'], active: false });
   expect(screen.getByText('Bird isn’t sharing data right now.')).toBeVisible();
 
-  // Counts follow the battery choice and ignore the provider choice, so each row says what it would add.
-  // Voi's only scooter is now hidden by the rider's own choice: that does not make Voi down.
-  fireEvent.click(screen.getByRole('button', { name: 'At least 60% in the filters' }));
+  // Counts follow the range minimum and ignore the provider choice, so each row says what it would add.
+  // Voi's only scooter, at 40% of the 10 km of an app the answer gives no figure for, is now hidden by the
+  // rider's own choice: that does not make Voi down.
+  fireEvent.click(screen.getByRole('button', { name: 'At least 5 km in the filters' }));
   expect(filters()).toEqual({ show: 1, counts: { lime: 1 }, down: ['bird'], active: true });
   fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
   expect(filters()).toEqual({ show: 0, counts: { lime: 1 }, down: ['bird'], active: true });
@@ -1313,6 +1318,103 @@ it('names no provider as not sharing data during the load that follows a jump to
   expect(document.querySelector('.chip-down')).toBeNull();
 });
 
+/** Lime's scooter says its battery and not its range; Voi's its range alone, 12 km; Bird's both, 3 km. */
+function rangesAndBatteries(batteryRanges?: Record<string, number>): ScooterResponse {
+  const body = response();
+  body.vehicles.push(
+    { ...body.vehicles[0], provider: 'voi', vehicle_id: 'two', battery: null, range_m: 12_000 },
+    { ...body.vehicles[0], provider: 'bird', vehicle_id: 'three', battery: 90, range_m: 3000 },
+  );
+  return batteryRanges ? { ...body, batteryRanges } : body;
+}
+
+it('filters by range, a scooter that reports only its battery by its app’s full battery, and keeps the minimum in the link and on the device', async () => {
+  // The Lime reports 80% and no range: 80% of the 6 km its app's full battery is said to go falls short of 5 km.
+  let batteryRanges: Record<string, number> | undefined = { lime: 6000 };
+  const fetcher = vi.fn<(input: string) => Promise<Response>>(async () => Response.json(rangesAndBatteries(batteryRanges)));
+  vi.stubGlobal('fetch', fetcher);
+  mount();
+  const filters = () => JSON.parse(screen.getByTestId('filters').textContent!);
+  const minimums = () => screen.getByTestId('minimums').textContent;
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(filters()).toEqual({ show: 3, counts: { bird: 1, lime: 1, voi: 1 }, down: [], active: false });
+  // The filters say what the answer's figures ask of each app's scooters.
+  expect(screen.getByTestId('battery-ranges')).toHaveTextContent('{"lime":6000}');
+
+  // A shorter range is left out, and the Lime whose battery would not take it so far.
+  fireEvent.click(screen.getByRole('button', { name: 'At least 5 km in the filters' }));
+  expect(filters()).toEqual({ show: 1, counts: { voi: 1 }, down: [], active: true });
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+  expect(window.location.search).toBe('?minRange=5000');
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '5000' });
+
+  // An answer without the figures: 80% of the 10 km of an app it does not name goes far enough.
+  batteryRanges = undefined;
+  await refreshData();
+  expect(screen.getByTestId('battery-ranges')).toHaveTextContent('{}');
+  expect(filters()).toEqual({ show: 2, counts: { lime: 1, voi: 1 }, down: [], active: true });
+
+  // At street level the map filters single scooters itself; further out the server leaves them out.
+  expect(fetcher.mock.calls.at(-1)![0]).not.toContain('minRange');
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' }));
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(fetcher.mock.calls.at(-1)![0]).toContain('minRange=5000');
+  expect(fetcher.mock.calls.every(([input]) => !String(input).includes('minBattery'))).toBe(true);
+
+  fireEvent.click(screen.getByRole('button', { name: 'Reset the filters' }));
+  expect(minimums()).toBe('range 0');
+  expect(window.location.search).toBe('');
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(fetcher.mock.calls.at(-1)![0]).not.toContain('minRange');
+});
+
+it('says what a range minimum hides, and that the scooters it leaves out are unknown once the server left them out', async () => {
+  // The Lime at 80% of the 6 km a full battery of its app is said to go.
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json({ ...response(), batteryRanges: { lime: 6000 } })));
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  fireEvent.click(screen.getByRole('button', { name: 'At least 5 km in the filters' }));
+  expect(screen.getByRole('heading', { name: '1 scooter hidden by your filters' })).toBeVisible();
+  expect(screen.getByText('Range 5 km or more')).toBeVisible();
+
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' }));
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByRole('heading', { name: 'No scooters match your filters here' })).toBeVisible();
+});
+
+it('reads a range minimum from a link, on a whole step of the units in use, and ignores a battery one', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  const opened = async (address: string) => {
+    window.history.replaceState(null, '', address);
+    const view = mount();
+    await act(async () => vi.advanceTimersByTimeAsync(180));
+    const said = [screen.getByTestId('minimums').textContent, window.location.search];
+    view.unmount();
+    return said;
+  };
+  expect(await opened('/map?minRange=5000')).toEqual(['range 5000', '?minRange=5000']);
+  // Kilometres from 4,828 m, the 3 miles of a link from the US.
+  expect(await opened('/map?minRange=4828')).toEqual(['range 5000', '?minRange=5000']);
+  expect(await opened('/map?minRange=45000')).toEqual(['range 30000', '?minRange=30000']);
+  // The battery minimum of a link from before the range minimum, beside one or alone, sets nothing.
+  expect(await opened('/map?minBattery=30&minRange=5000')).toEqual(['range 5000', '?minRange=5000']);
+  for (const wrong of ['-5000', '5000.5', '5km', '']) {
+    localStorage.clear();
+    expect(await opened(`/map?minRange=${wrong}`), wrong).toEqual(['range 0', '']);
+  }
+  localStorage.setItem('scooters-params', JSON.stringify({ minRange: '8000' }));
+  expect(await opened('/map?minBattery=60')).toEqual(['range 8000', '?minRange=8000']);
+  localStorage.setItem('scooters-params', JSON.stringify({ minBattery: '60' }));
+  expect(await opened('/map')).toEqual(['range 0', '']);
+  expect(await opened('/map?minRange=8000')).toEqual(['range 8000', '?minRange=8000']);
+  expect(await opened('/map')).toEqual(['range 8000', '?minRange=8000']);
+
+  // In miles, the nearest whole mile: 5 km is 3 miles, 4,828 m.
+  localStorage.clear();
+  localStorage.setItem('scooters-units', 'imperial');
+  expect(await opened('/map?minRange=5000')).toEqual(['range 4828', '?minRange=4828']);
+});
+
 it('promises no count in the filters while the answer for a new minimum is on its way', async () => {
   const fetcher = vi.fn<(input: string) => Promise<Response>>(async () => Response.json(response()));
   vi.stubGlobal('fetch', fetcher);
@@ -1323,10 +1425,10 @@ it('promises no count in the filters while the answer for a new minimum is on it
   fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' }));
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(show()).toBe(1);
-  fireEvent.click(screen.getByRole('button', { name: 'At least 60% in the filters' }));
+  fireEvent.click(screen.getByRole('button', { name: 'At least 5 km in the filters' }));
   expect(show()).toBeNull();
   await act(async () => vi.advanceTimersByTimeAsync(180));
-  expect(fetcher.mock.calls.at(-1)![0]).toContain('minBattery=60');
+  expect(fetcher.mock.calls.at(-1)![0]).toContain('minRange=5000');
   expect(show()).toBe(1);
 });
 
@@ -1544,13 +1646,14 @@ const themeColors = () => ['light', 'dark'].map(scheme => document.head
 
 it('carries settings from the old tile parameter over to theme and map', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  // With a battery minimum from before the range minimum, which the map no longer has.
   window.history.replaceState(null, '', '/map?tile=dark&minBattery=45');
   const first = mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(shell()).toHaveAttribute('data-theme', 'dark');
   expect(shell()).toHaveAttribute('data-map', 'calm');
   expect(screen.getByTestId('settings')).toHaveTextContent('dark calm');
-  expect(window.location.search).toBe('?minBattery=30&theme=dark');
+  expect(window.location.search).toBe('?theme=dark');
   first.unmount();
 
   // A home-screen launch has no URL; the settings come from storage, here in the old format.
@@ -1616,7 +1719,7 @@ it('leaves Automatic to the system, and keeps a chosen appearance and map style 
 
 it('keeps the settings saved on this device where a link sets none of them, and changes only those it sets', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
-  localStorage.setItem('scooters-params', JSON.stringify({ minBattery: '60', theme: 'dark' }));
+  localStorage.setItem('scooters-params', JSON.stringify({ minRange: '6000', theme: 'dark' }));
   // A shared place, then a campaign's tag: neither sets anything.
   for (const search of ['?origin=47.3769,8.5417', '?utm_source=newsletter']) {
     window.history.replaceState(null, '', `/map${search}`);
@@ -1624,8 +1727,8 @@ it('keeps the settings saved on this device where a link sets none of them, and 
     await act(async () => vi.advanceTimersByTimeAsync(180));
     expect(shell()).toHaveAttribute('data-theme', 'dark');
     expect(screen.getByTestId('settings')).toHaveTextContent('dark calm');
-    expect(window.location.search).toBe('?minBattery=60&theme=dark');
-    expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minBattery: '60', theme: 'dark' });
+    expect(window.location.search).toBe('?minRange=6000&theme=dark');
+    expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark' });
     view.unmount();
   }
 
@@ -1634,8 +1737,8 @@ it('keeps the settings saved on this device where a link sets none of them, and 
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByTestId('settings')).toHaveTextContent('dark detailed');
-  expect(window.location.search).toBe('?minBattery=60&theme=dark&map=detailed');
-  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minBattery: '60', theme: 'dark', map: 'detailed' });
+  expect(window.location.search).toBe('?minRange=6000&theme=dark&map=detailed');
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark', map: 'detailed' });
 });
 
 it('restores a chosen appearance and map style from the link', async () => {

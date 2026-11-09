@@ -682,8 +682,8 @@ test('one failed feed does not make a provider look down beside its scooters, an
   await expect(filters.getByRole('button', { name: 'Bird, 1. Shown.' })).toBeVisible();
   await expect(filters.locator('.provider-down')).toHaveCount(1);
 
-  // Hiding Bird's scooter with a battery minimum is the rider's choice, not Bird's silence.
-  await filters.getByRole('button', { name: '80%+' }).click();
+  // Hiding Bird's scooter, which goes 10 km, with a range minimum is the rider's choice, not Bird's silence.
+  await filters.getByRole('slider', { name: 'Range' }).fill('11');
   await expect(filters.getByRole('button', { name: 'Bird, 0. Shown.' })).toBeVisible();
   await expect(filters.locator('.provider-down')).toHaveCount(1);
 });
@@ -1679,7 +1679,7 @@ test('central Helsingborg, where scooters park only in racks or marked places, i
   await expect(legend).toHaveCount(0);
 });
 
-test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {
+test('the filters offer a range minimum and providers with their counts, and say what the map will show', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
@@ -1691,24 +1691,23 @@ test('the filters offer battery presets and providers with their counts, and say
   await expect(show).toHaveText('Show 3 scooters');
   await expect(filters.getByRole('button', { name: 'Done' })).toHaveCount(0);
 
-  // Battery first: one choice of four, and no slider.
-  const battery = filters.getByRole('group', { name: 'Battery' });
-  await expect(battery.getByRole('button')).toHaveText(['Any', '30%+', '60%+', '80%+']);
-  await expect(battery.getByRole('button', { name: 'Any' })).toHaveAttribute('aria-pressed', 'true');
-  await expect(filters.getByRole('slider')).toHaveCount(0);
-  const help = filters.getByText('Scooters without battery info are hidden while a minimum is set.');
-  await expect(help).toHaveCount(0);
+  // The range first, on its slider, and no battery minimum.
   const sections = await filters.getByRole('heading', { level: 3 }).allTextContents();
-  expect(sections).toEqual(['Battery', 'Providers']);
+  expect(sections).toEqual(['Range', 'Providers']);
+  await expect(filters.getByRole('group', { name: 'Battery' })).toHaveCount(0);
+  await expect(filters.getByRole('button', { name: /^\d+%\+$/ })).toHaveCount(0);
+  const range = filters.getByRole('slider', { name: 'Range' });
+  await expect(filters.getByRole('slider')).toHaveCount(1);
+  const help = filters.locator('.filter-help');
+  await expect(help).toHaveCount(0);
 
-  await battery.getByRole('button', { name: '60%+' }).click();
-  await expect(battery.getByRole('button', { name: '60%+' })).toHaveAttribute('aria-pressed', 'true');
+  await range.fill('10');
   await expect(help).toBeVisible();
   await expect(reset).toBeEnabled();
-  // Lime has 82% and Bird 64%; Bolt, at 58%, no longer counts.
+  // Lime goes 14 km and Bird 10; Bolt, at 9, no longer counts.
   await expect(show).toHaveText('Show 2 scooters');
   await expect(page.locator('.scooter-marker')).toHaveCount(2);
-  await expect.poll(() => new URL(page.url()).searchParams.get('minBattery')).toBe('60');
+  await expect.poll(() => new URL(page.url()).searchParams.get('minRange')).toBe('10000');
 
   // One list in catalogue order: what each provider has in view, switched on or not.
   const providers = filters.getByRole('group', { name: 'Providers' }).getByRole('button');
@@ -1736,36 +1735,150 @@ test('the filters offer battery presets and providers with their counts, and say
   expect(accessibility.violations).toEqual([]);
 
   await reset.click();
-  await expect(battery.getByRole('button', { name: 'Any' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(range).toHaveValue('0');
   await expect(lime).toHaveAttribute('aria-pressed', 'true');
   await expect(help).toHaveCount(0);
   await expect(reset).toBeDisabled();
   await expect(show).toHaveText('Show 3 scooters');
-  await expect.poll(() => new URL(page.url()).searchParams.has('minBattery')).toBe(false);
+  await expect.poll(() => new URL(page.url()).searchParams.has('minRange')).toBe(false);
 
   await show.click();
   await expect(filters).not.toBeVisible();
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
 });
 
-test('a battery minimum from an old link snaps down to a preset, and the server applies it to clusters', async ({ page }) => {
+test('the filters offer a range minimum on a slider, in kilometres or miles', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/map?origin=47.3769,8.5417');
+  await expect(page.locator('.scooter-marker')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Filters', exact: true }).click();
+  const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
+  const show = filters.locator('.sheet-primary');
+  const range = filters.getByRole('slider', { name: 'Range' });
+  const value = filters.locator('.filter-value');
+  // Every scooter here gives its range: the filters say only what the minimum leaves out of the others.
+  const help = 'Scooters without range or battery info are hidden while a minimum is set.';
+  await expect(range).toHaveValue('0');
+  await expect(range).toHaveAttribute('aria-valuetext', 'Any');
+  await expect(value).toHaveText('Any');
+  await expect(filters.locator('.filter-help')).toHaveCount(0);
+  // As wide as the sheet's sections and a finger's height, once the sheet has risen.
+  await filters.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
+  const slider = (await range.boundingBox())!;
+  expect(slider.height).toBeGreaterThanOrEqual(44);
+  expect(slider.width).toBeGreaterThan(300);
+
+  // Step by step with the keys: Lime goes 14 km, Bird 10 and Bolt 9.
+  await range.focus();
+  for (let step = 0; step < 10; step++) await page.keyboard.press('ArrowRight');
+  await expect(range).toHaveValue('10');
+  await expect(range).toHaveAttribute('aria-valuetext', '10 km or more');
+  await expect(value).toHaveText('10 km+');
+  await expect(range).toHaveAccessibleDescription(help);
+  await expect(filters.locator('.filter-help')).toHaveText(help);
+  await expect(show).toHaveText('Show 2 scooters');
+  await expect(page.locator('.scooter-marker')).toHaveCount(2);
+  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=10000');
+  const accessibility = await new AxeBuilder({ page }).include('.control-sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
+  expect(accessibility.violations).toEqual([]);
+
+  await range.fill('15');
+  await expect(value).toHaveText('15 km+');
+  await expect(show).toHaveText('Show 0 scooters');
+  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=15000');
+
+  // In miles: 20 at most, 15 km the nearest whole mile, 9, which Lime's 14 km (8.7 mi) doesn't reach, and 8 does.
+  await filters.getByRole('button', { name: 'Reset', exact: true }).click();
+  await expect(range).toHaveValue('0');
+  await expect.poll(() => new URL(page.url()).search).toBe('');
+  await range.fill('15');
+  await show.click();
+  await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
+  await settings.getByRole('group', { name: 'Units' }).getByRole('button', { name: 'Miles' }).click();
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: 'Filters active', exact: true }).click();
+  await expect(range).toHaveAttribute('max', '20');
+  await expect(range).toHaveValue('9');
+  await expect(value).toHaveText('9 mi+');
+  await expect(range).toHaveAttribute('aria-valuetext', '9 mi or more');
+  await expect(show).toHaveText('Show 0 scooters');
+  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=14484');
+  await range.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(value).toHaveText('8 mi+');
+  await expect(show).toHaveText('Show 1 scooter');
+  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=12875');
+});
+
+test('the filters say what battery the scooters that only report one need, from the answer\'s full ranges', async ({ page }) => {
+  // Beside the three that give their range, one of Lime, Bolt and Voi each that reports only its battery.
+  const batteryOnly = (provider: string, battery: number) => ({
+    provider, lat: 47.37693, lng: 8.54173, battery, range_m: null, vehicle_id: `${provider}-2`, deep_link: null, distance_m: 11,
+  });
+  await page.route('**/api/scooters?**', async route => {
+    const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+    // 50% of Lime's 11.5 km is 5.75 km, 30% of Bolt's 29.4 km 8.82 km, 10% of Voi's 72.8 km 7.28 km.
+    const vehicles = [...scooterResponse.vehicles, batteryOnly('lime', 50), batteryOnly('bolt', 30), batteryOnly('voi', 10)];
+    await route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      ...scooterResponse, vehicles, providers: { lime: 2, bird: 1, bolt: 2, voi: 1 },
+      batteryRanges: { lime: 11_500, bolt: 29_400, voi: 72_800 },
+      meta: { ...scooterResponse.meta, totalVehicles: vehicles.length, mode: 'vehicles', zoom },
+    }) });
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/map?origin=47.3769,8.5417&minRange=6000');
+  await expect(page.locator('.scooter-marker')).toHaveCount(5);
+  await page.getByRole('button', { name: 'Filters active', exact: true }).click();
+  const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
+  const range = filters.getByRole('slider', { name: 'Range' });
+  const show = filters.locator('.sheet-primary');
+  const last = 'Scooters without range or battery info are hidden while a minimum is set.';
+  // The Lime at 50% does not reach 6 km; the others do. WebKit lists three as en-US does, with a comma before "and".
+  await expect(show).toHaveText('Show 5 scooters');
+  await expect(range).toHaveAccessibleDescription(new RegExp(
+    `^Scooters that only report a battery need at least 9% \\(Voi\\), 21% \\(Bolt\\),? and 53% \\(Lime\\)\\. ${last}$`));
+
+  // Bolt switched off is left out of the line.
+  await filters.getByRole('button', { name: /^Bolt, 2\./ }).click();
+  await expect(range).toHaveAccessibleDescription(`Scooters that only report a battery need at least 9% (Voi) and 53% (Lime). ${last}`);
+  await filters.getByRole('button', { name: /^Bolt, 2\./ }).click();
+
+  // Further than even a full battery of Lime's may go, its scooters that report only a battery are all hidden.
+  await range.fill('12');
+  await expect(range).toHaveAccessibleDescription('Scooters that only report a battery need at least 17% (Voi) and 41% (Bolt). ' +
+    `Scooters from Lime that only report a battery are hidden, as a full battery may not reach 12 km. ${last}`);
+  await expect(filters.locator('.filter-help')).toHaveText(
+    /^Scooters that only report a battery need at least 17% \(Voi\) and 41% \(Bolt\)\. Scooters from Lime/);
+  await expect(show).toHaveText('Show 1 scooter');
+  const accessibility = await new AxeBuilder({ page }).include('.control-sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
+  expect(accessibility.violations).toEqual([]);
+
+  await range.fill('0');
+  await expect(filters.locator('.filter-help')).toHaveCount(0);
+  await expect(show).toHaveText('Show 6 scooters');
+});
+
+test('a battery minimum from an old link is ignored, and the server applies the range minimum to clusters', async ({ page }) => {
   const requested: string[] = [];
   page.on('request', request => {
     const url = new URL(request.url());
-    if (url.pathname === '/api/scooters') requested.push(`${url.searchParams.get('zoom')}:${url.searchParams.get('minBattery')}`);
+    if (url.pathname === '/api/scooters') {
+      requested.push(`${url.searchParams.get('zoom')}:${url.searchParams.get('minBattery')}:${url.searchParams.get('minRange')}`);
+    }
   });
   await page.goto('/map?minBattery=45');
-  await expect.poll(() => new URL(page.url()).searchParams.get('minBattery')).toBe('30');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
-  await expect.poll(() => requested.at(-1)).toBe('8:30');
-  await page.getByRole('button', { name: 'Filters active', exact: true }).click();
+  await expect.poll(() => requested.at(-1)).toBe('8:null:null');
+  await expect.poll(() => new URL(page.url()).search).toBe('');
+  await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
-  await expect(filters.getByRole('button', { name: '30%+' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(filters.getByRole('slider', { name: 'Range' })).toHaveValue('0');
   // The clusters stand for three scooters.
   await expect(filters.locator('.sheet-primary')).toHaveText('Show 3 scooters');
-  await filters.getByRole('button', { name: '80%+' }).click();
+  await filters.getByRole('slider', { name: 'Range' }).fill('5');
+  await expect.poll(() => requested.at(-1)).toBe('8:null:5000');
   await expect(filters.locator('.sheet-primary')).toHaveText('Show 3 scooters');
-  await expect.poll(() => requested.at(-1)).toBe('8:80');
 });
 
 const paradeplatz = [
@@ -2370,12 +2483,13 @@ test('links and settings saved with the old map style carry over', async ({ page
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark&map=detailed');
   await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.detailedDark });
 
-  // A home-screen launch has no link: the settings come from the device, here as an older release left them.
+  // A home-screen launch has no link: the settings come from the device, here as an older release left them,
+  // with a battery minimum the map no longer has.
   await page.evaluate(() => localStorage.setItem('scooters-params', JSON.stringify({ tile: 'dark', minBattery: '45' })));
   await page.goto('/map');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
-  await expect.poll(() => new URL(page.url()).search).toBe('?minBattery=30&theme=dark');
-  expect(await page.evaluate(() => localStorage.getItem('scooters-params'))).toBe('{"minBattery":"30","theme":"dark"}');
+  await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark');
+  expect(await page.evaluate(() => localStorage.getItem('scooters-params'))).toBe('{"theme":"dark"}');
 });
 
 test('the settings name the languages, and About leads to the credits, the privacy notice and the source code', async ({ page, browserName }) => {

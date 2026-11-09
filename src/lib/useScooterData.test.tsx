@@ -12,8 +12,8 @@ vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
 const T0 = Date.parse('2026-10-03T12:00:00.000Z');
 const iso = (time: number) => new Date(time).toISOString();
 
-const ZURICH: ScooterDataQuery = { bounds: { south: 47.36, west: 8.52, north: 47.39, east: 8.57 }, zoom: 16, minBattery: 0 };
-const BERN: ScooterDataQuery = { bounds: { south: 46.93, west: 7.42, north: 46.96, east: 7.47 }, zoom: 16, minBattery: 0 };
+const ZURICH: ScooterDataQuery = { bounds: { south: 47.36, west: 8.52, north: 47.39, east: 8.57 }, zoom: 16 };
+const BERN: ScooterDataQuery = { bounds: { south: 46.93, west: 7.42, north: 46.96, east: 7.47 }, zoom: 16 };
 
 /** A healthy response as the server would build it at the moment it is requested. */
 function body(meta: Partial<ScooterResponseMeta> = {}, extra: Partial<ScooterResponse> = {}): ScooterResponse {
@@ -114,7 +114,7 @@ describe('useScooterData', () => {
     await advance(1);
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher.mock.calls[0][0])
-      .toBe('/api/scooters?south=47.36000&west=8.52000&north=47.39000&east=8.57000&zoom=16&minBattery=0');
+      .toBe('/api/scooters?south=47.36000&west=8.52000&north=47.39000&east=8.57000&zoom=16');
     // Dated by the observation the server reports, not by the moment of arrival.
     expect(result.current).toMatchObject({ loading: null, hasData: true, failure: null, lastUpdated: T0 + 5_180 - 20_000 });
     expect(result.current.vehicles).toHaveLength(1);
@@ -559,14 +559,14 @@ describe('useScooterData', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
-  it('reloads when the server-side battery filter changes', async () => {
+  it('reloads when the server-side range filter changes', async () => {
     fetcher.mockImplementation(ok());
     const { rerender } = mount({ ...ZURICH, zoom: 14 });
     await advance(180);
-    rerender({ query: { ...ZURICH, zoom: 14, minBattery: 30 } });
+    rerender({ query: { ...ZURICH, zoom: 14, minRange: 5000 } });
     await advance(180);
     expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(fetcher.mock.calls[1][0]).toContain('minBattery=30');
+    expect(fetcher.mock.calls[1][0]).toContain('minRange=5000');
   });
 
   it('keeps the data of the previous view when the load for a new view fails', async () => {

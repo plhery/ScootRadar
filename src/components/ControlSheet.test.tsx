@@ -16,7 +16,8 @@ function sheetProps(overrides: Partial<Props> = {}): Props {
   return {
     open: true,
     panel: 'filters',
-    minBattery: 0,
+    minRange: 0,
+    batteryRanges: {},
     enabledProviders: new Set(PROVIDER_KEYS),
     availableProviders: ['lime', 'bird', 'dott', 'bolt'],
     providerCounts: { bolt: 4, dott: 2, lime: 1200 },
@@ -27,7 +28,7 @@ function sheetProps(overrides: Partial<Props> = {}): Props {
     mapStyle: 'calm',
     zones: false,
     onClose: vi.fn(),
-    onMinBatteryChange: vi.fn(),
+    onMinRangeChange: vi.fn(),
     onProviderToggle: vi.fn(),
     onResetFilters: vi.fn(),
     onThemeChange: vi.fn(),
@@ -75,31 +76,91 @@ describe('ControlSheet filters', () => {
     expect(dialog.open).toBe(false);
   });
 
-  it('offers the battery minimum as one choice of four, without a slider', () => {
+  it('offers the range minimum first, on a slider of whole kilometres up to 30, and no battery minimum', () => {
     const { props, rerender } = renderSheet();
-    const battery = screen.getByRole('group', { name: 'Battery' });
-    const presets = within(battery).getAllByRole('button');
-    expect(presets.map(preset => preset.textContent)).toEqual(['Any', '30%+', '60%+', '80%+']);
-    expect(presets.map(preset => preset.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false', 'false']);
-    expect(screen.queryByRole('slider')).toBeNull();
-    // Nothing is hidden while any battery level will do.
-    expect(screen.queryByText('Scooters without battery info are hidden while a minimum is set.')).toBeNull();
+    const dialog = screen.getByRole('dialog', { name: 'Filters' });
+    expect(within(dialog).getAllByRole('heading', { level: 3 }).map(heading => heading.textContent))
+      .toEqual(['Range', 'Providers']);
+    expect(screen.queryByRole('group', { name: 'Battery' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '60%+' })).toBeNull();
+    expect(within(dialog).getAllByRole('slider')).toHaveLength(1);
+    const range = screen.getByRole('slider', { name: 'Range' });
+    expect([range.getAttribute('min'), range.getAttribute('max'), range.getAttribute('step')]).toEqual(['0', '30', '1']);
+    expect(range).toHaveValue('0');
+    expect(range).toHaveAttribute('aria-valuetext', 'Any');
+    expect(dialog.querySelector('.filter-value')).toHaveTextContent('Any');
+    // Nothing is hidden while any range will do.
+    expect(range).not.toHaveAccessibleDescription();
+    expect(dialog.querySelector('.filter-help')).toBeNull();
 
-    fireEvent.click(within(battery).getByRole('button', { name: '60%+' }));
-    expect(props.onMinBatteryChange).toHaveBeenCalledExactlyOnceWith(60);
-    // The choice already made is not made again.
-    fireEvent.click(within(battery).getByRole('button', { name: 'Any' }));
-    expect(props.onMinBatteryChange).toHaveBeenCalledOnce();
+    // As a finger moves it, then lets go: counted once, where it was let go.
+    fireEvent.input(range, { target: { value: '4' } });
+    fireEvent.input(range, { target: { value: '5' } });
+    fireEvent.change(range);
+    expect(vi.mocked(props.onMinRangeChange).mock.calls).toEqual([[4000], [5000]]);
+    expect(track).toHaveBeenCalledExactlyOnceWith('range_filter', { value: 5000 });
 
-    rerender({ minBattery: 60 });
-    expect(within(battery).getByRole('button', { name: '60%+' })).toHaveAttribute('aria-pressed', 'true');
-    expect(within(battery).getByRole('button', { name: 'Any' })).toHaveAttribute('aria-pressed', 'false');
-    expect(battery).toHaveAccessibleDescription('Scooters without battery info are hidden while a minimum is set.');
+    rerender({ minRange: 5000 });
+    expect(range).toHaveValue('5');
+    expect(range).toHaveAttribute('aria-valuetext', '5 km or more');
+    expect(dialog.querySelector('.filter-value')).toHaveTextContent('5 km+');
+    // Every app here gives a range: only the scooters that say neither are hidden.
+    expect(range).toHaveAccessibleDescription('Scooters without range or battery info are hidden while a minimum is set.');
+    // Further than the slider goes, it is at its end.
+    rerender({ minRange: 45_000 });
+    expect(range).toHaveValue('30');
+    expect(dialog.querySelector('.filter-value')).toHaveTextContent('30 km+');
   });
 
-  it('shows a minimum from the slider era as the preset below it', () => {
-    renderSheet({ minBattery: 45 });
-    expect(screen.getByRole('button', { name: '30%+' })).toHaveAttribute('aria-pressed', 'true');
+  it('says under the slider what battery the scooters that only report one need, of the apps switched on', () => {
+    const batteryRanges = { lime: 11_500, bolt: 29_400, voi: 72_800 };
+    const { rerender } = renderSheet({ minRange: 6000, batteryRanges });
+    const range = screen.getByRole('slider', { name: 'Range' });
+    const help = screen.getByRole('dialog').querySelector('.filter-help')!;
+    expect(range).toHaveAccessibleDescription('Scooters that only report a battery need at least 9% (Voi), 21% (Bolt) and 53% (Lime). ' +
+      'Scooters without range or battery info are hidden while a minimum is set.');
+    expect(range.getAttribute('aria-describedby')).toBe(help.id);
+
+    rerender({ minRange: 12_000 });
+    expect(range).toHaveAccessibleDescription('Scooters that only report a battery need at least 17% (Voi) and 41% (Bolt). ' +
+      'Scooters from Lime that only report a battery are hidden, as a full battery may not reach 12 km. ' +
+      'Scooters without range or battery info are hidden while a minimum is set.');
+
+    rerender({ minRange: 6000, enabledProviders: new Set(PROVIDER_KEYS.filter(provider => provider !== 'bolt')) });
+    expect(range).toHaveAccessibleDescription('Scooters that only report a battery need at least 9% (Voi) and 53% (Lime). ' +
+      'Scooters without range or battery info are hidden while a minimum is set.');
+
+    rerender({ minRange: 0 });
+    expect(range).not.toHaveAccessibleDescription();
+    expect(screen.getByRole('dialog').querySelector('.filter-help')).toBeNull();
+  });
+
+  it('counts the range in whole miles up to 20 where lengths are in miles, a minimum in kilometres on the nearest', async () => {
+    localStorage.setItem('scooters-units', 'imperial');
+    const { props } = renderSheet({ minRange: 5000 });
+    const range = screen.getByRole('slider', { name: 'Range' });
+    await vi.waitFor(() => expect(range).toHaveAttribute('max', '20'));
+    expect(range).toHaveValue('3');
+    expect(range).toHaveAttribute('aria-valuetext', '3 mi or more');
+    expect(screen.getByRole('dialog').querySelector('.filter-value')).toHaveTextContent('3 mi+');
+
+    fireEvent.input(range, { target: { value: '4' } });
+    expect(props.onMinRangeChange).toHaveBeenCalledExactlyOnceWith(6437);
+    fireEvent.input(range, { target: { value: '0' } });
+    expect(props.onMinRangeChange).toHaveBeenLastCalledWith(0);
+  });
+
+  it('says the range minimum in the language on screen', async () => {
+    localStorage.setItem('scooters-locale', 'de');
+    const { rerender } = renderSheet();
+    const range = await screen.findByRole('slider', { name: 'Reichweite' });
+    expect(range).toHaveAttribute('aria-valuetext', 'Beliebig');
+    rerender({ minRange: 12_000 });
+    expect(range).toHaveAttribute('aria-valuetext', '12 km oder mehr');
+    expect(range).toHaveAccessibleDescription('Scooter ohne Reichweiten- oder Akkuangabe werden ausgeblendet, solange eine Mindestreichweite gewählt ist.');
+    rerender({ minRange: 6000, batteryRanges: { lime: 11_500, bolt: 29_400, voi: 72_800 } });
+    expect(range).toHaveAccessibleDescription('Scooter, die nur ihren Akkustand melden, brauchen mindestens 9% (Voi), 21% (Bolt) und 53% (Lime). ' +
+      'Scooter ohne Reichweiten- oder Akkuangabe werden ausgeblendet, solange eine Mindestreichweite gewählt ist.');
   });
 
   it('lists the providers of this part of the map in catalogue order with their counts', () => {

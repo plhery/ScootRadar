@@ -221,7 +221,7 @@ describe('Whoosh closed seasons', () => {
         count: response.vehicles.length, originInViewport: false, nearest: null, loading: null, failure: null,
         outOfDate: false, hasData: true, meta: response.meta, lastUpdated: Date.now() - 30_000, now: Date.now(),
         representedCount: response.vehicles.length, viewportProviders: ['whoosh'], viewportCenter: system.center,
-        providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['whoosh']), minBattery: 0,
+        providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['whoosh']),
         unfilteredCount: response.vehicles.length,
       };
       const model = dockModel(input);

@@ -1,11 +1,13 @@
-import { snapBatteryPreset, type BatteryPreset } from '@/lib/battery';
-
 export type ThemeName = 'auto' | 'light' | 'dark';
 export type MapStyleName = 'calm' | 'detailed';
 
 export interface ClientParams {
   origin: [number, number] | null;
-  minBattery: BatteryPreset | undefined;
+  /**
+   * The range minimum in whole metres, as given: the map shows it on a step of its units (rangeSlider.ts).
+   * The battery minimum of links and filters saved before it, minBattery, is no longer read.
+   */
+  minRange: number | undefined;
   /** Undefined when nothing was chosen, which means automatic. */
   theme: ThemeName | undefined;
   /** Undefined when nothing was chosen, which means calm. */
@@ -14,7 +16,12 @@ export interface ClientParams {
   zones: boolean | undefined;
 }
 
-/** What a link to the map can carry. "tile" is the style setting of older links. */
+/**
+ * What a link to the map could carry while the map was at "/", which mark a link there as the map's
+ * (mapAddress.ts, and the apps' ScooterMapLink). "tile" is the style setting of older links, and minBattery
+ * the battery minimum the range minimum replaced, both still marking a link to the map. Those added since,
+ * zones and minRange, are read on the map alone.
+ */
 export const CLIENT_PARAMETERS = ['origin', 'minBattery', 'theme', 'map', 'tile'] as const;
 
 const THEMES = new Set<ThemeName>(['auto', 'light', 'dark']);
@@ -37,12 +44,11 @@ function parseCoordinate(value: string | null): [number, number] | null {
   return [lat, lng];
 }
 
-function parseMinimumBattery(value: string | null): BatteryPreset | undefined {
-  if (value === null || value.trim() === '') return undefined;
-
+// Whole metres, 0 for none; anything else, as a negative or a fraction, is no choice at all.
+function parseMinimumRange(value: string | null): number | undefined {
+  if (value === null || !/^\d+$/.test(value.trim())) return undefined;
   const parsed = Number(value);
-  // Links and settings from the slider era hold any multiple of five.
-  return Number.isFinite(parsed) ? snapBatteryPreset(parsed) : undefined;
+  return Number.isSafeInteger(parsed) ? parsed : undefined;
 }
 
 // "tile" held the single map style setting before appearance and map detail were separate.
@@ -60,7 +66,7 @@ export function parseClientParams(params: URLSearchParams): ClientParams {
   const legacyTile = params.get('tile');
   return {
     origin: parseCoordinate(params.get('origin')),
-    minBattery: parseMinimumBattery(params.get('minBattery')),
+    minRange: parseMinimumRange(params.get('minRange')),
     theme: parseTheme(params.get('theme'), legacyTile),
     map: parseMapStyle(params.get('map'), legacyTile),
     zones: params.get('zones') === '0' ? false : params.get('zones') === '1' ? true : undefined,
@@ -77,13 +83,15 @@ export function parseStoredClientParams(raw: string | null): ClientParams | null
     const record = stored as Record<string, unknown>;
     const params = new URLSearchParams();
     // Origins from older releases are intentionally ignored. Preferences may
-    // persist locally, but precise map/location coordinates should not.
-    for (const key of ['minBattery', 'theme', 'map', 'tile', 'zones']) {
+    // persist locally, but precise map/location coordinates should not. A battery
+    // minimum saved before the range minimum is dropped with the next save.
+    for (const key of ['minRange', 'theme', 'map', 'tile', 'zones']) {
       if (typeof record[key] === 'string') params.set(key, record[key]);
     }
 
     const parsed = parseClientParams(params);
-    return parsed.minBattery !== undefined || parsed.theme || parsed.map || parsed.zones !== undefined
+    return parsed.minRange !== undefined || parsed.theme || parsed.map ||
+      parsed.zones !== undefined
       ? parsed
       : null;
   } catch {
@@ -99,7 +107,7 @@ export function parseStoredClientParams(raw: string | null): ClientParams | null
 export function startingClientParams(link: ClientParams, saved: ClientParams | null): ClientParams {
   return {
     origin: link.origin,
-    minBattery: link.minBattery ?? saved?.minBattery,
+    minRange: link.minRange ?? saved?.minRange,
     theme: link.theme ?? saved?.theme,
     map: link.map ?? saved?.map,
     zones: link.zones ?? saved?.zones,
@@ -107,18 +115,19 @@ export function startingClientParams(link: ClientParams, saved: ClientParams | n
 }
 
 export function serializeClientParams({
-  minBattery,
+  minRange = 0,
   theme,
   map,
   zones = true,
 }: {
-  minBattery: number;
+  /** In whole metres, as the map shows it. */
+  minRange?: number;
   theme: ThemeName;
   map: MapStyleName;
   zones?: boolean;
 }): URLSearchParams {
   const params = new URLSearchParams();
-  if (minBattery !== 0) params.set('minBattery', String(minBattery));
+  if (minRange !== 0) params.set('minRange', String(minRange));
   if (theme !== 'auto') params.set('theme', theme);
   if (map !== 'calm') params.set('map', map);
   if (!zones) params.set('zones', '0');

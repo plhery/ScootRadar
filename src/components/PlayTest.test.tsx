@@ -182,7 +182,8 @@ describe('Settings › About', () => {
         <ControlSheet
           open
           panel="settings"
-          minBattery={0}
+          minRange={0}
+          batteryRanges={{}}
           enabledProviders={new Set()}
           availableProviders={[]}
           providerCounts={{}}
@@ -193,7 +194,7 @@ describe('Settings › About', () => {
           mapStyle="calm"
           zones={false}
           onClose={vi.fn()}
-          onMinBatteryChange={vi.fn()}
+          onMinRangeChange={vi.fn()}
           onProviderToggle={vi.fn()}
           onResetFilters={vi.fn()}
           onThemeChange={vi.fn()}

@@ -23,7 +23,6 @@ function input(overrides: Partial<NothingToShowInput> = {}): NothingToShowInput 
     hasData: true,
     viewportProviders: ZURICH,
     viewportCenter: [47.3769, 8.5417],
-    minBattery: 0,
     enabledProviders: new Set(ALL),
     unfilteredCount: 0,
     ...overrides,
@@ -32,7 +31,8 @@ function input(overrides: Partial<NothingToShowInput> = {}): NothingToShowInput 
 
 const english: Record<string, string> = {
   'hidden.only': '{names} only',
-  'hidden.battery': 'battery {value}% or more',
+  'hidden.range': 'range {distance} or more',
+  'distance.kilometers': '{count} km',
 };
 const i18n: UiTextFormatter = {
   locale: 'en',
@@ -45,29 +45,33 @@ const i18n: UiTextFormatter = {
 
 describe('filtersActive', () => {
   it('is off when everything that operates here is shown', () => {
-    expect(filtersActive({ minBattery: 0, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(false);
+    expect(filtersActive({ enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(false);
   });
 
   it('ignores a provider that is switched off but does not operate here', () => {
-    expect(filtersActive({ minBattery: 0, enabledProviders: new Set(ZURICH), viewportProviders: ZURICH })).toBe(false);
-    expect(filtersActive({ minBattery: 0, enabledProviders: new Set(ZURICH), viewportProviders: ['dott', 'pony'] })).toBe(true);
+    expect(filtersActive({ enabledProviders: new Set(ZURICH), viewportProviders: ZURICH })).toBe(false);
+    expect(filtersActive({ enabledProviders: new Set(ZURICH), viewportProviders: ['dott', 'pony'] })).toBe(true);
   });
 
-  it('is on with a minimum battery or a provider here switched off', () => {
-    expect(filtersActive({ minBattery: 30, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(true);
-    expect(filtersActive({ minBattery: 0, enabledProviders: new Set(['lime']), viewportProviders: ZURICH })).toBe(true);
+  it('is on with a provider here switched off', () => {
+    expect(filtersActive({ enabledProviders: new Set(['lime']), viewportProviders: ZURICH })).toBe(true);
+  });
+
+  it('is on with a minimum range', () => {
+    expect(filtersActive({ minRange: 5000, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(true);
+    expect(filtersActive({ minRange: 0, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(false);
   });
 });
 
 describe('filterSummary', () => {
-  it('lists the providers that are still on, then the battery', () => {
-    const parts = filterSummary({ minBattery: 60, enabledProviders: new Set(['lime']), viewportProviders: ZURICH });
-    expect(parts).toEqual([{ kind: 'providers', names: ['Lime'] }, { kind: 'battery', value: 60 }]);
-    expect(formatFilterSummary(parts, i18n)).toBe('Lime only · battery 60% or more');
+  it('lists the providers that are still on', () => {
+    const parts = filterSummary({ enabledProviders: new Set(['lime']), viewportProviders: ZURICH });
+    expect(parts).toEqual([{ kind: 'providers', names: ['Lime'] }]);
+    expect(formatFilterSummary(parts, i18n)).toBe('Lime only');
   });
 
   it('names several providers in catalogue order', () => {
-    const parts = filterSummary({ minBattery: 0, enabledProviders: new Set(['voi', 'lime', 'bolt']), viewportProviders: ZURICH });
+    const parts = filterSummary({ enabledProviders: new Set(['voi', 'lime', 'bolt']), viewportProviders: ZURICH });
     expect(parts).toEqual([{ kind: 'providers', names: ['Bolt', 'Lime', 'Voi'] }]);
     expect(formatFilterSummary(parts, i18n)).toBe('Bolt, Lime and Voi only');
     expect(formatFilterSummary([{ kind: 'providers', names: ['Lime', 'Voi'] }], i18n)).toBe('Lime and Voi only');
@@ -86,21 +90,30 @@ describe('filterSummary', () => {
     expect(formatFilterSummary(names, { ...i18n, region: 'US' })).toBe('Bird, Lime, and Veo only');
   });
 
-  it('mentions only the battery when every provider here is on', () => {
-    const parts = filterSummary({ minBattery: 30, enabledProviders: new Set(ALL), viewportProviders: ZURICH });
-    expect(parts).toEqual([{ kind: 'battery', value: 30 }]);
-    expect(formatFilterSummary(parts, i18n)).toBe('Battery 30% or more');
+  it('mentions only the range when every provider here is on', () => {
+    const parts = filterSummary({ minRange: 3000, enabledProviders: new Set(ALL), viewportProviders: ZURICH });
+    expect(parts).toEqual([{ kind: 'range', meters: 3000 }]);
+    expect(formatFilterSummary(parts, i18n)).toBe('Range 3 km or more');
+  });
+
+  it('lists the range after the providers, in whole kilometres or miles as the slider has it', () => {
+    const parts = filterSummary({ minRange: 5000, enabledProviders: new Set(['lime']), viewportProviders: ZURICH });
+    expect(parts).toEqual([{ kind: 'providers', names: ['Lime'] }, { kind: 'range', meters: 5000 }]);
+    expect(formatFilterSummary(parts, i18n)).toBe('Lime only · range 5 km or more');
+    expect(formatFilterSummary(parts.slice(1), i18n)).toBe('Range 5 km or more');
+    expect(formatFilterSummary([{ kind: 'range', meters: 4828 }], { ...i18n, region: 'US' })).toBe('Range 3 mi or more');
+    expect(formatFilterSummary([{ kind: 'range', meters: 4828 }], { ...i18n, region: 'GB', units: 'metric' })).toBe('Range 5 km or more');
   });
 
   it('names what is selected when none of it operates here', () => {
-    expect(filterSummary({ minBattery: 0, enabledProviders: new Set(['pony']), viewportProviders: ZURICH }))
+    expect(filterSummary({ enabledProviders: new Set(['pony']), viewportProviders: ZURICH }))
       .toEqual([{ kind: 'providers', names: ['Pony'] }]);
   });
 
   it('leaves the providers out when none is selected at all, and is empty without filters', () => {
-    expect(filterSummary({ minBattery: 80, enabledProviders: new Set(), viewportProviders: ZURICH }))
-      .toEqual([{ kind: 'battery', value: 80 }]);
-    expect(filterSummary({ minBattery: 0, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toEqual([]);
+    expect(filterSummary({ minRange: 8000, enabledProviders: new Set(), viewportProviders: ZURICH }))
+      .toEqual([{ kind: 'range', meters: 8000 }]);
+    expect(filterSummary({ enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toEqual([]);
     expect(formatFilterSummary([], i18n)).toBe('');
   });
 });
@@ -116,22 +129,23 @@ describe('unfilteredCountInView', () => {
   const meta = { truncated: false };
 
   it('counts every scooter in the viewport in vehicle mode', () => {
-    expect(unfilteredCountInView({ meta, vehicles, clusters: [], viewport: VIEWPORT, serverMinBattery: 0 })).toBe(2);
+    expect(unfilteredCountInView({ meta, vehicles, clusters: [], viewport: VIEWPORT })).toBe(2);
   });
 
   it('adds up the provider counts of the clusters in the viewport', () => {
-    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0 })).toBe(8);
+    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT })).toBe(8);
   });
 
   it('knows that nothing is there', () => {
-    expect(unfilteredCountInView({ meta, vehicles: [outside], clusters: [], viewport: VIEWPORT, serverMinBattery: 0 })).toBe(0);
+    expect(unfilteredCountInView({ meta, vehicles: [outside], clusters: [], viewport: VIEWPORT })).toBe(0);
   });
 
-  it('cannot know when the server filtered by battery, cut the list short, or nothing is loaded', () => {
-    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 30 })).toBeNull();
-    expect(unfilteredCountInView({ meta: { truncated: true }, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0 })).toBeNull();
-    expect(unfilteredCountInView({ meta: null, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0 })).toBeNull();
-    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: null, serverMinBattery: 0 })).toBeNull();
+  it('cannot know when the server filtered by range, cut the list short, or nothing is loaded', () => {
+    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinRange: 5000 })).toBeNull();
+    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinRange: 0 })).toBe(8);
+    expect(unfilteredCountInView({ meta: { truncated: true }, vehicles, clusters, viewport: VIEWPORT })).toBeNull();
+    expect(unfilteredCountInView({ meta: null, vehicles, clusters, viewport: VIEWPORT })).toBeNull();
+    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: null })).toBeNull();
   });
 });
 
@@ -163,30 +177,39 @@ describe('nothingToShow', () => {
   });
 
   it('is outside coverage whatever the filters say', () => {
-    expect(nothingToShow(input({ viewportProviders: [], viewportCenter: LUNGERN, minBattery: 60 }))?.kind)
+    expect(nothingToShow(input({ viewportProviders: [], viewportCenter: LUNGERN, minRange: 6000 }))?.kind)
       .toBe('outsideCoverage');
     expect(nothingToShow(input({ viewportProviders: [], viewportCenter: null })))
       .toEqual({ kind: 'outsideCoverage', cities: [] });
   });
 
   it('blames the filters with the number they hide', () => {
-    expect(nothingToShow(input({ enabledProviders: new Set(['lime']), minBattery: 60, unfilteredCount: 26 }))).toEqual({
+    expect(nothingToShow(input({ enabledProviders: new Set(['lime']), minRange: 6000, unfilteredCount: 26 }))).toEqual({
       kind: 'filtersHideAll',
       hiddenCount: 26,
-      summary: [{ kind: 'providers', names: ['Lime'] }, { kind: 'battery', value: 60 }],
+      summary: [{ kind: 'providers', names: ['Lime'] }, { kind: 'range', meters: 6000 }],
     });
   });
 
   it('blames the filters without a number when it is not known', () => {
-    expect(nothingToShow(input({ minBattery: 30, unfilteredCount: null }))).toEqual({
+    expect(nothingToShow(input({ minRange: 3000, unfilteredCount: null }))).toEqual({
       kind: 'filtersHideAll',
       hiddenCount: null,
-      summary: [{ kind: 'battery', value: 30 }],
+      summary: [{ kind: 'range', meters: 3000 }],
     });
   });
 
+  it('blames a range minimum with the number it hides', () => {
+    expect(nothingToShow(input({ minRange: 5000, unfilteredCount: 3 }))).toEqual({
+      kind: 'filtersHideAll',
+      hiddenCount: 3,
+      summary: [{ kind: 'range', meters: 5000 }],
+    });
+    expect(nothingToShow(input({ minRange: 5000, unfilteredCount: 0 }))).toEqual({ kind: 'empty' });
+  });
+
   it('calls the area empty when filters are set but hide nothing', () => {
-    expect(nothingToShow(input({ minBattery: 30, unfilteredCount: 0 }))).toEqual({ kind: 'empty' });
+    expect(nothingToShow(input({ minRange: 3000, unfilteredCount: 0 }))).toEqual({ kind: 'empty' });
   });
 
   it('calls a covered area without scooters empty', () => {

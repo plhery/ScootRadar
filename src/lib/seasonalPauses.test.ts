@@ -198,7 +198,7 @@ describe('a city with a winter pause', () => {
         truncated: false, totalVehicles: 0, mode: 'vehicles', zoom: 14 },
       lastUpdated: JANUARY - 30_000, now: JANUARY, representedCount: 0, viewportProviders: ['bird', 'lime'],
       viewportCenter: MONTREAL, providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['bird', 'lime']),
-      minBattery: 0, unfilteredCount: 0,
+      unfilteredCount: 0,
     };
     const model = dockModel(input);
     if (model.kind !== 'summary') throw new Error(`Expected the summary, got ${model.kind}`);
@@ -230,7 +230,7 @@ describe('a city with a winter pause', () => {
         truncated: false, totalVehicles: 0, mode: 'vehicles', zoom: 14 },
       lastUpdated: january - 30_000, now: january, representedCount: 0, viewportProviders: ['ryde'],
       viewportCenter: skien, providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['ryde']),
-      minBattery: 0, unfilteredCount: 0,
+      unfilteredCount: 0,
     };
     const notices = (changes: Partial<DockInput>) => {
       const model = dockModel({ ...input, ...changes });

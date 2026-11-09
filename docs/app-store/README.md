@@ -283,8 +283,9 @@ the web. Nothing here submits the version for review.
 query, and the old links to the map at `/` that carry `origin`. The app claims
 `applinks:scootradar.com` (`ios/ScootRadar/ScootRadar.entitlements`) and reads
 the link in `ScooterMapLink`: a city's centre opens like the city chosen in the
-search, any other point moves the map there, and `minBattery` or `minRange` sets
-the battery or range filter. `src/lib/appSiteAssociation.test.ts` keeps the file, the entitlement
+search, any other point moves the map there, and `minRange` sets the range
+filter, in metres; the `minBattery` of links from before it is ignored.
+`src/lib/appSiteAssociation.test.ts` keeps the file, the entitlement
 and the Xcode project in step.
 
 Test in the simulator:

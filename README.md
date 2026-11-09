@@ -44,7 +44,12 @@ for the iPhone, and on Google Play for Android, where it is in a
   an address, in the country's own script too. Every provider's scooters are
   on the map, with the walking time to each.
 - **Will it get me there?** A scooter shows its battery and range when its
-  provider publishes them. Set a minimum and the flat ones disappear.
+  provider publishes them. Set a minimum range, in kilometres or miles, and
+  the scooters that may not get that far disappear. A scooter that gives only
+  its battery is judged by how far a full battery of its provider's goes at
+  the least (`data/battery-full-ranges.json`), and the filters say what
+  battery that asks of each app's in view: "at least 9% (Voi), 21% (Bolt) and
+  53% (Lime)" for 6 km.
 - **What will the ride cost?** An estimate from the provider's published rates,
   for a ride of 5 to 30 minutes, before you walk over.
 - **Where can I leave it?** At street zoom, the operators' parking bays show as

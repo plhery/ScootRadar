@@ -52,17 +52,24 @@ const loaded = run([
 ]);
 
 describe('scooter query', () => {
-  const query = { bounds: { south: 47.361234567, west: 8.52, north: 47.39, east: 8.57 }, zoom: 16, minBattery: 0 };
+  const query = { bounds: { south: 47.361234567, west: 8.52, north: 47.39, east: 8.57 }, zoom: 16 };
 
-  it('sends the bounds with five decimals, the zoom and the server filter', () => {
+  it('sends the bounds with five decimals and the zoom, and never a battery minimum', () => {
     expect(scooterQueryParams(query).toString())
-      .toBe('south=47.36123&west=8.52000&north=47.39000&east=8.57000&zoom=16&minBattery=0');
+      .toBe('south=47.36123&west=8.52000&north=47.39000&east=8.57000&zoom=16');
   });
 
   it('gives queries that would receive the same response the same key', () => {
     expect(scooterQueryKey({ ...query, bounds: { ...query.bounds, south: 47.3612349 } })).toBe(scooterQueryKey(query));
     expect(scooterQueryKey({ ...query, zoom: 15 })).not.toBe(scooterQueryKey(query));
-    expect(scooterQueryKey({ ...query, minBattery: 30 })).not.toBe(scooterQueryKey(query));
+    expect(scooterQueryKey({ ...query, minRange: 5000 })).not.toBe(scooterQueryKey(query));
+    expect(scooterQueryKey({ ...query, minRange: 0 })).toBe(scooterQueryKey(query));
+  });
+
+  it('sends a range minimum only when there is one, as the apps do', () => {
+    expect(scooterQueryParams({ ...query, zoom: 14, minRange: 4828 }).toString())
+      .toBe('south=47.36123&west=8.52000&north=47.39000&east=8.57000&zoom=14&minRange=4828');
+    expect(scooterQueryParams({ ...query, minRange: 0 }).has('minRange')).toBe(false);
   });
 });
 
@@ -201,6 +208,13 @@ describe('scooterDataReducer', () => {
       type: 'succeeded', key: 'a', response: response(), now: T0 + SKEW, clockOffsetMs: SKEW,
     });
     expect(state).toMatchObject({ lastUpdated: T0 + SKEW - 30_000, expiresAt: T0 + SKEW + 270_000 });
+  });
+
+  it('keeps the full battery range of each app in view whose scooters say only their battery, or none from an answer without', () => {
+    const answered = scooterDataReducer(INITIAL_SCOOTER_DATA_STATE, { type: 'succeeded', key: 'a', now: 1_000,
+      response: { ...response(), batteryRanges: { lime: 11_500, bolt: 29_400 } } });
+    expect(answered.batteryRanges).toEqual({ lime: 11_500, bolt: 29_400 });
+    expect(scooterDataReducer(answered, { type: 'succeeded', key: 'a', now: 2_000, response: response() }).batteryRanges).toEqual({});
   });
 
   it('tolerates a response without clusters or parking', () => {

@@ -46,19 +46,24 @@ export function notUpdating(statuses: Record<string, LastSeenStatus>): Record<st
 export interface ScooterDataQuery {
   bounds: MapBounds;
   zoom: number;
-  /** What the server filters by; 0 when the client filters the response itself. */
-  minBattery: number;
+  /**
+   * The range minimum the server filters by, in metres; 0 or absent when the client filters the response
+   * itself. The battery minimum the server still takes is the older apps' alone.
+   */
+  minRange?: number;
 }
 
-export function scooterQueryParams({ bounds, zoom, minBattery }: ScooterDataQuery): URLSearchParams {
-  return new URLSearchParams({
+export function scooterQueryParams({ bounds, zoom, minRange = 0 }: ScooterDataQuery): URLSearchParams {
+  const params = new URLSearchParams({
     south: bounds.south.toFixed(5),
     west: bounds.west.toFixed(5),
     north: bounds.north.toFixed(5),
     east: bounds.east.toFixed(5),
     zoom: String(zoom),
-    minBattery: String(minBattery),
   });
+  // Only when set, as the apps send it: a query without one is the same as before it existed.
+  if (minRange > 0) params.set('minRange', String(minRange));
+  return params;
 }
 
 /** Two queries with the same key receive the same response. */
@@ -74,6 +79,11 @@ export interface ScooterDataState {
   lastSeenClusters: ScooterCluster[];
   /** Of each app among them, from lastSeenStatuses(). */
   lastSeenProviders: Record<string, LastSeenStatus>;
+  /**
+   * How far a full battery takes, in metres, the scooters of each app in view that say their battery and not
+   * their range (response.batteryRanges), which the range minimum judges them by (range.ts).
+   */
+  batteryRanges: Record<string, number>;
   parking: ParkingLocation[];
   /** Of the last successful response. Kept when the scooters go out of date. */
   meta: ScooterResponseMeta | null;
@@ -110,6 +120,7 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   lastSeenVehicles: [],
   lastSeenClusters: [],
   lastSeenProviders: {},
+  batteryRanges: {},
   parking: [],
   meta: null,
   lastUpdated: null,
@@ -168,6 +179,7 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         lastSeenVehicles,
         lastSeenClusters,
         lastSeenProviders: lastSeenStatuses(response, clockOffsetMs),
+        batteryRanges: response.batteryRanges ?? {},
         parking: isExpired(expiry.parking, now) ? [] : response.parking ?? [],
         meta: response.meta,
         lastUpdated: Number.isFinite(generated) ? Math.min(generated, now) : now,

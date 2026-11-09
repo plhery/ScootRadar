@@ -2,13 +2,13 @@
 
 import { track } from '@/lib/analytics';
 
-import { useId, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useId, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
-import { BATTERY_PRESETS, batteryPresetLabel, snapBatteryPreset } from '@/lib/battery';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
+import { formatMinimumRange, rangeFilterHelp, rangeScale, rangeSteps, rangeStepsMeters } from '@/lib/rangeSlider';
 import { isSingular } from '@/lib/uiText';
-import type { UnitsChoice } from '@/lib/walking';
+import { measurementSystem, type UnitsChoice } from '@/lib/walking';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
 import { providerSurfaceColor } from '@/lib/providerColor';
 import { selectionFeedback } from '@/lib/feedback';
@@ -63,11 +63,17 @@ const SOURCE_CODE_URL = 'https://github.com/plhery/ScootRadar';
 interface ControlSheetProps {
   open: boolean;
   panel: 'filters' | 'settings';
-  minBattery: number;
+  /** The range minimum in metres, 0 for none; the slider shows it on a step of the units in use. */
+  minRange: number;
+  /**
+   * How far a full battery takes each app's scooters in view that say only their battery, in metres
+   * (response.batteryRanges): the line under the slider says what battery they need.
+   */
+  batteryRanges: Readonly<Record<string, number>>;
   enabledProviders: Set<string>;
   /** Providers that operate in the viewport. */
   availableProviders: string[];
-  /** Scooters per provider in the viewport with the battery choice, whether or not the provider is switched on. */
+  /** Scooters per provider in the viewport with the range minimum, whether or not the provider is switched on. */
   providerCounts: Readonly<Record<string, number>>;
   /** Providers that are not sharing data right now and so have nothing in view, from providerHealth(). */
   downProviders: readonly string[];
@@ -80,7 +86,8 @@ interface ControlSheetProps {
   /** The operators' zones over the map, a preview. */
   zones: boolean;
   onClose: () => void;
-  onMinBatteryChange: (value: number) => void;
+  /** In metres, a whole step of the units in use, as the slider moves. */
+  onMinRangeChange: (meters: number) => void;
   onProviderToggle: (provider: string) => void;
   onResetFilters: () => void;
   onThemeChange: (theme: ThemeName) => void;
@@ -91,7 +98,8 @@ interface ControlSheetProps {
 export default function ControlSheet({
   open,
   panel,
-  minBattery,
+  minRange,
+  batteryRanges,
   enabledProviders,
   availableProviders,
   providerCounts,
@@ -102,15 +110,17 @@ export default function ControlSheet({
   mapStyle,
   zones,
   onClose,
-  onMinBatteryChange,
+  onMinRangeChange,
   onProviderToggle,
   onResetFilters,
   onThemeChange,
   onMapStyleChange,
   onZonesChange,
 }: ControlSheetProps) {
-  const { t, locale, localeChoice, units, setUnits, formatNumber } = useI18n();
-  const batteryHelpId = useId();
+  const i18n = useI18n();
+  const { t, locale, localeChoice, region, units, setUnits, formatNumber } = i18n;
+  const rangeTitleId = useId();
+  const rangeHelpId = useId();
   const zonesHelpId = useId();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const languageRowRef = useRef<HTMLButtonElement>(null);
@@ -145,7 +155,27 @@ export default function ControlSheet({
     row.current?.focus();
   };
 
-  const batteryPreset = snapBatteryPreset(minBattery);
+  // Whole kilometres, or whole miles where lengths are in miles; "5 km+", spoken "5 km or more".
+  const rangeSystem = measurementSystem(region, units);
+  const rangeMax = rangeScale(rangeSystem).max;
+  const rangeStep = rangeSteps(minRange, rangeSystem);
+  const rangeLabel = formatMinimumRange(minRange, i18n);
+  // What battery the scooters that say only their battery need, of each app switched on, and that those saying
+  // neither are hidden: the slider's description while a minimum is set.
+  const rangeHelp = rangeStep > 0
+    ? rangeFilterHelp(minRange, batteryRanges, provider => enabledProviders.has(provider), i18n)
+    : null;
+  // Counted once a minimum is let go of, not at each step on the way: what the slider gave last.
+  const rangeMoved = useRef<number | null>(null);
+  const rangeSlider = useCallback((slider: HTMLInputElement | null) => {
+    if (!slider) return;
+    const chosen = () => {
+      if (rangeMoved.current !== null) track('range_filter', { value: rangeMoved.current });
+      rangeMoved.current = null;
+    };
+    slider.addEventListener('change', chosen);
+    return () => slider.removeEventListener('change', chosen);
+  }, []);
   // In catalogue order, as the iOS filters list them.
   const providers = PROVIDER_KEYS.filter(key => availableProviders.includes(key)).map(key => {
     const count = providerCounts[key] ?? 0;
@@ -183,38 +213,33 @@ export default function ControlSheet({
       {filters ? (
         <>
           <section className="settings-section">
-            <h3>{t('filter.battery')}</h3>
-            <div
-              className="seg"
-              role="group"
-              aria-label={t('filter.battery')}
-              aria-describedby={batteryPreset > 0 ? batteryHelpId : undefined}
-              style={
-                {
-                  '--segment-index': BATTERY_PRESETS.indexOf(batteryPreset),
-                  '--segment-count': BATTERY_PRESETS.length,
-                } as CSSProperties
-              }
-            >
-              <span className="seg-indicator" aria-hidden="true" />
-              {BATTERY_PRESETS.map((preset) => (
-                <button
-                  key={preset}
-                  type="button"
-                  aria-pressed={batteryPreset === preset}
-                  onClick={() => {
-                    if (batteryPreset === preset) return;
-                    selectionFeedback();
-                    onMinBatteryChange(preset);
-                  }}
-                >
-                  {batteryPresetLabel(preset) ?? t('filter.any')}
-                </button>
-              ))}
+            {/* The slider says its value itself. */}
+            <div className="filter-heading">
+              <h3 id={rangeTitleId}>{t('filter.range')}</h3>
+              <span className="filter-value" aria-hidden="true">{rangeLabel ? `${rangeLabel}+` : t('filter.any')}</span>
             </div>
-            {batteryPreset > 0 && (
-              <p id={batteryHelpId} className="filter-help">{t('filter.batteryHelp')}</p>
-            )}
+            <input
+              ref={rangeSlider}
+              type="range"
+              className="range-slider"
+              min={0}
+              max={rangeMax}
+              step={1}
+              value={rangeStep}
+              aria-labelledby={rangeTitleId}
+              aria-valuetext={rangeLabel ? t('filter.rangeValue', { distance: rangeLabel }) : t('filter.any')}
+              aria-describedby={rangeHelp ? rangeHelpId : undefined}
+              style={{ '--range-ratio': rangeStep / rangeMax } as CSSProperties}
+              onChange={event => {
+                const step = Number(event.currentTarget.value);
+                if (step === rangeStep) return;
+                const meters = rangeStepsMeters(step, rangeSystem);
+                selectionFeedback();
+                rangeMoved.current = meters;
+                onMinRangeChange(meters);
+              }}
+            />
+            {rangeHelp && <p id={rangeHelpId} className="filter-help">{rangeHelp}</p>}
           </section>
           <section className="settings-section">
             <h3>{t('filter.providers')}</h3>

@@ -42,7 +42,6 @@ function input(overrides: Partial<DockInput> = {}): DockInput {
     providerCounts: { bolt: 2, lime: 3 },
     providersInView: new Set(['bolt', 'lime']),
     enabledProviders: new Set(Object.keys(PROVIDERS)),
-    minBattery: 0,
     unfilteredCount: 5,
     ...overrides,
   };
@@ -416,11 +415,11 @@ describe('BottomSheet', () => {
 
   it('says how many scooters the filters hide and offers to show them or edit the filters', () => {
     const props = renderSheet({ dock: dock({
-      count: 0, enabledProviders: new Set(['lime']), minBattery: 60, providerCounts: {}, unfilteredCount: 26,
+      count: 0, enabledProviders: new Set(['lime']), minRange: 6000, providerCounts: {}, unfilteredCount: 26,
     }) });
 
     expect(screen.getByRole('heading', { name: '26 scooters hidden by your filters' })).toBeVisible();
-    expect(screen.getByText('Lime only · battery 60% or more')).toBeVisible();
+    expect(screen.getByText('Lime only · range 6 km or more')).toBeVisible();
     expect(count()).not.toBeInTheDocument();
     expect(screen.queryByRole('group')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Show all 26' }));
@@ -430,15 +429,15 @@ describe('BottomSheet', () => {
   });
 
   it('does not invent a number when the hidden count is not known', () => {
-    renderSheet({ dock: dock({ count: 0, minBattery: 80, providerCounts: {}, unfilteredCount: null }) });
+    renderSheet({ dock: dock({ count: 0, minRange: 8000, providerCounts: {}, unfilteredCount: null }) });
 
     expect(screen.getByRole('heading', { name: 'No scooters match your filters here' })).toBeVisible();
-    expect(screen.getByText('Battery 80% or more')).toBeVisible();
+    expect(screen.getByText('Range 8 km or more')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Show all' })).toBeVisible();
   });
 
   it('does not say "Show all 1" for a single hidden scooter', () => {
-    renderSheet({ dock: dock({ count: 0, minBattery: 80, providerCounts: {}, unfilteredCount: 1 }) });
+    renderSheet({ dock: dock({ count: 0, minRange: 8000, providerCounts: {}, unfilteredCount: 1 }) });
 
     expect(screen.getByRole('heading', { name: '1 scooter hidden by your filters' })).toBeVisible();
     expect(screen.getByRole('button', { name: 'Show all' })).toBeVisible();
@@ -511,7 +510,7 @@ describe('BottomSheet', () => {
 
   it('shows a selected bay instead of the card that says the filters hide every scooter', () => {
     renderSheet({
-      ...data({ count: 0, minBattery: 80, providerCounts: {}, unfilteredCount: 26 }),
+      ...data({ count: 0, minRange: 8000, providerCounts: {}, unfilteredCount: 26 }),
       selectedParking: { parking: bay, walk: null },
     });
 

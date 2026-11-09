@@ -224,7 +224,8 @@ export interface DockInput {
    */
   providersInView: ReadonlySet<string> | null;
   enabledProviders: ReadonlySet<string>;
-  minBattery: number;
+  /** In metres, as FilterState has it; 0 or absent for none. */
+  minRange?: number;
   /** From unfilteredCountInView(). */
   unfilteredCount: number | null;
 }

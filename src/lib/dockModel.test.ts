@@ -52,7 +52,6 @@ function input(overrides: Partial<DockInput> = {}): DockInput {
     providerCounts: { lime: 7, voi: 9, bolt: 2, dott: 4 },
     providersInView: new Set(['lime', 'voi', 'bolt', 'dott']),
     enabledProviders: new Set(ALL),
-    minBattery: 0,
     unfilteredCount: 22,
     ...overrides,
   };
@@ -362,10 +361,10 @@ describe('dock notices', () => {
   });
 
   it('keeps calling a provider down whose scooters the filters would hide anyway', () => {
-    // Dott has scooters here, but none with the battery asked for: it is not down.
+    // Dott has scooters here, but none with the range asked for: it is not down.
     const filtered = summary({
       meta: meta({ failedSources: ['national:dott_zurich', 'national:bird_zurich'] }),
-      minBattery: 60,
+      minRange: 6000,
       providerCounts: { lime: 7, voi: 9 },
       enabledProviders: new Set(['lime']),
       count: 7,
@@ -659,19 +658,27 @@ describe('dock cards', () => {
 
   it('shows how many scooters the filters hide and offers to show them', () => {
     expect(dockModel(input({
-      count: 0, enabledProviders: new Set(['lime']), minBattery: 60, providerCounts: {}, unfilteredCount: 26,
+      count: 0, enabledProviders: new Set(['lime']), minRange: 6000, providerCounts: {}, unfilteredCount: 26,
     }))).toEqual({
       kind: 'filtersHideAll',
       title: { key: 'hidden.title.other', numbers: { count: 26 } },
-      summary: [{ kind: 'providers', names: ['Lime'] }, { kind: 'battery', value: 60 }],
+      summary: [{ kind: 'providers', names: ['Lime'] }, { kind: 'range', meters: 6000 }],
       showAll: { key: 'hidden.showAll.count', numbers: { count: 26 } },
       edit: { key: 'hidden.edit' },
       hiddenCount: 26,
     });
   });
 
+  it('says the same of a range minimum alone', () => {
+    expect(dockModel(input({ count: 0, minRange: 5000, providerCounts: {}, unfilteredCount: 4 }))).toMatchObject({
+      kind: 'filtersHideAll',
+      title: { key: 'hidden.title.other', numbers: { count: 4 } },
+      summary: [{ kind: 'range', meters: 5000 }],
+    });
+  });
+
   it('has a singular title for one hidden scooter', () => {
-    expect(dockModel(input({ count: 0, minBattery: 80, unfilteredCount: 1 }))).toMatchObject({
+    expect(dockModel(input({ count: 0, minRange: 8000, unfilteredCount: 1 }))).toMatchObject({
       kind: 'filtersHideAll',
       title: { key: 'hidden.title.one' },
       showAll: { key: 'hidden.showAll.count', numbers: { count: 1 } },
@@ -679,7 +686,7 @@ describe('dock cards', () => {
   });
 
   it('does not invent a number when the hidden count is unknown', () => {
-    expect(dockModel(input({ count: 0, minBattery: 30, unfilteredCount: null }))).toMatchObject({
+    expect(dockModel(input({ count: 0, minRange: 3000, unfilteredCount: null }))).toMatchObject({
       kind: 'filtersHideAll',
       title: { key: 'hidden.title.unknown' },
       showAll: { key: 'hidden.showAll' },
@@ -689,13 +696,13 @@ describe('dock cards', () => {
 
   it('shows no card while the view is loading or a refresh failed', () => {
     expect(dockModel(input({ count: 0, viewportProviders: [], loading: 'load' })).kind).toBe('summary');
-    expect(dockModel(input({ count: 0, minBattery: 30, unfilteredCount: 9, failure: 'timeout' })).kind).toBe('summary');
+    expect(dockModel(input({ count: 0, minRange: 3000, unfilteredCount: 9, failure: 'timeout' })).kind).toBe('summary');
   });
 
   it('keeps a card during a refresh', () => {
     expect(dockModel(input({ count: 0, viewportProviders: [], viewportCenter: LUNGERN, loading: 'refresh' })).kind)
       .toBe('outsideCoverage');
-    expect(dockModel(input({ count: 0, minBattery: 30, unfilteredCount: 9, loading: 'refresh' })).kind).toBe('filtersHideAll');
+    expect(dockModel(input({ count: 0, minRange: 3000, unfilteredCount: 9, loading: 'refresh' })).kind).toBe('filtersHideAll');
   });
 });
 
@@ -721,7 +728,7 @@ describe('dock issue, for the line above a card', () => {
   });
 
   it('repeats delayed data without a retry, also where a card has replaced the count', () => {
-    const hidden = input({ count: 0, minBattery: 30, unfilteredCount: 9, meta: meta({ stale: true }), lastUpdated: NOW - 6 * 60_000 });
+    const hidden = input({ count: 0, minRange: 3000, unfilteredCount: 9, meta: meta({ stale: true }), lastUpdated: NOW - 6 * 60_000 });
     expect(dockModel(hidden).kind).toBe('filtersHideAll');
     expect(dockIssue(hidden)).toEqual({
       status: { kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 6 * 60_000 } },
