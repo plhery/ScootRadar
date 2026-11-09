@@ -287,15 +287,9 @@
 "Loading %@’s zones…" = "Laster inn sonene i %@ …";
 "%@’s zones unavailable right now" = "Sonene i %@ er ikke tilgjengelige nå";
 
-/* Filters › Range and Settings › Units (issues #12 and #14) */
-/* Filters: the heading of the minimum range, a slider under the battery presets. Range is how far a scooter can go on its charge, as on its card ("Estimated range"). */
-"Range" = "Rekkevidde";
-/* Filters: under the range slider while a minimum is set, as under the battery presets. */
-"Scooters without range info are hidden while a minimum is set." = "Elsparkesykler uten info om rekkevidde skjules så lenge et minimum er valgt.";
-/* The "hidden by your filters" card, after the providers: "Lime only · range 5 km or more". %@ is a distance with its unit, "5 km" or "3 mi". Starts in lower case, as "battery %lld%% or more". */
-"range %@ or more" = "minst %@ rekkevidde";
-/* Filters: what VoiceOver and TalkBack read as the range slider's value, %@ a distance with its unit: "5 km or more". */
-"%@ or more" = "Minst %@";
+/* Filters › Battery and Settings › Units (issues #12 and #14) */
+/* Filters: under the battery presets, how far the minimum chosen, or a full battery for Any, usually takes the scooters chosen in view, worked out from each app's usual range on a full battery. %1$lld is the minimum, or 100 for Any; %2$@ a length with its unit, "22 km", or "12–80 km" where the apps differ. While a minimum is set, "Scooters without battery info are hidden while a minimum is set." follows it. */
+"%1$lld%% usually allows about %2$@." = "Med %1$lld%% kommer du vanligvis rundt %2$@.";
 /* Settings: the heading of the choice of distance units: Auto, km or mi. "km" and "mi" are written as they are in every language. */
 "Units" = "Enheter";
 /* Settings › Units: what VoiceOver and TalkBack read for the "km" segment. */
