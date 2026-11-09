@@ -244,11 +244,11 @@ internal fun FormValueRow(label: @Composable () -> Unit, modifier: Modifier = Mo
     }
 }
 
-/** `Label(title, systemImage:)` in a list: the symbol in the app's tint, in a column of its own, then the text. */
+/** `Label(title, systemImage:)` in a list: the symbol in the tint as `Color.accentColor` draws it, in a column of its own, then the text. */
 @Composable
 internal fun RowScope.FormLabel(title: String, symbol: ImageVector, detail: String? = null) {
     Box(Modifier.width(LABEL_ICON), contentAlignment = Alignment.Center) {
-        SymbolIcon(symbol, textSymbolSize(17f), scootColors.accent, Modifier.clearAndSetSemantics { })
+        SymbolIcon(symbol, textSymbolSize(17f), scootColors.accentColor, Modifier.clearAndSetSemantics { })
     }
     FormText(title, Modifier.padding(start = LABEL_GAP - 8.dp).weight(1f), detail)
 }

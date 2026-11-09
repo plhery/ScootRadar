@@ -617,11 +617,11 @@ class ScooterMarkerArt(
         private const val BAY_SHADOW_BLUR = 8.0
         private const val BAY_DOT_RADIUS = 3.0
 
-        /** UIColor.systemBlue, the balloon's tint without a provider. */
-        private const val SYSTEM_BLUE: Long = 0xFF007AFF
+        /** UIColor.systemBlue as iOS 26 made it, the balloon's tint without a provider (UI-346). */
+        private const val SYSTEM_BLUE: Long = 0xFF0088FF
 
         /** UIColor.systemBlue in the dark. */
-        private const val SYSTEM_BLUE_DARK: Long = 0xFF0A84FF
+        private const val SYSTEM_BLUE_DARK: Long = 0xFF0091FF
 
         private val RAISED_DARK = Color.argb(1f, 0.086f, 0.102f, 0.141f)
         private val COUNT_ON_DARK = Color.argb(1f, 0.957f, 0.961f, 0.969f)

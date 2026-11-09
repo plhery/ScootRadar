@@ -121,8 +121,8 @@ internal fun SettingsTile(
     Column(
         modifier
             .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
-            .background(if (isSelected) colors.accent.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
-            .border(1.5.dp, if (isSelected) colors.accent else colors.dockHairline, shape)
+            .background(if (isSelected) colors.accentColor.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
+            .border(1.5.dp, if (isSelected) colors.accentColor else colors.dockHairline, shape)
             .selectable(isSelected, interaction, FocusRing(shape), role = Role.RadioButton, onClick = onClick)
             .padding(top = 4.dp, bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),

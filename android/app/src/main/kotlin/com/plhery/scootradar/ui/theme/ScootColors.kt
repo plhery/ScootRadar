@@ -37,8 +37,13 @@ data class ScootColors(
     val dockGround: Color,
     /** Prominent card buttons. */
     val cardActionFill: Color,
-    /** The app's tint, systemBlue: toggles, links, Done. */
+    /** The app's tint, systemBlue as iOS 26 made it, as UIKit draws it: toggles, checks, links, Done (UI-346). */
     val accent: Color,
+    /**
+     * The tint as SwiftUI's `Color.accentColor` draws it, a step stronger than [accent] with Increase Contrast: the
+     * chosen tile in Settings, a Label's symbol in a form row (UI-346).
+     */
+    val accentColor: Color,
     val systemBackground: Color,
     val systemGroupedBackground: Color,
     val secondarySystemGroupedBackground: Color,
@@ -106,15 +111,17 @@ data class ScootColors(
     /**
      * The colours with Increase Contrast on (ui.md UI-186): the system colours take UIKit's high-contrast variants,
      * as UIKit resolves them for `accessibilityContrast == .high` (the fills as Mac Catalyst's UIKit gives them on
-     * macOS 27; the labels, separators, backgrounds, blue and green as Flutter's CupertinoColors copies them from
-     * iOS), and the glass gains an edge (chromeGlass). ScooterPalette's own colours stay as they are, but for the
+     * macOS 27; the labels, separators, backgrounds and green as Flutter's CupertinoColors copies them from iOS; the
+     * blue as the iOS 27 simulator draws it, and `Color.accentColor` a step stronger: 0.8 of it by day, a quarter of
+     * the way to white by night), and the glass gains an edge (chromeGlass). ScooterPalette's own colours stay as they are, but for the
      * dark halves of warning, good and critical, which are UIKit's orange, green and red and take theirs.
      */
     fun withIncreasedContrast(): ScootColors = when {
         isContrastIncreased -> this
         isDark -> copy(
             isContrastIncreased = true,
-            accent = Color(0xFF409CFF),
+            accent = Color(0xFF5CB8FF),
+            accentColor = Color(0xFF85CAFF),
             secondarySystemGroupedBackground = Color(0xFF242426),
             secondaryLabel = Color(0xADEBEBF5),
             tertiaryLabel = Color(0x60EBEBF5),
@@ -130,7 +137,8 @@ data class ScootColors(
         )
         else -> copy(
             isContrastIncreased = true,
-            accent = Color(0xFF0040DD),
+            accent = Color(0xFF1E6EF4),
+            accentColor = Color(0xFF1858C3),
             systemGroupedBackground = Color(0xFFEBEBF0),
             secondaryLabel = Color(0xAD3C3C43),
             tertiaryLabel = Color(0x603C3C43),
@@ -162,7 +170,8 @@ data class ScootColors(
             dockHairline = Color(0xFF10131A).copy(alpha = 0.1f),
             dockGround = Color(0xFFEEF0F4),
             cardActionFill = Color(0xFF0070EB),
-            accent = Color(0xFF007AFF),
+            accent = Color(0xFF0088FF),
+            accentColor = Color(0xFF0088FF),
             systemBackground = Color.White,
             systemGroupedBackground = Color(0xFFF2F2F7),
             secondarySystemGroupedBackground = Color.White,
@@ -201,7 +210,8 @@ data class ScootColors(
             dockHairline = Color.White.copy(alpha = 0.1f),
             dockGround = Color(0xFF0B0E14),
             cardActionFill = Color(0xFF0070EB),
-            accent = Color(0xFF0A84FF),
+            accent = Color(0xFF0091FF),
+            accentColor = Color(0xFF0091FF),
             systemBackground = Color.Black,
             systemGroupedBackground = Color.Black,
             secondarySystemGroupedBackground = Color(0xFF1C1C1E),

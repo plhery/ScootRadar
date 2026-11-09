@@ -48,6 +48,7 @@ class ContrastTest {
                 "systemGray2" to (colors.systemGray2 to raised.systemGray2),
                 "separator" to (colors.separator to raised.separator),
                 "accent" to (colors.accent to raised.accent),
+                "accentColor" to (colors.accentColor to raised.accentColor),
                 "systemGreen" to (colors.systemGreen to raised.systemGreen),
             ) + if (colors.isDark) {
                 // The palette's dark halves that are UIKit's orange, green and red.
@@ -75,6 +76,7 @@ class ContrastTest {
             val restored = raised.copy(
                 isContrastIncreased = false,
                 accent = colors.accent,
+                accentColor = colors.accentColor,
                 systemGroupedBackground = colors.systemGroupedBackground,
                 secondarySystemGroupedBackground = colors.secondarySystemGroupedBackground,
                 secondaryLabel = colors.secondaryLabel,
@@ -99,9 +101,15 @@ class ContrastTest {
             listOf(ScootColors.Light.warning, ScootColors.Light.good, ScootColors.Light.critical),
             listOf(light.warning, light.good, light.critical),
         )
-        // UIKit's high-contrast systemBlue, which the rider on the map takes too (RiderArt).
-        assertEquals(Color(0xFF0040DD), ScootColors.Light.withIncreasedContrast().accent)
-        assertEquals(Color(0xFF409CFF), ScootColors.Dark.withIncreasedContrast().accent)
+        // UIKit's high-contrast systemBlue as iOS 26 made it, which the rider on the map takes too (RiderArt), and
+        // SwiftUI's Color.accentColor a step stronger, as the iOS 27 simulator draws them (UI-346).
+        assertEquals(Color(0xFF1E6EF4), ScootColors.Light.withIncreasedContrast().accent)
+        assertEquals(Color(0xFF5CB8FF), ScootColors.Dark.withIncreasedContrast().accent)
+        assertEquals(Color(0xFF1858C3), ScootColors.Light.withIncreasedContrast().accentColor)
+        assertEquals(Color(0xFF85CAFF), ScootColors.Dark.withIncreasedContrast().accentColor)
+        // Without it, the two are systemBlue.
+        assertEquals(listOf(Color(0xFF0088FF), Color(0xFF0088FF)), listOf(ScootColors.Light.accent, ScootColors.Light.accentColor))
+        assertEquals(listOf(Color(0xFF0091FF), Color(0xFF0091FF)), listOf(ScootColors.Dark.accent, ScootColors.Dark.accentColor))
     }
 
     /** A sheet's raised level, in the dark, keeps the higher contrast's backgrounds. */
@@ -132,7 +140,7 @@ class ContrastTest {
             setContrast(contrast)
             compose.waitForIdle()
             assertEquals("contrast $contrast", raised, colors!!.isContrastIncreased)
-            assertEquals("contrast $contrast", if (raised) Color(0xFF0040DD) else ScootColors.Light.accent, colors!!.accent)
+            assertEquals("contrast $contrast", if (raised) Color(0xFF1E6EF4) else ScootColors.Light.accent, colors!!.accent)
         }
     }
 
