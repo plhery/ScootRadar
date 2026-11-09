@@ -140,7 +140,7 @@ class SettingsSheetTest {
         compose.waitForIdle()
         compose.onNode(title("Settings")).assertExists()
 
-        compose.onNodeWithContentDescription("Done").performClick()
+        compose.onNodeWithText("Done").performClick()
         assertEquals(1, done)
     }
 
