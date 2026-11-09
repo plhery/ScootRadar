@@ -2458,6 +2458,7 @@ extension ScooterModelsTests {
             XCTAssertEqual(metric.region, locale.region)
             XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 300, locale: metric)), "300 m", locale.identifier)
             XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: 1_250, locale: metric)), "1.3 km", locale.identifier)
+            XCTAssertEqual(ScooterRangeFilter.Unit(locale: metric), .kilometres, locale.identifier)
         }
 
         // Miles: in feet under half a mile outside the UK, as iOS writes them on roads, and in yards in it.
@@ -2482,6 +2483,10 @@ extension ScooterModelsTests {
             ["10 yd", "350 yd", "1.9 mi"]
         )
         XCTAssertEqual(ScooterUnits.imperial.applied(to: american).measurementSystem, .us)
+
+        for locale in [irishMiles, swissMiles, britishMiles] {
+            XCTAssertEqual(ScooterRangeFilter.Unit(locale: locale), .miles, locale.identifier)
+        }
 
         // The closest cities, in whole kilometres or miles as chosen.
         let bern = ScooterCityCatalog.nearest(to: GeoPoint(latitude: 46.7741, longitude: 8.1558), count: 1)[0]

@@ -357,7 +357,7 @@ private actor DownloadStubAPI: ScooterAPIClient {
         self.files = files
     }
 
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) async throws -> ScooterResponse {
         ScooterResponse(vehicles: [])
     }
 

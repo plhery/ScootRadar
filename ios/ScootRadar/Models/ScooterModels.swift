@@ -156,6 +156,18 @@ struct Scooter: Identifiable, Hashable, Sendable {
         guard let gap = length.lastIndex(where: { $0 == "\u{00A0}" || $0 == "\u{202F}" }) else { return (length, nil) }
         return (String(length[..<gap]), String(length[length.index(after: gap)...]))
     }
+
+    /// Whole kilometres or miles, "61 km" or "38 mi": the closest cities and the
+    /// range filter's steps, which never come in metres, feet or yards.
+    static func formattedWhole(_ value: Int, of unit: UnitLength, locale: Locale = ScooterLanguage.current.locale) -> String {
+        Measurement(value: Double(value), unit: unit).formatted(.measurement(
+            width: .abbreviated,
+            usage: .asProvided,
+            numberFormatStyle: .number.precision(.fractionLength(0))
+        ).locale(locale))
+        // A line never breaks between the number and its unit.
+        .replacingOccurrences(of: " ", with: "\u{00A0}")
+    }
 }
 
 /// What "Open in" opened.
@@ -1681,16 +1693,9 @@ extension ScooterCityDistance {
     }
 
     func formattedDistance(locale: Locale) -> String {
-        let length = locale.measurementSystem == .metric
-            ? Measurement(value: max(1, (distanceMeters / 1_000).rounded()), unit: UnitLength.kilometers)
-            : Measurement(value: max(1, (distanceMeters / 1_609.344).rounded()), unit: UnitLength.miles)
-        return length.formatted(.measurement(
-            width: .abbreviated,
-            usage: .asProvided,
-            numberFormatStyle: .number.precision(.fractionLength(0))
-        ).locale(locale))
-        // A line never breaks between the number and its unit.
-        .replacingOccurrences(of: " ", with: "\u{00A0}")
+        locale.measurementSystem == .metric
+            ? Scooter.formattedWhole(max(1, Int((distanceMeters / 1_000).rounded())), of: .kilometers, locale: locale)
+            : Scooter.formattedWhole(max(1, Int((distanceMeters / 1_609.344).rounded())), of: .miles, locale: locale)
     }
 
     /// "Bern · 61 km", the label of a closest-city chip.
@@ -1704,6 +1709,7 @@ struct ScooterFollowUpQuery: Equatable, Sendable {
     let bounds: GeoBounds
     let zoom: Int
     let minimumBattery: Int
+    let minimumRange: Int
 }
 
 /// When scooter data is refreshed automatically. Web and iOS follow the same rules.

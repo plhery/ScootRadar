@@ -909,17 +909,19 @@ private actor StubScooterAPI: ScooterAPIClient {
     private var cancellations = 0
     private var lastZoom: Int?
     private var lastMinimumBattery: Int?
+    private var lastMinimumRange: Int?
 
     init(response: ScooterResponse, delaysFirstRequest: Bool = false) {
         self.response = response
         self.delaysFirstRequest = delaysFirstRequest
     }
 
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) async throws -> ScooterResponse {
         _ = bounds
         calls += 1
         lastZoom = zoom
         lastMinimumBattery = minimumBattery
+        lastMinimumRange = minimumRange
         if delaysFirstRequest, calls == 1 {
             do {
                 try await Task.sleep(for: .seconds(30))
@@ -944,9 +946,10 @@ private actor StubScooterAPI: ScooterAPIClient {
         calls: Int,
         cancellations: Int,
         lastZoom: Int?,
-        lastMinimumBattery: Int?
+        lastMinimumBattery: Int?,
+        lastMinimumRange: Int?
     ) {
-        (calls, cancellations, lastZoom, lastMinimumBattery)
+        (calls, cancellations, lastZoom, lastMinimumBattery, lastMinimumRange)
     }
 }
 
@@ -987,7 +990,7 @@ extension ScooterMapModelTests {
 private actor DelayedSecondAPI: ScooterAPIClient {
     private var calls = 0
     func callCount() -> Int { calls }
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) async throws -> ScooterResponse {
         calls += 1
         let second = calls == 2
         if second { try await Task.sleep(for: .milliseconds(500)) }
@@ -998,7 +1001,7 @@ private actor DelayedSecondAPI: ScooterAPIClient {
 private actor CancelledAPI: ScooterAPIClient {
     private var calls = 0
     func callCount() -> Int { calls }
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) async throws -> ScooterResponse {
         calls += 1
         throw CancellationError()
     }
@@ -1031,7 +1034,7 @@ private actor HeldScooterAPI: ScooterAPIClient {
         held = nil
     }
 
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) async throws -> ScooterResponse {
         calls += 1
         if holdsNextRequest {
             holdsNextRequest = false
@@ -5693,8 +5696,165 @@ extension ScooterMapModelTests {
     }
 }
 
-// The units chosen in Settings (issue #14).
+// The minimum range (issue #12) and the units chosen in Settings (issue #14).
 extension ScooterMapModelTests {
+    /// Stuttgart: Lime and Voi give a range and no battery, Bolt and Dott both. A minimum range hides the
+    /// scooters without one and sets the battery to Any, and a minimum battery sets the range to Any.
+    func testRangeFilterHidesScootersWithoutARangeAndNeverHoldsWithTheBattery() async throws {
+        defer { ScooterUnits.current = .automatic }
+        let defaults = isolatedDefaults()
+        defaults.set("metric", forKey: "units")
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: [
+            scooter(id: "lime-far", provider: "lime", battery: nil, rangeMeters: 9_000),
+            scooter(id: "voi-near", provider: "voi", battery: nil, rangeMeters: 2_000),
+            scooter(id: "bolt-full", provider: "bolt", battery: 90, rangeMeters: 30_000),
+            scooter(id: "dott-unknown", provider: "dott", battery: 70, rangeMeters: nil)
+        ]))
+        let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults, builtInZones: [])
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        model.selectScooter("dott:dott-unknown")
+
+        model.setMinimumBattery(60)
+        XCTAssertEqual(Set(model.mapScooters.map(\.id)), ["bolt:bolt-full", "dott:dott-unknown"])
+
+        // 4.6 km is read as the nearest whole kilometre, and the battery goes back to Any.
+        model.setMinimumRange(4_600)
+        XCTAssertEqual(model.minimumRange, 5_000)
+        XCTAssertEqual(model.minimumBattery, 0)
+        XCTAssertEqual(Set(model.mapScooters.map(\.id)), ["lime:lime-far", "bolt:bolt-full"])
+        XCTAssertEqual(model.visibleCount, 2)
+        XCTAssertTrue(model.hasActiveFilters)
+        XCTAssertNil(model.selectedScooterID, "The scooter without a range is hidden, and its card closes")
+        XCTAssertEqual(defaults.integer(forKey: "minimum-range"), 5_000)
+        XCTAssertEqual(defaults.integer(forKey: "minimum-battery"), 0)
+        // Filtered here, one by one: the server is not asked again.
+        let calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 1)
+
+        model.setMinimumBattery(80)
+        XCTAssertEqual(model.minimumRange, 0)
+        XCTAssertEqual(defaults.integer(forKey: "minimum-range"), 0)
+        XCTAssertEqual(model.mapScooters.map(\.id), ["bolt:bolt-full"])
+
+        model.setMinimumRange(40_000)
+        XCTAssertEqual(model.minimumRange, 30_000, "No further than the slider's last step")
+        model.showProviders([.voi])
+        XCTAssertEqual(model.dock, .filtersHideEverything(ScooterFilterSummary(
+            hiddenCount: 4, providers: [.voi], minimumBattery: nil, minimumRange: 30_000
+        )))
+
+        model.resetFilters()
+        XCTAssertEqual(model.minimumRange, 0)
+        XCTAssertEqual(model.minimumBattery, 0)
+        XCTAssertFalse(model.hasActiveFilters)
+        XCTAssertEqual(model.mapScooters.count, 4)
+    }
+
+    /// Zoomed out the server groups the scooters and filters them; it is asked with the minimum range in
+    /// metres, and what it left out cannot be counted.
+    func testClusteredRangeFilterIsAppliedByTheServerWhichCannotCountWhatItHides() async {
+        defer { ScooterUnits.current = .automatic }
+        let cluster = ScooterCluster(id: "12:1:1", latitude: 47.3769, longitude: 8.5417, count: 10, providers: ["lime": 10])
+        let meta = ScooterResponseMetadata(partial: false, failedSources: [], mode: "clusters", zoom: 12)
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: [], clusters: [cluster], meta: meta))
+        let defaults = isolatedDefaults()
+        defaults.set("imperial", forKey: "units")
+        let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults, builtInZones: [])
+        model.updateViewport(zurichRegion, zoom: 12)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        let unfiltered = await api.snapshot()
+        XCTAssertEqual(unfiltered.lastMinimumRange, 0)
+
+        await api.setResponse(ScooterResponse(vehicles: [], meta: meta))
+        // 3 mi, as the slider sets it in miles.
+        model.setMinimumRange(ScooterRangeFilter.metres(steps: 3, unit: .miles))
+        let filtered = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(filtered)
+        let snapshot = await api.snapshot()
+        XCTAssertEqual(snapshot.lastZoom, 12)
+        XCTAssertEqual(snapshot.lastMinimumRange, 4_828)
+        XCTAssertEqual(snapshot.lastMinimumBattery, 0)
+        XCTAssertEqual(model.dock, .filtersHideEverything(ScooterFilterSummary(
+            hiddenCount: nil, providers: [], minimumBattery: nil, minimumRange: 4_828
+        )))
+
+        // Kilometres chosen read the minimum as 5 km, which the server is asked for again.
+        model.units = .metric
+        let again = await waitUntil { await api.snapshot().calls == 3 && !model.isLoading }
+        XCTAssertTrue(again)
+        let inKilometres = await api.snapshot()
+        XCTAssertEqual(inKilometres.lastMinimumRange, 5_000)
+    }
+
+    /// Kept in metres, read in whole steps of the unit shown: 5 km set reads "3 mi" in miles, and
+    /// 5 km again once kilometres are chosen back. A stored value is read the same way.
+    func testMinimumRangeIsReadInWholeStepsOfTheUnitsShown() {
+        defer { ScooterUnits.current = .automatic }
+        let defaults = isolatedDefaults()
+        defaults.set("metric", forKey: "units")
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+            defaults: defaults, builtInZones: []
+        )
+        model.setMinimumRange(5_000)
+        XCTAssertEqual(model.rangeUnit, .kilometres)
+
+        model.units = .imperial
+        XCTAssertEqual(model.rangeUnit, .miles)
+        XCTAssertEqual(model.minimumRange, 4_828)
+        XCTAssertEqual(plainSpaces(ScooterRangeFilter.label(metres: model.minimumRange)), "3 mi+")
+        model.units = .metric
+        XCTAssertEqual(model.minimumRange, 5_000)
+
+        for (stored, units, expected) in [(4_900, "metric", 5_000), (5_000, "imperial", 4_828), (99_000, "metric", 30_000),
+                                          (-20, "metric", 0), (1_609, "imperial", 1_609)] {
+            let restored = isolatedDefaults()
+            restored.set(stored, forKey: "minimum-range")
+            restored.set(units, forKey: "units")
+            let model = ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+                defaults: restored, builtInZones: []
+            )
+            XCTAssertEqual(model.minimumRange, expected, "Stored \(stored) in \(units)")
+        }
+
+        // A battery minimum kept beside a range, which the app never writes, wins as in a link.
+        let both = isolatedDefaults()
+        both.set(60, forKey: "minimum-battery")
+        both.set(5_000, forKey: "minimum-range")
+        let restored = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+            defaults: both, builtInZones: []
+        )
+        XCTAssertEqual(restored.minimumBattery, 60)
+        XCTAssertEqual(restored.minimumRange, 0)
+        // The range is forgotten: with the battery set to Any, none comes back at the next launch.
+        XCTAssertEqual(both.integer(forKey: "minimum-range"), 0)
+    }
+
+    /// A link's minimum range takes the place of the rider's battery minimum, and a link with both keeps
+    /// the battery's.
+    func testALinkSetsAMinimumRangeAndTheBatteryToAny() {
+        defer { ScooterUnits.current = .automatic }
+        let defaults = isolatedDefaults()
+        defaults.set("metric", forKey: "units")
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+            defaults: defaults, builtInZones: []
+        )
+        model.setMinimumBattery(30)
+        model.open(ScooterMapLink(minimumRange: 12_000))
+        XCTAssertEqual(model.minimumRange, 12_000)
+        XCTAssertEqual(model.minimumBattery, 0)
+
+        model.open(ScooterMapLink(minimumBattery: 60, minimumRange: 5_000))
+        XCTAssertEqual(model.minimumBattery, 60)
+        XCTAssertEqual(model.minimumRange, 0)
+    }
+
     /// Settings › Units: Automatic, as before there was a choice, or kilometres or miles, at once
     /// everywhere and kept for the next launch.
     func testChosenUnitsMeasureEveryLengthAtOnceAndAreKept() {

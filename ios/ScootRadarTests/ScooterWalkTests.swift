@@ -874,7 +874,7 @@ private actor WalkStubAPI: ScooterAPIClient {
         self.response = response
     }
 
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int, minimumRange: Int) async throws -> ScooterResponse {
         calls += 1
         return response
     }

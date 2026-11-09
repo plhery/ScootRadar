@@ -171,15 +171,20 @@ city's **Open the map** in a guide, opens in the app when it is installed
 (universal links: `public/.well-known/apple-app-site-association` and
 `ScootRadar.entitlements`). `Models/ScooterMapLink.swift` reads it as the web
 map does: a city's centre opens like the city chosen in the search, any other
-point moves the map there, and `minBattery` sets the battery filter. The first
+point moves the map there, `minBattery` sets the battery filter and `minRange`
+the range filter, in metres (a link with both keeps the battery). The first
 location fix after a link leaves the map where the link put it. Safari's Smart
 App Banner on the site names the page it is on, with the link's parameters, so
 its **Open** lands in the same place. Try it with
 `xcrun simctl openurl booted "https://scootradar.com/map?origin=47.3769,8.5417"`.
 
-**Filters.** One battery choice (Any, 30%+, 60%+, 80%+) and one provider list
-with the count in view, or a note when a provider is not sharing data. **Reset**
-is in the header and the button at the bottom says how many scooters the map
+**Filters.** One battery choice (Any, 30%+, 60%+, 80%+), a range slider (Any,
+then whole kilometres up to 30 km, or whole miles up to 20 mi where lengths are
+in miles), which hides the scooters whose feed gives no range, and one provider
+list with the count in view, or a note when a provider is not sharing data. A
+minimum battery and a minimum range never hold together: setting one sets the
+other to Any. Zoomed out, the server filters the groups it counts (`minBattery`,
+`minRange`); zoomed in, the app filters the scooters itself. **Reset** is in the header and the button at the bottom says how many scooters the map
 will show.
 
 **Settings.** Three choices as tiles, the first two each under a small picture of
