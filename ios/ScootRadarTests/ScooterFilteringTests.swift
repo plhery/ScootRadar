@@ -1075,7 +1075,8 @@ extension ScooterFilteringTests {
         XCTAssertTrue(both.showAllTitle.contains("26"))
         XCTAssertEqual(both.parts.count, 2)
         XCTAssertTrue(both.parts[0].contains("Lime"))
-        XCTAssertTrue(both.parts[1].contains("6"))
+        // As the slider writes it where the tests run: "6 km", or "4 mi" on a simulator in the United States.
+        XCTAssertTrue(both.parts[1].contains(ScooterRangeFilter.distance(metres: 6_000)))
         XCTAssertFalse(both.parts[1].contains("%"))
         XCTAssertEqual(both.body, both.parts.joined(separator: " · "))
 
