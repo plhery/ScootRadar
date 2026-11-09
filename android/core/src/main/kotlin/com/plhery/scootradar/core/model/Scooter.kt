@@ -170,9 +170,6 @@ sealed interface ScooterRentalOpening {
      * the App Store page opens on the iPhone.
      */
     data class Store(override val url: URI) : ScooterRentalOpening
-
-    /** On the way to the operator, and maybe to a ride: not to the store, where the app is still to install. */
-    val mayLeadToARide: Boolean get() = this !is Store
 }
 
 enum class ScooterBatteryLevel {

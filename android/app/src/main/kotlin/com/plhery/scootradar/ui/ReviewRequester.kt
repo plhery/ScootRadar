@@ -40,9 +40,10 @@ fun interface ReviewRequester {
 }
 
 /**
- * A return from a ride that is the moment to ask for a rating (ScooterReviewPrompt): after the map has rested a few
- * seconds with nothing over it, never from a button. Anything over the map or changing on it before then ends this
- * try, and before the store answers its card, as the iPhone's sheet comes at once.
+ * A calm map that is the moment to ask for a rating (ScooterReviewPrompt): after it has rested a few seconds with
+ * nothing over it and no touch, never from a button. Anything over the map or changing on it before then ends this
+ * try, as does a touch (the controller's noteInteraction), and the next fresh load brings another; so does anything
+ * over the map before the store answers its card, as the iPhone's sheet comes at once.
  */
 @Composable
 internal fun ReviewWhenTheMapRests(
@@ -67,7 +68,7 @@ internal fun ReviewWhenTheMapRests(
         if (!controller.takeReviewMoment()) return@LaunchedEffect
         var asking = true
         requester.request { asking }
-        analytics?.track("review_ask", result = "rental_return")
+        analytics?.track("review_ask", result = "calm_map")
         try {
             awaitCancellation()
         } finally {

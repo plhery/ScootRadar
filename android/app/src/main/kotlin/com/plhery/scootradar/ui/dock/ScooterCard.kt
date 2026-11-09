@@ -65,7 +65,6 @@ import com.plhery.scootradar.core.map.cardContent
 import com.plhery.scootradar.core.map.cardStatus
 import com.plhery.scootradar.core.map.directionsControl
 import com.plhery.scootradar.core.map.hideWalkingRoute
-import com.plhery.scootradar.core.map.openRental
 import com.plhery.scootradar.core.map.openWalkInMaps
 import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.map.straightLineDistance
@@ -156,7 +155,7 @@ internal fun ScooterCard(controller: ScooterMapController, scooter: Scooter) {
             // it opens the operator's app, or else its page.
             val opens = scooter.rentalURL != null || scooter.operatorApp != null
             DockActionRow(Modifier.padding(top = 12.dp), weights = if (opens) listOf(1.5f, 1f) else emptyList()) {
-                if (opens) OpenInButton(controller, scooter)
+                if (opens) OpenInButton(scooter)
                 DirectionsButton(controller, target, directions, prominent = false)
             }
         }
@@ -468,12 +467,11 @@ internal fun priceLabel(quote: RidePriceQuote): String {
 
 /**
  * Open in the provider's app: the scooter's own link where the feed gives one, or else the operator's app, as also
- * where no link to the scooter opens, as Bolt's bolt:// without its app. The return from a ride may be the moment to
- * ask for a rating (openRental). A tap that opened nothing, as an operator's own scheme without its app and with no
+ * where no link to the scooter opens, as Bolt's bolt:// without its app. A tap that opened nothing, as an operator's own scheme without its app and with no
  * app in the catalog to fall back on, is felt to fail rather than doing nothing.
  */
 @Composable
-private fun OpenInButton(controller: ScooterMapController, scooter: Scooter) {
+private fun OpenInButton(scooter: Scooter) {
     val context = LocalContext.current
     val analytics = LocalAnalytics.current
     val haptics = LocalHapticFeedback.current
@@ -484,8 +482,7 @@ private fun OpenInButton(controller: ScooterMapController, scooter: Scooter) {
             // The tap, whatever opens: rental_open never says whether the operator's app is installed.
             analytics?.track("rental_open", provider = scooter.provider, result = if (scooter.rentalURL == null) "app" else null)
             scope.launch {
-                val opened = controller.openRental(
-                    scooter,
+                val opened = scooter.openRental(
                     openRentalLink = { context.openRentalLink(it) },
                     openLink = { url, appOnly -> context.openLink(url, appOnly) },
                 )

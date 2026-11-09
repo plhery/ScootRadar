@@ -10,8 +10,8 @@ import org.junit.Test
 // ios/ScootRadarTests/ScooterReviewPromptTests.swift.
 
 /**
- * When the app asks for a rating: on a calm return from a ride, from the third day with a fresh feed, never on a
- * day something went wrong, once per version and a month apart at the soonest.
+ * When the app asks for a rating: at a calm moment, from the third day with a fresh feed, never on a day
+ * something went wrong, once per version and a month apart at the soonest.
  */
 class ScooterReviewPromptTest {
     /** 09:00 UTC: the hours added below stay on the same day. */
@@ -26,9 +26,6 @@ class ScooterReviewPromptTest {
         ScooterReviewPrompt(defaults, version, timeZone = { ZoneOffset.UTC })
 
     private fun day(days: Int, hours: Double = 0.0): Instant = start.plusSeconds((days * 86_400 + hours * 3_600).toLong())
-
-    /** `start` and so many seconds. */
-    private fun later(seconds: Double): Instant = start.plusSeconds(seconds.toLong())
 
     /** A fresh feed at `date`, then whether a calm moment then is the one to ask. */
     private fun isDue(prompt: ScooterReviewPrompt, date: Instant, calm: Boolean = true): Boolean {
@@ -116,34 +113,4 @@ class ScooterReviewPromptTest {
         assertTrue(isDue(prompt, day(3)))
     }
 
-    @Test
-    fun onlyAReturnFiveMinutesToTwoHoursAfterOpenInIsTheEndOfARide() = withDefaults { defaults ->
-        val prompt = prompt(defaults)
-        // Nothing was opened.
-        assertFalse(prompt.takeRentalReturn(start))
-
-        // Back within minutes: the rental mostly did not happen, and the tap is used up.
-        prompt.noteRentalOpened(start)
-        assertFalse(prompt.takeRentalReturn(later(4.0 * 60 + 59)))
-        assertFalse(prompt.takeRentalReturn(later(20.0 * 60)))
-
-        for (minutes in listOf(5.0, 20.0, 120.0)) {
-            prompt.noteRentalOpened(start)
-            assertTrue("$minutes min", prompt.takeRentalReturn(later(minutes * 60)))
-            // One try per return.
-            assertFalse(prompt.takeRentalReturn(later(minutes * 60 + 1)))
-        }
-
-        // Later, it is another trip.
-        prompt.noteRentalOpened(start)
-        assertFalse(prompt.takeRentalReturn(later(2.0 * 3_600 + 1)))
-
-        // The last tap is the one that counts, and it survives the app being closed.
-        prompt.noteRentalOpened(start)
-        prompt.noteRentalOpened(later(30.0 * 60))
-        val reopened = ScooterReviewPrompt(defaults, version = "1.0.1", timeZone = { ZoneOffset.UTC })
-        assertFalse(reopened.takeRentalReturn(later(33.0 * 60)))
-        prompt.noteRentalOpened(later(30.0 * 60))
-        assertTrue(reopened.takeRentalReturn(later(40.0 * 60)))
-    }
 }

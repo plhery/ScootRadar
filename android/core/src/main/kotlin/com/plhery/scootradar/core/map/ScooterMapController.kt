@@ -418,7 +418,9 @@ class ScooterMapController(
     val ridePasses: StateFlow<Map<ScooterProvider, ProviderRidePass>> = _ridePasses.asStateFlow()
 
     private var isTrackingHeading = false
-    private var isSceneActive = true
+    /** The app is in front: a load that comes in meanwhile may be the moment to ask for a rating. */
+    internal var isSceneActive = true
+        private set
 
     /** When the map was last touched, a key pressed or the app brought back to the front. */
     private var lastInteractionAt: Instant = now()
@@ -443,9 +445,6 @@ class ScooterMapController(
 
     /** Says when to ask for a rating (ScooterReviewPrompt). */
     internal val reviewPrompt: ScooterReviewPrompt = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
-
-    /** The rider is back from a ride: the load that follows says whether this is the moment to ask. */
-    internal var awaitsReviewLoad = false
 
     // What the data on the map was requested for: the dock only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds? = null
@@ -564,9 +563,8 @@ class ScooterMapController(
         if (debug) {
             // A screenshot's camera stays where it was set when the rider is located.
             keepsMapOnFirstFix = defaults.string(forKey = "ScreenshotCamera") != null
-            // The first fresh feed is a return from a ride, and the moment to ask.
+            // Every calm map with a fresh feed is the moment to ask, the first one too.
             reviewPrompt.alwaysDue = defaults.bool(forKey = "ReviewPromptDue")
-            awaitsReviewLoad = reviewPrompt.alwaysDue
         }
         locationManager.distanceFilter = DISTANCE_FILTER
         // What has come, or failed to, is drawn or said at once.
@@ -795,8 +793,6 @@ class ScooterMapController(
     fun start() {
         if (hasStarted) return
         hasStarted = true
-        // Android may have closed the app during the ride.
-        noteReturnFromRide()
 
         if (locationManager.authorizationStatus.isAuthorized) {
             startHeadingUpdates()
@@ -820,13 +816,12 @@ class ScooterMapController(
         _isPausedForIdle.value = false
         if (hasStarted) startHeadingUpdates()
         expireParkingIfNeeded()
-        noteReturnFromRide()
         // Back in the foreground a due refresh starts at once. The old data stays on the map until the outcome
         // is known.
         refreshIfDue(respectingAttemptGap = false)
-        // Data not due for a refresh is as fresh as one would make it. Before the first load, as while the
-        // first fix is found, that load decides.
-        if (awaitsReviewLoad && fetchTask == null && lastSuccessAt != null) reviewAfterLoad()
+        // Data not due for a refresh is as fresh as one would make it, and the map may be the moment to ask for
+        // a rating. Before the first load, as while the first fix is found, that load decides.
+        if (fetchTask == null && lastSuccessAt != null) reviewAfterLoad()
     }
 
     fun becameInactive() {
@@ -835,7 +830,6 @@ class ScooterMapController(
         refreshTimerTask?.cancel()
         refreshTimerTask = null
         // A moment to ask for a rating ends when the rider leaves.
-        awaitsReviewLoad = false
         reviewDue = false
     }
 
@@ -920,6 +914,8 @@ class ScooterMapController(
     /** A touch anywhere in the window, or a key: a paused map refreshes at once if its data is due, and the automatic refreshes start again. */
     fun noteInteraction() {
         lastInteractionAt = clock()
+        // The ask for a rating waits for a map nobody touches: the next fresh load is the next moment.
+        reviewDue = false
         if (!_isPausedForIdle.value) return
         _isPausedForIdle.value = false
         refreshIfDue(respectingAttemptGap = false)

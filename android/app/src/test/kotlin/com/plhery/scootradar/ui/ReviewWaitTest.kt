@@ -13,7 +13,6 @@ import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.TrackedEvent
 import com.plhery.scootradar.core.map.ScooterMapController
-import com.plhery.scootradar.core.map.rentalOpened
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLinks
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -31,8 +30,8 @@ import org.junit.runner.RunWith
 import java.util.TimeZone
 
 /**
- * The screen's half of the ask for a rating (ui.md UI-106, ScooterMapScreen.swift:161-178): a return from a ride
- * that is the moment asks once the map has rested 5 seconds with nothing over it, and anything over the map
+ * The screen's half of the ask for a rating (ui.md UI-106, ScooterMapScreen.swift:168-186): a calm map that is the
+ * moment asks once it has rested 5 seconds with nothing over it and no touch, and anything over the map or a touch
  * before then ends that try. The prompt's own rules are :core's (T346–T352).
  */
 @RunWith(AndroidJUnit4::class)
@@ -59,7 +58,7 @@ class ReviewWaitTest {
 
     @Test
     fun theRatingIsAskedOnceTheMapHasRestedFiveSeconds() {
-        val model = backFromARide()
+        val model = calmOnTheThirdDay()
         val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
@@ -71,8 +70,25 @@ class ReviewWaitTest {
         compose.mainClock.advanceTimeBy(1_500)
         assertEquals(1, asked)
         assertFalse(model.reviewDue)
-        // LOG-330 (ScooterMapScreen.swift:177): the ask is counted, with what it came after.
-        assertEquals(listOf(TrackedEvent("review_ask", result = "rental_return")), analytics.events)
+        // LOG-330 (ScooterMapScreen.swift:185): the ask is counted, with the moment it came at.
+        assertEquals(listOf(TrackedEvent("review_ask", result = "calm_map")), analytics.events)
+    }
+
+    /** A touch anywhere before then (MainActivity.onUserInteraction) ends this try: the map must rest untouched. */
+    @Test
+    fun aTouchBeforeThenEndsThisTry() {
+        val model = calmOnTheThirdDay()
+        val analytics = RecordingAnalytics()
+        compose.mainClock.autoAdvance = false
+        compose.setContent {
+            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = analytics.analytics)
+        }
+        compose.mainClock.advanceTimeBy(3_000)
+        compose.runOnUiThread { model.noteInteraction() }
+        compose.mainClock.advanceTimeBy(10_000)
+        assertEquals(0, asked)
+        assertFalse(model.reviewDue)
+        assertEquals(emptyList<TrackedEvent>(), analytics.events)
     }
 
     /**
@@ -81,7 +97,7 @@ class ReviewWaitTest {
      */
     @Test
     fun theStoreIsReadiedAsTheRestBeginsAndAskedAtItsEnd() {
-        val model = backFromARide()
+        val model = calmOnTheThirdDay()
         val calls = mutableListOf<String>()
         val requester = object : ReviewRequester {
             override fun prepare() {
@@ -102,7 +118,7 @@ class ReviewWaitTest {
 
     @Test
     fun somethingOverTheMapBeforeThenEndsThisTry() {
-        val model = backFromARide()
+        val model = calmOnTheThirdDay()
         var nothingOver by mutableStateOf(true)
         val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
@@ -130,7 +146,7 @@ class ReviewWaitTest {
      */
     @Test
     fun somethingOverTheMapBeforeTheStoreAnswersTakesBackItsCard() {
-        val model = backFromARide()
+        val model = calmOnTheThirdDay()
         var nothingOver by mutableStateOf(true)
         var stillAsked: (() -> Boolean)? = null
         compose.mainClock.autoAdvance = false
@@ -156,11 +172,8 @@ class ReviewWaitTest {
         assertFalse(stillAsked!!())
     }
 
-    /**
-     * A controller on its third day with a fresh feed, back in front 20 minutes after "Open in" and loaded again:
-     * the moment to ask.
-     */
-    private fun backFromARide(): ScooterMapController {
+    /** A controller on its third day, its first fresh feed in on a calm map: the moment to ask. */
+    private fun calmOnTheThirdDay(): ScooterMapController {
         val defaults = InMemoryScooterDefaults()
         val earlier = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
         earlier.noteUse(at = clock.now.addingTimeInterval(-2.0 * 86_400))
@@ -169,13 +182,6 @@ class ReviewWaitTest {
         val model = controllers.make(api, clock = clock, defaults = defaults)
         model.refresh()
         assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
-
-        model.rentalOpened()
-        model.becameInactive()
-        clock.advance(20.0 * 60)
-        val calls = api.calls
-        model.becameActive()
-        assertTrue(controllers.waitUntil { api.calls == calls + 1 && !model.isLoading.value })
         assertTrue(model.reviewDue)
         return model
     }

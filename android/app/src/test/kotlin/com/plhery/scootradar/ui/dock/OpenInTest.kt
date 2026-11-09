@@ -95,7 +95,7 @@ class OpenInTest {
     }
 
     @Test
-    fun openInNotesTheTapSaysRentalOpenAndOpensTheScooter() {
+    fun openInSaysRentalOpenAndOpensTheScooter() {
         val target = scooterNearby("lime", ScooterRentalURIs(ios = null, android = "https://lime.bike/vehicle/1", web = null))
         val link = checkNotNull(target.rentalURL)
         showCard(target)
@@ -104,8 +104,6 @@ class OpenInTest {
         compose.waitForIdle()
 
         assertEquals(listOf(TrackedEvent("rental_open", provider = "lime")), analytics.events)
-        // The return from the ride may be the moment to ask for a rating.
-        assertEquals(controllers.now()(), defaults.date("review-rental-opened-at"))
         val opened = shadowOf(application).nextStartedActivity
         assertEquals(Intent.ACTION_VIEW, opened.action)
         assertEquals(link.toString(), opened.dataString)
@@ -129,13 +127,11 @@ class OpenInTest {
         // Bolt's link, then its app's, an app first: its page opens in the browser and sends the phone to the store.
         val asked = checkNotNull(phone).started.map { it.dataString to it.isForAnApp }
         assertEquals(listOf(link to false, bolt to true, bolt to false), asked)
-        // The store is no ride to be back from.
-        assertNull(defaults.date("review-rental-opened-at"))
         assertTrue(haptics.types.isEmpty())
     }
 
     @Test
-    fun aTapThatOpensNothingIsNotNotedAndIsFeltToFail() {
+    fun aTapThatOpensNothingIsFeltToFail() {
         // Bolt Hopp's links are in its own scheme, and the catalog gives it no app to fall back on.
         val link = "bolt-hopp://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=8d8f81ed"
         val target = scooterNearby("bolt_hopp", ScooterRentalURIs(ios = null, android = link, web = null))
@@ -147,7 +143,6 @@ class OpenInTest {
 
         assertEquals(listOf(TrackedEvent("rental_open", provider = "bolt_hopp")), analytics.events)
         assertEquals(listOf(link), checkNotNull(phone).started.map { it.dataString })
-        assertNull(defaults.date("review-rental-opened-at"))
         assertEquals(listOf(HapticFeedbackType.Reject), haptics.types)
     }
 
@@ -161,8 +156,6 @@ class OpenInTest {
         compose.waitForIdle()
 
         assertEquals(listOf(TrackedEvent("rental_open", provider = provider.rawValue, result = "app")), analytics.events)
-        // The app took it: the return from the ride may be the moment to ask for a rating.
-        assertNotNull(defaults.date("review-rental-opened-at"))
         assertNotNull(shadowOf(application).nextStartedActivity)
     }
 

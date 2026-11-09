@@ -12,7 +12,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * LOG-312 (ScooterReviewPrompt.swift:23-27, ScooterMapModel.swift:419-421): a debug build launched with
+ * LOG-312 (ScooterReviewPrompt.swift:21-25, ScooterMapModel.swift:536-537): a debug build launched with
  * `ReviewPromptDue` makes every calm moment due, and its first load one, with no day of use and the version asked
  * already; a release build, or a debug build launched without it, asks as ever. The days are counted in UTC.
  */
@@ -27,7 +27,7 @@ class ReviewPromptDueTest {
             assertTrue(model.takeReviewMoment())
 
             // This version asked, on its first day: still due once the map is calm again.
-            returnFromRide(model, api, clock)
+            awayAndBack(model, api, clock)
             assertEquals(2, model.reviewMoments.value)
             assertTrue(model.takeReviewMoment())
         }
@@ -39,7 +39,7 @@ class ReviewPromptDueTest {
             val clock = TestClock()
             val (model, api) = loaded(clock, InMemoryScooterDefaults().apply { set(true, forKey = "ReviewPromptDue") }, debug = false)
             assertEquals(0, model.reviewMoments.value)
-            returnFromRide(model, api, clock)
+            awayAndBack(model, api, clock)
             assertEquals("not on the first day of use", 0, model.reviewMoments.value)
             assertFalse(model.takeReviewMoment())
         }
@@ -51,7 +51,7 @@ class ReviewPromptDueTest {
             val clock = TestClock()
             val (model, api) = loaded(clock, InMemoryScooterDefaults(), debug = true)
             assertEquals(0, model.reviewMoments.value)
-            returnFromRide(model, api, clock)
+            awayAndBack(model, api, clock)
             assertEquals(0, model.reviewMoments.value)
         }
     }
@@ -65,9 +65,8 @@ class ReviewPromptDueTest {
         return model to api
     }
 
-    /** "Open in", 20 minutes away, then the app in front again until the refresh is in. */
-    private fun TestScope.returnFromRide(model: ScooterMapController, api: StubScooterAPI, clock: TestClock) {
-        model.rentalOpened()
+    /** 20 minutes away, then the app in front again until the refresh is in. */
+    private fun TestScope.awayAndBack(model: ScooterMapController, api: StubScooterAPI, clock: TestClock) {
         model.becameInactive()
         clock.advance(20.0 * 60)
         val calls = api.calls

@@ -62,7 +62,7 @@ class ScooterMapViewModelTest {
 
     @Test
     fun theFirstStartOpensTheAppEachReturnComesToTheForegroundAndARecreationIsNeither() {
-        // Two days of use before this one: a return from a ride is the moment to ask for a rating.
+        // Two days of use before this one: a calm map is the moment to ask for a rating.
         val prompt = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
         prompt.noteUse(at = Instant.now().minusSeconds(2 * 86_400))
         prompt.noteUse(at = Instant.now().minusSeconds(86_400))
@@ -74,16 +74,17 @@ class ScooterMapViewModelTest {
         val open = TrackedEvent("app_open")
         val foreground = TrackedEvent("app_foreground")
 
-        // The page view and app_open, then the controller starts: its first load.
+        // The page view and app_open, then the controller starts: its first load, the moment.
         activity.start().resume()
         idle()
         assertEquals(listOf(pageView, open), analytics.events)
         assertEquals(1, api.calls)
         assertNotNull(model.controller.lastUpdated.value)
+        assertTrue(model.controller.reviewDue)
 
-        // Out on a ride for 20 minutes: the return is the moment, and it is taken at once with the data there.
+        // Leaving ends it; back with the data there, the map is the moment again at once.
         activity.pause().stop()
-        prompt.noteRentalOpened(at = Instant.now().minusSeconds(20 * 60))
+        assertFalse(model.controller.reviewDue)
         activity.restart().resume()
         idle()
         assertEquals(listOf(pageView, open, foreground), analytics.events)

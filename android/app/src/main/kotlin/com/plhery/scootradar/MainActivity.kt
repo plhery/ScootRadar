@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     private val openedLinks = links.receiveAsFlow()
 
     /**
-     * Google Play's card to rate the app, asked for when the map rests after a ride (UI-106). A debug build launched
+     * Google Play's card to rate the app, asked for when the map rests from the third day of use (UI-106). A debug build launched
      * with ReviewPromptDue asks Play's stand-in, which answers as Play would, as Play shows its card only in a copy it
      * installed, and logs the ask (LOG-312).
      */

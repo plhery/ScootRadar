@@ -1013,7 +1013,6 @@ class ScooterModelsTest {
         )
         assertEquals(listOf(android, web), tried)
         assertEquals(ScooterRentalOpening.Link(URI(web)), opened)
-        assertTrue(opened!!.mayLeadToARide)
 
         // With the app installed, its link is the only one tried.
         tried.clear()
@@ -1078,7 +1077,6 @@ class ScooterModelsTest {
         )
         assertEquals(listOf(link, "$bolt true", "$bolt false"), tried)
         assertEquals(ScooterRentalOpening.Store(URI(bolt)), store)
-        assertFalse(store!!.mayLeadToARide)
 
         // An operator the catalog gives no app has nothing to fall back on.
         val hopp = Scooter(
@@ -1145,7 +1143,6 @@ class ScooterModelsTest {
         )
         assertEquals(listOf("$link true"), tried)
         assertEquals(ScooterRentalOpening.App(URI(link)), opened)
-        assertTrue(opened!!.mayLeadToARide)
 
         // Without it, the same link opens in the browser, whose page sends the phone to the store.
         tried.clear()
@@ -1158,7 +1155,6 @@ class ScooterModelsTest {
         )
         assertEquals(listOf("$link true", "$link false"), tried)
         assertEquals(ScooterRentalOpening.Store(URI(link)), store)
-        assertFalse(store!!.mayLeadToARide)
 
         // A scooter its feed links keeps that link, and an operator with no app has nothing to fall back on.
         val host = ScooterRentalLinkPolicy.policies.getValue(withApp.rawValue).httpsHosts.first()

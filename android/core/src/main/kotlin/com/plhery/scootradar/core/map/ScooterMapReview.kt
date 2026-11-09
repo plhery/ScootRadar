@@ -1,32 +1,8 @@
 package com.plhery.scootradar.core.map
 
-import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterDockContent
-import com.plhery.scootradar.core.model.ScooterRentalOpening
-import java.net.URI
 
 // The rating of ios/ScootRadar/ViewModels/ScooterMapModel.swift.
-
-/**
- * "Open in" ([Scooter.openRental]). Only the scooter or the operator's app opening is noted for the rating, at the
- * tap: not the operator's page in the browser, which sends the phone to the store where the app is still to install,
- * nor a tap that opened nothing.
- */
-suspend fun ScooterMapController.openRental(
-    scooter: Scooter,
-    openRentalLink: suspend (URI) -> Boolean,
-    openLink: suspend (url: URI, appOnly: Boolean) -> Boolean,
-): ScooterRentalOpening? {
-    val tappedAt = clock()
-    val opened = scooter.openRental(openRentalLink, openLink)
-    if (opened?.mayLeadToARide == true) reviewPrompt.noteRentalOpened(at = tappedAt)
-    return opened
-}
-
-/** "Open in" took the rider to the operator's app: the return from the ride may be the moment to ask for a rating. */
-fun ScooterMapController.rentalOpened() {
-    reviewPrompt.noteRentalOpened(at = clock())
-}
 
 /**
  * The screen asks for a rating now, once the map has rested since the moment came: true once, while the map
@@ -41,27 +17,24 @@ fun ScooterMapController.takeReviewMoment(): Boolean {
     return true
 }
 
-/** Something went over the map, or changed on it, before the wait was over: this return asks no more. */
+/**
+ * Something went over the map, or changed on it, before the wait was over: this moment asks no more, and the next
+ * fresh load is the next one.
+ */
 fun ScooterMapController.dropReviewMoment() {
     reviewDue = false
 }
 
-/** Back in front: a return 5 minutes to 2 hours after "Open in" waits for the next load. */
-internal fun ScooterMapController.noteReturnFromRide() {
-    if (reviewPrompt.takeRentalReturn(at = clock())) awaitsReviewLoad = true
-}
-
 /**
- * After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A return from
- * a ride that waited for this load is the moment to ask when the map is calm.
+ * After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A calm map in front,
+ * from the third day with a fresh feed, is then the moment to ask, once the screen has seen it rest; a moment already
+ * waiting goes on waiting.
  */
 internal fun ScooterMapController.reviewAfterLoad() {
     val now = clock()
     if (loadIssue.value == null && responseMetadata.value?.stale != true) reviewPrompt.noteUse(at = now)
     if (reviewTrouble) reviewPrompt.noteBadMoment(at = now)
-    if (!awaitsReviewLoad) return
-    awaitsReviewLoad = false
-    if (!reviewPrompt.isDue(at = now, calm = reviewCalm)) return
+    if (!isSceneActive || reviewDue || !reviewPrompt.isDue(at = now, calm = reviewCalm)) return
     reviewDue = true
     _reviewMoments.value += 1
 }

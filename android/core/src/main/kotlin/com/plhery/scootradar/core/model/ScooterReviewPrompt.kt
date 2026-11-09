@@ -9,10 +9,11 @@ import kotlin.time.Duration.Companion.seconds
 
 /**
  * When the app asks for a rating with the system's prompt, which the store shows only so often: when the
- * rider is back from the operator's app 5 minutes to 2 hours after "Open in", the end of a ride, and the
- * map shows a healthy feed. Only from the third day with a fresh feed, once per version of the app, a month
- * after the last ask at the soonest, and never on a day the feed or the rider's place had a problem. The
- * days are counted on this device, in its time zone.
+ * map shows a fresh feed and rests, with nothing over it and no touch, never from a button. Only from the
+ * third day with a fresh feed, as a rider still using the app then likes it (riders seldom come back to the
+ * app after a ride, so the end of one no longer counts), once per version of the app, a month after the last
+ * ask at the soonest, and never on a day the feed or the rider's place had a problem. The days are counted on
+ * this device, in its time zone.
  */
 class ScooterReviewPrompt(
     val defaults: ScooterDefaults,
@@ -65,22 +66,6 @@ class ScooterReviewPrompt(
         defaults.set(day(of = at), forKey = ASKED_DAY_KEY)
     }
 
-    /** "Open in" took the rider to the operator's app then. Kept on disk: Android may close the app meanwhile. */
-    fun noteRentalOpened(at: Instant) {
-        defaults.set(at, forKey = RENTAL_OPENED_KEY)
-    }
-
-    /**
-     * The app is in front again then: true when this is the end of a ride, 5 minutes to 2 hours after
-     * "Open in". Each return is one try, so the time of the tap goes, whatever the answer.
-     */
-    fun takeRentalReturn(at: Instant): Boolean {
-        val opened = defaults.date(RENTAL_OPENED_KEY) ?: return false
-        defaults.removeObject(RENTAL_OPENED_KEY)
-        val seconds = (at.epochSecond - opened.epochSecond) + (at.nano - opened.nano) / 1e9
-        return seconds in rentalReturn
-    }
-
     /** The calendar day of the instant in the rider's time zone, as days since 1970. */
     private fun day(of: Instant): Int = of.atZone(timeZone()).toLocalDate().toEpochDay().toInt()
 
@@ -91,13 +76,7 @@ class ScooterReviewPrompt(
         /** Days from one ask to the next, whatever the version. */
         const val gap = 30
 
-        /**
-         * How long after "Open in", in seconds, a return is the end of a ride: sooner, the rental mostly did
-         * not happen; later, it is another trip.
-         */
-        val rentalReturn: ClosedFloatingPointRange<Double> = 5.0 * 60..2.0 * 3_600
-
-        /** How long the map rests with nothing over it before the ask. */
+        /** How long the map rests with nothing over it and no touch before the ask. */
         val settle: Duration = 5.seconds
 
         private const val DAYS_KEY = "review-use-days"
@@ -105,6 +84,5 @@ class ScooterReviewPrompt(
         private const val BAD_DAY_KEY = "review-bad-day"
         private const val ASKED_KEY = "review-asked-version"
         private const val ASKED_DAY_KEY = "review-asked-day"
-        private const val RENTAL_OPENED_KEY = "review-rental-opened-at"
     }
 }

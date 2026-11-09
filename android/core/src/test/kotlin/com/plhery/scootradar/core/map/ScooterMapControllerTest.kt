@@ -64,8 +64,6 @@ import com.plhery.scootradar.core.model.ScooterMenuBar
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterProviderHealth
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
-import com.plhery.scootradar.core.model.ScooterRentalOpening
-import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterReviewPrompt
@@ -84,7 +82,6 @@ import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.core.search.KeyboardOverlap
-import java.net.URI
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -3189,7 +3186,6 @@ class ScooterMapControllerTest {
         model.focusOnAddress(MapDestination(title = "Paradeplatz", subtitle = "Zürich", point = GeoPoint(47.3697, 8.5392)))
         model.selectScooter(parked.id)
         model.showWalkingRoute(ScooterWalkTarget.Scooter(parked))
-        model.rentalOpened()
         model.becameInactive()
         model.becameActive()
         model.refresh()
@@ -3202,11 +3198,10 @@ class ScooterMapControllerTest {
             "minimum-battery", "apple-map-style", "map-zones", "appearance", "disabled-providers",
             "ride-estimate-minutes-v1", "provider-ride-passes-v1", "has-located-once",
             "review-use-days", "review-last-use-day", "review-bad-day", "review-asked-version", "review-asked-day",
-            "review-rental-opened-at",
         )
         val keys = defaults.writes.map { it.substringBefore(" = ") }.toSet()
         assertTrue("Stored: $keys", allowed.containsAll(keys))
-        assertTrue(keys.containsAll(allowed.take(8) + "review-rental-opened-at"))
+        assertTrue(keys.containsAll(allowed.take(8) + "review-use-days"))
         assertEquals(listOf(listOf("fr")), kept)
         // No position, place or scooter among the values.
         val stored = defaults.writes.joinToString("\n")
@@ -4010,67 +4005,57 @@ class ScooterMapControllerTest {
         assertEquals(2_000.0, ScooterMapCameraPolicy.distance(1_000.0, zoomedBy = -1), 0.001)
     }
 
-    // Asking for a rating when the rider is back from a ride. The prompt counts the phone's days in its time zone,
-    // which these tests set to UTC, so that the days they mean don't hang on the zone of the machine that runs them.
+    // Asking for a rating at a calm map, from the third day with a fresh feed (ctl-1841: riders seldom come back to
+    // the app after a ride, and one still using it on the third day likes it). The prompt counts the phone's days in
+    // its time zone, which these tests set to UTC, so that the days they mean don't hang on the zone of the machine
+    // that runs them.
 
     @Test
-    fun aReturnFromARideIsTheMomentOnceTheMapIsCalmWithAFreshFeed() = inUTC {
+    fun aCalmMapWithAFreshFeedIsTheMomentFromTheThirdDay() = inUTC {
         runTest {
             val clock = TestClock()
+            val (second, _) = reviewController(clock, earlierDays = 1)
+            assertEquals("Not on the second day", 0, second.reviewMoments.value)
+            assertFalse(second.reviewDue)
+
+            // The third day's first fresh feed, on a map at rest: no ride to be back from.
             val (model, api) = reviewController(clock)
-
-            // Back within minutes: the rental mostly did not happen.
-            returnFromRide(model, api, after = 2.0 * 60, clock = clock)
-            assertEquals(0, model.reviewMoments.value)
-
-            // Back to the card of a scooter still on the map: the rider is choosing.
-            val id = unwrap(model.mapScooters.value.firstOrNull()?.id)
-            model.selectScooter(id)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
-            assertEquals(0, model.reviewMoments.value)
-
-            // That return was its one try; the next ride's return, to the map at rest, is the moment.
-            model.clearSelection()
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
             assertEquals(1, model.reviewMoments.value)
             assertTrue(model.reviewDue)
+
+            // Loads while the screen waits leave its wait as it is.
+            reload(model, api)
+            assertEquals(1, model.reviewMoments.value)
             assertTrue(model.takeReviewMoment())
             assertFalse(model.takeReviewMoment())
 
             // This version asked.
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            reload(model, api)
             assertEquals(1, model.reviewMoments.value)
+            assertFalse(model.reviewDue)
         }
     }
 
     @Test
-    fun onlyAnOpenInThatReachedTheScooterOrTheOperatorsAppIsARideToAskAfter() = inUTC {
+    fun aTouchEndsTheWaitAndTheNextCalmLoadIsTheNextMoment() = inUTC {
         runTest {
             val clock = TestClock()
             val (model, api) = reviewController(clock)
-            // Bolt's feed gives only links in Bolt's own scheme.
-            val link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
-            val bolt = scooter(id = "bolt-1", provider = "bolt", rentalURIs = ScooterRentalURIs(ios = link, android = link, web = null))
-            val boltApp = URI(unwrap(Bolt.app).link)
+            model.noteInteraction()
+            assertFalse(model.reviewDue)
+            assertFalse(model.takeReviewMoment())
 
-            // Without Bolt's app nothing takes its link, and Bolt's page opens in the browser, which sends the phone
-            // to the store: no ride to be back from.
-            val store = model.openRental(bolt, openRentalLink = { false }, openLink = { _, appOnly -> !appOnly })
-            assertEquals(ScooterRentalOpening.Store(boltApp), store)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock, openIn = false)
-            assertEquals(0, model.reviewMoments.value)
-
-            // Nor when nothing opened at all.
-            val nothing = model.openRental(bolt, openRentalLink = { false }, openLink = { _, _ -> false })
-            assertNull(nothing)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock, openIn = false)
-            assertEquals(0, model.reviewMoments.value)
-
-            // With the app, the scooter opens in it as before, and the return from the ride is the moment.
-            val opened = model.openRental(bolt, openRentalLink = { it.scheme == "bolt" }, openLink = { _, _ -> false })
-            assertEquals(ScooterRentalOpening.Link(URI(link)), opened)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock, openIn = false)
+            // A scooter's card on the map: the rider is choosing.
+            val id = unwrap(model.mapScooters.value.firstOrNull()?.id)
+            model.selectScooter(id)
+            reload(model, api)
             assertEquals(1, model.reviewMoments.value)
+            assertFalse(model.reviewDue)
+
+            model.clearSelection()
+            reload(model, api)
+            assertEquals(2, model.reviewMoments.value)
+            assertTrue(model.takeReviewMoment())
         }
     }
 
@@ -4079,86 +4064,74 @@ class ScooterMapControllerTest {
         runTest {
             val clock = TestClock()
             val (model, api) = reviewController(clock)
+            model.noteInteraction()
 
             api.setFailure(ScooterAPIError.Offline())
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            reload(model, api)
             assertNotNull(model.loadIssue.value)
-            assertEquals(0, model.reviewMoments.value)
+            assertFalse(model.reviewDue)
 
             // Back online later that day: still no ask.
             api.setFailure(null)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            clock.advance(3_600.0)
+            reload(model, api)
             assertNull(model.loadIssue.value)
-            assertEquals(0, model.reviewMoments.value)
-
-            // The next day, a calm return asks.
-            clock.advance(86_400.0)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
             assertEquals(1, model.reviewMoments.value)
+
+            // The next day, a calm map asks.
+            clock.advance(86_400.0)
+            reload(model, api)
+            assertEquals(2, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
         }
     }
 
     @Test
-    fun leavingEndsTheMomentToAskForARating() = inUTC {
+    fun leavingEndsTheMomentAndFreshDataOnTheReturnIsTheNext() = inUTC {
         runTest {
-            // The moment came, and the rider left before the screen asked.
             val clock = TestClock()
             val (model, api) = reviewController(clock)
-            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
-            assertTrue(model.reviewDue)
             model.becameInactive()
             assertFalse(model.reviewDue)
             assertFalse(model.takeReviewMoment())
 
-            // Back from a ride and gone again before the refresh came in: the load asks nothing.
-            val otherClock = TestClock()
-            val (other, otherAPI) = reviewController(otherClock)
-            other.rentalOpened()
-            other.becameInactive()
-            otherClock.advance(20.0 * 60)
-            val calls = otherAPI.calls
-            other.becameActive()
-            assertTrue(other.awaitsReviewLoad)
-            other.becameInactive()
-            assertFalse(other.awaitsReviewLoad)
-            val refreshed = waitUntil { otherAPI.calls == calls + 1 && !other.isLoading.value }
+            // Back seconds later: the data on the map is as fresh as a refresh would make it.
+            clock.advance(10.0)
+            val calls = api.calls
+            model.becameActive()
+            assertEquals(2, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
+            assertEquals(calls, api.calls)
+
+            // Gone again before a refresh came in: that load is no moment.
+            model.becameInactive()
+            clock.advance(20.0 * 60)
+            model.becameActive()
+            model.becameInactive()
+            val refreshed = waitUntil { api.calls == calls + 1 && !model.isLoading.value }
             assertTrue(refreshed)
-            assertEquals(0, other.reviewMoments.value)
-            assertFalse(other.reviewDue)
+            assertEquals(2, model.reviewMoments.value)
+            assertFalse(model.reviewDue)
         }
     }
 
-    /** A controller with a fresh feed on the map and two earlier days with one: the third day. */
-    private fun TestScope.reviewController(clock: TestClock): Pair<ScooterMapController, StubScooterAPI> {
+    /** A controller with a fresh feed on the map after `earlierDays` days with one: the third day by default. */
+    private fun TestScope.reviewController(clock: TestClock, earlierDays: Int = 2): Pair<ScooterMapController, StubScooterAPI> {
         val defaults = InMemoryScooterDefaults()
         val earlier = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
-        earlier.noteUse(at = clock.now.addingTimeInterval(-2.0 * 86_400))
-        earlier.noteUse(at = clock.now.addingTimeInterval(-86_400.0))
+        for (day in earlierDays downTo 1) earlier.noteUse(at = clock.now.addingTimeInterval(-day * 86_400.0))
         val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "one", provider = "lime"))))
         val model = makeController(api, clock = clock, defaults = defaults)
         model.refresh()
         val loaded = waitUntil { model.lastUpdated.value != null && !model.isLoading.value }
         assertTrue(loaded)
-        assertEquals("Not without a ride", 0, model.reviewMoments.value)
         return model to api
     }
 
-    /**
-     * "Open in" (unless `openIn` is false: the test opened what it opened), the app in the background for `after`
-     * seconds, then in front again until the refresh is in.
-     */
-    private fun TestScope.returnFromRide(
-        model: ScooterMapController,
-        api: StubScooterAPI,
-        after: Double,
-        clock: TestClock,
-        openIn: Boolean = true,
-    ) {
-        if (openIn) model.rentalOpened()
-        model.becameInactive()
-        clock.advance(after)
+    /** The map refreshed, until the refresh is in. */
+    private fun TestScope.reload(model: ScooterMapController, api: StubScooterAPI) {
         val calls = api.calls
-        model.becameActive()
+        model.refresh()
         val refreshed = waitUntil { api.calls == calls + 1 && !model.isLoading.value }
         assertTrue(refreshed)
     }
