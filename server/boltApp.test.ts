@@ -181,4 +181,14 @@ describe('Bolt map data', () => {
     expect(result.vehicles).toEqual([scooter('1')]);
     await expect(collectBoltRegion({ ...system, boltAppCategories: [] }, api)).rejects.toThrow('Not a Bolt app map region');
   });
+
+  it('pauses a market Bolt no longer serves, and fails on any other refusal', async () => {
+    const closed = { vehicles: vi.fn(async () => ({ code: 800, message: 'AREA_NOT_SERVICED' })) };
+    const result = await collectBoltRegion(system, closed);
+    expect(result).toMatchObject({ stale: false, vehicles: [], seasonOver: true });
+    const other = { vehicles: vi.fn(async () => ({ code: 800, message: 'SOMETHING_ELSE' })) };
+    await expect(collectBoltRegion(system, other)).rejects.toThrow('Invalid Bolt map response (code 800, "SOMETHING_ELSE", no data)');
+    const reopened = { vehicles: vi.fn(async () => map({ 25: [vehicle(1)] })) };
+    expect(await collectBoltRegion(system, reopened)).not.toHaveProperty('seasonOver');
+  });
 });

@@ -242,13 +242,19 @@ export function parseBoltVehicles(payload: unknown, system: RegionalScooterSyste
   return [...vehicles.values()];
 }
 
+/** Bolt's answer for a point it no longer serves: the market is closed, not the map broken. */
+const notServiced = (payload: unknown) => object(payload)?.code === 800 && object(payload)?.message === 'AREA_NOT_SERVICED';
+
 let defaultClient: BoltClient | undefined;
 export async function collectBoltRegion(system: RegionalScooterSystem,
   api: Pick<BoltClient, 'vehicles'> = defaultClient ??= new BoltClient()): Promise<SourceVehicles> {
   if (!system.boltAppCity || system.provider !== 'bolt' || !system.boltAppCategories?.length) throw new Error('Not a Bolt app map region');
   const observedAt = Date.now();
-  const vehicles = parseBoltVehicles(await api.vehicles(system.center, system.country.toLowerCase()), system);
-  return { observedAt, stale: false, vehicles };
+  const payload = await api.vehicles(system.center, system.country.toLowerCase());
+  // Closed by Bolt, the market pauses as a season Whoosh closes does (seasonalPauses.ts), and opens
+  // again with the first answer that has its categories.
+  if (notServiced(payload)) return { observedAt, stale: false, vehicles: [], seasonOver: true };
+  return { observedAt, stale: false, vehicles: parseBoltVehicles(payload, system) };
 }
 
 export function withBoltAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
