@@ -1926,6 +1926,18 @@ Bonaire had feeds to add. Survey files are in
   scooter; and Lincoln, in
   `selwyn`, with about 9 scooters none rode. Poll each on a weekday morning
   and a weekend afternoon, New Zealand time.
+- **1 December 2026:** Spin in Roanoke, Virginia (`spin_us_roanoke`, its
+  public feed) and Auburn, Alabama (`spin_us_app_auburn`, Bird's rider map).
+  Roanoke's feed held 74 to 85 scooters until early November 2026, about 25
+  on 6 November and none from that afternoon; Auburn held 110 to 122 until
+  the sweep of Saturday 7 November, a college football day, and none on 7 or
+  8 November. Neither city publishes a season, and on 9 November no notice
+  was found from Spin, the cities or their papers, so neither has a seasonal
+  window: their "feed empty" alerts are silenced until 1 December and the
+  feeds stay polled. Knoxville, emptied the same Saturday, came back with
+  Bird the next day, and Baton Rouge's Spin (166 to 45) on 9 November. If
+  either is still empty on 1 December, look again for a notice, and pause it
+  until spring if Spin has stored its scooters.
 - **17 December 2026:** Leoben (`dott_at_leoben`). Its council banned
   e-scooters from the town centre on 24 September 2026, then suspended the
   ban once the ministry held, under the 36th StVO-Novelle, that a pedestrian
