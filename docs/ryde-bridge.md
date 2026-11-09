@@ -562,3 +562,12 @@ bridge worker stopped asking for jobs") instead of each group's expiry. It saves
 when that silence began with its feed states, so a restart goes on with it
 until the worker asks again; counting from the restart reported the groups one
 by one for 10 minutes after each deploy, then the silence again.
+
+
+A failed map transport retires that job and uses the worker's existing bounded
+backoff; it does not permanently pause an otherwise valid encryption session.
+Legacy transport-only holds are classified separately and released only after a
+fresh successful native map decrypts and translates correctly. Renewal, session
+and payload failures retain their holds. After a cold launch the enabled helper
+also prepares the minimized window, waking a hidden iPhone app that may otherwise
+remain suspended before it sends its first request.

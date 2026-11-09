@@ -115,7 +115,25 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(result['error'],'TransportError')
         self.assertFalse(self.producer.native_jobs)
         self.assertIsNone(self.producer.pending)
-        self.assertTrue(json.loads((self.root/'session/status.json').read_text())['paused'])
+        self.assertFalse(json.loads((self.root/'session/status.json').read_text())['paused'])
+    def test_legacy_transport_hold_requires_a_fresh_decrypted_native_map(self):
+        job=self.job();flow=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(flow);self.producer.error(flow)
+        self.producer.paused=True;self.producer.status() # state left by the old build
+        self.producer=self.module.Producer()
+        self.assertTrue(self.producer.paused)
+        self.assertEqual(self.producer.pause_reason,'transport')
+        self.map()
+        self.assertFalse(self.producer.paused)
+        self.assertIsNone(self.producer.pause_reason)
+
+    def test_legacy_recovery_does_not_clear_a_key_renewal_failure(self):
+        self.producer.paused=True;self.producer.event('native-transport-failed')
+        self.producer.event('renewal-rejected')
+        self.producer=self.module.Producer()
+        self.assertIsNone(self.producer.pause_reason)
+        self.map();self.assertTrue(self.producer.paused)
+
     def test_abandoned_request_expires_and_late_reply_preserves_new_pending_job(self):
         first=self.job()
         a=self.flow(MAP,{'ekt':thumbprint(self.app)})

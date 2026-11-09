@@ -84,6 +84,31 @@ class WorkerTests(unittest.TestCase):
                 self.assertEqual(query(job,root),result)
             cold.assert_not_called()
 
+    def test_legacy_transport_recovery_waits_for_proxy_confirmation_before_arming(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name)
+            save(base/'session/status.json',{'bridgeStage':'bridge-active','paused':True,'pauseReason':'transport'})
+            calls=[];result={'id':job['id'],'scooters':[]}
+            def restart(_root,arm=None):
+                calls.append('restart')
+                if arm:
+                    self.assertEqual(calls,['restart','verified','restart'])
+                    arm();save(base/'results'/f"{job['id']}.json",result)
+            def recover(_root,action):
+                self.assertEqual(action,'prepare');self.assertFalse((base/'job.json').exists())
+                calls.append('verified')
+                save(base/'session/status.json',{'bridgeStage':'bridge-active','paused':False})
+            with patch('worker.relaunch',side_effect=restart),patch('worker.run_map_control',side_effect=recover):
+                self.assertEqual(query(job,root),result)
+
+    def test_key_renewal_hold_is_never_restarted_as_transport_recovery(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name)
+            save(base/'session/status.json',{'bridgeStage':'bridge-active','paused':True,'pauseReason':'renewal'})
+            with patch('worker.relaunch') as restart:
+                with self.assertRaises(RuntimeError):query(job,root)
+            restart.assert_not_called()
+
     def test_interrupted_warm_trigger_never_quits_a_live_native_read(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]}

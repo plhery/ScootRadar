@@ -162,6 +162,17 @@ def query(job, root=ROOT, timeout=60):
     base=root/'producer'
     state=json.loads((base/'session/status.json').read_text())
     if state['bridgeStage'] not in {'bridge-active','awaiting-first-rotation'}: raise RuntimeError('Ryde bridge needs a completed operator sign-in')
+    if state.get('paused') and state.get('pauseReason')=='transport':
+        # Recovery never edits session/key files. The proxy clears this legacy hold
+        # only after decrypting and translating a fresh successful native map.
+        relaunch(root)
+        try:run_map_control(root,'prepare')
+        except (subprocess.SubprocessError,OSError,ValueError):pass
+        until=min(time.time()+30,job['expiresAt'])
+        while time.time()<until:
+            state=json.loads((base/'session/status.json').read_text())
+            if not state.get('paused'):break
+            time.sleep(.25)
     if state.get('paused'): raise RuntimeError('Ryde bridge held after an upstream failure')
     end=min(time.time()+timeout,job['expiresAt'])
     path=base/'results'/f"{job['id']}.json"
@@ -187,6 +198,7 @@ def query(job, root=ROOT, timeout=60):
         # Arm after termination: a spontaneous request just before quit must not claim
         # the next job and be cancelled by that very quit.
         relaunch(root,lambda:save(base/'job.json',job))
+        prepare_warm(root)
         save(base/'last-trigger.json',{'mode':'restart','at':time.time()})
     retry_at=time.time()+30;retried=False;fallback_checked=not warm
     while time.time()<end:

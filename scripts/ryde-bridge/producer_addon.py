@@ -25,9 +25,11 @@ class Producer(BridgeTrial):
         public=json.loads((self.directory/'status.json').read_text())
         public.pop('expiresAt',None);public['lifetime']='supervised'
         public['pendingJob']=getattr(self,'pending',None);public['pendingUntil']=getattr(self,'pending_deadline',0);public['paused']=getattr(self,'paused',False)
+        public['pauseReason']=getattr(self,'pause_reason',None)
         private_json(self.directory/'status.json',public,replace=True)
         state = json.loads((self.directory/'bridge-state.json').read_text())
         state['paused'] = getattr(self, 'paused', False)
+        state['pauseReason'] = getattr(self, 'pause_reason', None)
         state['pendingPublic'] = getattr(self, 'pending_public', None)
         temp = self.directory/'recovery.tmp'
         with os.fdopen(os.open(temp, os.O_CREAT|os.O_TRUNC|os.O_WRONLY, 0o600), 'w') as handle:
@@ -45,6 +47,9 @@ class Producer(BridgeTrial):
 
     def __init__(self):
         saved = None
+        previous = {}
+        try: previous=json.loads((ROOT/'session/status.json').read_text())
+        except FileNotFoundError: pass
         try: saved = json.loads((ROOT/'session'/'recovery.json').read_text())
         except FileNotFoundError: pass
         self._initializing = True
@@ -58,6 +63,18 @@ class Producer(BridgeTrial):
         self.pending_deadline = 0
         self.pending_public = saved.get('pendingPublic') if saved else None
         self.paused = bool(saved and saved.get('paused'))
+        self.pause_reason = saved.get('pauseReason') if saved else None
+        # Older builds permanently held a valid session after a failed map socket.
+        # Identify only that legacy hold; a fresh cryptographically valid native
+        # response is still required before clearing it.
+        events=previous.get('events',[])
+        faults=[i for i,e in enumerate(events) if e.get('event')=='native-transport-failed']
+        if self.paused and not self.pause_reason and faults and previous.get('lastError') is None:
+            later=events[faults[-1]+1:]
+            if (not any(e.get('event')=='job-assigned' for e in later) and
+                not any(e.get('event') in {'renewal-rejected','translation-failed','native-session-recovered-outside-proxy','binding-rejected','restoration-rejected'} for e in events)):
+                self.pause_reason='transport'
+
         if saved and saved.get('bindingSent') and not saved.get('restoreVerified'):
             self.key = serialization.load_pem_private_key((self.directory/'bridge-private.pem').read_bytes(), password=None)
             self.token_hash = saved['tokenHash']; self.app_public = saved['appPublic']
@@ -186,7 +203,9 @@ class Producer(BridgeTrial):
         if job:
             private_json(ROOT/'results'/f"{job['id']}.json",{'version':1,'id':job['id'],'error':'TransportError'},replace=True)
             if self.pending==job['id']: self.pending=None
-            self.paused=True;self.event('native-transport-failed')
+            # A lost map socket is retriable through the worker's bounded backoff.
+            # It does not invalidate a successfully bound encryption session.
+            self.event('native-transport-failed')
 
     def note_refusal(self, flow):
         """Kept for the worker, which then leaves Ryde alone instead of relaunching the app every minute
@@ -211,7 +230,7 @@ class Producer(BridgeTrial):
                 self.directory.mkdir(mode=0o700)
                 self.stage='awaiting-login';self.key=None;self.app_public=None;self.restore_public=None
                 self.bound=False;self.binding_sent=False;self.restored=False;self.restore_verified=False
-                self.done=False;self.paused=False;self.token_hash=None
+                self.done=False;self.paused=False;self.pause_reason=None;self.token_hash=None
                 self.pending=None;self.pending_deadline=0;self.pending_public=None
         if origin_path(flow) == MAP:
             try:
@@ -223,13 +242,13 @@ class Producer(BridgeTrial):
                 reply=json.loads(flow.response.content); envelope=json.loads(reply.get('key','{}'))
                 native=flow.metadata.get('nativeRecipient')
                 if success(flow,reply) and native and envelope.get('ekt')==native and native!=thumbprint(self.key):
-                    self.bound=False;self.binding_sent=False;self.paused=True;self.stage='needs-sign-in'
+                    self.bound=False;self.binding_sent=False;self.paused=True;self.pause_reason='session';self.stage='needs-sign-in'
                     self.event('native-session-recovered-outside-proxy')
             except (ValueError,TypeError): pass
         if flow.metadata.get('producerRenew'):
             reply = json.loads(flow.response.content)
             if not success(flow, reply):
-                self.pending_public=None;self.paused = True; self.event('renewal-rejected'); return
+                self.pending_public=None;self.paused = True;self.pause_reason='renewal'; self.event('renewal-rejected'); return
             self.app_public=self.pending_public;self.pending_public=None
             reply['rotateAfterSeconds'] = 120
             flow.response.content = json.dumps(reply, separators=(',', ':')).encode()
@@ -263,6 +282,7 @@ class Producer(BridgeTrial):
                 if len(rows)>len(scooters):self.event('duplicate-map-rows-collapsed',count=len(rows)-len(scooters))
             except Exception as error:
                 result['error']=type(error).__name__;result['reason']=str(error)[:160]; self.paused='payload' not in locals()
+                self.pause_reason='payload' if self.paused else None
                 if 'payload' in locals() and (ROOT/'capture-parser-error').exists():
                     private_json(ROOT/'parser-error-map.json',{'cityId':job['cityId'],'payload':payload},replace=True)
                     (ROOT/'capture-parser-error').unlink()
@@ -285,12 +305,23 @@ class Producer(BridgeTrial):
                         directory=ROOT/'city-metadata';directory.mkdir(mode=0o700,exist_ok=True)
                         private_json(directory/(str(city)+'-'+origin_path(flow).rsplit('/',1)[1]+'.json'),captured,replace=True)
             except (ValueError,TypeError): self.event('fence-response-unreadable')
+        recovered_transport=False
+        if (self.paused and self.pause_reason=='transport' and self.stage=='bridge-active'
+            and not self.pending_public and not (ROOT/'stop.json').exists()
+            and origin_path(flow)==MAP and flow.metadata.get('bridgeAction')=='translate'):
+            try:
+                reply=json.loads(flow.response.content)
+                payload=json.loads(decrypt_envelope(self.key,json.loads(reply['key']))) if success(flow,reply) else None
+                recovered_transport=isinstance(payload,dict) and isinstance(payload.get('scooters'),list)
+            except Exception:pass # Failed decryption never releases a hold.
         super().response(flow)
+        if recovered_transport and not flow.error and self.last_error is None:
+            self.paused=False;self.pause_reason=None;self.event('native-transport-recovered')
         if flow.metadata.get('bridgeAction') == 'bind' and self.bound:
             reply=json.loads(flow.response.content); reply['rotateAfterSeconds']=120
             flow.response.content=json.dumps(reply,separators=(',', ':')).encode()
         if flow.metadata.get('bridgeAction')=='bind' and self.binding_rejected:
-            self.done=False;self.binding_sent=False;self.paused=True;self.stage='needs-sign-in';self.status()
+            self.done=False;self.binding_sent=False;self.paused=True;self.pause_reason='sign-in';self.stage='needs-sign-in';self.status()
         if self.done and self.restore_verified: private_json(ROOT/'stopped.json', {'restored':True,'at':time.time()}, replace=True)
 
 addons=[Producer()]
