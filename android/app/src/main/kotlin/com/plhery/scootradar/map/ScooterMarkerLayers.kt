@@ -404,9 +404,10 @@ object ScooterMarkerLayers {
      */
     const val CITIES = "scooter-cities"
 
-    /** The rider's accuracy halo, compass beam and white ring, under its blue dot, [RIDER] (ScooterRider). */
+    /** The rider's accuracy halo, compass beam, and white ring over its shadow, under its blue dot, [RIDER] (ScooterRider). */
     const val RIDER_HALO = "rider-halo"
     const val RIDER_BEAM = "rider-beam"
+    const val RIDER_SHADOW = "rider-shadow"
     const val RIDER_RING = "rider-ring"
     const val RIDER = "rider"
 
@@ -468,7 +469,7 @@ object ScooterMarkerLayers {
     const val NOTHING = "[\"boolean\",false]"
 
     /** The rider's layers, bottom to top, which ScooterRider adds above the markers'. */
-    val riderLayers = listOf(RIDER_HALO, RIDER_BEAM, RIDER_RING, RIDER)
+    val riderLayers = listOf(RIDER_HALO, RIDER_BEAM, RIDER_SHADOW, RIDER_RING, RIDER)
 
     /** Whether a faded marker breathes, its new positions being on their way. */
     const val UPDATING = "[\"has\",\"updating\"]"

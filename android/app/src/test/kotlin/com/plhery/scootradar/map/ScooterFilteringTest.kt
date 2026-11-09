@@ -494,10 +494,16 @@ class ScooterFilteringTest {
             symbols.take(markers) + ScooterMarkerLayers.fadedDots.map { it.id } + symbols.drop(markers) +
                 ScooterMarkerLayers.riderLayers + ScooterMarkerLayers.CITIES,
         )
-        // The rider's halo, beam and ring under its dot, all above the names (ScooterRider).
+        // The rider's halo, beam, and ring over its shadow, under its dot, all above the names (ScooterRider).
         assertEquals(
-            listOf(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.RIDER_BEAM, ScooterMarkerLayers.RIDER_RING, ScooterMarkerLayers.RIDER),
-            order.dropLast(1).takeLast(4),
+            listOf(
+                ScooterMarkerLayers.RIDER_HALO,
+                ScooterMarkerLayers.RIDER_BEAM,
+                ScooterMarkerLayers.RIDER_SHADOW,
+                ScooterMarkerLayers.RIDER_RING,
+                ScooterMarkerLayers.RIDER,
+            ),
+            order.dropLast(1).takeLast(5),
         )
 
         // While they light up, the dots are drawn by bands over their layer, in the order of their priorities,

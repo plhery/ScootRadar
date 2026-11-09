@@ -134,6 +134,7 @@ device shell wm set-ignore-orientation-request false
 reset; run aTurnOfThePhoneKeepsTheScreenUprightAndTheDotAndItsBeamWithAFix
 restoreOrientationRequest
 reset; run theBeamPointsTheWayTheRiderFacesOnATurnedAndTiltedMapWithAFix
+reset; run theRingKeepsItsSizeAnywhereOnATiltedMapWithAFix
 reset
 
 echo "$failures failed"

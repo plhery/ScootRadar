@@ -54,12 +54,16 @@ import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapView
+import org.maplibre.android.style.layers.Property
+import org.maplibre.android.style.layers.PropertyFactory
 import org.maplibre.android.style.layers.SymbolLayer
 import org.maplibre.android.style.layers.TransitionOptions
 import java.io.File
 import java.time.Instant
 import java.util.Locale
 import java.util.Random
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import kotlin.math.PI
 import kotlin.math.abs
@@ -67,6 +71,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /**
@@ -265,6 +270,44 @@ class RiderLocationTest {
     }
 
     /**
+     * MAP-187: on a map tilted 60°, as far as MapLibre tilts it, the ring is MapKit's 22 points across round the
+     * dot above the screen's middle and below it, as MapKit's view is wherever it shows. As a picture laid on the map
+     * it was 18.8 points across halfway up, 25.2 halfway down, and smaller than the dot near the top
+     * (review-app-bh2). Measured across the rider's middle, where the map changes as the ring is hidden, in
+     * MapLibre's own pictures of the map, with nothing of the screen's over it.
+     */
+    @Test
+    fun theRingKeepsItsSizeAnywhereOnATiltedMapWithAFix() {
+        grant()
+        launch()
+        waitFor(FIX_WAIT) { controller.userLocation.value != null }
+        takeTheCompass()
+        face(null)
+        val density = instrumentation.targetContext.resources.displayMetrics.density
+        for ((name, place) in listOf("above" to 0.25f, "below" to 0.68f)) {
+            look(bearing = 0.0, tilt = 60.0)
+            riderAt(place)
+            waitFor(5_000) { drawn(ScooterMarkerLayers.RIDER_RING) }
+            Thread.sleep(SETTLE)
+            val with = mapPicture()
+            ringShown(false)
+            val without = mapPicture()
+            ringShown(true)
+            screenshot("rider-ring-tilt60-$name", with)
+            val (x, y) = riderOnMap()
+            val reach = (20 * density).toInt()
+            val changed = (x - reach..x + reach).filter { it in 0 until with.width }.filter { column ->
+                val before = without.getPixel(column, y)
+                val after = with.getPixel(column, y)
+                maxOf(abs(Color.red(after) - Color.red(before)), abs(Color.green(after) - Color.green(before)), abs(Color.blue(after) - Color.blue(before))) > 24
+            }
+            assertTrue("The ring $name the middle, at ($x, $y): none", changed.isNotEmpty())
+            val across = (changed.last() - changed.first() + 1) / density
+            assertEquals("The ring $name the middle, at ($x, $y), in points", RiderArt.RING_DIAMETER, across.toDouble(), 1.5)
+        }
+    }
+
+    /**
      * Not a check but a measure, run by hand (the review of app-e, finding 3: each turn of the beam lays the rider's
      * layers out again). Over 10 s each, the frames MapLibre draws, how many of them whole, how long each took to
      * encode and render, and the app's CPU time: the map still with the rider off it, with the beam hidden, and with
@@ -370,6 +413,61 @@ class RiderLocationTest {
         val camera = CameraPosition.Builder().target(LatLng(rider.latitude, rider.longitude)).zoom(17.0).bearing(bearing).tilt(tilt).build()
         instrumentation.runOnMainSync { map.moveCamera(CameraUpdateFactory.newCameraPosition(camera)) }
         waitFor(5_000) { drawn(ScooterMarkerLayers.RIDER) }
+    }
+
+    /** The map moved till the rider shows [fraction] of the way down it, in its middle across. */
+    private fun riderAt(fraction: Float) {
+        val map = map!!
+        val view = mapView!!
+        val rider = controller.userLocation.value!!
+        repeat(6) {
+            instrumentation.runOnMainSync {
+                val now = map.projection.toScreenLocation(LatLng(rider.latitude, rider.longitude))
+                // The camera's middle, which the map's padding may move from the view's: the ground as far from it
+                // as the rider is from its place, brought to it.
+                val middle = map.projection.toScreenLocation(map.cameraPosition.target!!)
+                val ground = PointF(middle.x + now.x - view.width / 2f, middle.y + now.y - view.height * fraction)
+                map.moveCamera(CameraUpdateFactory.newLatLng(map.projection.fromScreenLocation(ground)))
+            }
+        }
+        waitFor(5_000) { drawn(ScooterMarkerLayers.RIDER) }
+        val (_, y) = riderOnMap()
+        assertEquals("the rider's height on the map", fraction * view.height, y.toFloat(), view.height * 0.02f)
+    }
+
+    /** The rider's middle on the map, in its pixels. */
+    private fun riderOnMap(): Pair<Int, Int> {
+        val map = map!!
+        val rider = controller.userLocation.value!!
+        var point = PointF()
+        instrumentation.runOnMainSync { point = map.projection.toScreenLocation(LatLng(rider.latitude, rider.longitude)) }
+        return point.x.roundToInt() to point.y.roundToInt()
+    }
+
+    /** The map as MapLibre draws it, without what the screen shows over it. */
+    private fun mapPicture(): Bitmap {
+        val map = map!!
+        val taken = CountDownLatch(1)
+        var picture: Bitmap? = null
+        instrumentation.runOnMainSync {
+            map.snapshot {
+                picture = it
+                taken.countDown()
+            }
+        }
+        assertTrue("MapLibre's picture of the map", taken.await(5, TimeUnit.SECONDS))
+        return picture!!
+    }
+
+    /** The rider's ring shown, or hidden, and drawn so. */
+    private fun ringShown(shown: Boolean) {
+        val map = map!!
+        instrumentation.runOnMainSync {
+            map.style!!.getLayer(ScooterMarkerLayers.RIDER_RING)!!.setProperties(
+                PropertyFactory.visibility(if (shown) Property.VISIBLE else Property.NONE),
+            )
+        }
+        Thread.sleep(SETTLE)
     }
 
     /** The way the rider faces, [heading], on the screen, in radians clockwise from up, as MAP-193 has it. */

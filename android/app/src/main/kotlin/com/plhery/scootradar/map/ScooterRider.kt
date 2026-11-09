@@ -5,6 +5,7 @@ package com.plhery.scootradar.map
 
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
+import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -72,7 +73,7 @@ class ScooterRider(
     private var style: Style? = null
     private var look = RiderArt.Look(dark = false, highContrast = false)
 
-    /** The pictures in the style: the ring's look, and the beam's half angle in whole degrees with its look. */
+    /** The pictures in the style: the look of the ring and its shadow, and the beam's half angle in whole degrees with its look. */
     private var ringLook: RiderArt.Look? = null
     private var beamPicture: Pair<Int, RiderArt.Look>? = null
 
@@ -128,7 +129,8 @@ class ScooterRider(
         val place = controller.userLocation.value
         if (ringLook != look) {
             ringLook = look
-            style.addImage(RING_IMAGE, art.ring(look))
+            style.addImage(SHADOW_IMAGE, art.shadow(look))
+            style.getLayer(ScooterMarkerLayers.RIDER_RING)?.setProperties(PropertyFactory.circleColor(art.ringColor(look)))
             style.getLayer(ScooterMarkerLayers.RIDER)?.setProperties(PropertyFactory.circleColor(art.dot(look)))
             style.getLayer(ScooterMarkerLayers.RIDER_HALO)?.setProperties(PropertyFactory.circleColor(art.halo(look)))
         }
@@ -187,12 +189,12 @@ class ScooterRider(
         val place = controller.userLocation.value ?: return false
         val point = projection.point(place)
         val bounds = projection.bounds
-        return point.x >= -RiderArt.RING_SIZE && point.y >= -RiderArt.RING_SIZE &&
-            point.x <= bounds.maxX + RiderArt.RING_SIZE && point.y <= bounds.maxY + RiderArt.RING_SIZE
+        return point.x >= -RiderArt.SHADOW_SIZE && point.y >= -RiderArt.SHADOW_SIZE &&
+            point.x <= bounds.maxX + RiderArt.SHADOW_SIZE && point.y <= bounds.maxY + RiderArt.SHADOW_SIZE
     }
 
     companion object {
-        private const val RING_IMAGE = "rider-ring"
+        private const val SHADOW_IMAGE = "rider-shadow"
         private const val BEAM_IMAGE = "rider-beam"
         private const val NOWHERE = "{\"type\":\"FeatureCollection\",\"features\":[]}"
 
@@ -238,10 +240,13 @@ class ScooterRider(
         private const val MAX_ZOOM = 25
 
         /**
-         * The rider's source and layers, above every marker and name, bottom to top: the halo, the beam, the ring
-         * and the dot. Each is drawn whatever is near. The halo, the ring and the dot lie on a tilted map, as MapKit
-         * lays its dot on it (a 22 pt ring 20.7 high at 20°), their size the same however far the camera; the beam
-         * is turned with the map, upright on the screen.
+         * The rider's source and layers, above every marker and name, bottom to top: the halo, the beam, the ring's
+         * shadow, the ring and the dot. Each is drawn whatever is near. The ring and the dot lie on a tilted map, as
+         * MapKit lays its dot on it (a 22 pt ring 20.7 high at 20°), their size the same wherever they are on the
+         * screen, as MapKit's view's; the halo lies on it at the map's scale. The shadow lies on it too, a picture,
+         * which MapLibre draws larger where the ground is nearer, near the screen's bottom, and smaller near its top:
+         * the ring is a circle for this, as a picture tilted 60° near the top it would be smaller than the dot. The
+         * beam is turned with the map, upright on the screen.
          */
         fun addLayers(style: Style) {
             style.addSource(GeoJsonSource(ScooterMarkerLayers.RIDER_SOURCE))
@@ -261,18 +266,20 @@ class ScooterRider(
                 ),
             )
             style.addLayer(
-                SymbolLayer(ScooterMarkerLayers.RIDER_RING, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
-                    PropertyFactory.iconImage(RING_IMAGE),
+                SymbolLayer(ScooterMarkerLayers.RIDER_SHADOW, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
+                    PropertyFactory.iconImage(SHADOW_IMAGE),
                     *pictureProperties(pitchAlignment = Property.ICON_PITCH_ALIGNMENT_MAP),
                 ),
             )
-            style.addLayer(
-                CircleLayer(ScooterMarkerLayers.RIDER, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
-                    PropertyFactory.circleRadius(RiderArt.DOT_RADIUS.toFloat()),
-                    PropertyFactory.circlePitchAlignment(Property.CIRCLE_PITCH_ALIGNMENT_MAP),
-                    PropertyFactory.circlePitchScale(Property.CIRCLE_PITCH_SCALE_VIEWPORT),
-                ),
-            )
+            for ((id, radius) in listOf(ScooterMarkerLayers.RIDER_RING to RiderArt.RING_DIAMETER / 2, ScooterMarkerLayers.RIDER to RiderArt.DOT_RADIUS)) {
+                style.addLayer(
+                    CircleLayer(id, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
+                        PropertyFactory.circleRadius(radius.toFloat()),
+                        PropertyFactory.circlePitchAlignment(Property.CIRCLE_PITCH_ALIGNMENT_MAP),
+                        PropertyFactory.circlePitchScale(Property.CIRCLE_PITCH_SCALE_VIEWPORT),
+                    ),
+                )
+            }
             // A breath or a beam shown or hidden is drawn at once, not eased over the style's 0.3 s.
             for (id in listOf(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.RIDER)) {
                 (style.getLayer(id) as? CircleLayer)?.circleRadiusTransition = TransitionOptions(0, 0)
@@ -303,7 +310,8 @@ class RiderArt(private val density: Float) {
 
     /**
      * UIColor.systemBlue in each appearance, its accessible variants with Increase Contrast, as iOS 26 made them: the
-     * beam's and the halo's.
+     * beam's, which ScooterHeadingBeamView takes from systemBlue, and the halo's, taken to be the same, as MapKit's
+     * own halo could not be measured.
      */
     fun blue(look: Look): Int = when {
         look.highContrast && look.dark -> 0xFF5CB8FF.toInt()
@@ -359,13 +367,14 @@ class RiderArt(private val density: Float) {
         drawPath(sector, paint)
     }
 
-    /** The ring under the dot, with its soft shadow all round. */
-    fun ring(look: Look): Bitmap = picture(RING_SIZE) { x, y ->
+    /** The ring's soft shadow all round it, under the ring: the ring's disc, blurred, faint and 1 point down. */
+    fun shadow(look: Look): Bitmap = picture(SHADOW_SIZE) { x, y ->
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = ringColor(look)
-            setShadowLayer(SHADOW_RADIUS, 0f, SHADOW_OFFSET, Color.argb(if (look.dark) 0.3f else 0.25f, 0f, 0f, 0f))
+            color = Color.argb(if (look.dark) 0.3f else 0.25f, 0f, 0f, 0f)
+            // Skia blurs it as it does a shadow layer of that radius.
+            maskFilter = BlurMaskFilter(SHADOW_RADIUS, BlurMaskFilter.Blur.NORMAL)
         }
-        drawCircle(x, y, RING_DIAMETER.toFloat() / 2, paint)
+        drawCircle(x, y + SHADOW_OFFSET, RING_DIAMETER.toFloat() / 2, paint)
     }
 
     private fun picture(size: Double, draw: Canvas.(x: Float, y: Float) -> Unit): Bitmap {
@@ -389,8 +398,8 @@ class RiderArt(private val density: Float) {
         const val DOT_RADIUS = 8.0
         const val RING_DIAMETER = 22.0
 
-        /** The ring's picture, with room for its shadow: 14 points past the ring, three times the shadow's spread. */
-        const val RING_SIZE = 50.0
+        /** The shadow's picture: 14 points past the ring, three times the shadow's spread. */
+        const val SHADOW_SIZE = 50.0
 
         const val BEAM_SIZE = 144.0
         private const val HALO_OPACITY = 0.15

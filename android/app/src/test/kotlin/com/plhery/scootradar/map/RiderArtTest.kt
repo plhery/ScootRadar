@@ -73,18 +73,25 @@ class RiderArtTest {
     }
 
     @Test
-    fun theRingIsWhiteAndTheDotBreathesSlowly() {
-        val ring = art.ring(light)
-        assertEquals(100, ring.width)
-        assertEquals(Color.WHITE, ring.getPixel(50, 50 - 20))
-        assertTrue("its shadow round it", Color.alpha(ring.getPixel(50, 50 - 24)) in 1..254)
+    fun theRingIsWhiteOverItsShadowAndTheDotBreathesSlowly() {
+        // The ring is white, and in dark a light grey, greyer with Increase Contrast.
+        assertEquals(Color.WHITE, art.ringColor(light))
+        assertEquals(Color.WHITE, art.ringColor(RiderArt.Look(dark = false, highContrast = true)))
+        assertEquals(0xFFC7C7CC.toInt(), art.ringColor(dark))
+        assertEquals(0xFFAEAEB2.toInt(), art.ringColor(RiderArt.Look(dark = true, highContrast = true)))
+
+        // Its shadow, a picture of its own under it: black, a quarter strong in its middle, which the ring hides,
+        // 0.3 in dark, and fading out past it.
+        val shadow = art.shadow(light)
+        assertEquals(100, shadow.width)
+        val middle = shadow.getPixel(50, 50 + 2)
+        assertEquals(0, Color.red(middle) + Color.green(middle) + Color.blue(middle))
+        assertEquals(0.25 * 255, Color.alpha(middle).toDouble(), 6.0)
+        assertEquals(0.3 * 255, Color.alpha(art.shadow(dark).getPixel(50, 50 + 2)).toDouble(), 7.0)
+        assertTrue("round the ring", Color.alpha(shadow.getPixel(50, 50 - 24)) in 1 until Color.alpha(middle))
         // MapKit's shadow still shows 7 points under the ring, past the 34-point picture the ring had.
-        assertTrue("its shadow's reach", Color.alpha(ring.getPixel(50, 50 + 2 * 18)) in 1..254)
-        assertEquals(0, Color.alpha(ring.getPixel(0, 0)))
-        // In dark, the ring is a light grey, greyer with Increase Contrast.
-        assertEquals(0xFFC7C7CC.toInt(), art.ring(dark).getPixel(50, 50 - 20))
-        assertEquals(0xFFAEAEB2.toInt(), art.ring(RiderArt.Look(dark = true, highContrast = true)).getPixel(50, 50 - 20))
-        assertEquals(Color.WHITE, art.ring(RiderArt.Look(dark = false, highContrast = true)).getPixel(50, 50 - 20))
+        assertTrue("its reach", Color.alpha(shadow.getPixel(50, 50 + 2 * 18)) in 1..254)
+        assertEquals(0, Color.alpha(shadow.getPixel(0, 0)))
 
         // Full size for a second and more, then in to 5/6 at the breath's middle and out again, every 3 s.
         assertEquals(8.0, RiderArt.breathingRadius(0.0), 1e-3)
@@ -129,7 +136,7 @@ class RiderArtTest {
 
     /**
      * The rider as the map draws its layers, over the ground's land: the halo's circle, the beam turned [beam]
-     * degrees, the ring and the dot, 200 points square.
+     * degrees, the ring's shadow, the ring and the dot, 200 points square.
      */
     private fun rider(look: RiderArt.Look, beam: Double, halfAngle: Double, halo: Double): Bitmap {
         val size = (200 * density).toInt()
@@ -146,8 +153,9 @@ class RiderArtTest {
             rotate(beam.toFloat(), middle, middle)
             drawBitmap(picture, middle - picture.width / 2f, middle - picture.height / 2f, null)
             restore()
-            val ring = art.ring(look)
-            drawBitmap(ring, middle - ring.width / 2f, middle - ring.height / 2f, null)
+            val shadow = art.shadow(look)
+            drawBitmap(shadow, middle - shadow.width / 2f, middle - shadow.height / 2f, null)
+            drawCircle(middle, middle, (RiderArt.RING_DIAMETER / 2 * ratio).toFloat(), Paint(Paint.ANTI_ALIAS_FLAG).apply { color = art.ringColor(look) })
             drawCircle(middle, middle, (RiderArt.DOT_RADIUS * ratio).toFloat(), Paint(Paint.ANTI_ALIAS_FLAG).apply { color = art.dot(look) })
         }
         return bitmap
