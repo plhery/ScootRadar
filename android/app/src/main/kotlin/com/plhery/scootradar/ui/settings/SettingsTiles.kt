@@ -184,10 +184,12 @@ internal fun AppearancePicture(appearance: ScooterAppearance) {
                 }
                 clipPath(lowerHalf) { smallScreen(isDark = true) }
                 if (appearance == ScooterAppearance.Sun) {
-                    // Between the scooters, clear of the search bar and the dock.
+                    // Between the scooters, clear of the search bar and the dock. iOS's Color(1, 0.72, 0.1) and
+                    // Color(0.98, 0.92, 0.7), at the levels the iOS 27 simulator draws them (ui348): a float literal
+                    // here would give the sun's 0.1 as 26 where iOS draws 25.
                     for ((painter, place, colour) in listOf(
-                        Triple(sun, Offset(0.14f, 0.45f), Color(1f, 0.72f, 0.1f)),
-                        Triple(moon, Offset(0.87f, 0.3f), Color(0.98f, 0.92f, 0.7f)),
+                        Triple(sun, Offset(0.14f, 0.45f), Color(0xFFFFB819)),
+                        Triple(moon, Offset(0.87f, 0.3f), Color(0xFFFAEBB3)),
                     )) {
                         // SF Symbols fill the 10 points they are drawn in; Material's fill 20 of their 24 units.
                         val side = 10.dp.toPx() * 1.2f
@@ -209,12 +211,13 @@ private fun DrawScope.smallScreen(isDark: Boolean) {
     val edge = ink.copy(alpha = if (isDark) 0.14f else 0.08f)
     val unit = 1.dp.toPx()
 
-    // The scooters, as the lights they are on the map.
+    // The scooters, as the lights they are on the map: iOS's (0.2, 0.78, 0.35), (0.93, 0.16, 0.55), (0.1, 0.67, 0.86)
+    // and (1, 0.55, 0.1), as the iOS 27 simulator draws them (ui348), where Compose would round each 0.1 up to 26.
     for ((place, colour) in listOf(
-        Offset(0.3f, 0.34f) to Color(0.2f, 0.78f, 0.35f),
-        Offset(0.62f, 0.3f) to Color(0.93f, 0.16f, 0.55f),
-        Offset(0.47f, 0.5f) to Color(0.1f, 0.67f, 0.86f),
-        Offset(0.8f, 0.48f) to Color(1f, 0.55f, 0.1f),
+        Offset(0.3f, 0.34f) to Color(0xFF33C759),
+        Offset(0.62f, 0.3f) to Color(0xFFED298C),
+        Offset(0.47f, 0.5f) to Color(0xFF19ABDB),
+        Offset(0.8f, 0.48f) to Color(0xFFFF8C19),
     )) {
         val centre = Offset(place.x * size.width, place.y * size.height)
         if (isDark) drawCircle(colour.copy(alpha = 0.3f), radius = 5.5f * unit, center = centre)
