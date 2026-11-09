@@ -12,7 +12,10 @@ import com.plhery.scootradar.core.model.ScooterMapLook
 @Immutable
 data class ScootColors(
     val isDark: Boolean,
-    /** Blue under white text: Near me, Show results, the checks in Filters. */
+    /**
+     * Blue under white text: Near me, Show results, the checks in Filters. iOS's (0, 0.42, 0.9), which the simulator
+     * draws #006BE5 in both appearances (ui346), not 0.9 × 255 rounded up.
+     */
     val actionFill: Color,
     /** Blue text and symbols on the glass. */
     val actionText: Color,
@@ -154,7 +157,7 @@ data class ScootColors(
     companion object {
         val Light = ScootColors(
             isDark = false,
-            actionFill = Color(0xFF006BE6),
+            actionFill = Color(0xFF006BE5),
             actionText = Color(0xFF0059BE),
             warning = Color(0xFF8A4D00),
             good = Color(0xFF1C7833),
@@ -194,7 +197,7 @@ data class ScootColors(
 
         val Dark = ScootColors(
             isDark = true,
-            actionFill = Color(0xFF006BE6),
+            actionFill = Color(0xFF006BE5),
             actionText = Color(0xFF5CB0FF),
             warning = Color(0xFFFF9F0A),
             good = Color(0xFF30D158),
