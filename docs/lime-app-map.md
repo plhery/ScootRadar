@@ -390,8 +390,14 @@ five seconds.
 
 Each group is an independent cache feed. Looking at one part of a market
 wakes its nearby groups rather than rescanning the entire city. Requested
-groups are served in arrival order so repeated polling cannot postpone an
-area still waiting for its first refresh. Viewed groups
+groups go nearest the expiry of what they show first, then in arrival order
+(`server/feedScheduler.ts`): a watched group's scooters expire 15 minutes after the
+later of the start of its watch and that of its last collection, so repeated polling
+cannot postpone an area waiting since before its last refresh, and the groups a
+visitor has panned past, no longer watched, wait behind those still on screen. On
+6 November 2026, served in arrival order, a visitor panning across Munich asked for
+some forty groups within minutes; the six Berlin groups a viewer had open, asked for
+again behind them, waited up to twelve minutes, and five expired. Viewed groups
 are selected by their individual assigned cells, including where a group's
 enclosing rectangle spans a gap between rows or disconnected polygons. They
 use the normal active cadence, but a request collects again only the six

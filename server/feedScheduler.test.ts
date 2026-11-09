@@ -442,6 +442,44 @@ it('serves older requested areas before areas a polling client requests again', 
   }
 });
 
+it('keeps the groups a viewer has open ahead of groups a panning visitor has moved on from', async () => {
+  // On 6 November 2026 a visitor panning across Munich asked for some forty Lime groups within minutes. The
+  // Berlin groups a viewer had open, asked for again behind them, waited up to twelve minutes, and five
+  // expired: a group's scooters expire 15 minutes after its collection starts, and Berlin's took 2.5.
+  const account = { host: 'web-production.lime.bike', paced: true, concurrencyKey: 'lime-account:primary', keepsIdleTurns: true,
+    watchMs: 3 * MINUTE, idleIntervalMs: 72 * 60 * MINUTE };
+  const berlin = ['berlin-a', 'berlin-b', 'berlin-c'].map(id => ({ id, ...account }));
+  const munich = Array.from({ length: 30 }, (_, i) => ({ id: `munich-${i}`, ...account }));
+  const { scheduler, times } = schedule([...berlin, ...munich], { lastCollectedAt: () => T0 - 2 * MINUTE },
+    feed => new Promise(resolve => setTimeout(resolve, feed.id.startsWith('berlin') ? 150_000 : 60_000)));
+  // Five minutes in, the visitor pans past three new groups every 20 seconds, then stays on the last six.
+  let step = -1;
+  const visitor = setInterval(() => {
+    if (Date.now() - T0 >= 5 * MINUTE) step = Math.min(step + 1, 8);
+    if (step >= 0) scheduler.demand(munich.slice(3 * step, 3 * step + 6).map(feed => feed.id));
+  }, 20_000);
+  const viewer = setInterval(() => scheduler.demand(berlin.map(feed => feed.id)), 20_000);
+  try {
+    scheduler.demand(berlin.map(feed => feed.id));
+    await vi.advanceTimersByTimeAsync(20 * MINUTE);
+    clearInterval(viewer);
+    clearInterval(visitor);
+    await vi.advanceTimersByTimeAsync(20 * MINUTE);
+    for (const feed of berlin) {
+      const starts = [...times(feed.id).filter(at => at < 20), 20];
+      // Each collection starts in time to end before the last one's scooters are 15 minutes old.
+      expect(Math.max(...starts.slice(1).map((at, i) => at - starts[i]))).toBeLessThan(12.5);
+    }
+    // The groups the visitor stays on from 7:40 are collected within ten minutes, the others once the slots are free.
+    for (const feed of munich.slice(24)) expect(times(feed.id)[0]).toBeLessThan(17.5);
+    for (const feed of munich) expect(times(feed.id).length).toBeGreaterThan(0);
+  } finally {
+    clearInterval(viewer);
+    clearInterval(visitor);
+    scheduler.stop();
+  }
+});
+
 it('warms a deploy\'s new feeds up a stage at a time, so the feeds the cache holds keep their turns', async () => {
   // 30 new feeds on three hosts, 20 seconds a first collection; Lyon, restored, is due 25 seconds in.
   // All due at once, the new feeds would hold every slot until 100 seconds.

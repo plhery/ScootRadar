@@ -1,4 +1,5 @@
 import { reportError } from './errorReporting';
+import { VEHICLE_MAX_AGE_MS } from '../src/lib/dataFreshness';
 import type { MapBounds } from '../src/lib/types';
 
 export interface ScheduledFeed {
@@ -291,9 +292,19 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // feeds, due at once; slow sweeps on three hosts held every slot, and Zürich's feeds, due a
     // minute later, waited behind them for over ten minutes.
     const idle = (feed: T) => this.mode(feed, now) === 'idle' && !this.woken.has(feed.id) ? 1 : 0;
-    // A polling client must not keep re-queuing earlier feeds ahead of areas
-    // still waiting for their first requested collection.
+    // Feeds asked for go nearest the expiry of what they show first, then in the order they were asked
+    // for. While watched, a feed's scooters expire 15 minutes after the later of its watch's start and its
+    // last collection's; once no one watches it, an idle interval after its last collection. A feed
+    // polled again thus goes behind the areas still waiting since before its last collection, and areas a
+    // visitor has moved on from go behind those still on screen. On 6 November 2026 a visitor panning
+    // across Munich asked for some forty Lime groups within minutes; the six Berlin groups a viewer had
+    // open, asked for again behind them, waited up to twelve minutes, and five expired.
     const wakeOrder = new Map([...this.woken].map((id, index) => [id, index]));
+    const expires = (feed: T) => {
+      const since = this.watchedSince.get(feed.id) ?? now, started = this.startedAt.get(feed.id) ?? since;
+      return this.watched(feed.id, now) ? Math.max(started, since) + VEHICLE_MAX_AGE_MS
+        : started + (feed.idleIntervalMs ?? this.options.idleIntervalMs);
+    };
     const waiting = this.definitions.filter(feed => !this.running.has(feed.id));
     // Where the client keeps turns for an idle sweep, its idle feeds due go nearest their expiry first,
     // since those turns are all they may have. On the morning of 1 November 2026 the groups a night's
@@ -304,8 +315,8 @@ export class FeedScheduler<T extends ScheduledFeed> {
     const order = (feed: T) => expiring.get(feed.id) ?? rank(feed);
     const pending = waiting.sort((a, b) => {
       const aWake = wakeOrder.get(a.id), bWake = wakeOrder.get(b.id);
-      return idle(a) - idle(b) ||
-        (aWake !== undefined && bWake !== undefined ? aWake - bWake : order(a) - order(b));
+      if (aWake === undefined || bWake === undefined) return idle(a) - idle(b) || order(a) - order(b);
+      return expires(a) - expires(b) || aWake - bWake;
     });
     // After the deploy of 24 October 2026, paced app-map sweeps held every shared slot, and
     // idle feeds on other hosts went uncollected for over half an hour.
