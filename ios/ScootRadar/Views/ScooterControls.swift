@@ -2108,8 +2108,8 @@ enum RidePriceFormatter {
     private static let wholeUnitCurrencies: Set<String> = ["HUF"]
 }
 
-/// Filters: a minimum battery or range and the providers to show. Choices
-/// apply at once, so the button at the bottom can say what the map will show.
+/// Filters: a minimum battery and the providers to show. Choices apply at
+/// once, so the button at the bottom can say what the map will show.
 struct ScooterFilterSheet: View {
     @Bindable var model: ScooterMapModel
     /// In a popover, it asks for the height that shows the whole list, where the window has it.
@@ -2127,7 +2127,6 @@ struct ScooterFilterSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     batteryFilters
-                    rangeFilter
                     providerFilters
                 }
                 .padding(.horizontal, 20)
@@ -2153,7 +2152,6 @@ struct ScooterFilterSheet: View {
             }
             .sensoryFeedback(.selection, trigger: model.enabledProviders)
             .sensoryFeedback(.selection, trigger: model.minimumBattery)
-            .sensoryFeedback(.selection, trigger: model.minimumRange)
         }
         // No least height: in a short window the popover gets less, and the list scrolls.
         .frame(minWidth: inPopover ? 360 : nil, idealWidth: inPopover ? 400 : nil, idealHeight: inPopover ? wholeHeight : nil)
@@ -2178,53 +2176,6 @@ struct ScooterFilterSheet: View {
 
             if model.minimumBattery > 0 {
                 Text(String(localized: "Scooters without battery info are hidden while a minimum is set."))
-                    .font(.footnote)
-                    .foregroundStyle(ScooterPalette.secondaryText)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 4)
-            }
-        }
-    }
-
-    /// "Range" with the minimum beside it, "Any" or "5 km+", over a slider in whole kilometres up to 30, or
-    /// whole miles up to 20 where lengths are in miles. Moving it off Any sets the battery to Any.
-    private var rangeFilter: some View {
-        let unit = model.rangeUnit
-        let minimum = model.minimumRange
-        return VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                sectionHeader("Range")
-                Spacer(minLength: 0)
-                // The slider says it to VoiceOver.
-                Text(verbatim: ScooterRangeFilter.label(metres: minimum))
-                    .font(.subheadline.weight(minimum > 0 ? .semibold : .regular))
-                    .monospacedDigit()
-                    .foregroundStyle(minimum > 0 ? Color.primary : ScooterPalette.secondaryText)
-                    .padding(.horizontal, 4)
-                    .accessibilityHidden(true)
-            }
-
-            Slider(
-                value: Binding(
-                    get: { Double(ScooterRangeFilter.steps(metres: minimum, unit: unit)) },
-                    set: { model.setMinimumRange(ScooterRangeFilter.metres(steps: Int($0.rounded()), unit: unit)) }
-                ),
-                in: 0 ... Double(unit.maximumSteps),
-                step: 1
-            )
-            .tint(ScooterPalette.actionFill)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .frame(minHeight: 52)
-            .background(
-                Color(uiColor: .tertiarySystemFill),
-                in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-            )
-            .accessibilityLabel(String(localized: "Range"))
-            .accessibilityValue(ScooterRangeFilter.spokenValue(metres: minimum))
-
-            if minimum > 0 {
-                Text(String(localized: "Scooters without range info are hidden while a minimum is set."))
                     .font(.footnote)
                     .foregroundStyle(ScooterPalette.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)

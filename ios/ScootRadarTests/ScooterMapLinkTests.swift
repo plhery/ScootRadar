@@ -40,33 +40,6 @@ final class ScooterMapLinkTests: XCTestCase {
         XCTAssertEqual(ScooterMapLink.battery("-5"), 0)
     }
 
-    /// A minimum range in whole metres, beside the battery's; a link with both keeps the battery's.
-    func testReadsAMinimumRangeAndKeepsTheBatteryOfALinkWithBoth() throws {
-        let link = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?origin=48.7758,9.1829&minRange=5000")!))
-        XCTAssertEqual(link.minimumRange, 5_000)
-        XCTAssertNil(link.minimumBattery)
-        XCTAssertEqual(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minRange=4828")!)?.minimumRange, 4_828)
-        // The map was at "/" before minRange existed: the site reads it on the map alone, as zones (clientParams.ts).
-        XCTAssertNil(ScooterMapLink(url: URL(string: "https://scootradar.com/?minRange=4828")!))
-        XCTAssertEqual(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minRange=0")!)?.minimumRange, 0)
-
-        let both = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minBattery=60&minRange=5000")!))
-        XCTAssertEqual(both.minimumBattery, 60)
-        XCTAssertNil(both.minimumRange)
-        // A battery of Any sets no minimum, and the range stays.
-        let any = try XCTUnwrap(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minBattery=0&minRange=5000")!))
-        XCTAssertEqual(any.minimumBattery, 0)
-        XCTAssertEqual(any.minimumRange, 5_000)
-    }
-
-    func testIgnoresARangeThatIsNoWholeNumberOfMetres() {
-        for text in ["", "far", "-1000", "5000.5", "5e3", "nan", "5000m"] {
-            XCTAssertNil(ScooterMapLink.range(text), text)
-        }
-        XCTAssertEqual(ScooterMapLink.range(" 12000 "), 12_000)
-        XCTAssertNil(ScooterMapLink(url: URL(string: "https://scootradar.com/map?minRange=-5")!)?.minimumRange)
-    }
-
     func testFindsTheCityWhoseCentreALinkNames() throws {
         let zurich = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:zurich" })
         let near = GeoPoint(latitude: zurich.center.latitude + 0.0001, longitude: zurich.center.longitude - 0.0001)

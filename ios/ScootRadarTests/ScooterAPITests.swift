@@ -62,25 +62,6 @@ final class ScooterAPITests: XCTestCase {
         XCTAssertEqual(values["minBattery"], "55")
     }
 
-    /// The minimum range goes in whole metres, and only when there is one: a server from before it
-    /// answers as it did, and the app filters by range itself.
-    func testRequestSendsAMinimumRangeInMetresOnlyWhenOneIsSet() async throws {
-        let session = StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData))
-        let api = ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: session)
-
-        _ = try await api.scooters(bounds: bounds, zoom: 12, minimumBattery: 0, minimumRange: 4_828)
-        let ranged = await session.lastRequest?.url
-        var components = URLComponents(url: try XCTUnwrap(ranged), resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.first { $0.name == "minRange" }?.value, "4828")
-        XCTAssertEqual(components?.queryItems?.first { $0.name == "minBattery" }?.value, "0")
-
-        _ = try await api.scooters(bounds: bounds, zoom: 12, minimumBattery: 30, minimumRange: 0)
-        let unranged = await session.lastRequest?.url
-        components = URLComponents(url: try XCTUnwrap(unranged), resolvingAgainstBaseURL: false)
-        XCTAssertNil(components?.queryItems?.first { $0.name == "minRange" })
-        XCTAssertEqual(components?.queryItems?.first { $0.name == "minBattery" }?.value, "30")
-    }
-
     func testAViewAcrossTheDateLineIsAskedForWithItsWestGreaterThanItsEast() async throws {
         let session = StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData))
         let api = ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: session)
