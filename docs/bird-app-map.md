@@ -55,7 +55,14 @@ minutes six seconds apart (20:52 and 21:48 UTC). Its limit counts requests
 over some period, not their pace, and it is not published; 120 an hour is
 about half what it took. An area nobody looks at is swept once a day
 (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
-ten minutes after a day without a sweep. A request keeps an area watched for
+two hours after a day without a sweep (`BIRD_IDLE_GRACE_MS`): its turn falls at
+the same time each day, but its sweep ends after those queued before it and its
+own 1 to 50 minutes, and a deploy stops the sweeps under way. With ten minutes,
+as before 9 November 2026, 15 of 240 days' sweeps over nine days ended too late.
+That night Scottsdale's waited for Austin's of 27 minutes and two others, then
+deploys at 23:43 and 23:57 UTC stopped it, and it ended 58 minutes late and
+Spin's Kent's, after it, 48: Sentry heard of both as stopped
+(SCOOTRADAR-CACHE-6B). A request keeps an area watched for
 three minutes, and a watched area is swept again as soon as its sweep ends.
 The 44 areas took about 300 requests, so a day's round of them all takes
 about 150 of the client's 1,440 minutes.

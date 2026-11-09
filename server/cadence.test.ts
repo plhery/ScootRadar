@@ -35,7 +35,7 @@ it('reads intervals in seconds and refuses nonsense', () => {
   expect(() => cadenceFromEnv({ SCOOTER_IDLE_INTERVAL_SECONDS: '30' })).toThrow('at least 60');
 });
 
-it('tells a feed collected less often on purpose, as a GCOO town every hour or a Bird area once a day, as stopped only ten minutes after its interval', () => {
+it('tells a feed collected less often on purpose, as a GCOO town every hour, as stopped only ten minutes after its interval, and a Bird area, swept once a day, two hours after it', () => {
   const MINUTE = 60_000;
   const now = 1_800_000_000_000;
   // One town of each collector that sets its own interval, as the cache wraps them, and one feed of the default 20 minutes.
@@ -54,9 +54,12 @@ it('tells a feed collected less often on purpose, as a GCOO town every hour or a
   };
   for (const feed of feeds.filter(candidate => candidate.idleIntervalMs)) {
     const interval = feed.idleIntervalMs! / MINUTE;
-    expect(feedState(collected(feed.id, interval + 1), now, cadence)).toBe('ok');
-    expect(feedState(collected(feed.id, interval + 11), now, cadence)).toBe('expired');
+    const grace = feed.id === ids[3] ? 120 : 10;
+    expect(feedState(collected(feed.id, interval + grace - 1), now, cadence)).toBe('ok');
+    expect(feedState(collected(feed.id, interval + grace + 1), now, cadence)).toBe('expired');
   }
+  // Scottsdale's sweep of 9 November 2026 ended 24 hours and 58 minutes after the last (SCOOTRADAR-CACHE-6B).
+  expect(feedState(collected(ids[3], 24 * 60 + 58), now, cadence)).toBe('ok');
   expect(feeds.filter(feed => feed.idleIntervalMs).map(feed => feed.id)).toEqual(ids);
   expect(feedState(collected('germany:dott_de_bonn', 29), now, cadence)).toBe('ok');
   expect(feedState(collected('germany:dott_de_bonn', 31), now, cadence)).toBe('expired');

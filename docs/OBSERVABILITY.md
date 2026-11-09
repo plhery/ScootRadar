@@ -205,7 +205,8 @@ looks:
   ([guide](lime-app-map.md#cache-behaviour)). Any idle feed collected in a night ban is
   collected again within a quarter of an hour of its end (`feedCurfewEnds`). Each
   expires 10 minutes after its own interval and waits up to half of it between
-  retries. The app maps read in a few requests keep the 20 minutes, so that one that
+  retries; Bird's areas, swept once a day, two hours after it, as their sweeps queue on
+  one client and a deploy stops those under way (`BIRD_IDLE_GRACE_MS`, [guide](bird-app-map.md)). The app maps read in a few requests keep the 20 minutes, so that one that
   stops answering is reported within half an hour. Bird's, Spin's and Bolt's own feeds
   are collected every 13 minutes, as their licences let their data be kept 15
   (`RETENTION_CAPS_MS` in `server/cadence.ts`); the cache drops it then, but they
@@ -541,7 +542,8 @@ Tracing is off, and no trace headers go to the operators' feeds.
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
   cadence's rule (an idle feed after 30 minutes without a successful collection, or ten
   minutes past its own interval for one collected less often on purpose: two hours and
-  ten for the app maps read in slow sweeps, three days and ten minutes for Lime) and is
+  ten for the app maps read in slow sweeps, a day and two hours for Bird's areas, three days
+  and ten minutes for Lime) and is
   still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
   short of expiring: on some weekday mornings sharedmobility.ch cuts most of its downloads off
   (see Logs), and it expired 3 times on 17 October 2026 and 9 on the 22nd, back within 8

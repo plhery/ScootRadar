@@ -264,6 +264,8 @@ export interface CollectableScooterFeed {
   host: string;
   /** Node collectors may scan idle areas less often under an upstream request quota. */
   idleIntervalMs?: number;
+  /** How long past that interval it may go without a collection before it expires, when not ten minutes (ownIdleExpiries). */
+  idleGraceMs?: number;
   /** How long a request keeps it watched, when not the cache's (FeedScheduler). */
   watchMs?: number;
   /** An app-map sweep whose client spaces every request to its host (FeedScheduler). */

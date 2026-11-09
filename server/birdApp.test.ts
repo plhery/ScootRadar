@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { BIRD_BRANDS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS, BIRD_WATCH_MS, BirdClient, BirdUntrustedMapError,
+import { BIRD_BRANDS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS, BIRD_WATCH_MS, BirdClient, BirdUntrustedMapError,
   collectBirdArea, parseBirdReply, sweepBirdArea, withBirdAppCollectors } from './birdApp';
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
@@ -268,8 +268,9 @@ describe('Bird areas in the cache', () => {
     expect(wrapped.filter((candidate, i) => candidate !== feeds[i]).map(candidate => candidate.id))
       .toEqual(systems.map(candidate => `${COUNTRY_SOURCES[candidate.country]}:${candidate.id}`));
     expect(BIRD_IDLE_INTERVAL_MS).toBe(24 * 60 * 60_000);
+    expect(BIRD_IDLE_GRACE_MS).toBe(2 * 60 * 60_000);
     for (const candidate of wrapped.filter((entry, i) => entry !== feeds[i])) {
-      expect(candidate).toMatchObject({ idleIntervalMs: BIRD_IDLE_INTERVAL_MS, watchMs: BIRD_WATCH_MS, paced: true });
+      expect(candidate).toMatchObject({ idleIntervalMs: BIRD_IDLE_INTERVAL_MS, idleGraceMs: BIRD_IDLE_GRACE_MS, watchMs: BIRD_WATCH_MS, paced: true });
       // Swept between 08:00 and 21:00 in its town.
       expect(candidate.nightEnds).toBeTypeOf('function');
     }

@@ -30,6 +30,16 @@ export const BIRD_START_HOLD_MS = 120_000;
 /** An area nobody looks at is swept once a day, by day in its town (daytimeSweeps). */
 export const BIRD_IDLE_INTERVAL_MS = 24 * 60 * 60_000;
 /**
+ * How long past its day an area may go without a sweep before it expires: two hours, not ten minutes. Its turn
+ * falls at the same time each day, but its sweep ends after those queued before it on the one client and its own
+ * 1 to 50 minutes, and a deploy stops the sweeps under way. From 31 October to 9 November 2026 a day's sweep
+ * ended 24 hours after the last at the median and 24 hours 27 at the 99th centile, past ten minutes 15 times
+ * in 240. On 9 November Scottsdale's waited for Austin's of 27 minutes and two others, then two deploys 14
+ * minutes apart stopped it, and it ended 58 minutes late and Kent's, after it, 48: Sentry heard of them as
+ * stopped (SCOOTRADAR-CACHE-6B).
+ */
+export const BIRD_IDLE_GRACE_MS = 2 * 60 * 60_000;
+/**
  * How long a request keeps an area watched: three minutes, not the cache's ten, as Lime's (LIME_WATCH_MS).
  * A watched area is swept again as soon as its sweep ends, on the two requests a minute.
  */
@@ -339,7 +349,7 @@ export function withBirdAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const areas = new Map(systems.filter(system => system.birdAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = areas.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: BIRD_IDLE_INTERVAL_MS, watchMs: BIRD_WATCH_MS, paced: true,
+    return system ? { ...feed, idleIntervalMs: BIRD_IDLE_INTERVAL_MS, idleGraceMs: BIRD_IDLE_GRACE_MS, watchMs: BIRD_WATCH_MS, paced: true,
       ...system.timeZone ? daytimeSweeps(feed.id, system.timeZone, BIRD_IDLE_INTERVAL_MS) : {},
       collect: () => collectBirdArea(system, previous(feed.id) ?? [], api) } : feed;
   });
