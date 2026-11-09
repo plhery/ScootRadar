@@ -219,7 +219,7 @@ describe('French scooter feeds', () => {
     await expect(collector('naolib_fr_nantes').collect()).rejects.toThrow('naolib_fr_nantes discovery contains no supported scooter feeds');
   });
 
-  it('retains unknown battery percentages and honors provider, battery and range filters', async () => {
+  it('retains unknown battery percentages and honors provider and battery filters', async () => {
     const serve = fixture('lime_fr_marseille', { vehicles: [{
       bike_id: 'lime-1', vehicle_type_id: 'scooter', lat: 43.296, lon: 5.369, current_range_meters: 15000,
     }] });
@@ -229,9 +229,6 @@ describe('French scooter feeds', () => {
     const result = await fetchScooters(query);
     expect(result.vehicles[0]).toMatchObject({ battery: null, range_m: 15000 });
     expect((await fetchScooters({ ...query, minBattery: 20 })).vehicles).toEqual([]);
-    // Lime gives Marseille a range and no battery: a range minimum is what it can be filtered by.
-    expect((await fetchScooters({ ...query, minRange: 15_000 })).vehicles).toHaveLength(1);
-    expect((await fetchScooters({ ...query, minRange: 15_001 })).vehicles).toEqual([]);
     expect(fetchMock).toHaveBeenCalledTimes(4);
   });
 

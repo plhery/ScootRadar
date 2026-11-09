@@ -1691,15 +1691,15 @@ test('the filters offer battery presets and providers with their counts, and say
   await expect(show).toHaveText('Show 3 scooters');
   await expect(filters.getByRole('button', { name: 'Done' })).toHaveCount(0);
 
-  // Battery first: one choice of four, and no slider; the range's comes under it.
+  // Battery first: one choice of four, and no slider.
   const battery = filters.getByRole('group', { name: 'Battery' });
   await expect(battery.getByRole('button')).toHaveText(['Any', '30%+', '60%+', '80%+']);
   await expect(battery.getByRole('button', { name: 'Any' })).toHaveAttribute('aria-pressed', 'true');
-  await expect(battery.getByRole('slider')).toHaveCount(0);
+  await expect(filters.getByRole('slider')).toHaveCount(0);
   const help = filters.getByText('Scooters without battery info are hidden while a minimum is set.');
   await expect(help).toHaveCount(0);
   const sections = await filters.getByRole('heading', { level: 3 }).allTextContents();
-  expect(sections).toEqual(['Battery', 'Range', 'Providers']);
+  expect(sections).toEqual(['Battery', 'Providers']);
 
   await battery.getByRole('button', { name: '60%+' }).click();
   await expect(battery.getByRole('button', { name: '60%+' })).toHaveAttribute('aria-pressed', 'true');
@@ -1746,75 +1746,6 @@ test('the filters offer battery presets and providers with their counts, and say
   await show.click();
   await expect(filters).not.toBeVisible();
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
-});
-
-test('the filters offer a range minimum on a slider, the battery\'s or the range\'s, in kilometres or miles', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/map?origin=47.3769,8.5417');
-  await expect(page.locator('.scooter-marker')).toHaveCount(3);
-  await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
-  const show = filters.locator('.sheet-primary');
-  const battery = filters.getByRole('group', { name: 'Battery' });
-  const range = filters.getByRole('slider', { name: 'Range' });
-  const value = filters.locator('.filter-value');
-  const help = filters.getByText('Scooters without range info are hidden while a minimum is set.');
-  await expect(range).toHaveValue('0');
-  await expect(range).toHaveAttribute('aria-valuetext', 'Any');
-  await expect(value).toHaveText('Any');
-  await expect(help).toHaveCount(0);
-  // As wide as the sheet's sections and a finger's height, once the sheet has risen.
-  await filters.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
-  const slider = (await range.boundingBox())!;
-  expect(slider.height).toBeGreaterThanOrEqual(44);
-  expect(slider.width).toBeGreaterThan(300);
-
-  // Step by step with the keys: Lime goes 14 km, Bird 10 and Bolt 9.
-  await range.focus();
-  for (let step = 0; step < 10; step++) await page.keyboard.press('ArrowRight');
-  await expect(range).toHaveValue('10');
-  await expect(range).toHaveAttribute('aria-valuetext', '10 km or more');
-  await expect(value).toHaveText('10 km+');
-  await expect(help).toBeVisible();
-  await expect(show).toHaveText('Show 2 scooters');
-  await expect(page.locator('.scooter-marker')).toHaveCount(2);
-  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=10000');
-  const accessibility = await new AxeBuilder({ page }).include('.control-sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
-  expect(accessibility.violations).toEqual([]);
-
-  // One or the other.
-  await battery.getByRole('button', { name: '60%+' }).click();
-  await expect(range).toHaveValue('0');
-  await expect(value).toHaveText('Any');
-  await expect.poll(() => new URL(page.url()).search).toBe('?minBattery=60');
-  await range.fill('15');
-  await expect(battery.getByRole('button', { name: 'Any' })).toHaveAttribute('aria-pressed', 'true');
-  await expect(value).toHaveText('15 km+');
-  await expect(show).toHaveText('Show 0 scooters');
-  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=15000');
-
-  // In miles: 20 at most, 15 km the nearest whole mile, 9, which Lime's 14 km (8.7 mi) doesn't reach, and 8 does.
-  await filters.getByRole('button', { name: 'Reset', exact: true }).click();
-  await expect(range).toHaveValue('0');
-  await expect.poll(() => new URL(page.url()).search).toBe('');
-  await range.fill('15');
-  await show.click();
-  await page.getByRole('button', { name: 'Settings', exact: true }).click();
-  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
-  await settings.getByRole('group', { name: 'Units' }).getByRole('button', { name: 'Miles' }).click();
-  await page.keyboard.press('Escape');
-  await page.getByRole('button', { name: 'Filters active', exact: true }).click();
-  await expect(range).toHaveAttribute('max', '20');
-  await expect(range).toHaveValue('9');
-  await expect(value).toHaveText('9 mi+');
-  await expect(range).toHaveAttribute('aria-valuetext', '9 mi or more');
-  await expect(show).toHaveText('Show 0 scooters');
-  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=14484');
-  await range.focus();
-  await page.keyboard.press('ArrowLeft');
-  await expect(value).toHaveText('8 mi+');
-  await expect(show).toHaveText('Show 1 scooter');
-  await expect.poll(() => new URL(page.url()).search).toBe('?minRange=12875');
 });
 
 test('a battery minimum from an old link snaps down to a preset, and the server applies it to clusters', async ({ page }) => {

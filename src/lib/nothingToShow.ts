@@ -3,7 +3,6 @@ import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCitie
 import { formatLocale } from '@/lib/formatLocale';
 import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import type { LoadFailure } from '@/lib/loadFailure';
-import { formatMinimumRange } from '@/lib/rangeSlider';
 import type { ScooterLoading } from '@/lib/scooterDataState';
 import type { ScooterCluster, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import type { UiTextFormatter } from '@/lib/uiText';
@@ -13,29 +12,22 @@ export const COVERAGE_CITY_COUNT = 3;
 
 export interface FilterState {
   minBattery: number;
-  /** The range minimum in metres, on a step of the units in use (range.ts); 0 or absent for none. */
-  minRange?: number;
   enabledProviders: ReadonlySet<string>;
   /** Providers that operate in the viewport. */
   viewportProviders: readonly string[];
 }
 
 /** A filter is active when it can hide something here; providers elsewhere do not count. */
-export function filtersActive({ minBattery, minRange = 0, enabledProviders, viewportProviders }: FilterState): boolean {
-  return minBattery > 0 || minRange > 0 || viewportProviders.some(provider => !enabledProviders.has(provider));
+export function filtersActive({ minBattery, enabledProviders, viewportProviders }: FilterState): boolean {
+  return minBattery > 0 || viewportProviders.some(provider => !enabledProviders.has(provider));
 }
 
 export type FilterSummaryPart =
   | { kind: 'providers'; names: string[] }
-  | { kind: 'battery'; value: number }
-  /** In metres. */
-  | { kind: 'range'; meters: number };
+  | { kind: 'battery'; value: number };
 
-/**
- * The parts of a line such as "Lime only · battery 60% or more", or "Lime only · range 5 km or more",
- * in that order.
- */
-export function filterSummary({ minBattery, minRange = 0, enabledProviders, viewportProviders }: FilterState): FilterSummaryPart[] {
+/** The parts of a line such as "Lime only · battery 60% or more", in that order. */
+export function filterSummary({ minBattery, enabledProviders, viewportProviders }: FilterState): FilterSummaryPart[] {
   const parts: FilterSummaryPart[] = [];
   if (viewportProviders.some(provider => !enabledProviders.has(provider))) {
     const enabled = PROVIDER_KEYS.filter(key => enabledProviders.has(key));
@@ -45,42 +37,35 @@ export function filterSummary({ minBattery, minRange = 0, enabledProviders, view
     if (names.length > 0) parts.push({ kind: 'providers', names });
   }
   if (minBattery > 0) parts.push({ kind: 'battery', value: minBattery });
-  if (minRange > 0) parts.push({ kind: 'range', meters: minRange });
   return parts;
 }
 
-export function formatFilterSummary(parts: readonly FilterSummaryPart[], formatter: UiTextFormatter): string {
-  const { locale, region, t, formatNumber } = formatter;
+export function formatFilterSummary(parts: readonly FilterSummaryPart[], { locale, region, t, formatNumber }: UiTextFormatter): string {
   const line = parts.map(part => part.kind === 'battery'
     ? t('hidden.battery', { value: formatNumber(part.value) })
-    // "range 5 km or more", in whole kilometres or miles as the slider has it.
-    : part.kind === 'range'
-      ? t('hidden.range', { distance: formatMinimumRange(part.meters, formatter) ?? '' })
-      // "Lime and Voi", "Lime und Voi", "Lime et Voi", "Lime e Voi".
-      : t('hidden.only', {
-          names: new Intl.ListFormat(formatLocale(locale, region), { style: 'long', type: 'conjunction' }).format(part.names),
-        })
+    // "Lime and Voi", "Lime und Voi", "Lime et Voi", "Lime e Voi".
+    : t('hidden.only', {
+        names: new Intl.ListFormat(formatLocale(locale, region), { style: 'long', type: 'conjunction' }).format(part.names),
+      })
   ).join(' · ');
-  // The battery and range parts start in lower case because they usually follow the providers.
+  // The battery part starts in lower case because it usually follows the providers.
   return line.charAt(0).toLocaleUpperCase(locale) + line.slice(1);
 }
 
 /**
  * How many scooters the viewport holds when the filters are ignored: what the
  * filters hide once they hide everything. Null when the response cannot tell,
- * because the server already filtered by battery or range or cut the list short.
+ * because the server already filtered by battery or cut the list short.
  */
-export function unfilteredCountInView({ meta, vehicles, clusters, viewport, serverMinBattery, serverMinRange = 0 }: {
+export function unfilteredCountInView({ meta, vehicles, clusters, viewport, serverMinBattery }: {
   meta: Pick<ScooterResponseMeta, 'truncated'> | null;
   vehicles: readonly Pick<Vehicle, 'lat' | 'lng'>[];
   clusters: readonly Pick<ScooterCluster, 'lat' | 'lng' | 'providers'>[];
   viewport: MapViewport | null;
   /** The minBattery of the query that produced the response. */
   serverMinBattery: number;
-  /** Its minRange, 0 or absent for none. */
-  serverMinRange?: number;
 }): number | null {
-  if (!meta || !viewport || meta.truncated || serverMinBattery > 0 || serverMinRange > 0) return null;
+  if (!meta || !viewport || meta.truncated || serverMinBattery > 0) return null;
   let count = 0;
   for (const vehicle of vehicles) {
     if (viewportContainsPoint(viewport, vehicle.lat, vehicle.lng)) count++;

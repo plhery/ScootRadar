@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, joinCityOverviews, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { scooterAnswerZoom } from './scooterQuery';
@@ -92,79 +92,6 @@ describe('persistent map snapshots', () => {
     const charged = querySnapshot(cached, { ...query, minBattery: 50 }, 9, now);
     expect(charged.clusters[0].count).toBe(1);
     expect(querySnapshot(cached, { ...query, providers: new Set(['pony']) }, 9, now).clusters).toEqual([]);
-  });
-
-  describe('the range minimum', () => {
-    // Bolt and Dott give both in Stuttgart, Lime and Voi a range alone, some a battery alone.
-    const ranged = feed({ vehicles: [
-      { ...vehicle('far', 90), range_m: 12_400 },
-      { ...vehicle('short', 80), range_m: 4_999 },
-      { ...vehicle('unknown', 80), range_m: null },
-      { ...vehicle('flat', 20), range_m: 9_000 },
-      { ...vehicle('unsaid', null), range_m: 30_000 },
-    ] });
-    const ids = (response: { vehicles: Vehicle[] }) => response.vehicles.map(item => item.vehicle_id).sort();
-    // As saved before the ranges were counted.
-    const withoutRanges = (overview: MobilitySnapshot['overview']): MobilitySnapshot['overview'] => ({ ...overview,
-      cities: overview.cities.map(city => {
-        const saved = { ...city };
-        delete saved.ranges;
-        return saved;
-      }) });
-
-    it('leaves out at street zoom the scooters that do not say they can go that far', () => {
-      const cached = snapshot([ranged]);
-      expect(ids(querySnapshot(cached, { ...query, minRange: 5_000 }, 16, now))).toEqual(['far', 'flat', 'unsaid']);
-      expect(ids(querySnapshot(cached, { ...query, minRange: 12_400 }, 16, now))).toEqual(['far', 'unsaid']);
-      expect(ids(querySnapshot(cached, { ...query, minRange: 0 }, 16, now))).toHaveLength(5);
-      // Both, which the clients never ask for: those that pass both.
-      expect(ids(querySnapshot(cached, { ...query, minBattery: 50, minRange: 5_000 }, 16, now))).toEqual(['far']);
-    });
-
-    it('counts the ranges in the city totals beside the batteries, by whole kilometres', () => {
-      const cached = snapshot([ranged]);
-      const lyonTotals = cached.overview.cities.find(city => city.city === 'Lyon')!;
-      expect(lyonTotals.ranges?.dott).toHaveLength(102);
-      expect(lyonTotals.ranges?.dott[4]).toBe(1);
-      expect(lyonTotals.ranges?.dott[12]).toBe(1);
-      expect(lyonTotals.ranges?.dott[101]).toBe(1);
-      const count = (minRange: number, minBattery = 0) =>
-        querySnapshot(cached, { ...query, minBattery, minRange }, 8, now).clusters[0]?.count ?? 0;
-      expect(count(0)).toBe(5);
-      expect(count(4_000)).toBe(4);
-      expect(count(5_000)).toBe(3);
-      expect(count(13_000)).toBe(1);
-      // 3 miles, 4,828 m, from the fifth kilometre: the 4,999 m scooter is counted only at street zoom.
-      expect(count(4_828)).toBe(3);
-      expect(ids(querySnapshot(cached, { ...query, minRange: 4_828 }, 16, now))).toEqual(['far', 'flat', 'short', 'unsaid']);
-      expect(count(100_000)).toBe(0);
-      // Both: no more than either lets through.
-      expect(count(5_000, 50)).toBe(3);
-      expect(count(13_000, 50)).toBe(1);
-    });
-
-    it('builds again totals saved before ranges were counted, and answers no range minimum from them meanwhile', () => {
-      const built = snapshot([ranged]);
-      const saved: MobilitySnapshot = { ...built, overview: withoutRanges(built.overview) };
-      expect(overviewNeedsRefresh(built, built.feeds, now + 60_000)).toBe(false);
-      expect(overviewNeedsRefresh(saved, saved.feeds, now + 60_000)).toBe(true);
-      expect(() => querySnapshot(saved, { ...query, minRange: 5_000 }, 8, now)).toThrow(ScooterFeedsUnavailableError);
-      // What they hold still answers the rest.
-      expect(querySnapshot(saved, query, 8, now).clusters[0].count).toBe(5);
-      expect(querySnapshot(saved, { ...query, minBattery: 50 }, 8, now).clusters[0].count).toBe(3);
-      expect(ids(querySnapshot(saved, { ...query, minRange: 5_000 }, 16, now))).toEqual(['far', 'flat', 'unsaid']);
-    });
-
-    it('joins the ranges of two sets of feeds as their batteries, and has none where either has none', () => {
-      const other = feed({ id: 'france:voi_lyon', provider: 'voi', vehicles: [{ ...vehicle('three'), provider: 'voi', range_m: 40_000 }] });
-      const joined = joinCityOverviews(buildCityOverview([ranged], now), buildCityOverview([other, feed({ id: 'more',
-        vehicles: [{ ...vehicle('again'), range_m: 12_900 }] })], now));
-      const lyonTotals = joined.cities.find(city => city.city === 'Lyon')!;
-      expect(lyonTotals.ranges?.dott[12]).toBe(2);
-      expect(lyonTotals.ranges?.voi[40]).toBe(1);
-      const unranged = withoutRanges(buildCityOverview([other], now));
-      expect(joinCityOverviews(buildCityOverview([ranged], now), unranged).cities.some(city => city.ranges)).toBe(false);
-    });
   });
 
   it('preserves a failing feed up to fifteen minutes but never offers older vehicles', () => {

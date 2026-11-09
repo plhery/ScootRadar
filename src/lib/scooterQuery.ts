@@ -62,7 +62,6 @@ export function parseScooterQuery(params: URLSearchParams): ScooterQueryResult {
   const north = numberParam(params, 'north', 47.43);
   const east = numberParam(params, 'east', 8.62);
   const minBattery = numberParam(params, 'minBattery', 0);
-  const minRange = numberParam(params, 'minRange', 0);
   const zoom = params.has('zoom') ? numberParam(params, 'zoom', Number.NaN) : null;
 
   if (
@@ -76,8 +75,6 @@ export function parseScooterQuery(params: URLSearchParams): ScooterQueryResult {
     // A west greater than the east is a box across the 180° line (geo.ts).
     south >= north || lngSpan({ west, east }) <= 0 ||
     !Number.isInteger(minBattery) || minBattery < 0 || minBattery > 100 ||
-    // In metres, as far as a range is believed (MAX_SCOOTER_RANGE_M in scooterFeeds.ts).
-    !Number.isInteger(minRange) || minRange < 0 || minRange > 200_000 ||
     (zoom !== null && (!Number.isInteger(zoom) || zoom < 0 || zoom > 22))
   ) {
     return { ok: false, error: 'Invalid scooter search parameters' };
@@ -108,7 +105,6 @@ export function parseScooterQuery(params: URLSearchParams): ScooterQueryResult {
       origin: lat !== null && lng !== null ? [lat, lng] : null,
       bounds: supportedBounds ?? requestedBounds,
       minBattery,
-      minRange,
       providers,
       outsideCoverage: !coverageIntersects(MOBILITY_COVERAGE, requestedBounds),
     },

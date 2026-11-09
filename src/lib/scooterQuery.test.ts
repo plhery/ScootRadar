@@ -12,7 +12,6 @@ describe('parseScooterQuery', () => {
       north: '47.39',
       east: '8.57',
       minBattery: '25',
-      minRange: '4828',
       provider: 'lime, dott',
       zoom: '15',
     }));
@@ -21,7 +20,6 @@ describe('parseScooterQuery', () => {
     if (!result.ok) return;
     expect(result.query.origin).toEqual([47.3769, 8.5417]);
     expect(result.query.minBattery).toBe(25);
-    expect(result.query.minRange).toBe(4828);
     expect(result.query.providers).toEqual(new Set(['lime', 'dott']));
     expect(result.zoom).toBe(15);
   });
@@ -87,21 +85,7 @@ describe('parseScooterQuery', () => {
     expect(result.query.outsideCoverage).toBe(true);
   });
 
-  it('takes a range minimum in whole metres, none when it is not asked for, as from older apps', () => {
-    const minRange = (params: Record<string, string>) => {
-      const result = parseScooterQuery(new URLSearchParams(params));
-      return result.ok ? result.query.minRange : result.error;
-    };
-    expect(minRange({})).toBe(0);
-    expect(minRange({ minRange: '0' })).toBe(0);
-    expect(minRange({ minRange: '5000' })).toBe(5000);
-    expect(minRange({ minRange: '200000' })).toBe(200_000);
-    // The two together, which the clients never send, are both kept.
-    const both = parseScooterQuery(new URLSearchParams({ minBattery: '60', minRange: '5000' }));
-    expect(both.ok && [both.query.minBattery, both.query.minRange]).toEqual([60, 5000]);
-  });
-
-  it('rejects unknown providers and non-integer battery and range values', () => {
+  it('rejects unknown providers and non-integer battery values', () => {
     expect(parseScooterQuery(new URLSearchParams({ provider: 'unknown' }))).toEqual({
       ok: false,
       error: 'Unknown scooter provider',
@@ -110,13 +94,6 @@ describe('parseScooterQuery', () => {
       ok: false,
       error: 'Invalid scooter search parameters',
     });
-    // A range minimum is whole metres, from none to the 200 km a range is believed up to.
-    for (const minRange of ['4828.5', '-1', '200001', '', '5km', 'Infinity']) {
-      expect(parseScooterQuery(new URLSearchParams({ minRange })), minRange).toEqual({
-        ok: false,
-        error: 'Invalid scooter search parameters',
-      });
-    }
     expect(parseScooterQuery(new URLSearchParams({ lat: '' }))).toEqual({
       ok: false,
       error: 'Invalid scooter search parameters',

@@ -30,18 +30,16 @@ const HEALTHY: ProviderHealth = { down: [], unknown: false };
  * The providers with a scooter of the loaded data inside the viewport, counted
  * as the chips count them but whatever the rider's own filters hide. Null when
  * the data cannot tell: the server already left out the scooters under the
- * rider's battery or range minimum.
+ * rider's battery minimum.
  */
-export function providersInView({ vehicles, clusters, viewport, serverMinBattery, serverMinRange = 0 }: {
+export function providersInView({ vehicles, clusters, viewport, serverMinBattery }: {
   vehicles: readonly Pick<Vehicle, 'provider' | 'lat' | 'lng'>[];
   clusters: readonly Pick<ScooterCluster, 'lat' | 'lng' | 'providers'>[];
   viewport: MapViewport | null;
   /** The minBattery of the query that produced the response. */
   serverMinBattery: number;
-  /** Its minRange, 0 or absent for none. */
-  serverMinRange?: number;
 }): Set<string> | null {
-  if (!viewport || serverMinBattery > 0 || serverMinRange > 0) return null;
+  if (!viewport || serverMinBattery > 0) return null;
   const providers = new Set<string>();
   for (const vehicle of vehicles) {
     if (viewportContainsPoint(viewport, vehicle.lat, vehicle.lng)) providers.add(vehicle.provider);

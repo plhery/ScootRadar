@@ -21,8 +21,6 @@ import PlayTestChip from '@/components/PlayTestChip';
 import PlayTestSheet from '@/components/PlayTestSheet';
 import ZoneLegend from '@/components/ZoneLegend';
 import { selectionFeedback } from '@/lib/feedback';
-import { passesMinimums } from '@/lib/range';
-import { snapMinimumRange } from '@/lib/rangeSlider';
 import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import { PROVIDERS } from '@/lib/types';
 import { LEGACY_PROVIDERS_STORAGE_KEY, PROVIDERS_OFF_STORAGE_KEY, providersOffToSave, savedProvidersOff } from '@/lib/providerFilterStorage';
@@ -66,7 +64,7 @@ import { lightsOrigin } from '@/lib/mapLights';
 import { useLiveLocation } from '@/lib/useLiveLocation';
 import { useWalkRoute } from '@/lib/useWalkRoute';
 import { appUpdateHold } from '@/lib/serviceWorkerUpdates';
-import { measurementSystem, walkEstimate, type WalkEstimate, type WalkOrigin } from '@/lib/walking';
+import { walkEstimate, type WalkEstimate, type WalkOrigin } from '@/lib/walking';
 import { WALK_ROUTE_MAX_M } from '@/lib/walkRoute';
 import type { WalkFrom } from '@/lib/walkState';
 import { requestHeadingPermission, type HeadingPermission } from '@/lib/deviceHeading';
@@ -141,7 +139,7 @@ function loadParamsFromStorage(): ClientParams | null {
 
 function readUrlParams(): ClientParams {
   if (typeof window === 'undefined') {
-    return { origin: null, minBattery: undefined, minRange: undefined, theme: undefined, map: undefined, zones: undefined };
+    return { origin: null, minBattery: undefined, theme: undefined, map: undefined, zones: undefined };
   }
   // A launch from the home screen has no link: the settings are those saved. The address then shows them once
   // they are set.
@@ -193,7 +191,7 @@ function viewportsEqual(a: MapViewport | null, b: MapViewport): boolean {
 }
 
 export default function Home() {
-  const { t, locale, region, units } = useI18n();
+  const { t, locale, region } = useI18n();
   // A wide window with a mouse: the dock is a legend, cards open beside their marker, keys work.
   const desktop = useDesktopLayout();
   const [initialCenter, setInitialCenter] = useState<[number, number]>(SWITZERLAND_CENTER);
@@ -207,10 +205,6 @@ export default function Home() {
   } = useLiveLocation();
   const [headingPermission, setHeadingPermission] = useState<HeadingPermission | null>(null);
   const [minBattery, setMinBattery] = useState(0);
-  // In metres, as chosen or given by a link; read on a whole step of the units in use, so that after 5 km
-  // the filters say "3 mi+" in miles, and mean the 4,828 m of 3 miles (range.ts).
-  const [minRange, setMinRange] = useState(0);
-  const rangeMinimum = snapMinimumRange(minRange, measurementSystem(region, units));
   const [theme, setTheme] = useState<ThemeName>('auto');
   const [mapStyle, setMapStyle] = useState<MapStyleName>('calm');
   // The operators' zones: on unless turned off in the settings or by a link.
@@ -287,7 +281,6 @@ export default function Home() {
     setPreferencesReady(true);
     const params = readUrlParams();
     if (params.minBattery !== undefined) setMinBattery(params.minBattery);
-    if (params.minRange !== undefined) setMinRange(params.minRange);
     if (params.theme) setTheme(params.theme);
     if (params.map) setMapStyle(params.map);
     if (params.zones !== undefined) setZonesOn(params.zones);
@@ -325,7 +318,7 @@ export default function Home() {
   // Sync state to URL + localStorage
   useEffect(() => {
     if (!preferencesReady) return;
-    const p = serializeClientParams({ minBattery, minRange: rangeMinimum, theme, map: mapStyle, zones: zonesOn });
+    const p = serializeClientParams({ minBattery, theme, map: mapStyle, zones: zonesOn });
     const qs = p.toString();
     const newUrl = qs ? `?${qs}` : window.location.pathname;
     window.history.replaceState(null, '', newUrl);
@@ -334,7 +327,7 @@ export default function Home() {
     const stored: Record<string, string> = {};
     p.forEach((v, k) => { stored[k] = v; });
     saveParamsToStorage(stored);
-  }, [minBattery, rangeMinimum, theme, mapStyle, zonesOn, preferencesReady]);
+  }, [minBattery, theme, mapStyle, zonesOn, preferencesReady]);
 
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -351,12 +344,8 @@ export default function Home() {
 
   // Clustered responses are filtered by the server; single scooters by the client.
   const scooterQuery = useMemo<ScooterDataQuery | null>(
-    () => mapQuery && {
-      ...mapQuery,
-      minBattery: mapQuery.zoom <= 15 ? minBattery : 0,
-      minRange: mapQuery.zoom <= 15 ? rangeMinimum : 0,
-    },
-    [mapQuery, minBattery, rangeMinimum]
+    () => mapQuery && { ...mapQuery, minBattery: mapQuery.zoom <= 15 ? minBattery : 0 },
+    [mapQuery, minBattery]
   );
   // A searched place wins over your location until it is cleared.
   const walkOrigin = useMemo<WalkOrigin | null>(() => {
@@ -492,7 +481,6 @@ export default function Home() {
   const resetFilters = useCallback(() => {
     track('filters_reset');
     setMinBattery(0);
-    setMinRange(0);
     setEnabledProviders(new Set(Object.keys(PROVIDERS)));
   }, []);
 
@@ -508,7 +496,7 @@ export default function Home() {
 
     for (const vehicle of vehicles) {
       if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinimums(vehicle, { minBattery, minRange: rangeMinimum })) continue;
+      if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
 
       providerCounts[vehicle.provider] = (providerCounts[vehicle.provider] ?? 0) + 1;
       if (enabledProviders.has(vehicle.provider)) visibleVehicles.push(vehicle);
@@ -537,7 +525,6 @@ export default function Home() {
     clusters,
     enabledProviders,
     minBattery,
-    rangeMinimum,
     responseMeta?.mode,
     vehicles,
     viewportBounds,
@@ -552,7 +539,7 @@ export default function Home() {
     if (!viewportBounds) return { visibleVehicles, visibleClusters, count: 0, byProvider };
     for (const vehicle of lastSeenVehicles) {
       if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinimums(vehicle, { minBattery, minRange: rangeMinimum })) continue;
+      if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
       byProvider[vehicle.provider] = (byProvider[vehicle.provider] ?? 0) + 1;
       if (enabledProviders.has(vehicle.provider)) visibleVehicles.push(vehicle);
     }
@@ -569,7 +556,7 @@ export default function Home() {
     }
     const count = visibleVehicles.length + visibleClusters.reduce((total, cluster) => total + cluster.count, 0);
     return { visibleVehicles, visibleClusters, count, byProvider };
-  }, [enabledProviders, lastSeenClusters, lastSeenVehicles, minBattery, rangeMinimum, responseMeta?.mode, viewportBounds]);
+  }, [enabledProviders, lastSeenClusters, lastSeenVehicles, minBattery, responseMeta?.mode, viewportBounds]);
 
   // Zoomed out, a country, a state or province, or neighbouring cities are drawn as one total.
   const mapClusters = useMemo(() => {
@@ -744,12 +731,12 @@ export default function Home() {
   }, [locating, locationError, walkLocationFailed, walkPhase]);
 
   // Taken while you walked to it: no longer in data that would have it, where
-  // single scooters are sent whatever their battery and range and its app's feed answered,
+  // single scooters are sent whatever their battery and its app's feed answered,
   // nor standing faded where it was last seen.
   // Twice, from two updates of the data: a scooter missing from one comes back.
   const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
     answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
-    (scooterQuery?.minBattery ?? 0) === 0 && (scooterQuery?.minRange ?? 0) === 0 &&
+    (scooterQuery?.minBattery ?? 0) === 0 &&
     boundsContainPoint(mapQuery.bounds, walkLat, walkLng) &&
     !responseMeta.failedSources.some(source => providerForFailedSource(source) === pinnedVehicle.provider);
   const walkedSeen = liveWalkedVehicle ? true : walkedCovered && !walkedFaded ? false : null;
@@ -769,7 +756,7 @@ export default function Home() {
   const availableProviders = viewportBounds
     ? [...new Set([...providersForViewport(viewportBounds), ...Object.keys(viewportData.providerCounts)])]
     : Object.keys(PROVIDERS);
-  const hasActiveFilters = minBattery > 0 || rangeMinimum > 0 || availableProviders.some(provider => !enabledProviders.has(provider));
+  const hasActiveFilters = minBattery > 0 || availableProviders.some(provider => !enabledProviders.has(provider));
 
   // On the right side of the 180° line when the view crosses it.
   const viewportCenter = useMemo<[number, number] | null>(() => viewportBounds && boundsCenter(viewportBounds), [viewportBounds]);
@@ -782,12 +769,9 @@ export default function Home() {
   // Who has scooters here whatever the filters hide. Data loaded for another
   // view says nothing about this one, so it names nobody as not sharing data.
   const providersHere = useMemo(() => answersQuery
-    ? providersInView({
-        vehicles, clusters, viewport: viewportBounds,
-        serverMinBattery: scooterQuery?.minBattery ?? 0, serverMinRange: scooterQuery?.minRange ?? 0,
-      })
+    ? providersInView({ vehicles, clusters, viewport: viewportBounds, serverMinBattery: scooterQuery?.minBattery ?? 0 })
     : null,
-  [answersQuery, clusters, scooterQuery?.minBattery, scooterQuery?.minRange, vehicles, viewportBounds]);
+  [answersQuery, clusters, scooterQuery?.minBattery, vehicles, viewportBounds]);
   // The exception is the load that follows a move within the same area: what
   // was known just before holds until the answer, so that the notice and the
   // dashed chip do not leave and come back with every move of the map.
@@ -798,7 +782,7 @@ export default function Home() {
     setAnswered({ providers: providersHere, viewport: viewportBounds });
   }
   const loadingNearby = !answersQuery && loading === 'load' && !failure &&
-    (scooterQuery?.minBattery ?? 0) === 0 && (scooterQuery?.minRange ?? 0) === 0 &&
+    (scooterQuery?.minBattery ?? 0) === 0 &&
     viewportBounds !== null && answered.viewport !== null && boundsIntersect(answered.viewport, viewportBounds);
   const loadedProviders = answersQuery ? providersHere : loadingNearby ? answered.providers : null;
 
@@ -827,14 +811,12 @@ export default function Home() {
     providersInView: loadedProviders,
     enabledProviders,
     minBattery,
-    minRange: rangeMinimum,
     unfilteredCount: unfilteredCountInView({
       meta: responseMeta,
       vehicles,
       clusters,
       viewport: viewportBounds,
       serverMinBattery: scooterQuery?.minBattery ?? 0,
-      serverMinRange: scooterQuery?.minRange ?? 0,
     }),
   };
   const dock = dockModel(dockInput);
@@ -1137,7 +1119,6 @@ export default function Home() {
         panel={activePanel}
         onClose={() => { track('panel_close'); setPanelOpen(false); }}
         minBattery={minBattery}
-        minRange={rangeMinimum}
         enabledProviders={enabledProviders}
         availableProviders={availableProviders}
         providerCounts={viewportData.providerCounts}
@@ -1152,16 +1133,7 @@ export default function Home() {
         theme={theme}
         mapStyle={mapStyle}
         zones={zonesOn}
-        // The two minimums are one or the other: some apps give a battery and no range, others a range and no battery.
-        onMinBatteryChange={value => {
-          track('battery_filter', { value });
-          setMinBattery(value);
-          if (value > 0) setMinRange(0);
-        }}
-        onMinRangeChange={meters => {
-          setMinRange(meters);
-          if (meters > 0) setMinBattery(0);
-        }}
+        onMinBatteryChange={value => { track('battery_filter', { value }); setMinBattery(value); }}
         onProviderToggle={handleProviderToggle}
         onResetFilters={resetFilters}
         onThemeChange={next => { track('map_style', { style: next }); setTheme(next); }}

@@ -670,14 +670,6 @@ describe('dock cards', () => {
     });
   });
 
-  it('says the same of a range minimum', () => {
-    expect(dockModel(input({ count: 0, minRange: 5000, providerCounts: {}, unfilteredCount: 4 }))).toMatchObject({
-      kind: 'filtersHideAll',
-      title: { key: 'hidden.title.other', numbers: { count: 4 } },
-      summary: [{ kind: 'range', meters: 5000 }],
-    });
-  });
-
   it('has a singular title for one hidden scooter', () => {
     expect(dockModel(input({ count: 0, minBattery: 80, unfilteredCount: 1 }))).toMatchObject({
       kind: 'filtersHideAll',

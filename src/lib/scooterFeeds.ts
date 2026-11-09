@@ -17,7 +17,6 @@ import {
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
 import { listedPricing } from '@/lib/listedPrices';
 import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, feedBase, isAppMapSystem, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
-import { passesMinimums } from '@/lib/range';
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
 import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
@@ -225,12 +224,6 @@ export interface FeedQuery {
   origin?: [number, number] | null;
   bounds: MapBounds;
   minBattery: number;
-  /**
-   * In metres: only the scooters that say they can go at least as far. 0 or absent for any, as
-   * before it existed. The clients set it or the battery minimum, never both; given both, the
-   * scooters pass both.
-   */
-  minRange?: number;
   providers?: Set<string>;
   outsideCoverage?: boolean;
 }
@@ -1646,7 +1639,10 @@ export async function fetchScooters(query: FeedQuery): Promise<ScooterFetchResul
   }
 
   const filtered = [...unique.values()]
-    .filter(vehicle => passesMinimums(vehicle, query))
+    .filter(vehicle => (
+      query.minBattery === 0 ||
+      (vehicle.battery !== null && vehicle.battery >= query.minBattery)
+    ))
     .sort(compareVehicles);
 
   const sources = Object.fromEntries(sourceResults.map(([source, result]) => [source, sourceStatus(result)])) as

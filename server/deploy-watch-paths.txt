@@ -38,7 +38,6 @@ tsconfig.json
 !src/lib/popoverPlacement.ts
 !src/lib/providerColor.ts
 !src/lib/quietGround.ts
-!src/lib/rangeSlider.ts
 !src/lib/rateLimit.ts
 !src/lib/readJsonBody.ts
 !src/lib/requestDeadline.ts
