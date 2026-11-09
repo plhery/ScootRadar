@@ -33,6 +33,8 @@ function input(overrides: Partial<NothingToShowInput> = {}): NothingToShowInput 
 const english: Record<string, string> = {
   'hidden.only': '{names} only',
   'hidden.battery': 'battery {value}% or more',
+  'hidden.range': 'range {distance} or more',
+  'distance.kilometers': '{count} km',
 };
 const i18n: UiTextFormatter = {
   locale: 'en',
@@ -56,6 +58,11 @@ describe('filtersActive', () => {
   it('is on with a minimum battery or a provider here switched off', () => {
     expect(filtersActive({ minBattery: 30, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(true);
     expect(filtersActive({ minBattery: 0, enabledProviders: new Set(['lime']), viewportProviders: ZURICH })).toBe(true);
+  });
+
+  it('is on with a minimum range', () => {
+    expect(filtersActive({ minBattery: 0, minRange: 5000, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(true);
+    expect(filtersActive({ minBattery: 0, minRange: 0, enabledProviders: new Set(ALL), viewportProviders: ZURICH })).toBe(false);
   });
 });
 
@@ -90,6 +97,15 @@ describe('filterSummary', () => {
     const parts = filterSummary({ minBattery: 30, enabledProviders: new Set(ALL), viewportProviders: ZURICH });
     expect(parts).toEqual([{ kind: 'battery', value: 30 }]);
     expect(formatFilterSummary(parts, i18n)).toBe('Battery 30% or more');
+  });
+
+  it('lists the range after the providers, in whole kilometres or miles as the slider has it', () => {
+    const parts = filterSummary({ minBattery: 0, minRange: 5000, enabledProviders: new Set(['lime']), viewportProviders: ZURICH });
+    expect(parts).toEqual([{ kind: 'providers', names: ['Lime'] }, { kind: 'range', meters: 5000 }]);
+    expect(formatFilterSummary(parts, i18n)).toBe('Lime only · range 5 km or more');
+    expect(formatFilterSummary(parts.slice(1), i18n)).toBe('Range 5 km or more');
+    expect(formatFilterSummary([{ kind: 'range', meters: 4828 }], { ...i18n, region: 'US' })).toBe('Range 3 mi or more');
+    expect(formatFilterSummary([{ kind: 'range', meters: 4828 }], { ...i18n, region: 'GB', units: 'metric' })).toBe('Range 5 km or more');
   });
 
   it('names what is selected when none of it operates here', () => {
@@ -127,8 +143,10 @@ describe('unfilteredCountInView', () => {
     expect(unfilteredCountInView({ meta, vehicles: [outside], clusters: [], viewport: VIEWPORT, serverMinBattery: 0 })).toBe(0);
   });
 
-  it('cannot know when the server filtered by battery, cut the list short, or nothing is loaded', () => {
+  it('cannot know when the server filtered by battery or range, cut the list short, or nothing is loaded', () => {
     expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 30 })).toBeNull();
+    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0, serverMinRange: 5000 })).toBeNull();
+    expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0, serverMinRange: 0 })).toBe(8);
     expect(unfilteredCountInView({ meta: { truncated: true }, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0 })).toBeNull();
     expect(unfilteredCountInView({ meta: null, vehicles, clusters, viewport: VIEWPORT, serverMinBattery: 0 })).toBeNull();
     expect(unfilteredCountInView({ meta, vehicles, clusters, viewport: null, serverMinBattery: 0 })).toBeNull();
@@ -183,6 +201,15 @@ describe('nothingToShow', () => {
       hiddenCount: null,
       summary: [{ kind: 'battery', value: 30 }],
     });
+  });
+
+  it('blames a range minimum as it does a battery one', () => {
+    expect(nothingToShow(input({ minRange: 5000, unfilteredCount: 3 }))).toEqual({
+      kind: 'filtersHideAll',
+      hiddenCount: 3,
+      summary: [{ kind: 'range', meters: 5000 }],
+    });
+    expect(nothingToShow(input({ minRange: 5000, unfilteredCount: 0 }))).toEqual({ kind: 'empty' });
   });
 
   it('calls the area empty when filters are set but hide nothing', () => {

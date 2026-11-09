@@ -53,6 +53,25 @@ describe('client params', () => {
     expect(parse('minBattery=-2').minBattery).toBe(0);
   });
 
+  it('reads a range minimum in whole metres, and nothing else', () => {
+    expect(parse('minRange=5000').minRange).toBe(5000);
+    expect(parse('minRange=4828').minRange).toBe(4828);
+    expect(parse('minRange=0').minRange).toBe(0);
+    // Far beyond the slider: the map shows it at the slider's end.
+    expect(parse('minRange=250000').minRange).toBe(250_000);
+    for (const wrong of ['', ' ', '-5000', '5000.5', '5e3', '5km', 'abc', '1e400', '99999999999999999999']) {
+      expect(parse(`minRange=${encodeURIComponent(wrong)}`).minRange, wrong).toBeUndefined();
+    }
+    expect(parse('').minRange).toBeUndefined();
+  });
+
+  it('keeps the battery minimum of a link that sets both, as the filters set one or the other', () => {
+    expect(parse('minBattery=30&minRange=5000')).toMatchObject({ minBattery: 30, minRange: 0 });
+    // A battery of any level leaves the range as it is.
+    expect(parse('minBattery=0&minRange=5000')).toMatchObject({ minBattery: 0, minRange: 5000 });
+    expect(parse('minBattery=abc&minRange=5000')).toMatchObject({ minBattery: undefined, minRange: 5000 });
+  });
+
   it('accepts each theme and map style by name', () => {
     expect(parse('theme=light')).toMatchObject({ theme: 'light', map: undefined });
     expect(parse('theme=auto')).toMatchObject({ theme: 'auto' });
@@ -123,11 +142,24 @@ describe('client params', () => {
       .toEqual({ origin: null, minBattery: 30, theme: 'dark', map: undefined, zones: undefined });
   });
 
+  it('clears the minimum saved where a link sets the other one, and keeps it where the link sets none', () => {
+    const range = parseStoredClientParams(JSON.stringify({ minRange: '8000' }));
+    const battery = parseStoredClientParams(JSON.stringify({ minBattery: '60' }));
+    expect(range).toMatchObject({ minRange: 8000 });
+    expect(startingClientParams(parse('minBattery=30'), range)).toMatchObject({ minBattery: 30, minRange: 0 });
+    expect(startingClientParams(parse('minRange=5000'), battery)).toMatchObject({ minBattery: 0, minRange: 5000 });
+    expect(startingClientParams(parse('minBattery=0'), range)).toMatchObject({ minBattery: 0, minRange: 8000 });
+    expect(startingClientParams(parse('theme=dark'), range)).toMatchObject({ minBattery: undefined, minRange: 8000 });
+    expect(startingClientParams(parse('minRange=0'), battery)).toMatchObject({ minBattery: 60, minRange: 0 });
+  });
+
   it('serializes only non-default settings', () => {
     expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm' }).toString()).toBe('');
     expect(serializeClientParams({ minBattery: 60, theme: 'dark', map: 'detailed' }).toString())
       .toBe('minBattery=60&theme=dark&map=detailed');
     expect(serializeClientParams({ minBattery: 0, theme: 'light', map: 'calm' }).toString()).toBe('theme=light');
+    expect(serializeClientParams({ minBattery: 0, minRange: 4828, theme: 'auto', map: 'calm' }).toString()).toBe('minRange=4828');
+    expect(serializeClientParams({ minBattery: 0, minRange: 0, theme: 'auto', map: 'calm' }).toString()).toBe('');
   });
 
   it('keeps the zones layer in the URL only while it is off', () => {
@@ -152,10 +184,12 @@ describe('client params', () => {
       { minBattery: 0, theme: 'auto', map: 'calm' },
       { minBattery: 30, theme: 'light', map: 'detailed' },
       { minBattery: 80, theme: 'dark', map: 'calm' },
+      { minBattery: 0, minRange: 12_000, theme: 'auto', map: 'calm' },
     ] as const) {
       const parsed = parseClientParams(serializeClientParams(settings));
       expect({
         minBattery: parsed.minBattery ?? 0,
+        ...'minRange' in settings ? { minRange: parsed.minRange } : {},
         theme: parsed.theme ?? 'auto',
         map: parsed.map ?? 'calm',
       }).toEqual(settings);

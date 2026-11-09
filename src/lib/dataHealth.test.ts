@@ -53,10 +53,11 @@ describe('providersInView', () => {
     expect(providersInView({ vehicles: [], clusters: [], viewport: VIEW, serverMinBattery: 0 })).toEqual(new Set());
   });
 
-  it('cannot tell before the map has a viewport, or once the server filtered by battery', () => {
+  it('cannot tell before the map has a viewport, or once the server filtered by battery or range', () => {
     const vehicles = [{ provider: 'lime', ...inside }];
     expect(providersInView({ vehicles, clusters: [], viewport: null, serverMinBattery: 0 })).toBeNull();
     expect(providersInView({ vehicles, clusters: [], viewport: VIEW, serverMinBattery: 60 })).toBeNull();
+    expect(providersInView({ vehicles, clusters: [], viewport: VIEW, serverMinBattery: 0, serverMinRange: 5000 })).toBeNull();
   });
 });
 

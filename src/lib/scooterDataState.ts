@@ -48,10 +48,12 @@ export interface ScooterDataQuery {
   zoom: number;
   /** What the server filters by; 0 when the client filters the response itself. */
   minBattery: number;
+  /** The same for the range, in metres; 0 or absent for none. */
+  minRange?: number;
 }
 
-export function scooterQueryParams({ bounds, zoom, minBattery }: ScooterDataQuery): URLSearchParams {
-  return new URLSearchParams({
+export function scooterQueryParams({ bounds, zoom, minBattery, minRange = 0 }: ScooterDataQuery): URLSearchParams {
+  const params = new URLSearchParams({
     south: bounds.south.toFixed(5),
     west: bounds.west.toFixed(5),
     north: bounds.north.toFixed(5),
@@ -59,6 +61,9 @@ export function scooterQueryParams({ bounds, zoom, minBattery }: ScooterDataQuer
     zoom: String(zoom),
     minBattery: String(minBattery),
   });
+  // Only when set, as the apps send it: a query without one is the same as before it existed.
+  if (minRange > 0) params.set('minRange', String(minRange));
+  return params;
 }
 
 /** Two queries with the same key receive the same response. */

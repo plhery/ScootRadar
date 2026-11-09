@@ -63,6 +63,14 @@ describe('scooter query', () => {
     expect(scooterQueryKey({ ...query, bounds: { ...query.bounds, south: 47.3612349 } })).toBe(scooterQueryKey(query));
     expect(scooterQueryKey({ ...query, zoom: 15 })).not.toBe(scooterQueryKey(query));
     expect(scooterQueryKey({ ...query, minBattery: 30 })).not.toBe(scooterQueryKey(query));
+    expect(scooterQueryKey({ ...query, minRange: 5000 })).not.toBe(scooterQueryKey(query));
+    expect(scooterQueryKey({ ...query, minRange: 0 })).toBe(scooterQueryKey(query));
+  });
+
+  it('sends a range minimum only when there is one, as the apps do', () => {
+    expect(scooterQueryParams({ ...query, zoom: 14, minRange: 4828 }).toString())
+      .toBe('south=47.36123&west=8.52000&north=47.39000&east=8.57000&zoom=14&minBattery=0&minRange=4828');
+    expect(scooterQueryParams({ ...query, minRange: 0 }).has('minRange')).toBe(false);
   });
 });
 

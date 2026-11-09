@@ -2,13 +2,14 @@
 
 import { track } from '@/lib/analytics';
 
-import { useId, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useId, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { BATTERY_PRESETS, batteryPresetLabel, snapBatteryPreset } from '@/lib/battery';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
+import { formatMinimumRange, rangeScale, rangeSteps, rangeStepsMeters } from '@/lib/rangeSlider';
 import { isSingular } from '@/lib/uiText';
-import type { UnitsChoice } from '@/lib/walking';
+import { measurementSystem, type UnitsChoice } from '@/lib/walking';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
 import { providerSurfaceColor } from '@/lib/providerColor';
 import { selectionFeedback } from '@/lib/feedback';
@@ -64,6 +65,8 @@ interface ControlSheetProps {
   open: boolean;
   panel: 'filters' | 'settings';
   minBattery: number;
+  /** The range minimum in metres, 0 for none; the slider shows it on a step of the units in use. */
+  minRange: number;
   enabledProviders: Set<string>;
   /** Providers that operate in the viewport. */
   availableProviders: string[];
@@ -81,6 +84,8 @@ interface ControlSheetProps {
   zones: boolean;
   onClose: () => void;
   onMinBatteryChange: (value: number) => void;
+  /** In metres, a whole step of the units in use, as the slider moves. */
+  onMinRangeChange: (meters: number) => void;
   onProviderToggle: (provider: string) => void;
   onResetFilters: () => void;
   onThemeChange: (theme: ThemeName) => void;
@@ -92,6 +97,7 @@ export default function ControlSheet({
   open,
   panel,
   minBattery,
+  minRange,
   enabledProviders,
   availableProviders,
   providerCounts,
@@ -103,14 +109,18 @@ export default function ControlSheet({
   zones,
   onClose,
   onMinBatteryChange,
+  onMinRangeChange,
   onProviderToggle,
   onResetFilters,
   onThemeChange,
   onMapStyleChange,
   onZonesChange,
 }: ControlSheetProps) {
-  const { t, locale, localeChoice, units, setUnits, formatNumber } = useI18n();
+  const i18n = useI18n();
+  const { t, locale, localeChoice, region, units, setUnits, formatNumber } = i18n;
   const batteryHelpId = useId();
+  const rangeTitleId = useId();
+  const rangeHelpId = useId();
   const zonesHelpId = useId();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const languageRowRef = useRef<HTMLButtonElement>(null);
@@ -146,6 +156,22 @@ export default function ControlSheet({
   };
 
   const batteryPreset = snapBatteryPreset(minBattery);
+  // Whole kilometres, or whole miles where lengths are in miles; "5 km+", spoken "5 km or more".
+  const rangeSystem = measurementSystem(region, units);
+  const rangeMax = rangeScale(rangeSystem).max;
+  const rangeStep = rangeSteps(minRange, rangeSystem);
+  const rangeLabel = formatMinimumRange(minRange, i18n);
+  // Counted once a minimum is let go of, not at each step on the way: what the slider gave last.
+  const rangeMoved = useRef<number | null>(null);
+  const rangeSlider = useCallback((slider: HTMLInputElement | null) => {
+    if (!slider) return;
+    const chosen = () => {
+      if (rangeMoved.current !== null) track('range_filter', { value: rangeMoved.current });
+      rangeMoved.current = null;
+    };
+    slider.addEventListener('change', chosen);
+    return () => slider.removeEventListener('change', chosen);
+  }, []);
   // In catalogue order, as the iOS filters list them.
   const providers = PROVIDER_KEYS.filter(key => availableProviders.includes(key)).map(key => {
     const count = providerCounts[key] ?? 0;
@@ -214,6 +240,37 @@ export default function ControlSheet({
             </div>
             {batteryPreset > 0 && (
               <p id={batteryHelpId} className="filter-help">{t('filter.batteryHelp')}</p>
+            )}
+          </section>
+          <section className="settings-section">
+            {/* The slider says its value itself. */}
+            <div className="filter-heading">
+              <h3 id={rangeTitleId}>{t('filter.range')}</h3>
+              <span className="filter-value" aria-hidden="true">{rangeLabel ? `${rangeLabel}+` : t('filter.any')}</span>
+            </div>
+            <input
+              ref={rangeSlider}
+              type="range"
+              className="range-slider"
+              min={0}
+              max={rangeMax}
+              step={1}
+              value={rangeStep}
+              aria-labelledby={rangeTitleId}
+              aria-valuetext={rangeLabel ? t('filter.rangeValue', { distance: rangeLabel }) : t('filter.any')}
+              aria-describedby={rangeStep > 0 ? rangeHelpId : undefined}
+              style={{ '--range-ratio': rangeStep / rangeMax } as CSSProperties}
+              onChange={event => {
+                const step = Number(event.currentTarget.value);
+                if (step === rangeStep) return;
+                const meters = rangeStepsMeters(step, rangeSystem);
+                selectionFeedback();
+                rangeMoved.current = meters;
+                onMinRangeChange(meters);
+              }}
+            />
+            {rangeStep > 0 && (
+              <p id={rangeHelpId} className="filter-help">{t('filter.rangeHelp')}</p>
             )}
           </section>
           <section className="settings-section">
