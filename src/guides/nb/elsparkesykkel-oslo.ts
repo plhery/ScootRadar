@@ -59,7 +59,7 @@ const guide: Guide = {
           },
         },
         'Ruter oppgir fortsatt 15 år for Ryde, men Rydes vilkår for Norge krever 16 år (3. november 2026). Bolts nye vilkår for Norge, som gjelder fra 1. desember 2026, krever også 16 år. Bolt kan be om legitimasjon, og i topptimer må du bestå en reaksjonstest for å låse opp. Ryde har reaksjonstest på kveldstid i helgene.',
-        'Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
+        'Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget ble sendt på høring 5. november 2026, med frist 5. februar 2027, og er **ikke vedtatt**.',
       ],
     },
     {
@@ -197,6 +197,7 @@ const guide: Guide = {
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
     { title: 'Oslo Bysykkel: priser og åpningstider', url: 'https://oslobysykkel.no/' },
+    { title: 'Samferdselsdepartementet: Sender forslag om å heve aldersgrense for bruk av elsparkesykkel på høring (5. november 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19132352/sender-forslag-om-a-heve-aldersgrense-for-bruk-av-elsparkesykkel-pa-horing?lang=no' },
     { title: 'Statens vegvesen: Flere skader seg på elsparkesykkel i Oslo (januar 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
   ],
 };
