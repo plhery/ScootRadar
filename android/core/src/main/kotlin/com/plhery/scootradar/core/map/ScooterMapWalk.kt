@@ -289,8 +289,9 @@ private fun ScooterMapController.reportArrival(target: ScooterWalkTarget) {
  * would list it no longer does twice, from two reads of its app, which mostly means someone took it: one
  * missing from one update comes back. Scooters get new ids now and then, so one of the same provider standing
  * where it stood, under an id the data before didn't list ([previousIDs]) and away from where its neighbours stood
- * ([successor]), is that scooter; another is not, which the walk is not handed to. Standing faded where it was last
- * seen, while its app is collected again, it is neither: the walk goes on until the app's new positions say which.
+ * ([successor]), is that scooter, even once the walk said it was gone; another is not, which the walk is not handed
+ * to. Standing faded where it was last seen, while its app is collected again, it is neither: the walk goes on until
+ * the app's new positions say which.
  */
 internal fun ScooterMapController.followWalkTarget(
     meta: ScooterResponseMetadata?,
@@ -315,18 +316,22 @@ internal fun ScooterMapController.followWalkTarget(
         return
     }
     val point = scooter.coordinate
-    if (!walk.isUnderway || !listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) {
-        return
-    }
+    if (!listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) return
     val successor = successor(of = scooter, among = vehicles.value.filter { it.id !in previousIDs })
     if (successor != null) {
+        if (walk.phase == ScooterWalkPhase.Gone) {
+            // Back after all, under a new id: the card is the scooter's again, and Directions with it.
+            setWalk(null)
+            follow(to = successor.id)
+            return
+        }
         setWalk(walk.copy(target = ScooterWalkTarget.Scooter(successor), missedAt = null))
         follow(to = successor.id)
         val userLocation = userLocation.value
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
     }
-    if (standsFaded(scooter)) return
+    if (!walk.isUnderway || standsFaded(scooter)) return
     // The read of its app this data is of: the same read served again, while another app in view is late or swept
     // and holds the data's own time back, says nothing new.
     val read = appRead(scooter.provider, meta = meta) ?: observedAt

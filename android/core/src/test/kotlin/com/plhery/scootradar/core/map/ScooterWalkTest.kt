@@ -635,6 +635,48 @@ class ScooterWalkTest {
         assertEquals(ScooterDirectionsControl.Directions, h.model.directionsControl(ScooterWalkTarget.Scooter(target)))
     }
 
+    /**
+     * A scooter missing from every answer for 5 minutes, as a reserved one the feed hides, comes back under a new id: where
+     * it stood, it is the scooter said taken, as on the website, and its neighbour under a new id is not (week review,
+     * finding 1.4).
+     */
+    @Test
+    fun aTakenScooterBackUnderANewIDWhereItStoodIsItsCardAgain() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val h = shownWalk(to = target, others = listOf(neighbour))
+        val choices = h.model.scooterChoices.value
+        h.api.setResponse(ScooterResponse(vehicles = listOf(neighbour)))
+        for (index in 0 until 2) {
+            h.clock.advance(60.0)
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value })
+        }
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+
+        // Six minutes on, the neighbour under a new id: still taken.
+        val renamedNeighbour = scooter("s2-renewed", at = point(east = 309, north = 0))
+        h.clock.advance(360.0)
+        h.api.setResponse(ScooterResponse(vehicles = listOf(renamedNeighbour)))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 4 && !h.model.isLoading.value })
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+        assertEquals(target.id, h.model.selectedScooterID.value)
+
+        // Listed again where it stood, under a new id: back.
+        val back = scooter("s1-renewed", at = point(east = 300, north = 0))
+        h.clock.advance(60.0)
+        h.api.setResponse(ScooterResponse(vehicles = listOf(back, renamedNeighbour)))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 5 && !h.model.isLoading.value })
+        assertNull(h.model.walk.value)
+        assertEquals(back.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterDockContent.Scooter(back), h.model.dock)
+        assertEquals(ScooterDirectionsControl.Directions, h.model.directionsControl(ScooterWalkTarget.Scooter(back)))
+        assertNull(h.model.walkNote(ScooterWalkTarget.Scooter(back)))
+        assertEquals("The same choice: the dock neither animates nor ticks", choices, h.model.scooterChoices.value)
+    }
+
     @Test
     fun aScooterUnderANewIDIsStillTheOneWalkedTo() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
