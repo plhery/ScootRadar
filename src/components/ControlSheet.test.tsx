@@ -172,10 +172,14 @@ describe('ControlSheet filters', () => {
     expect(range).toHaveAttribute('aria-valuetext', '3 mi or more');
     expect(screen.getByRole('dialog').querySelector('.filter-value')).toHaveTextContent('3 mi+');
 
+    // On fake timers, so that the minimum counted a second on is not counted in the tests after this one.
+    vi.useFakeTimers();
     fireEvent.input(range, { target: { value: '4' } });
     expect(props.onMinRangeChange).toHaveBeenCalledExactlyOnceWith(6437);
     fireEvent.input(range, { target: { value: '0' } });
     expect(props.onMinRangeChange).toHaveBeenLastCalledWith(0);
+    vi.advanceTimersByTime(1000);
+    expect(track).toHaveBeenCalledExactlyOnceWith('range_filter', { value: 0 });
   });
 
   it('says the range minimum in the language on screen', async () => {
