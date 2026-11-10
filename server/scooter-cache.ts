@@ -24,7 +24,7 @@ import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, resto
   type FeedFailure, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { createVisitorLedger } from './visitorLedger';
-import { createPublicVehicleIds } from './publicVehicleIds';
+import { createPublicVehicleIds, readPublicVehicleIds, writePublicVehicleIds } from './publicVehicleIds';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
   restoreWorkerSilence } from './errorReporting';
@@ -105,6 +105,9 @@ const feedStatesPath = join(dirname(snapshotPath), 'feed-states.json');
 // restored after a restart: its additions stand across a deploy, until too old, rather than none until a new
 // sweep has ended, by night until someone looks.
 const birdSupplementsPath = join(dirname(snapshotPath), 'bird-supplements.json');
+// The ids the answers give scooters (publicVehicleIds.ts), saved beside the snapshot with it and restored
+// after a restart: a deploy renames no scooter.
+const publicIdsPath = join(dirname(snapshotPath), 'public-ids.json');
 // The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
@@ -164,6 +167,10 @@ let ownIdleExpiry = ownIdleExpiries([]);
 let ownLastSeenMaxAge: (id: string) => number | undefined = () => undefined;
 // How long the data of Bird's, Spin's and Bolt's own feeds may be kept, from their definitions.
 let retentionCap = retentionCaps([]);
+// Their systems, which name their scooters `<system>:<id>` (scooterFeeds.ts), whose public ids are kept only
+// minutes out of the answers (PUBLIC_ID_CAPPED_KEPT_MS).
+let cappedSystems = new Set<string>();
+const vehicleIds = createPublicVehicleIds({ capped: vehicleId => cappedSystems.has(vehicleId.slice(0, vehicleId.indexOf(':'))) });
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
   idleExpiryMsForFeed: id => ownIdleExpiry(id) };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
@@ -189,7 +196,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visi
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ rydeBridge, rydeViews, snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
-  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors, vehicleIds: createPublicVehicleIds(),
+  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler, visitors, vehicleIds,
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
   // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
   lastSeenMaxAgeMs: id => ownLastSeenMaxAge(id) ?? Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining,
@@ -255,6 +262,14 @@ try {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
     console.error('Bird supplement restore failed', error);
     reportError('restore:bird-supplements', error);
+  }
+}
+try {
+  vehicleIds.restore(await readPublicVehicleIds(publicIdsPath), Date.now());
+} catch (error) {
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+    console.error('Public id restore failed', error);
+    reportError('restore:public-ids', error);
   }
 }
 
@@ -379,6 +394,7 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
   const lastSeenAges = new Map(definitions.flatMap(feed => feed.lastSeenMaxAgeMs ? [[feed.id, feed.lastSeenMaxAgeMs] as const] : []));
   ownLastSeenMaxAge = id => lastSeenAges.get(id);
   retentionCap = retentionCaps(definitions);
+  cappedSystems = new Set(definitions.filter(feed => retentionCap(feed.id) !== undefined).map(feed => feed.id.slice(feed.id.indexOf(':') + 1)));
   const active = new Set(definitions.map(feed => feed.id));
   for (const [id, feed] of records) if (!active.has(id) && retiresMissing(feed)) records.delete(id);
   for (const id of lastErrors.keys()) if (!active.has(id) && !records.has(id)) lastErrors.delete(id);
@@ -420,7 +436,8 @@ async function persist(final = false) {
   // which a restart builds again from what it holds.
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
-  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), sweeps = savedBirdSupplements();
+  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), sweeps = savedBirdSupplements(),
+    ids = vehicleIds.saved();
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
@@ -441,6 +458,12 @@ async function persist(final = false) {
     } catch (error) {
       console.error('Bird supplement persistence failed', error);
       reportError('persist:bird-supplements', error);
+    }
+    try {
+      await saveAtomically(publicIdsPath, temporaryDirectory, 'public-ids', path => writePublicVehicleIds(path, ids, now));
+    } catch (error) {
+      console.error('Public id persistence failed', error);
+      reportError('persist:public-ids', error);
     }
   })();
   try { await persisting; } finally { persisting = undefined; }
