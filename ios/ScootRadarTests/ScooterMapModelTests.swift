@@ -5644,10 +5644,15 @@ extension ScooterMapModelTests {
         let (model, api) = await reviewModel(clock: clock)
         model.noteInteraction()
         let vehicles = [scooter(id: "one", provider: "lime")]
+        // Lime's positions 6 minutes old: "Lime data delayed".
+        let limeSeenAt = ISO8601DateFormatter().string(from: clock.now.addingTimeInterval(-360))
         await api.setResponse(ScooterResponse(
-            vehicles: vehicles, meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
+            vehicles: vehicles, meta: ScooterResponseMetadata(
+                partial: false, stale: true, failedSources: [], generatedAt: limeSeenAt, staleProviders: ["lime": limeSeenAt]
+            )
         ))
         await reload(model, api)
+        XCTAssertEqual(model.cardStatus, .delayed(showing: clock.now.addingTimeInterval(-360), app: .lime))
         XCTAssertFalse(model.reviewDue)
 
         // Up to date again later that day: still no ask.
@@ -5656,6 +5661,48 @@ extension ScooterMapModelTests {
         await reload(model, api)
         XCTAssertEqual(model.reviewMoments, 1)
         XCTAssertFalse(model.reviewDue)
+    }
+
+    /// The cache says an answer is stale while it collects the view's feeds again, as the first answer of a view mostly
+    /// comes outside Switzerland, where feeds are collected only while someone looks: none of its apps late, the dock
+    /// says nothing is delayed, and the day is neither a bad one nor one without use (week review, finding 4.1).
+    func testAnAnswerOfFeedsCollectedAgainWithNoneLateIsNoBadDay() async {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+        model.noteInteraction()
+        let vehicles = [scooter(id: "one", provider: "lime")]
+        await api.setResponse(ScooterResponse(vehicles: vehicles, meta: collectedAgain(clock)))
+        await reload(model, api)
+        XCTAssertNil(model.cardStatus)
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.status(at: clock.now), .live)
+        XCTAssertEqual(model.reviewMoments, 2)
+        XCTAssertTrue(model.takeReviewMoment())
+    }
+
+    func testAnAnswerOfFeedsCollectedAgainWithNoneLateCountsTheDayWithUse() async {
+        let clock = TestClock()
+        // The second day: its only answer, of feeds collected again.
+        let (second, api) = await reviewModel(clock: clock, earlierDays: 1, first: ScooterResponse(
+            vehicles: [scooter(id: "one", provider: "lime")], meta: collectedAgain(clock)
+        ))
+        XCTAssertEqual(second.reviewMoments, 0)
+
+        // The third day: a calm, fresh map asks.
+        clock.advance(86_400)
+        await api.setResponse(ScooterResponse(vehicles: [scooter(id: "one", provider: "lime")]))
+        await reload(second, api)
+        XCTAssertEqual(second.reviewMoments, 1)
+        XCTAssertTrue(second.reviewDue)
+    }
+
+    /// As the cache answers a view whose feeds it collects again: stale and refreshing, no app late.
+    private func collectedAgain(_ clock: TestClock) -> ScooterResponseMetadata {
+        ScooterResponseMetadata(
+            partial: false, stale: true, failedSources: [],
+            generatedAt: ISO8601DateFormatter().string(from: clock.now.addingTimeInterval(-2)), mode: "vehicles",
+            refreshing: true, followUpMs: 3_000, staleProviders: [:]
+        )
     }
 
     /// Up to 1.4.0 the app kept the time of the last "Open in" for the ask; an updated app forgets it.
@@ -5669,14 +5716,16 @@ extension ScooterMapModelTests {
         XCTAssertEqual(defaults.integer(forKey: "review-use-days"), 2)
     }
 
-    /// A model with a fresh feed on the map after `earlierDays` days with one: the third day by default.
-    private func reviewModel(clock: TestClock, earlierDays: Int = 2) async -> (ScooterMapModel, StubScooterAPI) {
+    /// A model with a fresh feed on the map, or `first`, after `earlierDays` days with one: the third day by default.
+    private func reviewModel(
+        clock: TestClock, earlierDays: Int = 2, first: ScooterResponse? = nil
+    ) async -> (ScooterMapModel, StubScooterAPI) {
         let defaults = isolatedDefaults()
         let earlier = ScooterReviewPrompt(defaults: defaults, version: ScooterLinks.appVersion)
         for day in stride(from: earlierDays, to: 0, by: -1) {
             earlier.noteUse(at: clock.now.addingTimeInterval(-Double(day) * 86_400))
         }
-        let api = StubScooterAPI(response: ScooterResponse(vehicles: [scooter(id: "one", provider: "lime")]))
+        let api = StubScooterAPI(response: first ?? ScooterResponse(vehicles: [scooter(id: "one", provider: "lime")]))
         let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults, now: { clock.now })
         model.refresh()
         let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }

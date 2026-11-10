@@ -221,8 +221,11 @@ popover or location card) and no touch, never from a button. A touch or a link
 opened ends the wait, and the next fresh load starts another. It asks from the third day
 with a fresh feed, as a rider still using the app then likes it, once per
 version and 30 days apart at the soonest, and never on a day a load failed, the
-data was delayed, every provider in view was down or the rider was outside the
-area any operator covers (`Models/ScooterReviewPrompt.swift`). Up to 1.4.0 it
+data was delayed as the dock says it, every provider in view was down or the
+rider was outside the area any operator covers (`Models/ScooterReviewPrompt.swift`).
+An answer of feeds being collected again, as the first of a view mostly is
+outside Switzerland, is no delay while none of its apps is late: it counts the
+day with use and leaves it free to ask. Up to 1.4.0 it
 asked only when the rider came back from the operator's app 5 minutes to 2 hours
 after **Open in**, which riders seldom did. iOS shows the prompt at most three
 times a year, and never in TestFlight. A Debug build launched with

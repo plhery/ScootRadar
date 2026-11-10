@@ -891,7 +891,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if case let .refreshFailed(failure, showing) = loadIssue {
             return failure == .offline ? .offline(showing: showing) : .refreshFailed(showing: showing)
         }
-        guard let lastUpdated, !isFilling else { return nil }
+        guard !isFilling else { return nil }
+        return delayedStatus
+    }
+
+    /// Data the dock calls delayed: a stale answer naming an app switched on as late by `delayedAfter` or more, or
+    /// one that names none, late as a whole. Nil otherwise, as for an answer of feeds being collected again, the
+    /// first of a view outside Switzerland mostly, whose positions are not late.
+    private var delayedStatus: ScooterDockStatus? {
+        guard let lastUpdated else { return nil }
         return ScooterDockStatus.delayed(
             isStale: responseMetadata?.stale == true, showing: lastUpdated, staleApps: staleApps, at: clock()
         )
@@ -2754,12 +2762,12 @@ extension ScooterMapModel {
         reviewDue = false
     }
 
-    /// After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A calm map in
-    /// front, from the third day with a fresh feed, is then the moment to ask, once the screen has seen it rest; a
-    /// moment already waiting goes on waiting.
+    /// After each load: a feed that answered, its data not delayed, counts the day with use, and trouble keeps the day
+    /// from asking. A calm map in front, from the third day with such a feed, is then the moment to ask, once the
+    /// screen has seen it rest; a moment already waiting goes on waiting.
     private func reviewAfterLoad() {
         let now = clock()
-        if loadIssue == nil, responseMetadata?.stale != true { reviewPrompt.noteUse(at: now) }
+        if loadIssue == nil, delayedStatus == nil { reviewPrompt.noteUse(at: now) }
         if reviewTrouble { reviewPrompt.noteBadMoment(at: now) }
         guard isSceneActive, !reviewDue, reviewPrompt.isDue(at: now, calm: reviewCalm) else { return }
         reviewDue = true
@@ -2774,10 +2782,11 @@ extension ScooterMapModel {
         return !reviewTrouble
     }
 
-    /// What makes a bad day: the feed failed or is out of date, the data shown is delayed, every provider here is
-    /// down, or the rider is where no operator shares data.
+    /// What makes a bad day: the feed failed or is out of date, the data shown is delayed as the dock says it, every
+    /// provider here is down, or the rider is where no operator shares data. An answer of feeds being collected
+    /// again, as the first of a view mostly is outside Switzerland, is none while none of its apps is late.
     private var reviewTrouble: Bool {
-        if loadIssue != nil || responseMetadata?.stale == true { return true }
+        if loadIssue != nil || delayedStatus != nil { return true }
         let down = Set(providerHealth.downProviders)
         if !down.isEmpty, Set(availableProviders).isSubset(of: down) { return true }
         guard let userLocation else { return false }
