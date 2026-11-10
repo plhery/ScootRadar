@@ -605,6 +605,50 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertTrue(shown)
     }
 
+    /// Zones that cannot be had are asked for again with the next three refreshes of the scooters, as the web asks
+    /// for an unreadable feed's three more times, then not until the map comes to the area anew (week review,
+    /// choice 15).
+    func testZonesThatCannotBeHadAreAskedForAgainThreeTimesThenWhenTheMapComesBack() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(unavailable: true)
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let failed = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .failed }
+        XCTAssertTrue(failed)
+        for count in 2 ... 4 {
+            model.refresh()
+            let asked = await waitUntil { await api.zoneAreas().count == count }
+            XCTAssertTrue(asked, "Refresh \(count - 1)")
+            // Its answer in.
+            try await Task.sleep(for: .milliseconds(100))
+            XCTAssertEqual(model.zoneState, .failed)
+        }
+        model.refresh()
+        try await Task.sleep(for: .milliseconds(300))
+        var areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 4)
+        XCTAssertEqual(model.zoneState, .failed)
+        XCTAssertEqual(model.mapOperatorZoneCount, 2, "Those that came stay drawn")
+
+        // Away and back, the area is asked for anew, and again with the next refresh.
+        var bern = zurich
+        bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
+        model.updateViewport(bern, zoom: 16)
+        let away = await waitUntil { await api.zoneAreas().count == 5 }
+        XCTAssertTrue(away)
+        model.updateViewport(zurich, zoom: 16)
+        let back = await waitUntil { await api.zoneAreas().count == 6 }
+        XCTAssertTrue(back)
+        try await Task.sleep(for: .milliseconds(100))
+        await api.setAnswer()
+        model.refresh()
+        let shown = await waitUntil { await api.zoneAreas().count == 7 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        areas = await api.zoneAreas()
+        XCTAssertEqual(areas[6], areas[0])
+    }
+
     func testAnAnswerWithZonesLeftOutAsksToZoomInBesideTheKindsAndStillDoesFromMemory() async throws {
         let api = ZoneStubAPI()
         await api.setAnswer(truncated: true)

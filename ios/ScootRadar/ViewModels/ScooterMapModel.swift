@@ -466,6 +466,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var recentZoneAnswers: [ScooterZoneAnswer] = []
     @ObservationIgnored private var zoneTask: Task<Void, Never>?
     @ObservationIgnored private var zoneTaskArea: ScooterZoneArea?
+    /// The refreshes that asked again for the zones of the area asked for last, which could not be had.
+    @ObservationIgnored private var failedZoneAsksMade = 0
     /// Where the cities' zones drawn were picked, the map and half of it again on
     /// each side: where hundreds are near, as in Bergen, nearly any pan brings one
     /// in or takes one out, and the overlay, the operators' zones with them, would
@@ -2595,6 +2597,9 @@ extension ScooterMapModel {
     /// While some feeds' zones are still being read, the same area is asked for again this much later, a few times.
     static let zonePendingRetry = Duration.seconds(3)
     static let zonePendingRetries = 3
+    /// The refreshes of the scooters that ask again for an area's zones that could not be had, as the web asks for an
+    /// unreadable feed's three more times; then they are asked for when the map comes to the area anew.
+    static let failedZoneAsks = 3
     /// The server lets an answer be kept five minutes.
     static let zoneAnswerLifetime: TimeInterval = 300
     private static let recentZoneAnswerLimit = 8
@@ -2642,6 +2647,7 @@ extension ScooterMapModel {
             setZones(state: recent.state)
             return
         }
+        failedZoneAsksMade = 0
         requestZones(in: area, after: Self.zoneDebounce, retries: Self.zonePendingRetries)
     }
 
@@ -2690,12 +2696,15 @@ extension ScooterMapModel {
         }
     }
 
-    /// A failed answer for the zones stands while the map stays in its area, so each refresh of the scooters, on
-    /// its own or asked for, asks for them again: after a load lost to the network, or a feed the server could not
-    /// read and tries again a minute later, they come back with the scooters, instead of staying unavailable until
-    /// the map leaves the area. What was drawn stays drawn meanwhile.
+    /// A failed answer for the zones stands while the map stays in its area, so the next refreshes of the scooters,
+    /// on their own or asked for, ask for them again, three at most: after a load lost to the network, or a feed the
+    /// server could not read and tries again a minute later, they come back with the scooters, instead of staying
+    /// unavailable until the map leaves the area, and an area whose zones cannot be had is not asked for every
+    /// minute while the map stays there. What was drawn stays drawn meanwhile.
     fileprivate func askAgainForFailedZones() {
-        guard showsZones, zoneTaskArea == nil, let answer = zoneAnswer, answer.failed else { return }
+        guard showsZones, zoneTaskArea == nil, let answer = zoneAnswer, answer.failed,
+              failedZoneAsksMade < Self.failedZoneAsks else { return }
+        failedZoneAsksMade += 1
         requestZones(in: answer.area, after: .zero, retries: Self.zonePendingRetries)
     }
 
