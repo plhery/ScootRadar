@@ -308,7 +308,14 @@ discovery's origin and under its directory, and publishes no `license_url`.
   They still were on 20 October 2026, polled four times from 11:32 to 11:58
   CEST: Bamberg (72 or 73), Ludwigsburg (130, none rented), Regensburg (193
   or 194) and Schweinfurt (135 to 138). Every ATOM id below answered as it had
-  on 13 October. Their ATOM ids answer but list no vehicles: 184 ("Bamberg/Memmelsdorf"), 82
+  on 13 October. On 10 November 2026, polled at 22:41 and 22:43 UTC, they were
+  still live, every available scooter having reported in the half hour
+  before, but fewer: Bamberg 61 or 62, Ludwigsburg 92, Regensburg 146 and
+  Schweinfurt 93. In the cache's counts they had fallen steadily over the six
+  days before, Bamberg from 84, Ludwigsburg from 135, Regensburg from 188 and
+  Schweinfurt from 100, and 30, 25, 52 and 18 of their disabled scooters had
+  reported in the fortnight before, beside 183, 159, 193 and 172 that last
+  reported months or years ago. Their ATOM ids answer but list no vehicles: 184 ("Bamberg/Memmelsdorf"), 82
   (Ludwigsburg, which MobiData BW's empty `zeus_ludwigsburg` mirrors), 192
   (Regensburg) and 193 (Schweinfurt). When one of these `zeus.city` feeds lists
   only disabled scooters, read the town from its ATOM id instead, or from
@@ -322,7 +329,10 @@ discovery's origin and under its directory, and publishes no `license_url`.
   no vehicles, and 26 Zeus ids answer "GBFS disabled": 194, 1301, 1303, 1318,
   1330 to 1337, 1386, 1387, 1391, 1392, 1394, 1395, 1397, 1398, 1404, 1411,
   1413, 1414 and 1418 to 1420. A disabled id gives no name, so which towns
-  they hold is unknown. Voi still covers Pforzheim and Tübingen.
+  they hold is unknown. Voi still covers Pforzheim and Tübingen. All of this
+  was unchanged on 10 November 2026, but for Straubing's 111; of the ids
+  after 1421, 1429 to 1431 answer "GBFS disabled" too, and 1422 to 1428 and
+  1432 to 1435 "Incorrect id" or "Incorrect data".
 - **No feed at all:** Zeus's list of cities also names Haßloch, Iserlohn,
   Falkensee, Dessau-Roßlau, Korntal-Münchingen, Eisenach, Gotha, Jülich,
   Wangen, Schwieberdingen, Sonthofen, Soest and Rottweil, which have neither a

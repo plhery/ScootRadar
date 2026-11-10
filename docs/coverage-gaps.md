@@ -1704,10 +1704,13 @@ Bonaire had feeds to add. Survey files are in
 
 ## Dates to check again
 
-- **Tuesday 10 November 2026:** Zeus's move to ATOM Mobility. Nothing had
-  changed on 20 October 2026: the 26 ids still answered "GBFS disabled", the
-  empty ones still listed no vehicle, MobiData BW still had the same 11 Zeus
-  feeds, and the four `zeus.city` towns were still live. Probe the ids that
+- **Tuesday 1 December 2026:** Zeus's move to ATOM Mobility. Nothing had
+  changed on 20 October 2026, nor on 10 November: the 26 ids still answered
+  "GBFS disabled", the empty ones still listed no vehicle, MobiData BW still
+  had the same 11 Zeus feeds, and the four `zeus.city` towns were still live,
+  though with fewer scooters each day (Bamberg 61 available, from 84 six days
+  before; [the audit](german-italian-scooter-feeds.md#zeuss-move-to-atom-mobility-october-2026)).
+  Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
   Check that `zeus.city` still lists available scooters in Bamberg,
