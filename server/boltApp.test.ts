@@ -3,7 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
+import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import { BoltClient, collectBoltRegion, parseBoltVehicles } from './boltApp';
+import { collectSnapshotFeed } from './collectFeed';
 
 const directories: string[] = [];
 afterEach(async () => { await Promise.all(directories.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
@@ -186,13 +188,33 @@ describe('Bolt map data', () => {
     await expect(collectBoltRegion({ ...system, boltAppCategories: [] }, api)).rejects.toThrow('Not a Bolt app map region');
   });
 
-  it('pauses a market Bolt no longer serves, and fails on any other refusal', async () => {
-    const closed = { vehicles: vi.fn(async () => ({ code: 800, message: 'AREA_NOT_SERVICED' })) };
-    const result = await collectBoltRegion(system, closed);
-    expect(result).toMatchObject({ stale: false, vehicles: [], seasonOver: true });
+  it('pauses a market Bolt says twice in a row it no longer serves, and fails on any other refusal', async () => {
+    const notServiced = { code: 800, message: 'AREA_NOT_SERVICED' };
+    const answers: unknown[] = [notServiced, notServiced, notServiced, map({ 25: [vehicle(1)] }), notServiced];
+    const api = { vehicles: vi.fn(async () => answers.shift()) };
+    // Once may be a passing refusal: the read fails, as any other would.
+    await expect(collectBoltRegion(system, api)).rejects.toThrow('Bolt said once it does not serve the market (AREA_NOT_SERVICED)');
+    expect(await collectBoltRegion(system, api)).toMatchObject({ stale: false, vehicles: [], seasonOver: true });
+    expect(await collectBoltRegion(system, api)).toMatchObject({ stale: false, vehicles: [], seasonOver: true });
+    // Open again with the market's categories, and a refusal after that is once again a passing one.
+    expect(await collectBoltRegion(system, api)).not.toHaveProperty('seasonOver');
+    await expect(collectBoltRegion(system, api)).rejects.toThrow('AREA_NOT_SERVICED');
     const other = { vehicles: vi.fn(async () => ({ code: 800, message: 'SOMETHING_ELSE' })) };
     await expect(collectBoltRegion(system, other)).rejects.toThrow('Invalid Bolt map response (code 800, "SOMETHING_ELSE", no data)');
-    const reopened = { vehicles: vi.fn(async () => map({ 25: [vehicle(1)] })) };
-    expect(await collectBoltRegion(system, reopened)).not.toHaveProperty('seasonOver');
+  });
+
+  it('keeps a market\'s scooters through one passing AREA_NOT_SERVICED, and its alerts with them', async () => {
+    // On 9 November 2026 one such answer emptied a market and silenced its empty-feed alert until its next read.
+    const answers: unknown[] = [map({ 25: [vehicle(1)] }), { code: 800, message: 'AREA_NOT_SERVICED' }, map({ 25: [vehicle(1)] })];
+    const api = { vehicles: vi.fn(async () => answers.shift()) };
+    let record: FeedSnapshot | undefined;
+    const collect = () => collectSnapshotFeed({ id: 'latvia:bolt_lv_riga', source: 'latvia', provider: 'bolt', coverage: [system.bounds],
+      host: 'user.live.boltsvc.net', collect: () => collectBoltRegion(system, api) }, record, published => { record = published; });
+    await collect();
+    await collect();
+    expect(record).toMatchObject({ vehicles: [scooter('1')], failed: true });
+    expect(record).not.toHaveProperty('seasonOver');
+    await collect();
+    expect(record).toMatchObject({ vehicles: [scooter('1')], failed: false });
   });
 });

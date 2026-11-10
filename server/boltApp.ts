@@ -244,6 +244,8 @@ export function parseBoltVehicles(payload: unknown, system: RegionalScooterSyste
 
 /** Bolt's answer for a point it no longer serves: the market is closed, not the map broken. */
 const notServiced = (payload: unknown) => object(payload)?.code === 800 && object(payload)?.message === 'AREA_NOT_SERVICED';
+/** How many answers in a row said Bolt no longer serves each market, by the client that read them. */
+const notServicedInRow = new WeakMap<object, Map<string, number>>();
 
 let defaultClient: BoltClient | undefined;
 export async function collectBoltRegion(system: RegionalScooterSystem,
@@ -251,10 +253,21 @@ export async function collectBoltRegion(system: RegionalScooterSystem,
   if (!system.boltAppCity || system.provider !== 'bolt' || !system.boltAppCategories?.length) throw new Error('Not a Bolt app map region');
   const observedAt = Date.now();
   const payload = await api.vehicles(system.center, system.country.toLowerCase());
+  const inRow = notServicedInRow.get(api) ?? new Map<string, number>();
+  notServicedInRow.set(api, inRow);
+  if (!notServiced(payload)) {
+    inRow.delete(system.id);
+    return { observedAt, stale: false, vehicles: parseBoltVehicles(payload, system) };
+  }
   // Closed by Bolt, the market pauses as a season Whoosh closes does (seasonalPauses.ts), and opens
-  // again with the first answer that has its categories.
-  if (notServiced(payload)) return { observedAt, stale: false, vehicles: [], seasonOver: true };
-  return { observedAt, stale: false, vehicles: parseBoltVehicles(payload, system) };
+  // again with the first answer that has its categories. Said once, it may be a passing refusal: the
+  // read fails, so the market keeps its scooters and its alerts until Bolt says it a second time in a
+  // row, a minute later as a failed read is retried. Until 10 November 2026 one such answer emptied a
+  // market and silenced its empty-feed alert until its next read, up to 20 minutes later.
+  const count = (inRow.get(system.id) ?? 0) + 1;
+  inRow.set(system.id, count);
+  if (count < 2) throw new Error('Bolt said once it does not serve the market (AREA_NOT_SERVICED)');
+  return { observedAt, stale: false, vehicles: [], seasonOver: true };
 }
 
 export function withBoltAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {

@@ -48,11 +48,15 @@ collector asks once per market, from the system's centre, with a viewport
 of ±0.005° around it, and keeps the scooters inside the system's bounds.
 
 A market Bolt has closed answers `{"code": 800, "message": "AREA_NOT_SERVICED"}`
-with no data. That is a successful empty fleet, not a feed error: the feed is
-closed by its operator (`seasonOver`), as a Whoosh region whose season is over
-([whoosh-app-map.md](whoosh-app-map.md)), so no alert fires, and it opens again
-with the first answer that holds the market's categories. Any other answer
-without code 0 and categories is refused with Bolt's code and message.
+with no data. Said twice in a row, that is a successful empty fleet, not a feed
+error: the feed is closed by its operator (`seasonOver`), as a Whoosh region
+whose season is over ([whoosh-app-map.md](whoosh-app-map.md)), so no alert
+fires, and it opens again with the first answer that holds the market's
+categories. Said once, it may be a passing refusal, so the read fails: the
+market keeps its scooters and its alerts until the read is retried a minute
+later. Until 10 November 2026 one such answer emptied the market and silenced
+its empty-feed alert until its next read, up to 20 minutes later. Any other
+answer without code 0 and categories is refused with Bolt's code and message.
 
 `GET /micromobility/cityArea/listByPosition` at zoom 6 lists each market's
 operating areas, with their `city_id` (`boltAppCity`) and
