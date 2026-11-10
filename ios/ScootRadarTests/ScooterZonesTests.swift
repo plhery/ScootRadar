@@ -87,6 +87,16 @@ final class ScooterZonesTests: XCTestCase {
         XCTAssertEqual(partial.kindSpeeds(besideNote: true).known, 10 ... 10)
     }
 
+    /// One feed's zones unreadable, the others' drawn: the legend says the zones are unavailable, and names the
+    /// kinds of those drawn beside it, as where some were left out (week review, finding 3.3).
+    @MainActor
+    func testTheKindsOfTheZonesDrawnAreNamedBesideTheNoteWhereAFeedsCouldNotBeRead() {
+        let failed = ZoneLegend(state: .failed, count: 3, slowSpeeds: speeds(5))
+        XCTAssertEqual(failed.note(hasRules: false), String(localized: "Zones unavailable right now"))
+        XCTAssertEqual(failed.kinds(besideNote: true), ScooterZoneKind.operatorKinds)
+        XCTAssertEqual(failed.kindSpeeds(besideNote: true).known, 5 ... 5)
+    }
+
     func testEveryLanguageNamesTheZones() throws {
         let keys = [
             "Ride and parking zones", "Zones", "No riding", "No parking", "Slow", "Parking",
@@ -522,6 +532,8 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertEqual(operatorZones(model).map(\.id), ["lime:0", "bird:0"])
         let legend = ZoneLegend(state: model.zoneState, count: model.mapOperatorZoneCount)
         XCTAssertEqual(legend.note(hasRules: false), String(localized: "Zones unavailable right now"))
+        // With the kinds of those drawn.
+        XCTAssertEqual(legend.kinds(besideNote: true), ScooterZoneKind.operatorKinds)
 
         // The next refresh of the scooters asks again, once the server has tried the feed again.
         await api.setAnswer()

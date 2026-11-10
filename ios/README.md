@@ -252,7 +252,7 @@ reading some feeds' zones, the app asks again every 3 seconds, three times, whil
 the legend names the kinds of those that came. Where some are still on their way
 after the last try, or a feed's zones could not be read (`meta.unavailable`), the
 legend says the zones are unavailable, not that none are published: those that
-came stay drawn, the answer is not kept, and the next refresh of the scooters
+came stay drawn, their kinds named beside it, the answer is not kept, and the next refresh of the scooters
 asks for it again. An answer with zones left out to keep it small
 (`meta.truncated`) names the kinds drawn and asks to zoom in. An area across the
 180° line, east of New Zealand, is asked for in one request whose west is greater

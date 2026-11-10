@@ -3114,6 +3114,7 @@ struct ZoneLegend: View {
         switch state {
         // Also where some zones were left out of the area's answer: those drawn are named, and zoomed in, all are.
         case .zoomIn, .partial: String(localized: "Zoom in to see the zones")
+        // Also where a feed's zones could not be read: the others' drawn are named still.
         case .failed: String(localized: "Zones unavailable right now")
         case .shown where count == 0 && !hasRules && notices.isEmpty: String(localized: "No zones published here")
         default: nil
@@ -3149,8 +3150,10 @@ struct ZoneLegend: View {
     }
 
     private func namesOperatorKinds(besideNote: Bool) -> Bool {
-        // An answer with zones left out asks to zoom in beside the kinds of those drawn, not instead of them.
-        (!besideNote || state == .partial) && state != .off && !(state == .shown && count == 0)
+        // An answer with zones left out asks to zoom in beside the kinds of those drawn, not instead of them, and
+        // one with a feed's zones unreadable says they are unavailable beside the kinds of the others' drawn.
+        let named = state == .partial || (state == .failed && count > 0)
+        return (!besideNote || named) && state != .off && !(state == .shown && count == 0)
     }
 
     /// A line for each of the cities' rules whose hours set it apart, or that does not hold yet, by kind,
