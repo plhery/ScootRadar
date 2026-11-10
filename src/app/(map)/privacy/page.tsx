@@ -22,7 +22,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 9 November 2026</p>
+        <p>Last updated: 10 November 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
 
         <h2>Local storage and service worker</h2>
         <p>
-          Appearance, map style, language, filters, the ride length you choose for price
+          Appearance, map style, language, units, filters, the ride length you choose for price
           estimates and, in the iOS and Android apps, the ride passes you enter are stored locally on your
           device, as is the fact that this device has found
           your location before (a yes or no, never the position). For its rating prompt each of the iOS
