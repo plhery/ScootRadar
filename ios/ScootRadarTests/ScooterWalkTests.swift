@@ -702,6 +702,140 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.walk?.phase, .gone)
     }
 
+    // MARK: Neighbours renamed
+
+    func testTheWalkIsNotHandedToANeighbourAfterItsAppStoodFadedForOneAnswer() async throws {
+        let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
+        // Some 9 m on, as at a parking spot, almost flat: another Lime that stood there all along.
+        let neighbour = scooter("s2", battery: 23, at: point(east: 309, north: 0))
+        let other = scooter("b9", provider: "bird", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour, other])
+
+        // Lime collected again: both Limes stand faded for one answer; then Lime's positions, without s1.
+        try await load(h, ScooterResponse(
+            vehicles: [other], lastSeenVehicles: [target, neighbour],
+            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [], mode: "vehicles", refreshing: true)
+        ), call: 2)
+        h.clock.advance(60)
+        try await load(h, ScooterResponse(vehicles: [neighbour, other]), call: 3)
+
+        XCTAssertEqual(h.model.walk?.target, .scooter(target))
+        XCTAssertEqual(h.model.selectedScooterID, target.id)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        h.clock.advance(60)
+        try await load(h, ScooterResponse(vehicles: [neighbour, other]), call: 4)
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+        XCTAssertEqual(h.model.selectedScooterID, target.id)
+    }
+
+    func testTheWalkIsNotHandedToANeighbourAfterZoomingOutOrPanningAwayAndBack() async throws {
+        let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
+        let neighbour = scooter("s2", battery: 23, at: point(east: 309, north: 0))
+        let groups = ScooterResponse(
+            vehicles: [],
+            clusters: [ScooterCluster(id: "c", latitude: rider.latitude, longitude: rider.longitude, count: 2, providers: ["lime": 2])],
+            meta: ScooterResponseMetadata(partial: false, failedSources: [], mode: "clusters")
+        )
+        let elsewhere = ScooterResponse(vehicles: [], meta: ScooterResponseMetadata(partial: false, failedSources: [], mode: "vehicles"))
+        let away = [
+            ("zoomed out to groups", groups, region(around: rider, span: 0.06), 14),
+            ("panned 3 km away", elsewhere, region(around: point(east: 3_000, north: 0), span: 0.01), 17)
+        ]
+
+        for (name, response, there, zoom) in away {
+            let h = try await shownWalk(to: target, others: [neighbour])
+            // s1 is taken meanwhile; back on the street only s2 stands there.
+            await h.api.setResponse(response)
+            h.model.updateViewport(there, zoom: zoom)
+            let leftLoaded = await waitUntil { await h.api.calls == 2 && !h.model.isLoading }
+            XCTAssertTrue(leftLoaded, name)
+            await h.api.setResponse(ScooterResponse(vehicles: [neighbour]))
+            h.clock.advance(60)
+            h.model.updateViewport(region, zoom: 17)
+            let backLoaded = await waitUntil { await h.api.calls == 3 && !h.model.isLoading }
+            XCTAssertTrue(backLoaded, name)
+
+            XCTAssertEqual(h.model.walk?.target, .scooter(target), name)
+            XCTAssertEqual(h.model.selectedScooterID, target.id, name)
+            XCTAssertEqual(h.model.walk?.phase, .shown, name)
+        }
+    }
+
+    func testANeighbourRenamedWhileThePhoneWasLockedDoesNotTakeTheWalk() async throws {
+        let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
+        let neighbour = scooter("s2", battery: 10, at: point(east: 309, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour])
+
+        // Six minutes without an answer, or a deploy: the server names the neighbour anew, and s1 was taken.
+        let renamed = scooter("s2-new", battery: 10, at: point(east: 309, north: 0))
+        h.clock.advance(360)
+        try await load(h, ScooterResponse(vehicles: [renamed]), call: 2)
+        XCTAssertEqual(h.model.walk?.target, .scooter(target))
+        XCTAssertEqual(h.model.selectedScooterID, target.id)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+
+        h.clock.advance(60)
+        try await load(h, ScooterResponse(vehicles: [renamed]), call: 3)
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+        XCTAssertEqual(h.model.walkNote(for: .scooter(target)), .gone)
+    }
+
+    func testAfterADeployRenamingEveryScooterTheWalkStaysOnItsScooter() async throws {
+        let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
+        let neighbour = scooter("s2", battery: 10, at: point(east: 309, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour])
+
+        let renamed = scooter("s1-new", battery: 80, at: point(east: 301, north: 0))
+        try await load(h, ScooterResponse(vehicles: [renamed, scooter("s2-new", battery: 10, at: point(east: 309, north: 0))]), call: 2)
+
+        XCTAssertEqual(h.model.walk?.target, .scooter(renamed))
+        XCTAssertEqual(h.model.selectedScooterID, renamed.id)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+    }
+
+    func testABirdRenamedOnEveryReadIsStillWalkedToBesideAnotherRenamedToo() async throws {
+        let target = scooter("x0", provider: "bird", battery: 80, at: point(east: 300, north: 0))
+        let neighbour = scooter("y0", provider: "bird", battery: 10, at: point(east: 309, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour])
+
+        for read in 1 ... 4 {
+            // Each read moves the scooters a metre or two, as GPS does.
+            let walked = scooter("x\(read)", provider: "bird", battery: 80, at: point(east: 300 + Double(read % 2), north: 0))
+            let beside = scooter("y\(read)", provider: "bird", battery: 10, at: point(east: 309 - Double(read % 2), north: 0))
+            h.clock.advance(60)
+            try await load(h, ScooterResponse(vehicles: [beside, walked]), call: read + 1)
+            XCTAssertEqual(h.model.walk?.target, .scooter(walked), "read \(read)")
+            XCTAssertEqual(h.model.selectedScooterID, walked.id, "read \(read)")
+            XCTAssertEqual(h.model.walk?.phase, .shown, "read \(read)")
+        }
+    }
+
+    func testAPlainCardClosesRatherThanMoveToANeighbourRenamedAfterItsScooterWasTaken() async throws {
+        let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
+        let neighbour = scooter("s2", battery: 10, at: point(east: 309, north: 0))
+        let h = try await harness(vehicles: [target, neighbour], rider: rider)
+        h.model.selectScooter(target.id)
+
+        // A deploy renames everything: the card follows its scooter, not the neighbour.
+        let renamed = scooter("s1-new", battery: 80, at: point(east: 300, north: 0))
+        let neighbourRenamed = scooter("s2-new", battery: 10, at: point(east: 309, north: 0))
+        try await load(h, ScooterResponse(vehicles: [neighbourRenamed, renamed]), call: 2)
+        XCTAssertEqual(h.model.selectedScooterID, renamed.id)
+
+        // Taken, then the neighbour named anew after a gap: the card closes.
+        h.clock.advance(360)
+        let later = scooter("s2-later", battery: 10, at: point(east: 309, north: 0))
+        try await load(h, ScooterResponse(vehicles: [later]), call: 3)
+        XCTAssertNil(h.model.selectedScooter)
+        XCTAssertNotEqual(h.model.dock, .scooter(later))
+
+        // Another choice remembers nothing of the first one's neighbours.
+        h.model.selectScooter(later.id)
+        let next = scooter("s2-next", battery: 10, at: point(east: 309, north: 0))
+        try await load(h, ScooterResponse(vehicles: [next]), call: 4)
+        XCTAssertEqual(h.model.selectedScooterID, next.id)
+    }
+
     // MARK: Map and card
 
     func testTheMapKeepsTheScooterWalkedToSelectedAndDrawsItsTrail() throws {
@@ -838,9 +972,9 @@ final class ScooterWalkTests: XCTestCase {
         return h
     }
 
-    private func scooter(_ id: String, provider: String = "lime", at point: GeoPoint) -> Scooter {
+    private func scooter(_ id: String, provider: String = "lime", battery: Int = 80, at point: GeoPoint) -> Scooter {
         Scooter(
-            provider: provider, latitude: point.latitude, longitude: point.longitude, battery: 80,
+            provider: provider, latitude: point.latitude, longitude: point.longitude, battery: battery,
             rangeMeters: nil, vehicleID: id, deepLink: nil, rentalURIs: nil, distanceMeters: 0
         )
     }
@@ -857,6 +991,10 @@ final class ScooterWalkTests: XCTestCase {
 
     private func iso(_ date: Date) -> String {
         ISO8601DateFormatter().string(from: date)
+    }
+
+    private func region(around centre: GeoPoint, span: CLLocationDegrees) -> MKCoordinateRegion {
+        MKCoordinateRegion(center: centre.coordinate, span: MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span))
     }
 
     private func point(east: CLLocationDistance, north: CLLocationDistance) -> GeoPoint {

@@ -168,7 +168,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         didSet {
             if selectedScooterID != nil { selectedParkingID = nil }
             guard selectedScooterID != oldValue else { return }
-            if !isFollowingScooter { scooterChoices += 1 }
+            if isFollowingScooter, let selectedScooterID {
+                neighbours?.follow(to: selectedScooterID)
+            } else {
+                scooterChoices += 1
+                // Another choice: the scooters seen beside the one before are nothing to this one.
+                neighbours = selectedScooterID.map(ScooterNeighbours.init(following:))
+                noteNeighbours()
+            }
             endWalkIfTargetLeftSelection()
         }
     }
@@ -176,6 +183,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// the same choice: the dock animates, VoiceOver reads the card and the phone ticks on it, not on the id.
     private(set) var scooterChoices = 0
     @ObservationIgnored private var isFollowingScooter = false
+    /// The scooters of its app seen near the selected scooter since it was chosen, which a scooter under a new id
+    /// must stand further from to be it (ScooterNeighbours).
+    @ObservationIgnored private var neighbours: ScooterNeighbours?
     /// Selecting a bay clears the selected scooter, and the other way round.
     private(set) var selectedParkingID: String? {
         didSet {
@@ -1711,6 +1721,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 rebuildVehicleIndex()
                 followWalkTarget(in: response.meta, loadedFor: bounds, receivedAt: receivedAt, previousIDs: previousIDs)
                 if let cardScooter { followCardScooter(cardScooter, previousIDs: previousIDs) }
+                noteNeighbours()
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()
@@ -2345,8 +2356,8 @@ extension ScooterMapModel {
     /// twice, from two reads of its app, which mostly means someone took
     /// it: one missing from one update comes back. Scooters get new ids now
     /// and then, so one of the same provider standing where it stood, under an
-    /// id the data before didn't list (`previousIDs`), is that scooter; one
-    /// listed before is another, which the walk is not handed to.
+    /// id the data before didn't list (`previousIDs`), is that scooter, unless it
+    /// stands where another of its app seen near it stood (`successor`).
     private func followWalkTarget(
         in meta: ScooterResponseMetadata?,
         loadedFor bounds: GeoBounds,
@@ -2371,7 +2382,7 @@ extension ScooterMapModel {
         guard walk.isUnderway, Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else {
             return
         }
-        if let successor = successor(of: scooter, among: vehicles.filter { !previousIDs.contains($0.id) }) {
+        if let successor = successor(of: scooter, previousIDs: previousIDs) {
             walk.target = .scooter(successor)
             walk.missedRead = nil
             self.walk = walk
@@ -2381,7 +2392,8 @@ extension ScooterMapModel {
         }
         // Faded where it was last seen while its app is collected again: neither seen nor taken until the
         // app's new positions say which.
-        if lastSeenVehicles.contains(where: { $0.id == scooter.id }) || successor(of: scooter, among: lastSeenVehicles) != nil {
+        if lastSeenVehicles.contains(where: { $0.id == scooter.id }) ||
+            Self.nearest(ofTheProviderOf: scooter, among: lastSeenVehicles) != nil {
             return
         }
         let read = Self.read(of: scooter.provider, in: meta) ?? receivedAt
@@ -2406,24 +2418,41 @@ extension ScooterMapModel {
     }
 
     /// A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on
-    /// each read, others after each ride: one of its provider within a few metres of where it stood, listed under an
-    /// id that wasn't before, is that scooter, and the card stays open on it. A scooter that was already listed there
-    /// is another one, and the card closes as it did.
+    /// each read, others after each ride, and the server its own after a gap or a restart: the scooter that takes
+    /// over (`successor`) is that scooter, and the card stays open on it. A scooter that was already listed there, or
+    /// stood where one seen near it stood, is another one, and the card closes as it did.
     private func followCardScooter(_ scooter: Scooter, previousIDs: Set<String>) {
         guard selectedScooterID == scooter.id, vehiclesByID[scooter.id] == nil,
-              let successor = successor(of: scooter, among: vehicles.filter { !previousIDs.contains($0.id) }) else { return }
+              let successor = successor(of: scooter, previousIDs: previousIDs) else { return }
         follow(to: successor.id)
     }
 
+    /// The scooter under a new id that is `scooter`, which the data no longer lists under its own: the nearest of its
+    /// provider within a few metres of where it stood, under an id the data before didn't list, and nearer where it
+    /// stood than where any other scooter of its app seen near it since it was chosen stood (ScooterNeighbours).
+    private func successor(of scooter: Scooter, previousIDs: Set<String>) -> Scooter? {
+        let stood = GeoPoint(scooter.coordinate)
+        return Self.nearest(ofTheProviderOf: scooter, among: vehicles.filter { candidate in
+            !previousIDs.contains(candidate.id) && neighbours?.mayTakeOver(candidate, from: stood) != false
+        })
+    }
+
     /// The nearest scooter of the same provider within a few metres of where `scooter` stood.
-    private func successor(of scooter: Scooter, among candidates: [Scooter]? = nil) -> Scooter? {
+    private static func nearest(ofTheProviderOf scooter: Scooter, among candidates: [Scooter]) -> Scooter? {
         let point = GeoPoint(scooter.coordinate)
-        return (candidates ?? vehicles)
+        return candidates
             .filter { $0.provider == scooter.provider }
             .map { (scooter: $0, metres: $0.distance(from: point)) }
             .filter { $0.metres <= WalkRoute.rebindDistance }
             .min { $0.metres < $1.metres }?
             .scooter
+    }
+
+    /// Remembers the scooters of its app, live or faded, standing near the selected scooter, or where it was last
+    /// seen while a walk holds its card.
+    private func noteNeighbours() {
+        guard let selectedScooter else { return }
+        neighbours?.note(vehicles + lastSeenVehicles, around: selectedScooter)
     }
 
     /// Moves the selection to the scooter's new id, the same choice.

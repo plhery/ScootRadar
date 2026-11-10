@@ -257,6 +257,57 @@ enum ScooterWalkPhase: Equatable, Sendable {
     case gone
 }
 
+/// The scooters of its app seen near a scooter that its card, or a walk to it, follows from answer to answer, by where
+/// each last stood. Operators give scooters new ids, Bird, Spin and Pony on every read, and the server gives its own
+/// anew after a gap or a restart, so one under an id the answer before didn't list, standing where the scooter
+/// followed stood, may be it or a neighbour renamed: it takes over only standing nearer where the scooter followed
+/// stood than where any neighbour stood. Neighbours are remembered live or faded, through answers that leave the spot
+/// out, groups zoomed out or the map panned away, until the card closes or another scooter is chosen.
+struct ScooterNeighbours: Equatable, Sendable {
+    /// Scooters of its app this near the one followed are remembered.
+    static let radius: CLLocationDistance = 30
+    /// The nearest so many of them.
+    static let limit = 50
+
+    /// The ids the scooter followed went by: it is no neighbour of its own.
+    private(set) var followedIDs: Set<String>
+    /// Where each neighbour last stood, by its id.
+    private(set) var positions: [String: GeoPoint] = [:]
+
+    init(following id: String) {
+        followedIDs = [id]
+    }
+
+    /// The scooter followed goes by a new id.
+    mutating func follow(to id: String) {
+        followedIDs.insert(id)
+        positions[id] = nil
+    }
+
+    /// Remembers where the scooters of its app among `scooters`, live or faded, stand within `radius` of `followed`,
+    /// keeping the nearest `limit`.
+    mutating func note(_ scooters: [Scooter], around followed: Scooter) {
+        let centre = GeoPoint(followed.coordinate)
+        for scooter in scooters where scooter.provider == followed.provider && !followedIDs.contains(scooter.id) {
+            let point = GeoPoint(scooter.coordinate)
+            if point.distance(to: centre) <= Self.radius { positions[scooter.id] = point }
+        }
+        guard positions.count > Self.limit else { return }
+        let nearest = positions
+            .map { (id: $0.key, point: $0.value, metres: $0.value.distance(to: centre)) }
+            .sorted { $0.metres < $1.metres }
+            .prefix(Self.limit)
+        positions = Dictionary(uniqueKeysWithValues: nearest.map { ($0.id, $0.point) })
+    }
+
+    /// Whether `candidate` stands nearer `stood`, where the scooter followed last stood, than where any neighbour stood.
+    func mayTakeOver(_ candidate: Scooter, from stood: GeoPoint) -> Bool {
+        let point = GeoPoint(candidate.coordinate)
+        let metres = point.distance(to: stood)
+        return positions.values.allSatisfy { metres < point.distance(to: $0) }
+    }
+}
+
 /// What the Directions button of a card is.
 enum ScooterDirectionsControl: Equatable, Sendable {
     /// Directions: draws the walking path.

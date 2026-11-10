@@ -143,7 +143,10 @@ When no route or no location is found, the card says so and offers **Open in
 Maps**. Closing the card or choosing another scooter or bay ends the walk; until
 then the scooter stays selected wherever the map goes. When two reads of its
 app's data no longer list it, the card stays open with no actions and says
-someone may have taken it.
+someone may have taken it. Operators and the server give scooters new ids now
+and then: the card and the walk follow a scooter of the same app standing where
+theirs stood under an id not listed before, but not one standing where another
+scooter of that app was seen beside it, live or faded, since the card opened.
 
 **Ride and parking zones.** A preview, on unless turned off under Settings ›
 Map, as on the website: from zoom 14 the map draws the zones the operators

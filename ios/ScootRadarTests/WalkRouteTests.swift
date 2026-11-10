@@ -118,6 +118,53 @@ final class WalkRouteTests: XCTestCase {
         XCTAssertFalse(WalkRoute.isWalk(from: start, to: point(east: 0, north: 10_100)))
     }
 
+    // MARK: Neighbours
+
+    func testANeighbourIsRememberedWithin30MetresOfItsAppAtItsLatestPosition() {
+        let followed = scooter("s1", at: start)
+        var neighbours = ScooterNeighbours(following: followed.id)
+
+        neighbours.note([
+            followed,
+            scooter("s2", at: point(east: 9, north: 0)),
+            scooter("s3", at: point(east: 0, north: 29)),
+            scooter("far", at: point(east: 31, north: 0)),
+            scooter("b1", provider: "bird", at: point(east: 5, north: 0))
+        ], around: followed)
+        neighbours.note([scooter("s2", at: point(east: 12, north: 0))], around: followed)
+
+        XCTAssertEqual(Set(neighbours.positions.keys), ["lime:s2", "lime:s3"])
+        XCTAssertEqual(neighbours.positions["lime:s2"]?.distance(to: start) ?? 0, 12, accuracy: 0.1)
+
+        // The scooter followed under a new id is no neighbour of its own.
+        neighbours.note([scooter("s3", at: point(east: 1, north: 0))], around: followed)
+        neighbours.follow(to: "lime:s3")
+        neighbours.note([scooter("s3", at: point(east: 1, north: 0))], around: followed)
+        XCTAssertEqual(Set(neighbours.positions.keys), ["lime:s2"])
+    }
+
+    func testOnlyAScooterNearerWhereTheFollowedOneStoodThanAnyNeighbourTakesOver() {
+        let followed = scooter("s1", at: start)
+        var neighbours = ScooterNeighbours(following: followed.id)
+        XCTAssertTrue(neighbours.mayTakeOver(scooter("new", at: point(east: 9, north: 0)), from: start))
+
+        neighbours.note([scooter("s2", at: point(east: 9, north: 0))], around: followed)
+
+        XCTAssertTrue(neighbours.mayTakeOver(scooter("s1-new", at: point(east: 4, north: 0)), from: start))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("s2-new", at: point(east: 9, north: 0)), from: start))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("nearer-it", at: point(east: 5, north: 0)), from: start))
+    }
+
+    func testTheNearestFiftyNeighboursAreKept() {
+        let followed = scooter("s1", at: start)
+        var neighbours = ScooterNeighbours(following: followed.id)
+
+        neighbours.note((1 ... 60).map { scooter("n\($0)", at: point(east: Double($0) / 3, north: 0)) }, around: followed)
+
+        XCTAssertEqual(neighbours.positions.count, ScooterNeighbours.limit)
+        XCTAssertEqual(Set(neighbours.positions.keys), Set((1 ... 50).map { "lime:n\($0)" }))
+    }
+
     // MARK: Walk
 
     func testTheButtonAndTheLineFollowTheWalk() {
@@ -253,6 +300,13 @@ final class WalkRouteTests: XCTestCase {
         XCTAssertNil(ScooterMapCameraPolicy.rect(
             fitting: [], heading: 0, size: size, visible: CGRect(origin: .zero, size: size), minimumScale: 3
         ))
+    }
+
+    private func scooter(_ id: String, provider: String = "lime", at point: GeoPoint) -> Scooter {
+        Scooter(
+            provider: provider, latitude: point.latitude, longitude: point.longitude, battery: 80,
+            rangeMeters: nil, vehicleID: id, deepLink: nil, rentalURIs: nil, distanceMeters: 0
+        )
     }
 
     private func point(east: CLLocationDistance, north: CLLocationDistance) -> GeoPoint {
