@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { render } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { I18nProvider } from '@/lib/i18n';
-import PrivacyPage from './page';
+import PrivacyPage, { metadata } from './page';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -25,4 +25,12 @@ const text = () => renderToStaticMarkup(<PrivacyPage />).replace(/<[^>]+>/g, ' '
 
 it('lists the units among the settings stored on the device, as PRIVACY.md does', () => {
   expect(text().match(/Local storage and service worker (.*?) are stored locally/)?.[1]).toMatch(/\bunits\b/);
+});
+
+it('is shared as the privacy notice, not as the map', () => {
+  expect(metadata.openGraph?.url).toBe('/privacy');
+  expect(metadata.openGraph?.title).toBe(metadata.title);
+  expect(metadata.openGraph?.description).toBe(metadata.description);
+  expect(metadata.twitter?.title).toBe(metadata.title);
+  expect(metadata.twitter?.description).toBe(metadata.description);
 });

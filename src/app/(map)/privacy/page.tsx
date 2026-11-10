@@ -2,11 +2,32 @@ import AnalyticsPreference from '@/components/AnalyticsPreference';
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import SmartAppBanner from '@/components/SmartAppBanner';
+import { MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
 
+const TITLE = 'Privacy — ScootRadar';
+const DESCRIPTION = 'How ScootRadar handles location, search, and service data.';
+
+// A shared link names this page, not the map: the layout's openGraph and twitter are the map's,
+// and a page that sets either replaces the whole of it.
 export const metadata: Metadata = {
-  title: 'Privacy — ScootRadar',
-  description: 'How ScootRadar handles location, search, and service data.',
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: '/privacy' },
+  openGraph: {
+    type: 'website',
+    url: '/privacy',
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: 'en_CH',
+    images: [MAP_SHARE_IMAGE],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [MAP_SHARE_IMAGE],
+  },
 };
 
 // This page is light whatever the appearance of the app.
