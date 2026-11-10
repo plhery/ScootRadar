@@ -1,9 +1,9 @@
 # Privacy
 
-Last updated: 9 November 2026
+Last updated: 10 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
-searches.
+searches, except the last place chosen in the search, which stays on the device (see below).
 
 - With permission, the app uses location coordinates on the device to focus the
   map and calculate distance. Its API receives the visible map bounds needed to

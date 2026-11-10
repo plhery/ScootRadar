@@ -34,3 +34,9 @@ it('is shared as the privacy notice, not as the map', () => {
   expect(metadata.twitter?.title).toBe(metadata.title);
   expect(metadata.twitter?.description).toBe(metadata.description);
 });
+
+it('says, where it says address searches are not kept, that the last place chosen in the search is, on the device', () => {
+  const overview = text().match(/ Overview (.*?) Location and map requests /)?.[1];
+  expect(overview).toMatch(/address searches/);
+  expect(overview).toMatch(/last place you chose in the search.* on your device/);
+});

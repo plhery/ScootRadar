@@ -47,7 +47,8 @@ export default function PrivacyPage() {
 
         <h2>Overview</h2>
         <p>
-          ScootRadar has no user accounts or advertising. It does not intentionally retain your precise location or address searches.
+          ScootRadar has no user accounts or advertising. It does not intentionally retain your precise location or address
+          searches, except the last place you chose in the search, which stays on your device (see Local storage below).
         </p>
 
         <h2>Location and map requests</h2>
