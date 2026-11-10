@@ -937,6 +937,35 @@ it('says the scooter walked to was taken once two updates of the data that would
   expect(within(scooterCard()).queryByRole('button', { name: /^(Directions|Hide route)$/ })).toBeNull();
 });
 
+it('says the scooter walked to was taken from two reads of its app, while another app in view holds the time of the data', async () => {
+  // Bird's feed in view was last read 6 minutes ago: every answer has that time as its own, and only Lime's
+  // own time says when Lime's scooters were read again.
+  const bird: Vehicle = { ...OTHER, provider: 'bird', vehicle_id: 'bird' };
+  const elsewhere: Vehicle = { ...OTHER, vehicle_id: 'elsewhere', lng: OTHER.lng + 0.001 };
+  const birdRead = new Date(Date.now() - 6 * 60_000).toISOString();
+  let limeRead = new Date().toISOString();
+  let vehicles = [FAR, elsewhere, bird];
+  stubServer(() => data(vehicles, [], { generatedAt: birdRead, shownSince: { lime: limeRead, bird: birdRead } }));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  // Lime read again without it, then that read served again for minutes: nothing more is known of it.
+  vehicles = [elsewhere, bird];
+  limeRead = new Date().toISOString();
+  for (let minute = 0; minute < 4; minute++) {
+    await refreshData();
+    expect(screen.queryByText(TAKEN)).toBeNull();
+    expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  }
+
+  // A second read of Lime without it.
+  limeRead = new Date().toISOString();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('gone 0 null');
+});
+
 it('keeps where a scooter taken was beside its card, and gives Directions back if it returns', async () => {
   let vehicles = [FAR];
   stubServer(() => data(vehicles));

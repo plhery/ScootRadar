@@ -745,17 +745,23 @@ export default function Home() {
   // Taken while you walked to it: no longer in data that would have it, where
   // single scooters are sent whatever their range and battery and its app's feed answered,
   // nor standing faded where it was last seen.
-  // Twice, from two updates of the data: a scooter missing from one comes back.
+  // Twice, from two reads of its app: a scooter missing from one comes back. A read is told by the time of its
+  // app's scooters shown (meta.shownSince), which moves only when they are read again; the answer's own time is
+  // the oldest of every app's, and stays put while another app in view is late or being swept. A server that
+  // does not name the app's time is judged by the answer's.
   const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
     answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
     (scooterQuery?.minRange ?? 0) === 0 &&
     boundsContainPoint(mapQuery.bounds, walkLat, walkLng) &&
     !responseMeta.failedSources.some(source => providerForFailedSource(source) === pinnedVehicle.provider);
   const walkedSeen = liveWalkedVehicle ? true : walkedCovered && !walkedFaded ? false : null;
-  const [walkMissedIn, setWalkMissedIn] = useState<number | null>(null);
-  if (walkedSeen === false && walkMissedIn === null) setWalkMissedIn(lastUpdated);
+  const walkedRead = pinnedProvider !== null && responseMeta
+    ? responseMeta.shownSince?.[pinnedProvider] ?? responseMeta.generatedAt
+    : null;
+  const [walkMissedIn, setWalkMissedIn] = useState<string | null>(null);
+  if (walkedSeen === false && walkMissedIn === null) setWalkMissedIn(walkedRead);
   if (walkedSeen === true && walkMissedIn !== null) setWalkMissedIn(null);
-  const walkedTaken = walkedSeen === false && walkMissedIn !== null && lastUpdated !== walkMissedIn;
+  const walkedTaken = walkedSeen === false && walkMissedIn !== null && walkedRead !== walkMissedIn;
   useEffect(() => {
     if (walkedTaken) walkGone();
   }, [walkGone, walkedTaken]);
