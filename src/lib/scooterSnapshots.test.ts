@@ -477,6 +477,53 @@ describe('feeds collected on demand', () => {
     });
   });
 
+  describe('a feed read over many minutes, as a Bird area\'s sweep', () => {
+    const austin = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'bird_us_app_austin')!;
+    const [lat, lng] = austin.center;
+    const scooter = (n: number): Vehicle => ({ provider: 'bird', vehicle_id: `bird:${n}`, lat: lat + n * 1e-4, lng, battery: 80,
+      range_m: 20_000, deep_link: null, distance_m: null });
+    const view = { bounds: { south: lat - 0.01, west: lng - 0.01, north: lat + 0.01, east: lng + 0.01 }, minBattery: 0 };
+    const at = (time: number) => new Date(time).toISOString();
+    // A sweep of 22 and a half minutes, just ended: its first scooter read at its start, the others 10 and 1 minutes ago.
+    const swept = feed({ id: `${regionalSource(austin)}:${austin.id}`, source: regionalSource(austin), provider: 'bird',
+      coverage: serviceAreas(austin).map(area => area.bounds), observedAt: now - minutes(22.5), collectionMs: minutes(22.5),
+      vehicles: [scooter(1), scooter(2), scooter(3), scooter(4)],
+      reads: { lastAt: now - 30_000, at: { 'bird:2': now - minutes(10), 'bird:3': now - minutes(1), 'bird:4': now - minutes(16) } } });
+    const ids = (vehicles: Vehicle[] | undefined) => vehicles?.map(item => item.vehicle_id).sort();
+
+    it('shows live the scooters it read in the last 15 minutes, those it read before faded, with the oldest live one\'s time', () => {
+      const answer = querySnapshot(snapshot([swept]), view, 16, now, { refreshing: new Set([swept.id]) });
+      expect(ids(answer.vehicles)).toEqual(['bird:2', 'bird:3']);
+      // The scooter it names no time for was read at its start.
+      expect(ids(answer.lastSeen?.vehicles)).toEqual(['bird:1', 'bird:4']);
+      expect(answer.meta).toMatchObject({ generatedAt: at(now - minutes(10)), expiresAt: at(now + minutes(5)),
+        shownSince: { bird: at(now - minutes(10)) }, lastSeenAt: at(now - minutes(22.5)), stale: false });
+      expect(answer.meta.refreshing).toBeUndefined();
+      // Its first scooters stand faded whatever collects it: a scooter a walk heads for does not leave the map as its part grows old.
+      expect(ids(querySnapshot(snapshot([swept]), view, 16, now).lastSeen?.vehicles)).toEqual(['bird:1', 'bird:4']);
+      // Six minutes on, the one read 10 minutes ago is too old as well, and the answer's time is the last one's.
+      const later = querySnapshot(snapshot([swept]), view, 16, now + minutes(6));
+      expect(ids(later.vehicles)).toEqual(['bird:3']);
+      expect(ids(later.lastSeen?.vehicles)).toEqual(['bird:1', 'bird:2', 'bird:4']);
+      expect(later.meta.generatedAt).toBe(at(now - minutes(1)));
+      // Once its last part is too old, it is a feed whose positions are too old: faded while collected again, else not shown.
+      const old = now + minutes(15);
+      expect(querySnapshot(snapshot([swept]), view, 16, old, { refreshing: new Set([swept.id]) }).vehicles).toEqual([]);
+      expect(ids(querySnapshot(snapshot([swept]), view, 16, old, { refreshing: new Set([swept.id]) }).lastSeen?.vehicles))
+        .toEqual(['bird:1', 'bird:2', 'bird:3', 'bird:4']);
+      expect(querySnapshot(snapshot([swept]), view, 16, old, { refreshing: new Set([swept.id]) }).meta.lastSeenAt)
+        .toBe(at(now - minutes(22.5)));
+    });
+
+    it('showed none of them live once it was over 15 minutes old, as old as its start, until 10 November 2026', () => {
+      // The same sweep without its reads: as every feed whose positions are too old.
+      const whole = { ...swept, reads: undefined };
+      const answer = querySnapshot(snapshot([whole]), view, 16, now, { refreshing: new Set([swept.id]) });
+      expect(answer.vehicles).toEqual([]);
+      expect(answer.lastSeen?.vehicles).toHaveLength(4);
+    });
+  });
+
   it('keeps a wide Ryde view from queuing a whole city ahead of the street being watched',()=>{
     const augsburg={south:48.3119,north:48.4049,west:10.8358,east:10.9538};
     const groups=REGIONAL_SCOOTER_SYSTEMS.filter(s=>s.id.startsWith('ryde_app_de_augsburg_')).map(system=>

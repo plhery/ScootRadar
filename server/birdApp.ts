@@ -5,12 +5,13 @@ import areaCatalog from '../data/bird-app-areas.json';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { serviceAreas, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
+import type { PositionReads } from '../src/lib/scooterSnapshots';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { daytimeSweeps } from './appMapCadence';
 import { heldSquare, sweepNearestArea, type Disc, type NearestMap, type NearestProgress, type NearestSweep, type Ring,
   type SweepLimits } from './nearestSweep';
 import { saveAtomically } from './snapshotFile';
-import { Pacer, SweepProgress } from './sweeps';
+import { currentCollection, Pacer, SweepProgress, type CollectionScope } from './sweeps';
 
 const ORIGIN = 'https://api-bird.prod.birdapp.com';
 const AUTH = 'https://api-auth.prod.birdapp.com';
@@ -405,6 +406,30 @@ type Published = { lat: number; lng: number; vehicle_id: string | null };
 export type PreviousPositions = (feedId: string) => readonly Published[] | undefined;
 
 /**
+ * What a Bird area's sweep tells the cache beside its progress (sweeps.ts), so that its scooters are as old as
+ * they are, not as the collection: when the sweep began, before a restart for one resumed (sweepStarted), and
+ * when it read each scooter it ends with (sweepRead), as a sweep may take longer than a position may be shown.
+ */
+export interface BirdSweepScope extends CollectionScope {
+  sweepStarted?(startedAt: number): void;
+  sweepRead?(reads: PositionReads): void;
+}
+
+/**
+ * The scope the cache collects a feed in. `progress` hears what its sweep has found with when the sweep began:
+ * the collection's start, `startedAt`, unless a Bird sweep resumed after a restart says it began before. `reads`
+ * gives when a Bird sweep read each scooter it ended with. Until 10 November 2026 a resumed sweep's progress was
+ * stamped with the collection's start: scooters it had found up to two hours before the restart (BIRD_LIMITS)
+ * showed as live, with the restart's time (week review, finding 2.4).
+ */
+export function sweepScope(attention: Omit<CollectionScope, 'progress'>, startedAt: number,
+  progress: (found: Vehicle[], swept: MapBounds[], startedAt: number) => void): BirdSweepScope & { reads(): PositionReads | undefined } {
+  let reads: PositionReads | undefined;
+  return { ...attention, progress: (found, swept) => progress(found, swept, startedAt),
+    sweepStarted: at => { startedAt = at; }, sweepRead: read => { reads = read; }, reads: () => reads };
+}
+
+/**
  * A complete sweep of a Bird area's outline (sweepNearestArea), planned from where its scooters
  * last stood. Only the brand of the system's provider is published, inside the outline and one of
  * the system's service areas: Spin's Greenwood Village system keeps the north of an area whose
@@ -422,18 +447,30 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   // By the operator's own id, so a scooter where two areas meet is shown once.
   const published = (scooters: Iterable<BirdScooter>): Vehicle[] =>
     [...scooters].filter(inside).map(scooter => birdVehicle(system.provider as 'bird' | 'spin', scooter));
+  const scope = currentCollection() as BirdSweepScope | undefined;
   const found = new Map<string, BirdScooter>();
+  // When each scooter was last read, and the last reply: the scooters a long sweep read last show live when
+  // it ends, those it read first faded (sweepRead).
+  const readAt = new Map<string, number>();
+  let lastReadAt: number | undefined;
+  const reading = { nearest: async (lat: number, lng: number, radiusM?: number) => {
+    const reply = await api.nearest(lat, lng, radiusM);
+    lastReadAt = Date.now();
+    for (const scooter of reply.scooters) readAt.set(scooter.id, lastReadAt);
+    return reply;
+  } };
   const progress = new SweepProgress(() => published(found.values()));
   const resume = await checkpoints?.resumable(system.id, limits);
   if (resume) {
-    // The map shows at once what the stopped sweep had found, and where.
+    // The map shows at once what the stopped sweep had found, and where, as old as that sweep.
+    scope?.sweepStarted?.(resume.startedAt);
     for (const seen of resume.scooters) found.set(seen.id, seen);
     progress.done(...resume.discs.map(({ lat, lng, r }) => heldSquare(lat, lng, r)));
   }
   const checkpoint = checkpoints?.track(system.id);
   let sweep: BirdSweep;
   try {
-    sweep = await sweepBirdArea(api, rings, previous, limits, found, (part, state) => {
+    sweep = await sweepBirdArea(reading, rings, previous, limits, found, (part, state) => {
       progress.done(part);
       checkpoint?.save(state, [...found.values()]);
     }, resume);
@@ -441,7 +478,14 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   console.log(JSON.stringify({ event: 'bird_sweep', system: system.id, scooters: sweep.scooters.length, requests: sweep.requests,
     planned: sweep.planned, piles: sweep.piles, ...resume ? { resumed: true, resumedRequests: resume.requests } : {},
     seconds: Math.round((Date.now() - sweep.startedAt) / 1000) }));
-  return { observedAt: sweep.startedAt, stale: false, vehicles: published(sweep.scooters) };
+  const kept = sweep.scooters.filter(inside);
+  const vehicles = kept.map(scooter => birdVehicle(system.provider as 'bird' | 'spin', scooter));
+  // Those the stopped sweep found and this one did not read again are as old as its start, observedAt.
+  if (lastReadAt !== undefined) {
+    scope?.sweepRead?.({ lastAt: lastReadAt, at: Object.fromEntries(kept.flatMap((scooter, i) =>
+      readAt.has(scooter.id) ? [[vehicles[i].vehicle_id!, readAt.get(scooter.id)!]] : [])) });
+  }
+  return { observedAt: sweep.startedAt, stale: false, vehicles };
 }
 
 /** The cache's one client, whose pace and holds every Bird request shares, the Rome feed's additions' too (birdSupplement.ts). */

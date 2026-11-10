@@ -42,7 +42,7 @@ import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { limeAccountRequests, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
-import { birdMapRequests, withBirdAppCollectors } from './birdApp';
+import { birdMapRequests, sweepScope, withBirdAppCollectors } from './birdApp';
 import { restoreBirdSupplements, savedBirdSupplements, withBirdSupplements } from './birdSupplement';
 import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
@@ -350,18 +350,18 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   // An app map's scooters carry no price: they get the one listed for their system, if any.
   const priced = (vehicles: Vehicle[]) => system ? withListedPricing(system, vehicles, Date.now()) : vehicles;
   // What an app map's sweep has found so far, shown until it ends (sweeps.ts): the record it ends
-  // with has no sweep.
-  const progress = (vehicles: Vehicle[], swept: MapBounds[]) => {
+  // with has no sweep. A Bird sweep tells when it began, and when it read each scooter it ends with.
+  const scope = sweepScope(attention, startedAt, (vehicles: Vehicle[], swept: MapBounds[], sweptSince: number) => {
     const record = records.get(definition.id);
     if (!running || stopping || !record) return;
-    records.set(definition.id, { ...record, sweep: { startedAt, vehicles: priced(vehicles), swept } });
+    records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, vehicles: priced(vehicles), swept } });
     publish();
     metrics.recordRefreshProgress(definition.id);
-  };
+  });
   const timed = async () => {
     const started = performance.now();
     try {
-      const result = await withinCollection({ ...attention, progress }, () => definition.collect()).finally(() => { running = false; });
+      const result = await withinCollection(scope, () => definition.collect()).finally(() => { running = false; });
       metrics.recordCollection(definition, false, (performance.now() - started) / 1000);
       lastErrors.delete(definition.id);
       return holdStrays(definition.id, { ...result, vehicles: priced(result.vehicles) }, records.get(definition.id), Date.now());
@@ -376,7 +376,9 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   await collectSnapshotFeed({ ...definition, collect: timed }, records.get(definition.id), record => {
     // Removed definitions may still have requests finishing in the background.
     if (stopping || !records.has(definition.id)) return;
-    records.set(definition.id, record);
+    // A failed collection keeps the scooters it had, and when they were read.
+    const reads = record.failed ? records.get(definition.id)!.reads : scope.reads();
+    records.set(definition.id, reads ? { ...record, reads } : record);
     publish();
   }, system && !isAppMapSystem(system) ? () => fetchRegionalParking(system) : undefined)
     .catch(error => { failed = true; throw error; })

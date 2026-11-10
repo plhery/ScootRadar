@@ -37,6 +37,11 @@ export interface FeedSnapshot {
   vehicles: Vehicle[];
   observedAt: number;
   /**
+   * Of a feed read over many minutes, as a Bird area's sweep (birdApp.ts): when each vehicle was read. Its
+   * observedAt is then its first part's time, which a vehicle not named in it takes.
+   */
+  reads?: PositionReads;
+  /**
    * An app map's sweep under way: the scooters it has found since it started, and the parts of
    * the area it has finished. The map shows them before the sweep ends; its end replaces them.
    */
@@ -54,6 +59,14 @@ export interface FeedSnapshot {
    * which ends when it says the season is open again (seasonalPauses.ts).
    */
   seasonOver?: boolean;
+}
+
+/** When the positions of a feed read over many minutes were read (FeedSnapshot.reads). */
+export interface PositionReads {
+  /** When its last part was read. */
+  lastAt: number;
+  /** When each vehicle was read, by its vehicle_id. */
+  at: Record<string, number>;
 }
 
 /**
@@ -113,8 +126,23 @@ function emptyHealth(): ScooterFetchMetadata {
 /** One scooter, whichever feeds list it. */
 const vehicleKey = (vehicle: Vehicle) => `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
 
-/** Whether a feed's positions are recent enough to show on the map. */
-export const showsPositions = (feed: FeedSnapshot, now: number) => now - feed.observedAt <= VEHICLE_MAX_AGE_MS;
+/** When a feed's vehicle was read: its feed's time, or its own part's of a feed read over many minutes. */
+const readAt = (feed: FeedSnapshot, vehicle: Vehicle) =>
+  (vehicle.vehicle_id ? feed.reads?.at[vehicle.vehicle_id] : undefined) ?? feed.observedAt;
+/** Whether a vehicle's position is recent enough to show on the map. */
+const shows = (feed: FeedSnapshot, vehicle: Vehicle, now: number) => now - readAt(feed, vehicle) <= VEHICLE_MAX_AGE_MS;
+
+/**
+ * Whether a feed's positions are recent enough to show on the map: of a feed read over many minutes, those
+ * of its last parts, those of its first standing faded once too old (readAt). A Bird area's sweep may take
+ * longer than a position may be shown, as Austin's of 46 requests, 22 minutes (docs/bird-app-map.md): until
+ * 10 November 2026 it came in whole as old as its start, every scooter faded (week review, finding 2.3).
+ */
+export const showsPositions = (feed: FeedSnapshot, now: number) => now - (feed.reads?.lastAt ?? feed.observedAt) <= VEHICLE_MAX_AGE_MS;
+
+/** When the oldest of a feed's positions the map shows were read, of one that shows them. */
+const oldestShown = (feed: FeedSnapshot, now: number) => !feed.reads ? feed.observedAt
+  : feed.vehicles.reduce((oldest, vehicle) => shows(feed, vehicle, now) ? Math.min(oldest, readAt(feed, vehicle)) : oldest, feed.reads.lastAt);
 
 /** The sweep under way that the map shows, of a feed whose last positions are too old to. */
 const shownSweep = (feed: FeedSnapshot, now: number) =>
@@ -674,25 +702,26 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   if (newest.size) for (const feed of relevant) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now);
-    const at = sweep?.startedAt ?? feed.observedAt;
     if (!showsPositions(feed, now) && !sweep) continue;
     for (const vehicle of sweep?.vehicles ?? feed.vehicles) {
       const key = vehicleKey(vehicle);
-      if (newest.has(key)) newest.set(key, Math.max(at, newest.get(key)!));
+      if (newest.has(key)) newest.set(key, Math.max(sweep?.startedAt ?? readAt(feed, vehicle), newest.get(key)!));
     }
   }
-  // When each feed's positions shown were seen: its last collection's, or its sweep's under way.
+  // When each feed's positions shown were seen: its last collection's, the oldest shown of one read over many
+  // minutes, or its sweep's under way.
   const shownSince: number[] = [];
   const shownSinceByProvider = new Map<string, number>();
   for (const feed of relevant) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now);
-    if (showsPositions(feed, now)) shownSince.push(feed.observedAt);
+    if (showsPositions(feed, now)) shownSince.push(oldestShown(feed, now));
     else if (sweep) shownSince.push(sweep.startedAt);
     else continue;
     shownSinceByProvider.set(feed.provider, Math.min(shownSinceByProvider.get(feed.provider) ?? Infinity, shownSince.at(-1)!));
-    const at = sweep?.startedAt ?? feed.observedAt;
-    pick(unique, sweep?.vehicles ?? feed.vehicles, (vehicle, key) => at < (newest.get(key) ?? -Infinity) || gone(feed, at, vehicle));
+    const at = (vehicle: Vehicle) => sweep?.startedAt ?? readAt(feed, vehicle);
+    pick(unique, sweep?.vehicles ?? feed.vehicles, (vehicle, key) => (!sweep && !shows(feed, vehicle, now)) ||
+      at(vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, at(vehicle), vehicle));
   }
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
@@ -703,17 +732,27 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const comingIds = new Set(coming.map(feed => feed.id));
   const fading = { refreshing: options.refreshing, idle: options.idleInView };
   for (const feed of relevant) {
-    if (!showsLastSeen(feed, now, fading, options.lastSeenMaxAgeMs?.(feed.id)) || quietInPause(feed, now, showing)) continue;
+    // Of a feed read over many minutes whose last parts show, its first parts' too old to show stand faded, whatever
+    // collects it: they are its last, and a scooter a walk heads for does not leave the map as its part grows old.
+    const firstParts = !feed.skipped && feed.reads !== undefined && showsPositions(feed, now);
+    const maxAgeMs = options.lastSeenMaxAgeMs?.(feed.id);
+    if (!(firstParts || showsLastSeen(feed, now, fading, maxAgeMs)) || quietInPause(feed, now, showing)) continue;
     const swept = shownSweep(feed, now)?.swept ?? [];
     const before = lastSeen.size;
-    pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) || newest.has(key) ||
-      swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)) || gone(feed, feed.observedAt, vehicle));
+    let seenAt = Infinity;
+    pick(lastSeen, feed.vehicles, (vehicle, key) => {
+      const at = readAt(feed, vehicle);
+      if (now - at <= VEHICLE_MAX_AGE_MS || now - at > (maxAgeMs ?? LAST_SEEN_MAX_AGE_MS) || unique.has(key) || newest.has(key) ||
+        swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)) || gone(feed, at, vehicle)) return true;
+      seenAt = Math.min(seenAt, at);
+      return false;
+    });
     if (lastSeen.size === before) continue;
-    lastSeenTimes.push(feed.observedAt);
+    lastSeenTimes.push(seenAt);
     const known = lastSeenProviders.get(feed.provider);
     const updating = comingIds.has(feed.id) || comingIds.has(viewReadsOf(feed.id));
     lastSeenProviders.set(feed.provider, {
-      seenAt: Math.min(known?.seenAt ?? Infinity, feed.observedAt),
+      seenAt: Math.min(known?.seenAt ?? Infinity, seenAt),
       updating: (known?.updating ?? false) || updating,
     });
   }

@@ -355,6 +355,17 @@ describe('cadence', () => {
     expect(feedState(old, now, watchedSince(now - minutes(15)))).toBe('expired');
   });
 
+  it('judges a feed read over many minutes, as a Bird area\'s sweep, by its last parts, which the map shows', () => {
+    // Austin's sweep of 22 and a half minutes, just ended, watched for 25: its first part is too old to show, its last not.
+    const swept = feed({ id: 'usa:bird_us_app_austin', provider: 'bird', observedAt: now - minutes(22.5), attemptedAt: now,
+      collectedAt: now, reads: { lastAt: now - 30_000, at: { 'bird:1': now - minutes(10) } } });
+    const watched = watchedSince(now - minutes(25));
+    expect(feedState(swept, now, watched)).toBe('ok');
+    expect(feedState(swept, now + minutes(15), watched)).toBe('expired');
+    // Until 10 November 2026 such a sweep came in as old as its start, and its feed read expired while watched.
+    expect(feedState({ ...swept, reads: undefined }, now, watched)).toBe('expired');
+  });
+
   it('judges parking as its cadence allows', () => {
     const parked = feed({ id: 'france:dott_fr_lyon', source: 'france', parking: { locations: [], observedAt: now - minutes(12), stale: false } });
     expect(parkingUp(parked, now, idle)).toBe(true);

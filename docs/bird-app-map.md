@@ -35,8 +35,11 @@ system's own brand is kept, inside the outline and the system's service
 areas (its `areas`, or its bounds): Bird's app shows Spin's fleet
 too, which a Spin system (`spin_us_app_*`) keeps where Spin has no public
 feed, and Spin's public feeds supply elsewhere. Each scooter keeps its battery
-charge and range. The map gives no position time, so the observation time is
-the sweep's start.
+charge and range. The map gives no position time, so a scooter's is that of
+the last reply that listed it, and the sweep's the start of it. A sweep may
+take longer than the 15 minutes a position is shown, as Austin's of 22
+minutes below: when it ends, the scooters of its last 15 minutes show live,
+and those it read before stand faded where they were last seen.
 
 Every reply is checked as the research reader checks it, and Spin's brand is
 accepted beside Bird's: the cells it answers for, and for each vehicle a UUID
@@ -73,7 +76,10 @@ it had found, as `tmp/bird-sweep.<area>.tmp` beside the snapshot (the host's
 backup skips it, as it does the snapshot's own temporary files), and removed
 when it ends: the new cache, once its two minutes are over, goes on with a
 sweep the deploy stopped, from its start, if saved within ten minutes
-(`BIRD_CHECKPOINT_MAX_AGE_MS`), rather than starting it again.
+(`BIRD_CHECKPOINT_MAX_AGE_MS`), rather than starting it again. It is as old
+as its start: the map shows what it finds only within 15 minutes of that
+start, as any sweep under way, and once it ends, the scooters it read in its
+last 15 minutes live.
 Rome's additions take about 24 requests every two hours by day, about 170 a
 day, and 24 every half hour while someone looks at Rome, 12 of each 30
 minutes ([below](#rome-adds-the-scooters-its-feed-leaves-out)).

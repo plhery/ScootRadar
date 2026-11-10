@@ -1,4 +1,4 @@
-import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
+import { showsPositions, VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
 
 /**
@@ -36,11 +36,12 @@ const fastFor = (feed: FeedSnapshot, now: number, cadence: FeedCadence, ms: numb
  * An idle feed's positions may be older than the map shows (15 minutes): it is
  * collected again as soon as someone looks. So it expires only when no
  * collection has succeeded for its interval and a grace. A feed collected every
- * minute, for at least 15 minutes, expires as its positions do on the map.
+ * minute, for at least 15 minutes, expires as its positions do on the map: of one
+ * read over many minutes, as a Bird area's sweep, its last parts' (showsPositions).
  */
 export function feedState(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): FeedState {
   if (now - lastSuccess(feed) > (cadence.idleExpiryMsForFeed?.(feed.id) ?? cadence.idleExpiryMs) ||
-    (fastFor(feed, now, cadence, VEHICLE_MAX_AGE_MS) && now - feed.observedAt > VEHICLE_MAX_AGE_MS)) return 'expired';
+    (fastFor(feed, now, cadence, VEHICLE_MAX_AGE_MS) && !showsPositions(feed, now))) return 'expired';
   return feed.failed ? 'failing' : 'ok';
 }
 

@@ -3,12 +3,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BIRD_BRANDS, BIRD_CHECKPOINT_MAX_AGE_MS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS,
-  BIRD_WATCH_MS, BirdClient, BirdSweepCheckpoints, BirdUntrustedMapError, birdVehicle, collectBirdArea, parseBirdReply, sweepBirdArea, withBirdAppCollectors,
-  type BirdScooter } from './birdApp';
+  BIRD_WATCH_MS, BirdClient, BirdSweepCheckpoints, BirdUntrustedMapError, birdVehicle, collectBirdArea, parseBirdReply, sweepBirdArea, sweepScope,
+  withBirdAppCollectors, type BirdScooter } from './birdApp';
 import type { NearestProgress } from './nearestSweep';
+import { withinCollection } from './sweeps';
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
-import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
+import { buildCityOverview, querySnapshot, type FeedSnapshot } from '../src/lib/scooterSnapshots';
+import type { MapBounds, Vehicle } from '../src/lib/types';
 import { COUNTRY_SOURCES } from '../src/generated/countries';
 
 const BIRD = 'df76d602-dd1a-4ce4-a64f-2e5dd8c6f845';
@@ -446,4 +449,81 @@ describe('Bird sweeps resumed after a deploy', () => {
       await vi.waitFor(() => expect(read).toBe(true));
     } finally { vi.useRealTimers(); }
   });
+
+  it('shows what the stopped sweep had found as old as that sweep, not as fresh as the restart', async () => {
+    // The stopped sweep began 40 minutes before, and saved a minute before the deploy what it had found downtown.
+    const startedAt = Date.now() - 40 * 60_000;
+    await writeFile(path, JSON.stringify({ system: austin.id, startedAt, requests: 3, discs: [{ lat: 30.27, lng: -97.74, r: 300 }],
+      scooters: [{ id: 'seen-before-deploy', brand: 'bird', lat: 30.27, lng: -97.74, battery: 50, range: 9_000 }], savedAt: Date.now() - 60_000 }));
+    const reports: { found: Vehicle[]; swept: MapBounds[]; since: number }[] = [];
+    const attention = { urgent: () => true, focus: () => undefined };
+    const collection = sweepScope(attention, Date.now(), (found, swept, since) => { reports.push({ found, swept, since }); });
+    // Bird does not answer yet: only what the checkpoint holds is shown.
+    const hanging = { nearest: () => new Promise<never>(() => undefined) };
+    void withinCollection(collection, () => collectBirdArea(austin, [], hanging, undefined, new BirdSweepCheckpoints({ directory })));
+    await vi.waitFor(() => expect(reports).toHaveLength(1), WAIT);
+    const [{ found, swept, since }] = reports;
+    expect(found.map(vehicle => vehicle.vehicle_id)).toEqual(['bird:seen-before-deploy']);
+    expect(since).toBe(startedAt);
+    // The cache's record with the sweep under way (scooter-cache.ts), its last whole sweep a day old: the scooter is not live.
+    const day = Date.now() - 24 * 60 * 60_000;
+    const record: FeedSnapshot = { id: `${regionalSource(austin)}:${austin.id}`, source: regionalSource(austin), provider: 'bird', coverage: serviceAreas(austin).map(area => area.bounds),
+      vehicles: [], observedAt: day, attemptedAt: day, collectedAt: day, collectionMs: 600_000, stale: false, failed: false, skipped: false,
+      sweep: { startedAt: since, vehicles: found, swept } };
+    const asked = Date.now() + 60_000;
+    const answer = querySnapshot({ version: 1, updatedAt: asked, feeds: [record], overview: buildCityOverview([record], asked) },
+      { bounds: { south: 30.26, west: -97.75, north: 30.28, east: -97.73 }, minBattery: 0 }, 16, asked, { refreshing: new Set([record.id]) });
+    expect(answer.vehicles).toEqual([]);
+    expect(answer.meta.shownSince).toBeUndefined();
+    // A sweep begun with the collection is as old as it.
+    const fresh: number[] = [];
+    const begun = Date.now();
+    const vehicles = fleet(50);
+    await withinCollection(sweepScope(attention, begun, (_, __, at) => { fresh.push(at); }),
+      () => collectBirdArea(austin, [], simulated(() => vehicles).api));
+    expect(fresh.length).toBeGreaterThan(0);
+    expect(new Set(fresh)).toEqual(new Set([begun]));
+  }, 30_000);
+});
+
+describe('Bird sweeps longer than a position may be shown', () => {
+  const austin = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'bird_us_app_austin')!;
+  afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); });
+
+  it('tell when they read each scooter, so that when one ends those of its last 15 minutes show live and the others faded', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.parse('2026-11-10T18:00:00Z'));
+    const vehicles = fleet(1_000);
+    const { api: map } = simulated(() => vehicles);
+    // A reply every minute and a half, as when other areas share Bird's two requests a minute.
+    const api = { nearest: async (lat: number, lng: number, radiusM?: number) => {
+      vi.setSystemTime(Date.now() + 90_000);
+      return map.nearest(lat, lng, radiusM);
+    } };
+    const collection = sweepScope({ urgent: () => true, focus: () => undefined }, Date.now(), () => undefined);
+    const result = await withinCollection(collection, () =>
+      collectBirdArea(austin, [], api, { requests: 3_000, milliseconds: 2 * 60 * 60_000, retryMs: 1 }));
+    const reads = collection.reads();
+    const end = Date.now();
+    expect(end - result.observedAt!).toBeGreaterThan(15 * 60_000);
+    expect(reads?.lastAt).toBe(end);
+    // Each scooter by its last reply, all of them read by this sweep.
+    expect(Object.keys(reads!.at).sort()).toEqual(result.vehicles.map(vehicle => vehicle.vehicle_id).sort());
+    const times = Object.values(reads!.at);
+    expect(Math.min(...times)).toBeGreaterThan(result.observedAt!);
+    expect(Math.max(...times)).toBeLessThanOrEqual(end);
+    // The cache's record of it (scooter-cache.ts), asked as it ends.
+    const record: FeedSnapshot = { id: `${regionalSource(austin)}:${austin.id}`, source: regionalSource(austin), provider: 'bird', coverage: serviceAreas(austin).map(area => area.bounds),
+      vehicles: result.vehicles, observedAt: result.observedAt!, reads, attemptedAt: end, collectedAt: end, stale: false, failed: false, skipped: false };
+    const bounds = { south: 30.1, west: -97.9, north: 30.4, east: -97.6 };
+    const answer = querySnapshot({ version: 1, updatedAt: end, feeds: [record], overview: buildCityOverview([record], end) },
+      { bounds, minBattery: 0 }, 18, end);
+    const recent = result.vehicles.filter(vehicle => end - reads!.at[vehicle.vehicle_id!] <= 15 * 60_000);
+    expect(recent.length).toBeGreaterThan(0);
+    expect(recent.length).toBeLessThan(result.vehicles.length);
+    expect(answer.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(recent.map(vehicle => vehicle.vehicle_id).sort());
+    expect(answer.lastSeen?.vehicles).toHaveLength(result.vehicles.length - recent.length);
+    expect(answer.meta.generatedAt).toBe(new Date(Math.min(...recent.map(vehicle => reads!.at[vehicle.vehicle_id!]))).toISOString());
+  }, 30_000);
 });
