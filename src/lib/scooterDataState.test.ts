@@ -191,6 +191,8 @@ describe('scooterDataReducer', () => {
       expiresAt: T0 + SKEW + 270_000,
       parkingExpiresAt: T0 + SKEW + 200_000,
       lastSuccessAt: T0 + SKEW,
+      // For the times the dock reads from the answer itself, as each app's delayed (dockModel.ts).
+      clockOffsetMs: SKEW,
     });
     // Not expired on arrival, fresh enough to read "Live", and due again at the server's interval.
     expect(isExpired(state.expiresAt, T0 + SKEW)).toBe(false);

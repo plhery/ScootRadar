@@ -51,6 +51,8 @@ export interface ScooterData {
   meta: ScooterResponseMeta | null;
   /** When the last successful response was observed, in epoch milliseconds. */
   lastUpdated: number | null;
+  /** How far this device's clock was ahead of the server's when it came: its other times are moved by as much. */
+  clockOffsetMs: number;
   /** A response is on screen, even one without scooters. */
   hasData: boolean;
   loading: ScooterLoading | null;
@@ -305,6 +307,7 @@ export function useScooterData(query: ScooterDataQuery | null, options: ScooterD
     parking: state.parking,
     meta: state.meta,
     lastUpdated: state.lastUpdated,
+    clockOffsetMs: state.clockOffsetMs,
     hasData: state.hasData,
     loading,
     answersQuery,

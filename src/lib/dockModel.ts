@@ -1,5 +1,6 @@
 import { PROVIDERS, PROVIDER_KEYS } from '@/generated/providers';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, type NearbyCoveredCity } from '@/lib/coveredCities';
+import { deviceTime } from '@/lib/dataExpiry';
 import { providerHealth, providersDownNotice, type ProviderHealth } from '@/lib/dataHealth';
 import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
@@ -211,6 +212,8 @@ export interface DockInput {
   meta: ScooterResponseMeta | null;
   lastUpdated: number | null;
   now: number;
+  /** How far this device's clock is ahead of the server's, for the times of that answer (useScooterData); 0 or absent for none. */
+  clockOffsetMs?: number;
   /** Scooters the whole response stands for (vehicles plus cluster totals), for the truncation notice. */
   representedCount: number;
   /** Providers that operate in the viewport. */
@@ -230,8 +233,8 @@ export interface DockInput {
   unfilteredCount: number | null;
 }
 
-type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now' | 'lastSeenCount' | 'fadedCounts' |
-  'lastSeenProviders' | 'enabledProviders'>;
+type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now' | 'clockOffsetMs' | 'lastSeenCount' |
+  'fadedCounts' | 'lastSeenProviders' | 'enabledProviders'>;
 
 /** The apps whose scooters are drawn faded on the map now, in catalogue order. */
 function fadedShown(input: Partial<StatusInput>): { provider: string; status: LastSeenStatus }[] {
@@ -262,7 +265,8 @@ function lastSeenText(apps: readonly { provider: string; status: LastSeenStatus 
 
 /**
  * The apps late in an answer of scooters, of those switched on: each the server is collecting again
- * or could not renew, whose oldest positions shown are DELAYED_MIN_AGE_MS old or more, oldest first.
+ * or could not renew, whose oldest positions shown are DELAYED_MIN_AGE_MS old or more, oldest first,
+ * each on this device's clock, as the answer's own time is.
  * Null when the answer does not name them (city totals, an answer kept from before, a server before
  * staleProviders): its data is then delayed or not as a whole.
  */
@@ -271,7 +275,7 @@ function delayedApps(input: StatusInput): { provider: string; at: number }[] | n
   if (!input.meta?.stale || !named) return null;
   return Object.entries(named)
     .filter(([provider]) => input.enabledProviders?.has(provider) ?? true)
-    .map(([provider, at]) => ({ provider, at: Math.min(Date.parse(at), input.now) }))
+    .map(([provider, at]) => ({ provider, at: Math.min(deviceTime(at, input.clockOffsetMs ?? 0), input.now) }))
     .filter(({ at }) => Number.isFinite(at) && input.now - at >= DELAYED_MIN_AGE_MS)
     .sort((a, b) => a.at - b.at || catalogueIndex(a.provider) - catalogueIndex(b.provider));
 }

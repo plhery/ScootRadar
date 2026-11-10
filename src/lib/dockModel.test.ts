@@ -219,6 +219,19 @@ describe('dock status', () => {
     expect(summary({ meta: late({}), lastUpdated: NOW - 12 * 60_000 }).status?.kind).toBe('updated');
   });
 
+  it('reads the app delayed on this device\'s clock, as the answer\'s own time', () => {
+    const minutes = (count: number) => count * 60_000;
+    // Lime's positions are 1 minute old on the server's clock, the device's 6 minutes fast: 1 minute old here too.
+    const fast = minutes(6);
+    const recent = meta({ stale: true, staleProviders: { lime: new Date(NOW - fast - minutes(1)).toISOString() } });
+    expect(summary({ meta: recent, lastUpdated: NOW - minutes(1), clockOffsetMs: fast }).status?.kind).toBe('live');
+    // Lime's 8 minutes old on the server's clock, the device's 6 minutes slow: delayed, at the device's time.
+    const slow = -minutes(6);
+    const old = meta({ stale: true, staleProviders: { lime: new Date(NOW - slow - minutes(8)).toISOString() } });
+    expect(summary({ meta: old, lastUpdated: NOW - minutes(8), clockOffsetMs: slow }).status)
+      .toEqual({ kind: 'delayed', text: { key: 'dock.delayed.one', values: { name: 'Lime' }, time: NOW - minutes(8) } });
+  });
+
   it('says whose faded ones are being updated while they stand where they were last seen', () => {
     const seenAt = NOW - 40 * 60_000;
     const filling = { meta: meta({ stale: true, refreshing: true, lastSeenAt: new Date(seenAt).toISOString() }), lastSeenCount: 12,

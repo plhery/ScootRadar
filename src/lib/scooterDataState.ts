@@ -89,6 +89,8 @@ export interface ScooterDataState {
   meta: ScooterResponseMeta | null;
   /** When the last successful response was observed (meta.generatedAt), in epoch milliseconds on this device's clock. */
   lastUpdated: number | null;
+  /** How far this device's clock was ahead of the server's when that response came, from clockOffset(). */
+  clockOffsetMs: number;
   /** A response is on screen, even one without scooters. */
   hasData: boolean;
   /** The query that response answered. */
@@ -124,6 +126,7 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   parking: [],
   meta: null,
   lastUpdated: null,
+  clockOffsetMs: 0,
   hasData: false,
   dataKey: null,
   expiresAt: null,
@@ -183,6 +186,7 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         parking: isExpired(expiry.parking, now) ? [] : response.parking ?? [],
         meta: response.meta,
         lastUpdated: Number.isFinite(generated) ? Math.min(generated, now) : now,
+        clockOffsetMs,
         hasData: true,
         dataKey: event.key,
         expiresAt: expiry.vehicles,
