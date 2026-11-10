@@ -771,9 +771,11 @@ private fun LocateRow(
         val showsMore = besideHeight > besideReach && overRoom > 0 &&
             (overRoom + slack).toLong() * besideHeight >= besideReach.toLong() * overHeight
         // Over it as well where beside it a word would break inside, the legend at its narrowest, each line wrapped at
-        // its spaces, wider than the room there, and over it it reaches no higher: at font scale 1.3 on
-        // ScootRadar_Phone_Min, beside "À proximité" the kinds' names broke inside ("Stationnem" over "ent").
-        val breaksWords = legendBox.minIntrinsicWidth(Constraints.Infinity) > beside && overRoom > 0 && overReach <= besideReach
+        // its spaces, wider than the room there, and over it it fits whole under the ceiling, even where it then
+        // reaches higher: at font scale 1.3 on ScootRadar_Phone_Min, beside "À proximité" the kinds' names broke inside
+        // ("Stationnem" over "ent"), and beside "In mijn buurt" or "Nær meg" too ("Parkeerver" over "bod",
+        // "Parkeringsforb" over "ud"), where over it the legend's top is 5 higher (week review, finding 6.2).
+        val breaksWords = legendBox.minIntrinsicWidth(Constraints.Infinity) > beside && overRoom > 0 && overHeight <= overRoom
         val over = endsLower || showsMore || breaksWords
         stacked[0] = over
         val cap = when {

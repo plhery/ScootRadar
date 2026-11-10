@@ -16,6 +16,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeUp
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.FakeLocationManager
@@ -31,6 +35,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterChromeLayout
+import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -45,11 +50,15 @@ import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
+import com.plhery.scootradar.ui.chrome.kindLabel
+import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.screenshot
 import com.plhery.scootradar.ui.theme.useFontScale
+import com.plhery.scootradar.ui.theme.weight
 import com.plhery.scootradar.zurichRegion
 import java.time.Instant
+import java.util.Locale
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -57,6 +66,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.ParameterizedRobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
@@ -445,6 +456,140 @@ class LegendBesideNearMeTest {
         fun square(at: GeoPoint, side: Double) = listOf(
             at, GeoPoint(at.latitude, at.longitude + side), GeoPoint(at.latitude + side, at.longitude + side),
             GeoPoint(at.latitude + side, at.longitude), at,
+        )
+    }
+}
+
+/**
+ * The operators' kinds named in the languages whose one-word names run longest, at large text on the smallest phones:
+ * where beside the locate button a name would break inside its word, the legend goes over the button, where it fits
+ * whole under the search bar, even where its top is then higher (8e3c649a's promise; week review, finding 6.2). Beside
+ * "In mijn buurt" and "Nær meg" at font scale 1.3, and beside the round button in Norwegian at 2.0, it stayed beside,
+ * "Parkeerver" over "bod" and "Parkeringsforb" over "ud", as over the button its top was 5 (61) higher. Each name is
+ * laid out in the legend's style at the width its text has in the legend as drawn (the legend's frame less its 12 + 12
+ * padding, the 16 swatch and the 6 between), and a line that ends between two letters is a word broken inside.
+ */
+@RunWith(ParameterizedRobolectricTestRunner::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(qualifiers = "w360dp-h640dp-xhdpi")
+class KindNamesWholeBesideNearMeTest(
+    private val language: String,
+    private val scale: Float,
+    private val located: Boolean,
+    private val window: String,
+    /** Whether the legend is over the button, or beside it, where every name fits whole. */
+    private val over: Boolean,
+) {
+    @get:Rule
+    val compose = createComposeRule()
+
+    private val controllers = TestControllers()
+    private val locale = Locale.getDefault()
+    private val launchLocale = ScooterLanguage.launchLocale
+    private lateinit var frames: MapChromeFrames
+    private lateinit var measurer: TextMeasurer
+
+    @After
+    fun tearDown() {
+        controllers.close()
+        resetFontScale()
+        ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterLanguage.launchLocale = launchLocale
+        Locale.setDefault(locale)
+    }
+
+    @Test
+    fun noKindsNameBreaksInsideItsWord() {
+        RuntimeEnvironment.setQualifiers(window)
+        val region = Locale.forLanguageTag(language)
+        ScooterLanguage.launchLocale = { region }
+        ScooterLanguage.current = checkNotNull(ScooterLanguage.fromRawValue(region.language))
+        Locale.setDefault(region)
+        val clock = TestClock()
+        val zones = ScooterZoneKind.operatorKinds.mapIndexed { index, kind ->
+            ScooterZone(
+                id = "voi:$index",
+                provider = "voi",
+                kind = kind,
+                polygons = listOf(listOf(square(GeoPoint(47.3760 + index * 0.0003, 8.5400), 0.0002))),
+                maxSpeedKph = if (kind == ScooterZoneKind.Slow) 10.0 else null,
+            )
+        }
+        val api = ZonedAPI(StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)))), zones)
+        val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = emptyList())
+        val model = controllers.make(api, clock, defaults = InMemoryScooterDefaults(), catalog = catalog)
+        if (located) {
+            model.locationsUpdated(listOf(ScooterLocationFix(GeoPoint(47.3779, 8.5417), horizontalAccuracy = 5.0, timestamp = Instant.now())))
+            assertTrue(controllers.waitUntil { model.hasLocatedOnce.value })
+        }
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        assertTrue(controllers.waitUntil { model.zoneState.value == ScooterZoneState.Shown && model.mapOperatorZoneCount.value > 0 })
+        useFontScale(scale)
+        val speeds = model.mapOperatorSlowSpeeds.value
+        compose.setContent {
+            measurer = rememberTextMeasurer()
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                ScooterMapScreen(controller = model, map = { frames = LocalMapChrome.current!! }, glassBlurs = false)
+            }
+        }
+        compose.waitForIdle()
+        val legend = checkNotNull(frames.zoneLegend) { "no legend" }
+        val button = checkNotNull(frames.locateButton) { "no locate button" }
+        val top = checkNotNull(frames.top) { "no search bar" }
+        // xhdpi: 2 pixels a point.
+        val textWidth = ((legend.width - 12 - 12 - 16 - 6) * 2).toInt()
+        val style = ScootType.caption.weight(FontWeight.Medium)
+        val drawn = ScooterZoneKind.operatorKinds.map { kind ->
+            val label = kindLabel(kind, speeds)
+            val layout = measurer.measure(label, style, constraints = Constraints(maxWidth = textWidth))
+            (0 until layout.lineCount).map { label.substring(layout.getLineStart(it), layout.getLineEnd(it)) }
+        }
+        val broken = drawn.filter { lines ->
+            lines.zipWithNext().any { (line, next) -> line.lastOrNull()?.isLetter() == true && next.firstOrNull()?.isLetter() == true }
+        }
+        val names = drawn.joinToString(" / ") { it.joinToString(" | ") }
+        assertTrue("a name broken inside its word in the legend $legend, beside the button $button: $names", broken.isEmpty())
+        assertTrue("the legend $legend under the search bar $top", legend.minY >= top.maxY)
+        if (over) {
+            assertTrue("the legend $legend over the button $button", legend.maxY <= button.minY - 10 + 0.5)
+        } else {
+            assertTrue("the legend $legend beside the button $button", legend.maxX <= button.minX - 20 + 0.5)
+        }
+    }
+
+    /** The stub's scooters, and the zones it is given for any area. */
+    private class ZonedAPI(private val scooters: StubScooterAPI, private val zones: List<ScooterZone>) : ScooterAPIClient by scooters {
+        override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
+    }
+
+    companion object {
+        /** ScootRadar_Phone_Min: 720 × 1280 px at 320 dpi. */
+        private const val PHONE_MIN = "w360dp-h640dp-xhdpi"
+
+        /** A phone a little wider: 768 × 1664 px at 320 dpi. */
+        private const val PHONE_384 = "w384dp-h832dp-xhdpi"
+
+        private fun square(at: GeoPoint, side: Double) = listOf(
+            GeoPoint(at.latitude - side, at.longitude - side),
+            GeoPoint(at.latitude - side, at.longitude + side),
+            GeoPoint(at.latitude + side, at.longitude + side),
+            GeoPoint(at.latitude + side, at.longitude - side),
+            GeoPoint(at.latitude - side, at.longitude - side),
+        )
+
+        @JvmStatic
+        @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1} located={2} {3} over={4}")
+        fun parameters(): List<Array<Any>> = listOf(
+            arrayOf("nl-NL", 1.3f, false, PHONE_MIN, true),
+            arrayOf("nl-NL", 1.3f, false, PHONE_384, true),
+            arrayOf("nb-NO", 1.3f, false, PHONE_MIN, true),
+            arrayOf("nb-NO", 2f, true, PHONE_MIN, true),
+            // 8e3c649a's own case, and bef9f112's beside the round button.
+            arrayOf("fr-CH", 1.3f, false, PHONE_MIN, true),
+            arrayOf("pt-PT", 1.3f, true, PHONE_MIN, false),
+            // Every name whole beside "In mijn buurt" at the default size: the iPhone's row.
+            arrayOf("nl-NL", 1f, false, PHONE_MIN, false),
         )
     }
 }
