@@ -1674,8 +1674,9 @@ it('reads a range minimum from a link, on a whole step of the units in use, and 
   expect(await opened('/map?minBattery=60')).toEqual(['range 8000', '?minRange=8000']);
   localStorage.setItem('scooters-params', JSON.stringify({ minBattery: '60' }));
   expect(await opened('/map')).toEqual(['range 0', '']);
+  // The link's for its visit alone.
   expect(await opened('/map?minRange=8000')).toEqual(['range 8000', '?minRange=8000']);
-  expect(await opened('/map')).toEqual(['range 8000', '?minRange=8000']);
+  expect(await opened('/map')).toEqual(['range 0', '']);
 
   // In miles, the nearest whole mile: 5 km is 3 miles, 4,828 m.
   localStorage.clear();
@@ -2000,13 +2001,58 @@ it('keeps the settings saved on this device where a link sets none of them, and 
     view.unmount();
   }
 
-  // A link with one setting changes that one alone, here and on the device.
+  // A link with one setting changes that one alone, for its visit: the device keeps its own.
   window.history.replaceState(null, '', '/map?map=detailed');
-  mount();
+  let view = mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByTestId('settings')).toHaveTextContent('dark detailed');
   expect(window.location.search).toBe('?minRange=6000&theme=dark&map=detailed');
-  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark', map: 'detailed' });
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark' });
+  view.unmount();
+  window.history.replaceState(null, '', '/map');
+  view = mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByTestId('settings')).toHaveTextContent('dark calm');
+  view.unmount();
+});
+
+it('applies a link\'s settings to its visit alone, and saves those the rider changes during it', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  localStorage.setItem('scooters-params', JSON.stringify({ minRange: '6000', theme: 'dark' }));
+  window.history.replaceState(null, '', '/map?minRange=10000&theme=light&map=detailed&zones=0');
+  let view = mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(shell()).toHaveAttribute('data-theme', 'light');
+  expect(screen.getByTestId('settings')).toHaveTextContent('light detailed');
+  expect(screen.getByTestId('minimums')).toHaveTextContent('range 10000');
+  expect(window.location.search).toBe('?minRange=10000&theme=light&map=detailed&zones=0');
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark' });
+
+  // Chosen by the rider, the appearance and the minimum are saved, the link's appearance chosen again too; the map
+  // style and the zones stay the link's.
+  fireEvent.click(screen.getByRole('button', { name: 'Appearance light' }));
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'light' });
+  fireEvent.click(screen.getByRole('button', { name: 'At least 5 km in the filters' }));
+  expect(window.location.search).toBe('?minRange=5000&theme=light&map=detailed&zones=0');
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '5000', theme: 'light' });
+  view.unmount();
+
+  // The next visit without them.
+  window.history.replaceState(null, '', '/map');
+  view = mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByTestId('settings')).toHaveTextContent('light calm');
+  expect(screen.getByTestId('minimums')).toHaveTextContent('range 5000');
+  expect(window.location.search).toBe('?minRange=5000&theme=light');
+  view.unmount();
+
+  // Reset in the filters is the rider's too.
+  window.history.replaceState(null, '', '/map?minRange=10000');
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '5000', theme: 'light' });
+  fireEvent.click(screen.getByRole('button', { name: 'Reset the filters' }));
+  expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ theme: 'light' });
 });
 
 it('restores a chosen appearance and map style from the link', async () => {

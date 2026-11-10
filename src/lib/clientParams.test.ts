@@ -3,6 +3,8 @@ import {
   parseClientParams,
   parseStoredClientParams,
   serializeClientParams,
+  settingsSetBy,
+  settingsToSave,
   startingClientParams,
 } from '@/lib/clientParams';
 
@@ -131,6 +133,22 @@ describe('client params', () => {
     // Nothing saved: the link's alone.
     expect(startingClientParams(parse('tile=dark&minRange=5000'), null))
       .toEqual({ origin: null, minRange: 5000, theme: 'dark', map: undefined, zones: undefined });
+  });
+
+  it('names the settings a link sets, which are its visit\'s alone', () => {
+    expect([...settingsSetBy(parse('origin=47.3769,8.5417&utm_source=newsletter&minBattery=30&theme=neon'))]).toEqual([]);
+    expect([...settingsSetBy(parse('minRange=0&tile=dark&map=detailed&zones=1'))]).toEqual(['minRange', 'theme', 'map', 'zones']);
+    expect([...settingsSetBy(parse('tile=osm'))]).toEqual(['map']);
+  });
+
+  it('saves the settings shown but those a link set and the rider has not changed, which stay as saved', () => {
+    const saved = parseStoredClientParams(JSON.stringify({ minRange: '8000', theme: 'dark', zones: '0' }));
+    const shown = { minRange: 5000, theme: 'light', map: 'detailed', zones: true } as const;
+    expect(settingsToSave(shown, saved, new Set()).toString()).toBe('minRange=5000&theme=light&map=detailed');
+    expect(settingsToSave(shown, saved, new Set(['minRange', 'theme', 'map', 'zones'])).toString()).toBe('minRange=8000&theme=dark&zones=0');
+    expect(settingsToSave(shown, saved, new Set(['map'])).toString()).toBe('minRange=5000&theme=light');
+    // Nothing saved: what nothing chosen means.
+    expect(settingsToSave(shown, null, new Set(['minRange', 'theme', 'map', 'zones'])).toString()).toBe('');
   });
 
   it('serializes only non-default settings', () => {

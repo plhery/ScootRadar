@@ -102,7 +102,7 @@ export function parseStoredClientParams(raw: string | null): ClientParams | null
 /**
  * The settings the map starts with: each one the link sets, over the one saved on this device. A link that sets
  * none, as one with a place or a campaign's tag alone, leaves every saved setting as it is; the place itself is
- * the link's alone, never saved.
+ * the link's alone, never saved, and so are its settings until the rider changes them (settingsToSave).
  */
 export function startingClientParams(link: ClientParams, saved: ClientParams | null): ClientParams {
   return {
@@ -112,6 +112,31 @@ export function startingClientParams(link: ClientParams, saved: ClientParams | n
     map: link.map ?? saved?.map,
     zones: link.zones ?? saved?.zones,
   };
+}
+
+/** The settings a link can set. */
+export type LinkSetting = 'minRange' | 'theme' | 'map' | 'zones';
+
+/** The settings this link sets: shown on the visit it opens, and not saved on the device unless the rider changes them. */
+export function settingsSetBy(link: ClientParams): Set<LinkSetting> {
+  return new Set((['minRange', 'theme', 'map', 'zones'] as const).filter(setting => link[setting] !== undefined));
+}
+
+/**
+ * What to save on this device: the settings shown, but for those a link set for its visit and the rider has not
+ * changed during it, which stay as they were saved, so that the next visit without the link shows them again.
+ */
+export function settingsToSave(
+  shown: { minRange: number; theme: ThemeName; map: MapStyleName; zones: boolean },
+  saved: ClientParams | null,
+  linkOnly: ReadonlySet<LinkSetting>,
+): URLSearchParams {
+  return serializeClientParams({
+    minRange: linkOnly.has('minRange') ? saved?.minRange : shown.minRange,
+    theme: linkOnly.has('theme') ? saved?.theme ?? 'auto' : shown.theme,
+    map: linkOnly.has('map') ? saved?.map ?? 'calm' : shown.map,
+    zones: linkOnly.has('zones') ? saved?.zones : shown.zones,
+  });
 }
 
 export function serializeClientParams({

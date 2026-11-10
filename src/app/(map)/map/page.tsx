@@ -32,8 +32,11 @@ import {
   parseClientParams,
   parseStoredClientParams,
   serializeClientParams,
+  settingsSetBy,
+  settingsToSave,
   startingClientParams,
   type ClientParams,
+  type LinkSetting,
   type MapStyleName,
   type ThemeName,
 } from '@/lib/clientParams';
@@ -174,13 +177,14 @@ function loadParamsFromStorage(): ClientParams | null {
   try { return parseStoredClientParams(localStorage.getItem(STORAGE_KEY)); } catch { return null; }
 }
 
-function readUrlParams(): ClientParams {
+/** What the link sets, and the settings saved on this device. */
+function readUrlParams(): { link: ClientParams; saved: ClientParams | null } {
   if (typeof window === 'undefined') {
-    return { origin: null, minRange: undefined, theme: undefined, map: undefined, zones: undefined };
+    return { link: { origin: null, minRange: undefined, theme: undefined, map: undefined, zones: undefined }, saved: null };
   }
   // A launch from the home screen has no link: the settings are those saved. The address then shows them once
   // they are set.
-  return startingClientParams(parseClientParams(new URLSearchParams(window.location.search)), loadParamsFromStorage());
+  return { link: parseClientParams(new URLSearchParams(window.location.search)), saved: loadParamsFromStorage() };
 }
 
 // What the browser says of location before it is asked; null when it will not say.
@@ -250,6 +254,17 @@ export default function Home() {
   const [mapStyle, setMapStyle] = useState<MapStyleName>('calm');
   // The operators' zones: on unless turned off in the settings or by a link.
   const [zonesOn, setZonesOn] = useState(true);
+  // The settings a link set, shown for its visit alone until the rider changes them, and those saved on this device,
+  // which stay saved for the next visit without the link.
+  const [linkSettings, setLinkSettings] = useState<{ only: ReadonlySet<LinkSetting>; saved: ClientParams | null }>(
+    () => ({ only: new Set(), saved: null })
+  );
+  const chooseSetting = useCallback((setting: LinkSetting) => setLinkSettings(current => {
+    if (!current.only.has(setting)) return current;
+    const only = new Set(current.only);
+    only.delete(setting);
+    return { ...current, only };
+  }), []);
   const [enabledProviders, setEnabledProviders] = useState<Set<string>>(
     new Set(Object.keys(PROVIDERS))
   );
@@ -320,7 +335,9 @@ export default function Home() {
     try { located = localStorage.getItem(LOCATED_ONCE_STORAGE_KEY) === '1'; } catch {}
     setLocatedOnce(located);
     setPreferencesReady(true);
-    const params = readUrlParams();
+    const { link, saved } = readUrlParams();
+    const params = startingClientParams(link, saved);
+    setLinkSettings({ only: settingsSetBy(link), saved });
     if (params.minRange !== undefined) setMinRange(params.minRange);
     if (params.theme) setTheme(params.theme);
     if (params.map) setMapStyle(params.map);
@@ -369,9 +386,10 @@ export default function Home() {
 
     // Persist to localStorage for PWA home screen launches
     const stored: Record<string, string> = {};
-    p.forEach((v, k) => { stored[k] = v; });
+    settingsToSave({ minRange: rangeMinimum, theme, map: mapStyle, zones: zonesOn }, linkSettings.saved, linkSettings.only)
+      .forEach((v, k) => { stored[k] = v; });
     saveParamsToStorage(stored);
-  }, [rangeMinimum, theme, mapStyle, zonesOn, preferencesReady]);
+  }, [rangeMinimum, theme, mapStyle, zonesOn, linkSettings, preferencesReady]);
 
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -526,9 +544,10 @@ export default function Home() {
 
   const resetFilters = useCallback(() => {
     track('filters_reset');
+    chooseSetting('minRange');
     setMinRange(0);
     setEnabledProviders(new Set(Object.keys(PROVIDERS)));
-  }, []);
+  }, [chooseSetting]);
 
   // The range minimum, judged as the cache judges it: a scooter that says only its battery by its battery
   // times how far a full one takes its app's, the latest answer's batteryRanges (range.ts).
@@ -1207,12 +1226,12 @@ export default function Home() {
         theme={theme}
         mapStyle={mapStyle}
         zones={zonesOn}
-        onMinRangeChange={setMinRange}
+        onMinRangeChange={next => { chooseSetting('minRange'); setMinRange(next); }}
         onProviderToggle={handleProviderToggle}
         onResetFilters={resetFilters}
-        onThemeChange={next => { track('map_style', { style: next }); setTheme(next); }}
-        onMapStyleChange={next => { track('map_style', { style: next }); setMapStyle(next); }}
-        onZonesChange={next => { track('zones_toggle', { enabled: next }); setZonesOn(next); }}
+        onThemeChange={next => { track('map_style', { style: next }); chooseSetting('theme'); setTheme(next); }}
+        onMapStyleChange={next => { track('map_style', { style: next }); chooseSetting('map'); setMapStyle(next); }}
+        onZonesChange={next => { track('zones_toggle', { enabled: next }); chooseSetting('zones'); setZonesOn(next); }}
       />
 
       <LocationHelpSheet open={locationHelpOpen} onClose={() => setLocationHelpOpen(false)} />

@@ -2476,12 +2476,13 @@ test('links and settings saved with the old map style carry over', async ({ page
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark');
   await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.calmDark });
 
-  // "OSM" is the detailed map and sets no appearance, so the dark one the link above saved stays: a link changes
-  // the settings it sets alone.
+  // "OSM" is the detailed map and sets no appearance. A link's settings are for its visit alone: the dark one of
+  // the link above was not saved, and the system's light one is back.
   await page.goto('/map?tile=osm');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
-  await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark&map=detailed');
-  await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.detailedDark });
+  await expect.poll(() => new URL(page.url()).search).toBe('?map=detailed');
+  await expect.poll(() => look(page)).toEqual({ ...LIGHT, ...GROUND.detailed });
+  expect(await page.evaluate(() => localStorage.getItem('scooters-params'))).toBe('{}');
 
   // A home-screen launch has no link: the settings come from the device, here as an older release left them,
   // with a battery minimum the map no longer has.
