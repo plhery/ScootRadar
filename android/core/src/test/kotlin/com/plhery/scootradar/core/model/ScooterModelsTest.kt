@@ -839,6 +839,11 @@ class ScooterModelsTest {
             listOf(12.0, 300.0, 3_000.0).map { plainSpaces(Scooter.formattedLength(meters = it, locale = britishMiles)) },
         )
         assertEquals(ScooterMeasurementSystem.Us, ScooterUnits.Imperial.applied(american).measurementSystem)
+        // Myanmar measures in miles and feet, as the website and the iPhone write them there, not in yards.
+        val myanmar = Locale.forLanguageTag("my-MM")
+        assertEquals(ScooterMeasurementSystem.Us, myanmar.measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Us, ScooterUnits.Imperial.applied(Locale.forLanguageTag("en-MM")).measurementSystem)
+        assertTrue(plainSpaces(Scooter.formattedLength(meters = 300.0, locale = Locale.forLanguageTag("en-MM"))).endsWith(" ft"))
         for (locale in listOf(irishMiles, swissMiles, britishMiles)) {
             assertEquals(locale.toLanguageTag(), ScooterRangeFilter.Unit.Miles, ScooterRangeFilter.Unit.of(locale))
         }

@@ -27,8 +27,9 @@ enum class ScooterMeasurementSystem(
 
 /**
  * Locale.measurementSystem: the one the locale names ("en-US-u-ms-metric"), or else its region's: miles and
- * feet in the US and Liberia, miles and yards in the UK and Myanmar, metres everywhere else. A locale
- * without a region is in the one its language most likely means, as English is in the US.
+ * feet in the US, Liberia and Myanmar, as the website writes them there and the iPhone writes miles outside the
+ * UK, miles and yards in the UK, metres everywhere else. A locale without a region is in the one its language
+ * most likely means, as English is in the US.
  */
 val Locale.measurementSystem: ScooterMeasurementSystem
     get() {
@@ -36,8 +37,8 @@ val Locale.measurementSystem: ScooterMeasurementSystem
         ScooterMeasurementSystem.entries.firstOrNull { it.keyword == named }?.let { return it }
         val region = country.ifEmpty { if (language == "en") "US" else "" }
         return when (region) {
-            "US", "LR" -> ScooterMeasurementSystem.Us
-            "GB", "MM" -> ScooterMeasurementSystem.Uk
+            "US", "LR", "MM" -> ScooterMeasurementSystem.Us
+            "GB" -> ScooterMeasurementSystem.Uk
             else -> ScooterMeasurementSystem.Metric
         }
     }

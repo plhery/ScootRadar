@@ -185,7 +185,7 @@ enum class ScooterUnits(val rawValue: String) {
     /**
      * The system a locale measures with in these units, where its region's own is [region]: none on Automatic,
      * which keeps the region's. Miles are written in yards under half a mile where the region writes them so, as
-     * the UK and Myanmar do, and in feet everywhere else; speeds in mph.
+     * the UK does, and in feet everywhere else; speeds in mph.
      */
     fun measurementSystem(region: ScooterMeasurementSystem): ScooterMeasurementSystem? = when (this) {
         Automatic -> null
