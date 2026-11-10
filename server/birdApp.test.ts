@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BIRD_BRANDS, BIRD_CHECKPOINT_MAX_AGE_MS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS,
-  BIRD_WATCH_MS, BirdClient, BirdSweepCheckpoints, BirdUntrustedMapError, collectBirdArea, parseBirdReply, sweepBirdArea, withBirdAppCollectors,
+  BIRD_WATCH_MS, BirdClient, BirdSweepCheckpoints, BirdUntrustedMapError, birdVehicle, collectBirdArea, parseBirdReply, sweepBirdArea, withBirdAppCollectors,
   type BirdScooter } from './birdApp';
 import type { NearestProgress } from './nearestSweep';
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
@@ -46,6 +46,13 @@ describe('Bird map replies', () => {
     // Captive vehicles and bicycles fill the page too.
     expect(parseBirdReply({ birds: north(BIRD_PAGE, { captive: true }), cell_ids: [CELL] }, at.lat, at.lng, 5_000).completeM).toBeLessThan(2_600);
     expect(parseBirdReply({ birds: north(3), cell_ids: [CELL], reached_response_limit: true }, at.lat, at.lng, 5_000).completeM).toBeLessThan(30);
+  });
+
+  it('publishes a battery as a whole percent, as the answer\'s schema says, which the iPhone app decodes no other way', () => {
+    const reply = parseBirdReply({ birds: [bird(at.lat + 0.0001, at.lng, { battery_level: 57.5 }), bird(at.lat + 0.0002, at.lng, { battery_level: 0.4 })],
+      cell_ids: [CELL] }, at.lat, at.lng, 5_000);
+    expect(reply.scooters.map(scooter => birdVehicle('bird', scooter).battery)).toEqual([58, 0]);
+    expect(birdVehicle('spin', { ...reply.scooters[0], battery: null }).battery).toBeNull();
   });
 
   it('refuses the made-up maps it served on 27 October 2026, and any it cannot vouch for', () => {

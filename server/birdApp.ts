@@ -391,10 +391,14 @@ interface Area { id: string; title: string; rings: Ring[] }
 const AREAS = new Map((areaCatalog.areas as unknown as Area[]).map(area => [area.id, area.rings]));
 /** The outline of a Bird operating area of data/bird-app-areas.json. */
 export const birdAreaRings = (id: string): readonly Ring[] | undefined => AREAS.get(id);
-/** A scooter of Bird's map as the cache publishes it, by the operator's own id, which the map keeps. */
+/**
+ * A scooter of Bird's map as the cache publishes it, by the operator's own id, which the map keeps. Its battery
+ * is a whole percent, as a GBFS feed's (scooterFeeds.ts) and as the answer's schema says: one of 57.5 would make
+ * the iPhone app refuse the whole answer.
+ */
 export const birdVehicle = (provider: 'bird' | 'spin', scooter: BirdScooter): Vehicle => ({
   provider, vehicle_id: `${provider}:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
-  battery: scooter.battery, range_m: scooter.range, deep_link: null, distance_m: null,
+  battery: scooter.battery === null ? null : Math.round(scooter.battery), range_m: scooter.range, deep_link: null, distance_m: null,
 });
 type Published = { lat: number; lng: number; vehicle_id: string | null };
 export type PreviousPositions = (feedId: string) => readonly Published[] | undefined;
