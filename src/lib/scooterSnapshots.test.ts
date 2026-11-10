@@ -569,6 +569,34 @@ describe('feeds collected on demand', () => {
     expect(querySnapshot(snapshot([dott, voi]), query, 16, now).meta.staleProviders).toBeUndefined();
   });
 
+  it('says of each app with positions shown when the oldest of them were seen, stale or not, as its own collections move it', () => {
+    const at = (time: number) => new Date(time).toISOString();
+    // Dott's feed is collected every minute; Voi's was last collected 6 minutes ago and is late.
+    const dott = (collected: number) => feed({ observedAt: collected });
+    const late = { ...voi, observedAt: now - minutes(6) };
+    const first = querySnapshot(snapshot([dott(now - minutes(1)), late]), query, 16, now);
+    expect(first.meta.stale).toBe(false);
+    expect(first.meta.generatedAt).toBe(at(now - minutes(6)));
+    expect(first.meta.shownSince).toEqual({ dott: at(now - minutes(1)), voi: at(now - minutes(6)) });
+    // A minute later Dott's has been collected again and Voi's not: the answer's time stays with Voi's, and Dott's moves.
+    const later = now + minutes(1);
+    const second = querySnapshot(snapshot([dott(later - 20_000), late]), query, 16, later);
+    expect(second.meta.generatedAt).toBe(first.meta.generatedAt);
+    expect(second.meta.shownSince).toEqual({ dott: at(later - 20_000), voi: at(now - minutes(6)) });
+    // Asked again before either is collected, neither moves.
+    expect(querySnapshot(snapshot([dott(later - 20_000), late]), query, 16, later + 30_000).meta.shownSince).toEqual(second.meta.shownSince);
+    // Stale, as when Voi's last collection failed: the same times, and Voi's among the stale ones.
+    const failing = querySnapshot(snapshot([dott(later - 20_000), { ...late, failed: true }]), query, 16, later);
+    expect(failing.meta.shownSince).toEqual(second.meta.shownSince);
+    expect(failing.meta.staleProviders).toEqual({ voi: at(now - minutes(6)) });
+    // An app with only faded scooters, its slow feed collected again for the request, is not among them.
+    const lime = feed({ id: 'germany:lime_app_test', provider: 'lime', observedAt: now - minutes(40), collectionMs: 30_000,
+      vehicles: [{ ...vehicle('l1'), provider: 'lime' }] });
+    const faded = querySnapshot(snapshot([dott(now - minutes(1)), lime]), query, 16, now, { refreshing: new Set([lime.id]) });
+    expect(faded.lastSeen?.vehicles).toHaveLength(1);
+    expect(faded.meta.shownSince).toEqual({ dott: at(now - minutes(1)) });
+  });
+
   describe('Lime\'s groups in a wide view', () => {
     const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
     const wide = { bounds: berlin, minBattery: 0 };

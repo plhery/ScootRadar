@@ -697,17 +697,22 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const previous = [...lastSeen.values()];
   if (query.origin) for (const list of [vehicles, previous]) list.sort((a, b) => (a.distance_m ?? 0) - (b.distance_m ?? 0));
   const observedAt = Math.min(now, ...shownSince);
+  // Each app with positions shown, with the oldest's time, in every answer. generatedAt holds the oldest of
+  // every app's, so it stays put while one app in view is late or mid-sweep: a walk told a new read of its
+  // scooter's app from the same one served again by generatedAt, and never said a scooter was taken.
+  const shownSinceByApp = Object.fromEntries([...shownSinceByProvider]
+    .map(([provider, at]) => [provider, new Date(Math.min(now, at)).toISOString()]));
   // The apps that make the answer stale (healthFor) and have positions shown, with the oldest's time:
   // the map names the one late app, where in Augsburg on 7 November 2026 it said "Data delayed" without
   // saying whose positions were 14 minutes old.
   const staleApps = new Set(counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing) &&
     (showsPositions(feed, now) ? feed.stale || feed.failed : !failedAtOperator(feed) && options.refreshing?.has(feed.id) === true))
     .map(feed => feed.provider));
-  const staleProviders = Object.fromEntries([...shownSinceByProvider].filter(([provider]) => staleApps.has(provider))
-    .map(([provider, at]) => [provider, new Date(Math.min(now, at)).toISOString()]));
+  const staleProviders = Object.fromEntries(Object.entries(shownSinceByApp).filter(([provider]) => staleApps.has(provider)));
   const batteryRanges = batteryRangesIn(snapshot, query.bounds, options.observations);
   const response = scooterResponse({ vehicles, meta, batteryRanges }, zoom, {
     ...(meta.stale ? { staleProviders } : {}),
+    ...(shownSinceByProvider.size ? { shownSince: shownSinceByApp } : {}),
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,
