@@ -158,6 +158,18 @@ const LEEDS_CENTRE = { south: 53.794, west: -1.555, north: 53.802, east: -1.535 
 const ORLANDO_DOWNTOWN = { south: 28.536, west: -81.384, north: 28.548, east: -81.368 };
 // Denver's Lower Downtown, from Union Station along Blake and Larimer Streets.
 const DENVER_LODO = { south: 39.745, west: -105.005, north: 39.756, east: -104.99 };
+// Stuttgart's centre, from the Schlossplatz and the Königstraße to the Marktplatz and the Leonhardsviertel.
+const STUTTGART_CENTRE = { south: 48.772, west: 9.17, north: 48.782, east: 9.185 };
+// Düsseldorf's Altstadt and the Königsallee, from the Burgplatz to the Kö-Bogen.
+const DUSSELDORF_ALTSTADT = { south: 51.222, west: 6.77, north: 51.23, east: 6.785 };
+// Augsburg's centre, from the Königsplatz to the Rathausplatz and the Obstmarkt.
+const AUGSBURG_CENTRE = { south: 48.364, west: 10.89, north: 48.372, east: 10.905 };
+// Mülheim an der Ruhr's centre, round the Schloßstraße and the Hauptbahnhof.
+const MULHEIM_CENTRE = { south: 51.424, west: 6.875, north: 51.432, east: 6.89 };
+// Nürnberg's old town, round the Hauptmarkt and the Lorenzkirche.
+const NURNBERG_ALTSTADT = { south: 49.449, west: 11.07, north: 49.457, east: 11.085 };
+// Kassel's centre, round the Königsplatz and the Friedrichsplatz.
+const KASSEL_CENTRE = { south: 51.312, west: 9.49, north: 51.32, east: 9.505 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 /** The credit JARTIC's terms ask for, of its data processed. */
 const JARTIC_CREDIT = '出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成';
@@ -1502,5 +1514,142 @@ describe('the cities\' zones', () => {
     await loadCityZones(denver);
     const shown = ruleZonesInView({ bounds: DENVER_LODO, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking']));
+  });
+
+  it("draws Stuttgart's parking areas and no-parking zones, its pedestrian zones among them, from the city's map, placed by its own grid", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const stuttgart = ZONE_CITIES.find(city => city.id === 'stuttgart')!;
+    expect(stuttgart.authority).toBe('Landeshauptstadt Stuttgart');
+    expect(stuttgart.timeZone).toBe('Europe/Berlin');
+    // Its 74 parking areas, its 90 no-parking zones and 287 of its pedestrian zones' 315 parcels (28 of under
+    // 4 m² simplify to nothing), read in ETRS89 / UTM 32N, as its WFS rounds degrees to four places.
+    const { default: file } = await CITY_ZONE_FILES.stuttgart();
+    const counts = Object.fromEntries(['parking', 'noParking'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 74, noParking: 377 });
+    expect(file.zones.filter(zone => zone.id.startsWith('stuttgart-no-parking-fz-'))).toHaveLength(287);
+    // Sommerrain Bahnhof 1 lies where an inverse of the grid apart from the script's puts it.
+    const sommerrain = file.zones.find(zone => zone.id === 'stuttgart-parking-5781')!;
+    expect(sommerrain.name).toBe('Sommerrain Bahnhof 1');
+    const ring = sommerrain.ring!;
+    const [lat, lng] = [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    expect(Math.abs(lat - 48.814995) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 9.246377) * 73_300).toBeLessThan(2);
+    // The Königstraße, which the city's own no-parking zones leave out, is a pedestrian zone.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    expect(at(48.7784, 9.1786)).toEqual(['Königstraße']);
+    await loadCityZones(stuttgart);
+    const shown = ruleZonesInView({ bounds: STUTTGART_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking']));
+  });
+
+  it("draws Düsseldorf's sharing stations and the no-parking zones round them, where a ride ends only at a station, placed by the city's grid", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const dusseldorf = ZONE_CITIES.find(city => city.id === 'dusseldorf')!;
+    expect(dusseldorf.authority).toBe('Landeshauptstadt Düsseldorf');
+    // 359 of the layer's 369 stations, those in use (aktiv, or temporaer, as the stand-ins for closed ones) for
+    // e-scooters, and its 51 zones.
+    const { default: file } = await CITY_ZONE_FILES.dusseldorf();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 359, racksOnly: 51 });
+    // The station on the Aachener Platz lies in its zone, where an inverse of the grid apart from the script's puts it.
+    const station = file.zones.find(zone => zone.id === 'dusseldorf-parking-7773686e-f77f-4ecf-906e-d37b4682953c')!;
+    expect(station.name).toBe('Aachener Platz');
+    const ring = station.ring!;
+    const [lat, lng] = [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    expect(Math.abs(lat - 51.196325) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 6.769624) * 69_800).toBeLessThan(2);
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => `${zone.kind} ${zone.name}`).sort();
+    expect(at(lat, lng)).toEqual(['parking Aachener Platz', 'racksOnly Aachener Platz']);
+    // The Königsallee and the Burgplatz are in the centre's zone.
+    expect(at(51.2235, 6.7795)).toEqual(['racksOnly Gebiet A']);
+    expect(at(51.2276, 6.7726)).toEqual(['racksOnly Gebiet A']);
+    await loadCityZones(dusseldorf);
+    const shown = ruleZonesInView({ bounds: DUSSELDORF_ALTSTADT, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly']));
+  });
+
+  it("draws Augsburg's parking places for e-scooters, from its geoportal's layer of places to park, by identify", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const augsburg = ZONE_CITIES.find(city => city.id === 'augsburg')!;
+    expect(augsburg.authority).toBe('Stadt Augsburg');
+    // Its 37 places ("E-Scooter Stellplatz"), of the layer's 218, points drawn as discs, named by their street.
+    const { default: file } = await CITY_ZONE_FILES.augsburg();
+    expect(file.zones).toHaveLength(37);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    const obstmarkt = file.zones.find(zone => zone.id === 'augsburg-parking-5642')!;
+    expect(obstmarkt.name).toBe('Obstmarkt');
+    const ring = obstmarkt.ring!;
+    const [lat, lng] = [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    expect(Math.abs(lat - 48.370905) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 10.89727) * 73_900).toBeLessThan(2);
+    await loadCityZones(augsburg);
+    const shown = ruleZonesInView({ bounds: AUGSBURG_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(10);
+  });
+
+  it("draws Mülheim an der Ruhr's e-scooter stations, from the points its page's map carries", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const mulheim = ZONE_CITIES.find(city => city.id === 'mulheim')!;
+    expect(mulheim.authority).toBe('Stadt Mülheim an der Ruhr');
+    // Its 76 stations, points drawn as discs, each numbered by the page it links to.
+    const { default: file } = await CITY_ZONE_FILES.mulheim();
+    expect(file.zones).toHaveLength(76);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    const wallstrasse = file.zones.find(zone => zone.id === 'mulheim-parking-932698')!;
+    expect(wallstrasse.name).toBe('Wallstraße 9a');
+    const ring = wallstrasse.ring!;
+    const [lat, lng] = [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    expect(Math.abs(lat - 51.428534) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 6.880848) * 69_400).toBeLessThan(2);
+    await loadCityZones(mulheim);
+    const shown = ruleZonesInView({ bounds: MULHEIM_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(20);
+  });
+
+  it("draws Nürnberg's area where a scooter is hired and returned only at a collection place, from the map its page embeds", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const nurnberg = ZONE_CITIES.find(city => city.id === 'nurnberg')!;
+    expect(nurnberg.authority).toBe('Stadt Nürnberg');
+    // The city within the Bundesstraßenring (B), which takes in the old town (A), left out so it is not drawn twice;
+    // the collection places are not published.
+    const { default: file } = await CITY_ZONE_FILES.nurnberg();
+    expect(file.zones.map(zone => `${zone.kind} ${zone.name}`)).toEqual(['racksOnly Bereich B']);
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    // The Hauptmarkt and the Hauptbahnhof are in it, the Nordostbahnhof, beyond the ring, is not.
+    expect(at(49.4539, 11.0775)).toEqual(['Bereich B']);
+    expect(at(49.4459, 11.0826)).toEqual(['Bereich B']);
+    expect(at(49.4765, 11.1105)).toEqual([]);
+    await loadCityZones(nurnberg);
+    const shown = ruleZonesInView({ bounds: NURNBERG_ALTSTADT, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly']));
+  });
+
+  it("draws Kassel's bike racks where a hired e-scooter may be parked, from its geoportal by identify, asked in quarters, and its Innenstadtring", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const kassel = ZONE_CITIES.find(city => city.id === 'kassel')!;
+    expect(kassel.authority).toBe('Stadt Kassel, Innenstadtring © OpenStreetMap');
+    // 2,098 of the layer's 2,128 racks (E-Scooter: ja), more than identify answers at once, points drawn as discs,
+    // but for the 131 within the Innenstadtring, where a scooter is parked only on its 27 marked places;
+    // those without an address are named as racks.
+    const { default: file } = await CITY_ZONE_FILES.kassel();
+    expect(file.zones).toHaveLength(1968);
+    expect(file.zones.filter(zone => zone.kind === 'parking')).toHaveLength(1967);
+    expect(file.zones.filter(zone => zone.name === 'Fahrradbügel')).toHaveLength(1211);
+    // The ring, traced on OpenStreetMap along the streets the city names: the Königsplatz and the Friedrichsplatz
+    // are within it, the Rathaus and the Hauptbahnhof without.
+    const ringZone = file.zones.find(zone => zone.kind === 'racksOnly')!;
+    expect(ringZone.name).toBe('Innenstadtring');
+    const inRing = (lat: number, lng: number) => Math.abs(winding(ringZone.ring!, lat, lng)) === 1;
+    expect([inRing(51.3166, 9.4963), inRing(51.3137, 9.4978), inRing(51.312, 9.4886), inRing(51.3183, 9.4895)]).toEqual([true, true, false, false]);
+    const rack = file.zones.find(zone => zone.id === 'kassel-parking-2')!;
+    expect(rack.name).toBe('Kurfürstenstraße 9');
+    const ring = rack.ring!;
+    const [lat, lng] = [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    expect(Math.abs(lat - 51.317424) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 9.490429) * 69_600).toBeLessThan(2);
+    await loadCityZones(kassel);
+    const shown = ruleZonesInView({ bounds: KASSEL_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(30);
+    expect(shown.filter(zone => zone.rule === 'racksOnly')).toHaveLength(1);
   });
 });

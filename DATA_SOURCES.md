@@ -959,6 +959,21 @@ its source and the date it was read.
   downtown no-parking and slow zone (`Shared_Micromobility_No_Parking_Slow_Zone`,
   May 2026), which no City page describes; Bird's own no-parking zone there,
   of the same outline, is drawn as Bird's.
+- **Augsburg** (read 11 November 2026): the Stadt Augsburg's 37 parking
+  places for e-scooters (`SYMBOL` "E-Scooter Stellplatz", of the 218 places
+  to park in layer 16, "Parken", of its geoportal's map service
+  `Geoportal_Projekte/Verkehr_Mobilität`, loaded 14 September 2026), points
+  each drawn as a disc of 5 m and named by their street, less "Stellplatz"
+  or "Standort". The layer answers no query or find, so they are read by
+  identify over an envelope round the city, as Bergen's are. The legend links
+  the city's
+  [e-scooter page](https://www.augsburg.de/buergerservice-rathaus/verkehr/fair-im-verkehr/e-scooter)
+  (updated 26 May 2026): in the city centre a hired e-scooter may be parked
+  only within the specially marked places, or its rental runs on, and the
+  [Stadtplan](https://geoportal.augsburg.de/WebDaten/synserver?project=stadtplan&client=auto&view=parken)
+  shows them. The centre itself is not published as a shape, nor drawn. The
+  geoportal's terms require the city's prior written permission for any use;
+  drawn credited "Stadt Augsburg", under the rule of 10 November 2026.
 - **Baltimore** (read 30 October 2026): the Baltimore City Department of
   Transportation's 71 scooter corrals, "locations of corrals for the shared
   scooter program", each a disc 5 m round its point, from its `Scooter_Corrals`
@@ -1213,6 +1228,28 @@ its source and the date it was read.
   zone, at Union Station, is due by 31 December 2026. A few corrals stand in
   pairs a few metres apart, a corral and a micromobility box at one address.
   The layer states no terms; the legend credits the City and links the page.
+- **Düsseldorf** (read 11 November 2026): the Landeshauptstadt Düsseldorf's
+  359 sharing stations for e-scooters and bikes in use, 346 open (`status`
+  aktiv) and 13 temporary (temporaer: four stand-ins, Ausweichstation, for
+  stations closed by works, and others at the Messe, the university hospital
+  and a sports centre), and the 51 no-parking zones round them, where a hired
+  scooter is left only at a station and so drawn as such (racksOnly), about
+  14.5 km², the centre's Gebiet A of 6.4 km² among them. They are the layers
+  `verkehr:sharingstationen_area` and `verkehr:sharing_parkverbotszone` of
+  Düsseldorf Maps' WFS (`maps.duesseldorf.de/services/verkehr`, updated
+  4 November 2026), read in their grid, ETRS89 / UTM 32N, each zone's id its
+  `_uuid`; the stations named less "Sharingstation" and the zones less
+  "Parkverbotszone". Left out: 9 stations closed (inaktiv) and one for bikes
+  alone. The legend links the city's news of the
+  [300th station](https://www.duesseldorf.de/aktuelles/news/detailansicht/newsdetail/300-sharingstation-eroeffnet-1)
+  (13 July 2026): round the stations no-parking zones for hired e-scooters and
+  bikes are set across the area, about 12 km², the first station opened in
+  February 2022 and 600 are planned by 2030; the city's company CMD's
+  [Sharingstation page](https://www.cmd.nrw/mobilitaetsangebote/sharingstation):
+  outside the stations the operators prevent parking digitally. The record of
+  the layers in NRW's geoportal releases the city's geodata for internal use
+  only; drawn credited "Landeshauptstadt Düsseldorf", under the rule of
+  10 November 2026.
 - **Halmstad** (read 1 November 2026): Halmstads kommun's 23 "sparkeringar",
   the places it has laid out where it would rather e-scooters were parked
   (Stora torg, Norre port, Lilla torg, the city library, Resecentrum, the
@@ -1288,6 +1325,34 @@ its source and the date it was read.
   square metre; the core centre's 15 km/h, which holds only on weekend and
   holiday nights (23:00–05:00); and the 37 parking places, which the City
   draws as lines.
+- **Kassel** (read 11 November 2026): the Stadt Kassel's 1,967 bicycle racks
+  where a hired e-scooter may be parked (`E_Scooter` "ja", 2,098 of the 2,128 of
+  layer 407, "Fahrradbügel", of its geoportal's map service
+  `Service_Daten/Verkehr_Mobilitaet`, which its map
+  [Verkehr und Mobilität in Kassel](https://geoportal.kassel.de/portal/apps/webappviewer/index.html?id=5556ce07901f44c0b94fbfb2783a26fe)
+  draws), points each drawn as a disc of 5 m, named by their address (`Ort`),
+  or as a rack, Fahrradbügel, where they have none (1,211). The layer's query
+  answers the racks' attributes but not their places, even as GeoJSON;
+  identify answers both, at most 1,000 at a time, so the envelope round the
+  city is asked for again in quarters. The legend links the city's
+  [e-scooter page](https://www.kassel.de/buerger/verkehr_und_mobilitaet/mit-dem-e-scooter/miet-e-scooter.php):
+  since 1 April 2026 a hired e-scooter outside the Innenstadtring may be
+  parked only at a rack or a specially marked place, the places whose
+  coordinates the city gives the operators, and within the ring only on its
+  27 marked places along it. Those places and the marked ones elsewhere are
+  not published, nor drawn. The layer marks the 131 racks within the ring
+  "ja" as well, as round the Königsplatz, so those are left out, and the ring
+  is drawn as an area where a scooter is parked only at a marked place
+  (racksOnly, only on the website). The city publishes no shape of it: it is
+  traced on OpenStreetMap (© OpenStreetMap contributors, ODbL) along the
+  streets the page names, Steinweg, Frankfurter Straße, Fünffensterstraße,
+  Ständeplatz, Scheidemannplatz, Rudolf-Schwander-Straße, Lutherstraße and
+  Kurt-Schumacher-Straße, and across the Altmarkt between the last and the
+  first, 75 corners kept in the catalog. The layer states no licence and the
+  city's [legal notice](https://www.kassel.de/rechtliche-hinweise.php)
+  requires its express consent to copy its content; drawn credited "Stadt
+  Kassel, Innenstadtring © OpenStreetMap", under the rule of 10 November
+  2026.
 - **Kraków** (read 11 November 2026): the Zarząd Transportu Publicznego w
   Krakowie's (ZTP's) 342 mobility points (punkty mobilności), each drawn as a
   disc of 5 m and named (`nazwa`), from its layer
@@ -1431,6 +1496,21 @@ its source and the date it was read.
   Left out: the 63 mobility hubs, points where scooters are one service among
   bikes and transit rather than places a ride must end; the University of
   Minnesota's campus; and the equity distribution areas.
+- **Mülheim an der Ruhr** (read 11 November 2026): the Stadt Mülheim an der
+  Ruhr's 76 e-scooter stations, points each drawn as a disc of 5 m and named
+  by their street, from its geoportal page
+  [E-Roller-Stationen](https://geo.muelheim-ruhr.de/e-roller-stationen), whose
+  OpenLayers map carries them in the page's Drupal settings; its GeoServer's
+  layer (`webteam:e_roller_stationen`) answers no WFS and no GetFeatureInfo.
+  Each station's id is the number of its own page. The legend links the
+  Straßenverkehrsbehörde's
+  [e-scooter page](https://cms.muelheim-ruhr.de/rathaus/aemter-und-einrichtungen/ordnungsamt/strassenverkehrsbehoerde/sondernutzung-oeffentlicher/e)
+  (as of 9 September 2025): in the city centre, the district centres and some
+  other areas an e-scooter may be hired and returned only at the special
+  stations. Those areas are not published as shapes, nor drawn. The city's
+  [terms of use](https://cms.muelheim-ruhr.de/nutzungsbedingungen) allow its
+  online services "ausschließlich für den persönlichen Bedarf"; drawn
+  credited "Stadt Mülheim an der Ruhr", under the rule of 10 November 2026.
 - **München** (read 30 October 2026): the Landeshauptstadt München's 430
   parking areas for shared e-scooters, 791 no-parking zones, where a rental
   can't end, and 55 no-riding zones (63 parts), the Mobilitätsreferat's
@@ -1578,6 +1658,24 @@ its source and the date it was read.
   which the map draws only from 0.7 m a pixel, and 2.75 m for the other zones,
   in tiles that overlap by 50 m. Twelve of the 14 slow zones are no-return
   areas too.
+- **Nürnberg** (read 11 November 2026): the Stadt Nürnberg's areas where a
+  hired e-scooter is taken and left only at a marked collection place
+  (Sammelparkplatz), so drawn as such (racksOnly): the old town, Bereich A
+  (1.7 km², since 1 May 2024), and the city within the Bundesstraßenring,
+  Bereich B (24 km², since 19 November 2024), which takes in A, so only B is
+  drawn, lest the old town be drawn twice. They are map 271, "E-Scooter-Zonen", of the city's
+  GeoMaps service, which its
+  [e-scooter page](https://www.nuernberg.de/internet/verkehrsplanung/escooter.html)
+  embeds, asked for as the page asks (by POST to
+  `microservices.nuernberg.de/geomaps/api/map/readMultiple`), Esri rings in
+  ETRS89 / UTM 32N. The legend links that page: the rest of the public space
+  within the ring is a no-parking zone, where the rental runs on, and outside
+  the ring scooters are left freely. Its 300 or so collection places are not
+  published: none of the service's maps 1 to 1,999 holds them (map 206 holds
+  the city's Mobilstationen), so none is drawn. The city's
+  [legal notice](https://haftungshinweis.nuernberg.de) allows copies only for
+  private, non-commercial use; drawn credited "Stadt Nürnberg", under the
+  rule of 10 November 2026.
 - **Omaha** (read 30 October 2026): the City of Omaha's automatic enforcement
   zones for scooters, where neither riding nor parking is allowed, drawn as 25
   no-riding zones: the 16 the
@@ -1907,6 +2005,29 @@ its source and the date it was read.
   is published only as a picture and is not drawn
   ([coverage gaps](docs/coverage-gaps.md)); none of the city's local traffic
   rules (`ltfr:LTFR_FORESKRIFT`) names e-scooters.
+- **Stuttgart** (read 11 November 2026): the Landeshauptstadt Stuttgart's 74
+  parking areas for e-scooters and its 90 no-parking zones, where a rental
+  can't end (round schools, fire stations, the MHP Arena, stations and some
+  streets), the layers `A32_ES_ABSTELLFLAECHEN` and
+  `A32_ES_ABSTELLVERBOTSZONEN` of its GeoServer's WFS (`GEOLINE_FLEX`), and its
+  pedestrian zones (`A66_VFL_FUSSGAENGERZ`, 315 parcels named by their
+  street), which its
+  [Stadtplan](https://maps.stuttgart.de/stadtplan/) draws under "Mit dem
+  E-Scooter unterwegs" in the same group, "E-Scooter Abstellverbotszonen", so
+  drawn as no-parking zones too: the city's own zones leave out the
+  Königstraße. All are read in the layers' grid, ETRS89 / UTM 32N, as the WFS
+  rounds degrees to four places, about 11 m; 28 of the pedestrian zones'
+  parcels, each under 4 m², simplify to nothing. One parking area,
+  Seeblickweg_digital, is a digital one on trial ("zur Probe"). The legend
+  links the city's
+  [FAQs E-Scooter](https://www.stuttgart.de/leben/mobilitaet/elektromobilitaet/e-scooter/faqs-e-scooter)
+  (as of 30 October 2025): the city has set zones where a rental cannot end,
+  as green spaces and pedestrian zones, and parking areas where one is
+  returned. Its
+  [geodata terms](https://www.stuttgart.de/geodaten-nutzungsbedingungen)
+  (5 February 2024) say the layers are not open data, free for
+  non-commercial use, and send commercial use to the Stadtmessungsamt; drawn
+  credited "Landeshauptstadt Stuttgart", under the rule of 10 November 2026.
 - **Tampa** (read 31 October 2026): the City of Tampa's 67 multi-use hubs
   and 92 public bike racks downtown and round it, points each drawn as a disc
   of 5 m, from its GeoHub's

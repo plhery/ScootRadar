@@ -12,7 +12,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // Writes data/city-zones/<id>.json, each city's zones from the layers data/city-zones.json lists,
 // and fills in each city's bounds and number of zones there. Bergen kommune's are ArcGIS layers,
 // whose query answers each zone's name but not its shape: identify, which the city's map calls on
-// a click, answers both, for every zone within an envelope. Porto's sharing points are entities of
+// a click, answers both, for every zone within an envelope; so are Augsburg's parking places and
+// Kassel's bike racks, points. Porto's sharing points are entities of
 // Porto Digital's FIWARE broker, each a point with its number of spots. The City of Boise's are an
 // ArcGIS feature service, whose query answers every zone's shape, and its parking corrals points;
 // so are the City of Västerås's, some zones of several parts and a few with holes. Norrköpings
@@ -33,7 +34,11 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // serves to the map the kommune's page embeds, and Long Beach's and Nashville's, of format
 // populus, the shapes of policies on Populus's public policy map, which each city links; both are
 // read as GeoJSON. Le Chesnay-Rocquencourt's, of format artifica, are the markers of the Artifica
-// map widget the town's page embeds, also read as GeoJSON. Helsingborg's is the area of a local
+// map widget the town's page embeds, also read as GeoJSON, as are Mülheim an der Ruhr's stations,
+// of format drupal, the points its page's map carries, and Nürnberg's two areas, of format
+// geomaps, a map of the city's GeoMaps service. Stuttgart's and Düsseldorf's are WFS layers too,
+// read in the grid they are drawn in, ETRS89 / UTM 32N, as Stuttgart's rounds degrees to four
+// places. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
@@ -89,19 +94,58 @@ function getJsonOverHttp1(url) {
 
 const slug = kind => kind.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 
+/** How long identify waits between the quarters of an envelope, so a city's server is asked about once a second. */
+const IDENTIFY_PAUSE_MS = 1000;
+
 /**
- * An ArcGIS layer's zones, each one ring: identify over the envelope round the municipality. Bergen's
- * are read so, as its query answers one no-parking zone without a shape.
+ * An ArcGIS layer's zones, each one ring, or a point drawn as a disc: identify over the envelope round
+ * the municipality, those whose attributes have the values `match` gives each, named by `nameField`
+ * less the pattern `nameTrim`, unless it is one of the placeholders `unnamed` lists, or else, for a
+ * point, `pointName`. Identify answers attributes by their aliases, an empty one as "Null". Bergen's
+ * are read so, as its query answers one no-parking zone without a shape; Augsburg's parking places,
+ * as its layer answers no query at all; and Kassel's bike racks, as its query answers none of their
+ * places. Identify answers at most the service's maxRecordCount: an envelope with as many is asked
+ * for again in quarters, as Kassel's 2,128 racks are. Those within a zone an earlier layer drew and
+ * `outside` names are left out, as Kassel's racks within its Innenstadtring, where a scooter is
+ * parked only on the ring's marked places.
  */
-async function arcgisZones(city, { kind, url, layer, envelope }) {
-  const query = new URLSearchParams({ geometry: envelope, geometryType: 'esriGeometryEnvelope', sr: '4326',
-    layers: `all:${layer}`, tolerance: '0', mapExtent: envelope, imageDisplay: '2000,2000,96', returnGeometry: 'true', f: 'json' });
-  const body = await getJson(`${url}/identify?${query}`);
-  if (!Array.isArray(body.results)) throw new Error(`${url} answered no zones`);
-  return body.results.map(({ attributes, geometry }) => {
+async function arcgisZones(city, { kind, url, layer, envelope, match = {}, nameField = 'Navn', nameTrim, unnamed = [], pointName, outside }, earlier) {
+  const { maxRecordCount = 1000 } = await getJson(`${url}?f=json`);
+  const results = new Map();
+  const identify = async ([west, south, east, north]) => {
+    const box = [west, south, east, north].join(',');
+    const query = new URLSearchParams({ geometry: box, geometryType: 'esriGeometryEnvelope', sr: '4326',
+      layers: `all:${layer}`, tolerance: '0', mapExtent: box, imageDisplay: '2000,2000,96', returnGeometry: 'true', f: 'json' });
+    const body = await getJson(`${url}/identify?${query}`);
+    if (!Array.isArray(body.results)) throw new Error(`${url} answered no zones`);
+    if (body.results.length < maxRecordCount) {
+      for (const result of body.results) results.set(String(result.attributes.OBJECTID), result);
+      return;
+    }
+    const [x, y] = [(west + east) / 2, (south + north) / 2];
+    for (const quarter of [[west, south, x, y], [x, south, east, y], [west, y, x, north], [x, y, east, north]]) {
+      await new Promise(done => setTimeout(done, IDENTIFY_PAUSE_MS));
+      await identify(quarter);
+    }
+  };
+  await identify(envelope.split(',').map(Number));
+  const has = attributes => Object.entries(match).every(([key, values]) => [values].flat().includes(attributes[key] ?? null));
+  const areas = outside ? earlier.filter(zone => zone.name === outside) : [];
+  if (outside && !areas.length) throw new Error(`${city.id}: no zone ${outside} drawn before its ${kind}`);
+  const inArea = ({ x, y, rings }) => {
+    const [lng, lat] = Number.isFinite(x) ? [x, y] : rings?.[0]?.[0] ?? [];
+    return areas.some(zone => within([lat, lng], zone.ring));
+  };
+  return [...results.values()].filter(({ attributes, geometry }) => has(attributes) && !inArea(geometry ?? {})).map(({ attributes, geometry }) => {
+    const id = `${city.id}-${slug(kind)}-${attributes.OBJECTID}`;
+    let given = String(attributes[nameField] ?? '').trim();
+    if (given && nameTrim) given = given.replace(new RegExp(nameTrim), '').trim();
+    const name = given && !unnamed.includes(given) ? given : null;
+    if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
+      return { id, kind, name: name || pointName || city.place, ring: disc(geometry.y, geometry.x) };
+    }
     if (geometry?.rings?.length !== 1) throw new Error(`${url}: zone ${attributes.OBJECTID} is not one ring`);
-    return { id: `${city.id}-${slug(kind)}-${attributes.OBJECTID}`, kind, name: attributes.Navn?.trim() || null,
-      ring: simplifyRing(geometry.rings[0], TOLERANCE_M, DIGITS) };
+    return { id, kind, name, ring: simplifyRing(geometry.rings[0], TOLERANCE_M, DIGITS) };
   });
 }
 
@@ -203,7 +247,9 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * and Hamburg's (DE.HH.UP_PARKVERBOTSZONEN_E_SCOOTER_6), or for a feature without one, as
  * Münster's are, a hash of its shape, as it is with `shapeIds` too, for a layer whose ids change
  * from one answer to the next: Stockholm's WFS makes its layer anew each night, ids and row
- * numbers too. A feature without a shape, as one of Hamburg's, is no zone.
+ * numbers too. `idTag` goes into each zone's id where two layers of one kind number theirs alike,
+ * as Stuttgart's no-parking zones and its pedestrian zones may. A feature without a shape, as one
+ * of Hamburg's, is no zone.
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
  * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points. Or a finer one:
  * Stockholm's parking place at John Ericssonsgatan 14, 70 cm wide, would otherwise be a line. A
@@ -214,15 +260,18 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * kmz those of the KML file a KMZ holds (kmzFeatures), one of format zip a zip of GeoJSON files
  * (zipFeatures), one of format nivel the active zones of a Nivel public map (nivelFeatures), one
  * of format populus a policy's shapes on Populus's public policy map (populusFeatures), one of
- * format geopdf the point symbols of a georeferenced PDF's map (geopdfFeatures), and one of format
- * artifica the markers of the Artifica map widget a page embeds (artificaFeatures).
+ * format geopdf the point symbols of a georeferenced PDF's map (geopdfFeatures), one of format
+ * artifica the markers of the Artifica map widget a page embeds (artificaFeatures), one of format
+ * drupal the points of an OpenLayers map a Drupal page carries (drupalFeatures), and one of format
+ * geomaps the shapes of a map of Nürnberg's GeoMaps service (geomapsFeatures).
  */
-async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, grid, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
+async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, openlayers, geomap, grid, match = {}, except, nameField, nameTrim, unnamed = [], idField, idTag, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
   const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'kmz' ? await kmzFeatures(url)
     : format === 'zip' ? await zipFeatures(url) : format === 'nivel' ? nivelFeatures(await getJson(url), url)
       : format === 'populus' ? await populusFeatures(url, policy)
         : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : format === 'artifica' ? await artificaFeatures(url)
-          : await getJson(url);
+          : format === 'drupal' ? drupalFeatures(await getText(url), url, openlayers)
+            : format === 'geomaps' ? await geomapsFeatures(url, geomap) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A layer in a grid's metres, which a service gives to the millimetre where its degrees are rounded to metres.
   if (grid) {
@@ -253,7 +302,7 @@ async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, gri
       : feature.id != null && !shapeIds ? String(feature.id).replace(/^.*\./, '').replace(/^.*_(?=\d+$)/, '')
         : createHash('sha1').update(JSON.stringify(geometry?.coordinates ?? null)).digest('hex').slice(0, 8);
     if (!featureId) throw new Error(`${url}: a feature has no ${idField}`);
-    const id = `${city.id}-${slug(kind)}-${featureId}`;
+    const id = `${city.id}-${slug(kind)}-${idTag ? `${idTag}-` : ''}${featureId}`;
     let given = nameField && String(properties[nameField] ?? '').trim();
     if (given && nameTrim) given = given.replace(new RegExp(nameTrim), '').trim();
     const name = given && !unnamed.includes(given) ? given : null;
@@ -364,6 +413,49 @@ function nivelFeatures(zones, url) {
   return {
     features: zones.filter(zone => zone.status === 'active').map(({ polygons, ...properties }) => ({
       id: properties.id, properties, geometry: JSON.parse(polygons.main),
+    })),
+  };
+}
+
+/**
+ * The points of a Drupal page's OpenLayers map, from the settings the page carries (Drupal.settings),
+ * as GeoJSON points: Mülheim an der Ruhr's page of its e-scooter stations draws them so, while its
+ * GeoServer gives the layer only as a picture. Each feature of the map's layer named `openlayers` is
+ * a WKT point in latitude and longitude, named by the text of its title's link and numbered by the
+ * node the link leads to.
+ */
+function drupalFeatures(page, url, openlayers) {
+  const settings = /jQuery\.extend\(Drupal\.settings, (\{[\s\S]*?\})\);/.exec(page)?.[1];
+  const layers = settings ? Object.values(JSON.parse(settings).openlayers?.maps ?? {}).map(map => map.layers?.[openlayers]).filter(Boolean) : [];
+  if (!layers.length) throw new Error(`${url}: no map layer ${openlayers}`);
+  const text = value => value.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#0?39;/g, "'").replace(/&amp;/g, '&').trim();
+  return {
+    features: layers.flatMap(layer => Object.values(layer.features ?? {})).map(({ projection, attributes, wkt }) => {
+      if (projection !== 'EPSG:4326') throw new Error(`${url}: a feature in ${projection}`);
+      const point = /^POINT \((-?[\d.]+) (-?[\d.]+)\)$/.exec(wkt?.trim() ?? '');
+      const link = /<a href="[^"]*\/(\d+)">([^<]*)<\/a>/.exec(attributes?.title ?? '');
+      return { id: link?.[1] ?? null, properties: { name: link ? text(link[2]) : null },
+        geometry: point ? { type: 'Point', coordinates: [Number(point[1]), Number(point[2])] } : { type: wkt?.trim().split(/\s*\(/)[0] ?? null } };
+    }),
+  };
+}
+
+/**
+ * A map of Nürnberg's GeoMaps service, which the city's pages embed (`_NbgGeoMaps`), as GeoJSON:
+ * each layer's active shapes, Esri rings in ETRS89 / UTM 32N, each a feature with its title and its
+ * layer's name. The service is asked as the pages ask it, by POST.
+ */
+async function geomapsFeatures(url, geomap) {
+  const response = await fetch(url, { method: 'POST', headers: { 'User-Agent': USER_AGENT, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mapIds: [geomap] }) });
+  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+  const map = (await response.json()).data?.[geomap];
+  if (!Array.isArray(map?.layers)) throw new Error(`${url} answered no map ${geomap}`);
+  return {
+    features: map.layers.flatMap(({ layerName, pois = [] }) => pois.filter(poi => poi.isActive === 1).map(({ id, title, geometry }) => {
+      if (geometry?.spatialReference?.wkid !== 25832 || !geometry.rings?.length) throw new Error(`${url}: ${title} is no shape in EPSG:25832`);
+      const rings = geometry.rings.map(ring => ring.map(([easting, northing]) => gridToLngLat(easting, northing, GRIDS['EPSG:25832'])));
+      return { id, properties: { layer: layerName, title }, geometry: { type: 'MultiPolygon', coordinates: featurePolygons(rings) } };
     })),
   };
 }
@@ -557,6 +649,18 @@ async function artificaFeatures(url) {
 }
 
 /**
+ * A zone given here as its ring of [lat, lng], where a city names the streets round an area but
+ * publishes no shape of it: Kassel's Innenstadtring, traced on OpenStreetMap along the streets its
+ * page names, Steinweg, Frankfurter Straße, Fünffensterstraße, Ständeplatz, Scheidemannplatz,
+ * Rudolf-Schwander-Straße, Lutherstraße and Kurt-Schumacher-Straße, and across the Altmarkt between
+ * the last and the first.
+ */
+function ringZones(city, { kind, name, ring }) {
+  if (!name || !Array.isArray(ring) || ring.length < 3) throw new Error(`${city.id}: a ${kind} ring needs a name and three corners`);
+  return [{ id: `${city.id}-${slug(kind)}-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`, kind, name, ring: ring.map(([lat, lng]) => [lat, lng]) }];
+}
+
+/**
  * A boundary's outer rings, each a zone named after the place. The one hole in Arlington National
  * Cemetery's outline, about 60 m across, is bleachers within the cemetery, so it is left closed.
  */
@@ -586,11 +690,13 @@ function nestedPolygons(rings) {
 
 /**
  * Grids a city's map may draw in, each a transverse Mercator projection of GRS 80: SWEREF 99 16 30,
- * Norrköping's, SWEREF 99 13 30, Halmstad's, and SWEREF 99 TM, the national one, Transportstyrelsen's register's.
+ * Norrköping's, SWEREF 99 13 30, Halmstad's, SWEREF 99 TM, the national one, Transportstyrelsen's
+ * register's, and ETRS89 / UTM 32N, Stuttgart's, Düsseldorf's and Nürnberg's.
  */
 const GRIDS = { 'EPSG:3010': { meridian: 16.5, scale: 1, falseEasting: 150000 },
   'EPSG:3008': { meridian: 13.5, scale: 1, falseEasting: 150000 },
-  'EPSG:3006': { meridian: 15, scale: 0.9996, falseEasting: 500000 } };
+  'EPSG:3006': { meridian: 15, scale: 0.9996, falseEasting: 500000 },
+  'EPSG:25832': { meridian: 9, scale: 0.9996, falseEasting: 500000 } };
 
 /** A grid's easting and northing as [lng, lat], by Lantmäteriet's Gauss–Krüger formulas. */
 function gridToLngLat(easting, northing, { meridian, scale, falseEasting }) {
@@ -1043,13 +1149,13 @@ async function updateCity(city) {
   const zones = [];
   for (const layer of city.layers) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
-    const pathname = layer.boundary ? null : new URL(layer.url).pathname;
-    const found = layer.boundary ? await boundaryZones(city, layer)
-      : ['geojson', 'kml', 'kmz', 'zip', 'nivel', 'populus', 'geopdf', 'artifica'].includes(layer.format) ? await geojsonZones(city, layer, zones)
+    const pathname = layer.boundary || layer.ring ? null : new URL(layer.url).pathname;
+    const found = layer.boundary ? await boundaryZones(city, layer) : layer.ring ? ringZones(city, layer)
+      : ['geojson', 'kml', 'kmz', 'zip', 'nivel', 'populus', 'geopdf', 'artifica', 'drupal', 'geomaps'].includes(layer.format) ? await geojsonZones(city, layer, zones)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)
-              : layer.envelope ? await arcgisZones(city, layer)
+              : layer.envelope ? await arcgisZones(city, layer, zones)
                 : /\/(Feature|Map)Server$/.test(pathname) ? await featureServerZones(city, layer)
                   : pathname.endsWith('/wms') ? await wmsZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + pointsOf(zone).length, 0)} points`);

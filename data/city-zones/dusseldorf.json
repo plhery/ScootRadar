@@ -1,0 +1,5604 @@
+{
+  "zones": [
+    {
+      "id": "dusseldorf-parking-00aedd1f-e047-47f4-99a1-4683ee06e1cd",
+      "kind": "parking",
+      "name": "Eller Mitte",
+      "ring": [
+        [51.202114, 6.836791],
+        [51.20212, 6.836817],
+        [51.202172, 6.836779],
+        [51.202165, 6.836754]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0aeec354-123c-42cf-a403-da6f00d0b45c",
+      "kind": "parking",
+      "name": "Karl-Geußen-Straße",
+      "ring": [
+        [51.208644, 6.810737],
+        [51.208652, 6.81076],
+        [51.208623, 6.810785],
+        [51.208615, 6.810764]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0af59016-4fb7-487d-9021-7d7f8b594823",
+      "kind": "parking",
+      "name": "Christophstraße I",
+      "ring": [
+        [51.196479, 6.796277],
+        [51.196451, 6.796374],
+        [51.196438, 6.796361],
+        [51.196465, 6.796264]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-00b1fa02-b82e-462a-9093-25c122b2e577",
+      "kind": "parking",
+      "name": "Oberbilker Allee I",
+      "ring": [
+        [51.211203, 6.783107],
+        [51.211255, 6.78317],
+        [51.21125, 6.783184],
+        [51.211197, 6.783121]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0b6d738d-8675-456d-954e-324352bd713a",
+      "kind": "parking",
+      "name": "Kapellstraße - Duisburger Straße",
+      "ring": [
+        [51.235755, 6.781295],
+        [51.235743, 6.781316],
+        [51.235769, 6.781359],
+        [51.235779, 6.781339]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0bc0408f-35e1-48c5-ac4c-dd1d6d1138b6",
+      "kind": "parking",
+      "name": "Freiligrathplatz II",
+      "ring": [
+        [51.265481, 6.751554],
+        [51.265547, 6.751514],
+        [51.26554, 6.751481],
+        [51.265477, 6.751512]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0cc6b2e4-6d70-4746-be81-35640804f082",
+      "kind": "parking",
+      "name": "Börnestraße",
+      "ring": [
+        [51.227257, 6.791239],
+        [51.227263, 6.79126],
+        [51.227288, 6.791241],
+        [51.227281, 6.791218]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0de3c012-7da2-4c0d-a91e-bb3ebf52a990",
+      "kind": "parking",
+      "name": "Stresemannstraße III",
+      "ring": [
+        [51.220468, 6.785303],
+        [51.220457, 6.785289],
+        [51.220426, 6.785358],
+        [51.220441, 6.785371]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0dfe0a41-7f2a-41ec-a029-baab3a27f5d2",
+      "kind": "parking",
+      "name": "Oberbilk S I",
+      "ring": [
+        [51.208354, 6.808009],
+        [51.208362, 6.807956],
+        [51.208311, 6.808003],
+        [51.208304, 6.808052]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0f47eb62-12b6-4915-9dea-1233751b59af",
+      "kind": "parking",
+      "name": "Robert-Schumann-Hochschule Georg-Glock-Straße",
+      "ring": [
+        [51.250268, 6.769874],
+        [51.250285, 6.769852],
+        [51.250343, 6.769999],
+        [51.250302, 6.77005],
+        [51.250247, 6.769902]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0f85d1fb-317d-4f90-8726-519037252490",
+      "kind": "parking",
+      "name": "Buschgasser Weg",
+      "ring": [
+        [51.313051, 6.754698],
+        [51.313086, 6.754749],
+        [51.313107, 6.754709],
+        [51.313071, 6.754662]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-0fa31821-a18a-4390-ab85-2f2754ac46ac",
+      "kind": "parking",
+      "name": "Gumbertstraße",
+      "ring": [
+        [51.200625, 6.840586],
+        [51.200589, 6.84055],
+        [51.200579, 6.840579],
+        [51.200617, 6.840613]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1a44dc59-e075-4964-8a88-33c5be32413a",
+      "kind": "parking",
+      "name": "Stresemannplatz I",
+      "ring": [
+        [51.219727, 6.788537],
+        [51.219716, 6.788557],
+        [51.219759, 6.788628],
+        [51.219768, 6.788607]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1a148b2c-d9a8-48ea-b33e-cb47022aae1c",
+      "kind": "parking",
+      "name": "Kirchplatz II",
+      "ring": [
+        [51.21394, 6.777452],
+        [51.213924, 6.777452],
+        [51.213923, 6.77757],
+        [51.21394, 6.77757]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1abe7998-6dc2-4633-be38-b43b5b8bf1ae",
+      "kind": "parking",
+      "name": "Van-Douven-Straße",
+      "ring": [
+        [51.213295, 6.795906],
+        [51.213274, 6.795874],
+        [51.213265, 6.795892],
+        [51.213286, 6.795924]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1ae1ec24-28aa-4868-8026-11875d9d01de",
+      "kind": "parking",
+      "name": "Ratinger Straße",
+      "ring": [
+        [51.229575, 6.775926],
+        [51.229532, 6.775939],
+        [51.229548, 6.776064],
+        [51.229592, 6.776051]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1cedd651-31bb-49db-a053-be85989b847d",
+      "kind": "parking",
+      "name": "Apostelplatz",
+      "ring": [
+        [51.238113, 6.852067],
+        [51.238069, 6.852039],
+        [51.238062, 6.852066],
+        [51.238105, 6.852095]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1e429839-0ab9-4cdc-971a-46da2d27173f",
+      "kind": "parking",
+      "name": "Kronenstraße",
+      "ring": [
+        [51.213907, 6.773877],
+        [51.213906, 6.773924],
+        [51.213843, 6.773924],
+        [51.213844, 6.773883]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-01eaeff6-cddc-4cf4-80fb-998376dd2273",
+      "kind": "parking",
+      "name": "Schumannstraße",
+      "ring": [
+        [51.231712, 6.799054],
+        [51.231696, 6.799075],
+        [51.23165, 6.798972],
+        [51.231667, 6.79895]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1f1abf3c-ade4-4fad-ab4f-717d53e12540",
+      "kind": "parking",
+      "name": "Düsseldorf Hbf I",
+      "ring": [
+        [51.220325, 6.792201],
+        [51.220308, 6.792238],
+        [51.220398, 6.792346],
+        [51.220415, 6.79231]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1f6e29ad-f944-4379-9755-b263461f3643",
+      "kind": "parking",
+      "name": "Grevenbroicher Weg II",
+      "ring": [
+        [51.244126, 6.728591],
+        [51.244107, 6.728583],
+        [51.244093, 6.728657],
+        [51.24411, 6.728666]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1f9ba025-4a00-4268-b6e6-56b44b1dd90f",
+      "kind": "parking",
+      "name": "Luisen-Gymnasium",
+      "ring": [
+        [51.221621, 6.775712],
+        [51.221576, 6.775737],
+        [51.221575, 6.775884],
+        [51.22162, 6.775856]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1f92b647-7cbc-4cda-a2ab-027c90907746",
+      "kind": "parking",
+      "name": "Uni West II",
+      "ring": [
+        [51.191335, 6.788254],
+        [51.19132, 6.788263],
+        [51.191303, 6.788178],
+        [51.191317, 6.788169]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2a752c20-169b-4e50-b642-ff9d5915575e",
+      "kind": "parking",
+      "name": "Venloer Straße",
+      "ring": [
+        [51.237303, 6.77912],
+        [51.237294, 6.779153],
+        [51.237264, 6.779127],
+        [51.237274, 6.779096]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2d4c3aa9-ba89-48f9-b3fb-4576ef91f319",
+      "kind": "parking",
+      "name": "Werstener Dorfstraße III",
+      "ring": [
+        [51.19327, 6.815399],
+        [51.193251, 6.815418],
+        [51.193278, 6.815494],
+        [51.193297, 6.815478]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2db3ca8b-1bc7-415c-870a-161e8c597e26",
+      "kind": "parking",
+      "name": "Stockumer Kirchstraße II",
+      "ring": [
+        [51.260394, 6.754737],
+        [51.26039, 6.754706],
+        [51.260458, 6.754689],
+        [51.260461, 6.75472]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2e1e6934-68d7-4a34-8f38-ee1c7a8a5269",
+      "kind": "parking",
+      "name": "Immermannstraße V",
+      "ring": [
+        [51.223662, 6.787878],
+        [51.223632, 6.787947],
+        [51.22362, 6.787931],
+        [51.22365, 6.787861]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2ec8b333-4e32-4cf6-82e3-8e228358bfe1",
+      "kind": "parking",
+      "name": "Aachener Straße I",
+      "ring": [
+        [51.206012, 6.775133],
+        [51.20602, 6.77511],
+        [51.20608, 6.775177],
+        [51.206072, 6.775199]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2f26821d-9b9f-42da-9a1d-78ea67536fbd",
+      "kind": "parking",
+      "name": "Karolingerstraße II",
+      "ring": [
+        [51.205525, 6.776978],
+        [51.205523, 6.777032],
+        [51.205441, 6.777023],
+        [51.205443, 6.77697]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2fafd7e9-4fdb-4520-aca6-17aa13e99b75",
+      "kind": "parking",
+      "name": "Flügelstraße",
+      "ring": [
+        [51.21442, 6.800785],
+        [51.214411, 6.80077],
+        [51.214383, 6.800822],
+        [51.214395, 6.800838]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3bbdc44c-3e22-4d5c-895f-218f48d13015",
+      "kind": "parking",
+      "name": "Uni West I",
+      "ring": [
+        [51.190778, 6.790278],
+        [51.190765, 6.790286],
+        [51.190787, 6.790379],
+        [51.1908, 6.790371]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3c88c8c0-8a7e-47a8-8693-b5afcba710a9",
+      "kind": "parking",
+      "name": "Berliner Allee II",
+      "ring": [
+        [51.221304, 6.782025],
+        [51.221235, 6.782016],
+        [51.221238, 6.781986],
+        [51.221278, 6.781993]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3caabe80-ac0c-4f61-9e53-4c09f4fcfb2e",
+      "kind": "parking",
+      "name": "Gneisenaustraße",
+      "ring": [
+        [51.239808, 6.786028],
+        [51.239775, 6.785977],
+        [51.239754, 6.78601],
+        [51.239789, 6.786063]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3d5b7a75-7da6-4edb-8b3d-92bda6a09760",
+      "kind": "parking",
+      "name": "Kalkumer Straße - Auf den Geisten",
+      "ring": [
+        [51.270954, 6.774058],
+        [51.270999, 6.774053],
+        [51.271002, 6.774074],
+        [51.270958, 6.774078]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3d8de3d8-8633-4f4f-93a7-f0917827bd2d",
+      "kind": "parking",
+      "name": "Harkortstraße",
+      "ring": [
+        [51.218532, 6.790305],
+        [51.21859, 6.790307],
+        [51.21859, 6.790335],
+        [51.218532, 6.790333]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3d5291f8-a02c-41a8-b99e-e0baa9ac4a6d",
+      "kind": "parking",
+      "name": "Uni Mensa I",
+      "ring": [
+        [51.191909, 6.793619],
+        [51.191921, 6.793614],
+        [51.191933, 6.793692],
+        [51.191922, 6.793698]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3eb3efa1-cc39-493d-97b6-8643496774c8",
+      "kind": "parking",
+      "name": "Schirmerstraße",
+      "ring": [
+        [51.233235, 6.791175],
+        [51.233245, 6.79119],
+        [51.233275, 6.791135],
+        [51.233264, 6.791118]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4a3d15bd-de2e-4571-819d-6425ab47c829",
+      "kind": "parking",
+      "name": "KÖ VI",
+      "ring": [
+        [51.22339, 6.779387],
+        [51.223391, 6.779359],
+        [51.223435, 6.77936],
+        [51.223435, 6.779389]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-04a89fa1-60b1-4a33-8e80-44a1a37f75d6",
+      "kind": "parking",
+      "name": "Immermannstraße II",
+      "ring": [
+        [51.224208, 6.786555],
+        [51.224199, 6.786543],
+        [51.224156, 6.786637],
+        [51.224165, 6.786649]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4addb8c1-5f2d-4fb2-97de-09e045273b70",
+      "kind": "parking",
+      "name": "Hamm S I",
+      "ring": [
+        [51.210308, 6.739123],
+        [51.210314, 6.739151],
+        [51.210376, 6.739116],
+        [51.21037, 6.73909]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4b7caa4f-c752-4d89-89ed-074bb3b3f7c3",
+      "kind": "parking",
+      "name": "Münsterplatz",
+      "ring": [
+        [51.244126, 6.788483],
+        [51.244114, 6.788452],
+        [51.244073, 6.788497],
+        [51.244084, 6.788527]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4ba8ff20-8f39-46b6-94ea-585524197620",
+      "kind": "parking",
+      "name": "Ausweichstation Corneliusplatz II",
+      "ring": [
+        [51.225767, 6.779438],
+        [51.225767, 6.779491],
+        [51.225857, 6.779495],
+        [51.225858, 6.779442]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4eb14176-5928-4023-92b9-577032d95f0f",
+      "kind": "parking",
+      "name": "Lessingplatz I",
+      "ring": [
+        [51.212727, 6.793251],
+        [51.212706, 6.79325],
+        [51.212703, 6.793352],
+        [51.212725, 6.793351]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5a1c4277-65d2-486e-884a-f163116a4e3b",
+      "kind": "parking",
+      "name": "Graf-Recke-Straße I",
+      "ring": [
+        [51.241351, 6.809922],
+        [51.241306, 6.809815],
+        [51.241276, 6.80985],
+        [51.241319, 6.809965]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5ab82c00-2966-485d-a109-e9695cd273bc",
+      "kind": "parking",
+      "name": "Bismarckstraße I",
+      "ring": [
+        [51.222217, 6.785691],
+        [51.222236, 6.785617],
+        [51.222256, 6.785667],
+        [51.222232, 6.785705]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5ae1f713-3044-401e-a768-2ee23ea19e72",
+      "kind": "parking",
+      "name": "Charlottenstraße - Friedrich-Ebert-Straße",
+      "ring": [
+        [51.221526, 6.788352],
+        [51.221518, 6.788371],
+        [51.221469, 6.788315],
+        [51.221478, 6.788296]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5c0bd5a9-4461-47a7-8e5e-d6133d3e314e",
+      "kind": "parking",
+      "name": "Saarbrücker Straße",
+      "ring": [
+        [51.24806, 6.779998],
+        [51.248045, 6.780008],
+        [51.248062, 6.780079],
+        [51.248077, 6.780067]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5c3a3ff1-a2eb-4939-9ad0-e596fc318552",
+      "kind": "parking",
+      "name": "Ursula-Trabalski-Straße",
+      "ring": [
+        [51.239769, 6.850332],
+        [51.239753, 6.85032],
+        [51.239741, 6.850368],
+        [51.239758, 6.85038]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5d460f81-4d30-4acc-89aa-4bdd1398520f",
+      "kind": "parking",
+      "name": "Willi-Becker-Allee",
+      "ring": [
+        [51.217609, 6.794735],
+        [51.217571, 6.794679],
+        [51.217552, 6.79471],
+        [51.21763, 6.794827],
+        [51.217647, 6.79479]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5da1a354-0ce6-4fb9-ab66-76811da05497",
+      "kind": "parking",
+      "name": "Klosterstraße",
+      "ring": [
+        [51.224866, 6.787878],
+        [51.224837, 6.787998],
+        [51.224852, 6.788009],
+        [51.224883, 6.78789]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-05e20770-7c44-48b3-a22c-e4a520e5bb73",
+      "kind": "parking",
+      "name": "UKD I",
+      "ring": [
+        [51.195675, 6.790723],
+        [51.195669, 6.790691],
+        [51.195734, 6.790652],
+        [51.19574, 6.790682]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5fb189e9-a25b-45c8-acf3-c7ee646b16b2",
+      "kind": "parking",
+      "name": "Schwanenmarkt I",
+      "ring": [
+        [51.219974, 6.774127],
+        [51.21987, 6.774124],
+        [51.219869, 6.774172],
+        [51.219972, 6.774179]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6a00504b-adea-4860-b835-793370884ef0",
+      "kind": "parking",
+      "name": "UKD V",
+      "ring": [
+        [51.194451, 6.793187],
+        [51.194389, 6.793223],
+        [51.194382, 6.793195],
+        [51.194444, 6.793158]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6aadcb35-80bb-47fa-bc7e-c85c9b6514ee",
+      "kind": "parking",
+      "name": "UKD II",
+      "ring": [
+        [51.194283, 6.791276],
+        [51.194267, 6.791282],
+        [51.194287, 6.791395],
+        [51.194302, 6.791387]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6b3a92db-446d-4f76-b7ee-ac61e0a32b92",
+      "kind": "parking",
+      "name": "Schanzenstraße I",
+      "ring": [
+        [51.232747, 6.7405],
+        [51.232731, 6.74048],
+        [51.232709, 6.740537],
+        [51.232725, 6.740554]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6b3d44a8-2eb7-4c35-9a57-9ee23f15f550",
+      "kind": "parking",
+      "name": "Pempelforter Straße",
+      "ring": [
+        [51.229621, 6.790977],
+        [51.229629, 6.79101],
+        [51.229579, 6.791043],
+        [51.229571, 6.791007]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6b56836a-0b3b-4601-ab7b-cbc1b5602ad7",
+      "kind": "parking",
+      "name": "Brehmplatz II",
+      "ring": [
+        [51.238544, 6.802138],
+        [51.238551, 6.802202],
+        [51.238535, 6.802211],
+        [51.238527, 6.802146]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6bfa668a-a493-4bd7-bf1e-7f4a7fe9e8dd",
+      "kind": "parking",
+      "name": "Kreuzstraße",
+      "ring": [
+        [51.223803, 6.785524],
+        [51.223793, 6.785548],
+        [51.223757, 6.7855],
+        [51.223771, 6.785474]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6c5674ed-c507-46a7-abed-c28b81a5981f",
+      "kind": "parking",
+      "name": "Marienhospital",
+      "ring": [
+        [51.234931, 6.782823],
+        [51.234919, 6.782802],
+        [51.234866, 6.782872],
+        [51.234877, 6.782893]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6cc8c2f0-503d-41fa-bf10-4ca05bdd2f4a",
+      "kind": "parking",
+      "name": "Rethelstraße - Herderstraße",
+      "ring": [
+        [51.234547, 6.797611],
+        [51.234551, 6.797649],
+        [51.234498, 6.797661],
+        [51.234493, 6.797624]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6d5b7b27-7dfe-4713-a204-3f6e394c4acc",
+      "kind": "parking",
+      "name": "UKD III",
+      "ring": [
+        [51.196275, 6.787686],
+        [51.196332, 6.787653],
+        [51.196328, 6.787633],
+        [51.196271, 6.787666]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6d1496ff-bb96-4bc6-8313-13ce40ffe87f",
+      "kind": "parking",
+      "name": "Kirchplatz I",
+      "ring": [
+        [51.213998, 6.775686],
+        [51.214019, 6.775685],
+        [51.214019, 6.775546],
+        [51.213999, 6.775547]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6dd4666a-8636-4f57-91b4-f53407feca6e",
+      "kind": "parking",
+      "name": "Kunstakademie",
+      "ring": [
+        [51.230443, 6.775333],
+        [51.230504, 6.775285],
+        [51.230494, 6.775257],
+        [51.230434, 6.775305]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6e223a8d-5244-4b9e-9843-446dd54fe920",
+      "kind": "parking",
+      "name": "St Michael",
+      "ring": [
+        [51.208448, 6.830162],
+        [51.208459, 6.830189],
+        [51.208503, 6.830136],
+        [51.20849, 6.830108]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6ee29786-88c3-435c-ac72-81ab63384a76",
+      "kind": "parking",
+      "name": "Von-Gahlen-Straße U",
+      "ring": [
+        [51.237523, 6.853723],
+        [51.237508, 6.853711],
+        [51.237488, 6.853795],
+        [51.237504, 6.853805]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6f916ed7-78bd-4eaa-8a9e-808feba74ce8",
+      "kind": "parking",
+      "name": "Schanzenstraße II",
+      "ring": [
+        [51.232374, 6.741834],
+        [51.232362, 6.741825],
+        [51.232385, 6.741757],
+        [51.232396, 6.741767]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7a8bc66b-68b7-42d0-937a-8b58e22aab10",
+      "kind": "parking",
+      "name": "Feldstraße - Gartenstraße",
+      "ring": [
+        [51.23167, 6.783274],
+        [51.231661, 6.783256],
+        [51.231617, 6.783306],
+        [51.231627, 6.783327]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7a9f6b91-1e7c-4a6b-abf5-f27acd93364e",
+      "kind": "parking",
+      "name": "Benrather Marktplatz",
+      "ring": [
+        [51.163516, 6.874262],
+        [51.163516, 6.874332],
+        [51.163496, 6.874333],
+        [51.163496, 6.874261]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7b75582f-4d2f-47b2-a338-753aea58dcd0",
+      "kind": "parking",
+      "name": "Kaiserswerther Straße - Cordobastraße",
+      "ring": [
+        [51.239107, 6.777099],
+        [51.239117, 6.77712],
+        [51.23907, 6.777178],
+        [51.239061, 6.777148]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7ba6a320-fcdb-472c-841d-17795f484576",
+      "kind": "parking",
+      "name": "An der Piwipp - Ulmenstraße",
+      "ring": [
+        [51.262595, 6.77637],
+        [51.262576, 6.776288],
+        [51.262592, 6.776277],
+        [51.262611, 6.77636]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7bdc3ccc-5430-4325-bb78-ee7428a3d40e",
+      "kind": "parking",
+      "name": "Uni Mensa II",
+      "ring": [
+        [51.191831, 6.793926],
+        [51.191814, 6.793937],
+        [51.191841, 6.794056],
+        [51.191858, 6.794045]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7c03919a-f6c6-4b09-8893-b4798c2bf2c8",
+      "kind": "parking",
+      "name": "Rochusstraße",
+      "ring": [
+        [51.234179, 6.786299],
+        [51.234179, 6.786329],
+        [51.234138, 6.786331],
+        [51.234138, 6.786302]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7c345765-38c4-4a25-aaca-e7e4304c4aed",
+      "kind": "parking",
+      "name": "Schwanenmarkt II",
+      "ring": [
+        [51.21939, 6.772735],
+        [51.219396, 6.772705],
+        [51.219296, 6.772698],
+        [51.219294, 6.77273]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7cb58a65-2559-44cc-80d6-d22dad5e3e02",
+      "kind": "parking",
+      "name": "Yorckstraße - Toulouser Allee",
+      "ring": [
+        [51.245373, 6.794312],
+        [51.245379, 6.794365],
+        [51.245309, 6.794383],
+        [51.245303, 6.794329]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7cd532be-c69c-404f-b2c5-3d101022950c",
+      "kind": "parking",
+      "name": "Liebigstraße",
+      "ring": [
+        [51.237261, 6.791403],
+        [51.237227, 6.791488],
+        [51.237211, 6.791474],
+        [51.237248, 6.791388]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7d7d2abf-084c-4837-ae10-9048acf79e1d",
+      "kind": "parking",
+      "name": "Urdenbacher Allee",
+      "ring": [
+        [51.162186, 6.874501],
+        [51.162165, 6.874503],
+        [51.162166, 6.874613],
+        [51.162186, 6.874613]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7d04050f-cf2a-4720-b574-fa079080a1a6",
+      "kind": "parking",
+      "name": "Nordstraße - Parkstraße",
+      "ring": [
+        [51.238201, 6.779891],
+        [51.23818, 6.77989],
+        [51.238176, 6.779987],
+        [51.2382, 6.779989]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7dd0e3bf-ac3c-4da6-8e6f-49a32eea23d7",
+      "kind": "parking",
+      "name": "Auf der Hardt - LVR-Klinikum I",
+      "ring": [
+        [51.240043, 6.84476],
+        [51.240033, 6.844751],
+        [51.240019, 6.844786],
+        [51.240029, 6.844795]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7eb5605e-33b7-4db1-85d2-a345b71a7cce",
+      "kind": "parking",
+      "name": "Christophstraße III",
+      "ring": [
+        [51.189299, 6.797956],
+        [51.189327, 6.797988],
+        [51.189352, 6.797934],
+        [51.189324, 6.7979]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7ed97495-a855-4161-9c5c-3ba288fba979",
+      "kind": "parking",
+      "name": "Friedensplätzchen",
+      "ring": [
+        [51.212466, 6.76821],
+        [51.212426, 6.768191],
+        [51.212404, 6.768299],
+        [51.212446, 6.768319]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7f6a6a99-50a3-4186-a95e-e67d0dfe01f7",
+      "kind": "parking",
+      "name": "Stresemannstraße I",
+      "ring": [
+        [51.219478, 6.787293],
+        [51.219475, 6.787299],
+        [51.219487, 6.787314],
+        [51.219518, 6.787241],
+        [51.219505, 6.787226]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7fe47258-ca58-400d-a79c-6145b626b5f2",
+      "kind": "parking",
+      "name": "Westfalenstraße II",
+      "ring": [
+        [51.263031, 6.816738],
+        [51.263016, 6.816744],
+        [51.263029, 6.816846],
+        [51.263043, 6.816841]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8a0c515e-429b-49df-be61-a6749bcef1e0",
+      "kind": "parking",
+      "name": "Horionplatz",
+      "ring": [
+        [51.220461, 6.768639],
+        [51.220431, 6.768625],
+        [51.220421, 6.768676],
+        [51.220453, 6.768691]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8a5e403d-4399-40dd-a17d-e20b6c7d353e",
+      "kind": "parking",
+      "name": "Engerstraße I",
+      "ring": [
+        [51.233187, 6.814949],
+        [51.233189, 6.81497],
+        [51.233226, 6.814963],
+        [51.233225, 6.814943]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8a019516-0d97-4022-8713-e6b43c9b369f",
+      "kind": "parking",
+      "name": "Stresemannplatz II",
+      "ring": [
+        [51.219373, 6.790333],
+        [51.219372, 6.790358],
+        [51.219435, 6.79036],
+        [51.219435, 6.790336]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8ab0f60a-61c7-4a23-883e-8153f4a412d0",
+      "kind": "parking",
+      "name": "Immermannstraße VIII",
+      "ring": [
+        [51.222412, 6.791107],
+        [51.222399, 6.79109],
+        [51.222364, 6.791173],
+        [51.222376, 6.791187]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8ae85a81-144d-45d7-bf56-d0c9355c5103",
+      "kind": "parking",
+      "name": "Friedrich-Ebert-Straße",
+      "ring": [
+        [51.223013, 6.785958],
+        [51.222997, 6.78595],
+        [51.223011, 6.785868],
+        [51.223027, 6.785875]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-08b47726-70d7-4524-add6-f4adbaae999d",
+      "kind": "parking",
+      "name": "Schillerstraße",
+      "ring": [
+        [51.233084, 6.797903],
+        [51.233091, 6.798],
+        [51.233191, 6.797984],
+        [51.233178, 6.797871]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8b626862-5a7c-4fbb-9ca7-ee379896e55c",
+      "kind": "parking",
+      "name": "Uni Kliniken IV",
+      "ring": [
+        [51.199417, 6.790819],
+        [51.199385, 6.790771],
+        [51.199369, 6.790804],
+        [51.199403, 6.790854]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8bda8658-042d-491b-8c7b-8d963eee678d",
+      "kind": "parking",
+      "name": "Maria-und-Josef-Otten-Platz",
+      "ring": [
+        [51.238289, 6.78373],
+        [51.238294, 6.783754],
+        [51.238337, 6.78373],
+        [51.238333, 6.783704]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-08ed96d4-b986-45c5-aa0d-029dcd2210fa",
+      "kind": "parking",
+      "name": "Worringer Straße II",
+      "ring": [
+        [51.226962, 6.79648],
+        [51.22696, 6.796511],
+        [51.226916, 6.796508],
+        [51.226917, 6.796475]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8f0b32f6-a39b-4b74-9713-579ff58e5867",
+      "kind": "parking",
+      "name": "Uni Kliniken V",
+      "ring": [
+        [51.200247, 6.789598],
+        [51.200234, 6.789579],
+        [51.200201, 6.78966],
+        [51.200214, 6.789679]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8f3a442e-e07c-4873-ac36-cd1343f2e99d",
+      "kind": "parking",
+      "name": "Alter Schlachthof",
+      "ring": [
+        [51.248955, 6.78947],
+        [51.248952, 6.789506],
+        [51.248902, 6.789498],
+        [51.248906, 6.789462]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9b52eb97-8586-4094-923f-2284b6dea08f",
+      "kind": "parking",
+      "name": "Benderstraße - Regenbergastraße",
+      "ring": [
+        [51.23717, 6.856738],
+        [51.237153, 6.856737],
+        [51.237153, 6.856827],
+        [51.23717, 6.856825]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9bb2c22d-78e4-480e-a7e0-a86589ea7cdb",
+      "kind": "parking",
+      "name": "Rath Mitte I",
+      "ring": [
+        [51.261098, 6.809328],
+        [51.261115, 6.809225],
+        [51.261133, 6.809233],
+        [51.261116, 6.809336]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9caffa3d-38e2-4dcd-aa75-2a8ab02e6f57",
+      "kind": "parking",
+      "name": "Pfalzstraße",
+      "ring": [
+        [51.239886, 6.778119],
+        [51.23987, 6.778132],
+        [51.23989, 6.778206],
+        [51.239906, 6.778192]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9d0bbfbf-b389-4205-9d11-d6d7b3fe7624",
+      "kind": "parking",
+      "name": "Europaplatz",
+      "ring": [
+        [51.264567, 6.735915],
+        [51.264558, 6.735816],
+        [51.264578, 6.735811],
+        [51.264587, 6.735911]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9d9ad48b-dfcb-4e4c-b315-b656fd5d1c37",
+      "kind": "parking",
+      "name": "Steinstraße",
+      "ring": [
+        [51.22307, 6.78093],
+        [51.22307, 6.780857],
+        [51.22309, 6.780857],
+        [51.223091, 6.78093]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9dc68c8a-bbec-42e9-9eec-cdc7a0f786ff",
+      "kind": "parking",
+      "name": "Niederkasseler Lohweg I",
+      "ring": [
+        [51.240932, 6.733592],
+        [51.240911, 6.733595],
+        [51.240917, 6.733673],
+        [51.240937, 6.733668]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9e236729-19e5-4bf8-a722-8cae15e9ae01",
+      "kind": "parking",
+      "name": "Uni Süd I",
+      "ring": [
+        [51.186123, 6.795754],
+        [51.186132, 6.795821],
+        [51.186114, 6.79583],
+        [51.186105, 6.795762]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9f20b90e-0a96-4cd7-b776-a2c1690f09b8",
+      "kind": "parking",
+      "name": "Gustaf-Gründgens-Platz",
+      "ring": [
+        [51.227829, 6.784203],
+        [51.227828, 6.784236],
+        [51.227891, 6.784239],
+        [51.227892, 6.784207]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9f47d0de-b2d3-478d-8b4c-8fa08982684c",
+      "kind": "parking",
+      "name": "Franklin 5",
+      "ring": [
+        [51.235827, 6.788575],
+        [51.235806, 6.788579],
+        [51.235811, 6.78866],
+        [51.23583, 6.788656]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9fb29633-36b0-464f-aa4c-8d75828b7f26",
+      "kind": "parking",
+      "name": "Schloßstraße",
+      "ring": [
+        [51.238723, 6.789274],
+        [51.23872, 6.789298],
+        [51.238778, 6.789316],
+        [51.238781, 6.78929]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-011b1ad5-7e11-4543-a48d-88e796c7b933",
+      "kind": "parking",
+      "name": "Staatsanwaltschaft Düsseldorf",
+      "ring": [
+        [51.230966, 6.775958],
+        [51.230942, 6.775977],
+        [51.230959, 6.776031],
+        [51.230979, 6.776014]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-16d648cd-0887-4e4c-9f78-42acba4a38a1",
+      "kind": "parking",
+      "name": "Bachplätzchen II",
+      "ring": [
+        [51.208866, 6.769233],
+        [51.208864, 6.769267],
+        [51.208812, 6.769257],
+        [51.208815, 6.769226]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-18bffafe-681a-4c54-8ecc-8896e556d68d",
+      "kind": "parking",
+      "name": "Helmholtzstraße",
+      "ring": [
+        [51.214797, 6.78758],
+        [51.21478, 6.787626],
+        [51.21477, 6.787618],
+        [51.214787, 6.78757]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-23cf8b7f-6793-40dd-9d50-37e80112cedf",
+      "kind": "parking",
+      "name": "Bilk S III",
+      "ring": [
+        [51.207586, 6.776904],
+        [51.207571, 6.776894],
+        [51.207557, 6.776952],
+        [51.207572, 6.776961]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-28b8101e-a9e4-472a-9b26-4352e54238bd",
+      "kind": "parking",
+      "name": "Stockumer Kirchstraße I",
+      "ring": [
+        [51.260168, 6.753955],
+        [51.260162, 6.753928],
+        [51.260226, 6.753887],
+        [51.260233, 6.753912]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-29f7d9f9-d7f8-4b8b-89e0-57c2897e30e2",
+      "kind": "parking",
+      "name": "Reuterkaserne II",
+      "ring": [
+        [51.230194, 6.77209],
+        [51.230212, 6.772023],
+        [51.230185, 6.772004],
+        [51.230166, 6.77207]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-29f855ab-63a8-485d-bd41-ce1b9fff1e10",
+      "kind": "parking",
+      "name": "Blücherstraße - Sternstraße",
+      "ring": [
+        [51.23677, 6.784562],
+        [51.236773, 6.784596],
+        [51.236724, 6.784611],
+        [51.23672, 6.784577]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-034fdc4f-348f-476b-b131-a884c89da0a4",
+      "kind": "parking",
+      "name": "KÖ III - Ausweichstation",
+      "ring": [
+        [51.225274, 6.778396],
+        [51.225275, 6.778425],
+        [51.225347, 6.77843],
+        [51.225346, 6.778399]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-35eb6904-e88e-4d86-b6ac-d2f0b536805f",
+      "kind": "parking",
+      "name": "Suitbertusstraße - Merowingerstraße",
+      "ring": [
+        [51.204168, 6.776585],
+        [51.204166, 6.776626],
+        [51.204097, 6.776615],
+        [51.2041, 6.776574]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-36ae1ed0-e055-497f-b1d8-b5cf8435211e",
+      "kind": "parking",
+      "name": "Düsseldorf Hbf II",
+      "ring": [
+        [51.221633, 6.793456],
+        [51.221677, 6.793345],
+        [51.221692, 6.793364],
+        [51.221649, 6.793474]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-41e54f57-e78f-410b-b31d-651f95f174af",
+      "kind": "parking",
+      "name": "Schützenstraße I",
+      "ring": [
+        [51.228588, 6.795079],
+        [51.228594, 6.795103],
+        [51.228638, 6.795075],
+        [51.228633, 6.795053]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-43d24687-f6de-4914-8728-8b9970025441",
+      "kind": "parking",
+      "name": "Prinz-Georg-Straße - Stockkampstraße",
+      "ring": [
+        [51.236408, 6.787109],
+        [51.236413, 6.787131],
+        [51.236359, 6.78717],
+        [51.236354, 6.787147]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-44f12116-94db-4886-b111-fd695748fe8d",
+      "kind": "parking",
+      "name": "Jugendherberge Düsseldorf",
+      "ring": [
+        [51.226182, 6.75695],
+        [51.226166, 6.756952],
+        [51.226172, 6.75706],
+        [51.226188, 6.757059]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-45f201a7-282b-443c-83cb-0e5df11f795a",
+      "kind": "parking",
+      "name": "Fritz-Vomfelde-Straße",
+      "ring": [
+        [51.239449, 6.7364],
+        [51.239462, 6.736363],
+        [51.23951, 6.736421],
+        [51.239494, 6.736456]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-47a74955-5d47-469a-ab93-9f6a89859551",
+      "kind": "parking",
+      "name": "Arminstraße",
+      "ring": [
+        [51.214031, 6.790839],
+        [51.214031, 6.790862],
+        [51.214002, 6.790862],
+        [51.214002, 6.790838]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-48d18721-4a4e-4eb5-bf0b-dea895dc53a2",
+      "kind": "parking",
+      "name": "Haus-der-Kirche",
+      "ring": [
+        [51.221616, 6.773344],
+        [51.221596, 6.773344],
+        [51.221595, 6.773491],
+        [51.221614, 6.773493]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-48f24251-2f41-49b0-84fa-bf2744546c36",
+      "kind": "parking",
+      "name": "Lohauser Deich I",
+      "ring": [
+        [51.257988, 6.732746],
+        [51.258053, 6.732476],
+        [51.258099, 6.732506],
+        [51.258035, 6.732774]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-50a5e39c-1341-4311-a348-2dd8749f475b",
+      "kind": "parking",
+      "name": "Stadttor",
+      "ring": [
+        [51.215398, 6.762025],
+        [51.21537, 6.76208],
+        [51.215401, 6.762121],
+        [51.215434, 6.762067]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-50f7931e-f58b-4fa0-adba-716c1c0040fc",
+      "kind": "parking",
+      "name": "Martin-Luther-Platz",
+      "ring": [
+        [51.224643, 6.781712],
+        [51.224655, 6.781689],
+        [51.224702, 6.781764],
+        [51.22469, 6.781786]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-51c3e0a1-ec3a-4b97-9a8a-2a2900a7323a",
+      "kind": "parking",
+      "name": "Bilker Allee - Friedrichstraße I",
+      "ring": [
+        [51.210755, 6.774851],
+        [51.210752, 6.77477],
+        [51.210735, 6.774771],
+        [51.210738, 6.774853]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-53f62261-59d9-4c07-a3e7-bf201248d8f7",
+      "kind": "parking",
+      "name": "Oberbilk S II",
+      "ring": [
+        [51.208986, 6.807641],
+        [51.208973, 6.807633],
+        [51.208953, 6.807729],
+        [51.208969, 6.807734]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-54bdf785-4e82-4a6f-a6d5-06faa7f7ac71",
+      "kind": "parking",
+      "name": "Reuterkaserne I",
+      "ring": [
+        [51.229085, 6.771125],
+        [51.22901, 6.771057],
+        [51.229004, 6.771077],
+        [51.229075, 6.771146]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-054c0930-5b98-4c67-a976-fd10c489ff50",
+      "kind": "parking",
+      "name": "Schwimm'n Bilk",
+      "ring": [
+        [51.209463, 6.775784],
+        [51.209469, 6.775886],
+        [51.209449, 6.775891],
+        [51.209442, 6.775788]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-55b7784e-e152-4885-a99c-2c8add899e5d",
+      "kind": "parking",
+      "name": "Herzogstraße II",
+      "ring": [
+        [51.215798, 6.778768],
+        [51.215798, 6.778798],
+        [51.215855, 6.7788],
+        [51.215854, 6.778769]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-56cc2f03-71ac-484a-9a65-35189ec5c7fd",
+      "kind": "parking",
+      "name": "Uni Kliniken II",
+      "ring": [
+        [51.198357, 6.784867],
+        [51.198342, 6.784868],
+        [51.198341, 6.784789],
+        [51.198356, 6.784789]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-57c26107-650f-4d99-a50f-7ae4448c91c3",
+      "kind": "parking",
+      "name": "Garath S-Bahnhof Ost",
+      "ring": [
+        [51.143758, 6.897963],
+        [51.143774, 6.89801],
+        [51.143732, 6.898051],
+        [51.143717, 6.898001]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-58b526c6-5a02-4f77-a213-4542e3b92eb5",
+      "kind": "parking",
+      "name": "Eller Mitte S",
+      "ring": [
+        [51.202214, 6.840989],
+        [51.202195, 6.841001],
+        [51.202178, 6.840917],
+        [51.202197, 6.840905]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-59f27c53-2a54-4b0f-a2af-6bd522ba8451",
+      "kind": "parking",
+      "name": "Emmastraße - Volksgarten",
+      "ring": [
+        [51.208978, 6.799828],
+        [51.20897, 6.799892],
+        [51.208883, 6.799865],
+        [51.208891, 6.799802]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-62c6f1c7-005f-40a9-a9cd-ed6533a5acb1",
+      "kind": "parking",
+      "name": "Berliner Allee I",
+      "ring": [
+        [51.221437, 6.782589],
+        [51.221434, 6.782688],
+        [51.221421, 6.782687],
+        [51.221423, 6.782588]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-67bd2950-e55e-4600-8c30-9d819985632e",
+      "kind": "parking",
+      "name": "Markenstraße - Im Liefeld",
+      "ring": [
+        [51.211671, 6.809899],
+        [51.211683, 6.809922],
+        [51.211645, 6.809975],
+        [51.211633, 6.809955]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-72b1cb4c-ee65-469e-bd8d-3bf5d0b9b889",
+      "kind": "parking",
+      "name": "Alter Markt",
+      "ring": [
+        [51.235617, 6.861647],
+        [51.23561, 6.861688],
+        [51.235564, 6.861669],
+        [51.23557, 6.861628]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-72c74bd6-5897-4691-bb5f-a26ea3aecba1",
+      "kind": "parking",
+      "name": "Messe Süd I",
+      "ring": [
+        [51.254199, 6.74468],
+        [51.254181, 6.744667],
+        [51.254135, 6.744828],
+        [51.254153, 6.744839]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-72cf57cc-b224-4448-b04c-16738c99f548",
+      "kind": "parking",
+      "name": "Karl-Anton-Straße II",
+      "ring": [
+        [51.225387, 6.794596],
+        [51.225352, 6.794628],
+        [51.225358, 6.794651],
+        [51.225393, 6.794619]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-72d960bb-c862-42d9-ade5-2f1d60767142",
+      "kind": "parking",
+      "name": "Uni Mensa III",
+      "ring": [
+        [51.191555, 6.791967],
+        [51.19154, 6.791975],
+        [51.191522, 6.791882],
+        [51.19154, 6.791872]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-073d534a-954a-4ad6-b134-a6eec46438b4",
+      "kind": "parking",
+      "name": "Wipperfürther Straße",
+      "ring": [
+        [51.194343, 6.819094],
+        [51.194338, 6.819118],
+        [51.194295, 6.81909],
+        [51.194301, 6.819069]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-73e0fa55-ef1f-4293-a72c-e00ce7825dd2",
+      "kind": "parking",
+      "name": "Marc-Chagall-Straße I",
+      "ring": [
+        [51.238303, 6.795216],
+        [51.238249, 6.795221],
+        [51.238248, 6.795249],
+        [51.238304, 6.795244]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-73f2c963-f73a-4ba5-9838-8786a1354695",
+      "kind": "parking",
+      "name": "Harffstraße",
+      "ring": [
+        [51.196661, 6.817311],
+        [51.196644, 6.817298],
+        [51.196618, 6.817388],
+        [51.196634, 6.817398]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-74d1cc5c-8786-419b-b20f-55b2f06dbc39",
+      "kind": "parking",
+      "name": "Düsseldorf Hbf IV",
+      "ring": [
+        [51.219914, 6.79108],
+        [51.219904, 6.791099],
+        [51.219865, 6.791042],
+        [51.219874, 6.791024]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-75aa1bdb-7020-4932-85b8-3709a66e94ff",
+      "kind": "parking",
+      "name": "Messeplatz",
+      "ring": [
+        [51.257992, 6.743121],
+        [51.257979, 6.743154],
+        [51.257902, 6.743074],
+        [51.257914, 6.743038]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-78c65060-e9e9-4edb-af31-add24a4c0c68",
+      "kind": "parking",
+      "name": "Schirmerstraße - Schinkelstraße",
+      "ring": [
+        [51.231743, 6.793088],
+        [51.23174, 6.793131],
+        [51.231684, 6.793129],
+        [51.231689, 6.793084]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-81cb50b0-ddd2-4306-a23d-156910ecf16e",
+      "kind": "parking",
+      "name": "Zurheide I",
+      "ring": [
+        [51.218944, 6.783139],
+        [51.218921, 6.78314],
+        [51.218918, 6.783243],
+        [51.218942, 6.783243]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-84af74fc-8988-48a6-84f7-77db8bef2fcf",
+      "kind": "parking",
+      "name": "GAP II",
+      "ring": [
+        [51.218168, 6.779218],
+        [51.218151, 6.779218],
+        [51.218152, 6.77913],
+        [51.218169, 6.779131]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-84cd5674-1e45-41ef-84ba-a2d1e04ecb4d",
+      "kind": "parking",
+      "name": "Marc-Chagall-Straße II",
+      "ring": [
+        [51.241208, 6.794943],
+        [51.241157, 6.794944],
+        [51.241158, 6.794974],
+        [51.241208, 6.794971]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-84ebd1f5-890a-4aec-ac3d-543e622dca77",
+      "kind": "parking",
+      "name": "Luise-Oppenheimer-Platz",
+      "ring": [
+        [51.23843, 6.78121],
+        [51.238431, 6.781243],
+        [51.238381, 6.78125],
+        [51.23838, 6.781217]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-85fccc8c-41d9-475a-bb61-b255c1c8234f",
+      "kind": "parking",
+      "name": "Herzogstraße I",
+      "ring": [
+        [51.215592, 6.785024],
+        [51.215575, 6.785037],
+        [51.215597, 6.785101],
+        [51.215611, 6.785083]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-88ba4cf9-096a-4818-b1b5-a694ce6aa002",
+      "kind": "parking",
+      "name": "Hammer Dorfstraße I",
+      "ring": [
+        [51.20993, 6.741671],
+        [51.209917, 6.741764],
+        [51.209935, 6.74177],
+        [51.209948, 6.741677]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-89bda25a-f2a0-4d94-b9be-3a7bfbd7e52b",
+      "kind": "parking",
+      "name": "Hirschweg",
+      "ring": [
+        [51.270426, 6.830146],
+        [51.270449, 6.830065],
+        [51.270467, 6.83008],
+        [51.270443, 6.830159]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-95a4c3d6-ba14-4e8a-b9e0-3da376d7ef20",
+      "kind": "parking",
+      "name": "Carl-Mosterts-Platz",
+      "ring": [
+        [51.238172, 6.788594],
+        [51.238154, 6.788593],
+        [51.238154, 6.788685],
+        [51.238173, 6.788683]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-95f08fef-b17b-4f4b-8a42-9dc6a9603b6b",
+      "kind": "parking",
+      "name": "KÖ VII",
+      "ring": [
+        [51.221591, 6.778237],
+        [51.221591, 6.778164],
+        [51.221604, 6.778164],
+        [51.221604, 6.778237]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-97f78f82-24b9-4fda-aad1-3f61caf9f5c6",
+      "kind": "parking",
+      "name": "Brunnenstraße",
+      "ring": [
+        [51.206776, 6.778088],
+        [51.206788, 6.778119],
+        [51.206746, 6.778162],
+        [51.206735, 6.778134]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-98a99131-0926-4fe4-8617-6942e8758801",
+      "kind": "parking",
+      "name": "Uni Kliniken I",
+      "ring": [
+        [51.198037, 6.782903],
+        [51.198044, 6.782933],
+        [51.198094, 6.782908],
+        [51.198089, 6.78288]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-98cade38-2122-4eac-99f7-cf309e0dedc9",
+      "kind": "parking",
+      "name": "Beuthstraße",
+      "ring": [
+        [51.231315, 6.791249],
+        [51.231302, 6.791301],
+        [51.231289, 6.791293],
+        [51.231303, 6.791243]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-99aeeadb-2fa7-40a4-b0fa-d7196d58b9ce",
+      "kind": "parking",
+      "name": "Hermannplatz",
+      "ring": [
+        [51.228698, 6.808033],
+        [51.228704, 6.808062],
+        [51.228659, 6.808086],
+        [51.228654, 6.808057]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-99faa56d-7090-4625-9cd2-a38b8e20bf6c",
+      "kind": "parking",
+      "name": "Kölner Landstraße",
+      "ring": [
+        [51.195325, 6.813516],
+        [51.195271, 6.813544],
+        [51.195267, 6.81352],
+        [51.195319, 6.813492]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-114fe670-82f3-4a8a-a973-af55bc5db2a7",
+      "kind": "parking",
+      "name": "Karolingerstraße IV",
+      "ring": [
+        [51.20572, 6.772283],
+        [51.205712, 6.77232],
+        [51.205661, 6.772291],
+        [51.205668, 6.772256]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-167af504-f037-46f3-90ac-e405b939311b",
+      "kind": "parking",
+      "name": "Südpark_Ausweichstation",
+      "ring": [
+        [51.194609, 6.802967],
+        [51.194604, 6.802927],
+        [51.194531, 6.802963],
+        [51.194538, 6.803004]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-185f116d-32f3-48ae-b4ee-2f1d557eb957",
+      "kind": "parking",
+      "name": "Kalkumer Straße - Bielefelder Straße",
+      "ring": [
+        [51.264202, 6.775494],
+        [51.264204, 6.775516],
+        [51.264249, 6.775503],
+        [51.264246, 6.77548]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-190f5899-5331-4b07-836f-e2e881cfd41d",
+      "kind": "parking",
+      "name": "Südpark",
+      "ring": [
+        [51.195429, 6.800695],
+        [51.195439, 6.800707],
+        [51.195469, 6.800633],
+        [51.195456, 6.80062]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-227e57ad-960a-4a79-8523-7ba7c0c6af8d",
+      "kind": "parking",
+      "name": "Immermannstraße VI",
+      "ring": [
+        [51.223049, 6.788962],
+        [51.223037, 6.788946],
+        [51.222986, 6.789052],
+        [51.223, 6.789069]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-246cba49-00be-419d-9dfe-da5d41cb0717",
+      "kind": "parking",
+      "name": "Im Liefeld",
+      "ring": [
+        [51.209513, 6.813068],
+        [51.209533, 6.813075],
+        [51.209553, 6.812989],
+        [51.20953, 6.812977]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-261d9ce3-18f9-4e79-b536-3516e34c28ba",
+      "kind": "parking",
+      "name": "Zoo S",
+      "ring": [
+        [51.236607, 6.797593],
+        [51.23659, 6.79762],
+        [51.236633, 6.797685],
+        [51.236648, 6.797658]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-261f6a89-edf2-495a-9836-a431c79f959d",
+      "kind": "parking",
+      "name": "Am Wehrhahn III",
+      "ring": [
+        [51.229784, 6.796097],
+        [51.229754, 6.796106],
+        [51.229761, 6.796179],
+        [51.229791, 6.79617]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-265a91ad-ba48-45d0-84ef-e1eaef59240e",
+      "kind": "parking",
+      "name": "Volksgarten S II",
+      "ring": [
+        [51.20958, 6.793518],
+        [51.209565, 6.793503],
+        [51.209538, 6.793579],
+        [51.209556, 6.793594]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-362ac058-05e7-46e0-8df3-bbc75afddc38",
+      "kind": "parking",
+      "name": "Grafenberger Allee - Mendelssohnstraße",
+      "ring": [
+        [51.229955, 6.799888],
+        [51.229972, 6.799939],
+        [51.23001, 6.799885],
+        [51.229994, 6.79985]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-369ecafe-a476-43f3-8cdd-f3728d417c96",
+      "kind": "parking",
+      "name": "Grupellostraße",
+      "ring": [
+        [51.22049, 6.787388],
+        [51.220481, 6.787373],
+        [51.220451, 6.787442],
+        [51.220464, 6.787456]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-372bec79-5cdf-4dd7-b188-71d3d559e42c",
+      "kind": "parking",
+      "name": "Cranachstraße I",
+      "ring": [
+        [51.231339, 6.816162],
+        [51.231325, 6.816152],
+        [51.231304, 6.816222],
+        [51.23132, 6.816232]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-373bb590-5a52-4231-a1e7-7dda5f716328",
+      "kind": "parking",
+      "name": "Rheinufer III",
+      "ring": [
+        [51.240359, 6.771114],
+        [51.240368, 6.771183],
+        [51.240411, 6.771169],
+        [51.240402, 6.771099]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-410fcaca-1088-4559-810b-e9ed5b8569d4",
+      "kind": "parking",
+      "name": "Mindener Straße - Markenstraße",
+      "ring": [
+        [51.212682, 6.810674],
+        [51.212671, 6.810658],
+        [51.212696, 6.810618],
+        [51.212705, 6.810632]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-554aba02-fb1f-41a4-bdfc-631242d6dc4e",
+      "kind": "parking",
+      "name": "Am Wehrhahn II",
+      "ring": [
+        [51.228332, 6.790864],
+        [51.22831, 6.790779],
+        [51.228289, 6.79079],
+        [51.22831, 6.790876]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-597c7f74-eeca-4ecc-bd8a-f8700f977fec",
+      "kind": "parking",
+      "name": "Klemensplatz I",
+      "ring": [
+        [51.299935, 6.738764],
+        [51.299933, 6.738788],
+        [51.299873, 6.73877],
+        [51.299877, 6.738746]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-611b9eef-e637-435d-990f-76d5cf44550b",
+      "kind": "parking",
+      "name": "Liesegangstraße",
+      "ring": [
+        [51.225451, 6.786499],
+        [51.225448, 6.786524],
+        [51.225505, 6.786537],
+        [51.225505, 6.78651]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-693f9afa-491f-411f-8346-ecb1d9863860",
+      "kind": "parking",
+      "name": "Ernst-Schneider-Platz",
+      "ring": [
+        [51.224997, 6.783508],
+        [51.224999, 6.783484],
+        [51.225058, 6.783505],
+        [51.225057, 6.783528]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-715ea7b1-5d51-4223-a149-af574ce2c687",
+      "kind": "parking",
+      "name": "Floragarten Spielplatz",
+      "ring": [
+        [51.209312, 6.774087],
+        [51.209297, 6.774098],
+        [51.20931, 6.774164],
+        [51.209326, 6.774153]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-749cf0bf-1f13-4e8f-87fc-3b7732b3efe2",
+      "kind": "parking",
+      "name": "Humboldtstraße",
+      "ring": [
+        [51.233456, 6.802677],
+        [51.233434, 6.802677],
+        [51.233433, 6.802744],
+        [51.233453, 6.802745]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-752d4a55-5291-4dc5-9426-ad48c897f29b",
+      "kind": "parking",
+      "name": "Bagelstraße - Franklinstraße",
+      "ring": [
+        [51.235847, 6.793452],
+        [51.235838, 6.793479],
+        [51.235893, 6.793517],
+        [51.235898, 6.793494]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-778da7e9-b015-4089-bf5a-ca33e29fb729",
+      "kind": "parking",
+      "name": "Klemensplatz II",
+      "ring": [
+        [51.301468, 6.739477],
+        [51.301461, 6.739563],
+        [51.301504, 6.739571],
+        [51.301509, 6.739499]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-841a94cd-8f40-41a2-b0f4-fd37e9e5a013",
+      "kind": "parking",
+      "name": "Westfalenstraße III",
+      "ring": [
+        [51.26352, 6.81832],
+        [51.263516, 6.818296],
+        [51.263452, 6.818324],
+        [51.263456, 6.81835]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-954ce7d9-7258-4f99-b0d7-dc7ef8aa0e4d",
+      "kind": "parking",
+      "name": "Wielandstraße - Schirmerstraße",
+      "ring": [
+        [51.231009, 6.794463],
+        [51.230995, 6.794448],
+        [51.231015, 6.794397],
+        [51.23103, 6.794412]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-963c8409-4f98-4f8d-a174-3b7303e9f4f7",
+      "kind": "parking",
+      "name": "Bagelstraße - Arndtstraße",
+      "ring": [
+        [51.234976, 6.792621],
+        [51.234951, 6.79258],
+        [51.234935, 6.792611],
+        [51.234965, 6.792653]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-967d7c2a-58c7-4182-bc1b-87fc09f5a390",
+      "kind": "parking",
+      "name": "Messe Ost",
+      "ring": [
+        [51.259224, 6.747249],
+        [51.259245, 6.747245],
+        [51.259257, 6.747346],
+        [51.259238, 6.747352]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1170cb90-9426-40bb-9074-b731abf6ec95",
+      "kind": "parking",
+      "name": "Bahnstraße",
+      "ring": [
+        [51.219161, 6.785552],
+        [51.219172, 6.785573],
+        [51.219209, 6.785503],
+        [51.219197, 6.785483]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1376b98e-868d-4489-9c7d-a9cc3ade00be",
+      "kind": "parking",
+      "name": "Benrath Bahnhof",
+      "ring": [
+        [51.162145, 6.877385],
+        [51.162097, 6.877384],
+        [51.162095, 6.877419],
+        [51.162146, 6.877418]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1517e4d6-b6dc-4c97-92a3-d152e9459760",
+      "kind": "parking",
+      "name": "Rheinufer II",
+      "ring": [
+        [51.23651, 6.771625],
+        [51.236507, 6.771644],
+        [51.236436, 6.771614],
+        [51.23644, 6.771594]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1887cfdc-c659-461f-aaba-7fc1af8c4d27",
+      "kind": "parking",
+      "name": "Worringer Straße III",
+      "ring": [
+        [51.225512, 6.796162],
+        [51.225459, 6.796149],
+        [51.225461, 6.796122],
+        [51.225514, 6.796136]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-2451cf3a-f911-4be5-b356-24a5cc253c6c",
+      "kind": "parking",
+      "name": "KÖ X",
+      "ring": [
+        [51.219934, 6.779251],
+        [51.219933, 6.779289],
+        [51.220008, 6.779286],
+        [51.220008, 6.779249]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4277df26-d39b-4f25-833c-2f350a1269ea",
+      "kind": "parking",
+      "name": "Kölner Straße - Heerstraße",
+      "ring": [
+        [51.212543, 6.807909],
+        [51.212558, 6.807922],
+        [51.212585, 6.80784],
+        [51.212569, 6.807826]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4346e588-7469-4cb5-9748-c8f8dd63ef6c",
+      "kind": "parking",
+      "name": "Werstener Dorfstraße I",
+      "ring": [
+        [51.192179, 6.814517],
+        [51.192187, 6.814562],
+        [51.192107, 6.814603],
+        [51.192103, 6.814552]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4674e174-5708-422b-8b67-142c3942fd32",
+      "kind": "parking",
+      "name": "Karolingerstraße I",
+      "ring": [
+        [51.205888, 6.779962],
+        [51.205898, 6.780062],
+        [51.205881, 6.780067],
+        [51.205871, 6.779967]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4713da20-ae84-4d02-86c8-dd7d6b17997a",
+      "kind": "parking",
+      "name": "Engerstraße II",
+      "ring": [
+        [51.233726, 6.816913],
+        [51.233714, 6.816905],
+        [51.233702, 6.81696],
+        [51.233715, 6.816967]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5035e459-d93e-48a6-83b3-3f802b3eb84e",
+      "kind": "parking",
+      "name": "Poststraße",
+      "ring": [
+        [51.222005, 6.771472],
+        [51.222003, 6.771495],
+        [51.222098, 6.771494],
+        [51.222099, 6.771472]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5106ffdb-cbc7-493c-9bf7-0715f93cda62",
+      "kind": "parking",
+      "name": "Karl-Anton-Straße I",
+      "ring": [
+        [51.225604, 6.791852],
+        [51.225587, 6.791849],
+        [51.225583, 6.79192],
+        [51.225601, 6.791923]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-5983e106-778b-4f64-9918-1ef1bef0883f",
+      "kind": "parking",
+      "name": "Kirchfeldstraße",
+      "ring": [
+        [51.21319, 6.788674],
+        [51.213178, 6.788687],
+        [51.213146, 6.788605],
+        [51.213157, 6.78859]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-6003a8d4-cec6-4442-9ac1-2fab42168721",
+      "kind": "parking",
+      "name": "Hüttenstraße II",
+      "ring": [
+        [51.212747, 6.791168],
+        [51.21273, 6.791169],
+        [51.212728, 6.79127],
+        [51.212746, 6.79127]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7069e30a-0492-4c4e-bd80-447e1b5c751c",
+      "kind": "parking",
+      "name": "Karolingerstraße III",
+      "ring": [
+        [51.205498, 6.776804],
+        [51.205424, 6.776796],
+        [51.205426, 6.776753],
+        [51.2055, 6.77676]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7173cb5d-9a52-4153-94dd-9401895d73fe",
+      "kind": "parking",
+      "name": "Oberbilker Allee - Schmiedestraße",
+      "ring": [
+        [51.210684, 6.804281],
+        [51.210638, 6.804244],
+        [51.210631, 6.804272],
+        [51.210677, 6.804305]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7296a438-53a1-40d2-a1c7-69ac4ab88d85",
+      "kind": "parking",
+      "name": "Düsseldorfer Straße",
+      "ring": [
+        [51.230693, 6.74039],
+        [51.230677, 6.740382],
+        [51.230661, 6.740458],
+        [51.230677, 6.740467]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7970cae2-30fe-4db2-99a0-7c841825a930",
+      "kind": "parking",
+      "name": "Immermannstraße IX",
+      "ring": [
+        [51.222232, 6.790641],
+        [51.222244, 6.790654],
+        [51.222201, 6.790744],
+        [51.222189, 6.790724]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8712bd1a-e235-4dde-8624-9d09fbc6bb85",
+      "kind": "parking",
+      "name": "PSD Bank Dome",
+      "ring": [
+        [51.273122, 6.810913],
+        [51.273091, 6.810878],
+        [51.273052, 6.811004],
+        [51.273082, 6.811029]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-9926c673-e6b2-438a-b28f-9baaf786251c",
+      "kind": "parking",
+      "name": "KÖ I",
+      "ring": [
+        [51.226505, 6.778447],
+        [51.226504, 6.778485],
+        [51.226419, 6.778486],
+        [51.226419, 6.778446]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-11667bc7-3564-4ce9-b1fb-03b75ea5e5a9",
+      "kind": "parking",
+      "name": "Vulkanstraße",
+      "ring": [
+        [51.216592, 6.791626],
+        [51.216585, 6.79166],
+        [51.216547, 6.791632],
+        [51.216555, 6.791596]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-27193d38-a36a-49f8-abbb-0d135b76b125",
+      "kind": "parking",
+      "name": "Westfalenstraße I",
+      "ring": [
+        [51.26255, 6.812812],
+        [51.262556, 6.812855],
+        [51.262571, 6.812848],
+        [51.262557, 6.812758],
+        [51.262542, 6.812764]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-36805b85-ae7a-4ae4-878f-b095a02ad839",
+      "kind": "parking",
+      "name": "Bismarckstraße II",
+      "ring": [
+        [51.220787, 6.789379],
+        [51.220799, 6.789392],
+        [51.220825, 6.789321],
+        [51.220814, 6.789307]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-38501a8b-a6ec-494b-aad8-7f74cc6e4605",
+      "kind": "parking",
+      "name": "Karolingerstraße VI",
+      "ring": [
+        [51.207933, 6.767875],
+        [51.207913, 6.76784],
+        [51.207871, 6.767931],
+        [51.207896, 6.767964]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-039204de-31f7-4665-99f2-a2535ce1f27a",
+      "kind": "parking",
+      "name": "Oberbilker Allee II",
+      "ring": [
+        [51.211156, 6.785566],
+        [51.211161, 6.785677],
+        [51.21118, 6.785674],
+        [51.211175, 6.785585]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-40455ff3-dc80-4dc0-9d10-907ab9283d7a",
+      "kind": "parking",
+      "name": "Rath Mitte II",
+      "ring": [
+        [51.260592, 6.809028],
+        [51.260602, 6.809005],
+        [51.260655, 6.809061],
+        [51.260644, 6.809085]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-42731e73-bac6-4920-81bf-b1ac99dd488f",
+      "kind": "parking",
+      "name": "Uni Kliniken III",
+      "ring": [
+        [51.199101, 6.789064],
+        [51.199085, 6.789074],
+        [51.199065, 6.788983],
+        [51.199081, 6.788973]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-49761fe1-4eae-43ad-aad1-a92179004548",
+      "kind": "parking",
+      "name": "Kölner Straße",
+      "ring": [
+        [51.226115, 6.79389],
+        [51.226124, 6.793914],
+        [51.226151, 6.793883],
+        [51.226144, 6.79386]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-58165fe4-9bca-4882-845a-09482176b3c0",
+      "kind": "parking",
+      "name": "Willstätterstraße",
+      "ring": [
+        [51.238229, 6.723388],
+        [51.238213, 6.723382],
+        [51.2382, 6.723456],
+        [51.238217, 6.723463]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-59119f7e-150a-4b7a-ac73-1b67040b101d",
+      "kind": "parking",
+      "name": "Engerstraße III",
+      "ring": [
+        [51.232382, 6.816656],
+        [51.232333, 6.816639],
+        [51.232336, 6.81662],
+        [51.232384, 6.816636]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-65204ebf-18e2-4882-859e-d66d42aa889a",
+      "kind": "parking",
+      "name": "Karlstraße II",
+      "ring": [
+        [51.221275, 6.790981],
+        [51.221322, 6.791045],
+        [51.221312, 6.791068],
+        [51.221262, 6.791005]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-65822c5e-0169-4648-89a5-0f2b67492bc8",
+      "kind": "parking",
+      "name": "Wehrhahn S",
+      "ring": [
+        [51.229773, 6.798323],
+        [51.229777, 6.798356],
+        [51.229733, 6.798366],
+        [51.22973, 6.798334]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-67226e77-3db1-476f-8c1a-39704a8a58f3",
+      "kind": "parking",
+      "name": "Toulouser Allee I",
+      "ring": [
+        [51.231559, 6.796472],
+        [51.23156, 6.796505],
+        [51.231519, 6.79651],
+        [51.231517, 6.796477]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-93021f7e-6acf-467d-a826-462d3516d87a",
+      "kind": "parking",
+      "name": "GAP I",
+      "ring": [
+        [51.218617, 6.775508],
+        [51.218616, 6.775532],
+        [51.218559, 6.775531],
+        [51.218559, 6.775508]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-93716b7c-d097-4d62-bfe4-b293866c257b",
+      "kind": "parking",
+      "name": "Birkenstraße II",
+      "ring": [
+        [51.228632, 6.798794],
+        [51.228609, 6.798739],
+        [51.228589, 6.79876],
+        [51.228608, 6.798818]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-180028c4-3a87-4b0a-8e16-8ea79fd1fa23",
+      "kind": "parking",
+      "name": "Benrather Straße - Breite Straße",
+      "ring": [
+        [51.222995, 6.776816],
+        [51.222983, 6.776815],
+        [51.222984, 6.776639],
+        [51.222997, 6.776639]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-209577e3-0328-4a42-8782-8d95ed41cac9",
+      "kind": "parking",
+      "name": "Achenbachstraße",
+      "ring": [
+        [51.237509, 6.798966],
+        [51.237479, 6.799021],
+        [51.23749, 6.799038],
+        [51.23752, 6.798981]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-259197b2-2eec-43f6-80ca-59b9077793c3",
+      "kind": "parking",
+      "name": "Uni Süd-Ost I",
+      "ring": [
+        [51.182716, 6.802295],
+        [51.182716, 6.802323],
+        [51.18266, 6.80232],
+        [51.182661, 6.80229]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-369861a0-0dbd-4e0f-a221-b25c9cb03c87",
+      "kind": "parking",
+      "name": "KÖ II",
+      "ring": [
+        [51.225384, 6.77941],
+        [51.225383, 6.779441],
+        [51.22533, 6.77944],
+        [51.22533, 6.77941]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-697028a6-929b-4bee-a3e2-41b7a226e268",
+      "kind": "parking",
+      "name": "Birkenstraße I",
+      "ring": [
+        [51.22773, 6.801116],
+        [51.227749, 6.801134],
+        [51.227713, 6.801221],
+        [51.227695, 6.801207]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-757985f3-bd82-40f1-99d9-ffb8422f6c78",
+      "kind": "parking",
+      "name": "Stephanienstraße - Klosterstraße",
+      "ring": [
+        [51.224275, 6.791523],
+        [51.224231, 6.791517],
+        [51.224229, 6.791546],
+        [51.224274, 6.791552]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-818004c9-25a8-427c-875b-f4522a2502b3",
+      "kind": "parking",
+      "name": "Heinrich-Heine-Gärten",
+      "ring": [
+        [51.237604, 6.73014],
+        [51.237561, 6.730103],
+        [51.237551, 6.730131],
+        [51.237594, 6.730169]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-932366fb-2057-4c4f-9e2b-70db46d8d7fb",
+      "kind": "parking",
+      "name": "Drususstraße",
+      "ring": [
+        [51.23119, 6.738196],
+        [51.231207, 6.738207],
+        [51.231225, 6.738121],
+        [51.231208, 6.738108]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-1319070b-238d-43b4-b164-00ac2fdc03c0",
+      "kind": "parking",
+      "name": "Platz der deutschen Einheit",
+      "ring": [
+        [51.22307, 6.784138],
+        [51.223085, 6.784138],
+        [51.223085, 6.784059],
+        [51.223071, 6.784059]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-3242534b-5921-4e14-ae89-ed4bc052d0dd",
+      "kind": "parking",
+      "name": "Zurheide II",
+      "ring": [
+        [51.219781, 6.782397],
+        [51.219779, 6.782537],
+        [51.219796, 6.782537],
+        [51.219797, 6.782417]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-4100664e-cdf4-4590-8d86-e06fcc5f7a0a",
+      "kind": "parking",
+      "name": "Kölner Straße - Markenstraße",
+      "ring": [
+        [51.211076, 6.808448],
+        [51.211062, 6.808465],
+        [51.211095, 6.808529],
+        [51.211107, 6.808515]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7034236f-5863-4cf1-93ac-17e0811e8c88",
+      "kind": "parking",
+      "name": "Aachener Straße II",
+      "ring": [
+        [51.205246, 6.774032],
+        [51.205237, 6.774053],
+        [51.205204, 6.774017],
+        [51.205213, 6.773996]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-7773686e-f77f-4ecf-906e-d37b4682953c",
+      "kind": "parking",
+      "name": "Aachener Platz",
+      "ring": [
+        [51.19629, 6.769608],
+        [51.196322, 6.769668],
+        [51.196359, 6.769639],
+        [51.196328, 6.76958]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-8185576d-827e-4cdd-a36f-af8221bafa1b",
+      "kind": "parking",
+      "name": "Rheinufer I",
+      "ring": [
+        [51.233916, 6.772812],
+        [51.233913, 6.773108],
+        [51.233958, 6.773109],
+        [51.233958, 6.772812]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-14376284-ba38-4c06-90b3-a062174246d3",
+      "kind": "parking",
+      "name": "UKD VI",
+      "ring": [
+        [51.195403, 6.794696],
+        [51.195402, 6.794742],
+        [51.19538, 6.794743],
+        [51.195379, 6.794696]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-37536724-9339-4b08-a2eb-3859fad6e68e",
+      "kind": "parking",
+      "name": "Grafenberger Allee",
+      "ring": [
+        [51.232775, 6.812125],
+        [51.232759, 6.812136],
+        [51.23274, 6.812044],
+        [51.232755, 6.812035]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-50695092-e237-4c29-a4c4-f5c7bdd16d99",
+      "kind": "parking",
+      "name": "Auf der Hardt - LVR-Klinikum II",
+      "ring": [
+        [51.241184, 6.844719],
+        [51.241164, 6.844729],
+        [51.241178, 6.844804],
+        [51.241198, 6.844792]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-52579741-5239-4b33-adda-cbd39f2ff23a",
+      "kind": "parking",
+      "name": "Philippusplatz",
+      "ring": [
+        [51.240053, 6.729087],
+        [51.240037, 6.729075],
+        [51.240011, 6.729146],
+        [51.240028, 6.729161]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-64230692-06c9-4217-b7ea-a81ea6ca3109",
+      "kind": "parking",
+      "name": "Hüttenstraße VI",
+      "ring": [
+        [51.217539, 6.782204],
+        [51.217586, 6.782139],
+        [51.217574, 6.782116],
+        [51.217526, 6.782183]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-74180931-8d8a-4053-aea5-a1e78a0b740b",
+      "kind": "parking",
+      "name": "Lenneper Straße",
+      "ring": [
+        [51.195485, 6.818389],
+        [51.195469, 6.81838],
+        [51.195491, 6.818301],
+        [51.195507, 6.818313]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-74961938-4f99-4c30-9ec9-b3b3673e9444",
+      "kind": "parking",
+      "name": "Mühlenstraße I",
+      "ring": [
+        [51.227174, 6.772562],
+        [51.227236, 6.77284],
+        [51.227255, 6.77283],
+        [51.227191, 6.772553]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a3cd77a5-ed27-42b4-bf64-792d74212550",
+      "kind": "parking",
+      "name": "Auf'm Hennekamp",
+      "ring": [
+        [51.202391, 6.783965],
+        [51.202362, 6.784028],
+        [51.202338, 6.783998],
+        [51.202368, 6.783935]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a4ef5492-1bbc-48ed-893b-f2c421654bf6",
+      "kind": "parking",
+      "name": "Ehrenstraße - Rochusstraße",
+      "ring": [
+        [51.234658, 6.785266],
+        [51.234646, 6.785246],
+        [51.234607, 6.7853],
+        [51.23462, 6.78532]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a5ba363d-801c-4081-a45b-7607bbfb194f",
+      "kind": "parking",
+      "name": "Fürstenplatz III",
+      "ring": [
+        [51.213938, 6.785259],
+        [51.213953, 6.785328],
+        [51.213937, 6.785341],
+        [51.213922, 6.785271]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a5f0488b-f6b8-410a-a9ac-e92e80f2ccc3",
+      "kind": "parking",
+      "name": "Gustav-Poensgen-Straße - Helmholtzstraße",
+      "ring": [
+        [51.216533, 6.789798],
+        [51.216533, 6.789862],
+        [51.216464, 6.789859],
+        [51.216461, 6.789803]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a16bcb86-1a9a-4a06-83f8-aac77446b4a4",
+      "kind": "parking",
+      "name": "Flößerstraße",
+      "ring": [
+        [51.148726, 6.871883],
+        [51.148729, 6.871914],
+        [51.148659, 6.871935],
+        [51.148657, 6.871902]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a24d4923-917a-4107-9ab9-6505b9793742",
+      "kind": "parking",
+      "name": "Nordstraße U",
+      "ring": [
+        [51.234833, 6.778405],
+        [51.23484, 6.778434],
+        [51.234876, 6.778411],
+        [51.234869, 6.77838]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a903ffa5-def7-40ec-b0ef-41e2de1e25de",
+      "kind": "parking",
+      "name": "Karolingerstraße V",
+      "ring": [
+        [51.206524, 6.769409],
+        [51.206511, 6.76944],
+        [51.206464, 6.769394],
+        [51.206479, 6.769364]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a48854b0-5e25-4abf-b8f8-ade32c9f02be",
+      "kind": "parking",
+      "name": "Yorckstraße - Münsterstraße",
+      "ring": [
+        [51.24635, 6.79265],
+        [51.246352, 6.792689],
+        [51.246299, 6.792702],
+        [51.246296, 6.792661]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a3220232-0f3a-4a4a-9599-e9c90ee5ac61",
+      "kind": "parking",
+      "name": "Kasernenstraße - Grabenstraße",
+      "ring": [
+        [51.22434, 6.775521],
+        [51.224257, 6.775518],
+        [51.224259, 6.775558],
+        [51.22434, 6.775562]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-a8892565-79c5-4e2c-822c-ceaf4edfc7e8",
+      "kind": "parking",
+      "name": "Alexanderstraße",
+      "ring": [
+        [51.219944, 6.784097],
+        [51.219974, 6.784014],
+        [51.219964, 6.783999],
+        [51.219933, 6.784082]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-aafc515e-e20a-4749-99a2-1571709042e3",
+      "kind": "parking",
+      "name": "Brehmplatz I",
+      "ring": [
+        [51.23867, 6.803218],
+        [51.23867, 6.803102],
+        [51.238688, 6.803104],
+        [51.238689, 6.803219]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-abb2deed-2b6d-4195-800e-dd58ee1fb24a",
+      "kind": "parking",
+      "name": "Friedingstraße U",
+      "ring": [
+        [51.239117, 6.847922],
+        [51.239105, 6.847914],
+        [51.239093, 6.847955],
+        [51.239107, 6.847963]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-aee852aa-895d-4adf-b584-55d0dbd0544f",
+      "kind": "parking",
+      "name": "Schadowstraße II",
+      "ring": [
+        [51.227234, 6.786409],
+        [51.227224, 6.786363],
+        [51.227286, 6.786325],
+        [51.227296, 6.78637]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-af5145cc-9585-4f7d-99d8-3514d5db17d1",
+      "kind": "parking",
+      "name": "Corneliusstraße I",
+      "ring": [
+        [51.212355, 6.783221],
+        [51.212338, 6.783222],
+        [51.212337, 6.783319],
+        [51.212354, 6.783319]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b3d005c2-11c9-474e-9b15-5ce6620069a7",
+      "kind": "parking",
+      "name": "KÖ VIII",
+      "ring": [
+        [51.221393, 6.77929],
+        [51.221394, 6.779316],
+        [51.221329, 6.779316],
+        [51.221329, 6.779288]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b3d25c30-54c7-4240-8f63-97eeed97c954",
+      "kind": "parking",
+      "name": "Tußmannstraße - Jordanstraße",
+      "ring": [
+        [51.241797, 6.792636],
+        [51.241767, 6.792647],
+        [51.241763, 6.792623],
+        [51.241795, 6.792612]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b3fc783c-79e9-4e7f-b57e-2c0ea9ff4453",
+      "kind": "parking",
+      "name": "Uni Ost II",
+      "ring": [
+        [51.189227, 6.800112],
+        [51.189215, 6.800093],
+        [51.18918, 6.80015],
+        [51.189193, 6.800168]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b4a810a7-e61e-4ff0-af56-600547bc22ad",
+      "kind": "parking",
+      "name": "Feldstraße - Kapellstraße",
+      "ring": [
+        [51.234589, 6.779753],
+        [51.2346, 6.779776],
+        [51.234645, 6.779723],
+        [51.234635, 6.779699]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b4cda3d4-e3da-43b3-9645-c5ad2621d4f0",
+      "kind": "parking",
+      "name": "Werstener Dorfstraße II",
+      "ring": [
+        [51.193237, 6.813976],
+        [51.193218, 6.81397],
+        [51.193198, 6.814084],
+        [51.193221, 6.814093]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b8ce2560-cfd5-4941-81e7-6c956e022913",
+      "kind": "parking",
+      "name": "Schadowstraße I",
+      "ring": [
+        [51.226335, 6.783202],
+        [51.226305, 6.783226],
+        [51.226343, 6.783368],
+        [51.226374, 6.783349]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b036a9e1-2aa2-4bca-994b-e09f767f69c4",
+      "kind": "parking",
+      "name": "Worringer Straße I",
+      "ring": [
+        [51.229393, 6.796359],
+        [51.229396, 6.796384],
+        [51.229325, 6.796402],
+        [51.229322, 6.796376]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b38c9537-5dc4-4fdc-9f36-0f064941a5fa",
+      "kind": "parking",
+      "name": "Am Wehrhahn I",
+      "ring": [
+        [51.22796, 6.788205],
+        [51.227943, 6.788217],
+        [51.227919, 6.788117],
+        [51.227937, 6.788106]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b586b7fb-0424-474a-b9db-7bea2c462b88",
+      "kind": "parking",
+      "name": "Cosmo Sports",
+      "ring": [
+        [51.234786, 6.843561],
+        [51.234768, 6.843549],
+        [51.234731, 6.843688],
+        [51.23475, 6.843699]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b1746b1e-380a-4d57-8e6c-7cfd19c2067f",
+      "kind": "parking",
+      "name": "Oberbilker Allee",
+      "ring": [
+        [51.209216, 6.805798],
+        [51.209204, 6.805791],
+        [51.209191, 6.805849],
+        [51.209207, 6.805857]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-b54567df-d9f4-409b-9afd-94f0872e4702",
+      "kind": "parking",
+      "name": "Rather Broich - Münsterstraße",
+      "ring": [
+        [51.261992, 6.810399],
+        [51.262042, 6.810462],
+        [51.262033, 6.810485],
+        [51.261982, 6.810418]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-baff3f6b-a93a-4363-bd80-7b5b839f4238",
+      "kind": "parking",
+      "name": "Fürstenplatz I",
+      "ring": [
+        [51.212562, 6.786193],
+        [51.212572, 6.786216],
+        [51.212536, 6.786257],
+        [51.212526, 6.786234]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-bc3aad8b-e749-4783-b0f4-d5d100236331",
+      "kind": "parking",
+      "name": "Düsseldorf Hbf III",
+      "ring": [
+        [51.222292, 6.795134],
+        [51.222254, 6.795104],
+        [51.22226, 6.795081],
+        [51.222298, 6.795113]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-bd07f2a0-3c49-4c23-b4d0-5f62596179c1",
+      "kind": "parking",
+      "name": "Hüttenstraße III",
+      "ring": [
+        [51.213338, 6.789688],
+        [51.213359, 6.789638],
+        [51.213402, 6.78967],
+        [51.213401, 6.78972]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-bded377e-83d2-4ac3-bb23-c79be0941713",
+      "kind": "parking",
+      "name": "Hellerhof S-Bahnhof",
+      "ring": [
+        [51.132703, 6.907844],
+        [51.132687, 6.907858],
+        [51.132722, 6.907954],
+        [51.132735, 6.907939]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-be8c450b-8eef-4b96-b657-80297329ae97",
+      "kind": "parking",
+      "name": "Bankstraße",
+      "ring": [
+        [51.243472, 6.775637],
+        [51.243465, 6.775611],
+        [51.243416, 6.77565],
+        [51.24342, 6.775674]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-beddc814-708f-430e-b063-ecac9c513f32",
+      "kind": "parking",
+      "name": "Bilk S - Färberstraße",
+      "ring": [
+        [51.208083, 6.778087],
+        [51.208067, 6.778093],
+        [51.20808, 6.778179],
+        [51.208097, 6.77817]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c0ee6877-aff7-467c-a900-e2f52a9db5a4",
+      "kind": "parking",
+      "name": "Niederkasseler Lohweg II",
+      "ring": [
+        [51.241151, 6.735374],
+        [51.241133, 6.735384],
+        [51.241146, 6.735443],
+        [51.241162, 6.735432]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c1ae31df-193b-4bc5-a542-7a939c8d581c",
+      "kind": "parking",
+      "name": "Gartenstraße - Kaiserstraße",
+      "ring": [
+        [51.231054, 6.781066],
+        [51.231041, 6.781009],
+        [51.231001, 6.781034],
+        [51.231013, 6.78109]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c3f1a4ba-2e2c-4896-9653-13a830f03a18",
+      "kind": "parking",
+      "name": "Immermannstraße - Klosterstraße",
+      "ring": [
+        [51.225502, 6.784868],
+        [51.225539, 6.784792],
+        [51.225549, 6.784808],
+        [51.225513, 6.784883]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c4dcb871-7311-4ff1-a2fc-7367ab11f198",
+      "kind": "parking",
+      "name": "Freiligrathplatz I",
+      "ring": [
+        [51.264293, 6.752682],
+        [51.264296, 6.752719],
+        [51.264217, 6.752736],
+        [51.264212, 6.752705]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c4f23fb6-bbf9-482b-9d64-6897e338e5d5",
+      "kind": "parking",
+      "name": "Hüttenstraße IV",
+      "ring": [
+        [51.214908, 6.786673],
+        [51.214931, 6.786631],
+        [51.214948, 6.786637],
+        [51.214919, 6.786693]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c6b13b53-54d2-4e72-913c-0357bca79d6a",
+      "kind": "parking",
+      "name": "Rosenstraße",
+      "ring": [
+        [51.232718, 6.782345],
+        [51.232704, 6.78236],
+        [51.232727, 6.782426],
+        [51.23274, 6.782409]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c6e1c526-3e1c-419c-8f1b-6feb602f5a81",
+      "kind": "parking",
+      "name": "Gerresheim Rathaus",
+      "ring": [
+        [51.237282, 6.858598],
+        [51.237267, 6.858599],
+        [51.237266, 6.85853],
+        [51.237282, 6.858529]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c8a3dc5b-b74d-467b-8d0f-4fa278950117",
+      "kind": "parking",
+      "name": "Stürzelberger Straße",
+      "ring": [
+        [51.242397, 6.729841],
+        [51.242392, 6.729873],
+        [51.242352, 6.729857],
+        [51.242358, 6.729824]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c20a86a8-4a50-4d6a-827b-fe52480963f0",
+      "kind": "parking",
+      "name": "Heinrich-Heine-Allee - Ausweichstation",
+      "ring": [
+        [51.229391, 6.777248],
+        [51.229391, 6.777211],
+        [51.229451, 6.777213],
+        [51.22945, 6.77725]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c92bdb93-6a8e-419e-a10c-31ba91b0b501",
+      "kind": "parking",
+      "name": "Kirchstraße",
+      "ring": [
+        [51.211981, 6.802154],
+        [51.211986, 6.80213],
+        [51.211927, 6.802093],
+        [51.21192, 6.802116]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c96e4222-1310-474e-bda7-9f428e438984",
+      "kind": "parking",
+      "name": "Berliner Allee - Steinstraße",
+      "ring": [
+        [51.223086, 6.782099],
+        [51.22309, 6.782132],
+        [51.223044, 6.782193],
+        [51.223043, 6.782146]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c755ec94-db24-427f-93ff-dea897f20ed5",
+      "kind": "parking",
+      "name": "Ackerstraße",
+      "ring": [
+        [51.22834, 6.802678],
+        [51.228327, 6.802694],
+        [51.228372, 6.802774],
+        [51.228384, 6.802751]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c8432eeb-9cb4-4eec-a49f-7a767e99e36f",
+      "kind": "parking",
+      "name": "Stresemannplatz III",
+      "ring": [
+        [51.219005, 6.78835],
+        [51.219019, 6.788384],
+        [51.219054, 6.788338],
+        [51.219042, 6.788309]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c9269eba-9542-43e5-a867-daa360f17bb4",
+      "kind": "parking",
+      "name": "Bachplätzchen I",
+      "ring": [
+        [51.208466, 6.76794],
+        [51.208479, 6.767959],
+        [51.208519, 6.767905],
+        [51.208507, 6.767883]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c2381076-7d06-40b4-9978-dac0dda50b1f",
+      "kind": "parking",
+      "name": "Alt-Pempelfort",
+      "ring": [
+        [51.23147, 6.787155],
+        [51.231419, 6.787158],
+        [51.23142, 6.787189],
+        [51.231469, 6.787188]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-c2815560-6af3-458e-b29d-b62a085901c6",
+      "kind": "parking",
+      "name": "Worringer Platz",
+      "ring": [
+        [51.223488, 6.795708],
+        [51.223458, 6.795684],
+        [51.223463, 6.79566],
+        [51.223495, 6.795688]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-ca5c8dcd-787f-424b-9fc6-f1dd9f4eeae7",
+      "kind": "parking",
+      "name": "Im Liefeld - Unterführung",
+      "ring": [
+        [51.208393, 6.81478],
+        [51.208393, 6.81481],
+        [51.208347, 6.814812],
+        [51.208347, 6.814782]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cab153f4-e0ea-47a2-b086-47287c03867e",
+      "kind": "parking",
+      "name": "Cranachstraße II",
+      "ring": [
+        [51.231862, 6.81451],
+        [51.231855, 6.814536],
+        [51.231894, 6.814557],
+        [51.231899, 6.814533]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cae0860c-9b51-4a2d-8ced-246ef80fead3",
+      "kind": "parking",
+      "name": "Mühlenstraße II",
+      "ring": [
+        [51.227275, 6.773009],
+        [51.227291, 6.77308],
+        [51.227307, 6.77307],
+        [51.22729, 6.772997]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cb49aecc-9168-439e-91a0-471a247b1870",
+      "kind": "parking",
+      "name": "Sonnenstraße II",
+      "ring": [
+        [51.212669, 6.795849],
+        [51.212646, 6.79585],
+        [51.212643, 6.795949],
+        [51.212667, 6.795947]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cbe63234-a9ca-4771-b9b6-d04154d119af",
+      "kind": "parking",
+      "name": "Fischerstraße - Klever Straße",
+      "ring": [
+        [51.239705, 6.773972],
+        [51.239726, 6.774073],
+        [51.239704, 6.774085],
+        [51.239684, 6.773985]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cc3086a8-09d4-4fa9-add0-5e9f4943c2dc",
+      "kind": "parking",
+      "name": "Burghofstraße",
+      "ring": [
+        [51.207087, 6.771102],
+        [51.207106, 6.771102],
+        [51.207103, 6.771194],
+        [51.207084, 6.771193]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-ced2ed3c-59d9-4218-898b-c04191174c10",
+      "kind": "parking",
+      "name": "Ausweichstation Corneliusplatz I",
+      "ring": [
+        [51.226089, 6.779445],
+        [51.226088, 6.779503],
+        [51.225998, 6.779501],
+        [51.225999, 6.779443]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cee8567c-9685-4886-9d96-afcb2ce6b2b4",
+      "kind": "parking",
+      "name": "Mühlenstraße I Ausweichstandort",
+      "ring": [
+        [51.227351, 6.772793],
+        [51.22731, 6.772816],
+        [51.227338, 6.772958],
+        [51.227382, 6.772931]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-cfd5f62f-b881-4cac-b250-d381ab911807",
+      "kind": "parking",
+      "name": "Karlstraße III",
+      "ring": [
+        [51.220038, 6.788592],
+        [51.220062, 6.78863],
+        [51.22005, 6.78865],
+        [51.220028, 6.788613]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d000d45d-a7e9-4ebc-bb6e-90b1a5226c53",
+      "kind": "parking",
+      "name": "Grabbeplatz",
+      "ring": [
+        [51.227547, 6.776703],
+        [51.227547, 6.776734],
+        [51.227493, 6.776732],
+        [51.227494, 6.776701]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d2a1f708-70fc-40a2-a908-f20974f51f69",
+      "kind": "parking",
+      "name": "Staufenplatz III",
+      "ring": [
+        [51.240373, 6.824896],
+        [51.240359, 6.82492],
+        [51.240403, 6.824991],
+        [51.240416, 6.824967]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d2b5263d-7316-41bf-a27c-0583c59a54e5",
+      "kind": "parking",
+      "name": "Karlstraße I",
+      "ring": [
+        [51.223295, 6.793447],
+        [51.223309, 6.793426],
+        [51.223348, 6.793494],
+        [51.223336, 6.793517]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d5c20231-3a53-4fa9-9b9f-199d84c56740",
+      "kind": "parking",
+      "name": "Gerresheimer Straße",
+      "ring": [
+        [51.227267, 6.795462],
+        [51.227255, 6.795453],
+        [51.22724, 6.795523],
+        [51.227254, 6.795531]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d7befe82-58e4-4118-9598-1b9d50e435cf",
+      "kind": "parking",
+      "name": "Immermannstraße III",
+      "ring": [
+        [51.224247, 6.787064],
+        [51.224262, 6.787084],
+        [51.2243, 6.787004],
+        [51.224284, 6.786983]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d9b20ab4-402b-41c8-a502-ed38739bddd7",
+      "kind": "parking",
+      "name": "Carlsplatz",
+      "ring": [
+        [51.223175, 6.774422],
+        [51.223175, 6.774335],
+        [51.223155, 6.774336],
+        [51.223151, 6.774542],
+        [51.223172, 6.774543]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d37eb382-de97-4f6d-ba46-17a1cd0dbfbc",
+      "kind": "parking",
+      "name": "Rath S I",
+      "ring": [
+        [51.263734, 6.820426],
+        [51.263702, 6.82045],
+        [51.263724, 6.820521],
+        [51.263758, 6.820494]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d51bb1a9-d065-4413-8acc-506605d1f146",
+      "kind": "parking",
+      "name": "Sonnenstraße I",
+      "ring": [
+        [51.212464, 6.798599],
+        [51.212445, 6.798572],
+        [51.21241, 6.798643],
+        [51.212427, 6.798668]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d57a98a8-d77e-4578-8374-c18156271d8b",
+      "kind": "parking",
+      "name": "Immermannstraße VII",
+      "ring": [
+        [51.223231, 6.789367],
+        [51.223203, 6.789428],
+        [51.223216, 6.789446],
+        [51.223242, 6.789386]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d61c0937-f218-45a5-aa19-6b40337c0fb9",
+      "kind": "parking",
+      "name": "Suitbertusstraße",
+      "ring": [
+        [51.204205, 6.772674],
+        [51.204194, 6.772703],
+        [51.204162, 6.772665],
+        [51.204174, 6.772638]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d87c7e40-1631-4f94-970d-8e1cbabba2f1",
+      "kind": "parking",
+      "name": "Wasserstraße I",
+      "ring": [
+        [51.218548, 6.771539],
+        [51.21853, 6.771518],
+        [51.218454, 6.771681],
+        [51.218476, 6.771705]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d754fed7-a8ba-41df-8044-9650656632d8",
+      "kind": "parking",
+      "name": "Oberbilk S III",
+      "ring": [
+        [51.207511, 6.807468],
+        [51.207471, 6.807495],
+        [51.207518, 6.807689],
+        [51.207557, 6.807659]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d954ca16-e6e8-4e7e-8f72-faced576f7fd",
+      "kind": "parking",
+      "name": "Anna-Spielplatz Düsseldorf",
+      "ring": [
+        [51.23993, 6.788828],
+        [51.239988, 6.788837],
+        [51.239988, 6.788866],
+        [51.239929, 6.788853]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d8383b49-4e6b-48bc-b23e-fb934eedd782",
+      "kind": "parking",
+      "name": "Siemensstraße",
+      "ring": [
+        [51.214137, 6.79689],
+        [51.214159, 6.79694],
+        [51.214147, 6.796954],
+        [51.214125, 6.796903]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-d2830522-48a0-41e4-a57b-1f6344eedb8a",
+      "kind": "parking",
+      "name": "Wasserstraße II",
+      "ring": [
+        [51.216405, 6.772809],
+        [51.216399, 6.772828],
+        [51.21645, 6.772868],
+        [51.216456, 6.772847]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-da7b50f1-4fe7-4289-b82c-27c29489a4d1",
+      "kind": "parking",
+      "name": "Hofgarten I",
+      "ring": [
+        [51.233003, 6.77895],
+        [51.232989, 6.778958],
+        [51.23297, 6.778867],
+        [51.232983, 6.778861]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-da10ad04-2020-4d8c-bd39-51ca914a6009",
+      "kind": "parking",
+      "name": "Römerstraße",
+      "ring": [
+        [51.244854, 6.782667],
+        [51.244836, 6.782683],
+        [51.244858, 6.782755],
+        [51.244876, 6.782737]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-db2c382c-9f74-44fa-b437-e7b84ecdf4fa",
+      "kind": "parking",
+      "name": "Universität Mitte",
+      "ring": [
+        [51.187763, 6.793133],
+        [51.187792, 6.793314],
+        [51.187818, 6.793303],
+        [51.18779, 6.793123]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-db5d9229-fc3e-40d6-8f80-b99857b1ad00",
+      "kind": "parking",
+      "name": "Ruby Hotel",
+      "ring": [
+        [51.222503, 6.775615],
+        [51.222437, 6.775614],
+        [51.222436, 6.775661],
+        [51.222504, 6.77566]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-db7c3d9a-d00e-4986-9c26-cefddd48f85c",
+      "kind": "parking",
+      "name": "UKD VIII",
+      "ring": [
+        [51.198124, 6.786111],
+        [51.198108, 6.786031],
+        [51.198092, 6.78604],
+        [51.198106, 6.786121]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-dc69ab52-16f8-4a9d-adc3-3eaf5e45f445",
+      "kind": "parking",
+      "name": "Immermannstraße I",
+      "ring": [
+        [51.22481, 6.786062],
+        [51.224822, 6.786081],
+        [51.22486, 6.786015],
+        [51.224847, 6.785995]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-dcefcd08-9c83-4713-8f15-602f68f48d7d",
+      "kind": "parking",
+      "name": "Staufenplatz II",
+      "ring": [
+        [51.241753, 6.826451],
+        [51.241699, 6.826477],
+        [51.241694, 6.82645],
+        [51.241748, 6.826424]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-dd0ca01f-cb61-4271-9d4f-fe737cab657d",
+      "kind": "parking",
+      "name": "Ellerstraße",
+      "ring": [
+        [51.213124, 6.806422],
+        [51.213135, 6.806459],
+        [51.213191, 6.806405],
+        [51.21318, 6.806369]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-de8d7d8b-f72f-4842-b2cd-ce8edb59171c",
+      "kind": "parking",
+      "name": "Bilk S II",
+      "ring": [
+        [51.208887, 6.777302],
+        [51.208824, 6.777332],
+        [51.20882, 6.777304],
+        [51.208883, 6.777277]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-de1030b4-86e7-49af-b912-db16e957af1a",
+      "kind": "parking",
+      "name": "Rheinufer IV",
+      "ring": [
+        [51.237531, 6.772167],
+        [51.237532, 6.772193],
+        [51.237492, 6.7722],
+        [51.237491, 6.772174]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e0c0598e-b104-42f6-a4c1-3f707adac52f",
+      "kind": "parking",
+      "name": "Kalkumer Straße - Kleinschmitthauser Weg",
+      "ring": [
+        [51.269147, 6.773965],
+        [51.269096, 6.773975],
+        [51.269097, 6.773995],
+        [51.269149, 6.773985]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e0e1549b-f73f-4036-8068-0caec5ce3334",
+      "kind": "parking",
+      "name": "Hüttenstraße I",
+      "ring": [
+        [51.21192, 6.79176],
+        [51.211886, 6.791813],
+        [51.211896, 6.791831],
+        [51.211931, 6.791778]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e1d7f7c2-de94-4944-9967-af3a059a2c80",
+      "kind": "parking",
+      "name": "Nixenstraße",
+      "ring": [
+        [51.192043, 6.821217],
+        [51.192029, 6.821244],
+        [51.191989, 6.821196],
+        [51.192002, 6.821169]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e8dd1909-7dfa-4bb6-9ba8-9f41709ff53b",
+      "kind": "parking",
+      "name": "Oststraße",
+      "ring": [
+        [51.221256, 6.785729],
+        [51.221228, 6.785698],
+        [51.221256, 6.785636],
+        [51.221283, 6.785664]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e29cd865-57cf-43e3-8253-9b70cf29f987",
+      "kind": "parking",
+      "name": "Prinz-Georg-Straße - Ludwig-Wolker-Straße",
+      "ring": [
+        [51.238043, 6.787115],
+        [51.238043, 6.787139],
+        [51.237985, 6.787147],
+        [51.237984, 6.787123]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e43f06b8-394c-415f-a859-138763e23bbf",
+      "kind": "parking",
+      "name": "Uni Kliniken VI",
+      "ring": [
+        [51.198962, 6.788821],
+        [51.198936, 6.788835],
+        [51.198918, 6.788755],
+        [51.198942, 6.788741]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e93d6249-7e9a-4a59-8482-530bd11e782f",
+      "kind": "parking",
+      "name": "Kalkumer Schloßallee",
+      "ring": [
+        [51.305177, 6.743043],
+        [51.305169, 6.743066],
+        [51.305211, 6.743106],
+        [51.305218, 6.743082]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e163ce45-4bd3-4b6d-a78b-85ae952baa8e",
+      "kind": "parking",
+      "name": "Bilker Straße",
+      "ring": [
+        [51.222954, 6.77294],
+        [51.222831, 6.772937],
+        [51.222831, 6.772907],
+        [51.222954, 6.77291]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e2015c2e-a1e2-456a-bb5a-54f14c950dc7",
+      "kind": "parking",
+      "name": "Rochusmarkt",
+      "ring": [
+        [51.233347, 6.78911],
+        [51.233328, 6.789132],
+        [51.233369, 6.789223],
+        [51.233385, 6.789195]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e2658570-93fc-4719-858c-42bf8d68a4fc",
+      "kind": "parking",
+      "name": "Corneliusstraße II",
+      "ring": [
+        [51.215876, 6.782365],
+        [51.215816, 6.782348],
+        [51.215813, 6.782378],
+        [51.215875, 6.782393]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-e3411196-717e-4bfa-8307-f2c4807628b3",
+      "kind": "parking",
+      "name": "Leopoldstraße I",
+      "ring": [
+        [51.226346, 6.788642],
+        [51.22635, 6.788612],
+        [51.2264, 6.788629],
+        [51.226397, 6.788659]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-ee63eec6-244a-4bf4-8b27-2d925f054676",
+      "kind": "parking",
+      "name": "Sportpark Niederheid",
+      "ring": [
+        [51.170434, 6.851687],
+        [51.170457, 6.851762],
+        [51.17036, 6.851864],
+        [51.170333, 6.851789]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-eecc0c84-cc5b-4538-b172-9e07429c73d5",
+      "kind": "parking",
+      "name": "Bilker Allee - Friedrichstraße II",
+      "ring": [
+        [51.210684, 6.776257],
+        [51.210702, 6.776255],
+        [51.210699, 6.776172],
+        [51.21068, 6.776175]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-efce9da0-621e-4987-a36e-fb678f4598e5",
+      "kind": "parking",
+      "name": "Vinzenzplatz",
+      "ring": [
+        [51.226234, 6.798651],
+        [51.226201, 6.798619],
+        [51.226191, 6.79865],
+        [51.226225, 6.79868]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f0c9137b-579a-4a33-825c-2751b9fae5ef",
+      "kind": "parking",
+      "name": "Willi-Becker-Allee - Ellerstraße",
+      "ring": [
+        [51.217319, 6.792503],
+        [51.217335, 6.79257],
+        [51.217316, 6.79258],
+        [51.217302, 6.792512]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f1c34656-aa4b-492e-97bc-1674b1fb5d1a",
+      "kind": "parking",
+      "name": "Volksgarten S I",
+      "ring": [
+        [51.209095, 6.792958],
+        [51.209136, 6.793018],
+        [51.209122, 6.793048],
+        [51.20908, 6.792991]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f2e34321-90ec-4155-878e-94d864ec51cb",
+      "kind": "parking",
+      "name": "Immermannstraße IV",
+      "ring": [
+        [51.223866, 6.788061],
+        [51.223873, 6.788086],
+        [51.223916, 6.788052],
+        [51.223907, 6.788024]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f3cfdc44-44f3-4c66-aa4a-fa8e2fb0a387",
+      "kind": "parking",
+      "name": "Rather Broich",
+      "ring": [
+        [51.260662, 6.813854],
+        [51.260622, 6.813857],
+        [51.260622, 6.813837],
+        [51.260661, 6.813834]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f44bdedf-ed56-4232-b406-738833d92c36",
+      "kind": "parking",
+      "name": "Provinzialplatz",
+      "ring": [
+        [51.195738, 6.812845],
+        [51.195744, 6.812873],
+        [51.195693, 6.812904],
+        [51.195687, 6.812876]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f69b005e-023f-4e99-9853-83147a88967a",
+      "kind": "parking",
+      "name": "Friedrichstadt S",
+      "ring": [
+        [51.211184, 6.787102],
+        [51.211184, 6.787208],
+        [51.211203, 6.787207],
+        [51.211203, 6.7871]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f70abeaa-fb96-4b0b-99af-eca72a05e219",
+      "kind": "parking",
+      "name": "Schützenstraße II",
+      "ring": [
+        [51.226446, 6.793972],
+        [51.226437, 6.793948],
+        [51.226481, 6.793907],
+        [51.22649, 6.793931]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f76d2b6e-96c1-402d-9ffb-a9fbbd7df16f",
+      "kind": "parking",
+      "name": "Garath S-Bahnhof West",
+      "ring": [
+        [51.143299, 6.897279],
+        [51.14331, 6.897305],
+        [51.143276, 6.89734],
+        [51.143265, 6.897311]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f771dfbe-dd2b-4b1e-9d73-0756ff5933b8",
+      "kind": "parking",
+      "name": "Gangelplatz",
+      "ring": [
+        [51.210732, 6.801406],
+        [51.210732, 6.801428],
+        [51.210691, 6.801422],
+        [51.21069, 6.8014]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f910ab85-527a-43c2-b153-8cd49e77a9fa",
+      "kind": "parking",
+      "name": "Uni Ost I",
+      "ring": [
+        [51.190207, 6.800057],
+        [51.190209, 6.80009],
+        [51.190164, 6.800103],
+        [51.190161, 6.800071]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f919cf78-ddce-4168-9dc6-504bb89fbc99",
+      "kind": "parking",
+      "name": "KÖ IX",
+      "ring": [
+        [51.21986, 6.776748],
+        [51.219848, 6.776751],
+        [51.219848, 6.776677],
+        [51.219861, 6.776677]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f08029d1-2951-485c-94a5-db66a23ee602",
+      "kind": "parking",
+      "name": "Wim-Wenders-Gymnasium",
+      "ring": [
+        [51.210784, 6.806923],
+        [51.210801, 6.806913],
+        [51.210782, 6.80683],
+        [51.210764, 6.80684]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f25830b4-b1af-4011-acf9-05ce3d7e2d86",
+      "kind": "parking",
+      "name": "Wielandstraße",
+      "ring": [
+        [51.229244, 6.793045],
+        [51.229231, 6.793068],
+        [51.229193, 6.793001],
+        [51.229205, 6.792978]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-f838623c-ed73-4b44-aa65-95494a9738e2",
+      "kind": "parking",
+      "name": "Ernst-Derra-Straße",
+      "ring": [
+        [51.193671, 6.785303],
+        [51.19365, 6.785316],
+        [51.193673, 6.785399],
+        [51.193694, 6.785385]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fa66de18-b0d3-4cf3-88f6-468e1f72a450",
+      "kind": "parking",
+      "name": "Elisabethstraße",
+      "ring": [
+        [51.216194, 6.775256],
+        [51.216193, 6.775285],
+        [51.216247, 6.77529],
+        [51.216247, 6.775261]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fa06055c-a369-4587-98e5-43dd8e38cffc",
+      "kind": "parking",
+      "name": "Eulerstraße - Scharnhorststraße",
+      "ring": [
+        [51.241082, 6.786759],
+        [51.241084, 6.78673],
+        [51.241142, 6.786756],
+        [51.241138, 6.786785]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-faa708fe-1e79-4ab3-8062-a5c684059d8e",
+      "kind": "parking",
+      "name": "Chlodwigstraße I",
+      "ring": [
+        [51.196138, 6.783397],
+        [51.196122, 6.783406],
+        [51.196109, 6.78334],
+        [51.196125, 6.78333]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fabaebc9-ae8b-487e-8772-73753d8a2892",
+      "kind": "parking",
+      "name": "Schlesische Straße",
+      "ring": [
+        [51.207156, 6.831494],
+        [51.207158, 6.831523],
+        [51.207099, 6.831545],
+        [51.207096, 6.831519]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-faf7b6c6-013a-49a2-aa02-26ad32e64b7c",
+      "kind": "parking",
+      "name": "Christophstraße II",
+      "ring": [
+        [51.192721, 6.797046],
+        [51.192732, 6.797118],
+        [51.19277, 6.797099],
+        [51.192761, 6.797027]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fc2b1c6d-f2c2-48ba-b188-1ecdfc1d8dec",
+      "kind": "parking",
+      "name": "Leopoldstraße II",
+      "ring": [
+        [51.226392, 6.790684],
+        [51.226373, 6.79069],
+        [51.226378, 6.790769],
+        [51.226397, 6.790763]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fc237231-08c3-4ea2-8ac2-c71af779a43d",
+      "kind": "parking",
+      "name": "UKD VII",
+      "ring": [
+        [51.196352, 6.792605],
+        [51.196367, 6.79267],
+        [51.196352, 6.792681],
+        [51.196322, 6.792549],
+        [51.196336, 6.792536]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fd39e8ee-0bf6-489f-8868-0d1076d55e73",
+      "kind": "parking",
+      "name": "Eckenerstraße",
+      "ring": [
+        [51.272038, 6.773408],
+        [51.27198, 6.773439],
+        [51.271987, 6.773463],
+        [51.272045, 6.773432]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-fe2ff80d-6d73-4d03-8f03-7e8fbbcec858",
+      "kind": "parking",
+      "name": "Toulouser Allee II",
+      "ring": [
+        [51.233006, 6.796308],
+        [51.233007, 6.796337],
+        [51.23296, 6.796342],
+        [51.23296, 6.796311]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-ff01c737-6696-42ad-8667-362d608e13ab",
+      "kind": "parking",
+      "name": "Schinkelstraße",
+      "ring": [
+        [51.234279, 6.793449],
+        [51.234266, 6.793428],
+        [51.234307, 6.793372],
+        [51.234318, 6.793394]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-ff346d82-1cf8-48e0-83f1-d8e4b1d4222a",
+      "kind": "parking",
+      "name": "Dreiecksplatz",
+      "ring": [
+        [51.241712, 6.851768],
+        [51.241677, 6.851762],
+        [51.241675, 6.851783],
+        [51.241711, 6.851789]
+      ]
+    },
+    {
+      "id": "dusseldorf-parking-ffe85aee-0d13-4696-8651-095dfb420e14",
+      "kind": "parking",
+      "name": "Heinrich-Könn-Straße U",
+      "ring": [
+        [51.242769, 6.850971],
+        [51.24276, 6.850949],
+        [51.242801, 6.850902],
+        [51.242809, 6.850922]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-1b5b2bee-dec4-4d30-b4a1-35bc96fa216a",
+      "kind": "racksOnly",
+      "name": "Drususstraße",
+      "ring": [
+        [51.231772, 6.737642],
+        [51.231656, 6.737152],
+        [51.229971, 6.736075],
+        [51.229718, 6.737401],
+        [51.229352, 6.738796],
+        [51.228915, 6.740213],
+        [51.230656, 6.74136],
+        [51.231086, 6.741429],
+        [51.23124, 6.744434],
+        [51.231704, 6.744802],
+        [51.233272, 6.739911],
+        [51.232977, 6.739616]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-2ae25c45-c1ad-4b89-ad0e-e731e7bac60a",
+      "kind": "racksOnly",
+      "name": "Gatherweg",
+      "ring": [
+        [51.21113, 6.833273],
+        [51.21134, 6.832362],
+        [51.211202, 6.831975],
+        [51.211131, 6.831624],
+        [51.211024, 6.831281],
+        [51.21091, 6.83123],
+        [51.210777, 6.831332],
+        [51.210019, 6.832128],
+        [51.210034, 6.832206],
+        [51.210187, 6.832624],
+        [51.210209, 6.832753],
+        [51.20995, 6.832965],
+        [51.210177, 6.833491],
+        [51.210888, 6.834403]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-3bebc6ed-e496-40c8-a192-a1dd03c75682",
+      "kind": "racksOnly",
+      "name": "Garath",
+      "ring": [
+        [51.143177, 6.895234],
+        [51.143557, 6.896206],
+        [51.143893, 6.897209],
+        [51.144331, 6.898383],
+        [51.144616, 6.898169],
+        [51.144866, 6.898801],
+        [51.14466, 6.898992],
+        [51.144258, 6.899419],
+        [51.144082, 6.898942],
+        [51.143759, 6.899267],
+        [51.14364, 6.898978],
+        [51.143862, 6.898741],
+        [51.1434, 6.897673],
+        [51.142532, 6.898584],
+        [51.142322, 6.898042],
+        [51.142782, 6.897598],
+        [51.142924, 6.897445],
+        [51.142459, 6.896174],
+        [51.142288, 6.895868],
+        [51.142173, 6.895535],
+        [51.142318, 6.895353],
+        [51.142139, 6.894679],
+        [51.142326, 6.894486],
+        [51.142591, 6.895106],
+        [51.143191, 6.894569],
+        [51.143353, 6.894994]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-4c1dcad5-b169-4932-bd27-b3920ac34fdc",
+      "kind": "racksOnly",
+      "name": "Volksgarten S",
+      "ring": [
+        [51.210063, 6.791444],
+        [51.209737, 6.7905],
+        [51.209458, 6.789025],
+        [51.208211, 6.789583],
+        [51.208584, 6.791726],
+        [51.208542, 6.791874],
+        [51.208397, 6.792005],
+        [51.208139, 6.79248],
+        [51.20846, 6.793164],
+        [51.209017, 6.793864],
+        [51.20978, 6.794894],
+        [51.210148, 6.795346],
+        [51.210479, 6.794731],
+        [51.210523, 6.793813],
+        [51.210456, 6.79314],
+        [51.211135, 6.793166],
+        [51.211104, 6.791391],
+        [51.210874, 6.790677]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-6a221b65-fa38-48c3-a91f-3d0919508450",
+      "kind": "racksOnly",
+      "name": "Unterrath",
+      "ring": [
+        [51.271541, 6.772755],
+        [51.271625, 6.773227],
+        [51.269437, 6.773479],
+        [51.269148, 6.773479],
+        [51.268608, 6.773522],
+        [51.268662, 6.774546],
+        [51.269051, 6.77452],
+        [51.269078, 6.774863],
+        [51.269424, 6.774933],
+        [51.269501, 6.774493],
+        [51.270165, 6.774509],
+        [51.270756, 6.774396],
+        [51.270766, 6.774707],
+        [51.270862, 6.774729],
+        [51.271034, 6.775855],
+        [51.271436, 6.775694],
+        [51.271323, 6.774632],
+        [51.271897, 6.77452],
+        [51.271968, 6.775196],
+        [51.272569, 6.77496],
+        [51.273018, 6.774842],
+        [51.272632, 6.772278],
+        [51.272176, 6.772524]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-06aeea79-3bb6-48ce-9f20-71584bc79b61",
+      "kind": "racksOnly",
+      "name": "Römerstraße",
+      "ring": [
+        [51.24431, 6.781335],
+        [51.244555, 6.781072],
+        [51.244906, 6.782134],
+        [51.245007, 6.78203],
+        [51.24522, 6.780592],
+        [51.24595, 6.781072],
+        [51.24586, 6.781601],
+        [51.245648, 6.782749],
+        [51.245606, 6.783046],
+        [51.245536, 6.783685],
+        [51.245351, 6.784042],
+        [51.245129, 6.784071],
+        [51.244793, 6.783846],
+        [51.244913, 6.783451],
+        [51.24456, 6.783317],
+        [51.244533, 6.783468],
+        [51.244181, 6.783339],
+        [51.244324, 6.782694]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-6e28a36b-4c50-4723-a05b-9afd43d0966a",
+      "kind": "racksOnly",
+      "name": "Sportpark Niederheid",
+      "ring": [
+        [51.17227, 6.850491],
+        [51.17111, 6.847503],
+        [51.169226, 6.848935],
+        [51.169189, 6.851365],
+        [51.169849, 6.852352],
+        [51.170249, 6.852829],
+        [51.170858, 6.853103],
+        [51.171056, 6.851944],
+        [51.172317, 6.85063]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-7c0ce289-2373-40a9-b6b1-67e944f7f447",
+      "kind": "racksOnly",
+      "name": "Brandenburgstraße I",
+      "ring": [
+        [51.24003, 6.833737],
+        [51.23965, 6.834235],
+        [51.238595, 6.833174],
+        [51.238914, 6.832509]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-7cdc8031-0a82-4d19-995b-9be7fdbca7ca",
+      "kind": "racksOnly",
+      "name": "An d. Piwipp",
+      "ring": [
+        [51.264788, 6.774691],
+        [51.264815, 6.77615],
+        [51.264009, 6.776397],
+        [51.263942, 6.775829],
+        [51.262888, 6.776397],
+        [51.262875, 6.77673],
+        [51.262371, 6.776826],
+        [51.261942, 6.777009],
+        [51.261707, 6.775743],
+        [51.262573, 6.7757],
+        [51.262586, 6.775271]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-8c45fcb4-9048-4aa1-80c1-dbd5818fb4b8",
+      "kind": "racksOnly",
+      "name": "Benrath",
+      "ring": [
+        [51.164033, 6.872452],
+        [51.163824, 6.872281],
+        [51.163474, 6.872216],
+        [51.163346, 6.873096],
+        [51.162579, 6.872635],
+        [51.162361, 6.872171],
+        [51.162063, 6.872396],
+        [51.162041, 6.873973],
+        [51.161896, 6.873987],
+        [51.161888, 6.877441],
+        [51.161207, 6.877484],
+        [51.161099, 6.879719],
+        [51.161173, 6.879866],
+        [51.162277, 6.878654],
+        [51.16303, 6.878117],
+        [51.164208, 6.877044],
+        [51.163869, 6.875974],
+        [51.163434, 6.87566],
+        [51.163831, 6.874351],
+        [51.164457, 6.874609],
+        [51.165223, 6.874577],
+        [51.165281, 6.873783],
+        [51.164695, 6.873713],
+        [51.164732, 6.872994],
+        [51.164345, 6.872839]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-8c75ed8c-f7f6-4747-af7d-b6c25c094608",
+      "kind": "racksOnly",
+      "name": "Gerresheim",
+      "ring": [
+        [51.238418, 6.853208],
+        [51.23813, 6.853106],
+        [51.237988, 6.853677],
+        [51.237729, 6.853403],
+        [51.237652, 6.853918],
+        [51.237538, 6.856306],
+        [51.238031, 6.856273],
+        [51.238028, 6.856772],
+        [51.237376, 6.856831],
+        [51.237494, 6.859916],
+        [51.237978, 6.860077],
+        [51.237991, 6.860302],
+        [51.238246, 6.860924],
+        [51.23832, 6.861616],
+        [51.238092, 6.861536],
+        [51.238038, 6.861101],
+        [51.23788, 6.860839],
+        [51.237578, 6.860533],
+        [51.237118, 6.860442],
+        [51.237245, 6.86351],
+        [51.235899, 6.863751],
+        [51.235764, 6.862764],
+        [51.235556, 6.862705],
+        [51.235593, 6.862099],
+        [51.234982, 6.861901],
+        [51.235086, 6.860935],
+        [51.235472, 6.86057],
+        [51.235979, 6.860393],
+        [51.235983, 6.859594],
+        [51.236439, 6.859551],
+        [51.236439, 6.859374],
+        [51.236661, 6.858838],
+        [51.236936, 6.859176],
+        [51.236926, 6.85644],
+        [51.236728, 6.85644],
+        [51.236873, 6.853784],
+        [51.236416, 6.853747],
+        [51.236943, 6.851971],
+        [51.237205, 6.852309],
+        [51.237501, 6.852626],
+        [51.238609, 6.848516],
+        [51.23826, 6.847567],
+        [51.238636, 6.847143],
+        [51.238817, 6.847749],
+        [51.239059, 6.846773],
+        [51.238549, 6.846108],
+        [51.238693, 6.845448],
+        [51.238196, 6.843731],
+        [51.237753, 6.843431],
+        [51.23692, 6.843688],
+        [51.236718, 6.844697],
+        [51.236248, 6.844611],
+        [51.235536, 6.846135],
+        [51.235227, 6.846006],
+        [51.234622, 6.848624],
+        [51.233783, 6.850528],
+        [51.233867, 6.850652],
+        [51.233638, 6.85107],
+        [51.233578, 6.850968],
+        [51.233047, 6.851864],
+        [51.233373, 6.852416],
+        [51.233181, 6.852824],
+        [51.23215, 6.850834],
+        [51.233561, 6.84901],
+        [51.234286, 6.847208],
+        [51.234676, 6.845212],
+        [51.23434, 6.845169],
+        [51.234367, 6.84474],
+        [51.233776, 6.844633],
+        [51.233897, 6.843967],
+        [51.233212, 6.843259],
+        [51.232943, 6.843495],
+        [51.231989, 6.842251],
+        [51.232983, 6.83989],
+        [51.233427, 6.840255],
+        [51.233413, 6.84077],
+        [51.234784, 6.84135],
+        [51.235012, 6.841929],
+        [51.235428, 6.842229],
+        [51.235993, 6.840491],
+        [51.237911, 6.837058],
+        [51.238411, 6.837809],
+        [51.238676, 6.837621],
+        [51.239126, 6.837836],
+        [51.239502, 6.837181],
+        [51.240409, 6.838673],
+        [51.241145, 6.84238],
+        [51.241219, 6.842841],
+        [51.241971, 6.846414],
+        [51.242589, 6.848463],
+        [51.243054, 6.850142],
+        [51.243264, 6.850029],
+        [51.243454, 6.850622],
+        [51.243156, 6.850941],
+        [51.243284, 6.851319],
+        [51.243077, 6.851558],
+        [51.242955, 6.85111],
+        [51.242468, 6.851582],
+        [51.242483, 6.852264],
+        [51.242152, 6.852301],
+        [51.242078, 6.85254],
+        [51.241528, 6.852559],
+        [51.241261, 6.852333],
+        [51.241428, 6.851773],
+        [51.240379, 6.85096],
+        [51.240119, 6.851931],
+        [51.239345, 6.851427],
+        [51.239526, 6.850576],
+        [51.239214, 6.850365],
+        [51.238816, 6.85218],
+        [51.238718, 6.852719],
+        [51.238478, 6.85254]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-9a766116-6093-410a-9330-bc7bfc0eb646",
+      "kind": "racksOnly",
+      "name": "Bilk S",
+      "ring": [
+        [51.209558, 6.77084],
+        [51.207539, 6.773871],
+        [51.207492, 6.773736],
+        [51.207199, 6.773871],
+        [51.207391, 6.774901],
+        [51.20768, 6.774761],
+        [51.207539, 6.773871],
+        [51.209558, 6.77084],
+        [51.208927, 6.770759],
+        [51.209004, 6.77173],
+        [51.210147, 6.771816],
+        [51.210167, 6.771221],
+        [51.210661, 6.771231],
+        [51.210543, 6.773629],
+        [51.21103, 6.773672],
+        [51.211138, 6.777631],
+        [51.210996, 6.778275],
+        [51.210506, 6.778114],
+        [51.210008, 6.778087],
+        [51.210425, 6.779895],
+        [51.208752, 6.780683],
+        [51.208657, 6.779906],
+        [51.208281, 6.780093],
+        [51.208049, 6.778634],
+        [51.206775, 6.779192],
+        [51.206379, 6.780056],
+        [51.206234, 6.781048],
+        [51.205623, 6.781204],
+        [51.205539, 6.780785],
+        [51.205391, 6.779616],
+        [51.205126, 6.77806],
+        [51.20398, 6.777926],
+        [51.204033, 6.777229],
+        [51.203046, 6.777234],
+        [51.203099, 6.77614],
+        [51.204147, 6.776161],
+        [51.204187, 6.773887],
+        [51.203328, 6.773136],
+        [51.203609, 6.771569],
+        [51.203701, 6.77114],
+        [51.204363, 6.771591],
+        [51.204863, 6.77195],
+        [51.204961, 6.771537],
+        [51.205492, 6.771837],
+        [51.20609, 6.769482],
+        [51.205714, 6.769091],
+        [51.206013, 6.768367],
+        [51.206191, 6.768603],
+        [51.206379, 6.76893],
+        [51.207105, 6.767541],
+        [51.207451, 6.766897],
+        [51.207798, 6.767009],
+        [51.208063, 6.766827],
+        [51.208389, 6.766559],
+        [51.208774, 6.766383],
+        [51.209685, 6.76858]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-9b3f7b91-e1f7-4687-952a-6bc3e0e09905",
+      "kind": "racksOnly",
+      "name": "Messe / Arena",
+      "ring": [
+        [51.257575, 6.753872],
+        [51.256638, 6.754156],
+        [51.256792, 6.755208],
+        [51.256087, 6.755438],
+        [51.255933, 6.754044],
+        [51.254795, 6.75443],
+        [51.254573, 6.752032],
+        [51.254227, 6.751807],
+        [51.253724, 6.749747],
+        [51.253287, 6.748985],
+        [51.2537, 6.747472],
+        [51.253831, 6.747054],
+        [51.253388, 6.746678],
+        [51.255547, 6.738369],
+        [51.257632, 6.730617],
+        [51.258511, 6.731384],
+        [51.259113, 6.731856],
+        [51.259676, 6.731202],
+        [51.259787, 6.731535],
+        [51.260545, 6.730263],
+        [51.261512, 6.728128],
+        [51.262164, 6.726004],
+        [51.262858, 6.7255],
+        [51.263728, 6.72543],
+        [51.264335, 6.725457],
+        [51.264849, 6.725703],
+        [51.265457, 6.726251],
+        [51.265285, 6.726825],
+        [51.265258, 6.727763],
+        [51.265534, 6.729394],
+        [51.265859, 6.730789],
+        [51.266197, 6.732441],
+        [51.264453, 6.734662],
+        [51.26544, 6.736363],
+        [51.264234, 6.737763],
+        [51.263134, 6.739308],
+        [51.263034, 6.739946],
+        [51.265988, 6.750332],
+        [51.266832, 6.753432],
+        [51.26552, 6.754382],
+        [51.265128, 6.754333],
+        [51.264584, 6.753845],
+        [51.26026, 6.755202],
+        [51.260394, 6.756018],
+        [51.259192, 6.756565],
+        [51.258961, 6.754591],
+        [51.257749, 6.754886]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-9c31d8c6-2c47-4d16-8845-3d9bdd691744",
+      "kind": "racksOnly",
+      "name": "Aachener Platz",
+      "ring": [
+        [51.196764, 6.769432],
+        [51.19703, 6.769735],
+        [51.196906, 6.770287],
+        [51.195759, 6.770754],
+        [51.195322, 6.768284],
+        [51.195415, 6.767849],
+        [51.1964, 6.767401]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-38f898b9-6065-4fe0-a544-e927f7a5e68e",
+      "kind": "racksOnly",
+      "name": "Graf-Recke-Straße",
+      "ring": [
+        [51.241084, 6.808369],
+        [51.240634, 6.808868],
+        [51.241202, 6.810188],
+        [51.240963, 6.810461],
+        [51.241155, 6.811051],
+        [51.24147, 6.810601],
+        [51.241581, 6.810923],
+        [51.241984, 6.810408],
+        [51.24189, 6.81015],
+        [51.242004, 6.810011],
+        [51.24182, 6.809506],
+        [51.241655, 6.809683]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-44d7d35e-d6e4-4da7-a05a-9eb226305a55",
+      "kind": "racksOnly",
+      "name": "Rath Mitte S",
+      "ring": [
+        [51.261579, 6.809229],
+        [51.261851, 6.807201],
+        [51.261213, 6.806901],
+        [51.261082, 6.807695],
+        [51.260146, 6.807287],
+        [51.259985, 6.807121],
+        [51.259875, 6.807349],
+        [51.259716, 6.807174],
+        [51.259739, 6.80711],
+        [51.259382, 6.80678],
+        [51.259189, 6.807294],
+        [51.259128, 6.807325],
+        [51.258982, 6.807787],
+        [51.259009, 6.807831],
+        [51.259494, 6.808429],
+        [51.259394, 6.809143],
+        [51.259622, 6.809374],
+        [51.259807, 6.808623],
+        [51.260933, 6.809878],
+        [51.260769, 6.811063],
+        [51.260575, 6.812197],
+        [51.260552, 6.813417],
+        [51.26053, 6.813625],
+        [51.260243, 6.813901],
+        [51.2602, 6.813567],
+        [51.260272, 6.813189],
+        [51.260215, 6.812686],
+        [51.259862, 6.812811],
+        [51.259963, 6.8134],
+        [51.25991, 6.813609],
+        [51.259976, 6.814271],
+        [51.260069, 6.814415],
+        [51.259683, 6.815248],
+        [51.259972, 6.815633],
+        [51.260523, 6.814861],
+        [51.260722, 6.815634],
+        [51.26119, 6.817699],
+        [51.261633, 6.818879],
+        [51.263474, 6.821181],
+        [51.26379, 6.822693],
+        [51.26436, 6.822393],
+        [51.264516, 6.82088],
+        [51.264125, 6.819979],
+        [51.26377, 6.819743],
+        [51.262595, 6.811203],
+        [51.262864, 6.810194],
+        [51.262192, 6.809594]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-68f63824-f3a8-4e5d-bf1e-e8e6b923a045",
+      "kind": "racksOnly",
+      "name": "Engerstraße",
+      "ring": [
+        [51.234101, 6.816042],
+        [51.234717, 6.817422],
+        [51.234085, 6.81845],
+        [51.233466, 6.817723],
+        [51.230686, 6.816896],
+        [51.230872, 6.815854],
+        [51.231231, 6.814471],
+        [51.231387, 6.813808],
+        [51.231761, 6.81297],
+        [51.232097, 6.812405],
+        [51.232062, 6.811587],
+        [51.232913, 6.811096]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-90d562ec-5d3d-43f5-a778-0fe8025ee928",
+      "kind": "racksOnly",
+      "name": "Buschgasser Weg",
+      "ring": [
+        [51.314091, 6.753497],
+        [51.313833, 6.752821],
+        [51.313246, 6.753652],
+        [51.313142, 6.753523],
+        [51.313038, 6.753604],
+        [51.312901, 6.753818],
+        [51.31281, 6.753985],
+        [51.312669, 6.753845],
+        [51.312508, 6.754119],
+        [51.312626, 6.754344],
+        [51.312756, 6.754467],
+        [51.312874, 6.754687],
+        [51.312411, 6.755664],
+        [51.312538, 6.75583],
+        [51.312733, 6.755401],
+        [51.313115, 6.755868],
+        [51.313715, 6.75443],
+        [51.313561, 6.75413]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-152f1fc7-5e6f-4ef6-a12a-e75affb5ef3a",
+      "kind": "racksOnly",
+      "name": "Hellerhof",
+      "ring": [
+        [51.132604, 6.906436],
+        [51.131804, 6.907383],
+        [51.131934, 6.907884],
+        [51.132395, 6.909172],
+        [51.132695, 6.908863],
+        [51.132954, 6.909403],
+        [51.133385, 6.908963],
+        [51.133067, 6.908252],
+        [51.133236, 6.908032]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-4850e213-2345-4a27-b84a-397f1ffb220a",
+      "kind": "racksOnly",
+      "name": "Yorckstraße - Münsterstraße",
+      "ring": [
+        [51.245221, 6.794601],
+        [51.244056, 6.79499],
+        [51.243952, 6.793976],
+        [51.244355, 6.793815],
+        [51.244594, 6.793333],
+        [51.244537, 6.792668],
+        [51.245504, 6.792431],
+        [51.24551, 6.792292],
+        [51.245739, 6.792163],
+        [51.245801, 6.792364],
+        [51.246305, 6.792262],
+        [51.24608, 6.79167],
+        [51.246222, 6.791517],
+        [51.247033, 6.793799],
+        [51.246873, 6.793908],
+        [51.246172, 6.794282],
+        [51.245812, 6.794427]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-7033e755-57f6-4bd4-a812-57782e2b22f4",
+      "kind": "racksOnly",
+      "name": "TSV Urdenbach",
+      "ring": [
+        [51.147799, 6.878383],
+        [51.147776, 6.878214],
+        [51.147895, 6.878178],
+        [51.147931, 6.878465],
+        [51.149727, 6.877913],
+        [51.149269, 6.875231],
+        [51.149565, 6.874952],
+        [51.149081, 6.872978],
+        [51.149461, 6.872662],
+        [51.149225, 6.872115],
+        [51.148845, 6.87142],
+        [51.148616, 6.870913],
+        [51.14871, 6.870478],
+        [51.14832, 6.870376],
+        [51.148145, 6.870677],
+        [51.148579, 6.871578],
+        [51.145305, 6.872098],
+        [51.145224, 6.873568],
+        [51.145056, 6.875811],
+        [51.144948, 6.879812],
+        [51.146495, 6.878844]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-47608c22-37d7-4bfc-896d-5a2ae2469740",
+      "kind": "racksOnly",
+      "name": "Lichtenbroicher Graben",
+      "ring": [
+        [51.285863, 6.790374],
+        [51.285441, 6.791218],
+        [51.284521, 6.789873],
+        [51.284999, 6.789092]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-67313ad5-0051-4e9b-a378-281cb7678fa7",
+      "kind": "racksOnly",
+      "name": "Saarbrücker Straße",
+      "ring": [
+        [51.248789, 6.780451],
+        [51.248339, 6.778945],
+        [51.24811, 6.779168],
+        [51.247827, 6.778248],
+        [51.247441, 6.77859],
+        [51.247747, 6.779688],
+        [51.247302, 6.78017],
+        [51.247507, 6.780773],
+        [51.247918, 6.780327],
+        [51.248106, 6.781139],
+        [51.24861, 6.780846],
+        [51.248548, 6.780606]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-308489c6-a03b-4b36-ac48-497745a84705",
+      "kind": "racksOnly",
+      "name": "Hamm S",
+      "ring": [
+        [51.211374, 6.74047],
+        [51.212258, 6.743925],
+        [51.211373, 6.744876],
+        [51.211014, 6.743334],
+        [51.21036, 6.743781],
+        [51.209937, 6.74291],
+        [51.208854, 6.742009],
+        [51.209236, 6.741062],
+        [51.209701, 6.7415],
+        [51.209977, 6.739774],
+        [51.209883, 6.739029],
+        [51.209698, 6.738817],
+        [51.209685, 6.738318],
+        [51.210619, 6.737956]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-3093908c-528b-4426-8da5-cdff08800168",
+      "kind": "racksOnly",
+      "name": "Heinrich-Heine-Gesamtschule",
+      "ring": [
+        [51.247105, 6.818988],
+        [51.247003, 6.818272],
+        [51.246479, 6.818452],
+        [51.245964, 6.818819],
+        [51.245663, 6.817628],
+        [51.244735, 6.818465],
+        [51.245243, 6.819983],
+        [51.246071, 6.819468]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-8169567f-0221-4239-bd20-1051f1e254e4",
+      "kind": "racksOnly",
+      "name": "Werstener Dorfstraße",
+      "ring": [
+        [51.194009, 6.81272],
+        [51.196282, 6.816266],
+        [51.19639, 6.816555],
+        [51.196067, 6.816834],
+        [51.195963, 6.816555],
+        [51.196282, 6.816266],
+        [51.194009, 6.81272],
+        [51.194078, 6.813024],
+        [51.194113, 6.812995],
+        [51.194165, 6.813268],
+        [51.194169, 6.813401],
+        [51.194146, 6.813591],
+        [51.194413, 6.813428],
+        [51.194157, 6.812017],
+        [51.195643, 6.811202],
+        [51.196423, 6.810794],
+        [51.196611, 6.81103],
+        [51.196901, 6.812468],
+        [51.196326, 6.8128],
+        [51.19682, 6.8153],
+        [51.197526, 6.816389],
+        [51.195916, 6.821115],
+        [51.1941, 6.81994],
+        [51.193831, 6.820477],
+        [51.193815, 6.821195],
+        [51.192782, 6.821303],
+        [51.191992, 6.823137],
+        [51.191717, 6.822757],
+        [51.191491, 6.82281],
+        [51.191021, 6.822419],
+        [51.19171, 6.819747],
+        [51.191915, 6.818883],
+        [51.192214, 6.81729],
+        [51.191831, 6.817129],
+        [51.1921, 6.815708],
+        [51.191327, 6.816051],
+        [51.191236, 6.815128],
+        [51.191841, 6.814924],
+        [51.191797, 6.814227],
+        [51.19215, 6.814168],
+        [51.192238, 6.812913],
+        [51.19329, 6.813048],
+        [51.193474, 6.81298]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-83879631-ce7a-44dc-88f3-423853af6a87",
+      "kind": "racksOnly",
+      "name": "Altenbrückstraße",
+      "ring": [
+        [51.18168, 6.864709],
+        [51.181939, 6.864446],
+        [51.181783, 6.863859],
+        [51.182403, 6.863387],
+        [51.182694, 6.864631],
+        [51.182327, 6.864907],
+        [51.182395, 6.865264],
+        [51.182166, 6.865514]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-a18e9c46-480f-43dc-93df-1838b0aeaad8",
+      "kind": "racksOnly",
+      "name": "Friedensplätzchen",
+      "ring": [
+        [51.211718, 6.766124],
+        [51.211552, 6.769565],
+        [51.213003, 6.769865],
+        [51.213613, 6.767711]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-a48b1c77-3e89-4753-a017-7e274a59067b",
+      "kind": "racksOnly",
+      "name": "Staufenplatz",
+      "ring": [
+        [51.242105, 6.825905],
+        [51.241743, 6.825857],
+        [51.241719, 6.826195],
+        [51.241531, 6.826243],
+        [51.241353, 6.825691],
+        [51.241089, 6.825189],
+        [51.241437, 6.824715],
+        [51.240622, 6.823411],
+        [51.240275, 6.82399],
+        [51.240013, 6.823475],
+        [51.239373, 6.824867],
+        [51.241289, 6.827407],
+        [51.241706, 6.827177],
+        [51.24188, 6.82789],
+        [51.241904, 6.828647],
+        [51.242337, 6.828652],
+        [51.242609, 6.828376],
+        [51.242471, 6.827579]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-a90d7a99-ae17-48d8-97c1-63a8e0e36a2a",
+      "kind": "racksOnly",
+      "name": "Stadttor",
+      "ring": [
+        [51.215027, 6.760825],
+        [51.214693, 6.761283],
+        [51.214482, 6.763426],
+        [51.213591, 6.763356],
+        [51.213524, 6.764209],
+        [51.215402, 6.764134],
+        [51.215419, 6.763716],
+        [51.215626, 6.763493],
+        [51.215993, 6.762643],
+        [51.216231, 6.761334],
+        [51.21612, 6.761103]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-ac3ca40c-915b-478d-982b-c05d3048465e",
+      "kind": "racksOnly",
+      "name": "Gebiet A",
+      "ring": [
+        [51.214236, 6.774691],
+        [51.214236, 6.774208],
+        [51.214293, 6.772754],
+        [51.213846, 6.772588],
+        [51.213853, 6.773564],
+        [51.213248, 6.773554],
+        [51.21328, 6.774696],
+        [51.213275, 6.77814],
+        [51.213752, 6.778146],
+        [51.213759, 6.778993],
+        [51.214391, 6.778983],
+        [51.214395, 6.779256],
+        [51.21434, 6.781745],
+        [51.214334, 6.782636],
+        [51.212082, 6.782684],
+        [51.210906, 6.782663],
+        [51.210936, 6.784685],
+        [51.211013, 6.786637],
+        [51.211047, 6.787914],
+        [51.211276, 6.788311],
+        [51.212283, 6.787152],
+        [51.212358, 6.787077],
+        [51.212896, 6.788386],
+        [51.212264, 6.790049],
+        [51.211524, 6.791669],
+        [51.212143, 6.792613],
+        [51.212566, 6.791797],
+        [51.212464, 6.792981],
+        [51.212333, 6.79333],
+        [51.211857, 6.793311],
+        [51.211852, 6.794054],
+        [51.212309, 6.794032],
+        [51.212465, 6.794276],
+        [51.212464, 6.794403],
+        [51.212321, 6.795698],
+        [51.212459, 6.797168],
+        [51.211934, 6.798085],
+        [51.211834, 6.798096],
+        [51.2118, 6.799051],
+        [51.211111, 6.800344],
+        [51.21097, 6.800322],
+        [51.211057, 6.799378],
+        [51.208732, 6.799099],
+        [51.208261, 6.807307],
+        [51.20775, 6.807671],
+        [51.207801, 6.806427],
+        [51.206907, 6.806196],
+        [51.206231, 6.806534],
+        [51.206971, 6.810552],
+        [51.20734, 6.809865],
+        [51.208439, 6.808707],
+        [51.208036, 6.811598],
+        [51.207317, 6.819092],
+        [51.20807, 6.81839],
+        [51.210046, 6.815316],
+        [51.21057, 6.813116],
+        [51.210936, 6.811791],
+        [51.21143, 6.812043],
+        [51.211817, 6.811518],
+        [51.212143, 6.812365],
+        [51.214512, 6.810279],
+        [51.214015, 6.808798],
+        [51.213762, 6.808176],
+        [51.213769, 6.807022],
+        [51.214542, 6.80632],
+        [51.214109, 6.805123],
+        [51.213379, 6.804431],
+        [51.21301, 6.805687],
+        [51.212207, 6.805193],
+        [51.212354, 6.804496],
+        [51.212818, 6.802629],
+        [51.212351, 6.802275],
+        [51.21258, 6.801213],
+        [51.214441, 6.801143],
+        [51.214384, 6.801336],
+        [51.214747, 6.801696],
+        [51.215255, 6.800682],
+        [51.21508, 6.800516],
+        [51.21512, 6.800296],
+        [51.214757, 6.799958],
+        [51.214663, 6.800151],
+        [51.214307, 6.799749],
+        [51.214028, 6.800296],
+        [51.212738, 6.80014],
+        [51.212845, 6.799158],
+        [51.213154, 6.798359],
+        [51.213883, 6.797608],
+        [51.213907, 6.797833],
+        [51.214203, 6.797812],
+        [51.214304, 6.797527],
+        [51.214727, 6.798053],
+        [51.214945, 6.797286],
+        [51.214653, 6.797034],
+        [51.214804, 6.796857],
+        [51.214606, 6.796186],
+        [51.214411, 6.795977],
+        [51.213833, 6.795913],
+        [51.213618, 6.795564],
+        [51.213376, 6.795553],
+        [51.2134, 6.79425],
+        [51.213915, 6.79426],
+        [51.213956, 6.792839],
+        [51.214295, 6.792858],
+        [51.21431, 6.791015],
+        [51.214619, 6.79102],
+        [51.214774, 6.791044],
+        [51.214791, 6.789875],
+        [51.214653, 6.789896],
+        [51.214663, 6.788097],
+        [51.21502, 6.788129],
+        [51.215335, 6.787517],
+        [51.215376, 6.786745],
+        [51.215873, 6.785843],
+        [51.217462, 6.783156],
+        [51.21797, 6.783489],
+        [51.217931, 6.784905],
+        [51.218551, 6.784948],
+        [51.218941, 6.784878],
+        [51.218962, 6.785187],
+        [51.219103, 6.786231],
+        [51.219271, 6.787232],
+        [51.219305, 6.787392],
+        [51.219038, 6.78748],
+        [51.218796, 6.787507],
+        [51.218742, 6.78793],
+        [51.218786, 6.788284],
+        [51.21884, 6.788966],
+        [51.219137, 6.788636],
+        [51.21935, 6.789947],
+        [51.218356, 6.789974],
+        [51.218003, 6.789958],
+        [51.217929, 6.789676],
+        [51.217754, 6.789341],
+        [51.217686, 6.789339],
+        [51.217264, 6.789832],
+        [51.217133, 6.78881],
+        [51.216726, 6.788714],
+        [51.216612, 6.788939],
+        [51.216353, 6.789583],
+        [51.216115, 6.789561],
+        [51.216115, 6.790012],
+        [51.216545, 6.790071],
+        [51.216552, 6.790393],
+        [51.216471, 6.791326],
+        [51.215905, 6.791066],
+        [51.215824, 6.792203],
+        [51.216138, 6.792133],
+        [51.21653, 6.792088],
+        [51.216933, 6.792436],
+        [51.216484, 6.794057],
+        [51.217192, 6.794631],
+        [51.217173, 6.794952],
+        [51.217519, 6.794979],
+        [51.218114, 6.795784],
+        [51.218363, 6.795746],
+        [51.218319, 6.795033],
+        [51.218655, 6.794491],
+        [51.218069, 6.793563],
+        [51.217832, 6.793067],
+        [51.21747, 6.792474],
+        [51.21759, 6.790575],
+        [51.218097, 6.790763],
+        [51.218571, 6.791272],
+        [51.219309, 6.792181],
+        [51.220505, 6.793697],
+        [51.221718, 6.795008],
+        [51.22305, 6.796048],
+        [51.223299, 6.796717],
+        [51.22349, 6.797146],
+        [51.223449, 6.797881],
+        [51.223806, 6.798117],
+        [51.2239, 6.796808],
+        [51.224336, 6.796379],
+        [51.224652, 6.796471],
+        [51.225196, 6.797601],
+        [51.225701, 6.798505],
+        [51.226111, 6.799122],
+        [51.22625, 6.799783],
+        [51.227148, 6.801561],
+        [51.228277, 6.803439],
+        [51.227551, 6.805091],
+        [51.22778, 6.806454],
+        [51.227484, 6.808514],
+        [51.227592, 6.809157],
+        [51.228855, 6.808524],
+        [51.229056, 6.809275],
+        [51.229829, 6.808771],
+        [51.22948, 6.807344],
+        [51.228156, 6.806357],
+        [51.228015, 6.805231],
+        [51.22995, 6.802409],
+        [51.229674, 6.801744],
+        [51.229439, 6.801036],
+        [51.229977, 6.800167],
+        [51.230111, 6.80081],
+        [51.230642, 6.800446],
+        [51.230548, 6.799866],
+        [51.231556, 6.799458],
+        [51.233054, 6.804147],
+        [51.233658, 6.803203],
+        [51.23388, 6.803364],
+        [51.234155, 6.802902],
+        [51.234034, 6.802709],
+        [51.234202, 6.802409],
+        [51.233833, 6.801797],
+        [51.233685, 6.802044],
+        [51.232657, 6.800156],
+        [51.232093, 6.79889],
+        [51.232684, 6.798117],
+        [51.233054, 6.798311],
+        [51.233678, 6.799469],
+        [51.234021, 6.798901],
+        [51.23351, 6.798085],
+        [51.235264, 6.798558],
+        [51.235946, 6.797956],
+        [51.236997, 6.799078],
+        [51.236255, 6.800478],
+        [51.236802, 6.801041],
+        [51.237128, 6.800118],
+        [51.237968, 6.801379],
+        [51.237511, 6.802693],
+        [51.238428, 6.80471],
+        [51.239761, 6.80301],
+        [51.239492, 6.801572],
+        [51.240396, 6.80007],
+        [51.238233, 6.798589],
+        [51.238125, 6.798064],
+        [51.238575, 6.797989],
+        [51.238525, 6.797399],
+        [51.237, 6.797329],
+        [51.23703, 6.796326],
+        [51.240114, 6.796293],
+        [51.241255, 6.79595],
+        [51.242716, 6.795151],
+        [51.242595, 6.792061],
+        [51.241904, 6.792007],
+        [51.241, 6.791959],
+        [51.240983, 6.790655],
+        [51.241094, 6.789384],
+        [51.240846, 6.788097],
+        [51.241494, 6.787957],
+        [51.241437, 6.787448],
+        [51.241568, 6.78682],
+        [51.241484, 6.78638],
+        [51.241944, 6.785672],
+        [51.241397, 6.784728],
+        [51.241219, 6.785044],
+        [51.240688, 6.784009],
+        [51.241172, 6.783542],
+        [51.241622, 6.78277],
+        [51.240725, 6.780002],
+        [51.241286, 6.77953],
+        [51.240819, 6.777915],
+        [51.240634, 6.778087],
+        [51.240543, 6.777717],
+        [51.240114, 6.778076],
+        [51.239818, 6.777148],
+        [51.240201, 6.77688],
+        [51.239912, 6.775834],
+        [51.239271, 6.776488],
+        [51.238942, 6.775539],
+        [51.238491, 6.776],
+        [51.238824, 6.777153],
+        [51.238082, 6.777706],
+        [51.237803, 6.778307],
+        [51.237407, 6.778773],
+        [51.23736, 6.777717],
+        [51.237, 6.777786],
+        [51.23697, 6.777261],
+        [51.235623, 6.778172],
+        [51.235318, 6.778087],
+        [51.235086, 6.778135],
+        [51.234199, 6.778752],
+        [51.234414, 6.779728],
+        [51.233742, 6.780565],
+        [51.233363, 6.77953],
+        [51.233206, 6.778926],
+        [51.233095, 6.778238],
+        [51.233064, 6.777933],
+        [51.233665, 6.775501],
+        [51.234019, 6.774004],
+        [51.234223, 6.773851],
+        [51.234144, 6.773503],
+        [51.234172, 6.773307],
+        [51.235596, 6.773304],
+        [51.235593, 6.772167],
+        [51.23614, 6.772167],
+        [51.236406, 6.772312],
+        [51.23699, 6.772315],
+        [51.237339, 6.772384],
+        [51.238216, 6.772186],
+        [51.239318, 6.771875],
+        [51.239257, 6.771606],
+        [51.240261, 6.771344],
+        [51.240658, 6.771199],
+        [51.241027, 6.771027],
+        [51.240465, 6.767881],
+        [51.237435, 6.769541],
+        [51.23435, 6.770512],
+        [51.233927, 6.770555],
+        [51.231777, 6.770705],
+        [51.230175, 6.770646],
+        [51.229147, 6.77056],
+        [51.226747, 6.770334],
+        [51.224839, 6.769403],
+        [51.223184, 6.76842],
+        [51.221565, 6.767363],
+        [51.221124, 6.766854],
+        [51.220694, 6.766304],
+        [51.220157, 6.76548],
+        [51.219683, 6.764598],
+        [51.2183, 6.766143],
+        [51.217916, 6.767715],
+        [51.217825, 6.768042],
+        [51.217286, 6.769837],
+        [51.21626, 6.772502],
+        [51.215812, 6.773839],
+        [51.215746, 6.774229],
+        [51.215737, 6.774769]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-b3ce47d9-cf26-4a5b-a72c-074e71c55522",
+      "kind": "racksOnly",
+      "name": "Bankstraße",
+      "ring": [
+        [51.244207, 6.775335],
+        [51.24404, 6.77475],
+        [51.243405, 6.775255],
+        [51.243166, 6.774573],
+        [51.242857, 6.774799],
+        [51.243079, 6.775619],
+        [51.242552, 6.776059],
+        [51.2427, 6.77659],
+        [51.24325, 6.77614],
+        [51.243519, 6.776987],
+        [51.243858, 6.776757],
+        [51.24361, 6.775877]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-b77567a5-f883-4b8e-b6b9-df2760f49117",
+      "kind": "racksOnly",
+      "name": "Sankt-Hubertus-Ring",
+      "ring": [
+        [51.170686, 6.815048],
+        [51.170874, 6.814994],
+        [51.17093, 6.811805],
+        [51.17036, 6.811403],
+        [51.169864, 6.811419],
+        [51.169771, 6.811652],
+        [51.169791, 6.812146],
+        [51.169882, 6.8128],
+        [51.169445, 6.813101],
+        [51.169576, 6.814082],
+        [51.16967, 6.814699],
+        [51.169714, 6.815407],
+        [51.169731, 6.815461]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-b889146c-adfd-45df-a003-2a66cef71586",
+      "kind": "racksOnly",
+      "name": "Flughafen",
+      "ring": [
+        [51.291429, 6.787017],
+        [51.291441, 6.787775],
+        [51.29096, 6.787821],
+        [51.290937, 6.787075]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-c746da04-fbdb-41fa-aca2-3e94973e58b6",
+      "kind": "racksOnly",
+      "name": "Universtiät",
+      "ring": [
+        [51.198114, 6.781929],
+        [51.198187, 6.782294],
+        [51.197131, 6.782885],
+        [51.196385, 6.783274],
+        [51.196313, 6.782912],
+        [51.196074, 6.782751],
+        [51.195492, 6.78305],
+        [51.1956, 6.783549],
+        [51.1931, 6.784933],
+        [51.19253, 6.785509],
+        [51.192102, 6.786316],
+        [51.189792, 6.788529],
+        [51.188082, 6.79052],
+        [51.187677, 6.79111],
+        [51.187486, 6.791423],
+        [51.187319, 6.791732],
+        [51.186978, 6.792287],
+        [51.186643, 6.792922],
+        [51.185806, 6.794617],
+        [51.184984, 6.79633],
+        [51.18386, 6.798853],
+        [51.183595, 6.799543],
+        [51.182782, 6.801465],
+        [51.182595, 6.801218],
+        [51.182027, 6.802149],
+        [51.182166, 6.802466],
+        [51.18141, 6.803329],
+        [51.181038, 6.803703],
+        [51.180741, 6.804239],
+        [51.180914, 6.804666],
+        [51.181099, 6.804721],
+        [51.181294, 6.804712],
+        [51.182195, 6.804417],
+        [51.182632, 6.804216],
+        [51.183074, 6.804151],
+        [51.183286, 6.804161],
+        [51.183503, 6.804215],
+        [51.184577, 6.804638],
+        [51.185037, 6.804752],
+        [51.186221, 6.805138],
+        [51.186821, 6.805268],
+        [51.187427, 6.805414],
+        [51.188632, 6.805729],
+        [51.189198, 6.805859],
+        [51.189664, 6.802651],
+        [51.190594, 6.801699],
+        [51.191011, 6.802911],
+        [51.193161, 6.805529],
+        [51.193374, 6.805576],
+        [51.193889, 6.806199],
+        [51.19449, 6.804686],
+        [51.195025, 6.803268],
+        [51.195526, 6.801635],
+        [51.196281, 6.799051],
+        [51.196619, 6.797787],
+        [51.196943, 6.796896],
+        [51.197214, 6.796205],
+        [51.197549, 6.795387],
+        [51.198209, 6.793888],
+        [51.198901, 6.792383],
+        [51.199592, 6.790933],
+        [51.20021, 6.791686],
+        [51.201018, 6.789804],
+        [51.200365, 6.788979],
+        [51.201687, 6.785984],
+        [51.202151, 6.785042],
+        [51.202433, 6.785333],
+        [51.203076, 6.783875],
+        [51.203529, 6.78451],
+        [51.203642, 6.784302],
+        [51.203017, 6.783157],
+        [51.202919, 6.782925],
+        [51.20277, 6.782395],
+        [51.201399, 6.782907],
+        [51.200631, 6.783069],
+        [51.199897, 6.7834],
+        [51.199216, 6.783331],
+        [51.198774, 6.782985],
+        [51.198808, 6.782607],
+        [51.198714, 6.78201],
+        [51.198454, 6.781767]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-cdbf04ff-f8a7-4d8e-a3ba-383bf062dd8c",
+      "kind": "racksOnly",
+      "name": "Schloß-Gymnasium Benrath",
+      "ring": [
+        [51.166334, 6.860574],
+        [51.166357, 6.862738],
+        [51.166431, 6.865141],
+        [51.166707, 6.865146],
+        [51.166791, 6.869642],
+        [51.16776, 6.869502],
+        [51.167834, 6.863397],
+        [51.167982, 6.860372]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d3d2dd1c-0338-4973-9516-a50d8cd4c939",
+      "kind": "racksOnly",
+      "name": "Hansaallee",
+      "ring": [
+        [51.241014, 6.73243],
+        [51.241198, 6.73243],
+        [51.241343, 6.732844],
+        [51.241662, 6.733139],
+        [51.241719, 6.733975],
+        [51.241198, 6.734056],
+        [51.2414, 6.735376],
+        [51.241796, 6.734254],
+        [51.242649, 6.735113],
+        [51.242156, 6.736577],
+        [51.241652, 6.736915],
+        [51.241417, 6.737001],
+        [51.241209, 6.736325],
+        [51.240893, 6.736561],
+        [51.240272, 6.73706],
+        [51.24047, 6.737344],
+        [51.240238, 6.7378],
+        [51.239452, 6.736872],
+        [51.238414, 6.735874],
+        [51.238001, 6.735542],
+        [51.239647, 6.730607],
+        [51.239257, 6.730188],
+        [51.238592, 6.732205],
+        [51.237303, 6.731132],
+        [51.237175, 6.73051],
+        [51.23694, 6.730295],
+        [51.237403, 6.728482],
+        [51.237813, 6.72668],
+        [51.237444, 6.726712],
+        [51.237518, 6.724378],
+        [51.237514, 6.723316],
+        [51.23744, 6.722265],
+        [51.237437, 6.721305],
+        [51.238841, 6.721455],
+        [51.238673, 6.724105],
+        [51.238539, 6.725639],
+        [51.238418, 6.726733],
+        [51.237974, 6.728761],
+        [51.239324, 6.729888],
+        [51.240125, 6.72753],
+        [51.24031, 6.726945],
+        [51.241024, 6.727568],
+        [51.243818, 6.728643],
+        [51.24408, 6.727281],
+        [51.245007, 6.727538],
+        [51.244913, 6.72963],
+        [51.244852, 6.730113],
+        [51.243912, 6.73007],
+        [51.243415, 6.729888],
+        [51.243267, 6.73095],
+        [51.24093, 6.731572]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d5afb501-ced2-4ca4-b661-968935c487ef",
+      "kind": "racksOnly",
+      "name": "Robert-Schumann-Hochschule Georg-Glock-Straße",
+      "ring": [
+        [51.250386, 6.769611],
+        [51.249797, 6.770295],
+        [51.249878, 6.770581],
+        [51.249632, 6.770915],
+        [51.249757, 6.771152],
+        [51.250186, 6.77082],
+        [51.250416, 6.770404],
+        [51.250555, 6.770402],
+        [51.250535, 6.769925]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d8c54f93-3d2b-4d8e-bde7-c4f82533e78a",
+      "kind": "racksOnly",
+      "name": "Eller",
+      "ring": [
+        [51.202507, 6.835851],
+        [51.202776, 6.836838],
+        [51.202054, 6.837637],
+        [51.203559, 6.84187],
+        [51.20322, 6.842245],
+        [51.202851, 6.841789],
+        [51.20204, 6.842133],
+        [51.20161, 6.841752],
+        [51.201069, 6.840937],
+        [51.200669, 6.841763],
+        [51.200064, 6.841232],
+        [51.200252, 6.840411],
+        [51.200507, 6.840057],
+        [51.20088, 6.8393],
+        [51.201055, 6.8387],
+        [51.201321, 6.83878],
+        [51.201433, 6.837914],
+        [51.201255, 6.836932]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d13c2147-ef9a-428c-ba84-531c0c9ed8ff",
+      "kind": "racksOnly",
+      "name": "PSD Bank Dome",
+      "ring": [
+        [51.273232, 6.810679],
+        [51.273452, 6.810838],
+        [51.272736, 6.813088],
+        [51.272697, 6.813134],
+        [51.272394, 6.813002],
+        [51.271677, 6.812453],
+        [51.271565, 6.812392],
+        [51.270986, 6.811942],
+        [51.270829, 6.811749],
+        [51.270684, 6.811631],
+        [51.270496, 6.811242],
+        [51.271559, 6.809357]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d43a1eeb-8c20-4bf8-988e-1765d30553bf",
+      "kind": "racksOnly",
+      "name": "Hirschweg",
+      "ring": [
+        [51.271165, 6.828963],
+        [51.270766, 6.828566],
+        [51.270343, 6.829789],
+        [51.269836, 6.829317],
+        [51.269588, 6.830068],
+        [51.271246, 6.831517],
+        [51.271441, 6.83075],
+        [51.270836, 6.830106]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d416b0a0-6cac-4473-a0ad-e915d03061e3",
+      "kind": "racksOnly",
+      "name": "Münsterplatz",
+      "ring": [
+        [51.244852, 6.787992],
+        [51.244742, 6.788235],
+        [51.244639, 6.788428],
+        [51.244552, 6.788311],
+        [51.244372, 6.788551],
+        [51.244614, 6.789309],
+        [51.244354, 6.789481],
+        [51.244066, 6.788722],
+        [51.243579, 6.789274],
+        [51.243374, 6.788834],
+        [51.243974, 6.788196],
+        [51.243632, 6.7875],
+        [51.243428, 6.787675],
+        [51.24333, 6.787192],
+        [51.24352, 6.787068],
+        [51.243727, 6.786807],
+        [51.243631, 6.786611],
+        [51.243857, 6.786201],
+        [51.244016, 6.786442],
+        [51.24421, 6.786282],
+        [51.244361, 6.78671],
+        [51.244267, 6.786832],
+        [51.244644, 6.787622]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-d3200e99-7f88-4861-bfdd-f94e45f543f1",
+      "kind": "racksOnly",
+      "name": "Lierenfeld",
+      "ring": [
+        [51.208928, 6.828604],
+        [51.209478, 6.830063],
+        [51.208162, 6.831951],
+        [51.20796, 6.831565],
+        [51.20644, 6.833775],
+        [51.205891, 6.834011],
+        [51.205391, 6.832767],
+        [51.205045, 6.831844],
+        [51.205344, 6.830857],
+        [51.207019, 6.830578]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-da39b9b5-4d6e-46b8-a4ad-79fc03d0005c",
+      "kind": "racksOnly",
+      "name": "Brandenburgstraße II",
+      "ring": [
+        [51.238753, 6.832345],
+        [51.238445, 6.833028],
+        [51.237682, 6.832257],
+        [51.237954, 6.831526]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-e3ef745c-51d6-436f-ae83-16fa62879949",
+      "kind": "racksOnly",
+      "name": "Klemensplatz",
+      "ring": [
+        [51.299711, 6.738347],
+        [51.299496, 6.739678],
+        [51.301904, 6.740332],
+        [51.303917, 6.74162],
+        [51.305137, 6.742457],
+        [51.304923, 6.744324],
+        [51.305607, 6.744506],
+        [51.305775, 6.741674],
+        [51.302481, 6.739517],
+        [51.301502, 6.738852],
+        [51.30116, 6.737822]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-ebeb49d9-6295-4ee1-bc79-adccc0e5ad54",
+      "kind": "racksOnly",
+      "name": "Jugendherberge Düsseldorf",
+      "ring": [
+        [51.226057, 6.755753],
+        [51.225868, 6.756953],
+        [51.225586, 6.757993],
+        [51.226167, 6.758832],
+        [51.226735, 6.758889],
+        [51.226827, 6.758651],
+        [51.226865, 6.758422],
+        [51.226866, 6.758221],
+        [51.226814, 6.75788],
+        [51.226904, 6.756838]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-f7c43712-8311-49c0-96a5-c29fdf0974b1",
+      "kind": "racksOnly",
+      "name": "Alter Schlachthof",
+      "ring": [
+        [51.249258, 6.787652],
+        [51.249127, 6.787378],
+        [51.248583, 6.787899],
+        [51.24863, 6.788172],
+        [51.248922, 6.789191],
+        [51.248391, 6.789095],
+        [51.248291, 6.788918],
+        [51.247921, 6.789175],
+        [51.247978, 6.789717],
+        [51.24821, 6.789728],
+        [51.248459, 6.790935],
+        [51.249456, 6.790372],
+        [51.249506, 6.790586],
+        [51.249926, 6.790388],
+        [51.249745, 6.789615],
+        [51.249651, 6.788961],
+        [51.249473, 6.78902]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-f9a054c3-6a87-4c93-bd04-c20ef0800b51",
+      "kind": "racksOnly",
+      "name": "Anton-Betz-Straße",
+      "ring": [
+        [51.209125, 6.785538],
+        [51.208339, 6.785924],
+        [51.207556, 6.786327],
+        [51.207861, 6.788151],
+        [51.207908, 6.788381],
+        [51.208453, 6.788076],
+        [51.209011, 6.787287],
+        [51.20936, 6.786879],
+        [51.209518, 6.786649]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-f9fe7449-af1e-4e2f-9fd6-29d240218fa9",
+      "kind": "racksOnly",
+      "name": "Lacombletstraße",
+      "ring": [
+        [51.247026, 6.795438],
+        [51.247219, 6.795263],
+        [51.247283, 6.795414],
+        [51.247421, 6.795292],
+        [51.247716, 6.795975],
+        [51.247656, 6.796046],
+        [51.247531, 6.796149],
+        [51.247139, 6.796389],
+        [51.247016, 6.79615],
+        [51.246981, 6.795907],
+        [51.24715, 6.795711]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-fa301c47-a617-4844-bec4-c79585bd8d63",
+      "kind": "racksOnly",
+      "name": "Robert-Schumann-Hochschule Fischerstraße",
+      "ring": [
+        [51.242606, 6.771559],
+        [51.243076, 6.771859],
+        [51.243133, 6.772095],
+        [51.242656, 6.772621],
+        [51.242313, 6.772921],
+        [51.241981, 6.773162],
+        [51.241823, 6.772159]
+      ]
+    },
+    {
+      "id": "dusseldorf-racks-only-fc67c73a-4550-4e5c-a5ef-0a38155dac51",
+      "kind": "racksOnly",
+      "name": "Fischerstraße - Klever Straße",
+      "ring": [
+        [51.240493, 6.774724],
+        [51.240315, 6.773661],
+        [51.240087, 6.773747],
+        [51.239919, 6.772562],
+        [51.239365, 6.772717],
+        [51.239432, 6.773291],
+        [51.238958, 6.77349],
+        [51.23913, 6.774482],
+        [51.239187, 6.775035],
+        [51.2401, 6.774498],
+        [51.240201, 6.774933]
+      ]
+    }
+  ]
+}

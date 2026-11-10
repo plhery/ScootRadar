@@ -237,6 +237,41 @@
       "zones": 19
     },
     {
+      "id": "augsburg",
+      "place": "Augsburg",
+      "country": "DE",
+      "authority": "Stadt Augsburg",
+      "timeZone": "Europe/Berlin",
+      "source": {
+        "title": "Stadt Augsburg, \"E-Scooter\" (updated 26 May 2026): in the city centre a hired e-scooter may be parked only within the specially marked parking places, or its rental runs on; the city's official online map shows them",
+        "url": "https://www.augsburg.de/buergerservice-rathaus/verkehr/fair-im-verkehr/e-scooter"
+      },
+      "map": {
+        "title": "Stadt Augsburg, Stadtplan, \"Parken\": its e-scooter parking places (\"E-Scooter Stellplatz\", geoportal, ArcGIS)",
+        "url": "https://geoportal.augsburg.de/WebDaten/synserver?project=stadtplan&client=auto&view=parken"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://geodaten.augsburg.de/server/rest/services/Geoportal_Projekte/Verkehr_Mobilit%C3%A4t/MapServer",
+          "layer": 16,
+          "envelope": "10.7,48.2,11.1,48.5",
+          "match": {
+            "SYMBOL": "E-Scooter Stellplatz"
+          },
+          "nameField": "NAM",
+          "nameTrim": "^(Stellplatz|Standort) "
+        }
+      ],
+      "bounds": {
+        "south": 48.355621,
+        "west": 10.874077,
+        "north": 48.381278,
+        "east": 10.903581
+      },
+      "zones": 37
+    },
+    {
       "id": "baltimore",
       "place": "Baltimore",
       "country": "US",
@@ -861,6 +896,53 @@
       "zones": 106
     },
     {
+      "id": "dusseldorf",
+      "place": "Düsseldorf",
+      "country": "DE",
+      "authority": "Landeshauptstadt Düsseldorf",
+      "timeZone": "Europe/Berlin",
+      "source": {
+        "title": "Landeshauptstadt Düsseldorf, \"300. Sharingstation eröffnet\" (13 July 2026): round its sharing stations the city sets no-parking zones for hired e-scooters and bikes across the area, about 12 km², so that a rental there ends only at a station",
+        "url": "https://www.duesseldorf.de/aktuelles/news/detailansicht/newsdetail/300-sharingstation-eroeffnet-1"
+      },
+      "map": {
+        "title": "Landeshauptstadt Düsseldorf, \"Sharingstationen\" and \"Parkverbotszone - Sharingstation\" (Düsseldorf Maps, WFS verkehr)",
+        "url": "https://maps.duesseldorf.de/"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://maps.duesseldorf.de/services/verkehr/wfs?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:25832&typeNames=verkehr:sharingstationen_area",
+          "grid": "EPSG:25832",
+          "match": {
+            "status": [
+              "aktiv",
+              "temporaer"
+            ],
+            "typ": "E-Scooter, Fahrrad"
+          },
+          "nameField": "name",
+          "nameTrim": "^Sharingstation "
+        },
+        {
+          "kind": "racksOnly",
+          "format": "geojson",
+          "url": "https://maps.duesseldorf.de/services/verkehr/wfs?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:25832&typeNames=verkehr:sharing_parkverbotszone",
+          "grid": "EPSG:25832",
+          "nameField": "name",
+          "nameTrim": "^Parkverbotszone "
+        }
+      ],
+      "bounds": {
+        "south": 51.131804,
+        "west": 6.721305,
+        "north": 51.314091,
+        "east": 6.909403
+      },
+      "zones": 410
+    },
+    {
       "id": "halmstad",
       "place": "Halmstad",
       "country": "SE",
@@ -1043,6 +1125,127 @@
         "east": 25.157566
       },
       "zones": 139
+    },
+    {
+      "id": "kassel",
+      "place": "Kassel",
+      "country": "DE",
+      "authority": "Stadt Kassel, Innenstadtring © OpenStreetMap",
+      "timeZone": "Europe/Berlin",
+      "source": {
+        "title": "Stadt Kassel, \"Mit dem Miet-E-Scooter\": since 1 April 2026 a hired e-scooter outside the Innenstadtring may be parked only at a bicycle rack or a specially marked place, the places the city gives the operators, and within the ring only on its 27 marked places",
+        "url": "https://www.kassel.de/buerger/verkehr_und_mobilitaet/mit-dem-e-scooter/miet-e-scooter.php"
+      },
+      "map": {
+        "title": "Stadt Kassel, \"Fahrradbügel\" (E-Scooter: ja) on its map \"Verkehr und Mobilität in Kassel\" (geoportal, ArcGIS)",
+        "url": "https://geoportal.kassel.de/portal/apps/webappviewer/index.html?id=5556ce07901f44c0b94fbfb2783a26fe"
+      },
+      "layers": [
+        {
+          "kind": "racksOnly",
+          "name": "Innenstadtring",
+          "ring": [
+            [51.315116, 9.503739],
+            [51.315847, 9.505349],
+            [51.316012, 9.505136],
+            [51.316364, 9.50454],
+            [51.316815, 9.503814],
+            [51.316937, 9.503301],
+            [51.317222, 9.502764],
+            [51.317458, 9.502221],
+            [51.317638, 9.50174],
+            [51.317791, 9.501263],
+            [51.317915, 9.500712],
+            [51.31805, 9.500277],
+            [51.31815, 9.499858],
+            [51.318251, 9.499364],
+            [51.318338, 9.499128],
+            [51.318415, 9.498545],
+            [51.318537, 9.498147],
+            [51.318515, 9.497902],
+            [51.318695, 9.497385],
+            [51.318947, 9.496627],
+            [51.3189, 9.49612],
+            [51.318752, 9.495781],
+            [51.31831, 9.495435],
+            [51.317931, 9.495114],
+            [51.317661, 9.494802],
+            [51.317637, 9.494617],
+            [51.317411, 9.494413],
+            [51.317143, 9.494069],
+            [51.316785, 9.493305],
+            [51.316684, 9.493304],
+            [51.316589, 9.493097],
+            [51.316432, 9.492932],
+            [51.316344, 9.492714],
+            [51.316224, 9.492609],
+            [51.316164, 9.492446],
+            [51.315948, 9.492525],
+            [51.315664, 9.491813],
+            [51.315564, 9.491623],
+            [51.315349, 9.490937],
+            [51.314883, 9.490222],
+            [51.31475, 9.490282],
+            [51.314434, 9.489715],
+            [51.314043, 9.48903],
+            [51.313783, 9.48908],
+            [51.313146, 9.489672],
+            [51.313021, 9.490037],
+            [51.312696, 9.49028],
+            [51.312613, 9.490676],
+            [51.312056, 9.491273],
+            [51.311966, 9.491623],
+            [51.311804, 9.491894],
+            [51.311261, 9.492553],
+            [51.311149, 9.492921],
+            [51.310781, 9.493227],
+            [51.310834, 9.49374],
+            [51.311614, 9.495266],
+            [51.311884, 9.495747],
+            [51.312334, 9.496368],
+            [51.312434, 9.496634],
+            [51.312577, 9.496949],
+            [51.312917, 9.49722],
+            [51.313092, 9.497787],
+            [51.313224, 9.497887],
+            [51.313306, 9.498172],
+            [51.313432, 9.498282],
+            [51.313508, 9.498548],
+            [51.313541, 9.498724],
+            [51.313597, 9.499234],
+            [51.313628, 9.499733],
+            [51.313729, 9.500199],
+            [51.313846, 9.500563],
+            [51.313972, 9.501102],
+            [51.314162, 9.501576],
+            [51.314398, 9.502138],
+            [51.314949, 9.503544]
+          ]
+        },
+        {
+          "kind": "parking",
+          "url": "https://geoportal.kassel.de/arcgis/rest/services/Service_Daten/Verkehr_Mobilitaet/MapServer",
+          "layer": 407,
+          "envelope": "9.3,51.22,9.65,51.42",
+          "match": {
+            "E-Scooter": "ja"
+          },
+          "nameField": "Ort",
+          "unnamed": [
+            "Null",
+            "Kassel"
+          ],
+          "pointName": "Fahrradbügel",
+          "outside": "Innenstadtring"
+        }
+      ],
+      "bounds": {
+        "south": 51.267906,
+        "west": 9.389713,
+        "north": 51.350296,
+        "east": 9.560718
+      },
+      "zones": 1968
     },
     {
       "id": "krakow",
@@ -1416,6 +1619,38 @@
         "east": -93.180673
       },
       "zones": 237
+    },
+    {
+      "id": "mulheim",
+      "place": "Mülheim an der Ruhr",
+      "country": "DE",
+      "authority": "Stadt Mülheim an der Ruhr",
+      "timeZone": "Europe/Berlin",
+      "source": {
+        "title": "Stadt Mülheim an der Ruhr, Straßenverkehrsbehörde, \"E-Scooter\" (as of 9 September 2025): in the city centre, the district centres and some other areas, an e-scooter may be hired and returned only at the special stations",
+        "url": "https://cms.muelheim-ruhr.de/rathaus/aemter-und-einrichtungen/ordnungsamt/strassenverkehrsbehoerde/sondernutzung-oeffentlicher/e"
+      },
+      "map": {
+        "title": "Stadt Mülheim an der Ruhr, \"E-Roller-Stationen\" (geo.muelheim-ruhr.de)",
+        "url": "https://geo.muelheim-ruhr.de/e-roller-stationen"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "drupal",
+          "url": "https://geo.muelheim-ruhr.de/e-roller-stationen",
+          "openlayers": "eroller_stationen_openlayers_1",
+          "nameField": "name",
+          "pointName": "E-Roller-Station"
+        }
+      ],
+      "bounds": {
+        "south": 51.403578,
+        "west": 6.839899,
+        "north": 51.452321,
+        "east": 6.925058
+      },
+      "zones": 76
     },
     {
       "id": "munchen",
@@ -1807,6 +2042,40 @@
         "east": 16.20556
       },
       "zones": 111
+    },
+    {
+      "id": "nurnberg",
+      "place": "Nürnberg",
+      "country": "DE",
+      "authority": "Stadt Nürnberg",
+      "timeZone": "Europe/Berlin",
+      "source": {
+        "title": "Stadt Nürnberg, Verkehrsplanungsamt, \"Mit dem E-Scooter\": since 1 May 2024 a hired e-scooter in the old town (zone A), and now within the Bundesstraßenring too (zone B), is hired and returned only at the marked collection places; the rest of the public space there is a no-parking zone, where the rental runs on",
+        "url": "https://www.nuernberg.de/internet/verkehrsplanung/escooter.html"
+      },
+      "map": {
+        "title": "Stadt Nürnberg, \"E-Scooter-Zonen\", the map its page embeds (GeoMaps)",
+        "url": "https://www.nuernberg.de/internet/verkehrsplanung/escooter.html"
+      },
+      "layers": [
+        {
+          "kind": "racksOnly",
+          "format": "geomaps",
+          "url": "https://microservices.nuernberg.de/geomaps/api/map/readMultiple",
+          "geomap": 271,
+          "nameField": "title",
+          "except": {
+            "title": "Bereich A"
+          }
+        }
+      ],
+      "bounds": {
+        "south": 49.427945,
+        "west": 11.015184,
+        "north": 49.470325,
+        "east": 11.122868
+      },
+      "zones": 1
     },
     {
       "id": "omaha",
@@ -2773,6 +3042,53 @@
         "east": 18.132306
       },
       "zones": 834
+    },
+    {
+      "id": "stuttgart",
+      "place": "Stuttgart",
+      "country": "DE",
+      "authority": "Landeshauptstadt Stuttgart",
+      "timeZone": "Europe/Berlin",
+      "source": {
+        "title": "Landeshauptstadt Stuttgart, \"FAQs E-Scooter\" (as of 30 October 2025): the city has set zones where a hired e-scooter's rental cannot end, as green spaces and pedestrian zones, and parking areas where one is returned",
+        "url": "https://www.stuttgart.de/leben/mobilitaet/elektromobilitaet/e-scooter/faqs-e-scooter"
+      },
+      "map": {
+        "title": "Landeshauptstadt Stuttgart, Stadtplan, \"Mit dem E-Scooter unterwegs\": \"E-Scooter Abstellverbotszonen\", with the pedestrian zones, and \"E-Scooter Abstellflächen\"",
+        "url": "https://maps.stuttgart.de/stadtplan/"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://geoserver.stuttgart.de/geoserver/GEOLINE_FLEX/ows?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:25832&typeNames=GEOLINE_FLEX:A32_ES_ABSTELLFLAECHEN_EPSG25832",
+          "grid": "EPSG:25832",
+          "nameField": "NAME"
+        },
+        {
+          "kind": "noParking",
+          "format": "geojson",
+          "url": "https://geoserver.stuttgart.de/geoserver/GEOLINE_FLEX/ows?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:25832&typeNames=GEOLINE_FLEX:A32_ES_ABSTELLVERBOTSZONEN_EPSG25832",
+          "grid": "EPSG:25832",
+          "nameField": "NAME",
+          "nameTrim": "^Abstellverbotszone "
+        },
+        {
+          "kind": "noParking",
+          "format": "geojson",
+          "url": "https://geoserver.stuttgart.de/geoserver/GEOLINE_FLEX/ows?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:25832&typeNames=GEOLINE_FLEX:A66_VFL_FUSSGAENGERZ_EPSG25832",
+          "grid": "EPSG:25832",
+          "nameField": "STRNAME",
+          "idTag": "fz"
+        }
+      ],
+      "bounds": {
+        "south": 48.712124,
+        "west": 9.086394,
+        "north": 48.849516,
+        "east": 9.255014
+      },
+      "zones": 451
     },
     {
       "id": "tampa",
