@@ -459,9 +459,10 @@ October, which nobody had looked at since and whose sweeps were due on 31
 October. Lime's map was not stale: it answered the view's six at once.
 
 Each configured account starts at most twelve calls in any 60 seconds across
-its Lime feeds, at once if they are asked for together: until 8 November 2026
-they started five seconds apart, and the eight views of a town took 35
-seconds. That evening the research account answered every one of a burst of
+its Lime feeds, at once if a town someone looks at asks for them together: until
+8 November 2026 they started five seconds apart, and the eight views of a town
+took 35 seconds. An idle sweep's calls keep the five seconds, so that it cannot
+spend the minute's twelve just before a town is opened. That evening the research account answered every one of a burst of
 eight calls, ten bursts of twelve a minute apart and then one of 24, all at
 once, in 0.3 to 0.8 seconds each. An account's first minute after the cache
 starts keeps the five seconds, as a deploy runs the old cache beside it. HTTP 429 pauses that account's client for Retry-After, with a minimum one-minute cooldown. The

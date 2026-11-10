@@ -358,7 +358,10 @@ map's client, these and Bird's, Bolt's, Dott's, JET's, LUUP's, RideMovi's, Skyss
 and Voi's, lets a minute's worth of requests at its old spacing start at once, and
 no more in any 60 seconds (`Pacer` in `server/sweeps.ts`): twelve a minute for each
 Lime account, where they started five seconds apart and a town of eight views took
-35 seconds. A client's first minute keeps the old spacing, as a deploy runs the
+35 seconds. Only the towns someone looks at start theirs at once: an idle sweep
+keeps the old spacing, so that it cannot spend the minute's turns just before a
+town is opened, which could then wait up to 50 seconds for its first view. A client's
+first minute keeps the old spacing, as a deploy runs the
 old cache beside the new one for about that long. On 24 October 2026 such
 sweeps held all six, and idle feeds elsewhere went uncollected for over half an
 hour. A sweep a request asked for has two slots of its own on its host, and its

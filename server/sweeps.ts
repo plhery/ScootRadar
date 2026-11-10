@@ -26,11 +26,17 @@ export const PACE_WINDOW_MS = 60_000;
 
 /**
  * Holds a client's requests to its host to a minute's worth at one every intervalMs, whichever
- * collections make them: no more than 60 000 / intervalMs start in any 60 seconds, and they may start
- * at once. Until 8 November 2026 they started intervalMs apart, so a town of eight Lime views took
- * 35 seconds, though Lime answers a view in half a second, and answered 24 asked at once. The first
- * minute after the client starts keeps the old spacing: a deploy runs the new cache beside the old
- * one for about a minute, and two budgets spent at once would double the host's rate.
+ * collections make them: no more than 60 000 / intervalMs start in any 60 seconds, and those of a
+ * collection someone is looking at may start at once. Until 8 November 2026 they started intervalMs
+ * apart, so a town of eight Lime views took 35 seconds, though Lime answers a view in half a second,
+ * and answered 24 asked at once. The first minute after the client starts keeps the old spacing: a
+ * deploy runs the new cache beside the old one for about a minute, and two budgets spent at once
+ * would double the host's rate.
+ *
+ * An idle sweep's requests keep the old spacing, each intervalMs after the idle one before, so that
+ * idle sweeps alone spend the minute's turns over the minute. From 8 November 2026 they could start
+ * at once too, so after a quiet spell an idle Lime sweep could spend an account's twelve turns in six
+ * seconds, and a town opened just after wait 50 seconds for its first view.
  *
  * A collection someone is looking at goes first, and an idle sweep of another town waits for the
  * turns it leaves. Until 25 October 2026 the turns went in the order asked, so a town opened while
@@ -39,7 +45,8 @@ export const PACE_WINDOW_MS = 60_000;
  * Given `routineEvery`, one turn in that many, while an idle sweep waits, goes to the idle sweep that
  * began first, so that a town watched for long cannot hold back the others' sweeps past their feeds'
  * expiry: on 28 October 2026 a watched Münster took nearly every turn of ATOM's client for a
- * quarter of an hour, and Linköping's sweep of 18 views, a minute's work, took 932 seconds.
+ * quarter of an hour, and Linköping's sweep of 18 views, a minute's work, took 932 seconds. A turn
+ * kept so waits for the idle sweep's spacing.
  */
 export class Pacer {
   /** How many requests may start in PACE_WINDOW_MS; unlimited for an interval of 0. */
@@ -48,13 +55,15 @@ export class Pacer {
   private readonly started: number[] = [];
   /** No request starts before this. */
   private heldUntil: number;
+  /** When an idle sweep's last request started. */
+  private lastIdle = -Infinity;
   private readonly waiting: { urgent: boolean; began: number; go: () => void }[] = [];
   /** When each collection first asked for a turn. */
   private readonly began = new WeakMap<CollectionScope, number>();
   /** The turns given in a row to collections someone is looking at while an idle sweep waited. */
   private urgentTurns = 0;
   private timer?: ReturnType<typeof setTimeout>;
-  constructor(intervalMs: number, private readonly now: () => number = Date.now, startAt = 0,
+  constructor(private readonly intervalMs: number, private readonly now: () => number = Date.now, startAt = 0,
     private readonly routineEvery = Infinity) {
     this.heldUntil = startAt;
     this.perWindow = intervalMs > 0 ? Math.max(1, Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
@@ -74,13 +83,17 @@ export class Pacer {
       const after = urgent ? this.waiting.findIndex(other => !other.urgent) : -1;
       if (after < 0) this.waiting.push({ urgent, began, go });
       else this.waiting.splice(after, 0, { urgent, began, go });
+      // The turn awaited may have been an idle sweep's spacing, which this one need not keep.
+      clearTimeout(this.timer);
+      this.timer = undefined;
       this.release();
     });
   }
 
   /** How long a request asked for now would wait, were nobody ahead of it. */
   wait(): number {
-    return Math.max(0, this.nextStart(this.now()) - this.now());
+    const now = this.now();
+    return Math.max(0, this.nextStart(now, currentCollection()?.urgent() ?? false) - now);
   }
 
   /** No request starts before `at`, as when the host asks to wait. */
@@ -92,35 +105,39 @@ export class Pacer {
     this.release();
   }
 
-  /** When the budget next lets a request start. */
-  private nextStart(now: number): number {
+  /** When the budget, and the spacing a request of this kind keeps, next let it start. */
+  private nextStart(now: number, urgent: boolean): number {
     while (this.started.length && this.started[0] <= now - PACE_WINDOW_MS) this.started.shift();
     const free = this.started.length < this.perWindow ? now : this.started[this.started.length - this.perWindow] + PACE_WINDOW_MS;
-    return Math.max(this.heldUntil, free);
+    const spacing = urgent ? -Infinity : this.lastIdle + this.intervalMs;
+    return Math.max(this.heldUntil, free, spacing);
   }
 
   private release(): void {
     while (this.timer === undefined && this.waiting.length) {
       const now = this.now();
-      const start = this.nextStart(now);
+      const { index, idleWaits } = this.next();
+      const waiter = this.waiting[index];
+      const start = this.nextStart(now, waiter.urgent);
       if (start > now) {
         this.timer = setTimeout(() => { this.timer = undefined; this.release(); }, start - now);
         return;
       }
       if (this.perWindow !== Infinity) this.started.push(now);
-      this.take()?.go();
+      if (!waiter.urgent) this.lastIdle = now;
+      this.urgentTurns = idleWaits && waiter.urgent ? this.urgentTurns + 1 : 0;
+      this.waiting.splice(index, 1);
+      waiter.go();
     }
   }
 
   /** The first in line, but the idle sweep that began first when its turn is kept for it. */
-  private take() {
+  private next(): { index: number; idleWaits: boolean } {
     let oldest = -1;
     this.waiting.forEach((waiter, index) => {
       if (!waiter.urgent && (oldest < 0 || waiter.began < this.waiting[oldest].began)) oldest = index;
     });
-    const index = oldest >= 0 && this.urgentTurns >= this.routineEvery - 1 ? oldest : 0;
-    this.urgentTurns = oldest >= 0 && this.waiting[index]?.urgent ? this.urgentTurns + 1 : 0;
-    return this.waiting.splice(index, 1)[0];
+    return { index: oldest >= 0 && this.urgentTurns >= this.routineEvery - 1 ? oldest : 0, idleWaits: oldest >= 0 };
   }
 }
 

@@ -53,7 +53,8 @@ describe('Pacer', () => {
   it('starts a minute\'s worth at once once its first minute is past, and the next when the first is a minute old', async () => {
     const pacer = new Pacer(5_000);
     const at: number[] = [];
-    const take = () => pacer.turn().then(() => at.push(Date.now() - T0));
+    const looked = collection({ urgent: () => true });
+    const take = () => withinCollection(looked, () => pacer.turn()).then(() => at.push(Date.now() - T0));
     // The first minute keeps one turn every five seconds, as a deploy runs the old cache beside it.
     const first = [take(), take(), take()];
     await vi.advanceTimersByTimeAsync(10_000);
@@ -71,6 +72,29 @@ describe('Pacer', () => {
     expect(at.at(-1)).toBe(130_000);
   });
 
+  it('keeps an idle sweep at its old spacing after a quiet spell, so a town opened meanwhile starts at once', async () => {
+    // From 8 November 2026 an idle sweep could spend a Lime account's twelve turns in six seconds after a quiet spell,
+    // and a town opened ten seconds later waited 50 for its first view.
+    const pacer = new Pacer(5_000, Date.now, 0, 3);
+    await vi.advanceTimersByTimeAsync(2 * PACE_WINDOW_MS);
+    const turns: string[] = [];
+    const sweep = (name: string, count: number, scope: CollectionScope) => withinCollection(scope, async () => {
+      for (let i = 1; i <= count; i++) {
+        await pacer.turn();
+        turns.push(`${name}${i} ${(Date.now() - T0) / 1000}`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    });
+    const idle = sweep('idle', 6, collection());
+    await vi.advanceTimersByTimeAsync(11_000);
+    const looked = sweep('looked', 4, collection({ urgent: () => true }));
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    await Promise.all([idle, looked]);
+    // The town's views go at once, but its third waits for the turn kept for the idle sweep, at the sweep's spacing.
+    expect(turns).toEqual(['idle1 120', 'idle2 125', 'idle3 130', 'looked1 131', 'looked2 131.5', 'idle4 135',
+      'looked3 135', 'looked4 135.5', 'idle5 140', 'idle6 145']);
+  });
+
   it('gives a turn someone is looking at first once the minute\'s turns are spent', async () => {
     const pacer = new Pacer(10_000);
     await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
@@ -81,14 +105,17 @@ describe('Pacer', () => {
         turns.push(`${name}${i} ${(Date.now() - T0) / 1000}`);
       }
     });
-    const idle = sweep('idle', 8, collection());
+    const looked = collection({ urgent: () => true });
+    const first = sweep('first', 6, looked);
     await vi.advanceTimersByTimeAsync(1_000);
-    const looked = sweep('looked', 2, collection({ urgent: () => true }));
+    const idle = sweep('idle', 2, collection());
+    const second = sweep('second', 2, looked);
     await vi.advanceTimersByTimeAsync(3 * PACE_WINDOW_MS);
-    await Promise.all([idle, looked]);
-    // The six turns of 60 s come back together at 120 s: the looked-at town takes the first, the rest go in order.
-    expect(turns).toEqual(['idle1 60', 'idle2 60', 'idle3 60', 'idle4 60', 'idle5 60', 'idle6 60',
-      'looked1 120', 'idle7 120', 'looked2 120', 'idle8 120']);
+    await Promise.all([first, idle, second]);
+    // The six turns of 60 s come back together at 120 s: the looked-at town takes the first, the idle sweep the
+    // next, and its second waits for its spacing.
+    expect(turns).toEqual(['first1 60', 'first2 60', 'first3 60', 'first4 60', 'first5 60', 'first6 60',
+      'second1 120', 'idle1 120', 'second2 120', 'idle2 130']);
   });
 
   it('holds the next turn while the host asks to wait, and starts when told', async () => {
