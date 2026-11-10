@@ -483,7 +483,7 @@ An optional private `/data/lime-accounts.json` manifest (`LIME_ACCOUNTS_PATH`)
 assigns refresh groups to independent accounts:
 
 ```json
-{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"}]}
+{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"},{"id":"lime4","sessionPath":"lime4-session.json"},{"id":"lime5","sessionPath":"lime5-session.json"},{"id":"lime6","sessionPath":"lime6-session.json"},{"id":"lime7","sessionPath":"lime7-session.json"},{"id":"lime8","sessionPath":"lime8-session.json"}]}
 ```
 
 Paths resolve beside the manifest. Account ids and resolved session paths must
@@ -501,7 +501,11 @@ Requested groups keep priority within their account. The network host,
 vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
 cadence and the catalog's conservative single-account budget remain in place.
 
-The original account, `lime2`, and `lime3` serve production. `lime1` is reserved
+The original account, `lime2`, `lime3`, `lime4`, `lime5`, `lime6`, `lime7`, and `lime8`
+serve production.
+`lime4` through `lime8` were email-verified and map-checked on 10 November 2026,
+raising the configured pool capacity from 36 to 96 requests a minute.
+`lime1` is reserved
 for research, whose session has a separate renewal owner. Never share a
 refresh-token file between the local research process and production. The
 protected metric `scootradar_lime_account_requests_total{account,kind}` shows
