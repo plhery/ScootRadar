@@ -419,6 +419,19 @@ final class ScooterFilteringTests: XCTestCase {
             XCTAssertTrue(faded.accessibilityText.contains(ScooterDockStatus.seenTime(seenAt)), faded.accessibilityText)
         }
         XCTAssertNotEqual(updating.accessibilityText, idle.accessibilityText)
+
+        // VoiceOver hears the count and the faded ones as two parts, "Ryde, 0 scooters, 44 faded, …",
+        // joined as the app's other spoken lists are.
+        for faded in [updating, idle] {
+            XCTAssertEqual(
+                QuickProviderFilterChip.accessibilityLabel(title: "Ryde", count: 0, isDown: false, faded: faded),
+                String(format: String(localized: "%@, %lld scooters"), "Ryde", Int64(0)) + ", " + faded.accessibilityText
+            )
+        }
+        XCTAssertEqual(
+            QuickProviderFilterChip.accessibilityLabel(title: "Ryde", count: 0, isDown: false),
+            String(format: String(localized: "%@, %lld scooters"), "Ryde", Int64(0))
+        )
     }
 
     @MainActor

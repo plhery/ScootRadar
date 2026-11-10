@@ -1100,7 +1100,7 @@ private struct CardStatusLine: View {
     }
 }
 
-private struct QuickProviderFilterChip: View {
+struct QuickProviderFilterChip: View {
     let title: String
     let accessibilityTitle: String
     let count: Int
@@ -1187,7 +1187,7 @@ private struct QuickProviderFilterChip: View {
 
     /// "Lime, 12 scooters", or what is said of a provider that isn't sharing
     /// data; of one with faded scooters in view, how many, since when and whether they are being
-    /// updated as well: "Ryde, 0 scooters 44 faded, last seen at 02:46, updating." The rows of the
+    /// updated as well: "Ryde, 0 scooters, 44 faded, last seen at 02:46, updating." The rows of the
     /// panel's list read the same.
     static func accessibilityLabel(
         title: String,
@@ -1200,7 +1200,7 @@ private struct QuickProviderFilterChip: View {
             ? String(format: String(localized: "%@, one scooter"), title)
             : String(format: String(localized: "%@, %lld scooters"), title, Int64(count))
         guard let faded else { return label }
-        return "\(label) \(faded.accessibilityText)"
+        return [label, faded.accessibilityText].joined(separator: ", ")
     }
 }
 
