@@ -481,7 +481,6 @@ class ScooterMarkers(
         style = null
     }
 
-    /** Dark appearance, and the satellite picture in either appearance, which the dots are drawn for. */
     /** A new appearance, ground or Increase Contrast, in one write of the markers. */
     fun setLook(look: Look) {
         if (scene.isDark == look.isDark && scene.balloons == look.balloons) return

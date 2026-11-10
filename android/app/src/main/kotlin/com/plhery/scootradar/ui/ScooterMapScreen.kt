@@ -177,7 +177,7 @@ fun ScooterMapScreen(
     addressSearch: AddressSearchAPIClient? = null,
     /** Where Settings keeps the rider's choice about usage data, for ScooterAnalytics to read; none in tests. */
     defaults: ScooterDefaults? = null,
-    /** What asks for a rating once the map has rested after a ride. */
+    /** What asks for a rating once the map has rested on a fresh feed, with nothing over it (ScooterReviewPrompt). */
     reviewRequester: ReviewRequester = ReviewRequester.none,
     /** Where the location card's Open Settings goes, and what its Try again asks first: the phone's location service. */
     locationSettings: LocationSettings = LocationSettings.appPage,
@@ -764,7 +764,7 @@ private fun LocateRow(
         // changing height by a little doesn't move it to and fro.
         val slack = if (stacked[0]) 8.dp.roundToPx() else 0
         val endsLower = besideHeight > room - slack && overHeight + gap + placedButton.height < besideHeight && overReach <= besideReach
-        // Over it too where both would scroll and over it, in what is left of the room and under the 64, it shows more
+        // Over it too where both would scroll and over it, in what is left of the room over the button, it shows more
         // of the legend: under a location card at font scale 2.0 on ScootRadar_Phone_Min, beside "Near me" the legend
         // was 125 wide, a line cut inside its words and taller than the legend; over it, at the row's 338, its words
         // stay whole.
