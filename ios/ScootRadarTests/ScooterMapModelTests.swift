@@ -543,6 +543,39 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(makeModel().enabledProviders, Set(ScooterProvider.allCases).subtracting([.voi]))
     }
 
+    func testARiderWithOneAppKeepsOneAppWhenTheCatalogGrows() {
+        let defaults = isolatedDefaults()
+        func makeModel() -> ScooterMapModel {
+            ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: CLLocationManager(),
+                defaults: defaults
+            )
+        }
+        // Saved before Voi came: the lists lack it.
+        func saveWithoutVoi() {
+            let disabled = defaults.array(forKey: "disabled-providers") as? [String] ?? []
+            defaults.set(disabled.filter { $0 != "voi" }, forKey: "disabled-providers")
+        }
+
+        // Lime's quick chip alone: Voi, added since, stays off.
+        makeModel().toggleQuickProvider(.lime)
+        XCTAssertEqual(defaults.string(forKey: "only-provider"), "lime")
+        saveWithoutVoi()
+        XCTAssertEqual(makeModel().enabledProviders, [.lime])
+
+        // Two on: one added since comes on, as before.
+        makeModel().toggle(provider: .bolt)
+        XCTAssertNil(defaults.string(forKey: "only-provider"))
+        saveWithoutVoi()
+        XCTAssertEqual(makeModel().enabledProviders, [.bolt, .lime, .voi])
+
+        // One the app doesn't know: the providers turned off are read as before.
+        defaults.set("gone", forKey: "only-provider")
+        defaults.set(["voi"], forKey: "disabled-providers")
+        XCTAssertEqual(makeModel().enabledProviders, Set(ScooterProvider.allCases).subtracting([.voi]))
+    }
+
     func testAppearanceGoesByTheSunUntilOneIsChosenAndIsKept() throws {
         let defaults = isolatedDefaults()
         let clock = TestClock()

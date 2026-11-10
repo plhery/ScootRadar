@@ -155,6 +155,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 ScooterProvider.allCases.filter { !enabledProviders.contains($0) }.map(\.rawValue).sorted(),
                 forKey: Self.disabledProvidersKey
             )
+            // And the one on, where one alone is: a rider with one app keeps one app, those the catalog adds later
+            // staying off (Desk card 350, item 4; the website's scooters-provider-only).
+            if enabledProviders.count == 1, let only = enabledProviders.first {
+                defaults.set(only.rawValue, forKey: Self.onlyProviderKey)
+            } else {
+                defaults.removeObject(forKey: Self.onlyProviderKey)
+            }
             defaults.removeObject(forKey: Self.legacyEnabledProvidersKey)
             rebuildMapScooters()
             rebuildMapClusters()
@@ -500,6 +507,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let showsZonesKey = "map-zones"
     private static let appearanceKey = "appearance"
     private static let disabledProvidersKey = "disabled-providers"
+    /// The provider on where it is the only one, kept beside those turned off since 10 November 2026.
+    private static let onlyProviderKey = "only-provider"
     /// Until 4 November 2026 the app kept the providers that were on, so those the catalog added after a rider's
     /// last change of the filters stayed off: RideMovi, new in 1.3.0, for everyone who had changed them in 1.2.0.
     private static let legacyEnabledProvidersKey = "enabled-providers"
@@ -587,7 +596,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         rideEstimateMinutes = RideEstimateDuration.normalized(savedEstimateMinutes)
         ridePasses = Self.loadRidePasses(from: defaults)
 
-        if let disabledIDs = defaults.array(forKey: Self.disabledProvidersKey) as? [String] {
+        if let only = defaults.string(forKey: Self.onlyProviderKey).flatMap(ScooterProvider.init(rawValue:)) {
+            // One app alone was on: those the catalog added since stay off.
+            enabledProviders = [only]
+        } else if let disabledIDs = defaults.array(forKey: Self.disabledProvidersKey) as? [String] {
             enabledProviders = Set(ScooterProvider.allCases).subtracting(disabledIDs.compactMap(ScooterProvider.init(rawValue:)))
         } else if let savedProviderIDs = defaults.array(forKey: Self.legacyEnabledProvidersKey) as? [String] {
             // A legacy list of those on turns off only the providers of before 11 October 2026 it lacks: it also lacks
