@@ -381,7 +381,7 @@ class ScooterAPITest {
      * ended (LOG-009). With no network at all it is not asked again.
      */
     @Test
-    fun aConnectionLostOnTheWayIsAskedAgainOnceBeforeThePhoneIsTakenToBeOffline() = runBlocking<Unit> {
+    fun aConnectionLostOnTheWayIsAskedAgainOnANewConnectionAtMostThreeTimesInAll() = runBlocking<Unit> {
         assertTrue(ScooterAPI().http.retryOnConnectionFailure)
         // The server's own address only, whatever else the host calls localhost.
         val dns = object : Dns {

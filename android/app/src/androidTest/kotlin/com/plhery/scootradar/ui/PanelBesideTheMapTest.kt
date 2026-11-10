@@ -104,6 +104,9 @@ class PanelBesideTheMapTest {
 
     /** Whether the screen is large enough for these tests, which turn it and then give it back. */
     private var largeScreen = false
+
+    /** The screen's rotation as found, the side it is held to and whether auto-rotate is on, given back after. */
+    private var rotationFound = emptyMap<String, String>()
     private lateinit var activity: ComponentActivity
     private lateinit var controller: ScooterMapController
     private lateinit var mapView: ScooterMapView
@@ -130,6 +133,8 @@ class PanelBesideTheMapTest {
         val size = device.displaySizeDp
         assumeTrue("a large screen, not $size dp", min(size.x, size.y) >= 600)
         largeScreen = true
+        rotationFound = listOf("user_rotation", "accelerometer_rotation")
+            .associateWith { device.executeShellCommand("settings get system $it").trim() }
         turn(upright = false)
     }
 
@@ -140,7 +145,10 @@ class PanelBesideTheMapTest {
         scope.cancel()
         if (largeScreen) {
             device.setOrientationNatural()
-            device.unfreezeRotation()
+            // As found, where unfreezing the rotation turned auto-rotate on on a screen that had it off.
+            for ((setting, value) in rotationFound) {
+                if (value.toIntOrNull() != null) device.executeShellCommand("settings put system $setting $value")
+            }
         }
         ScooterLanguage.current = language
         Locale.setDefault(locale)
