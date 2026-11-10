@@ -248,7 +248,7 @@ describe('sweeps', () => {
     expect(taken).toEqual([views[0], views[1], views[2], views[3], undefined]);
   });
 
-  it('reports what it has found every two seconds at most, with every part done so far', async () => {
+  it('reports what it has found every two seconds at most, with every part done so far, those done meanwhile once they are over', async () => {
     const reports: [number, number][] = [];
     const found: Vehicle[] = [];
     const scooter = { provider: 'lime', lat: 45, lng: 4, battery: 80, range_m: null, vehicle_id: 'a', deep_link: null, distance_m: null };
@@ -257,11 +257,16 @@ describe('sweeps', () => {
       found.push(scooter);
       progress.done(views[0]);
       progress.done(views[1]);
-      vi.advanceTimersByTime(PROGRESS_EVERY_MS);
+      vi.advanceTimersByTime(PROGRESS_EVERY_MS - 1);
       found.push({ ...scooter, vehicle_id: 'b' });
       progress.done(views[2]);
     });
+    expect(reports).toEqual([[1, 1]]);
+    // Two seconds after the first, without waiting for another part.
+    vi.advanceTimersByTime(1);
     expect(reports).toEqual([[1, 1], [2, 3]]);
+    vi.advanceTimersByTime(10 * PROGRESS_EVERY_MS);
+    expect(reports).toHaveLength(2);
     // Outside a collection it reports to nobody.
     expect(() => new SweepProgress(() => found).done(views[0])).not.toThrow();
   });

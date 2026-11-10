@@ -257,17 +257,28 @@ export const PROGRESS_EVERY_MS = 2_000;
 
 /**
  * Reports a sweep's progress to the cache, at most every PROGRESS_EVERY_MS: the parts it has
- * finished, and the scooters it has found, which `found` lists as the feed will publish them.
+ * finished, and the scooters it has found, which `found` lists as the feed will publish them. Parts
+ * done within that of the last report are reported once it is over, not with the next part done: on
+ * 10 November 2026 Charlotte's first eight Bird views were answered within two seconds, and the map
+ * showed the first one's two scooters, of 41, until the ninth answered, 16 seconds later.
  */
 export class SweepProgress {
   private readonly swept: MapBounds[] = [];
-  private reportedAt = 0;
+  private reportedAt = -Infinity;
+  private timer?: ReturnType<typeof setTimeout>;
   constructor(private readonly found: () => Vehicle[], private readonly now: () => number = Date.now) {}
 
   done(...parts: MapBounds[]): void {
     this.swept.push(...parts);
     const collection = currentCollection();
-    if (!collection || this.now() - this.reportedAt < PROGRESS_EVERY_MS) return;
+    if (!collection || this.timer) return;
+    const wait = this.reportedAt + PROGRESS_EVERY_MS - this.now();
+    if (wait <= 0) this.report(collection);
+    else this.timer = setTimeout(() => { this.timer = undefined; this.report(collection); }, wait);
+  }
+
+  /** The cache hears nothing more once the collection has ended (scooter-cache.ts). */
+  private report(collection: CollectionScope): void {
     this.reportedAt = this.now();
     collection.progress(this.found(), [...this.swept]);
   }
