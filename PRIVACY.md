@@ -32,7 +32,10 @@ searches, except the last place chosen in the search, which stays on the device 
 - OpenFreeMap receives normal map tile requests from the user's device: from the website, with its origin as the referrer (no page path or query string), and from the Android app. The iOS app's map comes from Apple Maps. The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, units, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS and Android apps, the ride passes entered are stored locally, as is the fact that the device has found its
-  location before (a yes or no, never the position). For its rating prompt each of the
+  location before (a yes or no, never the position) and, in the Android app, the fact that the user refused it
+  location, until it is allowed (`android-location-refused`). The website also keeps what was done with its
+  invitation to test the Android app (`scooters-android-test`): until when it is hidden, whether it is never to
+  be shown again, the last of its steps followed and whether it gave thanks. For its rating prompt each of the
   iOS and Android apps also keeps the number of days it was used and when it last asked (up to
   version 1.4.0 of the iOS app and 1.3.0 of the Android app, also the time "Open in" was last
   tapped, which later versions delete). Precise map origins are not persisted, except the

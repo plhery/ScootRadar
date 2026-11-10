@@ -144,7 +144,10 @@ export default function PrivacyPage() {
           Appearance, map style, language, units, filters, the ride length you choose for price
           estimates and, in the iOS and Android apps, the ride passes you enter are stored locally on your
           device, as is the fact that this device has found
-          your location before (a yes or no, never the position). For its rating prompt each of the iOS
+          your location before (a yes or no, never the position) and, in the Android app, the fact that you refused
+          it your location, until you allow it. The website also keeps what you did with its invitation to test the
+          Android app: until when it is hidden, whether you asked not to see it again, the last of its steps you
+          followed and whether it thanked you. For its rating prompt each of the iOS
           and Android apps also keeps the number of days you used it and when it last asked (up to
           version 1.4.0 of the iOS app and 1.3.0 of the Android app, also the time you last tapped
           &ldquo;Open in&rdquo;, which later versions delete). Precise map origins are not persisted, except
