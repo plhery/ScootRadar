@@ -523,6 +523,9 @@ class ScooterMapController(
     internal var zoneTask: Job? = null
     internal var zoneTaskArea: ScooterZoneArea? = null
 
+    /** The refreshes that asked again for the zones of the area asked for last, which could not be had. */
+    internal var failedZoneAsksMade = 0
+
     /**
      * Where the cities' zones drawn were picked, the map and half of it again on each side: where hundreds are near,
      * as in Bergen, nearly any pan brings one in or takes one out, and the overlay, the operators' zones with them,
@@ -1844,6 +1847,12 @@ class ScooterMapController(
         /** While some feeds' zones are still being read, the same area is asked for again this much later, a few times. */
         val zonePendingRetry: Duration = 3.seconds
         const val zonePendingRetries: Int = 3
+
+        /**
+         * The refreshes of the scooters that ask again for an area's zones that could not be had, as the web asks for an
+         * unreadable feed's three more times; then they are asked for when the map comes to the area anew.
+         */
+        const val failedZoneAsks: Int = 3
 
         /** The server lets an answer be kept five minutes, in seconds. */
         const val zoneAnswerLifetime: Double = 300.0

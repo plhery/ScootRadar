@@ -97,6 +97,7 @@ internal fun ScooterMapController.updateZones() {
         setZones(recent.state)
         return
     }
+    failedZoneAsksMade = 0
     requestZones(area, after = ScooterMapController.zoneDebounce, retries = ScooterMapController.zonePendingRetries)
 }
 
@@ -145,15 +146,17 @@ private fun ScooterMapController.requestZones(area: ScooterZoneArea, after: Dura
 }
 
 /**
- * A failed answer for the zones stands while the map stays in its area, so each refresh of the scooters, on its own or
- * asked for, asks for them again: after a load lost to the network, or a feed the server could not read and tries again
- * a minute later, they come back with the scooters, instead of staying unavailable until the map leaves the area. What
- * was drawn stays drawn meanwhile.
+ * A failed answer for the zones stands while the map stays in its area, so the next refreshes of the scooters, on their
+ * own or asked for, ask for them again, three at most: after a load lost to the network, or a feed the server could not
+ * read and tries again a minute later, they come back with the scooters, instead of staying unavailable until the map
+ * leaves the area, and an area whose zones cannot be had is not asked for every minute while the map stays there (the
+ * iPhone's f1d1cb4b). What was drawn stays drawn meanwhile.
  */
 internal fun ScooterMapController.askAgainForFailedZones() {
     if (!showsZones.value || zoneTaskArea != null) return
     val answer = zoneAnswer ?: return
-    if (!answer.failed) return
+    if (!answer.failed || failedZoneAsksMade >= ScooterMapController.failedZoneAsks) return
+    failedZoneAsksMade += 1
     requestZones(answer.area, after = Duration.ZERO, retries = ScooterMapController.zonePendingRetries)
 }
 

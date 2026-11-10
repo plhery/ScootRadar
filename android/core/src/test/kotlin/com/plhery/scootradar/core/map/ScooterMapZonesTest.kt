@@ -381,6 +381,48 @@ class ScooterMapZonesTest {
         assertEquals(2, model.mapZones.value.filter { it.provider != "city" }.size)
     }
 
+    /**
+     * Zones that cannot be had are asked for again with the next three refreshes of the scooters, as the web asks for an
+     * unreadable feed's three more times, then not until the map comes to the area anew (week review, choice 15; the
+     * iPhone's f1d1cb4b).
+     */
+    @Test
+    fun zonesThatCannotBeHadAreAskedForAgainThreeTimesThenWhenTheMapComesBack() = runTest {
+        val api = ZoneStubAPI()
+        api.unavailable = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val failed = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Failed }
+        assertTrue(failed)
+        for (count in 2..4) {
+            model.refresh()
+            val asked = waitUntil { api.zoneAreas.size == count && model.zoneTaskArea == null }
+            assertTrue("Refresh ${count - 1}", asked)
+            assertEquals(ScooterZoneState.Failed, model.zoneState.value)
+        }
+        model.refresh()
+        advanceTimeBy(400)
+        runCurrent()
+        assertEquals(4, api.zoneAreas.size)
+        assertEquals(ScooterZoneState.Failed, model.zoneState.value)
+        assertEquals("Those that came stay drawn", 2, model.mapOperatorZoneCount.value)
+
+        // Away and back, the area is asked for anew, and again with the next refresh.
+        val bern = zurich.copy(center = GeoPoint(latitude = 46.948, longitude = 7.4474))
+        model.updateViewport(bern, zoom = 16)
+        val away = waitUntil { api.zoneAreas.size == 5 && model.zoneTaskArea == null }
+        assertTrue(away)
+        model.updateViewport(zurich, zoom = 16)
+        val back = waitUntil { api.zoneAreas.size == 6 && model.zoneTaskArea == null }
+        assertTrue(back)
+        api.unavailable = false
+        model.refresh()
+        val shown = waitUntil { api.zoneAreas.size == 7 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+        assertEquals(api.zoneAreas[0], api.zoneAreas[6])
+    }
+
     @Test
     fun anAnswerWithZonesThatCouldNotBeReadIsNotKeptForTheMapToComeBackTo() = runTest {
         val api = ZoneStubAPI()
