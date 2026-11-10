@@ -84,11 +84,17 @@ function validateCatalog() {
     // claims all of binbin.tech on Android, and on the iPhone only paths below its root, as /scooter:
     // there its link opens the App Store page too. Voi's and Bolt's links are those their feeds
     // publish, on the link services their apps claim, so they carry a path and a query: Voi's is the
-    // one it gives every scooter, Bolt's its store link.
+    // one it gives every scooter, Bolt's its store link. googlePlayId is the app's package on Google
+    // Play, whose page the Android app opens where the app is not installed, as the iPhone opens the
+    // App Store's; each was checked on its public Play page to be the operator's (10 November 2026).
+    // Without one, Android opens the link in the browser.
     if (provider.app !== undefined && !(
       /^https:\/\/[a-z0-9.-]+\/[\w\-.~%&=?/]*$/.test(provider.app.link) && Number.isInteger(provider.app.appStoreId) && provider.app.appStoreId > 0
     )) {
       throw new Error(`Provider ${provider.key}: app needs an https link and an App Store id`);
+    }
+    if (provider.app?.googlePlayId !== undefined && !/^[A-Za-z]\w*(\.[A-Za-z]\w*)+$/.test(provider.app.googlePlayId)) {
+      throw new Error(`Provider ${provider.key}: googlePlayId needs to be an Android package name`);
     }
   }
 }
@@ -605,7 +611,7 @@ function kotlinCatalog() {
   const entries = providers.map(provider => (
     `    ${kotlinCase(provider.key)}(${kotlinString(provider.key)}, ${kotlinString(provider.name)}, ` +
     `${kotlinString(provider.initial)}, 0xFF${provider.color.slice(1).toUpperCase()}, ` +
-    `${provider.app ? `OperatorApp(${kotlinString(provider.app.link)})` : 'null'}),`
+    `${provider.app ? `OperatorApp(${[provider.app.link, provider.app.googlePlayId].filter(value => value !== undefined).map(kotlinString).join(', ')})` : 'null'}),`
   )).join('\n');
   const matchers = matcherOrder.map(provider => (
     `            SystemIDMatcher(${kotlinCase(provider.key)}, listOf(${list(provider.systemIds?.exact ?? [])}), ` +
@@ -632,9 +638,10 @@ ${entries}
 
     /**
      * The operator's app, for scooters whose feed gives no link: a link to a site's root that its app
-     * claims. Spin's site is the one link no app claims.
+     * claims, and its package on Google Play, whose page opens where it is not installed. Spin's site
+     * is the one link no app claims.
      */
-    data class OperatorApp(val link: String)
+    data class OperatorApp(val link: String, val googlePlayId: String? = null)
 
     private class SystemIDMatcher(val provider: ScooterProvider, val exact: List<String>, val prefixes: List<String>)
 

@@ -112,21 +112,49 @@ class OpenInTest {
 
     @Test
     fun withoutTheOperatorsAppALinkInItsOwnSchemeFallsBackToItsStorePage() {
-        // Bolt's feed gives only links in Bolt's own scheme, and this phone has no Bolt app: only the browser
-        // takes a link, a web one.
+        // Bolt's feed gives only links in Bolt's own scheme, and this phone has no Bolt app, but the Play Store, which
+        // takes market:// links, and a browser, which takes web ones.
         val link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
         val target = scooterNearby("bolt", ScooterRentalURIs(ios = link, android = link, web = null))
         val bolt = checkNotNull(ScooterProvider.Bolt.app).link
-        showCard(target) { it.data?.scheme == "https" && !it.isForAnApp }
+        val play = checkNotNull(ScooterProvider.Bolt.app?.googlePlayId)
+        showCard(target) { it.data?.scheme == "market" || it.data?.scheme == "https" && !it.isForAnApp }
 
         compose.onNodeWithText(openIn(target)).performClick()
         compose.waitForIdle()
 
         // The tap says rental_open as for any scooter its feed links, whatever opens.
         assertEquals(listOf(TrackedEvent("rental_open", provider = "bolt")), analytics.events)
-        // Bolt's link, then its app's, an app first: its page opens in the browser and sends the phone to the store.
+        // Bolt's link, then its app's, an app first, then Bolt's page in the Play Store, as the iPhone opens the App
+        // Store's (week review, choice 17).
         val asked = checkNotNull(phone).started.map { it.dataString to it.isForAnApp }
-        assertEquals(listOf(link to false, bolt to true, bolt to false), asked)
+        assertEquals(listOf(link to false, bolt to true, "market://details?id=$play" to false), asked)
+        assertTrue(haptics.types.isEmpty())
+    }
+
+    @Test
+    fun withoutThePlayStoreTheOperatorsPageOnGooglePlayOpensInTheBrowser() {
+        // No Bolt app and no store that takes market:// links, as on a phone without Google's apps: only the browser
+        // takes a link, a web one.
+        val link = "bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1"
+        val target = scooterNearby("bolt", ScooterRentalURIs(ios = link, android = link, web = null))
+        val bolt = checkNotNull(ScooterProvider.Bolt.app).link
+        val play = checkNotNull(ScooterProvider.Bolt.app?.googlePlayId)
+        showCard(target) { it.data?.scheme == "https" && !it.isForAnApp }
+
+        compose.onNodeWithText(openIn(target)).performClick()
+        compose.waitForIdle()
+
+        val asked = checkNotNull(phone).started.map { it.dataString to it.isForAnApp }
+        assertEquals(
+            listOf(
+                link to false,
+                bolt to true,
+                "market://details?id=$play" to false,
+                "https://play.google.com/store/apps/details?id=$play" to false,
+            ),
+            asked,
+        )
         assertTrue(haptics.types.isEmpty())
     }
 

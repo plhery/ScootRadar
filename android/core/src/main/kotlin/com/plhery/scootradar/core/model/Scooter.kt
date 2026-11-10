@@ -56,9 +56,9 @@ data class Scooter(
      * opens nothing when the app is not installed, so the next link, the provider's web page, is tried then. Where no
      * link opens, as Bolt's feed gives only bolt:// ones, and where the feed links no scooter, the operator's app
      * opens on its link with [openLink], which with `appOnly` opens only an installed app
-     * (FLAG_ACTIVITY_REQUIRE_NON_BROWSER); without the app, the same link opens in the browser, whose page sends a
-     * phone to its store, as no operator's package is known yet. Nothing asks Android which apps are installed.
-     * Returns what opened: null for nothing, as for an operator the catalog gives no app.
+     * (FLAG_ACTIVITY_REQUIRE_NON_BROWSER); without the app, its page on Google Play opens, in the Play Store
+     * (market://) or else on the web, as the iPhone opens the App Store's ([storePages]). Nothing asks Android which
+     * apps are installed. Returns what opened: null for nothing, as for an operator the catalog gives no app.
      */
     suspend fun openRental(
         openRentalLink: suspend (URI) -> Boolean,
@@ -67,9 +67,10 @@ data class Scooter(
         for (url in rentalURLs) {
             if (openRentalLink(url)) return ScooterRentalOpening.Link(url)
         }
-        val link = URI(providerInfo?.app?.link ?: return null)
+        val app = providerInfo?.app ?: return null
+        val link = URI(app.link)
         if (openLink(link, true)) return ScooterRentalOpening.App(link)
-        return if (openLink(link, false)) ScooterRentalOpening.Store(link) else null
+        return app.storePages.firstOrNull { openLink(it, false) }?.let(ScooterRentalOpening::Store)
     }
 
     companion object {
@@ -158,11 +159,23 @@ sealed interface ScooterRentalOpening {
     data class App(override val url: URI) : ScooterRentalOpening
 
     /**
-     * The operator's link in the browser, the app not being installed: its page sends the phone to the store, as
-     * the App Store page opens on the iPhone.
+     * The app's page on Google Play, the app not being installed, as the App Store page opens on the iPhone; or, for
+     * an operator whose package the catalog does not give, its link in the browser, whose page sends the phone to the
+     * store.
      */
     data class Store(override val url: URI) : ScooterRentalOpening
 }
+
+/**
+ * Where "Open in" sends a phone without the operator's app, in turn: its page in the Play Store, or another store that
+ * takes market:// links, then on Google Play's website, which the Play Store takes where it is installed and the
+ * browser otherwise (Android's "Linking to Google Play"); the operator's link alone where the catalog gives no package
+ * (data/providers.json, googlePlayId).
+ */
+internal val ScooterProvider.OperatorApp.storePages: List<URI>
+    get() = googlePlayId?.let { id ->
+        listOf(URI("market://details?id=$id"), URI("https://play.google.com/store/apps/details?id=$id"))
+    } ?: listOf(URI(link))
 
 enum class ScooterBatteryLevel {
     Good,

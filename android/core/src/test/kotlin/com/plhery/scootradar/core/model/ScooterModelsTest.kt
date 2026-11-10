@@ -1015,8 +1015,10 @@ class ScooterModelsTest {
         assertEquals(listOf(android), tried)
         assertEquals(ScooterRentalOpening.Link(URI(android)), app)
 
-        // When nothing opens, not even Lime's app or its page in the browser, nothing is reported as opened.
-        val lime = checkNotNull(ScooterProvider.Lime.app).link
+        // When nothing opens, not even Lime's app or its page on Google Play, nothing is reported as opened.
+        val lime = checkNotNull(ScooterProvider.Lime.app)
+        val play = lime.storePages.map { "$it false" }
+        assertEquals(2, play.size)
         tried.clear()
         val nothing = scooter.openRental(
             openRentalLink = { url ->
@@ -1029,7 +1031,7 @@ class ScooterModelsTest {
             },
         )
         assertNull(nothing)
-        assertEquals(listOf(android, web, "$lime true", "$lime false"), tried)
+        assertEquals(listOf(android, web, "${lime.link} true") + play, tried)
     }
 
     @Test
@@ -1050,9 +1052,10 @@ class ScooterModelsTest {
         assertEquals(listOf(link), scooter.rentalURLs.map(URI::toString))
         assertNull("The card says rental_open without result app", scooter.operatorApp)
         val bolt = checkNotNull(ScooterProvider.Bolt.app).link
+        val play = checkNotNull(ScooterProvider.Bolt.app?.googlePlayId)
 
-        // Without the app, Bolt's link opens nothing either, so it opens in the browser, whose page sends the phone
-        // to the store.
+        // Without the app, Bolt's link opens nothing either, so its page in the Play Store opens, as the App Store's
+        // does on the iPhone (week review, choice 17).
         val tried = mutableListOf<String>()
         val store = scooter.openRental(
             openRentalLink = { url ->
@@ -1064,8 +1067,24 @@ class ScooterModelsTest {
                 !appOnly
             },
         )
-        assertEquals(listOf(link, "$bolt true", "$bolt false"), tried)
-        assertEquals(ScooterRentalOpening.Store(URI(bolt)), store)
+        assertEquals(listOf(link, "$bolt true", "market://details?id=$play false"), tried)
+        assertEquals(ScooterRentalOpening.Store(URI("market://details?id=$play")), store)
+
+        // Without the Play Store, or any store that takes market:// links, its page on Google Play's website.
+        tried.clear()
+        val web = scooter.openRental(
+            openRentalLink = { url ->
+                tried += url.toString()
+                false
+            },
+            openLink = { url, appOnly ->
+                tried += "$url $appOnly"
+                !appOnly && url.scheme == "https"
+            },
+        )
+        val playPage = "https://play.google.com/store/apps/details?id=$play"
+        assertEquals(listOf(link, "$bolt true", "market://details?id=$play false", "$playPage false"), tried)
+        assertEquals(ScooterRentalOpening.Store(URI(playPage)), web)
 
         // An operator the catalog gives no app has nothing to fall back on.
         val hopp = Scooter(
@@ -1108,9 +1127,9 @@ class ScooterModelsTest {
             rentalURIs = rentalURIs,
             distanceMeters = null,
         )
-        // The catalog has no Play Store pages yet: the operator's link is all there is, for every operator the
-        // catalog gives an app, and none for the others. Which operators have one, and their links, are data/'s
-        // (CatalogParityTest holds them to the Swift catalog's), so they are read from it (LOG-370).
+        // The operator's app for every operator the catalog gives one, and none for the others. Which operators have
+        // one, their links and their packages on Google Play are data/'s (CatalogParityTest holds the links to the
+        // Swift catalog's), so they are read from it (LOG-370).
         for (provider in ScooterProvider.entries) {
             assertEquals(provider.rawValue, provider.app, scooter(provider.rawValue).operatorApp)
         }
@@ -1133,7 +1152,7 @@ class ScooterModelsTest {
         assertEquals(listOf("$link true"), tried)
         assertEquals(ScooterRentalOpening.App(URI(link)), opened)
 
-        // Without it, the same link opens in the browser, whose page sends the phone to the store.
+        // Without it, its page in the Play Store opens, as the App Store's does on the iPhone (week review, choice 17).
         tried.clear()
         val store = operator.openRental(
             openRentalLink = { error("The feed links no scooter") },
@@ -1142,8 +1161,9 @@ class ScooterModelsTest {
                 !appOnly
             },
         )
-        assertEquals(listOf("$link true", "$link false"), tried)
-        assertEquals(ScooterRentalOpening.Store(URI(link)), store)
+        val market = URI("market://details?id=${checkNotNull(withApp.app?.googlePlayId)}")
+        assertEquals(listOf("$link true", "$market false"), tried)
+        assertEquals(ScooterRentalOpening.Store(market), store)
 
         // A scooter its feed links keeps that link, and an operator with no app has nothing to fall back on.
         val host = ScooterRentalLinkPolicy.policies.getValue(withApp.rawValue).httpsHosts.first()
@@ -1157,6 +1177,26 @@ class ScooterModelsTest {
         val withoutApp = ScooterProvider.entries.firstOrNull { it.app == null }
         assumeTrue("every operator has an app", withoutApp != null)
         assertNull(scooter(withoutApp!!.rawValue).openRental(openRentalLink = { true }, openLink = { _, _ -> true }))
+    }
+
+    /**
+     * Without the operator's app, "Open in" goes to its page in the Play Store (market://), or else on Google Play's
+     * website, as the iPhone goes to the App Store's (week review, choice 17); an operator whose package the catalog
+     * does not give, none being confirmed, keeps its link, which opens in the browser.
+     */
+    @Test
+    fun theStorePagesOfAnOperatorsAppAreItsPlayPagesOrElseItsLink() {
+        val withPackage = ScooterProvider.OperatorApp("https://ride.example.com/", googlePlayId = "com.example.ride")
+        assertEquals(
+            listOf(URI("market://details?id=com.example.ride"), URI("https://play.google.com/store/apps/details?id=com.example.ride")),
+            withPackage.storePages,
+        )
+        assertEquals(listOf(URI("https://ride.example.com/")), ScooterProvider.OperatorApp("https://ride.example.com/").storePages)
+        // The catalog's packages, from data/providers.json, are package names.
+        for (provider in ScooterProvider.entries) {
+            val id = provider.app?.googlePlayId ?: continue
+            assertTrue(id, Regex("[A-Za-z]\\w*(\\.[A-Za-z]\\w*)+").matches(id))
+        }
     }
 
     // Ride prices and passes.

@@ -6,7 +6,7 @@
     "initial": "B",
     "switzerland": true,
     "systemIds": { "prefixes": ["bolt"] },
-    "app": { "link": "https://bolt.sng.link/Epy3j/o9sr", "appStoreId": 675033630 }
+    "app": { "link": "https://bolt.sng.link/Epy3j/o9sr", "appStoreId": 675033630, "googlePlayId": "ee.mtakso.client" }
   },
   {
     "key": "bird",
@@ -15,7 +15,7 @@
     "initial": "Bi",
     "switzerland": true,
     "systemIds": { "prefixes": ["bird"] },
-    "app": { "link": "https://ride.bird.co/", "appStoreId": 1260842311 }
+    "app": { "link": "https://ride.bird.co/", "appStoreId": 1260842311, "googlePlayId": "co.bird.android" }
   },
   {
     "key": "dott",
@@ -24,7 +24,7 @@
     "initial": "D",
     "switzerland": true,
     "systemIds": { "prefixes": ["dott"] },
-    "app": { "link": "https://v.ridedott.com/", "appStoreId": 1440301673 }
+    "app": { "link": "https://v.ridedott.com/", "appStoreId": 1440301673, "googlePlayId": "com.ridedott.rider" }
   },
   {
     "key": "hopp",
@@ -41,7 +41,7 @@
     "initial": "L",
     "switzerland": true,
     "systemIds": { "prefixes": ["lime"] },
-    "app": { "link": "https://lime.bike/", "appStoreId": 1199780189 }
+    "app": { "link": "https://lime.bike/", "appStoreId": 1199780189, "googlePlayId": "com.limebike" }
   },
   {
     "key": "voi",
@@ -50,7 +50,7 @@
     "initial": "V",
     "switzerland": true,
     "systemIds": { "prefixes": ["voi"] },
-    "app": { "link": "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest", "appStoreId": 1395921017 }
+    "app": { "link": "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest", "appStoreId": 1395921017, "googlePlayId": "io.voiapp.voi" }
   },
   {
     "key": "pony",
@@ -69,7 +69,7 @@
       "exact": ["velospot"],
       "prefixes": ["publibike"]
     },
-    "app": { "link": "https://app.publibike.ch/", "appStoreId": 6739938966 }
+    "app": { "link": "https://app.publibike.ch/", "appStoreId": 6739938966, "googlePlayId": "ch.publibike2.app" }
   },
   {
     "key": "zeus",
@@ -140,7 +140,7 @@
     "color": "#ff5436",
     "initial": "Sp",
     "systemIds": { "prefixes": ["spin"] },
-    "app": { "link": "https://www.spin.app/", "appStoreId": 1241808993 }
+    "app": { "link": "https://www.spin.app/", "appStoreId": 1241808993, "googlePlayId": "pm.spin" }
   },
   {
     "key": "veo",
@@ -196,7 +196,8 @@
     },
     "app": {
       "link": "https://qickscooters.app.link/",
-      "appStoreId": 1480390337
+      "appStoreId": 1480390337,
+      "googlePlayId": "qickscooters.app"
     }
   },
   {
@@ -233,7 +234,8 @@
     },
     "app": {
       "link": "https://wsh.bike/",
-      "appStoreId": 1418412616
+      "appStoreId": 1418412616,
+      "googlePlayId": "com.punicapp.whoosh"
     }
   },
   {
@@ -248,7 +250,8 @@
     },
     "app": {
       "link": "https://move-mobility.app.link/",
-      "appStoreId": 1632973735
+      "appStoreId": 1632973735,
+      "googlePlayId": "move.mobility.app"
     }
   },
   {
@@ -263,7 +266,8 @@
     },
     "app": {
       "link": "https://zippyride.app.link/",
-      "appStoreId": 6752651073
+      "appStoreId": 6752651073,
+      "googlePlayId": "zippy.app"
     }
   },
   {
@@ -278,7 +282,8 @@
     },
     "app": {
       "link": "https://binbin.tech/",
-      "appStoreId": 1483635924
+      "appStoreId": 1483635924,
+      "googlePlayId": "com.BINBIN"
     }
   },
   {
@@ -304,7 +309,8 @@
     },
     "app": {
       "link": "https://open.gbike.io/",
-      "appStoreId": 1501264071
+      "appStoreId": 1501264071,
+      "googlePlayId": "io.gbike.gcooter"
     }
   },
   {
@@ -341,7 +347,8 @@
     },
     "app": {
       "link": "https://tswm.link/",
-      "appStoreId": 1459344011
+      "appStoreId": 1459344011,
+      "googlePlayId": "com.co.swing"
     }
   },
   {
@@ -356,7 +363,8 @@
     },
     "app": {
       "link": "https://deer.tswm.link/",
-      "appStoreId": 1455718957
+      "appStoreId": 1455718957,
+      "googlePlayId": "co.deering.deer"
     }
   },
   {
@@ -371,7 +379,8 @@
     },
     "app": {
       "link": "https://alpaca.kr/",
-      "appStoreId": 1328860619
+      "appStoreId": 1328860619,
+      "googlePlayId": "com.trianglewide.sbike"
     }
   },
   {
@@ -391,6 +400,6 @@
     "color": "#f36b21",
     "initial": "RM",
     "systemIds": { "prefixes": ["ridemovi"] },
-    "app": { "link": "https://ridemovi.app.link/ZduGyMtOD6", "appStoreId": 1503536800 }
+    "app": { "link": "https://ridemovi.app.link/ZduGyMtOD6", "appStoreId": 1503536800, "googlePlayId": "com.ridemovi.app" }
   }
 ]
