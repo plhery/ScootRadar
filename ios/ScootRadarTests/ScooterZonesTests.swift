@@ -673,6 +673,30 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertEqual(areas.count, 2)
     }
 
+    /// Zoomed in while the wide area's answer is on its way, the view waits for it, as it serves any area within its
+    /// own; one with zones left out serves its own alone, and the close view's area is asked for once it comes, rather
+    /// than "Zoom in to see the zones" staying at street level (week review, finding 5.1).
+    func testZoomingInWhileAnAnswerWithZonesLeftOutIsOnItsWayAsksForTheCloseViewsOwnOnceItComes() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(truncated: true)
+        await api.hold()
+        let model = makeModel(api: api)
+        model.showsZones = true
+        let wide = MKCoordinateRegion(center: zurich.center, span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
+        model.updateViewport(wide, zoom: 14)
+        let asked = await waitUntil { await api.zoneAreas().count == 1 }
+        XCTAssertTrue(asked)
+
+        let close = MKCoordinateRegion(center: zurich.center, span: MKCoordinateSpan(latitudeDelta: 0.004, longitudeDelta: 0.004))
+        model.updateViewport(close, zoom: 17)
+        await api.setAnswer()
+        await api.release()
+        let shown = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        let areas = await api.zoneAreas()
+        XCTAssertTrue(areas[0].contains(areas[1]) && areas[0] != areas[1])
+    }
+
     private func makeModel(
         api: any ScooterAPIClient,
         defaults: UserDefaults? = nil,
@@ -716,6 +740,8 @@ private actor ZoneStubAPI: ScooterAPIClient {
     private var pending = false
     private var unavailable = false
     private var truncated = false
+    private var held = false
+    private var waiting: [CheckedContinuation<Void, Never>] = []
 
     init(more: [ScooterZone] = []) {
         self.more = more
@@ -727,6 +753,8 @@ private actor ZoneStubAPI: ScooterAPIClient {
 
     func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
         areas.append(area)
+        let (pending, unavailable, truncated) = (pending, unavailable, truncated)
+        if held { await withCheckedContinuation { waiting.append($0) } }
         if let failure { throw failure }
         let ring = [
             GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54),
@@ -739,6 +767,15 @@ private actor ZoneStubAPI: ScooterAPIClient {
     }
 
     func zoneAreas() -> [ScooterZoneArea] { areas }
+
+    /// Held, the answers wait until released, each as it was set when it was asked for.
+    func hold() { held = true }
+
+    func release() {
+        held = false
+        waiting.forEach { $0.resume() }
+        waiting = []
+    }
 
     func setAnswer(pending: Bool = false, unavailable: Bool = false, truncated: Bool = false) {
         self.pending = pending

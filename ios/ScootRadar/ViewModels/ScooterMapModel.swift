@@ -2629,7 +2629,8 @@ extension ScooterMapModel {
             return
         }
         if let taskArea = zoneTaskArea, taskArea.contains(area) {
-            // The cities' zones follow the map meanwhile.
+            // The cities' zones follow the map meanwhile. Should the answer come with zones left out, the view's own
+            // area is asked for then.
             rebuildMapZones()
             return
         }
@@ -2683,6 +2684,9 @@ extension ScooterMapModel {
                 recentZoneAnswers = Array(recentZoneAnswers.prefix(Self.recentZoneAnswerLimit))
             }
             setZones(state: answer.state)
+            // One with zones left out serves its own area alone: a view zoomed into it while it was on its way, which
+            // waited for it, asks for its own now.
+            if answer.truncated, zoneTaskArea == nil { updateZones() }
         }
     }
 

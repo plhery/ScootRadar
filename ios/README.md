@@ -254,7 +254,9 @@ after the last try, or a feed's zones could not be read (`meta.unavailable`), th
 legend says the zones are unavailable, not that none are published: those that
 came stay drawn, their kinds named beside it, the answer is not kept, and the next refresh of the scooters
 asks for it again. An answer with zones left out to keep it small
-(`meta.truncated`) names the kinds drawn and asks to zoom in. An area across the
+(`meta.truncated`) names the kinds drawn and asks to zoom in; it serves its own
+area alone, so a closer view asks for its own, also one zoomed into while that
+answer was on its way. An area across the
 180° line, east of New Zealand, is asked for in one request whose west is greater
 than its east, as the web map does (`GeoBounds`). The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
