@@ -488,9 +488,11 @@ npm run check:scrapers                    # yesterday; --date=2026-11-05 for ano
 npm run check:scrapers -- --json          # the same as JSON
 ```
 
-It reads the cache's counters above from Prometheus over `ssh netcup` and, from
-Cloudflare's analytics with wrangler's login (or `CLOUDFLARE_API_TOKEN`), the
-`/api/scooters` requests of the busiest outside clients, an IPv6 one by its /64, and
+It reads the cache's counters above from Prometheus over `ssh netcup` (the visitors'
+a minute after the day's end, and each sweep's quarter hour a minute after its own, as
+they count a quarter hour once it has closed) and, from Cloudflare's analytics with
+wrangler's login (or `CLOUDFLARE_API_TOKEN`), the `/api/scooters` requests of the
+busiest outside clients, an IPv6 one by its /64, and
 of those limited (429). It sets apart our own traffic: this machine (its address by
 `scootradar.com/cdn-cgi/trace`), `2a06:98c0:3600::103` (the Worker's own cache
 writes, PUT 204), user agents `scootradar-*` (our scripts), okhttp from `2001:4860:`

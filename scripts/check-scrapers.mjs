@@ -23,6 +23,11 @@ const ZONE = '79c6a39db1a26ea42f9c97eb7d6cef3e'; // scootradar.com
 const PROMETHEUS = process.env.PROMETHEUS_CONTAINER ?? 'p13mhgbtnebkwu8rutbtz6mk';
 const CACHE = 'job="scootradar-cache"';
 const SWEEPS = `scootradar_visitor_areas_total{${CACHE}, areas=~"32-63|64\\\\+"}`;
+// The visitors' counters count a UTC quarter hour once it has closed, at the cache's first request or scrape
+// (every 30 s) after it, so they are read a minute after the day's end and each quarter hour's. Read on the
+// boundaries, until 10 November 2026, the day's last quarter hour was counted on neither day, and no sweep
+// had a time.
+const CLOSED = 60;
 
 // What a suspicion is. A map now stops refreshing half an hour after the last touch; in the audit of
 // 6 November 2026 the busiest outside browser made about 2,600 requests in a day, most under 900.
@@ -40,28 +45,30 @@ function prometheus(path) {
   if (body.status !== 'success') throw new Error(`Prometheus: ${body.error}`);
   return body.data.result;
 }
-const instant = query => prometheus(`/api/v1/query?${new URLSearchParams({ query, time: String(dayEnd) })}`);
-const value = query => Math.round(Number(instant(query)[0]?.value[1] ?? 0));
+const instant = (query, at = dayEnd) => prometheus(`/api/v1/query?${new URLSearchParams({ query, time: String(at) })}`);
+const value = (query, at) => Math.round(Number(instant(query, at)[0]?.value[1] ?? 0));
 // In the buckets' order (server/visitorLedger.ts), which Prometheus does not keep.
 const ORDER = ['1-15', '16-60', '61-300', '301+', '1', '2-3', '4-7', '8-15', '16-31', '32-63', '64+'];
-const byLabel = (query, label) => Object.fromEntries(instant(query)
+const byLabel = (query, label, at) => Object.fromEntries(instant(query, at)
   .map(series => [series.metric[label], Math.round(Number(series.value[1]))])
   .sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)));
 
 function cache() {
+  const closed = dayEnd + CLOSED;
+  // Each quarter hour by its start.
   const sweptAt = prometheus(`/api/v1/query_range?${new URLSearchParams({ query: `sum(increase(${SWEEPS}[15m]))`,
-    start: String(dayEnd - 86_400 + 900), end: String(dayEnd), step: '900' })}`)[0]?.values
-    .filter(([, count]) => Number(count) > 0.5).map(([at]) => new Date((at - 900) * 1000).toISOString().slice(11, 16)) ?? [];
+    start: String(closed - 86_400 + 900), end: String(closed), step: '900' })}`)[0]?.values
+    .filter(([, count]) => Number(count) > 0.5).map(([at]) => new Date((at - 900 - CLOSED) * 1000).toISOString().slice(11, 16)) ?? [];
   return {
-    visitorQuarterHours: value(`sum(increase(scootradar_visitors_total{${CACHE}}[24h]))`),
-    byRequests: byLabel(`sum by (requests) (increase(scootradar_visitors_total{${CACHE}}[24h]))`, 'requests'),
-    byAreas: byLabel(`sum by (areas) (increase(scootradar_visitor_areas_total{${CACHE}}[24h]))`, 'areas'),
-    sweeps: value(`sum(increase(${SWEEPS}[24h]))`),
+    visitorQuarterHours: value(`sum(increase(scootradar_visitors_total{${CACHE}}[24h]))`, closed),
+    byRequests: byLabel(`sum by (requests) (increase(scootradar_visitors_total{${CACHE}}[24h]))`, 'requests', closed),
+    byAreas: byLabel(`sum by (areas) (increase(scootradar_visitor_areas_total{${CACHE}}[24h]))`, 'areas', closed),
+    sweeps: value(`sum(increase(${SWEEPS}[24h]))`, closed),
     sweptAt,
     unwatched: value(`sum(increase(scootradar_unwatched_requests_total{${CACHE}}[24h]))`),
     loweredZooms: value(`sum(increase(scootradar_scooter_zoom_lowered_total{${CACHE}}[24h]))`),
     limited: value(`sum(increase(scootradar_http_requests_total{${CACHE}, route="/api/scooters", status="429"}[24h]))`),
-    limeRoundsVisitors: value(`sum(increase(scootradar_lime_wake_clients_total{${CACHE}, refreshes="16+"}[24h]))`),
+    limeRoundsVisitors: value(`sum(increase(scootradar_lime_wake_clients_total{${CACHE}, refreshes="16+"}[24h]))`, closed),
   };
 }
 
