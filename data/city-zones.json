@@ -272,6 +272,55 @@
       "zones": 37
     },
     {
+      "id": "austin",
+      "place": "Austin",
+      "country": "US",
+      "authority": "City of Austin",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "City of Austin, Transportation and Public Works, \"Shared Mobility\": there are certain areas where scooters are not allowed; park off bridges and away from creeks and rivers; parking boxes are marked spaces for dockless devices; the Shared Mobility Operations map the page links shows them",
+        "url": "https://www.austintexas.gov/sharedmobility"
+      },
+      "map": {
+        "title": "City of Austin, \"Austin's Shared Mobility Operations Web Map\" (ArcGIS): the shared mobility infrastructure and regulations in place, its micromobility regulations and parking boxes and corrals among them",
+        "url": "https://austin.maps.arcgis.com/apps/webappviewer/index.html?id=7680eb73d6504c92b62ea31073ae9340"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/Shared_Mobility_Operations_Parking_Boxes_and_Corrals/FeatureServer",
+          "layer": 0,
+          "where": "Status = 'Complete'",
+          "nameField": "Location"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/Shared_Mobility_Operations_Micromobility_Regulations/FeatureServer",
+          "layer": 0,
+          "where": "No_Lock = 'Yes' AND Description NOT LIKE '%riding%'"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/Shared_Mobility_Operations_Micromobility_Regulations/FeatureServer",
+          "layer": 0,
+          "where": "Description LIKE '%mph slow zone%'"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/Shared_Mobility_Operations_Micromobility_Regulations/FeatureServer",
+          "layer": 0,
+          "where": "Description LIKE '%riding%' OR Description LIKE 'Dismount%'"
+        }
+      ],
+      "bounds": {
+        "south": 30.224936,
+        "west": -97.761238,
+        "north": 30.407547,
+        "east": -97.679034
+      },
+      "zones": 42
+    },
+    {
       "id": "baltimore",
       "place": "Baltimore",
       "country": "US",
@@ -2310,6 +2359,43 @@
       "zones": 15
     },
     {
+      "id": "phoenix",
+      "place": "Phoenix",
+      "country": "US",
+      "authority": "City of Phoenix",
+      "timeZone": "America/Phoenix",
+      "source": {
+        "title": "City of Phoenix, Street Transportation, \"Shared Micromobility Program\": Lime's and Spin's e-scooters and e-bikes in a service area of 35 square miles, extended by 13 more with 103 new corrals; park upright, in designated areas",
+        "url": "https://www.phoenix.gov/administration/departments/streets/requests-services/active-transportation/shared-micromobility-program.html"
+      },
+      "map": {
+        "title": "City of Phoenix, map service \"STR_eScooters\" (ArcGIS): the places downtown where scooters may be parked, kept from the pilot, the no-ride zones and the program's boundaries",
+        "url": "https://maps.phoenix.gov/pub/rest/services/Public/STR_eScooters/MapServer"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://maps.phoenix.gov/pub/rest/services/Public/STR_eScooters/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson",
+          "pointName": "Permitted parking"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://maps.phoenix.gov/pub/rest/services/Public/STR_eScooters/MapServer",
+          "layer": 1,
+          "where": "OBJECTID NOT IN (169, 177)",
+          "nameField": "PARK_NAME"
+        }
+      ],
+      "bounds": {
+        "south": 33.368788,
+        "west": -112.112757,
+        "north": 33.508872,
+        "east": -111.981343
+      },
+      "zones": 497
+    },
+    {
       "id": "plymouth",
       "place": "Plymouth",
       "country": "GB",
@@ -3285,6 +3371,58 @@
         "east": 22.416315
       },
       "zones": 460
+    },
+    {
+      "id": "universityofflorida",
+      "place": "University of Florida",
+      "country": "US",
+      "authority": "University of Florida",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "University of Florida, Transportation and Parking Services, \"Micromobility (Rental E-Scooters) Program\": on campus a rental e-scooter is parked only in one of the parking zones UF has set for them, or the ride cannot end",
+        "url": "https://taps.ufl.edu/alternative-transportation/micromobility/"
+      },
+      "map": {
+        "title": "University of Florida, \"Micromobility Map\" (ArcGIS), which the page embeds: the campus boundary, the low-speed zone and the e-scooter parking zones, from the layers that hold the dismount zones too",
+        "url": "https://experience.arcgis.com/experience/a4eeb7b798f74973b4e3289d4b93d93d/"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://services9.arcgis.com/IiuFUnlkob76Az9k/arcgis/rest/services/eScooter_view/FeatureServer/0/query?where=Area_Type%3D%27Parking%27+AND+Name+NOT+LIKE+%27%25CLOSED%25%27&outFields=*&outSR=4326&f=geojson",
+          "match": {
+            "Area_Type": "Parking"
+          },
+          "nameField": "Name",
+          "nameTrim": "^\\d+\\.\\s*"
+        },
+        {
+          "kind": "racksOnly",
+          "url": "https://services9.arcgis.com/IiuFUnlkob76Az9k/arcgis/rest/services/eScooter_Zones_view/FeatureServer",
+          "layer": 0,
+          "where": "Zone = 'Campus Boundary'"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services9.arcgis.com/IiuFUnlkob76Az9k/arcgis/rest/services/eScooter_Zones_view/FeatureServer",
+          "layer": 0,
+          "where": "Zone = 'Low-Speed Zones'"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services9.arcgis.com/IiuFUnlkob76Az9k/arcgis/rest/services/eScooter_Zones_view/FeatureServer",
+          "layer": 0,
+          "where": "Zone = 'Dismount Zones'"
+        }
+      ],
+      "bounds": {
+        "south": 29.630209,
+        "west": -82.37651,
+        "north": 29.651899,
+        "east": -82.339447
+      },
+      "zones": 69
     },
     {
       "id": "vaasa",

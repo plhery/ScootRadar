@@ -170,6 +170,12 @@ const MULHEIM_CENTRE = { south: 51.424, west: 6.875, north: 51.432, east: 6.89 }
 const NURNBERG_ALTSTADT = { south: 49.449, west: 11.07, north: 49.457, east: 11.085 };
 // Kassel's centre, round the Königsplatz and the Friedrichsplatz.
 const KASSEL_CENTRE = { south: 51.312, west: 9.49, north: 51.32, east: 9.505 };
+// Downtown Austin, from Lady Bird Lake's north shore and Republic Square to the Capitol.
+const AUSTIN_DOWNTOWN = { south: 30.258, west: -97.75, north: 30.276, east: -97.735 };
+// Downtown Phoenix, from Chase Field and City Hall to Roosevelt Street.
+const PHOENIX_DOWNTOWN = { south: 33.444, west: -112.08, north: 33.458, east: -112.066 };
+// The University of Florida's historic core, from the Reitz Union to the Plaza of the Americas.
+const UF_HISTORIC_CORE = { south: 29.643, west: -82.35, north: 29.652, east: -82.338 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 /** The credit JARTIC's terms ask for, of its data processed. */
 const JARTIC_CREDIT = '出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成';
@@ -1651,5 +1657,78 @@ describe('the cities\' zones', () => {
     const shown = ruleZonesInView({ bounds: KASSEL_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(30);
     expect(shown.filter(zone => zone.rule === 'racksOnly')).toHaveLength(1);
+  });
+
+  it("draws the City of Austin's parking boxes, those complete, and its no-parking, slow and no-riding areas, from its Shared Mobility Operations map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const austin = ZONE_CITIES.find(city => city.id === 'austin')!;
+    expect(austin.authority).toBe('City of Austin');
+    expect(austin.timeZone).toBe('America/Chicago');
+    // 25 of its 40 boxes and corrals, the others pending installation, and 16 of its 17 areas: the
+    // sidewalk between Congress and Trinity only keeps the operators from deploying there. The Domain
+    // is in two parts.
+    const { default: file } = await CITY_ZONE_FILES.austin();
+    const counts = Object.fromEntries(['parking', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 25, noParking: 3, slow: 3, noRide: 11 });
+    expect(file.zones.some(zone => zone.name === 'Sidewalk between Congress & Trinity')).toBe(false);
+    const box = file.zones.find(zone => zone.name === '301 Lavaca St')!.ring!;
+    const [lat, lng] = [box.reduce((sum, [y]) => sum + y, 0) / box.length, box.reduce((sum, [, x]) => sum + x, 0) / box.length];
+    expect(Math.abs(lat - 30.266176) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - -97.746087) * 96_200).toBeLessThan(2);
+    // The Capitol's grounds are not ridden; Republic Square's park is walked, inside its 5 mph perimeter.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name).sort();
+    expect(at(30.2747, -97.7404)).toEqual(['State Capitol']);
+    expect(at(30.267794, -97.747377)).toEqual(['Republic Square Park Perimeter', 'Republic Square Parkland']);
+    await loadCityZones(austin);
+    const shown = ruleZonesInView({ bounds: AUSTIN_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws the City of Phoenix's parking places downtown, kept from its pilot, and its no-ride zones, but not two slivers", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const phoenix = ZONE_CITIES.find(city => city.id === 'phoenix')!;
+    expect(phoenix.authority).toBe('City of Phoenix');
+    expect(phoenix.timeZone).toBe('America/Phoenix');
+    // Its 389 places to park, each a disc round its point, and 108 of its 110 no-ride zones.
+    const { default: file } = await CITY_ZONE_FILES.phoenix();
+    const counts = Object.fromEntries(['parking', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 389, noRide: 108 });
+    expect(file.zones.filter(zone => /^phoenix-no-ride-(169|177)$/.test(zone.id))).toEqual([]);
+    const place = file.zones.find(zone => zone.id === 'phoenix-parking-1')!;
+    expect(place.name).toBe('Permitted parking');
+    const [lat, lng] = [place.ring!.reduce((sum, [y]) => sum + y, 0) / place.ring!.length, place.ring!.reduce((sum, [, x]) => sum + x, 0) / place.ring!.length];
+    expect(Math.abs(lat - 33.458449) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - -112.072643) * 92_900).toBeLessThan(2);
+    // Chase Field is not ridden, and neither is the zone added in June 2026 that no operator's data had in November.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    expect(at(33.4455, -112.0667)).toEqual(['Ballpark']);
+    expect(file.zones.find(zone => zone.id === 'phoenix-no-ride-59')?.kind).toBe('noRide');
+    await loadCityZones(phoenix);
+    const shown = ruleZonesInView({ bounds: PHOENIX_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noRide']));
+  });
+
+  it("draws the University of Florida's parking areas, the campus, where a scooter is parked only at one, its slow and dismount zones, but not game days'", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const uf = ZONE_CITIES.find(city => city.id === 'universityofflorida')!;
+    expect(uf.authority).toBe('University of Florida');
+    expect(uf.timeZone).toBe('America/New_York');
+    // 59 of its 60 parking areas, one closed, named without their numbers; the campus in three parts.
+    const { default: file } = await CITY_ZONE_FILES.universityofflorida();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 59, racksOnly: 3, slow: 1, noRide: 6 });
+    expect(file.zones.some(zone => /CLOSED|^\d/.test(zone.name))).toBe(false);
+    const area = file.zones.find(zone => zone.name === 'Reitz Union South')!.ring!;
+    const [lat, lng] = [area.reduce((sum, [y]) => sum + y, 0) / area.length, area.reduce((sum, [, x]) => sum + x, 0) / area.length];
+    expect(Math.abs(lat - 29.645057) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - -82.347593) * 96_800).toBeLessThan(2);
+    // The Plaza of the Americas is walked, in the slow zone, on campus; beside the stadium, in the game
+    // days' dismount zone alone, a scooter is only on campus.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.kind).sort();
+    expect(at(29.650722, -82.342517)).toEqual(['noRide', 'racksOnly', 'slow']);
+    expect(at(29.64812, -82.35019)).toEqual(['racksOnly']);
+    await loadCityZones(uf);
+    const shown = ruleZonesInView({ bounds: UF_HISTORIC_CORE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly', 'slow', 'noRide']));
   });
 });

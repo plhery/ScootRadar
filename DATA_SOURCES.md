@@ -974,6 +974,40 @@ its source and the date it was read.
   shows them. The centre itself is not published as a shape, nor drawn. The
   geoportal's terms require the city's prior written permission for any use;
   drawn credited "Stadt Augsburg", under the rule of 10 November 2026.
+- **Austin** (read 10 November 2026): the City of Austin's 25 parking boxes
+  and corrals (`Status` "Complete"), each a disc 5 m round its point, named
+  for its address, and 16 of the 17 areas of its micromobility regulations:
+  3 no-parking areas, where no ride may end (the medical area, the School for
+  the Blind, and Red River Street at Cesar Chavez), 3 slow zones (8 mph near
+  the Waller Creek Trail, 5 mph round Republic Square and at Q2 Stadium) and
+  10 no-riding areas (St. Edward's University, the State Capitol's grounds,
+  the UT Pickle Research Campus, Austin Community College, Walnut Creek
+  Metropolitan Park, the North Star Greenbelt, the Domain, two private
+  properties, and Republic Square's park, where riders dismount and walk),
+  from the feature services `Shared_Mobility_Operations_Micromobility_Regulations`
+  (last edited 16 September 2021) and
+  `Shared_Mobility_Operations_Parking_Boxes_and_Corrals` (2 November 2022).
+  Both are layers of the City's
+  [Shared Mobility Operations map](https://austin.maps.arcgis.com/apps/webappviewer/index.html?id=7680eb73d6504c92b62ea31073ae9340),
+  whose web map (5 August 2024) shows "shared mobility infrastructure and
+  regulations currently in place", and which the City's
+  [Shared Mobility](https://www.austintexas.gov/sharedmobility) page links:
+  there are areas where scooters are not allowed; park in parking boxes,
+  marked spaces for dockless devices, and off bridges. The Director Rules
+  for dockless operations (filed 8 August 2025) keep the operators' riders
+  out of parks, campuses and State land unless agreed and let the Director
+  set geofences. Lime's public zone file for Austin (10 November 2026) holds
+  most of the areas by name, some milder (Austin Community College's, Walnut
+  Creek's, North Star's and the Domain's as no-parking only, Republic Square
+  at 10 mph), and not the residential apartments, Red River at Cesar Chavez,
+  the Waller Creek Trail or Q2 Stadium. Left out: the 15 boxes pending
+  installation; the sidewalk between Congress Avenue and Trinity Street, where
+  the operators may not deploy, its only rule; and the 21 no-lock areas near
+  waterways, each a point on a bridge, which a disc 5 m round it would not
+  cover. The Domain is in two parts, one a sliver of 9 m². The layers state
+  no licence, and the City's legal notice grants use of its files for
+  personal use only; drawn credited "City of Austin", under the rule of
+  10 November 2026. The legend links the City's page.
 - **Baltimore** (read 30 October 2026): the Baltimore City Department of
   Transportation's 71 scooter corrals, "locations of corrals for the shared
   scooter program", each a disc 5 m round its point, from its `Scooter_Corrals`
@@ -1759,6 +1793,38 @@ its source and the date it was read.
   19 m², which the announcement calls suggested places to set scooters out,
   as it sets no fixed parking zones while Straume's centre is being built.
   The slow zone's speed is not given.
+- **Phoenix** (read 10 November 2026): the City of Phoenix's 389 places
+  downtown where scooters may be parked and 108 of its 110 no-ride zones,
+  from layers 0 ("Permitted Parking") and 1 ("No-Ride Zones") of the
+  `STR_eScooters` service on its map server, outside its open data. The
+  places are points, each a disc 5 m round it, named "Permitted parking"; the
+  layer, without dates, calls them where the pilot's scooters (from September
+  2019) could be parked, and 368 lie in the pilot's downtown area, the rest
+  at its edges. They are
+  still used: on 10 November 2026, 73 of the 164 Spin scooters in that area
+  stood within 10 m of one, against 2 to 14 for the same places moved 25 to
+  80 m. The 103 corrals that the City's
+  [Shared Micromobility Program](https://www.phoenix.gov/administration/departments/streets/requests-services/active-transportation/shared-micromobility-program.html)
+  page says were installed in the 13 square miles added to the north (the
+  Phoenix Art Museum, the Heard Museum, Steele Indian School Park) are not in
+  the layer, nor drawn: the page shows them, with "all current designated
+  parking locations", on a Google Earth project that cannot be downloaded.
+  Of the no-ride zones, 28 are named, downtown (City Hall, the courts, the
+  County complex, Chase Field, Footprint Center, the Convention Center,
+  Civic Space Park, the downtown buildings of ASU and the University of
+  Arizona), and 82 were added on 3 June 2026 with the program's two new
+  boundaries. Spin's open data and Lime's public zone file of 10 November 2026
+  hold 77 of the 110 as no-riding zones; the other 33, all added in June and
+  most in the service area beyond downtown, are in neither, and are drawn as
+  the City's. Left out: two slivers of 10 m² and less (objects 169 and 177);
+  layer 2's boundaries, the pilot's area and the program's service area; and
+  the downtown core where Spin's and Lime's data let a ride end only at a
+  designated spot, which none of the City's boundaries matches (each covers
+  about 70% of the pilot's area). The page asks riders to park
+  upright, in designated areas. The service states no licence, and the City's
+  copyright notice allows its site's materials only for personal,
+  non-commercial use; drawn credited "City of Phoenix", under the rule of
+  10 November 2026. The legend links the City's page.
 - **Plymouth** (read 10 November 2026): Plymouth City Council's 69 Beryl
   docking stations, where its e-bikes and, since July 2026, its e-scooters are
   taken and left, points each drawn as a disc of 5 m and named as the council
@@ -2084,6 +2150,36 @@ its source and the date it was read.
   kind, are left out (`polygonsOnly`); some areas lie in Kaarina, which the
   layers cover too. The weekend night ban and night speed limits are the
   city's for the whole city, not areas, and are not drawn.
+- **University of Florida** (read 10 November 2026): UF's 59 parking areas
+  for rental e-scooters on its Gainesville campus; the campus, in three
+  parts, where a rental e-scooter is parked only in one of them; its slow
+  zone over the historic core and the Reitz Union; and its 6 dismount zones,
+  drawn as no-riding zones (the Journalism School, Turlington Plaza and
+  Marston Library, the Pharmacy and Health Science Center breezeway, the
+  Reitz Union, the Plaza of the Americas and University Auditorium), from
+  the feature services `eScooter_view` (60 points, last edited 18 August
+  2025) and `eScooter_Zones_view` (19 November 2024) on UF's ArcGIS Online.
+  The parking areas are points, each a disc 5 m round it, named without the
+  number each begins with ("1. Park & Ride #2"); the one marked closed, the
+  Racquet Club's, is left out. Transportation and Parking Services'
+  [micromobility page](https://taps.ufl.edu/alternative-transportation/micromobility/)
+  embeds UF's
+  [Micromobility Map](https://experience.arcgis.com/experience/a4eeb7b798f74973b4e3289d4b93d93d/),
+  which draws the campus, the slow zone and the parking areas from these
+  layers: riders must park only in the designated areas, or cannot end the
+  ride and are charged by the minute, as UF's policy 4-013 (18 July 2024)
+  has it too. The map leaves out the dismount zones, of the same layer; on
+  10 November 2026 Spin's open data made five of them no-riding zones, all
+  but the Journalism School's, and on 22 October Bird's and Spin's data had
+  the Plaza of the Americas, University Auditorium, Turlington Plaza and the
+  Reitz Union. Not
+  drawn: the football game day dismount zone, in force on game days only.
+  The slow zone's speed is not given; rentals end at midnight and start at
+  6:00, a night ban, not a zone. "Park only in racks or marked places" is a
+  kind of the website's alone: neither app draws the campus yet. The layers
+  state no licence, and UF's web disclaimer asks for permission to use its
+  material; drawn credited "University of Florida", under the rule of
+  10 November 2026. The legend links TAPS's page.
 - **Vaasa** (read 30 October 2026): Vaasan kaupunki's 229 parking places
   (`Sahkopotkulautojen_pysakointi`) and, from its restriction areas
   (`Rajoitusalueet_sahkopotkulaudat_view`, by `rajoitus`), 66 no-parking
