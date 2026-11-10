@@ -753,6 +753,15 @@ class ScooterMapControllerTest {
         defaults.set("gone", forKey = "only-provider")
         defaults.set(listOf("voi"), forKey = "disabled-providers")
         assertEquals(ScooterProvider.entries.toSet() - Voi, makeModel().enabledProviders.value)
+
+        // Saved by a version before only-provider, the providers turned off leaving Lime alone on: the app keeps it
+        // the only one once it starts, and Voi, added since, stays off.
+        defaults.removeObject(forKey = "only-provider")
+        defaults.set((ScooterProvider.entries - Lime).map { it.rawValue }.sorted(), forKey = "disabled-providers")
+        assertEquals(setOf(Lime), makeModel().enabledProviders.value)
+        assertEquals("lime", defaults.string(forKey = "only-provider"))
+        saveWithoutVoi()
+        assertEquals(setOf(Lime), makeModel().enabledProviders.value)
     }
 
     @Test

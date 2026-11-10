@@ -260,6 +260,12 @@ class ScooterMapController(
     val locationIssue: StateFlow<ScooterLocationIssue?> = _locationIssue.asStateFlow()
 
     private val _enabledProviders = MutableStateFlow(savedProviders(defaults) ?: ScooterProvider.entries.toSet())
+
+    init {
+        // Filters saved before only-provider that leave one app alone on keep it the only one from now on, as the
+        // website does on each visit: those a later catalog adds stay off (Desk card 350, item 4).
+        _enabledProviders.value.singleOrNull()?.let { defaults.set(it.rawValue, forKey = ONLY_PROVIDER_KEY) }
+    }
     val enabledProviders: StateFlow<Set<ScooterProvider>> = _enabledProviders.asStateFlow()
 
     private val _selectedScooterID = MutableStateFlow<String?>(null)
