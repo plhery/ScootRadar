@@ -76,8 +76,9 @@ export function parseScooterQuery(params: URLSearchParams): ScooterQueryResult {
     // A west greater than the east is a box across the 180° line (geo.ts).
     south >= north || lngSpan({ west, east }) <= 0 ||
     !Number.isInteger(minBattery) || minBattery < 0 || minBattery > 100 ||
-    // In metres, as far as a range is believed (MAX_SCOOTER_RANGE_M in scooterFeeds.ts).
-    !Number.isInteger(minRange) || minRange < 0 || minRange > 200_000 ||
+    // In metres, up to 100 km, as far as the city totals count exactly (REACH_STEPS in scooterSnapshots.ts):
+    // the sliders stop at 30 km and 20 mi.
+    !Number.isInteger(minRange) || minRange < 0 || minRange > 100_000 ||
     (zoom !== null && (!Number.isInteger(zoom) || zoom < 0 || zoom > 22))
   ) {
     return { ok: false, error: 'Invalid scooter search parameters' };

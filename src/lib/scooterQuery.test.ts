@@ -95,7 +95,10 @@ describe('parseScooterQuery', () => {
     expect(minRange({})).toBe(0);
     expect(minRange({ minRange: '0' })).toBe(0);
     expect(minRange({ minRange: '5000' })).toBe(5000);
-    expect(minRange({ minRange: '200000' })).toBe(200_000);
+    expect(minRange({ minRange: '100000' })).toBe(100_000);
+    // No further than the city totals count exactly.
+    expect(minRange({ minRange: '100001' })).toBe('Invalid scooter search parameters');
+    expect(minRange({ minRange: '200000' })).toBe('Invalid scooter search parameters');
     // The two together, which the clients never send, are both kept.
     const both = parseScooterQuery(new URLSearchParams({ minBattery: '60', minRange: '5000' }));
     expect(both.ok && [both.query.minBattery, both.query.minRange]).toEqual([60, 5000]);

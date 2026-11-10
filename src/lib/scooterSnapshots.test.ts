@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, joinCityOverviews, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, joinCityOverviews, LIME_GROUPS_PER_REQUEST, RYDE_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, REACH_STEPS, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { scooterAnswerZoom } from './scooterQuery';
@@ -112,14 +112,16 @@ describe('persistent map snapshots', () => {
     // Voi's give a range alone.
     const vois = feed({ id: 'france:voi_lyon', provider: 'voi', vehicles: [{ ...vehicle('voi', null), provider: 'voi', range_m: 20_000 }] });
     const ids = (response: { vehicles: Vehicle[] }) => response.vehicles.map(item => item.vehicle_id).sort();
-    // As saved before the effective ranges were counted.
+    // As saved before the reaches were counted.
     const withoutRanges = (overview: MobilitySnapshot['overview']): MobilitySnapshot['overview'] => ({ ...overview,
       cities: overview.cities.map(city => {
         const saved = { ...city };
-        delete saved.effectiveRanges;
+        delete saved.reaches;
         delete saved.batteryOnly;
         return saved;
       }) });
+    // The bin of the city totals counting from a step of the sliders, in metres.
+    const step = (metres: number) => REACH_STEPS.indexOf(metres);
 
     it('leaves out at street zoom the scooters that may not go that far, judging those without a range by their battery', () => {
       const cached = snapshot([ranged, limes]);
@@ -140,16 +142,18 @@ describe('persistent map snapshots', () => {
       expect(count(91)).toBe(0);
     });
 
-    it('counts in the city totals each scooter’s range, or else its battery times its app’s full range, by whole kilometres', () => {
+    it('counts in the city totals each scooter’s range, or else its battery times its app’s full range, by step of the sliders', () => {
       const cached = snapshot([ranged, limes]);
       const lyonTotals = cached.overview.cities.find(city => city.city === 'Lyon')!;
-      expect(lyonTotals.effectiveRanges?.dott).toHaveLength(102);
-      expect(lyonTotals.effectiveRanges?.dott[4]).toBe(1);
-      expect(lyonTotals.effectiveRanges?.dott[12]).toBe(1);
-      expect(lyonTotals.effectiveRanges?.dott[14]).toBe(1);
-      expect(lyonTotals.effectiveRanges?.dott[101]).toBe(1);
-      expect(lyonTotals.effectiveRanges?.lime[6]).toBe(1);
-      expect(lyonTotals.effectiveRanges?.lime[5]).toBe(1);
+      // Whole kilometres to 100 and whole miles to 20, and one bin for neither.
+      expect(lyonTotals.reaches?.dott).toHaveLength(122);
+      // 4,999 m from 3 mi, 4,828 m; 12,400 m from 12 km; 14,960 m from 9 mi, 14,484 m.
+      expect(lyonTotals.reaches?.dott[step(4_828)]).toBe(1);
+      expect(lyonTotals.reaches?.dott[step(12_000)]).toBe(1);
+      expect(lyonTotals.reaches?.dott[step(14_484)]).toBe(1);
+      expect(lyonTotals.reaches?.dott[121]).toBe(1);
+      expect(lyonTotals.reaches?.lime[step(6_000)]).toBe(1);
+      expect(lyonTotals.reaches?.lime[step(5_000)]).toBe(1);
       expect(lyonTotals.batteryOnly?.sort()).toEqual(['dott', 'lime']);
       const count = (minRange: number, minBattery = 0) =>
         querySnapshot(cached, { ...query, minBattery, minRange }, 8, now).clusters[0]?.count ?? 0;
@@ -159,12 +163,42 @@ describe('persistent map snapshots', () => {
       expect(querySnapshot(cached, { ...query, minRange: 6_000 }, 8, now).clusters[0].providers).toEqual({ dott: 4, lime: 1 });
       expect(count(5_000)).toBe(6);
       expect(count(15_000)).toBe(1);
-      // 3 miles, 4,828 m, from the fifth kilometre: the 4,999 m scooter is counted only at street zoom.
-      expect(count(4_828)).toBe(6);
+      // 3 miles, 4,828 m: the 4,999 m scooter too, as at street zoom.
+      expect(count(4_828)).toBe(7);
       expect(ids(querySnapshot(cached, { ...query, minRange: 4_828 }, 16, now))).toEqual(['far', 'flat', 'lime52', 'lime53', 'short', 'unknown', 'unsaid']);
       expect(count(100_000)).toBe(0);
       // Both: no more than either lets through.
       expect(count(13_000, 50)).toBe(2);
+    });
+
+    it('counts in the city totals what passes at street zoom and in groups, at every step of the sliders and up to 100 km', () => {
+      // At each step, a scooter whose range reaches it to the metre and one a metre short; and battery-only Limes
+      // and Vois at every battery, 11.5 km and 72.8 km on a full one: Lime 42% goes 4,830 m, 3 mi, and 41% not.
+      const steps = [...Array.from({ length: 30 }, (_, km) => (km + 1) * 1000),
+        ...Array.from({ length: 20 }, (_, mi) => Math.round((mi + 1) * 1609.344)), 50_000, 99_000, 100_000];
+      const everyOne = snapshot([feed({ vehicles: [
+        ...steps.flatMap(metres => [{ ...vehicle(`at ${metres}`), range_m: metres }, { ...vehicle(`short of ${metres}`), range_m: metres - 1 }]),
+        { ...vehicle('far beyond'), range_m: 150_000 },
+      ] }), feed({ id: 'france:lime_lyon', provider: 'lime',
+        vehicles: Array.from({ length: 101 }, (_, battery) => ({ ...vehicle(`lime ${battery}`, battery), provider: 'lime' })) }),
+      feed({ id: 'france:voi_lyon', provider: 'voi',
+        vehicles: Array.from({ length: 101 }, (_, battery) => ({ ...vehicle(`voi ${battery}`, battery), provider: 'voi' })) })]);
+      const passing = (minRange: number, zoom: number) => {
+        const answer = querySnapshot(everyOne, { ...query, minRange }, zoom, now);
+        return answer.vehicles.length + answer.clusters.reduce((sum, cluster) => sum + cluster.count, 0);
+      };
+      for (const minRange of [...new Set(steps)]) {
+        const street = passing(minRange, 16);
+        expect([passing(minRange, 13), passing(minRange, 8)], `${minRange} m`).toEqual([street, street]);
+      }
+      // The review's cases: Voi 45% at 20 mi and not 44%, Lime 42% at 3 mi and not 41%, a range of 12.9 km at 8 mi.
+      const counted = (minRange: number) => querySnapshot(everyOne, { ...query, minRange }, 8, now).clusters[0].providers;
+      expect(counted(32_187)).toMatchObject({ voi: 101 - 45 });
+      expect(counted(4_828)).toMatchObject({ lime: 101 - 42 });
+      expect(querySnapshot(snapshot([feed({ vehicles: [{ ...vehicle('12.9 km'), range_m: 12_900 }] })]), { ...query, minRange: 12_875 }, 8, now)
+        .clusters[0].count).toBe(1);
+      // 100 km, the API's furthest, counts what goes 100 km or more.
+      expect(counted(100_000)).toEqual({ dott: 2 });
     });
 
     it('gives the full range of each app with a scooter in view that says its battery and not its range, whatever the filters', () => {
@@ -182,15 +216,20 @@ describe('persistent map snapshots', () => {
       expect(querySnapshot(snapshot([vois]), query, 8, now)).not.toHaveProperty('batteryRanges');
     });
 
-    it('builds again totals saved before the effective ranges were counted, and answers no range minimum from them meanwhile', () => {
+    it('builds again totals saved before the reaches were counted, and answers no range minimum from them meanwhile', () => {
       const built = snapshot([ranged]);
       const saved: MobilitySnapshot = { ...built, overview: withoutRanges(built.overview) };
       expect(overviewNeedsRefresh(built, built.feeds, now + 60_000)).toBe(false);
       expect(overviewNeedsRefresh(saved, saved.feeds, now + 60_000)).toBe(true);
-      // Those of the first range minimum counted the ranges alone.
+      // Those of the first range minimum counted the ranges alone; those of the second by whole kilometres,
+      // which would read 3 mi from 5 km.
       const first: MobilitySnapshot = { ...built, overview: { ...withoutRanges(built.overview),
         cities: withoutRanges(built.overview).cities.map(city => ({ ...city, ranges: {} })) } };
       expect(overviewNeedsRefresh(first, first.feeds, now + 60_000)).toBe(true);
+      const byKilometre: MobilitySnapshot = { ...built, overview: { ...built.overview,
+        cities: withoutRanges(built.overview).cities.map(city => ({ ...city, effectiveRanges: { dott: Array<number>(102).fill(0) }, batteryOnly: [] })) } };
+      expect(overviewNeedsRefresh(byKilometre, byKilometre.feeds, now + 60_000)).toBe(true);
+      expect(() => querySnapshot(byKilometre, { ...query, minRange: 4_828 }, 8, now)).toThrow(ScooterFeedsUnavailableError);
       expect(() => querySnapshot(saved, { ...query, minRange: 5_000 }, 8, now)).toThrow(ScooterFeedsUnavailableError);
       // What they hold still answers the rest.
       expect(querySnapshot(saved, query, 8, now).clusters[0].count).toBe(6);
@@ -198,16 +237,16 @@ describe('persistent map snapshots', () => {
       expect(ids(querySnapshot(saved, { ...query, minRange: 5_000 }, 16, now))).toEqual(['far', 'flat', 'unknown', 'unsaid']);
     });
 
-    it('joins the effective ranges of two sets of feeds as their batteries, and has none where either has none', () => {
+    it('joins the reaches of two sets of feeds as their batteries, and has none where either has none', () => {
       const joined = joinCityOverviews(buildCityOverview([ranged], now), buildCityOverview([vois, limes, feed({ id: 'more',
-        vehicles: [{ ...vehicle('again'), range_m: 12_900 }] })], now));
+        vehicles: [{ ...vehicle('again'), range_m: 12_600 }] })], now));
       const lyonTotals = joined.cities.find(city => city.city === 'Lyon')!;
-      expect(lyonTotals.effectiveRanges?.dott[12]).toBe(2);
-      expect(lyonTotals.effectiveRanges?.voi[20]).toBe(1);
-      expect(lyonTotals.effectiveRanges?.lime[6]).toBe(1);
+      expect(lyonTotals.reaches?.dott[step(12_000)]).toBe(2);
+      expect(lyonTotals.reaches?.voi[step(20_000)]).toBe(1);
+      expect(lyonTotals.reaches?.lime[step(6_000)]).toBe(1);
       expect(lyonTotals.batteryOnly?.sort()).toEqual(['dott', 'lime']);
       const unranged = withoutRanges(buildCityOverview([vois], now));
-      expect(joinCityOverviews(buildCityOverview([ranged], now), unranged).cities.some(city => city.effectiveRanges || city.batteryOnly)).toBe(false);
+      expect(joinCityOverviews(buildCityOverview([ranged], now), unranged).cities.some(city => city.reaches || city.batteryOnly)).toBe(false);
     });
   });
 

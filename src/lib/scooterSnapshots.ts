@@ -56,6 +56,27 @@ export interface FeedSnapshot {
   seasonOver?: boolean;
 }
 
+/**
+ * The range minimums the city totals count exactly, in metres: every step of the filters' sliders, whole
+ * kilometres up to 30 and whole miles up to 20 as the clients send them, 3 mi as 4,828 m (rangeSlider.ts,
+ * the apps' ScooterRangeFilter), and every whole kilometre up to the API's 100 km (scooterQuery.ts). The
+ * city totals count each app's scooters between one step and the next, and a minimum from its own step.
+ */
+export const REACH_STEPS = [
+  ...Array.from({ length: 101 }, (_, kilometres) => kilometres * 1000),
+  // A mile as the clients convert it (walking.ts's METERS_PER_MILE, a website file the cache leaves out).
+  ...Array.from({ length: 20 }, (_, miles) => Math.round((miles + 1) * 1609.344)),
+].sort((a, b) => a - b);
+// Where each whole kilometre's step stands among them, to find a scooter's bin at once.
+const KILOMETRE_STEPS = Array.from({ length: 101 }, (_, kilometres) => REACH_STEPS.indexOf(kilometres * 1000));
+
+/** The bin of the city totals' reaches that counts a scooter going `reach` metres: that of the last step it attains. */
+function reachBin(reach: number): number {
+  const bin = KILOMETRE_STEPS[Math.min(100, Math.max(0, Math.floor(reach / 1000)))];
+  // A kilometre holds at most one step in miles, after its own.
+  return REACH_STEPS[bin + 1] <= reach ? bin + 1 : bin;
+}
+
 interface CityTotals {
   id: string;
   city: string;
@@ -64,9 +85,10 @@ interface CityTotals {
   // Bins 0..100 hold known battery percentages; bin 101 is unknown. The older apps' minBattery reads them.
   batteries: Record<string, number[]>;
   // How far each can go as the range minimum judges it (range.ts): its range, or else its battery times its
-  // app's full battery range. Bins 0..99 hold k to k + 1 km; bin 100 is 100 km or more, bin 101 neither.
-  // Totals saved before they were counted so have none, and are built again (overviewNeedsRefresh).
-  effectiveRanges?: Record<string, number[]>;
+  // app's full battery range. Bin i holds from REACH_STEPS[i] to the next step; the last step's, 100 km or
+  // more; one more, neither. Totals saved before they were counted so have none, those counted by whole
+  // kilometres alone none either, and are built again (overviewNeedsRefresh).
+  reaches?: Record<string, number[]>;
   // The apps with a scooter here that says its battery and not its range, for the answer's batteryRanges,
   // in alphabetical order, so that totals built apart and joined are those built together.
   batteryOnly?: string[];
@@ -184,8 +206,9 @@ export function overviewNeedsRefresh(snapshot: Pick<MobilitySnapshot, 'overview'
   counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now)): boolean {
   if (!snapshot || snapshot.overview.cities.length !== regionalCities.length + SWISS_SCOOTER_AREAS.length ||
     now - snapshot.overview.generatedAt >= OVERVIEW_REFRESH_MS) return true;
-  // Totals saved before the effective ranges were counted could not answer a range minimum.
-  if (snapshot.overview.cities.some(city => !city.effectiveRanges || !city.batteryOnly)) return true;
+  // Totals saved before the reaches were counted could not answer a range minimum, those by whole
+  // kilometres alone not one in miles.
+  if (snapshot.overview.cities.some(city => !city.reaches || !city.batteryOnly)) return true;
   // A feed discovered or retired since the totals were built would be missing from them or linger.
   // Totals saved before feedIds existed list none, so they refresh once.
   const built = new Set(snapshot.overview.feedIds);
@@ -320,7 +343,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
     const relevant = feeds.filter(feed => (countrySource ? feed.source === countrySource : isSwissSource(feed.source)) && coverageIntersects(feed.coverage, city.bounds));
     const health = healthFor(relevant, now, counts);
     totals.set(city.id, { id: city.id, city: city.city, lat: city.center[0], lng: city.center[1],
-      batteries: {}, effectiveRanges: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
+      batteries: {}, reaches: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
     yield;
   }
   const seen = new Set<string>();
@@ -340,9 +363,9 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
       const total = totals.get(townOf(vehicle, cities, own).id)!;
       const bins = total.batteries[vehicle.provider] ??= Array<number>(102).fill(0);
       bins[vehicle.battery ?? 101]++;
-      const ranges = total.effectiveRanges![vehicle.provider] ??= Array<number>(102).fill(0);
+      const reaches = total.reaches![vehicle.provider] ??= Array<number>(REACH_STEPS.length + 1).fill(0);
       const reach = effectiveRange(vehicle, batteryFullRange(vehicle.provider));
-      ranges[reach === null ? 101 : Math.min(100, Math.floor(reach / 1000))]++;
+      reaches[reach === null ? REACH_STEPS.length : reachBin(reach)]++;
       if (reportsBatteryOnly(vehicle) && !total.batteryOnly!.includes(vehicle.provider)) total.batteryOnly!.push(vehicle.provider);
     }
     yield;
@@ -394,15 +417,15 @@ export function joinCityOverviews(a: MobilitySnapshot['overview'], b: MobilitySn
         return joined;
       };
       const batteries = joinBins(city.batteries, other.batteries);
-      // Without the effective ranges of either, the two together have none.
-      const counted = city.effectiveRanges && other.effectiveRanges && city.batteryOnly && other.batteryOnly;
-      const effectiveRanges = counted ? joinBins(city.effectiveRanges!, other.effectiveRanges!) : undefined;
+      // Without the reaches of either, the two together have none.
+      const counted = city.reaches && other.reaches && city.batteryOnly && other.batteryOnly;
+      const reaches = counted ? joinBins(city.reaches!, other.reaches!) : undefined;
       const batteryOnly = counted ? [...new Set([...city.batteryOnly!, ...other.batteryOnly!])].sort() : undefined;
       const sources = { ...city.sources };
       for (const source of Object.keys(sources) as Array<keyof typeof sources>) {
         sources[source] = joinStatus(sources[source], other.sources[source] ?? 'skipped');
       }
-      return { ...city, batteries, effectiveRanges, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
+      return { ...city, batteries, reaches, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
     }),
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
@@ -416,15 +439,16 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
   const batteryRanges: Record<string, number> = {};
   const meta = emptyHealth();
   const minRange = query.minRange ?? 0;
-  // Whole kilometres from the first that reaches the minimum: exact for a minimum in kilometres, up to
-  // a kilometre short of one in miles, which the city totals of a zoomed-out map can be.
-  const fromKilometre = Math.ceil(minRange / 1000);
+  // From the minimum's own step, exact in kilometres and in miles, as at street zoom. One between two steps,
+  // which only the API may send, counts from the next: what surely reaches it, perhaps short of the street's;
+  // one past the last, which the API refuses, none.
+  const fromStep = minRange > REACH_STEPS.at(-1)! ? REACH_STEPS.length : REACH_STEPS.findIndex(step => step >= minRange);
   const sum = (bins: number[], from: number, to: number) => bins.slice(from, to).reduce((a, b) => a + b, 0);
   for (const city of snapshot.overview.cities) {
     if (!boundsContainPoint(query.bounds, city.lat, city.lng)) continue;
-    // Totals saved before the effective ranges were counted are built again within seconds: a range
+    // Totals saved before the reaches were counted are built again within seconds: a range
     // minimum is not answered with none meanwhile, as when the totals are too old.
-    if (minRange > 0 && !city.effectiveRanges) throw new ScooterFeedsUnavailableError(['city-overview']);
+    if (minRange > 0 && !city.reaches) throw new ScooterFeedsUnavailableError(['city-overview']);
     // Of every app, whichever the provider filter keeps.
     for (const provider of city.batteryOnly ?? []) batteryRanges[provider] = batteryFullRange(provider);
     const counts: Record<string, number> = {};
@@ -432,7 +456,7 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
       if (query.providers && !query.providers.has(provider)) continue;
       const charged = sum(bins, query.minBattery, query.minBattery > 0 ? 101 : 102);
       // With both minimums, which the clients never ask for, the fewer of the two: no more than pass both.
-      const count = minRange > 0 ? Math.min(charged, sum(city.effectiveRanges?.[provider] ?? [], fromKilometre, 101)) : charged;
+      const count = minRange > 0 ? Math.min(charged, sum(city.reaches?.[provider] ?? [], fromStep, REACH_STEPS.length)) : charged;
       if (count > 0) {
         counts[provider] = count;
         providers[provider] = (providers[provider] ?? 0) + count;
