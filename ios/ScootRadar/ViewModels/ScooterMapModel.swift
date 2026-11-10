@@ -2357,15 +2357,18 @@ extension ScooterMapModel {
     /// it: one missing from one update comes back. Scooters get new ids now
     /// and then, so one of the same provider standing where it stood, under an
     /// id the data before didn't list (`previousIDs`), is that scooter, unless it
-    /// stands where another of its app seen near it stood (`successor`).
+    /// stands where another of its app seen near it stood (`successor`). The
+    /// walk follows it whatever its phase: one the rider is at stays so, and one
+    /// said to be taken is back after all.
     private func followWalkTarget(
         in meta: ScooterResponseMetadata?,
         loadedFor bounds: GeoBounds,
         receivedAt: Date,
         previousIDs: Set<String>
     ) {
-        guard var walk, walk.holdsCard, case let .scooter(scooter) = walk.target else { return }
+        guard var walk, case let .scooter(scooter) = walk.target else { return }
         if let fresh = vehiclesByID[scooter.id] {
+            guard walk.holdsCard else { return }
             guard walk.phase != .gone else {
                 // Back on the map: its card is a scooter's card again.
                 self.walk = nil
@@ -2378,10 +2381,20 @@ extension ScooterMapModel {
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
             return
         }
-        let point = GeoPoint(scooter.coordinate)
-        guard walk.isUnderway, Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else {
+        guard walk.isUnderway else {
+            guard let successor = successor(of: scooter, previousIDs: previousIDs) else { return }
+            if walk.phase == .gone {
+                // Back on the map after all, under a new id: its card is a scooter's card again.
+                self.walk = nil
+            } else {
+                walk.target = .scooter(successor)
+                self.walk = walk
+            }
+            follow(to: successor.id)
             return
         }
+        let point = GeoPoint(scooter.coordinate)
+        guard Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else { return }
         if let successor = successor(of: scooter, previousIDs: previousIDs) {
             walk.target = .scooter(successor)
             walk.missedRead = nil

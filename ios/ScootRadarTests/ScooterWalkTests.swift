@@ -836,6 +836,49 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.selectedScooterID, next.id)
     }
 
+    // MARK: Back, and there
+
+    func testAScooterSaidTakenThatIsBackUnderANewIDHasItsCardAgain() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        // A Lime 12 m on that stays: not the one walked to.
+        let neighbour = scooter("s2", at: point(east: 312, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour])
+        for call in 2 ... 3 {
+            h.clock.advance(60)
+            try await load(h, ScooterResponse(vehicles: [neighbour]), call: call)
+        }
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+
+        // Reserved and listed again 6 minutes later, where it stood, under the server's new id.
+        let back = scooter("s1-renewed", at: point(east: 300, north: 0))
+        h.clock.advance(360)
+        try await load(h, ScooterResponse(vehicles: [neighbour, back]), call: 4)
+
+        XCTAssertNil(h.model.walk)
+        XCTAssertEqual(h.model.selectedScooterID, back.id)
+        XCTAssertEqual(h.model.dock, .scooter(back))
+        XCTAssertEqual(h.model.directionsControl(for: .scooter(back)), .directions)
+        XCTAssertNil(h.model.walkNote(for: .scooter(back)))
+    }
+
+    func testAWalkThatArrivedFollowsItsScooterUnderANewIDAndStaysThere() async throws {
+        for provider in ["lime", "bird"] {
+            let target = scooter("x1", provider: provider, at: point(east: 0, north: 2))
+            let h = try await harness(vehicles: [target], rider: rider)
+            h.model.selectScooter(target.id)
+            h.model.showWalkingRoute(to: .scooter(target))
+            XCTAssertEqual(h.model.walk?.phase, .arrived, provider)
+
+            let renamed = scooter("x1-next-read", provider: provider, at: point(east: 0, north: 2))
+            h.clock.advance(60)
+            try await load(h, ScooterResponse(vehicles: [renamed]), call: 2)
+
+            XCTAssertEqual(h.model.selectedScooterID, renamed.id, provider)
+            XCTAssertEqual(h.model.walk?.phase, .arrived, provider)
+            XCTAssertEqual(h.model.walkNote(for: .scooter(renamed)), .arrived, provider)
+        }
+    }
+
     // MARK: Map and card
 
     func testTheMapKeepsTheScooterWalkedToSelectedAndDrawsItsTrail() throws {

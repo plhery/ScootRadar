@@ -146,7 +146,10 @@ app's data no longer list it, the card stays open with no actions and says
 someone may have taken it. Operators and the server give scooters new ids now
 and then: the card and the walk follow a scooter of the same app standing where
 theirs stood under an id not listed before, but not one standing where another
-scooter of that app was seen beside it, live or faded, since the card opened.
+scooter of that app was seen beside it, live or faded, since the card opened. A
+walk you have arrived at stays so under the new id, and a scooter said to be
+taken that is listed again, under its id or a new one, has its card and
+**Directions** back.
 
 **Ride and parking zones.** A preview, on unless turned off under Settings ›
 Map, as on the website: from zoom 14 the map draws the zones the operators
