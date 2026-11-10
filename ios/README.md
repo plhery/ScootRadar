@@ -141,8 +141,9 @@ Leave the route, or have the scooter move, and a new one is found, at most every
 card says **You’re there.** A walk of more than 10 km opens Apple Maps as before.
 When no route or no location is found, the card says so and offers **Open in
 Maps**. Closing the card or choosing another scooter or bay ends the walk; until
-then the scooter stays selected wherever the map goes. When fresh data no longer
-lists it, the card stays open with no actions and says someone may have taken it.
+then the scooter stays selected wherever the map goes. When two reads of its
+app's data no longer list it, the card stays open with no actions and says
+someone may have taken it.
 
 **Ride and parking zones.** A preview, on unless turned off under Settings ›
 Map, as on the website: from zoom 14 the map draws the zones the operators

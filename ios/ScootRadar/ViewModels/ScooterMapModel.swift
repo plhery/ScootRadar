@@ -1709,7 +1709,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 queryZoom = zoom
                 queryMinimumRange = requestMinimumRange
                 rebuildVehicleIndex()
-                followWalkTarget(in: response.meta, loadedFor: bounds, observedAt: observedAt, previousIDs: previousIDs)
+                followWalkTarget(in: response.meta, loadedFor: bounds, receivedAt: receivedAt, previousIDs: previousIDs)
                 if let cardScooter { followCardScooter(cardScooter, previousIDs: previousIDs) }
                 rebuildMapScooters()
                 rebuildMapClusters()
@@ -2342,7 +2342,7 @@ extension ScooterMapModel {
 
     /// Fresh data about the scooter walked to. It may have moved, and the
     /// route then follows it; or data that would list it no longer does
-    /// twice, from two updates of the data, which mostly means someone took
+    /// twice, from two reads of its app, which mostly means someone took
     /// it: one missing from one update comes back. Scooters get new ids now
     /// and then, so one of the same provider standing where it stood, under an
     /// id the data before didn't list (`previousIDs`), is that scooter; one
@@ -2350,7 +2350,7 @@ extension ScooterMapModel {
     private func followWalkTarget(
         in meta: ScooterResponseMetadata?,
         loadedFor bounds: GeoBounds,
-        observedAt: Date,
+        receivedAt: Date,
         previousIDs: Set<String>
     ) {
         guard var walk, walk.holdsCard, case let .scooter(scooter) = walk.target else { return }
@@ -2360,9 +2360,9 @@ extension ScooterMapModel {
                 self.walk = nil
                 return
             }
-            guard fresh != scooter || walk.missedAt != nil else { return }
+            guard fresh != scooter || walk.missedRead != nil else { return }
             walk.target = .scooter(fresh)
-            walk.missedAt = nil
+            walk.missedRead = nil
             self.walk = walk
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
             return
@@ -2373,7 +2373,7 @@ extension ScooterMapModel {
         }
         if let successor = successor(of: scooter, among: vehicles.filter { !previousIDs.contains($0.id) }) {
             walk.target = .scooter(successor)
-            walk.missedAt = nil
+            walk.missedRead = nil
             self.walk = walk
             follow(to: successor.id)
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
@@ -2384,18 +2384,25 @@ extension ScooterMapModel {
         if lastSeenVehicles.contains(where: { $0.id == scooter.id }) || successor(of: scooter, among: lastSeenVehicles) != nil {
             return
         }
-        guard let missedAt = walk.missedAt else {
-            walk.missedAt = observedAt
+        let read = Self.read(of: scooter.provider, in: meta) ?? receivedAt
+        guard let missedRead = walk.missedRead else {
+            walk.missedRead = read
             self.walk = walk
             return
         }
-        // The same data again says nothing new.
-        guard missedAt != observedAt else { return }
+        // The same read of its app again says nothing new, however late another app in view is.
+        guard missedRead != read else { return }
         cancelRouteRequest()
         walk.phase = .gone
         walk.route = nil
         self.walk = walk
         announceWalk(ScooterWalkNote.gone.text)
+    }
+
+    /// When the positions shown of `provider` were seen, as the server wrote it: its own time (meta.shownSince), or
+    /// the answer's (generatedAt), the oldest of every app's, from a server that doesn't name it. Nil without either.
+    private static func read(of provider: String, in meta: ScooterResponseMetadata?) -> Date? {
+        meta?.shownSince?[provider].flatMap(ScooterServerTime.date) ?? meta?.generatedAt.flatMap(ScooterServerTime.date)
     }
 
     /// A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on

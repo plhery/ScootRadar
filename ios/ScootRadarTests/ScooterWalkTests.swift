@@ -647,6 +647,61 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertNotEqual(h.model.dock, .scooter(movedNeighbour))
     }
 
+    func testAScooterIsTakenFromTwoReadsOfItsAppWhileAnotherAppInViewIsLate() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        // Another Lime in view, so that Lime's positions are shown, and a Bird whose feed was read 6 minutes ago and
+        // not since: generatedAt, the oldest of every app's, is Bird's in every answer.
+        let lime = scooter("s3", at: point(east: -300, north: 0))
+        let bird = scooter("b1", provider: "bird", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [lime, bird])
+        let birdRead = h.clock.now.addingTimeInterval(-360)
+        func answer(limeRead: Date) -> ScooterResponse {
+            ScooterResponse(vehicles: [lime, bird], meta: ScooterResponseMetadata(
+                partial: false, stale: true, failedSources: [], generatedAt: iso(birdRead), mode: "vehicles",
+                shownSince: ["lime": iso(limeRead), "bird": iso(birdRead)]
+            ))
+        }
+
+        // Lime read again: the scooter missed once.
+        h.clock.advance(60)
+        let firstRead = h.clock.now.addingTimeInterval(-20)
+        try await load(h, answer(limeRead: firstRead), call: 2)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        // The same read of Lime served again, a minute on, says nothing new.
+        h.clock.advance(60)
+        try await load(h, answer(limeRead: firstRead), call: 3)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        XCTAssertNotNil(h.model.walkTrail)
+
+        // Another read of Lime without it: taken, though generatedAt never moved.
+        h.clock.advance(60)
+        try await load(h, answer(limeRead: h.clock.now.addingTimeInterval(-20)), call: 4)
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+        XCTAssertEqual(h.model.walkNote(for: .scooter(target)), .gone)
+    }
+
+    func testAnAnswerThatDoesNotNameItsAppIsToldApartByWhenItWasGenerated() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let bird = scooter("b1", provider: "bird", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [bird])
+        func answer(generatedAt: Date, shownSince: [String: String]?) -> ScooterResponse {
+            ScooterResponse(vehicles: [bird], meta: ScooterResponseMetadata(
+                partial: false, failedSources: [], generatedAt: iso(generatedAt), mode: "vehicles", shownSince: shownSince
+            ))
+        }
+        let first = h.clock.now
+
+        // A server that does not send shownSince, then one that names Bird only, as Lime has nothing shown.
+        try await load(h, answer(generatedAt: first, shownSince: nil), call: 2)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        try await load(h, answer(generatedAt: first, shownSince: ["bird": iso(first.addingTimeInterval(30))]), call: 3)
+        XCTAssertEqual(h.model.walk?.phase, .shown, "The same answer's time is the same data")
+
+        h.clock.advance(60)
+        try await load(h, answer(generatedAt: first.addingTimeInterval(60), shownSince: nil), call: 4)
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+    }
+
     // MARK: Map and card
 
     func testTheMapKeepsTheScooterWalkedToSelectedAndDrawsItsTrail() throws {
@@ -788,6 +843,20 @@ final class ScooterWalkTests: XCTestCase {
             provider: provider, latitude: point.latitude, longitude: point.longitude, battery: 80,
             rangeMeters: nil, vehicleID: id, deepLink: nil, rentalURIs: nil, distanceMeters: 0
         )
+    }
+
+    /// Answers the next request with `response`, which is the API's `call`th, and waits for the model to take it.
+    private func load(
+        _ h: Harness, _ response: ScooterResponse, call: Int, file: StaticString = #filePath, line: UInt = #line
+    ) async throws {
+        await h.api.setResponse(response)
+        h.model.refresh()
+        let loaded = await waitUntil { await h.api.calls == call && !h.model.isLoading }
+        XCTAssertTrue(loaded, "call \(call)", file: file, line: line)
+    }
+
+    private func iso(_ date: Date) -> String {
+        ISO8601DateFormatter().string(from: date)
     }
 
     private func point(east: CLLocationDistance, north: CLLocationDistance) -> GeoPoint {

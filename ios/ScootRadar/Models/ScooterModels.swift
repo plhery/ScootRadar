@@ -954,6 +954,10 @@ struct ScooterResponseMetadata: Sendable {
     /// or could not be renewed, with when the oldest of them were seen: "lime": "2026-11-07T15:44:00Z".
     /// Nil from city totals, a server that does not say and the answer it kept from before.
     let staleProviders: [String: String]?
+    /// Of an answer of scooters, stale or not: each app with positions shown, with when the oldest of them were
+    /// seen, which moves only when its positions are collected again, unlike generatedAt, the oldest of every
+    /// app's. Nil from a server that does not say; an app with nothing shown, or only faded scooters, is left out.
+    let shownSince: [String: String]?
     let parkingStatus: String?
     let expiresAt: String?
     let parkingExpiresAt: String?
@@ -977,6 +981,7 @@ struct ScooterResponseMetadata: Sendable {
         followUpMs: Int? = nil,
         lastSeenAt: String? = nil,
         staleProviders: [String: String]? = nil,
+        shownSince: [String: String]? = nil,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
         parkingExpiresAt: String? = nil,
@@ -997,6 +1002,7 @@ struct ScooterResponseMetadata: Sendable {
         self.followUpMs = followUpMs
         self.lastSeenAt = lastSeenAt
         self.staleProviders = staleProviders
+        self.shownSince = shownSince
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
         self.parkingExpiresAt = parkingExpiresAt
@@ -1068,6 +1074,7 @@ extension ScooterResponseMetadataPayload {
             followUpMs: followUpMs,
             lastSeenAt: lastSeenAt,
             staleProviders: staleProviders,
+            shownSince: shownSince,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
             parkingExpiresAt: parkingExpiresAt,
