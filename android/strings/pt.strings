@@ -35,3 +35,7 @@
 /* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address is copied, in two
    lines at most on a phone, as Android 12 and later cut a toast; the address itself is in the clipboard. */
 "No mail app. Address copied." = "Sem app de email. Endereço copiado.";
+/* What TalkBack reads for the tile in Settings › Appearance and the segment in Settings › Units that show "Auto"
+   (the key "Automatic"): the whole word, as "Auto" alone also means a car in German, Dutch, Norwegian and Italian. One
+   word for both, the choice's, where the Language row's Automatic agrees with the language (review choice 16). */
+"Automatic (spoken)" = "Automático";

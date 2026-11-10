@@ -495,7 +495,7 @@ private fun SettingsRoot(
             val choices = ScooterAppearance.entries
             SettingsTileRow(localized("Appearance"), choices.size) { index, modifier ->
                 val choice = choices[index]
-                SettingsTile(choice.label, appearance == choice, { controller.setAppearance(choice) }, modifier) {
+                SettingsTile(choice.label, appearance == choice, { controller.setAppearance(choice) }, modifier, choice.spokenLabel) {
                     AppearancePicture(choice)
                 }
             }

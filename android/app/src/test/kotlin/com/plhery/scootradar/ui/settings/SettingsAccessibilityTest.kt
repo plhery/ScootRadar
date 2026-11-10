@@ -8,6 +8,7 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isSelectable
@@ -122,18 +123,22 @@ class SettingsAccessibilityTest {
 
     /**
      * UI-292: the appearances and the map's looks are choices, read by their names, the chosen one selected (PLAN §10,
-     * review-app-ai R3).
+     * review-app-ai R3); Auto as the whole word, "Automatic", its "Auto" left to Voice Access (review choice 16).
      */
     @Test
     fun anAppearanceAndAMapLookAreChoicesTheChosenOneSelected() {
         show(listOf(SettingsPage.Root))
-        // The tile, not the Language row's "Automatic".
-        fun tile(name: String) = compose.onNode(hasText(name) and isSelectable()).fetchSemanticsNode()
+        // The tile, not the Language row's "Automatic", nor the units' segment that shows "Auto" too.
+        fun tile(name: String) = compose.onNode(hasText(name) and isSelectable() and !hasAnySibling(hasText("km"))).fetchSemanticsNode()
         for (choice in ScooterAppearance.entries) {
             val tile = tile(choice.label)
             assertEquals(choice.rawValue, Role.RadioButton, tile.config[SemanticsProperties.Role])
             assertEquals(choice.rawValue, choice == model.appearance.value, tile.config[SemanticsProperties.Selected])
+            assertEquals(choice.rawValue, listOf(choice.label), tile.config[SemanticsProperties.Text].map { it.text })
+            val spoken = tile.config.getOrNull(SemanticsProperties.ContentDescription)
+            assertEquals(choice.rawValue, if (choice == ScooterAppearance.Sun) listOf("Automatic") else null, spoken)
         }
+        assertEquals("Auto", ScooterAppearance.Sun.label)
         for (style in AppleMapStyle.entries - AppleMapStyle.Satellite) {
             val tile = tile(style.label)
             assertEquals(style.rawValue, Role.RadioButton, tile.config[SemanticsProperties.Role])
@@ -143,21 +148,23 @@ class SettingsAccessibilityTest {
 
     /**
      * Issue #14: the units are a group of three choices under the "Units" heading, shown "Auto", "km" and "mi" and
-     * read "Auto", "Kilometres" and "Miles", the chosen one selected. What "km" and "mi" show is their text, which
-     * Voice Access answers to.
+     * read "Automatic", "Kilometres" and "Miles", the chosen one selected (Auto in full since review choice 16). What
+     * they show is their text, which Voice Access answers to.
      */
     @Test
     fun theUnitsAreAGroupOfChoicesReadInFullTheChosenOneSelected() {
         model.setUnits(ScooterUnits.Metric)
         show(listOf(SettingsPage.Root))
         compose.onNode(hasText("Units"), useUnmergedTree = true).assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
-        val segments = listOf("Auto", "Kilometres", "Miles").map { label ->
-            compose.onNode(hasContentDescription(label) and isSelectable()).fetchSemanticsNode()
+        // The segments, not Appearance's tile, which TalkBack reads "Automatic" too.
+        val units = hasAnySibling(hasContentDescription("Kilometres") or hasContentDescription("Miles"))
+        val segments = listOf("Automatic", "Kilometres", "Miles").map { label ->
+            compose.onNode(hasContentDescription(label) and isSelectable() and units).fetchSemanticsNode()
         }
         assertEquals(List(3) { Role.RadioButton }, segments.map { it.config[SemanticsProperties.Role] })
         assertEquals(listOf(false, true, false), segments.map { it.config[SemanticsProperties.Selected] })
         assertEquals(
-            listOf(null, "km", "mi"),
+            listOf("Auto", "km", "mi"),
             segments.map { segment -> segment.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text } },
         )
         assertTrue(segments.all { it.children.isEmpty() })

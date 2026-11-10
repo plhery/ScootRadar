@@ -103,7 +103,7 @@ private val NAME_INSET = 3.dp
 /**
  * A choice as a tile: its picture over its name, in a hairline frame around a faint fill, blue and checked once
  * chosen. It dims under the finger, as a plain button, and a little under a mouse's pointer; TalkBack reads it as one
- * of the group's choices.
+ * of the group's choices, by [spokenTitle] where that differs from the name shown, which Voice Access answers to.
  */
 @Composable
 internal fun SettingsTile(
@@ -111,6 +111,7 @@ internal fun SettingsTile(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    spokenTitle: String = title,
     picture: @Composable () -> Unit,
 ) {
     val colors = scootColors
@@ -124,6 +125,8 @@ internal fun SettingsTile(
             .background(if (isSelected) colors.accentColor.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
             .border(1.5.dp, if (isSelected) colors.accentColor else colors.dockHairline, shape)
             .selectable(isSelected, interaction, FocusRing(shape), role = Role.RadioButton, onClick = onClick)
+            // TalkBack reads "Automatic" where the tile shows "Auto", as the units' segment does (review choice 16).
+            .then(if (spokenTitle == title) Modifier else Modifier.semantics { contentDescription = spokenTitle })
             .padding(top = 4.dp, bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

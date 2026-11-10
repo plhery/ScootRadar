@@ -216,10 +216,10 @@ enum class ScooterUnits(val rawValue: String) {
             Imperial -> "mi"
         }
 
-    /** What TalkBack reads for its segment. */
+    /** What TalkBack reads for its segment: Auto as the whole word, which "Auto" alone is not in every language. */
     val spokenLabel: String
         get() = when (this) {
-            Automatic -> localized("Automatic")
+            Automatic -> localized("Automatic (spoken)")
             Metric -> localized("Kilometres")
             Imperial -> localized("Miles")
         }

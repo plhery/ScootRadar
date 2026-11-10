@@ -106,6 +106,13 @@ enum class ScooterAppearance(val rawValue: String) {
             Dark -> localized("Dark")
         }
 
+    /**
+     * What TalkBack reads for its tile: Automatic's "Auto" as the whole word, as "Auto" alone also means a car in
+     * German, Dutch, Norwegian and Italian; the others' names as shown.
+     */
+    val spokenLabel: String
+        get() = if (this == Sun) localized("Automatic (spoken)") else label
+
     /** Unspecified leaves the choice to the phone. */
     fun interfaceStyle(at: Instant, place: GeoPoint): UserInterfaceStyle = when (this) {
         Sun -> if (ScooterDaylight.isDark(at, place)) UserInterfaceStyle.Dark else UserInterfaceStyle.Light

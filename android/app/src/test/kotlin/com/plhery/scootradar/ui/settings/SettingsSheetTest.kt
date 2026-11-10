@@ -12,6 +12,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.hasAnySibling
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -181,10 +183,12 @@ class SettingsSheetTest {
         assertEquals(ScooterRangeFilter.Unit.Miles, model.rangeUnit)
         compose.onNodeWithContentDescription("Miles").assertIsSelected()
 
-        compose.onNodeWithContentDescription("Auto").performClick()
+        // The segment, not Appearance's tile, which TalkBack reads "Automatic" too.
+        val automatic = hasContentDescription("Automatic") and hasAnySibling(hasContentDescription("Miles"))
+        compose.onNode(automatic).performClick()
         compose.waitForIdle()
         assertEquals(ScooterUnits.Automatic, model.units.value)
-        compose.onNodeWithContentDescription("Auto").assertIsSelected()
+        compose.onNode(automatic).assertIsSelected()
     }
 
     @Test

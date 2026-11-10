@@ -273,6 +273,34 @@ class ScooterModelsTest {
         assertEquals("Automatica", strings("it")["Automatic (language)"])
     }
 
+    /**
+     * Auto, the appearance's tile and the units' segment, is shown "Auto" in every language, which alone also means a
+     * car in German, Dutch, Norwegian and Italian: TalkBack reads the whole word, the same for both (review choice
+     * 16). The other choices are read as shown, or in full where they show a unit.
+     */
+    @Test
+    fun talkBackReadsAutoAsTheWholeWordInEveryLanguage() {
+        val spoken = mutableMapOf<ScooterLanguage, String>()
+        for (language in ScooterLanguage.entries) {
+            ScooterLanguage.current = language
+            assertEquals(language.rawValue, "Auto", ScooterAppearance.Sun.label)
+            assertEquals(language.rawValue, "Auto", ScooterUnits.Automatic.label)
+            val automatic = ScooterUnits.Automatic.spokenLabel
+            assertNotEquals(language.rawValue, "Auto", automatic)
+            assertEquals(language.rawValue, automatic, ScooterAppearance.Sun.spokenLabel)
+            for (appearance in ScooterAppearance.entries - ScooterAppearance.Sun) {
+                assertEquals("${language.rawValue}: $appearance", appearance.label, appearance.spokenLabel)
+            }
+            spoken[language] = automatic
+        }
+        assertEquals("Automatic", spoken[ScooterLanguage.En])
+        assertEquals("Automatisch", spoken[ScooterLanguage.De])
+        assertEquals("Automatisch", spoken[ScooterLanguage.Nl])
+        assertEquals("Automatisk", spoken[ScooterLanguage.Nb])
+        assertEquals("Automatico", spoken[ScooterLanguage.It])
+        assertEquals("Sjálfvirkt", spoken[ScooterLanguage.Is])
+    }
+
     @Test
     fun frenchAndItalianNameTheOperatorWithOneWordAndFrenchShowsNothingInTheSingular() {
         val pricing = "Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding."
