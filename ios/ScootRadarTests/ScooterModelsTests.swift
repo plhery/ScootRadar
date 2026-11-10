@@ -387,6 +387,9 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: 15.01), 16)
         XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: 1e300), 22)
         XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: -1e300), 0)
+        // Infinity is clamped as any zoom past 22 or below 0 is, as Android's is (bc1175ab); NaN alone is 0.
+        XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: .infinity), 22)
+        XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: -.infinity), 0)
         XCTAssertEqual(ScooterClusteringPolicy.apiZoom(for: .nan), 0)
         XCTAssertTrue(ScooterClusteringPolicy.representationsMatch(16, 18))
         XCTAssertFalse(ScooterClusteringPolicy.representationsMatch(14, 15))

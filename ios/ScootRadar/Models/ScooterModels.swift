@@ -716,8 +716,9 @@ enum ScooterClusteringPolicy {
     }
 
     static func apiZoom(for zoomLevel: Double) -> Int {
-        guard zoomLevel.isFinite else { return 0 }
-        // Clamped before Int(_:), which traps on a value out of Int's range (1e300).
+        guard !zoomLevel.isNaN else { return 0 }
+        // Clamped before Int(_:), which traps on a value out of Int's range (1e300): infinity is 22
+        // as any zoom past 22 is, and below 0 it is 0.
         return Int(min(22, max(0, ceil(zoomLevel))))
     }
 
