@@ -288,9 +288,9 @@ private fun ScooterMapController.reportArrival(target: ScooterWalkTarget) {
  * Fresh data about the scooter walked to. It may have moved, and the route then follows it; or data that
  * would list it no longer does twice, from two reads of its app, which mostly means someone took it: one
  * missing from one update comes back. Scooters get new ids now and then, so one of the same provider standing
- * where it stood, under an id the data before didn't list ([previousIDs]), is that scooter; one listed before is
- * another, which the walk is not handed to. Standing faded where it was last seen, while its app is collected
- * again, it is neither: the walk goes on until the app's new positions say which.
+ * where it stood, under an id the data before didn't list ([previousIDs]) and away from where its neighbours stood
+ * ([successor]), is that scooter; another is not, which the walk is not handed to. Standing faded where it was last
+ * seen, while its app is collected again, it is neither: the walk goes on until the app's new positions say which.
  */
 internal fun ScooterMapController.followWalkTarget(
     meta: ScooterResponseMetadata?,
@@ -357,9 +357,10 @@ private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? 
 
 /**
  * A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on
- * each read, others after each ride: one of its provider within a few metres of where it stood, listed under an id
- * that wasn't before, is that scooter, and the card stays open on it. A scooter that was already listed there is
- * another one, and the card closes as it did.
+ * each read, others after each ride, and the cache after a gap or a restart: one of its provider within a few metres
+ * of where it stood, listed under an id that wasn't before and away from where its neighbours stood, is that scooter,
+ * and the card stays open on it. A scooter that was already listed there, or stood there before, is another one, and
+ * the card closes as it did.
  */
 internal fun ScooterMapController.followCardScooter(scooter: Scooter, previousIDs: Set<String>) {
     if (selectedScooterID.value != scooter.id || vehiclesByID[scooter.id] != null) return
@@ -367,13 +368,16 @@ internal fun ScooterMapController.followCardScooter(scooter: Scooter, previousID
     follow(to = successor.id)
 }
 
-/** The nearest scooter of the same provider within a few metres of where [scooter] stood. */
+/**
+ * The nearest scooter of the same provider within a few metres of where [scooter][of] stood, and nearer to there than
+ * to where any of its neighbours was seen ([ScooterNeighbours]): a neighbour under a new id is not it.
+ */
 private fun ScooterMapController.successor(of: Scooter, among: List<Scooter> = vehicles.value): Scooter? {
     val point = of.coordinate
     return among
         .filter { it.provider == of.provider }
         .map { it to it.distance(from = point) }
-        .filter { it.second <= WalkRoute.rebindDistance }
+        .filter { it.second <= WalkRoute.rebindDistance && neighbours.mayBe(of, candidate = it.first) }
         .minByOrNull { it.second }
         ?.first
 }

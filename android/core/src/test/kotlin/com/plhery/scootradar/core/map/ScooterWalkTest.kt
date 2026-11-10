@@ -6,6 +6,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterDirectionsControl
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -677,6 +678,137 @@ class ScooterWalkTest {
         assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
     }
 
+    // A neighbour the answer before didn't list is not new: the walk and the card remember where the scooters of its app
+    // stood beside the one they follow, live or faded, in any answer (week review, findings 1.2 and 1.3).
+
+    @Test
+    fun theWalkIsNotHandedToANeighbourThatStoodFadedTheUpdateBefore() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        // Some 9 m on, as at a parking spot: another Lime that stood there all along.
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val other = scooter("b9", provider = "bird", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(neighbour, other))
+
+        // Lime is collected again: both stand faded where they were last seen.
+        h.clock.advance(60.0)
+        h.api.setResponse(
+            ScooterResponse(
+                vehicles = listOf(other),
+                lastSeenVehicles = listOf(target, neighbour),
+                meta = ScooterResponseMetadata(partial = false, stale = true, failedSources = emptyList(), refreshing = true),
+            ),
+        )
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+        // Lime's new positions: the neighbour where it stood, and not the scooter walked to, taken.
+        h.api.setResponse(ScooterResponse(vehicles = listOf(neighbour, other)))
+        for (index in 0 until 2) {
+            h.clock.advance(60.0)
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == index + 3 && !h.model.isLoading.value })
+            assertEquals(target.id, h.model.selectedScooterID.value)
+            assertEquals(ScooterWalkTarget.Scooter(target), h.model.walk.value?.target)
+        }
+        // Missing from two reads: taken.
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+    }
+
+    @Test
+    fun theWalkIsNotHandedToANeighbourWhenTheMapComesBackFromGroupsOrAnotherPlace() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val groups = ScooterResponse(
+            vehicles = emptyList(),
+            clusters = listOf(ScooterCluster("c", rider.latitude, rider.longitude, 2, mapOf("lime" to 2))),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters"),
+        )
+        val away = listOf(
+            "zoomed out to groups" to (groups to MapRegion(center = rider, latitudeDelta = 0.06, longitudeDelta = 0.06)),
+            "panned 3 km away" to (ScooterResponse(vehicles = emptyList()) to MapRegion(center = point(east = 3_000, north = 0), latitudeDelta = 0.01, longitudeDelta = 0.01)),
+        )
+
+        for ((name, answerAndRegion) in away) {
+            val (answer, region) = answerAndRegion
+            val h = shownWalk(to = target, others = listOf(neighbour))
+            h.api.setResponse(answer)
+            h.model.updateViewport(region, zoom = if (answer.clusters.isEmpty()) 17 else 14)
+            assertTrue(name, waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+
+            // Back on the street, the scooter walked to taken meanwhile: the neighbour stands where it stood.
+            h.clock.advance(60.0)
+            h.api.setResponse(ScooterResponse(vehicles = listOf(neighbour)))
+            h.model.updateViewport(this@ScooterWalkTest.region, zoom = 17)
+            assertTrue(name, waitUntil { h.api.calls == 3 && !h.model.isLoading.value })
+
+            assertEquals(name, target.id, h.model.selectedScooterID.value)
+            assertEquals(name, ScooterWalkTarget.Scooter(target), h.model.walk.value?.target)
+            assertEquals(name, ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        }
+    }
+
+    /**
+     * The cache gives a scooter missing from every answer for 5 minutes a new id, and every scooter one after a restart:
+     * the neighbour under its new id, where it stood, is not the scooter walked to, which the same restart renames.
+     */
+    @Test
+    fun aNeighbourUnderANewIDIsNotTheScooterWalkedToWhichANewIDStillIs() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val h = shownWalk(to = target, others = listOf(neighbour))
+
+        // A deploy: both under new ids where they stood. The scooter walked to is followed.
+        val renamed = scooter("s1-deploy", at = point(east = 300, north = 0))
+        h.clock.advance(60.0)
+        h.api.setResponse(ScooterResponse(vehicles = listOf(renamed, scooter("s2-deploy", at = point(east = 309, north = 0)))))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+        assertEquals(renamed.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterWalkTarget.Scooter(renamed), h.model.walk.value?.target)
+
+        // The phone locked for 6 minutes: the scooter walked to was taken, and the neighbour, which nobody else looked
+        // at meanwhile, comes back under another new id.
+        h.clock.advance(360.0)
+        h.api.setResponse(ScooterResponse(vehicles = listOf(scooter("s2-later", at = point(east = 309, north = 0)))))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 3 && !h.model.isLoading.value })
+        assertEquals(renamed.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        h.clock.advance(60.0)
+        h.model.refresh()
+        assertTrue(waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone })
+        assertEquals(renamed.id, h.model.selectedScooterID.value)
+    }
+
+    /** Bird gives every scooter a new id on each read: the one walked to is followed, read after read, its neighbour never. */
+    @Test
+    fun aBirdRenamedOnEveryReadIsFollowedAndItsNeighbourNever() = runTest {
+        val target = scooter("b1", provider = "bird", at = point(east = 300, north = 0))
+        val h = shownWalk(to = target, others = listOf(scooter("b2", provider = "bird", at = point(east = 309, north = 0))))
+        var walked = target
+        for (read in 1..3) {
+            h.clock.advance(60.0)
+            val answer = if (read == 2) {
+                // Bird is swept again: the scooters stand faded under the ids of the read before.
+                ScooterResponse(
+                    vehicles = emptyList(),
+                    lastSeenVehicles = listOf(walked, scooter("b2-$read", provider = "bird", at = point(east = 309, north = 0))),
+                    meta = ScooterResponseMetadata(partial = false, stale = true, failedSources = emptyList(), refreshing = true),
+                )
+            } else {
+                walked = scooter("b1-$read", provider = "bird", at = point(east = 300 + read, north = 0))
+                ScooterResponse(vehicles = listOf(scooter("b2-$read", provider = "bird", at = point(east = 309, north = 0)), walked))
+            }
+            h.api.setResponse(answer)
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == read + 1 && !h.model.isLoading.value })
+            assertEquals("read $read", walked.id, h.model.selectedScooterID.value)
+            assertEquals("read $read", ScooterWalkTarget.Scooter(walked), h.model.walk.value?.target)
+            assertEquals("read $read", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        }
+    }
+
     @Test
     fun aScooterMissingFromOneUpdateAndBackOnTheNextIsStillWalkedTo() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
@@ -864,6 +996,31 @@ class ScooterWalkTest {
         assertTrue(takenLoaded)
         assertNull(h.model.selectedScooter)
         assertNotEquals(ScooterDockContent.Scooter(movedNeighbour), h.model.dock)
+    }
+
+    /** The phone locked for 6 minutes on a card: the neighbour, under the new id the cache gave it, is another scooter. */
+    @Test
+    fun aPlainCardClosesWhenItsScooterIsTakenAndItsNeighbourComesBackUnderANewID() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val h = harness(vehicles = listOf(target, neighbour), rider = rider)
+        h.model.selectScooter(target.id)
+
+        val renamedNeighbour = scooter("s2-later", at = point(east = 309, north = 0))
+        h.clock.advance(360.0)
+        h.api.setResponse(ScooterResponse(vehicles = listOf(renamedNeighbour)))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+        assertNull(h.model.selectedScooter)
+        assertNotEquals(ScooterDockContent.Scooter(renamedNeighbour), h.model.dock)
+
+        // Chosen in turn, the neighbour is followed under its next id where it stands.
+        h.model.selectScooter(renamedNeighbour.id)
+        val again = scooter("s2-again", at = point(east = 309, north = 0))
+        h.api.setResponse(ScooterResponse(vehicles = listOf(again)))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 3 && !h.model.isLoading.value })
+        assertEquals(again.id, h.model.selectedScooterID.value)
     }
 
     // Helpers

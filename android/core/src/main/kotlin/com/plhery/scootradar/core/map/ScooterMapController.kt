@@ -512,6 +512,9 @@ class ScooterMapController(
     internal var vehiclesByID: Map<String, Scooter> = emptyMap()
         private set
 
+    /** The scooters of its app seen beside the scooter the card or the walk follows, while it follows it. */
+    internal val neighbours = ScooterNeighbours()
+
     /** The zones of the area last answered for, with whether asking failed; they stay drawn while a new area's are on their way. */
     internal var zoneAnswer: ScooterZoneAnswer? = null
 
@@ -607,7 +610,12 @@ class ScooterMapController(
         _selectedScooterID.value = value
         if (value != null) setSelectedParkingID(null)
         if (value == oldValue) return
-        if (!isFollowingScooter) _scooterChoices.value += 1
+        if (!isFollowingScooter) {
+            _scooterChoices.value += 1
+            // Another choice: its neighbours are those around it now.
+            neighbours.forget()
+            value?.let { vehiclesByID[it] }?.let { neighbours.note(it, seen = vehicles.value + lastSeenVehicles.value) }
+        }
         endWalkIfTargetLeftSelection()
     }
 
@@ -1449,6 +1457,7 @@ class ScooterMapController(
                 rebuildVehicleIndex()
                 followWalkTarget(response.meta, loadedFor = bounds, observedAt = observedAt, previousIDs = previousIDs)
                 if (cardScooter != null) followCardScooter(cardScooter, previousIDs = previousIDs)
+                selectedScooter?.let { neighbours.note(it, seen = response.vehicles + response.lastSeenVehicles) }
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()
