@@ -98,8 +98,10 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   `first` (its first scooters were published: a sweep's nearest the view, all of
   them otherwise) and `done` (it ended). The map asks again every 3 seconds
   while a feed refreshes, so it shows them up to 3 s later. Failed ones are in
-  the counter only. Since 8 November 2026. P50 and P90 of a week's cold waits by
-  provider:
+  the counter only. One whose watch lapsed before its collection started (a
+  group a visitor panned past) is in neither, as nobody waits for it; until 10
+  November 2026 its whole wait was counted. Since 8 November 2026. P50 and P90
+  of a week's cold waits by provider:
   `histogram_quantile(0.9, sum by (le, provider, map, phase) (increase(scootradar_refresh_seconds_bucket{kind="cold"}[7d])))`.
   A long `start` says the host's or account's slots are taken (more accounts or
   addresses would help); a `done` long past `first` a slow sweep; a long

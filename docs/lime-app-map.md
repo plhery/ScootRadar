@@ -393,8 +393,11 @@ wakes its nearby groups rather than rescanning the entire city. Requested
 groups go nearest the expiry of what they show first, then in arrival order
 (`server/feedScheduler.ts`): a watched group's scooters expire 15 minutes after the
 later of the start of its watch and that of its last collection, so repeated polling
-cannot postpone an area waiting since before its last refresh, and the groups a
-visitor has panned past, no longer watched, wait behind those still on screen. On
+cannot postpone an area waiting since before its last refresh. A group a visitor
+has panned past, not yet started when its watch lapses, is no longer asked for: it
+waits for the slot and turns of the account's idle sweeps, as their groups do (until
+10 November 2026 it waited behind the groups on screen, then took the turns of one
+someone looks at). On
 6 November 2026, served in arrival order, a visitor panning across Munich asked for
 some forty groups within minutes; the six Berlin groups a viewer had open, asked for
 again behind them, waited up to twelve minutes, and five expired. Viewed groups

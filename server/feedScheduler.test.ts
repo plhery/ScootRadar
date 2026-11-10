@@ -480,6 +480,42 @@ it('keeps the groups a viewer has open ahead of groups a panning visitor has mov
   }
 });
 
+it('no longer asks for a group whose watch lapsed before it started, which goes on as an idle sweep', async () => {
+  // A Lime group a visitor panned past stayed asked for: it waited behind the groups a viewer had open,
+  // then took the account's turns as one someone looks at, and its whole wait counted as a visitor's.
+  const account = { host: 'web-production.lime.bike', paced: true, concurrencyKey: 'lime-account:primary', keepsIdleTurns: true,
+    watchMs: 3 * MINUTE, idleIntervalMs: 72 * 60 * MINUTE };
+  const open = ['open-a', 'open-b'].map(id => ({ id, ...account }));
+  const passed = { id: 'passed', ...account };
+  const lapsed: Array<{ id: string; at: number }> = [];
+  const { scheduler, calls, attention } = schedule([...open, passed], {
+    lastCollectedAt: feed => feed.id === 'passed' ? T0 - 30 * 60 * MINUTE : T0 - 2 * MINUTE,
+    onLapse: feed => lapsed.push({ id: feed.id, at: (Date.now() - T0) / MINUTE }),
+  }, () => new Promise(resolve => setTimeout(resolve, 4 * MINUTE)));
+  const viewer = setInterval(() => scheduler.demand(open.map(feed => feed.id)), 20_000);
+  try {
+    scheduler.demand(open.map(feed => feed.id));
+    await vi.advanceTimersByTimeAsync(10_000);
+    // The visitor's map shows the group for one request, then they pan on.
+    scheduler.demand(['passed']);
+    expect(scheduler.refreshing('passed')).toBe(true);
+    expect(calls.filter(call => call.id === 'passed')).toEqual([]);
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    expect(lapsed).toEqual([]);
+    // The open groups free a slot at 4:00, well after the watch lapsed at 3:10.
+    await vi.advanceTimersByTimeAsync(MINUTE);
+    expect(lapsed).toEqual([{ id: 'passed', at: 4 }]);
+    expect(scheduler.refreshing('passed')).toBe(false);
+    expect(calls.filter(call => call.id === 'passed')).toEqual([{ id: 'passed', at: 4 * MINUTE, reason: 'idle' }]);
+    expect(attention.get('passed')?.urgent()).toBe(false);
+    // The groups still on screen keep their place.
+    expect(calls.filter(call => call.id === 'open-a').map(call => call.at / MINUTE)).toEqual([0, 4]);
+  } finally {
+    clearInterval(viewer);
+    scheduler.stop();
+  }
+});
+
 it('warms a deploy\'s new feeds up a stage at a time, so the feeds the cache holds keep their turns', async () => {
   // 30 new feeds on three hosts, 20 seconds a first collection; Lyon, restored, is due 25 seconds in.
   // All due at once, the new feeds would hold every slot until 100 seconds.

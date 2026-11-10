@@ -72,6 +72,8 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
   /** If a night ban holds then where the feed's scooters are, when it ends (feedCurfewEnds). */
   curfewEnds?: (feed: T, time: number) => number | undefined;
   onStart?: (feed: T, reason: CollectionReason) => void;
+  /** A collection a request asked for, whose watch lapsed before it started, is no longer asked for (lapse). */
+  onLapse?: (feed: T) => void;
 }
 
 export const DEFAULT_SCHEDULE = { activeIntervalMs: 60_000, idleIntervalMs: 20 * 60_000, watchMs: 10 * 60_000, retryMs: 60_000 };
@@ -113,7 +115,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private readonly watchedSince = new Map<string, number>();
   private readonly watchedUntil = new Map<string, number>();
   private readonly focusOf = new Map<string, MapBounds>();
-  // Collections a request asked for, until they finish.
+  // Collections a request asked for, until they finish or their watch lapses before they start.
   private readonly woken = new Set<string>();
   // Of those, the idle feeds woken because they were late, one per paced host at a time.
   private readonly late = new Set<string>();
@@ -286,6 +288,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     if (this.stopped) return;
     clearTimeout(this.timer);
     const now = Date.now();
+    this.lapse(now);
     this.wakeLate(now);
     const rank = (feed: T) => this.woken.has(feed.id) ? -Infinity : this.due.get(feed.id) ?? 0;
     // A feed on the active interval goes before an idle one. A deploy on 24 October 2026 added 202
@@ -294,11 +297,11 @@ export class FeedScheduler<T extends ScheduledFeed> {
     const idle = (feed: T) => this.mode(feed, now) === 'idle' && !this.woken.has(feed.id) ? 1 : 0;
     // Feeds asked for go nearest the expiry of what they show first, then in the order they were asked
     // for. While watched, a feed's scooters expire 15 minutes after the later of its watch's start and its
-    // last collection's; once no one watches it, an idle interval after its last collection. A feed
-    // polled again thus goes behind the areas still waiting since before its last collection, and areas a
-    // visitor has moved on from go behind those still on screen. On 6 November 2026 a visitor panning
-    // across Munich asked for some forty Lime groups within minutes; the six Berlin groups a viewer had
-    // open, asked for again behind them, waited up to twelve minutes, and five expired.
+    // last collection's; a late one's, which no one watches, an idle interval after its last collection. A
+    // feed polled again thus goes behind the areas still waiting since before its last collection, and areas
+    // a visitor has moved on from wait as idle feeds once their watch lapses (lapse). On 6 November 2026 a
+    // visitor panning across Munich asked for some forty Lime groups within minutes; the six Berlin groups a
+    // viewer had open, asked for again behind them, waited up to twelve minutes, and five expired.
     const wakeOrder = new Map([...this.woken].map((id, index) => [id, index]));
     const expires = (feed: T) => {
       const since = this.watchedSince.get(feed.id) ?? now, started = this.startedAt.get(feed.id) ?? since;
@@ -330,6 +333,23 @@ export class FeedScheduler<T extends ScheduledFeed> {
     const nextDue = this.definitions.filter(feed => !this.running.has(feed.id))
       .map(feed => this.due.get(feed.id) ?? 0).filter(due => due > now);
     if (nextDue.length) this.timer = setTimeout(() => this.pump(), Math.max(1, Math.min(...nextDue) - now));
+  }
+
+  /**
+   * Forgets the collections requests asked for whose watch lapsed before they started: nobody waits for them
+   * any more. Each goes on as an idle feed due, with the turns and slots idle sweeps have, not those of the towns
+   * people look at, and its wait is no visitor's (onLapse). Until 10 November 2026 a Lime group a visitor
+   * panned past stayed asked for: it waited behind every group still on screen, took the account's turns as
+   * if someone looked at it, and its whole wait, 23 minutes in a test with six groups open, counted as a
+   * visitor's.
+   */
+  private lapse(now: number): void {
+    for (const id of [...this.woken]) {
+      if (this.running.has(id) || this.late.has(id) || this.watched(id, now)) continue;
+      this.settle(id);
+      const feed = this.byId.get(id);
+      if (feed) this.options.onLapse?.(feed);
+    }
   }
 
   /**

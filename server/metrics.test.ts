@@ -200,6 +200,28 @@ it('times the refreshes requests ask for, from the first request to their start,
   expect(text).not.toContain('provider="voi",map="feed",kind="warm",phase');
 });
 
+it('does not time a refresh nobody asks for any more, and times one asked for again from the new request', () => {
+  // A Lime group a visitor panned past, whose watch lapsed before its collection started.
+  const metrics = createSnapshotMetrics('abc123');
+  const lime = { id: 'germany:lime_de_app_augsburg_001', source: 'germany', provider: 'lime' };
+  const cold = 'provider="lime",map="app",kind="cold"';
+  metrics.recordRefreshAsked(lime, true, true, now);
+  metrics.recordRefreshLapsed(lime.id);
+  metrics.recordRefreshStarted(lime.id, now + 20 * 60_000);
+  metrics.recordRefreshEnded(lime.id, false, now + 21 * 60_000);
+  const lapsed = metrics.render(snapshot([]), now + 22 * 60_000, true);
+  expect(sample(lapsed, `scootradar_refreshes_total{${cold},outcome="ok"}`)).toBeUndefined();
+  expect(lapsed).not.toContain(`scootradar_refresh_seconds_count{${cold},phase="start"}`);
+  // Asked for again after its watch lapsed, it is timed from that request.
+  metrics.recordRefreshAsked(lime, true, true, now + 30 * 60_000);
+  metrics.recordRefreshLapsed('germany:lime_de_app_augsburg_002');
+  metrics.recordRefreshStarted(lime.id, now + 30 * 60_000 + 2_000);
+  metrics.recordRefreshEnded(lime.id, false, now + 30 * 60_000 + 10_000);
+  const asked = metrics.render(snapshot([]), now + 31 * 60_000, true);
+  expect(sample(asked, `scootradar_refreshes_total{${cold},outcome="ok"}`)).toBe('1');
+  expect(sample(asked, `scootradar_refresh_seconds_sum{${cold},phase="start"}`)).toBe('2');
+});
+
 it('counts the scooters with a price, and the plans fetched again for plans scooters named', () => {
   const vehicle: FeedSnapshot['vehicles'][number] = { provider: 'lime', lat: 47.37, lng: 8.54, battery: null, range_m: null,
     vehicle_id: null, deep_link: null, distance_m: null };

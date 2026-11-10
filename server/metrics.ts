@@ -148,6 +148,12 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       if (asked.has(feed.id)) return;
       asked.set(feed.id, { labels: { provider: feed.provider, map: app ? 'app' : 'feed', kind: cold ? 'cold' : 'warm' }, at: now });
     },
+    /**
+     * Nobody asks for the feed any more: its watch lapsed before its collection started, which then goes on
+     * as an idle one (FeedScheduler's onLapse). Its wait is no visitor's, so it is not counted; a request
+     * asking for the feed again times a refresh of its own.
+     */
+    recordRefreshLapsed(id: string) { asked.delete(id); },
     /** The feed's collection started; one under way when the request came answers it from then. */
     recordRefreshStarted(id: string, now = Date.now()) {
       const entry = asked.get(id);
