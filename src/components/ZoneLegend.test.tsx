@@ -57,6 +57,13 @@ it('says there are none only of an area whose zones are all known, and to zoom i
   expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow']);
 });
 
+it('names the kinds of the zones drawn where those of one feed could not be read, and says the zones are unavailable', () => {
+  const drawn = [{ kind: 'noRide' as const }, { kind: 'noParking' as const }, { kind: 'slow' as const, maxSpeedKph: 5 }];
+  const { container } = render(<I18nProvider><ZoneLegend state="failed" zones={drawn} /></I18nProvider>);
+  expect(container.querySelector('.zone-legend-note')?.textContent).toBe('Zones unavailable right now');
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow: 5 km/h']);
+});
+
 it('names each of a city\'s kinds once, the strongest first, and credits the city once, linked to where it says so', () => {
   const rules = [
     bergen('parking-1', 'parking'), bergen('no-parking-1', 'noParking'), bergen('slow-1', 'slow'),
