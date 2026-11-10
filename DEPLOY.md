@@ -405,8 +405,8 @@ from the file it reads. A request for a feed whose
 positions are older waits, up to three seconds, for the first of the collections
 it starts of the feeds quick to collect, and answers with it; the apps ask again at
 once for the others. It never waits for a slow feed, as an app map's sweep: its
-last positions are shown faded meanwhile, up to three hours old or three days for
-Lime's, and its sweep publishes each part as it finishes (see
+last positions are shown faded meanwhile, up to three hours old, 26 hours for
+Bird's areas or three days for Lime's, and its sweep publishes each part as it finishes (see
 [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md#collection-cadence)). Parking availability expires after five minutes.
 Cached metadata is reported as degraded independently and does not prevent live
 vehicle timestamps advancing.

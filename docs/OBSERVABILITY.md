@@ -247,8 +247,8 @@ A slow feed's sweep can take minutes, so while one runs for a request:
 - the answer carries `lastSeen`, the feed's previous positions where the sweep has
   not looked yet, and `meta.lastSeenAt`; the apps draw them faded, count them nowhere,
   and keep asking every 3 seconds while they stand. They stand up to 3 hours old, or
-  until the feed is due again while nobody looks for one collected less often: three
-  days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
+  until the feed is due again while nobody looks for one collected less often: a day
+  and two hours for Bird's areas, Spin's among them, three days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
   `server/scooter-cache.ts`). Ryde's groups, due again after many hours, say 3 hours
   in their definitions: a read of the view clears only its circle. The dock gives the day of the week of a time on
   another day. A feed quick to collect has none: it is waited for instead.
