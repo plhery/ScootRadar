@@ -1,8 +1,16 @@
 /**
  * The providers a visitor turned off in the map's filters, as the browser keeps them. The ones turned off, not
- * those on, as the Android app keeps them: a provider the map adds later is on for everyone until they turn it off.
+ * those on, as the Android app keeps them: a provider the map adds later is on for everyone until they turn it off,
+ * but for a visitor with exactly one on (PROVIDER_ONLY_STORAGE_KEY).
  */
 export const PROVIDERS_OFF_STORAGE_KEY = 'scooters-providers-off';
+
+/**
+ * The one provider on, while exactly one of the map's is, and nothing otherwise: a visitor who turned every other
+ * provider off has said what they want, and the providers the map adds later stay off for them, as in the iPhone and
+ * Android apps. Read ahead of the list of those off.
+ */
+export const PROVIDER_ONLY_STORAGE_KEY = 'scooters-provider-only';
 
 /**
  * Until 4 November 2026 the map kept the providers that were on, and wrote them on every visit, filters touched or
@@ -25,11 +33,13 @@ const stringList = (raw: string | null): string[] | null => {
 };
 
 /**
- * The providers kept off, among those the map has; null where none were kept. A legacy list of those on counts as
- * turning off only the providers of before 11 October 2026 it lacks: one written on a visit since then also lacks the
- * providers added after it, which nobody had turned off.
+ * The providers kept off, among those the map has; null where none were kept. Every one but the one kept on, where
+ * that is one the map has. A legacy list of those on counts as turning off only the providers of before 11 October
+ * 2026 it lacks: one written on a visit since then also lacks the providers added after it, which nobody had turned off.
  */
 export function savedProvidersOff(read: (key: string) => string | null, providers: readonly string[]): Set<string> | null {
+  const only = read(PROVIDER_ONLY_STORAGE_KEY);
+  if (only !== null && providers.includes(only)) return new Set(providers.filter(provider => provider !== only));
   const off = stringList(read(PROVIDERS_OFF_STORAGE_KEY));
   if (off) return new Set(off.filter(provider => providers.includes(provider)));
   const on = stringList(read(LEGACY_PROVIDERS_STORAGE_KEY));
@@ -40,3 +50,9 @@ export function savedProvidersOff(read: (key: string) => string | null, provider
 /** What to keep: the providers not shown, sorted. */
 export const providersOffToSave = (providers: readonly string[], shown: ReadonlySet<string>): string =>
   JSON.stringify(providers.filter(provider => !shown.has(provider)).sort());
+
+/** The one provider to keep as the only one on: of all the map's, not only those of the area shown; null for any other number. */
+export function providerOnlyToSave(providers: readonly string[], shown: ReadonlySet<string>): string | null {
+  const on = providers.filter(provider => shown.has(provider));
+  return on.length === 1 ? on[0] : null;
+}

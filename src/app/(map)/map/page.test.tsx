@@ -2037,6 +2037,47 @@ it('restores and saves provider preferences without overwriting them during hydr
   expect(localStorage.getItem('scooters-providers-off')).toBe(saved);
 });
 
+it('keeps a visitor with one provider on to that one when the map adds providers, and turns a new one on for the others', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(data([FAR, OTHER]))));
+  // Kept before Voi was on the map: Voi is in neither list.
+  const offBeforeVoi = (...on: string[]) =>
+    JSON.stringify(Object.keys(PROVIDERS).filter(provider => provider !== 'voi' && !on.includes(provider)).sort());
+  const settle = () => act(async () => vi.advanceTimersByTimeAsync(180));
+  localStorage.setItem('scooters-providers-off', offBeforeVoi('lime'));
+  localStorage.setItem('scooters-provider-only', 'lime');
+  let view = mount();
+  await settle();
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+  expect(screen.getByRole('button', { name: 'Marker far' })).toBeInTheDocument();
+  expect(localStorage.getItem('scooters-provider-only')).toBe('lime');
+  expect(JSON.parse(localStorage.getItem('scooters-providers-off')!)).toEqual(Object.keys(PROVIDERS).filter(provider => provider !== 'lime').sort());
+  // Every provider again, then Lime alone: the one on is forgotten, then kept.
+  fireEvent.click(screen.getByRole('button', { name: 'Lime, 1. Shown.' }));
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('2');
+  expect(localStorage.getItem('scooters-provider-only')).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Lime, 1. Shown.' }));
+  expect(localStorage.getItem('scooters-provider-only')).toBe('lime');
+  view.unmount();
+
+  // Two on: a provider added since comes on, as before.
+  localStorage.clear();
+  localStorage.setItem('scooters-providers-off', offBeforeVoi('lime', 'bolt'));
+  view = mount();
+  await settle();
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('2');
+  expect(localStorage.getItem('scooters-provider-only')).toBeNull();
+  view.unmount();
+
+  // The one kept on is not on the map: the list of those off, as before.
+  localStorage.clear();
+  localStorage.setItem('scooters-providers-off', offBeforeVoi('lime'));
+  localStorage.setItem('scooters-provider-only', 'gone');
+  mount();
+  await settle();
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('2');
+  expect(localStorage.getItem('scooters-provider-only')).toBeNull();
+});
+
 it('shows the providers added since the first visit, which the list of those on kept off until 4 November 2026', async () => {
   // As every visit before 11 October 2026 wrote it, filters touched or not.
   localStorage.setItem('scooters-providers', JSON.stringify(['bird', 'bolt', 'dott', 'hopp', 'lime', 'pony', 'publibike', 'voi']));
