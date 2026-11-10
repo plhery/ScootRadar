@@ -401,8 +401,9 @@ object ScooterMarkerLayers {
     /**
      * The cities' totals of the overview, over the rider: at the zooms where they show, the rider's dot stands on
      * the total of the city it is in, and would hide its digits. The dot keeps its place, under the total, its beam
-     * showing past it. Over the selected scooter and its name too, which the rider is drawn over: a total that would
-     * cover them is hidden instead (ScooterMarkerScene.heldScooterFrames), as the iPhone draws them over it.
+     * showing past it. Over the selected scooter and its name too, which the rider is drawn over, and the selected
+     * bay: a total that would cover them is hidden instead (ScooterMarkerScene.heldFrames), as the iPhone draws them
+     * over it.
      */
     const val CITIES = "scooter-cities"
 

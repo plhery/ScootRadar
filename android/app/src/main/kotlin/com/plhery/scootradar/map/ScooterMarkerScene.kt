@@ -196,7 +196,7 @@ class ClusterMark(cluster: ScooterCluster, members: List<Scooter>?) {
 
     /**
      * Its disc meets the chrome over the map, where its number would be read in part, or in the overview the scooter
-     * held on the map, which it would cover: it is hidden, and neither a tap there nor TalkBack opens it
+     * or bay held on the map, which it would cover: it is hidden, and neither a tap there nor TalkBack opens it
      * (ScooterMarkerScene.clearCounts).
      */
     var isHidden = false
@@ -1205,26 +1205,30 @@ class ScooterMarkerScene(
     }
 
     /**
-     * What else a count keeps off, in the overview: the selected scooter, the one walked to, which stays on the map at
-     * any zoom, its dot in the square of its footprint and its name, in the map's points. The cities' totals are drawn
-     * over the rider's layers there (ScooterMarkerLayers.CITIES), and the rider over the selected dot, as the iPhone
-     * draws it (zPriority .max); the iPhone draws that dot and its name over every total (zPriority 900, above any
-     * total's), so a total that would cover them makes way instead. Elsewhere the clusters are drawn under them.
+     * What else a count keeps off, in the overview: what is selected, the scooter or the bay walked to, which stays on
+     * the map at any zoom: the scooter's dot in the square of its footprint and its name, and the bay's balloon, in the
+     * map's points. The cities' totals are drawn over the rider's layers there (ScooterMarkerLayers.CITIES), and the
+     * rider over the selected dot, as the iPhone draws it (zPriority .max); the iPhone draws that dot and its name over
+     * every total (zPriority 900, above any total's), and the selected bay too (.defaultSelected, 1000), so a total
+     * that would cover them makes way instead. Elsewhere the clusters are drawn under them.
      */
-    fun heldScooterFrames(map: MarkerMap): List<ScreenRect> {
+    fun heldFrames(map: MarkerMap): List<ScreenRect> {
         if (!parent.isOverview) return emptyList()
-        val id = appliedSelectionID ?: return emptyList()
-        val mark = marksByID[id]?.takeIf { id !in clusteredIDs && it.look.state == ScooterDotState.Selected } ?: return emptyList()
-        val centre = dotCentre(mark, map.projection)
+        val projection = map.projection
+        val bay = appliedParkingID?.let { parkingByID[it] }?.let { bayFrame(it, projection) }
+        val id = appliedSelectionID
+        val mark = id?.let { marksByID[it] }?.takeIf { id !in clusteredIDs && it.look.state == ScooterDotState.Selected }
+            ?: return listOfNotNull(bay)
+        val centre = dotCentre(mark, projection)
         val side = mark.look.footprint
         val dot = ScreenRect(centre.x - side / 2, centre.y - side / 2, side, side)
-        val pill = mark.shownPill ?: return listOf(dot)
-        return listOf(dot, ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(pill), art.pillHeight))
+        val name = mark.shownPill?.let { ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(it), art.pillHeight) }
+        return listOfNotNull(dot, name, bay)
     }
 
     /**
      * Keeps every cluster's number whole or unseen: one whose disc meets the chrome ([countChrome]), or in the
-     * overview the scooter held on the map ([heldScooterFrames]), fades out over [PILL_FADE], and back in as the map
+     * overview the scooter or bay held on the map ([heldFrames]), fades out over [PILL_FADE], and back in as the map
      * takes it clear, as a name does; at once with animations off, with the map off the screen, and for one not placed
      * before. The city totals of the overview, the server's clusters and the app's own alike; a scooter's dot stays,
      * as under the chrome on the iPhone. Returns whether any was hidden or shown again.
@@ -1232,7 +1236,7 @@ class ScooterMarkerScene(
     fun clearCounts(map: MarkerMap): Boolean {
         val clusters = clusters()
         if (clusters.isEmpty()) return false
-        val obstacles = countChrome(map) + heldScooterFrames(map)
+        val obstacles = countChrome(map) + heldFrames(map)
         val points = map.points(clusters.map { it.cluster.coordinate })
         val time = now()
         val eases = map.isShown && animates()

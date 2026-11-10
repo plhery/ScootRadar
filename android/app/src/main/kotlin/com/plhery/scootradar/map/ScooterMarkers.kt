@@ -598,7 +598,7 @@ class ScooterMarkers(
             calloutBelow = it.below
         }
         tips.next(scene.fadedTipID, callout)?.let { tipAnnouncement = it }
-        // The clusters under the chrome, or on the scooter held in the overview, are hidden before the source is
+        // The clusters under the chrome, or on the scooter or bay held in the overview, are hidden before the source is
         // written: a new one is never seen there.
         val written = writtenMarkers
         val counts = scene.clearCounts(markerMap)

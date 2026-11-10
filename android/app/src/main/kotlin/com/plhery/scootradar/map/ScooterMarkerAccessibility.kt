@@ -85,7 +85,8 @@ object MarkerElements {
      * The markers on the map that TalkBack reads, top to bottom, then left to right (MAP-228, MAP-306). The
      * names speak through their dots. Of the faded markers of scooters last seen, the scooters of an app whose last
      * sight is known are read, as a tap shows their tips; the groups are not (MAP-223), nor a count hidden under the
-     * chrome or off the scooter held in the overview, which a tap does not open either (ScooterMarkerScene.clearCounts).
+     * chrome or off the scooter or bay held in the overview, which a tap does not open either
+     * (ScooterMarkerScene.clearCounts).
      */
     fun of(scene: ScooterMarkerScene, map: MarkerMap): List<MarkerElement> {
         if (!map.isShown) return emptyList()

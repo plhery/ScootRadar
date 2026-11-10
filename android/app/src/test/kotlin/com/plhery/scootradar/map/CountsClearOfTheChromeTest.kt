@@ -4,6 +4,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterCluster
+import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import org.json.JSONObject
@@ -401,7 +402,7 @@ class CountsClearOfTheChromeTest {
         val held = scene.mark("lime:held")!!
         assertTrue(held.shownPill?.time != null)
         // Its dot, in the square of its footprint, and its name.
-        val (dot, name) = scene.heldScooterFrames(map)
+        val (dot, name) = scene.heldFrames(map)
         val centre = scene.dotCentre(held, map)
         assertEquals(held.look.footprint, dot.width, 0.0)
         assertEquals(centre.x, dot.midX, 1e-9)
@@ -426,7 +427,7 @@ class CountsClearOfTheChromeTest {
 
         // Away from the overview the clusters are drawn under the selected dot and its name: none makes way.
         scene.parent = walking.copy(isOverview = false)
-        assertTrue(scene.heldScooterFrames(map).isEmpty())
+        assertTrue(scene.heldFrames(map).isEmpty())
         assertTrue(scene.clearCounts(map))
         assertTrue(scene.clusters().none { it.isHidden })
 
@@ -439,10 +440,65 @@ class CountsClearOfTheChromeTest {
         scene.parent = MarkerParent(usesServerClusters = true, isOverview = true, userLocation = rider)
         scene.applySelection(null, map)
         scene.reconcile(emptyList(), revision = 2)
-        assertTrue(scene.heldScooterFrames(map).isEmpty())
+        assertTrue(scene.heldFrames(map).isEmpty())
         assertTrue(scene.clearCounts(map))
         assertTrue(scene.clusters().none { it.isHidden })
         assertEquals(0.5, mark("zurich").clearance(101.1), 1e-3)
+    }
+
+    /**
+     * The bay walked to stays on the map at any zoom too, its balloon in the selected markers' layer under the totals:
+     * a total whose disc meets the balloon is hidden instead, takes no tap and is not read, as the iPhone draws the
+     * selected bay over every total; one clear of it stays (week review, finding 6.1).
+     */
+    @Test
+    fun inTheOverviewATotalOnTheBayWalkedToIsHiddenAndOneClearOfItStays() {
+        val map = FlatMarkerMap(mapLibreZoom = 9.0)
+        val rider = map.at(195.0, 560.0)
+        val walking = MarkerParent(
+            origin = rider,
+            walkRemainingMetres = 900.0,
+            isWalking = true,
+            usesServerClusters = true,
+            isOverview = true,
+            userLocation = rider,
+        )
+        scene.parent = walking
+        assertTrue(scene.updateClusteringMode(9.0, map))
+        val place = map.at(195.0, 400.0)
+        scene.reconcileParking(listOf(ScooterParking("voi:bay", "voi", "Bahnhofplatz", place.latitude, place.longitude, mandatory = false)))
+        scene.applyParkingSelection("voi:bay")
+        // Its balloon, as it is drawn selected.
+        val balloon = scene.bayFrame(scene.parking.single(), map)
+        assertEquals(listOf(balloon), scene.heldFrames(map))
+        val onBalloon = map.at(balloon.midX + 6, balloon.midY - 6)
+        scene.reconcileClusters(
+            listOf(cluster("zurich", onBalloon, 7023), cluster("winterthur", map.at(195.0, 700.0), 300)),
+            revision = 1,
+        )
+        assertTrue(scene.clearCounts(map))
+        assertEquals(listOf("zurich"), scene.clusters().filter { it.isHidden }.map { it.id })
+        // A tap on the total's middle is not the total's, and TalkBack reads only the total clear of the bay.
+        assertNull(scene.topCluster(map.point(onBalloon), map))
+        val read = MarkerElements.of(scene, map).filterIsInstance<MarkerElement.Cluster>().map { it.cluster.id }
+        assertEquals(listOf("winterthur"), read)
+
+        // Away from the overview the clusters are drawn under the selected bay: none makes way.
+        scene.parent = walking.copy(isOverview = false)
+        assertTrue(scene.heldFrames(map).isEmpty())
+        assertTrue(scene.clearCounts(map))
+        assertTrue(scene.clusters().none { it.isHidden })
+
+        // Back in the overview the total makes way again, and comes back once the bay has left the map.
+        scene.parent = walking
+        assertTrue(scene.clearCounts(map))
+        assertTrue(mark("zurich").isHidden)
+        scene.parent = MarkerParent(usesServerClusters = true, isOverview = true, userLocation = rider)
+        scene.applyParkingSelection(null)
+        scene.reconcileParking(emptyList())
+        assertTrue(scene.heldFrames(map).isEmpty())
+        assertTrue(scene.clearCounts(map))
+        assertTrue(scene.clusters().none { it.isHidden })
     }
 
     @Test
