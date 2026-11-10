@@ -27,6 +27,15 @@ if args.count == 2 && args[1] == "status" {
         RunLoop.current.run(until: Date().addingTimeInterval(0.1))
     }
     if apps.contains(where: { !$0.isTerminated }) { exit(1) }
+} else if args.count == 2 && args[1] == "force-quit" {
+    // Worker only uses this after graceful quit fails and the scoped proxy
+    // acknowledges no live native map or unresolved key renewal.
+    for app in apps { _ = app.forceTerminate() }
+    let deadline = Date().addingTimeInterval(3)
+    while apps.contains(where: { !$0.isTerminated }) && Date() < deadline {
+        RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+    }
+    if apps.contains(where: { !$0.isTerminated }) { exit(1) }
 } else if args.count == 3 && args[1] == "open" {
     let url = URL(fileURLWithPath: args[2])
     guard let bundle = Bundle(url: url), bundle.bundleIdentifier == bundleID else { exit(2) }

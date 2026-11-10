@@ -31,6 +31,9 @@ BROKER_RETRY=5
 BROKER_RETRY_MAX=60
 WARM_WAIT=8
 
+class JobDeadline(Exception):
+    """Queued work ran out of time; this is not evidence that Ryde failed."""
+
 def warm_helper(root):
     return root/'Ryde Map Control.app/Contents/MacOS/RydeMapControl'
 
@@ -133,7 +136,18 @@ def relaunch(root=ROOT, after_quit=None):
             value={'at':time.time(),'phase':phase,'statusUnavailable':type(error).__name__}
         with (root/'producer/lifecycle.jsonl').open('a') as handle: handle.write(json.dumps(value)+'\n')
     lifecycle_event('before-quit')
-    subprocess.run([str(helper),'quit'],check=True,timeout=12)
+    try:
+        subprocess.run([str(helper),'quit'],check=True,timeout=12)
+    except subprocess.CalledProcessError as error:
+        if error.returncode!=1:raise
+        lifecycle_event('graceful-quit-stuck')
+        # Never kill a live native map/rotation, even after its public job deadline.
+        # A new control nonce is acknowledged on the proxy's native-hook loop.
+        if not cold_fallback_ready({'id':uuid.uuid4().hex},root,time.time()+3):
+            raise RuntimeError('Ryde quit stalled; native activity prevents forced recovery') from error
+        lifecycle_event('before-forced-quit')
+        subprocess.run([str(helper),'force-quit'],check=True,timeout=5)
+        lifecycle_event('after-forced-quit')
     lifecycle_event('after-quit')
     egress.begin_cycle(root/'producer')
     if after_quit is not None: after_quit()
@@ -155,10 +169,12 @@ def validate_job(job):
     for name,limit in [('latitude',85),('longitude',180),('radius',50)]:
         value=job[name]
         if type(value) not in (int,float) or not math.isfinite(value) or abs(value)>limit or (name=='radius' and value<=0): raise ValueError('Invalid query geography')
-    if type(job['expiresAt']) not in (int,float) or not time.time()<job['expiresAt']<=time.time()+180: raise ValueError('Expired or excessive broker deadline')
+    if type(job['expiresAt']) not in (int,float) or not math.isfinite(job['expiresAt']) or job['expiresAt']>time.time()+180: raise ValueError('Invalid broker deadline')
+    if job['expiresAt']<=time.time():raise JobDeadline('Broker job already expired')
 
 def query(job, root=ROOT, timeout=60):
     validate_job(job)
+    if job['expiresAt']<time.time()+20:raise JobDeadline('Too little time remains for a native request')
     base=root/'producer'
     state=json.loads((base/'session/status.json').read_text())
     if state['bridgeStage'] not in {'bridge-active','awaiting-first-rotation'}: raise RuntimeError('Ryde bridge needs a completed operator sign-in')
@@ -219,7 +235,8 @@ def query(job, root=ROOT, timeout=60):
             # Retrigger once only when no live job is in flight; never retry a denial.
             retried=True;relaunch(root,lambda:save(base/'job.json',job))
         time.sleep(.25)
-    raise TimeoutError('No fresh native map within job deadline')
+    if job['expiresAt']<=time.time():raise JobDeadline('Broker deadline elapsed during native request')
+    raise TimeoutError('No fresh native map within worker timeout')
 
 def call(config, method, path, value=None):
     request=urllib.request.Request(config['url'].rstrip('/')+path,
@@ -299,6 +316,11 @@ def serve(config, base):
                 relaunch();last_trigger=time.time() # allow due native key renewals
             save(base/'worker-status.json',{'state':'ready','at':time.time()})
             wait_interval(0 if job else 2,stop)
+        except JobDeadline:
+            # Reject stale backlog promptly. A short broker deadline must not
+            # accumulate app failures or force a healthy worker into a long hold.
+            save(base/'worker-status.json',{'state':'ready','reason':'BrokerJobExpired','at':time.time()})
+            wait_interval(0,stop)
         except sqlite3.OperationalError:
             # Local accounting contention is neither an app failure nor an upstream denial.
             # Keep routing closed and retry promptly without killing the worker.

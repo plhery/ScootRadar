@@ -571,3 +571,18 @@ fresh successful native map decrypts and translates correctly. Renewal, session
 and payload failures retain their holds. After a cold launch the enabled helper
 also prepares the minimized window, waking a hidden iPhone app that may otherwise
 remain suspended before it sends its first request.
+
+
+If Ryde ignores graceful quit for ten seconds, the worker asks the scoped proxy
+for a fresh acknowledgement that no native map or key renewal is in flight and
+no recipient change remains unresolved. Only then may the lifecycle helper
+force-terminate Ryde, still restricted to its fixed bundle identifier. Confirmed
+termination precedes egress selection, job arming and reopening. A missing or busy
+proxy acknowledgement leaves the process and routing untouched. Lifecycle records
+separate a stuck graceful quit from its guarded forced recovery. This handles the
+minimized native process observed ignoring all graceful quits on 9–10 November.
+
+Broker jobs with less than twenty seconds left are rejected without touching the
+native app; broker expiry during a query also stays separate from an app timeout.
+The worker immediately asks for the next job instead of accumulating app failures
+and entering an hours-long hold while draining an old queue.

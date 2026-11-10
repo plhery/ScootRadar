@@ -8,7 +8,7 @@ import tempfile
 import unittest
 import uuid
 from unittest.mock import patch
-from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control
+from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control,JobDeadline
 import time
 import urllib.error
 
@@ -157,6 +157,43 @@ class WorkerTests(unittest.TestCase):
                 self.assertEqual(query(job,root),result)
             cold.assert_not_called()
 
+    def test_stuck_app_force_quit_requires_proxy_ack_and_confirmed_termination(self):
+        for safe,force_ok in [(True,True),(False,True),(True,False)]:
+            with self.subTest(safe=safe,force_ok=force_ok),tempfile.TemporaryDirectory() as name:
+                root=Path(name);base=root/'producer';base.mkdir()
+                save(root/'config.json',{'appBinary':'/test/Ryde.app/Ryde'})
+                save(base/'proxy-ready.json',{'pid':os.getpid()});save(root/'transport-status.json',{'proxyPid':os.getpid()})
+                order=[]
+                def run(command,**kwargs):
+                    action=command[1]
+                    if action=='quit':
+                        order.append('quit');raise subprocess.CalledProcessError(1,command)
+                    if action=='force-quit':
+                        self.assertTrue(safe);self.assertEqual(order,['quit','proxy-safe'])
+                        order.append('force-quit')
+                        if not force_ok:raise subprocess.CalledProcessError(1,command)
+                    if action=='open':order.append('open')
+                    return subprocess.CompletedProcess(command,0,stdout='{}')
+                def ack(*args):order.append('proxy-safe');return safe
+                with patch('worker.subprocess.run',side_effect=run),patch('worker.cold_fallback_ready',side_effect=ack), \
+                     patch('worker.egress.begin_cycle',side_effect=lambda _:order.append('route')):
+                    if safe and force_ok:
+                        relaunch(root,lambda:order.append('arm'))
+                        self.assertEqual(order,['quit','proxy-safe','force-quit','route','arm','open'])
+                    else:
+                        with self.assertRaises((RuntimeError,subprocess.CalledProcessError)):
+                            relaunch(root,lambda:order.append('arm'))
+                        self.assertNotIn('arm',order);self.assertNotIn('route',order);self.assertNotIn('open',order)
+                        if not safe:self.assertNotIn('force-quit',order)
+
+    def test_expiring_broker_job_does_not_launch_or_activate_ryde(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);job['expiresAt']=time.time()+2
+            with patch('worker.relaunch') as restart,patch('worker.warm_available') as warm:
+                with self.assertRaises(JobDeadline):query(job,root)
+            restart.assert_not_called();warm.assert_not_called()
+            self.assertFalse((base/'job.json').exists())
+
     def test_long_idle_backoff_yields_to_an_operator_stop(self):
         with tempfile.TemporaryDirectory() as name:
             stop=Path(name)/'stop.json'
@@ -216,7 +253,7 @@ class WorkerTests(unittest.TestCase):
             self.assertEqual(order,['quit','armed','open'])
             sleep.assert_not_called()
             # A failed termination must still prevent both arming and opening the next job.
-            with patch('worker.subprocess.run',side_effect=subprocess.CalledProcessError(1,['helper','quit'])), \
+            with patch('worker.subprocess.run',side_effect=subprocess.CalledProcessError(2,['helper','quit'])), \
                  patch('worker.time.sleep'), patch('worker.egress.begin_cycle') as cycle:
                 with self.assertRaises(subprocess.CalledProcessError): relaunch(root,arm)
                 cycle.assert_not_called()
@@ -251,6 +288,11 @@ class ServeTests(unittest.TestCase):
                 serve({'url':'https://cache.test','token':'t'*32},base)
             self.assertEqual(replies,[]);self.assertEqual(queries,[])
             return waits
+
+    def test_expired_backlog_does_not_trigger_app_failure_backoff(self):
+        replies=['job',None,'job',None]
+        self.assertEqual(self.run_serve(replies,[JobDeadline('expired backlog'),'ok'],2),[0,0])
+        self.assertFalse(self.held)
 
     def test_a_deploy_costs_seconds_not_minutes(self):
         # The job leased before the deploy is unknown to the new cache (400); then the cache does not
