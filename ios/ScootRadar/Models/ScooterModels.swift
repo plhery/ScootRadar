@@ -1601,7 +1601,7 @@ struct RecentPlaceStore: Sendable {
 
     var file: URL { directory.appending(path: "recent-place-v1.json") }
 
-    /// What the file holds: the place's lines, its point, whether it is a city and whether it has data.
+    /// What the file holds: the place's lines, its point, whether it is a city and whether it had data.
     private struct Saved: Codable {
         let title: String
         let subtitle: String
@@ -1609,6 +1609,8 @@ struct RecentPlaceStore: Sendable {
         let longitude: Double
         /// "address" or "city".
         let kind: String
+        /// Whether it had data when it was chosen. A feed may have been added there since, or taken away: whether
+        /// it has data is worked out again when the place is read, as for a place the search answers without it.
         let isCovered: Bool
     }
 
@@ -1637,8 +1639,7 @@ struct RecentPlaceStore: Sendable {
             title: saved.title,
             subtitle: saved.subtitle,
             point: GeoPoint(latitude: saved.latitude, longitude: saved.longitude),
-            kind: kind,
-            isCovered: saved.isCovered
+            kind: kind
         )
     }
 

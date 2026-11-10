@@ -3185,6 +3185,29 @@ extension ScooterMapModelTests {
         XCTAssertEqual(standard.directory.lastPathComponent, "Application Support")
     }
 
+    /// Whether the map has data at the place saved is as it is today, not as when the place was chosen: Manama,
+    /// saved as "No data" before Hopp's feed there was added on 4 November 2026, has data, and Lungern, saved as
+    /// having some, has none (week review, finding 3.4).
+    func testTheRecentPlaceHasDataAsTheMapHasItTodayNotAsWhenItWasChosen() throws {
+        let store = recentPlaceStore()
+        try FileManager.default.createDirectory(at: store.directory, withIntermediateDirectories: true)
+        let manama = #"{"title":"Manama","subtitle":"Bahrain","latitude":26.2235,"longitude":50.5876,"kind":"address","isCovered":false}"#
+        try Data(manama.utf8).write(to: store.file)
+        XCTAssertEqual(store.load()?.isCovered, true)
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: isolatedDefaults(),
+            recentPlaceStore: store,
+            builtInZones: []
+        )
+        XCTAssertEqual(model.recentPlace?.isCovered, true)
+
+        let lungern = #"{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}"#
+        try Data(lungern.utf8).write(to: store.file)
+        XCTAssertEqual(store.load()?.isCovered, false)
+    }
+
     /// A store in a directory of its own, deleted when the test ends.
     private func recentPlaceStore() -> RecentPlaceStore {
         let directory = FileManager.default.temporaryDirectory

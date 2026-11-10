@@ -85,8 +85,8 @@ in the bar with a button to clear it, and a place where no operator shares data
 does not promise scooters.
 
 **Search.** It opens on the field. Before you type: **Use my location**, the
-last place you chose, with a ✕ to forget it, and the six nearest cities with
-scooters. A link to a city on the site opens it without replacing that place. Typing
+last place you chose, with a ✕ to forget it and a **No data** tag where no
+operator shares data today, and the six nearest cities with scooters. A link to a city on the site opens it without replacing that place. Typing
 two characters or more lists places with a second line and a **No data** tag
 where no operator shares data; Return chooses the first. Streets and addresses
 are found in every country the app covers, typed in the country's own script
