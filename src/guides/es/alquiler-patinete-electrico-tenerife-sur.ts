@@ -159,7 +159,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 5 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 10 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'BOE: Real Decreto 518/2026, que modifica el Reglamento General de Circulación, en vigor desde el 1 de octubre de 2026', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
     { title: 'Ayuntamiento de Arona: los 98 paseos y calles peatonales prohibidos (BOP, agosto de 2016)', url: 'https://www.arona.org/Portals/0/documentos/0_37129_1.pdf' },
     { title: 'Ayuntamiento de Arona: patinetes retirados en 2024 y 2025 (23 de julio de 2025)', url: 'https://www.arona.org/Tu-Ayuntamiento/Prensa/Noticias/ctl/Ver/mid/422?id=92916' },

@@ -200,7 +200,7 @@ const guide: Guide = {
     { title: 'BOE: Ley sobre Tráfico y Seguridad Vial (Real Decreto Legislativo 6/2015), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11722' },
     { title: 'BOE: Reglamento General de Circulación (Real Decreto 1428/2003), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2003-23514' },
     { title: 'BOE: Reglamento General de Vehículos (Real Decreto 2822/1998), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1999-1826' },
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 5 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 10 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'DGT, sede electrónica: inscripción de un VMP', url: 'https://sede.dgt.gob.es/es/vehiculos/matriculaciones-de-vehiculos/inscripcion-vmp/index.html' },
     { title: 'DGT: entra en vigor la reforma del Reglamento General de Circulación (30 de septiembre de 2026)', url: 'https://www.dgt.es/comunicacion/notas-de-prensa/20260930-reforma-del-reglamento-de-circulacion-usuarios-vulnerables/' },
     { title: 'DGT: puesta en marcha del registro de vehículos personales ligeros (27 de enero de 2026)', url: 'https://www.dgt.es/comunicacion/notas-de-prensa/20260127-trafico-pone-en-marcha-registro-vehiculos-personales-ligeros/' },

@@ -194,7 +194,7 @@ const guide: Guide = {
     { title: 'BOE: Ley sobre Tráfico y Seguridad Vial (Real Decreto Legislativo 6/2015), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11722' },
     { title: 'BOE: Reglamento General de Vehículos (Real Decreto 2822/1998), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1999-1826' },
     { title: 'BOE: Real Decreto 970/2020, primeras normas estatales sobre los vehículos de movilidad personal, en vigor desde el 2 de enero de 2021', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2020-13969' },
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 5 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 10 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'DGT: Instrucción 2019/S-149 TV-108 sobre vehículos de movilidad personal', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/muevete-con-seguridad/normas-de-trafico/S-sanciones/Intruccion-VMP-y-otros-vehiculos-ligeros.pdf' },
     { title: 'BOP de Las Palmas, 29 de julio de 2019: ordenanza de vehículos de movilidad personal de Antigua', url: 'https://www.boplaspalmas.net/boletines/2019/29-7-19/29-7-19.pdf' },
     { title: 'Ayuntamiento de Pájara: Ordenanza nº 51 sobre vehículos de movilidad personal', url: 'https://www.pajara.es/51-ordenanza-sobre-el-uso-y-la-circulacion-de-vehiculos-de-movilidad-personal-y-de-bicicletas-de-pedales-con-pedaleo-asistido-del-municipio-de-pajara/' },

@@ -136,7 +136,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 5 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 10 de noviembre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'BOE: Real Decreto 518/2026, reforma del Reglamento General de Circulación', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
     { title: 'BOE: Reglamento General de Circulación (Real Decreto 1428/2003), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2003-23514' },
     { title: 'BOE: Ley sobre Tráfico y Seguridad Vial (Real Decreto Legislativo 6/2015), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11722' },
