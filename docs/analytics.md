@@ -54,6 +54,7 @@ agent that doesn't name the app.
 | Walking routes | `route_result`, `route_arrived` | web: `success`/`no_route`/`busy`/`failed`/`too_far`; iOS: `success`/`error`/`too_far`, with provider and vehicle/parking target |
 | Reliability | `refresh`, `refresh_result` (web), `data_error`, `data_expired` (web), `zones_error` (web) | generic outcome only (`success`/`error`; `timeout`/`request_failed`; for `zones_error`, `status_` and the HTTP status, or `request_failed`) |
 | Price tools (iOS) | `ride_duration`, `ride_pass_change` | duration, provider; never pass expiry or financial details |
+| Android test (web) | `invite_view`, `invite_open`, `invite_group`, `invite_optin`, `invite_install`, `invite_dismiss`, `invite_never` | `place`: where the invitation to test the Android app on Google Play was: `map` (the chip under the map's search bar), `guide` (the card under a guide's headline), `landing` (the landing page's Android app button) or `settings` (the map's Settings › About › Android app, which sends `invite_open` only) |
 | Rating (iOS, Android) | `review_ask` | `result`: the moment the app asked for a rating with Apple's prompt, or on Android Google Play's card: `calm_map` (a fresh feed on a map left untouched 5 seconds with nothing over it, from the third day of use), or `rental_return` (back from the operator's app 5 minutes to 2 hours after **Open in**) from iOS up to 1.4.0 and Android up to 1.3.0, which asked at no other moment. None was sent up to 9 November 2026. It counts asks, not prompts shown: iOS decides whether the prompt appears, at most three times a year, and Google Play whether its card does, only so often and only in a copy of the app it installed |
 
 Useful funnels: `app_open` → `vehicle_select` → `rental_open`, and for the guides,
@@ -103,6 +104,20 @@ What the events mean on the web:
   `search_open`, `+` and `−` send `map_zoom`, Esc sends `search_close` or, on a
   scooter card, `vehicle_dismiss`. A tap on the map that closes a scooter card
   sends `vehicle_dismiss` as well.
+- The `invite_*` events follow the invitation to test the Android app
+  (`src/lib/playTest.ts`, sent from 3 November 2026): `invite_view` is the
+  chip, a guide's card or the landing page's button shown, once a page for each
+  place; `invite_open` opens its three steps; `invite_group`, `invite_optin` and
+  `invite_install` are each step's link followed (join the testers' group,
+  become a tester on Google Play, install); `invite_dismiss` is × or "Not now",
+  which hides it for a week, and `invite_never` "Never show" or "Don't ask
+  again". They count links followed, not testers: Play Console counts those.
+  The chip and the card are shown on Android only. The landing page's button,
+  on Android only until 9 November 2026, is from then on shown on every page but
+  an iPhone's (5d537745), computers included, so `invite_view` with
+  `place: landing` jumps that day. It is neither shown nor counted where the
+  browser says it runs an Android older than 12, on which the app does not
+  install.
 - Not sent at all: opening the location help, closing a parking bay's card, the
   ride length chosen for the price estimate, a "Closest cities" chip, hover tips.
 
