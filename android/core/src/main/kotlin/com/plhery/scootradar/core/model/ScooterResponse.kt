@@ -106,6 +106,13 @@ data class ScooterResponseMetadata(
      * totals, an answer the server kept from before, an older server.
      */
     val staleProviders: Map<String, String>? = null,
+    /**
+     * In an answer of scooters, stale or not: each app with positions shown, by provider id, with when the oldest of
+     * them were seen. It moves only when that app's positions are collected again, unlike `generatedAt`, the oldest of
+     * every app's: a walk tells a new read of its scooter's app by it. Null from an older server; an app with nothing
+     * shown, or only faded scooters, is left out.
+     */
+    val shownSince: Map<String, String>? = null,
     /** When the oldest of the last-seen scooters were seen, while there are any. */
     val lastSeenAt: String? = null,
     val parkingStatus: String? = null,
@@ -178,6 +185,7 @@ val ScooterResponseMetadataPayload.model: ScooterResponseMetadata
         refreshing = refreshing ?: false,
         followUpMs = followUpMs?.saturated,
         staleProviders = staleProviders,
+        shownSince = shownSince,
         lastSeenAt = lastSeenAt,
         parkingStatus = parkingStatus?.rawValue,
         expiresAt = expiresAt,

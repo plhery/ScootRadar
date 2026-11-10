@@ -22,6 +22,8 @@ import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.core.model.timeIntervalSince
 import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.format.DateTimeParseException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -284,7 +286,7 @@ private fun ScooterMapController.reportArrival(target: ScooterWalkTarget) {
 
 /**
  * Fresh data about the scooter walked to. It may have moved, and the route then follows it; or data that
- * would list it no longer does twice, from two updates of the data, which mostly means someone took it: one
+ * would list it no longer does twice, from two reads of its app, which mostly means someone took it: one
  * missing from one update comes back. Scooters get new ids now and then, so one of the same provider standing
  * where it stood, under an id the data before didn't list ([previousIDs]), is that scooter; one listed before is
  * another, which the walk is not handed to. Standing faded where it was last seen, while its app is collected
@@ -325,16 +327,32 @@ internal fun ScooterMapController.followWalkTarget(
         return
     }
     if (standsFaded(scooter)) return
+    // The read of its app this data is of: the same read served again, while another app in view is late or swept
+    // and holds the data's own time back, says nothing new.
+    val read = appRead(scooter.provider, meta = meta) ?: observedAt
     val missedAt = walk.missedAt
     if (missedAt == null) {
-        setWalk(walk.copy(missedAt = observedAt))
+        setWalk(walk.copy(missedAt = read))
         return
     }
-    // The same data again says nothing new.
-    if (missedAt == observedAt) return
+    if (missedAt == read) return
     cancelRouteRequest()
     setWalk(walk.copy(phase = ScooterWalkPhase.Gone, route = null))
     announceWalk(ScooterWalkNote.Gone.text)
+}
+
+/**
+ * When the positions of [provider] in the data were seen (meta.shownSince), which moves only when they are collected
+ * again. Null where the data does not say, from an older server, or of an app with no positions shown: the data's own
+ * time then tells one read from the next.
+ */
+private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? {
+    val value = meta?.shownSince?.get(provider) ?: return null
+    return try {
+        OffsetDateTime.parse(value).toInstant()
+    } catch (_: DateTimeParseException) {
+        null
+    }
 }
 
 /**

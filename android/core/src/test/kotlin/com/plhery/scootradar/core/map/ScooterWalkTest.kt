@@ -720,6 +720,75 @@ class ScooterWalkTest {
         }
     }
 
+    /**
+     * The data's own time is the oldest of every app's positions shown, which a late feed in view, or a sweep under way,
+     * holds back for minutes: two reads of the walked scooter's app are told apart by its own time, meta.shownSince
+     * (week review, finding 1.1).
+     */
+    @Test
+    fun aScooterIsTakenFromTwoReadsOfItsAppWhileAnotherAppHoldsTheDataBack() = runTest {
+        val target = scooter("bolt-1", provider = "bolt", at = point(east = 300, north = 0))
+        val lime = scooter("lime-1", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(lime))
+        // Lime's feed in view has failed since 5 minutes before the walk, its positions kept: the data's time is theirs.
+        val limeSince = h.clock.now.minusSeconds(300)
+        val boltReads = listOf(h.clock.now.plusSeconds(55), h.clock.now.plusSeconds(55), h.clock.now.plusSeconds(175))
+        val dataTimes = listOf(limeSince, boltReads[1], limeSince)
+
+        for ((index, boltRead) in boltReads.withIndex()) {
+            h.clock.advance(60.0)
+            h.api.setResponse(
+                ScooterResponse(
+                    vehicles = listOf(lime),
+                    meta = ScooterResponseMetadata(
+                        partial = false, stale = true, failedSources = emptyList(), generatedAt = dataTimes[index].toString(),
+                        staleProviders = mapOf("lime" to limeSince.toString()),
+                        shownSince = mapOf("lime" to limeSince.toString(), "bolt" to boltRead.toString()),
+                    ),
+                ),
+            )
+            h.model.refresh()
+            val loaded = waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value }
+            assertTrue(loaded)
+            if (index < 2) {
+                // Missing from one read of Bolt, then the same read served again, whatever time the data now gives.
+                assertEquals("update ${index + 1}", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+            }
+        }
+
+        // Missing from a second read of Bolt: taken, though the data's time has not moved.
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+        assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
+    }
+
+    /** An older server, or an app with no positions shown, names no time of its: the data's own then tells the reads apart. */
+    @Test
+    fun aScooterIsTakenFromTwoUpdatesWhereTheDataDoesNotSayItsAppsTime() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val bolt = scooter("bolt-1", provider = "bolt", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(bolt))
+
+        for (index in 0 until 3) {
+            h.clock.advance(60.0)
+            val generatedAt = if (index == 2) h.clock.now else h.clock.now.minusSeconds(60L * (index + 1))
+            h.api.setResponse(
+                ScooterResponse(
+                    vehicles = listOf(bolt),
+                    meta = ScooterResponseMetadata(
+                        partial = false, failedSources = emptyList(), generatedAt = generatedAt.toString(),
+                        shownSince = mapOf("bolt" to generatedAt.toString()).takeIf { index > 0 },
+                    ),
+                ),
+            )
+            h.model.refresh()
+            val loaded = waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value }
+            assertTrue(loaded)
+            if (index < 2) assertEquals("update ${index + 1}", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        }
+
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+    }
+
     @Test
     fun aScooterStandingFadedWhileItsAppIsCollectedAgainIsNotTaken() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
