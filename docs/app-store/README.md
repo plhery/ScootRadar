@@ -116,8 +116,10 @@ translated. Every language opens on the providers and shows the pier second:
   with the location at 34.01016,-118.49496 and the flat terrain users get;
 - the price on a Voi scooter's card;
 - the route to a scooter 3 to 5 minutes' walk away;
-- the battery filter at 60%+ (set it back to Any afterwards: the app keeps
-  it);
+- the battery filter at 60%+, which the version after 1.3.0 replaces with the
+  range slider (issue #12's third take): its frame and headline ("Set a minimum
+  battery level") wait to be taken again with a minimum range, such as 5 km+
+  (set it back to Any afterwards: the app keeps it);
 - the same street at night;
 - Europe at night, with each city's count.
 
@@ -166,7 +168,7 @@ To try it:
    for instance), "Open in <operator>" opens that operator's own app (or its
    website if the app isn't installed), where riders unlock and pay; ScootRadar
    itself rents nothing.
-4. Filters (battery, operators) and Settings (appearance, map style, language,
+4. Filters (range, operators) and Settings (appearance, map style, language,
    ride passes, privacy switch for anonymous usage statistics) open from the
    search bar.
 5. Links to the map on scootradar.com open in the app, e.g.
