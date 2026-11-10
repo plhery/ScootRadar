@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { track } from '@/lib/analytics';
 import { PLAY_TEST_ATTRIBUTE, PLAY_TEST_STORAGE_KEY } from '@/lib/playTest';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
-import { resetPlayTestViews } from '@/lib/usePlayTest';
+import { OLDER_ANDROID_ATTRIBUTE, resetPlayTestViews } from '@/lib/usePlayTest';
 import { PlayTestButton, PlayTestCard, PlayTestSite } from './playTest';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
@@ -122,5 +122,45 @@ describe('the landing page’s Android button', () => {
     await renderLanding(IPHONE);
     expect(shown()).toBeNull();
     expect(track).not.toHaveBeenCalled();
+  });
+
+  // The app installs on Android 12 or later (its minSdk, 31).
+  const older = () => document.documentElement.hasAttribute(OLDER_ANDROID_ATTRIBUTE);
+  function hinting(platformVersion: string) {
+    Object.defineProperty(navigator, 'userAgentData', {
+      configurable: true,
+      value: { getHighEntropyValues: async () => ({ platform: 'Android', platformVersion }) },
+    });
+  }
+  afterEach(() => {
+    Reflect.deleteProperty(navigator, 'userAgentData');
+    document.documentElement.removeAttribute(OLDER_ANDROID_ATTRIBUTE);
+  });
+
+  it('gives way on an Android older than the app installs on, as Firefox’s user agent says, and is not counted', async () => {
+    await renderLanding('Mozilla/5.0 (Android 11; Mobile; rv:144.0) Gecko/144.0 Firefox/144.0');
+    expect(older()).toBe(true);
+    expect(track).not.toHaveBeenCalled();
+  });
+
+  it('gives way on an Android older than the app installs on, as Chrome’s client hints say behind “Android 10; K”', async () => {
+    hinting('11.0.0');
+    await renderLanding(ANDROID);
+    expect(older()).toBe(true);
+    expect(track).not.toHaveBeenCalled();
+  });
+
+  it('stays where the client hints say Android 12, and where nothing says which Android it is', async () => {
+    hinting('12.0.0');
+    await renderLanding(ANDROID);
+    expect(older()).toBe(false);
+    expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
+    cleanup();
+    resetPlayTestViews();
+    vi.mocked(track).mockClear();
+    Reflect.deleteProperty(navigator, 'userAgentData');
+    await renderLanding(ANDROID);
+    expect(older()).toBe(false);
+    expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
   });
 });

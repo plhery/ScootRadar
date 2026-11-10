@@ -6,12 +6,20 @@ import PlayTestSteps, { PlayTestDismiss } from '@/components/PlayTestSteps';
 import { isIPhone } from '@/lib/appStore';
 import { PLAY_TEST_ATTRIBUTE, playTestInvitation } from '@/lib/playTest';
 import type { PlayTestCopy } from '@/lib/playTestCopy';
-import { playTest, usePlayTestAudience, usePlayTestMemory, type PlayTestPlace } from '@/lib/usePlayTest';
+import {
+  OLDER_ANDROID_ATTRIBUTE,
+  playTest,
+  useOlderAndroid,
+  usePlayTestAudience,
+  usePlayTestMemory,
+  type PlayTestPlace,
+} from '@/lib/usePlayTest';
 
 // The invitation to test the Android app on the pages of the site
 // (src/lib/playTest.ts): a guide's card, shown by the attribute the head's
-// script sets, the landing page's button, shown to all but an iPhone, and the
-// sheet of steps both open, once a page.
+// script sets, the landing page's button, shown to all but an iPhone and an
+// Android the app does not install on, and the sheet of steps both open, once a
+// page.
 
 // The card and the button ask the page's sheet to open: nothing is kept, so a sheet mounted later does not open by itself.
 const openers = new Set<() => void>();
@@ -61,7 +69,10 @@ export function PlayTestCard({ copy }: { copy: PlayTestCopy }) {
   );
 }
 
-/** The landing page's button, under the iPhone app's: in its place on Android, and not on an iPhone. */
+/**
+ * The landing page's button, under the iPhone app's: in its place on Android, and not on an iPhone, nor on an
+ * Android the app does not install on once the browser has said so.
+ */
 export function PlayTestButton({ copy }: { copy: PlayTestCopy }) {
   return (
     <span className="play-android">
@@ -86,12 +97,13 @@ export function PlayTestButton({ copy }: { copy: PlayTestCopy }) {
  */
 export function PlayTestSite({ copy, place }: { copy: PlayTestCopy; place: Extract<PlayTestPlace, 'guide' | 'landing'> }) {
   const audience = usePlayTestAudience();
+  const older = useOlderAndroid();
   const memory = usePlayTestMemory();
   const titleId = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    if (audience === null) return;
+    if (audience === null || older === null) return;
     const root = document.documentElement;
     let offer = false;
     if (audience) {
@@ -100,9 +112,11 @@ export function PlayTestSite({ copy, place }: { copy: PlayTestCopy; place: Extra
     } else {
       root.removeAttribute(PLAY_TEST_ATTRIBUTE);
     }
-    // The landing page's button is there for all but an iPhone, whatever was answered before; a guide's card only while it offers.
-    if (place === 'landing' ? !isIPhone(navigator.userAgent) : offer) playTest.viewed(place);
-  }, [audience, memory, place]);
+    root.toggleAttribute(OLDER_ANDROID_ATTRIBUTE, older);
+    // The landing page's button is there for all but an iPhone and an Android the app does not install on, whatever
+    // was answered before; a guide's card only while it offers.
+    if (place === 'landing' ? !older && !isIPhone(navigator.userAgent) : offer) playTest.viewed(place);
+  }, [audience, older, memory, place]);
 
   useEffect(() => {
     const open = () => {

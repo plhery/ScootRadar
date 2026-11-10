@@ -3,6 +3,9 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { track } from '@/lib/analytics';
 import {
+  androidInUserAgent,
+  androidVersionFromHints,
+  MIN_ANDROID,
   PLAY_TEST_ON,
   PLAY_TEST_SNOOZE_MS,
   PLAY_TEST_STORAGE_KEY,
@@ -65,6 +68,28 @@ export function usePlayTestAudience(): boolean | null {
     return () => { live = false; };
   }, []);
   return audience;
+}
+
+/** The attribute of the site's <html> where the browser says it runs an Android the app does not install on. */
+export const OLDER_ANDROID_ATTRIBUTE = 'data-older-android';
+
+/**
+ * Whether the browser says it runs an Android older than the app installs on (MIN_ANDROID): as its client hints say
+ * where it gives them, for Chrome and Samsung Internet give every phone as "Android 10; K" in the user agent, and
+ * else as its user agent says, as Firefox's does. Null while the browser is asked; false where neither says.
+ */
+export function useOlderAndroid(): boolean | null {
+  const [older, setOlder] = useState<boolean | null>(null);
+  useEffect(() => {
+    let live = true;
+    void androidVersionFromHints(navigator).then(version => {
+      if (!live) return;
+      const agent = navigator.userAgent;
+      setOlder(version !== null ? version < MIN_ANDROID : /\bAndroid\b/.test(agent) && androidInUserAgent(agent) === 'no');
+    });
+    return () => { live = false; };
+  }, []);
+  return older;
 }
 
 const STEP_EVENTS = ['invite_group', 'invite_optin', 'invite_install'] as const;

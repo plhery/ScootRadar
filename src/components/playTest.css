@@ -269,7 +269,8 @@
    attributes the head's script sets (PLAY_TEST_SCRIPT), so nothing moves as it
    loads. The landing page's two app buttons are both shown, but a phone's own
    only: the iPhone app's (.play-ios) gives way on Android, the Android app's on
-   an iPhone. */
+   an iPhone, and on an Android the app does not install on once the browser has
+   said so (usePlayTest.ts). */
 
 .play-card {
   display: none;
@@ -278,7 +279,8 @@ html[data-android-test='offer'] .play-card {
   display: flex;
 }
 html[data-android-test] .play-ios,
-html[data-iphone] .play-android {
+html[data-iphone] .play-android,
+html[data-older-android] .play-android {
   display: none;
 }
 

@@ -334,6 +334,22 @@ test.describe('on Android', () => {
   });
 });
 
+test.describe('on an Android the app does not install on', () => {
+  // Android 11, below the app's minSdk 31: Playwright gives Chromium the client hints this names, and WebKit none,
+  // so one reads the version from the hints and the other from the user agent, as Firefox on Android gives it.
+  test.use({ userAgent: 'Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36' });
+
+  test('the landing page offers no Android app, and still the map and the iPhone app', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-older-android', '');
+    const hero = page.locator('.hero');
+    await expect(hero.getByRole('button', { name: /^Android app/ })).toBeHidden();
+    await expect(page.locator('.closing').getByRole('button', { name: /^Android app/ })).toBeHidden();
+    await expect(hero.getByRole('link', { name: 'Get the iPhone app' })).toBeVisible();
+    await expect(hero.getByRole('link', { name: 'Open the map' })).toBeVisible();
+  });
+});
+
 test('the landing page says it is open source under its first button, with a link to the code', async ({ page }) => {
   await page.goto('/fr');
   const code = 'https://github.com/plhery/ScootRadar';
