@@ -95,8 +95,9 @@ export class BeamClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'beam-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    // Keep a fleet-wide startup sweep gentle: rapid bursts have returned transient empty maps.
-    this.pace = new Pacer(options.intervalMs ?? 2000, this.now);
+    // Keep a fleet-wide startup sweep gentle: rapid bursts have returned transient empty maps, which publish as a
+    // region without scooters. So every request starts two seconds after the one before, a region someone looks at too.
+    this.pace = new Pacer(options.intervalMs ?? 2000, this.now, 0, Infinity, { spaced: true });
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 

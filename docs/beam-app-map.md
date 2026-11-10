@@ -55,8 +55,9 @@ margin. The union is limited to 10,000 cells and a sweep has a 90-second
 budget. All batches must succeed before publication; errors, failed batches
 and malformed GraphQL replies leave the last complete snapshot intact.
 
-At most 30 requests start in any 60 seconds across all regions, at once if
-need be; until 8 November 2026 they started two seconds apart. HTTP 429 honors
+Requests start at least two seconds apart across all regions, those of a region
+someone looks at too, as bursts returned empty maps at the first startup (below);
+for two days from 8 November 2026 a minute's worth, 30, could start at once. HTTP 429 honors
 `Retry-After`; rejected authentication gets one renewal and retry, then a
 one-minute cooldown. Responses have streaming size limits and deadlines.
 The normal scheduler polls idle regions every 20 minutes and watched regions

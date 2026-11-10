@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { BeamClient, beamMapCells, beamRegionCells, collectBeamRegion, parseBeamVehicles, withBeamAppCollectors } from './beamApp';
+import { withinCollection } from './sweeps';
 
 const directories: string[] = [];
 afterEach(async () => { await Promise.all(directories.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
@@ -172,6 +173,26 @@ describe('Beam private session and transport', () => {
     f.advance(120_000);
     f.fetch.mockRejectedValue(new Error(`request contained ${f.session.authToken}`));
     await expect(f.client.vehicles(cells, region.center)).rejects.toThrow('Beam request failed or timed out');
+  });
+
+  it('starts its requests two seconds apart after a quiet spell, those of a region someone looks at too', async () => {
+    // Bursts returned transient empty maps on 24 October 2026, which publish as a region without scooters. From
+    // 8 November 2026 a minute's worth could start at once, and six regions due together read at the same moment.
+    const f = await fixture();
+    vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] });
+    try {
+      vi.setSystemTime(now);
+      const starts: number[] = [];
+      f.fetch.mockImplementation(async () => { starts.push(Date.now() - now); return map(); });
+      const client = new BeamClient({ sessionPath: f.sessionPath, fetch: f.fetch });
+      await client.vehicles(cells, region.center);
+      await vi.advanceTimersByTimeAsync(5 * 60_000);
+      const looked = { urgent: () => true, focus: () => undefined, progress: () => {} };
+      const reads = Promise.all([1, 2, 3, 4].map(() => withinCollection(looked, () => client.vehicles(cells, region.center))));
+      await vi.advanceTimersByTimeAsync(10_000);
+      await reads;
+      expect(starts).toEqual([0, 300_000, 302_000, 304_000, 306_000]);
+    } finally { vi.useRealTimers(); }
   });
 
   it('rejects wrong-user renewal, invalid credentials, over-budget requests and bad responses', async () => {

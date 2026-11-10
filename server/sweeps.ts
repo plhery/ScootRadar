@@ -24,6 +24,15 @@ export const currentCollection = (): CollectionScope | undefined => scope.getSto
 /** The span a client's budget of requests covers. */
 export const PACE_WINDOW_MS = 60_000;
 
+/** How a client's requests may start besides its budget of a minute (Pacer). */
+export interface PaceOptions {
+  /**
+   * Every request starts intervalMs after the one before, a collection someone is looking at too, as
+   * all did until 8 November 2026: for a host that answers a burst badly, as Beam's with empty maps.
+   */
+  spaced?: boolean;
+}
+
 /**
  * Holds a client's requests to its host to a minute's worth at one every intervalMs, whichever
  * collections make them: no more than 60 000 / intervalMs start in any 60 seconds, and those of a
@@ -47,6 +56,8 @@ export const PACE_WINDOW_MS = 60_000;
  * expiry: on 28 October 2026 a watched Münster took nearly every turn of ATOM's client for a
  * quarter of an hour, and Linköping's sweep of 18 views, a minute's work, took 932 seconds. A turn
  * kept so waits for the idle sweep's spacing.
+ *
+ * Given `spaced` (PaceOptions), every request keeps the spacing.
  */
 export class Pacer {
   /** How many requests may start in PACE_WINDOW_MS; unlimited for an interval of 0. */
@@ -55,8 +66,9 @@ export class Pacer {
   private readonly started: number[] = [];
   /** No request starts before this. */
   private heldUntil: number;
-  /** When an idle sweep's last request started. */
-  private lastIdle = -Infinity;
+  /** When the last request that keeps the spacing started: an idle sweep's, or any when every request is spaced. */
+  private lastSpaced = -Infinity;
+  private readonly spaced: boolean;
   private readonly waiting: { urgent: boolean; began: number; go: () => void }[] = [];
   /** When each collection first asked for a turn. */
   private readonly began = new WeakMap<CollectionScope, number>();
@@ -64,8 +76,9 @@ export class Pacer {
   private urgentTurns = 0;
   private timer?: ReturnType<typeof setTimeout>;
   constructor(private readonly intervalMs: number, private readonly now: () => number = Date.now, startAt = 0,
-    private readonly routineEvery = Infinity) {
+    private readonly routineEvery = Infinity, options: PaceOptions = {}) {
     this.heldUntil = startAt;
+    this.spaced = options.spaced ?? false;
     this.perWindow = intervalMs > 0 ? Math.max(1, Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
     if (this.perWindow === Infinity) return;
     // As if the minute before it starts had been spent at one request every intervalMs.
@@ -109,7 +122,7 @@ export class Pacer {
   private nextStart(now: number, urgent: boolean): number {
     while (this.started.length && this.started[0] <= now - PACE_WINDOW_MS) this.started.shift();
     const free = this.started.length < this.perWindow ? now : this.started[this.started.length - this.perWindow] + PACE_WINDOW_MS;
-    const spacing = urgent ? -Infinity : this.lastIdle + this.intervalMs;
+    const spacing = urgent && !this.spaced ? -Infinity : this.lastSpaced + this.intervalMs;
     return Math.max(this.heldUntil, free, spacing);
   }
 
@@ -124,7 +137,7 @@ export class Pacer {
         return;
       }
       if (this.perWindow !== Infinity) this.started.push(now);
-      if (!waiter.urgent) this.lastIdle = now;
+      if (!waiter.urgent || this.spaced) this.lastSpaced = now;
       this.urgentTurns = idleWaits && waiter.urgent ? this.urgentTurns + 1 : 0;
       this.waiting.splice(index, 1);
       waiter.go();
