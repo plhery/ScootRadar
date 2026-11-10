@@ -134,3 +134,17 @@ describe('the language and country a shared link to a guide names', () => {
     expect(sharedOn('how-to-rent', 'en')).toBe('en_CH');
   });
 });
+
+describe('the picture a shared link shows', () => {
+  it('is described on the map, the privacy notice and the accessibility page as the English landing page describes it', async () => {
+    const pictureOf = (metadata: Metadata) => (metadata.openGraph?.images as { url: string; alt: string }[] | undefined)?.[0];
+    const landing = pictureOf(await generateMetadata({ params: Promise.resolve({ path: sitePaths()[0] }) }));
+    expect(landing?.url).toBe('/share/en.png');
+    // public/share/en.png: the initials of twelve providers, B Bi D H L V P PB Z Be R Ho.
+    expect(landing?.alt).toContain('twelve providers');
+    for (const metadata of [mapMetadata, privacyMetadata, accessibilityMetadata]) {
+      expect(pictureOf(metadata), String(metadata.title)).toEqual(landing);
+      expect(metadata.twitter?.images, String(metadata.title)).toEqual([landing]);
+    }
+  });
+});

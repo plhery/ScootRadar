@@ -12,7 +12,7 @@ export const MAP_SHARE_IMAGE = {
   url: '/share/en.png',
   width: 1200,
   height: 630,
-  alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of nine providers.',
+  alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of twelve providers.',
 };
 
 /** The language and country a shared link names, for each language of the site. */
