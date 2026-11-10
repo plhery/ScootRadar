@@ -16,7 +16,8 @@ export const viewport: Viewport = {
 
 export default function PrivacyPage() {
   return (
-    <main className="legal-page">
+    // In English whatever language the map is shown in, which the layout sets on the whole document.
+    <main className="legal-page" lang="en">
       <SmartAppBanner page="/privacy" />
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>

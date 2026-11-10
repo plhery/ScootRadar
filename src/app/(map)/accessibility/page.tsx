@@ -42,7 +42,8 @@ export const viewport: Viewport = {
  */
 export default function AccessibilityPage() {
   return (
-    <main className="legal-page">
+    // In English whatever language the map is shown in, which the layout sets on the whole document.
+    <main className="legal-page" lang="en">
       <SmartAppBanner page="/accessibility" />
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
