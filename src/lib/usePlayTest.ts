@@ -70,8 +70,7 @@ export function usePlayTestAudience(): boolean | null {
   return audience;
 }
 
-/** The attribute of the site's <html> where the browser says it runs an Android the app does not install on. */
-export const OLDER_ANDROID_ATTRIBUTE = 'data-older-android';
+export { OLDER_ANDROID_ATTRIBUTE } from '@/lib/playTest';
 
 /**
  * Whether the browser says it runs an Android older than the app installs on (MIN_ANDROID): as its client hints say

@@ -147,6 +147,9 @@ export const PLAY_TEST_ATTRIBUTE = 'data-android-test';
 /** The attribute of the site's <html> on an iPhone, where the landing page's Android button gives way (appStore.ts's isIPhone). */
 export const IPHONE_ATTRIBUTE = 'data-iphone';
 
+/** The attribute of the site's <html> where the browser says it runs an Android the app does not install on: the landing page's Android button gives way. */
+export const OLDER_ANDROID_ATTRIBUTE = 'data-older-android';
+
 /**
  * Runs in the head of every page of the site, before the first paint: the guide's
  * card and the landing page's two app buttons are in the page as built, and this
@@ -161,7 +164,7 @@ export const PLAY_TEST_SCRIPT = `(function () {
     if (/\\biPhone\\b/.test(agent)) document.documentElement.setAttribute(${JSON.stringify(IPHONE_ATTRIBUTE)}, '');
     if (!/\\bAndroid\\b/.test(agent) || document.referrer.indexOf(${JSON.stringify(APP_REFERRER)}) === 0) return;
     var told = /\\bAndroid 10; K\\)/.test(agent) ? 0 : Number((/\\bAndroid (\\d+)/.exec(agent) || [])[1]);
-    if (told && told < ${MIN_ANDROID}) return;
+    if (told && told < ${MIN_ANDROID}) { document.documentElement.setAttribute(${JSON.stringify(OLDER_ANDROID_ATTRIBUTE)}, ''); return; }
     var memory = null;
     try { memory = JSON.parse(localStorage.getItem(${JSON.stringify(PLAY_TEST_STORAGE_KEY)}) || 'null'); } catch (error) {}
     if (!memory || typeof memory !== 'object') memory = {};
@@ -172,7 +175,10 @@ export const PLAY_TEST_SCRIPT = `(function () {
     var hints = navigator.userAgentData;
     if (hints && hints.getHighEntropyValues) hints.getHighEntropyValues(['platformVersion']).then(function (given) {
       var major = parseInt(given.platformVersion, 10);
-      if (given.platform === 'Android' && major < ${MIN_ANDROID}) root.removeAttribute(${JSON.stringify(PLAY_TEST_ATTRIBUTE)});
+      if (given.platform === 'Android' && major < ${MIN_ANDROID}) {
+        root.removeAttribute(${JSON.stringify(PLAY_TEST_ATTRIBUTE)});
+        root.setAttribute(${JSON.stringify(OLDER_ANDROID_ATTRIBUTE)}, '');
+      }
     }, function () {});
   } catch (error) {}
 })();`;

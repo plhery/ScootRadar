@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { isIPhone } from './appStore';
 import {
   IPHONE_ATTRIBUTE,
+  OLDER_ANDROID_ATTRIBUTE,
   PLAY_TEST_ATTRIBUTE,
   PLAY_TEST_LINKS,
   PLAY_TEST_SCRIPT,
@@ -133,6 +134,7 @@ describe('the script of the site, before the first paint', () => {
   const run = (userAgent: string, options: { memory?: PlayTestMemory; referrer?: string; hints?: { platform: string; platformVersion: string } } = {}) => {
     document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE);
     document.documentElement.removeAttribute(IPHONE_ATTRIBUTE);
+    document.documentElement.removeAttribute(OLDER_ANDROID_ATTRIBUTE);
     if (options.memory) localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(options.memory));
     else localStorage.removeItem(PLAY_TEST_STORAGE_KEY);
     const nav = hinting(userAgent, options.hints);
@@ -144,6 +146,7 @@ describe('the script of the site, before the first paint', () => {
   afterEach(() => {
     document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE);
     document.documentElement.removeAttribute(IPHONE_ATTRIBUTE);
+    document.documentElement.removeAttribute(OLDER_ANDROID_ATTRIBUTE);
   });
 
   it('marks the page as playTestInvitation() and the user agent decide, for every browser and memory', () => {
@@ -178,5 +181,20 @@ describe('the script of the site, before the first paint', () => {
     expect(run(AGENTS.chrome, { hints: { platform: 'Android', platformVersion: '15.0.0' } })).toBe('offer');
     await new Promise(resolve => setTimeout(resolve, 0));
     expect(document.documentElement.getAttribute(PLAY_TEST_ATTRIBUTE)).toBe('offer');
+  });
+
+  it('marks an Android the app does not install on before the first paint, where the landing page’s Android button gives way', async () => {
+    const older = () => document.documentElement.hasAttribute(OLDER_ANDROID_ATTRIBUTE);
+    // The user agent says so, as Firefox's and older Chrome's do.
+    for (const userAgent of Object.values(AGENTS)) {
+      run(userAgent);
+      expect(older(), userAgent).toBe(userAgent === AGENTS.firefox11 || userAgent === AGENTS.oldChrome9);
+    }
+    // Chrome's client hints say so once they answer.
+    run(AGENTS.chrome, { hints: { platform: 'Android', platformVersion: '11.0.0' } });
+    await expect.poll(older).toBe(true);
+    run(AGENTS.chrome, { hints: { platform: 'Android', platformVersion: '12.0.0' } });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    expect(older()).toBe(false);
   });
 });
