@@ -202,14 +202,16 @@ function createScooterDataController() {
     return response !== null;
   };
 
-  // Any touch, click, wheel or key counts, wherever it lands: a paused map refreshes at once.
+  // Any touch, click, wheel, pinch or key counts, wherever it lands: a paused map refreshes at once.
+  // A click comes alone where VoiceOver activates a control, and Safari's trackpad pinch sends
+  // gesture events, no wheel.
   const onInteraction = () => {
     lastInteractionAt = Date.now();
     if (!state.paused) return;
     apply({ type: 'paused', paused: false });
     schedule(true);
   };
-  const INTERACTIONS = ['pointerdown', 'keydown', 'wheel', 'touchstart'] as const;
+  const INTERACTIONS = ['pointerdown', 'click', 'keydown', 'wheel', 'touchstart', 'gesturestart', 'gesturechange'] as const;
 
   const onVisibilityChange = () => {
     if (document.visibilityState === 'visible') lastInteractionAt = Date.now();

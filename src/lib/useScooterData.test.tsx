@@ -188,6 +188,20 @@ describe('useScooterData', () => {
     expect(fetcher).toHaveBeenCalledTimes(32);
   });
 
+  // A click with no pointerdown before it (VoiceOver activating a control), and Safari's trackpad
+  // pinch, which sends gesture events and no wheel.
+  it.each(['click', 'gesturestart', 'gesturechange'])('counts a lone %s as a touch: it refreshes a paused map at once', async (type) => {
+    fetcher.mockImplementation(ok());
+    const { result } = mount();
+    await advance(180 + 30 * 60_000);
+    expect(result.current.paused).toBe(true);
+
+    act(() => { window.dispatchEvent(new Event(type)); });
+    await advance(0);
+    expect(fetcher).toHaveBeenCalledTimes(31);
+    expect(result.current.paused).toBe(false);
+  });
+
   it('refreshes at once, unpaused, when the page comes back to the foreground', async () => {
     fetcher.mockImplementation(ok());
     const { result } = mount();
