@@ -52,6 +52,18 @@ const LAMBETH_VAUXHALL = { south: 51.483, west: -0.13, north: 51.49, east: -0.11
 const NORFOLK_DOWNTOWN = { south: 36.844, west: -76.296, north: 36.857, east: -76.287 };
 // Poznań's Old Market Square and the streets round it.
 const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
+// Budapest's inner city, from Deák Ferenc tér to the Opera and Oktogon.
+const BUDAPEST_BELVAROS = { south: 47.494, west: 19.048, north: 47.507, east: 19.066 };
+// Kraków's Old Town, from the Rynek Główny to the Planty and Basztowa.
+const KRAKOW_OLD_TOWN = { south: 50.056, west: 19.93, north: 50.068, east: 19.945 };
+// Rome's Prati, from Piazza Cavour to Via Cola di Rienzo and Viale Giulio Cesare.
+const ROMA_PRATI = { south: 41.903, west: 12.458, north: 41.913, east: 12.474 };
+// Vilnius's Old Town, from the Cathedral Square down Pilies gatvė to the Town Hall.
+const VILNIUS_OLD_TOWN = { south: 54.678, west: 25.278, north: 54.688, east: 25.295 };
+// Lisboa's Baixa, from the Praça do Comércio to the Rossio.
+const LISBOA_BAIXA = { south: 38.706, west: -9.145, north: 38.716, east: -9.13 };
+// Le Chesnay-Rocquencourt's centre, round the town hall on the rue Pottier.
+const LE_CHESNAY_CENTRE = { south: 48.822, west: 2.118, north: 48.832, east: 2.132 };
 // Reykjavík's centre, from Austurvöllur to Hallgrímskirkja.
 const REYKJAVIK_CENTRE = { south: 64.141, west: -21.945, north: 64.149, east: -21.925 };
 // Rīga's old town, from the Dom to the Freedom Monument.
@@ -913,6 +925,144 @@ describe('the cities\' zones', () => {
     await loadCityZones(poznan);
     const shown = ruleZonesInView({ bounds: POZNAN_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
+  });
+
+  it("draws Budapest's Mobi-pontok and the zones where a shared scooter is placed only at one, from Budapest Közút's layers", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const budapest = ZONE_CITIES.find(city => city.id === 'budapest')!;
+    expect(budapest.authority).toBe('Budapest Közút');
+    expect(budapest.timeZone).toBe('Europe/Budapest');
+    // Its 1,122 active points, drawn as discs, and its 9 zones, named by their kind's coded value.
+    const { default: file } = await CITY_ZONE_FILES.budapest();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 1122, racksOnly: 9 });
+    const names = file.zones.filter(zone => zone.kind === 'racksOnly').map(zone => zone.name);
+    expect(names.filter(name => name === 'Belvárosi zóna').length).toBe(2);
+    expect(names.filter(name => name === 'Átmeneti zóna').length).toBe(6);
+    expect(names.filter(name => name === 'Külvárosi centrum zóna').length).toBe(1);
+    const baross = file.zones.find(zone => zone.name === 'Baross tér 4.')!.ring!;
+    const [lat, lng] = [baross.reduce((sum, [y]) => sum + y, 0) / baross.length, baross.reduce((sum, [, x]) => sum + x, 0) / baross.length];
+    expect(Math.abs(lat - 47.499267) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 19.080471) * 75_200).toBeLessThan(2);
+    // Deák Ferenc tér and Gellért tér are in the inner city, on either bank; Újpest's centre floats freely.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => zone.kind === 'racksOnly' && Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    expect(at(47.4979, 19.0544)).toEqual(['Belvárosi zóna']);
+    expect(at(47.4836, 19.0526)).toEqual(['Belvárosi zóna']);
+    expect(at(47.56, 19.09)).toEqual([]);
+    await loadCityZones(budapest);
+    const shown = ruleZonesInView({ bounds: BUDAPEST_BELVAROS, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
+  });
+
+  it("draws Kraków's mobility points and the area where a shared scooter is left only at one, from the ZTP's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const krakow = ZONE_CITIES.find(city => city.id === 'krakow')!;
+    expect(krakow.authority).toBe('ZTP Kraków');
+    expect(krakow.timeZone).toBe('Europe/Warsaw');
+    // Its 342 mobility points, drawn as discs, and the area round them.
+    const { default: file } = await CITY_ZONE_FILES.krakow();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 342, racksOnly: 1 });
+    const basztowa = file.zones.find(zone => zone.name === 'Basztowa')!.ring!;
+    const [lat, lng] = [basztowa.reduce((sum, [y]) => sum + y, 0) / basztowa.length, basztowa.reduce((sum, [, x]) => sum + x, 0) / basztowa.length];
+    expect(Math.abs(lat - 50.066319) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 19.938538) * 71_600).toBeLessThan(2);
+    // The area holds the Rynek Główny and the Wawel, not Nowa Huta.
+    const area = file.zones.find(zone => zone.kind === 'racksOnly')!;
+    expect(Math.abs(winding(area.ring!, 50.0617, 19.9373))).toBe(1);
+    expect(Math.abs(winding(area.ring!, 50.054, 19.9354))).toBe(1);
+    expect(winding(area.ring!, 50.07, 20.04)).toBe(0);
+    await loadCityZones(krakow);
+    const shown = ruleZonesInView({ bounds: KRAKOW_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
+  });
+
+  it("draws Rome's 13 parking areas for sharing bikes and scooters, from Roma Servizi per la Mobilità's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const roma = ZONE_CITIES.find(city => city.id === 'roma')!;
+    expect(roma.authority).toBe('Roma Servizi per la Mobilità');
+    expect(roma.timeZone).toBe('Europe/Rome');
+    const { default: file } = await CITY_ZONE_FILES.roma();
+    expect(file.zones.map(zone => zone.kind)).toEqual(Array(13).fill('parking'));
+    const cola = file.zones.find(zone => zone.name === 'Via Cola di Rienzo')!.ring!;
+    const [lat, lng] = [cola.reduce((sum, [y]) => sum + y, 0) / cola.length, cola.reduce((sum, [, x]) => sum + x, 0) / cola.length];
+    expect(Math.abs(lat - 41.90919) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 12.46884) * 82_900).toBeLessThan(2);
+    await loadCityZones(roma);
+    const shown = ruleZonesInView({ bounds: ROMA_PRATI, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBe(6);
+  });
+
+  it("draws Vilnius's parking places, the zone where a shared scooter is left only at one, its no-parking and 12 km/h zones and the three streets where riding is banned, from JUDU's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const vilnius = ZONE_CITIES.find(city => city.id === 'vilnius')!;
+    expect(vilnius.authority).toBe('JUDU');
+    expect(vilnius.timeZone).toBe('Europe/Vilnius');
+    // Its 837 parking places marked installed, drawn as discs, and the 47 parts of its restricted parking zone.
+    const { default: file } = await CITY_ZONE_FILES.vilnius();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 837, racksOnly: 47, noParking: 119, slow: 58, noRide: 3 });
+    const place = file.zones.find(zone => zone.name === 'Vilniaus g. 32')!.ring!;
+    const [lat, lng] = [place.reduce((sum, [y]) => sum + y, 0) / place.length, place.reduce((sum, [, x]) => sum + x, 0) / place.length];
+    expect(Math.abs(lat - 54.681275) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 25.281207) * 64_370).toBeLessThan(2);
+    expect(file.zones.filter(zone => zone.kind === 'noRide').map(zone => zone.name).sort()).toEqual(['Pilies g.', 'Savičiaus g.', 'Vilniaus g.']);
+    // Pilies gatvė is ridden on by no one, slowly in the Old Town round it; the Cathedral Square is no place to park.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.kind);
+    expect(new Set(at(54.6835, 25.2893))).toEqual(new Set(['noRide', 'noParking', 'slow', 'racksOnly']));
+    expect(file.zones.find(zone => zone.name === 'Katedros aikštė')?.kind).toBe('noParking');
+    expect(new Set(at(54.6855, 25.2875))).toEqual(new Set(['noParking', 'slow', 'racksOnly']));
+    // The restricted parking zone reaches Žirmūnai, across the Neris, but not Naujoji Vilnia.
+    expect(at(54.71, 25.3)).toEqual(['racksOnly']);
+    expect(at(54.692, 25.42)).toEqual([]);
+    await loadCityZones(vilnius);
+    const shown = ruleZonesInView({ bounds: VILNIUS_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws Lisboa's hotspots and racks a shared scooter may be parked at, and the zones where it is neither ridden nor parked, but not one during works, from the Câmara's layers", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const lisboa = ZONE_CITIES.find(city => city.id === 'lisboa')!;
+    expect(lisboa.authority).toBe('Câmara Municipal de Lisboa');
+    expect(lisboa.timeZone).toBe('Europe/Lisbon');
+    // Its 1,856 hotspots and racks for shared vehicles, drawn as discs, and its 347 lasting zones, each part one.
+    const { default: file } = await CITY_ZONE_FILES.lisboa();
+    const counts = Object.fromEntries(['parking', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 1856, noRide: 502 });
+    expect(file.zones.some(zone => zone.name.includes('Temporário'))).toBe(false);
+    const comercio = file.zones.find(zone => zone.name === 'Praça do Comércio')!;
+    expect(comercio.kind).toBe('noRide');
+    const centre = (ring: number[][]) => [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    const [lat, lng] = centre(comercio.ring!);
+    expect(Math.abs(lat - 38.707525) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng + 9.136455) * 86_870).toBeLessThan(2);
+    // A hotspot with racks by the Parque Eduardo VII, at the Marquês de Pombal.
+    const pombal = file.zones.filter(zone => zone.kind === 'parking' && zone.name === 'Praça do Marquês de Pombal').map(zone => centre(zone.ring!));
+    expect(pombal.some(([lat, lng]) => Math.abs(lat - 38.726236) * 110_540 < 2 && Math.abs(lng + 9.150473) * 86_870 < 2)).toBe(true);
+    // The Rossio is a no-go zone.
+    expect(file.zones.filter(zone => Math.abs(winding(zone.ring!, 38.7139, -9.1394)) === 1).map(zone => zone.name)).toEqual(['Praça D. Pedro IV']);
+    await loadCityZones(lisboa);
+    const shown = ruleZonesInView({ bounds: LISBOA_BAIXA, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noRide']));
+  });
+
+  it("draws Le Chesnay-Rocquencourt's places for its Dott scooters and bikes, from the map the town's page draws", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const town = ZONE_CITIES.find(city => city.id === 'lechesnayrocquencourt')!;
+    expect(town.authority).toBe('Mairie du Chesnay-Rocquencourt');
+    expect(town.timeZone).toBe('Europe/Paris');
+    // Its 40 places, drawn as discs, named by their addresses.
+    const { default: file } = await CITY_ZONE_FILES.lechesnayrocquencourt();
+    expect(file.zones.map(zone => zone.kind)).toEqual(Array(40).fill('parking'));
+    const centre = (ring: number[][]) => [ring.reduce((sum, [y]) => sum + y, 0) / ring.length, ring.reduce((sum, [, x]) => sum + x, 0) / ring.length];
+    for (const [name, lat, lng] of [['9, rue Pottier', 48.826447, 2.125306], ['2, rue de la Sabretache', 48.837784, 2.109868]] as const) {
+      const [y, x] = centre(file.zones.find(zone => zone.name === name)!.ring!);
+      expect(Math.abs(y - lat) * 110_540).toBeLessThan(2);
+      expect(Math.abs(x - lng) * 73_400).toBeLessThan(2);
+    }
+    await loadCityZones(town);
+    const shown = ruleZonesInView({ bounds: LE_CHESNAY_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking']));
   });
 
   it("draws Reykjavík's parking places for shared vehicles, its no-parking and slow zones, from the city's open map services", async () => {

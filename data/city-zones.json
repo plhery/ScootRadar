@@ -651,6 +651,43 @@
       "zones": 103
     },
     {
+      "id": "budapest",
+      "place": "Budapest",
+      "country": "HU",
+      "authority": "Budapest Közút",
+      "timeZone": "Europe/Budapest",
+      "source": {
+        "title": "Budapest Főváros Közgyűlése, decree 3/2013 (III. 8.) on the use of the Fővárosi Önkormányzat's public spaces, § 33/G (as in force from 1 September 2026): a shared micromobility device is placed only at a micromobility point (Mobi-pont) designated for it, in the inner city, transition and outer centre zones its annex 7 maps; elsewhere it may float freely",
+        "url": "https://njt.jog.gov.hu/jogszabaly/2013-3-SP-5Y4191"
+      },
+      "map": {
+        "title": "Budapest Közút, \"Mikromobilitási pontok\" (MOBI, ArcGIS, updated 31 August 2026): the micromobility points and zones, on the live map BKK's Mobi-pont page embeds",
+        "url": "https://budapestkozut.maps.arcgis.com/apps/instant/media/index.html?appid=cafaa886160944518721301aa847a6e1"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services5.arcgis.com/U5XLnNfWSBVhIdqv/arcgis/rest/services/mobi_gdb/FeatureServer",
+          "layer": 0,
+          "where": "lcm = 1",
+          "nameField": "php"
+        },
+        {
+          "kind": "racksOnly",
+          "url": "https://services5.arcgis.com/U5XLnNfWSBVhIdqv/arcgis/rest/services/mobi_gdb/FeatureServer",
+          "layer": 1,
+          "nameField": "nhv"
+        }
+      ],
+      "bounds": {
+        "south": 47.435776,
+        "west": 18.993133,
+        "north": 47.549313,
+        "east": 19.122921
+      },
+      "zones": 1131
+    },
+    {
       "id": "cityoflondon",
       "place": "City of London",
       "country": "GB",
@@ -1008,6 +1045,41 @@
       "zones": 139
     },
     {
+      "id": "krakow",
+      "place": "Kraków",
+      "country": "PL",
+      "authority": "ZTP Kraków",
+      "timeZone": "Europe/Warsaw",
+      "source": {
+        "title": "Zarząd Transportu Publicznego w Krakowie, \"Hulajnogi elektryczne\": under their agreements with the city, the operators of shared e-scooters have them left only at one of its mobility points, more than 300, within the area of Kraków its map shows, and move any left outside one",
+        "url": "https://ztp.krakow.pl/miasto-15-minutowe/hulajnogi-elektryczne"
+      },
+      "map": {
+        "title": "Zarząd Transportu Publicznego w Krakowie, \"Punkty Mobilności w Krakowie\" (map, ArcGIS), on its page: the mobility points and the boundary of the area where e-scooters left outside one are moved",
+        "url": "https://gmk-2.maps.arcgis.com/apps/instant/basic/index.html?appid=aafbfe9173d14665ad25169767525560"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services-eu1.arcgis.com/svTzSt3AvH7sK6q9/arcgis/rest/services/Punkty_mobilności_warstwa_publiczna/FeatureServer",
+          "layer": 0,
+          "nameField": "nazwa"
+        },
+        {
+          "kind": "racksOnly",
+          "format": "geojson",
+          "url": "https://www.arcgis.com/sharing/rest/content/items/c9a3fea5d1cb45efa8c059538b3912a0/data"
+        }
+      ],
+      "bounds": {
+        "south": 50.032519,
+        "west": 19.912037,
+        "north": 50.082035,
+        "east": 19.976046
+      },
+      "zones": 343
+    },
+    {
       "id": "lambeth",
       "place": "Lambeth",
       "country": "GB",
@@ -1054,6 +1126,37 @@
       "zones": 347
     },
     {
+      "id": "lechesnayrocquencourt",
+      "place": "Le Chesnay-Rocquencourt",
+      "country": "FR",
+      "authority": "Mairie du Chesnay-Rocquencourt",
+      "timeZone": "Europe/Paris",
+      "source": {
+        "title": "Ville du Chesnay-Rocquencourt, \"Mobilité électrique\": the town runs a service of 40 Dott e-bikes and 90 e-scooters, and a ride ends with the scooter or bike parked at a place set aside for it",
+        "url": "https://www.lechesnay-rocquencourt.fr/220/cadre-de-vie/se-deplacer/velos-et-trottinettes/mobilite-electrique.htm"
+      },
+      "map": {
+        "title": "Ville du Chesnay-Rocquencourt, \"Emplacement des trottinettes DOTT\" (map): the places for its Dott scooters and bikes",
+        "url": "https://www.lechesnay-rocquencourt.fr/676/cartographie/emplacement-des-trottinettes-dott.htm"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "artifica",
+          "url": "https://www.lechesnay-rocquencourt.fr/676/cartographie/emplacement-des-trottinettes-dott.htm",
+          "nameField": "address",
+          "pointName": "Dott place"
+        }
+      ],
+      "bounds": {
+        "south": 48.814656,
+        "west": 2.107657,
+        "north": 48.837943,
+        "east": 2.139853
+      },
+      "zones": 40
+    },
+    {
       "id": "leeds",
       "place": "Leeds",
       "country": "GB",
@@ -1087,6 +1190,45 @@
         "east": -1.478616
       },
       "zones": 83
+    },
+    {
+      "id": "lisboa",
+      "place": "Lisboa",
+      "country": "PT",
+      "authority": "Câmara Municipal de Lisboa",
+      "timeZone": "Europe/Lisbon",
+      "source": {
+        "title": "ECO, \"Lisboa cria novas zonas proibidas a trotinetas e torna utilização gratuita para 'alfacinhas' com passe Navegante\" (26 June 2025): since its agreement of January 2023 with the operators, the Câmara Municipal de Lisboa has a shared scooter parked only at a hotspot, and none is ridden in bus lanes, gardens, pedestrian areas or main roads such as the Avenida da Liberdade, which the operators' geofences keep it out of",
+        "url": "https://eco.sapo.pt/2025/06/26/lisboa-cria-novas-zonas-proibidas-a-trotinetas-e-torna-utilizacao-gratuita-para-alfacinhas-com-passe-navegante/"
+      },
+      "map": {
+        "title": "Câmara Municipal de Lisboa, \"MOB Micromobilidade\" and \"Estacionamento para Velocípedes\" (geodados, ArcGIS), on Lisboa Aberta: the zones where a shared scooter is neither ridden nor parked, and the hotspots and racks where it may be parked",
+        "url": "https://geodados-cml.hub.arcgis.com/datasets/CML::mob-micromobilidade/explore"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services.arcgis.com/1dSrzEWVQn5kHHyK/arcgis/rest/services/Ciclovias/FeatureServer",
+          "layer": 1,
+          "where": "ESTACIONAMENTO_ESTADO IN ('Dedicado Micromobilidade','Partilhado com Micromobilidade')",
+          "nameField": "MORADA",
+          "pointName": "Hotspot"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services.arcgis.com/1dSrzEWVQn5kHHyK/arcgis/rest/services/MOB_Micromobilidade/FeatureServer",
+          "layer": 0,
+          "where": "ZONA_RESTRICAO = 'Preta' AND NOME NOT LIKE '%(Tempor%'",
+          "nameField": "NOME"
+        }
+      ],
+      "bounds": {
+        "south": 38.691399,
+        "west": -9.22695,
+        "north": 38.795809,
+        "east": -9.089531
+      },
+      "zones": 2358
     },
     {
       "id": "longbeach",
@@ -2182,6 +2324,36 @@
       "zones": 477
     },
     {
+      "id": "roma",
+      "place": "Roma",
+      "country": "IT",
+      "authority": "Roma Servizi per la Mobilità",
+      "timeZone": "Europe/Rome",
+      "source": {
+        "title": "Roma Servizi per la Mobilità, \"Nuovo Codice della Strada: cosa cambia per l'uso dei monopattini elettrici\": a scooter is not parked on the pavement, but in the areas set aside for it",
+        "url": "https://romamobilita.it/muoversi-a-roma/nuovo-codice-della-strada-cosa-cambia-per-luso-dei-monopattini-elettrici/"
+      },
+      "map": {
+        "title": "Roma Servizi per la Mobilità, \"Aree di sosta dedicate a biciclette e monopattini sharing\" (map, ArcGIS)",
+        "url": "https://rsm.maps.arcgis.com/apps/instant/sidebar/index.html?appid=8beb5f57b71b45c8b658490890cba618"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services2.arcgis.com/NZMqCJwY3kMjFOqf/arcgis/rest/services/Monopattini_coordinate_nuove/FeatureServer",
+          "layer": 0,
+          "nameField": "Indirizzo"
+        }
+      ],
+      "bounds": {
+        "south": 41.886406,
+        "west": 12.44617,
+        "north": 41.919166,
+        "east": 12.51448
+      },
+      "zones": 13
+    },
+    {
       "id": "rostock",
       "place": "Rostock",
       "country": "DE",
@@ -2970,6 +3142,62 @@
         "east": 16.645035
       },
       "zones": 871
+    },
+    {
+      "id": "vilnius",
+      "place": "Vilnius",
+      "country": "LT",
+      "authority": "JUDU",
+      "timeZone": "Europe/Vilnius",
+      "source": {
+        "title": "JUDU, \"Mikrojudumas\" (updated 20 May 2026): in the city centre a shared e-scooter or e-bike is left only at a parking place marked for them; in the Old Town and on bridges and viaducts it rides at 12 km/h at most, and signs ban scooters and bikes from Vilniaus, Pilies and Savičiaus gatvės",
+        "url": "https://judu.lt/mikrojudumas/"
+      },
+      "map": {
+        "title": "JUDU, \"Eismo organizavimo žemėlapis\" (map, ArcGIS): parking places, the restricted parking zone, no-parking zones, the 12 km/h zones and the streets where riding is banned",
+        "url": "https://sisp.maps.arcgis.com/apps/instant/basic/index.html?appid=78e86d6a6e854ee3a784f1a640201abb"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services1.arcgis.com/vVI5TNykiYD9EhM5/arcgis/rest/services/Stovėjimo_vietos_2_peržiūra/FeatureServer",
+          "layer": 0,
+          "where": "Būsena = '2'",
+          "nameField": "Adresas",
+          "pointName": "Parking place"
+        },
+        {
+          "kind": "racksOnly",
+          "url": "https://services1.arcgis.com/vVI5TNykiYD9EhM5/arcgis/rest/services/Stovėjimo_vietų_zona_peržiūra/FeatureServer",
+          "layer": 0,
+          "nameField": null
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services1.arcgis.com/vVI5TNykiYD9EhM5/arcgis/rest/services/Draudžiamo_stovėjimo_zona_viešinimui/FeatureServer",
+          "layer": 0,
+          "nameField": "Pavadinimas"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services1.arcgis.com/vVI5TNykiYD9EhM5/arcgis/rest/services/Greičio_ribojimo_zona_naujas_viešinimui/FeatureServer",
+          "layer": 0,
+          "nameField": null
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services1.arcgis.com/vVI5TNykiYD9EhM5/arcgis/rest/services/Draudžiamo_eismo_gatvės_peržiūra/FeatureServer",
+          "layer": 0,
+          "nameField": "Pavadinimas"
+        }
+      ],
+      "bounds": {
+        "south": 54.630873,
+        "west": 25.172051,
+        "north": 54.783395,
+        "east": 25.429185
+      },
+      "zones": 1064
     },
     {
       "id": "washington",

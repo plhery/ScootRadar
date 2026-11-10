@@ -1108,6 +1108,26 @@ its source and the date it was read.
   ask a service that uses its data to tell the editors where it is found. The
   legend links the city's
   [press release of 26 October 2022](https://www.braunschweig.de/politik_verwaltung/ob/textarchiv/textarchiv-2022/790_E_Scooter_stationsbasiertes-System_2610.pdf).
+- **Budapest** (read 11 November 2026): Budapest Közút's 1,122 active
+  micromobility points (Mobi-pontok, `lcm` 1, all marked finished), each drawn
+  as a disc of 5 m and named by its place (`php`, "Baross tér 4."), and its 9
+  micromobility zones, named by their kind (`nhv`, a coded value: 2 inner
+  city, 6 transition and 1 outer centre zones), where a shared scooter is
+  placed only at a point (racks or marked places only, drawn only on the
+  website), layers 0 and 1 of `mobi_gdb` ("Mikromobilitási pontok és
+  zónák", updated 31 August 2026) on Budapest Közút's ArcGIS, which the
+  [live map](https://budapestkozut.maps.arcgis.com/apps/instant/media/index.html?appid=cafaa886160944518721301aa847a6e1)
+  on BKK's Mobi-pont page draws. The legend links the Fővárosi Közgyűlés's
+  [decree 3/2013 (III. 8.)](https://njt.jog.gov.hu/jogszabaly/2013-3-SP-5Y4191)
+  on the use of the capital's public spaces, whose § 33/G, as in force from
+  1 September 2026, sets the rule in all three zones its annex 7 maps, the
+  outer centre zone too, and lets a device float freely elsewhere; the points
+  outside the zones are drawn as well. The decree governs the capital's own
+  public spaces; the districts' streets are not told apart. The layers state no
+  licence, and BKK's
+  [legal notice](https://bkk.hu/jogi-tudnivalok/jogi-nyilatkozat/) allows
+  only non-commercial personal use without its written consent; drawn under
+  the rule of 28 October 2026, credited "Budapest Közút".
 - **City of London** (read 30 October 2026): the City of London
   Corporation's 45 parking places for hire scooters and bikes, each set by a
   traffic management order (2022/21, 2024/1, 2025/13 and 2025/17) and named
@@ -1268,6 +1288,22 @@ its source and the date it was read.
   square metre; the core centre's 15 km/h, which holds only on weekend and
   holiday nights (23:00–05:00); and the 37 parking places, which the City
   draws as lines.
+- **Kraków** (read 11 November 2026): the Zarząd Transportu Publicznego w
+  Krakowie's (ZTP's) 342 mobility points (punkty mobilności), each drawn as a
+  disc of 5 m and named (`nazwa`), from its layer
+  `Punkty_mobilności_warstwa_publiczna` (edited 6 October 2026), and the area
+  of the city where a shared scooter is left only at one, its operator moving
+  any left outside (`Granice obszaru relokacji hulajnóg`, a GeoJSON item of
+  27 June 2024; racks or marked places only, drawn only on the website), both
+  on the ZTP's map
+  [Punkty Mobilności w Krakowie](https://gmk-2.maps.arcgis.com/apps/instant/basic/index.html?appid=aafbfe9173d14665ad25169767525560),
+  which its page
+  [Hulajnogi elektryczne](https://ztp.krakow.pl/miasto-15-minutowe/hulajnogi-elektryczne)
+  embeds: "tylko tam, w tym obszarze miasta, można zgodnie z prawem
+  pozostawiać pojazd po zakończeniu podróży". All 342 points lie within the
+  area. The legend links the page. The layers state no licence, and the city
+  GIS portal's rules allow only personal, non-commercial use; drawn under the
+  rule of 28 October 2026, credited "ZTP Kraków".
 - **Lambeth** (read 31 October 2026): Lambeth Council's 342 shared parking
   bays for rental e-scooters and e-bikes and Transport for London's 4 in the
   borough, points each drawn as a disc of 5 m and named for their street, and
@@ -1283,6 +1319,24 @@ its source and the date it was read.
   put its website under its copyright and the Open Government Licence. The
   outline's 3,996 points are 855 within half a metre. The other boroughs in
   London's rental trial publish no bays as data (docs/coverage-gaps.md).
+- **Le Chesnay-Rocquencourt** (read 11 November 2026): the town's 40 places
+  for its Dott e-scooters and e-bikes, points each drawn as a disc of 5 m and
+  named by their address, from its map
+  [Emplacement des trottinettes DOTT](https://www.lechesnay-rocquencourt.fr/676/cartographie/emplacement-des-trottinettes-dott.htm),
+  drawn on the town's site by Artifica's map widget (ICE). The script reads
+  the widget's key from the page's own settings each time, never keeping it,
+  and asks the widget's API for the markers of its folder (format
+  `artifica`). Two places share a point on the avenue Dutartre, by Parly 2;
+  both are drawn. The legend links the town's
+  [Mobilité électrique](https://www.lechesnay-rocquencourt.fr/220/cadre-de-vie/se-deplacer/velos-et-trottinettes/mobilite-electrique.htm)
+  page: a ride ends with the scooter parked "sur une place de stationnement
+  réservée à cet effet". Its five 10 km/h zones are described only in words,
+  and not drawn. Its
+  [legal notice](https://www.lechesnay-rocquencourt.fr/20/mentions-legales.htm)
+  forbids reproducing the site without the town's permission and asks any
+  reuse to carry "© 2025 Mairie du Chesnay-Rocquencourt - Tous droits
+  réservés"; drawn under the rule of 28 October 2026, credited "Mairie du
+  Chesnay-Rocquencourt".
 - **Leeds** (read 10 November 2026): Leeds City Council's 82 live LNER Beryl
   bays, points each drawn as a disc of 5 m and named as the council names
   them, and the scheme's operating area, 34 km², where a scooter is left only
@@ -1301,6 +1355,33 @@ its source and the date it was read.
   126 m apart, and Hunslet Library 1.1 km from any. The operating area is
   Beryl's "Leeds Phase 1.1" (34.6 km²) to within 2%. The map states no terms;
   the legend credits the council and links the page.
+- **Lisboa** (read 11 November 2026; its shared scooters end in January
+  2027): the Câmara Municipal de Lisboa's 1,856 places where a shared scooter
+  may be parked, 431 hotspots for micromobility alone
+  (`ESTACIONAMENTO_ESTADO` "Dedicado Micromobilidade", all but one virtual)
+  and 397 hotspots and 1,028 bike racks shared with it ("Partilhado com
+  Micromobilidade"), points each drawn as a disc of 5 m and named by their
+  address (`MORADA`), from its layer "Estacionamento para Velocípedes"
+  (`Ciclovias/FeatureServer` layer 1, edited 6 November 2026); and its 347
+  zones where a shared scooter is neither ridden nor parked (`ZONA_RESTRICAO`
+  "Preta": main roads, bus lanes, gardens, squares, interchanges and
+  viewpoints), 502 drawn as each part is one, from "Zonas de Restrições à
+  Micromobilidade" (`MOB_Micromobilidade/FeatureServer` layer 0, edited
+  30 October 2026), both on the Câmara's
+  [geodados](https://geodados-cml.hub.arcgis.com/datasets/CML::mob-micromobilidade/explore)
+  and listed on Lisboa Aberta. Left out: the 366 racks where shared vehicles
+  are banned ("Interdito Micromobilidade") and the temporary zone at Santa
+  Apolónia station during the drainage plan's works ("Temporário - Obras
+  PGDL"). Parking at a hotspot has been compulsory since the Câmara's
+  agreement with the operators of January 2023, and the zones of 2025 are
+  kept by geofence
+  ([ECO, 26 June 2025](https://eco.sapo.pt/2025/06/26/lisboa-cria-novas-zonas-proibidas-a-trotinetas-e-torna-utilizacao-gratuita-para-alfacinhas-com-passe-navegante/)),
+  which the legend links, as lisboa.pt answers scripts 403. The council voted
+  on 21 October 2026 to end shared scooters, with 60 days to remove them
+  (docs/coverage-gaps.md); the city's zones go when they do. The zones' layer
+  states "Reservam-se todos os direitos", the racks' layer CC0 and Lisboa
+  Aberta CC BY; drawn under the rule of 28 October 2026, credited "Câmara
+  Municipal de Lisboa".
 - **Long Beach** (read 1 November 2026): the City of Long Beach's 21
   no-parking areas, where a parked scooter costs its operator $0.50, 25
   no-riding zones (the Port, the airport, the campuses of CSULB and LBCC,
@@ -1666,6 +1747,23 @@ its source and the date it was read.
   RD-24-261-sn, in force since 1 May 2024: a shared scooter is not left in a
   no-parking zone, but at a parking place the city's map shows, nor ridden
   faster than a speed zone's limit.
+- **Roma** (read 11 November 2026): Roma Servizi per la Mobilità's 13
+  parking areas for sharing bikes and scooters, each set by a determination
+  of the city (`Nome`, "DD 2956"), most in Prati and round it, two in
+  Trastevere and one by Villa Torlonia, points each drawn as a disc of 5 m and
+  named by their address (`Indirizzo`), from its layer
+  `Monopattini_coordinate_nuove` (edited April 2026), which its map
+  [Aree di sosta dedicate a biciclette e monopattini sharing](https://rsm.maps.arcgis.com/apps/instant/sidebar/index.html?appid=8beb5f57b71b45c8b658490890cba618)
+  draws. Under the new Codice della Strada a scooter is not parked on the
+  pavement but in the areas set aside for it, as the company's
+  [page on it](https://romamobilita.it/muoversi-a-roma/nuovo-codice-della-strada-cosa-cambia-per-luso-dei-monopattini-elettrici/),
+  which the legend links, says. The no-parking macro-areas of the call for new
+  operators are not drawn by the city yet, so there is nothing more; the
+  current operators run on permits extended until the new ones are chosen
+  (docs/coverage-gaps.md). The layer states no licence, and the company's
+  [legal notes](https://romamobilita.it/azienda/note-legali/) forbid
+  reproducing its material for profit; drawn under the rule of 28 October
+  2026, credited "Roma Servizi per la Mobilità".
 - **Rostock** (read 31 October 2026): the Hanse- und Universitätsstadt
   Rostock's 15 marked parking places for e-scooters, points each drawn as a
   disc of 5 m and named by their street, from its open data
@@ -1924,6 +2022,31 @@ its source and the date it was read.
   leaves out two parking places. The City's summer no-riding zone on the
   Vasagatan pedestrian street (15 June to 16 August) is not in the layer. The
   service accepts edits; ScootRadar only queries it.
+- **Vilnius** (read 11 November 2026): JUDU's (the city's transport
+  company's) 837 parking places for shared e-scooters and e-bikes marked
+  installed (`Būsena` 2, "Įrengta"), points each drawn as a disc of 5 m and
+  named by their address (`Adresas`) or, the 430 without one, "Parking
+  place"; the 47 parts of its restricted parking zone ("Riboto stovėjimo
+  zona", about 33 km², from the Old Town and Naujamiestis to Žirmūnai,
+  Antakalnis and Pilaitė), where one is left only at such a place (racks or
+  marked places only, drawn only on the website); its 119 no-parking zones
+  (squares, bridges, viaducts, parks), named (`Pavadinimas`) or after the
+  city; its 58 zones of 12 km/h (the Old Town, bridges and viaducts) and the
+  3 streets where riding is banned (Vilniaus, Pilies and Savičiaus gatvės),
+  from the layers of JUDU's map
+  [Eismo organizavimo žemėlapis](https://sisp.maps.arcgis.com/apps/instant/basic/index.html?appid=78e86d6a6e854ee3a784f1a640201abb)
+  (web map "Mikromobilumo taisyklės viešinimui", modified 2 July 2026),
+  which its page [Mikrojudumas](https://judu.lt/mikrojudumas/) (updated
+  20 May 2026) links, and the legend too. Left out: the places not installed,
+  in preparation or only wanted (42, 29 and 98, and 26 of other values),
+  and the Old Town core's zone "su apribojimais" (about 2 km², within the
+  restricted zone), whose further restriction nothing published explains;
+  its 190 places, marked with it, are drawn with the others. Three places
+  are named by the LKS-94 coordinates the layer gives for their address. Two
+  of the map's layers are titled like tests ("Bandymas"), but they are the
+  ones it draws. The web map states "Viešas skelbimas ir pernaudojimas
+  negalimas be JUDU sutikimo", the map's app CC BY-NC 4.0; drawn under the
+  rule of 28 October 2026, credited "JUDU".
 - **Washington** (read 30 October 2026): the District Department of
   Transportation's 259 in-street corrals, 252 no-parking zones (365 parts),
   51 no-riding zones and 7 slow zones. The corrals and the no-parking zones are

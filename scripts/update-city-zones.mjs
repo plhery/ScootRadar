@@ -32,7 +32,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // serves. Stavanger's, of format nivel, are the zones Nivel's platform
 // serves to the map the kommune's page embeds, and Long Beach's and Nashville's, of format
 // populus, the shapes of policies on Populus's public policy map, which each city links; both are
-// read as GeoJSON. Helsingborg's is the area of a local
+// read as GeoJSON. Le Chesnay-Rocquencourt's, of format artifica, are the markers of the Artifica
+// map widget the town's page embeds, also read as GeoJSON. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
@@ -145,23 +146,29 @@ function featurePolygons(rings) {
  * A feature or map service layer's zones, those `where` picks: each part of a polygon one ring, its holes
  * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, or else after the
  * city, as all are where `nameField` is null: Antwerpen's names are mostly ids. `nameField` may
- * list fields, their values joined, as Denver's corrals are named by number and street. A point
- * without a name is named by its `CorralType`, or as a corral. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
+ * list fields, their values joined, as Denver's corrals are named by number and street, and a
+ * field of coded values, as Budapest's zones have, gives the name its domain gives the code. A
+ * point without a name is named by its `CorralType`, or `pointName`, as half of Vilnius's parking
+ * places are, or as a corral. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
  * goes into each zone's id where two layers of one kind number theirs alike, as Ottawa's two of
  * parking places do.
  */
-async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag }) {
+async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag, pointName }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
   // The layer's object id, which Washington's no-riding layer has as OBJECTID_1, its OBJECTID repeated.
   const idField = body.fields?.find(field => field.type === 'esriFieldTypeOID')?.name ?? 'OBJECTID';
+  const codes = Object.fromEntries([nameField ?? []].flat().map(field => [field, body.fields?.find(({ name }) => name === field)?.domain?.codedValues ?? []]));
   return body.features.flatMap(({ attributes, geometry }) => {
     const objectId = attributes[idField];
     const id = `${city.id}-${slug(kind)}-${idTag ? `${idTag}-` : ''}${objectId}`;
-    const name = nameField ? [nameField].flat().map(field => String(attributes[field] ?? '').trim()).filter(Boolean).join(' ') : null;
+    const name = nameField ? [nameField].flat().map(field => {
+      const value = attributes[field];
+      return String(codes[field].find(({ code }) => code === value)?.name ?? value ?? '').trim();
+    }).filter(Boolean).join(' ') : null;
     if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
-      const corral = attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral';
+      const corral = attributes.CorralType ? `${attributes.CorralType} corral` : pointName ?? 'Corral';
       return [{ id, kind, name: name || corral, ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
@@ -206,14 +213,16 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), one of format
  * kmz those of the KML file a KMZ holds (kmzFeatures), one of format zip a zip of GeoJSON files
  * (zipFeatures), one of format nivel the active zones of a Nivel public map (nivelFeatures), one
- * of format populus a policy's shapes on Populus's public policy map (populusFeatures), and one of
- * format geopdf the point symbols of a georeferenced PDF's map (geopdfFeatures).
+ * of format populus a policy's shapes on Populus's public policy map (populusFeatures), one of
+ * format geopdf the point symbols of a georeferenced PDF's map (geopdfFeatures), and one of format
+ * artifica the markers of the Artifica map widget a page embeds (artificaFeatures).
  */
 async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, grid, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
   const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'kmz' ? await kmzFeatures(url)
     : format === 'zip' ? await zipFeatures(url) : format === 'nivel' ? nivelFeatures(await getJson(url), url)
       : format === 'populus' ? await populusFeatures(url, policy)
-        : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : await getJson(url);
+        : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : format === 'artifica' ? await artificaFeatures(url)
+          : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A layer in a grid's metres, which a service gives to the millimetre where its degrees are rounded to metres.
   if (grid) {
@@ -519,6 +528,31 @@ async function populusFeatures(url, policy) {
     features: geographies.flatMap(({ geography_json: json }) => (json.type === 'FeatureCollection' ? json.features : [json]))
       .map(feature => ({ ...feature, properties: { ...feature.properties,
         name: /^\s*\d+\s*$/.test(feature.properties?.name ?? '') ? null : feature.properties?.name?.trim() ?? null } })),
+  };
+}
+
+/**
+ * The markers of the Artifica ("ICE") map widget the page at the url embeds, as GeoJSON points,
+ * each with its own fields as properties and its id: Le Chesnay-Rocquencourt's places for Dott's
+ * scooters and bikes. The widget's folders are its div's data-folders, and its key is in the
+ * page's TYPO3 settings, read from the page each time, never kept nor printed. The widget's
+ * answer is JSON, though sent as text/html.
+ */
+async function artificaFeatures(url) {
+  const page = await getText(url);
+  const key = /"TS":\{[^}]*"ice":"([A-Za-z0-9]+)"/.exec(page)?.[1];
+  const folders = /class="artifica-map-widget"[^>]*?data-folders="([\d,\s]+)"/.exec(page)?.[1];
+  if (!key || !folders) throw new Error(`${url}: no Artifica map widget found`);
+  const query = new URLSearchParams([...folders.split(',').map(folder => ['datas[folders][]', folder.trim()]), ['key', key]]);
+  const response = await fetch(`https://ice.artifica.fr/datas/widget/datas?${query}`, { headers: { 'User-Agent': USER_AGENT } });
+  if (!response.ok) throw new Error(`${url}: its Artifica widget answered ${response.status}`);
+  const markers = JSON.parse(await response.text());
+  if (!Array.isArray(markers)) throw new Error(`${url}: its Artifica widget answered no markers`);
+  return {
+    features: markers.filter(marker => marker.table === 'MARKER').map(({ id, lat, lng, ...properties }) => ({
+      type: 'Feature', id, properties,
+      geometry: Number.isFinite(lat) && Number.isFinite(lng) ? { type: 'Point', coordinates: [lng, lat] } : null,
+    })),
   };
 }
 
@@ -1011,7 +1045,7 @@ async function updateCity(city) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : ['geojson', 'kml', 'kmz', 'zip', 'nivel', 'populus', 'geopdf'].includes(layer.format) ? await geojsonZones(city, layer, zones)
+      : ['geojson', 'kml', 'kmz', 'zip', 'nivel', 'populus', 'geopdf', 'artifica'].includes(layer.format) ? await geojsonZones(city, layer, zones)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)
