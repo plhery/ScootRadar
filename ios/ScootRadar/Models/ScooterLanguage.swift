@@ -229,10 +229,11 @@ enum ScooterUnits: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    /// What VoiceOver reads for its segment.
+    /// What VoiceOver reads for its segment: the whole word for "Auto", which also means a car in German, Dutch,
+    /// Norwegian and Italian.
     var spokenLabel: String {
         switch self {
-        case .automatic: String(localized: "Automatic")
+        case .automatic: String(localized: "Automatic (read aloud)")
         case .metric: String(localized: "Kilometres")
         case .imperial: String(localized: "Miles")
         }

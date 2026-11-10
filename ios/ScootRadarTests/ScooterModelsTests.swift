@@ -1745,6 +1745,35 @@ extension ScooterModelsTests {
         XCTAssertEqual(english.localizedString(forKey: "Automatic (language)", value: nil, table: nil), "Automatic")
     }
 
+    /// "Auto" in Settings › Appearance and Settings › Units is read aloud as the whole word, in every language: in
+    /// German, Dutch, Norwegian and Italian "Auto" alone also means a car (week review, choice 16).
+    func testAutoInSettingsIsReadAloudAsTheWholeWordInEveryLanguage() throws {
+        let expected = [
+            "en": "Automatic", "de": "Automatisch", "fr": "Automatique", "it": "Automatico", "nl": "Automatisch",
+            "nb": "Automatisk", "pt": "Automático", "es": "Automático", "is": "Sjálfvirkt"
+        ]
+        XCTAssertEqual(Set(expected.keys), Set(ScooterLanguage.allCases.map(\.rawValue)))
+        for language in ScooterLanguage.allCases {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language.rawValue, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            // What the tile and the segment show stays as it was.
+            XCTAssertEqual(strings.localizedString(forKey: "Automatic", value: nil, table: nil), "Auto", language.rawValue)
+            XCTAssertEqual(
+                strings.localizedString(forKey: "Automatic (read aloud)", value: "?", table: nil),
+                expected[language.rawValue], language.rawValue
+            )
+        }
+        let spoken = String(localized: "Automatic (read aloud)")
+        XCTAssertEqual(ScooterAppearance.sun.label, String(localized: "Automatic"))
+        XCTAssertEqual(ScooterAppearance.sun.spokenLabel, spoken)
+        XCTAssertEqual(ScooterUnits.automatic.label, String(localized: "Automatic"))
+        XCTAssertEqual(ScooterUnits.automatic.spokenLabel, spoken)
+        // The others read as they show.
+        XCTAssertEqual(ScooterAppearance.system.spokenLabel, ScooterAppearance.system.label)
+        XCTAssertEqual(ScooterAppearance.dark.spokenLabel, ScooterAppearance.dark.label)
+    }
+
     func testFrenchAndItalianNameTheOperatorWithOneWordAndFrenchShowsNothingInTheSingular() throws {
         func strings(_ language: String) throws -> Bundle {
             try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:)))

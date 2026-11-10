@@ -27,6 +27,8 @@ struct SettingsTileRow<Content: View>: View {
 
 struct SettingsTile<Picture: View>: View {
     let title: String
+    /// What VoiceOver reads, where it is not the title.
+    var spokenTitle: String?
     let isSelected: Bool
     let action: () -> Void
     @ViewBuilder let picture: Picture
@@ -57,6 +59,8 @@ struct SettingsTile<Picture: View>: View {
             .settingsTile(isSelected: isSelected, cornerRadius: 17)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(spokenTitle ?? title)
+        .voiceControlNames([title, spokenTitle ?? title])
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

@@ -305,3 +305,5 @@
 "Kilometres" = "Kilómetros";
 /* Settings › Units: what VoiceOver and TalkBack read for the "mi" segment. */
 "Miles" = "Millas";
+/* What VoiceOver reads for the tile in Settings › Appearance and the segment in Settings › Units that show "Auto" (the key "Automatic"): the whole word, as "Auto" alone also means a car in German, Dutch, Norwegian and Italian. One word for both, the choice's. */
+"Automatic (read aloud)" = "Automático";

@@ -2409,7 +2409,10 @@ struct ScooterSettingsSheet: View {
                 Section {
                     SettingsTileRow(title: String(localized: "Appearance")) {
                         ForEach(ScooterAppearance.allCases) { appearance in
-                            SettingsTile(title: appearance.label, isSelected: model.appearance == appearance) {
+                            SettingsTile(
+                                title: appearance.label, spokenTitle: appearance.spokenLabel,
+                                isSelected: model.appearance == appearance
+                            ) {
                                 model.appearance = appearance
                             } picture: {
                                 AppearancePicture(appearance: appearance)

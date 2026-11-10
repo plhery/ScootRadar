@@ -1124,6 +1124,12 @@ enum ScooterAppearance: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// What VoiceOver reads for its tile: the whole word for "Auto", which also means a car in German, Dutch,
+    /// Norwegian and Italian.
+    var spokenLabel: String {
+        self == .sun ? String(localized: "Automatic (read aloud)") : label
+    }
+
     /// Unspecified leaves the choice to the iPhone.
     func interfaceStyle(at date: Date, in place: GeoPoint) -> UIUserInterfaceStyle {
         switch self {
