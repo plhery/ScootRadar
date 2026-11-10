@@ -42,6 +42,11 @@ class RecentPlaceStore(private val defaults: ScooterDefaults = InMemoryScooterDe
         val latitude: Double,
         val longitude: Double,
         val kind: String,
+        /**
+         * Whether it had data when it was chosen, written for the iPhone's file and older versions. A feed may have
+         * been added there since, or taken away: whether it has data is worked out again when the place is read, from
+         * the bundled service areas, as for a place the search answers without saying (the iPhone's 9fb2c282).
+         */
         val isCovered: Boolean,
     ) {
         constructor(place: MapDestination) : this(
@@ -53,7 +58,10 @@ class RecentPlaceStore(private val defaults: ScooterDefaults = InMemoryScooterDe
             isCovered = place.isCovered,
         )
 
-        /** The place, or null for a kind this version doesn't know, an empty title or a point off the globe. */
+        /**
+         * The place, with whether it has data today, or null for a kind this version doesn't know, an empty title or a
+         * point off the globe.
+         */
         val destination: MapDestination?
             get() {
                 val kind = when (kind) {
@@ -62,7 +70,7 @@ class RecentPlaceStore(private val defaults: ScooterDefaults = InMemoryScooterDe
                     else -> return null
                 }
                 if (title.isBlank() || latitude !in -90.0..90.0 || longitude !in -180.0..180.0) return null
-                return MapDestination(title, subtitle, GeoPoint(latitude, longitude), kind, isCovered)
+                return MapDestination(title = title, subtitle = subtitle, point = GeoPoint(latitude, longitude), kind = kind)
             }
     }
 

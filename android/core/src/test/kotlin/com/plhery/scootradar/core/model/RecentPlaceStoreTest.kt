@@ -40,13 +40,38 @@ class RecentPlaceStoreTest {
         assertEquals(JsonPrimitive("city"), written["kind"])
 
         kept.set(
-            """{"title":"Bahnhofstrasse 12","subtitle":"8001 Zürich","latitude":47.3717,"longitude":8.5392,"kind":"address","isCovered":false}""",
+            """{"title":"Bahnhofstrasse 12","subtitle":"8001 Zürich","latitude":47.3717,"longitude":8.5392,"kind":"address","isCovered":true}""",
             forKey = key,
         )
         assertEquals(
-            MapDestination("Bahnhofstrasse 12", "8001 Zürich", GeoPoint(47.3717, 8.5392), MapDestination.Kind.Address, false),
+            MapDestination("Bahnhofstrasse 12", "8001 Zürich", GeoPoint(47.3717, 8.5392), MapDestination.Kind.Address, true),
             RecentPlaceStore(kept).load(),
         )
+    }
+
+    /**
+     * Whether the map has data at the place kept is as it is today, not as when the place was chosen: Manama, kept as
+     * "No data" before Hopp's feed there was added on 4 November 2026, has data, and Lungern, kept as having some, has
+     * none (week review, finding 3.4; the iPhone's 9fb2c282). The flag is still written, for the iPhone's file and
+     * older versions.
+     */
+    @Test
+    fun aPlaceKeptHasDataAsTheMapHasItTodayNotAsWhenItWasChosen() {
+        val kept = InMemoryScooterDefaults()
+        kept.set(
+            """{"title":"Manama","subtitle":"Bahrain","latitude":26.2235,"longitude":50.5876,"kind":"address","isCovered":false}""",
+            forKey = key,
+        )
+        assertEquals(true, RecentPlaceStore(kept).load()?.isCovered)
+
+        kept.set(
+            """{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}""",
+            forKey = key,
+        )
+        assertEquals(false, RecentPlaceStore(kept).load()?.isCovered)
+
+        RecentPlaceStore(kept).save(MapDestination("Paradeplatz", "Lungern OW", GeoPoint(46.7741, 8.1558), MapDestination.Kind.Address, false))
+        assertEquals(JsonPrimitive(false), Json.parseToJsonElement(kept.string(forKey = key)!!).jsonObject["isCovered"])
     }
 
     /** What is not a place is not offered, and is removed so that it is not read again. */
