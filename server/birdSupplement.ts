@@ -3,7 +3,8 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { localClock } from '../src/lib/rentalCurfews';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
-import { BIRD_QUERY_INTERVAL_MS, birdAreaRings, birdMapClient, birdVehicle, sweepBirdArea, type BirdClient, type BirdScooter } from './birdApp';
+import { BIRD_QUERY_INTERVAL_MS, birdAreaRings, birdMapClient, birdVehicle, savedScooter, sweepBirdArea, type BirdClient,
+  type BirdScooter } from './birdApp';
 import { reportError } from './errorReporting';
 import type { Ring } from './nearestSweep';
 import { currentCollection } from './sweeps';
@@ -32,6 +33,18 @@ const SUPPLEMENT_LIMITS = { requests: 60, milliseconds: 60 * 60_000, retryMs: BI
 const DAY_FROM = 8 * 60;
 const DAY_UNTIL = 21 * 60;
 
+/**
+ * What a supplement keeps of its last sweep across a restart, saved beside the snapshot (scooter-cache.ts): a
+ * deploy otherwise dropped Rome's additions until a new sweep had ended, by night until someone looked and its
+ * sweep, 12 to 45 minutes, had ended.
+ */
+export interface SavedSupplement {
+  sweptAt: number;
+  scooters: BirdScooter[];
+  /** Once the feed's first fresh collection after the sweep has told them. */
+  added?: string[];
+}
+
 /** One public feed's additions from Bird's map, kept across the cache's rebuilt feed definitions. */
 export class BirdSupplement {
   private sweeping?: Promise<void>;
@@ -43,9 +56,21 @@ export class BirdSupplement {
   private added?: Set<string>;
   private failures = 0;
 
+  /** `restored`, the last sweep before a restart (`saved()`), goes on as if the cache had not restarted. */
   constructor(private readonly system: RegionalScooterSystem & { provider: 'bird' | 'spin'; timeZone: string },
     private readonly rings: readonly Ring[], private readonly api: Pick<BirdClient, 'nearest'>,
-    private readonly now: () => number = Date.now) {}
+    private readonly now: () => number = Date.now, restored?: SavedSupplement) {
+    if (!restored) return;
+    this.startedAt = this.sweptAt = restored.sweptAt;
+    this.scooters = restored.scooters;
+    this.added = restored.added && new Set(restored.added);
+  }
+
+  /** The last sweep, for a restart to go on from: none until one has ended. */
+  saved(): SavedSupplement | undefined {
+    return this.sweptAt === undefined ? undefined
+      : { sweptAt: this.sweptAt, scooters: this.scooters, ...(this.added ? { added: [...this.added] } : {}) };
+  }
 
   /** The feed's collection with the scooters it leaves out, and a sweep started when one is due. */
   async collect(feed: () => Promise<SourceVehicles>): Promise<SourceVehicles> {
@@ -104,6 +129,33 @@ export class BirdSupplement {
 }
 
 const supplements = new Map<string, BirdSupplement>();
+// The sweeps saved before a restart (restoreBirdSupplements), each taken by its feed's supplement once made.
+const restoredSweeps = new Map<string, SavedSupplement>();
+
+/** Each supplement's last sweep, by feed, for the cache to save beside its snapshot. */
+export function savedBirdSupplements(kept = supplements): Record<string, SavedSupplement> {
+  return Object.fromEntries([...kept].flatMap(([id, supplement]) => {
+    const saved = supplement.saved();
+    return saved ? [[id, saved]] : [];
+  }));
+}
+
+/**
+ * Takes back the sweeps the cache saved before a restart (savedBirdSupplements, read from its file), each for its
+ * feed's supplement when withBirdSupplements makes it: those whose additions still stand (SUPPLEMENT_MAX_AGE_MS),
+ * and none that cannot be read.
+ */
+export function restoreBirdSupplements(saved: unknown, now: number, restored = restoredSweeps): void {
+  const feeds = (saved as { feeds?: unknown } | null | undefined)?.feeds;
+  if (!feeds || typeof feeds !== 'object') return;
+  for (const [id, value] of Object.entries(feeds)) {
+    const { sweptAt, scooters, added } = (value ?? {}) as Partial<Record<keyof SavedSupplement, unknown>>;
+    if (typeof sweptAt !== 'number' || !Number.isFinite(sweptAt) || sweptAt > now || now - sweptAt > SUPPLEMENT_MAX_AGE_MS ||
+      !Array.isArray(scooters) || !scooters.every(savedScooter) ||
+      (added !== undefined && (!Array.isArray(added) || !added.every(entry => typeof entry === 'string')))) continue;
+    restored.set(id, { sweptAt, scooters, ...(added ? { added } : {}) });
+  }
+}
 
 /** The parts of a supplement's areas within its distance of the system's centre, or none should one be missing. */
 export function supplementRings(system: RegionalScooterSystem): Ring[] | undefined {
@@ -118,7 +170,7 @@ export function supplementRings(system: RegionalScooterSystem): Ring[] | undefin
 
 /** The public Bird feeds whose system names a birdAppSupplement, with the scooters they leave out. */
 export function withBirdSupplements(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[],
-  api: Pick<BirdClient, 'nearest'> = birdMapClient, kept = supplements): CollectableScooterFeed[] {
+  api: Pick<BirdClient, 'nearest'> = birdMapClient, kept = supplements, restored = restoredSweeps): CollectableScooterFeed[] {
   const named = new Map(systems.filter(system => system.birdAppSupplement).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = named.get(feed.id.slice(feed.id.indexOf(':') + 1));
@@ -126,9 +178,10 @@ export function withBirdSupplements(feeds: CollectableScooterFeed[], systems: re
     // Made once: the cache rebuilds its feeds on each discovery.
     const rings = kept.has(feed.id) ? undefined : supplementRings(system);
     const supplement = kept.get(feed.id) ??
-      (rings && new BirdSupplement({ ...system, provider: system.provider, timeZone: system.timeZone }, rings, api));
+      (rings && new BirdSupplement({ ...system, provider: system.provider, timeZone: system.timeZone }, rings, api, Date.now, restored.get(feed.id)));
     if (!supplement) return feed;
     kept.set(feed.id, supplement);
+    restored.delete(feed.id);
     const collect = feed.collect;
     return { ...feed, collect: () => supplement.collect(collect) };
   });

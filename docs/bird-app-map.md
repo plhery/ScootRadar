@@ -436,7 +436,12 @@ the first fresh read after a sweep, are added as `bird:<id>` for as long as
 none of the feed's stands on one, and for at most two and a half hours after
 the sweep. A scooter the feed listed then is not
 added later on its old spot once ridden away, while one added and ridden away
-stands until the next sweep. While the map cannot be read the feed stands as
+stands until the next sweep. The last sweep, its scooters and those it added,
+is saved beside the snapshot in `bird-supplements.json`, with it every minute
+and on shutdown, and a restart takes it back while its additions stand, its
+next sweep due as before: a deploy no longer drops the additions until a new
+sweep has ended, by night until someone looks at Rome and that sweep, 12 to 45
+minutes, has ended. While the map cannot be read the feed stands as
 it is, and Sentry hears once two sweeps in a row have failed
 (`bird-supplement:bird_it_rome`). The areas' rings, 15 and 68, are in
 [`data/bird-app-areas.json`](../data/bird-app-areas.json), from the European

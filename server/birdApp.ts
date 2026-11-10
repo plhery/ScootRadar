@@ -315,7 +315,8 @@ const savedDisc = (value: unknown): value is Disc => {
   const entry = object(value);
   return finite(entry?.lat) && finite(entry.lng) && finite(entry.r) && entry.r >= 0;
 };
-const savedScooter = (value: unknown): value is BirdScooter => {
+/** A scooter as a file the cache saved holds it, read back: a checkpoint's, or a supplement's (birdSupplement.ts). */
+export const savedScooter = (value: unknown): value is BirdScooter => {
   const entry = object(value);
   return typeof entry?.id === 'string' && (entry.brand === 'bird' || entry.brand === 'spin') && finite(entry.lat) && finite(entry.lng) &&
     (entry.battery === null || finite(entry.battery)) && (entry.range === null || finite(entry.range));

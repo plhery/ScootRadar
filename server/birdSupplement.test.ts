@@ -5,7 +5,8 @@ import { REGIONAL_SCOOTER_SYSTEMS, type RegionalScooterSystem } from '../src/lib
 import { independentCollectableFeeds, type SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
 import { BIRD_PAGE, birdAreaRings, type BirdScooter } from './birdApp';
-import { BirdSupplement, SUPPLEMENT_IDLE_MS, SUPPLEMENT_MAX_AGE_MS, SUPPLEMENT_WATCHED_MS, supplementRings, withBirdSupplements } from './birdSupplement';
+import { BirdSupplement, restoreBirdSupplements, savedBirdSupplements, SUPPLEMENT_IDLE_MS, SUPPLEMENT_MAX_AGE_MS, SUPPLEMENT_WATCHED_MS,
+  supplementRings, withBirdSupplements, type SavedSupplement } from './birdSupplement';
 import { reportError } from './errorReporting';
 import type { Ring } from './nearestSweep';
 import { withinCollection } from './sweeps';
@@ -166,5 +167,106 @@ describe('Bird map scooters a public feed leaves out', () => {
     }
     expect(supplementRings({ ...ROME, birdAppSupplement: { areas: [...ROME.birdAppSupplement!.areas, 'none'], withinM: 4_500 } })).toBeUndefined();
     expect(supplementRings({ ...ROME, birdAppSupplement: undefined })).toBeUndefined();
+  });
+
+  describe('across a restart', () => {
+    // 20:30 in Rome, the evening's last idle sweep; a deploy at 22:00.
+    const EVENING = Date.UTC(2026, 10, 9, 19, 30);
+    const AFTER = EVENING + 95 * MINUTE;
+    // Through JSON, as the file it is saved in beside the snapshot.
+    const reread = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+    async function sweptAtEvening(scooters: BirdScooter[], listing: Vehicle[]) {
+      let now = EVENING;
+      const supplement = new BirdSupplement(system as RegionalScooterSystem & typeof system, [AREA], map(() => scooters), () => now);
+      await supplement.collect(feed(listing));
+      await supplement.settled();
+      now += MINUTE;
+      await supplement.collect(feed(listing));
+      return reread(supplement.saved()!);
+    }
+    const restarted = (scooters: BirdScooter[], saved: SavedSupplement | undefined, at: () => number) => {
+      const api = map(() => scooters);
+      return { api, supplement: new BirdSupplement(system as RegionalScooterSystem & typeof system, [AREA], api, at, saved) };
+    };
+
+    it('adds what the last sweep before it added, by night while nobody looks, without sweeping again', async () => {
+      const own = scooter(41.903, 12.448), left = scooter(41.905, 12.450);
+      const saved = await sweptAtEvening([own, left], [listed(own.lat, own.lng)]);
+      expect(saved).toEqual({ sweptAt: EVENING, scooters: expect.arrayContaining([own, left]), added: [left.id] });
+      expect(saved.scooters).toHaveLength(2);
+      const { api, supplement } = restarted([own, left], saved, () => AFTER);
+      expect(ids(await supplement.collect(feed([listed(own.lat, own.lng)])))).toContain(`bird:${left.id}`);
+      expect(api.nearest).not.toHaveBeenCalled();
+      // The feed's own scooter ridden away: its old spot is still not added.
+      const away = listed(41.909, 12.454);
+      expect(ids(await supplement.collect(feed([away])))).toEqual([away.vehicle_id, `bird:${left.id}`]);
+      // Without what was saved, as before: none until a sweep ends.
+      expect(ids(await restarted([own, left], undefined, () => AFTER).supplement.collect(feed([listed(own.lat, own.lng)])))).toHaveLength(1);
+    });
+
+    it('adds them while someone looks, through the sweep their look starts, and those of that sweep once it ends', async () => {
+      const own = scooter(41.903, 12.448), left = scooter(41.905, 12.450), arrived = scooter(41.906, 12.446);
+      const saved = await sweptAtEvening([own, left], [listed(own.lat, own.lng)]);
+      let now = AFTER;
+      const { api, supplement } = restarted([own, left, arrived], saved, () => now);
+      let release!: () => void;
+      api.nearest.mockImplementationOnce(async () => { await new Promise<void>(resolve => { release = resolve; });
+        return { scooters: [own, left, arrived], completeM: 5_000 }; });
+      const listing = [listed(own.lat, own.lng)];
+      expect(ids(await watched(() => supplement.collect(feed(listing))))).toContain(`bird:${left.id}`);
+      await vi.waitFor(() => expect(release).toBeTypeOf('function'));
+      now += MINUTE;
+      expect(ids(await watched(() => supplement.collect(feed(listing))))).toEqual([listing[0].vehicle_id, `bird:${left.id}`]);
+      release();
+      await supplement.settled();
+      now += MINUTE;
+      expect(ids(await watched(() => supplement.collect(feed(listing))))).toEqual([listing[0].vehicle_id, `bird:${left.id}`, `bird:${arrived.id}`]);
+      // The next is due half an hour after this one started, not after the sweep before the restart.
+      now = AFTER + SUPPLEMENT_WATCHED_MS - MINUTE;
+      await watched(() => supplement.collect(feed(listing)));
+      expect(api.nearest).toHaveBeenCalledTimes(1);
+    });
+
+    it('sweeps by day once the sweep before it is due again, not at once', async () => {
+      const own = scooter(41.903, 12.448), left = scooter(41.905, 12.450);
+      let now = NOON;
+      const first = new BirdSupplement(system as RegionalScooterSystem & typeof system, [AREA], map(() => [own, left]), () => now);
+      await first.collect(feed([]));
+      await first.settled();
+      now = NOON + 30 * MINUTE;
+      const { api, supplement } = restarted([own, left], reread(first.saved()), () => now);
+      await supplement.collect(feed([]));
+      expect(api.nearest).not.toHaveBeenCalled();
+      now = NOON + SUPPLEMENT_IDLE_MS;
+      await supplement.collect(feed([]));
+      await supplement.settled();
+      expect(api.nearest).toHaveBeenCalled();
+    });
+
+    it('saves each supplement’s last sweep by feed, and takes back for each one made after the restart those under 2.5 hours old', async () => {
+      const own = scooter(41.903, 12.448), left = scooter(41.905, 12.450);
+      const saved = await sweptAtEvening([own, left], [listed(own.lat, own.lng)]);
+      const rome = `${COUNTRY_SOURCES.IT}:bird_it_rome`;
+      const kept = new Map<string, BirdSupplement>();
+      expect(savedBirdSupplements(kept)).toEqual({});
+      // Nothing to save before a sweep has ended.
+      withBirdSupplements(independentCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS, map(() => []), kept);
+      expect(savedBirdSupplements(kept)).toEqual({});
+      const restored = new Map<string, SavedSupplement>();
+      const file = reread({ version: 1, savedAt: AFTER, feeds: { [rome]: saved, 'italy:other': { sweptAt: 'then', scooters: [] } } });
+      restoreBirdSupplements(file, EVENING + SUPPLEMENT_MAX_AGE_MS, restored);
+      expect([...restored.keys()]).toEqual([rome]);
+      const afterRestart = new Map<string, BirdSupplement>();
+      const [wrapped] = withBirdSupplements(independentCollectableFeeds().filter(entry => entry.id === rome), REGIONAL_SCOOTER_SYSTEMS,
+        map(() => []), afterRestart, restored);
+      expect(savedBirdSupplements(afterRestart)).toEqual({ [rome]: saved });
+      expect(wrapped.id).toBe(rome);
+      // Too old, or unreadable, none.
+      const none = new Map<string, SavedSupplement>();
+      restoreBirdSupplements(file, EVENING + SUPPLEMENT_MAX_AGE_MS + 1, none);
+      restoreBirdSupplements({ version: 1, feeds: { [rome]: { ...saved, scooters: [{ id: 1 }] } } }, AFTER, none);
+      restoreBirdSupplements(undefined, AFTER, none);
+      expect(none.size).toBe(0);
+    });
   });
 });

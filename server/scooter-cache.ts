@@ -2,6 +2,7 @@ import { RydeBroker } from './rydeBridge';
 import { RydeWatchedViews } from './rydeWatchedViews';
 import { loadRydeRuntimeConfig, withRydeAppCollectors, type RydeArea } from './rydeApp';
 import rydeAreas from '../data/ryde-bridge-areas.json';
+import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, listedNationalFeeds, planRefreshCounts,
   type CollectableScooterFeed } from '../src/lib/scooterFeeds';
@@ -42,7 +43,7 @@ import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { limeAccountRequests, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 import { birdMapRequests, withBirdAppCollectors } from './birdApp';
-import { withBirdSupplements } from './birdSupplement';
+import { restoreBirdSupplements, savedBirdSupplements, withBirdSupplements } from './birdSupplement';
 import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
 import { swingMapRequests, withSwingAppCollectors } from './swingApp';
@@ -100,6 +101,10 @@ const temporaryDirectory = join(dirname(snapshotPath), 'tmp');
 // Each feed's state, and any expiry Sentry is still to hear of, saved beside the snapshot with it
 // and restored after a restart (createFeedStateLog).
 const feedStatesPath = join(dirname(snapshotPath), 'feed-states.json');
+// The last sweep of each Bird supplement, Rome's (birdSupplement.ts), saved beside the snapshot with it and
+// restored after a restart: its additions stand across a deploy, until too old, rather than none until a new
+// sweep has ended, by night until someone looks.
+const birdSupplementsPath = join(dirname(snapshotPath), 'bird-supplements.json');
 // The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
@@ -242,6 +247,14 @@ try {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
     console.error('Feed state restore failed', error);
     reportError('restore:feed-states', error);
+  }
+}
+try {
+  restoreBirdSupplements(JSON.parse(await readFile(birdSupplementsPath, 'utf8')), Date.now());
+} catch (error) {
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+    console.error('Bird supplement restore failed', error);
+    reportError('restore:bird-supplements', error);
   }
 }
 
@@ -407,7 +420,7 @@ async function persist(final = false) {
   // which a restart builds again from what it holds.
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
-  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now);
+  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), sweeps = savedBirdSupplements();
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
@@ -421,6 +434,13 @@ async function persist(final = false) {
     } catch (error) {
       console.error('Feed state persistence failed', error);
       reportError('persist:feed-states', error);
+    }
+    try {
+      await saveAtomically(birdSupplementsPath, temporaryDirectory, 'bird-supplements',
+        path => writeFile(path, `${JSON.stringify({ version: 1, savedAt: now, feeds: sweeps })}\n`));
+    } catch (error) {
+      console.error('Bird supplement persistence failed', error);
+      reportError('persist:bird-supplements', error);
     }
   })();
   try { await persisting; } finally { persisting = undefined; }
