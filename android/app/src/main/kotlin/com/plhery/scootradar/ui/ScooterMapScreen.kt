@@ -771,11 +771,15 @@ private fun LocateRow(
         val showsMore = besideHeight > besideReach && overRoom > 0 &&
             (overRoom + slack).toLong() * besideHeight >= besideReach.toLong() * overHeight
         // Over it as well where beside it a word would break inside, the legend at its narrowest, each line wrapped at
-        // its spaces, wider than the room there, and over it it fits whole under the ceiling, even where it then
-        // reaches higher: at font scale 1.3 on ScootRadar_Phone_Min, beside "À proximité" the kinds' names broke inside
-        // ("Stationnem" over "ent"), and beside "In mijn buurt" or "Nær meg" too ("Parkeerver" over "bod",
-        // "Parkeringsforb" over "ud"), where over it the legend's top is 5 higher (week review, finding 6.2).
-        val breaksWords = legendBox.minIntrinsicWidth(Constraints.Infinity) > beside && overRoom > 0 && overHeight <= overRoom
+        // its spaces, wider than the room there and not than the row, and over it there is a line's room under the
+        // ceiling, even where it then reaches higher or scrolls: at font scale 1.3 on ScootRadar_Phone_Min, beside
+        // "À proximité" the kinds' names broke inside ("Stationnem" over "ent"), and beside "In mijn buurt" or
+        // "Nær meg" too ("Parkeerver" over "bod", "Parkeringsforb" over "ud"), where over it the legend's top is 5
+        // higher (week review, finding 6.2). In Norwegian at 2.0, located, with a city's rules under the kinds, the
+        // legend is taller than the room over the button, and beside it "Parkeringsforbu" stood over "d" on the
+        // emulator: over it, it scrolls with its words whole.
+        val narrowest = legendBox.minIntrinsicWidth(Constraints.Infinity)
+        val breaksWords = narrowest > beside && narrowest <= width && overRoom >= floor
         val over = endsLower || showsMore || breaksWords
         stacked[0] = over
         val cap = when {

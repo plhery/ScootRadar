@@ -40,6 +40,7 @@ import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterRidePricing
+import com.plhery.scootradar.core.model.ScooterUnits
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneKind
@@ -479,6 +480,12 @@ class KindNamesWholeBesideNearMeTest(
     private val window: String,
     /** Whether the legend is over the button, or beside it, where every name fits whole. */
     private val over: Boolean,
+    /**
+     * As on ScootRadar_Phone_Min in Zürich: a city's rules on the map too, their authority's line under the kinds,
+     * lengths in miles, as the emulator's US region has them ("Lav fart: 3 miles/t" in two lines), and the data 9
+     * minutes old, which the location card says in a line of its own.
+     */
+    private val asOnTheEmulator: Boolean,
 ) {
     @get:Rule
     val compose = createComposeRule()
@@ -516,7 +523,15 @@ class KindNamesWholeBesideNearMeTest(
             )
         }
         val api = ZonedAPI(StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)))), zones)
-        val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = emptyList())
+        val city = CityRuleZone(
+            id = "zurich-parking-1",
+            authority = "Stadt Zürich",
+            timeZone = "Europe/Zurich",
+            kind = ScooterZoneKind.Parking,
+            source = "https://example.com/zurich",
+            ring = square(GeoPoint(47.3769, 8.5417), 0.0001),
+        )
+        val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = if (asOnTheEmulator) listOf(city) else emptyList())
         val model = controllers.make(api, clock, defaults = InMemoryScooterDefaults(), catalog = catalog)
         if (located) {
             model.locationsUpdated(listOf(ScooterLocationFix(GeoPoint(47.3779, 8.5417), horizontalAccuracy = 5.0, timestamp = Instant.now())))
@@ -525,6 +540,11 @@ class KindNamesWholeBesideNearMeTest(
         model.updateViewport(zurichRegion, zoom = 16)
         assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
         assertTrue(controllers.waitUntil { model.zoneState.value == ScooterZoneState.Shown && model.mapOperatorZoneCount.value > 0 })
+        if (asOnTheEmulator) {
+            assertTrue(controllers.waitUntil { model.mapRuleZones.value.isNotEmpty() })
+            model.setUnits(ScooterUnits.Imperial)
+            clock.advance(9 * 60.0)
+        }
         useFontScale(scale)
         val speeds = model.mapOperatorSlowSpeeds.value
         compose.setContent {
@@ -579,17 +599,20 @@ class KindNamesWholeBesideNearMeTest(
         )
 
         @JvmStatic
-        @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1} located={2} {3} over={4}")
+        @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1} located={2} {3} over={4} asOnTheEmulator={5}")
         fun parameters(): List<Array<Any>> = listOf(
-            arrayOf("nl-NL", 1.3f, false, PHONE_MIN, true),
-            arrayOf("nl-NL", 1.3f, false, PHONE_384, true),
-            arrayOf("nb-NO", 1.3f, false, PHONE_MIN, true),
-            arrayOf("nb-NO", 2f, true, PHONE_MIN, true),
+            arrayOf("nl-NL", 1.3f, false, PHONE_MIN, true, false),
+            arrayOf("nl-NL", 1.3f, false, PHONE_384, true, false),
+            arrayOf("nb-NO", 1.3f, false, PHONE_MIN, true, false),
+            arrayOf("nb-NO", 2f, true, PHONE_MIN, true, false),
+            // As on ScootRadar_Phone_Min in Zürich: "Stadt Zürich" under the kinds makes the legend taller than the
+            // room over the button, where it then scrolls; beside it "Parkeringsforbu" stood over "d".
+            arrayOf("nb-NO", 2f, true, PHONE_MIN, true, true),
             // 8e3c649a's own case, and bef9f112's beside the round button.
-            arrayOf("fr-CH", 1.3f, false, PHONE_MIN, true),
-            arrayOf("pt-PT", 1.3f, true, PHONE_MIN, false),
+            arrayOf("fr-CH", 1.3f, false, PHONE_MIN, true, false),
+            arrayOf("pt-PT", 1.3f, true, PHONE_MIN, false, false),
             // Every name whole beside "In mijn buurt" at the default size: the iPhone's row.
-            arrayOf("nl-NL", 1f, false, PHONE_MIN, false),
+            arrayOf("nl-NL", 1f, false, PHONE_MIN, false, false),
         )
     }
 }
