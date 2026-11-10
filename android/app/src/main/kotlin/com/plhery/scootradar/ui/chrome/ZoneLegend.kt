@@ -290,8 +290,8 @@ const val ZONE_LEGEND_TAG = "zoneLegend"
 
 /**
  * Each kind once, the strongest rule first: the operators' while they are drawn, unless a note stands for them
- * ([besideNote]), as none does beside an answer with zones left out, and those of the cities' [rules] that hold at all
- * hours.
+ * ([besideNote]), as none does beside an answer with zones left out or with a feed's zones unreadable while others'
+ * are drawn, and those of the cities' [rules] that hold at all hours.
  */
 internal fun legendKinds(state: ScooterZoneState, count: Int, rules: List<CityRuleZone.Shown>, besideNote: Boolean): List<ScooterZoneKind> {
     val operators = namesOperatorKinds(state, count, besideNote)
@@ -316,9 +316,14 @@ internal fun legendKindSpeeds(
         speeds + shown.rule.maxSpeedKph
     }
 
+/**
+ * Whether the operators' kinds are named: while their zones are drawn, unless a note stands for them; beside the note
+ * of an answer with zones left out, and of one with a feed's zones unreadable while others' are drawn ([count]), they
+ * are named still (week review, finding 3.3).
+ */
 private fun namesOperatorKinds(state: ScooterZoneState, count: Int, besideNote: Boolean): Boolean =
-    (!besideNote || state == ScooterZoneState.Partial) && state != ScooterZoneState.Off &&
-        !(state == ScooterZoneState.Shown && count == 0)
+    (!besideNote || state == ScooterZoneState.Partial || (state == ScooterZoneState.Failed && count > 0)) &&
+        state != ScooterZoneState.Off && !(state == ScooterZoneState.Shown && count == 0)
 
 /**
  * The kind's name, which TalkBack reads too; a slow one's with the limits of the zones it counts where each has one:
@@ -354,12 +359,14 @@ private const val WORD_JOINER = '\u2060'
 private const val KM_PER_MILE = 1.609344
 
 /**
- * What the legend says instead of the kinds, or above them where some zones were left out: never that no zones are
- * published where a city's are drawn ([rules]), or where a city's are on their way or unavailable ([notices]).
+ * What the legend says instead of the kinds, or above them where some zones were left out, or could not be read while
+ * others are drawn: never that no zones are published where a city's are drawn ([rules]), or where a city's are on
+ * their way or unavailable ([notices]).
  */
 internal fun zoneLegendNote(state: ScooterZoneState, count: Int, rules: Boolean, notices: Boolean): String? = when {
     // Some zones were left out of the area's answer: those drawn are named, and zoomed in, all are.
     state == ScooterZoneState.ZoomIn || state == ScooterZoneState.Partial -> localized("Zoom in to see the zones")
+    // Some could not be read: those of the others drawn are named under it.
     state == ScooterZoneState.Failed -> localized("Zones unavailable right now")
     state == ScooterZoneState.Shown && count == 0 && !rules && !notices -> localized("No zones published here")
     else -> null

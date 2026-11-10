@@ -124,6 +124,11 @@ class CityRuleZoneTest {
         // Unknown rules are not no rules.
         assertEquals("Zones unavailable right now", note(ScooterZoneState.Failed, 0))
         assertEquals(emptyList<ScooterZoneKind>(), legendKinds(ScooterZoneState.Failed, 0, emptyList(), besideNote = true))
+        // One feed's unreadable and the others' drawn: the note says so, and the kinds drawn are named still, with the
+        // slow zones' limits (week review, finding 3.3).
+        assertEquals("Zones unavailable right now", note(ScooterZoneState.Failed, 12))
+        assertEquals(ScooterZoneKind.operatorKinds, legendKinds(ScooterZoneState.Failed, 12, emptyList(), besideNote = true))
+        assertEquals(5.0..5.0, legendKindSpeeds(ScooterZoneState.Failed, 12, speeds(5.0), emptyList(), besideNote = true).known)
         // Those that came are drawn, and named, while the rest are on their way.
         assertNull(note(ScooterZoneState.Loading, 0))
         assertEquals(ScooterZoneKind.operatorKinds, legendKinds(ScooterZoneState.Loading, 0, emptyList(), besideNote = false))

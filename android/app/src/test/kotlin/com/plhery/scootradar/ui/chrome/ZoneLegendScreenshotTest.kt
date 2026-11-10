@@ -84,6 +84,9 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
     ) {
         ZoomIn(ScooterZoneState.ZoomIn, 0, emptyList()),
         Failed(ScooterZoneState.Failed, 0, emptyList()),
+
+        /** One feed's zones unreadable and the others' drawn: the note, and under it the kinds drawn (week review, finding 3.3). */
+        FailedWithKinds(ScooterZoneState.Failed, 12, emptyList()),
         NoneHere(ScooterZoneState.Shown, 0, emptyList()),
         Kinds(ScooterZoneState.Shown, 12, emptyList()),
         Rules(ScooterZoneState.Shown, 0, seoulRules),
