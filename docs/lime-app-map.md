@@ -487,7 +487,9 @@ assigns refresh groups to independent accounts:
 ```
 
 Paths resolve beside the manifest. Account ids and resolved session paths must
-be distinct; up to eight accounts are supported. A missing default manifest
+be distinct; up to 64 accounts are supported (`LIME_MAX_ACCOUNTS`, a bound against a
+malformed manifest, not a measure of what Lime allows: every account calls from the
+cache's one address). A missing default manifest
 keeps the original `LIME_SESSION_PATH` behaviour. An explicit missing manifest
 or malformed configuration is an error. The cache reads the manifest when it
 first wraps Lime feeds; restart through the normal deployment to change it.
@@ -497,8 +499,21 @@ collection slots, and cached query plans. Each refresh group is assigned by
 its id, consistently across restarts and manifest reordering. Removing an
 account reassigns its groups on restart. A failed or throttled request stays
 on its assigned account; it does not retry through the other accounts.
-Requested groups keep priority within their account. The network host,
-vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
+Requested groups keep priority within their account.
+
+A group someone is looking at borrows calls from other accounts. Each of its
+views goes to the account that can start the call soonest: its own on a tie,
+otherwise one that is not cooling down after a 429 or a refused login. Every
+account's pacer still holds it to twelve calls in any 60 seconds, whichever
+groups make them, and keeps its every third turn for its own idle sweeps.
+Idle sweeps never borrow, and a group whose own account is cooling down fails
+there as before. Until 10 November 2026 a group's calls waited for its own
+account's minute while the others had theirs to spare: on 9 and 10 November a
+Lime group someone opened, with its last positions standing faded, started in
+0.8 seconds (median) and showed its first scooters 32 seconds later, though
+Lime answers a view in half a second.
+
+The network host, vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
 cadence and the catalog's conservative single-account budget remain in place.
 
 The original account, `lime2`, `lime3`, `lime4`, `lime5`, `lime6`, `lime7`, and `lime8`
@@ -509,7 +524,9 @@ raising the configured pool capacity from 36 to 96 requests a minute.
 for research, whose session has a separate renewal owner. Never share a
 refresh-token file between the local research process and production. The
 protected metric `scootradar_lime_account_requests_total{account,kind}` shows
-requests from each production account using only its manifest id.
+requests from each production account using only its manifest id, and
+`scootradar_lime_account_lent_requests_total{account}` those of its status
+requests made for another account's groups.
 
 Only actual scooter pins are retained. Battery is a percentage; range, fares,
 vehicle-specific rental links, parking and zone overlays are not supplied by

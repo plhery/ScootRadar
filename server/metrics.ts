@@ -41,7 +41,7 @@ interface MetricsSources {
   /** Requests sent to operators since the start, by kind. */
   upstreamRequests?: () => Record<string, number>;
   /** Lime requests by a manifest's non-secret account id, including idle accounts at zero. */
-  limeAccountRequests?: () => readonly { account: string; status: number; metadata: number }[];
+  limeAccountRequests?: () => readonly { account: string; status: number; metadata: number; lent?: number }[];
   /** Pricing plans fetched again for scooters naming plans they did not list, by outcome. */
   planRefreshes?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
@@ -276,6 +276,9 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_lime_account_requests_total', 'counter',
           'Lime requests sent by independently paced production account and request kind.',
           sources.limeAccountRequests().flatMap(row => (['status', 'metadata'] as const).map((kind): [Labels, number] => [{ account: row.account, kind }, row[kind]])));
+        metric('scootradar_lime_account_lent_requests_total', 'counter',
+          'Of a Lime account\'s status requests, those it made for another account\'s group someone was looking at, whose own account had no turn as soon.',
+          sources.limeAccountRequests().map((row): [Labels, number] => [{ account: row.account }, row.lent ?? 0]));
       }
       if (sources.planRefreshes) {
         metric('scootradar_pricing_plan_refreshes_total', 'counter',

@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { MapBounds } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
-import { LimeClient, LimeAccountPool, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { LimeClient, LimeAccountPool, LIME_MAX_ACCOUNTS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { LIME_QUERY_INTERVAL_MS, LIME_ROUTINE_EVERY } from './limeAreas';
 import { withinCollection } from './sweeps';
@@ -170,6 +170,9 @@ describe('Lime portable rider session', () => {
   });
 });
 
+const sixteenViews: MapBounds[] = Array.from({ length: 16 }, (_, i) => ({ south: 0, north: .01, west: i * .000625, east: (i + 1) * .000625 }));
+const looking = { urgent: () => true, focus: () => undefined, progress: () => {} };
+
 describe('independent Lime production accounts', () => {
   it('keeps the legacy session by default, resolves private manifest paths, and rejects duplicate accounts or files', async () => {
     const f = await fixture();
@@ -191,6 +194,17 @@ describe('independent Lime production accounts', () => {
     expect(() => readLimeAccounts({ accountsPath: join(f.directory, 'missing.json') })).toThrow('missing or unreadable');
     await writeFile(path, 'not json');
     expect(() => readLimeAccounts({ accountsPath: path })).toThrow('missing or unreadable');
+  });
+
+  it('takes more than eight accounts, up to a bound that only catches a malformed manifest', async () => {
+    const f = await fixture();
+    const path = join(f.directory, 'lime-accounts.json');
+    const accounts = (count: number) => Array.from({ length: count }, (_, i) => ({ id: `lime${i + 1}`, sessionPath: `lime${i + 1}.json` }));
+    await writeFile(path, JSON.stringify({ version: 1, accounts: accounts(12) }));
+    expect(new LimeAccountPool(readLimeAccounts({ accountsPath: path })).requests).toHaveLength(12);
+    await writeFile(path, JSON.stringify({ version: 1, accounts: accounts(LIME_MAX_ACCOUNTS + 1) }));
+    expect(() => readLimeAccounts({ accountsPath: path })).toThrow('invalid');
+    expect(() => new LimeAccountPool(accounts(LIME_MAX_ACCOUNTS + 1))).toThrow('unique');
   });
 
   it('keeps feed assignments through manifest reordering and adds scheduler slots only to rider feeds', () => {
@@ -259,7 +273,7 @@ describe('independent Lime production accounts', () => {
     await expect(pool.collect(two)).resolves.toMatchObject({ vehicles: [expect.anything()] });
     await expect(pool.collect(one)).rejects.toThrow('temporarily rate limited');
     expect(transport).toHaveBeenCalledTimes(2);
-    expect(pool.requests).toEqual([{ account: 'a', status: 1, metadata: 0 }, { account: 'b', status: 1, metadata: 0 }]);
+    expect(pool.requests).toEqual([{ account: 'a', status: 1, metadata: 0, lent: 0 }, { account: 'b', status: 1, metadata: 0, lent: 0 }]);
     now += 120_000;
     transport.mockImplementation(async () => response(map()));
     await expect(pool.collect(one)).resolves.toMatchObject({ stale: false });
@@ -287,6 +301,65 @@ describe('independent Lime production accounts', () => {
       expect(times).toHaveLength(2);
       await vi.advanceTimersByTimeAsync(1); await waiting;
       expect(times.at(-1)).toEqual({ device: a.seed.deviceToken, at: 5000 });
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('reads a group someone is looking at through another account once its own has spent its minute, and an idle sweep only through its own', async () => {
+    const a = await fixture('-a'), b = await fixture('-b'), c = await fixture('-c');
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      const calls: { device: string; at: number }[] = [];
+      const pool = new LimeAccountPool([a, b, c].map((f, i) => ({ id: 'abc'[i], sessionPath: f.sessionPath })),
+        { intervalMs: LIME_QUERY_INTERVAL_MS, transport: async (_path, headers) => {
+          calls.push({ device: headers['X-Device-Token'], at: Date.now() - initialTime });
+          return response(map());
+        } });
+      // Each account's first minute keeps the five seconds, as a deploy runs the old cache beside it.
+      await vi.advanceTimersByTimeAsync(60_000);
+      const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}`, limeMapTiles: sixteenViews }));
+      const [opened, swept] = candidates.filter(s => pool.accountFor(s.id).id === 'a');
+      await withinCollection(looking, () => pool.collect(opened));
+      // Its own account's twelve, then four through another, all at once.
+      expect(calls.filter(call => call.device === a.seed.deviceToken)).toHaveLength(12);
+      expect(calls.filter(call => call.device !== a.seed.deviceToken)).toHaveLength(4);
+      expect(calls.every(call => call.at === 60_000)).toBe(true);
+      expect(pool.requests.map(row => row.lent).sort()).toEqual([0, 0, 4]);
+      expect(pool.requests.find(row => row.account === 'a')!.lent).toBe(0);
+      calls.length = 0;
+      const idle = pool.collect(swept);
+      await vi.advanceTimersByTimeAsync(140_000);
+      await idle;
+      expect(calls.map(call => call.device)).toEqual(Array(16).fill(a.seed.deviceToken));
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('never borrows from an account cooling down after a 429, and a group whose own account cools down fails there', async () => {
+    const a = await fixture('-a'), b = await fixture('-b');
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      const calls: string[] = [];
+      const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+        { intervalMs: LIME_QUERY_INTERVAL_MS, transport: async (_path, headers) => {
+          calls.push(headers['X-Device-Token']);
+          return headers['X-Device-Token'] === b.seed.deviceToken ? { ...response({}, 429), retryAfter: '600' } : response(map());
+        } });
+      const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}`, limeMapTiles: sixteenViews }));
+      const [onA, idleOnA] = candidates.filter(s => pool.accountFor(s.id).id === 'a');
+      const onB = candidates.find(s => pool.accountFor(s.id).id === 'b')!;
+      // Each account's one turn of its first second: b is told to wait ten minutes, and a reads its session.
+      await expect(pool.collect(onB)).rejects.toThrow('HTTP 429');
+      await pool.collect({ ...idleOnA, limeMapTiles: sixteenViews.slice(0, 1) });
+      await vi.advanceTimersByTimeAsync(60_000);
+      calls.length = 0;
+      const opened = withinCollection(looking, () => pool.collect(onA));
+      await vi.advanceTimersByTimeAsync(0);
+      expect(calls).toHaveLength(12);
+      await vi.advanceTimersByTimeAsync(60_000);
+      await opened;
+      expect(calls).toEqual(Array(16).fill(a.seed.deviceToken));
+      await expect(withinCollection(looking, () => pool.collect(onB))).rejects.toThrow('temporarily rate limited');
+      expect(calls).toHaveLength(16);
+      expect(pool.requests.map(row => row.lent)).toEqual([0, 0]);
     } finally { vi.useRealTimers(); }
   });
 
@@ -338,7 +411,7 @@ describe('independent Lime production accounts', () => {
     expect(transport.mock.calls.filter(([path]) => path.endsWith('/token'))).toHaveLength(1);
     expect(JSON.parse(await readFile(a.sessionPath, 'utf8')).refreshToken).toBe('new-refresh');
     expect(await readFile(b.sessionPath, 'utf8')).toBe(beforeB);
-    expect(pool.requests).toEqual([{ account: 'a', status: 2, metadata: 1 }, { account: 'b', status: 1, metadata: 0 }]);
+    expect(pool.requests).toEqual([{ account: 'a', status: 2, metadata: 1, lent: 0 }, { account: 'b', status: 1, metadata: 0, lent: 0 }]);
   });
 });
 

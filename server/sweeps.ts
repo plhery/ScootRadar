@@ -109,6 +109,24 @@ export class Pacer {
     return Math.max(0, this.nextStart(now, currentCollection()?.urgent() ?? false) - now);
   }
 
+  /**
+   * When a request someone is looking at, asked for now, would start: after those someone is looking
+   * at already waiting here, each taking the next turn the minute's budget frees. An estimate, to choose
+   * between clients (LimeAccountPool): a turn kept for an idle sweep (routineEvery) can make it later.
+   */
+  urgentStartAt(): number {
+    const now = this.now();
+    const ahead = this.waiting.filter(waiter => waiter.urgent).length;
+    while (this.started.length && this.started[0] <= now - PACE_WINDOW_MS) this.started.shift();
+    let at = now;
+    if (this.perWindow !== Infinity) {
+      const turns = [...Array<number>(this.perWindow - this.started.length).fill(now), ...this.started.map(start => start + PACE_WINDOW_MS)];
+      at = turns[ahead % this.perWindow] + Math.floor(ahead / this.perWindow) * PACE_WINDOW_MS;
+    }
+    const spacing = this.spaced ? this.lastSpaced + this.intervalMs * (ahead + 1) : -Infinity;
+    return Math.max(this.heldUntil, at, spacing);
+  }
+
   /** No request starts before `at`, as when the host asks to wait. */
   holdUntil(at: number): void {
     if (at <= this.heldUntil) return;

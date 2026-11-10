@@ -12,7 +12,7 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { Pacer, SweepProgress, takeNearest } from './sweeps';
+import { currentCollection, Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://web-production.lime.bike';
 const RETRY_MS = 60_000;
@@ -188,6 +188,13 @@ export class LimeClient {
     })();
     return this.renewing;
   }
+  /** Whether a call asked for now would go out: the account is not cooling down after a 429 or a refused login. */
+  ready(): boolean {
+    const now = this.now();
+    return now >= this.blockedUntil && now >= this.retryAt;
+  }
+  /** When a call for a town someone is looking at, asked for now, would start (Pacer.urgentStartAt). */
+  urgentStartAt(): number { return this.pace.urgentStartAt(); }
   async pins(bounds: MapBounds): Promise<unknown> {
     const query = new URLSearchParams({ ne_lat: String(bounds.north), ne_lng: String(bounds.east),
       sw_lat: String(bounds.south), sw_lng: String(bounds.west), user_latitude: String((bounds.north + bounds.south) / 2),
@@ -295,7 +302,13 @@ export class LimeMapCollector {
   }
 }
 export interface LimeAccount { id: string; sessionPath: string }
-export interface LimeAccountRequests { account: string; status: number; metadata: number }
+/** An account's calls by kind, and the map reads it took on for another account's groups (lent), which its status calls include. */
+export interface LimeAccountRequests { account: string; status: number; metadata: number; lent: number }
+/**
+ * A sanity bound on the manifest, not a measure of what Lime allows: every account calls from the cache's one
+ * address. Eight until 10 November 2026, the evening eight accounts served production.
+ */
+export const LIME_MAX_ACCOUNTS = 64;
 
 /** Optional private manifest; an absent default keeps the original single-account setup. */
 export function readLimeAccounts(options: { accountsPath?: string; sessionPath?: string } = {}): LimeAccount[] {
@@ -309,7 +322,7 @@ export function readLimeAccounts(options: { accountsPath?: string; sessionPath?:
     if (!explicit && (error as NodeJS.ErrnoException).code === 'ENOENT') return [{ id: 'primary', sessionPath }];
     throw new Error('Lime account configuration is missing or unreadable');
   }
-  if (manifest?.version !== 1 || !Array.isArray(manifest.accounts) || !manifest.accounts.length || manifest.accounts.length > 8) {
+  if (manifest?.version !== 1 || !Array.isArray(manifest.accounts) || !manifest.accounts.length || manifest.accounts.length > LIME_MAX_ACCOUNTS) {
     throw new Error('Lime account configuration is invalid');
   }
   return validateAccounts(manifest.accounts.map(value => {
@@ -320,23 +333,51 @@ export function readLimeAccounts(options: { accountsPath?: string; sessionPath?:
 }
 
 function validateAccounts(accounts: readonly LimeAccount[]): LimeAccount[] {
-  if (!accounts.length || accounts.length > 8 || accounts.some(account => !/^[a-z0-9][a-z0-9-]{0,31}$/.test(account.id) || !account.sessionPath) ||
+  if (!accounts.length || accounts.length > LIME_MAX_ACCOUNTS || accounts.some(account => !/^[a-z0-9][a-z0-9-]{0,31}$/.test(account.id) || !account.sessionPath) ||
       new Set(accounts.map(account => account.id)).size !== accounts.length ||
       new Set(accounts.map(account => resolve(account.sessionPath))).size !== accounts.length) throw new Error('Lime accounts must have unique ids and session files');
   return accounts.map(account => ({ ...account }));
 }
 
-/** A feed stays on its account during failures; no retry switches it to another quota. */
+/**
+ * Each group is its account's: its slots, plans and idle sweeps, and its calls but those a group someone is
+ * looking at borrows (pins). A feed stays on its account during failures; no retry switches it to another quota.
+ */
 export class LimeAccountPool {
   readonly accounts: readonly LimeAccount[];
   readonly requests: LimeAccountRequests[];
+  private readonly clients: Map<string, LimeClient>;
   private readonly collectors: Map<string, LimeMapCollector>;
   constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest'> = {}) {
     this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
-    this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0 }));
-    this.collectors = new Map(this.accounts.map((account, index) => [account.id, new LimeMapCollector(new LimeClient({
+    this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0 }));
+    this.clients = new Map(this.accounts.map((account, index) => [account.id, new LimeClient({
       ...options, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
-    }))]));
+    })]));
+    this.collectors = new Map(this.accounts.map(account => [account.id,
+      new LimeMapCollector({ pins: bounds => this.pins(account.id, bounds) })]));
+  }
+  /**
+   * A view of a group, through its own account, or for a group someone is looking at, through the account
+   * that can start the call soonest: its own on a tie, else one not cooling down after a 429 or a refused
+   * login. Each account's pacer still holds it to twelve calls in any 60 seconds, whosever the calls. A
+   * group's calls waited for its own account's minute while others had theirs to spare: on 9 and 10
+   * November 2026 a Lime group someone opened started in 0.8 seconds (median) and showed its first scooters
+   * 32 seconds later, though Lime answers a view in half a second. An idle sweep keeps to its account, as
+   * does a group whose account cools down: its call fails there, as before.
+   */
+  private pins(home: string, bounds: MapBounds): Promise<unknown> {
+    const own = this.clients.get(home)!;
+    if (this.clients.size < 2 || !currentCollection()?.urgent() || !own.ready()) return own.pins(bounds);
+    let lender: string | undefined, soonest = own.urgentStartAt();
+    for (const [id, client] of this.clients) {
+      if (id === home || !client.ready()) continue;
+      const at = client.urgentStartAt();
+      if (at < soonest) { lender = id; soonest = at; }
+    }
+    if (lender === undefined) return own.pins(bounds);
+    this.requests.find(row => row.account === lender)!.lent++;
+    return this.clients.get(lender)!.pins(bounds);
   }
   accountFor(feedId: string): LimeAccount {
     // Rendezvous hashing keeps assignments stable when the manifest is reordered, and moves

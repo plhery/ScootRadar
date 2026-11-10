@@ -113,6 +113,9 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_lime_account_requests_total{account,kind="status|metadata"}`:
   requests per independently paced Lime production account, including each
   account's renewals. The account label is its non-secret manifest id.
+- `scootradar_lime_account_lent_requests_total{account}`: of an account's status
+  requests, those it made for another account's group someone was looking at,
+  when its own account had no turn as soon (`server/limeApp.ts`, LimeAccountPool).
 - `scootradar_lime_wake_clients_total{refreshes="1|2-3|4-7|8-15|16+"}` and
   `scootradar_lime_wakes_total{refreshes}`: visitors whose requests set off refreshes of
   Lime rider-map feeds, by how many they set off in a quarter hour (UTC), and those

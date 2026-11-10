@@ -118,6 +118,28 @@ describe('Pacer', () => {
       'second1 120', 'idle1 120', 'second2 120', 'idle2 130']);
   });
 
+  it('tells when a turn someone is looking at would start: after those of its kind waiting, as the minute frees turns', async () => {
+    const pacer = new Pacer(10_000);
+    const looked = collection({ urgent: () => true });
+    const take = () => withinCollection(looked, () => pacer.turn());
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    expect(pacer.urgentStartAt()).toBe(T0 + 60_000);
+    await Promise.all([take(), take(), take()]);
+    await vi.advanceTimersByTimeAsync(20_000);
+    await Promise.all([take(), take(), take()]);
+    // The minute's six turns are spent: the next comes back a minute after the first.
+    expect(pacer.urgentStartAt()).toBe(T0 + 120_000);
+    // An idle sweep waiting is not ahead of it; three turns someone is looking at are.
+    void pacer.turn();
+    expect(pacer.urgentStartAt()).toBe(T0 + 120_000);
+    const waiting = [take(), take(), take()];
+    expect(pacer.urgentStartAt()).toBe(T0 + 140_000);
+    pacer.holdUntil(T0 + 200_000);
+    expect(pacer.urgentStartAt()).toBe(T0 + 200_000);
+    await vi.advanceTimersByTimeAsync(3 * PACE_WINDOW_MS);
+    await Promise.all(waiting);
+  });
+
   it('holds the next turn while the host asks to wait, and starts when told', async () => {
     const pacer = new Pacer(1_000, Date.now, T0 + 200);
     const at: number[] = [];
