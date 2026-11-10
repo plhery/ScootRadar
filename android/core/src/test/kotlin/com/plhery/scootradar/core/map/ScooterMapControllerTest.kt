@@ -727,6 +727,35 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun aRiderWithOneAppKeepsOneAppWhenTheCatalogGrows() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        fun makeModel() = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        // Saved before Voi came: the lists lack it.
+        fun saveWithoutVoi() {
+            val disabled = defaults.stringArray(forKey = "disabled-providers").orEmpty()
+            defaults.set(disabled - "voi", forKey = "disabled-providers")
+        }
+
+        // Lime's quick chip alone: Voi, added since, stays off (Desk card 350, item 4; the iPhone's
+        // testARiderWithOneAppKeepsOneAppWhenTheCatalogGrows).
+        makeModel().toggleQuickProvider(Lime)
+        assertEquals("lime", defaults.string(forKey = "only-provider"))
+        saveWithoutVoi()
+        assertEquals(setOf(Lime), makeModel().enabledProviders.value)
+
+        // Two on: one added since comes on, as before.
+        makeModel().toggle(Bolt)
+        assertNull(defaults.string(forKey = "only-provider"))
+        saveWithoutVoi()
+        assertEquals(setOf(Bolt, Lime, Voi), makeModel().enabledProviders.value)
+
+        // One the app doesn't know: the providers turned off are read as before.
+        defaults.set("gone", forKey = "only-provider")
+        defaults.set(listOf("voi"), forKey = "disabled-providers")
+        assertEquals(ScooterProvider.entries.toSet() - Voi, makeModel().enabledProviders.value)
+    }
+
+    @Test
     fun appearanceGoesByTheSunUntilOneIsChosenAndIsKept() = runTest {
         val defaults = InMemoryScooterDefaults()
         val clock = TestClock()
@@ -3165,7 +3194,7 @@ class ScooterMapControllerTest {
         // keeps AppleLanguages.
         val allowed = setOf(
             "minimum-range", "apple-map-style", "map-zones", "appearance", "disabled-providers",
-            "ride-estimate-minutes-v1", "provider-ride-passes-v1", "has-located-once",
+            "ride-estimate-minutes-v1", "provider-ride-passes-v1", "has-located-once", "only-provider",
             "review-use-days", "review-last-use-day", "review-bad-day", "review-asked-version", "review-asked-day",
         )
         val keys = defaults.writes.map { it.substringBefore(" = ") }.toSet()

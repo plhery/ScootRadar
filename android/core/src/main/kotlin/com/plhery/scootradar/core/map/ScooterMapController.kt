@@ -786,6 +786,10 @@ class ScooterMapController(
         _enabledProviders.value = value
         // The providers turned off, as the iPhone keeps them since 17118b3b: one a later catalog adds shows.
         defaults.set((ScooterProvider.entries - value).map { it.rawValue }.sorted(), forKey = DISABLED_PROVIDERS_KEY)
+        // And the one on, where one alone is: a rider with one app keeps one app, those a later catalog adds staying
+        // off (Desk card 350, item 4; the iPhone's only-provider, the website's scooters-provider-only).
+        val only = value.singleOrNull()
+        if (only != null) defaults.set(only.rawValue, forKey = ONLY_PROVIDER_KEY) else defaults.removeObject(forKey = ONLY_PROVIDER_KEY)
         rebuildMapScooters()
         rebuildMapClusters()
         rebuildMapLastSeen()
@@ -1866,6 +1870,8 @@ class ScooterMapController(
         private const val SHOWS_ZONES_KEY = "map-zones"
         private const val APPEARANCE_KEY = "appearance"
         private const val DISABLED_PROVIDERS_KEY = "disabled-providers"
+        /** The provider on where it is the only one, kept beside those turned off since 10 November 2026. */
+        private const val ONLY_PROVIDER_KEY = "only-provider"
         private const val RIDE_ESTIMATE_MINUTES_KEY = "ride-estimate-minutes-v1"
         private const val RIDE_PASSES_KEY = "provider-ride-passes-v1"
         private const val HAS_LOCATED_ONCE_KEY = "has-located-once"
@@ -1880,9 +1886,11 @@ class ScooterMapController(
          * passed over, as on the iPhone since 17118b3b (ScooterMapModel.swift:478-479; PLAN §0, LOG-288's fix). The
          * iPhone also reads its old list of those turned on, enabled-providers, until the filters next change, turning
          * off only the eight providers of before 11 October 2026 it lacks (:480-487); no Android build that reached a
-         * rider wrote that list, so there is none to read here.
+         * rider wrote that list, so there is none to read here. Where one provider alone was on, and this version knows
+         * it, only it is: those added since stay off (Desk card 350, item 4).
          */
         private fun savedProviders(defaults: ScooterDefaults): Set<ScooterProvider>? {
+            defaults.string(forKey = ONLY_PROVIDER_KEY)?.let { ScooterProvider.fromRawValue(it) }?.let { return setOf(it) }
             val disabledIDs = defaults.stringArray(forKey = DISABLED_PROVIDERS_KEY) ?: return null
             return ScooterProvider.entries.toSet() - disabledIDs.mapNotNull { ScooterProvider.fromRawValue(it) }.toSet()
         }
