@@ -638,6 +638,8 @@ export default function Home() {
   // Held while the walk is under way, or to say it is gone; a walk that failed or
   // got there leaves the card to the view, as any other.
   const walkHolds = walk.state !== null && walk.state.phase !== 'failed' && walk.state.phase !== 'arrived';
+  // Under way: locating, finding the way or showing it.
+  const walkOnMap = walk.state?.phase === 'locating' || walk.state?.phase === 'finding' || walk.state?.phase === 'shown';
   const pinnedVehicle = walkHolds && walkPin && 'vehicle' in walkPin ? walkPin.vehicle : null;
   const pinnedParking = walkHolds && walkPin && 'parking' in walkPin ? walkPin.parking : null;
   const pinnedProvider = pinnedVehicle?.provider ?? null;
@@ -706,26 +708,30 @@ export default function Home() {
   const routeRemainingM = walk.view?.phase === 'shown' ? walk.view.remainingM : null;
 
   // While it is walked to, a scooter or a bay keeps its card out of view, among
-  // groups and below the zoom of bays; a provider switched off still closes it.
+  // groups and below the zoom of bays. While the walk is under way its provider
+  // switched off leaves it too, as in the iOS and Android apps: the walk is what the
+  // rider is doing, the filters are for browsing. Without a walk under way, a provider
+  // switched off closes it.
   const selectedParking = useMemo<SelectedParking | null>(() => {
     if (selectedParkingId === null) return null;
     const bay = walkedParking ?? visibleParking.find(location => location.id === selectedParkingId);
-    if (!bay || !enabledProviders.has(bay.provider)) return null;
+    if (!bay || (!enabledProviders.has(bay.provider) && !(walkOnMap && bay === walkedParking))) return null;
     return { parking: bay, walk: alongRoute(walkEstimate(walkOrigin, bay.lat, bay.lng), routeRemainingM) };
-  }, [enabledProviders, routeRemainingM, selectedParkingId, visibleParking, walkOrigin, walkedParking]);
+  }, [enabledProviders, routeRemainingM, selectedParkingId, visibleParking, walkOnMap, walkOrigin, walkedParking]);
 
   const selectedVehicle = useMemo<SelectedVehicle | null>(() => {
     if (!selectedVehicleKey) return null;
     const vehicle = walkedVehicle ??
       viewportData.visibleVehicles.find(candidate => vehicleKey(candidate) === selectedVehicleKey);
-    if (!vehicle || !enabledProviders.has(vehicle.provider)) return null;
+    if (!vehicle || (!enabledProviders.has(vehicle.provider) && !(walkOnMap && vehicle === walkedVehicle))) return null;
     return {
       vehicle,
       walk: alongRoute(walkEstimate(walkOrigin, vehicle.lat, vehicle.lng), routeRemainingM),
       curfew: activeCurfew([vehicle.lat, vehicle.lng], now),
       choice: chosenVehicleKey ?? selectedVehicleKey,
     };
-  }, [chosenVehicleKey, enabledProviders, now, routeRemainingM, selectedVehicleKey, viewportData.visibleVehicles, walkOrigin, walkedVehicle]);
+  }, [chosenVehicleKey, enabledProviders, now, routeRemainingM, selectedVehicleKey, viewportData.visibleVehicles, walkOnMap, walkOrigin,
+    walkedVehicle]);
 
   // The scooter that leads the dock: the nearest one shown, while single scooters are.
   const nearestVehicle = useMemo(() => {
@@ -948,8 +954,6 @@ export default function Home() {
     if (!walked || visibleParking.some(location => location.id === walked.id)) return visibleParking;
     return [...visibleParking, walked];
   }, [selectedParking, visibleParking, walkHolds]);
-  // A stray tap on the map does not take the way away: the card closes it.
-  const walkOnMap = walkPhase === 'locating' || walkPhase === 'finding' || walkPhase === 'shown';
 
   // The marker of the selection: the card in the dock hands the focus back to it when it closes.
   const selectionAnchor = useCallback(
@@ -1150,6 +1154,7 @@ export default function Home() {
         onVehicleSelect={selectVehicle}
         selectedParkingId={selectedParkingId}
         onParkingSelect={selectParking}
+        // A stray tap on the map does not take the way away: the card closes it.
         onMapClick={walkOnMap ? undefined : closeCard}
         walk={walk.view}
         revealAboveDock={!desktop}

@@ -881,7 +881,7 @@ it('walks to a parking bay too, and keeps the bay and its way below the zoom of 
   expect(screen.getByTestId('parking')).toHaveTextContent('0');
 });
 
-it('keeps the scooter walked to and its card while the map is away from it, until its provider is switched off', async () => {
+it('keeps the scooter walked to and its card while the map is away from it, its provider switched off too', async () => {
   stubServer(() => data([FAR]));
   await mountLocated();
   fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
@@ -902,13 +902,78 @@ it('keeps the scooter walked to and its card while the map is away from it, unti
   expect(screen.queryByText(TAKEN)).toBeNull();
   expect(routeOnMap()).toHaveTextContent('shown 3 1');
 
+  // As in the apps: the walk is what the rider is doing, the filters are for browsing.
   fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
-  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(within(scooterCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(screen.getByRole('button', { name: 'Marker far' })).toBeInTheDocument();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+
+  fireEvent.click(within(scooterCard()).getByRole('button', { name: 'Close scooter details' }));
   expect(routeOnMap()).toHaveTextContent('none');
   expect(screen.getByTestId('selected')).toHaveTextContent('none');
   fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
   expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
   expect(screen.getByTestId('vehicles')).toHaveTextContent('0');
+});
+
+it('keeps a walk, its scooter on the map and its card when its app is switched off, and closes a card without one', async () => {
+  let vehicles = [FAR];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  expect(within(scooterCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+  expect(screen.getByRole('button', { name: 'Marker far' })).toBeInTheDocument();
+  await refreshData();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+
+  // The route hidden, it is a card like any other, and goes with its app.
+  fireEvent.click(within(scooterCard()).getByRole('button', { name: 'Hide route' }));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('0');
+
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+
+  // Taken, the walk is over: its card goes with its app, as in the apps.
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  vehicles = [];
+  await refreshData();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  await refreshData();
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('0');
+});
+
+it('keeps a bay walked to and its card when its app is switched off', async () => {
+  stubServer(() => data([], [FAR_BAY]));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Parking bay' }));
+  const bayCard = () => screen.getByRole('group', { name: 'Lime parking bay' });
+  await pressDirections(bayCard());
+
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  expect(within(bayCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(screen.getByTestId('parking')).toHaveTextContent('1');
+
+  fireEvent.click(within(bayCard()).getByRole('button', { name: 'Hide route' }));
+  expect(screen.queryByRole('group', { name: 'Lime parking bay' })).toBeNull();
+  expect(screen.getByTestId('parking')).toHaveTextContent('0');
 });
 
 it('says the scooter walked to was taken once two updates of the data that would show it no longer have it', async () => {

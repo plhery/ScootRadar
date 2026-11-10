@@ -405,6 +405,36 @@ test('a walk ends with its card, and its scooter stays selected while the map is
   await expect(page.locator('.scooter-marker-selected')).toHaveCount(0);
 });
 
+test('a walk goes on with its scooter on the map when its app is switched off in the filters; without the walk its card closes', async ({ page }) => {
+  await locateAt(page, HERE);
+  await answerWalks(page, { body: { path: WAY, distanceM: Math.round(WALK_M) } });
+  await page.goto('/map');
+  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  await expect(page.locator('.user-location-marker')).toBeVisible();
+  const card = await openLime(page);
+  await card.getByRole('button', { name: 'Directions', exact: true }).click();
+  await expect(card.getByRole('button', { name: 'Hide route', exact: true })).toBeVisible();
+
+  // Bolt on and Lime off: the walk is what the rider is doing, as in the iPhone and Android apps.
+  await page.getByRole('button', { name: 'Filters active', exact: true }).click();
+  const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
+  await filters.getByRole('button', { name: /^Bolt, 1\./ }).click();
+  await filters.getByRole('button', { name: /^Lime, 1\./ }).click();
+  await filters.getByRole('button', { name: 'Show 1 scooter' }).click();
+  await expect(filters).not.toBeVisible();
+  await expect(card.getByRole('button', { name: 'Hide route', exact: true })).toBeVisible();
+  await expect(page.locator('path.walk-route-dots')).toBeVisible();
+  await expect(page.locator('.scooter-marker')).toHaveCount(2);
+  await expect(page.locator('.scooter-marker-selected')).toHaveCount(1);
+
+  // The way hidden, it is a card like any other, and goes with its app.
+  await card.getByRole('button', { name: 'Hide route', exact: true }).click();
+  await expect(card).toHaveCount(0);
+  await expect(page.locator('path.walk-route')).toHaveCount(0);
+  await expect(page.locator('.scooter-marker')).toHaveCount(1);
+  await expect(page.locator('.scooter-marker-selected')).toHaveCount(0);
+});
+
 for (const { label, status, reason, message } of [
   { label: 'no walking route', status: 422, reason: 'no_route', message: 'Couldn’t find a walking route.' },
   { label: 'a busy routing service', status: 503, reason: 'busy', message: 'Walking routes can’t be loaded right now.' },
