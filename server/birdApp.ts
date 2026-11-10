@@ -11,7 +11,7 @@ import { daytimeSweeps } from './appMapCadence';
 import { heldSquare, sweepNearestArea, type Disc, type NearestMap, type NearestProgress, type NearestSweep, type Ring,
   type SweepLimits } from './nearestSweep';
 import { saveAtomically } from './snapshotFile';
-import { currentCollection, Pacer, SweepProgress, type CollectionScope } from './sweeps';
+import { currentCollection, Pacer, SweepProgress, withinCollection, type CollectionScope, type PaceOptions } from './sweeps';
 
 const ORIGIN = 'https://api-bird.prod.birdapp.com';
 const AUTH = 'https://api-auth.prod.birdapp.com';
@@ -20,12 +20,27 @@ export const BIRD_PAGE = 250;
 /** How far a request reaches: the research reader's verified limit (docs/bird-app-map.md). */
 export const BIRD_REACH_M = 5_000;
 /**
- * Two requests a minute for every Bird area together, 120 an hour. On 27 October 2026 the map
- * made up its scooters twice after about 200 requests: in eleven minutes 2.5 to 3 seconds apart, and
- * in 23 minutes six seconds apart. So its limit counts requests over some period, not their pace,
- * and it is not published (docs/bird-app-map.md).
+ * An idle sweep's spacing: one request every 30 seconds, as every Bird request was until 10 November
+ * 2026. On 27 October 2026 the map made up its scooters twice after about 200 requests: in eleven
+ * minutes 2.5 to 3 seconds apart, and in 23 minutes six seconds apart. So its limit counts requests
+ * over some period, not their pace, and it is not published (docs/bird-app-map.md).
  */
 export const BIRD_QUERY_INTERVAL_MS = 30_000;
+/**
+ * What all Bird requests may take together (Pacer): a town someone opens up to ten a minute at once
+ * (BIRD_BURST_EVERY_MS), 30 in any five minutes and 120 in any hour, of which an idle sweep, at its 30
+ * seconds, leaves ten and 30 to the towns someone opens. On 10 November 2026 the research account's map
+ * answered 66 requests in 44 seconds, four at a time, with real scooters (Austin's 2,844 in 45 requests;
+ * the cache's sweeps found 2,846 to 2,874 that day), and its API refused the Mac's address (HTTP 403,
+ * Bird's public feeds still answering it) after 139 in four minutes: 30 in five minutes is under a
+ * quarter of that, and 120 an hour well under the 200 the map made up scooters after. Until then two a
+ * minute, so a town opened waited up to 30 seconds for its first scooters, 38 at the median from 8 to 10
+ * November, and Austin's sweep of 31 to 37 took 17 to 39 minutes.
+ */
+export const BIRD_PACE: PaceOptions = {
+  perMinute: 10,
+  spans: [{ ms: 5 * 60_000, requests: 30, idle: 20 }, { ms: 60 * 60_000, requests: 120, idle: 90 }],
+};
 /** After an unverified map, no Bird request for a quarter of an hour: the research reader's hold. */
 export const BIRD_UNTRUSTED_HOLD_MS = 15 * 60_000;
 /** A deploy runs the new cache beside the old one for up to 90 seconds; a starting cache waits for it (BINBIN_START_HOLD_MS). */
@@ -44,9 +59,21 @@ export const BIRD_IDLE_INTERVAL_MS = 24 * 60 * 60_000;
 export const BIRD_IDLE_GRACE_MS = 2 * 60 * 60_000;
 /**
  * How long a request keeps an area watched: three minutes, not the cache's ten, as Lime's (LIME_WATCH_MS).
- * A watched area is swept again as soon as its sweep ends, on the two requests a minute.
  */
 export const BIRD_WATCH_MS = 3 * 60_000;
+/**
+ * A watched area is swept again five minutes after its last sweep started, or once that ends, not a
+ * minute after: a town of one request watched for an hour takes twelve of the hour's 120 (BIRD_PACE), not 60.
+ */
+export const BIRD_WATCHED_INTERVAL_MS = 5 * 60_000;
+/**
+ * A town someone opens has its sweep at the pace of a town looked at (BIRD_PACE) once in half an hour: its
+ * next sweeps, while it stays watched, keep an idle sweep's. Austin's sweeps of 31 to 37, each at that pace
+ * as the last ends, would spend the hour's 120 in twenty minutes and leave every other town none for forty.
+ */
+export const BIRD_BURST_EVERY_MS = 30 * 60_000;
+/** When each area's last sweep at a looked-at town's pace began, by system: in memory, so a restart allows one more. */
+const bursts = new Map<string, { at: number; token: object }>();
 const RETRY_MS = 60_000;
 const RENEW_BEFORE_MS = 60 * 60_000;
 export const birdMapRequests = { status: 0, metadata: 0 };
@@ -64,7 +91,14 @@ const BIRD_MAP: NearestMap = { name: 'Bird', page: BIRD_PAGE, reachM: BIRD_REACH
 export interface BirdScooter { id: string; brand: 'bird' | 'spin'; lat: number; lng: number; battery: number | null; range: number | null }
 export interface BirdReply { scooters: BirdScooter[]; completeM: number }
 interface Session { version: 1; deviceId: string; accessToken: string; refreshToken: string }
-interface ClientOptions { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; startHoldMs?: number }
+interface ClientOptions {
+  sessionPath?: string; fetch?: typeof fetch; now?: () => number;
+  /** One request every intervalMs, 0 for none, instead of BIRD_PACE. */
+  intervalMs?: number;
+  timeoutMs?: number; startHoldMs?: number;
+  /** Where it keeps when its requests of the last hour started, for the cache that replaces it (BIRD_PACE). */
+  pacePath?: string;
+}
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
@@ -169,14 +203,51 @@ export class BirdClient {
   private failure?: Error;
   private session?: Session;
   private renewing?: Promise<Session>;
+  private readonly startAt: number;
+  private readonly pacePath?: string;
+  private restored?: Promise<void>;
+  private pacing = Promise.resolve();
+  private paceSaveFailed = false;
 
   constructor(options: ClientOptions = {}) {
     this.sessionPath = options.sessionPath ?? process.env.BIRD_SESSION_PATH ??
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'bird-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? BIRD_QUERY_INTERVAL_MS, this.now, this.now() + (options.startHoldMs ?? 0));
+    this.startAt = this.now() + (options.startHoldMs ?? 0);
+    this.pace = options.intervalMs === undefined ? new Pacer(BIRD_QUERY_INTERVAL_MS, this.now, this.startAt, Infinity, BIRD_PACE)
+      : new Pacer(options.intervalMs, this.now, this.startAt);
+    this.pacePath = options.pacePath;
     this.timeoutMs = options.timeoutMs ?? 20_000;
+  }
+
+  /**
+   * Counts the requests of the cache it replaces against the hour's budget, read once its start hold
+   * is over, when that cache has stopped: two caches each with its own hour would double the rate.
+   */
+  private restorePace(): Promise<void> {
+    return this.restored ??= (async () => {
+      if (!this.pacePath) return;
+      const wait = this.startAt - this.now();
+      if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
+      try {
+        const saved = object(JSON.parse(await readFile(this.pacePath, 'utf8')));
+        if (saved?.version === 1 && Array.isArray(saved.started)) this.pace.remember(saved.started.filter(finite));
+      } catch { /* none kept, or unreadable: the start hold alone stands */ }
+    })();
+  }
+
+  /** Each save once the one before is done; one that fails is told once and the requests go on. */
+  private savePace(): void {
+    const path = this.pacePath;
+    if (!path) return;
+    const started = this.pace.history();
+    this.pacing = this.pacing.then(() => saveAtomically(path, dirname(path), 'bird-pace',
+      temporary => writeFile(temporary, JSON.stringify({ version: 1, started }), { mode: 0o600 }))).catch(error => {
+      if (this.paceSaveFailed) return;
+      this.paceSaveFailed = true;
+      console.warn(JSON.stringify({ event: 'bird_pace_save_failed', error: error instanceof Error ? error.name : 'UnknownError' }));
+    });
   }
 
   private async load(): Promise<Session> {
@@ -200,8 +271,10 @@ export class BirdClient {
 
   private async request(url: string, init: RequestInit, kind: 'status' | 'metadata'): Promise<Response> {
     if (this.now() < this.blockedUntil) throw new Error('Bird requests are held off');
+    await this.restorePace();
     await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Bird requests are held off');
+    this.savePace();
     birdMapRequests[kind]++;
     let response: Response;
     try { response = await this.fetch(url, { ...init, redirect: 'error', signal: AbortSignal.timeout(this.timeoutMs) }); }
@@ -448,13 +521,22 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   const published = (scooters: Iterable<BirdScooter>): Vehicle[] =>
     [...scooters].filter(inside).map(scooter => birdVehicle(system.provider as 'bird' | 'spin', scooter));
   const scope = currentCollection() as BirdSweepScope | undefined;
+  // The client hears someone looks only during the area's one such sweep of the half hour (BIRD_BURST_EVERY_MS).
+  const token = {}, began = Date.now();
+  const paced: CollectionScope | undefined = scope && { ...scope, urgent: () => {
+    if (!scope.urgent()) return false;
+    const last = bursts.get(system.id);
+    if (last && last.token !== token && began - last.at < BIRD_BURST_EVERY_MS) return false;
+    bursts.set(system.id, { at: began, token });
+    return true;
+  } };
   const found = new Map<string, BirdScooter>();
   // When each scooter was last read, and the last reply: the scooters a long sweep read last show live when
   // it ends, those it read first faded (sweepRead).
   const readAt = new Map<string, number>();
   let lastReadAt: number | undefined;
   const reading = { nearest: async (lat: number, lng: number, radiusM?: number) => {
-    const reply = await api.nearest(lat, lng, radiusM);
+    const reply = await (paced ? withinCollection(paced, () => api.nearest(lat, lng, radiusM)) : api.nearest(lat, lng, radiusM));
     lastReadAt = Date.now();
     for (const scooter of reply.scooters) readAt.set(scooter.id, lastReadAt);
     return reply;
@@ -488,8 +570,13 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   return { observedAt: sweep.startedAt, stale: false, vehicles };
 }
 
-/** The cache's one client, whose pace and holds every Bird request shares, the Rome feed's additions' too (birdSupplement.ts). */
-export const birdMapClient = new BirdClient({ startHoldMs: BIRD_START_HOLD_MS });
+/**
+ * The cache's one client, whose pace and holds every Bird request shares, the Rome feed's additions' too
+ * (birdSupplement.ts). Its last hour's requests are kept beside the sweeps' checkpoints, as a .tmp the
+ * host's backup skips.
+ */
+export const birdMapClient = new BirdClient({ startHoldMs: BIRD_START_HOLD_MS,
+  pacePath: join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'tmp', 'bird-pace.tmp') });
 /** The cache's sweeps' checkpoints, read once its client's start hold is over. Scripts' sweeps keep none. */
 export const birdSweepCheckpoints = new BirdSweepCheckpoints({ startHoldMs: BIRD_START_HOLD_MS });
 let scriptClient: BirdClient | undefined;
@@ -502,7 +589,8 @@ export function withBirdAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const areas = new Map(systems.filter(system => system.birdAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = areas.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: BIRD_IDLE_INTERVAL_MS, idleGraceMs: BIRD_IDLE_GRACE_MS, watchMs: BIRD_WATCH_MS, paced: true,
+    return system ? { ...feed, idleIntervalMs: BIRD_IDLE_INTERVAL_MS, idleGraceMs: BIRD_IDLE_GRACE_MS, watchMs: BIRD_WATCH_MS,
+      activeIntervalMs: BIRD_WATCHED_INTERVAL_MS, paced: true,
       ...system.timeZone ? daytimeSweeps(feed.id, system.timeZone, BIRD_IDLE_INTERVAL_MS) : {},
       collect: () => collectBirdArea(system, previous(feed.id) ?? [], api, undefined, checkpoints) } : feed;
   });

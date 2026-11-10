@@ -51,13 +51,30 @@ the `Retry-After` Bird asks, up to six hours.
 
 ## Pace and budget
 
-One client serves every area: two requests a minute, 120 an hour at
-most. On 27 October 2026 the map made up its scooters twice, both times after
+One client serves every area, and Rome's additions (`BIRD_PACE`). Since
+10 November 2026 a town someone opens has up to ten requests a minute, at
+once, and all requests together no more than 30 in any five minutes and 120
+in any hour. An idle sweep keeps a request every 30 seconds
+(`BIRD_QUERY_INTERVAL_MS`) and waits once 20 have started in five minutes, or
+90 in the hour, which leaves the rest to the towns someone opens. Until then
+every request came 30 seconds after the one before: a town opened waited for
+its first scooters 38 seconds at the median from 8 to 10 November, and
+Austin's sweeps of 31 to 37 requests took 17 to 39 minutes.
+
+On 27 October 2026 the map made up its scooters twice, both times after
 about 200 requests: in eleven minutes 2.5 to 3 seconds apart, and in 23
 minutes six seconds apart (20:52 and 21:48 UTC). Its limit counts requests
 over some period, not their pace, and it is not published; 120 an hour is
-about half what it took. An area nobody looks at is swept once a day
-(`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
+about half what it took. On 10 November 2026, from 22:28 UTC, the research
+account's map answered 66 requests in 44 seconds, up to four at once, with
+real scooters: Austin's 2,844 in 45 requests and 31 seconds, where the
+cache's sweeps found 2,846 to 2,874 that day. A minute later a second run, a
+request every two seconds, had Bird's API refuse the Mac's address after 139
+requests in four minutes (HTTP 403 in 15 ms, 22:32:10 UTC), while Bird's
+public feeds (`mds.bird.co`) still answered it. So 30 in five minutes is
+under a quarter of what that firewall let through.
+
+An area nobody looks at is swept once a day (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
 two hours after a day without a sweep (`BIRD_IDLE_GRACE_MS`): its turn falls at
 the same time each day, but its sweep ends after those queued before it and its
 own 1 to 50 minutes, and a deploy stops the sweeps under way. With ten minutes,
@@ -66,11 +83,20 @@ That night Scottsdale's waited for Austin's of 27 minutes and two others, then
 deploys at 23:43 and 23:57 UTC stopped it, and it ended 58 minutes late and
 Spin's Kent's, after it, 48: Sentry heard of both as stopped
 (SCOOTRADAR-CACHE-6B). A request keeps an area watched for
-three minutes, and a watched area is swept again as soon as its sweep ends.
+three minutes (`BIRD_WATCH_MS`), and a watched area is swept again five
+minutes after its last sweep began, or when that ends
+(`BIRD_WATCHED_INTERVAL_MS`). Only one sweep of an area in half an hour goes
+at an opened town's pace (`BIRD_BURST_EVERY_MS`); the next, while it stays
+watched, keep an idle sweep's. Austin swept again at that pace as each sweep
+ends would spend the hour's 120 in twenty minutes and leave the other towns
+none for forty.
 The 44 areas took about 300 requests, so a day's round of them all takes
 about 150 of the client's 1,440 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
-cache waits two minutes, while the cache it replaces may still be sweeping.
+cache waits two minutes, while the cache it replaces may still be sweeping,
+then counts that cache's requests of the last hour against its own budgets:
+every request saves them as `tmp/bird-pace.tmp` beside the snapshot, as two
+caches each with an hour of its own would double the rate.
 Each sweep is saved after every reply, with where it stood and the scooters
 it had found, as `tmp/bird-sweep.<area>.tmp` beside the snapshot (the host's
 backup skips it, as it does the snapshot's own temporary files), and removed
@@ -81,8 +107,9 @@ as its start: the map shows what it finds only within 15 minutes of that
 start, as any sweep under way, and once it ends, the scooters it read in its
 last 15 minutes live.
 Rome's additions take about 24 requests every two hours by day, about 170 a
-day, and 24 every half hour while someone looks at Rome, 12 of each 30
-minutes ([below](#rome-adds-the-scooters-its-feed-leaves-out)).
+day, and 24 every half hour while someone looks at Rome, at an opened town's
+pace: about three minutes of each 30, twelve before 10 November 2026
+([below](#rome-adds-the-scooters-its-feed-leaves-out)).
 
 Production and research share an account's limit, and renewing rotates its
 refresh token. So research runs on an account of its own since 1 November

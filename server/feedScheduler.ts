@@ -10,6 +10,11 @@ export interface ScheduledFeed {
   /** How long a request keeps it watched, when not the scheduler's watchMs: less long under a tight quota. */
   watchMs?: number;
   /**
+   * How long after a collection started a request or its watch starts the next, when not the scheduler's
+   * activeIntervalMs: longer where one costs much of a small quota, as a Bird area's sweep.
+   */
+  activeIntervalMs?: number;
+  /**
    * Its client paces every request on the host, whatever the collection: it waits on that pace,
    * not on the cache, so it takes one of its host's slots but none of the shared ones.
    */
@@ -199,7 +204,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       if (this.options.alwaysFast(feed) || this.woken.has(id)) continue;
       // A collection already under way answers the request.
       if (this.running.has(id)) { this.woken.add(id); continue; }
-      const target = (this.startedAt.get(id) ?? -Infinity) + this.options.activeIntervalMs;
+      const target = (this.startedAt.get(id) ?? -Infinity) + this.activeInterval(feed);
       if (target <= now) {
         this.woken.add(id);
         this.due.set(id, now);
@@ -266,8 +271,11 @@ export class FeedScheduler<T extends ScheduledFeed> {
 
   private watched(id: string, now: number) { return (this.watchedUntil.get(id) ?? 0) > now; }
 
+  private activeInterval(feed: T): number { return feed.activeIntervalMs ?? this.options.activeIntervalMs; }
+
   private nextDue(feed: T, startedAt: number, finishedAt: number, failed: boolean): number {
-    const { activeIntervalMs, retryMs } = this.options;
+    const { retryMs } = this.options;
+    const activeIntervalMs = this.activeInterval(feed);
     const idleIntervalMs = feed.idleIntervalMs ?? this.options.idleIntervalMs;
     if (this.mode(feed, finishedAt) !== 'idle') return startedAt + activeIntervalMs;
     if (failed) {

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -422,6 +422,23 @@ it('keeps a feed with a watch of its own watched only that long', async () => {
     expect(times('lime-group')).toEqual([0, 5, 6, 7, 8]);
     expect(times('lyon')).toEqual([0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
     expect(scheduler.mode({ id: 'lime-group', host: 'lime' })).toBe('idle');
+  } finally { scheduler.stop(); }
+});
+
+it('collects a watched feed with an interval of its own only that often, whatever its requests', async () => {
+  // A Bird area: one sweep can cost a quarter of the hour's requests.
+  const { scheduler, times } = schedule([{ id: 'austin', host: 'bird', watchMs: 3 * MINUTE, activeIntervalMs: 5 * MINUTE }, { id: 'lyon', host: 'fr' }]);
+  try {
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    const polling = setInterval(() => scheduler.demand(['austin', 'lyon']), MINUTE);
+    expect(scheduler.demand(['austin', 'lyon'])).toEqual(['austin', 'lyon']);
+    await vi.advanceTimersByTimeAsync(9.5 * MINUTE);
+    clearInterval(polling);
+    expect(times('austin')).toEqual([0, 5, 10]);
+    expect(times('lyon')).toEqual([0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+    // Watched still by the request at 14, it is collected again at 15.
+    await vi.advanceTimersByTimeAsync(0.5 * MINUTE);
+    expect(times('austin')).toEqual([0, 5, 10, 15]);
   } finally { scheduler.stop(); }
 });
 

@@ -604,9 +604,12 @@ Bird's rider map reads mode-0600 `/data/bird-session.json`, owned by Node UID
 1000 (`BIRD_SESSION_PATH` overrides it): the app's device id and a rider's
 access and refresh tokens, never in Git or build variables. The access token
 is renewed a day at a time and saved atomically in the same file. Every Bird
-area shares two requests a minute, 120 an hour, about half the count
-after which Bird's map made up its scooters on 27 October 2026; a made-up or
-refused reply holds every Bird request for 15 minutes. An idle area is swept
+area shares one budget: a town someone opens up to ten requests a minute, an
+idle sweep one every 30 seconds, and all together 30 in five minutes and 120 an
+hour, about half the count after which Bird's map made up its scooters on 27
+October 2026. A made-up or refused reply holds every Bird request for 15
+minutes. A starting cache counts the hour's requests of the one it replaces,
+from `/data/tmp/bird-pace.tmp`. An idle area is swept
 once a day, by day in its town. Production and research share the account's
 limit: run no Bird research on it while the cache holds it. See [the session
 format and the budget](docs/bird-app-map.md).

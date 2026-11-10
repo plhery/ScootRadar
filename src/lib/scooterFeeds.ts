@@ -279,6 +279,8 @@ export interface CollectableScooterFeed {
   idleGraceMs?: number;
   /** How long a request keeps it watched, when not the cache's (FeedScheduler). */
   watchMs?: number;
+  /** How long after a collection started a request or its watch starts the next, when not the cache's minute (FeedScheduler). */
+  activeIntervalMs?: number;
   /** An app-map sweep whose client spaces every request to its host (FeedScheduler). */
   paced?: boolean;
   /** Independent Node scheduler slots for an account whose client enforces its own pace. */

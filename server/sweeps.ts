@@ -31,7 +31,21 @@ export interface PaceOptions {
    * all did until 8 November 2026: for a host that answers a burst badly, as Beam's with empty maps.
    */
   spaced?: boolean;
+  /**
+   * How many may start in any 60 seconds, when not 60 000 / intervalMs: more than an idle sweep's
+   * spacing lets through, for a host whose limits count requests over longer spans (`spans`), as Bird's.
+   */
+  perMinute?: number;
+  /**
+   * Budgets over spans longer than the minute, which the client's own earlier requests count against
+   * (`remember`): no first minute at the old spacing, then, as the client that remembers them waits
+   * for the one it replaces to stop.
+   */
+  spans?: readonly PaceSpan[];
 }
+
+/** No more than `requests` start in any `ms`, and an idle sweep's only while fewer than `idle` have. */
+export interface PaceSpan { ms: number; requests: number; idle: number }
 
 /**
  * Holds a client's requests to its host to a minute's worth at one every intervalMs, whichever
@@ -57,12 +71,16 @@ export interface PaceOptions {
  * quarter of an hour, and Linköping's sweep of 18 views, a minute's work, took 932 seconds. A turn
  * kept so waits for the idle sweep's spacing.
  *
- * Given `spaced` (PaceOptions), every request keeps the spacing.
+ * Given `spaced` (PaceOptions), every request keeps the spacing. Given `spans`, the requests of the
+ * longest span count too, and an idle sweep leaves part of each span's to the towns someone opens.
  */
 export class Pacer {
   /** How many requests may start in PACE_WINDOW_MS; unlimited for an interval of 0. */
   private readonly perWindow: number;
-  /** When the requests of the last PACE_WINDOW_MS started, oldest first. */
+  private readonly spans: readonly PaceSpan[];
+  /** How long a start counts: the minute, or the longest span. */
+  private readonly keepMs: number;
+  /** When the requests of the last keepMs started, oldest first. */
   private readonly started: number[] = [];
   /** No request starts before this. */
   private heldUntil: number;
@@ -79,11 +97,35 @@ export class Pacer {
     private readonly routineEvery = Infinity, options: PaceOptions = {}) {
     this.heldUntil = startAt;
     this.spaced = options.spaced ?? false;
-    this.perWindow = intervalMs > 0 ? Math.max(1, Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
-    if (this.perWindow === Infinity) return;
+    this.perWindow = intervalMs > 0 ? Math.max(1, options.perMinute ?? Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
+    this.spans = intervalMs > 0 ? options.spans ?? [] : [];
+    this.keepMs = Math.max(PACE_WINDOW_MS, ...this.spans.map(span => span.ms));
+    if (this.perWindow === Infinity || this.spans.length) return;
     // As if the minute before it starts had been spent at one request every intervalMs.
     const from = Math.max(startAt, now());
     for (let i = 0; i < this.perWindow; i++) this.started.push(from - PACE_WINDOW_MS + i * intervalMs);
+  }
+
+  /** When its requests of the longest span started, as `remember` takes them back after a restart. */
+  history(): number[] {
+    this.forget(this.now());
+    return [...this.started];
+  }
+
+  /**
+   * Counts requests made before it started, by the client it replaces, against its budgets: an idle
+   * sweep's spacing too, as if the last of them had been one.
+   */
+  remember(starts: readonly number[]): void {
+    const now = this.now();
+    const known = starts.filter(at => Number.isFinite(at) && at <= now && at > now - this.keepMs);
+    if (!known.length || this.perWindow === Infinity) return;
+    this.started.push(...known);
+    this.started.sort((a, b) => a - b);
+    this.lastSpaced = Math.max(this.lastSpaced, this.started.at(-1)!);
+    clearTimeout(this.timer);
+    this.timer = undefined;
+    this.release();
   }
 
   /** Resolves when the next request may start. */
@@ -112,15 +154,17 @@ export class Pacer {
   /**
    * When a request someone is looking at, asked for now, would start: after those someone is looking
    * at already waiting here, each taking the next turn the minute's budget frees. An estimate, to choose
-   * between clients (LimeAccountPool): a turn kept for an idle sweep (routineEvery) can make it later.
+   * between clients (LimeAccountPool): a turn kept for an idle sweep (routineEvery), or the budgets of
+   * longer spans (`spans`), can make it later.
    */
   urgentStartAt(): number {
     const now = this.now();
     const ahead = this.waiting.filter(waiter => waiter.urgent).length;
-    while (this.started.length && this.started[0] <= now - PACE_WINDOW_MS) this.started.shift();
+    this.forget(now);
     let at = now;
     if (this.perWindow !== Infinity) {
-      const turns = [...Array<number>(this.perWindow - this.started.length).fill(now), ...this.started.map(start => start + PACE_WINDOW_MS)];
+      const minute = this.started.filter(start => start > now - PACE_WINDOW_MS).slice(-this.perWindow);
+      const turns = [...Array<number>(this.perWindow - minute.length).fill(now), ...minute.map(start => start + PACE_WINDOW_MS)];
       at = turns[ahead % this.perWindow] + Math.floor(ahead / this.perWindow) * PACE_WINDOW_MS;
     }
     const spacing = this.spaced ? this.lastSpaced + this.intervalMs * (ahead + 1) : -Infinity;
@@ -136,12 +180,19 @@ export class Pacer {
     this.release();
   }
 
-  /** When the budget, and the spacing a request of this kind keeps, next let it start. */
+  /** When the budgets, and the spacing a request of this kind keeps, next let it start. */
   private nextStart(now: number, urgent: boolean): number {
-    while (this.started.length && this.started[0] <= now - PACE_WINDOW_MS) this.started.shift();
-    const free = this.started.length < this.perWindow ? now : this.started[this.started.length - this.perWindow] + PACE_WINDOW_MS;
+    this.forget(now);
+    // Once the limit-th latest start is a span old, fewer than limit have started within it.
+    const free = (limit: number, ms: number) => limit < 1 ? Infinity
+      : this.started.length < limit ? now : this.started[this.started.length - limit] + ms;
+    const spans = this.spans.map(span => free(urgent ? span.requests : span.idle, span.ms));
     const spacing = urgent && !this.spaced ? -Infinity : this.lastSpaced + this.intervalMs;
-    return Math.max(this.heldUntil, free, spacing);
+    return Math.max(this.heldUntil, free(this.perWindow, PACE_WINDOW_MS), spacing, ...spans);
+  }
+
+  private forget(now: number): void {
+    while (this.started.length && this.started[0] <= now - this.keepMs) this.started.shift();
   }
 
   private release(): void {

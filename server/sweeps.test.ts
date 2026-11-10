@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { nearestFirst, PACE_WINDOW_MS, Pacer, PROGRESS_EVERY_MS, SweepProgress, takeNearest, withinCollection, type CollectionScope } from './sweeps';
+import { nearestFirst, PACE_WINDOW_MS, Pacer, PROGRESS_EVERY_MS, SweepProgress, takeNearest, withinCollection, type CollectionScope,
+  type PaceOptions } from './sweeps';
 
 const T0 = Date.parse('2026-10-25T08:00:00Z');
 beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(T0); });
@@ -150,6 +151,76 @@ describe('Pacer', () => {
     void take();
     await vi.advanceTimersByTimeAsync(40_000);
     expect(at).toEqual([200, 30_000]);
+  });
+
+  // Bird's (BIRD_PACE): ten a minute, 30 in five minutes and 120 an hour, of which an idle sweep may take 20 and 90.
+  const MINUTE = 60_000;
+  const spans: PaceOptions = { perMinute: 10, spans: [{ ms: 5 * MINUTE, requests: 30, idle: 20 }, { ms: 60 * MINUTE, requests: 120, idle: 90 }] };
+
+  it('starts ten a minute at once for a town someone looks at, from its first minute, and 30 in five minutes', async () => {
+    const pacer = new Pacer(30_000, Date.now, 0, Infinity, spans);
+    const at: number[] = [];
+    const looked = collection({ urgent: () => true });
+    const turns = Array.from({ length: 42 }, () => withinCollection(looked, () => pacer.turn()).then(() => at.push((Date.now() - T0) / 1000)));
+    await vi.advanceTimersByTimeAsync(6 * MINUTE);
+    await Promise.all(turns);
+    expect(at).toEqual([...Array(10).fill(0), ...Array(10).fill(60), ...Array(10).fill(120), ...Array(10).fill(300), 360, 360]);
+  });
+
+  it('leaves part of five minutes\' turns to the towns someone opens, while an idle sweep keeps its spacing', async () => {
+    const pacer = new Pacer(30_000, Date.now, 0, Infinity, spans);
+    const turns: string[] = [];
+    const sweep = (name: string, count: number, scope: CollectionScope) => withinCollection(scope, async () => {
+      for (let i = 1; i <= count; i++) {
+        await pacer.turn();
+        turns.push(`${name}${i} ${(Date.now() - T0) / 1000}`);
+      }
+    });
+    const looked = collection({ urgent: () => true });
+    const first = Promise.all(Array.from({ length: 20 }, () => withinCollection(looked, () => pacer.turn())));
+    await vi.advanceTimersByTimeAsync(1_000);
+    // Twenty have started in five minutes: the idle sweep waits, a town opened later does not.
+    const idle = sweep('idle', 3, collection());
+    await vi.advanceTimersByTimeAsync(119_000);
+    const town = sweep('town', 12, looked);
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    await Promise.all([first, idle, town]);
+    expect(turns).toEqual([...Array.from({ length: 10 }, (_, i) => `town${i + 1} 120`), 'town11 300', 'town12 300',
+      'idle1 360', 'idle2 390', 'idle3 420']);
+  });
+
+  it('counts the hour\'s requests of the client it replaces, and gives them back', async () => {
+    const pacer = new Pacer(30_000, Date.now, 0, Infinity, spans);
+    // 115 requests from 55 minutes ago, twenty seconds apart, and one from the future that is not believed.
+    const before = Array.from({ length: 115 }, (_, i) => T0 - 55 * MINUTE + i * 20_000);
+    pacer.remember([...before, T0 + 1_000, Number.NaN]);
+    expect(pacer.history()).toEqual(before);
+    const at: number[] = [];
+    const looked = collection({ urgent: () => true });
+    const turns = Array.from({ length: 8 }, () => withinCollection(looked, () => pacer.turn()).then(() => at.push((Date.now() - T0) / 1000)));
+    await vi.advanceTimersByTimeAsync(6 * MINUTE);
+    await Promise.all(turns);
+    // Five fit in the hour's 120; the others as its oldest are an hour old.
+    expect(at).toEqual([0, 0, 0, 0, 0, 300, 320, 340]);
+    // The four oldest are over an hour old at six minutes.
+    expect(pacer.history()).toHaveLength(115 - 4 + 8);
+  });
+
+  it('tells when a turn someone is looking at would start without forgetting the longer spans\' requests', async () => {
+    const pacer = new Pacer(30_000, Date.now, 0, Infinity, spans);
+    const before = Array.from({ length: 10 }, (_, i) => T0 - 2 * MINUTE + i * 1_000);
+    pacer.remember(before);
+    expect(pacer.urgentStartAt()).toBe(T0);
+    expect(pacer.history()).toEqual(before);
+  });
+
+  it('keeps an idle sweep\'s spacing after the last request the client it replaces made', async () => {
+    const pacer = new Pacer(30_000, Date.now, 0, Infinity, spans);
+    pacer.remember([T0 - 10_000]);
+    const at: number[] = [];
+    void pacer.turn().then(() => at.push(Date.now() - T0));
+    await vi.advanceTimersByTimeAsync(30_000);
+    expect(at).toEqual([20_000]);
   });
 });
 

@@ -1,12 +1,12 @@
-import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { BIRD_BRANDS, BIRD_CHECKPOINT_MAX_AGE_MS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS,
+import { BIRD_BRANDS, BIRD_BURST_EVERY_MS, BIRD_CHECKPOINT_MAX_AGE_MS, BIRD_IDLE_GRACE_MS, BIRD_IDLE_INTERVAL_MS, BIRD_PAGE, BIRD_QUERY_INTERVAL_MS, BIRD_UNTRUSTED_HOLD_MS,
   BIRD_WATCH_MS, BirdClient, BirdSweepCheckpoints, BirdUntrustedMapError, birdVehicle, collectBirdArea, parseBirdReply, sweepBirdArea, sweepScope,
   withBirdAppCollectors, type BirdScooter } from './birdApp';
 import type { NearestProgress } from './nearestSweep';
-import { withinCollection } from './sweeps';
+import { currentCollection, withinCollection } from './sweeps';
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
@@ -176,7 +176,7 @@ describe('Bird map client', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
-  it('asks Bird once every 30 seconds, for every area together', async () => {
+  it('asks Bird once every 30 seconds for an idle sweep, for every area together', async () => {
     expect(BIRD_QUERY_INTERVAL_MS).toBe(30_000);
     await writeFile(sessionPath, JSON.stringify(session(Date.now() + 20 * HOUR)));
     const times: number[] = [];
@@ -192,6 +192,67 @@ describe('Bird map client', () => {
       await second;
     } finally { vi.useRealTimers(); }
     expect(times[1] - times[0]).toBe(30_000);
+  });
+
+  const looked = { urgent: () => true, focus: () => undefined, progress: () => {} };
+
+  it('asks Bird up to ten times at once for a town someone looks at', async () => {
+    await writeFile(sessionPath, JSON.stringify(session(Date.now() + 20 * HOUR)));
+    const times: number[] = [];
+    const fetcher = vi.fn(async () => { times.push(Date.now()); return ok({ birds: [], cell_ids: [] }); });
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    try {
+      const paced = new BirdClient({ sessionPath, fetch: fetcher });
+      const town = withinCollection(looked, () => Promise.all(Array.from({ length: 12 }, (_, i) => paced.nearest(at.lat + i * 0.01, at.lng))));
+      // Its session is read from disk before the first.
+      await vi.waitFor(() => expect(times).toHaveLength(10));
+      await vi.advanceTimersByTimeAsync(60_000);
+      await town;
+    } finally { vi.useRealTimers(); }
+    expect(times.map(time => time - times[0])).toEqual([...Array(10).fill(0), 60_000, 60_000]);
+  });
+
+  it('counts the requests of the cache it replaces once its start hold is over, and keeps its own for the next', async () => {
+    await writeFile(sessionPath, JSON.stringify(session(Date.now() + 20 * HOUR)));
+    const pacePath = join(directory, 'tmp', 'bird-pace.tmp');
+    const times: number[] = [];
+    const fetcher = vi.fn(async () => { times.push(Date.now()); return ok({ birds: [], cell_ids: [] }); });
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    const t0 = Date.now();
+    // The cache it replaces spent five minutes' 30 requests in the minute before it started.
+    const before = Array.from({ length: 30 }, (_, i) => t0 - 60_000 + i * 1_000);
+    await mkdir(dirname(pacePath), { recursive: true });
+    await writeFile(pacePath, JSON.stringify({ version: 1, started: before }));
+    try {
+      const paced = new BirdClient({ sessionPath, fetch: fetcher, startHoldMs: 120_000, pacePath });
+      const town = withinCollection(looked, () => paced.nearest(at.lat, at.lng));
+      await vi.advanceTimersByTimeAsync(240_000 - 1);
+      expect(times).toEqual([]);
+      await vi.advanceTimersByTimeAsync(1);
+      await town;
+    } finally { vi.useRealTimers(); }
+    // Five minutes after the first of them.
+    expect(times).toEqual([t0 + 240_000]);
+    await vi.waitFor(async () => expect(JSON.parse(await readFile(pacePath, 'utf8'))).toEqual({ version: 1, started: [...before, t0 + 240_000] }));
+    expect((await stat(pacePath)).mode & 0o777).toBe(0o600);
+  });
+
+  it('starts at the end of its hold when it finds no requests kept', async () => {
+    await writeFile(sessionPath, JSON.stringify(session(Date.now() + 20 * HOUR)));
+    const pacePath = join(directory, 'none', 'bird-pace.tmp');
+    const times: number[] = [];
+    const fetcher = vi.fn(async () => { times.push(Date.now()); return ok({ birds: [], cell_ids: [] }); });
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    const t0 = Date.now();
+    try {
+      const paced = new BirdClient({ sessionPath, fetch: fetcher, startHoldMs: 120_000, pacePath });
+      const town = withinCollection(looked, () => Promise.all([paced.nearest(at.lat, at.lng), paced.nearest(at.lat + 0.1, at.lng)]));
+      await vi.advanceTimersByTimeAsync(120_000);
+      await town;
+    } finally { vi.useRealTimers(); }
+    expect(times).toEqual([t0 + 120_000, t0 + 120_000]);
+    // In a folder it makes.
+    await vi.waitFor(async () => expect(JSON.parse(await readFile(pacePath, 'utf8')).started).toEqual(times));
   });
 });
 
@@ -486,6 +547,53 @@ describe('Bird sweeps resumed after a deploy', () => {
   }, 30_000);
 });
 
+describe('Bird sweeps of a town someone looks at', () => {
+  const austin = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'bird_us_app_austin')!;
+  afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); });
+  /** What Bird's client hears of each request of a sweep: whether someone looks. */
+  const heard = (id: string) => {
+    const vehicles = fleet(200);
+    const { api: map } = simulated(() => vehicles);
+    const urgency: (boolean | undefined)[] = [];
+    const api = { nearest: async (lat: number, lng: number, radiusM?: number) => {
+      urgency.push(currentCollection()?.urgent());
+      return map.nearest(lat, lng, radiusM);
+    } };
+    const sweep = async (urgent: () => boolean) => {
+      urgency.length = 0;
+      await withinCollection(sweepScope({ urgent, focus: () => undefined }, Date.now(), () => undefined),
+        () => collectBirdArea({ ...austin, id }, [], api));
+      return [...urgency];
+    };
+    return sweep;
+  };
+
+  it('go at its pace once in half an hour, and the next while it stays watched at an idle sweep\'s', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.useFakeTimers({ toFake: ['Date'] });
+    const start = Date.parse('2026-11-10T18:00:00Z');
+    vi.setSystemTime(start);
+    const sweep = heard('bird_us_app_austin_watched');
+    expect(new Set(await sweep(() => false))).toEqual(new Set([false]));
+    expect(new Set(await sweep(() => true))).toEqual(new Set([true]));
+    vi.setSystemTime(start + 5 * 60_000);
+    expect(new Set(await sweep(() => true))).toEqual(new Set([false]));
+    vi.setSystemTime(start + BIRD_BURST_EVERY_MS);
+    expect(new Set(await sweep(() => true))).toEqual(new Set([true]));
+  });
+
+  it('go at its pace from when someone opens the town during an idle sweep', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.parse('2026-11-10T18:00:00Z'));
+    const sweep = heard('bird_us_app_austin_opened');
+    let asked = 0;
+    const urgency = await sweep(() => ++asked > 2);
+    expect(urgency.length).toBeGreaterThan(3);
+    expect(urgency).toEqual([false, false, ...Array(urgency.length - 2).fill(true)]);
+  });
+});
+
 describe('Bird sweeps longer than a position may be shown', () => {
   const austin = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'bird_us_app_austin')!;
   afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); });
@@ -496,7 +604,7 @@ describe('Bird sweeps longer than a position may be shown', () => {
     vi.setSystemTime(Date.parse('2026-11-10T18:00:00Z'));
     const vehicles = fleet(1_000);
     const { api: map } = simulated(() => vehicles);
-    // A reply every minute and a half, as when other areas share Bird's two requests a minute.
+    // A reply every minute and a half, as when other areas shared Bird's two requests a minute until 10 November 2026.
     const api = { nearest: async (lat: number, lng: number, radiusM?: number) => {
       vi.setSystemTime(Date.now() + 90_000);
       return map.nearest(lat, lng, radiusM);
