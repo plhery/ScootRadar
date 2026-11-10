@@ -74,119 +74,35 @@ record:
 A city's public zone layers are drawn, credited to the city, since 28 October
 2026 (`DATA_SOURCES.md`). Found on 30 October 2026 and not drawn:
 
-- **Held on their terms:** Tromsø kommune's ("kan ikke benyttes i
-  kommersielle tjenester uten avtale"), Lisboa's ("Reservam-se todos os
-  direitos"; its shared scooters end in January 2027 in any case),
-  Vilnius's, which are JUDU's ("pernaudojimas negalimas be JUDU sutikimo"),
-  and Kraków's 342 mobility points (edited 6 October 2026), as its city GIS
-  portal's rules allow only personal, non-commercial use and forbid passing
-  its content on. Orlando's 34 designated parking areas, a KMZ its
-  [program page](https://www.orlando.gov/Initiatives/Bike-Share-Scooter-Share-Program)
-  maps (file of December 2020, served as of January 2025), as the City's
-  [legal notices](https://www.orlando.gov/System-pages/Website-Legal-Notices)
-  prohibit commercial use of the site's materials "without the written
-  permission of the City of Orlando"; so, for the same reason, are its 25
-  no-riding and 69 no-parking zones and Lake Nona's park-only area on
-  Populus's public policy map, beside the stats dashboard its page links
-  (1 November 2026). Albuquerque's 191 Lime stations, in the
-  City's `STAPProject` layer (last edited 25 September 2025; it lists sites
-  for Spin and Beam too, and looks like the approved list rather than the 52
-  stations Lime built), as it states no licence and the City's
-  [legal notices](https://cabq.gov/about/legal) license the site's content
-  "for non-commercial, personal, or educational purposes only". Austin's
-  17 micromobility regulation areas (no riding, no parking, slow), 40 parking
-  boxes and corrals and 21 no-lock bridges, ArcGIS layers last edited in
-  2021 and 2022, as the City's [legal notice](https://www.austintexas.gov/legal-notice)
-  grants permission to use its files "for only personal use". Mülheim an der
-  Ruhr's 76 e-scooter stations, where a ride in the centre and the district
-  centres begins and ends, are points on its
-  [geoportal page](https://geo.muelheim-ruhr.de/e-roller-stationen), outside
-  its open data, and the city's
-  [terms of use](https://cms.muelheim-ruhr.de/nutzungsbedingungen) allow
-  its online services "ausschließlich für den persönlichen Bedarf".
-  Budapest's 1,122 mobility points and 9 micromobility zones, in whose inner
-  city and transition zones a shared scooter is parked only at a point, are
-  Budapest Közút's ArcGIS layers (`mobi_gdb`, updated 31 August 2026; no
-  licence stated), shown on BKK's site, whose
-  [legal notice](https://bkk.hu/jogi-tudnivalok/jogi-nyilatkozat/) allows
-  only non-commercial personal use without BKK's prior written consent.
-  Augsburg's 37 e-scooter parking places (`SYMBOL` "E-Scooter Stellplatz" in
-  its geoportal's parking layer, loaded 14 September 2026), outside which a
-  scooter may not be parked in the city centre, as the geoportal's terms
-  require the city's prior written permission for any use; the centre itself
-  is not published as a shape. Kassel's bicycle racks where a scooter may be
-  parked (`E_Scooter` "ja", 2,098 of the geoportal's 2,128 `Fahrradbügel`),
-  outside which, or a marked place, a hired scooter there may not be parked
-  since April 2026, as the layer states no licence and the city's
-  [legal notice](https://www.kassel.de/rechtliche-hinweise.php) requires its
-  express consent to copy its content; the layer also hides its shapes from
-  queries. Kiel's 19 "E-Scooter Verbotszonen", its Kieler Woche's event areas
-  where scooters may not be parked during the festival, as the city's
-  [imprint](https://www.kiel.de/de/_info/impressum.php) allows reuse only with
-  written permission; its lasting no-parking zones are in the operators'
-  apps alone.
-  Nürnberg's two areas within the Bundesstraßenring, where a hired scooter is
-  taken and left only at a marked collection place (the old town since 1 May
-  2024, up to the ring since 19 November 2024), are map 271 of the city's own
-  map service, not marked public, and the city's
-  [legal notice](https://haftungshinweis.nuernberg.de) allows copies only for
-  private, non-commercial use and any other use only with the author's
-  written consent; its 300 or so collection places are not published.
-  Denver's corrals (the City's 106, edited in March 2026, and 286 permitted to
-  operators in 2021–25) are layers of the City's ArcGIS Online accounts,
-  outside its Open Data Catalog and its CC BY 3.0, and the City's
-  [terms of use](https://www.denvergov.org/Terms-of-Use) forbid commercial use
-  without its written permission; the downtown zone where a scooter is parked
-  only in a corral is a layer that asks for a token. Oeiras's 200 or so Oeiras
-  Move points, where a shared scooter's trip starts and ends, are a metadata
-  record of its geoportal (data of April 2023, no download), for internal use
-  only unless the municipality licenses it (Decreto-Lei 193/95, art. 14).
-  Plymouth's 69 Beryl docking sites, where its scooters (since July 2026) are
-  taken and left, are a layer of the council's ArcGIS map on Connect
-  Plymouth, last edited in August 2025, and the council's
-  [terms](https://www.plymouth.gov.uk/website-terms-and-conditions) forbid
-  reproducing its material without its prior written agreement; its open data
-  licence covers only the datasets it lists. Leeds's 82 live LNER Beryl bays,
-  outside which a scooter is not returned without a charge, and the scheme's
-  operating area are layers of the council's ArcGIS (edited 6 October 2026),
-  and its [terms](https://www.leeds.gov.uk/terms-and-conditions) ask
-  permission to republish anything from its site. Roma's 13 parking areas for
-  sharing bikes and scooters (Roma Servizi per la Mobilità's layer
-  `Monopattini_coordinate_nuove`, edited April 2026) state no licence, and its
-  [legal notes](https://romamobilita.it/azienda/note-legali/) forbid
-  reproducing its material for profit; its call for new operators (bids until
-  2 November 2026, the current ones running until 31 October) sets no-parking
-  macro-areas the city has yet to draw. Le Chesnay-Rocquencourt's map of
-  Dott's places is drawn by a widget behind a keyed API, and its
-  [legal notice](https://www.lechesnay-rocquencourt.fr/20/mentions-legales.htm)
-  forbids reproducing anything from its site without the town's prior
-  permission. Bristol's only layer is the council's 212 proposed bays,
-  consulted on until 31 October 2026 (the 55 installed are not published),
-  and its [copyright terms](https://www.bristol.gov.uk/council/about-our-website/copyright-of-website-content)
-  ask its express prior written permission; the West of England Combined
-  Authority's geofence layer is a copy of Dott's, of July 2025. Stuttgart's
-  90 no-parking zones and 74 parking areas for e-scooters are layers of its
-  geoserver's WFS (`A32_ES_ABSTELLVERBOTSZONEN`, `A32_ES_ABSTELLFLAECHEN`),
-  and its [geodata terms](https://www.stuttgart.de/geodaten-nutzungsbedingungen)
-  say they are not open data and send commercial use to the
-  Stadtmessungsamt. Düsseldorf's 49 no-parking zones round its 364 sharing
-  stations, where a scooter is left only at the station, are layers of
-  Düsseldorf Maps' WFS (`verkehr:sharing_parkverbotszone`, edited 14 October
-  2026), and their record in NRW's geoportal releases the city's geodata for
-  internal use only. Phoenix's 110 no-riding zones and 389 parking posts
-  downtown (`STR_eScooters` on its map server, outside its open data; the
-  posts look like the 2019 pilot's, without the 103 corrals added since), as
-  the City's
-  [copyright notice](https://www.phoenix.gov/administration/departments/communications/copyright.html)
-  allows materials from its site "for your own personal, non-commercial and
-  not-for-profit purposes" alone (31 October 2026). The University of
-  Florida's zones on its Gainesville campus (6 dismount zones, one more on
-  football game days, a slow zone, and the campus, where a scooter is parked
-  only in one of its 60 parking areas: `eScooter_Zones_view` and `eScooter_view`
-  on ArcGIS), as they state no licence and UF's
-  [web disclaimer](https://it.ufl.edu/media/itufledu/documents/governance/web-services/Standard-Web-Disclaimer.pdf)
-  sends "requests for permission for the use of UF copyrighted material" to
-  the unit responsible.
+- **No longer held on their terms, but not drawn:** since 10 November 2026 a
+  city's terms (personal or non-commercial use only, its written permission
+  first) no longer hold its zone layers back, and those held for nothing else
+  are drawn (DATA_SOURCES.md): Austin, Augsburg, Budapest, Denver, Düsseldorf,
+  Kassel, Kraków, Le Chesnay-Rocquencourt, Leeds, Lisboa, Mülheim an der Ruhr,
+  Nürnberg, Orlando, Phoenix, Plymouth, Roma, Stuttgart, the University of
+  Florida and Vilnius. These stay out for what they hold. Tromsø kommune's
+  only zone map is the one put out for consultation in February 2025, which
+  caps the fleet at 2,500 where the rule adopted (FOR-2025-09-03-1800) sets
+  2,000, so it may not be the zones in force. Kiel's 19 "E-Scooter
+  Verbotszonen" are its Kieler Woche's event areas, where scooters may not be
+  parked during the festival; its lasting no-parking zones are in the
+  operators' apps alone. Oeiras's 200 or so Oeiras Move points, where a shared
+  scooter's trip starts and ends, are a metadata record of its geoportal
+  (data of April 2023) with no download. Bristol's only layer is the
+  council's 212 proposed bays, consulted on until 31 October 2026 (the 55
+  installed are not published); the West of England Combined Authority's
+  geofence layer is a copy of Dott's, of July 2025. Albuquerque's stations, in
+  the City's `STAPProject` layer (last edited 25 September 2025), are the same
+  191 sites listed for Spin, Lime and Beam, with siting notes, but nothing
+  saying which were built or are in use (Lime built 52); Lime's public zone
+  file holds no parking pins (10 November 2026). Denver's 286 corrals
+  permitted to the operators in 2021–25, which no field marks as still in
+  place, and its downtown zone where a scooter is parked only in a corral, a
+  layer that asks for a token, are left out too; so are Phoenix's 103 corrals
+  added in the north since the pilot, not in its layer. Bergen kommune's four
+  map services for its e-scooter zones answer "Token Required" (11 November
+  2026), so the zones read on 29 October are kept until they open again or
+  its map moves.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is

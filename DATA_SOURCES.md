@@ -870,10 +870,16 @@ Zürich state a licence or terms for their layers, Washington for two of its thr
 city's public zone layers are drawn regardless, credited to the city, and since 1 November 2026 a public
 zone map the city itself points to, as Stavanger's on Nivel's platform, Long Beach's, Nashville's,
 Baltimore's, Milwaukee's, Salt Lake City's and San Antonio's on Populus's and Nashville's PDF of its corrals.
+Since 10 November 2026 a city's terms do not hold its layers back either, where they allow only personal
+or non-commercial use or ask for its written permission first: Austin's, Augsburg's, Budapest's, Denver's,
+Düsseldorf's, Kassel's, Kraków's, Le Chesnay-Rocquencourt's, Leeds's, Lisboa's, Mülheim an der Ruhr's,
+Nürnberg's, Orlando's, Phoenix's, Plymouth's, Roma's, Stuttgart's, the University of Florida's and Vilnius's
+are drawn so, credited to the city, the university or JUDU, Vilnius's transport agency.
 A Populus map counts when the city's page links it or the trip dashboard beside it, as Nashville's
 does; what a policy gives the operators alone (drop zones, caps, fees) and a zone in force only at some
 hours or on some days are not drawn. Such a map may go without notice: nothing watches for it,
-and a city whose map stops answering keeps the zones last read from it, each city's entry here giving
+and a city whose map stops answering keeps the zones last read from it, as Bergen's, whose services ask
+for a token (11 November 2026), each city's entry here giving
 its source and the date it was read.
 
 - **Aachen** (read 31 October 2026): the Stadt Aachen's 23 parking areas
@@ -1176,7 +1182,7 @@ its source and the date it was read.
   licence, and BKK's
   [legal notice](https://bkk.hu/jogi-tudnivalok/jogi-nyilatkozat/) allows
   only non-commercial personal use without its written consent; drawn under
-  the rule of 28 October 2026, credited "Budapest Közút".
+  the rule of 10 November 2026, credited "Budapest Közút".
 - **City of London** (read 30 October 2026): the City of London
   Corporation's 45 parking places for hire scooters and bikes, each set by a
   traffic management order (2022/21, 2024/1, 2025/13 and 2025/17) and named
@@ -1402,7 +1408,7 @@ its source and the date it was read.
   pozostawiać pojazd po zakończeniu podróży". All 342 points lie within the
   area. The legend links the page. The layers state no licence, and the city
   GIS portal's rules allow only personal, non-commercial use; drawn under the
-  rule of 28 October 2026, credited "ZTP Kraków".
+  rule of 10 November 2026, credited "ZTP Kraków".
 - **Lambeth** (read 31 October 2026): Lambeth Council's 342 shared parking
   bays for rental e-scooters and e-bikes and Transport for London's 4 in the
   borough, points each drawn as a disc of 5 m and named for their street, and
@@ -1434,7 +1440,7 @@ its source and the date it was read.
   [legal notice](https://www.lechesnay-rocquencourt.fr/20/mentions-legales.htm)
   forbids reproducing the site without the town's permission and asks any
   reuse to carry "© 2025 Mairie du Chesnay-Rocquencourt - Tous droits
-  réservés"; drawn under the rule of 28 October 2026, credited "Mairie du
+  réservés"; drawn under the rule of 10 November 2026, credited "Mairie du
   Chesnay-Rocquencourt".
 - **Leeds** (read 10 November 2026): Leeds City Council's 82 live LNER Beryl
   bays, points each drawn as a disc of 5 m and named as the council names
@@ -1479,7 +1485,7 @@ its source and the date it was read.
   on 21 October 2026 to end shared scooters, with 60 days to remove them
   (docs/coverage-gaps.md); the city's zones go when they do. The zones' layer
   states "Reservam-se todos os direitos", the racks' layer CC0 and Lisboa
-  Aberta CC BY; drawn under the rule of 28 October 2026, credited "Câmara
+  Aberta CC BY; drawn under the rule of 10 November 2026, credited "Câmara
   Municipal de Lisboa".
 - **Long Beach** (read 1 November 2026): the City of Long Beach's 21
   no-parking areas, where a parked scooter costs its operator $0.50, 25
@@ -1926,7 +1932,7 @@ its source and the date it was read.
   current operators run on permits extended until the new ones are chosen
   (docs/coverage-gaps.md). The layer states no licence, and the company's
   [legal notes](https://romamobilita.it/azienda/note-legali/) forbid
-  reproducing its material for profit; drawn under the rule of 28 October
+  reproducing its material for profit; drawn under the rule of 10 November
   2026, credited "Roma Servizi per la Mobilità".
 - **Rostock** (read 31 October 2026): the Hanse- und Universitätsstadt
   Rostock's 15 marked parking places for e-scooters, points each drawn as a
@@ -2263,7 +2269,7 @@ its source and the date it was read.
   of the map's layers are titled like tests ("Bandymas"), but they are the
   ones it draws. The web map states "Viešas skelbimas ir pernaudojimas
   negalimas be JUDU sutikimo", the map's app CC BY-NC 4.0; drawn under the
-  rule of 28 October 2026, credited "JUDU".
+  rule of 10 November 2026, credited "JUDU".
 - **Washington** (read 30 October 2026): the District Department of
   Transportation's 259 in-street corrals, 252 no-parking zones (365 parts),
   51 no-riding zones and 7 slow zones. The corrals and the no-parking zones are
