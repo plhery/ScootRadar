@@ -60,7 +60,10 @@ beforeEach(() => {
   vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('prefers-reduced-motion') }));
 });
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
 
 describe('ControlSheet filters', () => {
   it('is a dialog named Filters that opens and closes with the page', () => {
@@ -93,11 +96,15 @@ describe('ControlSheet filters', () => {
     expect(range).not.toHaveAccessibleDescription();
     expect(dialog.querySelector('.filter-help')).toBeNull();
 
-    // As a finger moves it, then lets go: counted once, where it was let go.
+    // As a finger moves it, then lets go: counted once, where it rests a second, as the apps count it.
+    vi.useFakeTimers();
     fireEvent.input(range, { target: { value: '4' } });
     fireEvent.input(range, { target: { value: '5' } });
     fireEvent.change(range);
     expect(vi.mocked(props.onMinRangeChange).mock.calls).toEqual([[4000], [5000]]);
+    vi.advanceTimersByTime(999);
+    expect(track).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(1);
     expect(track).toHaveBeenCalledExactlyOnceWith('range_filter', { value: 5000 });
 
     rerender({ minRange: 5000 });
@@ -110,6 +117,27 @@ describe('ControlSheet filters', () => {
     rerender({ minRange: 45_000 });
     expect(range).toHaveValue('30');
     expect(dialog.querySelector('.filter-value')).toHaveTextContent('30 km+');
+  });
+
+  it('counts the minimum the arrow keys leave the slider at once it rests a second, not at each step', () => {
+    vi.useFakeTimers();
+    renderSheet();
+    const range = screen.getByRole('slider', { name: 'Range' });
+    // Each press of → is a step and a change of its own, a little under a second apart.
+    for (const value of ['1', '2', '3']) {
+      fireEvent.input(range, { target: { value } });
+      fireEvent.change(range);
+      vi.advanceTimersByTime(600);
+    }
+    expect(track).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(400);
+    expect(track).toHaveBeenCalledExactlyOnceWith('range_filter', { value: 3000 });
+    // Closing the sheet before the second is up still counts where it was left.
+    fireEvent.input(range, { target: { value: '2' } });
+    cleanup();
+    vi.advanceTimersByTime(1000);
+    expect(track).toHaveBeenLastCalledWith('range_filter', { value: 2000 });
+    expect(track).toHaveBeenCalledTimes(2);
   });
 
   it('says under the slider what battery the scooters that only report one need, of the apps switched on', () => {

@@ -2,7 +2,7 @@
 
 import { track } from '@/lib/analytics';
 
-import { useCallback, useId, useRef, useState, type CSSProperties } from 'react';
+import { useId, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
@@ -59,6 +59,9 @@ const MAP_STYLES: { name: MapStyleName; label: TranslationKey }[] = [
 ];
 
 const SOURCE_CODE_URL = 'https://github.com/plhery/ScootRadar';
+
+/** How long the range slider rests on a minimum before it is counted (range_filter), as in the apps. */
+const RANGE_REST_MS = 1000;
 
 interface ControlSheetProps {
   open: boolean;
@@ -165,17 +168,9 @@ export default function ControlSheet({
   const rangeHelp = rangeStep > 0
     ? rangeFilterHelp(minRange, batteryRanges, provider => enabledProviders.has(provider), i18n)
     : null;
-  // Counted once a minimum is let go of, not at each step on the way: what the slider gave last.
-  const rangeMoved = useRef<number | null>(null);
-  const rangeSlider = useCallback((slider: HTMLInputElement | null) => {
-    if (!slider) return;
-    const chosen = () => {
-      if (rangeMoved.current !== null) track('range_filter', { value: rangeMoved.current });
-      rangeMoved.current = null;
-    };
-    slider.addEventListener('change', chosen);
-    return () => slider.removeEventListener('change', chosen);
-  }, []);
+  // A drag of the slider, or the arrow keys pressed one after another, passes many steps and is one choice: the
+  // minimum is counted where it rests a second, as the apps count it, even once the sheet is closed.
+  const rangeCounting = useRef<ReturnType<typeof setTimeout>>(undefined);
   // In catalogue order, as the iOS filters list them.
   const providers = PROVIDER_KEYS.filter(key => availableProviders.includes(key)).map(key => {
     const count = providerCounts[key] ?? 0;
@@ -219,7 +214,6 @@ export default function ControlSheet({
               <span className="filter-value" aria-hidden="true">{rangeLabel ? `${rangeLabel}+` : t('filter.any')}</span>
             </div>
             <input
-              ref={rangeSlider}
               type="range"
               className="range-slider"
               min={0}
@@ -235,7 +229,8 @@ export default function ControlSheet({
                 if (step === rangeStep) return;
                 const meters = rangeStepsMeters(step, rangeSystem);
                 selectionFeedback();
-                rangeMoved.current = meters;
+                clearTimeout(rangeCounting.current);
+                rangeCounting.current = setTimeout(() => track('range_filter', { value: meters }), RANGE_REST_MS);
                 onMinRangeChange(meters);
               }}
             />
