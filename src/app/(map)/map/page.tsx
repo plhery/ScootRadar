@@ -91,6 +91,9 @@ const CLOCK_TICK_MS = 30_000;
 const VIEWPORT_FETCH_PADDING = 0.25;
 // A scooter of the same app this close to the one walked to, under another id, is taken to be it.
 const SAME_SCOOTER_M = 15;
+// While a card is open, the scooters of its app seen this close to its scooter are remembered, the nearest so many.
+const BESIDE_M = 30;
+const BESIDE_KEPT = 50;
 
 // The colour the browser gives its own bars in each appearance.
 const THEME_COLOR = { light: '#eef0f4', dark: '#0b0e14' };
@@ -111,14 +114,45 @@ function vehicleKey(vehicle: Vehicle): string {
   return vehicle.vehicle_id ? `${vehicle.provider}:${vehicle.vehicle_id}` : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`;
 }
 
-/** The nearest of `candidates` of the scooter's app within SAME_SCOOTER_M of where it stood, if any. */
-function nearestOfItsApp(scooter: Vehicle, candidates: readonly Vehicle[]): Vehicle | null {
+/** Where the scooters of its app other than the one of a card were seen beside it, by key, each where it was last. */
+type Beside = ReadonlyMap<string, readonly [number, number]>;
+const NOTHING_BESIDE: Beside = new Map();
+
+/** `beside` with the scooters of `scooter`'s app but it among `seen` within BESIDE_M of it, the nearest BESIDE_KEPT. */
+function rememberBeside(beside: Beside, scooter: Vehicle, seen: readonly Vehicle[]): Beside {
+  const key = vehicleKey(scooter);
+  const fromIt = ([lat, lng]: readonly [number, number]) => haversineM(scooter.lat, scooter.lng, lat, lng);
+  const next = new Map(beside);
+  for (const other of seen) {
+    if (other.provider !== scooter.provider || vehicleKey(other) === key || fromIt([other.lat, other.lng]) > BESIDE_M) continue;
+    next.set(vehicleKey(other), [other.lat, other.lng]);
+  }
+  if (next.size <= BESIDE_KEPT) return next;
+  return new Map([...next].sort(([, a], [, b]) => fromIt(a) - fromIt(b)).slice(0, BESIDE_KEPT));
+}
+
+/**
+ * Whether a scooter under a key the answer before didn't have may be the one that stood at `lat`, `lng` under a new
+ * id: not one seen beside it, nor standing as near where one of those stood as where it stood. A scooter beside it
+ * renamed, as after a gap in the data or a deploy, or by an app that renames on every read, is not it.
+ */
+function mayBeRenamed(candidate: Vehicle, lat: number, lng: number, beside: Beside): boolean {
+  if (beside.has(vehicleKey(candidate))) return false;
+  const fromIt = haversineM(lat, lng, candidate.lat, candidate.lng);
+  for (const [besideLat, besideLng] of beside.values()) {
+    if (haversineM(besideLat, besideLng, candidate.lat, candidate.lng) <= fromIt) return false;
+  }
+  return true;
+}
+
+/** The nearest of `candidates` of the scooter's app within SAME_SCOOTER_M of where it stood that may be it, if any. */
+function nearestOfItsApp(scooter: Pick<Vehicle, 'provider' | 'lat' | 'lng'>, candidates: readonly Vehicle[], beside: Beside): Vehicle | null {
   let nearest: Vehicle | null = null;
   let nearestM = SAME_SCOOTER_M;
   for (const candidate of candidates) {
     if (candidate.provider !== scooter.provider) continue;
     const distanceM = haversineM(scooter.lat, scooter.lng, candidate.lat, candidate.lng);
-    if (distanceM <= nearestM) {
+    if (distanceM <= nearestM && mayBeRenamed(candidate, scooter.lat, scooter.lng, beside)) {
       nearest = candidate;
       nearestM = distanceM;
     }
@@ -597,9 +631,10 @@ export default function Home() {
   }, [enabledProviders, parking, viewportBounds, viewportZoom]);
 
   // The scooter walked to, as the latest data has it. Some apps give a scooter a
-  // new id now and then: one of the same app a few metres from where it was, listed
-  // under a key the answer before didn't have, is it. One already listed beside it is
-  // another scooter, which the walk is not handed to.
+  // new id now and then, and the cache does after a gap or a deploy: one of the same app
+  // a few metres from where it was, listed under a key the answer before didn't have, is it.
+  // One seen beside it while its card is open, in any answer, or standing where one of those
+  // stood is another scooter, which the walk is not handed to.
   // Held while the walk is under way, or to say it is gone; a walk that failed or
   // got there leaves the card to the view, as any other.
   const walkHolds = walk.state !== null && walk.state.phase !== 'failed' && walk.state.phase !== 'arrived';
@@ -609,23 +644,23 @@ export default function Home() {
   const [walkLat, walkLng] = walk.state?.target.point ?? [null, null];
   // The answer before this one, until this one has been looked at.
   const [listedVehicles, setListedVehicles] = useState(vehicles);
+  // The scooters of its app seen beside the scooter of the card, live or faded, in every answer since it was chosen,
+  // through groups and other places in between; forgotten with the card, or when another scooter is chosen. An
+  // answer is judged by those of the answers before it, then added.
+  const [besideCard, setBesideCard] = useState<{ choice: string | null; answer: Vehicle[] | null; beside: Beside }>(
+    { choice: null, answer: null, beside: NOTHING_BESIDE }
+  );
+  const beside = besideCard.choice !== null && besideCard.choice === chosenVehicleKey ? besideCard.beside : NOTHING_BESIDE;
   const liveWalkedVehicle = useMemo(() => {
     if (pinnedProvider === null || walkLat === null || walkLng === null) return null;
+    const listed = vehicles.find(vehicle => vehicleKey(vehicle) === selectedVehicleKey);
+    if (listed) return listed;
     // Only a new answer can rename it.
-    const listedKeys = listedVehicles === vehicles ? null : new Set(listedVehicles.map(vehicleKey));
-    let nearest: Vehicle | null = null;
-    let nearestM = SAME_SCOOTER_M;
-    for (const vehicle of vehicles) {
-      if (vehicleKey(vehicle) === selectedVehicleKey) return vehicle;
-      if (vehicle.provider !== pinnedProvider || !listedKeys || listedKeys.has(vehicleKey(vehicle))) continue;
-      const distanceM = haversineM(walkLat, walkLng, vehicle.lat, vehicle.lng);
-      if (distanceM <= nearestM) {
-        nearest = vehicle;
-        nearestM = distanceM;
-      }
-    }
-    return nearest;
-  }, [listedVehicles, pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
+    if (listedVehicles === vehicles) return null;
+    const listedKeys = new Set(listedVehicles.map(vehicleKey));
+    return nearestOfItsApp({ provider: pinnedProvider, lat: walkLat, lng: walkLng },
+      vehicles.filter(vehicle => !listedKeys.has(vehicleKey(vehicle))), beside);
+  }, [beside, listedVehicles, pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
   // Faded where it was last seen while its app is collected again: neither seen nor taken until the
   // app's new positions say which.
   const walkedFaded = useMemo(() => pinnedProvider !== null && walkLat !== null && walkLng !== null &&
@@ -639,10 +674,10 @@ export default function Home() {
   // The pin is kept as fresh as the data, for when the data has nothing to say of it.
   if (liveWalkedVehicle && pinnedVehicle && pinnedVehicle !== liveWalkedVehicle) setWalkPin({ vehicle: liveWalkedVehicle });
   if (liveWalkedVehicle && vehicleKey(liveWalkedVehicle) !== selectedVehicleKey) setSelectedVehicleKey(vehicleKey(liveWalkedVehicle));
-  // Bird and Pony give every scooter a new id on each read, other apps after each ride. A card not walked to follows
-  // its scooter too, but only to one listed under a key that wasn't there before: one already listed beside it is
-  // another scooter, the first taken, and the card closes.
-  let followedCard = false;
+  // Bird and Pony give every scooter a new id on each read, other apps after each ride, and the cache after a gap or
+  // a deploy. A card not walked to follows its scooter too, but only to one listed under a key that wasn't there
+  // before, as the walk does: one seen beside it is another scooter, the first taken, and the card closes.
+  let followedCard: Vehicle | null = null;
   if (listedVehicles !== vehicles) {
     setListedVehicles(vehicles);
     const card = !walkHolds && selectedVehicleKey !== null && !vehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey)
@@ -650,12 +685,21 @@ export default function Home() {
       : undefined;
     if (card) {
       const listedKeys = new Set(listedVehicles.map(vehicleKey));
-      const successor = nearestOfItsApp(card, vehicles.filter(vehicle => !listedKeys.has(vehicleKey(vehicle))));
-      if (successor) {
-        setSelectedVehicleKey(vehicleKey(successor));
-        followedCard = true;
-      }
+      followedCard = nearestOfItsApp(card, vehicles.filter(vehicle => !listedKeys.has(vehicleKey(vehicle))), beside);
+      if (followedCard) setSelectedVehicleKey(vehicleKey(followedCard));
     }
+  }
+  // Those beside the card's scooter in this answer, around where it now stands, or stood last.
+  if (selectedVehicleKey === null) {
+    if (besideCard.choice !== null) setBesideCard({ choice: null, answer: null, beside: NOTHING_BESIDE });
+  } else if (besideCard.choice !== chosenVehicleKey || besideCard.answer !== vehicles) {
+    const shown = liveWalkedVehicle ?? followedCard ?? [...vehicles, ...lastSeenVehicles]
+      .find(vehicle => vehicleKey(vehicle) === selectedVehicleKey) ?? pinnedVehicle;
+    setBesideCard({
+      choice: chosenVehicleKey,
+      answer: vehicles,
+      beside: shown ? rememberBeside(beside, shown, [...vehicles, ...lastSeenVehicles]) : beside,
+    });
   }
   const walkedVehicle = liveWalkedVehicle ?? pinnedVehicle;
   const walkedParking = liveWalkedParking ?? pinnedParking;

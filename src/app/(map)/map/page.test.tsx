@@ -152,6 +152,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
   Reflect.deleteProperty(navigator, 'geolocation');
   Reflect.deleteProperty(navigator, 'permissions');
+  Reflect.deleteProperty(document, 'visibilityState');
 });
 
 it('expires parking and scooters separately even when subsequent refreshes fail', async () => {
@@ -1090,6 +1091,179 @@ it('does not hand the walk to another scooter of its app already listed beside i
   expect(routeOnMap()).toHaveTextContent('gone 0 null');
 });
 
+// Some 9 m from FAR, as at a parking spot, almost flat.
+const BESIDE: Vehicle = { ...FAR, vehicle_id: 'neighbour', lat: FAR.lat + 0.00008, battery: 10 };
+
+/** Walks to FAR, with BESIDE listed beside it, through answers of `vehicles()`, groups from zoom 15 out as the server sends them. */
+async function walkToFarBeside(vehicles: () => ScooterResponse) {
+  stubServer(vehicles);
+  const single = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    if (url === '/api/walk' || Number(new URL(url, 'https://scootradar.test').searchParams.get('zoom')) > 15) {
+      return single(input as string, init);
+    }
+    const listed = vehicles().vehicles;
+    return Response.json({ ...data([]), clusters: [{ id: 'c', lat: FAR.lat, lng: FAR.lng, count: listed.length, providers: { lime: listed.length } }],
+      meta: { ...data([]).meta, mode: 'clusters', zoom: 15, totalVehicles: listed.length } });
+  });
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+}
+/** The page hidden, as on a phone locked, for `minutes`, then back. */
+async function hideFor(minutes: number) {
+  const visibility = (state: DocumentVisibilityState) => {
+    Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => state });
+    document.dispatchEvent(new Event('visibilitychange'));
+  };
+  visibility('hidden');
+  await act(async () => vi.advanceTimersByTimeAsync(minutes * 60_000));
+  visibility('visible');
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+}
+const settle = () => act(async () => vi.advanceTimersByTimeAsync(180));
+
+it('does not hand the walk to a scooter of its app that stood beside it while its app stood faded', async () => {
+  let answer = () => data([FAR, BESIDE]);
+  await walkToFarBeside(() => answer());
+
+  // Lime is collected again: both stand faded where they were last seen, and the answer before lists neither.
+  answer = () => ({ ...data([]), lastSeen: { vehicles: [FAR, BESIDE], clusters: [],
+    providers: { lime: { seenAt: new Date(Date.now() - 120_000).toISOString(), updating: true } } } });
+  await refreshData();
+  // Lime's new positions: the scooter walked to is gone, the one beside it still stands there.
+  answer = () => data([BESIDE]);
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText('Battery 80%')).toBeInTheDocument();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
+it('does not hand the walk to a scooter that stood beside it, after groups or another place in between', async () => {
+  let vehicles = [FAR, BESIDE];
+  await walkToFarBeside(() => data(vehicles));
+
+  // Zoomed out to groups, and back to the street once it was taken.
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' }));
+  await settle();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  vehicles = [BESIDE];
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 16' }));
+  await settle();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText('Battery 80%')).toBeInTheDocument();
+
+  // Panned away, and back: the one beside it is still not it.
+  viewport.bounds = { south: 47.40, west: 8.52, north: 47.43, east: 8.57 };
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 16' }));
+  await settle();
+  viewport.bounds = { south: 47.36, west: 8.52, north: 47.39, east: 8.57 };
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 16' }));
+  await settle();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
+it('does not hand the walk to the scooter beside it under a new id, after a phone locked or a deploy', async () => {
+  let vehicles = [FAR, BESIDE];
+  await walkToFarBeside(() => data(vehicles));
+
+  // Locked for 6 minutes on the way: the one beside it is back under an id of its own, the one walked to is gone.
+  vehicles = [{ ...BESIDE, vehicle_id: 'neighbour-renewed' }];
+  await hideFor(6);
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText('Battery 80%')).toBeInTheDocument();
+
+  // A deploy renames every scooter: still not it, and a second read without it says it was taken.
+  vehicles = [{ ...BESIDE, vehicle_id: 'neighbour-deployed' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
+it('follows the scooter walked to under a new id beside the one renamed with it, as after a deploy or every read of Bird', async () => {
+  const bird: Vehicle = { ...FAR, provider: 'bird', vehicle_id: 'bird-1' };
+  const birdBeside: Vehicle = { ...BESIDE, provider: 'bird', vehicle_id: 'beside-1' };
+  let vehicles = [FAR, BESIDE, bird, birdBeside];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker bird-1' }));
+  const birdCard = () => screen.getByRole('group', { name: 'Bird scooter' });
+  await pressDirections(birdCard());
+
+  // Every scooter under a new id on each read, each where it stood or a metre or two on.
+  for (let read = 2; read <= 4; read++) {
+    vehicles = [{ ...FAR, vehicle_id: `far-${read}` }, { ...BESIDE, vehicle_id: `neighbour-${read}` },
+      { ...bird, vehicle_id: `bird-${read}`, lat: bird.lat - read * 0.00001 }, { ...birdBeside, vehicle_id: `beside-${read}` }];
+    await refreshData();
+    expect(screen.getByTestId('selected')).toHaveTextContent(`bird:bird-${read}`);
+    expect(within(birdCard()).getByText('Battery 80%')).toBeInTheDocument();
+    expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  }
+
+  // Taken: only the one beside it, under a new id on each read, and two reads say so.
+  vehicles = [{ ...birdBeside, vehicle_id: 'beside-5' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-4');
+  vehicles = [{ ...birdBeside, vehicle_id: 'beside-6' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-4');
+  expect(within(birdCard()).getByText(TAKEN)).toBeVisible();
+});
+
+for (const backAs of ['far', 'far-renewed']) {
+  it(`gives a scooter said to be taken its card and Directions back when it is listed again where it stood as "${backAs}"`, async () => {
+    let vehicles = [FAR];
+    stubServer(() => data(vehicles));
+    await mountLocated();
+    fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+    await pressDirections(scooterCard());
+    vehicles = [];
+    await refreshData();
+    await refreshData();
+    expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+
+    // Hidden by its app for 6 minutes, as a reserved scooter is, and back under the cache's new id for it.
+    await act(async () => vi.advanceTimersByTimeAsync(5 * 60_000));
+    vehicles = [{ ...FAR, vehicle_id: backAs }];
+    await refreshData();
+    expect(screen.queryByText(TAKEN)).toBeNull();
+    expect(within(scooterCard()).getByRole('button', { name: 'Directions' })).toBeVisible();
+    expect(screen.getByTestId('selected')).toHaveTextContent(`lime:${backAs}`);
+  });
+}
+
+it('closes the card of a scooter taken while the phone was locked, rather than move it to the one beside it under a new id', async () => {
+  let vehicles = [FAR, BESIDE];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  expect(within(scooterCard()).getByText('Battery 80%')).toBeInTheDocument();
+
+  vehicles = [{ ...BESIDE, vehicle_id: 'neighbour-renewed' }];
+  await hideFor(6);
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+});
+
+it('forgets the scooters beside the one of a card once another is chosen', async () => {
+  let vehicles = [FAR, BESIDE];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Marker neighbour' }));
+  expect(within(scooterCard()).getByText('Battery 10%')).toBeInTheDocument();
+
+  // The scooter now chosen under a new id where it stood is still it.
+  vehicles = [FAR, { ...BESIDE, vehicle_id: 'neighbour-renewed' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:neighbour-renewed');
+  expect(within(scooterCard()).getByText('Battery 10%')).toBeInTheDocument();
+});
+
 it('keeps a card on its scooter when its app gives it a new id, and closes it when someone takes it', async () => {
   const neighbour: Vehicle = { ...FAR, vehicle_id: 'neighbour', lat: FAR.lat + 0.00009 };
   let vehicles = [FAR, neighbour];
@@ -1098,9 +1272,9 @@ it('keeps a card on its scooter when its app gives it a new id, and closes it wh
   fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
   const card = scooterCard();
 
-  // Every scooter under a new id, as Bird's are on each read: the Lime newly listed some 9 m on is it, not the one
-  // listed before that now stands where it stood.
-  const renamed: Vehicle = { ...FAR, vehicle_id: 'renamed', lat: FAR.lat + 0.00008 };
+  // Under a new id, as Bird's are on each read: the Lime newly listed some 9 m on, away from the one beside it, is
+  // it, not the one listed before that now stands where it stood.
+  const renamed: Vehicle = { ...FAR, vehicle_id: 'renamed', lat: FAR.lat - 0.00008 };
   vehicles = [renamed, { ...neighbour, lat: FAR.lat }];
   await refreshData();
   expect(screen.getByTestId('selected')).toHaveTextContent('lime:renamed');
