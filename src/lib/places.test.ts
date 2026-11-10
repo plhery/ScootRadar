@@ -152,6 +152,13 @@ describe('storedPlace', () => {
     ]) expect(storedPlace(value)).toBeNull();
   });
 
+  it('says whether the map has data at the place as it has today, not as when it was stored', () => {
+    // Manama, stored as "No data" before Hopp's feed there was added on 4 November 2026; Lungern, where there is none.
+    const manama = { lat: 26.2235, lng: 50.5876, display_name: 'Manama, Bahrain', title: 'Manama', subtitle: 'Bahrain' };
+    expect(storedPlace({ ...manama, covered: false })?.covered).toBe(true);
+    expect(storedPlace({ lat: 46.7741, lng: 8.1558, title: 'Lungern', covered: true })?.covered).toBe(false);
+  });
+
   it('fills in what an incomplete place leaves out', () => {
     expect(storedPlace({ lat: 46.7741, lng: 8.1558, title: 'Lungern', city: 'yes' })).toEqual({
       lat: 46.7741, lng: 8.1558, display_name: 'Lungern', title: 'Lungern', subtitle: '', covered: false,

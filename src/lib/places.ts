@@ -90,10 +90,13 @@ export function searchNear(center: readonly [number, number] | null, zoom: numbe
 /** Where this browser keeps the last place chosen in the search, and nothing else of it. */
 export const RECENT_PLACE_STORAGE_KEY = 'scooters-recent-place';
 
-/** A place as an earlier visit stored it, or null for anything else: storage is not to be trusted. */
+/**
+ * A place as an earlier visit stored it, or null for anything else: storage is not to be trusted. Whether the map
+ * has data there is as it has today, which a feed added or ended since may have changed.
+ */
 export function storedPlace(value: unknown): Place | null {
   if (!value || typeof value !== 'object') return null;
-  const { lat, lng, display_name: displayName, title, subtitle, covered, city } = value as Record<string, unknown>;
+  const { lat, lng, display_name: displayName, title, subtitle, city } = value as Record<string, unknown>;
   if (typeof lat !== 'number' || !Number.isFinite(lat) || Math.abs(lat) > 90) return null;
   if (typeof lng !== 'number' || !Number.isFinite(lng) || Math.abs(lng) > 180) return null;
   if (typeof title !== 'string' || !title.trim()) return null;
@@ -103,7 +106,7 @@ export function storedPlace(value: unknown): Place | null {
     display_name: typeof displayName === 'string' && displayName.trim() ? displayName : title,
     title,
     subtitle: typeof subtitle === 'string' ? subtitle : '',
-    covered: typeof covered === 'boolean' ? covered : isPointCovered(lat, lng),
+    covered: isPointCovered(lat, lng),
     ...(city === true ? { city: true as const } : {}),
   };
 }
