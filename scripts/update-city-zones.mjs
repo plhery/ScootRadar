@@ -28,7 +28,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // asked for so, Turku's an OGC API's collections, Sacramento's a feature service's query answered
 // as GeoJSON, Basel's an open data portal's export and Tampa's its GeoHub's download, as the City's
 // map server answers only the United States; Poznań's, of format kml, are a Google My
-// Maps map's KML, read as GeoJSON. Stavanger's, of format nivel, are the zones Nivel's platform
+// Maps map's KML, read as GeoJSON, and Orlando's parking areas, of format kmz, a KMZ its map
+// serves. Stavanger's, of format nivel, are the zones Nivel's platform
 // serves to the map the kommune's page embeds, and Long Beach's and Nashville's, of format
 // populus, the shapes of policies on Populus's public policy map, which each city links; both are
 // read as GeoJSON. Helsingborg's is the area of a local
@@ -143,8 +144,9 @@ function featurePolygons(rings) {
 /**
  * A feature or map service layer's zones, those `where` picks: each part of a polygon one ring, its holes
  * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, or else after the
- * city, as all are where `nameField` is null: Antwerpen's names are mostly ids. A point without a
- * name is named by its `CorralType`, or as a corral. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
+ * city, as all are where `nameField` is null: Antwerpen's names are mostly ids. `nameField` may
+ * list fields, their values joined, as Denver's corrals are named by number and street. A point
+ * without a name is named by its `CorralType`, or as a corral. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
  * goes into each zone's id where two layers of one kind number theirs alike, as Ottawa's two of
  * parking places do.
  */
@@ -157,7 +159,7 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
   return body.features.flatMap(({ attributes, geometry }) => {
     const objectId = attributes[idField];
     const id = `${city.id}-${slug(kind)}-${idTag ? `${idTag}-` : ''}${objectId}`;
-    const name = nameField ? attributes[nameField]?.trim() : null;
+    const name = nameField ? [nameField].flat().map(field => String(attributes[field] ?? '').trim()).filter(Boolean).join(' ') : null;
     if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
       const corral = attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral';
       return [{ id, kind, name: name || corral, ring: disc(geometry.y, geometry.x) }];
@@ -201,16 +203,17 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * layer of zones may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone
  * of its own kind; or only those within a zone of its kind an earlier layer drew, `pointsOutside`:
  * 89 of Rīga's 121 parking points mark parking places its other layer draws as shapes.
- * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), one of
- * format zip a zip of GeoJSON files (zipFeatures), one of format nivel the active zones of a
- * Nivel public map (nivelFeatures), one of format populus a policy's shapes on Populus's
- * public policy map (populusFeatures), and one of format geopdf the point symbols of a
- * georeferenced PDF's map (geopdfFeatures).
+ * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), one of format
+ * kmz those of the KML file a KMZ holds (kmzFeatures), one of format zip a zip of GeoJSON files
+ * (zipFeatures), one of format nivel the active zones of a Nivel public map (nivelFeatures), one
+ * of format populus a policy's shapes on Populus's public policy map (populusFeatures), and one of
+ * format geopdf the point symbols of a georeferenced PDF's map (geopdfFeatures).
  */
 async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, grid, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
-  const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'zip' ? await zipFeatures(url)
-    : format === 'nivel' ? nivelFeatures(await getJson(url), url) : format === 'populus' ? await populusFeatures(url, policy)
-      : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : await getJson(url);
+  const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'kmz' ? await kmzFeatures(url)
+    : format === 'zip' ? await zipFeatures(url) : format === 'nivel' ? nivelFeatures(await getJson(url), url)
+      : format === 'populus' ? await populusFeatures(url, policy)
+        : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A layer in a grid's metres, which a service gives to the millimetre where its degrees are rounded to metres.
   if (grid) {
@@ -265,8 +268,9 @@ async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, gri
 
 /**
  * A KML file's placemarks as GeoJSON features, as Google My Maps exports a map: each placemark's
- * properties its folder's name, `folder`, its own, `name`, and its data, or its schema's data, as
- * Rīga's portal exports it, and its shape a point or a polygon, its outer ring and then its holes.
+ * properties its folder's name, `folder`, its own, `name`, its `description`, which gives each of
+ * Orlando's parking areas its address, and its data, or its schema's data, as Rīga's portal
+ * exports it, and its shape a point or a polygon, its outer ring and then its holes.
  * Any other shape is given by its name, for geojsonZones to refuse.
  */
 function kmlFeatures(kml) {
@@ -278,7 +282,8 @@ function kmlFeatures(kml) {
   return {
     features: (folders.length ? folders : [kml]).flatMap(folder => [...folder.matchAll(/<Placemark\b[^>]*>([\s\S]*?)<\/Placemark>/g)]
       .map(([, placemark]) => {
-        const properties = { folder: folders.length ? text(element(folder, 'name') ?? '') : null, name: text(element(placemark, 'name') ?? '') };
+        const properties = { folder: folders.length ? text(element(folder, 'name') ?? '') : null, name: text(element(placemark, 'name') ?? ''),
+          description: text(element(placemark, 'description') ?? '') };
         for (const [, key, value] of placemark.matchAll(/<Data name="([^"]+)">\s*<value>([\s\S]*?)<\/value>/g)) properties[text(key)] = text(value);
         for (const [, key, value] of placemark.matchAll(/<SimpleData name="([^"]+)">([\s\S]*?)<\/SimpleData>/g)) properties[text(key)] = text(value);
         const point = element(placemark, 'Point');
@@ -292,17 +297,17 @@ function kmlFeatures(kml) {
 }
 
 /**
- * A zip of GeoJSON files' features, as one answer: Braunschweig's open data gives each of its zones
- * a file of its own, named in a DOS code page that macOS's file system refuses, so the zip is read
- * here, entry by entry from its central directory, rather than unpacked.
+ * A zip's files, each its name and bytes, read entry by entry from its central directory rather
+ * than unpacked: Braunschweig's open data names its files in a DOS code page that macOS's file
+ * system refuses. Only the files whose names `wanted` takes are inflated.
  */
-async function zipFeatures(url) {
+async function zipEntries(url, wanted) {
   const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
   if (!response.ok) throw new Error(`${url} answered ${response.status}`);
   const zip = Buffer.from(await response.arrayBuffer());
   const end = zip.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
   if (end < 0) throw new Error(`${url} is no zip`);
-  const features = [];
+  const entries = [];
   for (let entry = zip.readUInt32LE(end + 16), count = zip.readUInt16LE(end + 10); count > 0; count--) {
     if (zip.readUInt32LE(entry) !== 0x02014b50) throw new Error(`${url}: its central directory is broken`);
     const method = zip.readUInt16LE(entry + 10);
@@ -312,15 +317,31 @@ async function zipFeatures(url) {
     const header = zip.readUInt32LE(entry + 42);
     const data = header + 30 + zip.readUInt16LE(header + 26) + zip.readUInt16LE(header + 28);
     entry += 46 + nameLength + zip.readUInt16LE(entry + 30) + zip.readUInt16LE(entry + 32);
-    if (!/\.(geo)?json$/i.test(name)) continue;
+    if (!wanted(name)) continue;
     if (method !== 0 && method !== 8) throw new Error(`${url}: ${name} is compressed by method ${method}`);
     const bytes = zip.subarray(data, data + size);
-    const file = JSON.parse((method === 8 ? inflateRawSync(bytes) : bytes).toString('utf8'));
+    entries.push({ name, bytes: method === 8 ? inflateRawSync(bytes) : bytes });
+  }
+  return entries;
+}
+
+/** A zip of GeoJSON files' features, as one answer: Braunschweig's open data gives each of its zones a file of its own. */
+async function zipFeatures(url) {
+  const features = [];
+  for (const { name, bytes } of await zipEntries(url, name => /\.(geo)?json$/i.test(name))) {
+    const file = JSON.parse(bytes.toString('utf8'));
     if (!Array.isArray(file.features)) throw new Error(`${url}: ${name} holds no features`);
     features.push(...file.features);
   }
   if (!features.length) throw new Error(`${url} holds no GeoJSON`);
   return { features };
+}
+
+/** A KMZ's placemarks, those of the KML file it holds, as the City of Orlando's map of its parking areas serves them. */
+async function kmzFeatures(url) {
+  const files = await zipEntries(url, name => /\.kml$/i.test(name));
+  if (files.length !== 1) throw new Error(`${url} holds ${files.length} KML files`);
+  return kmlFeatures(files[0].bytes.toString('utf8'));
 }
 
 /**
@@ -990,7 +1011,7 @@ async function updateCity(city) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : ['geojson', 'kml', 'zip', 'nivel', 'populus', 'geopdf'].includes(layer.format) ? await geojsonZones(city, layer, zones)
+      : ['geojson', 'kml', 'kmz', 'zip', 'nivel', 'populus', 'geopdf'].includes(layer.format) ? await geojsonZones(city, layer, zones)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)

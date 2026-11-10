@@ -1172,6 +1172,27 @@ its source and the date it was read.
   night ban (`data/rental-curfews.json`), not a zone. The map states no
   licence, only that it is for information; the legend credits the City and
   links the page.
+- **Denver** (read 10 November 2026): the City and County of Denver's 106
+  corrals, its own (76 "City Corral", 29 "City Corral/MICROMOBILITY BOX" and
+  one untyped; installed from 2020 to 2024 where a date is given), points each
+  drawn as a disc of 5 m and named for their address, from layer 1,
+  DOTIBikeCorrals, of the City's `BikeCorrals_gdb` feature service on ArcGIS
+  Online ([Bike Corrals](https://www.arcgis.com/home/item.html?id=f507101d9e864753b484d868cc99a4d2),
+  edited 6 March 2026); 103 of them are among the City's corrals in its list
+  of all corrals of January 2025 (`All_Corrals_Jan_2025`). Its
+  [Micromobility Program](https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Department-of-Transportation-and-Infrastructure/Programs-Services/Transit/Micromobility-Program)
+  page: "The City of Denver has partnered with Veo to create designated
+  parking corrals where riders can park bikes or scooters"; Veo has run the
+  program alone since May 2026. Not drawn: the 286 corrals permitted to Lime
+  and Bird from 2021 to 2025 (layer 0, PrivateBikeCorrals), which no field
+  marks as still in place, of which only 183 are in the January 2025 list, and
+  whose operators left in May 2026; and the mandatory parking zone downtown,
+  where a scooter is parked only in a corral: its layers (MPZ Boundary,
+  MPZ_Corrals) ask for a token, the one shape in the open, in the "MPZ Corral
+  Planning" web map, is a sketch of March 2025, and the ordinance's first
+  zone, at Union Station, is due by 31 December 2026. A few corrals stand in
+  pairs a few metres apart, a corral and a micromobility box at one address.
+  The layer states no terms; the legend credits the City and links the page.
 - **Halmstad** (read 1 November 2026): Halmstads kommun's 23 "sparkeringar",
   the places it has laid out where it would rather e-scooters were parked
   (Stora torg, Norre port, Lilla torg, the city library, Resecentrum, the
@@ -1262,6 +1283,24 @@ its source and the date it was read.
   put its website under its copyright and the Open Government Licence. The
   outline's 3,996 points are 855 within half a metre. The other boroughs in
   London's rental trial publish no bays as data (docs/coverage-gaps.md).
+- **Leeds** (read 10 November 2026): Leeds City Council's 82 live LNER Beryl
+  bays, points each drawn as a disc of 5 m and named as the council names
+  them, and the scheme's operating area, 34 km², where a scooter is left only
+  in a bay (racks or marked places only, drawn only on the website), from the
+  layers `Leeds_City_Bikes_Sites` (status "Live"; edited 6 October 2026) and
+  `LCB_Operational_Area` (edited 18 November 2025) of the council's
+  [Leeds City Bikes](https://www.arcgis.com/home/item.html?id=9825931b5cee474e8fe0a6cbf72db2b0)
+  map on ArcGIS Online. Its
+  [LNER Beryl Bikes](https://www.leeds.gov.uk/parking-roads-and-travel/connecting-leeds-and-transforming-travel/cycling/lner-beryl-bikes)
+  page, which links no map: "Park – In an LNER Beryl Bay", and "if a bike or
+  e-scooter is not returned to a bay the rider will face extra charges". Not
+  drawn: the 25 sites not live (drawings complete, ready for install, install
+  planned, in planning, suspended), and the map's buffers of 400 m and 100 m
+  round the docks, which are for planning. Beryl's own feed has 90 bays live:
+  71 of the council's 82 lie within 40 m of one, a few of the same name 60 to
+  126 m apart, and Hunslet Library 1.1 km from any. The operating area is
+  Beryl's "Leeds Phase 1.1" (34.6 km²) to within 2%. The map states no terms;
+  the legend credits the council and links the page.
 - **Long Beach** (read 1 November 2026): the City of Long Beach's 21
   no-parking areas, where a parked scooter costs its operator $0.50, 25
   no-riding zones (the Port, the airport, the campuses of CSULB and LBCC,
@@ -1475,6 +1514,31 @@ its source and the date it was read.
   that enters a No Ride Zone is shut off and must be walked out. Council Bluffs'
   site answers scripts only with a challenge, and no layer of its own was
   found.
+- **Orlando** (read 10 November 2026): the City of Orlando's 34 designated
+  parking areas downtown (marked pavement boxes, signed two-wheeled parking
+  spaces and racks), points each drawn as a disc of 5 m and named for their
+  address, from the KMZ the map on its
+  [Bike Share / Scooter Share Program](https://www.orlando.gov/Initiatives/Bike-Share-Scooter-Share-Program)
+  page serves (drawn 9 December 2020, last modified 6 January 2025), read with
+  the format kmz; all 34 lie in or within 9 m of the designated staging areas
+  the City published on Populus in November 2024, so are still in force. And
+  its 69 no-parking zones (garages, hospitals, stations, parks, golf courses,
+  the airport and Universal Studios among them), its 25 no-riding zones (Lake
+  Eola, the SunRail and LYNX stations, Greenwood Cemetery, the two airports
+  and others) and Lake Nona's docked service area, 56 km², where a scooter is
+  left only at a hub (racks or marked places only, drawn only on the website),
+  the shapes of the City's policies "Ordinance Req: No Park Zones" (published
+  13 July 2026), "Ordinance Req: No Ride Zones" (14 August 2025) and "Lake
+  Nona Docked Service Area" (9 April 2025) on
+  [Populus's public policy map](https://app.populus.ai/orlando/public/policies),
+  beside the dashboard the page links, read as Long Beach's are. Not drawn:
+  the Orange Avenue no-ride and no-park zone and the other pedestrian streets
+  of Friday to Sunday nights (20:00 to 04:00) and the special events' zones,
+  in force only at some hours or on some days, and the staging areas, fleet
+  caps, rebalancing and fees, which the City sets for the operators alone.
+  Lake Nona's area keeps a thin hole of about 3,500 m² its drawing left.
+  Neither the KMZ nor the map states terms; the legend credits the City and
+  links the page.
 - **Oslo** (read 30 October 2026): Oslo kommune's 12 areas to park, 12
   no-parking areas, 3 slow areas and 3 of its 4 no-riding areas, in 262, 366,
   129 and 78 parts, from `geodata.bymoslo.no/arcgis/rest/services/geodata/Reguleringer_Mikromobilitet/MapServer`,
@@ -1516,6 +1580,22 @@ its source and the date it was read.
   19 m², which the announcement calls suggested places to set scooters out,
   as it sets no fixed parking zones while Straume's centre is being built.
   The slow zone's speed is not given.
+- **Plymouth** (read 10 November 2026): Plymouth City Council's 69 Beryl
+  docking stations, where its e-bikes and, since July 2026, its e-scooters are
+  taken and left, points each drawn as a disc of 5 m and named as the council
+  names them, and Beryl's two service areas, the city's (15 km²) and
+  Derriford's (1.5 km²), where a scooter is left only at a station (racks or
+  marked places only, drawn only on the website), from the layers
+  `Joined Beryl Data2` (edited 27 August 2025) and `250807_Beryl_Service_Area`
+  (7 August 2025) of the council's
+  [Connect Plymouth - Beryl Bikes](https://experience.arcgis.com/experience/4b0d1770cba14c3dad5fa4dce4969181)
+  map on ArcGIS Online, which Connect Plymouth's
+  [Electric Bike and Scooter Hire](https://connectplymouth.org/electric-bike-and-scooter-hire)
+  page links: "Finish your ride and dock your e-bike or e-scooter". The layers
+  are more than a year old but current: each station lies within 35 m of one
+  Beryl's own feed has live, which adds only Millfields Trust, and the areas
+  are Beryl's to within 5%. The map states no terms; the legend credits the
+  council and links the page.
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),

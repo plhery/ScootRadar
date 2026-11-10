@@ -138,6 +138,14 @@ const SALT_LAKE_DOWNTOWN = { south: 40.758, west: -111.905, north: 40.772, east:
 const SAN_ANTONIO_DOWNTOWN = { south: 29.415, west: -98.5, north: 29.43, east: -98.48 };
 // Baltimore's Inner Harbor, from Camden Yards to the promenade.
 const BALTIMORE_INNER_HARBOR = { south: 39.278, west: -76.625, north: 39.29, east: -76.6 };
+// Plymouth's city centre, from Royal Parade and Civic Square to the Armada Way.
+const PLYMOUTH_CENTRE = { south: 50.366, west: -4.15, north: 50.374, east: -4.132 };
+// Leeds's centre, from the station and the Town Hall to Victoria Gate.
+const LEEDS_CENTRE = { south: 53.794, west: -1.555, north: 53.802, east: -1.535 };
+// Downtown Orlando, from Church Street to Lake Eola.
+const ORLANDO_DOWNTOWN = { south: 28.536, west: -81.384, north: 28.548, east: -81.368 };
+// Denver's Lower Downtown, from Union Station along Blake and Larimer Streets.
+const DENVER_LODO = { south: 39.745, west: -105.005, north: 39.756, east: -104.99 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 /** The credit JARTIC's terms ask for, of its data processed. */
 const JARTIC_CREDIT = '出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成';
@@ -1259,5 +1267,90 @@ describe('the cities\' zones', () => {
     await loadCityZones(zurich);
     const shown = ruleZonesInView({ bounds: ZURICH, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'noRide']));
+  });
+
+  it("draws Plymouth's Beryl docking stations, where its scooters are taken and left, and the two service areas round them, from the council's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const plymouth = ZONE_CITIES.find(city => city.id === 'plymouth')!;
+    expect(plymouth.authority).toBe('Plymouth City Council');
+    expect(plymouth.timeZone).toBe('Europe/London');
+    // Its 69 stations, points drawn as discs, and the service areas of the city and of Derriford, where a scooter is left only at one.
+    const { default: file } = await CITY_ZONE_FILES.plymouth();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 69, racksOnly: 2 });
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name).sort();
+    const centre = (name: string) => [0, 1].map(axis => { const { ring } = file.zones.find(zone => zone.name === name)!; return ring!.reduce((sum, point) => sum + point[axis], 0) / ring!.length; });
+    // Civic Square's station, within a metre of where Beryl's own feed has it, and Derriford Hospital's; Plympton is outside both areas.
+    expect(at(50.369072, -4.142051)).toEqual(['Civic Square', 'Plymouth']);
+    expect(centre('Civic Square')[0]).toBeCloseTo(50.369072, 5);
+    expect(centre('Civic Square')[1]).toBeCloseTo(-4.142051, 5);
+    expect(at(50.417134, -4.114309)).toEqual(['Derriford', 'Derriford Hospital']);
+    expect(at(50.386, -4.05)).toEqual([]);
+    await loadCityZones(plymouth);
+    const shown = ruleZonesInView({ bounds: PLYMOUTH_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly']));
+  });
+
+  it("draws Leeds's live LNER Beryl bays, outside which a scooter is not returned without a charge, and the scheme's operating area, from the council's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const leeds = ZONE_CITIES.find(city => city.id === 'leeds')!;
+    expect(leeds.authority).toBe('Leeds City Council');
+    expect(leeds.timeZone).toBe('Europe/London');
+    // The 82 live of its 107 sites, the others planned, ready or suspended, and the operating area round them.
+    const { default: file } = await CITY_ZONE_FILES.leeds();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 82, racksOnly: 1 });
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name).sort();
+    const centre = (name: string) => [0, 1].map(axis => { const { ring } = file.zones.find(zone => zone.name === name)!; return ring!.reduce((sum, point) => sum + point[axis], 0) / ring!.length; });
+    // The Town Hall's bay and Victoria Gate's, within the operating area, which leaves Leeds Bradford Airport out.
+    expect(at(53.799713, -1.549921)).toEqual(['Leeds', 'Town Hall']);
+    expect(centre('Town Hall')[0]).toBeCloseTo(53.799713, 5);
+    expect(centre('Town Hall')[1]).toBeCloseTo(-1.549921, 5);
+    expect(at(53.798577, -1.536637)).toEqual(['Leeds', 'Victoria Gate']);
+    expect(at(53.8659, -1.6606)).toEqual([]);
+    await loadCityZones(leeds);
+    const shown = ruleZonesInView({ bounds: LEEDS_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly']));
+  });
+
+  it("draws Orlando's designated parking areas, from the map on the City's page, and its no-parking and no-riding zones and Lake Nona, where a scooter is left only at a hub, from Populus's public policy map beside the dashboard the City links", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const orlando = ZONE_CITIES.find(city => city.id === 'orlando')!;
+    expect(orlando.authority).toBe('City of Orlando');
+    expect(orlando.timeZone).toBe('America/New_York');
+    const { default: file } = await CITY_ZONE_FILES.orlando();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'noParking', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 34, racksOnly: 1, noParking: 69, noRide: 25 });
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => `${zone.kind} ${zone.name}`).sort();
+    const centre = (name: string) => [0, 1].map(axis => { const { ring } = file.zones.find(zone => zone.name === name)!; return ring!.reduce((sum, point) => sum + point[axis], 0) / ring!.length; });
+    // A parking area named for its address; Lake Eola, neither ridden nor parked in; Lake Nona's town centre.
+    expect(at(28.539014, -81.377999)).toEqual(['parking 42 East Jackson Street']);
+    expect(centre('42 East Jackson Street')[0]).toBeCloseTo(28.539014, 5);
+    expect(centre('42 East Jackson Street')[1]).toBeCloseTo(-81.377999, 5);
+    expect(at(28.5435, -81.373)).toEqual(['noParking Lake Eola - No Parking / Riding', 'noRide Lake Eola - No Parking / Riding']);
+    expect(at(28.374, -81.244)).toEqual(['racksOnly Lake Nona Service Area']);
+    await loadCityZones(orlando);
+    const shown = ruleZonesInView({ bounds: ORLANDO_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'noRide']));
+  });
+
+  it("draws Denver's corrals, the City's own, from its layer of them, but not those once permitted to the operators", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const denver = ZONE_CITIES.find(city => city.id === 'denver')!;
+    expect(denver.authority).toBe('City and County of Denver');
+    expect(denver.timeZone).toBe('America/Denver');
+    const { default: file } = await CITY_ZONE_FILES.denver();
+    const counts = Object.fromEntries(['parking'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 106 });
+    // Each named for its address, number and street.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name).sort();
+    const centre = (name: string) => [0, 1].map(axis => { const { ring } = file.zones.find(zone => zone.name === name)!; return ring!.reduce((sum, point) => sum + point[axis], 0) / ring!.length; });
+    expect(at(39.750174, -104.999748)).toEqual(['1525 Blake St']);
+    expect(centre('1525 Blake St')[0]).toBeCloseTo(39.750174, 5);
+    expect(centre('1525 Blake St')[1]).toBeCloseTo(-104.999748, 5);
+    expect(at(39.75219, -104.996352)).toEqual(['1441 18th St']);
+    await loadCityZones(denver);
+    const shown = ruleZonesInView({ bounds: DENVER_LODO, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking']));
   });
 });
