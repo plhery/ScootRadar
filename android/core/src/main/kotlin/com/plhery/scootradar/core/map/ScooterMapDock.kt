@@ -360,8 +360,19 @@ val ScooterMapController.cardStatus: ScooterDockStatus?
                 ScooterDockStatus.RefreshFailed(showing = loadIssue.showing)
             }
         }
+        if (isFilling) return null
+        return delayedStatus
+    }
+
+/**
+ * Data the dock calls delayed: a stale answer naming an app switched on as late by [ScooterDockStatus.delayedAfter]
+ * or more, or one that names none, late as a whole. Null otherwise, as for an answer of feeds being collected again,
+ * the first of a view outside Switzerland mostly, whose positions are not late.
+ */
+internal val ScooterMapController.delayedStatus: ScooterDockStatus.Delayed?
+    get() {
         val lastUpdated = lastUpdated.value
-        if (responseMetadata.value?.stale != true || lastUpdated == null || isFilling) return null
+        if (responseMetadata.value?.stale != true || lastUpdated == null) return null
         return ScooterDockStatus.Delayed.of(showing = lastUpdated, apps = staleApps, at = clock())
     }
 

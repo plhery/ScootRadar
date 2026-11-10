@@ -27,13 +27,13 @@ fun ScooterMapController.dropReviewMoment(moment: Int) {
 }
 
 /**
- * After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A calm map in front,
- * from the third day with a fresh feed, is then the moment to ask, once the screen has seen it rest; a moment already
- * waiting goes on waiting.
+ * After each load: a feed that answered, its data not delayed, counts the day with use, and trouble keeps the day
+ * from asking. A calm map in front, from the third day with such a feed, is then the moment to ask, once the screen
+ * has seen it rest; a moment already waiting goes on waiting.
  */
 internal fun ScooterMapController.reviewAfterLoad() {
     val now = clock()
-    if (loadIssue.value == null && responseMetadata.value?.stale != true) reviewPrompt.noteUse(at = now)
+    if (loadIssue.value == null && delayedStatus == null) reviewPrompt.noteUse(at = now)
     if (reviewTrouble) reviewPrompt.noteBadMoment(at = now)
     if (!isSceneActive || reviewDue || !reviewPrompt.isDue(at = now, calm = reviewCalm)) return
     reviewDue = true
@@ -54,12 +54,13 @@ private val ScooterMapController.reviewCalm: Boolean
     }
 
 /**
- * What makes a bad day: the feed failed or is out of date, the data shown is delayed, every provider here is
- * down, or the rider is where no operator shares data.
+ * What makes a bad day: the feed failed or is out of date, the data shown is delayed as the dock says it, every
+ * provider here is down, or the rider is where no operator shares data. An answer of feeds being collected again, as
+ * the first of a view mostly is outside Switzerland, is none while none of its apps is late.
  */
 private val ScooterMapController.reviewTrouble: Boolean
     get() {
-        if (loadIssue.value != null || responseMetadata.value?.stale == true) return true
+        if (loadIssue.value != null || delayedStatus != null) return true
         val down = providerHealth.downProviders.toSet()
         if (down.isNotEmpty() && down.containsAll(availableProviders)) return true
         val userLocation = userLocation.value ?: return false

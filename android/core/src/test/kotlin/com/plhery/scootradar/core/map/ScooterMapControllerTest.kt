@@ -4129,10 +4129,19 @@ class ScooterMapControllerTest {
             val (model, api) = reviewController(clock)
             model.noteInteraction()
             val vehicles = listOf(scooter(id = "one", provider = "lime"))
+            // Lime's positions 6 minutes old: "Lime data delayed".
+            val limeSeenAt = clock.now.addingTimeInterval(-360.0)
             api.setResponse(
-                ScooterResponse(vehicles = vehicles, meta = ScooterResponseMetadata(partial = false, stale = true, failedSources = emptyList())),
+                ScooterResponse(
+                    vehicles = vehicles,
+                    meta = ScooterResponseMetadata(
+                        partial = false, stale = true, failedSources = emptyList(), generatedAt = iso(limeSeenAt),
+                        staleProviders = mapOf("lime" to iso(limeSeenAt)),
+                    ),
+                ),
             )
             reload(model, api)
+            assertEquals(ScooterDockStatus.Delayed(showing = limeSeenAt, provider = Lime), summaryOf(model.dock).status(at = clock.now))
             assertFalse(model.reviewDue)
 
             // Up to date again later that day: still no ask.
@@ -4143,6 +4152,63 @@ class ScooterMapControllerTest {
             assertFalse(model.reviewDue)
         }
     }
+
+    /**
+     * The cache says an answer is stale while it collects the view's feeds again, as the first answer of a view mostly
+     * comes outside Switzerland, where feeds are collected only while someone looks: none of its apps late, the dock
+     * says nothing is delayed, and the day is neither a bad one nor one without use (week review, finding 4.1).
+     */
+    @Test
+    fun anAnswerOfFeedsCollectedAgainWithNoneLateIsNoBadDay() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+            model.noteInteraction()
+            val vehicles = listOf(scooter(id = "one", provider = "lime"))
+            api.setResponse(ScooterResponse(vehicles = vehicles, meta = collectedAgain(clock)))
+            reload(model, api)
+            assertNull(model.cardStatus)
+            assertEquals(ScooterDockStatus.Live, summaryOf(model.dock).status(at = clock.now))
+            assertEquals(2, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
+
+            // A calm, fresh map later that day asks too.
+            model.noteInteraction()
+            api.setResponse(ScooterResponse(vehicles = vehicles))
+            clock.advance(3_600.0)
+            reload(model, api)
+            assertEquals(3, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
+        }
+    }
+
+    @Test
+    fun anAnswerOfFeedsCollectedAgainWithNoneLateCountsTheDayWithUse() = inUTC {
+        runTest {
+            val clock = TestClock()
+            // The second day: its only answer, of feeds collected again.
+            val defaults = InMemoryScooterDefaults()
+            ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion).noteUse(at = clock.now.addingTimeInterval(-86_400.0))
+            val vehicles = listOf(scooter(id = "one", provider = "lime"))
+            val api = StubScooterAPI(ScooterResponse(vehicles = vehicles, meta = collectedAgain(clock)))
+            val second = makeController(api, clock = clock, defaults = defaults)
+            reload(second, api)
+            assertEquals(0, second.reviewMoments.value)
+
+            // The third day: a calm, fresh map asks.
+            clock.advance(86_400.0)
+            api.setResponse(ScooterResponse(vehicles = vehicles))
+            val (model, _) = reviewController(clock, earlierDays = 0, defaults = defaults, api = api)
+            assertEquals(1, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
+        }
+    }
+
+    /** The cache's answer while it collects the view's feeds again, none of them late: stale, and no app named. */
+    private fun collectedAgain(clock: TestClock) = ScooterResponseMetadata(
+        partial = false, stale = true, failedSources = emptyList(), generatedAt = iso(clock.now.addingTimeInterval(-2.0)),
+        refreshing = true, followUpMs = 3_000, staleProviders = emptyMap(),
+    )
 
     /** Up to 1.3.0 the app kept the time of the last "Open in" for the ask; an updated app forgets it. */
     @Test
@@ -4156,11 +4222,14 @@ class ScooterMapControllerTest {
     }
 
     /** A controller with a fresh feed on the map after `earlierDays` days with one: the third day by default. */
-    private fun TestScope.reviewController(clock: TestClock, earlierDays: Int = 2): Pair<ScooterMapController, StubScooterAPI> {
-        val defaults = InMemoryScooterDefaults()
+    private fun TestScope.reviewController(
+        clock: TestClock,
+        earlierDays: Int = 2,
+        defaults: InMemoryScooterDefaults = InMemoryScooterDefaults(),
+        api: StubScooterAPI = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "one", provider = "lime")))),
+    ): Pair<ScooterMapController, StubScooterAPI> {
         val earlier = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
         for (day in earlierDays downTo 1) earlier.noteUse(at = clock.now.addingTimeInterval(-day * 86_400.0))
-        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "one", provider = "lime"))))
         val model = makeController(api, clock = clock, defaults = defaults)
         model.refresh()
         val loaded = waitUntil { model.lastUpdated.value != null && !model.isLoading.value }
