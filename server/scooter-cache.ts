@@ -19,8 +19,8 @@ import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readFeedStates, readSnapshot, saveAtomically, writeFeedStates, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, stalledAt, waitOutCurfew, type FeedCadence, type FeedFailure,
-  type FeedStateEntry } from './feedStateLog';
+import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, restoredFailures, stalledAt, waitOutCurfew, type FeedCadence,
+  type FeedFailure, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { createVisitorLedger } from './visitorLedger';
 import { createPublicVehicleIds } from './publicVehicleIds';
@@ -116,7 +116,8 @@ let persisting: Promise<void> | undefined;
 let savedAt = 0;
 let lastHealthLogAt = 0;
 const records = new Map<string, FeedSnapshot>();
-// The last collection error of each failing feed, for its state changes and its Sentry report should it expire.
+// The last collection error of each failing feed, for its state changes and its Sentry report should it expire,
+// and how long that waits (stalledAt). Saved with the feed states, and restored with them (restoredFailures).
 const lastErrors = new Map<string, FeedFailure>();
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
 // The feeds collected now, whose zones are read when someone asks for them.
@@ -220,6 +221,9 @@ try {
   const saved = await readFeedStates(feedStatesPath, Date.now());
   if (saved) {
     restoredFeedStates = saved.feeds;
+    // Until each failing feed's first collection ends: an NRW.Mobidrom stall expired before the restart waits
+    // out its 3 hours, not 5 minutes.
+    for (const [id, failure] of restoredFailures(saved.feeds)) lastErrors.set(id, failure);
     discoveredAt = saved.discoveredAt;
     if (discoveredAt) metrics.recordDiscovery(discoveredAt);
     // The Ryde bridge's worker, silent and reported before the restart, is silent still until it asks:

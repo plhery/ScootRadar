@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ALWAYS_FAST, createFeedStateLog, expiredBeside, expiredReportDelay, feedState, parkingUp, stalledAt, waitOutCurfew,
+import { ALWAYS_FAST, createFeedStateLog, expiredBeside, expiredReportDelay, feedState, parkingUp, restoredFailures, stalledAt, waitOutCurfew,
   type FeedCadence, type FeedFailure, type FeedStateEntry, type StillExpired } from './feedStateLog';
 import { feedCurfewed } from '../src/lib/seasonalPauses';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
@@ -274,6 +274,49 @@ describe('a restart with the states saved before it', () => {
     expect(reported).toEqual([['ok', now + minutes(7)]]);
     expect(unsaved).toEqual([]);
     expect(Object.keys(after.saved())).toEqual(['national:dott_zurich']);
+  });
+
+  it('holds an NRW.Mobidrom stall expired before it for its 3 hours, by the error its feed failed on, not for 5 minutes', () => {
+    const NRW = 'www.mobilitaetsdaten.nrw';
+    const stall: FeedFailure = { message: 'Status timestamp is missing or out of date', statusAgeSeconds: 2400 };
+    const koeln = (at: number) => [feed({ id: 'germany:voi_de_koeln', provider: 'voi', observedAt: now - minutes(40),
+      attemptedAt: at - 20_000, stale: true, failed: true })];
+    // As scooter-cache.ts wires it: the hold reads the last error of each feed, until a collection succeeds.
+    const run = (lastErrors: Map<string, FeedFailure>, reported: string[], restored?: Record<string, FeedStateEntry>) =>
+      createFeedStateLog(() => {}, undefined, ALWAYS_FAST, {
+        afterMs: current => expiredReportDelay(current, 0, stalledAt(current, NRW, lastErrors.get(current.id))),
+        report: change => { reported.push(change.feed); } }, restored, id => lastErrors.get(id));
+    const told: string[] = [];
+    const before = run(new Map([['germany:voi_de_koeln', stall]]), told);
+    before([{ ...koeln(now)[0], observedAt: now - 1000, failed: false, stale: false }], now);
+    // Expired at 16 minutes and held an hour while NRW answers with old documents, then a deploy.
+    for (let at = now + minutes(16); at <= now + minutes(76); at += 5000) before(koeln(at), at);
+    const saved = reread(before.saved());
+    expect(saved['germany:voi_de_koeln']).toMatchObject({ state: 'expired', change: { state: 'expired' }, failure: stall });
+    // 5 seconds after the restart, the feed's first collection still under way.
+    const after = run(restoredFailures(saved), told, saved);
+    after(koeln(now + minutes(77)), now + minutes(77) + 5000);
+    expect(told).toEqual([]);
+    // Told once the stall outlasts its 3 hours, as without the restart.
+    for (let at = now + minutes(78); at <= now + minutes(16 + 180); at += minutes(1)) after(koeln(at), at);
+    expect(told).toEqual(['germany:voi_de_koeln']);
+    // States saved before the errors were, or with none, hold no failure: the feed is judged as before, after 5 minutes.
+    const older = reread(before.saved());
+    delete older['germany:voi_de_koeln'].failure;
+    expect(restoredFailures(older).size).toBe(0);
+    const unheld: string[] = [];
+    run(restoredFailures(older), unheld, older)(koeln(now + minutes(77)), now + minutes(77) + 5000);
+    expect(unheld).toEqual(['germany:voi_de_koeln']);
+  });
+
+  it('saves no error for a feed whose collections succeed, and forgets it once one does', () => {
+    const lastErrors = new Map<string, FeedFailure>([['national:dott_zurich', { message: 'HTTP 503', httpStatus: 503 }]]);
+    const log = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, undefined, {}, id => lastErrors.get(id));
+    log([feed({ id: 'national:dott_zurich', provider: 'dott', observedAt: now, attemptedAt: now, failed: true })], now);
+    expect(reread(log.saved())).toEqual({ 'national:dott_zurich': { state: 'failing', since: now, failure: { message: 'HTTP 503', httpStatus: 503 } } });
+    lastErrors.delete('national:dott_zurich');
+    log(zurich(now + minutes(1), now + minutes(1)), now + minutes(1));
+    expect(reread(log.saved())).toEqual({ 'national:dott_zurich': { state: 'ok', since: now + minutes(1) } });
   });
 
   it('keeps the wait of an expiry not told yet', () => {

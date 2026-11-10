@@ -186,6 +186,18 @@ export interface FeedStateEntry {
   state: FeedState | 'warming';
   since: number;
   change?: FeedStateChange;
+  /** Saved only: the last collection's error while the feed's collections fail (restoredFailures). */
+  failure?: FeedFailure;
+}
+
+/**
+ * The last collection errors saved with the feed states (`saved()`), by feed, for a restart to judge each failing
+ * feed by its error until its first collection ends, as before the restart: an NRW.Mobidrom stall expired then is
+ * still held for its 3 hours (stalledAt), not told 5 minutes into its expiry, seconds after the restart. States
+ * saved before the errors were have none, and their feeds are judged as without an error.
+ */
+export function restoredFailures(restored: Readonly<Record<string, FeedStateEntry>>): Map<string, FeedFailure> {
+  return new Map(Object.entries(restored).flatMap(([id, { failure }]) => typeof failure?.message === 'string' ? [[id, failure]] : []));
 }
 
 /**
@@ -201,7 +213,7 @@ export interface FeedStateEntry {
  * across a restart. An entry for a feed the first call is not handed goes, as any feed's that leaves.
  *
  * `failure` gives the last collection error of a failed feed (scooter-cache.ts), whose rejected status document's
- * age the change carries (`statusAgeSeconds`).
+ * age the change carries (`statusAgeSeconds`), and which `saved()` keeps for the restart (restoredFailures).
  */
 export function createFeedStateLog(log: (line: string) => void = console.log,
   onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST,
@@ -242,8 +254,13 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
     }
     for (const id of known.keys()) if (!seen.has(id)) known.delete(id);
   };
-  /** The entries for a restart to restore, by feed: the change only with an expiry still to be told. */
-  const saved = (): Record<string, FeedStateEntry> => Object.fromEntries([...known].map(([id, { state, since, change }]) =>
-    [id, change?.state === 'expired' ? { state, since, change } : { state, since }]));
+  /**
+   * The entries for a restart to restore, by feed: the change only with an expiry still to be told, the last
+   * collection's error only while the feed has one (`failure`).
+   */
+  const saved = (): Record<string, FeedStateEntry> => Object.fromEntries([...known].map(([id, { state, since, change }]) => {
+    const last = failure?.(id);
+    return [id, { state, since, ...(change?.state === 'expired' ? { change } : {}), ...(last ? { failure: last } : {}) }];
+  }));
   return Object.assign(logStates, { saved });
 }
