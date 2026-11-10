@@ -15,7 +15,7 @@ import { snapshotPaused } from '../src/lib/seasonalPauses';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
-import type { SnapshotMetrics } from './metrics';
+import { gaugedFeeds, type SnapshotMetrics } from './metrics';
 import type { VisitorLedger } from './visitorLedger';
 import type { PublicVehicleIds } from './publicVehicleIds';
 import { reportError } from './errorReporting';
@@ -167,9 +167,10 @@ export function createSnapshotServer(options: ServerOptions) {
         usableFeeds: usable.length,
         // Positions recent enough to show without collecting again.
         servedFeeds: feeds.filter(feed => showsPositions(feed, now)).length,
-        // A paused feed is expected to stop: counted apart, as the feed-stopped alert leaves it out.
+        // A paused feed is expected to stop: counted apart, as the feed-stopped alert leaves it out, and as
+        // scootradar_feed_paused counts them, a skipped one outside sharedmobility.ch included (gaugedFeeds).
         failedFeeds: attempted.filter(feed => feedState(feed, now, cadence) !== 'ok' && !paused(feed, now)).map(feed => feed.id),
-        pausedFeeds: attempted.filter(feed => paused(feed, now)).length,
+        pausedFeeds: gaugedFeeds(snapshot?.feeds ?? []).filter(feed => paused(feed, now)).length,
         warmingFeeds: feeds.filter(feed => feed.attemptedAt === 0).map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),

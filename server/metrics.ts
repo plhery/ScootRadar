@@ -58,6 +58,18 @@ interface MetricsSources {
 }
 
 /**
+ * The feeds the gauges of each feed's state cover, scootradar_feed_paused among them, as /health's pausedFeeds
+ * does: those attempted, as in the feed state log a feed not attempted yet has no state to speak of. A
+ * skipped feed, whose operator lists nothing at all (Bird out of season, a Dott region it has paused), has
+ * no state either, but holds no scooter, which the empty-feed alert counts. Not the Swiss systems
+ * sharedmobility.ch keeps listing after their operator stopped: they are skipped as inactive for good. Nor
+ * Lime's groups standing by for a national feed that serves.
+ */
+export function gaugedFeeds<F extends { id: string; source: string; attemptedAt: number; skipped: boolean }>(feeds: readonly F[]): F[] {
+  return feeds.filter(feed => feed.attemptedAt > 0 && (!feed.skipped || (feed.source !== 'national' && !standbyNationalFeed(feed.id))));
+}
+
+/**
  * Prometheus metrics of the snapshot server, in the text exposition format.
  * Labels hold feed ids, sources, providers, routes and status codes only:
  * never a map URL, coordinates or a caller's address. Feed states come from
@@ -201,13 +213,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         for (const [labels, value] of samples) out.push(`${name}${formatLabels(labels)} ${value}`);
       };
       // As in the feed state log, a feed not attempted yet has no state to speak of.
-      const attempted = (snapshot?.feeds ?? []).filter(feed => feed.attemptedAt > 0);
-      const feeds = attempted.filter(feed => !feed.skipped);
-      // A skipped feed, whose operator lists nothing at all (Bird out of season, a Dott region it
-      // has paused), has no state either, but holds no scooter, which the empty-feed alert counts.
-      // Not the Swiss systems sharedmobility.ch keeps listing after their operator stopped: they are
-      // skipped as inactive for good. Nor Lime's groups standing by for a national feed that serves.
-      const counted = attempted.filter(feed => !feed.skipped || (feed.source !== 'national' && !standbyNationalFeed(feed.id)));
+      const feeds = (snapshot?.feeds ?? []).filter(feed => feed.attemptedAt > 0 && !feed.skipped);
+      const counted = gaugedFeeds(snapshot?.feeds ?? []);
       const labelsOf = (feed: FeedLabels): Labels => ({ feed: feed.id, source: feed.source, provider: feed.provider });
       // A feed retired from the catalog stops counting.
       if (snapshot) {

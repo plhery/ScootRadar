@@ -702,6 +702,23 @@ describe('collection on demand', () => {
       warmingFeeds: ['norway:ryde_app_drammen_001'] });
   });
 
+  it('counts the paused feeds scootradar_feed_paused marks, a skipped one outside sharedmobility.ch included', async () => {
+    // Bird's MDS towns out of season answer an empty, undated list and are skipped; the metric counts them, as the
+    // empty-feed alert does, but not a Swiss system sharedmobility.ch lists after its operator stopped.
+    const now = Date.now();
+    const feeds = [feed('canada:bird_ca_vaughan', lyon, now - minutes(2), { source: 'canada', provider: 'bird', skipped: true }),
+      feed('canada:bird_ca_app_brampton', lyon, now - minutes(2), { source: 'canada', provider: 'bird' }),
+      feed('national:stopped', lyon, now - minutes(2), { source: 'national', skipped: true }),
+      feed('canada:bird_ca_oshawa', lyon, 0, { source: 'canada', provider: 'bird', attemptedAt: 0 })];
+    const snapshot: MobilitySnapshot = { version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) };
+    const { port } = await start(snapshot, { paused: () => true });
+    const health = await (await fetch(`http://127.0.0.1:${port}/health`)).json() as Record<string, unknown>;
+    const marked = createSnapshotMetrics('local', { paused: () => true }).render(snapshot, now).split('\n')
+      .filter(line => line.startsWith('scootradar_feed_paused{') && line.endsWith(' 1'));
+    expect(marked).toHaveLength(2);
+    expect(health.pausedFeeds).toBe(2);
+  });
+
   it('answers the zones of a street view to the Worker, and lets it keep a complete answer', async () => {
     const view = 'south=47.36&west=8.53&north=47.38&east=8.55';
     expect((await fetch(`http://127.0.0.1:${(await start()).port}/api/zones?${view}&zoom=15`,
