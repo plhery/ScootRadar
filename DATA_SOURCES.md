@@ -276,9 +276,9 @@ nobody looks, Bird's once a day, and Lime's many markets every three days. A swe
 starts where the request looked and publishes each part of its area as it
 finishes it, so the map fills in as it goes. And since 26 October, any feed whose
 collection takes over three seconds, timed on each, is not waited for: while it
-is collected again, its positions up to three hours old, a day for Bird's, or three
-days for Lime's, stand faded where they were last seen, counted nowhere, until the sweep
-reaches them. The national
+is collected again, its positions up to three hours old, 26 hours for Bird's (its day
+between sweeps and two hours' grace), or three days for Lime's, stand faded where they
+were last seen, counted nowhere, until the sweep reaches them. The national
 platform publishes Voi every eight to nine minutes, about ninety seconds after
 the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
 late. City totals are aggregated hourly, and those of Bird's, Spin's and Bolt's
