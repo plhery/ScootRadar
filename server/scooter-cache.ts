@@ -160,7 +160,9 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   },
   // A feed collected in a night ban, when its operator may hide its scooters, is collected again when it ends.
   curfewEnds: (feed, time) => feedCurfewEnds(feed.id, time),
-  onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
+  onStart: (_feed, reason) => metrics.recordCollectionStart(reason),
+  // A group a visitor only panned past, whose watch lapsed before it started: its wait is no visitor's.
+  onLapse: feed => metrics.recordRefreshLapsed(feed.id) });
 // The expiry of the feeds collected less often on purpose (Lime, BinBin, GCOO), from their definitions.
 let ownIdleExpiry = ownIdleExpiries([]);
 // How old a feed's last positions may stand faded, of the feeds that say (Ryde's).
