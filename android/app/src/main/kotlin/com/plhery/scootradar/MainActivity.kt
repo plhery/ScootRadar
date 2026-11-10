@@ -78,7 +78,8 @@ class MainActivity : AppCompatActivity() {
      * with ReviewPromptDue asks Play's stand-in, which answers as Play would, as Play shows its card only in a copy it
      * installed, and logs the ask (LOG-312).
      */
-    private val reviewRequester = PlayReviewRequester(this) {
+    @VisibleForTesting
+    internal val reviewRequester = PlayReviewRequester(this) {
         if (askPlaysStandIn) FakeReviewManager(applicationContext) else ReviewManagerFactory.create(applicationContext)
     }
 
@@ -149,19 +150,25 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * A touch or a key anywhere in the window: a map that stopped refreshing itself half an hour after the last
-     * one refreshes at once, and goes on (ScooterRefreshPolicy.idlePause).
+     * one refreshes at once, and goes on (ScooterRefreshPolicy.idlePause), and an ask for Play's rating card that Play
+     * has not answered yet is taken back, the map no longer at rest.
      */
     override fun onUserInteraction() {
         super.onUserInteraction()
-        model.controller.noteInteraction()
+        noteInteraction()
     }
 
     /** So does a mouse's wheel, or TalkBack's finger finding its way over the screen, which come as hover events. */
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
         if (event.actionMasked == MotionEvent.ACTION_SCROLL || event.actionMasked == MotionEvent.ACTION_HOVER_ENTER) {
-            model.controller.noteInteraction()
+            noteInteraction()
         }
         return super.dispatchGenericMotionEvent(event)
+    }
+
+    private fun noteInteraction() {
+        model.controller.noteInteraction()
+        reviewRequester.noteInteraction()
     }
 
     override fun onNewIntent(intent: Intent) {

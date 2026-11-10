@@ -17,7 +17,9 @@ import com.plhery.scootradar.ui.ReviewRequester
  * whether it showed or what was given, so nothing that fails is told to the rider. What the card needs is asked for
  * as the map starts to rest at a moment to ask ([prepare]), so that the card comes when the rest ends, in [activity];
  * a rest that a touch or something over the map ends early leaves it unused, and the next rest asks for it again.
- * Play's manager, from [managerOf], is made at the first of these, not as the app starts.
+ * A touch or a key after the ask, before Play has answered, takes it back ([noteInteraction]): the card is shown only
+ * while the map is still at rest. Play's manager, from [managerOf], is made at the first of these, not as the app
+ * starts.
  */
 class PlayReviewRequester(
     private val activity: Activity,
@@ -27,6 +29,18 @@ class PlayReviewRequester(
 
     /** What Play was asked for as the map began to rest, used by the ask at its end. */
     private var prepared: Task<ReviewInfo>? = null
+
+    /** How many touches and keys there have been, which an ask compares when Play answers. */
+    private var interactions = 0
+
+    /**
+     * A touch or a key anywhere in the window, a mouse's wheel, or TalkBack's finger finding its way (MainActivity, as
+     * the controller's noteInteraction): an ask Play has not answered yet shows no card, as the rider is panning or
+     * typing by then (week review, finding 6.3).
+     */
+    fun noteInteraction() {
+        interactions += 1
+    }
 
     override fun prepare() {
         prepared = manager.requestReviewFlow()
@@ -38,10 +52,13 @@ class PlayReviewRequester(
         // One Play failed to answer is asked again.
         val asked = prepared?.takeUnless { it.isComplete && !it.isSuccessful } ?: manager.requestReviewFlow()
         prepared = null
+        val touched = interactions
         // Heard only while the activity shows: one left before Play answered shows no card, nor does a map with
-        // something come over it by then.
+        // something come over it or a touch on it by then.
         asked.addOnCompleteListener(activity) { answer ->
-            if (!answer.isSuccessful || !stillAsked() || activity.isFinishing || activity.isDestroyed) return@addOnCompleteListener
+            if (!answer.isSuccessful || !stillAsked() || interactions != touched || activity.isFinishing || activity.isDestroyed) {
+                return@addOnCompleteListener
+            }
             manager.launchReviewFlow(activity, answer.result).addOnCompleteListener {
                 if (BuildConfig.DEBUG) Log.i(TAG, "Google Play asked for its card to rate the app")
             }

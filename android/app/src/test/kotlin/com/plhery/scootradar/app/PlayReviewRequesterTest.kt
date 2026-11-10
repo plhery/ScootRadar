@@ -21,7 +21,7 @@ import org.robolectric.Shadows.shadowOf
 /**
  * Google Play's card to rate the app (X-AD27, LOG-310): the card is asked for with what Play gave as the map began to
  * rest, in the activity that shows the map, and nothing is shown, or told, when Play can't give it, the activity has
- * gone, or something has come over the map by the time Play answers. Play's own FakeReviewManager stands in for Play, as Google's guide has it. The activity is a
+ * gone, or something has come over the map or a touch on it by the time Play answers. Play's own FakeReviewManager stands in for Play, as Google's guide has it. The activity is a
  * FragmentActivity, as MainActivity is, whose listeners the Task API ends with it.
  */
 @RunWith(AndroidJUnit4::class)
@@ -131,6 +131,28 @@ class PlayReviewRequesterTest {
         idle()
         assertEquals(2, manager.asked)
         assertEquals(0, manager.shown.size)
+    }
+
+    /**
+     * The rider puts a finger on the map and pans, or presses a key, before Play answered: the map is no longer at
+     * rest, and no card comes over it (week review, finding 6.3). The next ask, on a map at rest again, shows its card.
+     */
+    @Test
+    fun aTouchBeforePlayAnsweredShowsNoCard() {
+        val answer = TaskCompletionSource<ReviewInfo>()
+        val manager = CountingReviewManager(answer.task)
+        val requester = PlayReviewRequester(activity.get()) { manager }
+        requester.request { true }
+        requester.noteInteraction()
+        answer.setResult(reviewInfo())
+        idle()
+        assertEquals(0, manager.shown.size)
+
+        // A touch before an ask takes back none of it.
+        requester.noteInteraction()
+        requester.request { true }
+        idle()
+        assertEquals(1, manager.shown.size)
     }
 
     @Test

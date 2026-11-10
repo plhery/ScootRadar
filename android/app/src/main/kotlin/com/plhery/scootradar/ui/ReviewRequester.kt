@@ -44,7 +44,7 @@ fun interface ReviewRequester {
  * nothing over it and no touch, never from a button. Anything over the map or changing on it before then ends this
  * try, as does a touch (the controller's noteInteraction), and the next fresh load brings another, which this try,
  * ended by it, leaves waiting; so does anything over the map before the store answers its card, as the iPhone's sheet
- * comes at once.
+ * comes at once, and a touch then, which Play's requester hears from the activity (PlayReviewRequester.noteInteraction).
  */
 @Composable
 internal fun ReviewWhenTheMapRests(
