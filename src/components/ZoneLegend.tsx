@@ -3,8 +3,10 @@
 import type { PathOptions } from 'leaflet';
 import { Fragment } from 'react';
 import { formatLocale } from '@/lib/formatLocale';
+import { boundsIntersect } from '@/lib/geo';
 import { useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
 import type { RuleKind, RuleZoneShape } from '@/lib/ruleZones';
+import type { MapBounds } from '@/lib/types';
 import { formatWallTime } from '@/lib/uiText';
 import type { ZoneDataState } from '@/lib/useZoneData';
 import { measurementSystem, type UnitsChoice } from '@/lib/walking';
@@ -93,19 +95,39 @@ export function formatSpeedLimits(speedsKph: readonly (number | undefined)[], lo
 }
 
 /**
+ * Whether a zone of these lines or rings reaches into the view, by the box around its points; every zone does
+ * without a view. The zones are asked for, and drawn, over an area around the screen: one only there is off it.
+ */
+function onScreen(view: MapBounds | undefined, lines: readonly (readonly (readonly [number, number])[])[]): boolean {
+  if (!view) return true;
+  let south = Infinity, west = Infinity, north = -Infinity, east = -Infinity;
+  for (const line of lines) {
+    for (const [lat, lng] of line) {
+      south = Math.min(south, lat);
+      north = Math.max(north, lat);
+      west = Math.min(west, lng);
+      east = Math.max(east, lng);
+    }
+  }
+  return south <= north && boundsIntersect(view, { south, west, north, east });
+}
+
+/**
  * What the colours of the zones mean, while they are on; or why none are drawn. Each kind is named
  * once, the strongest rule first, whether the operators or a city (ruleZones.ts) set it: a city's
  * rule has a line of its own only where its hours set it apart, its swatch hatched the other way
  * as the map draws it, or where its first day is still to come; dimmer while it does not hold. Slow
- * names the limit of the slow zones it counts where each has one, "Slow: 6 km/h", and so does a city's
- * slow line. Who sets the cities' rules is credited once each, small, at the foot, linked to where they
+ * names the limit of the slow zones it counts on screen where each has one, "Slow: 6 km/h", and so does a
+ * city's slow line. Who sets the cities' rules is credited once each, small, at the foot, linked to where they
  * say so.
  */
-export default function ZoneLegend({ state, zones, rules = [] }: {
+export default function ZoneLegend({ state, zones, rules = [], view }: {
   state: ZoneDataState;
   /** The operators' zones drawn. */
-  zones: readonly Pick<MapZone, 'kind' | 'maxSpeedKph'>[];
+  zones: readonly (Pick<MapZone, 'kind' | 'maxSpeedKph'> & Partial<Pick<MapZone, 'polygons'>>)[];
   rules?: RuleZoneShape[];
+  /** The screen: the limits named are those of the slow zones on it. */
+  view?: MapBounds;
 }) {
   const { t, locale, region, units } = useI18n();
   if (state === 'off' && !rules.length) return null;
@@ -115,8 +137,9 @@ export default function ZoneLegend({ state, zones, rules = [] }: {
   const named = state === 'partial' || (state === 'failed' && count > 0);
   const kinds = new Set<RuleKind>((note && !named) || state === 'off' || (state === 'shown' && count === 0) ? [] : KINDS);
   // The limits "Slow" names: the operators' slow zones' while their kinds are named, and those of the cities'
-  // slow rules that hold at all hours; a city's line names its own.
-  const slowSpeeds = kinds.has('slow') ? zones.flatMap(zone => zone.kind === 'slow' ? [zone.maxSpeedKph] : []) : [];
+  // slow rules that hold at all hours; a city's line names its own. Only of the zones on screen.
+  const slowSpeeds = kinds.has('slow') ? zones.flatMap(zone =>
+    zone.kind === 'slow' && onScreen(view, zone.polygons?.map(([outer]) => outer) ?? []) ? [zone.maxSpeedKph] : []) : [];
   const lines = new Map<string, { zone: RuleZoneShape; hours: string; speeds: (number | undefined)[] }>();
   const credits = new Map<string, RuleZoneShape>();
   for (const zone of [...rules].sort((a, b) => RULE_KINDS.indexOf(a.rule) - RULE_KINDS.indexOf(b.rule))) {
@@ -132,7 +155,7 @@ export default function ZoneLegend({ state, zones, rules = [] }: {
     } else {
       kinds.add(zone.rule);
     }
-    if (zone.rule === 'slow') speeds.push(zone.maxSpeedKph);
+    if (zone.rule === 'slow' && onScreen(view, zone.ring ? [zone.ring] : zone.lines)) speeds.push(zone.maxSpeedKph);
   }
   // "Slow: 6 km/h" where each slow zone counted has a limit, else the kind's name: the text screen readers read too.
   // Riding on the pavement is at walking pace, 6 km/h, which is written in the units too: "4 mph".

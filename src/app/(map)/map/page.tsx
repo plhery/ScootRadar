@@ -1172,7 +1172,7 @@ export default function Home() {
 
         <MapCredits />
 
-        {!searchExpanded && <ZoneLegend state={zoneData.state} zones={mapZones} rules={ruleZones} />}
+        {!searchExpanded && <ZoneLegend state={zoneData.state} zones={mapZones} rules={ruleZones} view={viewportBounds ?? undefined} />}
       </div>
 
       {desktop && <KeyHints />}

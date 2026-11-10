@@ -177,6 +177,26 @@ it('gives a city\'s slow line, for its hours or as it does not hold yet, the lim
   ]);
 });
 
+it('names the limits of the slow zones on screen only, not of those in the area around it the zones are asked for', () => {
+  // The screen over Bergen's made-up zones, and the area asked for around it, which reaches 60.403° north.
+  const screen = { south: 60.394, west: 5.322, north: 60.398, east: 5.328 };
+  const north = (ring: [number, number][]) => ring.map(([lat, lng]): [number, number] => [lat + 0.006, lng]);
+  const onScreen = bergenSlow('slow-1', 6);
+  const offScreen: RuleZoneShape = { ...bergenSlow('slow-2', 15), ring: north(onScreen.ring!), lines: undefined };
+  const night = [{ from: '22:00', until: '06:00' }];
+  const nightOn = bergenSlow('slow-night-1', 12, night);
+  const nightOff: RuleZoneShape = { ...bergenSlow('slow-night-2', 20, night), ring: north(nightOn.ring!), lines: undefined };
+  const operator = (maxSpeedKph: number | undefined, ring: [number, number][]) => ({ kind: 'slow' as const, maxSpeedKph, polygons: [[ring]] });
+  // One of an operator's on screen at 10 km/h, and in the area around it one at 25 km/h and one without a limit.
+  const zones = [operator(10, onScreen.ring!), operator(25, north(onScreen.ring!)), operator(undefined, north(onScreen.ring!))];
+  const rules = [onScreen, offScreen, nightOn, nightOff];
+  const { container, rerender } = render(<I18nProvider><ZoneLegend state="shown" zones={zones} rules={rules} view={screen} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow: 6–10 km/h', 'Slow: 12 km/h 22:00–06:00']);
+  // Panned over the others, they are named.
+  rerender(<I18nProvider><ZoneLegend state="shown" zones={zones.slice(0, 2)} rules={rules} view={{ ...screen, north: 60.403 }} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow: 6–25 km/h', 'Slow: 12–20 km/h 22:00–06:00']);
+});
+
 it('says the limits in mph where the region measures in miles', async () => {
   vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-US']);
   const zones = [{ kind: 'slow' as const, maxSpeedKph: 16.09 }, { kind: 'slow' as const, maxSpeedKph: 12.87 }];
