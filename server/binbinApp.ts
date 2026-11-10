@@ -62,7 +62,7 @@ export function parseBinbinReply(payload: unknown, lat: number, lng: number, rad
     farthest = Math.max(farthest, vehicle.distance);
     if (vehicle.vehicleTypeId !== 1) continue;
     scooters.push({ id: vehicle.vehicleId, lat: vehicle.latitude, lng: vehicle.longitude,
-      battery: finite(vehicle.battery) && vehicle.battery >= 0 && vehicle.battery <= 100 ? vehicle.battery : null });
+      battery: finite(vehicle.battery) && vehicle.battery >= 0 && vehicle.battery <= 100 ? Math.round(vehicle.battery) : null });
   }
   // A scooter as far as the tenth may be the one left out. Less 0.3%, for the distance BinBin
   // measures and for a parallel bowing away from the great circle across a cell.

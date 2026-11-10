@@ -62,6 +62,11 @@ describe('RideMovi response coverage', () => {
     const value = reply([{ ...bike(), bikePowerBatteryStatus: { soc: 140, lockId: '' }, estimatedTravelDistanceInKM: -1 }]);
     expect(parseRidemoviReply(value, 86, lat, lng).scooters[0]).toMatchObject({ battery: null, range_m: null });
   });
+
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    const value = reply([{ ...bike(), bikePowerBatteryStatus: { soc: 57.5, lockId: '' } }]);
+    expect(parseRidemoviReply(value, 86, lat, lng).scooters[0].battery).toBe(58);
+  });
 });
 
 async function harness(fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json(reply()))) {

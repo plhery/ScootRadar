@@ -59,7 +59,7 @@ export function parseRidemoviReply(payload: unknown, cityId: number, lat: number
     farthest = Math.max(farthest, bike.distance);
     const battery = object(bike.bikePowerBatteryStatus)?.soc, range = bike.estimatedTravelDistanceInKM;
     scooters.push({ id: String(bike.id), lat: bike.lat, lng: bike.lon,
-      battery: finite(battery) && battery >= 0 && battery <= 100 ? battery : null,
+      battery: finite(battery) && battery >= 0 && battery <= 100 ? Math.round(battery) : null,
       range_m: finite(range) && range >= 0 && range <= 200 ? Math.round(range * 1000) : null });
   }
   // Distances differ from haversine by about 0.3%: keep a margin. Tied piles cannot establish coverage.

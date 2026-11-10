@@ -144,6 +144,10 @@ describe('Voi map data', () => {
     expect(() => parseVoiVehicles(map(scooter('wrong-region', { zone_id: '2' })), '1')).toThrow('requested region');
   });
 
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    expect(parseVoiVehicles(map(scooter('scooter-a', { battery: 57.5 })), '1')[0].battery).toBe(58);
+  });
+
   it('distinguishes empty scooter maps from changed schemas and invalid positions', () => {
     expect(parseVoiVehicles({ data: { vehicle_groups: [] } }, '1')).toEqual([]);
     expect(parseVoiVehicles(map(scooter('bike', { category: 'ebike' })), '1')).toEqual([]);

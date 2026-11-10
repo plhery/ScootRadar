@@ -140,7 +140,7 @@ export function parseWhooshVehicles(payload: unknown): WhooshScooter[] {
     const range = distance?.amount;
     const unit = distance?.unit;
     vehicles.set(device.id, { id: device.id, lat: point.lat, lng: point.lng,
-      battery: typeof power === 'number' && Number.isFinite(power) && power >= 0 && power <= 100 ? power : null,
+      battery: typeof power === 'number' && Number.isFinite(power) && power >= 0 && power <= 100 ? Math.round(power) : null,
       // The app's amount-unit mapper defaults a missing distance unit to kilometres.
       range: typeof range === 'number' && Number.isFinite(range) && range >= 0 && range <= 200 &&
         (unit === undefined || unit === 'km') ? Math.round(range * 1000) : null });

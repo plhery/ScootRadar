@@ -243,7 +243,7 @@ export function parseAtomVehicles(payload: unknown): AtomView {
     }
     if (vehicle.is_active_ride) { unavailable.push(vehicle.id); continue; }
     const battery = typeof vehicle.battery_level === 'number' && Number.isFinite(vehicle.battery_level) &&
-      vehicle.battery_level >= 0 && vehicle.battery_level <= 100 ? vehicle.battery_level : null;
+      vehicle.battery_level >= 0 && vehicle.battery_level <= 100 ? Math.round(vehicle.battery_level) : null;
     vehicles.push({ id: vehicle.id as number, lat: location.latitude, lng: location.longitude, battery });
   }
   return { vehicles, unavailable: unavailable as number[], closed: data.currently_not_operating };

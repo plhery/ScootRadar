@@ -232,7 +232,7 @@ export function parseBoltVehicles(payload: unknown, system: RegionalScooterSyste
         Math.abs(location.lat) > 90 || Math.abs(location.lng) > 180) throw new Error('Invalid Bolt scooter');
       if (!boundsContainPoint(system.bounds, location.lat, location.lng)) continue;
       const battery = vehicle.hide_battery_charge !== true && typeof vehicle.charge === 'number' &&
-        Number.isFinite(vehicle.charge) && vehicle.charge >= 0 && vehicle.charge <= 100 ? vehicle.charge : null;
+        Number.isFinite(vehicle.charge) && vehicle.charge >= 0 && vehicle.charge <= 100 ? Math.round(vehicle.charge) : null;
       const vehicleId = `${system.id}:${id}`;
       vehicles.set(vehicleId, { provider: 'bolt', vehicle_id: vehicleId, lat: location.lat, lng: location.lng,
         battery, range_m: null, deep_link: null, distance_m: null });

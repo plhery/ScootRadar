@@ -60,6 +60,11 @@ describe('BinBin map replies', () => {
     expect(parseBinbinReply({ status: 'SUCCESS', data: [] }, at.lat, at.lng, 5_000).scooters).toEqual([]);
   });
 
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    const reply = parseBinbinReply({ status: 'SUCCESS', data: [vehicle(near(1), at.lat, at.lng, { battery: 57.5 })] }, at.lat, at.lng, 5_000);
+    expect(reply.scooters[0].battery).toBe(58);
+  });
+
   it('refuses a reply whose distances could not vouch for the scooters it leaves out', () => {
     const one = vehicle(near(1), at.lat, at.lng);
     for (const [payload, error] of [

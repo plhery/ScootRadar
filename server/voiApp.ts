@@ -190,7 +190,7 @@ export function parseVoiVehicles(payload: unknown, zoneId: string): VoiScooter[]
         typeof location.lng !== 'number' || !Number.isFinite(location.lat) || !Number.isFinite(location.lng) ||
         Math.abs(location.lat) > 90 || Math.abs(location.lng) > 180) throw new Error('Invalid Voi scooter');
       const battery = typeof vehicle.battery === 'number' && Number.isFinite(vehicle.battery) &&
-        vehicle.battery >= 0 && vehicle.battery <= 100 ? vehicle.battery : null;
+        vehicle.battery >= 0 && vehicle.battery <= 100 ? Math.round(vehicle.battery) : null;
       vehicles.set(vehicle.id, { id: vehicle.id, lat: location.lat, lng: location.lng, battery });
     }
   }

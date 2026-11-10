@@ -56,6 +56,10 @@ describe('ATOM map coverage and availability', () => {
     expect(parseAtomVehicles(map()).vehicles).toEqual([]);
   });
 
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    expect(parseAtomVehicles(map([scooter(1, { battery_level: 57.5 })])).vehicles[0].battery).toBe(58);
+  });
+
   it('rejects errors disguised as success and malformed availability or scooter coordinates', () => {
     for (const payload of [{ message: 'Unauthorized' }, map([], { hidden_vehicles: null }),
       map([], { active_vehicle_ids: ['bad-id'] }), map([scooter(1, { coordinates: { latitude: NaN, longitude: 15 } })]),

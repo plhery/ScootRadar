@@ -228,7 +228,7 @@ export function parseLimePins(payload: unknown): { count: number; vehicles: Lime
     }
     vehicles.push({ id: text(p.secondary_id) ? p.secondary_id : p.id, lat: l.latitude, lng: l.longitude,
       battery: typeof p.battery_percentage === 'number' && Number.isFinite(p.battery_percentage) &&
-        p.battery_percentage >= 0 && p.battery_percentage <= 100 ? p.battery_percentage : null });
+        p.battery_percentage >= 0 && p.battery_percentage <= 100 ? Math.round(p.battery_percentage) : null });
   }
   return { count: pins.length, vehicles };
 }

@@ -69,6 +69,11 @@ describe('Whoosh map contract', () => {
       .toMatchObject({ battery: null, range: null });
   });
 
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    expect(parseWhooshVehicles({ devices: [{ ...device(), battery: { power: 57.5, distanceToCharge: { amount: 19 } } }] })[0])
+      .toMatchObject({ battery: 58 });
+  });
+
   it('covers disjoint ride areas without bridging the gap or accepting unreviewed expansion', () => {
     const ride = parseWhooshRideAreas(areas);
     const views = whooshMapViews([...ride, { south: 1.2, north: 1.21, west: 2.2, east: 2.21 }],

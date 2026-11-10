@@ -155,6 +155,10 @@ describe('Bolt map data', () => {
     }), system)).toEqual([scooter('1', { battery: 71 }), scooter('2', { battery: null }), scooter('3', { battery: null }), scooter('a-5')]);
   });
 
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    expect(parseBoltVehicles(map({ 25: [vehicle(1, { charge: 57.5 })] }), system)).toEqual([scooter('1', { battery: 58 })]);
+  });
+
   it('refuses another market\'s answer, changed schemas and invalid positions, and keeps an empty market empty', () => {
     expect(parseBoltVehicles(map({ 25: [] }), system)).toEqual([]);
     expect(() => parseBoltVehicles(map({ 1: [vehicle(1, { vehicle_type: 'scooter_1' })] }), system)).toThrow('another market');

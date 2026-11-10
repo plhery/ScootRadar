@@ -350,6 +350,9 @@ describe('complete Lime scooter maps', () => {
     expect(() => parseLimePins({ data: {} })).toThrow('Lime returned a clustered map');
     expect(() => parseLimePins(map(pin('bad', NaN)))).toThrow('Invalid Lime scooter');
   });
+  it('rounds a fractional charge to a whole percent, which the iPhone app needs to read the answer', () => {
+    expect(parseLimePins(map(pin('scooter', 0, 0, { battery_percentage: 57.5 }))).vehicles[0].battery).toBe(58);
+  });
   it('retains parent pins omitted by narrower views, deduplicates boundaries, and refreshes parents and empty leaves', async () => {
     const api = { pins: vi.fn(async (b: typeof system.bounds) => {
       if (b.north - b.south === .01) return map(...Array.from({ length: 200 }, (_, i) => pin(String(i))));
