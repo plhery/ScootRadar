@@ -31,3 +31,11 @@ it('is read as English, the language it is written in, whatever language the map
   expect(document.documentElement.lang).toBe('de-CH');
   expect(view.getByRole('heading', { level: 1, name: 'Accessibility' }).closest('[lang]')).toHaveAttribute('lang', 'en');
 });
+
+it('promises Voice Control for the controls the next update has: the range slider, the battery presets gone', () => {
+  const view = render(<AccessibilityPage />);
+  const voiceControl = view.getAllByText('Voice Control:').map(label => label.closest('li')!.textContent)[0];
+  // The iPhone app's Filters have one minimum since issue #12's third take, a slider named "Range" (ScooterControls.swift).
+  expect(voiceControl).not.toMatch(/battery/i);
+  expect(voiceControl).toMatch(/range slider/);
+});

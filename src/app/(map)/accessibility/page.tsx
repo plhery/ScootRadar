@@ -69,8 +69,9 @@ export default function AccessibilityPage() {
         <p>These fixes are built, but not released yet. They come with the version after 1.3.0.</p>
         <ul>
           <li>
-            <strong>Voice Control:</strong> the search bar, the nearest-scooter button, the price and
-            the battery presets answer to the words they show.
+            <strong>Voice Control:</strong> the search bar, the nearest-scooter button and the price
+            answer to the words they show, and the range slider in Filters to &ldquo;Range&rdquo;, the
+            word above it.
           </li>
           <li>
             <strong>Larger Text:</strong> at twice the standard text size and above, the zone legend
@@ -132,7 +133,7 @@ export default function AccessibilityPage() {
           device and which screen, and the feature you use, such as VoiceOver or Larger Text.
         </p>
 
-        <p>Last updated 6 November 2026</p>
+        <p>Last updated 10 November 2026</p>
       </article>
     </main>
   );
