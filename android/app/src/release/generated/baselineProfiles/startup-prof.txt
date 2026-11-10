@@ -16035,7 +16035,6 @@ HSPLcom/plhery/scootradar/core/map/ScooterMapController;->access$setFollowedUpQu
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->access$setLastAttemptAt$p(Lcom/plhery/scootradar/core/map/ScooterMapController;Ljava/time/Instant;)V
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->access$setLastSuccessAt$p(Lcom/plhery/scootradar/core/map/ScooterMapController;Ljava/time/Instant;)V
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->access$setQueryBounds$p(Lcom/plhery/scootradar/core/map/ScooterMapController;Lcom/plhery/scootradar/core/model/GeoBounds;)V
-HSPLcom/plhery/scootradar/core/map/ScooterMapController;->access$setQueryMinimumBattery$p(Lcom/plhery/scootradar/core/map/ScooterMapController;Ljava/lang/Integer;)V
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->access$setQueryZoom$p(Lcom/plhery/scootradar/core/map/ScooterMapController;Ljava/lang/Integer;)V
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->clearPendingFetch()V
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->clearSelectionIfHidden()V
@@ -16074,10 +16073,8 @@ HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getMapStyle()Lkotlinx/
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getMapZoneNotices()Lkotlinx/coroutines/flow/StateFlow;
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getMapZones()Lkotlinx/coroutines/flow/StateFlow;
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getMapZonesRevision()Lkotlinx/coroutines/flow/StateFlow;
-HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getMinimumBattery()Lkotlinx/coroutines/flow/StateFlow;
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getParking()Lkotlinx/coroutines/flow/StateFlow;
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getPhoneLanguage()Lcom/plhery/scootradar/core/model/ScooterLanguage;
-HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getQueryMinimumBattery$ScootRadar_core()Ljava/lang/Integer;
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getRecentPlaces()Lkotlinx/coroutines/flow/StateFlow;
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getRefreshAfter()D
 HSPLcom/plhery/scootradar/core/map/ScooterMapController;->getRepresentedVehicleCount$ScootRadar_core()I
@@ -16849,10 +16846,6 @@ HSPLcom/plhery/scootradar/core/model/ScooterAppearance$Companion;-><init>(Lkotli
 HSPLcom/plhery/scootradar/core/model/ScooterAppearance$Companion;->fromRawValue(Ljava/lang/String;)Lcom/plhery/scootradar/core/model/ScooterAppearance;
 Lcom/plhery/scootradar/core/model/ScooterAppearance$WhenMappings;
 HSPLcom/plhery/scootradar/core/model/ScooterAppearance$WhenMappings;-><clinit>()V
-Lcom/plhery/scootradar/core/model/ScooterBatteryFilter;
-HSPLcom/plhery/scootradar/core/model/ScooterBatteryFilter;-><clinit>()V
-HSPLcom/plhery/scootradar/core/model/ScooterBatteryFilter;-><init>()V
-HSPLcom/plhery/scootradar/core/model/ScooterBatteryFilter;->snapped(I)I
 Lcom/plhery/scootradar/core/model/ScooterCatalog;
 Lcom/plhery/scootradar/core/model/ScooterCatalog$Generated;
 HSPLcom/plhery/scootradar/core/model/ScooterCatalog$Generated;-><clinit>()V
@@ -17037,7 +17030,6 @@ Lcom/plhery/scootradar/core/model/ScooterFiltering;
 HSPLcom/plhery/scootradar/core/model/ScooterFiltering;-><clinit>()V
 HSPLcom/plhery/scootradar/core/model/ScooterFiltering;-><init>()V
 HSPLcom/plhery/scootradar/core/model/ScooterFiltering;->mapScooters(Ljava/util/List;DLjava/util/Set;)Ljava/util/List;
-HSPLcom/plhery/scootradar/core/model/ScooterFiltering;->passesBattery(Lcom/plhery/scootradar/core/model/Scooter;D)Z
 HSPLcom/plhery/scootradar/core/model/ScooterFiltering;->visibleSummary(Ljava/util/List;Lcom/plhery/scootradar/core/model/GeoBounds;DLjava/util/Set;)Lcom/plhery/scootradar/core/model/VisibleScooterSummary;
 Lcom/plhery/scootradar/core/model/ScooterFold;
 HSPLcom/plhery/scootradar/core/model/ScooterFold;-><clinit>()V
