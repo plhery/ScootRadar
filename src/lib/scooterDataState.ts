@@ -1,6 +1,8 @@
 import { DEFAULT_REFRESH_AFTER_MS, FOLLOW_UP_GAP_MS, MIN_ATTEMPT_GAP_MS, MIN_FOLLOW_UP_MS } from '@/lib/autoRefresh';
 import { deviceTime, failedRequestOutcome, isExpired, responseExpiry } from '@/lib/dataExpiry';
+import { expandBounds } from '@/lib/geo';
 import type { LoadFailure } from '@/lib/loadFailure';
+import { scooterAnswerZoom } from '@/lib/scooterQuery';
 import type {
   MapBounds,
   ParkingLocation,
@@ -64,6 +66,34 @@ export function scooterQueryParams({ bounds, zoom, minRange = 0 }: ScooterDataQu
   // Only when set, as the apps send it: a query without one is the same as before it existed.
   if (minRange > 0) params.set('minRange', String(minRange));
   return params;
+}
+
+/** How much the map asks for beyond its view, on each side, in parts of the view: a little panning needs no request. */
+export const VIEWPORT_FETCH_PADDING = 0.25;
+
+/**
+ * The box the map asks scooters for at `zoom`: its view with VIEWPORT_FETCH_PADDING on each side, or less around a
+ * view so large that the box would be wider or taller than the cache answers at that zoom (MAX_VIEW_PIXELS, such as a
+ * 4K screen with the browser at 25%), which would answer it at a lower zoom: clusters for a street. The most that
+ * fits, as the request writes the box; none around a view wider or taller than that itself. Clusters are asked for
+ * the same way.
+ */
+export function viewportFetchBounds(view: MapBounds, zoom: number): MapBounds {
+  const answered = (padding: number) => {
+    const sent = scooterQueryParams({ bounds: expandBounds(view, padding), zoom });
+    const [south, west, north, east] = ['south', 'west', 'north', 'east'].map(side => Number(sent.get(side)));
+    return scooterAnswerZoom(zoom, { south, west, north, east }) === zoom;
+  };
+  if (answered(VIEWPORT_FETCH_PADDING)) return expandBounds(view, VIEWPORT_FETCH_PADDING);
+  // Halved twelve times, to within a twentieth of a percent of the view.
+  let fits = 0;
+  let over = VIEWPORT_FETCH_PADDING;
+  for (let halving = 0; halving < 12; halving += 1) {
+    const padding = (fits + over) / 2;
+    if (answered(padding)) fits = padding;
+    else over = padding;
+  }
+  return expandBounds(view, fits);
 }
 
 /** Two queries with the same key receive the same response. */

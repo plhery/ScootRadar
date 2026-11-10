@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { MIN_FOLLOW_UP_MS, nextRefreshAt } from '@/lib/autoRefresh';
 import { isExpired } from '@/lib/dataExpiry';
+import { expandBounds, viewBounds } from '@/lib/geo';
+import { MAX_VIEW_PIXELS, parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
 import {
   INITIAL_SCOOTER_DATA_STATE,
   lastSeenStatuses,
@@ -9,6 +11,8 @@ import {
   scooterLoading,
   scooterQueryKey,
   scooterQueryParams,
+  VIEWPORT_FETCH_PADDING,
+  viewportFetchBounds,
   type ScooterDataEvent,
   type ScooterDataState,
 } from '@/lib/scooterDataState';
@@ -70,6 +74,53 @@ describe('scooter query', () => {
     expect(scooterQueryParams({ ...query, zoom: 14, minRange: 4828 }).toString())
       .toBe('south=47.36123&west=8.52000&north=47.39000&east=8.57000&zoom=14&minRange=4828');
     expect(scooterQueryParams({ ...query, minRange: 0 }).has('minRange')).toBe(false);
+  });
+});
+
+describe('the box the map asks scooters for', () => {
+  /** Leaflet's bounds of a map `width` by `height` CSS pixels at `zoom`, north up, centred on Zürich's Bellevue. */
+  function leafletBounds(width: number, height: number, zoom: number) {
+    const world = 256 * 2 ** zoom;
+    const [lat, lng] = [47.3667, 8.5450];
+    const x = (lng + 180) / 360 * world;
+    const y = (0.5 - Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) / (2 * Math.PI)) * world;
+    const latOf = (py: number) => (2 * Math.atan(Math.exp((0.5 - py / world) * 2 * Math.PI)) - Math.PI / 2) * 180 / Math.PI;
+    const lngOf = (px: number) => px / world * 360 - 180;
+    return viewBounds(latOf(y + height / 2), lngOf(x - width / 2), latOf(y - height / 2), lngOf(x + width / 2));
+  }
+
+  /** The zoom the cache and the Worker answer the request for that box at. */
+  function answeredZoom(width: number, height: number, zoom: number) {
+    const parsed = parseScooterQuery(scooterQueryParams({ bounds: viewportFetchBounds(leafletBounds(width, height, zoom), zoom), zoom }));
+    if (!parsed.ok) throw new Error(parsed.error);
+    return scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
+  }
+
+  it('is the view with a quarter of it on each side, on a phone as on a 4K screen with the browser at 50%', () => {
+    for (const [width, height] of [[390, 844], [3840 * 2, 2160 * 2]]) {
+      const view = leafletBounds(width, height, 16);
+      expect(viewportFetchBounds(view, 16)).toEqual(expandBounds(view, VIEWPORT_FETCH_PADDING));
+      expect(answeredZoom(width, height, 16)).toBe(16);
+    }
+  });
+
+  it('has less around a view on screen too large for that, so that the street is answered as the street (week review, 2.9)', () => {
+    // A 4K screen with the browser at 25%, and at Chrome's 33%: within MAX_VIEW_PIXELS, but not with a quarter more on each side.
+    expect(3840 * 4).toBeLessThan(MAX_VIEW_PIXELS);
+    for (const scale of [4, 3]) {
+      const view = leafletBounds(3840 * scale, 2160 * scale, 16);
+      const box = viewportFetchBounds(view, 16);
+      expect(answeredZoom(3840 * scale, 2160 * scale, 16), `${scale}×`).toBe(16);
+      expect(box.west).toBeLessThan(view.west);
+      expect(box.north).toBeGreaterThan(view.north);
+    }
+    // Further out too: the clusters of the zoom shown, not of the one below.
+    expect(answeredZoom(3840 * 4, 2160 * 4, 12)).toBe(12);
+  });
+
+  it('is the view alone where the view itself is wider than any screen shows', () => {
+    const view = leafletBounds(3840 * 5, 2160 * 5, 16);
+    expect(viewportFetchBounds(view, 16)).toEqual(expandBounds(view, 0));
   });
 });
 

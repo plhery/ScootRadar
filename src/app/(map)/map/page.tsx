@@ -48,6 +48,7 @@ import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlace } from '@/lib/useRecentPlace';
 import { useCityZones } from '@/lib/useCityZones';
+import { viewportFetchBounds } from '@/lib/scooterDataState';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { useZoneData, zoneArea, zoneAreaKey } from '@/lib/useZoneData';
 import { groupCityTotals } from '@/lib/clustering';
@@ -57,7 +58,6 @@ import {
   boundsContainBounds,
   boundsContainPoint,
   boundsIntersect,
-  expandBounds,
   haversineM,
   viewportContainsPoint,
   type MapViewport,
@@ -88,7 +88,6 @@ const PARKING_MIN_ZOOM = 16;
 const SEARCH_CITY_COUNT = 6;
 // How often the age of the data in the dock is worked out again.
 const CLOCK_TICK_MS = 30_000;
-const VIEWPORT_FETCH_PADDING = 0.25;
 // A scooter of the same app this close to the one walked to, under another id, is taken to be it.
 const SAME_SCOOTER_M = 15;
 // While a card is open, the scooters of its app seen this close to its scooter are remembered, the nearest so many.
@@ -495,7 +494,7 @@ export default function Home() {
 
     // Padding also applies to clusters. Stable grid cells make nearby pans reuse
     // the response without refetching or rebuilding the entire marker layer.
-    const next = { bounds: expandBounds(bounds, VIEWPORT_FETCH_PADDING), zoom };
+    const next = { bounds: viewportFetchBounds(bounds, zoom), zoom };
     mapQueryRef.current = next;
     setMapQuery(next);
   }, []);
