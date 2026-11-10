@@ -18,6 +18,7 @@ import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneResponse
 import com.plhery.scootradar.core.model.ScooterZoneState
 import java.time.Instant
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.currentTime
@@ -610,6 +611,30 @@ class ScooterMapZonesTest {
         runCurrent()
         assertEquals(2, api.zoneAreas.size)
     }
+
+    /**
+     * Zoomed in while the wide area's answer is on its way, the view waits for it, as it serves any area within its
+     * own; one with zones left out serves its own alone, and the close view's area is asked for once it comes, rather
+     * than "Zoom in to see the zones" staying at street level (week review, finding 5.1; the iPhone's 35d7a34c).
+     */
+    @Test
+    fun zoomingInWhileAnAnswerWithZonesLeftOutIsOnItsWayAsksForTheCloseViewsOwnOnceItComes() = runTest {
+        val api = ZoneStubAPI()
+        api.truncated = true
+        api.hold()
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich.copy(latitudeDelta = 0.03, longitudeDelta = 0.03), zoom = 14)
+        val asked = waitUntil { api.zoneAreas.size == 1 }
+        assertTrue(asked)
+
+        model.updateViewport(zurich.copy(latitudeDelta = 0.004, longitudeDelta = 0.004), zoom = 17)
+        api.truncated = false
+        api.release()
+        val shown = waitUntil { api.zoneAreas.size == 2 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+        assertTrue(api.zoneAreas[0].contains(api.zoneAreas[1]) && api.zoneAreas[0] != api.zoneAreas[1])
+    }
 }
 
 /** Lime's no riding and Bird's no parking, and [more] after them. */
@@ -632,6 +657,11 @@ private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : S
 
     override suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse {
         areas += area
+        // The answer is as things were when it was asked for, also when it is held back.
+        val pending = pending
+        val unavailable = unavailable
+        val truncated = truncated
+        gate?.await()
         failure?.let { throw it }
         val ring = listOf(
             GeoPoint(latitude = 47.37, longitude = 8.54), GeoPoint(latitude = 47.38, longitude = 8.54),
@@ -650,5 +680,18 @@ private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : S
 
     fun setFailure(failure: ScooterAPIError?) {
         this.failure = failure
+    }
+
+    private var gate: CompletableDeferred<Unit>? = null
+
+    /** Holds the answers to the zones asked for from now on, until [release]. */
+    fun hold() {
+        gate = CompletableDeferred()
+    }
+
+    /** Lets the answers held go. */
+    fun release() {
+        gate?.complete(Unit)
+        gate = null
     }
 }

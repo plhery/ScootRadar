@@ -83,7 +83,8 @@ internal fun ScooterMapController.updateZones() {
     }
     val taskArea = zoneTaskArea
     if (taskArea != null && taskArea.contains(area)) {
-        // The cities' zones follow the map meanwhile.
+        // The cities' zones follow the map meanwhile. Should the answer come with zones left out, the view's own area
+        // is asked for then.
         rebuildMapZones()
         return
     }
@@ -137,6 +138,9 @@ private fun ScooterMapController.requestZones(area: ScooterZoneArea, after: Dura
                 .take(ScooterMapController.RECENT_ZONE_ANSWER_LIMIT)
         }
         setZones(answer.state)
+        // One with zones left out serves its own area alone: a view zoomed into it while it was on its way, which
+        // waited for it, asks for its own now (the iPhone's 35d7a34c).
+        if (answer.truncated && zoneTaskArea == null) updateZones()
     }
 }
 
