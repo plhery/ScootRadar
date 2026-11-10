@@ -364,12 +364,16 @@ private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? 
  * A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on
  * each read, others after each ride, and the cache after a gap or a restart: one of its provider within a few metres
  * of where it stood, listed under an id that wasn't before and away from where its neighbours stood, is that scooter,
- * and the card stays open on it. A scooter that was already listed there, or stood there before, is another one, and
- * the card closes as it did.
+ * and the card stays open on it, with the walk that got there or found no way to it. A scooter that was already
+ * listed there, or stood there before, is another one, and the card closes as it did.
  */
 internal fun ScooterMapController.followCardScooter(scooter: Scooter, previousIDs: Set<String>) {
     if (selectedScooterID.value != scooter.id || vehiclesByID[scooter.id] != null) return
     val successor = successor(of = scooter, among = vehicles.value.filter { it.id !in previousIDs }) ?: return
+    // "You're there" stays: the walk is of the same scooter.
+    walk.value?.takeIf { (it.target as? ScooterWalkTarget.Scooter)?.scooter?.id == scooter.id }?.let {
+        setWalk(it.copy(target = ScooterWalkTarget.Scooter(successor)))
+    }
     follow(to = successor.id)
 }
 

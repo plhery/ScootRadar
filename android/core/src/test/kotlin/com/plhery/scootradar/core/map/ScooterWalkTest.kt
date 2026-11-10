@@ -251,6 +251,43 @@ class ScooterWalkTest {
         )
     }
 
+    /**
+     * Bird gives every scooter a new id on each read, and the cache every scooter after a restart: the card follows its
+     * scooter, and the walk that got there, or found no way, goes with it, "You're there" with it (week review, finding
+     * 1.5).
+     */
+    @Test
+    fun aWalkThatGotThereOrFoundNoWayGoesOnWithItsScooterUnderANewID() = runTest {
+        for (arrived in listOf(true, false)) {
+            val name = if (arrived) "arrived" else "no route"
+            val target = scooter("b1", provider = "bird", at = point(east = if (arrived) 10 else 300, north = 0))
+            val neighbour = scooter("b2", provider = "bird", at = point(east = if (arrived) 19 else 309, north = 0))
+            val h = harness(vehicles = listOf(target, neighbour), rider = rider)
+            h.directions.result = Result.failure(WalkingDirectionsError(WalkingDirectionsError.Reason.NoRoute))
+            h.model.selectScooter(target.id)
+            h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
+            val phase = if (arrived) ScooterWalkPhase.Arrived else ScooterWalkPhase.Failed(ScooterWalkFailure.NoRoute)
+            assertTrue(name, waitUntil { h.model.walk.value?.phase == phase })
+            val note = h.model.walkNote(ScooterWalkTarget.Scooter(target))
+            val control = h.model.directionsControl(ScooterWalkTarget.Scooter(target))
+            val choices = h.model.scooterChoices.value
+
+            // The next read: both under new ids where they stood.
+            val renamed = scooter("b1-next", provider = "bird", at = target.coordinate)
+            h.clock.advance(60.0)
+            h.api.setResponse(ScooterResponse(vehicles = listOf(scooter("b2-next", provider = "bird", at = neighbour.coordinate), renamed)))
+            h.model.refresh()
+            assertTrue(name, waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+
+            assertEquals(name, renamed.id, h.model.selectedScooterID.value)
+            assertEquals(name, phase, h.model.walk.value?.phase)
+            assertEquals(name, ScooterWalkTarget.Scooter(renamed), h.model.walk.value?.target)
+            assertEquals(name, note, h.model.walkNote(ScooterWalkTarget.Scooter(renamed)))
+            assertEquals(name, control, h.model.directionsControl(ScooterWalkTarget.Scooter(renamed)))
+            assertEquals(name, choices, h.model.scooterChoices.value)
+        }
+    }
+
     // Walking
 
     @Test
