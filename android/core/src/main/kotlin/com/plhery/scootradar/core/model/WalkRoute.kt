@@ -419,8 +419,10 @@ data class ScooterWalk(
     val reroutes: Int = 0,
     val lastRequestAt: Instant? = null,
     /**
-     * When data that would list the scooter walked to first didn't, under any id: from a second, later such
-     * update it was taken. Cleared as soon as data lists it again.
+     * The read of its app in which data that would list the scooter walked to first didn't, under any id: when that
+     * app's positions shown were seen (meta.shownSince), or else the data's own time. From data of another read that
+     * doesn't list it either, it was taken; the same read served again says nothing new. Cleared as soon as data
+     * lists it again.
      */
     val missedAt: Instant? = null,
 ) {
