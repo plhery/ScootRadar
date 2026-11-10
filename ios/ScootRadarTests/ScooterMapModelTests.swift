@@ -574,6 +574,15 @@ final class ScooterMapModelTests: XCTestCase {
         defaults.set("gone", forKey: "only-provider")
         defaults.set(["voi"], forKey: "disabled-providers")
         XCTAssertEqual(makeModel().enabledProviders, Set(ScooterProvider.allCases).subtracting([.voi]))
+
+        // Saved by a version before only-provider, the providers turned off leaving Lime alone on: the app keeps it
+        // the only one once it starts, and Voi, added since, stays off.
+        defaults.removeObject(forKey: "only-provider")
+        defaults.set(ScooterProvider.allCases.filter { $0 != .lime }.map(\.rawValue).sorted(), forKey: "disabled-providers")
+        XCTAssertEqual(makeModel().enabledProviders, [.lime])
+        XCTAssertEqual(defaults.string(forKey: "only-provider"), "lime")
+        saveWithoutVoi()
+        XCTAssertEqual(makeModel().enabledProviders, [.lime])
     }
 
     func testAppearanceGoesByTheSunUntilOneIsChosenAndIsKept() throws {

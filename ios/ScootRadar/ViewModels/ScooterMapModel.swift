@@ -613,6 +613,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         super.init()
 
+        // Filters saved before only-provider that leave one app alone on keep it the only one from now on, as the
+        // website does on each visit: those a later catalog adds stay off (Desk card 350, item 4).
+        if enabledProviders.count == 1, let only = enabledProviders.first {
+            defaults.set(only.rawValue, forKey: Self.onlyProviderKey)
+        }
+
         cityZoneDownloads.onChange = { [weak self] in self?.rebuildMapZones() }
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
