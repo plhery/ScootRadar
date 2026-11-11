@@ -1,5 +1,6 @@
 import { showsPositions, VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
+import { hasStandby } from '../src/lib/feedCoverage';
 
 /**
  * ok: its last collection succeeded. failing: the last collection failed, the
@@ -147,6 +148,15 @@ export const SLOW_SWEEP_REPORT_DELAY_MS = 30 * 60_000;
 const STALL_REPORT_DELAYS_MS: Readonly<Record<string, number>> = { 'www.mobilitaetsdaten.nrw': 3 * 3600_000 };
 
 /**
+ * Longer for a national feed Lime's groups stand by for (hasStandby) when it stalls while sharedmobility.ch still answers.
+ * Lime's Zürich, Basel and Uster stopped there together at about 01:15 UTC on 10 and 11 November 2026, no other
+ * operator's feed with them, and each stayed expired for 23 to 27 minutes (SCOOTRADAR-CACHE-6D), Basel and Uster
+ * again for 13 minutes from 03:21 on the 11th, while the groups read the towns from Lime; on the 12th none stopped.
+ * Sentry hears of such a stall once it outlasts any seen; a failure that may be ours, as usual.
+ */
+const STANDBY_STALL_REPORT_DELAY_MS = 60 * 60_000;
+
+/**
  * Whether a feed's last collection says its host answered while its data had stopped: it succeeded, and its data
  * then aged past the limit; it refused the status document for its time; or the platform answered 404 or a server
  * error, as NRW.Mobidrom's documents and manifests did on 26 October 2026. A refused token (401, 403), a refusal for
@@ -163,7 +173,9 @@ export function stalledAt(feed: FeedSnapshot, host: string | undefined, failure:
  * host when that still answers (stalledAt).
  */
 export function expiredReportDelay(feed: FeedSnapshot, ownIdleExpiryMs = 0, stalledHost?: string): number {
-  return (stalledHost === undefined ? undefined : STALL_REPORT_DELAYS_MS[stalledHost]) ?? EXPIRED_REPORT_DELAYS_MS[feed.id] ??
+  return (stalledHost === undefined ? undefined
+    : STALL_REPORT_DELAYS_MS[stalledHost] ?? (hasStandby(feed.id) ? STANDBY_STALL_REPORT_DELAY_MS : undefined)) ??
+    EXPIRED_REPORT_DELAYS_MS[feed.id] ??
     (ownIdleExpiryMs >= SLOW_SWEEP_EXPIRY_MS ? SLOW_SWEEP_REPORT_DELAY_MS : EXPIRED_REPORT_DELAY_MS);
 }
 

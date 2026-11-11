@@ -509,7 +509,8 @@ setDefinitions(withAppCollectors([...listedNationalFeeds(restoredNational), ...i
 scheduler.start();
 void discover();
 // Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, 30 for one swept
-// slowly on purpose, as the app maps, or 3 hours for NRW.Mobidrom's while it still answers
+// slowly on purpose, as the app maps, 3 hours for NRW.Mobidrom's while it still answers, or an hour
+// for a national feed Lime's groups stand by for while sharedmobility.ch still answers
 // (expiredReportDelay). A restart goes on from the states saved before it (restoredFeedStates).
 const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: feed => expiredReportDelay(feed,
   ownIdleExpiry(feed.id), stalledAt(feed, hostOf.get(feed.id), lastErrors.get(feed.id))),

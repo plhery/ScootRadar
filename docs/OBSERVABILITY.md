@@ -580,7 +580,11 @@ Tracing is off, and no trace headers go to the operators' feeds.
   kept Voi's twelve feeds there expired together for 130, 128 and 136 minutes on 25 and
   26 October 2026 and 54 on 8 November, back on their own each time, and Voi publishes no feed of its own
   for those towns to fall back on, so Grafana's "feed stopped" shows such a stall and
-  Sentry hears of it once it outlasts any seen; a refused token (401, 403), a 429 or no
+  Sentry hears of it once it outlasts any seen; an hour for Lime's Zürich, Basel and Uster
+  feeds while sharedmobility.ch still answers them: they stopped together at about 01:15 UTC on
+  10 and 11 November 2026, no other operator's with them, and stayed expired up to 27 minutes
+  (Basel and Uster again for 13 minutes from 03:21 on the 11th; none on the 12th) while Lime's
+  groups standing by for them read the towns; a refused token (401, 403), a 429 or no
   answer is told after 5 minutes, as it may be ours), outside its seasonal pause. Under a night ban at all its
   service areas, it waits for the ban to end and tells only if the feed is still expired
   30 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which

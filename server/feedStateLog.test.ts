@@ -453,3 +453,20 @@ it('tells Sentry of NRW.Mobidrom\'s stalls only once they outlast any seen, and 
   expect(delay({ message: timestamp, statusAgeSeconds: 1699 }, {}, null)).toBe(5);
   expect(delay({ message: timestamp, statusAgeSeconds: 1699 }, { id: 'national:voiscooters.com' }, 'api.sharedmobility.ch')).toBe(15);
 });
+
+it('tells Sentry of a stall of a national feed Lime\'s groups stand by for only once it outlasts any seen', () => {
+  const host = 'api.sharedmobility.ch';
+  const delay = (id: string, failure: FeedFailure | undefined, changes: Partial<FeedSnapshot> = {}) => {
+    const current = feed({ id, source: 'national', provider: 'lime', failed: true, ...changes });
+    return expiredReportDelay(current, 0, stalledAt(current, host, failure)) / 60_000;
+  };
+  // The status of 11 November 2026: 948 seconds old at the first failure, 2,434 at the last.
+  const stalled = { message: 'Status timestamp is missing or out of date', statusAgeSeconds: 948 };
+  expect(['national:lime_zurich', 'national:lime_basel', 'national:lime_uster'].map(id => delay(id, stalled)))
+    .toEqual([60, 60, 60]);
+  expect(delay('national:lime_zurich', undefined, { failed: false })).toBe(60);
+  // No answer, asking too often, or another operator's stall there: as usual.
+  expect(delay('national:lime_zurich', { message: 'fetch failed' })).toBe(5);
+  expect(delay('national:lime_zurich', { message: 'GBFS request failed with HTTP 429', httpStatus: 429 })).toBe(5);
+  expect(delay('national:bolt_zurich', stalled)).toBe(5);
+});

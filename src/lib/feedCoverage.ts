@@ -86,6 +86,9 @@ const LIME_STANDBY_MARKETS: ReadonlyMap<string, string> = new Map([
 export const standbyNationalFeed = (feedId: string) =>
   LIME_STANDBY_MARKETS.get(feedId.slice(feedId.indexOf(':') + 1).replace(/_\d{3}$/, ''));
 
+/** Whether Lime's groups stand by for this national feed, as for "national:lime_basel". */
+export const hasStandby = (feedId: string) => [...LIME_STANDBY_MARKETS.values()].includes(feedId);
+
 // Systems named after one town that serve others too, as their published
 // geofencing shows: Bolt Zürich's "Wadenswil" zone, which takes in Richterswil,
 // and Dott St. Gallen's polygon around Wil. Its Lichtensteig zone is left out:
