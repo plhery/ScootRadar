@@ -35,9 +35,12 @@ export const ZONE_CITIES: ZoneCity[] = index.cities.filter(city => !('website' i
 
 /**
  * Each city's zones, loaded when asked for. Named one by one, so that the bundler makes each
- * file a piece of its own and leaves them all out of the map page.
+ * file a piece of its own and leaves them all out of the map page. Only the browser loads them:
+ * the server's build, where Next.js sets NEXT_RUNTIME, names none, as each file there was a piece
+ * of the Worker too, which they took past Cloudflare's 10 MB on 11 November 2026 (Dallas's 1.9 MB,
+ * Berlin's 1.7 MB…). The tests, where it is not set, load them as the browser does.
  */
-export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }>> = {
+export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }>> = process.env.NEXT_RUNTIME ? {} : {
   aachen: () => import('../../data/city-zones/aachen.json'),
   alexandria: () => import('../../data/city-zones/alexandria.json'),
   antwerpen: () => import('../../data/city-zones/antwerpen.json'),
