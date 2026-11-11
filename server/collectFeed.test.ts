@@ -3,6 +3,7 @@ import { collectSnapshotFeed, smoothedCollectionMs } from './collectFeed';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { ParkingSnapshot } from '../src/lib/parking';
 import { StatusTimestampError } from '../src/lib/feedValidation';
+import { LimeAccountError } from './limeApp';
 
 it('publishes fresh status despite stale metadata before optional parking completes', async () => {
   const now = Date.now();
@@ -85,6 +86,20 @@ it('logs the age of the status document a failed collection refused for its time
   expect(warning.mock.calls.map(([line]) => JSON.parse(String(line)))).toEqual([
     { event: 'snapshot_feed_failed', feed: 'germany:voi_de_koeln', error: 'Status timestamp is missing or out of date', statusAgeSeconds: 1699 },
     { event: 'snapshot_feed_failed', feed: 'germany:voi_de_koeln', error: 'GBFS request failed with HTTP 503' },
+  ]);
+  warning.mockRestore();
+});
+
+it('names the Lime account whose call failed, and whether it lent it, in the failure log line', async () => {
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+  const definition = { id: 'germany:lime_de_app_berlin_079', provider: 'lime' as const, source: 'germany' as const, host: 'test', coverage: [] };
+  await collectSnapshotFeed({ ...definition, collect: async () => { throw new LimeAccountError(new Error('Lime map HTTP 429'), 'lime4', true); } },
+    undefined, () => undefined);
+  await collectSnapshotFeed({ ...definition, collect: async () => { throw new Error('Lime map completeness budget exceeded'); } },
+    undefined, () => undefined);
+  expect(warning.mock.calls.map(([line]) => JSON.parse(String(line)))).toEqual([
+    { event: 'snapshot_feed_failed', feed: 'germany:lime_de_app_berlin_079', error: 'Lime map HTTP 429', account: 'lime4', lent: true },
+    { event: 'snapshot_feed_failed', feed: 'germany:lime_de_app_berlin_079', error: 'Lime map completeness budget exceeded' },
   ]);
   warning.mockRestore();
 });

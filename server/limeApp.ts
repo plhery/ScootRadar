@@ -340,6 +340,24 @@ function validateAccounts(accounts: readonly LimeAccount[]): LimeAccount[] {
 }
 
 /**
+ * A Lime call that failed, with the same message, naming the account that made it by its manifest id (not a
+ * secret) and whether it made it for another account's group (lent), for the feed's failure log line: on
+ * 11 November 2026 four Berlin groups of three accounts failed on a 429 in the same second, and the line could
+ * not say whose call it was.
+ */
+export class LimeAccountError extends Error {
+  constructor(cause: unknown, readonly account: string, readonly lent: boolean) {
+    super(cause instanceof Error ? cause.message : String(cause), { cause });
+    this.name = 'LimeAccountError';
+  }
+}
+
+/** For a log line: the Lime account whose call failed, when that is why `error` was thrown. */
+export function limeAccount(error: unknown): { account?: string; lent?: boolean } {
+  return error instanceof LimeAccountError ? { account: error.account, lent: error.lent } : {};
+}
+
+/**
  * Each group is its account's: its slots, plans and idle sweeps, and its calls but those a group someone is
  * looking at borrows (pins). A feed stays on its account during failures; no retry switches it to another quota.
  */
@@ -368,16 +386,19 @@ export class LimeAccountPool {
    */
   private pins(home: string, bounds: MapBounds): Promise<unknown> {
     const own = this.clients.get(home)!;
-    if (this.clients.size < 2 || !currentCollection()?.urgent() || !own.ready()) return own.pins(bounds);
+    if (this.clients.size < 2 || !currentCollection()?.urgent() || !own.ready()) return this.call(home, bounds, false);
     let lender: string | undefined, soonest = own.urgentStartAt();
     for (const [id, client] of this.clients) {
       if (id === home || !client.ready()) continue;
       const at = client.urgentStartAt();
       if (at < soonest) { lender = id; soonest = at; }
     }
-    if (lender === undefined) return own.pins(bounds);
+    if (lender === undefined) return this.call(home, bounds, false);
     this.requests.find(row => row.account === lender)!.lent++;
-    return this.clients.get(lender)!.pins(bounds);
+    return this.call(lender, bounds, true);
+  }
+  private call(id: string, bounds: MapBounds, lent: boolean): Promise<unknown> {
+    return this.clients.get(id)!.pins(bounds).catch(error => { throw new LimeAccountError(error, id, lent); });
   }
   accountFor(feedId: string): LimeAccount {
     // Rendezvous hashing keeps assignments stable when the manifest is reordered, and moves

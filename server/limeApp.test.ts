@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { MapBounds } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
-import { LimeClient, LimeAccountPool, LIME_MAX_ACCOUNTS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { LimeClient, LimeAccountError, LimeAccountPool, limeAccount, LIME_MAX_ACCOUNTS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { LIME_QUERY_INTERVAL_MS, LIME_ROUTINE_EVERY } from './limeAreas';
 import { withinCollection } from './sweeps';
@@ -360,6 +360,30 @@ describe('independent Lime production accounts', () => {
       await expect(withinCollection(looking, () => pool.collect(onB))).rejects.toThrow('temporarily rate limited');
       expect(calls).toHaveLength(16);
       expect(pool.requests.map(row => row.lent)).toEqual([0, 0]);
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('names the account whose call failed, and whether it lent it, for the failure log line', async () => {
+    // On 11 November 2026 four Berlin groups of three accounts failed on a 429 in the same second, and the
+    // log could not say whether their own accounts or a lender had made the calls.
+    const a = await fixture('-a'), b = await fixture('-b');
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+        { intervalMs: LIME_QUERY_INTERVAL_MS, transport: async (_path, headers) =>
+          headers['X-Device-Token'] === b.seed.deviceToken ? { ...response({}, 429), retryAfter: '600' } : response(map()) });
+      await vi.advanceTimersByTimeAsync(60_000);
+      const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}`, limeMapTiles: sixteenViews }));
+      const onA = candidates.find(s => pool.accountFor(s.id).id === 'a')!;
+      const onB = candidates.find(s => pool.accountFor(s.id).id === 'b')!;
+      // a's twelve of the minute, then b's lent call, which Lime refuses.
+      const lent = await withinCollection(looking, () => pool.collect(onA)).catch((error: unknown) => error);
+      expect(lent).toBeInstanceOf(LimeAccountError);
+      expect(lent).toMatchObject({ message: 'Lime map HTTP 429', account: 'b', lent: true });
+      expect(limeAccount(lent)).toEqual({ account: 'b', lent: true });
+      const own = await pool.collect(onB).catch((error: unknown) => error);
+      expect(own).toMatchObject({ message: 'Lime is temporarily rate limited', account: 'b', lent: false });
+      expect(limeAccount(new Error('Lime map completeness budget exceeded'))).toEqual({});
     } finally { vi.useRealTimers(); }
   });
 

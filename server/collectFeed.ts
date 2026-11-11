@@ -2,6 +2,7 @@ import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { ParkingSnapshot } from '../src/lib/parking';
 import { statusAge } from '../src/lib/feedValidation';
+import { limeAccount } from './limeApp';
 
 /**
  * How long a feed's collections take, smoothed over the last few so that one slow answer does not
@@ -32,7 +33,7 @@ export async function collectSnapshotFeed(
       // A failure says nothing of the season: a region closed for it stays closed.
       ...(old?.seasonOver ? { seasonOver: true } : {}), parking: old?.parking };
     console.warn(JSON.stringify({ event: 'snapshot_feed_failed', feed: definition.id,
-      error: error instanceof Error ? error.message : String(error), ...statusAge(error) }));
+      error: error instanceof Error ? error.message : String(error), ...statusAge(error), ...limeAccount(error) }));
   }
   publish(record);
   // A skipped feed, as a region its operator has paused, has no parking either.
