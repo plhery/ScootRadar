@@ -30,6 +30,11 @@ FAILURES_BEFORE_HOLD=3
 BROKER_RETRY=5
 BROKER_RETRY_MAX=60
 WARM_WAIT=8
+# Where the App Store installs Ryde. config.json's appBinary is where macOS unpacks the iPhone app
+# to run it, under /var/folders, and a restart of the Mac empties that folder: opening it then
+# fails, and the worker held itself off as AppFailing from the restart of 12 November 2026 at
+# 21:28 CET until Ryde was opened by hand from here, which unpacked it again at the same place.
+INSTALLED_APP=Path('/Applications/Ryde.app')
 
 class JobDeadline(Exception):
     """Queued work ran out of time; this is not evidence that Ryde failed."""
@@ -154,7 +159,8 @@ def relaunch(root=ROOT, after_quit=None):
     # The lifecycle helper waits for confirmed process termination before returning.
     # Routing and job arming above finish synchronously, so no additional fixed pause is needed.
     try:
-        subprocess.run([str(helper),'open',str(Path(config['appBinary']).parent)],check=True,timeout=15)
+        unpacked=Path(config['appBinary']).parent
+        subprocess.run([str(helper),'open',str(unpacked if unpacked.exists() else INSTALLED_APP)],check=True,timeout=15)
     except subprocess.TimeoutExpired:
         # LaunchServices can start Ryde before its completion callback returns.
         # Wait for the authenticated native response; don't kill/reopen it again.

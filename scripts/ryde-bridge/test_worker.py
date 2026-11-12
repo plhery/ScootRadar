@@ -186,6 +186,22 @@ class WorkerTests(unittest.TestCase):
                         self.assertNotIn('arm',order);self.assertNotIn('route',order);self.assertNotIn('open',order)
                         if not safe:self.assertNotIn('force-quit',order)
 
+    def test_opens_the_installed_app_when_a_restart_of_the_mac_emptied_the_unpacked_one(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name);(root/'producer').mkdir();unpacked=root/'X/Wrapper/Ryde.app';unpacked.mkdir(parents=True)
+            save(root/'config.json',{'appBinary':str(unpacked/'Ryde')})
+            save(root/'producer/proxy-ready.json',{'pid':os.getpid()});save(root/'transport-status.json',{'proxyPid':os.getpid()})
+            opened=[]
+            def run(command,**kwargs):
+                if command[1]=='open':opened.append(command[2])
+                return subprocess.CompletedProcess(command,0,stdout='{}')
+            with patch('worker.subprocess.run',side_effect=run),patch('worker.egress.begin_cycle'), \
+                 patch('worker.INSTALLED_APP',root/'Applications/Ryde.app'):
+                relaunch(root)
+                unpacked.rmdir()
+                relaunch(root)
+            self.assertEqual(opened,[str(unpacked),str(root/'Applications/Ryde.app')])
+
     def test_expiring_broker_job_does_not_launch_or_activate_ryde(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,job=self.warm_root(name);job['expiresAt']=time.time()+2

@@ -586,3 +586,14 @@ Broker jobs with less than twenty seconds left are rejected without touching the
 native app; broker expiry during a query also stays separate from an app timeout.
 The worker immediately asks for the next job instead of accumulating app failures
 and entering an hours-long hold while draining an old queue.
+
+`config.json`'s `appBinary` is where macOS unpacks the iPhone app to run it, under
+`/var/folders/…/X/…/d/Wrapper/`, and a restart of the Mac empties that folder. The
+lifecycle helper's `open` of it then fails, and the worker counted each launch as an
+app failure: after the restart of 12 November 2026 at 21:28 CET it held itself off as
+AppFailing, 15 minutes and then 29, and read nothing until Ryde was opened by hand
+from `/Applications/Ryde.app` at 22:03, which unpacked it again at the same path, so
+the certificate's trust on that path still held and no sign-in was needed. The worker
+now opens `/Applications/Ryde.app` itself when the unpacked folder is missing
+(`INSTALLED_APP` in `worker.py`). The Mac had stopped at 18:07 CET with no clean
+shutdown recorded; why was not found.
