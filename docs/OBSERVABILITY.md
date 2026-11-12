@@ -108,7 +108,12 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   addresses would help); a `done` long past `first` a slow sweep; a long
   `first` with a short `start`, a client's pace (its requests queue in it, as
   Lime's per account). Ryde's views, which the Mac bridge reads
-  (`server/rydeWatchedViews.ts`), are not in it.
+  (`server/rydeWatchedViews.ts`), are not in it. The dashboard's "Visitors and
+  scraping" row draws the cold views' P90 `start` by provider over each hour, against
+  the 15-second target, and the failed ones beside it. Both are counters, so they come
+  from each container's address (job `scootradar-cache-containers`, relabelled), never
+  `instance="scootradar-cache:3001"`, which has the gauges alone: sum them by `le`
+  across instances, as above.
 - `scootradar_upstream_requests_total{kind="status|metadata"}`: requests sent to
   operators; status covers positions and parking, metadata what is kept an hour or more.
 - `scootradar_lime_account_requests_total{account,kind="status|metadata"}`:
@@ -180,7 +185,19 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   stale" counts from the cache's start only before any discovery is saved, as on a new
   volume. While sharedmobility.ch was down on 31 October 2026 it counted from each
   restart, and the day's deploys put it out three times before it held.
-- `process_*` and `nodejs_*`: memory, CPU, start time and event loop delay.
+- `process_*` and `nodejs_*`: memory, CPU, start time and event loop delay. Each hold of
+  the loop of a second or more is in Loki as `event_loop_held`, with the collections that
+  ended around it, and a garbage collection of half a second or more as `gc_pause`
+  (`server/stallLog.ts`). The container has one CPU (DEPLOY.md), which the main thread
+  shares with V8's and libuv's threads: when they run together, the kernel stops all of
+  them for the rest of each 100 ms, and the loop is held with no long work of its own.
+  `/sys/fs/cgroup/cpu.stat` in the container counts it (`nr_throttled`,
+  `throttled_usec`). On 12 November 2026, 79% of the day's holds began within five
+  seconds of the minute's save of the snapshot (logged as `snapshot_health`), whose own
+  work holds the loop 3 ms at most without a CPU limit, and in the container
+  `throttled_usec` rose by 3 to 4.8 seconds within a second or two of a full Prometheus
+  scrape. The holds of 2 seconds or more grew over the container's life with its heap,
+  from 22 on the 11th to 114 on the 12th.
 
 Counters start at zero with the process; the dashboard's "Deploys" annotation marks
 restarts.

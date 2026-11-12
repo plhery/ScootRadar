@@ -2532,13 +2532,168 @@
       }
     },
     {
+      "id": 42,
+      "type": "timeseries",
+      "title": "A first view's wait for its collection to start, p90 by provider",
+      "description": "Of the views that found a feed with no position recent enough to show (kind cold) and whose collection then succeeded, the 90th percentile of the seconds from the first request asking until the collection started, over the hour before each point. The line is the 15-second target. Failed ones are in the panel beside it; docs/OBSERVABILITY.md has the query for the first scooters shown (phase first).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 102,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.9, sum by (le, provider) (increase(scootradar_refresh_seconds_bucket{job=\"scootradar-cache\", kind=\"cold\", phase=\"start\"}[1h])))",
+          "legendFormat": "{{provider}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 15
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 43,
+      "type": "timeseries",
+      "title": "First views whose collection failed, per hour, by provider",
+      "description": "Of the same cold views, those whose collection failed: the visitor waited and saw no scooters. Lime's failed on a 429, or on an account cooling down for a minute after one, from 11 November 2026 until all its accounts together were held to fifty calls in ten seconds (465b6cc9, 12 November 21:42 UTC).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 102,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (provider) (increase(scootradar_refreshes_total{job=\"scootradar-cache\", kind=\"cold\", outcome=\"failed\"}[1h]))",
+          "legendFormat": "{{provider}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
       "id": 22,
       "type": "row",
       "title": "Process",
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 102,
+        "y": 110,
         "w": 24,
         "h": 1
       },
@@ -2555,7 +2710,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 103,
+        "y": 111,
         "w": 8,
         "h": 8
       },
@@ -2641,7 +2796,7 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 103,
+        "y": 111,
         "w": 8,
         "h": 8
       },
@@ -2715,7 +2870,7 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 103,
+        "y": 111,
         "w": 8,
         "h": 8
       },
