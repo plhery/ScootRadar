@@ -13,8 +13,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -28,9 +30,11 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.scooter
+import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.zurichRegion
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -88,11 +92,17 @@ class MapUnderChromeTest {
         val (screen, frames) = show(model)
         assertFalse(frames().covered)
         assertHeard(map())
+        assertHeard(locateButton())
+        assertTrue("TalkBack reads the dock's controls", dockControlsHeard() > 0)
 
         compose.runOnIdle { screen().searchIsExpanded = true }
         compose.waitForIdle()
         assertTrue(frames().covered)
         assertUnheard(map())
+        // On a phone the locate row and the dock are under the open search as well, which covers them whole: Compose
+        // gives TalkBack no node it covers (chunk-00 audit, 4810e235).
+        assertUnheard(locateButton())
+        assertEquals("dock's controls TalkBack reads", 0, dockControlsHeard())
         assertHeard(compose.onNodeWithTag(SEARCH_ISLAND_TAG, useUnmergedTree = true))
 
         // Back closes it, as Cancel does.
@@ -100,6 +110,7 @@ class MapUnderChromeTest {
         assertFalse(screen().searchIsExpanded)
         assertFalse(frames().covered)
         assertHeard(map())
+        assertHeard(locateButton())
 
         compose.runOnIdle { screen().settingsPresented = true }
         compose.waitForIdle()
@@ -119,17 +130,22 @@ class MapUnderChromeTest {
     @Test
     @Config(qualifiers = "w1280dp-h800dp-mdpi")
     fun besideThePanelTheOpenSearchIsReadAlone() {
-        val model = controllers.make(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        val model = controllers.make(api)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
         val (screen, frames) = show(model)
         assertFalse(frames().covered)
         assertHeard(map())
         assertHeard(locateButton())
+        assertTrue("TalkBack reads the panel's controls", dockControlsHeard() > 0)
 
         compose.runOnIdle { screen().searchIsExpanded = true }
         compose.waitForIdle()
         assertTrue(frames().covered)
         assertUnheard(map())
         assertUnheard(locateButton())
+        assertEquals("panel's controls TalkBack reads", 0, dockControlsHeard())
         assertHeard(compose.onNodeWithTag(SEARCH_ISLAND_TAG, useUnmergedTree = true))
 
         back()
@@ -171,6 +187,12 @@ class MapUnderChromeTest {
         val id = node.fetchSemanticsNode().id
         return compose.runOnIdle { view.accessibilityNodeProvider.createAccessibilityNodeInfo(id)?.isVisibleToUser == true }
     }
+
+    /** How many of the dock's controls TalkBack reads. */
+    private fun dockControlsHeard(): Int =
+        compose.onAllNodes(hasAnyAncestor(hasTestTag(DOCK_TAG)) and hasClickAction(), useUnmergedTree = true)
+            .fetchSemanticsNodes()
+            .count { node -> compose.runOnIdle { view.accessibilityNodeProvider.createAccessibilityNodeInfo(node.id)?.isVisibleToUser == true } }
 
     private fun assertHeard(node: SemanticsNodeInteraction) {
         assertTrue("TalkBack reads it", heard(node))
