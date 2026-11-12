@@ -6,9 +6,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, listedNationalFeeds, planRefreshCounts,
   type CollectableScooterFeed } from '../src/lib/scooterFeeds';
-import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_AGE_MS, overviewDue, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot,
+import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_AGE_MS, overviewDue, refreshedOverview, showsPositions, VEHICLE_MAX_AGE_MS, type FeedSnapshot,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
-import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, isAppMapFeed, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
+import { APP_MAP_WIDE_INTERVAL_MS } from './appMapCadence';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
@@ -160,6 +161,8 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   },
   // A feed collected in a night ban, when its operator may hide its scooters, is collected again when it ends.
   curfewEnds: (feed, time) => feedCurfewEnds(feed.id, time),
+  // What a wide view keeps shown is what the answers show (querySnapshot), not what the scheduler last started.
+  showsPositions: (feed, now) => { const record = records.get(feed.id); return record !== undefined && showsPositions(record, now); },
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason),
   // A group a visitor only panned past, whose watch lapsed before it started: its wait is no visitor's.
   onLapse: feed => metrics.recordRefreshLapsed(feed.id) });
@@ -390,7 +393,10 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
 
 function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (feed: FeedSnapshot) => boolean) {
   // Capped feeds are collected every 13 minutes while nobody looks, but expire as the others do.
-  const definitions = withRetentionCaps(collected, schedule.idleIntervalMs);
+  // A view of groups of scooters has an app map collected every ten minutes, not every one: but a Bird
+  // area, whose sweeps have an interval of their own, sized to its quota and to how long one takes.
+  const definitions = withRetentionCaps(collected, schedule.idleIntervalMs).map(feed =>
+    feed.activeIntervalMs === undefined && (isAppMapFeed(feed) || readsSwissAppMap(feed)) ? { ...feed, wideIntervalMs: APP_MAP_WIDE_INTERVAL_MS } : feed);
   collectable = definitions;
   workerOf = new Map(definitions.flatMap(feed => feed.worker ? [[feed.id, feed.worker] as const] : []));
   hostOf = new Map(definitions.map(feed => [feed.id, feed.host]));

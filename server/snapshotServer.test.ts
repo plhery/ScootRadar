@@ -437,6 +437,17 @@ describe('collection on demand', () => {
     expect(query).toHaveBeenCalledTimes(2);
   });
 
+  it('tells the scheduler a view of groups of scooters from a street\'s', async () => {
+    const now = Date.now();
+    const feeds = [feed('france:dott_fr_lyon', lyon, now)];
+    const wide: Array<boolean | undefined> = [];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, {
+      refresher: { demand: (ids, _now, _focus, far) => { if (ids.length) wide.push(far); return []; }, refreshing: () => false, wait: async () => true } });
+    // Clusters from zoom 15 out; every scooter from 16 in, and without a zoom in a box a street fills.
+    for (const extra of ['&zoom=11', '&zoom=15', '&zoom=16', '']) await (await fetch(lyonUrl(port, extra), { headers })).text();
+    expect(wide).toEqual([true, true, false, false]);
+  });
+
   it('marks as watched the feeds whose positions answer a request, and none for the city totals', async () => {
     const now = Date.now();
     const feeds = [feed('france:dott_fr_lyon', lyon, now), feed('france:dott_fr_paris', paris, now),

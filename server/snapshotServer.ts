@@ -6,6 +6,7 @@ import { isIP } from 'node:net';
 import { clientNetwork } from '../src/lib/clientNetwork';
 import { scooterView } from '../src/lib/scooterView';
 import { parseScooterQuery, scooterAnswerZoom } from '../src/lib/scooterQuery';
+import { shouldClusterAtZoom } from '../src/lib/clustering';
 import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
@@ -26,8 +27,10 @@ export interface FeedRefresher {
   /**
    * Marks the feeds as watched, and collects at once those last collected over an active interval
    * ago; their sweeps start where `focus`, the area asked for, is. Returns the feeds it collects at once.
+   * For a view too wide to show single scooters (`wide`), a feed that says how often such a view needs it
+   * is collected only that often while its positions still show (FeedScheduler.demand).
    */
-  demand(ids: string[], now: number, focus?: MapBounds): string[];
+  demand(ids: string[], now: number, focus?: MapBounds, wide?: boolean): string[];
   /** A collection a request asked for is queued or under way. */
   refreshing(id: string): boolean;
   /**
@@ -250,11 +253,12 @@ export function createSnapshotServer(options: ServerOptions) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
       // those within DEMAND_REACH_DEGREES of the middle of the view, the area its visitor is charged for and around it,
       // but the Lime groups past the few nearest that middle, which Lime's pace could not keep up.
+      // A view of groups of scooters, from zoom 15 out, has the app maps collected every ten minutes, not every one.
       // Ryde's watched reads bypass long full-group scans. Keep those scans on their idle schedule.
       const watched = watches ? demandedFeeds(inView.filter(feed => !options.rydeViews?.handles(feed)), parsed.query.bounds, now) : [];
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
-      const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds));
+      const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds, zoom !== null && shouldClusterAtZoom(zoom)));
       // How long the visitor waits for each refresh: the first request asking times it (metrics.ts).
       for (const feed of watched) {
         if (refresher.refreshing(feed.id)) options.metrics?.recordRefreshAsked(feed, isAppMapFeed(feed), !showsPositions(feed, now), now);

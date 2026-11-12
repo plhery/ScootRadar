@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -574,4 +574,119 @@ it('collects every feed at once on a cold start, and an always-fast new feed at 
     await vi.advanceTimersByTimeAsync(15_000);
     expect(restored.calls.filter(call => call.id.startsWith('new-')).map(call => call.at / 1000)).toEqual([...Array(6).fill(0), ...Array(6).fill(15)]);
   } finally { restored.scheduler.stop(); }
+});
+
+// A Lime group: swept every two hours here while nobody looks, and every ten minutes for a view of groups of scooters.
+const group = { host: 'lime', watchMs: 3 * MINUTE, idleIntervalMs: 120 * MINUTE, wideIntervalMs: 10 * MINUTE };
+const wide = (scheduler: FeedScheduler<Feed>, ids: string[]) => scheduler.demand(ids, Date.now(), undefined, true);
+
+it('collects a feed for a wide view at once when its positions are too old to show, then only every ten minutes', async () => {
+  const { scheduler, times, calls, attention } = schedule([{ id: 'mitte', ...group }]);
+  let viewer: ReturnType<typeof setInterval> | undefined;
+  try {
+    await vi.advanceTimersByTimeAsync(20 * MINUTE);
+    // Nothing of it to show: the view waits for it as a street's would.
+    expect(wide(scheduler, ['mitte'])).toEqual(['mitte']);
+    expect(times('mitte')).toEqual([0, 20]);
+    expect(calls.at(-1)?.reason).toBe('wake');
+    expect(scheduler.refreshing('mitte')).toBe(true);
+    await vi.advanceTimersByTimeAsync(0);
+    // The map asks again every minute.
+    viewer = setInterval(() => wide(scheduler, ['mitte']), MINUTE);
+    await vi.advanceTimersByTimeAsync(9.5 * MINUTE);
+    expect(times('mitte')).toEqual([0, 20]);
+    await vi.advanceTimersByTimeAsync(16 * MINUTE);
+    expect(times('mitte')).toEqual([0, 20, 30, 40]);
+    expect(calls.slice(-2).map(call => call.reason)).toEqual(['wide', 'wide']);
+    // Someone looks, so its requests need not keep an idle sweep's spacing; but no request waits for it,
+    // and it is judged as an idle feed, not as one meant to be a minute old.
+    expect(attention.get('mitte')?.urgent()).toBe(true);
+    expect(scheduler.refreshing('mitte')).toBe(false);
+    expect(scheduler.fastSince('mitte')).toBeUndefined();
+    expect(scheduler.mode({ id: 'mitte', ...group })).toBe('idle');
+    // The view closed, nothing more is collected for it: its next sweep is the idle one, at two hours.
+    clearInterval(viewer);
+    await vi.advanceTimersByTimeAsync(60 * MINUTE);
+    expect(times('mitte')).toEqual([0, 20, 30, 40]);
+    expect(attention.get('mitte')?.urgent()).toBe(false);
+    await vi.advanceTimersByTimeAsync(15 * MINUTE);
+    expect(times('mitte')).toEqual([0, 20, 30, 40, 120]);
+  } finally { clearInterval(viewer); scheduler.stop(); }
+});
+
+it('watches a feed for a wide view as for any other when it has no interval for wide views', async () => {
+  const { scheduler, times } = schedule([{ id: 'lyon', host: 'fr' }]);
+  try {
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    expect(wide(scheduler, ['lyon'])).toEqual(['lyon']);
+    await vi.advanceTimersByTimeAsync(3.5 * MINUTE);
+    expect(times('lyon')).toEqual([0, 5, 6, 7, 8]);
+    expect(scheduler.fastSince('lyon')).toBe(T0 + 5 * MINUTE);
+  } finally { scheduler.stop(); }
+});
+
+it('collects a feed a wide view keeps shown every minute once someone looks at its streets', async () => {
+  const { scheduler, times, calls } = schedule([{ id: 'mitte', ...group }]);
+  const far = setInterval(() => wide(scheduler, ['mitte']), MINUTE);
+  let near: ReturnType<typeof setInterval> | undefined;
+  try {
+    await vi.advanceTimersByTimeAsync(12.5 * MINUTE);
+    expect(times('mitte')).toEqual([0, 10]);
+    // Zoomed in on positions two and a half minutes old: collected at once, and every minute while they look.
+    expect(scheduler.demand(['mitte'])).toEqual(['mitte']);
+    expect(calls.at(-1)).toEqual({ id: 'mitte', at: 12.5 * MINUTE, reason: 'wake' });
+    near = setInterval(() => scheduler.demand(['mitte']), MINUTE);
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    expect(times('mitte')).toEqual([0, 10, 12.5, 13.5, 14.5, 15.5]);
+    expect(scheduler.fastSince('mitte')).toBe(T0 + 12.5 * MINUTE);
+    // Zoomed out again, the watch runs out three minutes after its last request, at 18:30, and the wide
+    // view's ten minutes count from the last collection: its request at 29:00 starts the next.
+    clearInterval(near);
+    await vi.advanceTimersByTimeAsync(14 * MINUTE);
+    expect(times('mitte').slice(6)).toEqual([16.5, 17.5, 18.5, 29]);
+    expect(calls.at(-1)?.reason).toBe('wide');
+  } finally { clearInterval(far); clearInterval(near); scheduler.stop(); }
+});
+
+it('goes by the positions the map shows, when told, to keep a feed shown for a wide view', async () => {
+  // Collected two minutes ago, but its positions were dropped: nothing of it shows.
+  let shown = false;
+  const { scheduler, times, calls } = schedule([{ id: 'mitte', ...group }], { showsPositions: () => shown });
+  try {
+    await vi.advanceTimersByTimeAsync(2 * MINUTE);
+    expect(wide(scheduler, ['mitte'])).toEqual(['mitte']);
+    expect(calls.at(-1)).toEqual({ id: 'mitte', at: 2 * MINUTE, reason: 'wake' });
+    shown = true;
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    expect(wide(scheduler, ['mitte'])).toEqual([]);
+    expect(times('mitte')).toEqual([0, 2]);
+  } finally { scheduler.stop(); }
+});
+
+it('collects a feed a wide view keeps shown after the towns asked for and before the idle sweeps', async () => {
+  const release = new Map<string, () => void>();
+  let held = false;
+  const { scheduler, times, calls } = schedule([{ id: 'sweep-a', host: 'lime' }, { id: 'sweep-b', host: 'lime' },
+    { id: 'idle', host: 'lime' }, { id: 'mitte', ...group }, { id: 'street', ...group }], {},
+  feed => held ? new Promise<void>(resolve => release.set(feed.id, resolve)) : Promise.resolve());
+  try {
+    await vi.advanceTimersByTimeAsync(12 * MINUTE);
+    wide(scheduler, ['mitte']);
+    expect(times('mitte')).toEqual([0, 12]);
+    await vi.advanceTimersByTimeAsync(7.5 * MINUTE);
+    // Two idle sweeps hold the host's slots from 20:00, and a third waits behind them.
+    held = true;
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    expect([...release.keys()]).toEqual(['sweep-a', 'sweep-b']);
+    // The wide view's ten minutes are over; then someone opens another group's streets.
+    expect(wide(scheduler, ['mitte'])).toEqual([]);
+    expect(scheduler.demand(['street'])).toEqual(['street']);
+    held = false;
+    release.get('sweep-a')!();
+    await vi.advanceTimersByTimeAsync(0);
+    release.get('sweep-b')!();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(calls.slice(-3)).toEqual([{ id: 'street', at: 22.5 * MINUTE, reason: 'wake' },
+      { id: 'mitte', at: 22.5 * MINUTE, reason: 'wide' }, { id: 'idle', at: 22.5 * MINUTE, reason: 'idle' }]);
+  } finally { scheduler.stop(); }
 });

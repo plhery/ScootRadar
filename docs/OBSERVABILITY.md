@@ -83,7 +83,8 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_feeds_by_cadence{cadence="always|watched|idle"}`: feeds on each cadence now.
 - `scootradar_collections_started_total{reason}`: `always`, `watched`, `wake` (a request
   found the data over a minute old), `late` (an idle feed on a paced host, woken five minutes
-  before it would expire), `idle` and `retry` (an idle feed that failed).
+  before it would expire), `wide` (an app map collected again for a view of groups of
+  scooters, ten minutes after its last collection), `idle` and `retry` (an idle feed that failed).
 - `scootradar_request_waits_total{outcome="collected|timeout"}`: requests that waited for
   the collection of feeds whose positions were over 15 minutes old.
 - `scootradar_refreshes_total{provider,map,kind,outcome}` and
@@ -261,6 +262,21 @@ and keeps them watched for 3 minutes rather than `SCOOTER_WATCH_SECONDS`: every 
 town shares 36 requests a minute. The other groups in view stay idle; their old
 positions stand faded the same way, outside the answer's state
 ([lime-app-map.md](lime-app-map.md)).
+
+Since 12 November 2026 a view too wide to show single scooters, groups of them from
+zoom 15 out, no longer has the operators' rider maps collected every minute. While a
+rider map's positions show, such a view has it collected again ten minutes after its
+last collection started (`APP_MAP_WIDE_INTERVAL_MS` in `server/appMapCadence.ts`,
+`wideIntervalMs` in `server/feedScheduler.ts`): the map shows positions for 15 minutes
+and asks every minute, so the groups never empty. That collection counts as `wide` in
+`scootradar_collections_started_total`, takes its turn after the towns someone looks
+at closely, and is not said to be refreshing; the feed stays `idle` in
+`scootradar_feeds_by_cadence` and is judged as an idle one. Once its positions are too
+old to show, the view has it collected at once, as a street's does (`wake`). From zoom
+16 in, and for the operators' public feeds at any zoom, nothing changes: every minute
+while someone looks. A Bird area keeps its own five minutes at every zoom. Before, the
+six Lime groups nearest the middle of Berlin, where the map opens at zoom 13 in
+Germany's time zone, took 65% of Lime's collection time (10 November 2026).
 
 `lastSeen.providers` says of each app among the faded scooters when its were seen and
 whether its new positions are on their way (`updating`: a collection for this request

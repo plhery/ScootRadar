@@ -406,7 +406,10 @@ enclosing rectangle spans a gap between rows or disconnected polygons. They
 use the normal active cadence, but a request collects again only the six
 nearest the middle of its view (`LIME_GROUPS_PER_REQUEST`, enough for a phone at
 zoom 14), and keeps them watched for three minutes (`LIME_WATCH_MS`) rather than
-ten: the map asks every minute while it is open. Every Lime town shares the
+ten: the map asks every minute while it is open. A view of groups of scooters,
+from zoom 15 out, has its six collected again only every ten minutes while their
+positions show, since 12 November 2026 (`APP_MAP_WIDE_INTERVAL_MS`,
+[OBSERVABILITY.md](OBSERVABILITY.md)); a street's view, every minute. Every Lime town shares the
 accounts' 36 requests a minute, four or five a group. On 25 October 2026 a view
 of Berlin asked for its 128 groups; Santiago's, watched meanwhile, waited a
 quarter of an hour for theirs and expired, and the new German towns' first

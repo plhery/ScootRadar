@@ -262,7 +262,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         }
       }
       metric('scootradar_collections_started_total', 'counter',
-        'Collections started, by reason: always, watched, wake (a request found the data over a minute old), idle, retry (an idle feed that failed).',
+        'Collections started, by reason: always, watched, wake (a request found the data over a minute old), wide (an app map a view of groups of scooters keeps shown, every ten minutes), idle, retry (an idle feed that failed).',
         [...starts].map(([reason, count]) => [{ reason }, count]));
       metric('scootradar_request_waits_total', 'counter',
         'Requests that waited for feeds whose positions had expired, by whether their collection finished in time.',

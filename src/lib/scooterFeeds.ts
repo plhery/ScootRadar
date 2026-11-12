@@ -281,6 +281,8 @@ export interface CollectableScooterFeed {
   watchMs?: number;
   /** How long after a collection started a request or its watch starts the next, when not the cache's minute (FeedScheduler). */
   activeIntervalMs?: number;
+  /** How long after a collection started a view of groups of scooters starts the next, when not as often as a street's (FeedScheduler). */
+  wideIntervalMs?: number;
   /** An app-map sweep whose client spaces every request to its host (FeedScheduler). */
   paced?: boolean;
   /** Independent Node scheduler slots for an account whose client enforces its own pace. */

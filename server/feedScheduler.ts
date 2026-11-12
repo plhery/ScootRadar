@@ -15,6 +15,15 @@ export interface ScheduledFeed {
    */
   activeIntervalMs?: number;
   /**
+   * How long after a collection started a view too wide to show single scooters (demand's `wide`) starts
+   * the next, in the background: often enough that its positions, shown 15 minutes, never go. Such a view
+   * otherwise had it collected every active interval, as a street's does, for groups of scooters that read
+   * the same a few minutes on: on 10 November 2026 the six Lime groups nearest the middle of Berlin, which
+   * the map opens on at zoom 13 in its time zone, took 65% of Lime's collection time. Without it, a wide
+   * view watches the feed as any other.
+   */
+  wideIntervalMs?: number;
+  /**
    * Its client paces every request on the host, whatever the collection: it waits on that pace,
    * not on the cache, so it takes one of its host's slots but none of the shared ones.
    */
@@ -45,17 +54,18 @@ export interface CollectionOutcome {
  * Why a collection started. always: a source collected every active interval.
  * wake: a request asked for a feed collected over an active interval ago.
  * late: an idle feed on a paced host, about to expire, woken as if asked for.
- * watched: a feed someone has looked at recently. idle: nobody has. retry: an
- * idle feed whose last collection failed.
+ * watched: a feed someone has looked at recently. wide: a feed a view too wide
+ * to show single scooters keeps shown (wideIntervalMs). idle: nobody looks.
+ * retry: an idle feed whose last collection failed.
  */
-export type CollectionReason = 'always' | 'wake' | 'late' | 'watched' | 'idle' | 'retry';
+export type CollectionReason = 'always' | 'wake' | 'late' | 'watched' | 'wide' | 'idle' | 'retry';
 export type FeedCadenceMode = 'always' | 'watched' | 'idle';
 
 /** What a collection under way can ask of the scheduler (sweeps.ts). */
 export interface CollectionAttention {
-  /** Someone is looking at the feed: a request is waiting for it, or one has asked within the watch. */
+  /** Someone is looking at the feed: a request is waiting for it, or one has asked within the watch, a wide view's too. */
   urgent(): boolean;
-  /** Where the last request for the feed looked, while it is watched. */
+  /** Where the last request for the feed looked, while it is watched, or kept shown for a wide view. */
   focus(): MapBounds | undefined;
 }
 
@@ -76,6 +86,11 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
   phase?: (feed: T) => number;
   /** If a night ban holds then where the feed's scooters are, when it ends (feedCurfewEnds). */
   curfewEnds?: (feed: T, time: number) => number | undefined;
+  /**
+   * Whether the map still shows the feed's last positions, which a wide view then has collected in the
+   * background (wideIntervalMs): by default those of a collection started under 15 minutes ago.
+   */
+  showsPositions?: (feed: T, now: number) => boolean;
   onStart?: (feed: T, reason: CollectionReason) => void;
   /** A collection a request asked for, whose watch lapsed before it started, is no longer asked for (lapse). */
   onLapse?: (feed: T) => void;
@@ -119,6 +134,11 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private readonly failures = new Map<string, number>();
   private readonly watchedSince = new Map<string, number>();
   private readonly watchedUntil = new Map<string, number>();
+  // Since and until when a view too wide to show single scooters keeps a feed with a wideIntervalMs shown.
+  private readonly glancedSince = new Map<string, number>();
+  private readonly glancedUntil = new Map<string, number>();
+  // The collections such views started in the background, until they start.
+  private readonly glancing = new Set<string>();
   private readonly focusOf = new Map<string, MapBounds>();
   // Collections a request asked for, until they finish or their watch lapses before they start.
   private readonly woken = new Set<string>();
@@ -138,9 +158,11 @@ export class FeedScheduler<T extends ScheduledFeed> {
     this.definitions = definitions;
     const now = Date.now();
     const ids = new Set(definitions.map(feed => feed.id));
-    for (const map of [this.due, this.startedAt, this.collectedAt, this.failures, this.watchedSince, this.watchedUntil, this.focusOf, this.byId]) {
+    for (const map of [this.due, this.startedAt, this.collectedAt, this.failures, this.watchedSince, this.watchedUntil,
+      this.glancedSince, this.glancedUntil, this.focusOf, this.byId]) {
       for (const id of map.keys()) if (!ids.has(id)) map.delete(id);
     }
+    for (const id of this.glancing) if (!ids.has(id)) this.glancing.delete(id);
     for (const id of this.woken) if (!ids.has(id) && !this.running.has(id)) this.settle(id);
     const added: T[] = [];
     for (const feed of definitions) {
@@ -191,26 +213,43 @@ export class FeedScheduler<T extends ScheduledFeed> {
    * asked for; the others are collected an active interval after their last.
    * `focus` is where the request looked, which their sweeps collect first.
    * Returns the feeds it collects at once: not those whose collection was under way.
+   *
+   * `wide` is a view too wide to show single scooters. A feed with a wideIntervalMs is then not watched
+   * but kept shown: while the map shows its last positions, it is collected again only once its last
+   * collection started that long ago. That collection takes its turn after the towns people look at
+   * closely and before the idle sweeps, with an idle sweep's slots, and is not said to be refreshing.
+   * Once its positions are too old to show, it is collected as for any request, so the view is no
+   * longer empty of it than a street's. A feed someone also watches closely is left to that watch.
    */
-  demand(ids: Iterable<string>, now = Date.now(), focus?: MapBounds): string[] {
+  demand(ids: Iterable<string>, now = Date.now(), focus?: MapBounds, wide = false): string[] {
     const started: string[] = [];
     let changed = false;
     for (const id of ids) {
       const feed = this.byId.get(id);
       if (!feed) continue;
-      if (!this.watched(id, now)) this.watchedSince.set(id, now);
-      this.watchedUntil.set(id, now + (feed.watchMs ?? this.options.watchMs));
+      const glance = wide && feed.wideIntervalMs !== undefined;
+      if (glance) {
+        if (!this.glanced(id, now)) this.glancedSince.set(id, now);
+        this.glancedUntil.set(id, now + (feed.watchMs ?? this.options.watchMs));
+        if (this.watched(id, now)) continue;
+      } else {
+        if (!this.watched(id, now)) this.watchedSince.set(id, now);
+        this.watchedUntil.set(id, now + (feed.watchMs ?? this.options.watchMs));
+      }
       if (focus) this.focusOf.set(id, focus);
       if (this.options.alwaysFast(feed) || this.woken.has(id)) continue;
+      const background = glance && this.shows(feed, now);
       // A collection already under way answers the request.
-      if (this.running.has(id)) { this.woken.add(id); continue; }
-      const target = (this.startedAt.get(id) ?? -Infinity) + this.activeInterval(feed);
+      if (this.running.has(id)) { if (!background) this.woken.add(id); continue; }
+      const interval = background ? Math.max(feed.wideIntervalMs!, this.activeInterval(feed)) : this.activeInterval(feed);
+      const target = (this.startedAt.get(id) ?? -Infinity) + interval;
       if (target <= now) {
-        this.woken.add(id);
+        if (background) this.glancing.add(id);
+        else { this.woken.add(id); started.push(id); }
         this.due.set(id, now);
-        started.push(id);
         changed = true;
-      } else if (target < (this.due.get(id) ?? Infinity)) {
+      } else if (!glance && target < (this.due.get(id) ?? Infinity)) {
+        // A wide view sets nothing ahead: its next request starts the collection, if it still looks.
         this.due.set(id, target);
         changed = true;
       }
@@ -270,6 +309,10 @@ export class FeedScheduler<T extends ScheduledFeed> {
   }
 
   private watched(id: string, now: number) { return (this.watchedUntil.get(id) ?? 0) > now; }
+  private glanced(id: string, now: number) { return (this.glancedUntil.get(id) ?? 0) > now; }
+  private shows(feed: T, now: number): boolean {
+    return this.options.showsPositions?.(feed, now) ?? (this.collectedAt.get(feed.id) ?? -Infinity) + VEHICLE_MAX_AGE_MS > now;
+  }
 
   private activeInterval(feed: T): number { return feed.activeIntervalMs ?? this.options.activeIntervalMs; }
 
@@ -302,18 +345,21 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // A feed on the active interval goes before an idle one. A deploy on 24 October 2026 added 202
     // feeds, due at once; slow sweeps on three hosts held every slot, and Zürich's feeds, due a
     // minute later, waited behind them for over ten minutes.
-    const idle = (feed: T) => this.mode(feed, now) === 'idle' && !this.woken.has(feed.id) ? 1 : 0;
+    // Of the idle ones, a feed a wide view keeps shown goes before those nobody looks at.
+    const idle = (feed: T) => this.mode(feed, now) !== 'idle' || this.woken.has(feed.id) ? 0 : this.glancing.has(feed.id) ? 1 : 2;
     // Feeds asked for go nearest the expiry of what they show first, then in the order they were asked
-    // for. While watched, a feed's scooters expire 15 minutes after the later of its watch's start and its
-    // last collection's; a late one's, which no one watches, an idle interval after its last collection. A
+    // for. While watched, or kept shown for a wide view, a feed's scooters expire 15 minutes after the later of
+    // its watch's start and its last collection's; a late one's, which no one watches, an idle interval after its last collection. A
     // feed polled again thus goes behind the areas still waiting since before its last collection, and areas
     // a visitor has moved on from wait as idle feeds once their watch lapses (lapse). On 6 November 2026 a
     // visitor panning across Munich asked for some forty Lime groups within minutes; the six Berlin groups a
     // viewer had open, asked for again behind them, waited up to twelve minutes, and five expired.
     const wakeOrder = new Map([...this.woken].map((id, index) => [id, index]));
     const expires = (feed: T) => {
-      const since = this.watchedSince.get(feed.id) ?? now, started = this.startedAt.get(feed.id) ?? since;
-      return this.watched(feed.id, now) ? Math.max(started, since) + VEHICLE_MAX_AGE_MS
+      const looked = this.watched(feed.id, now) ? this.watchedSince.get(feed.id)
+        : this.glanced(feed.id, now) ? this.glancedSince.get(feed.id) : undefined;
+      const since = looked ?? now, started = this.startedAt.get(feed.id) ?? since;
+      return looked !== undefined ? Math.max(started, since) + VEHICLE_MAX_AGE_MS
         : started + (feed.idleIntervalMs ?? this.options.idleIntervalMs);
     };
     const waiting = this.definitions.filter(feed => !this.running.has(feed.id));
@@ -353,7 +399,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
    */
   private lapse(now: number): void {
     for (const id of [...this.woken]) {
-      if (this.running.has(id) || this.late.has(id) || this.watched(id, now)) continue;
+      if (this.running.has(id) || this.late.has(id) || this.watched(id, now) || this.glanced(id, now)) continue;
       this.settle(id);
       const feed = this.byId.get(id);
       if (feed) this.options.onLapse?.(feed);
@@ -406,14 +452,15 @@ export class FeedScheduler<T extends ScheduledFeed> {
 
   private run(feed: T, now: number): void {
     const reason: CollectionReason = this.options.alwaysFast(feed) ? 'always' : this.late.has(feed.id) ? 'late' : this.woken.has(feed.id) ? 'wake'
-      : this.watched(feed.id, now) ? 'watched' : this.failures.has(feed.id) ? 'retry' : 'idle';
+      : this.watched(feed.id, now) ? 'watched' : this.glancing.has(feed.id) ? 'wide' : this.failures.has(feed.id) ? 'retry' : 'idle';
+    this.glancing.delete(feed.id);
     this.running.set(feed.id, feed);
     this.startedAt.set(feed.id, now);
     this.options.onStart?.(feed, reason);
     let failed = true;
     void this.collect(feed, {
-      urgent: () => this.woken.has(feed.id) || this.watched(feed.id, Date.now()),
-      focus: () => this.watched(feed.id, Date.now()) ? this.focusOf.get(feed.id) : undefined,
+      urgent: () => this.woken.has(feed.id) || this.watched(feed.id, Date.now()) || this.glanced(feed.id, Date.now()),
+      focus: () => this.watched(feed.id, Date.now()) || this.glanced(feed.id, Date.now()) ? this.focusOf.get(feed.id) : undefined,
     }).then(outcome => { failed = outcome?.failed ?? false; }, error => {
       console.error('Feed collection failed', feed.id, error instanceof Error ? error.name : 'UnknownError');
       reportError(`collect:${feed.id}`, error);

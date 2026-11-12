@@ -10,6 +10,15 @@ import { idPhase } from './feedScheduler';
  */
 export const APP_MAP_IDLE_INTERVAL_MS = 2 * 60 * 60_000;
 
+/**
+ * How long after an app map's collection started a view too wide to show single scooters, clusters from
+ * zoom 15 out, has it collected again (FeedScheduler's wideIntervalMs), where a street's view has it
+ * collected every minute. The map shows positions for 15 minutes and asks again every minute, so the next
+ * collection starts in the eleventh minute at the latest and has four to end before they go: the groups
+ * of scooters such a view shows never empty, at a tenth of the operator's requests.
+ */
+export const APP_MAP_WIDE_INTERVAL_MS = 10 * 60_000;
+
 const DAY_MS = 24 * 60 * 60_000;
 // A town's idle sweeps fall between 08:00 and 21:00 there.
 const SWEEP_DAY_FROM = 8 * 60;
