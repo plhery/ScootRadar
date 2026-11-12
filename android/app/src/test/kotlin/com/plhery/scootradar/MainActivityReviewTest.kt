@@ -1,13 +1,23 @@
 package com.plhery.scootradar
 
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.Context
 import android.content.Intent
 import android.os.Looper
 import android.os.SystemClock
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityManager
+import android.view.accessibility.AccessibilityNodeInfo
+import androidx.compose.ui.node.RootForTest
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getAllSemanticsNodes
+import androidx.compose.ui.semantics.getOrNull
+import androidx.core.view.children
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.app.LaunchArgumentDefaults
@@ -104,6 +114,34 @@ class MainActivityReviewTest {
     fun aTalkBackFocusMoveBeforePlayAnsweredShowsNoCard() {
         assertEquals(0, shown().askThen { sendsUp(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) })
     }
+
+    /**
+     * TalkBack puts its focus on the Settings button, as after a swipe: it asks the screen's node to take it, and
+     * Compose tells the window through every view above it, the way TalkBack hears of it. With TalkBack's service on,
+     * which Compose gives its nodes and events to only then.
+     */
+    @Test
+    fun talkBacksFocusPutOnAButtonByTheScreenBeforePlayAnsweredShowsNoCard() {
+        val accessibility = ApplicationProvider.getApplicationContext<Context>().getSystemService(AccessibilityManager::class.java)
+        shadowOf(accessibility).setEnabled(true)
+        shadowOf(accessibility).setTouchExplorationEnabled(true)
+        shadowOf(accessibility).setEnabledAccessibilityServiceList(listOf(AccessibilityServiceInfo()))
+        val activity = shown()
+        idle()
+        val screen = checkNotNull(activity.window.decorView.composeRoot())
+        val settings = (screen as RootForTest).semanticsOwner.getAllSemanticsNodes(mergingEnabled = false)
+            .first { it.config.getOrNull(SemanticsProperties.ContentDescription)?.contains("Settings") == true }
+        assertEquals(
+            0,
+            activity.askThen {
+                check(screen.accessibilityNodeProvider.performAction(settings.id, AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null))
+            },
+        )
+    }
+
+    /** The view Compose draws the screen in, among [this] and the views it holds. */
+    private fun View.composeRoot(): View? =
+        if (this is RootForTest) this else (this as? ViewGroup)?.children?.firstNotNullOfOrNull { it.composeRoot() }
 
     /** A control clicked through accessibility, as Switch Access and Voice Access click. */
     @Test
