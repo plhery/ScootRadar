@@ -347,12 +347,17 @@ internal fun ScooterMapController.followWalkTarget(
 }
 
 /**
- * When the positions of [provider] in the data were seen (meta.shownSince), which moves only when they are collected
- * again. Null where the data does not say, from an older server, or of an app with no positions shown: the data's own
- * time then tells one read from the next.
+ * When the positions of [provider] in the data were seen, as the server wrote it: their own time (meta.shownSince),
+ * which moves only when they are collected again, or, where the data does not say, from an older server or of an app
+ * with no positions shown, the data's own (generatedAt). Read on the server's clock, not this device's: the clock
+ * offset is measured anew from each answer's Date header, to the second, and would tell one answer served twice from
+ * itself (the iPhone's ScooterMapModel.read). Null without either.
  */
-private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? {
-    val value = meta?.shownSince?.get(provider) ?: return null
+private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? =
+    serverTime(meta?.shownSince?.get(provider)) ?: serverTime(meta?.generatedAt)
+
+private fun serverTime(value: String?): Instant? {
+    value ?: return null
     return try {
         OffsetDateTime.parse(value).toInstant()
     } catch (_: DateTimeParseException) {

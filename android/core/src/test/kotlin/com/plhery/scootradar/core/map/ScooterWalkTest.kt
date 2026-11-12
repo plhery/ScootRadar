@@ -1000,6 +1000,47 @@ class ScooterWalkTest {
         assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
     }
 
+    /**
+     * An answer that names no time of the walked scooter's app is told apart by the data's own, as the server wrote it.
+     * This device's clock offset is measured anew from each answer's Date header, to the second: the same answer's time
+     * on this clock moves with it, yet it is the same data (the iPhone's
+     * testAnAnswerThatDoesNotNameItsAppIsToldApartByWhenItWasGenerated).
+     */
+    @Test
+    fun anAnswerThatDoesNotNameItsAppIsToldApartByWhenItWasGenerated() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val bird = scooter("b1", provider = "bird", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(bird))
+        val generatedAt = h.clock.now.minusSeconds(20)
+        fun answer(generatedAt: Instant, shownSince: Map<String, String>?, clockOffset: Double) = ScooterResponse(
+            vehicles = listOf(bird),
+            meta = ScooterResponseMetadata(
+                partial = false, failedSources = emptyList(), generatedAt = generatedAt.toString(), shownSince = shownSince,
+            ),
+            clockOffset = clockOffset,
+        )
+
+        // A server that does not send shownSince, then one that names Bird only, as Lime has nothing shown; this
+        // device's clock found 0.4 s, then 1.3 s ahead of the server's.
+        val answers = listOf(
+            answer(generatedAt, shownSince = null, clockOffset = 0.4),
+            answer(generatedAt, shownSince = mapOf("bird" to generatedAt.plusSeconds(10).toString()), clockOffset = 1.3),
+        )
+        for ((index, response) in answers.withIndex()) {
+            h.clock.advance(1.0)
+            h.api.setResponse(response)
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value })
+            assertEquals("answer ${index + 1}: the same answer's time is the same data", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        }
+
+        h.clock.advance(60.0)
+        h.api.setResponse(answer(generatedAt.plusSeconds(60), shownSince = null, clockOffset = 0.4))
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 4 && !h.model.isLoading.value })
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+    }
+
     @Test
     fun aScooterStandingFadedWhileItsAppIsCollectedAgainIsNotTaken() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
