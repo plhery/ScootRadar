@@ -1284,18 +1284,22 @@ final class CityRuleZoneTests: XCTestCase {
 
     @MainActor
     func testSlowSaysMilesPerHourWhereTheRegionMeasuresInMiles() {
-        // Rounded down once converted, never above the real limit, unless within a twentieth of the next whole one:
-        // 12.87 km/h is 8 mph (7.997) and 16.09 is 10 (9.998); 16.05 and 16.1 are both 10, said once.
+        // Rounded down once converted, unless within a tenth of the next whole one: 12.87 km/h is 8 mph (7.997),
+        // 6 km/h 3 (3.73), 25 km/h 15 (15.53), 20 km/h 12 (12.43) and 15.9 km/h 9 (9.88).
         let us = Locale(identifier: "en_US")
+        let gb = Locale(identifier: "en_GB")
         XCTAssertEqual(ZoneLegend.speedText(12.87 ... 16.09, locale: us), "8–10 mph")
-        XCTAssertEqual(ZoneLegend.speedText(16.05 ... 16.1, locale: Locale(identifier: "en_GB")), "10 mph")
-        // 6 km/h is 3.73 mph, 25 is 15.53, 20 is 12.43, 16 is 9.94: none said above.
         XCTAssertEqual(ZoneLegend.speedText(6 ... 6, locale: us), "3 mph")
         XCTAssertEqual(ZoneLegend.speedText(25 ... 25, locale: us), "15 mph")
-        XCTAssertEqual(ZoneLegend.speedText(16.09 ... 16.09, locale: us), "10 mph")
         XCTAssertEqual(ZoneLegend.speedText(20 ... 20, locale: us), "12 mph")
         XCTAssertEqual(ZoneLegend.speedText(6 ... 25, locale: us), "3–15 mph")
-        XCTAssertEqual(ZoneLegend.speedText(16 ... 16.1, locale: us), "9–10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(15.9 ... 15.9, locale: gb), "9 mph")
+        // A UK 10 mph zone is 10 mph however it is written: Dott's 16 km/h (9.94 mph), Bolt's 16.1 (10.004) and 16.09
+        // (9.998), said once where the legend counts several.
+        XCTAssertEqual(ZoneLegend.speedText(16 ... 16, locale: gb), "10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16.1 ... 16.1, locale: gb), "10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16.09 ... 16.09, locale: gb), "10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16 ... 16.1, locale: gb), "10 mph")
         // Kilometres are rounded to the nearest, as before.
         XCTAssertEqual(ZoneLegend.speedText(6 ... 15, locale: Locale(identifier: "en_CH")), "6–15 km/h")
         XCTAssertEqual(ZoneLegend.speedText(6.4 ... 15.6, locale: Locale(identifier: "en_CH")), "6–16 km/h")
