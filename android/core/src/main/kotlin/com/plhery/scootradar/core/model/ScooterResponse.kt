@@ -205,7 +205,8 @@ val ScooterAPIResponsePayload.model: ScooterResponse
         parking = parking.orEmpty().map {
             ScooterParking(id = it.id, provider = it.provider, name = it.name, latitude = it.lat, longitude = it.lng, mandatory = it.mandatory)
         },
-        batteryRanges = batteryRanges.orEmpty().saturated,
+        // Only lengths: an app named with 0 or less is left to the 10 km every other app gets (the iPhone, 6fe33d6d).
+        batteryRanges = batteryRanges.orEmpty().saturated.filterValues { it > 0 },
     )
 
 /**

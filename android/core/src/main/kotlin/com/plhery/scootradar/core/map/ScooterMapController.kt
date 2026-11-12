@@ -1528,6 +1528,9 @@ class ScooterMapController(
         setLastSeenVehicles(emptyList())
         setLastSeenClusters(emptyList())
         _lastSeenProviders.value = emptyMap()
+        staleProviders = null
+        // The figures were those of the scooters cleared (the iPhone's ScooterMapModel since 6fe33d6d).
+        _batteryRanges.value = emptyMap()
         setSelectedScooterID(null)
         setSelectedParkingID(null)
         queryBounds = null

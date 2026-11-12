@@ -1135,22 +1135,35 @@ class ScooterMapControllerTest {
         assertTrue(model.mapScooters.value.isEmpty())
     }
 
+    /**
+     * With the scooters go the figures and the apps named late of their answer: an out-of-date map with a minimum
+     * range set no longer names the battery each app needs (the iPhone's ScooterMapModel since 6fe33d6d).
+     */
     @Test
     fun expiredDataIsClearedOnlyWhenTheRefreshThatFollowsFails() = runTest {
         val clock = TestClock()
         val generatedAt = clock.now
-        val api = StubScooterAPI(timedResponse(generatedAt = generatedAt, expiresIn = 60.0))
+        val timed = timedResponse(generatedAt = generatedAt, expiresIn = 60.0)
+        val api = StubScooterAPI(
+            timed.copy(
+                batteryRanges = mapOf("lime" to 11_500),
+                meta = timed.meta?.copy(stale = true, staleProviders = mapOf("lime" to iso(generatedAt))),
+            ),
+        )
         val model = makeController(api, clock = clock)
         model.refresh()
         val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
         assertTrue(loaded)
         model.selectScooter(unwrap(model.mapScooters.value.firstOrNull()?.id))
+        assertEquals(mapOf("lime" to 11_500), model.batteryRanges.value)
+        assertEquals(setOf(ScooterProvider.Lime), model.staleProviders?.keys)
 
         // Passing the expiry clears nothing by itself.
         clock.advance(61.0)
         assertEquals(1, model.mapScooters.value.size)
         assertNotNull(model.selectedScooter)
         assertNull(model.loadIssue.value)
+        assertEquals(mapOf("lime" to 11_500), model.batteryRanges.value)
 
         api.setFailure(ScooterAPIError.TimedOut())
         model.autoRefreshIfNeeded()
@@ -1160,6 +1173,8 @@ class ScooterMapControllerTest {
         assertEquals(ScooterLoadIssue.OutOfDate(ScooterLoadFailure.Timeout, lastUpdate = generatedAt), model.loadIssue.value)
         assertTrue(model.mapScooters.value.isEmpty())
         assertNull(model.selectedScooterID.value)
+        assertEquals(emptyMap<String, Int>(), model.batteryRanges.value)
+        assertNull(model.staleProviders)
         assertEquals(generatedAt, model.lastUpdated.value)
         assertEquals(ScooterDockContent.OutOfDate(ScooterLoadFailure.Timeout, lastUpdate = generatedAt), model.dock)
 

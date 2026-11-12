@@ -519,12 +519,14 @@ class ScooterModelsTest {
     fun theFullBatterysRangesDecodeAndAnOlderAnswerHasNone() {
         val response = ScooterAPIJson.decodeFromString<ScooterAPIResponsePayload>(
             """
-            {"vehicles": [], "clusters": [], "providers": {}, "batteryRanges": {"lime": 11500, "bolt": 29400},
+            {"vehicles": [], "clusters": [], "providers": {},
+             "batteryRanges": {"lime": 11500, "bolt": 29400, "future-provider": 30000, "broken": 0, "below": -5},
              "meta": {"partial": false, "stale": false, "failedSources": [], "sources": {},
              "generatedAt": "2026-11-09T10:00:00.000Z", "truncated": false, "totalVehicles": 0, "mode": "vehicles"}}
             """,
         ).model
-        assertEquals(mapOf("lime" to 11_500, "bolt" to 29_400), response.batteryRanges)
+        // An app the catalog doesn't know yet keeps its figure; one that is not a length is left out, as on the iPhone.
+        assertEquals(mapOf("lime" to 11_500, "bolt" to 29_400, "future-provider" to 30_000), response.batteryRanges)
 
         val older = ScooterAPIJson.decodeFromString<ScooterAPIResponsePayload>(
             """
