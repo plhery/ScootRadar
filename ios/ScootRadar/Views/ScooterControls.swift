@@ -3194,12 +3194,14 @@ struct ZoneLegend: View {
         return String(format: String(localized: "Slow: %@"), speedText(range, locale: locale))
     }
 
-    /// "6 km/h", or from the least to the greatest, "6–15 km/h"; in mph where the region measures distances in
-    /// miles ("10 mph"), each rounded to a whole number once converted, as on the web (formatSpeedLimits).
+    /// "6 km/h", or from the least to the greatest, "6–15 km/h", each rounded to a whole number; in mph where the
+    /// region measures distances in miles ("10 mph"), each rounded down once converted, unless within a twentieth of
+    /// the next whole one, so a limit is never said above the real one: 6 km/h (3.73 mph) is 3 mph, 25 km/h (15.53)
+    /// 15, the UK's 16.09 km/h (9.998) 10 (Desk card 350, item 7). As on the web (formatSpeedLimits).
     static func speedText(_ range: ClosedRange<Double>, locale: Locale = ScooterLanguage.current.locale) -> String {
         let miles = locale.measurementSystem != .metric
         let unit: UnitSpeed = miles ? .milesPerHour : .kilometersPerHour
-        let whole = { (kph: Double) in (miles ? kph / 1.609344 : kph).rounded() }
+        let whole = { (kph: Double) in miles ? (kph / 1.609344 + 0.05).rounded(.down) : kph.rounded() }
         let least = whole(range.lowerBound)
         let greatest = whole(range.upperBound)
         let formatter = MeasurementFormatter()

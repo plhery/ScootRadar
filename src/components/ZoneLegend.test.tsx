@@ -212,7 +212,7 @@ it('says the limits, and the pavement\'s walking pace, in the units chosen over 
   localStorage.setItem('scooters-units', 'imperial');
   const rules = [bergenSlow('slow-1', 16.09), bergen('pavement', 'pavement')];
   const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
-  await vi.waitFor(() => expect(listed(container).items).toEqual(['Slow: 10 mph', 'Pavement riding at 4 mph']));
+  await vi.waitFor(() => expect(listed(container).items).toEqual(['Slow: 10 mph', 'Pavement riding at 3 mph']));
 });
 
 it('writes a limit in the units chosen: Automatic as the region does, else kilometres or miles anywhere', () => {
@@ -221,13 +221,30 @@ it('writes a limit in the units chosen: Automatic as the region does, else kilom
   expect(formatSpeedLimits([16.09], 'en', 'CH', 'imperial')).toBe('10 mph');
   expect(formatSpeedLimits([16.09], 'en', 'GB', 'imperial')).toBe('10 mph');
   expect(formatSpeedLimits([16.09], 'en', 'GB', 'metric')).toBe('16 km/h');
-  expect(formatSpeedLimits([6, 15], 'de', 'CH', 'imperial')).toBe('4–9 mi/h');
+  expect(formatSpeedLimits([6, 15], 'de', 'CH', 'imperial')).toBe('3–9 mi/h');
+});
+
+it('rounds a limit in mph down, unless within a tenth of the next whole one (Desk cards 350, item 7, and 353)', () => {
+  // 6 km/h is 3.73 mph, 25 km/h 15.53, 20 km/h 12.43, 15.9 km/h 9.88: none said above.
+  expect(formatSpeedLimits([6], 'en', 'GB')).toBe('3 mph');
+  expect(formatSpeedLimits([25], 'en', 'US')).toBe('15 mph');
+  expect(formatSpeedLimits([20], 'en', 'US')).toBe('12 mph');
+  expect(formatSpeedLimits([6, 25], 'en', 'US')).toBe('3–15 mph');
+  expect(formatSpeedLimits([15.9], 'en', 'GB')).toBe('9 mph');
+  // A UK 10 mph zone is 10 mph however it is written: Dott's 16 km/h (9.94 mph), Bolt's 16.1 (10.004) and 16.09
+  // (9.998), said once where the legend counts several.
+  expect(formatSpeedLimits([16], 'en', 'GB')).toBe('10 mph');
+  expect(formatSpeedLimits([16.1], 'en', 'GB')).toBe('10 mph');
+  expect(formatSpeedLimits([16.09], 'en', 'GB')).toBe('10 mph');
+  expect(formatSpeedLimits([16, 16.1, 16.09], 'en', 'GB')).toBe('10 mph');
+  // Kilometres are rounded to the nearest, as before.
+  expect(formatSpeedLimits([6.4, 15.6], 'en', 'CH')).toBe('6–16 km/h');
 });
 
 it('writes a limit in the language, as its region writes it, and in miles where it measures in them', () => {
   expect(formatSpeedLimits([6], 'en', 'CH')).toBe('6 km/h');
   expect(formatSpeedLimits([6, 15, 12], 'en', 'CH')).toBe('6–15 km/h');
-  // Rounded once converted, to one where the least and the greatest round alike.
+  // Rounded once converted, to one where the least and the greatest round alike (see the mph rule below).
   expect(formatSpeedLimits([16.09, 12.87], 'en', 'US')).toBe('8–10 mph');
   expect(formatSpeedLimits([16, 16.1], 'en', 'GB')).toBe('10 mph');
   expect(formatSpeedLimits([16, 16.1], 'en', 'CH')).toBe('16 km/h');
@@ -237,7 +254,7 @@ it('writes a limit in the language, as its region writes it, and in miles where 
   expect(formatSpeedLimits([6, 15], 'nb', 'NO')).toBe('6–15 km/t');
   expect(formatSpeedLimits([6], 'is', 'IS')).toBe('6 km/klst.');
   // French sets a narrow space before the unit.
-  expect(formatSpeedLimits([6], 'fr', 'US')).toBe('4\u202Fmi/h');
+  expect(formatSpeedLimits([6], 'fr', 'US')).toBe('3\u202Fmi/h');
   // None to say.
   expect(formatSpeedLimits([], 'en', 'CH')).toBeNull();
   expect(formatSpeedLimits([6, undefined], 'en', 'CH')).toBeNull();

@@ -1284,12 +1284,23 @@ final class CityRuleZoneTests: XCTestCase {
 
     @MainActor
     func testSlowSaysMilesPerHourWhereTheRegionMeasuresInMiles() {
-        // 12.87 km/h is 8 mph and 16.09 is 10, each rounded once converted; 16 and 16.1 are both 10, said once.
-        XCTAssertEqual(ZoneLegend.speedText(12.87 ... 16.09, locale: Locale(identifier: "en_US")), "8–10 mph")
-        XCTAssertEqual(ZoneLegend.speedText(16 ... 16.1, locale: Locale(identifier: "en_GB")), "10 mph")
+        // Rounded down once converted, never above the real limit, unless within a twentieth of the next whole one:
+        // 12.87 km/h is 8 mph (7.997) and 16.09 is 10 (9.998); 16.05 and 16.1 are both 10, said once.
+        let us = Locale(identifier: "en_US")
+        XCTAssertEqual(ZoneLegend.speedText(12.87 ... 16.09, locale: us), "8–10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16.05 ... 16.1, locale: Locale(identifier: "en_GB")), "10 mph")
+        // 6 km/h is 3.73 mph, 25 is 15.53, 20 is 12.43, 16 is 9.94: none said above.
+        XCTAssertEqual(ZoneLegend.speedText(6 ... 6, locale: us), "3 mph")
+        XCTAssertEqual(ZoneLegend.speedText(25 ... 25, locale: us), "15 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16.09 ... 16.09, locale: us), "10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(20 ... 20, locale: us), "12 mph")
+        XCTAssertEqual(ZoneLegend.speedText(6 ... 25, locale: us), "3–15 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16 ... 16.1, locale: us), "9–10 mph")
+        // Kilometres are rounded to the nearest, as before.
         XCTAssertEqual(ZoneLegend.speedText(6 ... 15, locale: Locale(identifier: "en_CH")), "6–15 km/h")
+        XCTAssertEqual(ZoneLegend.speedText(6.4 ... 15.6, locale: Locale(identifier: "en_CH")), "6–16 km/h")
         // French writes a narrow space before the unit.
-        XCTAssertEqual(plainSpaces(ZoneLegend.speedText(6 ... 6, locale: Locale(identifier: "fr_US"))), "4 mi/h")
+        XCTAssertEqual(plainSpaces(ZoneLegend.speedText(6 ... 6, locale: Locale(identifier: "fr_US"))), "3 mi/h")
     }
 
     @MainActor

@@ -283,13 +283,23 @@ class CityRuleZoneTest {
 
     @Test
     fun slowSaysMilesPerHourWhereTheRegionMeasuresInMiles() {
-        // 12.87 km/h is 8 mph and 16.09 is 10, each rounded once converted; 16 and 16.1 are both 10, said once.
+        // Rounded down once converted, never above the real limit, unless within a twentieth of the next whole one:
+        // 12.87 km/h is 8 mph (7.997) and 16.09 is 10 (9.998); 16.05 and 16.1 are both 10, said once.
         val us = Locale.forLanguageTag("en-US")
         assertEquals("8–10 mph", plain(speedText(12.87..16.09, us)))
-        assertEquals("10 mph", plain(speedText(16.0..16.1, Locale.forLanguageTag("en-GB"))))
+        assertEquals("10 mph", plain(speedText(16.05..16.1, Locale.forLanguageTag("en-GB"))))
+        // 6 km/h is 3.73 mph, 25 is 15.53, 20 is 12.43, 16 is 9.94: none said above (Desk card 350, item 7).
+        assertEquals("3 mph", plain(speedText(6.0..6.0, us)))
+        assertEquals("15 mph", plain(speedText(25.0..25.0, us)))
+        assertEquals("10 mph", plain(speedText(16.09..16.09, us)))
+        assertEquals("12 mph", plain(speedText(20.0..20.0, us)))
+        assertEquals("3–15 mph", plain(speedText(6.0..25.0, us)))
+        assertEquals("9–10 mph", plain(speedText(16.0..16.1, us)))
+        // Kilometres are rounded to the nearest, as before.
         assertEquals("6–15 km/h", plain(speedText(6.0..15.0, Locale.forLanguageTag("en-CH"))))
+        assertEquals("6–16 km/h", plain(speedText(6.4..15.6, Locale.forLanguageTag("en-CH"))))
         // French writes a narrow space before the unit.
-        assertEquals("4\u202Fmi/\u2060h", speedText(6.0..6.0, Locale.forLanguageTag("fr-US")))
+        assertEquals("3\u202Fmi/\u2060h", speedText(6.0..6.0, Locale.forLanguageTag("fr-US")))
         // In the user's region, as the legend writes it.
         Locale.setDefault(us)
         ScooterLanguage.launchLocale = { us }

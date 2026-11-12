@@ -82,6 +82,7 @@ import com.plhery.scootradar.ui.theme.weight
 import java.time.Instant
 import java.time.ZoneOffset
 import java.util.Locale
+import kotlin.math.floor
 
 // ZoneLegend and ZoneSwatch in ios/ScootRadar/Views/ScooterControls.swift (ui.md UI-092, UI-093, UI-174, UI-285,
 // UI-348, UI-409).
@@ -336,15 +337,17 @@ internal fun kindLabel(kind: ScooterZoneKind, speeds: ScooterZoneSpeeds, locale:
 }
 
 /**
- * "6 km/h", or from the least to the greatest, "6–15 km/h"; in mph where the region measures distances in miles
- * ("10 mph"), each rounded to a whole number once converted, as on the web (formatSpeedLimits) and the iPhone. Whole on
+ * "6 km/h", or from the least to the greatest, "6–15 km/h", each rounded to a whole number; in mph where the region
+ * measures distances in miles ("10 mph"), each rounded down once converted, unless within a twentieth of the next whole
+ * one, so a limit is never said above the real one: 6 km/h (3.73 mph) is 3 mph, 25 km/h (15.53) 15, the UK's 16.09 km/h
+ * (9.998) 10 (Desk card 350, item 7). As on the web (formatSpeedLimits) and the iPhone. Whole on
  * its line: where the legend wraps a slow zone's name, it breaks before the speed, never in it, where a line may break
  * after "/" or "–" ("Velocidade reduzida: 5 km/" over "h" beside the locate button, Portuguese at font scale 1.3 on
  * ScootRadar_Phone_Min).
  */
 internal fun speedText(range: ClosedFloatingPointRange<Double>, locale: Locale = ScooterLanguage.current.locale): String {
     val miles = locale.measurementSystem != ScooterMeasurementSystem.Metric
-    val whole = { kph: Double -> Math.round(if (miles) kph / KM_PER_MILE else kph) }
+    val whole = { kph: Double -> if (miles) floor(kph / KM_PER_MILE + 0.05).toLong() else Math.round(kph) }
     val least = whole(range.start)
     val greatest = whole(range.endInclusive)
     val unit = if (miles) MeasureUnit.MILE_PER_HOUR else MeasureUnit.KILOMETER_PER_HOUR
