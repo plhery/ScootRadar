@@ -57,6 +57,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
@@ -89,6 +90,32 @@ class ScooterAPITest {
     }
 
     // ScooterAPITests
+
+    /**
+     * Each request for scooters names the map, an id held in memory, and its number in turn, in the form the server
+     * reads (src/lib/scooterView.ts); another API is another map, and the zones go without it.
+     */
+    @Test
+    fun mapIdentityIsEphemeralAndRequestsAreOrdered() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 200, data = emptyResponseData)
+        repeat(2) { server.enqueue(answer(200, emptyResponseData)) }
+        api.scooters(bounds = bounds, zoom = 16)
+        val first = server.takeRequest().headers["X-Scooter-View"]
+        api.scooters(bounds = bounds, zoom = 17)
+        val second = server.takeRequest().headers["X-Scooter-View"]
+        val form = Regex("^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\\.([1-9][0-9]{0,11})$")
+        assertEquals("1", form.matchEntire(checkNotNull(first))?.groupValues?.get(2))
+        assertEquals("2", form.matchEntire(checkNotNull(second))?.groupValues?.get(2))
+        assertEquals(first.substringBefore('.'), second.substringBefore('.'))
+
+        runCatching { api.zonesIn(ScooterZoneArea(covering = bounds)!!) }
+        assertNull(server.takeRequest().headers["X-Scooter-View"])
+
+        makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16)
+        val separate = checkNotNull(server.takeRequest().headers["X-Scooter-View"])
+        assertNotEquals(first.substringBefore('.'), separate.substringBefore('.'))
+        assertTrue(separate.endsWith(".1"))
+    }
 
     @Test
     fun parkingIsDecodedSeparatelyFromVehiclesAndLegacyResponsesStillWork() = runBlocking<Unit> {

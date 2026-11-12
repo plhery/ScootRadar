@@ -17,8 +17,10 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicLong
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.CancellationException
@@ -81,6 +83,15 @@ class ScooterAPI(
     private val underWay = ConcurrentHashMap<Call, Boolean>()
 
     /**
+     * The map's identity for the server, held in memory only, never stored nor used for analytics: a random id for
+     * this API, and each request for scooters numbered in turn. It lets the server drop a Ryde read that a later
+     * request of the same map has made obsolete (X-Scooter-View, docs/ryde-bridge.md; the iPhone's and the website's
+     * 6e556872).
+     */
+    private val viewID = UUID.randomUUID().toString()
+    private val viewSequence = AtomicLong()
+
+    /**
      * The phone has just lost its way to the internet: the requests under way end at once, as offline. iOS's
      * URLSession ends them so (networkConnectionLost), where a socket of a network Android has lost may wait out
      * its 20 seconds. The app calls it as ConnectivityManager tells it the phone is offline.
@@ -107,7 +118,7 @@ class ScooterAPI(
         // Only with a minimum, in whole metres: a server from before the range filter answers as it did, and the app
         // filters the scooters itself. The battery minimum of the builds before is no longer sent.
         if (minimumRange > 0) query += "minRange" to minimumRange.toString()
-        val response = get("api/scooters", query)
+        val response = get("api/scooters", query, view = "$viewID.${viewSequence.incrementAndGet()}")
         // The server's times are compared with this device's clock, which may be wrong.
         val clockOffset = clockOffset(dateHeader = response.headers["Date"], receivedAt = Instant.now())
 
@@ -134,11 +145,13 @@ class ScooterAPI(
     }
 
     /** A GET to the app's server, with what went wrong told apart as the dock reports it. */
-    private suspend fun get(path: String, query: List<Pair<String, String>>): ScooterHTTPResponse {
+    private suspend fun get(path: String, query: List<Pair<String, String>>, view: String? = null): ScooterHTTPResponse {
         val url = baseURL.newBuilder().addPathSegments(path).apply {
             for ((name, value) in query) addQueryParameter(name, value)
         }.build()
-        val request = Request.Builder().url(url).header("Accept", "application/json").build()
+        val request = Request.Builder().url(url).header("Accept", "application/json").apply {
+            if (view != null) header("X-Scooter-View", view)
+        }.build()
 
         val call = http.newCall(request)
         underWay[call] = false
