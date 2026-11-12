@@ -714,6 +714,42 @@ class ScooterWalkTest {
         assertEquals("The same choice: the dock neither animates nor ticks", choices, h.model.scooterChoices.value)
     }
 
+    /**
+     * Back under a new id where it stood, in an answer cut short: what the answer leaves out is other scooters, and it
+     * lists this one. The card is the scooter's again, as on the iPhone, whose walk said taken follows it whatever the
+     * rest of the data (its testAScooterSaidTakenThatIsBackUnderANewIDHasItsCardAgain).
+     */
+    @Test
+    fun aTakenScooterBackUnderANewIDInAnAnswerCutShortIsItsCardAgain() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        // A Lime 12 m on that stays: not the one walked to.
+        val neighbour = scooter("s2", at = point(east = 312, north = 0))
+        val h = shownWalk(to = target, others = listOf(neighbour))
+        h.api.setResponse(ScooterResponse(vehicles = listOf(neighbour)))
+        for (index in 0 until 2) {
+            h.clock.advance(60.0)
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value })
+        }
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+
+        val back = scooter("s1-renewed", at = point(east = 300, north = 0))
+        h.clock.advance(360.0)
+        h.api.setResponse(
+            ScooterResponse(
+                vehicles = listOf(neighbour, back),
+                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), truncated = true, totalVehicles = 2_400),
+            ),
+        )
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == 4 && !h.model.isLoading.value })
+
+        assertNull(h.model.walk.value)
+        assertEquals(back.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterDockContent.Scooter(back), h.model.dock)
+        assertEquals(ScooterDirectionsControl.Directions, h.model.directionsControl(ScooterWalkTarget.Scooter(back)))
+    }
+
     @Test
     fun aScooterUnderANewIDIsStillTheOneWalkedTo() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))

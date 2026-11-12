@@ -315,16 +315,19 @@ internal fun ScooterMapController.followWalkTarget(
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
     }
+    val newlyListed = vehicles.value.filter { it.id !in previousIDs }
+    if (walk.phase == ScooterWalkPhase.Gone) {
+        // Back after all, under a new id: the card is the scooter's again, and Directions with it. Data that lists it
+        // says so, whatever else it leaves out (the iPhone's ScooterMapModel).
+        val successor = successor(of = scooter, among = newlyListed) ?: return
+        setWalk(null)
+        follow(to = successor.id)
+        return
+    }
     val point = scooter.coordinate
     if (!listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) return
-    val successor = successor(of = scooter, among = vehicles.value.filter { it.id !in previousIDs })
+    val successor = successor(of = scooter, among = newlyListed)
     if (successor != null) {
-        if (walk.phase == ScooterWalkPhase.Gone) {
-            // Back after all, under a new id: the card is the scooter's again, and Directions with it.
-            setWalk(null)
-            follow(to = successor.id)
-            return
-        }
         setWalk(walk.copy(target = ScooterWalkTarget.Scooter(successor), missedAt = null))
         follow(to = successor.id)
         val userLocation = userLocation.value
