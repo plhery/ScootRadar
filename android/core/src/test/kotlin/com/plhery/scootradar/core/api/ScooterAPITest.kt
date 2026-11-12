@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import javax.net.ssl.SSLException
 import kotlin.io.path.createTempDirectory
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -739,6 +740,11 @@ class ScooterAPITest {
             Triple(429, mapOf("Retry-After" to "Wed, 21 Oct 2026 07:28:00 GMT"), AddressSearchAPIError.RateLimited(retryAfter = null)),
             // Swift traps on a wait too long to count; here there is no wait.
             Triple(429, mapOf("Retry-After" to "1e400"), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            // The iPhone's rows since 8c719fd2: "inf" and "nan" are no wait on both. A wait too long to hold is a day on
+            // the iPhone and Kotlin's infinite here; the search waits 60 s at most either way (SwissAddressSearch).
+            Triple(429, mapOf("Retry-After" to "inf"), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            Triple(429, mapOf("Retry-After" to "nan"), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            Triple(429, mapOf("Retry-After" to "1e300"), AddressSearchAPIError.RateLimited(retryAfter = Duration.INFINITE)),
             Triple(503, mapOf("Retry-After" to "30"), AddressSearchAPIError.InvalidResponse()),
         )
         for ((statusCode, headers, expected) in expectations) {
