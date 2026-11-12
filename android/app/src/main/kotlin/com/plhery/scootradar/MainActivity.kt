@@ -8,6 +8,9 @@ import android.view.KeyEvent
 import android.view.KeyboardShortcutGroup
 import android.view.Menu
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -123,8 +126,24 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        window.decorView.accessibilityDelegate = riderInWindow
         // The link that opened the app; an activity made again has it already.
         if (savedInstanceState == null) open(intent, launched = true)
+    }
+
+    /**
+     * TalkBack's focus moved, by a swipe as well as by a finger over the screen, or a control clicked through
+     * accessibility, as Switch Access and Voice Access click: the rider is at the screen, though no touch reached the
+     * window (the iPhone's elementFocusedNotification, 664938c0). Every view in the window sends its accessibility
+     * events up through the window's own view, the map's scooters and Compose's nodes alike.
+     */
+    private val riderInWindow = object : View.AccessibilityDelegate() {
+        override fun onRequestSendAccessibilityEvent(host: ViewGroup, child: View, event: AccessibilityEvent): Boolean {
+            when (event.eventType) {
+                AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED, AccessibilityEvent.TYPE_VIEW_CLICKED -> noteInteraction()
+            }
+            return super.onRequestSendAccessibilityEvent(host, child, event)
+        }
     }
 
     /**

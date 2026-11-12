@@ -6,6 +6,8 @@ import android.os.SystemClock
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.app.LaunchArgumentDefaults
@@ -21,8 +23,9 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.shadows.ShadowLog
 
 // UI-106, X-AD27: Google Play's rating card is shown only while the map is still at rest. The screen takes the ask
-// back when something comes over the map (ReviewWaitTest); a touch, a key, a mouse's wheel or TalkBack's finger in
-// the window, which MainActivity hears, takes it back too, before Play has answered (week review, finding 6.3).
+// back when something comes over the map (ReviewWaitTest); a touch, a key, a mouse's wheel, TalkBack's finger or focus
+// in the window, or a control clicked through accessibility, which MainActivity hears, takes it back too, before Play
+// has answered (week review, finding 6.3).
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityReviewTest {
@@ -85,5 +88,39 @@ class MainActivityReviewTest {
         val now = SystemClock.uptimeMillis()
         val wheel = MotionEvent.obtain(now, now, MotionEvent.ACTION_SCROLL, 100f, 100f, 0).apply { source = InputDevice.SOURCE_MOUSE }
         assertEquals(0, activity.askThen { dispatchGenericMotionEvent(wheel) })
+    }
+
+    /**
+     * An accessibility event of [type] from the screen, on its way up to TalkBack through the window's own view, as
+     * every view's goes.
+     */
+    private fun MainActivity.sendsUp(type: Int) {
+        val window = window.decorView as ViewGroup
+        window.onRequestSendAccessibilityEvent(window.getChildAt(0), AccessibilityEvent(type))
+    }
+
+    /** TalkBack's focus moved by a swipe, which no touch reaches the window for (the iPhone, 664938c0). */
+    @Test
+    fun aTalkBackFocusMoveBeforePlayAnsweredShowsNoCard() {
+        assertEquals(0, shown().askThen { sendsUp(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) })
+    }
+
+    /** A control clicked through accessibility, as Switch Access and Voice Access click. */
+    @Test
+    fun aControlClickedThroughAccessibilityBeforePlayAnsweredShowsNoCard() {
+        assertEquals(0, shown().askThen { sendsUp(AccessibilityEvent.TYPE_VIEW_CLICKED) })
+    }
+
+    /** What the screen says of itself, a count changed, a list scrolled or a sheet opened, is not the rider. */
+    @Test
+    fun theScreenChangingBeforePlayAnsweredStillShowsTheCard() {
+        assertEquals(
+            1,
+            shown().askThen {
+                sendsUp(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED)
+                sendsUp(AccessibilityEvent.TYPE_VIEW_SCROLLED)
+                sendsUp(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+            },
+        )
     }
 }
