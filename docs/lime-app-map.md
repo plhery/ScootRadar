@@ -492,7 +492,8 @@ assigns refresh groups to independent accounts:
 Paths resolve beside the manifest. Account ids and resolved session paths must
 be distinct; up to 64 accounts are supported (`LIME_MAX_ACCOUNTS`, a bound against a
 malformed manifest, not a measure of what Lime allows: every account calls from the
-cache's one address). A missing default manifest
+cache's one address, which is allowed about 25 accounts' calls, see
+[The address's ten seconds](#the-addresss-ten-seconds)). A missing default manifest
 keeps the original `LIME_SESSION_PATH` behaviour. An explicit missing manifest
 or malformed configuration is an error. The cache reads the manifest when it
 first wraps Lime feeds; restart through the normal deployment to change it.
@@ -515,6 +516,53 @@ account's minute while the others had theirs to spare: on 9 and 10 November a
 Lime group someone opened, with its last positions standing faded, started in
 0.8 seconds (median) and showed its first scooters 32 seconds later, though
 Lime answers a view in half a second.
+
+### The address's ten seconds
+
+Lime also counts the calls of one address, whichever accounts make them, in
+ten-second windows of the clock (:00, :10, ...): it answers the first 60 of a
+window and refuses the rest with HTTP 429 until the window ends. The reply's
+`Server` header is Cloudflare's. This was measured on 11 and 12 November 2026,
+the first 43 hours of eight accounts lending each other calls:
+
+- A town opened after a quiet spell (Berlin's six groups in 24 of 27 cases)
+  sent 66 to 78 calls within seconds through every account. 195 calls were
+  refused, and 146 of about 1,230 Lime collections failed, against none in the
+  48 hours before on three accounts, which could send 36 at once.
+- All 195 refusals fell between 5.2 and 10.0 seconds into a window (six a few
+  hundredths past its end), none in a window's first five seconds, while the
+  cache's own events of those hours fell anywhere in it.
+- Three bursts ended with 66 calls made and six refused, one for each of the
+  six groups reading, so 60 answered (11 November at 05:40 and 11:29 UTC, 12
+  November at 06:56 UTC). The last fell within one window for certain: none of
+  its calls had been made five seconds before its first refusal, which came
+  7.6 seconds into the window.
+- Refusals reached three to eight accounts within the same second, idle ones
+  on their first call. Four bursts of 84 to 88 calls after a quiet spell were
+  all answered, as a burst spread over two windows would be.
+- Each refusal cooled its account for a minute, so a refused group showed its
+  last positions for about two minutes (median 115 seconds; twelve minutes on
+  12 November at 09:32 UTC, when all eight accounts were refused).
+
+So the accounts' pacers share one budget (`PaceGate` in `server/sweeps.ts`,
+`LIME_ADDRESS_CALLS`): no more than fifty calls start in any ten seconds from
+all accounts together. A count over any ten seconds holds for Lime's windows
+wherever they begin, and ten are left for calls that arrive late. The cache a
+deploy runs beside this one for a minute counts its own, so the two could pass
+60 together in that minute, the new one's accounts keeping their five seconds
+apart. Fifty in ten seconds is 300
+a minute, twenty-five accounts' worth at twelve each; eight accounts make 96.
+A town's first fifty calls still start at once and its 51st ten seconds
+after its first, and nothing waits longer. Idle sweeps wait on the same budget.
+
+Lime answered a view through two datacenter proxy exits on 12 November 2026
+(HTTP 200, the same 87 pins as directly; about one second through a new
+tunnel against 0.45 directly). Sending calls through other addresses is not
+built: one address is allowed more than three times what eight accounts send.
+It would matter past about 25 accounts.
+
+A failed collection's log line carries the `Retry-After` Lime sent with a 429
+(`retryAfter`), which the refusals above were logged without.
 
 The network host, vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
 cadence and the catalog's conservative single-account budget remain in place.

@@ -42,10 +42,32 @@ export interface PaceOptions {
    * for the one it replaces to stop.
    */
   spans?: readonly PaceSpan[];
+  /**
+   * A budget its requests share with other pacers' (PaceGate): a request starts once the pacer's own budgets
+   * and the gate both let it.
+   */
+  gate?: PaceGate;
 }
 
 /** No more than `requests` start in any `ms`, and an idle sweep's only while fewer than `idle` have. */
 export interface PaceSpan { ms: number; requests: number; idle: number }
+
+/**
+ * No more than `requests` start in any `ms`, counted across the pacers that share it (PaceOptions.gate): a
+ * limit a host keeps on the address its calls come from, whichever account makes them, as Lime's (limeApp.ts).
+ * A pacer held by it starts its next request when the oldest of those `requests` is `ms` old, in the order
+ * the pacers' timers fall.
+ */
+export class PaceGate {
+  private readonly started: number[] = [];
+  constructor(private readonly requests: number, private readonly ms: number) {}
+  /** When a request may next start: `now` while fewer than `requests` have started within `ms`. */
+  free(now: number): number {
+    while (this.started.length && this.started[0] <= now - this.ms) this.started.shift();
+    return this.started.length < this.requests ? now : this.started[this.started.length - this.requests] + this.ms;
+  }
+  start(now: number): void { this.started.push(now); }
+}
 
 /**
  * Holds a client's requests to its host to a minute's worth at one every intervalMs, whichever
@@ -73,6 +95,7 @@ export interface PaceSpan { ms: number; requests: number; idle: number }
  *
  * Given `spaced` (PaceOptions), every request keeps the spacing. Given `spans`, the requests of the
  * longest span count too, and an idle sweep leaves part of each span's to the towns someone opens.
+ * Given `gate`, its requests also wait for a budget other pacers share.
  */
 export class Pacer {
   /** How many requests may start in PACE_WINDOW_MS; unlimited for an interval of 0. */
@@ -87,6 +110,7 @@ export class Pacer {
   /** When the last request that keeps the spacing started: an idle sweep's, or any when every request is spaced. */
   private lastSpaced = -Infinity;
   private readonly spaced: boolean;
+  private readonly gate?: PaceGate;
   private readonly waiting: { urgent: boolean; began: number; go: () => void }[] = [];
   /** When each collection first asked for a turn. */
   private readonly began = new WeakMap<CollectionScope, number>();
@@ -97,6 +121,7 @@ export class Pacer {
     private readonly routineEvery = Infinity, options: PaceOptions = {}) {
     this.heldUntil = startAt;
     this.spaced = options.spaced ?? false;
+    this.gate = options.gate;
     this.perWindow = intervalMs > 0 ? Math.max(1, options.perMinute ?? Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
     this.spans = intervalMs > 0 ? options.spans ?? [] : [];
     this.keepMs = Math.max(PACE_WINDOW_MS, ...this.spans.map(span => span.ms));
@@ -168,7 +193,7 @@ export class Pacer {
       at = turns[ahead % this.perWindow] + Math.floor(ahead / this.perWindow) * PACE_WINDOW_MS;
     }
     const spacing = this.spaced ? this.lastSpaced + this.intervalMs * (ahead + 1) : -Infinity;
-    return Math.max(this.heldUntil, at, spacing);
+    return Math.max(this.heldUntil, at, spacing, this.gate?.free(now) ?? -Infinity);
   }
 
   /** No request starts before `at`, as when the host asks to wait. */
@@ -188,7 +213,7 @@ export class Pacer {
       : this.started.length < limit ? now : this.started[this.started.length - limit] + ms;
     const spans = this.spans.map(span => free(urgent ? span.requests : span.idle, span.ms));
     const spacing = urgent && !this.spaced ? -Infinity : this.lastSpaced + this.intervalMs;
-    return Math.max(this.heldUntil, free(this.perWindow, PACE_WINDOW_MS), spacing, ...spans);
+    return Math.max(this.heldUntil, free(this.perWindow, PACE_WINDOW_MS), spacing, ...spans, this.gate?.free(now) ?? -Infinity);
   }
 
   private forget(now: number): void {
@@ -206,6 +231,7 @@ export class Pacer {
         return;
       }
       if (this.perWindow !== Infinity) this.started.push(now);
+      this.gate?.start(now);
       if (!waiter.urgent || this.spaced) this.lastSpaced = now;
       this.urgentTurns = idleWaits && waiter.urgent ? this.urgentTurns + 1 : 0;
       this.waiting.splice(index, 1);

@@ -359,7 +359,10 @@ map's client but Beam's, these and Bird's, Bolt's, Dott's, JET's, LUUP's, RideMo
 and Voi's, lets a minute's worth of requests at its old spacing start at once, and
 no more in any 60 seconds (`Pacer` in `server/sweeps.ts`): twelve a minute for each
 Lime account, where they started five seconds apart and a town of eight views took
-35 seconds. Only the towns someone looks at start theirs at once: an idle sweep
+35 seconds. Lime's accounts together start no more than fifty calls in any ten seconds
+(`LIME_ADDRESS_CALLS`): Lime answers 60 from one address in a ten-second window of the
+clock and refuses the rest, whichever accounts make them (`docs/lime-app-map.md`, "The
+address's ten seconds"). Only the towns someone looks at start theirs at once: an idle sweep
 keeps the old spacing, so that it cannot spend the minute's turns just before a
 town is opened, which could then wait up to 50 seconds for its first view. Beam's
 client keeps two seconds between all its requests, as bursts have returned empty

@@ -12,13 +12,35 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { currentCollection, Pacer, SweepProgress, takeNearest } from './sweeps';
+import { currentCollection, PaceGate, Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://web-production.lime.bike';
 const RETRY_MS = 60_000;
 /** How long the other container of a deploy gets to save the session it renewed. */
 const PEER_SAVE_MS = 1_000;
 const PIN_LIMIT = 200;
+/**
+ * Lime counts the calls of one address, whichever accounts make them, in ten-second windows of the clock
+ * (:00, :10, ...) and answers 429 from the 61st of a window to its end. Measured on 11 and 12 November 2026,
+ * the first two days of eight accounts that lend each other calls: a town opened after a quiet spell sent 66
+ * to 78 calls within seconds from every account, and all 195 refusals of those 43 hours fell in the second
+ * half of a window, none in its first five seconds; three bursts ended with 66 calls made and six refused,
+ * one for each of the six groups reading, so 60 answered, one of them within a single window for certain;
+ * and refusals reached three to eight accounts in the same second, idle ones on their first call. Each
+ * refusal cooled its account for a minute: 146 of 1,230 Lime collections failed, none in the two days
+ * before, on three accounts (docs/lime-app-map.md, "The address's ten seconds").
+ *
+ * So no more than fifty calls start in any ten seconds, across all accounts (PaceGate): a count over any
+ * ten seconds also holds for Lime's windows wherever they begin, and ten are left for calls that arrive
+ * late. The cache a deploy runs beside this one for a minute counts its own: the two could pass 60 together
+ * in that minute, the new one's accounts keeping their five seconds. Fifty in ten seconds is 300 a minute,
+ * twenty-five accounts' worth at twelve each: the eight of November 2026 make 96, so a town's 51st call of
+ * a burst waits for the first to be ten seconds old, and nothing waits longer. Lime answered a view through
+ * other addresses too (two datacenter proxy exits, 12 November 2026), half a second slower each for the
+ * tunnel: worth building only past what one address is allowed.
+ */
+export const LIME_ADDRESS_CALLS = 50;
+export const LIME_ADDRESS_WINDOW_MS = 10_000;
 // One Lime region can hold several towns' markets, as Düsseldorf's holds Neuss and Hilden: each keeps its own polygons.
 const serviceOutlines = new Map(limeRegions.markets.map(market => [`${market.regionToken}|${market.city}`, market.serviceAreas.map(area => area.polygon)]));
 export const limeMapRequests = { status: 0, metadata: 0 };
@@ -30,6 +52,8 @@ interface Reply { status: number; retryAfter?: string; body: unknown }
 type Transport = (path: string, headers: Record<string, string>, body?: string) => Promise<Reply>;
 interface LimeClientOptions {
   sessionPath?: string; now?: () => number; intervalMs?: number; peerSaveMs?: number; transport?: Transport;
+  /** The budget of the address, shared with the other accounts' clients (LIME_ADDRESS_CALLS). */
+  gate?: PaceGate;
   onRequest?: (kind: 'status' | 'metadata') => void;
 }
 const object = (v: unknown): Record<string, unknown> | undefined =>
@@ -99,7 +123,7 @@ export class LimeClient {
     this.sessionPath = options.sessionPath ?? process.env.LIME_SESSION_PATH ??
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'lime-session.json');
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now, 0, LIME_ROUTINE_EVERY);
+    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now, 0, LIME_ROUTINE_EVERY, { gate: options.gate });
     this.transport = options.transport ?? transport;
   }
   private async load(): Promise<Session> {
@@ -212,8 +236,16 @@ export class LimeClient {
         this.retryAt = this.now() + RETRY_MS;
       }
     }
-    if (r.status !== 200) throw new Error(`Lime map HTTP ${r.status}`);
+    if (r.status !== 200) throw new LimeMapError(r.status, r.retryAfter);
     return r.body;
+  }
+}
+
+/** Lime's refusal of a map call, with the Retry-After it sent, if any. */
+export class LimeMapError extends Error {
+  constructor(status: number, readonly retryAfter?: string) {
+    super(`Lime map HTTP ${status}`);
+    this.name = 'LimeMapError';
   }
 }
 
@@ -306,7 +338,8 @@ export interface LimeAccount { id: string; sessionPath: string }
 export interface LimeAccountRequests { account: string; status: number; metadata: number; lent: number }
 /**
  * A sanity bound on the manifest, not a measure of what Lime allows: every account calls from the cache's one
- * address. Eight until 10 November 2026, the evening eight accounts served production.
+ * address, which is allowed about twenty-five accounts' calls (LIME_ADDRESS_CALLS). Eight until 10 November
+ * 2026, the evening eight accounts served production.
  */
 export const LIME_MAX_ACCOUNTS = 64;
 
@@ -352,9 +385,15 @@ export class LimeAccountError extends Error {
   }
 }
 
-/** For a log line: the Lime account whose call failed, when that is why `error` was thrown. */
-export function limeAccount(error: unknown): { account?: string; lent?: boolean } {
-  return error instanceof LimeAccountError ? { account: error.account, lent: error.lent } : {};
+/**
+ * For a log line: the Lime account whose call failed, when that is why `error` was thrown, and the Retry-After
+ * Lime sent with its refusal, if any: the 429s of 11 and 12 November 2026 were read without it, and whether
+ * Lime names the ten seconds it counts over (LIME_ADDRESS_CALLS) had to be worked out from their times.
+ */
+export function limeAccount(error: unknown): { account?: string; lent?: boolean; retryAfter?: string } {
+  if (!(error instanceof LimeAccountError)) return {};
+  const retryAfter = error.cause instanceof LimeMapError ? error.cause.retryAfter?.slice(0, 40) : undefined;
+  return { account: error.account, lent: error.lent, ...(retryAfter ? { retryAfter } : {}) };
 }
 
 /**
@@ -369,8 +408,9 @@ export class LimeAccountPool {
   constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest'> = {}) {
     this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
     this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0 }));
+    const gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
     this.clients = new Map(this.accounts.map((account, index) => [account.id, new LimeClient({
-      ...options, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
+      ...options, gate, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
     })]));
     this.collectors = new Map(this.accounts.map(account => [account.id,
       new LimeMapCollector({ pins: bounds => this.pins(account.id, bounds) })]));
@@ -378,7 +418,8 @@ export class LimeAccountPool {
   /**
    * A view of a group, through its own account, or for a group someone is looking at, through the account
    * that can start the call soonest: its own on a tie, else one not cooling down after a 429 or a refused
-   * login. Each account's pacer still holds it to twelve calls in any 60 seconds, whosever the calls. A
+   * login. Each account's pacer still holds it to twelve calls in any 60 seconds, whosever the calls, and
+   * all of them together to the address's fifty in any ten seconds (LIME_ADDRESS_CALLS). A
    * group's calls waited for its own account's minute while others had theirs to spare: on 9 and 10
    * November 2026 a Lime group someone opened started in 0.8 seconds (median) and showed its first scooters
    * 32 seconds later, though Lime answers a view in half a second. An idle sweep keeps to its account, as

@@ -643,8 +643,8 @@ Routine feed failures are not sent; the metrics and logs cover them.
 `parking_feed_failed` and `swiss_app_map_failed` (with the error, and for a status
 document refused for its time its own age, `statusAgeSeconds`, which a failed feed's
 `snapshot_feed_state` carries too; `snapshot_feed_failed` for a failed Lime call names the
-account that made it, `account` (its manifest id), and `lent`, true when it made the call for
-another account's group), and `snapshot_health` (every minute, with the
+account that made it, `account` (its manifest id), `lent`, true when it made the call for
+another account's group, and `retryAfter`, the Retry-After Lime sent with a 429, if any), and `snapshot_health` (every minute, with the
 feeds on each cadence, `warmingFeeds` not collected yet and not counted as failed or
 expired, `unobservedFeeds` with no positions yet, and `oldestObservationAgeSeconds` over
 the feeds that have some, null when none has) are JSON lines, as is `feed_states_restored`

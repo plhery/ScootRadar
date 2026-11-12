@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { nearestFirst, PACE_WINDOW_MS, Pacer, PROGRESS_EVERY_MS, SweepProgress, takeNearest, withinCollection, type CollectionScope,
+import { nearestFirst, PACE_WINDOW_MS, PaceGate, Pacer, PROGRESS_EVERY_MS, SweepProgress, takeNearest, withinCollection, type CollectionScope,
   type PaceOptions } from './sweeps';
 
 const T0 = Date.parse('2026-10-25T08:00:00Z');
@@ -221,6 +221,66 @@ describe('Pacer', () => {
     void pacer.turn().then(() => at.push(Date.now() - T0));
     await vi.advanceTimersByTimeAsync(30_000);
     expect(at).toEqual([20_000]);
+  });
+});
+
+describe('PaceGate', () => {
+  const looking = collection({ urgent: () => true });
+  const calls = (pacer: Pacer, count: number, into: number[], scope = looking) => withinCollection(scope, async () => {
+    for (let i = 0; i < count; i++) { await pacer.turn(); into.push(Date.now() - T0); }
+  });
+
+  it('holds the pacers that share it to its count in any of its spans, whichever asks', async () => {
+    const gate = new PaceGate(5, 10_000);
+    const one = new Pacer(0, Date.now, 0, Infinity, { gate }), two = new Pacer(0, Date.now, 0, Infinity, { gate });
+    const times: number[] = [];
+    const first = calls(one, 4, times), second = calls(two, 4, times);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(times).toEqual([0, 0, 0, 0, 0]);
+    await vi.advanceTimersByTimeAsync(9_999);
+    expect(times).toHaveLength(5);
+    await vi.advanceTimersByTimeAsync(1);
+    await Promise.all([first, second]);
+    expect(times).toEqual([0, 0, 0, 0, 0, 10_000, 10_000, 10_000]);
+  });
+
+  it('counts over any span, not from a mark: a start frees its place when it is a span old', async () => {
+    const gate = new PaceGate(3, 10_000);
+    const pacer = new Pacer(0, Date.now, 0, Infinity, { gate });
+    const times: number[] = [];
+    await calls(pacer, 2, times);
+    await vi.advanceTimersByTimeAsync(6_000);
+    const rest = calls(pacer, 4, times);
+    await vi.advanceTimersByTimeAsync(20_000);
+    await rest;
+    // The third at once, the next two as the first two turn ten seconds old, the last as the third does.
+    expect(times).toEqual([0, 0, 6_000, 10_000, 10_000, 16_000]);
+    for (const [i, at] of times.entries()) expect(times.filter(other => other > at - 10_000 && other <= at).length, `start ${i}`).toBeLessThanOrEqual(3);
+  });
+
+  it('holds an idle sweep too, and a pacer keeps its own budget under it', async () => {
+    const gate = new PaceGate(3, 10_000);
+    // Twelve a minute, a looked-at collection's at once, an idle sweep's five seconds apart.
+    const account = new Pacer(5_000, Date.now, 0, Infinity, { gate }), other = new Pacer(5_000, Date.now, 0, Infinity, { gate });
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    const looked: number[] = [], idle: number[] = [];
+    const opened = calls(account, 14, looked), swept = calls(other, 2, idle, collection());
+    await vi.advanceTimersByTimeAsync(2 * PACE_WINDOW_MS);
+    await Promise.all([opened, swept]);
+    const all = [...looked, ...idle].sort((a, b) => a - b);
+    for (const at of all) expect(all.filter(start => start > at - 10_000 && start <= at).length).toBeLessThanOrEqual(3);
+    // The account's twelve of its minute, three every ten seconds less the idle sweep's, then its thirteenth a minute after its first.
+    expect(looked.slice(0, 12).every(at => at < 2 * PACE_WINDOW_MS)).toBe(true);
+    expect(looked[12]).toBe(looked[0] + PACE_WINDOW_MS);
+    expect(idle).toHaveLength(2);
+  });
+
+  it('is counted in when a looked-at request would start', () => {
+    const gate = new PaceGate(2, 10_000);
+    const pacer = new Pacer(0, Date.now, 0, Infinity, { gate });
+    expect(pacer.urgentStartAt()).toBe(T0);
+    gate.start(T0 - 4_000); gate.start(T0 - 1_000);
+    expect(pacer.urgentStartAt()).toBe(T0 + 6_000);
   });
 });
 
