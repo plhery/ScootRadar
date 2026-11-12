@@ -744,6 +744,8 @@ class ScooterAPITest {
             // the iPhone and Kotlin's infinite here; the search waits 60 s at most either way (SwissAddressSearch).
             Triple(429, mapOf("Retry-After" to "inf"), AddressSearchAPIError.RateLimited(retryAfter = null)),
             Triple(429, mapOf("Retry-After" to "nan"), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            // A wait already over is no wait.
+            Triple(429, mapOf("Retry-After" to "-5"), AddressSearchAPIError.RateLimited(retryAfter = null)),
             Triple(429, mapOf("Retry-After" to "1e300"), AddressSearchAPIError.RateLimited(retryAfter = Duration.INFINITE)),
             Triple(503, mapOf("Retry-After" to "30"), AddressSearchAPIError.InvalidResponse()),
         )
