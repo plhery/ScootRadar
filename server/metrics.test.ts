@@ -200,8 +200,10 @@ it('times the refreshes requests ask for, from the first request to their start,
   expect(text).not.toContain('provider="voi",map="feed",kind="warm",phase');
 });
 
-it('does not time a refresh nobody asks for any more, and times one asked for again from the new request', () => {
-  // A Lime group a visitor panned past, whose watch lapsed before its collection started.
+it('counts a refresh nobody asks for any more as abandoned without timing it, and times one asked for again from the new request', () => {
+  // A Lime group a visitor panned past, whose watch lapsed before its collection started: a first view all
+  // the same, which did not start within 15 seconds, but whose start 20 minutes later as an idle sweep is no
+  // visitor's wait.
   const metrics = createSnapshotMetrics('abc123');
   const lime = { id: 'germany:lime_de_app_augsburg_001', source: 'germany', provider: 'lime' };
   const cold = 'provider="lime",map="app",kind="cold"';
@@ -210,6 +212,7 @@ it('does not time a refresh nobody asks for any more, and times one asked for ag
   metrics.recordRefreshStarted(lime.id, now + 20 * 60_000);
   metrics.recordRefreshEnded(lime.id, false, now + 21 * 60_000);
   const lapsed = metrics.render(snapshot([]), now + 22 * 60_000, true);
+  expect(sample(lapsed, `scootradar_refreshes_total{${cold},outcome="abandoned"}`)).toBe('1');
   expect(sample(lapsed, `scootradar_refreshes_total{${cold},outcome="ok"}`)).toBeUndefined();
   expect(lapsed).not.toContain(`scootradar_refresh_seconds_count{${cold},phase="start"}`);
   // Asked for again after its watch lapsed, it is timed from that request.
@@ -220,6 +223,19 @@ it('does not time a refresh nobody asks for any more, and times one asked for ag
   const asked = metrics.render(snapshot([]), now + 31 * 60_000, true);
   expect(sample(asked, `scootradar_refreshes_total{${cold},outcome="ok"}`)).toBe('1');
   expect(sample(asked, `scootradar_refresh_seconds_sum{${cold},phase="start"}`)).toBe('2');
+  // A feed that lapses without a request having asked for it, as a late idle feed, is no first view.
+  expect(sample(asked, `scootradar_refreshes_total{${cold},outcome="abandoned"}`)).toBe('1');
+  // Every cold view asked for has an outcome: ok, failed or abandoned.
+  const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };
+  metrics.recordRefreshAsked(voi, false, true, now + 40 * 60_000);
+  metrics.recordRefreshEnded(voi.id, true, now + 40 * 60_000 + 3_000);
+  metrics.recordRefreshAsked({ ...voi, id: 'national:voi_other' }, false, true, now + 40 * 60_000);
+  metrics.recordRefreshLapsed('national:voi_other');
+  const all = metrics.render(snapshot([]), now + 41 * 60_000, true);
+  const voiCold = 'provider="voi",map="feed",kind="cold"';
+  expect(sample(all, `scootradar_refreshes_total{${voiCold},outcome="failed"}`)).toBe('1');
+  expect(sample(all, `scootradar_refreshes_total{${voiCold},outcome="abandoned"}`)).toBe('1');
+  expect(all).not.toContain(`scootradar_refresh_seconds_count{${voiCold}`);
 });
 
 it('counts the scooters with a price, and the plans fetched again for plans scooters named', () => {
@@ -255,7 +271,7 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
     cadence: { fastSince: id => id.startsWith('national:') ? 0 : undefined, idleExpiryMs: 30 * 60_000 },
     cadenceModes: () => ({ always: 20, watched: 2, idle: 150 }),
     upstreamRequests: () => requests,
-    limeAccountRequests: () => [{ account: 'primary', status: 4, metadata: 1, lent: 3 }, { account: 'second', status: 0, metadata: 0, lent: 0 }],
+    limeAccountRequests: () => [{ account: 'primary', status: 4, metadata: 1, lent: 3, throttled: 2 }, { account: 'second', status: 0, metadata: 0, lent: 0, throttled: 0 }],
     upstreamCache: () => ({ entries: 1_900, capacity: 2_322, evictions: 4 }),
   });
   metrics.recordCollectionStart('idle');
@@ -284,6 +300,9 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
   expect(sample(text, 'scootradar_lime_account_requests_total{account="second",kind="status"}')).toBe('0');
   expect(sample(text, 'scootradar_lime_account_lent_requests_total{account="primary"}')).toBe('3');
   expect(sample(text, 'scootradar_lime_account_lent_requests_total{account="second"}')).toBe('0');
+  // Lime's 429s by the account that made the call, idle accounts at zero.
+  expect(sample(text, 'scootradar_lime_account_throttled_total{account="primary"}')).toBe('2');
+  expect(sample(text, 'scootradar_lime_account_throttled_total{account="second"}')).toBe('0');
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="used"}')).toBe('1900');
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="capacity"}')).toBe('2322');
   expect(sample(text, 'scootradar_upstream_cache_evictions_total')).toBe('4');

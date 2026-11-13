@@ -87,7 +87,7 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   scooters, ten minutes after its last collection), `idle` and `retry` (an idle feed that failed).
 - `scootradar_request_waits_total{outcome="collected|timeout"}`: requests that waited for
   the collection of feeds whose positions were over 15 minutes old.
-- `scootradar_refreshes_total{provider,map,kind,outcome}` and
+- `scootradar_refreshes_total{provider,map,kind,outcome="ok|failed|abandoned"}` and
   `scootradar_refresh_seconds{provider,map,kind,phase}` (a histogram): the
   collections a request asked for because the feed's data was over a minute old,
   and how long the visitor waited for them, from the first request asking. `map`
@@ -100,17 +100,25 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   them otherwise) and `done` (it ended). The map asks again every 3 seconds
   while a feed refreshes, so it shows them up to 3 s later. Failed ones are in
   the counter only. One whose watch lapsed before its collection started (a
-  group a visitor panned past) is in neither, as nobody waits for it; until 10
-  November 2026 its whole wait was counted. Since 8 November 2026. P50 and P90
-  of a week's cold waits by provider:
+  group a visitor panned past) is in the counter only too, as `abandoned`, since
+  13 November 2026: it had not started a whole watch (2 to 10 minutes) after the
+  last request asking, so not within 15 s of the first, and its collection then
+  goes on as an idle sweep, a wait nobody has. From 10 to 13 November it was in
+  neither; until 10 November its whole wait was timed. Since 8 November 2026. P50
+  and P90 of a week's cold waits by provider, of those that succeeded:
   `histogram_quantile(0.9, sum by (le, provider, map, phase) (increase(scootradar_refresh_seconds_bucket{kind="cold"}[7d])))`.
+  The share of every first view (cold) whose collection started within 15 s and
+  succeeded, the failed and abandoned ones counted as missed, which is 0.9 or more
+  when their P90 is within 15 s:
+  `sum by (provider) (increase(scootradar_refresh_seconds_bucket{kind="cold",phase="start",le="15"}[7d])) / sum by (provider) (increase(scootradar_refreshes_total{kind="cold"}[7d]))`;
+  `outcome!="abandoned"` in the divisor leaves out the groups nobody stayed on.
   A long `start` says the host's or account's slots are taken (more accounts or
   addresses would help); a `done` long past `first` a slow sweep; a long
   `first` with a short `start`, a client's pace (its requests queue in it, as
   Lime's per account). Ryde's views, which the Mac bridge reads
   (`server/rydeWatchedViews.ts`), are not in it. The dashboard's "Visitors and
   scraping" row draws the cold views' P90 `start` by provider over each hour, against
-  the 15-second target, and the failed ones beside it. Both are counters, so they come
+  the 15-second target, and beside it those that failed or were abandoned. Both are counters, so they come
   from each container's address (job `scootradar-cache-containers`, relabelled), never
   `instance="scootradar-cache:3001"`, which has the gauges alone: sum them by `le`
   across instances, as above.
@@ -122,6 +130,14 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_lime_account_lent_requests_total{account}`: of an account's status
   requests, those it made for another account's group someone was looking at,
   when its own account had no turn as soon (`server/limeApp.ts`, LimeAccountPool).
+- `scootradar_lime_account_throttled_total{account}`: of an account's requests, those
+  Lime answered with HTTP 429, renewals included, counted on the account that made the
+  call, lent or not. Lime counts the calls of the cache's one address in ten-second
+  windows, whichever accounts make them, and the refused account cools down for its
+  Retry-After, a minute at least, so its groups' collections fail meanwhile (their log
+  line names it, see [Logs](#logs)). Since 13 November 2026; 195 refusals in the two
+  days before all accounts together were held to fifty calls in ten seconds (12 November).
+  Per hour: `sum by (account) (increase(scootradar_lime_account_throttled_total[1h]))`.
 - `scootradar_lime_wake_clients_total{refreshes="1|2-3|4-7|8-15|16+"}` and
   `scootradar_lime_wakes_total{refreshes}`: visitors whose requests set off refreshes of
   Lime rider-map feeds, by how many they set off in a quarter hour (UTC), and those

@@ -575,9 +575,10 @@ raising the configured pool capacity from 36 to 96 requests a minute.
 for research, whose session has a separate renewal owner. Never share a
 refresh-token file between the local research process and production. The
 protected metric `scootradar_lime_account_requests_total{account,kind}` shows
-requests from each production account using only its manifest id, and
+requests from each production account using only its manifest id,
 `scootradar_lime_account_lent_requests_total{account}` those of its status
-requests made for another account's groups.
+requests made for another account's groups, and
+`scootradar_lime_account_throttled_total{account}` those Lime refused with a 429.
 
 Only actual scooter pins are retained. Battery is a percentage; range, fares,
 vehicle-specific rental links, parking and zone overlays are not supplied by

@@ -55,6 +55,8 @@ interface LimeClientOptions {
   /** The budget of the address, shared with the other accounts' clients (LIME_ADDRESS_CALLS). */
   gate?: PaceGate;
   onRequest?: (kind: 'status' | 'metadata') => void;
+  /** Lime answered a call of this client's with HTTP 429, a map view's or a renewal's. */
+  onThrottled?: () => void;
 }
 const object = (v: unknown): Record<string, unknown> | undefined =>
   v !== null && typeof v === 'object' && !Array.isArray(v) ? v as Record<string, unknown> : undefined;
@@ -164,6 +166,7 @@ export class LimeClient {
     try { reply = await this.transport(path, headers, body); }
     catch { throw new Error('Lime request failed or timed out'); }
     if (reply.status === 429) {
+      this.options.onThrottled?.();
       const r = reply.retryAfter;
       const ms = r && /^\d+$/.test(r) ? Number(r) * 1000 : r ? Date.parse(r) - this.now() : RETRY_MS;
       this.blockedUntil = this.now() + Math.max(RETRY_MS, Number.isFinite(ms) && ms > 0 ? ms : RETRY_MS);
@@ -334,8 +337,11 @@ export class LimeMapCollector {
   }
 }
 export interface LimeAccount { id: string; sessionPath: string }
-/** An account's calls by kind, and the map reads it took on for another account's groups (lent), which its status calls include. */
-export interface LimeAccountRequests { account: string; status: number; metadata: number; lent: number }
+/**
+ * An account's calls by kind, the map reads it took on for another account's groups (lent), which its status calls
+ * include, and those of its calls Lime answered with HTTP 429 (throttled), lent or not, renewals included.
+ */
+export interface LimeAccountRequests { account: string; status: number; metadata: number; lent: number; throttled: number }
 /**
  * A sanity bound on the manifest, not a measure of what Lime allows: every account calls from the cache's one
  * address, which is allowed about twenty-five accounts' calls (LIME_ADDRESS_CALLS). Eight until 10 November
@@ -405,12 +411,13 @@ export class LimeAccountPool {
   readonly requests: LimeAccountRequests[];
   private readonly clients: Map<string, LimeClient>;
   private readonly collectors: Map<string, LimeMapCollector>;
-  constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest'> = {}) {
+  constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest' | 'onThrottled'> = {}) {
     this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
-    this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0 }));
+    this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0, throttled: 0 }));
     const gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
     this.clients = new Map(this.accounts.map((account, index) => [account.id, new LimeClient({
       ...options, gate, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
+      onThrottled: () => { this.requests[index].throttled++; },
     })]));
     this.collectors = new Map(this.accounts.map(account => [account.id,
       new LimeMapCollector({ pins: bounds => this.pins(account.id, bounds) })]));

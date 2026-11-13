@@ -32,6 +32,11 @@ const REFRESH_FORGET_MS = 60 * 60_000;
  * view, or all of them), and for it to end.
  */
 type RefreshPhase = 'start' | 'first' | 'done';
+/**
+ * How a refresh asked for ended: its collection succeeded or failed, or its watch lapsed before it started
+ * (abandoned: a group the visitor panned past, which then waits as an idle feed, FeedScheduler.lapse).
+ */
+type RefreshOutcome = 'ok' | 'failed' | 'abandoned';
 
 interface MetricsSources {
   /** How often each feed is meant to be collected, which its state is judged by. */
@@ -40,8 +45,8 @@ interface MetricsSources {
   cadenceModes?: (now: number) => Record<FeedCadenceMode, number>;
   /** Requests sent to operators since the start, by kind. */
   upstreamRequests?: () => Record<string, number>;
-  /** Lime requests by a manifest's non-secret account id, including idle accounts at zero. */
-  limeAccountRequests?: () => readonly { account: string; status: number; metadata: number; lent?: number }[];
+  /** Lime requests by a manifest's non-secret account id, including idle accounts at zero, and Lime's 429s to them. */
+  limeAccountRequests?: () => readonly { account: string; status: number; metadata: number; lent?: number; throttled?: number }[];
   /** Pricing plans fetched again for scooters naming plans they did not list, by outcome. */
   planRefreshes?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
@@ -103,6 +108,12 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
   const asked = new Map<string, { labels: Labels; at: number; startedAt?: number; firstAt?: number }>();
   const refreshTimes = new Map<string, { labels: Labels; buckets: number[]; seconds: number; count: number }>();
   const refreshOutcomes = new Map<string, { labels: Labels; count: number }>();
+  const countRefresh = (labels: Labels, outcome: RefreshOutcome) => {
+    const key = `${labels.provider} ${labels.map} ${labels.kind} ${outcome}`;
+    const counted = refreshOutcomes.get(key) ?? { labels: { ...labels, outcome }, count: 0 };
+    counted.count++;
+    refreshOutcomes.set(key, counted);
+  };
   const observeRefresh = (labels: Labels, phase: RefreshPhase, ms: number) => {
     const key = `${labels.provider} ${labels.map} ${labels.kind} ${phase}`;
     const entry = refreshTimes.get(key) ?? { labels: { ...labels, phase }, buckets: REFRESH_BUCKETS.map(() => 0), seconds: 0, count: 0 };
@@ -162,10 +173,16 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     },
     /**
      * Nobody asks for the feed any more: its watch lapsed before its collection started, which then goes on
-     * as an idle one (FeedScheduler's onLapse). Its wait is no visitor's, so it is not counted; a request
-     * asking for the feed again times a refresh of its own.
+     * as an idle one (FeedScheduler's onLapse). Its wait is no visitor's, so it is not timed, but it counts as
+     * abandoned: it had not started a whole watch (a minute at least, two to ten in production) after the last
+     * request asking, so not within 15 seconds of the first. A request asking for the feed again times a refresh of its own.
      */
-    recordRefreshLapsed(id: string) { asked.delete(id); },
+    recordRefreshLapsed(id: string) {
+      const entry = asked.get(id);
+      if (!entry) return;
+      asked.delete(id);
+      countRefresh(entry.labels, 'abandoned');
+    },
     /** The feed's collection started; one under way when the request came answers it from then. */
     recordRefreshStarted(id: string, now = Date.now()) {
       const entry = asked.get(id);
@@ -181,11 +198,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       const entry = asked.get(id);
       if (!entry) return;
       asked.delete(id);
-      const outcome = failed ? 'failed' : 'ok';
-      const key = `${entry.labels.provider} ${entry.labels.map} ${entry.labels.kind} ${outcome}`;
-      const counted = refreshOutcomes.get(key) ?? { labels: { ...entry.labels, outcome }, count: 0 };
-      counted.count++;
-      refreshOutcomes.set(key, counted);
+      countRefresh(entry.labels, failed ? 'failed' : 'ok');
       if (failed) return;
       observeRefresh(entry.labels, 'start', (entry.startedAt ?? entry.at) - entry.at);
       observeRefresh(entry.labels, 'first', (entry.firstAt ?? now) - entry.at);
@@ -279,6 +292,9 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_lime_account_lent_requests_total', 'counter',
           'Of a Lime account\'s status requests, those it made for another account\'s group someone was looking at, whose own account had no turn as soon.',
           sources.limeAccountRequests().map((row): [Labels, number] => [{ account: row.account }, row.lent ?? 0]));
+        metric('scootradar_lime_account_throttled_total', 'counter',
+          'Of a Lime account\'s requests, those Lime answered with HTTP 429, lent or not: it counts the calls of the cache\'s one address, whichever accounts make them, and the account then cools down for its Retry-After, a minute at least.',
+          sources.limeAccountRequests().map((row): [Labels, number] => [{ account: row.account }, row.throttled ?? 0]));
       }
       if (sources.planRefreshes) {
         metric('scootradar_pricing_plan_refreshes_total', 'counter',
@@ -330,7 +346,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         'Requests address searches sent to Geoapify, as the Worker reports them: its free plan allows 3,000 a day.',
         [[{ version }, geoapifyRequests]]);
       metric('scootradar_refreshes_total', 'counter',
-        'Collections requests asked for, as the feed\'s data was over a minute old, by provider, map (app: a rider app\'s map; feed: a public feed), kind (cold: no position recent enough to show; warm: the map still showed its scooters) and outcome.',
+        'Collections requests asked for, as the feed\'s data was over a minute old, by provider, map (app: a rider app\'s map; feed: a public feed), kind (cold: no position recent enough to show; warm: the map still showed its scooters) and outcome (ok, failed, or abandoned: its watch lapsed before it started, as a group the visitor panned past).',
         [...refreshOutcomes.values()].map(entry => [entry.labels, entry.count]));
       metric('scootradar_refresh_seconds', 'histogram',
         'Of those that succeeded, the seconds from the request that asked for them until their collection started (phase start), published its first scooters (first: a sweep\'s nearest the view) and ended (done). The map asks again every 3 seconds while a feed refreshes.',

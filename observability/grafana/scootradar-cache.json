@@ -2535,7 +2535,7 @@
       "id": 42,
       "type": "timeseries",
       "title": "A first view's wait for its collection to start, p90 by provider",
-      "description": "Of the views that found a feed with no position recent enough to show (kind cold) and whose collection then succeeded, the 90th percentile of the seconds from the first request asking until the collection started, over the hour before each point. The line is the 15-second target. Failed ones are in the panel beside it; docs/OBSERVABILITY.md has the query for the first scooters shown (phase first).",
+      "description": "Of the views that found a feed with no position recent enough to show (kind cold) and whose collection then succeeded, the 90th percentile of the seconds from the first request asking until the collection started, over the hour before each point. The line is the 15-second target. Failed and abandoned ones are in the panel beside it; docs/OBSERVABILITY.md has the share of all first views started within 15 seconds, those included, and the query for the first scooters shown (phase first).",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -2615,8 +2615,8 @@
     {
       "id": 43,
       "type": "timeseries",
-      "title": "First views whose collection failed, per hour, by provider",
-      "description": "Of the same cold views, those whose collection failed: the visitor waited and saw no scooters. Lime's failed on a 429, or on an account cooling down for a minute after one, from 11 November 2026 until all its accounts together were held to fifty calls in ten seconds (465b6cc9, 12 November 21:42 UTC).",
+      "title": "First views whose collection failed or was abandoned, per hour, by provider",
+      "description": "Of the same cold views, those whose collection failed (the visitor waited and saw no scooters) and, since 13 November 2026, those abandoned: the watch of a group the visitor panned past lapsed before its collection started, a whole watch (2 to 10 minutes) after the last request asking, so it missed the 15 seconds, but its later start as an idle sweep is no visitor's wait and is not in the panel beside. Lime's failed on a 429, or on an account cooling down for a minute after one, from 11 November 2026 until all its accounts together were held to fifty calls in ten seconds (465b6cc9, 12 November 21:42 UTC); scootradar_lime_account_throttled_total counts its 429s by account.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -2634,8 +2634,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (provider) (increase(scootradar_refreshes_total{job=\"scootradar-cache\", kind=\"cold\", outcome=\"failed\"}[1h]))",
-          "legendFormat": "{{provider}}",
+          "expr": "sum by (provider, outcome) (increase(scootradar_refreshes_total{job=\"scootradar-cache\", kind=\"cold\", outcome=~\"failed|abandoned\"}[1h]))",
+          "legendFormat": "{{provider}} {{outcome}}",
           "range": true,
           "instant": false,
           "refId": "A"

@@ -273,7 +273,8 @@ describe('independent Lime production accounts', () => {
     await expect(pool.collect(two)).resolves.toMatchObject({ vehicles: [expect.anything()] });
     await expect(pool.collect(one)).rejects.toThrow('temporarily rate limited');
     expect(transport).toHaveBeenCalledTimes(2);
-    expect(pool.requests).toEqual([{ account: 'a', status: 1, metadata: 0, lent: 0 }, { account: 'b', status: 1, metadata: 0, lent: 0 }]);
+    // Lime's 429 counts on its account (scootradar_lime_account_throttled_total); the cool-down's refusal, no call, does not.
+    expect(pool.requests).toEqual([{ account: 'a', status: 1, metadata: 0, lent: 0, throttled: 1 }, { account: 'b', status: 1, metadata: 0, lent: 0, throttled: 0 }]);
     now += 120_000;
     transport.mockImplementation(async () => response(map()));
     await expect(pool.collect(one)).resolves.toMatchObject({ stale: false });
@@ -414,6 +415,8 @@ describe('independent Lime production accounts', () => {
       const own = await pool.collect(onB).catch((error: unknown) => error);
       expect(own).toMatchObject({ message: 'Lime is temporarily rate limited', account: 'b', lent: false });
       expect(limeAccount(own)).toEqual({ account: 'b', lent: false });
+      // The 429 counts on b, which made the call for a's group; b's cooling down sent nothing to count.
+      expect(pool.requests.map(({ account, throttled }) => ({ account, throttled }))).toEqual([{ account: 'a', throttled: 0 }, { account: 'b', throttled: 1 }]);
       expect(limeAccount(new Error('Lime map completeness budget exceeded'))).toEqual({});
     } finally { vi.useRealTimers(); }
   });
@@ -445,6 +448,17 @@ describe('independent Lime production accounts', () => {
     } finally { vi.useRealTimers(); }
   });
 
+  it('counts a renewal Lime refuses with a 429 on its account, as Lime counts every call of the address', async () => {
+    const a = await fixture('-a'), b = await fixture('-b');
+    await writeFile(a.sessionPath, JSON.stringify({ ...a.seed, expiresAt: initialTime + 1 }));
+    const transport = vi.fn(async (path: string) => path.endsWith('/token') ? response({}, 429) : response(map(pin())));
+    const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+      { transport, now: () => initialTime, intervalMs: 0 });
+    const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}` }));
+    await expect(pool.collect(candidates.find(s => pool.accountFor(s.id).id === 'a')!)).rejects.toThrow('Lime session HTTP 429');
+    expect(pool.requests).toEqual([{ account: 'a', status: 0, metadata: 1, lent: 0, throttled: 1 }, { account: 'b', status: 0, metadata: 0, lent: 0, throttled: 0 }]);
+  });
+
   it('renews only the due account once, persists its rotation, and leaves another session untouched', async () => {
     const a = await fixture('-a'), b = await fixture('-b');
     await writeFile(a.sessionPath, JSON.stringify({ ...a.seed, expiresAt: initialTime + 1 }));
@@ -466,7 +480,7 @@ describe('independent Lime production accounts', () => {
     expect(transport.mock.calls.filter(([path]) => path.endsWith('/token'))).toHaveLength(1);
     expect(JSON.parse(await readFile(a.sessionPath, 'utf8')).refreshToken).toBe('new-refresh');
     expect(await readFile(b.sessionPath, 'utf8')).toBe(beforeB);
-    expect(pool.requests).toEqual([{ account: 'a', status: 2, metadata: 1, lent: 0 }, { account: 'b', status: 1, metadata: 0, lent: 0 }]);
+    expect(pool.requests).toEqual([{ account: 'a', status: 2, metadata: 1, lent: 0, throttled: 0 }, { account: 'b', status: 1, metadata: 0, lent: 0, throttled: 0 }]);
   });
 });
 
