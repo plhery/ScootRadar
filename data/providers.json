@@ -6,7 +6,8 @@
     "initial": "B",
     "switzerland": true,
     "systemIds": { "prefixes": ["bolt"] },
-    "app": { "link": "https://bolt.sng.link/Epy3j/o9sr", "appStoreId": 675033630, "googlePlayId": "ee.mtakso.client" }
+    "app": { "link": "https://bolt.sng.link/Epy3j/o9sr", "appStoreId": 675033630, "googlePlayId": "ee.mtakso.client" },
+    "rental": { "schemes": ["bolt"], "hosts": ["bolt.eu", "bolt.com"], "website": { "hosts": ["bolt.sng.link"] }, "note": "bolt.sng.link carries the store link Bolt's feeds publish, which its app claims (a20df3a7). Only the website's rules take it on a scooter; the apps' never have." }
   },
   {
     "key": "bird",
@@ -15,7 +16,8 @@
     "initial": "Bi",
     "switzerland": true,
     "systemIds": { "prefixes": ["bird"] },
-    "app": { "link": "https://ride.bird.co/", "appStoreId": 1260842311, "googlePlayId": "co.bird.android" }
+    "app": { "link": "https://ride.bird.co/", "appStoreId": 1260842311, "googlePlayId": "co.bird.android" },
+    "rental": { "schemes": ["bird"], "hosts": ["bird.co", "birdapp.com", "birdapp.app.link"] }
   },
   {
     "key": "dott",
@@ -24,7 +26,8 @@
     "initial": "D",
     "switzerland": true,
     "systemIds": { "prefixes": ["dott"] },
-    "app": { "link": "https://v.ridedott.com/", "appStoreId": 1440301673, "googlePlayId": "com.ridedott.rider" }
+    "app": { "link": "https://v.ridedott.com/", "appStoreId": 1440301673, "googlePlayId": "com.ridedott.rider" },
+    "rental": { "schemes": ["dott", "ridedott"], "hosts": ["ridedott.com"] }
   },
   {
     "key": "hopp",
@@ -32,7 +35,8 @@
     "color": "#00bcd4",
     "initial": "H",
     "switzerland": true,
-    "systemIds": { "prefixes": ["hopp"] }
+    "systemIds": { "prefixes": ["hopp"] },
+    "rental": { "schemes": ["hopp"], "hosts": ["hopp.bike"] }
   },
   {
     "key": "lime",
@@ -41,7 +45,8 @@
     "initial": "L",
     "switzerland": true,
     "systemIds": { "prefixes": ["lime"] },
-    "app": { "link": "https://lime.bike/", "appStoreId": 1199780189, "googlePlayId": "com.limebike" }
+    "app": { "link": "https://lime.bike/", "appStoreId": 1199780189, "googlePlayId": "com.limebike" },
+    "rental": { "schemes": ["lime", "limebike"], "hosts": ["li.me", "lime.bike", "limebike.com"] }
   },
   {
     "key": "voi",
@@ -50,14 +55,16 @@
     "initial": "V",
     "switzerland": true,
     "systemIds": { "prefixes": ["voi"] },
-    "app": { "link": "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest", "appStoreId": 1395921017, "googlePlayId": "io.voiapp.voi" }
+    "app": { "link": "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest", "appStoreId": 1395921017, "googlePlayId": "io.voiapp.voi" },
+    "rental": { "schemes": ["voiapp"], "hosts": ["voi.com", "voiscooters.com", "lqfa.adj.st"] }
   },
   {
     "key": "pony",
     "name": "Pony",
     "color": "#00a7a0",
     "initial": "P",
-    "systemIds": { "prefixes": ["pony"] }
+    "systemIds": { "prefixes": ["pony"] },
+    "rental": { "schemes": ["co.ponybikes.mercury", "co.ponybikes.venus"], "hosts": ["getapony.com"] }
   },
   {
     "key": "publibike",
@@ -69,49 +76,56 @@
       "exact": ["velospot"],
       "prefixes": ["publibike"]
     },
-    "app": { "link": "https://app.publibike.ch/", "appStoreId": 6739938966, "googlePlayId": "ch.publibike2.app" }
+    "app": { "link": "https://app.publibike.ch/", "appStoreId": 6739938966, "googlePlayId": "ch.publibike2.app" },
+    "rental": { "schemes": ["publibike", "velospot"], "hosts": ["publibike.ch", "velospot.info"] }
   },
   {
     "key": "zeus",
     "name": "Zeus",
     "color": "#f82519",
     "initial": "Z",
-    "systemIds": { "prefixes": ["zeus"] }
+    "systemIds": { "prefixes": ["zeus"] },
+    "rental": { "schemes": [], "hosts": ["zeus.city", "ridezeus.app.link"] }
   },
   {
     "key": "beryl",
     "name": "Beryl",
     "color": "#00c896",
     "initial": "Be",
-    "systemIds": { "prefixes": ["beryl"] }
+    "systemIds": { "prefixes": ["beryl"] },
+    "rental": { "schemes": ["beryl-basis"], "hosts": ["beryl.app", "beryl.cc"] }
   },
   {
     "key": "ryde",
     "name": "Ryde",
     "color": "#2f8413",
     "initial": "R",
-    "systemIds": { "prefixes": ["ryde"] }
+    "systemIds": { "prefixes": ["ryde"] },
+    "rental": { "schemes": ["rydelink", "ryde-linking"], "hosts": ["ryde.vip"], "website": { "withoutQuery": true }, "note": "Ryde's link carries the scooter's IMEI. The website's rules drop its query, and the page still sends the rider to the app; the apps' rules keep it." }
   },
   {
     "key": "hoppy",
     "name": "Hoppy",
     "color": "#22c5aa",
     "initial": "Ho",
-    "systemIds": { "prefixes": ["hoppy"] }
+    "systemIds": { "prefixes": ["hoppy"] },
+    "rental": { "schemes": [], "hosts": ["ride-hoppy.app.link", "behoppy.eu"] }
   },
   {
     "key": "ride_mobility",
     "name": "Ride Mobility",
     "color": "#b21f5a",
     "initial": "RM",
-    "systemIds": { "prefixes": ["ride_mobility"] }
+    "systemIds": { "prefixes": ["ride_mobility"] },
+    "rental": { "schemes": [], "hosts": ["ridemobility.app.link", "ridemobility.eu"], "note": "Ride Mobility runs on ATOM Mobility, as Hoppy does, and links each scooter the same way." }
   },
   {
     "key": "yoio",
     "name": "Yoio",
     "color": "#0d5e4a",
     "initial": "Y",
-    "systemIds": { "prefixes": ["yoio"] }
+    "systemIds": { "prefixes": ["yoio"] },
+    "rental": { "schemes": [], "hosts": ["rideyoio.app.link", "yoio.app"], "note": "Yoio is on ATOM Mobility too: its links name each scooter by the number it carries, not by hardware." }
   },
   {
     "key": "naolib",
@@ -125,14 +139,16 @@
     "name": "Elerent",
     "color": "#6e7d18",
     "initial": "E",
-    "systemIds": { "prefixes": ["elerent"] }
+    "systemIds": { "prefixes": ["elerent"] },
+    "rental": { "schemes": [], "hosts": ["elerent.app.link", "elerent.com"], "note": "Elerent is on ATOM Mobility too, and its links name each scooter by the code it carries, such as CAT0059 in Catania." }
   },
   {
     "key": "zelectra",
     "name": "3electra",
     "color": "#0f6f86",
     "initial": "3e",
-    "systemIds": { "prefixes": ["zelectra"] }
+    "systemIds": { "prefixes": ["zelectra"] },
+    "rental": { "schemes": [], "hosts": ["zelectra.app.link", "3electra.com.ua"], "note": "3electra is on ATOM Mobility too, in Kyiv: its links end in the code on the scooter, such as Z3106." }
   },
   {
     "key": "spin",
@@ -140,49 +156,56 @@
     "color": "#ff5436",
     "initial": "Sp",
     "systemIds": { "prefixes": ["spin"] },
-    "app": { "link": "https://www.spin.app/", "appStoreId": 1241808993, "googlePlayId": "pm.spin" }
+    "app": { "link": "https://www.spin.app/", "appStoreId": 1241808993, "googlePlayId": "pm.spin" },
+    "rental": { "schemes": [], "hosts": ["spin.app", "spin.pm"], "note": "Spin's feeds give no link of their own, and their app's, as Bird's, is the charger sign-up. Its \"Open in\" button is its site, www.spin.app, which no app claims." }
   },
   {
     "key": "veo",
     "name": "Veo",
     "color": "#059a8e",
     "initial": "Ve",
-    "systemIds": { "prefixes": ["veo"] }
+    "systemIds": { "prefixes": ["veo"] },
+    "rental": { "schemes": [], "hosts": ["gmjc.adj.st", "veoride.com"], "note": "Veo's links are Adjust links that open its app on the scooter's number." }
   },
   {
     "key": "lyft",
     "name": "Lyft",
     "color": "#ff00bf",
     "initial": "Ly",
-    "systemIds": { "prefixes": ["lyft"] }
+    "systemIds": { "prefixes": ["lyft"] },
+    "rental": { "schemes": [], "hosts": ["lft.to", "lyft.com", "biketownpdx.com"], "note": "Lyft gives every scooter of a city one link, which opens its app's code scanner: chi.lft.to in Chicago, lyft.biketownpdx.com in Portland." }
   },
   {
     "key": "bolt_hopp",
     "name": "Hopp",
     "color": "#2a9c64",
     "initial": "H",
-    "systemIds": { "prefixes": ["bolt_hopp"] }
+    "systemIds": { "prefixes": ["bolt_hopp"] },
+    "rental": { "schemes": ["bolt-hopp"], "hosts": ["gethopp.com"], "note": "Bolt runs its scooters in Washington, DC as Hopp, in an app of that name: bolt-hopp://." }
   },
   {
     "key": "saham",
     "name": "SAHAM",
     "color": "#1ea9e1",
     "initial": "Sa",
-    "systemIds": { "prefixes": ["saham"] }
+    "systemIds": { "prefixes": ["saham"] },
+    "rental": { "schemes": [], "hosts": ["ride-saham.app.link", "sahamofficial.com"], "note": "SAHAM, in Riyadh, is on ATOM Mobility too: its links end in the number on the scooter, such as 0131." }
   },
   {
     "key": "flamingo",
     "name": "Flamingo",
     "color": "#ff206e",
     "initial": "Fl",
-    "systemIds": { "prefixes": ["flamingo"] }
+    "systemIds": { "prefixes": ["flamingo"] },
+    "rental": { "schemes": [], "hosts": ["flamingoscooters.com"], "note": "Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com: /vehicle/<id> for iPhones, /v/<id> for Android, so no one link serves both and the web gets none." }
   },
   {
     "key": "jolt",
     "name": "JOLT",
     "color": "#1a1a1a",
     "initial": "J",
-    "systemIds": { "prefixes": ["jolt"] }
+    "systemIds": { "prefixes": ["jolt"] },
+    "rental": { "schemes": [], "hosts": ["joltscooters.co.nz"], "note": "JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site." }
   },
   {
     "key": "qick",
@@ -198,7 +221,8 @@
       "link": "https://qickscooters.app.link/",
       "appStoreId": 1480390337,
       "googlePlayId": "qickscooters.app"
-    }
+    },
+    "rental": { "schemes": [], "hosts": ["qickscooters.app.link", "qickscooters.com"] }
   },
   {
     "key": "luup",
@@ -284,7 +308,8 @@
       "link": "https://binbin.tech/",
       "appStoreId": 1483635924,
       "googlePlayId": "com.BINBIN"
-    }
+    },
+    "rental": { "schemes": [], "hosts": ["binbin.tech"], "note": "BinBin's map links no scooter; its app claims binbin.tech." }
   },
   {
     "key": "beam",
@@ -295,7 +320,8 @@
       "prefixes": [
         "beam_"
       ]
-    }
+    },
+    "rental": { "schemes": [], "hosts": [], "note": "Beam's map provides no reviewed rental link: every link it gives is refused." }
   },
   {
     "key": "gcoo",
@@ -381,7 +407,8 @@
       "link": "https://alpaca.kr/",
       "appStoreId": 1328860619,
       "googlePlayId": "com.trianglewide.sbike"
-    }
+    },
+    "rental": { "schemes": [], "hosts": [], "note": "Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://." }
   },
   {
     "key": "dart",
@@ -392,7 +419,8 @@
       "prefixes": [
         "dart_"
       ]
-    }
+    },
+    "rental": { "schemes": [], "hosts": [], "note": "DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host." }
   },
   {
     "key": "ridemovi",

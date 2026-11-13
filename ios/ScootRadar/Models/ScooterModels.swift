@@ -348,124 +348,12 @@ enum RidePriceEstimator {
 }
 
 enum ScooterRentalLinkPolicy {
-    private struct ProviderPolicy {
+    /// The URL schemes an operator's app claims and the https hosts its links are on, and their subdomains:
+    /// data/providers.json's rental, in `policies` (ProviderCatalog.generated.swift).
+    struct ProviderPolicy {
         let schemes: Set<String>
         let httpsHosts: Set<String>
     }
-
-    private static let policies: [String: ProviderPolicy] = [
-        "bolt": ProviderPolicy(
-            schemes: ["bolt"],
-            httpsHosts: ["bolt.eu", "bolt.com"]
-        ),
-        "bird": ProviderPolicy(
-            schemes: ["bird"],
-            httpsHosts: ["bird.co", "birdapp.com", "birdapp.app.link"]
-        ),
-        "dott": ProviderPolicy(
-            schemes: ["dott", "ridedott"],
-            httpsHosts: ["ridedott.com"]
-        ),
-        "hopp": ProviderPolicy(
-            schemes: ["hopp"],
-            httpsHosts: ["hopp.bike"]
-        ),
-        "lime": ProviderPolicy(
-            schemes: ["lime", "limebike"],
-            httpsHosts: ["li.me", "lime.bike", "limebike.com"]
-        ),
-        "voi": ProviderPolicy(
-            schemes: ["voiapp"],
-            httpsHosts: ["voi.com", "voiscooters.com", "lqfa.adj.st"]
-        ),
-        "pony": ProviderPolicy(
-            schemes: ["co.ponybikes.mercury", "co.ponybikes.venus"],
-            httpsHosts: ["getapony.com"]
-        ),
-        "zeus": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["zeus.city", "ridezeus.app.link"]
-        ),
-        "beryl": ProviderPolicy(
-            schemes: ["beryl-basis"],
-            httpsHosts: ["beryl.app", "beryl.cc"]
-        ),
-        "ryde": ProviderPolicy(
-            schemes: ["rydelink", "ryde-linking"],
-            httpsHosts: ["ryde.vip"]
-        ),
-        "hoppy": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["ride-hoppy.app.link", "behoppy.eu"]
-        ),
-        "qick": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["qickscooters.app.link", "qickscooters.com"]
-        ),
-        "ride_mobility": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["ridemobility.app.link", "ridemobility.eu"]
-        ),
-        "yoio": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["rideyoio.app.link", "yoio.app"]
-        ),
-        "elerent": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["elerent.app.link", "elerent.com"]
-        ),
-        "zelectra": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["zelectra.app.link", "3electra.com.ua"]
-        ),
-        "spin": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["spin.app", "spin.pm"]
-        ),
-        "veo": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["gmjc.adj.st", "veoride.com"]
-        ),
-        "lyft": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["lft.to", "lyft.com", "biketownpdx.com"]
-        ),
-        // Bolt runs its scooters in Washington, DC as Hopp, in an app of that name.
-        "bolt_hopp": ProviderPolicy(
-            schemes: ["bolt-hopp"],
-            httpsHosts: ["gethopp.com"]
-        ),
-        // SAHAM, in Riyadh, is on ATOM Mobility: its links end in the number on the scooter.
-        "saham": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["ride-saham.app.link", "sahamofficial.com"]
-        ),
-        // Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com.
-        "flamingo": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["flamingoscooters.com"]
-        ),
-        // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
-        "jolt": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["joltscooters.co.nz"]
-        ),
-        // Beam's map provides no reviewed rental URI.
-        "beam": ProviderPolicy(schemes: [], httpsHosts: []),
-        // BinBin's map links no scooter; its app claims binbin.tech.
-        "binbin": ProviderPolicy(
-            schemes: [],
-            httpsHosts: ["binbin.tech"]
-        ),
-        // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
-        "alpaca": ProviderPolicy(schemes: [], httpsHosts: []),
-        // DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host.
-        "dart": ProviderPolicy(schemes: [], httpsHosts: []),
-        "publibike": ProviderPolicy(
-            schemes: ["publibike", "velospot"],
-            httpsHosts: ["publibike.ch", "velospot.info"]
-        )
-    ]
 
     /// Links that open an operator's app elsewhere than on a scooter, as rentalLinks.ts has them.
     private static let notRentalLinks: [(scheme: String, host: String)] = [("bird", "charger-onboarding")]

@@ -1,141 +1,10 @@
-import { PROVIDERS } from '@/generated/providers';
+import { PROVIDERS, RENTAL_LINK_POLICIES } from '@/generated/providers';
 import type { RentalUris, Vehicle } from '@/generated/scooterApi';
 
 export type RentalPlatform = 'ios' | 'android' | 'web';
 
-interface ProviderRentalLinkPolicy {
-  schemes: readonly string[];
-  httpsHosts: readonly string[];
-  /** Links whose query names the vehicle for good, past the id the feed rotates. */
-  withoutQuery?: boolean;
-}
-
-const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
-  // bolt.sng.link carries the store link Bolt's feeds publish, which its app claims.
-  bolt: {
-    schemes: ['bolt'],
-    httpsHosts: ['bolt.eu', 'bolt.com', 'bolt.sng.link'],
-  },
-  bird: {
-    schemes: ['bird'],
-    httpsHosts: ['bird.co', 'birdapp.com', 'birdapp.app.link'],
-  },
-  dott: {
-    schemes: ['dott', 'ridedott'],
-    httpsHosts: ['ridedott.com'],
-  },
-  hopp: {
-    schemes: ['hopp'],
-    httpsHosts: ['hopp.bike'],
-  },
-  lime: {
-    schemes: ['lime', 'limebike'],
-    httpsHosts: ['li.me', 'lime.bike', 'limebike.com'],
-  },
-  voi: {
-    schemes: ['voiapp'],
-    httpsHosts: ['voi.com', 'voiscooters.com', 'lqfa.adj.st'],
-  },
-  publibike: {
-    schemes: ['publibike', 'velospot'],
-    httpsHosts: ['publibike.ch', 'velospot.info'],
-  },
-  pony: {
-    schemes: ['co.ponybikes.mercury', 'co.ponybikes.venus'],
-    httpsHosts: ['getapony.com'],
-  },
-  zeus: {
-    schemes: [],
-    httpsHosts: ['zeus.city', 'ridezeus.app.link'],
-  },
-  beryl: {
-    schemes: ['beryl-basis'],
-    httpsHosts: ['beryl.app', 'beryl.cc'],
-  },
-  // Ryde's link carries the scooter's IMEI; without it the page still sends the rider to the app.
-  ryde: {
-    schemes: ['rydelink', 'ryde-linking'],
-    httpsHosts: ['ryde.vip'],
-    withoutQuery: true,
-  },
-  hoppy: {
-    schemes: [],
-    httpsHosts: ['ride-hoppy.app.link', 'behoppy.eu'],
-  },
-  qick: {
-    schemes: [],
-    httpsHosts: ['qickscooters.app.link', 'qickscooters.com'],
-  },
-  // Ride Mobility runs on ATOM Mobility, as Hoppy does, and links each scooter the same way.
-  ride_mobility: {
-    schemes: [],
-    httpsHosts: ['ridemobility.app.link', 'ridemobility.eu'],
-  },
-  // Yoio is on ATOM Mobility too: its links name each scooter by the number it carries, not by hardware.
-  yoio: {
-    schemes: [],
-    httpsHosts: ['rideyoio.app.link', 'yoio.app'],
-  },
-  // Elerent too, and its links name each scooter by the code it carries, such as CAT0059 in Catania.
-  elerent: {
-    schemes: [],
-    httpsHosts: ['elerent.app.link', 'elerent.com'],
-  },
-  // 3electra too, in Kyiv: its links end in the code on the scooter, such as Z3106.
-  zelectra: {
-    schemes: [],
-    httpsHosts: ['zelectra.app.link', '3electra.com.ua'],
-  },
-  // Spin's feeds give no link of their own, and their app's, as Bird's, is the charger sign-up.
-  // Its "Open in" button is its site, www.spin.app, which no app claims.
-  spin: {
-    schemes: [],
-    httpsHosts: ['spin.app', 'spin.pm'],
-  },
-  // Veo's links are Adjust links that open its app on the scooter's number.
-  veo: {
-    schemes: [],
-    httpsHosts: ['gmjc.adj.st', 'veoride.com'],
-  },
-  // Lyft gives every scooter of a city one link, which opens its app's code scanner: chi.lft.to
-  // in Chicago, lyft.biketownpdx.com in Portland.
-  lyft: {
-    schemes: [],
-    httpsHosts: ['lft.to', 'lyft.com', 'biketownpdx.com'],
-  },
-  // Bolt runs its scooters in Washington, DC as Hopp, in an app of that name: bolt-hopp://.
-  bolt_hopp: {
-    schemes: ['bolt-hopp'],
-    httpsHosts: ['gethopp.com'],
-  },
-  // SAHAM, in Riyadh, is on ATOM Mobility too: its links end in the number on the scooter, such as 0131.
-  saham: {
-    schemes: [],
-    httpsHosts: ['ride-saham.app.link', 'sahamofficial.com'],
-  },
-  // Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com: /vehicle/<id> for
-  // iPhones, /v/<id> for Android, so no one link serves both and the web gets none.
-  flamingo: {
-    schemes: [],
-    httpsHosts: ['flamingoscooters.com'],
-  },
-  // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
-  jolt: {
-    schemes: [],
-    httpsHosts: ['joltscooters.co.nz'],
-  },
-  // Beam's map provides no reviewed rental URI. Keep every supplied link disabled.
-  beam: { schemes: [], httpsHosts: [] },
-  // BinBin's map links no scooter; its app claims binbin.tech.
-  binbin: {
-    schemes: [],
-    httpsHosts: ['binbin.tech'],
-  },
-  // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
-  alpaca: { schemes: [], httpsHosts: [] },
-  // DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host.
-  dart: { schemes: [], httpsHosts: [] },
-};
+// Each operator's schemes and hosts are data/providers.json's rental (RENTAL_LINK_POLICIES), which both apps
+// take too, without its website part.
 
 // Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give
 // bird://charger-onboarding as their app's address, the sign-up for people who charge scooters.
@@ -162,7 +31,7 @@ export function safeRentalUri(
     UNSAFE_CHARACTERS.test(candidate)
   ) return null;
 
-  const policy = PROVIDER_LINK_POLICIES[provider];
+  const policy = RENTAL_LINK_POLICIES[provider];
   if (!policy) return null;
 
   try {

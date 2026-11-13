@@ -88,9 +88,10 @@
    --countries=<code>` checks the feeds live; `npm run check:catalogs` checks
    every country.
 
-A new provider still needs its entry in `data/providers.json` and its link
-policy in `src/lib/rentalLinks.ts` and the iOS `ScooterRentalLinkPolicy`; a
-night ban goes in `data/rental-curfews.json`.
+A new provider still needs its entry in `data/providers.json`, with the URL
+schemes and https hosts of its scooters' links under `rental`, which
+`npm run generate:providers` writes for the website and both apps; a night ban
+goes in `data/rental-curfews.json`.
 
 Lime rider-map catalogs are generated from reviewed publisher service polygons
 in `data/lime-app-regions.json`. Add markets there and retain their source

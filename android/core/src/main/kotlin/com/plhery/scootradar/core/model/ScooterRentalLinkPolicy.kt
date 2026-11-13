@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.model
 
+import com.plhery.scootradar.core.generated.rentalLinkPolicies
 import java.net.IDN
 import java.net.URI
 import java.net.URISyntaxException
@@ -7,122 +8,13 @@ import java.net.URISyntaxException
 // ScooterRentalLinkPolicy from ios/ScootRadar/Models/ScooterModels.swift.
 
 object ScooterRentalLinkPolicy {
+    /**
+     * The URL schemes an operator's app claims and the https hosts its links are on, and their subdomains:
+     * data/providers.json's rental, as the iPhone app has it (scripts/generate-provider-catalog.mjs).
+     */
     internal class ProviderPolicy(val schemes: Set<String>, val httpsHosts: Set<String>)
 
-    // RentalLinkPolicyParityTest checks both tables are the Swift ones.
-    internal val policies: Map<String, ProviderPolicy> = mapOf(
-        "bolt" to ProviderPolicy(
-            schemes = setOf("bolt"),
-            httpsHosts = setOf("bolt.eu", "bolt.com"),
-        ),
-        "bird" to ProviderPolicy(
-            schemes = setOf("bird"),
-            httpsHosts = setOf("bird.co", "birdapp.com", "birdapp.app.link"),
-        ),
-        "dott" to ProviderPolicy(
-            schemes = setOf("dott", "ridedott"),
-            httpsHosts = setOf("ridedott.com"),
-        ),
-        "hopp" to ProviderPolicy(
-            schemes = setOf("hopp"),
-            httpsHosts = setOf("hopp.bike"),
-        ),
-        "lime" to ProviderPolicy(
-            schemes = setOf("lime", "limebike"),
-            httpsHosts = setOf("li.me", "lime.bike", "limebike.com"),
-        ),
-        "voi" to ProviderPolicy(
-            schemes = setOf("voiapp"),
-            httpsHosts = setOf("voi.com", "voiscooters.com", "lqfa.adj.st"),
-        ),
-        "pony" to ProviderPolicy(
-            schemes = setOf("co.ponybikes.mercury", "co.ponybikes.venus"),
-            httpsHosts = setOf("getapony.com"),
-        ),
-        "zeus" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("zeus.city", "ridezeus.app.link"),
-        ),
-        "beryl" to ProviderPolicy(
-            schemes = setOf("beryl-basis"),
-            httpsHosts = setOf("beryl.app", "beryl.cc"),
-        ),
-        "ryde" to ProviderPolicy(
-            schemes = setOf("rydelink", "ryde-linking"),
-            httpsHosts = setOf("ryde.vip"),
-        ),
-        "hoppy" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("ride-hoppy.app.link", "behoppy.eu"),
-        ),
-        "qick" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("qickscooters.app.link", "qickscooters.com"),
-        ),
-        "ride_mobility" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("ridemobility.app.link", "ridemobility.eu"),
-        ),
-        "yoio" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("rideyoio.app.link", "yoio.app"),
-        ),
-        "elerent" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("elerent.app.link", "elerent.com"),
-        ),
-        "zelectra" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("zelectra.app.link", "3electra.com.ua"),
-        ),
-        "spin" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("spin.app", "spin.pm"),
-        ),
-        "veo" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("gmjc.adj.st", "veoride.com"),
-        ),
-        "lyft" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("lft.to", "lyft.com", "biketownpdx.com"),
-        ),
-        // Bolt runs its scooters in Washington, DC as Hopp, in an app of that name.
-        "bolt_hopp" to ProviderPolicy(
-            schemes = setOf("bolt-hopp"),
-            httpsHosts = setOf("gethopp.com"),
-        ),
-        // SAHAM, in Riyadh, is on ATOM Mobility: its links end in the number on the scooter.
-        "saham" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("ride-saham.app.link", "sahamofficial.com"),
-        ),
-        // Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com.
-        "flamingo" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("flamingoscooters.com"),
-        ),
-        // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
-        "jolt" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("joltscooters.co.nz"),
-        ),
-        // Beam's map provides no reviewed rental URI.
-        "beam" to ProviderPolicy(schemes = emptySet(), httpsHosts = emptySet()),
-        // BinBin's map links no scooter; its app claims binbin.tech.
-        "binbin" to ProviderPolicy(
-            schemes = emptySet(),
-            httpsHosts = setOf("binbin.tech"),
-        ),
-        // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
-        "alpaca" to ProviderPolicy(schemes = emptySet(), httpsHosts = emptySet()),
-        // DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host.
-        "dart" to ProviderPolicy(schemes = emptySet(), httpsHosts = emptySet()),
-        "publibike" to ProviderPolicy(
-            schemes = setOf("publibike", "velospot"),
-            httpsHosts = setOf("publibike.ch", "velospot.info"),
-        ),
-    )
+    internal val policies: Map<String, ProviderPolicy> get() = rentalLinkPolicies
 
     /** Links that open an operator's app elsewhere than on a scooter, as rentalLinks.ts has them. */
     internal val notRentalLinks: List<Pair<String, String>> = listOf("bird" to "charger-onboarding")

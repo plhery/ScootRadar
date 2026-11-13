@@ -266,6 +266,64 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
+extension ScooterRentalLinkPolicy {
+    /// data/providers.json's rental: the URL schemes each operator's app claims and the https hosts its links are
+    /// on, without what only the website takes (its website part).
+    static let policies: [String: ProviderPolicy] = [
+        // bolt.sng.link carries the store link Bolt's feeds publish, which its app claims (a20df3a7). Only the
+        // website's rules take it on a scooter; the apps' never have.
+        "bolt": ProviderPolicy(schemes: ["bolt"], httpsHosts: ["bolt.eu","bolt.com"]),
+        "bird": ProviderPolicy(schemes: ["bird"], httpsHosts: ["bird.co","birdapp.com","birdapp.app.link"]),
+        "dott": ProviderPolicy(schemes: ["dott","ridedott"], httpsHosts: ["ridedott.com"]),
+        "hopp": ProviderPolicy(schemes: ["hopp"], httpsHosts: ["hopp.bike"]),
+        "lime": ProviderPolicy(schemes: ["lime","limebike"], httpsHosts: ["li.me","lime.bike","limebike.com"]),
+        "voi": ProviderPolicy(schemes: ["voiapp"], httpsHosts: ["voi.com","voiscooters.com","lqfa.adj.st"]),
+        "pony": ProviderPolicy(schemes: ["co.ponybikes.mercury","co.ponybikes.venus"], httpsHosts: ["getapony.com"]),
+        "publibike": ProviderPolicy(schemes: ["publibike","velospot"], httpsHosts: ["publibike.ch","velospot.info"]),
+        "zeus": ProviderPolicy(schemes: [], httpsHosts: ["zeus.city","ridezeus.app.link"]),
+        "beryl": ProviderPolicy(schemes: ["beryl-basis"], httpsHosts: ["beryl.app","beryl.cc"]),
+        // Ryde's link carries the scooter's IMEI. The website's rules drop its query, and the page still sends the
+        // rider to the app; the apps' rules keep it.
+        "ryde": ProviderPolicy(schemes: ["rydelink","ryde-linking"], httpsHosts: ["ryde.vip"]),
+        "hoppy": ProviderPolicy(schemes: [], httpsHosts: ["ride-hoppy.app.link","behoppy.eu"]),
+        // Ride Mobility runs on ATOM Mobility, as Hoppy does, and links each scooter the same way.
+        "ride_mobility": ProviderPolicy(schemes: [], httpsHosts: ["ridemobility.app.link","ridemobility.eu"]),
+        // Yoio is on ATOM Mobility too: its links name each scooter by the number it carries, not by hardware.
+        "yoio": ProviderPolicy(schemes: [], httpsHosts: ["rideyoio.app.link","yoio.app"]),
+        // Elerent is on ATOM Mobility too, and its links name each scooter by the code it carries, such as CAT0059 in
+        // Catania.
+        "elerent": ProviderPolicy(schemes: [], httpsHosts: ["elerent.app.link","elerent.com"]),
+        // 3electra is on ATOM Mobility too, in Kyiv: its links end in the code on the scooter, such as Z3106.
+        "zelectra": ProviderPolicy(schemes: [], httpsHosts: ["zelectra.app.link","3electra.com.ua"]),
+        // Spin's feeds give no link of their own, and their app's, as Bird's, is the charger sign-up. Its "Open in"
+        // button is its site, www.spin.app, which no app claims.
+        "spin": ProviderPolicy(schemes: [], httpsHosts: ["spin.app","spin.pm"]),
+        // Veo's links are Adjust links that open its app on the scooter's number.
+        "veo": ProviderPolicy(schemes: [], httpsHosts: ["gmjc.adj.st","veoride.com"]),
+        // Lyft gives every scooter of a city one link, which opens its app's code scanner: chi.lft.to in Chicago,
+        // lyft.biketownpdx.com in Portland.
+        "lyft": ProviderPolicy(schemes: [], httpsHosts: ["lft.to","lyft.com","biketownpdx.com"]),
+        // Bolt runs its scooters in Washington, DC as Hopp, in an app of that name: bolt-hopp://.
+        "bolt_hopp": ProviderPolicy(schemes: ["bolt-hopp"], httpsHosts: ["gethopp.com"]),
+        // SAHAM, in Riyadh, is on ATOM Mobility too: its links end in the number on the scooter, such as 0131.
+        "saham": ProviderPolicy(schemes: [], httpsHosts: ["ride-saham.app.link","sahamofficial.com"]),
+        // Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com: /vehicle/<id> for iPhones, /v/<id>
+        // for Android, so no one link serves both and the web gets none.
+        "flamingo": ProviderPolicy(schemes: [], httpsHosts: ["flamingoscooters.com"]),
+        // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
+        "jolt": ProviderPolicy(schemes: [], httpsHosts: ["joltscooters.co.nz"]),
+        "qick": ProviderPolicy(schemes: [], httpsHosts: ["qickscooters.app.link","qickscooters.com"]),
+        // BinBin's map links no scooter; its app claims binbin.tech.
+        "binbin": ProviderPolicy(schemes: [], httpsHosts: ["binbin.tech"]),
+        // Beam's map provides no reviewed rental link: every link it gives is refused.
+        "beam": ProviderPolicy(schemes: [], httpsHosts: []),
+        // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
+        "alpaca": ProviderPolicy(schemes: [], httpsHosts: []),
+        // DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host.
+        "dart": ProviderPolicy(schemes: [], httpsHosts: []),
+    ]
+}
+
 enum ScooterProviderCoverage {
     private static let swissAreas: [GeoBounds] = [
         GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262),
