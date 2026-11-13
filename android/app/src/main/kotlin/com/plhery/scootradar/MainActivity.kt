@@ -31,6 +31,7 @@ import com.plhery.scootradar.app.PlayReviewRequester
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.app.ScreenOrientation
+import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.map.ScooterMap
 import com.plhery.scootradar.ui.ScooterMapScreen
@@ -38,6 +39,7 @@ import com.plhery.scootradar.ui.ScreenShortcuts
 import com.plhery.scootradar.ui.keyboardShortcutGroups
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import java.time.Instant
 
 /**
  * The app's one activity, edge to edge. It is AppCompat's so that a language chosen for the app applies from
@@ -56,6 +58,8 @@ class MainActivity : AppCompatActivity() {
                     container = container,
                     defaults = if (arguments.isEmpty()) container.defaults else LaunchArgumentDefaults(arguments, container.defaults),
                     languageAtLaunch = container.languages.choiceAtLaunch(),
+                    api = mapServerStandIn ?: container.api,
+                    now = mapClockStandIn ?: Instant::now,
                     savedState = createSavedStateHandle(),
                 )
             }
@@ -264,5 +268,13 @@ class MainActivity : AppCompatActivity() {
          */
         @VisibleForTesting
         var mapStandIn: (@Composable (dark: Boolean) -> Unit)? = null
+
+        /** A JVM test's server for the map, in place of the app's own. Null in the app. */
+        @VisibleForTesting
+        var mapServerStandIn: ScooterAPIClient? = null
+
+        /** A JVM test's clock for the map, which it moves by hand, in place of the phone's. Null in the app. */
+        @VisibleForTesting
+        var mapClockStandIn: (() -> Instant)? = null
     }
 }

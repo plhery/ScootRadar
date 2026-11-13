@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 /**
  * Holds the map's controller for as long as the screen lives, through a rotation or a resized window, as the
@@ -47,6 +48,8 @@ class ScooterMapViewModel(
     val analytics: ScooterAnalytics = container.analytics,
     /** Where the map's scooters come from: the server, or a test's own answers. */
     api: ScooterAPIClient = container.api,
+    /** The clock the map reads: the phone's, or a test's. */
+    now: () -> Instant = Instant::now,
     /** Where the cities' zones the app downloads are kept. */
     cityZoneCache: CityZoneCache? = container.cityZoneCache,
     /** What the screen keeps through the end of the process: `@SceneStorage("panelCollapsed")`. */
@@ -90,6 +93,7 @@ class ScooterMapViewModel(
         start = container.start,
         debug = BuildConfig.DEBUG,
         cityZoneCache = cityZoneCache,
+        now = now,
     )
 
     init {
