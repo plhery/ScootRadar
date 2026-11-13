@@ -110,8 +110,9 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   The share of every first view (cold) whose collection started within 15 s and
   succeeded, the failed and abandoned ones counted as missed, which is 0.9 or more
   when their P90 is within 15 s:
-  `sum by (provider) (increase(scootradar_refresh_seconds_bucket{kind="cold",phase="start",le="15"}[7d])) / sum by (provider) (increase(scootradar_refreshes_total{kind="cold"}[7d]))`;
-  `outcome!="abandoned"` in the divisor leaves out the groups nobody stayed on.
+  `sum by (provider) (increase(scootradar_refresh_seconds_bucket{kind="cold",phase="start",le="15.0"}[7d])) / sum by (provider) (increase(scootradar_refreshes_total{kind="cold"}[7d]))`;
+  `outcome!="abandoned"` in the divisor leaves out the groups nobody stayed on. Prometheus (3.x) keeps a bound
+  as `15.0` where the cache writes `15`, so `le="15"` matches nothing.
   A long `start` says the host's or account's slots are taken (more accounts or
   addresses would help); a `done` long past `first` a slow sweep; a long
   `first` with a short `start`, a client's pace (its requests queue in it, as
