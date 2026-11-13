@@ -107,6 +107,9 @@ function validateCatalog() {
 // every link refused. Until 13 November 2026 (LOG-367) each of the three kept its own table by hand.
 const RENTAL_SCHEME = /^[a-z][a-z0-9+.-]*$/;
 const RENTAL_HOST = /^[a-z0-9-]+(\.[a-z0-9-]+)+$/;
+// Schemes no operator's app claims, which a browser or the phone itself runs: a link on one would run a script, show
+// a page made of the link itself, read a file or start whatever app it names.
+const NOT_APP_SCHEMES = new Set(['http', 'https', 'javascript', 'vbscript', 'data', 'file', 'blob', 'about', 'content', 'intent']);
 
 function validateRental({ key, rental }) {
   const problem = message => new Error(`Provider ${key}: rental ${message}`);
@@ -116,8 +119,8 @@ function validateRental({ key, rental }) {
     && values.every(value => typeof value === 'string' && pattern.test(value)) && new Set(values).size === values.length;
   if (!only(rental, ['schemes', 'hosts', 'website', 'note'])) throw problem('takes schemes, hosts, website and note');
   // The schemes are the app's own: a link on http is never a rental's, and one on https is told by its host.
-  if (!distinct(rental.schemes, RENTAL_SCHEME) || rental.schemes.some(scheme => /^https?$/.test(scheme))) {
-    throw problem('schemes need to be distinct lower-case URL schemes, neither http nor https');
+  if (!distinct(rental.schemes, RENTAL_SCHEME) || rental.schemes.some(scheme => NOT_APP_SCHEMES.has(scheme))) {
+    throw problem(`schemes need to be distinct lower-case URL schemes of the operator's app, none of ${[...NOT_APP_SCHEMES].join(', ')}`);
   }
   if (!distinct(rental.hosts, RENTAL_HOST)) throw problem('hosts need to be distinct lower-case host names');
   const { website } = rental;

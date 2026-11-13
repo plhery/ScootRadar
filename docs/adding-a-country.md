@@ -90,8 +90,8 @@
 
 A new provider still needs its entry in `data/providers.json`, with the URL
 schemes and https hosts of its scooters' links under `rental`, which
-`npm run generate:providers` writes for the website and both apps; a night ban
-goes in `data/rental-curfews.json`.
+`npm run generate:providers` writes for the website and the iPhone app, and the
+Android app's build for itself; a night ban goes in `data/rental-curfews.json`.
 
 Lime rider-map catalogs are generated from reviewed publisher service polygons
 in `data/lime-app-regions.json`. Add markets there and retain their source
