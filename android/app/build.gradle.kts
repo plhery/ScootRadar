@@ -22,7 +22,7 @@ android {
         targetSdk = 37
         versionCode = 9
         // The iPhone app's version (MARKETING_VERSION); versionCode goes up by one with each upload to Play.
-        versionName = "1.4.0"
+        versionName = "1.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
