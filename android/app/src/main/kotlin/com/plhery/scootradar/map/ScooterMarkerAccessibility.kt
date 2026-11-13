@@ -169,6 +169,11 @@ class ScooterMarkerAccessibility(
     private val map: MarkerMap,
     /** Pixels in a point. */
     private val ratio: Float,
+    /**
+     * TalkBack's focus is on a marker the map no longer has: TalkBack moves it on by itself, which the rider did not
+     * ask for (MainActivity's half-hour pause).
+     */
+    private val focusOnAGoneMarker: () -> Unit = {},
     /** Draws what a double tap changed. */
     private val changed: () -> Unit,
 ) : ExploreByTouchHelper(host) {
@@ -215,6 +220,12 @@ class ScooterMarkerAccessibility(
             numbers[element.key] = id
             byNumber[id] = element
         }
+        // A refresh, data past its time or Bird's new names took away the marker TalkBack's focus is on. TalkBack
+        // finds it gone as it reads it again, which lists the markers anew, and then moves its focus by itself, to the
+        // search bar or another marker: TalkBack 16.2 on 13 Nov 2026, its focus on a group of 2 gone as the data
+        // expired offline, put it on the search bar 0.6 s later.
+        val focused = accessibilityFocusedVirtualViewId
+        if (focused != INVALID_ID && focused in listed && focused !in byNumber) focusOnAGoneMarker()
         ids = numbers
         listed = byNumber
         this.elements = elements

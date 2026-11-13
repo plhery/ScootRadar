@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
                         dark = dark,
                         screenshot = model.screenshotCamera,
                         analytics = model.analytics,
+                        focusOnAGoneMarker = ::talkBacksFocusOnAGoneMarker,
                     )
                 }
             }
@@ -139,15 +140,30 @@ class MainActivity : AppCompatActivity() {
      * TalkBack's focus moved, by a swipe as well as by a finger over the screen, or a control clicked through
      * accessibility, as Switch Access and Voice Access click: the rider is at the screen, though no touch reached the
      * window (the iPhone's elementFocusedNotification, 664938c0). Every view in the window sends its accessibility
-     * events up through the window's own view, the map's scooters and Compose's nodes alike.
+     * events up through the window's own view, the map's scooters and Compose's nodes alike. TalkBack's focus moved
+     * off a marker the map no longer has is TalkBack's own doing ([talkBacksFocusOnAGoneMarker]).
      */
     private val riderInWindow = object : View.AccessibilityDelegate() {
         override fun onRequestSendAccessibilityEvent(host: ViewGroup, child: View, event: AccessibilityEvent): Boolean {
             when (event.eventType) {
-                AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED, AccessibilityEvent.TYPE_VIEW_CLICKED -> noteInteraction()
+                AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED -> if (focusStranded) focusStranded = false else noteInteraction()
+                AccessibilityEvent.TYPE_VIEW_CLICKED -> noteInteraction()
             }
             return super.onRequestSendAccessibilityEvent(host, child, event)
         }
+    }
+
+    /** TalkBack's focus is on a marker the map no longer has, until TalkBack moves it on. */
+    private var focusStranded = false
+
+    /**
+     * The map's markers, listed again after a refresh, no longer have the one TalkBack's focus is on
+     * ([ScooterMarkerAccessibility]): TalkBack's next move of its focus is its own, putting it back on the screen, and
+     * not the rider's. A rider who swipes from there first loses that one swipe to the pause, and no more.
+     */
+    @VisibleForTesting
+    internal fun talkBacksFocusOnAGoneMarker() {
+        focusStranded = true
     }
 
     /**

@@ -92,6 +92,24 @@ class MainActivityIdlePauseTest {
         assertFalse(controller.isPausedForIdle.value)
     }
 
+    /**
+     * TalkBack's focus moved by TalkBack itself, after a refresh took away the marker it was on (TalkBack 16.2 on
+     * Phone_Min, 13 Nov 2026: a group of 2 gone as the data expired offline, and the focus on the search bar 0.6 s
+     * later), is not the rider; the rider's next move is.
+     */
+    @Test
+    fun talkBacksOwnMoveOffAMarkerGoneLeavesItPausedAndTheRidersNextEndsIt() {
+        val (activity, controller) = paused()
+        activity.talkBacksFocusOnAGoneMarker()
+        activity.sendsUp(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED)
+        idle()
+        assertTrue("TalkBack's own move", controller.isPausedForIdle.value)
+
+        activity.sendsUp(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED)
+        idle()
+        assertFalse("the rider's", controller.isPausedForIdle.value)
+    }
+
     /** A control clicked through accessibility, as Switch Access and Voice Access click. */
     @Test
     fun aControlClickedThroughAccessibilityEndsThePause() {

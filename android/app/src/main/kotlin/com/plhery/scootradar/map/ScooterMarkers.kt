@@ -68,6 +68,8 @@ class ScooterMarkers(
     animates: () -> Boolean = { ValueAnimator.areAnimatorsEnabled() },
     /** The look the first markers are drawn in, which the style may be loaded for before the screen hands it over. */
     look: Look = Look.day,
+    /** TalkBack's focus is on a marker the map no longer has, which TalkBack moves on by itself. */
+    focusOnAGoneMarker: () -> Unit = {},
 ) {
     /**
      * The markers' look: [isDark] for the dots, clusters and faded markers, dark over the satellite picture too, and
@@ -347,7 +349,7 @@ class ScooterMarkers(
     }
 
     /** TalkBack's virtual views of the markers. */
-    private val accessibility = ScooterMarkerAccessibility(view, scene, markerMap, view.pixelRatio) { flush() }
+    private val accessibility = ScooterMarkerAccessibility(view, scene, markerMap, view.pixelRatio, focusOnAGoneMarker) { flush() }
 
     /** The pin's title while its callout shows, a tap having selected the pin (MAP-270), or a faded scooter's tip's. */
     var calloutTitle by mutableStateOf<String?>(null)

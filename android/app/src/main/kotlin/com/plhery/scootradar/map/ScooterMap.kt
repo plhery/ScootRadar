@@ -161,6 +161,8 @@ fun ScooterMap(
     screenshot: ScooterScreenshotCamera.Camera? = null,
     /** Where the taps on bays go, as the iPhone's map tracks parking_select. */
     analytics: ScooterAnalytics? = null,
+    /** TalkBack's focus is on a marker the map no longer has, which TalkBack moves on by itself. */
+    focusOnAGoneMarker: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -223,7 +225,10 @@ fun ScooterMap(
                 walking.mapDidRest(animated)
                 zoning.mapDidRest()
             }
-            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }, look = currentMarkerLook).also {
+            marked = ScooterMarkers(
+                map, view, controller, analytics, scope, move = { moving.show(it) }, look = currentMarkerLook,
+                focusOnAGoneMarker = focusOnAGoneMarker,
+            ).also {
                 markers = it
                 view.markers = it
             }

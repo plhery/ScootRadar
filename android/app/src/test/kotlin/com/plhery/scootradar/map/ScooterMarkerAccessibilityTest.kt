@@ -14,6 +14,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapProjection
@@ -512,6 +513,49 @@ class ScooterMarkerAccessibilityTest {
         assertEquals(emptyList<Int>(), accessibility.virtualViews())
         accessibility.covered = false
         assertEquals(free, at(355.0, 300.0))
+    }
+
+    /**
+     * A refresh that takes away the marker TalkBack's focus is on is told once, as the markers are listed again, which
+     * TalkBack's reading the marker again does: TalkBack then moves its focus on by itself (MainActivity's half-hour
+     * pause). A marker gone from under no focus, or the focus moved from one marker to another, is not told.
+     */
+    @Test
+    fun aRefreshTakingAwayTheMarkerTalkBacksFocusIsOnIsToldOnce() {
+        val map = FlatMarkerMap()
+        val first = scooter("a", "lime", at = map.at(195.0, 300.0))
+        val second = scooter("b", "lime", at = map.at(195.0, 500.0))
+        val third = scooter("c", "lime", at = map.at(195.0, 700.0))
+        scene.reconcile(listOf(first, second, third), revision = 1)
+        scene.updateLook(map)
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        shadowOf(context.getSystemService(AccessibilityManager::class.java)).apply {
+            setEnabled(true)
+            setTouchExplorationEnabled(true)
+        }
+        FrameLayout(context).addView(host)
+        var stranded = 0
+        val accessibility = ScooterMarkerAccessibility(host, scene, map, density, focusOnAGoneMarker = { stranded += 1 }) { changes += 1 }
+        val provider = accessibility.getAccessibilityNodeProvider(host)!!
+        fun focus(id: Int) = provider.performAction(id, AccessibilityNodeInfoCompat.ACTION_ACCESSIBILITY_FOCUS, null)
+        fun refresh(vararg scooters: Scooter, revision: Int): List<Int> {
+            scene.reconcile(scooters.toList(), revision = revision)
+            accessibility.refresh()
+            return accessibility.virtualViews()
+        }
+        val (a, b, c) = accessibility.virtualViews()
+
+        assertTrue(focus(a))
+        assertTrue(focus(b))
+        assertEquals(listOf(b, c), refresh(second, third, revision = 2))
+        assertEquals("the focus on a marker still there", 0, stranded)
+
+        assertEquals(listOf(c), refresh(third, revision = 3))
+        assertEquals(1, stranded)
+        assertEquals(listOf(c), refresh(third, revision = 4))
+        assertEquals("told once", 1, stranded)
+        assertTrue(focus(c))
+        assertEquals(1, stranded)
     }
 
     @Test
