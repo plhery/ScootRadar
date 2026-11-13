@@ -51,7 +51,7 @@ export default function AccessibilityPage() {
         <p>This page is about the ScootRadar app on the App Store, for iPhone and iPad.</p>
 
         <h2>Works today</h2>
-        <p>The App Store lists two accessibility features for ScootRadar, on iPhone and iPad:</p>
+        <p>The App Store lists three accessibility features for ScootRadar, on iPhone and iPad:</p>
         <ul>
           <li>
             <strong>Dark Interface:</strong> Settings › Appearance › Dark keeps the whole app dark,
@@ -63,26 +63,27 @@ export default function AccessibilityPage() {
             place without zooming or sliding there: when you tap a cluster, pick a scooter, show the
             walk to it or go back to where you are.
           </li>
+          <li>
+            <strong>Larger Text:</strong> the app follows the text size you choose, up to the
+            largest accessibility sizes. At twice the standard size and above, the zone legend stays
+            between the search bar and the scooter&apos;s card, and scrolls when it doesn&apos;t fit,
+            so the card stays on the screen. In Filters, providers&apos; names don&apos;t break inside
+            a word. Icons grow with the text. On the map, the names and walking times grow with the
+            text size up to twice their size, and the counts grow as far as their circles allow. A
+            name with no room to show whole is left out rather than cut off.
+          </li>
         </ul>
 
-        <h2>In the next update</h2>
-        <p>These fixes are built, but not released yet. They come with the version after 1.3.0.</p>
+        <h2>Also in the app</h2>
+        <p>
+          These fixes help, but not yet enough for the App Store to list the feature. They came with
+          version 1.4.0, except where it says the next update.
+        </p>
         <ul>
           <li>
             <strong>Voice Control:</strong> the search bar, the nearest-scooter button and the price
-            answer to the words they show, and the range slider in Filters to &ldquo;Range&rdquo;, the
-            word above it.
-          </li>
-          <li>
-            <strong>Larger Text:</strong> at twice the standard text size and above, the zone legend
-            stays between the search bar and the scooter&apos;s card, and scrolls when it doesn&apos;t
-            fit, so the card stays on the screen. In Filters, providers&apos; names no longer break
-            inside a word. On the map, the names and walking times grow with the text size up to
-            twice their size, and the counts grow as far as their circles allow. A name with no room
-            to show whole is left out rather than cut off.
-          </li>
-          <li>
-            <strong>Icons:</strong> icons grow with the text size.
+            answer to the words they show. In the next update, the range slider in Filters answers to
+            &ldquo;Range&rdquo;, the word above it.
           </li>
           <li>
             <strong>Sufficient Contrast:</strong> on a provider&apos;s colour, the selected
@@ -133,7 +134,7 @@ export default function AccessibilityPage() {
           device and which screen, and the feature you use, such as VoiceOver or Larger Text.
         </p>
 
-        <p>Last updated 10 November 2026</p>
+        <p>Last updated 13 November 2026</p>
       </article>
     </main>
   );

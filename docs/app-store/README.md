@@ -72,18 +72,19 @@ The description's ALSO list names only declared features too.
 | --- | --- | --- |
 | Dark Interface | Yes | Settings › Appearance › Dark, and System in Dark Mode |
 | Reduced Motion | Yes, since 4 November 2026 | Tested in 1.3.0 on the iPhone and iPad simulators: with Reduce Motion on, the map moves without animating |
-| Larger Text | Not yet: waits for the next version | See below |
+| Larger Text | Yes, since 13 November 2026 | Checked in 1.4.0 at AX3 and AX5 on the iPhone and iPad simulators: see below |
 | VoiceOver, Voice Control | No | Not tested on a device yet |
 | Differentiate Without Color Alone, Sufficient Contrast | No, and staying No | Some providers' dots differ only by colour, the light map's dots are below the contrast Apple asks, and so is the dark map's no-riding edge (2.8:1 on Quiet's dark land). On 6 November 2026 the map's look was kept as it is, so both stay undeclared and the accessibility page lists them under "Known gaps", with what a rider can do meanwhile. From the build after 1.3.0, what is written on a provider's colour (the selected pill, the initials, the parking "P") reads at 4.5:1 or better (`ScooterMapLook.ink(on:)`), and Settings' grey text is darker: 5.4:1 on the fully open sheet, about 4.3:1 where the half-open glass sheet lets the light map through |
 | Captions, Audio Descriptions | No | The app has no video or audio |
 
-**Larger Text waits for the build after 1.3.0.** In 1.3.0, at twice the standard
+**Larger Text is declared since 1.4.0.** In 1.3.0, at twice the standard
 text size (AX3), the zone legend over a tall card went up under the search bar
 and pushed the card past the foot of the screen; the fix of 4 November 2026
-keeps the legend between the two, scrolling. Declare Larger Text on iPhone and
-iPad only once the version with the fix is live on the App Store, and move the
-page's Larger Text line from "In the next update" to "Works today" in the same
-change. The text drawn on the map follows the text size too since the same
+keeps the legend between the two, scrolling. Once 1.4.0 was live, its build
+was checked on 13 November 2026 at AX3 and AX5 on the iPhone 17 Pro Max and
+iPad simulators (map, legend, a scooter's card to its end, the walk, Filters,
+search and Settings), Larger Text was declared on iPhone and iPad, and the
+page's Larger Text line moved to "Works today" in the same change. The text drawn on the map follows the text size too since the same
 build: the scooters' names and walking times grow up to twice their size (AX3
 and above stay at 24 pt, their pills 52 pt tall), and the clusters' counts grow
 as far as their discs allow, which keep their size so the map is laid out as

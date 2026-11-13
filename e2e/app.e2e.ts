@@ -2876,7 +2876,7 @@ test('publishes an accessibility page for the apps on the App Store, accessible 
   await page.goto('/accessibility');
 
   await expect(page.getByRole('heading', { level: 1, name: 'Accessibility' })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Works today', 'In the next update', 'Still working on', 'Known gaps', 'Report a problem']);
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Works today', 'Also in the app', 'Still working on', 'Known gaps', 'Report a problem']);
   await expect(page.getByRole('link', { name: 'hello@scootradar.com' })).toHaveAttribute('href', 'mailto:hello@scootradar.com');
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
