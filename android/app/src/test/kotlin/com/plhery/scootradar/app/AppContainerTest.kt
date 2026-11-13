@@ -304,35 +304,34 @@ class AppContainerTest {
      * X-M21: the watch the app sets as it starts is the server's, and not only a callback: the loss ends the server's
      * requests and closes the connections they keep, which only the API's networkLost does (review-app-ah 3). An idle
      * connection to the phone itself stands for the server's.
+     *
+     * The client is the app's one (ScooterAPI.privateClient), shared by every test in the process, where an earlier
+     * one's request may still be under way and join the pool at any moment: so the test follows its own connection,
+     * which the server sees closed, rather than counting the pool's.
      */
     @Test
     fun theAppsOwnWatchClosesTheServersConnections() {
         val connectivity = context.getSystemService(ConnectivityManager::class.java)
         val watch = shadowOf(connectivity).networkCallbacks.single()
         val api = (context as ScooterApplication).container.api
-        // The app's one client, which earlier tests may have left connections in.
-        val pool = api.client.connectionPool
-        pool.evictAll()
-        val done = CountDownLatch(1)
+        val closed = CountDownLatch(1)
         ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->
             thread(name = "Server") {
                 server.accept().use { socket ->
+                    socket.soTimeout = 10_000
                     val request = socket.getInputStream().bufferedReader()
                     while (!request.readLine().isNullOrEmpty()) Unit
                     socket.getOutputStream().apply { write("HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n".toByteArray()); flush() }
-                    done.await(5, TimeUnit.SECONDS)
+                    // The client closing its end, which the next read sees as the stream's end.
+                    if (runCatching { request.read() }.getOrNull() == -1) closed.countDown()
                 }
             }
-            try {
-                val url = "http://${server.inetAddress.hostAddress}:${server.localPort}/"
-                api.client.newCall(Request.Builder().url(url).build()).execute().close()
-                assertEquals("the connection kept", 1, pool.connectionCount())
+            val url = "http://${server.inetAddress.hostAddress}:${server.localPort}/"
+            api.client.newCall(Request.Builder().url(url).build()).execute().close()
+            assertFalse("the connection kept", closed.await(300, TimeUnit.MILLISECONDS))
 
-                watch.onLost(checkNotNull(connectivity.activeNetwork))
-                assertEquals("the connections gone with the network", 0, pool.connectionCount())
-            } finally {
-                done.countDown()
-            }
+            watch.onLost(checkNotNull(connectivity.activeNetwork))
+            assertTrue("the connection closed with the network", closed.await(5, TimeUnit.SECONDS))
         }
     }
 
