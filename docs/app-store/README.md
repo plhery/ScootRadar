@@ -21,7 +21,7 @@ in `screenshots/<locale>/`.
 | Privacy policy URL | https://scootradar.com/privacy |
 | Accessibility URL | https://scootradar.com/accessibility (see Accessibility) |
 | Copyright | 2026 Paul-Louis Hery |
-| Version | 1.4.0 |
+| Version | 1.5.0 |
 | Devices | iPhone and iPad (`TARGETED_DEVICE_FAMILY = "1,2"`), iOS 26 or newer. iPhones keep the app upright; iPads turn it every way |
 | Export compliance | `ITSAppUsesNonExemptEncryption = NO` in the build: the app only uses HTTPS through Apple's APIs |
 | Sign-in for review | none: the app has no accounts |
