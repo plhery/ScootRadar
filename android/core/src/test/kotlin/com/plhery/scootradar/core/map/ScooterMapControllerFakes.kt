@@ -129,8 +129,8 @@ internal class CancelledAPI : ScooterAPIClient {
     }
 }
 
-/** Holds a request until the test releases it, optionally with a failure. */
-internal class HeldScooterAPI(private val response: ScooterResponse) : ScooterAPIClient {
+/** Holds a request until the test releases it, optionally with a failure. Answers [response], which a test may change. */
+internal class HeldScooterAPI(var response: ScooterResponse) : ScooterAPIClient {
     private var calls = 0
     private var holdsNextRequest = false
     private var held: CompletableDeferred<Unit>? = null

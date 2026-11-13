@@ -395,11 +395,11 @@ class ScooterMapControllerTest {
         assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
         assertEquals(4_828, api.lastMinimumRange)
 
-        // The server left out the groups' short ranges: they go at once, the faded ones too, and are asked for
-        // again with all, 180 ms later, as after a move.
+        // The server left out the groups' short ranges: they are asked for again with all, 180 ms later, as after a
+        // move, and the groups of 3 mi, the faded ones too, stay until they come.
         model.resetFilters()
-        assertTrue(model.clusters.value.isEmpty())
-        assertTrue(model.lastSeenClusters.value.isEmpty())
+        assertEquals(listOf(group), model.clusters.value)
+        assertEquals(listOf(faded), model.lastSeenClusters.value)
         advanceTimeBy(179)
         assertEquals(2, api.calls)
         advanceTimeBy(1)
@@ -445,6 +445,49 @@ class ScooterMapControllerTest {
         assertEquals(4_828, defaults.integer(forKey = "minimum-range"))
         assertNull(model.selectedScooterID.value)
         assertTrue(model.mapScooters.value.isEmpty())
+    }
+
+    /**
+     * A range chosen where the server groups the scooters: the groups are asked for again, filtered there. Until they
+     * come, the map keeps those it had and every count with them, not the scooters standing alone: Zürich's overview
+     * said "Show 1 scooter" for a second or two. Reset asks again too.
+     */
+    @Test
+    fun aRangeKeepsTheGroupsAndTheirCountsUntilTheFilteredOnesCome() = runTest {
+        val lone = scooter(id = "lone", provider = "lime", battery = null, rangeMeters = 20_000)
+        fun grouped(count: Int) = ScooterResponse(
+            vehicles = listOf(lone),
+            clusters = listOf(
+                ScooterCluster(id = "z", latitude = 47.377, longitude = 8.542, count = count, providers = mapOf("lime" to count)),
+            ),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 13),
+        )
+        val api = HeldScooterAPI(grouped(120))
+        val model = makeController(api)
+        model.updateViewport(zurichRegion, zoom = 13)
+        assertTrue(waitUntil { api.callCount() == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(121, model.visibleCount)
+
+        api.holdNextRequest()
+        api.response = grouped(80)
+        model.setMinimumRange(4_828)
+        assertTrue(waitUntil { api.isHolding })
+        assertEquals(121, model.visibleCount)
+        assertEquals("Show 121 scooters", model.showResultsTitle)
+        assertEquals(121, model.dockChips.first { it.provider == Lime }.count)
+        assertEquals(121, (model.dock as ScooterDockContent.Summary).summary.count)
+
+        api.release()
+        assertTrue(waitUntil { !model.isLoading.value && model.visibleCount == 81 })
+        assertEquals("Show 81 scooters", model.showResultsTitle)
+
+        api.holdNextRequest()
+        api.response = grouped(120)
+        model.resetFilters()
+        assertTrue(waitUntil { api.isHolding })
+        assertEquals(81, model.visibleCount)
+        api.release()
+        assertTrue(waitUntil { !model.isLoading.value && model.visibleCount == 121 })
     }
 
     @Test
@@ -2547,10 +2590,11 @@ class ScooterMapControllerTest {
         assertEquals(listOf(mapOf("lime" to 5)), model.mapLastSeenClusters.value.map { it.providers })
         assertEquals(5, model.visibleLastSeenCount.value)
 
-        // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again.
+        // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again,
+        // and the faded groups stay as they were until the new ones come.
         model.setMinimumRange(4_828)
-        assertTrue(model.mapLastSeenClusters.value.isEmpty())
-        assertEquals(0, model.visibleLastSeenCount.value)
+        assertEquals(listOf(mapOf("lime" to 5)), model.mapLastSeenClusters.value.map { it.providers })
+        assertEquals(5, model.visibleLastSeenCount.value)
         val asked = waitUntil { api.calls == 2 && !model.isLoading.value }
         assertTrue(asked)
         assertEquals(4_828, api.lastMinimumRange)

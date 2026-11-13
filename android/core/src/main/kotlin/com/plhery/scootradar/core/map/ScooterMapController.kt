@@ -1104,11 +1104,13 @@ class ScooterMapController(
         }
     }
 
-    /** The groups the server counted were counted with the minimums of before: they are asked for again. */
+    /**
+     * The groups the server counted were counted with the minimums of before: they are asked for again. They stay on
+     * the map until the new ones come, as any answer stays until the next: emptied now, the count, the chips and
+     * "Show n scooters" were those of the few scooters standing alone, "Show 1 scooter" over Zürich for a second.
+     */
     private fun refetchFilteredClusters() {
         if (!ScooterClusteringPolicy.shouldCluster(viewportZoom.value)) return
-        setClusters(emptyList())
-        setLastSeenClusters(emptyList())
         scheduleFetch(viewport.value.expanded(by = 0.25), zoom = viewportZoom.value, debounce = true)
     }
 
