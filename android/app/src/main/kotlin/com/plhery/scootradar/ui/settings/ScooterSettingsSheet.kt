@@ -63,6 +63,7 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
@@ -73,8 +74,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.intl.LocaleList
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -578,17 +581,7 @@ private fun SettingsRoot(
                         // Very large text: the status goes under the name, so neither is cut off.
                         FormText(AnnotatedString(provider.displayName), Modifier.weight(1f), status, Detail.Subheadline)
                     } else {
-                        // The name takes the room it needs, and the status the rest, at the end.
-                        Text(provider.displayName, style = ScootType.body, color = scootColors.label)
-                        Text(
-                            status,
-                            style = ScootType.subheadline,
-                            color = scootColors.secondaryText,
-                            textAlign = TextAlign.End,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.weight(1f),
-                        )
+                        PassNameAndStatus(provider.displayName, status, Modifier.weight(1f))
                     }
                 }
             }
@@ -620,6 +613,52 @@ private fun SettingsRoot(
             },
         ),
     )
+}
+
+/**
+ * A pass's row beside its dot: the provider's name, and its status at the end in up to two lines. The name takes the
+ * room it needs and the status the rest, unless the status would then be cut short: the name then wraps, and the
+ * status keeps the room it needs up to half the row. So the iPhone's HStack shares the row, which on a 320-point screen
+ * wraps "PubliBike / Velospot" and shows "Non configuré" whole; here the name kept its one line and left the status
+ * 46 dp, "Non" over "conf…", and at 360 dp with text at 1.3 "Non" over "con…".
+ */
+@Composable
+private fun PassNameAndStatus(name: String, status: String, modifier: Modifier = Modifier) {
+    val measurer = rememberTextMeasurer()
+    val statusStyle = ScootType.subheadline
+    Layout(
+        content = {
+            Text(name, style = ScootType.body, color = scootColors.label)
+            Text(
+                status,
+                style = statusStyle,
+                color = scootColors.secondaryText,
+                textAlign = TextAlign.End,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        modifier = modifier,
+    ) { (start, end), constraints ->
+        val width = constraints.maxWidth
+        // The row's own spacing, which held the two apart as children of it.
+        val gap = 8.dp.roundToPx()
+        val room = maxOf(0, width - gap)
+        val nameNeeds = start.maxIntrinsicWidth(Constraints.Infinity)
+        val rest = maxOf(0, room - nameNeeds)
+        val cut = measurer.measure(status, statusStyle, maxLines = 2, constraints = Constraints(maxWidth = rest)).let {
+            it.didOverflowHeight || it.didOverflowWidth
+        }
+        val statusWidth = if (cut) maxOf(rest, minOf(end.maxIntrinsicWidth(Constraints.Infinity), room / 2)) else rest
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val namePlaceable = start.measure(loose.copy(maxWidth = room - statusWidth))
+        val statusPlaceable = end.measure(loose.copy(minWidth = statusWidth, maxWidth = statusWidth))
+        val height = maxOf(namePlaceable.height, statusPlaceable.height)
+        layout(width, height) {
+            namePlaceable.placeRelative(0, (height - namePlaceable.height) / 2)
+            statusPlaceable.placeRelative(width - statusWidth, (height - statusPlaceable.height) / 2)
+        }
+    }
 }
 
 /** What a pass gives, or why it gives nothing: "Not set", "Expired", "Free unlock · 15 free min". */
