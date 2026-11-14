@@ -106,6 +106,13 @@ again). The region was still active, its season not over, and its other 23
 regions collected as usual. Its south bound went from -8.14695 to -8.15296; a
 scooter past the town line counts under Jaboatão, as JET's do.
 
+From 13 November 2026 at 09:42 UTC every sweep of Campo Grande failed the same
+way, and the feed expired. Once the cache logged it
+(`whoosh_area_crosses_coverage`, 14 November), its ride area's envelope had
+reached 5 km further west, to -54.67069, about 9.5 km from the centre and well
+inside the municipality; its other three sides had not moved. Its west bound
+went from -54.62322 to -54.67169, and a sweep plans 8 views instead of 6.
+
 Positions are `state.position.point.{lat,lng}`. Battery is `battery.power`;
 `battery.distanceToCharge.amount` defaults to kilometres in the app's
 amount-unit mapper. The collector excludes known bike models and retains
