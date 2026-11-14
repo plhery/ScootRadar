@@ -353,3 +353,8 @@ Keep `-parallel-testing-enabled NO` (or `-parallel-testing-worker-count 2` at mo
 The scheme tests in parallel on clones of the simulator, and each clone downloads
 about 1.9 GB of Siri and Apple Intelligence assets: on 26 October 2026 a run made
 five and filled 9 GB of the Mac's disk in ten minutes. CI runs without them too.
+
+Boot the simulator and wait for it before the first run, with its id from
+`xcrun simctl list devices`: `xcrun simctl boot <id>` then
+`xcrun simctl bootstatus <id> -b`. Started cold by `xcodebuild`, the test host
+once failed to launch ("did not return a process handle") and no test ran.
