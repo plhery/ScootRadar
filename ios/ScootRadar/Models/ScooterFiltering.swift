@@ -248,16 +248,13 @@ struct ScooterProviderEntry: Identifiable, Equatable, Sendable {
                 : String(format: String(localized: "last seen %@"), ScooterDockStatus.seenTime(seenAt))
         }
 
-        /// What VoiceOver adds to the chip: "44 faded, last seen at 14:02, updating."
+        /// What VoiceOver adds to the chip: "44 faded, last seen at 14:02, updating.", its words in the form the count
+        /// takes in the language ("1 sbiadito, visto…", "2 sbiaditi, visti…").
         var accessibilityText: String {
-            String(
-                format: updating
-                    ? String(localized: "%1$lld faded, last seen at %2$@, updating.")
-                    : String(localized: "%1$lld faded, last seen at %2$@."),
-                locale: ScooterLanguage.current.locale,
-                Int64(count),
-                ScooterDockStatus.seenTime(seenAt)
-            )
+            let time = ScooterDockStatus.seenTime(seenAt)
+            return updating
+                ? String(localizedCounting: "\(count) faded, last seen at \(time), updating.")
+                : String(localizedCounting: "\(count) faded, last seen at \(time).")
         }
     }
 

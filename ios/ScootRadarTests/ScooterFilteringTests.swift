@@ -434,6 +434,45 @@ final class ScooterFilteringTests: XCTestCase {
         )
     }
 
+    /// VoiceOver reads one faded scooter in the singular in every language, as the website writes it, where Italian
+    /// read "1 sbiaditi, visti l’ultima volta alle…", and so Spanish, Portuguese, Norwegian, Icelandic and French in
+    /// braille; Icelandic reads 21 in the singular too, and 11 in the plural (fresh-eyes review of 14 November 2026,
+    /// iPhone finding 5; the Android review's S8).
+    @MainActor
+    func testFadedScootersAreReadInTheFormEachCountTakesInEveryLanguage() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let seenAt = Date(timeIntervalSince1970: 1_792_983_600)
+        // The words before the time for one and for more, and what an update adds after it.
+        let sentences: [(ScooterLanguage, one: String, other: String, updating: String)] = [
+            (.en, "faded, last seen at", "faded, last seen at", ", updating"),
+            (.de, "blass, Stand", "blass, Stand", ", wird aktualisiert"),
+            (.fr, "en pâle, vue à", "en pâle, vues à", ", mise à jour en cours"),
+            (.it, "sbiadito, visto l’ultima volta alle", "sbiaditi, visti l’ultima volta alle", ", in aggiornamento"),
+            (.nl, "vervaagd, laatst gezien om", "vervaagd, laatst gezien om", ", wordt bijgewerkt"),
+            (.nb, "blek, sist sett kl.", "bleke, sist sett kl.", ", oppdateres"),
+            (.pt, "esbatida, vista pela última vez às", "esbatidas, vistas pela última vez às", ", a atualizar"),
+            (.es, "tenue, visto por última vez a las", "tenues, vistos por última vez a las", ", actualizando"),
+            (.is, "dauf, sást síðast kl.", "daufar, sáust síðast kl.", ", uppfærist")
+        ]
+        XCTAssertEqual(Set(sentences.map(\.0)), Set(ScooterLanguage.allCases))
+        for (language, one, other, updating) in sentences {
+            ScooterLanguage.current = language
+            let time = ScooterDockStatus.seenTime(seenAt)
+            for count in [1, 2, 11, 21] {
+                let isOne = count == 1 || (language == .is && count == 21)
+                let words = "\(count) \(isOne ? one : other) \(time)"
+                XCTAssertEqual(
+                    ScooterProviderEntry.Faded(count: count, seenAt: seenAt, updating: false).accessibilityText, words + ".",
+                    "\(language.rawValue), \(count)"
+                )
+                XCTAssertEqual(
+                    ScooterProviderEntry.Faded(count: count, seenAt: seenAt, updating: true).accessibilityText, words + updating + ".",
+                    "\(language.rawValue), \(count), updating"
+                )
+            }
+        }
+    }
+
     @MainActor
     func testFadedMarkersAreKeptAndMovedWhileTheirScootersStay() {
         let parent = ScooterMapView(

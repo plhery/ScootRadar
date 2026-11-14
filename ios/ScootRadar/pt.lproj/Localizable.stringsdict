@@ -29,5 +29,37 @@
 			<string>%lld&#x00A0;países</string>
 		</dict>
 	</dict>
+	<key>%lld faded, last seen at %@.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@faded@ %@.</string>
+		<key>faded</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld esbatida, vista pela última vez às</string>
+			<key>other</key>
+			<string>%lld esbatidas, vistas pela última vez às</string>
+		</dict>
+	</dict>
+	<key>%lld faded, last seen at %@, updating.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@faded@ %@, a atualizar.</string>
+		<key>faded</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld esbatida, vista pela última vez às</string>
+			<key>other</key>
+			<string>%lld esbatidas, vistas pela última vez às</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

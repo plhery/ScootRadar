@@ -28,7 +28,16 @@ class ScooterStringsTest {
                 val (key, value) = Regex("^\"(.*)\" = \"(.*)\";$").find(line)!!.destructured
                 assertEquals(line, value, language.strings[key])
             }
-            assertEquals(setOf("ScootRadar covers %lld cities in %lld countries."), language.strings.countingKeys)
+            assertEquals(
+                setOf(
+                    "ScootRadar covers %lld cities in %lld countries.",
+                    // The iPhone's faded sentences, in the form each count takes (fresh-eyes review of 14 November
+                    // 2026, the iPhone's twin of S8); Android still reads them from Localizable.strings.
+                    "%lld faded, last seen at %@.",
+                    "%lld faded, last seen at %@, updating.",
+                ),
+                language.strings.countingKeys,
+            )
         }
     }
 
