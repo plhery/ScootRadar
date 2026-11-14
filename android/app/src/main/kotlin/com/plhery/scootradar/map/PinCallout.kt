@@ -44,7 +44,8 @@ import com.plhery.scootradar.ui.theme.iosShadow
  * once under Remove animations. It takes the taps on it, the arrow's too, as MapKit's does, so that they don't close
  * it. A faded scooter's tip is drawn so too, with a [subtitle] under its title, in MapKit's callout's secondary
  * colour, and hangs [below] its dot, pointing up at it, where it would reach above the room the map has over it
- * ([CalloutPlacement]).
+ * ([CalloutPlacement]). The tip's two lines wrap whole, as the iPhone's ScooterLastSeenTipView does, so that large
+ * text doesn't cut the time it was last seen.
  */
 @Composable
 fun PinCallout(
@@ -86,11 +87,13 @@ fun PinCallout(
                 if (subtitle == null) {
                     Text(title, style = ScootType.headline, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 } else {
+                    // Both whole on as many lines as they take: at large text on a small phone the title's time was
+                    // cut, "Lime · last seen 13…" (fresh-eyes review of 14 November 2026, S7).
                     Column {
-                        Text(title, style = ScootType.headline, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(title, style = ScootType.headline, color = ink)
                         // UIKit's secondaryLabel.
                         val secondary = if (dark) Color(0x99EBEBF5) else Color(0x993C3C43)
-                        Text(subtitle, style = ScootType.subheadline, color = secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                        Text(subtitle, style = ScootType.subheadline, color = secondary)
                     }
                 }
             }
