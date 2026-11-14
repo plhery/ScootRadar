@@ -2654,6 +2654,11 @@ extension ScooterMapModel {
             // Back before another area's zones came: that request goes, or its answer would be drawn over this view
             // (Android review of 14 November 2026, S1).
             if let taskArea = zoneTaskArea, taskArea != answer.area { cancelZoneRequest() }
+            // A pending answer's next try gave way to that request: its area is asked for again now (fresh-eyes
+            // review of 14 November 2026, iPhone finding 2).
+            if zoneTaskArea == nil, answer.pending {
+                requestZones(in: answer.area, after: .zero, retries: Self.zonePendingRetries)
+            }
             // Unless a pending answer is being asked for again, it stands; the
             // cities' zones follow the map either way.
             if zoneTaskArea == nil { setZones(state: answer.state) } else { rebuildMapZones() }

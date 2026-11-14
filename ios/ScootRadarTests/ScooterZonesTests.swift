@@ -753,6 +753,44 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertEqual(areas.count, 2, "Zürich's answer at hand serves it")
     }
 
+    /// Back on an area whose answer said some of its zones were still on their way, before another area's zones come,
+    /// the view's area is asked for again: the other area's request had taken the place of its next try, and the
+    /// legend stayed loading without the rest of its zones until the map left the area (fresh-eyes review of
+    /// 14 November 2026, iPhone finding 2). The cities' zones follow the map meanwhile.
+    func testComingBackToZonesStillOnTheirWayBeforeAnotherAreasComeAsksForTheRest() async throws {
+        let api = ZoneStubAPI()
+        await api.setAnswer(pending: true)
+        let model = makeModel(api: api, zonePendingRetry: .milliseconds(400))
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let first = await waitUntil { await api.zoneAreas().count == 1 && model.mapOperatorZoneCount == 2 }
+        XCTAssertTrue(first)
+        XCTAssertEqual(model.zoneState, .loading)
+        let zurichRules = model.mapRuleZones.map(\.rule.id)
+        XCTAssertFalse(zurichRules.isEmpty)
+
+        // Before Zürich's next try the map rests on Bern, whose zones are slow to come; every answer is whole now.
+        await api.setAnswer()
+        await api.hold()
+        var bern = zurich
+        bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
+        model.updateViewport(bern, zoom: 16)
+        let asked = await waitUntil { await api.zoneAreas().count == 2 }
+        XCTAssertTrue(asked)
+        XCTAssertNotEqual(model.mapRuleZones.map(\.rule.id), zurichRules)
+
+        // Back in Zürich before they come: Zürich's rules are drawn, and the rest of its zones asked for.
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.mapRuleZones.map(\.rule.id), zurichRules)
+        await api.release()
+        let shown = await waitUntil { await api.zoneAreas().count == 3 && model.zoneState == .shown }
+        let areas = await api.zoneAreas()
+        XCTAssertTrue(shown, "the legend \(model.zoneState), \(areas.count) areas asked for")
+        XCTAssertEqual(areas.last, areas.first, "Zürich asked for again")
+        XCTAssertEqual(operatorZones(model).map(\.id), ["lime:0", "bird:0"])
+        XCTAssertEqual(model.mapRuleZones.map(\.rule.id), zurichRules)
+    }
+
     /// Zoomed in while the wide area's answer is on its way, the view waits for it, as it serves any area within its
     /// own; one with zones left out serves its own alone, and the close view's area is asked for once it comes, rather
     /// than "Zoom in to see the zones" staying at street level (week review, finding 5.1).
