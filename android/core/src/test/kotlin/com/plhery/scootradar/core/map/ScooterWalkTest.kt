@@ -288,6 +288,56 @@ class ScooterWalkTest {
         }
     }
 
+    /**
+     * The same after the map was zoomed out to groups between the two reads: the answer that lists the scooter only
+     * inside a group leaves the card without it, and the next one lists it under its new id. The walk follows it there
+     * as the iPhone's does (fresh-eyes review of 14 November 2026, S3), where the card stayed closed and the walk
+     * hidden, and a tap on the renamed scooter began a new choice without "You're there".
+     */
+    @Test
+    fun aWalkThatGotThereOrFoundNoWayGoesOnWithItsScooterRenamedWhileTheMapShowedGroups() = runTest {
+        for (renamed in listOf(true, false)) {
+            for (arrived in listOf(true, false)) {
+                val name = (if (arrived) "arrived" else "no route") + if (renamed) ", renamed" else ", same ids"
+                val target = scooter("b1", provider = "bird", at = point(east = if (arrived) 10 else 300, north = 0))
+                val neighbour = scooter("b2", provider = "bird", at = point(east = if (arrived) 19 else 309, north = 0))
+                val h = harness(vehicles = listOf(target, neighbour), rider = rider)
+                h.directions.result = Result.failure(WalkingDirectionsError(WalkingDirectionsError.Reason.NoRoute))
+                h.model.selectScooter(target.id)
+                h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
+                val phase = if (arrived) ScooterWalkPhase.Arrived else ScooterWalkPhase.Failed(ScooterWalkFailure.NoRoute)
+                assertTrue(name, waitUntil { h.model.walk.value?.phase == phase })
+                val note = h.model.walkNote(ScooterWalkTarget.Scooter(target))
+
+                // Zoomed out: both counted in one group, no scooter listed alone.
+                h.clock.advance(5.0)
+                h.api.setResponse(
+                    ScooterResponse(
+                        vehicles = emptyList(),
+                        clusters = listOf(ScooterCluster("c", target.latitude, target.longitude, 2, mapOf("bird" to 2))),
+                        meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters"),
+                    ),
+                )
+                h.model.updateViewport(region, zoom = 15)
+                assertTrue(name, waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+                assertNull(name, h.model.selectedScooter)
+
+                // Zoomed back in, after a read of the app or not.
+                h.clock.advance(60.0)
+                val back = if (renamed) scooter("b1-next", provider = "bird", at = target.coordinate) else target
+                val backNeighbour = if (renamed) scooter("b2-next", provider = "bird", at = neighbour.coordinate) else neighbour
+                h.api.setResponse(ScooterResponse(vehicles = listOf(backNeighbour, back)))
+                h.model.updateViewport(region, zoom = 17)
+                assertTrue(name, waitUntil { h.api.calls == 3 && !h.model.isLoading.value })
+
+                assertEquals(name, back.id, h.model.selectedScooter?.id)
+                assertEquals(name, phase, h.model.walk.value?.phase)
+                assertEquals(name, ScooterWalkTarget.Scooter(back), h.model.walk.value?.target)
+                assertEquals(name, note, h.model.walkNote(ScooterWalkTarget.Scooter(back)))
+            }
+        }
+    }
+
     // Walking
 
     @Test

@@ -300,10 +300,10 @@ internal fun ScooterMapController.followWalkTarget(
     previousIDs: Set<String>,
 ) {
     val walk = walk.value ?: return
-    if (!walk.holdsCard) return
     val scooter = (walk.target as? ScooterWalkTarget.Scooter)?.scooter ?: return
     val fresh = vehiclesByID[scooter.id]
     if (fresh != null) {
+        if (!walk.holdsCard) return
         if (walk.phase == ScooterWalkPhase.Gone) {
             // Back on the map: its card is a scooter's card again.
             setWalk(null)
@@ -316,11 +316,13 @@ internal fun ScooterMapController.followWalkTarget(
         return
     }
     val newlyListed = vehicles.value.filter { it.id !in previousIDs }
-    if (walk.phase == ScooterWalkPhase.Gone) {
+    if (!walk.isUnderway) {
         // Back after all, under a new id: the card is the scooter's again, and Directions with it. Data that lists it
-        // says so, whatever else it leaves out (the iPhone's ScooterMapModel).
+        // says so, whatever else it leaves out (the iPhone's ScooterMapModel). A walk that got there or found no way
+        // goes on with it, "You're there" with it: followCardScooter does so from the card's scooter, which an answer
+        // listing it only in a group in between takes from the card (fresh-eyes review of 14 November 2026, S3).
         val successor = successor(of = scooter, among = newlyListed) ?: return
-        setWalk(null)
+        setWalk(if (walk.phase == ScooterWalkPhase.Gone) null else walk.copy(target = ScooterWalkTarget.Scooter(successor)))
         follow(to = successor.id)
         return
     }
