@@ -1590,12 +1590,15 @@ struct ScooterMapView: UIViewRepresentable {
                 moved.append(annotation)
             }
             // Nor does a name that would be cut by the edge of the map or by
-            // the dock, or that found no place but on another name.
+            // the dock, or that found no place but on another name. A larger
+            // name loses whole letters there: it shows whole or not at all, as
+            // the selected scooter's does at every size.
             covered.formUnion(ScooterMapLook.unreadablePills(
                 frames,
                 inside: visible,
                 under: chrome,
-                whole: (appliedLook?.textScale ?? 1) > 1
+                whole: (appliedLook?.textScale ?? 1) > 1,
+                selected: appliedSelectionID
             ))
             for id in namedIDs {
                 guard let annotation = annotationsByID[id],

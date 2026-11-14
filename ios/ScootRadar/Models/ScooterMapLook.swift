@@ -437,19 +437,23 @@ enum ScooterMapLook {
     /// most: one cut by the edge of the map or by what floats over it, and
     /// one lying on a name that stays. Where there is no room, a name less
     /// is better than two that cannot be read. With larger text, `whole`:
-    /// nothing may cover a name at all.
+    /// nothing may cover a name at all. The `selected` scooter's shows whole
+    /// or not at all at every size: with a card open, Near me covered about a
+    /// quarter of the selected "Hopp" on a 360 dp Android phone, and the rule
+    /// is the iPhone's too (Android f731f378, 14 November 2026).
     static func unreadablePills(
         _ pills: [(id: String, frame: CGRect)],
         inside visible: CGRect,
         under chrome: [CGRect],
-        whole: Bool = false
+        whole: Bool = false,
+        selected: String? = nil
     ) -> Set<String> {
         var unreadable: Set<String> = []
         var shown: [CGRect] = []
         for pill in pills {
             let covered = shown.reduce(0) { $0 + area($1.intersection(pill.frame)) }
             let clear = whole ? covered < 1 : covered * 10 <= area(pill.frame)
-            if pillCanBeRead(pill.frame, inside: visible, under: chrome, whole: whole), clear {
+            if pillCanBeRead(pill.frame, inside: visible, under: chrome, whole: whole || pill.id == selected), clear {
                 shown.append(pill.frame)
             } else {
                 unreadable.insert(pill.id)

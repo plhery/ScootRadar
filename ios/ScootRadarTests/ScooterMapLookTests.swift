@@ -379,6 +379,39 @@ final class ScooterMapLookTests: XCTestCase {
         )
     }
 
+    /// The selected scooter's name shows whole or not at all at every size,
+    /// where any other may lose a third to the edge of the map and what floats
+    /// over it: Near me covered about a quarter of the selected "Hopp" on a
+    /// 360 dp Android phone (Android f731f378).
+    func testTheSelectedScootersNameShowsWholeOrNotAtAll() {
+        let visible = CGRect(x: 0, y: 100, width: 390, height: 700)
+        let nearMe = CGRect(x: 250, y: 540, width: 130, height: 50)
+        let dock = CGRect(x: 10, y: 600, width: 370, height: 180)
+        // 26 of its 66 points across under Near me, for 16 of its 26 down: about a quarter.
+        let hopp = CGRect(x: 210, y: 530, width: 66, height: 26)
+        let lime = CGRect(x: 40, y: 300, width: 66, height: 26)
+        let names = [("hopp", hopp), ("lime", lime)]
+
+        XCTAssertEqual(ScooterMapLook.unreadablePills(names, inside: visible, under: [nearMe, dock]), [])
+        XCTAssertEqual(ScooterMapLook.unreadablePills(names, inside: visible, under: [nearMe, dock], selected: "hopp"), ["hopp"])
+        // Another scooter selected, Hopp's keeps its third.
+        XCTAssertEqual(ScooterMapLook.unreadablePills(names, inside: visible, under: [nearMe, dock], selected: "lime"), [])
+        // Clear of it all, it shows; a point past the edge of the map, the search bar's foot, it does not.
+        XCTAssertEqual(
+            ScooterMapLook.unreadablePills([("hopp", hopp.offsetBy(dx: -100, dy: 0))], inside: visible, under: [nearMe, dock], selected: "hopp"),
+            []
+        )
+        XCTAssertEqual(
+            ScooterMapLook.unreadablePills([("hopp", lime.offsetBy(dx: 0, dy: -201))], inside: visible, under: [nearMe, dock], selected: "hopp"),
+            ["hopp"]
+        )
+        // Unselected there, a point past the edge, it shows.
+        XCTAssertEqual(
+            ScooterMapLook.unreadablePills([("hopp", lime.offsetBy(dx: 0, dy: -201))], inside: visible, under: [nearMe, dock]),
+            []
+        )
+    }
+
     func testOfTwoNamesOnEachOtherTheFirstStays() {
         let visible = CGRect(x: 0, y: 100, width: 390, height: 700)
         let first = CGRect(x: 100, y: 300, width: 90, height: 26)
