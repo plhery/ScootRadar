@@ -147,7 +147,7 @@ export const PLAY_TEST_ATTRIBUTE = 'data-android-test';
 /** The attribute of the site's <html> on an iPhone, where the landing page's Android button gives way (appStore.ts's isIPhone). */
 export const IPHONE_ATTRIBUTE = 'data-iphone';
 
-/** The attribute of the site's <html> where the browser says it runs an Android the app does not install on: the landing page's Android button gives way. */
+/** The attribute of the site's <html> where the browser says it runs an Android the app does not install on: the landing page's two app buttons give way, and the map is the way in. */
 export const OLDER_ANDROID_ATTRIBUTE = 'data-older-android';
 
 /**

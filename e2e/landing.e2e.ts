@@ -339,14 +339,17 @@ test.describe('on an Android the app does not install on', () => {
   // so one reads the version from the hints and the other from the user agent, as Firefox on Android gives it.
   test.use({ userAgent: 'Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36' });
 
-  test('the landing page offers no Android app, and still the map and the iPhone app', async ({ page }) => {
+  test('the landing page offers neither app, only the map', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('data-older-android', '');
-    const hero = page.locator('.hero');
-    await expect(hero.getByRole('button', { name: /^Android app/ })).toBeHidden();
-    await expect(page.locator('.closing').getByRole('button', { name: /^Android app/ })).toBeHidden();
-    await expect(hero.getByRole('link', { name: 'Get the iPhone app' })).toBeVisible();
-    await expect(hero.getByRole('link', { name: 'Open the map' })).toBeVisible();
+    for (const section of ['.hero', '.closing']) {
+      const actions = page.locator(section).locator('.cta-row');
+      await expect(actions.getByRole('button', { name: /^Android app/ }), section).toBeHidden();
+      await expect(actions.getByRole('link', { name: 'Get the iPhone app' }), section).toBeHidden();
+      await expect(actions.locator('.app-qr'), section).toBeHidden();
+      await expect(actions.getByRole('link', { name: 'Open the map' }), section).toBeVisible();
+      await expect(actions.getByRole('link', { name: 'Open the map' }), section).toHaveAttribute('href', '/map');
+    }
   });
 });
 
