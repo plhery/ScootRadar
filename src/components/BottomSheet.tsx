@@ -191,11 +191,12 @@ function ChipCount({ chip, className }: { chip: DockChip; className: string }) {
   );
 }
 
-/** "02:46", or "Wed 02:46" when the faded ones were seen on another day. */
+/** "02:46", or "Wed 02:46" when the faded ones were seen on another day; a sentence counting one of them is singular. */
 function seenText(faded: NonNullable<DockChip['faded']>, key: 'providers.faded.seen' | 'providers.faded.label' | 'providers.faded.labelUpdating',
   i18n: ReturnType<typeof useI18n>) {
   const weekday = new Date(faded.seenAt).toDateString() !== new Date().toDateString();
-  return formatUiText({ key, numbers: { count: faded.count }, time: faded.seenAt, ...(weekday ? { weekday } : {}) }, i18n);
+  const one = key === 'providers.faded.seen' ? {} : { one: { key: `${key}.one` as const, count: faded.count } };
+  return formatUiText({ key, numbers: { count: faded.count }, time: faded.seenAt, ...(weekday ? { weekday } : {}), ...one }, i18n);
 }
 
 /**

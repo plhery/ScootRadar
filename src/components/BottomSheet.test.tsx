@@ -321,6 +321,30 @@ describe('BottomSheet', () => {
     ]);
   });
 
+  it('names one faded scooter of a provider in the singular, and more in the plural', async () => {
+    localStorage.setItem('scooters-locale', 'it');
+    const faded = (fadedCount: number, updating = false) =>
+      dock({ fadedCounts: { lime: fadedCount }, lastSeenProviders: { lime: { seenAt: UPDATED, updating } } });
+    const sheet = renderSheet({ dock: faded(1) });
+    const lime = () => screen.getByRole('button', { name: /^Lime,/ }).getAttribute('aria-label');
+    await vi.waitFor(() => expect(lime()).toMatch(/\. 1 sbiadito, visto l’ultima volta alle [^,]+\.$/));
+    sheet.update({ dock: faded(1, true) });
+    expect(lime()).toMatch(/\. 1 sbiadito, visto l’ultima volta alle .+, in aggiornamento\.$/);
+    sheet.update({ dock: faded(2) });
+    expect(lime()).toMatch(/\. 2 sbiaditi, visti l’ultima volta alle [^,]+\.$/);
+  });
+
+  it('names 21 faded scooters in the singular in Icelandic, and 11 in the plural', async () => {
+    localStorage.setItem('scooters-locale', 'is');
+    const faded = (fadedCount: number) =>
+      dock({ fadedCounts: { lime: fadedCount }, lastSeenProviders: { lime: { seenAt: UPDATED, updating: false } } });
+    const sheet = renderSheet({ dock: faded(21) });
+    const lime = () => screen.getByRole('button', { name: /^Lime,/ }).getAttribute('aria-label');
+    await vi.waitFor(() => expect(lime()).toMatch(/\. 21 dauf, sást síðast kl\. .+\.$/));
+    sheet.update({ dock: faded(11) });
+    expect(lime()).toMatch(/\. 11 daufar, sáust síðast kl\. .+\.$/);
+  });
+
   it('only offers providers in the current area without changing the saved selection', () => {
     const enabledProviders = new Set(Object.keys(PROVIDERS));
     renderSheet({ dock: dock({ enabledProviders, viewportProviders: ['dott'], providerCounts: { dott: 3 }, count: 3 }) });
