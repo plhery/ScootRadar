@@ -34,6 +34,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalConfiguration
@@ -243,8 +244,9 @@ private fun RangeFilter(minimum: Int, unit: ScooterRangeFilter.Unit, help: Strin
 /**
  * The iPhone's Slider in the app's blue, a step a whole kilometre or mile: a white capsule of a thumb on a track
  * across the card, blue up to the thumb and grey after it. Material's slider underneath takes the drags, taps and
- * arrow keys, mirrors in a right-to-left language and gives TalkBack its steps: it reads "Range, 5 km or more" and
- * moves a step a swipe. Its thumb and track of our own are still experimental in Material 1.4.
+ * arrow keys, mirrors in a right-to-left language and gives TalkBack its steps: it reads "5 km or more, Range,
+ * Slider" in one stop, its state first as it reads every control's, and moves a step a swipe up or down. Its thumb
+ * and track of our own are still experimental in Material 1.4.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -276,7 +278,10 @@ private fun RangeThumb(interaction: MutableInteractionSource) {
             .size(RANGE_THUMB_WIDTH, RANGE_THUMB_HEIGHT)
             .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.15f), radius = 8.dp, y = 3.dp)
             .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.06f), radius = 1.dp, y = 3.dp)
-            .background(Color.White, CapsuleShape)
+            // Drawn, where background(…, CapsuleShape) would give the thumb the shape's semantics: the slider would
+            // then have a child, and Compose would move its "Range" off it to a child of its own, which TalkBack
+            // reads apart, "Any, Slider" and then "Range".
+            .drawBehind { drawOutline(CapsuleShape.createOutline(size, layoutDirection, this), Color.White) }
             .indication(interaction, FocusRing(CapsuleShape)),
     )
 }

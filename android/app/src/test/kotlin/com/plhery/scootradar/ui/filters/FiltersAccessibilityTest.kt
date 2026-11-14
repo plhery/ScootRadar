@@ -85,8 +85,12 @@ class FiltersAccessibilityTest {
     private var batteryRanges by mutableStateOf(emptyMap<String, Int>())
     private var enabledProviders by mutableStateOf(ScooterProvider.entries.toSet())
 
+    /** The sheet's view, which hands TalkBack its nodes. */
+    private lateinit var sheetView: View
+
     private fun showFilters(rangeUnit: ScooterRangeFilter.Unit = ScooterRangeFilter.Unit.Kilometres) {
         compose.setContent {
+            sheetView = LocalView.current
             ScootTheme(dark = false, reduceMotion = true) {
                 FilterSheetContent(
                     entries = entries,
@@ -184,6 +188,23 @@ class FiltersAccessibilityTest {
         assertEquals(listOf(12_000, 0), chosenRanges)
         assertEquals("Any", compose.onNodeWithContentDescription("Range").fetchSemanticsNode().config[SemanticsProperties.StateDescription])
         assertTrue(compose.onAllNodes(hasText(help)).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * TalkBack reads the slider in one stop, its title, its minimum and "Slider", as VoiceOver reads the iPhone's one
+     * element: the title is on the slider's own node. Compose moves a merging node's description to a node of its own
+     * under it when the node has children, and TalkBack read that apart, "Any, Slider" and then "Range" (14 November,
+     * on an emulator): the thumb, drawn with background(…, CapsuleShape), was a child for the shape's semantics.
+     */
+    @Test
+    fun theRangeSliderIsOneStopForTalkBack() {
+        showFilters()
+        val slider = compose.onNodeWithContentDescription("Range").fetchSemanticsNode()
+        val info = compose.runOnIdle { sheetView.accessibilityNodeProvider.createAccessibilityNodeInfo(slider.id)!! }
+        assertEquals("android.widget.SeekBar", info.className)
+        assertEquals("Range", info.contentDescription?.toString())
+        assertEquals("Any", info.stateDescription?.toString())
+        assertEquals(0, info.childCount)
     }
 
     /** Where lengths are in miles the slider goes a whole mile a step up to 20 mi, a step set in metres: 3 mi is 4,828 m. */
