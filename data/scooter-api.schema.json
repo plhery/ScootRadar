@@ -320,7 +320,7 @@
           "additionalProperties": { "type": "string", "format": "date-time" }
         },
         "shownSince": {
-          "description": "In an answer of scooters, stale or not: each app with positions shown, by provider, with when the oldest of them were seen (its feeds' last collections, or the start of a sweep under way). An app's time moves only when its positions shown are collected again, unlike generatedAt, which the oldest of every app's holds: a walk tells a new read of its scooter's app from the same one served again by it. An app with nothing shown, or only faded scooters, is not among them.",
+          "description": "In an answer of scooters, stale or not: each app with positions shown, by provider, with when they were read: its feeds' last collections, the oldest where it has several (of a feed read over many minutes, as a Bird area's sweep, when its last part was read), or the start of a sweep under way. An app's time moves only when its positions shown are collected again, unlike generatedAt, which the oldest position of every app's holds: a walk tells a new read of its scooter's app from the same one served again by it. An app with nothing shown, or only faded scooters, is not among them.",
           "type": "object",
           "additionalProperties": { "type": "string", "format": "date-time" }
         },

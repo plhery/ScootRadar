@@ -496,8 +496,9 @@ describe('feeds collected on demand', () => {
       expect(ids(answer.vehicles)).toEqual(['bird:2', 'bird:3']);
       // The scooter it names no time for was read at its start.
       expect(ids(answer.lastSeen?.vehicles)).toEqual(['bird:1', 'bird:4']);
+      // Bird's read is when its last part was (as it is told apart from another, below).
       expect(answer.meta).toMatchObject({ generatedAt: at(now - minutes(10)), expiresAt: at(now + minutes(5)),
-        shownSince: { bird: at(now - minutes(10)) }, lastSeenAt: at(now - minutes(22.5)), stale: false });
+        shownSince: { bird: at(now - 30_000) }, lastSeenAt: at(now - minutes(22.5)), stale: false });
       expect(answer.meta.refreshing).toBeUndefined();
       // Its first scooters stand faded whatever collects it: a scooter a walk heads for does not leave the map as its part grows old.
       expect(ids(querySnapshot(snapshot([swept]), view, 16, now).lastSeen?.vehicles)).toEqual(['bird:1', 'bird:4']);
@@ -513,6 +514,32 @@ describe('feeds collected on demand', () => {
         .toEqual(['bird:1', 'bird:2', 'bird:3', 'bird:4']);
       expect(querySnapshot(snapshot([swept]), view, 16, old, { refreshing: new Set([swept.id]) }).meta.lastSeenAt)
         .toBe(at(now - minutes(22.5)));
+    });
+
+    it('names Bird the same read while the sweep is served again, its first parts growing too old, until another ends', () => {
+      // A walk to a scooter this sweep did not list says it was taken from another read of Bird without it, told
+      // apart by meta.shownSince.bird. Served a minute and six minutes on, the sweep is the same read, though its
+      // oldest scooter shown, the answer's time, moves on; it said taken a minute and a half after the sweep, until
+      // 14 November 2026 (Android review, S2).
+      // A reply every minute and a half, as Austin's of 22 minutes, its last 30 seconds ago.
+      const replies = Array.from({ length: 15 }, (_, n) => n);
+      const paced = { ...swept, vehicles: replies.map(scooter),
+        reads: { lastAt: now - 30_000, at: Object.fromEntries(replies.map(n => [`bird:${n}`, now - 30_000 - n * minutes(1.5)])) } };
+      const first = querySnapshot(snapshot([paced]), view, 16, now + 30_000);
+      const minuteOn = querySnapshot(snapshot([paced]), view, 16, now + 90_000);
+      const sixOn = querySnapshot(snapshot([paced]), view, 16, now + minutes(6));
+      expect([first, minuteOn, sixOn].map(answer => answer.meta.generatedAt))
+        .toEqual([at(now - minutes(14)), at(now - minutes(12.5)), at(now - minutes(8))]);
+      expect([minuteOn.meta.shownSince, sixOn.meta.shownSince]).toEqual([first.meta.shownSince, first.meta.shownSince]);
+      expect(first.meta.shownSince).toEqual({ bird: at(now - 30_000) });
+      // The next sweep, ended 22 and a half minutes on, is another read.
+      const nextEnd = now + minutes(22.5);
+      const next = { ...swept, observedAt: nextEnd - minutes(22.5), vehicles: [scooter(2), scooter(3)],
+        reads: { lastAt: nextEnd - 30_000, at: { 'bird:2': nextEnd - minutes(2), 'bird:3': nextEnd - minutes(1) } } };
+      expect(querySnapshot(snapshot([next]), view, 16, nextEnd).meta.shownSince).toEqual({ bird: at(nextEnd - 30_000) });
+      // Late, its last collection having failed, it is named among the stale apps by its oldest scooter shown, as it was.
+      const failing = querySnapshot(snapshot([{ ...swept, failed: true }]), view, 16, now + minutes(6));
+      expect(failing.meta).toMatchObject({ staleProviders: { bird: at(now - minutes(1)) }, shownSince: first.meta.shownSince });
     });
 
     it('showed none of them live once it was over 15 minutes old, as old as its start, until 10 November 2026', () => {

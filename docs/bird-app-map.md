@@ -39,7 +39,12 @@ charge and range. The map gives no position time, so a scooter's is that of
 the last reply that listed it, and the sweep's the start of it. A sweep may
 take longer than the 15 minutes a position is shown, as Austin's of 22
 minutes below: when it ends, the scooters of its last 15 minutes show live,
-and those it read before stand faded where they were last seen.
+and those it read before stand faded where they were last seen. The answer's
+time is the oldest of those live, which moves on as they grow old, but the
+app's read (`meta.shownSince`) is when the sweep's last reply came, until
+another sweep ends: a walk tells a second read without its scooter by it, and
+from 10 to 14 November 2026 said a scooter one sweep missed was taken a minute
+and a half later (Android review of 14 November, S2).
 
 Every reply is checked as the research reader checks it, and Spin's brand is
 accepted beside Bird's: the cells it answers for, and for each vehicle a UUID
