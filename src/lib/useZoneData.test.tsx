@@ -79,6 +79,37 @@ it('says the zones are unavailable when the answer fails', async () => {
   expect(vi.mocked(track).mock.calls).toEqual([['zones_error', { result: 'status_503' }]]);
 });
 
+it('asks again a minute later for zones whose request got no answer, three times at most, and counts the failure once', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('Failed to fetch'));
+  const { result } = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250 + 59_000));
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await act(() => vi.advanceTimersByTimeAsync(1000));
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  await act(() => vi.advanceTimersByTimeAsync(10 * 60_000));
+  expect(fetcher).toHaveBeenCalledTimes(4);
+  expect(result.current).toEqual({ zones: [], state: 'failed' });
+  expect(vi.mocked(track).mock.calls).toEqual([['zones_error', { result: 'request_failed' }]]);
+});
+
+it('draws the zones when a failed request asked again is answered', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ error: 'busy' }, { status: 503 }))
+    .mockResolvedValue(answer(false));
+  const { result } = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250));
+  expect(result.current).toEqual({ zones: [], state: 'failed' });
+  await act(() => vi.advanceTimersByTimeAsync(60_000));
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  expect(result.current).toEqual({ zones: [zone], state: 'shown' });
+});
+
+it('counts a request that fails after a pending answer, once', async () => {
+  vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer(true)).mockRejectedValue(new TypeError('Failed to fetch'));
+  renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250 + 3000 + 5 * 60_000));
+  expect(vi.mocked(track).mock.calls).toEqual([['zones_error', { result: 'request_failed' }]]);
+});
+
 it('counts a request that gets no answer, and not one given up for another area', async () => {
   const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new TypeError('Failed to fetch'));
   const { result, rerender } = renderHook(({ query }) => useZoneData(query, true), { initialProps: { query: view } });

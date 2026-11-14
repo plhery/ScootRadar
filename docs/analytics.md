@@ -87,8 +87,10 @@ What the events mean on the web:
 - `zones_error` is the operators' zones of an area failing to load, once each
   time an area is asked for, with the HTTP status of the answer (`status_429`,
   the minute's limit the zones share with the scooters; `status_503`, the cache
-  failing) or `request_failed` where none came. A request given up as the view
-  moves on sends nothing. The iOS and Android apps don't send it.
+  failing) or `request_failed` where none came. The area is then asked again a
+  minute apart, up to three times, and counted once (the first failure's
+  outcome). A request given up as the view moves on sends nothing. The iOS and
+  Android apps don't send it.
 - `provider_filter` comes with `source: quick` from the chips and the desktop
   legend, and with `source: filters` and `enabled` from the Filters sheet.
   `filters_reset` is Reset in that sheet or "Show all" on the card that says

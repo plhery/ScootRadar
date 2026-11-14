@@ -10,7 +10,10 @@ const QUERY_DEBOUNCE_MS = 250;
 /** While some feeds' zones are still being read, the same area is asked for again this much later, a few times. */
 const PENDING_RETRY_MS = 3_000;
 const PENDING_RETRIES = 3;
-/** Where some feeds' zones could not be read, as soon as the cache tries them again (zoneStore.ts), as many times. */
+/**
+ * Where some feeds' zones could not be read, as soon as the cache tries them again (zoneStore.ts), as many times;
+ * where the request itself failed, as long after it.
+ */
 const UNAVAILABLE_RETRY_MS = 60_000;
 /**
  * The area asked for is rounded out to a grid of 1/50° (about 2 km), so that views near
@@ -66,6 +69,7 @@ export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, e
     if (!key) return;
     const controller = new AbortController();
     let timer = 0;
+    let reported = false;
     const load = async (retries: number) => {
       let status = 0;
       try {
@@ -87,7 +91,14 @@ export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, e
         setAnswer(current => ({ key, zones: current?.key === key ? current.zones : [], state: 'failed' }));
         // The kind of failure alone, neither the area nor anything of the visitor: a status apart
         // tells the limit the zones share with the scooters (429) from the cache failing (503).
-        track('zones_error', { result: status ? `status_${status}` : 'request_failed' });
+        // Once for the area, however many times it is asked again.
+        if (!reported) {
+          reported = true;
+          track('zones_error', { result: status ? `status_${status}` : 'request_failed' });
+        }
+        // Asked again a minute later while tries are left, as the apps ask with their next scooter refreshes:
+        // a request lost to the network would otherwise leave the area without zones until the map leaves it.
+        if (retries > 0) timer = window.setTimeout(() => void load(retries - 1), UNAVAILABLE_RETRY_MS);
       }
     };
     timer = window.setTimeout(() => void load(PENDING_RETRIES), QUERY_DEBOUNCE_MS);
