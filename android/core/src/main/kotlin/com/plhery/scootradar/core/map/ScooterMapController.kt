@@ -1472,7 +1472,12 @@ class ScooterMapController(
                 rebuildVehicleIndex()
                 followWalkTarget(response.meta, loadedFor = bounds, observedAt = observedAt, previousIDs = previousIDs)
                 if (cardScooter != null) followCardScooter(cardScooter, previousIDs = previousIDs)
-                selectedScooter?.let { neighbours.note(it, seen = response.vehicles + response.lastSeenVehicles) }
+                // Only from an answer that lists the card's scooter under its own id, live or faded, is every other id
+                // near it another scooter: one that doesn't (groups, cut short, or faded under the id of a read the walk
+                // missed) may list it under a new id, which would stand as a neighbour on its own spot and keep the walk
+                // from ever following it there (the iPhone's a0848d8e).
+                val listed = response.vehicles + response.lastSeenVehicles
+                selectedScooter?.takeIf { card -> listed.any { it.id == card.id } }?.let { neighbours.note(it, seen = listed) }
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()

@@ -974,6 +974,108 @@ class ScooterWalkTest {
         }
     }
 
+    /**
+     * A grouped answer can list a Bird alone in its cell, under the id of a new read: the walk can't tell from it, and
+     * its neighbours aren't noted from it either, where that id stood as a neighbour on the walked Bird's own spot and
+     * no renamed copy could take the walk over, so that it said "taken" two reads after the map was zoomed back in (the
+     * iPhone's a0848d8e; review lane R2).
+     */
+    @Test
+    fun aBirdListedAloneInAGroupedAnswerIsStillWalkedToOnceZoomedBackIn() = runTest {
+        // Back in, the next Bird read (x2), or the same read as the groups' (x1) and the next one after.
+        for (sameReadBackIn in listOf(false, true)) {
+            val name = if (sameReadBackIn) "same read back in" else "next read back in"
+            val target = scooter("x0", provider = "bird", at = point(east = 300, north = 0))
+            val other = scooter("l9", at = point(east = -200, north = 0))
+            val h = shownWalk(to = target, others = listOf(other))
+
+            // Zoomed out to see the way: the Lime is counted in a group, the Bird alone in its cell is listed, renamed.
+            val x1 = scooter("x1", provider = "bird", at = point(east = 300, north = 0))
+            h.clock.advance(60.0)
+            h.api.setResponse(
+                ScooterResponse(
+                    vehicles = listOf(x1),
+                    clusters = listOf(ScooterCluster("c", other.latitude, other.longitude, 3, mapOf("lime" to 3))),
+                    meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters"),
+                ),
+            )
+            h.model.updateViewport(MapRegion(center = rider, latitudeDelta = 0.03, longitudeDelta = 0.03), zoom = 15)
+            assertTrue(name, waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+            assertEquals(name, ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+            val backIn = if (sameReadBackIn) x1 else scooter("x2", provider = "bird", at = point(east = 300, north = 0))
+            h.api.setResponse(ScooterResponse(vehicles = listOf(backIn, other)))
+            h.model.updateViewport(region, zoom = 17)
+            assertTrue(name, waitUntil { h.api.calls == 3 && !h.model.isLoading.value })
+            assertEquals(name, ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+            for (read in 3..4) {
+                h.clock.advance(60.0)
+                val walked = scooter("x$read", provider = "bird", at = point(east = 300, north = 0))
+                load(h, ScooterResponse(vehicles = listOf(walked, other)), call = read + 1)
+                assertEquals("$name, read $read", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+                assertEquals("$name, read $read", ScooterWalkTarget.Scooter(walked), h.model.walk.value?.target)
+                assertEquals("$name, read $read", walked.id, h.model.selectedScooterID.value)
+            }
+        }
+    }
+
+    /** The same from an answer cut short, which lists the Bird renamed (the iPhone's a0848d8e). */
+    @Test
+    fun aBirdListedInAnAnswerCutShortIsStillWalkedToOnTheNextReads() = runTest {
+        val target = scooter("x0", provider = "bird", at = point(east = 300, north = 0))
+        val other = scooter("l9", at = point(east = -200, north = 0))
+        val h = shownWalk(to = target, others = listOf(other))
+
+        // An answer cut short lists the Bird renamed: the walk can't tell from it.
+        h.clock.advance(60.0)
+        val cut = ScooterResponseMetadata(partial = false, failedSources = emptyList(), truncated = true)
+        load(h, ScooterResponse(vehicles = listOf(scooter("x1", provider = "bird", at = point(east = 300, north = 0)), other), meta = cut), call = 2)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+        for (read in 2..3) {
+            h.clock.advance(60.0)
+            val walked = scooter("x$read", provider = "bird", at = point(east = 300, north = 0))
+            load(h, ScooterResponse(vehicles = listOf(walked, other)), call = read + 1)
+            assertEquals("read $read", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+            assertEquals("read $read", ScooterWalkTarget.Scooter(walked), h.model.walk.value?.target)
+            assertEquals("read $read", walked.id, h.model.selectedScooterID.value)
+        }
+    }
+
+    /** The same from a Bird standing faded under the id of a read the walk missed (the iPhone's a0848d8e). */
+    @Test
+    fun aBirdStandingFadedUnderTheIDOfAReadTheWalkMissedIsStillWalkedTo() = runTest {
+        val target = scooter("x0", provider = "bird", at = point(east = 300, north = 0))
+        val h = shownWalk(to = target)
+
+        // Panned 3 km away while Bird is read again (x1).
+        h.api.setResponse(ScooterResponse(vehicles = emptyList(), meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "vehicles")))
+        h.model.updateViewport(MapRegion(center = point(east = 3_000, north = 0), latitudeDelta = 0.01, longitudeDelta = 0.01), zoom = 17)
+        assertTrue(waitUntil { h.api.calls == 2 && !h.model.isLoading.value })
+
+        // Back while Bird's next sweep is under way: the Bird stands faded as x1, the read the walk never saw.
+        h.clock.advance(60.0)
+        h.api.setResponse(
+            ScooterResponse(
+                vehicles = emptyList(),
+                lastSeenVehicles = listOf(scooter("x1", provider = "bird", at = point(east = 300, north = 0))),
+                meta = ScooterResponseMetadata(partial = false, stale = true, failedSources = emptyList(), mode = "vehicles", refreshing = true),
+            ),
+        )
+        h.model.updateViewport(region, zoom = 17)
+        assertTrue(waitUntil { h.api.calls == 3 && !h.model.isLoading.value })
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+        for (read in 2..3) {
+            h.clock.advance(60.0)
+            val walked = scooter("x$read", provider = "bird", at = point(east = 300, north = 0))
+            load(h, ScooterResponse(vehicles = listOf(walked)), call = read + 2)
+            assertEquals("read $read", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+            assertEquals("read $read", ScooterWalkTarget.Scooter(walked), h.model.walk.value?.target)
+        }
+    }
+
     @Test
     fun aScooterMissingFromOneUpdateAndBackOnTheNextIsStillWalkedTo() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
@@ -1282,6 +1384,13 @@ class ScooterWalkTest {
         val shown = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Shown }
         assertTrue(shown)
         return h
+    }
+
+    /** [answer] loaded by a refresh, the API's [call]th. */
+    private fun TestScope.load(h: Harness, answer: ScooterResponse, call: Int) {
+        h.api.setResponse(answer)
+        h.model.refresh()
+        assertTrue(waitUntil { h.api.calls == call && !h.model.isLoading.value })
     }
 
     private fun scooter(id: String, provider: String = "lime", at: GeoPoint): Scooter =
