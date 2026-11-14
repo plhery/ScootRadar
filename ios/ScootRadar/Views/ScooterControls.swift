@@ -2506,23 +2506,7 @@ struct ScooterSettingsSheet: View {
                                 Circle()
                                     .fill(providerAccent(provider, colorScheme: colorScheme))
                                     .frame(width: 10, height: 10)
-                                if dynamicTypeSize.isAccessibilitySize {
-                                    // Very large text: the status goes under the name, so neither is cut off.
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(provider.name)
-                                        Text(passStatus(for: provider))
-                                            .font(.subheadline)
-                                            .foregroundStyle(ScooterPalette.secondaryText)
-                                    }
-                                } else {
-                                    Text(provider.name)
-                                    Spacer(minLength: 8)
-                                    Text(passStatus(for: provider))
-                                        .font(.subheadline)
-                                        .foregroundStyle(ScooterPalette.secondaryText)
-                                        .multilineTextAlignment(.trailing)
-                                        .lineLimit(2)
-                                }
+                                PassNameAndStatus(name: provider.name, status: passStatus(for: provider))
                             }
                         }
                     }
@@ -2859,6 +2843,96 @@ private struct ExternalLinkRow: View {
                     .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
         }
+    }
+}
+
+/// Whether a pass's status shows whole beside its name in Settings › Passes: in two lines at most, and no line ending
+/// inside a word. Where it would not, it goes under the name, as every status does at very large text (Android
+/// 52d00da1). The row's HStack shares the row as before; only its status is checked. In German on a 375-point iPhone,
+/// a pass with both benefits read "Kostenlos entsperren · 3…" beside "PubliBike / Velospot" from xLarge to xxxLarge,
+/// and beside Ride Mobility, Naolib Micromob', Elerent, 3electra, SAHAM and others from the standard size.
+enum ScooterPassRowLayout {
+    /// Whether the status shows whole in a column this wide, the width the row's HStack gave it, at this text size.
+    static func showsWhole(_ status: String, width: CGFloat, size: DynamicTypeSize) -> Bool {
+        let font = UIFont.preferredFont(
+            forTextStyle: .subheadline,
+            compatibleWith: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory(size))
+        )
+        // SwiftUI lays the text out on whole pixels: a point to spare.
+        let column = width + 1
+        guard column > 1, status.split(whereSeparator: \.isWhitespace).allSatisfy({
+            (String($0) as NSString).size(withAttributes: [.font: font]).width <= column
+        }) else { return false }
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakStrategy = .standard
+        func height(_ width: CGFloat) -> CGFloat {
+            (status as NSString).boundingRect(
+                with: CGSize(width: width, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [.font: font, .paragraphStyle: paragraph],
+                context: nil
+            ).height
+        }
+        return height(column) <= height(.greatestFiniteMagnitude) * 2 + 0.5
+    }
+}
+
+/// A pass's name and its status beside it where the status shows whole there, and under it elsewhere
+/// (ScooterPassRowLayout). The row beside is laid out unseen behind the row shown, to read the status's width there.
+private struct PassNameAndStatus: View {
+    let name: String
+    let status: String
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// The status's width in the row beside the name.
+    @State private var besideWidth: CGFloat?
+
+    var body: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            stacked
+        } else {
+            Group {
+                if let besideWidth, !ScooterPassRowLayout.showsWhole(status, width: besideWidth, size: dynamicTypeSize) {
+                    stacked
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    beside(measured: false)
+                }
+            }
+            .background {
+                beside(measured: true)
+                    .hidden()
+                    .accessibilityHidden(true)
+            }
+        }
+    }
+
+    /// The name and the status on a row, as the row's own HStack held them, its spacing included; measured, the
+    /// status's width is kept.
+    private func beside(measured: Bool) -> some View {
+        HStack(spacing: 10) {
+            Text(name)
+            Spacer(minLength: 8)
+            statusText
+                .multilineTextAlignment(.trailing)
+                .lineLimit(2)
+                .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width in
+                    if measured { besideWidth = width }
+                }
+        }
+    }
+
+    /// The status under the name, so neither is cut off.
+    private var stacked: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(name)
+            statusText
+        }
+    }
+
+    private var statusText: some View {
+        Text(status)
+            .font(.subheadline)
+            .foregroundStyle(ScooterPalette.secondaryText)
     }
 }
 

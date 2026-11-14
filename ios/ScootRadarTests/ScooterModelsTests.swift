@@ -1,5 +1,7 @@
 import CoreLocation
 import Foundation
+import SwiftUI
+import UIKit
 import XCTest
 @testable import ScootRadar
 
@@ -2549,4 +2551,21 @@ extension ScooterModelsTests {
             "The screen model's own choice, whatever the global one"
         )
     }
+
+    /// Settings › Passes: a status that the row's HStack would cut beside the name, in more than two lines or inside a
+    /// word, goes under it (Android's PassRowTest.aStatusThatHalfTheRowWouldCutGoesUnderTheName). The widths are those
+    /// the HStack gave the status on a 375-point iPhone in German at xxLarge: about 135 points beside "PubliBike /
+    /// Velospot", where it read "Kostenlos entsperren · 3…", and 190 beside "Lime", where it wrapped whole.
+    func testAStatusThatThePassRowWouldCutGoesUnderTheName() {
+        let both = "Kostenlos entsperren · 30 Freimin."
+        XCTAssertFalse(ScooterPassRowLayout.showsWhole(both, width: 135, size: .xxLarge))
+        XCTAssertTrue(ScooterPassRowLayout.showsWhole(both, width: 190, size: .xxLarge))
+        XCTAssertTrue(ScooterPassRowLayout.showsWhole(both, width: 300, size: .large), "On one line")
+        // "Nicht" over "eingerichtet".
+        XCTAssertTrue(ScooterPassRowLayout.showsWhole("Nicht eingerichtet", width: 105, size: .xxLarge))
+        // A word wider than its column is broken inside it, on two lines or not.
+        XCTAssertFalse(ScooterPassRowLayout.showsWhole("Abgelaufen", width: 60, size: .large))
+        XCTAssertFalse(ScooterPassRowLayout.showsWhole("Nicht eingerichtet", width: 80, size: .xxLarge))
+    }
 }
+
