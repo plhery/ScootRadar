@@ -4,6 +4,8 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterUserHeading
 import com.plhery.scootradar.core.map.TestCatalog
 import java.net.URI
+import java.time.Instant
+import java.time.ZoneOffset
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos
@@ -33,6 +35,51 @@ class ScooterFilteringTest {
     fun showTheLaunchLanguage() {
         ScooterLanguage.current = ScooterLanguage.atLaunch
         ScooterLanguage.launchLocale = launchLocale
+    }
+
+    /**
+     * TalkBack reads one faded scooter in the singular in every language, as the iPhone and the website write it, where
+     * Italian read "1 sbiaditi, visti l’ultima volta alle…", and so Spanish, Portuguese, Norwegian, Icelandic and French
+     * on a braille display; Icelandic reads 21 in the singular too, and 11 in the plural (fresh-eyes review of 14
+     * November 2026, S8; the iPhone's testFadedScootersAreReadInTheFormEachCountTakesInEveryLanguage).
+     */
+    @Test
+    fun fadedScootersAreReadInTheFormEachCountTakesInEveryLanguage() {
+        val zone = ScooterDateFormat.timeZone
+        ScooterDateFormat.timeZone = { ZoneOffset.UTC }
+        try {
+            val seenAt = Instant.ofEpochSecond(1_792_983_600)
+            val now = seenAt.plusSeconds(60)
+            // The words before the time for one and for more, and what an update adds after it.
+            val sentences = listOf(
+                Triple(ScooterLanguage.En, "faded, last seen at" to "faded, last seen at", ", updating"),
+                Triple(ScooterLanguage.De, "blass, Stand" to "blass, Stand", ", wird aktualisiert"),
+                Triple(ScooterLanguage.Fr, "en pâle, vue à" to "en pâle, vues à", ", mise à jour en cours"),
+                Triple(ScooterLanguage.It, "sbiadito, visto l’ultima volta alle" to "sbiaditi, visti l’ultima volta alle", ", in aggiornamento"),
+                Triple(ScooterLanguage.Nl, "vervaagd, laatst gezien om" to "vervaagd, laatst gezien om", ", wordt bijgewerkt"),
+                Triple(ScooterLanguage.Nb, "blek, sist sett kl." to "bleke, sist sett kl.", ", oppdateres"),
+                Triple(ScooterLanguage.Pt, "esbatida, vista pela última vez às" to "esbatidas, vistas pela última vez às", ", a atualizar"),
+                Triple(ScooterLanguage.Es, "tenue, visto por última vez a las" to "tenues, vistos por última vez a las", ", actualizando"),
+                Triple(ScooterLanguage.Is, "dauf, sást síðast kl." to "daufar, sáust síðast kl.", ", uppfærist"),
+            )
+            assertEquals(ScooterLanguage.entries.toSet(), sentences.map { it.first }.toSet())
+            for ((language, words, updating) in sentences) {
+                ScooterLanguage.current = language
+                val time = ScooterDockStatus.seenTime(seenAt, now = now)
+                for (count in listOf(1, 2, 11, 21)) {
+                    val isOne = count == 1 || (language == ScooterLanguage.Is && count == 21)
+                    val said = "$count ${if (isOne) words.first else words.second} $time"
+                    assertEquals("${language.rawValue}, $count", "$said.", ScooterFadedCount(count, seenAt, updating = false).accessibilityLabel(now))
+                    assertEquals(
+                        "${language.rawValue}, $count, updating",
+                        "$said$updating.",
+                        ScooterFadedCount(count, seenAt, updating = true).accessibilityLabel(now),
+                    )
+                }
+            }
+        } finally {
+            ScooterDateFormat.timeZone = zone
+        }
     }
 
     /** Scooters that report only their battery, judged at 5 km by a full battery's 10 km: 50% or more. */
