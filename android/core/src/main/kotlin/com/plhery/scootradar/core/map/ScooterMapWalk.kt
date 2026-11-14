@@ -342,19 +342,23 @@ internal fun ScooterMapController.followWalkTarget(
     val read = appRead(scooter.provider, meta = meta) ?: observedAt
     val missedAt = walk.missedAt
     if (missedAt == null) {
-        setWalk(walk.copy(missedAt = read))
+        // The newest of the app's reads in view (meta.readThrough), read on the server's clock as appRead's.
+        setWalk(walk.copy(missedAt = serverTime(meta?.readThrough?.get(scooter.provider)) ?: read))
         return
     }
-    if (missedAt == read) return
+    // Nor does one of its feeds read beside the scooter's own, or the view moving, or an older read: until 14 November
+    // 2026 a read of Lime's group beside the scooter's said it was taken after one read of its own (Desk [373] S-1).
+    if (read <= missedAt) return
     cancelRouteRequest()
     setWalk(walk.copy(phase = ScooterWalkPhase.Gone, route = null))
     announceWalk(ScooterWalkNote.Gone.text)
 }
 
 /**
- * When the positions of [provider] in the data were seen, as the server wrote it: their own time (meta.shownSince),
- * which moves only when they are collected again, or, where the data does not say, from an older server or of an app
- * with no positions shown, the data's own (generatedAt). Read on the server's clock, not this device's: the clock
+ * When the positions of [provider] in the data were seen, as the server wrote it: their own time (meta.shownSince), the
+ * oldest of its reads in view, which moves when its feed is collected again, and, where it has several in view, as
+ * Lime's groups, when another of them is read or the view takes one in or leaves one out; or, where the data does not
+ * say, from an older server or of an app with no positions shown, the data's own (generatedAt). Read on the server's clock, not this device's: the clock
  * offset is measured anew from each answer's Date header, to the second, and would tell one answer served twice from
  * itself (the iPhone's ScooterMapModel.read). Null without either.
  */

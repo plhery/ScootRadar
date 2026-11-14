@@ -113,6 +113,12 @@ data class ScooterResponseMetadata(
      * shown, or only faded scooters, is left out.
      */
     val shownSince: Map<String, String>? = null,
+    /**
+     * The same apps as `shownSince`, with the newest of each one's reads in view where `shownSince` has the oldest:
+     * once an app's `shownSince` is later than an answer's `readThrough`, every feed of the app in view, as each of
+     * Lime's groups, was read since that answer. Null from a server that does not say (Desk [373] S-1).
+     */
+    val readThrough: Map<String, String>? = null,
     /** When the oldest of the last-seen scooters were seen, while there are any. */
     val lastSeenAt: String? = null,
     val parkingStatus: String? = null,
@@ -186,6 +192,7 @@ val ScooterResponseMetadataPayload.model: ScooterResponseMetadata
         followUpMs = followUpMs?.saturated,
         staleProviders = staleProviders,
         shownSince = shownSince,
+        readThrough = readThrough,
         lastSeenAt = lastSeenAt,
         parkingStatus = parkingStatus?.rawValue,
         expiresAt = expiresAt,

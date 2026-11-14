@@ -1160,6 +1160,57 @@ class ScooterWalkTest {
         assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
     }
 
+    /**
+     * Two of Lime's groups in view, the walked scooter's (A) and another (B), each read on its own: Lime's oldest read
+     * (shownSince) moves when B is read or the view moves, with A read once without the scooter. It is taken only once
+     * Lime's oldest read is later than the newest of the answer that missed it (readThrough): every group in view, A
+     * too, was read since (fresh-eyes review of 14 November 2026, cache finding 1; Desk [373] S-1; the iPhone's
+     * testAScooterIsTakenOnlyOnceEveryGroupOfItsAppInViewWasReadAfterTheOneThatMissedIt).
+     */
+    @Test
+    fun aScooterIsTakenOnlyOnceEveryGroupOfItsAppInViewWasReadAfterTheOneThatMissedIt() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val lime = scooter("s3", at = point(east = -300, north = 0))
+        val h = shownWalk(to = target, others = listOf(lime))
+        val start = h.clock.now
+        // A's and B's reads, in seconds from the start; B out of view where null.
+        fun answer(a: Long, b: Long?): ScooterResponse {
+            val reads = listOfNotNull(a, b)
+            val oldest = start.plusSeconds(reads.min()).toString()
+            val newest = start.plusSeconds(reads.max()).toString()
+            return ScooterResponse(
+                vehicles = listOf(lime),
+                meta = ScooterResponseMetadata(
+                    partial = false, failedSources = emptyList(), generatedAt = oldest,
+                    shownSince = mapOf("lime" to oldest), readThrough = mapOf("lime" to newest),
+                ),
+            )
+        }
+        suspend fun load(response: ScooterResponse, call: Int) {
+            h.api.setResponse(response)
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == call && !h.model.isLoading.value })
+        }
+
+        // A read again without it: missed once, with A's read the newest.
+        h.clock.advance(60.0)
+        load(answer(a = 50, b = 20), call = 2)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        // B alone read again: Lime's oldest read is A's, the one that missed it.
+        h.clock.advance(60.0)
+        load(answer(a = 50, b = 80), call = 3)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        // B leaves the view: nothing read again.
+        load(answer(a = 50, b = null), call = 4)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+
+        // A read again without it: taken.
+        h.clock.advance(60.0)
+        load(answer(a = 140, b = 80), call = 5)
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+        assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
+    }
+
     /** An older server, or an app with no positions shown, names no time of its: the data's own then tells the reads apart. */
     @Test
     fun aScooterIsTakenFromTwoUpdatesWhereTheDataDoesNotSayItsAppsTime() = runTest {

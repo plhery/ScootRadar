@@ -419,10 +419,12 @@ data class ScooterWalk(
     val reroutes: Int = 0,
     val lastRequestAt: Instant? = null,
     /**
-     * The read of its app in which data that would list the scooter walked to first didn't, under any id: when that
-     * app's positions shown were seen (meta.shownSince), or else the data's own time. From data of another read that
-     * doesn't list it either, it was taken; the same read served again says nothing new. Cleared as soon as data
-     * lists it again.
+     * The read of its app in which data that would list the scooter walked to first didn't, under any id: the newest of
+     * that app's reads in view (meta.readThrough), or else when its positions shown were seen (meta.shownSince, the
+     * oldest), or else the data's own time. From data of a later read that doesn't list it either, it was taken: when
+     * the app's positions shown were seen after it, every one of its feeds in view, as each of Lime's groups, was read
+     * since. The same read served again says nothing new, nor one of the app's other feeds read, or the view moving
+     * (Desk [373] S-1). Cleared as soon as data lists it again.
      */
     val missedAt: Instant? = null,
 ) {
