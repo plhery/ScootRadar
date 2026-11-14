@@ -3364,21 +3364,53 @@ class ScooterMapControllerTest {
         assertNull(ScooterCityCatalog.city(centredAt = GeoPoint(latitude = 30.0, longitude = -40.0)))
     }
 
-    /** The battery minimum the builds with a battery filter kept is forgotten: the range is the only minimum. */
+    /**
+     * The battery minimum the builds with a battery filter kept becomes the rider's range minimum, the range that share
+     * of a full battery's 10 km reaches, and is forgotten (Desk [372]): a rider who chose 60% finds 6 km, which keeps
+     * the scooters of an app the answer names no figure for at 60% and up, as before.
+     */
     @Test
-    fun aStoredBatteryMinimumIsForgotten() = runTest {
-        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "low", provider = "lime", battery = 10))))
+    fun aStoredBatteryMinimumIsKeptAsTheRangeItReaches() = runTest {
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(
+                    scooter(id = "low", provider = "lime", battery = 59),
+                    scooter(id = "high", provider = "lime", latitude = 47.3775, battery = 60),
+                ),
+            ),
+        )
         val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
         defaults.set(60, forKey = "minimum-battery")
 
         val model = makeController(api, defaults = defaults)
 
         assertNull(defaults.int(forKey = "minimum-battery"))
-        assertEquals(0, model.minimumRange.value)
-        assertFalse(model.hasActiveFilters)
+        assertEquals(6_000, defaults.int(forKey = "minimum-range"))
+        assertEquals(6_000, model.minimumRange.value)
+        assertTrue(model.hasActiveFilters)
         model.updateViewport(zurichRegion, zoom = 16)
         assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
-        assertEquals(listOf("lime:low"), model.mapScooters.value.map { it.id })
+        assertEquals(listOf("lime:high"), model.mapScooters.value.map { it.id })
+
+        // The presets of those builds, in kilometres and in whole miles; none, or 0, is Any.
+        for ((percent, units, expected) in listOf(
+            Triple(30, "metric", 3_000), Triple(80, "metric", 8_000), Triple(60, "imperial", 6_437),
+            Triple(30, "imperial", 3_219), Triple(0, "metric", 0), Triple(150, "metric", 10_000),
+        )) {
+            val updated = InMemoryScooterDefaults()
+            updated.set(units, forKey = "units")
+            updated.set(percent, forKey = "minimum-battery")
+            val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = updated)
+            assertEquals("$percent% in $units", expected, restored.minimumRange.value)
+            assertNull(updated.int(forKey = "minimum-battery"))
+            // Read again, by the next launch, it is the same range.
+            val next = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = updated)
+            assertEquals("$percent% in $units, next launch", expected, next.minimumRange.value)
+        }
+        val none = InMemoryScooterDefaults()
+        makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = none)
+        assertNull(none.int(forKey = "minimum-range"))
     }
 
     @Test
@@ -4663,14 +4695,17 @@ class ScooterMapControllerTest {
             assertEquals("Stored $metres in $units", expected, restoredModel.minimumRange.value)
         }
 
-        // A battery minimum kept beside a range, by a build that had both, is forgotten and the range kept.
-        val both = InMemoryScooterDefaults()
-        both.set(60, forKey = "minimum-battery")
-        both.set(5_000, forKey = "minimum-range")
-        both.set("metric", forKey = "units")
-        val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = both)
-        assertEquals(5_000, restored.minimumRange.value)
-        assertNull(both.int(forKey = "minimum-battery"))
+        // A battery minimum kept beside a range, by a build that had both, is forgotten and the range kept, Any too.
+        for (range in listOf(5_000, 0)) {
+            val both = InMemoryScooterDefaults()
+            both.set(60, forKey = "minimum-battery")
+            both.set(range, forKey = "minimum-range")
+            both.set("metric", forKey = "units")
+            val restored = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = both)
+            assertEquals(range, restored.minimumRange.value)
+            assertEquals(range, both.int(forKey = "minimum-range"))
+            assertNull(both.int(forKey = "minimum-battery"))
+        }
     }
 
     /** A link's minimum range takes the place of the rider's, and a link's minimum battery is not read. */

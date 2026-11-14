@@ -352,7 +352,15 @@ class ScooterMapController(
     private var chosenMinimumRange: Int = max(0, defaults.int(forKey = MINIMUM_RANGE_KEY) ?: 0)
 
     init {
-        // The battery minimum of the builds before, now that the range is the filters' only minimum, is forgotten.
+        // The battery minimum of the builds with a battery filter is kept, now that the range is the filters' only
+        // minimum, as the range that share of a full battery's 10 km reaches, 60% as 6 km, where no range is set:
+        // the filters judge the scooters of an app the answer names no figure for by 10 km (Desk [372]). It is then
+        // forgotten, and the range set beside one kept as it was.
+        val battery = defaults.int(forKey = LEGACY_MINIMUM_BATTERY_KEY)
+        if (battery != null && battery > 0 && defaults.int(forKey = MINIMUM_RANGE_KEY) == null) {
+            chosenMinimumRange = battery.coerceAtMost(100) * ScooterRangeFilter.DEFAULT_FULL_BATTERY / 100
+            defaults.set(chosenMinimumRange, forKey = MINIMUM_RANGE_KEY)
+        }
         defaults.removeObject(forKey = LEGACY_MINIMUM_BATTERY_KEY)
     }
 
