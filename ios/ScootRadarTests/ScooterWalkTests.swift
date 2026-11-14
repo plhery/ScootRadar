@@ -810,6 +810,96 @@ final class ScooterWalkTests: XCTestCase {
         }
     }
 
+    func testABirdListedAloneInAGroupedAnswerIsStillWalkedToOnceZoomedBackIn() async throws {
+        // Back in, the next Bird read (x2), or the same read as the groups' (x1) and the next one after.
+        for sameReadBackIn in [false, true] {
+            let name = sameReadBackIn ? "same read back in" : "next read back in"
+            let target = scooter("x0", provider: "bird", at: point(east: 300, north: 0))
+            let other = scooter("l9", at: point(east: -200, north: 0))
+            let h = try await shownWalk(to: target, others: [other])
+
+            // Zoomed out to see the way: the Lime is counted in a group, the Bird alone in its cell is listed, renamed.
+            let x1 = scooter("x1", provider: "bird", at: point(east: 300, north: 0))
+            h.clock.advance(60)
+            await h.api.setResponse(ScooterResponse(
+                vehicles: [x1],
+                clusters: [ScooterCluster(id: "c", latitude: other.latitude, longitude: other.longitude, count: 3, providers: ["lime": 3])],
+                meta: ScooterResponseMetadata(partial: false, failedSources: [], mode: "clusters")
+            ))
+            h.model.updateViewport(region(around: rider, span: 0.03), zoom: 15)
+            let grouped = await waitUntil { await h.api.calls == 2 && !h.model.isLoading }
+            XCTAssertTrue(grouped, name)
+            XCTAssertEqual(h.model.walk?.phase, .shown, name)
+
+            let backIn = sameReadBackIn ? x1 : scooter("x2", provider: "bird", at: point(east: 300, north: 0))
+            await h.api.setResponse(ScooterResponse(vehicles: [backIn, other]))
+            h.model.updateViewport(region, zoom: 17)
+            let back = await waitUntil { await h.api.calls == 3 && !h.model.isLoading }
+            XCTAssertTrue(back, name)
+            XCTAssertEqual(h.model.walk?.phase, .shown, name)
+
+            for read in 3 ... 4 {
+                h.clock.advance(60)
+                let walked = scooter("x\(read)", provider: "bird", at: point(east: 300, north: 0))
+                try await load(h, ScooterResponse(vehicles: [walked, other]), call: read + 1)
+                XCTAssertEqual(h.model.walk?.phase, .shown, "\(name), read \(read)")
+                XCTAssertEqual(h.model.walk?.target, .scooter(walked), "\(name), read \(read)")
+                XCTAssertEqual(h.model.selectedScooterID, walked.id, "\(name), read \(read)")
+            }
+        }
+    }
+
+    func testABirdListedInAnAnswerCutShortIsStillWalkedToOnTheNextReads() async throws {
+        let target = scooter("x0", provider: "bird", at: point(east: 300, north: 0))
+        let other = scooter("l9", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [other])
+
+        // An answer cut short lists the Bird renamed: the walk can't tell from it.
+        h.clock.advance(60)
+        let cut = ScooterResponseMetadata(partial: false, failedSources: [], truncated: true)
+        try await load(h, ScooterResponse(vehicles: [scooter("x1", provider: "bird", at: point(east: 300, north: 0)), other], meta: cut), call: 2)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+
+        for read in 2 ... 3 {
+            h.clock.advance(60)
+            let walked = scooter("x\(read)", provider: "bird", at: point(east: 300, north: 0))
+            try await load(h, ScooterResponse(vehicles: [walked, other]), call: read + 1)
+            XCTAssertEqual(h.model.walk?.phase, .shown, "read \(read)")
+            XCTAssertEqual(h.model.walk?.target, .scooter(walked), "read \(read)")
+            XCTAssertEqual(h.model.selectedScooterID, walked.id, "read \(read)")
+        }
+    }
+
+    func testABirdStandingFadedUnderTheIDOfAReadTheWalkMissedIsStillWalkedTo() async throws {
+        let target = scooter("x0", provider: "bird", at: point(east: 300, north: 0))
+        let h = try await shownWalk(to: target)
+
+        // Panned 3 km away while Bird is read again (x1).
+        await h.api.setResponse(ScooterResponse(vehicles: [], meta: ScooterResponseMetadata(partial: false, failedSources: [], mode: "vehicles")))
+        h.model.updateViewport(region(around: point(east: 3_000, north: 0), span: 0.01), zoom: 17)
+        let away = await waitUntil { await h.api.calls == 2 && !h.model.isLoading }
+        XCTAssertTrue(away)
+
+        // Back while Bird's next sweep is under way: the Bird stands faded as x1, the read the walk never saw.
+        h.clock.advance(60)
+        await h.api.setResponse(ScooterResponse(
+            vehicles: [], lastSeenVehicles: [scooter("x1", provider: "bird", at: point(east: 300, north: 0))],
+            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [], mode: "vehicles", refreshing: true)
+        ))
+        h.model.updateViewport(region, zoom: 17)
+        let back = await waitUntil { await h.api.calls == 3 && !h.model.isLoading }
+        XCTAssertTrue(back)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+
+        for read in 2 ... 3 {
+            h.clock.advance(60)
+            let walked = scooter("x\(read)", provider: "bird", at: point(east: 300, north: 0))
+            try await load(h, ScooterResponse(vehicles: [walked]), call: read + 2)
+            XCTAssertEqual(h.model.walk?.phase, .shown, "read \(read)")
+            XCTAssertEqual(h.model.walk?.target, .scooter(walked), "read \(read)")
+        }
+    }
+
     func testAPlainCardClosesRatherThanMoveToANeighbourRenamedAfterItsScooterWasTaken() async throws {
         let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
         let neighbour = scooter("s2", battery: 10, at: point(east: 309, north: 0))

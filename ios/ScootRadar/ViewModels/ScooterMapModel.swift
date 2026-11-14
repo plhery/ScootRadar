@@ -2490,9 +2490,14 @@ extension ScooterMapModel {
     }
 
     /// Remembers the scooters of its app, live or faded, standing near the selected scooter, or where it was last
-    /// seen while a walk holds its card.
+    /// seen while a walk holds its card, from an answer that lists it under its own id, live or faded: only then is
+    /// every other id near it another scooter. An answer that doesn't (groups, cut short, or faded under the id of a
+    /// read the walk missed) may list it under a new id, which would stand as a neighbour on its own spot and keep the
+    /// walk from ever following it, renamed, there.
     private func noteNeighbours() {
-        guard let selectedScooter else { return }
+        guard let selectedScooter,
+              vehiclesByID[selectedScooter.id] != nil || lastSeenVehicles.contains(where: { $0.id == selectedScooter.id })
+        else { return }
         neighbours?.note(vehicles + lastSeenVehicles, around: selectedScooter)
     }
 
