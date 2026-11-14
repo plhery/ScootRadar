@@ -36,6 +36,11 @@ import org.junit.Test
 class ScooterMapZonesTest {
     private val zurich = MapRegion(center = GeoPoint(latitude = 47.3769, longitude = 8.5417), latitudeDelta = 0.01, longitudeDelta = 0.01)
     private val porto = MapRegion(center = GeoPoint(latitude = 41.147, longitude = -8.611), latitudeDelta = 0.01, longitudeDelta = 0.01)
+    private val bern = zurich.copy(center = GeoPoint(latitude = 46.948, longitude = 7.4474))
+    private val ring = listOf(
+        GeoPoint(latitude = 47.37, longitude = 8.54), GeoPoint(latitude = 47.38, longitude = 8.54),
+        GeoPoint(latitude = 47.38, longitude = 8.55), GeoPoint(latitude = 47.37, longitude = 8.54),
+    )
 
     @Test
     fun zonesAreOnUntilTurnedOffAndTheChoiceIsKept() = runTest {
@@ -613,6 +618,73 @@ class ScooterMapZonesTest {
         assertEquals(inView, model.mapRuleZones.value.map { it.rule.id })
         assertEquals(ScooterZoneState.Loading, model.zoneState.value)
     }
+    /**
+     * Back on the area answered for before another area's zones come, the view's own are drawn and the legend is not
+     * left loading: that request goes, where its answer was drawn over the view until the map next moved, and the
+     * view's no-ride and no-parking zones went (Android review of 14 November 2026, S1).
+     */
+    @Test
+    fun comingBackBeforeAnotherAreasZonesComeKeepsTheViewsOwn() = runTest {
+        val api = ZoneStubAPI()
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        assertTrue(waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Shown })
+
+        // The map rests on Bern, whose zones are asked for and are slow to come...
+        api.more = listOf(ScooterZone(id = "lime:bern", provider = "lime", kind = ScooterZoneKind.NoParking, maxSpeedKph = null, polygons = listOf(listOf(ring))))
+        api.hold()
+        model.updateViewport(bern, zoom = 16)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+        assertTrue(waitUntil { api.zoneAreas.size == 2 })
+
+        // ...and the rider is back in Zürich before they come.
+        model.updateViewport(zurich, zoom = 16)
+        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        api.release()
+        advanceTimeBy(300)
+        runCurrent()
+        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        assertEquals(listOf("lime:0", "bird:0"), model.mapZones.value.map { it.id })
+        assertEquals("Zürich's answer at hand serves it", 2, api.zoneAreas.size)
+    }
+
+    /**
+     * Back on an area whose answer said some of its zones were still on their way, before another area's zones come,
+     * the view's area is asked for again: the other area's request had taken the place of its next try, and the
+     * legend stayed loading without the rest of its zones until the map left the area (the iPhone's a5a61220). The
+     * cities' zones follow the map meanwhile.
+     */
+    @Test
+    fun comingBackToZonesStillOnTheirWayBeforeAnotherAreasComeAsksForTheRest() = runTest {
+        val api = ZoneStubAPI()
+        api.pending = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(porto, zoom = 16)
+        assertTrue(waitUntil { api.zoneAreas.size == 1 && model.mapOperatorZoneCount.value == 2 })
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+        val portoRules = model.mapRuleZones.value.map { it.rule.id }
+        assertTrue(portoRules.isNotEmpty())
+
+        // Before Porto's next try the map rests on Bern, whose zones are slow to come; every answer is whole now.
+        api.pending = false
+        api.hold()
+        model.updateViewport(bern, zoom = 16)
+        assertTrue(waitUntil { api.zoneAreas.size == 2 })
+        assertNotEquals(portoRules, model.mapRuleZones.value.map { it.rule.id })
+
+        // Back in Porto before they come: Porto's rules are drawn, and the rest of its zones asked for.
+        model.updateViewport(porto, zoom = 16)
+        assertEquals(portoRules, model.mapRuleZones.value.map { it.rule.id })
+        api.release()
+        val shown = waitUntil { api.zoneAreas.size == 3 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue("the legend ${model.zoneState.value}, ${api.zoneAreas.size} areas asked for", shown)
+        assertEquals("Porto asked for again", api.zoneAreas.first(), api.zoneAreas.last())
+        assertEquals(listOf("lime:0", "bird:0"), model.mapZones.value.map { it.id }.filter { it.startsWith("lime:") || it.startsWith("bird:") })
+        assertEquals(portoRules, model.mapRuleZones.value.map { it.rule.id })
+    }
+
     // Android's own: an answer with zones left out serves no smaller area than its own, which may have them all.
 
     /**
@@ -680,8 +752,11 @@ class ScooterMapZonesTest {
 }
 
 /** Lime's no riding and Bird's no parking, and [more] after them. */
-private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : ScooterAPIClient {
+private class ZoneStubAPI(more: List<ScooterZone> = emptyList()) : ScooterAPIClient {
     private var failure: ScooterAPIError? = null
+
+    /** The zones after Lime's and Bird's in the answers asked for from now on. */
+    var more: List<ScooterZone> = more
     /** Whether some feeds' zones are still on their way. */
     var pending = false
 
@@ -703,6 +778,7 @@ private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : S
         val pending = pending
         val unavailable = unavailable
         val truncated = truncated
+        val more = more
         gate?.await()
         failure?.let { throw it }
         val ring = listOf(

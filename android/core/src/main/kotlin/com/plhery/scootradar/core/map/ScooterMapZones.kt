@@ -77,6 +77,14 @@ internal fun ScooterMapController.updateZones() {
     }
     val answer = zoneAnswer
     if (answer != null && answer.serves(area)) {
+        // Back before another area's zones came: that request goes, or its answer would be drawn over this view
+        // (Android review of 14 November 2026, S1; the iPhone's 956c3bf4).
+        if (zoneTaskArea != null && zoneTaskArea != answer.area) cancelZoneRequest()
+        // A pending answer's next try gave way to that request: its area is asked for again now (the iPhone's
+        // a5a61220).
+        if (zoneTaskArea == null && answer.pending) {
+            requestZones(answer.area, after = Duration.ZERO, retries = ScooterMapController.zonePendingRetries)
+        }
         // Unless a pending answer is being asked for again, it stands; the cities' zones follow the map either way.
         if (zoneTaskArea == null) setZones(answer.state) else rebuildMapZones()
         return
