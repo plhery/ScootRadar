@@ -119,7 +119,13 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   Lime's per account). Ryde's views, which the Mac bridge reads
   (`server/rydeWatchedViews.ts`), are not in it. The dashboard's "Visitors and
   scraping" row draws the cold views' P90 `start` by provider over each hour, against
-  the 15-second target, and beside it those that failed or were abandoned. Both are counters, so they come
+  the 15-second target; beside it, the share above over each hour (`[1h]`, every
+  outcome in the divisor), against 0.9; and under them those that failed or were
+  abandoned. The share moves by the views that waited, where the P90 jumps on a few
+  and leaves out the failed: one visitor's 52 Lime areas from 17:29 to 18:29 UTC on
+  13 November took Lime's P90 to 80.5 s and its share to 0.75, and 9 failed of 10
+  from 18:29 to 19:29 UTC on 12 November left the P90 at 0.9 s and the share at 0.1.
+  All three are counters, so they come
   from each container's address (job `scootradar-cache-containers`, relabelled), never
   `instance="scootradar-cache:3001"`, which has the gauges alone: sum them by `le`
   across instances, as above.
