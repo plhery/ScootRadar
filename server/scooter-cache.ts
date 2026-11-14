@@ -41,7 +41,7 @@ import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
-import { limeAccountRequests, limeAddressHeld, limeMapRequests, withLimeAppCollectors } from './limeApp';
+import { limeAccountRequests, limeAddressHeld, limeMapRequests, limePlans, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 import { birdMapRequests, sweepScope, withBirdAppCollectors } from './birdApp';
 import { restoreBirdSupplements, savedBirdSupplements, withBirdSupplements } from './birdSupplement';
@@ -109,6 +109,9 @@ const birdSupplementsPath = join(dirname(snapshotPath), 'bird-supplements.json')
 // The ids the answers give scooters (publicVehicleIds.ts), saved beside the snapshot with it and restored
 // after a restart: a deploy renames no scooter.
 const publicIdsPath = join(dirname(snapshotPath), 'public-ids.json');
+// The views each Lime group's sweeps read (LimePlans in limeApp.ts), saved beside the snapshot with it and restored
+// after a restart: a deploy does not send each group's next sweep through its capped views again.
+const limePlansPath = join(dirname(snapshotPath), 'lime-plans.json');
 // The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
@@ -275,6 +278,14 @@ try {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
     console.error('Public id restore failed', error);
     reportError('restore:public-ids', error);
+  }
+}
+try {
+  limePlans.restore(JSON.parse(await readFile(limePlansPath, 'utf8')), Date.now());
+} catch (error) {
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+    console.error('Lime plan restore failed', error);
+    reportError('restore:lime-plans', error);
   }
 }
 
@@ -447,7 +458,7 @@ async function persist(final = false) {
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
   const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), sweeps = savedBirdSupplements(),
-    ids = vehicleIds.saved();
+    ids = vehicleIds.saved(), plans = limePlans.saved();
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
@@ -474,6 +485,13 @@ async function persist(final = false) {
     } catch (error) {
       console.error('Public id persistence failed', error);
       reportError('persist:public-ids', error);
+    }
+    try {
+      await saveAtomically(limePlansPath, temporaryDirectory, 'lime-plans',
+        path => writeFile(path, `${JSON.stringify({ version: 1, savedAt: now, ...plans })}\n`));
+    } catch (error) {
+      console.error('Lime plan persistence failed', error);
+      reportError('persist:lime-plans', error);
     }
   })();
   try { await persisting; } finally { persisting = undefined; }

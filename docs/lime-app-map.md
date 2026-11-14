@@ -43,8 +43,15 @@ scooter seen in its parent, despite returning no pins. Discarding the parent
 would therefore lose a known available scooter. Since 14 November 2026 a
 warm refresh reads them after the views under them: a sweep starting where
 someone looks reads the finished view there first, so a dense middle capped
-twice shows its first scooters one call in, not three. Nearby pins outside the
-owned cell still count toward the cap;
+twice shows its first scooters one call in, not three. The plans are saved
+beside the snapshot in `lime-plans.json`, every minute and on shutdown
+(`LimePlans` in `server/limeApp.ts`), and a restart takes back those used within
+the last four days (`LIME_PLAN_MAX_AGE_MS`), each while its views at the top are
+still its group's; until 14 November 2026 a restart lost them all, so each
+group's next sweep read its capped views first again: in the hour after that
+day's 03:04 UTC restart, 14 of the 56 times a Lime group was opened its first
+scooters showed more than 15 seconds in, though all but one sweep started within 15. Nearby
+pins outside the owned cell still count toward the cap;
 only positions inside that cell and a reviewed service polygon are published.
 The source's selection behaviour was checked against a conservative complete
 scan and overlapping reference views. It remains an unofficial protocol.
@@ -502,7 +509,8 @@ or malformed configuration is an error. The cache reads the manifest when it
 first wraps Lime feeds; restart through the normal deployment to change it.
 
 Each account has one client with its own five-second pacer, renewal, cooldown,
-collection slots, and cached query plans. Each refresh group is assigned by
+collection slots; the groups' query plans are shared, whichever account reads
+them. Each refresh group is assigned by
 its id, consistently across restarts and manifest reordering. Removing an
 account reassigns its groups on restart. A failed or throttled request stays
 on its assigned account; it does not retry through the other accounts.

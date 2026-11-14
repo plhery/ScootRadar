@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { MapBounds } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
-import { LimeClient, LimeAccountError, LimeAccountPool, limeAccount, LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS, LIME_MAX_ACCOUNTS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { LimeClient, LimeAccountError, LimeAccountPool, LimePlans, LIME_PLAN_MAX_AGE_MS, limeAccount, LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS, LIME_MAX_ACCOUNTS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { LIME_QUERY_INTERVAL_MS, LIME_ROUTINE_EVERY } from './limeAreas';
 import { withinCollection } from './sweeps';
@@ -586,6 +586,52 @@ describe('complete Lime scooter maps', () => {
     expect(api.pins.mock.calls.map(([b]) => b.north - b.south)).toContain(.01);
     expect(api.pins).toHaveBeenCalledTimes(5);
     expect(result.vehicles).toHaveLength(204);
+  });
+  describe('plans kept across a restart', () => {
+    const capped = () => ({ pins: vi.fn(async (b: typeof system.bounds) => b.north - b.south === .01
+      ? map(...Array.from({ length: 200 }, (_, i) => pin(String(i))))
+      : map(pin(`${b.south}:${b.west}`, (b.south + b.north) / 2, (b.west + b.east) / 2))) });
+    const focus = { south: .006, west: .006, north: .007, east: .007 };
+    const quarter = { south: .005, north: .01, west: .005, east: .01 };
+    /** The plans one cache saved, as its file holds them, after a sweep of the capped town. */
+    async function savedFile() {
+      const plans = new LimePlans();
+      await new LimeMapCollector(capped(), undefined, plans).collect(system);
+      return JSON.parse(JSON.stringify({ version: 1, savedAt: Date.now(), ...plans.saved() }));
+    }
+    async function sweepAfterRestart(plans: LimePlans, target = system) {
+      const api = capped(), reports: number[] = [];
+      await withinCollection({ urgent: () => true, focus: () => focus, progress: () => { reports.push(api.pins.mock.calls.length); } },
+        () => new LimeMapCollector(api, undefined, plans).collect(target));
+      return { first: api.pins.mock.calls[0][0], calls: api.pins.mock.calls.length, firstReport: reports[0] };
+    }
+
+    it('starts the first sweep after a restart at the finished view where people look, as the plan taken back says', async () => {
+      const plans = new LimePlans();
+      plans.restore(await savedFile(), Date.now());
+      expect(await sweepAfterRestart(plans)).toEqual({ first: quarter, calls: 5, firstReport: 1 });
+      // Without it, the sweep reads the capped town first, then the quarter: its first scooters come two calls in.
+      expect(await sweepAfterRestart(new LimePlans())).toEqual({ first: system.bounds, calls: 5, firstReport: 2 });
+    });
+
+    it('drops a plan whose views at the top are no longer its group\'s, one too old and one it cannot read', async () => {
+      const file = await savedFile();
+      // The catalogue changed the town's views meanwhile.
+      const moved = new LimePlans();
+      moved.restore(file, Date.now());
+      const halved = { ...system, limeMapTiles: [{ south: 0, north: .01, west: 0, east: .005 }, { south: 0, north: .01, west: .005, east: .01 }] };
+      expect((await sweepAfterRestart(moved, halved)).first).toEqual(halved.limeMapTiles[1]);
+      const old = new LimePlans();
+      old.restore(file, file.plans[system.id].at + LIME_PLAN_MAX_AGE_MS + 1);
+      expect(old.saved()).toEqual({ plans: {} });
+      const broken = new LimePlans();
+      broken.restore({ plans: { [system.id]: { ...file.plans[system.id], cells: [[0, 0, 0, .01, 0, 0]] } } }, Date.now());
+      expect(broken.saved()).toEqual({ plans: {} });
+      // A plan taken back and not used yet is saved again, with when it was last used.
+      const kept = new LimePlans();
+      kept.restore(file, Date.now());
+      expect(kept.saved()).toEqual({ plans: file.plans });
+    });
   });
   it('reads a registered market\'s own polygons by its region and town', async () => {
     const api = { pins: vi.fn(async () => map()) };

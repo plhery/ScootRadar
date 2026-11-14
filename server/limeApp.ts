@@ -289,19 +289,90 @@ export function limeCellCovered(result: ReturnType<typeof parseLimePins>, bounds
 }
 
 interface Cell { bounds: MapBounds; depth: number; probe?: true }
+/** A saved cell: its south, west, north and east, its depth, and 1 for a capped view read again (a probe). */
+type SavedCell = [number, number, number, number, number, 0 | 1];
+/** How long a plan nobody used is kept: past an idle sweep of its group (LIME_IDLE_INTERVAL_MS) and a day. */
+export const LIME_PLAN_MAX_AGE_MS = LIME_IDLE_INTERVAL_MS + 24 * 60 * 60_000;
+
+/**
+ * The views each Lime group's sweeps read, as its last sweep left them: its town's views, each capped one split
+ * into quarters until each part is finished (LimeMapCollector). Saved beside the snapshot and taken back after a
+ * restart (scooter-cache.ts), so that a deploy does not send each group's next sweep through its capped views again,
+ * a call for each level before the first view finished: until 14 November 2026 the plans were lost on each
+ * restart, and in the hour after the one at 03:04 UTC that day, 14 of the 56 times a group was opened its first
+ * scooters showed more than 15 seconds in, though all but one sweep started within 15. A plan taken back is used
+ * only while its views at the top are still its group's (the catalogue may have changed them meanwhile).
+ */
+export class LimePlans {
+  private readonly live = new Map<string, { at: number; cells: Cell[] }>();
+  private readonly restored = new Map<string, { at: number; cells: Cell[] }>();
+
+  /** The group's plan, if it has one whose views at the top are `tiles`, within the limits of a sweep. */
+  take(id: string, tiles: readonly MapBounds[], limits: { requests: number; depth: number }): Cell[] | undefined {
+    const live = this.live.get(id);
+    if (live) return live.cells;
+    const saved = this.restored.get(id)?.cells;
+    if (!saved) return undefined;
+    const key = (b: MapBounds) => `${b.south},${b.west},${b.north},${b.east}`;
+    const tops = saved.filter(cell => cell.depth === 0), wanted = new Set(tiles.map(key));
+    const within = (inner: MapBounds, outer: MapBounds) => inner.south >= outer.south && inner.north <= outer.north &&
+      inner.west >= outer.west && inner.east <= outer.east;
+    if (saved.length <= limits.requests && tops.length === wanted.size && new Set(tops.map(cell => key(cell.bounds))).size === tops.length &&
+      tops.every(cell => wanted.has(key(cell.bounds))) && saved.every(cell => cell.depth <= limits.depth &&
+        tops.some(top => within(cell.bounds, top.bounds)))) return saved;
+    this.restored.delete(id);
+    return undefined;
+  }
+
+  set(id: string, cells: Cell[], at: number): void {
+    this.live.set(id, { at, cells });
+    this.restored.delete(id);
+  }
+
+  /** Every plan, those taken back and not used yet with them, as the cache saves them. */
+  saved(): { plans: Record<string, { at: number; cells: SavedCell[] }> } {
+    const plans: Record<string, { at: number; cells: SavedCell[] }> = {};
+    for (const [id, plan] of [...this.restored, ...this.live]) {
+      plans[id] = { at: plan.at, cells: plan.cells.map(({ bounds: b, depth, probe }) => [b.south, b.west, b.north, b.east, depth, probe ? 1 : 0]) };
+    }
+    return { plans };
+  }
+
+  /** Takes back the plans saved before a restart (saved, read from its file): those used within LIME_PLAN_MAX_AGE_MS, and none that cannot be read. */
+  restore(saved: unknown, now: number): void {
+    const plans = (saved as { plans?: unknown } | null | undefined)?.plans;
+    if (!plans || typeof plans !== 'object') return;
+    const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+    for (const [id, value] of Object.entries(plans)) {
+      const { at, cells } = (value ?? {}) as { at?: unknown; cells?: unknown };
+      if (!finite(at) || at > now || now - at > LIME_PLAN_MAX_AGE_MS || !Array.isArray(cells) || !cells.length) continue;
+      const read = cells.map(cell => {
+        if (!Array.isArray(cell) || cell.length !== 6 || !cell.slice(0, 4).every(finite)) return undefined;
+        const [south, west, north, east, depth, probe] = cell as SavedCell;
+        if (south >= north || west >= east || !Number.isInteger(depth) || depth < 0 || (probe !== 0 && probe !== 1)) return undefined;
+        return { bounds: { south, west, north, east }, depth, ...(probe ? { probe: true as const } : {}) };
+      });
+      if (read.every(cell => cell !== undefined) && !this.live.has(id)) this.restored.set(id, { at, cells: read as Cell[] });
+    }
+  }
+}
+/** The plans of the cache's Lime groups, whichever account sweeps them (LimeAccountPool). */
+export const limePlans = new LimePlans();
+
 /**
  * A capped viewport is never published as a complete fleet. Empty leaves remain in the plan. The
  * cell nearest where people look goes next, and each one found complete is reported (sweeps.ts).
  */
 export class LimeMapCollector {
-  private plans = new Map<string, Cell[]>();
-  constructor(private readonly api: Pick<LimeClient, 'pins'>, private readonly limits = { requests: 256, depth: 9, milliseconds: 900_000 }) {}
+  constructor(private readonly api: Pick<LimeClient, 'pins'>, private readonly limits = { requests: 256, depth: 9, milliseconds: 900_000 },
+    private readonly plans = new LimePlans()) {}
   async collect(system: RegionalScooterSystem): Promise<SourceVehicles> {
     if (!system.limeAppMap || system.provider !== 'lime') throw new Error('Not a Lime app map region');
     const started = Date.now();
     const areas = (system.limeServiceAreas ?? serviceOutlines.get(`${system.limeAppRegion}|${system.city}`))?.map(decodeLimeArea);
     if (!areas?.length) throw new Error('Lime map requires verified service outlines');
-    const cells: Cell[] = [...(this.plans.get(system.id) ?? (system.limeMapTiles ?? limeAreaTiles(areas)).map(bounds => ({ bounds, depth: 0 })))];
+    const tiles = system.limeMapTiles ?? limeAreaTiles(areas);
+    const cells: Cell[] = [...(this.plans.take(system.id, tiles, this.limits) ?? tiles.map(bounds => ({ bounds, depth: 0 })))];
     if (cells.length > this.limits.requests) throw new Error('Lime service area exceeds the collection budget');
     const leaves: Cell[] = [];
     const vehicles = new Map<string, LimeScooter>();
@@ -339,7 +410,7 @@ export class LimeMapCollector {
     // show and took a turn more for each level. Lime's turns go to the views someone looks at in the order they
     // ask, so each of those calls waited behind every other watched view's: until 14 November 2026 a town's
     // dense middle, capped twice, showed its first scooters three calls in.
-    this.plans.set(system.id, [...leaves.filter(cell => !cell.probe), ...leaves.filter(cell => cell.probe)]);
+    this.plans.set(system.id, [...leaves.filter(cell => !cell.probe), ...leaves.filter(cell => cell.probe)], Date.now());
     return { observedAt: started, stale: false, vehicles: [...vehicles.values()].map(published) };
   }
 }
@@ -420,7 +491,8 @@ export class LimeAccountPool {
   readonly gate: PaceGate;
   private readonly clients: Map<string, LimeClient>;
   private readonly collectors: Map<string, LimeMapCollector>;
-  constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest' | 'onThrottled'> = {}) {
+  constructor(accounts: readonly LimeAccount[],
+    { plans = new LimePlans(), ...options }: Omit<LimeClientOptions, 'sessionPath' | 'onRequest' | 'onThrottled'> & { plans?: LimePlans } = {}) {
     this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
     this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0, throttled: 0 }));
     const gate = this.gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
@@ -435,7 +507,7 @@ export class LimeAccountPool {
       onThrottled: () => { this.requests[index].throttled++; },
     })]));
     this.collectors = new Map(this.accounts.map(account => [account.id,
-      new LimeMapCollector({ pins: bounds => this.pins(account.id, bounds) })]));
+      new LimeMapCollector({ pins: bounds => this.pins(account.id, bounds) }, undefined, plans)]));
   }
   /**
    * A view of a group, through its own account, or for a group someone is looking at, through the account
@@ -478,7 +550,7 @@ export class LimeAccountPool {
 }
 
 let productionPool: LimeAccountPool | undefined;
-const pool = () => productionPool ??= new LimeAccountPool(readLimeAccounts());
+const pool = () => productionPool ??= new LimeAccountPool(readLimeAccounts(), { plans: limePlans });
 export const limeAccountRequests = () => productionPool?.requests ?? [];
 /** The calls the address's budget held though their account had a turn, and how long in all (PaceGate.held). */
 export const limeAddressHeld = () => productionPool?.gate.held ?? { requests: 0, ms: 0 };
