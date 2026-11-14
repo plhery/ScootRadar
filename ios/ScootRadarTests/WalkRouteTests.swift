@@ -146,13 +146,41 @@ final class WalkRouteTests: XCTestCase {
     func testOnlyAScooterNearerWhereTheFollowedOneStoodThanAnyNeighbourTakesOver() {
         let followed = scooter("s1", at: start)
         var neighbours = ScooterNeighbours(following: followed.id)
-        XCTAssertTrue(neighbours.mayTakeOver(scooter("new", at: point(east: 9, north: 0)), from: start))
+        XCTAssertTrue(neighbours.mayTakeOver(scooter("new", at: point(east: 9, north: 0)), from: start, battery: 80))
 
         neighbours.note([scooter("s2", at: point(east: 9, north: 0))], around: followed)
 
-        XCTAssertTrue(neighbours.mayTakeOver(scooter("s1-new", at: point(east: 4, north: 0)), from: start))
-        XCTAssertFalse(neighbours.mayTakeOver(scooter("s2-new", at: point(east: 9, north: 0)), from: start))
-        XCTAssertFalse(neighbours.mayTakeOver(scooter("nearer-it", at: point(east: 5, north: 0)), from: start))
+        XCTAssertTrue(neighbours.mayTakeOver(scooter("s1-new", at: point(east: 4, north: 0)), from: start, battery: 80))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("s2-new", at: point(east: 9, north: 0)), from: start, battery: 80))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("nearer-it", at: point(east: 5, north: 0)), from: start, battery: 80))
+    }
+
+    func testABatteryTellsTheScooterFollowedFromANeighbourAsNearItsSpot() {
+        // Two Ponys at the same spot, as in Liège, renamed on every read.
+        let followed = scooter("p1", at: start, battery: 54)
+        var neighbours = ScooterNeighbours(following: followed.id)
+        neighbours.note([followed, scooter("p2", at: start, battery: 80)], around: followed)
+        XCTAssertEqual(neighbours.batteries, ["lime:p2": 80])
+
+        // The one with the battery of the scooter followed is it; the other is the neighbour renamed.
+        XCTAssertTrue(neighbours.mayTakeOver(scooter("p1-new", at: start, battery: 54), from: start, battery: 54))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p2-new", at: start, battery: 80), from: start, battery: 54))
+        // Moved a little, nearer the neighbour's spot than its own: still told apart.
+        let east3 = point(east: 3, north: 0)
+        neighbours.note([scooter("p2", at: point(east: 4, north: 0), battery: 80)], around: followed)
+        XCTAssertTrue(neighbours.mayTakeOver(scooter("p1-new", at: east3, battery: 54), from: start, battery: 54))
+        // Batteries that don't tell them apart refuse it, as before: the same, or one unknown.
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p1-new", at: east3, battery: 80), from: start, battery: 80))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p1-new", at: east3, battery: nil), from: start, battery: 54))
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p1-new", at: east3, battery: 54), from: start, battery: nil))
+        // Its battery moved a point between reads: not told apart.
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p1-new", at: east3, battery: 53), from: start, battery: 54))
+        neighbours.note([scooter("p3", at: point(east: 5, north: 0), battery: nil)], around: followed)
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p1-new", at: point(east: 5, north: 0), battery: 54), from: start, battery: 54))
+
+        // Kept with the nearest fifty, and forgotten for the scooter followed under a new id.
+        neighbours.follow(to: "lime:p2")
+        XCTAssertNil(neighbours.batteries["lime:p2"])
     }
 
     func testTheNearestFiftyNeighboursAreKept() {
@@ -163,6 +191,7 @@ final class WalkRouteTests: XCTestCase {
 
         XCTAssertEqual(neighbours.positions.count, ScooterNeighbours.limit)
         XCTAssertEqual(Set(neighbours.positions.keys), Set((1 ... 50).map { "lime:n\($0)" }))
+        XCTAssertEqual(Set(neighbours.batteries.keys), Set(neighbours.positions.keys))
     }
 
     // MARK: Walk
@@ -302,9 +331,9 @@ final class WalkRouteTests: XCTestCase {
         ))
     }
 
-    private func scooter(_ id: String, provider: String = "lime", at point: GeoPoint) -> Scooter {
+    private func scooter(_ id: String, provider: String = "lime", at point: GeoPoint, battery: Int? = 80) -> Scooter {
         Scooter(
-            provider: provider, latitude: point.latitude, longitude: point.longitude, battery: 80,
+            provider: provider, latitude: point.latitude, longitude: point.longitude, battery: battery,
             rangeMeters: nil, vehicleID: id, deepLink: nil, rentalURIs: nil, distanceMeters: 0
         )
     }

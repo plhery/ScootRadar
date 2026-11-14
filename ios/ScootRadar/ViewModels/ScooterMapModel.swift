@@ -2533,11 +2533,13 @@ extension ScooterMapModel {
 
     /// The scooter under a new id that is `scooter`, which the data no longer lists under its own: the nearest of its
     /// provider within a few metres of where it stood, under an id the data before didn't list, and nearer where it
-    /// stood than where any other scooter of its app seen near it since it was chosen stood (ScooterNeighbours).
+    /// stood than where any other scooter of its app seen near it since it was chosen stood, or told from that one by
+    /// its battery (ScooterNeighbours).
     private func successor(of scooter: Scooter, previousIDs: Set<String>) -> Scooter? {
         let stood = GeoPoint(scooter.coordinate)
         return Self.nearest(ofTheProviderOf: scooter, among: vehicles.filter { candidate in
-            !previousIDs.contains(candidate.id) && neighbours?.mayTakeOver(candidate, from: stood) != false
+            !previousIDs.contains(candidate.id) &&
+                neighbours?.mayTakeOver(candidate, from: stood, battery: scooter.battery) != false
         })
     }
 

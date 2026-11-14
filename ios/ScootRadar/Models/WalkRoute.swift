@@ -261,7 +261,8 @@ enum ScooterWalkPhase: Equatable, Sendable {
 /// each last stood. Operators give scooters new ids, Bird, Spin and Pony on every read, and the server gives its own
 /// anew after a gap or a restart, so one under an id the answer before didn't list, standing where the scooter
 /// followed stood, may be it or a neighbour renamed: it takes over only standing nearer where the scooter followed
-/// stood than where any neighbour stood. Neighbours are remembered live or faded, through answers that leave the spot
+/// stood than where any neighbour stood, or as near as one but with the battery of the scooter followed where that
+/// neighbour's was another (Desk [373] S-2). Neighbours are remembered live or faded, through answers that leave the spot
 /// out, groups zoomed out or the map panned away, until the card closes or another scooter is chosen.
 struct ScooterNeighbours: Equatable, Sendable {
     /// Scooters of its app this near the one followed are remembered.
@@ -273,6 +274,8 @@ struct ScooterNeighbours: Equatable, Sendable {
     private(set) var followedIDs: Set<String>
     /// Where each neighbour last stood, by its id.
     private(set) var positions: [String: GeoPoint] = [:]
+    /// Each neighbour's battery where it last stood, by its id, for those that report one.
+    private(set) var batteries: [String: Int] = [:]
 
     init(following id: String) {
         followedIDs = [id]
@@ -282,6 +285,7 @@ struct ScooterNeighbours: Equatable, Sendable {
     mutating func follow(to id: String) {
         followedIDs.insert(id)
         positions[id] = nil
+        batteries[id] = nil
     }
 
     /// Remembers where the scooters of its app among `scooters`, live or faded, stand within `radius` of `followed`,
@@ -290,7 +294,10 @@ struct ScooterNeighbours: Equatable, Sendable {
         let centre = GeoPoint(followed.coordinate)
         for scooter in scooters where scooter.provider == followed.provider && !followedIDs.contains(scooter.id) {
             let point = GeoPoint(scooter.coordinate)
-            if point.distance(to: centre) <= Self.radius { positions[scooter.id] = point }
+            if point.distance(to: centre) <= Self.radius {
+                positions[scooter.id] = point
+                batteries[scooter.id] = scooter.battery
+            }
         }
         guard positions.count > Self.limit else { return }
         let nearest = positions
@@ -298,13 +305,20 @@ struct ScooterNeighbours: Equatable, Sendable {
             .sorted { $0.metres < $1.metres }
             .prefix(Self.limit)
         positions = Dictionary(uniqueKeysWithValues: nearest.map { ($0.id, $0.point) })
+        batteries = batteries.filter { positions[$0.key] != nil }
     }
 
-    /// Whether `candidate` stands nearer `stood`, where the scooter followed last stood, than where any neighbour stood.
-    func mayTakeOver(_ candidate: Scooter, from stood: GeoPoint) -> Bool {
+    /// Whether `candidate` stands nearer `stood`, where the scooter followed last stood with `battery`, than where any
+    /// neighbour stood. One as near a neighbour's spot, or nearer, is that neighbour renamed, unless the batteries tell
+    /// them apart: the candidate's is the scooter followed's, and that neighbour's another. So of two scooters at the
+    /// same spot, the one followed is told from the other where their batteries differ.
+    func mayTakeOver(_ candidate: Scooter, from stood: GeoPoint, battery: Int?) -> Bool {
         let point = GeoPoint(candidate.coordinate)
         let metres = point.distance(to: stood)
-        return positions.values.allSatisfy { metres < point.distance(to: $0) }
+        let hasItsBattery = candidate.battery != nil && candidate.battery == battery
+        return positions.allSatisfy { id, spot in
+            metres < point.distance(to: spot) || (hasItsBattery && batteries[id].map { $0 != candidate.battery } == true)
+        }
     }
 }
 
