@@ -1489,7 +1489,7 @@ struct MapDestination: Equatable, Identifiable, Sendable {
 struct RecentPlaceStore: Sendable {
     let directory: URL
     /// The build of the app that keeps the place, written beside it: the build that kept it reads whether it had data
-    /// as it saved it, another works it out again from its own service areas.
+    /// as it saved it; another reads "has data" as saved and works "no data" out again from its own service areas.
     let build: String
 
     /// The app's own build number, which scripts/upload-ios-app.sh makes the commit count, so that each upload has its
@@ -1516,12 +1516,15 @@ struct RecentPlaceStore: Sendable {
         let longitude: Double
         /// "address" or "city".
         let kind: String
-        /// Whether it had data when it was chosen, as the search said from that day's service areas. Read by the
-        /// build that saved it, it stands: a town whose feed is newer than the build's bundled areas has data at the
-        /// next launch too, where it read "No data" (Desk [372]). Read by another build, a feed may have been added
-        /// there since, or taken away: it is worked out again, as for a place the search answers without it.
+        /// Whether it had data when it was chosen, as the search said from that day's service areas. "Has data"
+        /// stands, whichever build reads it: a town whose feed is newer than the build's bundled areas has data at the
+        /// next launch too, where it read "No data" (Desk [372] S-b, and [373] S-5 for any build). "No data" stands
+        /// for the build that saved it; another works it out again, as for a place the search answers without it,
+        /// since a feed may have been added there since: Manama, kept as "No data" before Hopp's feed of 4 November
+        /// 2026, has data.
         let isCovered: Bool
-        /// The build that saved it; none in a file an earlier version kept, which every build works out again.
+        /// The build that saved it; none in a file an earlier version kept, whose "No data" every build works out
+        /// again.
         let build: String?
     }
 
@@ -1551,7 +1554,7 @@ struct RecentPlaceStore: Sendable {
             subtitle: saved.subtitle,
             point: GeoPoint(latitude: saved.latitude, longitude: saved.longitude),
             kind: kind,
-            isCovered: saved.build == build ? saved.isCovered : nil
+            isCovered: (saved.isCovered || saved.build == build) ? saved.isCovered : nil
         )
     }
 

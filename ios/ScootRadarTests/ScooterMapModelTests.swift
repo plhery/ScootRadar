@@ -3350,9 +3350,10 @@ extension ScooterMapModelTests {
         XCTAssertEqual(standard.directory.lastPathComponent, "Application Support")
     }
 
-    /// Whether the map has data at the place saved is as it is today, not as when the place was chosen: Manama,
-    /// saved as "No data" before Hopp's feed there was added on 4 November 2026, has data, and Lungern, saved as
-    /// having some, has none (week review, finding 3.4).
+    /// A place saved as "No data" by an earlier version has data where the map has some today: Manama, saved so
+    /// before Hopp's feed there was added on 4 November 2026 (week review, finding 3.4). One saved as having data
+    /// keeps it, as the search said: Lungern stands for a town whose feed is newer than the bundled areas (Desk [373]
+    /// S-5).
     func testTheRecentPlaceHasDataAsTheMapHasItTodayNotAsWhenItWasChosen() throws {
         let store = recentPlaceStore()
         try FileManager.default.createDirectory(at: store.directory, withIntermediateDirectories: true)
@@ -3370,14 +3371,15 @@ extension ScooterMapModelTests {
 
         let lungern = #"{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}"#
         try Data(lungern.utf8).write(to: store.file)
-        XCTAssertEqual(store.load()?.isCovered, false)
+        XCTAssertEqual(store.load()?.isCovered, true)
     }
 
     /// The build that kept the place reads whether it has data as the search said, from that day's service areas: a
     /// town whose feed is newer than the build's bundled ones still has data at the next launch, where it read "No
     /// data" (Desk [372] S-b; Android's RecentPlaceStoreTest.aPlaceKeptByThisBuildHasDataAsTheSearchSaid, 1a819ca8).
     /// Lungern stands for such a town, which the bundled areas leave out, and Zürich for a place the search said has
-    /// none. Another build works it out again from its own bundled areas, as the test above.
+    /// none. Another build reads "has data" as saved, and works "No data" out again from its own bundled areas, where
+    /// a feed may have come since (Desk [373] S-5).
     func testAPlaceKeptByThisBuildHasDataAsTheSearchSaid() throws {
         let directory = recentPlaceStore().directory
         func store(_ build: String) -> RecentPlaceStore { RecentPlaceStore(directory: directory, build: build) }
@@ -3392,7 +3394,7 @@ extension ScooterMapModelTests {
 
         store("11").save(lungern)
         XCTAssertEqual(store("11").load()?.isCovered, true)
-        XCTAssertEqual(store("12").load()?.isCovered, false)
+        XCTAssertEqual(store("12").load()?.isCovered, true)
         let saved = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: store("11").file)) as? [String: Any])
         XCTAssertEqual(Set(saved.keys), ["title", "subtitle", "latitude", "longitude", "kind", "isCovered", "build"])
         XCTAssertEqual(saved["build"] as? String, "11")
@@ -3408,11 +3410,15 @@ extension ScooterMapModelTests {
         app.save(lungern)
         XCTAssertEqual(RecentPlaceStore(directory: directory).load(), lungern)
 
-        // What a build before the field kept is read as the bundled areas have it, by any build.
+        // What a build before the field kept: "has data" as saved, "No data" as the bundled areas have it, by any build.
         let before = #"{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}"#
         try Data(before.utf8).write(to: app.file)
-        XCTAssertEqual(app.load()?.isCovered, false)
-        XCTAssertEqual(store("11").load()?.isCovered, false)
+        XCTAssertEqual(app.load()?.isCovered, true)
+        XCTAssertEqual(store("11").load()?.isCovered, true)
+        let zurichBefore = #"{"title":"Bahnhofstrasse 12","subtitle":"8001 Zürich","latitude":47.3717,"longitude":8.5392,"kind":"address","isCovered":false}"#
+        try Data(zurichBefore.utf8).write(to: app.file)
+        XCTAssertEqual(app.load()?.isCovered, true)
+        XCTAssertEqual(store("11").load()?.isCovered, true)
     }
 
     /// A store in a directory of its own, deleted when the test ends.
