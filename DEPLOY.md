@@ -110,9 +110,10 @@ too large for its zoom is answered at the zoom it fits, and a visitor who has as
 for 32 areas in a quarter hour no longer keeps feeds collected; a request keeps
 collected only the feeds within about 80 km of its view's middle, and the rider maps
 every ten minutes, not every one, from zoom 15 out. Answers name
-scooters by the cache's own ids, renewed after a move or a gap, not the operators'; see
-[Scraping](docs/OBSERVABILITY.md#scraping). Origin responses are private/no-store; only the
-Worker publishes the public response cache policy.
+scooters by the cache's own ids, not the operators'. A scooter keeps its id while it stands
+within 100 m and is missing for less than a day (5 minutes for Bird's, Spin's and Bolt's own
+GBFS feeds), across a deploy too; see [Scraping](docs/OBSERVABILITY.md#scraping). Origin
+responses are private/no-store; only the Worker publishes the public response cache policy.
 
 After this one-time migration, keep both sides on the same secret during normal
 releases. Update the secret on both sides before any planned rotation cutover.
