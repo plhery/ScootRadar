@@ -138,7 +138,7 @@ function rememberBeside(beside: Beside, scooter: Vehicle, seen: readonly Vehicle
 /**
  * Whether a scooter under a key the answer before didn't have may be the one that stood at `lat`, `lng` under a new
  * id: not one seen beside it, nor standing as near where one of those stood as where it stood. A scooter beside it
- * renamed, as after a gap in the data or a deploy, or by an app that renames on every read, is not it.
+ * renamed, by a feed that renames on every read or now and then, is not it.
  */
 function mayBeRenamed(candidate: Vehicle, lat: number, lng: number, beside: Beside): boolean {
   if (beside.has(vehicleKey(candidate))) return false;
@@ -654,8 +654,8 @@ export default function Home() {
       viewportContainsPoint(viewportBounds, location.lat, location.lng));
   }, [enabledProviders, parking, viewportBounds, viewportZoom]);
 
-  // The scooter walked to, as the latest data has it. Some apps give a scooter a
-  // new id now and then, and the cache does after a gap or a deploy: one of the same app
+  // The scooter walked to, as the latest data has it. Some feeds give a scooter a
+  // new id on each read, others now and then (below): one of the same app
   // a few metres from where it was, listed under a key the answer before didn't have, is it.
   // One seen beside it while its card is open, in any answer, or standing where one of those
   // stood is another scooter, which the walk is not handed to.
@@ -700,9 +700,11 @@ export default function Home() {
   // The pin is kept as fresh as the data, for when the data has nothing to say of it.
   if (liveWalkedVehicle && pinnedVehicle && pinnedVehicle !== liveWalkedVehicle) setWalkPin({ vehicle: liveWalkedVehicle });
   if (liveWalkedVehicle && vehicleKey(liveWalkedVehicle) !== selectedVehicleKey) setSelectedVehicleKey(vehicleKey(liveWalkedVehicle));
-  // Bird and Pony give every scooter a new id on each read, other apps after each ride, and the cache after a gap or
-  // a deploy. A card not walked to follows its scooter too, but only to one listed under a key that wasn't there
-  // before, as the walk does: one seen beside it is another scooter, the first taken, and the card closes.
+  // Pony's GBFS feed, and Bird's and Spin's, give every scooter a new id on each read, and Bird's app map some of its
+  // scooters now and then. The cache keeps its own id for a scooter while it stands where it got it, through a deploy
+  // and up to a day out of the answers, but 5 minutes only for Bird's, Spin's and Bolt's GBFS feeds
+  // (publicVehicleIds.ts). A card not walked to follows its scooter too, but only to one listed under a key that
+  // wasn't there before, as the walk does: one seen beside it is another scooter, the first taken, and the card closes.
   let followedCard: Vehicle | null = null;
   if (listedVehicles !== vehicles) {
     setListedVehicles(vehicles);
@@ -715,12 +717,15 @@ export default function Home() {
       if (followedCard) setSelectedVehicleKey(vehicleKey(followedCard));
     }
   }
-  // Those beside the card's scooter in this answer, around where it now stands, or stood last.
+  // Those beside the card's scooter in this answer, around where it now stands, live or faded. An answer that does
+  // not list it adds none: around where it stood they would take in its own copies under new ids, one refused for
+  // standing nearer where a neighbour stood, or one faded under the id of a read this page never had, and refuse
+  // its next ones.
   if (selectedVehicleKey === null) {
     if (besideCard.choice !== null) setBesideCard({ choice: null, answer: null, beside: NOTHING_BESIDE });
   } else if (besideCard.choice !== chosenVehicleKey || besideCard.answer !== vehicles) {
     const shown = liveWalkedVehicle ?? followedCard ?? [...vehicles, ...lastSeenVehicles]
-      .find(vehicle => vehicleKey(vehicle) === selectedVehicleKey) ?? pinnedVehicle;
+      .find(vehicle => vehicleKey(vehicle) === selectedVehicleKey);
     setBesideCard({
       choice: chosenVehicleKey,
       answer: vehicles,

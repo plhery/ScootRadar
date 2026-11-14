@@ -1279,6 +1279,56 @@ it('follows the scooter walked to under a new id beside the one renamed with it,
   expect(within(birdCard()).getByText(TAKEN)).toBeVisible();
 });
 
+// A metre north, in degrees of latitude.
+const METRE = 1 / 111_195;
+
+it('keeps no copy of the scooter walked to that was refused as one beside it, and follows its next one', async () => {
+  // A Bird 4 m from another, both under a new id on each read.
+  const bird: Vehicle = { ...FAR, provider: 'bird', vehicle_id: 'bird-1' };
+  const birdBeside: Vehicle = { ...bird, vehicle_id: 'beside-1', lat: bird.lat + 4 * METRE, battery: 10 };
+  let vehicles = [bird, birdBeside];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker bird-1' }));
+  const birdCard = () => screen.getByRole('group', { name: 'Bird scooter' });
+  await pressDirections(birdCard());
+
+  // Placed 2.5 m on, toward the other: nearer where that one stood than where it stood, it is not followed.
+  vehicles = [{ ...bird, vehicle_id: 'bird-2', lat: bird.lat + 2.5 * METRE }, { ...birdBeside, vehicle_id: 'beside-2' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-1');
+  // Then 1.4 m from where it stood, 2.6 m from where the other stood and 1.1 m from the copy refused: it is.
+  vehicles = [{ ...bird, vehicle_id: 'bird-3', lat: bird.lat + 1.4 * METRE }, { ...birdBeside, vehicle_id: 'beside-3' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-3');
+  expect(within(birdCard()).queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+});
+
+it('follows the Bird walked to from where it stood faded under the id of a read the page never had', async () => {
+  const bird: Vehicle = { ...FAR, provider: 'bird', vehicle_id: 'bird-1' };
+  const renamed: Vehicle = { ...bird, vehicle_id: 'bird-2' };
+  let answer = () => data([bird]);
+  stubServer(() => answer());
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker bird-1' }));
+  const birdCard = () => screen.getByRole('group', { name: 'Bird scooter' });
+  await pressDirections(birdCard());
+
+  // Bird is collected again: the scooter stands faded where it was last seen, under the id of a read between two answers.
+  answer = () => ({ ...data([]), lastSeen: { vehicles: [renamed], clusters: [],
+    providers: { bird: { seenAt: new Date(Date.now() - 120_000).toISOString(), updating: true } } } });
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-1');
+  // Bird's new positions list it under that id, where it stood.
+  answer = () => data([renamed]);
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-2');
+  await refreshData();
+  expect(within(birdCard()).queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+});
+
 for (const backAs of ['far', 'far-renewed']) {
   it(`gives a scooter said to be taken its card and Directions back when it is listed again where it stood as "${backAs}"`, async () => {
     let vehicles = [FAR];
