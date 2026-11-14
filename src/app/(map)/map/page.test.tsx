@@ -2123,6 +2123,8 @@ it('restores and saves provider preferences without overwriting them during hydr
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByRole('button', { name: 'Lime, 1. Shown.' })).toHaveClass('chip-selected');
   expect(screen.getByRole('button', { name: 'Bolt, 0. Hidden.' })).toBeInTheDocument();
+  // Kept since the list was read against the 40 providers of November 2026: it is not read so again.
+  expect(localStorage.getItem('scooters-providers-off-v2')).toBe('1');
   fireEvent.click(screen.getByRole('button', { name: 'Lime, 1. Shown.' }));
   // The providers turned off are kept: none now.
   const saved = localStorage.getItem('scooters-providers-off');

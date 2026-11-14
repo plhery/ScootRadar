@@ -19,6 +19,23 @@ export const PROVIDER_ONLY_STORAGE_KEY = 'scooters-provider-only';
  */
 export const LEGACY_PROVIDERS_STORAGE_KEY = 'scooters-providers';
 
+/**
+ * Written with every save since 14 November 2026. A list of those off kept without it was written against the 40
+ * providers below, and if it leaves exactly one of them on and no one-provider key was kept with it, that one is the
+ * only provider on: the visitor kept one app before the map kept that choice (d0bd77ea, 10 November 2026) and has not
+ * come back since. Only once: after that save, a list leaving one of the 40 on is a choice made beside a provider
+ * added later.
+ */
+export const PROVIDERS_OFF_CHECKED_STORAGE_KEY = 'scooters-providers-off-v2';
+
+/** The map's 40 providers from before 10 November 2026 to 14 November 2026, the most a list without the flag can name. */
+export const PROVIDERS_OF_NOVEMBER_2026: readonly string[] = [
+  'alpaca', 'beam', 'beryl', 'binbin', 'bird', 'bolt', 'bolt_hopp', 'dart', 'deer', 'dott', 'elerent', 'flamingo', 'gcoo',
+  'hopp', 'hoppy', 'jet', 'jolt', 'kickgoing', 'lime', 'luup', 'lyft', 'move', 'naolib', 'pony', 'publibike', 'qick',
+  'ride_mobility', 'ridemovi', 'ryde', 'saham', 'spin', 'swing', 'veo', 'voi', 'whoosh', 'xingxing', 'yoio', 'zelectra',
+  'zeus', 'zippy',
+];
+
 /** The map's providers until 11 October 2026, the only ones a visitor could have turned off on purpose since the first. */
 const PROVIDERS_BEFORE_11_OCTOBER_2026: readonly string[] = ['bird', 'bolt', 'dott', 'hopp', 'lime', 'pony', 'publibike', 'voi'];
 
@@ -34,14 +51,20 @@ const stringList = (raw: string | null): string[] | null => {
 
 /**
  * The providers kept off, among those the map has; null where none were kept. Every one but the one kept on, where
- * that is one the map has. A legacy list of those on counts as turning off only the providers of before 11 October
+ * that is one the map has, or the one of the 40 a list kept before the flag left on. A legacy list of those on counts as turning off only the providers of before 11 October
  * 2026 it lacks: one written on a visit since then also lacks the providers added after it, which nobody had turned off.
  */
 export function savedProvidersOff(read: (key: string) => string | null, providers: readonly string[]): Set<string> | null {
   const only = read(PROVIDER_ONLY_STORAGE_KEY);
   if (only !== null && providers.includes(only)) return new Set(providers.filter(provider => provider !== only));
   const off = stringList(read(PROVIDERS_OFF_STORAGE_KEY));
-  if (off) return new Set(off.filter(provider => providers.includes(provider)));
+  if (off) {
+    if (read(PROVIDERS_OFF_CHECKED_STORAGE_KEY) === null) {
+      const on = PROVIDERS_OF_NOVEMBER_2026.filter(provider => !off.includes(provider));
+      if (on.length === 1 && providers.includes(on[0])) return new Set(providers.filter(provider => provider !== on[0]));
+    }
+    return new Set(off.filter(provider => providers.includes(provider)));
+  }
   const on = stringList(read(LEGACY_PROVIDERS_STORAGE_KEY));
   if (!on || !on.every(provider => providers.includes(provider))) return null;
   return new Set(PROVIDERS_BEFORE_11_OCTOBER_2026.filter(provider => providers.includes(provider) && !on.includes(provider)));

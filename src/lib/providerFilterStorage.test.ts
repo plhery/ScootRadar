@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { PROVIDERS } from '@/lib/types';
 import {
-  LEGACY_PROVIDERS_STORAGE_KEY, PROVIDER_ONLY_STORAGE_KEY, PROVIDERS_OFF_STORAGE_KEY, providerOnlyToSave, providersOffToSave, savedProvidersOff,
+  LEGACY_PROVIDERS_STORAGE_KEY, PROVIDER_ONLY_STORAGE_KEY, PROVIDERS_OF_NOVEMBER_2026, PROVIDERS_OFF_CHECKED_STORAGE_KEY,
+  PROVIDERS_OFF_STORAGE_KEY, providerOnlyToSave, providersOffToSave, savedProvidersOff,
 } from './providerFilterStorage';
 
 const BEFORE = ['bird', 'bolt', 'dott', 'hopp', 'lime', 'pony', 'publibike', 'voi'];
@@ -61,5 +63,57 @@ describe('the providers a visitor keeps off', () => {
   it('keeps the providers not shown, sorted', () => {
     expect(providersOffToSave(NOW, new Set(NOW))).toBe('[]');
     expect(providersOffToSave(NOW, new Set(['lime', 'zeus']))).toBe(JSON.stringify(['bird', 'bolt', 'dott', 'hopp', 'pony', 'publibike', 'ridemovi', 'voi', 'whoosh']));
+  });
+});
+
+describe('a visitor who kept one provider before the map kept that choice', () => {
+  const FORTY = [...PROVIDERS_OF_NOVEMBER_2026];
+  const LATER = [...FORTY, 'newco'];
+  /** The providers shown with what was kept, on a map with the providers given. */
+  const shown = (providers: string[], stored: Record<string, string>) => {
+    const off = savedProvidersOff(reading(stored), providers);
+    return providers.filter(provider => !off?.has(provider)).sort();
+  };
+  /** What a save keeps with the providers given shown, flag and all. */
+  const saved = (providers: string[], on: string[]) => {
+    const only = providerOnlyToSave(providers, new Set(on));
+    return {
+      [PROVIDERS_OFF_STORAGE_KEY]: providersOffToSave(providers, new Set(on)),
+      ...(only ? { [PROVIDER_ONLY_STORAGE_KEY]: only } : {}),
+      [PROVIDERS_OFF_CHECKED_STORAGE_KEY]: '1',
+    };
+  };
+
+  it('are the map\'s providers of 14 November 2026', () => {
+    expect(FORTY).toHaveLength(40);
+    expect(FORTY.every(provider => provider in PROVIDERS)).toBe(true);
+  });
+
+  it('keeps Lime alone from a list of those off kept before 10 November, on a map that adds a provider since', () => {
+    const before = { [PROVIDERS_OFF_STORAGE_KEY]: JSON.stringify(FORTY.filter(provider => provider !== 'lime')) };
+    expect(shown(LATER, before)).toEqual(['lime']);
+    expect(shown(FORTY, before)).toEqual(['lime']);
+    // A one-provider key kept with it goes first, as before.
+    expect(shown(LATER, { ...before, [PROVIDER_ONLY_STORAGE_KEY]: 'voi' })).toEqual(['voi']);
+  });
+
+  it('turns a provider added since on for a visitor who kept two, with or without the flag', () => {
+    const two = { [PROVIDERS_OFF_STORAGE_KEY]: JSON.stringify(FORTY.filter(provider => !['bolt', 'lime'].includes(provider))) };
+    expect(shown(LATER, two)).toEqual(['bolt', 'lime', 'newco']);
+    expect(shown(LATER, saved(FORTY, ['bolt', 'lime']))).toEqual(['bolt', 'lime', 'newco']);
+  });
+
+  it('reads the list once: Lime and a provider added since, saved with the flag, stay both on', () => {
+    const both = saved(LATER, ['lime', 'newco']);
+    expect(both[PROVIDER_ONLY_STORAGE_KEY]).toBeUndefined();
+    expect(shown(LATER, both)).toEqual(['lime', 'newco']);
+    // Without the flag the same list would read as Lime alone.
+    const { [PROVIDERS_OFF_CHECKED_STORAGE_KEY]: _flag, ...unflagged } = both;
+    expect(shown(LATER, unflagged)).toEqual(['lime']);
+  });
+
+  it('reads the list as kept where its one provider left on is no longer on the map', () => {
+    const gone = FORTY.filter(provider => provider !== 'zippy');
+    expect(shown(gone, { [PROVIDERS_OFF_STORAGE_KEY]: JSON.stringify(gone) })).toEqual([]);
   });
 });

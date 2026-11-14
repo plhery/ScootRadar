@@ -26,7 +26,7 @@ import { snapMinimumRange } from '@/lib/rangeSlider';
 import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import { PROVIDERS } from '@/lib/types';
 import {
-  LEGACY_PROVIDERS_STORAGE_KEY, PROVIDER_ONLY_STORAGE_KEY, PROVIDERS_OFF_STORAGE_KEY, providerOnlyToSave, providersOffToSave, savedProvidersOff,
+  LEGACY_PROVIDERS_STORAGE_KEY, PROVIDER_ONLY_STORAGE_KEY, PROVIDERS_OFF_CHECKED_STORAGE_KEY, PROVIDERS_OFF_STORAGE_KEY, providerOnlyToSave, providersOffToSave, savedProvidersOff,
 } from '@/lib/providerFilterStorage';
 import {
   parseClientParams,
@@ -372,6 +372,7 @@ export default function Home() {
       const only = providerOnlyToSave(Object.keys(PROVIDERS), enabledProviders);
       if (only) localStorage.setItem(PROVIDER_ONLY_STORAGE_KEY, only);
       else localStorage.removeItem(PROVIDER_ONLY_STORAGE_KEY);
+      localStorage.setItem(PROVIDERS_OFF_CHECKED_STORAGE_KEY, '1');
       localStorage.removeItem(LEGACY_PROVIDERS_STORAGE_KEY);
     } catch {}
   }, [enabledProviders, preferencesReady]);
