@@ -242,10 +242,16 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
-    /// The minimum range in metres the map filters by and asks for: the one set, in the nearest whole
-    /// step of the slider's unit, no further than its last; 0 for Any.
+    /// The minimum range in metres a scootradar.com link set (`minRange`), ahead of the rider's own and not kept: a
+    /// friend's link with 10 km shows 10 km while the app runs, and the rider's own minimum the next launch, as on
+    /// the website since 11 November 2026 (1a271490; Desk [373] S-3). Until then each link's took the rider's place
+    /// for good. A choice on the slider is kept as the rider's own and ends it, as Reset and another link do.
+    private var linkMinimumRange: Int?
+
+    /// The minimum range in metres the map filters by and asks for: the link's or the one set, in the nearest
+    /// whole step of the slider's unit, no further than its last; 0 for Any.
     var minimumRange: Int {
-        ScooterRangeFilter.snapped(chosenMinimumRange, unit: rangeUnit)
+        ScooterRangeFilter.snapped(linkMinimumRange ?? chosenMinimumRange, unit: rangeUnit)
     }
 
     /// The range slider's unit: kilometres, or miles where lengths are written in miles.
@@ -286,7 +292,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             // A minimum range is read in whole steps of the new unit: 5 km becomes 3 mi. Units that keep
             // the slider's unit (km in Switzerland, mi in Britain) leave the map as it is.
             let before = ScooterRangeFilter.snapped(
-                chosenMinimumRange,
+                linkMinimumRange ?? chosenMinimumRange,
                 unit: ScooterRangeFilter.Unit(locale: ScooterWriting(language: language, units: oldValue).locale)
             )
             guard minimumRange != before else { return }
@@ -1423,6 +1429,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         rangeTracking?.cancel()
         rangeBeforeDrag = nil
         let minimumChanged = minimumRange != 0
+        linkMinimumRange = nil
         chosenMinimumRange = 0
         enabledProviders = Set(ScooterProvider.allCases)
         if minimumChanged { refetchFilteredClusters() }
@@ -1436,6 +1443,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         // The first step after a rest starts a drag.
         let before = rangeBeforeDrag ?? minimumRange
         rangeBeforeDrag = before
+        // The rider's own, kept: a link's minimum is left.
+        linkMinimumRange = nil
         chosenMinimumRange = normalizedValue
         refetchFilteredClusters()
         // A drag of the slider passes many steps and is one choice: the minimum is counted where it rests,
@@ -1558,7 +1567,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func open(_ link: ScooterMapLink) {
         // A link changes the map: a moment to ask for a rating waits for its fresh load.
         reviewDue = false
-        if let range = link.minimumRange { setMinimumRange(range) }
+        // Its minimum shows while the app runs, not kept nor counted as a choice (range_filter); a link without one
+        // shows the rider's own again.
+        let minimumBefore = minimumRange
+        linkMinimumRange = link.minimumRange
+        if minimumRange != minimumBefore {
+            filtersDidChange()
+            refetchFilteredClusters()
+        }
         guard let origin = link.origin else {
             ScooterAnalytics.shared.track("link_open", result: "map")
             return

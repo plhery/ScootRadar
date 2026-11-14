@@ -6185,8 +6185,8 @@ extension ScooterMapModelTests {
         XCTAssertEqual(both.integer(forKey: "minimum-range"), 5_000)
     }
 
-    /// A link's minimum range takes the place of the rider's, and an older link's minimum battery is left out:
-    /// it opens the map with the rider's own minimum, or with the range of a link that has both.
+    /// A link's minimum range shows ahead of the rider's while the app runs, not kept nor counted, and an older
+    /// link's minimum battery is left out: a link without a range shows the rider's own.
     func testALinkSetsAMinimumRangeAndLeavesOutABatteryMinimum() throws {
         defer { ScooterUnits.current = .automatic }
         let defaults = isolatedDefaults()
@@ -6205,8 +6205,61 @@ extension ScooterMapModelTests {
 
         let battery = try XCTUnwrap(ScooterMapLink(url: XCTUnwrap(URL(string: "https://scootradar.com/?minBattery=60"))))
         model.open(battery)
-        XCTAssertEqual(model.minimumRange, 5_000, "The rider's own minimum is kept")
+        XCTAssertEqual(model.minimumRange, 3_000, "The rider's own minimum")
         XCTAssertNil(defaults.object(forKey: "minimum-battery"))
+    }
+
+    /// A link's minimum range is for that visit: the rider's own stays kept, and comes back at the next launch, after
+    /// a choice on the slider (kept), Reset, or a link without one. Opening it is no choice of the rider's.
+    func testALinksMinimumRangeIsForThatVisitAndNotTheRidersOwn() async throws {
+        defer { ScooterUnits.current = .automatic }
+        let defaults = isolatedDefaults()
+        defaults.set("metric", forKey: "units")
+        var events: [String] = []
+        ScooterAnalytics.shared.observer = { name, value in
+            if let name { events.append(value.map { "\(name) \($0)" } ?? name) }
+        }
+        defer { ScooterAnalytics.shared.observer = nil }
+        func makeModel() -> ScooterMapModel {
+            ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])), locationManager: CLLocationManager(),
+                defaults: defaults, rangeRest: .milliseconds(50), builtInZones: []
+            )
+        }
+        let model = makeModel()
+        model.setMinimumRange(3_000)
+        try await Task.sleep(for: .milliseconds(200))
+        events.removeAll()
+
+        // A friend's link with 10 km: shown, not kept, not counted.
+        model.open(ScooterMapLink(minimumRange: 10_000))
+        XCTAssertEqual(model.minimumRange, 10_000)
+        XCTAssertEqual(defaults.integer(forKey: "minimum-range"), 3_000)
+        try await Task.sleep(for: .milliseconds(200))
+        XCTAssertFalse(events.contains { $0.hasPrefix("range_filter") })
+        // The next launch: the rider's own.
+        XCTAssertEqual(makeModel().minimumRange, 3_000)
+
+        // A choice on the slider is the rider's own, kept and counted, and the link's is gone.
+        model.setMinimumRange(8_000)
+        XCTAssertEqual(model.minimumRange, 8_000)
+        XCTAssertEqual(defaults.integer(forKey: "minimum-range"), 8_000)
+        try await Task.sleep(for: .milliseconds(200))
+        XCTAssertEqual(events.filter { $0.hasPrefix("range_filter") }, ["range_filter 8000"])
+
+        // Reset ends a link's minimum too, and keeps Any.
+        model.open(ScooterMapLink(minimumRange: 12_000))
+        XCTAssertEqual(model.minimumRange, 12_000)
+        model.resetFilters()
+        XCTAssertEqual(model.minimumRange, 0)
+        XCTAssertEqual(defaults.integer(forKey: "minimum-range"), 0)
+
+        // A link without a range, after one with: the rider's own again.
+        model.setMinimumRange(4_000)
+        model.open(ScooterMapLink(minimumRange: 15_000))
+        XCTAssertEqual(model.minimumRange, 15_000)
+        model.open(ScooterMapLink(minimumRange: nil))
+        XCTAssertEqual(model.minimumRange, 4_000)
     }
 
     /// Settings › Units: Automatic, as before there was a choice, or kilometres or miles, at once
