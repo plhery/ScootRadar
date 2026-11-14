@@ -4,6 +4,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.Scooter
 import kotlin.math.PI
 import kotlin.math.cos
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -79,17 +80,65 @@ class ScooterNeighboursTest {
         neighbours.note(followed, seen = listOf(lime("west-near", east = -6)))
         assertFalse(neighbours.mayBe(followed, candidate = lime("new", east = -6)))
         assertFalse(neighbours.mayBe(followed, candidate = lime("new", east = 10)))
+        // Their batteries with them, and no other.
+        assertEquals(50, neighbours.rememberedIDs.size)
+        assertEquals(neighbours.rememberedIDs, neighbours.rememberedBatteries.keys)
+        assertFalse(lime("n49").id in neighbours.rememberedBatteries)
+    }
+
+    /**
+     * Two scooters of an app at the same spot, renamed on every read, as two Ponys in Liège: the one followed is told
+     * from the other by its battery, where the other's is another (Desk [373] S-2; the iPhone's
+     * testABatteryTellsTheScooterFollowedFromANeighbourAsNearItsSpot). Before, the walk to either said "taken" at the
+     * first read.
+     */
+    @Test
+    fun aBatteryTellsTheScooterFollowedFromANeighbourAsNearItsSpot() {
+        val followed = pony("p1", battery = 54)
+        val neighbours = ScooterNeighbours()
+        neighbours.note(followed, seen = listOf(followed, pony("p2", battery = 80)))
+        assertEquals(mapOf(pony("p2").id to 80), neighbours.rememberedBatteries)
+
+        // The one with the battery of the scooter followed is it; the other is the neighbour renamed.
+        assertTrue(neighbours.mayBe(followed, candidate = pony("p1-new", battery = 54)))
+        assertFalse(neighbours.mayBe(followed, candidate = pony("p2-new", battery = 80)))
+        // Moved a little, nearer the neighbour's spot than its own: still told apart.
+        neighbours.note(followed, seen = listOf(pony("p2", east = 4, battery = 80)))
+        assertTrue(neighbours.mayBe(followed, candidate = pony("p1-new", east = 3, battery = 54)))
+        // Batteries that don't tell them apart refuse it, as before: the same, or one unknown.
+        assertFalse(neighbours.mayBe(pony("p1", battery = 80), candidate = pony("p1-new", east = 3, battery = 80)))
+        assertFalse(neighbours.mayBe(followed, candidate = pony("p1-new", east = 3, battery = null)))
+        assertFalse(neighbours.mayBe(pony("p1", battery = null), candidate = pony("p1-new", east = 3, battery = 54)))
+        // Its battery moved a point between reads: not told apart.
+        assertFalse(neighbours.mayBe(followed, candidate = pony("p1-new", east = 3, battery = 53)))
+        // A neighbour whose battery is unknown.
+        neighbours.note(followed, seen = listOf(pony("p3", east = 5, battery = null)))
+        assertEquals(setOf(pony("p2").id), neighbours.rememberedBatteries.keys)
+        assertFalse(neighbours.mayBe(followed, candidate = pony("p1-new", east = 5, battery = 54)))
+        // Seen again without one, it is forgotten.
+        neighbours.note(followed, seen = listOf(pony("p2", east = 4, battery = null)))
+        assertEquals(emptyMap<String, Int>(), neighbours.rememberedBatteries)
+        neighbours.note(followed, seen = listOf(pony("p2", east = 4, battery = 80)))
+
+        // Followed under a new id, it is no neighbour, nor is its battery remembered.
+        neighbours.note(pony("p2", east = 4, battery = 80), seen = emptyList())
+        assertEquals(emptyMap<String, Int>(), neighbours.rememberedBatteries)
+        neighbours.forget()
+        assertEquals(emptySet<String>(), neighbours.rememberedIDs)
     }
 
     private fun lime(id: String, east: Number = 0, north: Number = 0): Scooter = scooter(id, "lime", east = east, north = north)
 
-    private fun scooter(id: String, provider: String, east: Number = 0, north: Number = 0): Scooter {
+    private fun pony(id: String, east: Number = 0, battery: Int? = 80): Scooter = scooter(id, "pony", east = east, battery = battery)
+
+    private fun scooter(id: String, provider: String, east: Number = 0, north: Number = 0, battery: Int? = 80): Scooter {
         val metresPerDegree = 6_371_008.8 * PI / 180
         return scooter(
             id,
             provider,
             latitude = origin.latitude + north.toDouble() / metresPerDegree,
             longitude = origin.longitude + east.toDouble() / (metresPerDegree * cos(origin.latitude * PI / 180)),
+            battery = battery,
         )
     }
 }
