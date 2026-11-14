@@ -30,13 +30,31 @@ class ScooterNeighboursTest {
         assertTrue("forgotten", neighbours.mayBe(followed, candidate = lime("new", east = 9)))
     }
 
+    /**
+     * A neighbour is remembered where it was seen last within 30 m of the scooter followed, as the iPhone remembers it
+     * (Desk [372]): seen further away, as when it is ridden off, it keeps that place, and a scooter standing there is
+     * not taken for the one followed.
+     */
     @Test
-    fun aNeighbourIsRememberedWhereItWasSeenLast() {
+    fun aNeighbourIsRememberedWhereItWasSeenLastWithin30Metres() {
         val neighbours = ScooterNeighbours()
         neighbours.note(followed, seen = listOf(lime("s2", east = 9)))
-        // Ridden away: where it stood is no longer its place.
-        neighbours.note(followed, seen = listOf(lime("s2", east = 400)))
+        assertFalse(neighbours.mayBe(followed, candidate = lime("new", east = 9)))
+        // Moved within 30 m: its new place is its.
+        neighbours.note(followed, seen = listOf(lime("s2", east = 20)))
         assertTrue(neighbours.mayBe(followed, candidate = lime("new", east = 9)))
+        assertFalse(neighbours.mayBe(followed, candidate = lime("new", east = 20)))
+        // Ridden away, and seen 400 m off, or 31 m: it stood 20 m east last.
+        for (east in listOf(400, 31, -31)) {
+            neighbours.note(followed, seen = listOf(lime("s2", east = east)))
+            assertFalse("seen $east m east", neighbours.mayBe(followed, candidate = lime("new", east = 20)))
+            assertTrue("seen $east m east", neighbours.mayBe(followed, candidate = lime("new", east = 9)))
+        }
+        // A scooter of its app first seen further than 30 m is not remembered, and one at 30 m is.
+        neighbours.note(followed, seen = listOf(lime("s3", north = 31)))
+        assertTrue(neighbours.mayBe(followed, candidate = lime("new", north = 31)))
+        neighbours.note(followed, seen = listOf(lime("s4", north = -29.9)))
+        assertFalse(neighbours.mayBe(followed, candidate = lime("new", north = -29.9)))
     }
 
     @Test

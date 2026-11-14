@@ -10,8 +10,9 @@ import com.plhery.scootradar.core.model.distance
  * the cache gives new ones after a gap or a restart, Bird, Spin and Pony on every read. One of its app standing where
  * it stood, under an id the answer before didn't list, is then that scooter. But a neighbour the answer before didn't
  * list either, as it stood faded, or the map showed groups or another place, or it too got a new id, is not: so each
- * one seen within [radius] of the scooter followed, live or faded, in any answer, is remembered where it last stood,
- * and a scooter standing as near to one of those places as to where the scooter followed stood is that neighbour.
+ * one seen within [radius] of the scooter followed, live or faded, in any answer, is remembered where it last stood
+ * within it, and a scooter standing as near to one of those places as to where the scooter followed stood is that
+ * neighbour. One seen further away keeps the place it was last seen at within it, as the iPhone's does (Desk [372]).
  */
 internal class ScooterNeighbours {
     /** The ids the scooter followed has had: never a neighbour's, as when it stands faded under an earlier one. */
@@ -27,8 +28,8 @@ internal class ScooterNeighbours {
     }
 
     /**
-     * Notes where the scooters of [followed]'s app among [seen], other than it, stand: those within [radius] of it,
-     * and wherever they are those already remembered. The [capacity] nearest to it are kept.
+     * Notes where the scooters of [followed]'s app among [seen], other than it, stand within [radius] of it; one
+     * remembered that stands further keeps where it stood within it. The [capacity] nearest to it are kept.
      */
     fun note(followed: Scooter, seen: List<Scooter>) {
         followedIDs += followed.id
@@ -36,7 +37,7 @@ internal class ScooterNeighbours {
         val point = followed.coordinate
         for (scooter in seen) {
             if (scooter.provider != followed.provider || scooter.id in followedIDs) continue
-            if (scooter.id in positions || scooter.distance(from = point) <= radius) positions[scooter.id] = scooter.coordinate
+            if (scooter.distance(from = point) <= radius) positions[scooter.id] = scooter.coordinate
         }
         if (positions.size <= capacity) return
         val farthest = positions.entries.sortedBy { it.value.distance(to = point) }.drop(capacity).map { it.key }
