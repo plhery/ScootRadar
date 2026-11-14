@@ -127,6 +127,49 @@ class ScooterMapEventsTest {
         )
     }
 
+    /**
+     * A drag away and back to where the slider rested before is no choice, and sends nothing, as on the website, where
+     * the apps counted it (review lane R5). A drag that rests elsewhere is counted where it rests, also after one that
+     * came back, and a drag after Reset starts from Any.
+     */
+    @Test
+    fun aDragAwayAndBackToWhereTheSliderRestedSendsNothing() = runTest {
+        val analytics = RecordingAnalytics()
+        val model = makeController(empty(), analytics = analytics)
+        model.setUnits(ScooterUnits.Metric)
+        fun km(steps: Int) = ScooterRangeFilter.metres(steps = steps, unit = ScooterRangeFilter.Unit.Kilometres)
+        fun drag(vararg steps: Int) {
+            for (step in steps) {
+                model.setMinimumRange(km(step))
+                advanceTimeBy(100)
+            }
+            advanceTimeBy(1_001)
+            runCurrent()
+        }
+
+        // From Any to 3 km and back to Any: nothing.
+        drag(1, 2, 3, 2, 1, 0)
+        // To 5 km: sent.
+        drag(2, 4, 5)
+        // From 5 km to 8 and back: nothing; then on to 8: sent.
+        drag(6, 8, 6, 5)
+        drag(6, 7, 8)
+        // Reset, then a drag from Any back to Any and one to 2 km.
+        model.resetFilters()
+        drag(1, 0)
+        drag(1, 2)
+
+        assertEquals(
+            listOf(
+                TrackedEvent("range_filter", value = 5_000),
+                TrackedEvent("range_filter", value = 8_000),
+                TrackedEvent("filters_reset"),
+                TrackedEvent("range_filter", value = 2_000),
+            ),
+            analytics.events,
+        )
+    }
+
     @Test
     fun aPreferenceIsSentWhenItChangesAndAPassWithoutItsAmounts() = runTest {
         val analytics = RecordingAnalytics()

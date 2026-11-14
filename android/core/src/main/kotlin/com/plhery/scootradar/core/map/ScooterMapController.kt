@@ -479,6 +479,8 @@ class ScooterMapController(
     private var fetchTask: Job? = null
     /** `range_filter`, sent a second after the slider's last step. */
     private var rangeTrackingTask: Job? = null
+    /** The minimum the slider rested on before the drag under way, if one is: a drag back to it is no choice. */
+    private var rangeBeforeDrag: Int? = null
     private var refreshTimerTask: Job? = null
     private var parkingExpiryTask: Job? = null
 
@@ -1103,6 +1105,7 @@ class ScooterMapController(
         analytics?.track("filters_reset")
         // A range the slider had not rested on was never chosen.
         rangeTrackingTask?.cancel()
+        rangeBeforeDrag = null
         val minimumChanged = minimumRange.value != 0
         assignMinimumRange(0)
         setEnabledProviders(ScooterProvider.entries.toSet())
@@ -1116,13 +1119,18 @@ class ScooterMapController(
     fun setMinimumRange(metres: Int) {
         val normalizedValue = ScooterRangeFilter.snapped(metres, rangeUnit)
         if (normalizedValue == minimumRange.value) return
+        // The first step after a rest starts a drag.
+        val before = rangeBeforeDrag ?: minimumRange.value
+        rangeBeforeDrag = before
         assignMinimumRange(normalizedValue)
         refetchFilteredClusters()
-        // A drag of the slider passes many steps and is one choice: the minimum is counted where it rests, in metres.
+        // A drag of the slider passes many steps and is one choice: the minimum is counted where it rests, in metres,
+        // and not at all where it rests where the drag started, as on the website (docs/analytics.md; review lane R5).
         rangeTrackingTask?.cancel()
         rangeTrackingTask = scope.launch {
             delay(1.seconds)
-            analytics?.track("range_filter", value = normalizedValue)
+            rangeBeforeDrag = null
+            if (normalizedValue != before) analytics?.track("range_filter", value = normalizedValue)
         }
     }
 
