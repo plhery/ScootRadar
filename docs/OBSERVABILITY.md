@@ -542,13 +542,19 @@ data. Since 6 November 2026:
   not the operator's (`server/publicVehicleIds.ts`). The operators' rider maps keep a
   scooter's id from ride to ride, so their ids would let anyone rebuild every trip,
   which an operator's GBFS feed prevents by giving a scooter a new id after each ride.
-  A scooter keeps its id while it stands within 100 m of where it got it and is in
-  the answers, and gets a new one once it has moved further or been missing for 5
-  minutes, as after a ride. The ids live in the cache's memory, so a restart renews
+  A scooter keeps its id while it stands within 100 m of where it got it, in the
+  answers or missing from them for up to a day (`PUBLIC_ID_KEPT_MS`), and gets a new
+  one once it has moved further, as after a ride. One of Bird's, Spin's or Bolt's own
+  GBFS feeds, whose licences cap how long their data may be kept, gets a new one after
+  5 minutes missing (`PUBLIC_ID_CAPPED_KEPT_MS`). The ids are saved beside the
+  snapshot in `public-ids.json`, every minute and on shutdown, and a restart takes
+  back those still in their time, so a deploy keeps them, but for a scooter first
+  named after the old cache's last save. Until 10 November 2026 (ece051cc) they lived
+  in memory only: a scooter missing for 5 minutes got a new id, and a restart renewed
   them all. The web, iPhone and Android apps follow a scooter to its new id (one of its
-  operator within 15 m of where it stood), as they did for Bird's and Pony's, which
-  change on every read. A rental link comes whole from the operator's feed and does
-  not use the id.
+  operator within 15 m of where it stood), as they did for Bird's and Pony's own
+  feeds, which change them on every read. A rental link comes whole from the
+  operator's feed and does not use the id.
 
 Not done on purpose: Bot Fight Mode or a JavaScript challenge on `/api`, which the
 iPhone and Android apps cannot pass, and a lower limit: a map waiting for its feeds asks
