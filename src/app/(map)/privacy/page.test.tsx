@@ -27,6 +27,11 @@ it('lists the units among the settings stored on the device, as PRIVACY.md does'
   expect(text().match(/Local storage and service worker (.*?) are stored locally/)?.[1]).toMatch(/\bunits\b/);
 });
 
+it('lists the zones shown or not among the settings stored on the device, as PRIVACY.md does', () => {
+  expect(text().match(/Local storage and service worker (.*?) are stored locally/)?.[1])
+    .toMatch(/whether the map shows ride and parking zones/);
+});
+
 it('is shared as the privacy notice, not as the map', () => {
   expect(metadata.openGraph?.url).toBe('/privacy');
   expect(metadata.openGraph?.title).toBe(metadata.title);

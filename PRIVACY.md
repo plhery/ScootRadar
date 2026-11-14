@@ -30,7 +30,8 @@ searches, except the last place chosen in the search, which stays on the device 
   ScootRadar catalogue are found without contacting either; their names still
   go to Geoapify, to find other towns of the same name.
 - OpenFreeMap receives normal map tile requests from the user's device: from the website, with its origin as the referrer (no page path or query string), and from the Android app. The iOS app's map comes from Apple Maps. The tiles hold OpenStreetMap data and are drawn on the device.
-- Language, units, filters, appearance, map style, the ride length chosen for price
+- Language, units, filters, appearance, map style, whether the map shows ride and
+  parking zones, the ride length chosen for price
   estimates and, in the iOS and Android apps, the ride passes entered are stored locally, as is the fact that the device has found its
   location before (a yes or no, never the position) and, in the Android app, the fact that the user refused it
   location, until it is allowed (`android-location-refused`). The website also keeps what was done with its
