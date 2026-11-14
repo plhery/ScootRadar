@@ -118,45 +118,49 @@ function vehicleKey(vehicle: Vehicle): string {
   return vehicle.vehicle_id ? `${vehicle.provider}:${vehicle.vehicle_id}` : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`;
 }
 
-/** Where the scooters of its app other than the one of a card were seen beside it, by key, each where it was last. */
-type Beside = ReadonlyMap<string, readonly [number, number]>;
+/** Where the scooters of its app other than the one of a card were seen beside it, by key, each where it was last, with its battery there. */
+type Beside = ReadonlyMap<string, readonly [lat: number, lng: number, battery: number | null]>;
 const NOTHING_BESIDE: Beside = new Map();
 
 /** `beside` with the scooters of `scooter`'s app but it among `seen` within BESIDE_M of it, the nearest BESIDE_KEPT. */
 function rememberBeside(beside: Beside, scooter: Vehicle, seen: readonly Vehicle[]): Beside {
   const key = vehicleKey(scooter);
-  const fromIt = ([lat, lng]: readonly [number, number]) => haversineM(scooter.lat, scooter.lng, lat, lng);
+  const fromIt = ([lat, lng]: readonly [number, number, ...unknown[]]) => haversineM(scooter.lat, scooter.lng, lat, lng);
   const next = new Map(beside);
   for (const other of seen) {
     if (other.provider !== scooter.provider || vehicleKey(other) === key || fromIt([other.lat, other.lng]) > BESIDE_M) continue;
-    next.set(vehicleKey(other), [other.lat, other.lng]);
+    next.set(vehicleKey(other), [other.lat, other.lng, other.battery]);
   }
   if (next.size <= BESIDE_KEPT) return next;
   return new Map([...next].sort(([, a], [, b]) => fromIt(a) - fromIt(b)).slice(0, BESIDE_KEPT));
 }
 
 /**
- * Whether a scooter under a key the answer before didn't have may be the one that stood at `lat`, `lng` under a new
- * id: not one seen beside it, nor standing as near where one of those stood as where it stood. A scooter beside it
- * renamed, by a feed that renames on every read or now and then, is not it.
+ * Whether a scooter under a key the answer before didn't have may be `scooter`, which stood at its `lat`, `lng` with its
+ * `battery`, under a new id: not one seen beside it, nor standing as near where one of those stood as where it stood,
+ * unless the batteries tell them apart: the candidate's is the scooter's, and that one's another (Desk [373] S-2). A
+ * scooter beside it renamed, by a feed that renames on every read or now and then, is not it; of two at the same spot,
+ * the one followed is told from the other where their batteries differ.
  */
-function mayBeRenamed(candidate: Vehicle, lat: number, lng: number, beside: Beside): boolean {
+function mayBeRenamed(candidate: Vehicle, scooter: Pick<Vehicle, 'lat' | 'lng' | 'battery'>, beside: Beside): boolean {
   if (beside.has(vehicleKey(candidate))) return false;
-  const fromIt = haversineM(lat, lng, candidate.lat, candidate.lng);
-  for (const [besideLat, besideLng] of beside.values()) {
-    if (haversineM(besideLat, besideLng, candidate.lat, candidate.lng) <= fromIt) return false;
+  const fromIt = haversineM(scooter.lat, scooter.lng, candidate.lat, candidate.lng);
+  const hasItsBattery = candidate.battery !== null && candidate.battery === scooter.battery;
+  for (const [besideLat, besideLng, besideBattery] of beside.values()) {
+    if (haversineM(besideLat, besideLng, candidate.lat, candidate.lng) > fromIt) continue;
+    if (!hasItsBattery || besideBattery === null || besideBattery === candidate.battery) return false;
   }
   return true;
 }
 
 /** The nearest of `candidates` of the scooter's app within SAME_SCOOTER_M of where it stood that may be it, if any. */
-function nearestOfItsApp(scooter: Pick<Vehicle, 'provider' | 'lat' | 'lng'>, candidates: readonly Vehicle[], beside: Beside): Vehicle | null {
+function nearestOfItsApp(scooter: Pick<Vehicle, 'provider' | 'lat' | 'lng' | 'battery'>, candidates: readonly Vehicle[], beside: Beside): Vehicle | null {
   let nearest: Vehicle | null = null;
   let nearestM = SAME_SCOOTER_M;
   for (const candidate of candidates) {
     if (candidate.provider !== scooter.provider) continue;
     const distanceM = haversineM(scooter.lat, scooter.lng, candidate.lat, candidate.lng);
-    if (distanceM <= nearestM && mayBeRenamed(candidate, scooter.lat, scooter.lng, beside)) {
+    if (distanceM <= nearestM && mayBeRenamed(candidate, scooter, beside)) {
       nearest = candidate;
       nearestM = distanceM;
     }
@@ -668,6 +672,7 @@ export default function Home() {
   const pinnedVehicle = walkHolds && walkPin && 'vehicle' in walkPin ? walkPin.vehicle : null;
   const pinnedParking = walkHolds && walkPin && 'parking' in walkPin ? walkPin.parking : null;
   const pinnedProvider = pinnedVehicle?.provider ?? null;
+  const pinnedBattery = pinnedVehicle?.battery ?? null;
   const [walkLat, walkLng] = walk.state?.target.point ?? [null, null];
   // The answer before this one, until this one has been looked at.
   const [listedVehicles, setListedVehicles] = useState(vehicles);
@@ -685,9 +690,9 @@ export default function Home() {
     // Only a new answer can rename it.
     if (listedVehicles === vehicles) return null;
     const listedKeys = new Set(listedVehicles.map(vehicleKey));
-    return nearestOfItsApp({ provider: pinnedProvider, lat: walkLat, lng: walkLng },
+    return nearestOfItsApp({ provider: pinnedProvider, lat: walkLat, lng: walkLng, battery: pinnedBattery },
       vehicles.filter(vehicle => !listedKeys.has(vehicleKey(vehicle))), beside);
-  }, [beside, listedVehicles, pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
+  }, [beside, listedVehicles, pinnedBattery, pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
   // Faded where it was last seen while its app is collected again: neither seen nor taken until the
   // app's new positions say which.
   const walkedFaded = useMemo(() => pinnedProvider !== null && walkLat !== null && walkLng !== null &&

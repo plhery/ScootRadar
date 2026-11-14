@@ -1283,9 +1283,9 @@ it('follows the scooter walked to under a new id beside the one renamed with it,
 const METRE = 1 / 111_195;
 
 it('keeps no copy of the scooter walked to that was refused as one beside it, and follows its next one', async () => {
-  // A Bird 4 m from another, both under a new id on each read.
+  // A Bird 4 m from another with the same battery, both under a new id on each read.
   const bird: Vehicle = { ...FAR, provider: 'bird', vehicle_id: 'bird-1' };
-  const birdBeside: Vehicle = { ...bird, vehicle_id: 'beside-1', lat: bird.lat + 4 * METRE, battery: 10 };
+  const birdBeside: Vehicle = { ...bird, vehicle_id: 'beside-1', lat: bird.lat + 4 * METRE };
   let vehicles = [bird, birdBeside];
   stubServer(() => data(vehicles));
   await mountLocated();
@@ -1303,6 +1303,37 @@ it('keeps no copy of the scooter walked to that was refused as one beside it, an
   expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-3');
   expect(within(birdCard()).queryByText(TAKEN)).toBeNull();
   expect(routeOnMap()).toHaveTextContent('shown 3 1');
+});
+
+it('tells the scooter walked to from another of its app at the same spot by its battery', async () => {
+  // Two Birds at the same spot, as two Ponys in Liège, both under a new id on each read.
+  const bird: Vehicle = { ...FAR, provider: 'bird', vehicle_id: 'bird-1', battery: 54 };
+  const birdBeside: Vehicle = { ...bird, vehicle_id: 'beside-1', battery: 80 };
+  let vehicles = [bird, birdBeside];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker bird-1' }));
+  const birdCard = () => screen.getByRole('group', { name: 'Bird scooter' });
+  await pressDirections(birdCard());
+
+  // The one with its battery is it, listed after the other or before it.
+  vehicles = [{ ...birdBeside, vehicle_id: 'beside-2' }, { ...bird, vehicle_id: 'bird-2' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-2');
+  expect(within(birdCard()).getByText('Battery 54%')).toBeInTheDocument();
+  vehicles = [{ ...bird, vehicle_id: 'bird-3', lat: bird.lat + METRE }, { ...birdBeside, vehicle_id: 'beside-3' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-3');
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+
+  // Taken: the other one alone, under a new id on each read, is not it, and two reads say so.
+  vehicles = [{ ...birdBeside, vehicle_id: 'beside-4' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-3');
+  vehicles = [{ ...birdBeside, vehicle_id: 'beside-5' }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('bird:bird-3');
+  expect(within(birdCard()).getByText(TAKEN)).toBeVisible();
 });
 
 it('follows the Bird walked to from where it stood faded under the id of a read the page never had', async () => {
