@@ -1634,6 +1634,9 @@ struct ScooterRefreshPolicy: Equatable, Sendable {
     /// next one. A map left open where nobody looked asked for the same view every minute, as one on
     /// Berlin from 3 to 6 November 2026 did for three days (Desk [316]).
     var idlePause: TimeInterval = 30 * 60
+    /// While the refreshes are paused, the cities' rules over the map are looked at this often, and redrawn when one
+    /// has started or ended with its hours. Nothing is fetched.
+    var pausedRulesCheck: TimeInterval = 60
 
     static let standard = ScooterRefreshPolicy()
 

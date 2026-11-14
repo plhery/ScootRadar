@@ -431,6 +431,73 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertTrue(model.mapZones.isEmpty)
     }
 
+    /// A map paused while nobody touches it draws a city's rule outside its hours once they end, without asking for
+    /// anything: the timer that redrew the rules stopped with the refreshes, and Hongdae's red road was drawn in force
+    /// past 23:00 (fresh-eyes review of 14 November 2026, iPhone finding 4; the Android review's S5).
+    func testAPausedMapDrawsACitysRuleOutsideItsHoursOnceTheyEndWithoutAskingForAnything() async throws {
+        let (model, api, clock) = await hongdaeAt22(rulesCheck: 0.1)
+        // Nobody touches the map: at 22:31 its refreshes pause.
+        clock.now = seoulNoon.addingTimeInterval(10 * 3600 + 31 * 60)
+        let paused = await waitUntil { model.isPausedForIdle }
+        XCTAssertTrue(paused)
+        let asked = await api.scootersAsked()
+
+        // 23:01: the red road's hours are over.
+        clock.now = seoulNoon.addingTimeInterval(11 * 3600 + 60)
+        let redrawn = await waitUntil { model.mapRuleZones.map(\.inForce) == [false] }
+        XCTAssertTrue(redrawn, "Hongdae's rule still drawn in force at 23:01")
+        XCTAssertTrue(model.isPausedForIdle)
+        let askedSince = await api.scootersAsked()
+        XCTAssertEqual(askedSince, asked)
+    }
+
+    /// A touch on the paused map, or coming back to the app, draws the cities' rules as they are at once, where they
+    /// waited for the timer's next tick, up to a minute (fresh-eyes review of 14 November 2026, iPhone finding 4).
+    func testATouchOnThePausedMapOrComingBackToTheAppDrawsACitysRulesAsTheyAreAtOnce() async throws {
+        // Paused at 22:31, its rules not looked at again before the touch at 23:01.
+        let (touched, _, touchedClock) = await hongdaeAt22(rulesCheck: 3600)
+        touchedClock.now = seoulNoon.addingTimeInterval(10 * 3600 + 31 * 60)
+        let paused = await waitUntil { touched.isPausedForIdle }
+        XCTAssertTrue(paused)
+        touchedClock.now = seoulNoon.addingTimeInterval(11 * 3600 + 60)
+        touched.noteInteraction()
+        XCTAssertEqual(touched.mapRuleZones.map(\.inForce), [false], "touched at 23:01")
+
+        // In the background from 22:00, back at 23:05.
+        let (away, _, awayClock) = await hongdaeAt22(rulesCheck: 3600)
+        away.becameInactive()
+        awayClock.now = seoulNoon.addingTimeInterval(11 * 3600 + 5 * 60)
+        away.becameActive()
+        XCTAssertEqual(away.mapRuleZones.map(\.inForce), [false], "back at 23:05")
+    }
+
+    /// Noon in Seoul. Hongdae's red road holds from 12:00 to 23:00 there.
+    private let seoulNoon = Date(timeIntervalSince1970: 1_792_983_600)
+
+    /// A map loaded on Hongdae at 22:00 in Seoul, with the zones off and its red road drawn in force. Its refresh
+    /// timer comes round every tenth of a second on the test's clock; paused, it looks at the rules every `rulesCheck`.
+    /// The cities' zone index it asks for has none, as one at hand asks for nothing more.
+    private func hongdaeAt22(rulesCheck: TimeInterval) async -> (ScooterMapModel, ZoneStubAPI, ZoneTestClock) {
+        let hongdae = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 37.5545, longitude: 126.9245),
+            span: MKCoordinateSpan(latitudeDelta: 0.008, longitudeDelta: 0.008)
+        )
+        let clock = ZoneTestClock(now: seoulNoon.addingTimeInterval(10 * 3600))
+        let api = ZoneStubAPI(cityIndex: Data(#"{"format":1,"cities":[]}"#.utf8))
+        let model = makeModel(
+            api: api, refreshPolicy: ScooterRefreshPolicy(defaultRefreshAfter: 0.1, minimumAttemptGap: 0.1, pausedRulesCheck: rulesCheck),
+            now: { clock.now }
+        )
+        model.showsZones = false
+        model.updateViewport(hongdae, zoom: 16)
+        model.refresh()
+        let loaded = await waitUntil { await api.scootersAsked() == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        XCTAssertEqual(model.mapRuleZones.map(\.rule.id), ["seoul-hongdae-red-road"])
+        XCTAssertEqual(model.mapRuleZones.map(\.inForce), [true])
+        return (model, api, clock)
+    }
+
     func testACitysZonesAreDrawnFromZoom14WithTheZonesOffAndTheSameOnesOverAShortPan() {
         let porto = MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 41.147, longitude: -8.611),
@@ -819,11 +886,12 @@ final class ScooterZonesModelTests: XCTestCase {
         api: any ScooterAPIClient,
         defaults: UserDefaults? = nil,
         zonePendingRetry: Duration = ScooterMapModel.zonePendingRetry,
+        refreshPolicy: ScooterRefreshPolicy = .standard,
         now: @escaping () -> Date = Date.init
     ) -> ScooterMapModel {
         ScooterMapModel(
             api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(),
-            zonePendingRetry: zonePendingRetry, now: now
+            zonePendingRetry: zonePendingRetry, refreshPolicy: refreshPolicy, now: now
         )
     }
 
@@ -860,14 +928,26 @@ private actor ZoneStubAPI: ScooterAPIClient {
     private var truncated = false
     private var held = false
     private var waiting: [CheckedContinuation<Void, Never>] = []
+    /// The cities' zone index it gives, or none: asked for, it fails.
+    private let cityIndex: Data?
+    private var scooterRequests = 0
 
-    init(more: [ScooterZone] = []) {
+    init(more: [ScooterZone] = [], cityIndex: Data? = nil) {
         self.more = more
+        self.cityIndex = cityIndex
     }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) async throws -> ScooterResponse {
-        ScooterResponse(vehicles: [])
+        scooterRequests += 1
+        return ScooterResponse(vehicles: [])
     }
+
+    func cityZoneFile(_ name: String) async throws -> Data {
+        guard let cityIndex, name == CityZoneIndex.fileName else { throw ScooterAPIError.httpStatus(404) }
+        return cityIndex
+    }
+
+    func scootersAsked() -> Int { scooterRequests }
 
     func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
         areas.append(area)
@@ -908,6 +988,15 @@ private actor ZoneStubAPI: ScooterAPIClient {
 
     func setFailure(_ failure: ScooterAPIError?) {
         self.failure = failure
+    }
+}
+
+/// A clock the test sets.
+private final class ZoneTestClock {
+    var now: Date
+
+    init(now: Date) {
+        self.now = now
     }
 }
 

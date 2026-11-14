@@ -1175,6 +1175,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         isPausedForIdle = false
         if hasStarted { startHeadingUpdates() }
         expireParkingIfNeeded()
+        // A city's rules may have started or ended with their hours meanwhile.
+        rebuildMapZones()
         // Back in the foreground a due refresh starts at once. The old data
         // stays on the map until the outcome is known.
         refreshIfDue(respectingAttemptGap: false)
@@ -1258,8 +1260,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             // Nobody has touched the map for a while: it stops asking until someone does.
             if clock().timeIntervalSince(lastInteractionAt) >= refreshPolicy.idlePause {
                 isPausedForIdle = true
-                refreshTimerTask?.cancel()
-                refreshTimerTask = nil
+                scheduleRulesCheckWhilePaused()
             } else {
                 refresh()
             }
@@ -1277,7 +1278,26 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         reviewDue = false
         guard isPausedForIdle else { return }
         isPausedForIdle = false
+        // A city's rules may have started or ended with their hours since the last look.
+        rebuildMapZones()
         refreshIfDue(respectingAttemptGap: false)
+    }
+
+    /// The paused map has no refresh timer, whose ticks redraw a city's rules by the clock: its rules over the map are
+    /// looked at every `refreshPolicy.pausedRulesCheck` instead, and redrawn when one has started or ended with its
+    /// hours, as Seoul's at noon and 23:00 (fresh-eyes review of 14 November 2026, iPhone finding 4). Nothing is
+    /// fetched.
+    private func scheduleRulesCheckWhilePaused() {
+        refreshTimerTask?.cancel()
+        let delay = refreshPolicy.pausedRulesCheck
+        refreshTimerTask = Task { [weak self] in
+            do { try await Task.sleep(for: .seconds(delay)) } catch { return }
+            guard let self, isPausedForIdle else { return }
+            refreshTimerTask = nil
+            let now = clock()
+            if mapRuleZones.contains(where: { $0.inForce != $0.rule.inForce(at: now) }) { rebuildMapZones() }
+            scheduleRulesCheckWhilePaused()
+        }
     }
 
     private func scheduleAutomaticRefresh() {
