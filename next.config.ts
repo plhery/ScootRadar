@@ -13,10 +13,11 @@ const nextConfig: NextConfig = {
   // data), so CI's Deploy job can tell when its commit is live (DEPLOY.md). Elsewhere Next
   // makes one up.
   generateBuildId: () => process.env.WORKERS_CI_COMMIT_SHA || null,
-  // Workers Builds builds only the commits CI has passed, whose own build has checked their types
-  // (DEPLOY.md), so it skips the check: its 8 GB machine leaves Node a heap of about 2 GB, which
+  // Workers Builds skips the type check: its 8 GB machine leaves Node a heap of about 2 GB, which
   // the check outgrew with the cities' zone files (2.5 GB), and from 7c5171cb to 86704af7 the
-  // website was not deployed.
+  // website was not deployed. CI's build checks the types of each commit its Deploy job moves
+  // `production` to (DEPLOY.md). A commit pushed straight to `production` has had neither the
+  // tests nor that check, so run `npx tsc --noEmit -p .` on it first.
   typescript: { ignoreBuildErrors: process.env.WORKERS_CI === '1' },
   async redirects() {
     // English is the landing page at the root; its code alone is not a second address for it.

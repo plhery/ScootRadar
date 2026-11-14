@@ -256,7 +256,10 @@ the live sitemap. The key is public by design, in the file of its name at the
 root of `public`, which Workers serves before `worker.ts` runs.
 
 To deploy a commit of `main` without waiting, push it to the branch, for
-example `git push origin <commit>:production-cache`. A branch only moves
+example `git push origin <commit>:production-cache`. A commit pushed straight
+to `production` skips CI's tests and its type check too, which Workers Builds
+does not make (`next.config.ts`): run `npx tsc --noEmit -p .` and `npm test`
+on it first. A branch only moves
 forward: never force-push one, or the next Deploy job fails until it is behind
 `main` again. Rolling back is done in Cloudflare and Coolify (Rollback below).
 
