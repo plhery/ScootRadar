@@ -757,11 +757,12 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   }
   // When each feed's positions shown were seen: its last collection's, the oldest shown of one read over many
   // minutes (beside its sweep under way, of those the sweep has not read again), or its sweep's under way. Per app,
-  // the oldest of them, and the oldest of its feeds' reads (lastRead): beside a sweep under way, still its last
-  // sweep's, which moves when the next ends (S2).
+  // the oldest of them, and the oldest and newest of its feeds' reads (lastRead): beside a sweep under way, still
+  // its last sweep's, which moves when the next ends (S2).
   const shownSince: number[] = [];
   const oldestShownByProvider = new Map<string, number>();
   const readByProvider = new Map<string, number>();
+  const readThroughByProvider = new Map<string, number>();
   const earliest = (times: Map<string, number>, provider: string, at: number) =>
     times.set(provider, Math.min(times.get(provider) ?? Infinity, at));
   for (const feed of relevant) {
@@ -772,7 +773,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     else if (sweep) shownSince.push(sweep.startedAt);
     else continue;
     earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
-    earliest(readByProvider, feed.provider, last ? lastRead(feed) : sweep!.startedAt);
+    const read = last ? lastRead(feed) : sweep!.startedAt;
+    earliest(readByProvider, feed.provider, read);
+    readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
     if (last) pick(unique, feed.vehicles, (vehicle, key) => !shows(feed, vehicle, now) || again?.last(vehicle) === true ||
       readAt(feed, vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, readAt(feed, vehicle), vehicle));
     if (sweep) pick(unique, sweep.vehicles, (vehicle, key) => again?.sweep(vehicle) === false ||
@@ -820,10 +823,12 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const byApp = (times: Map<string, number>, apps?: Set<string>) => Object.fromEntries([...times]
     .filter(([provider]) => !apps || apps.has(provider))
     .map(([provider, at]) => [provider, new Date(Math.min(now, at)).toISOString()]));
-  // Each app with positions shown, with when they were read, in every answer: it moves only when the app is read
-  // again (lastRead). generatedAt holds the oldest position of every app's, so it stays put while one app in view is
-  // late or mid-sweep: a walk told a new read of its scooter's app from the same one served again by generatedAt, and
-  // never said a scooter was taken.
+  // Each app with positions shown, with when they were read, in every answer. generatedAt holds the oldest position of
+  // every app's, so it stays put while one app in view is late or mid-sweep: a walk told a new read of its scooter's
+  // app from the same one served again by generatedAt, and never said a scooter was taken. An app's oldest read
+  // (shownSince) moves also when another of its feeds in view is read, as one of Lime's groups beside the walked
+  // scooter's, or when one comes into or leaves the view; beside it, its newest (readThrough): once the oldest is later
+  // than an answer's newest, every feed of the app in view was read since that answer (Desk [373] S-1).
   const shownSinceByApp = byApp(readByProvider);
   // The apps that make the answer stale (healthFor) and have positions shown, with the oldest's time:
   // the map names the one late app, where in Augsburg on 7 November 2026 it said "Data delayed" without
@@ -835,7 +840,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const batteryRanges = batteryRangesIn(snapshot, query.bounds, options.observations);
   const response = scooterResponse({ vehicles, meta, batteryRanges }, zoom, {
     ...(meta.stale ? { staleProviders } : {}),
-    ...(readByProvider.size ? { shownSince: shownSinceByApp } : {}),
+    ...(readByProvider.size ? { shownSince: shownSinceByApp, readThrough: byApp(readThroughByProvider) } : {}),
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,

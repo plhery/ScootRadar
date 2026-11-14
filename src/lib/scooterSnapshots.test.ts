@@ -766,6 +766,35 @@ describe('feeds collected on demand', () => {
     expect(faded.meta.shownSince).toEqual({ dott: at(now - minutes(1)) });
   });
 
+  it('says beside each app\'s oldest read in view its newest, which a read of another of its feeds or the view moving leaves behind', () => {
+    const at = (time: number) => new Date(time).toISOString();
+    // Two of Lime's groups in Lyon, the walked scooter's to the south (A) and another to the north (B), as in a street
+    // view in Berlin (fresh-eyes review of 14 November 2026, cache finding 1).
+    const south = { ...lyon, north: 45.8 }, north = { ...lyon, south: 45.8 };
+    const lime = (id: string, coverage: typeof lyon, observedAt: number, lat: number) => feed({ id: `france:lime_app_${id}`,
+      provider: 'lime', coverage: [coverage], observedAt, attemptedAt: observedAt, vehicles: [{ ...vehicle(id), provider: 'lime', lat }] });
+    const a = lime('a', south, now - 10_000, 45.75), b = lime('b', north, now - 40_000, 45.85);
+    // The answer that first leaves the walked scooter out: A's read, the newer, and B's, the older.
+    const missed = querySnapshot(snapshot([a, b, voi]), query, 16, now).meta;
+    expect([missed.shownSince, missed.readThrough]).toEqual([
+      { lime: at(now - 40_000), voi: at(now) }, { lime: at(now - 10_000), voi: at(now) }]);
+    // B alone read again: the oldest moves to A's read, no later than the newest before. A has not been read again.
+    const bAgain = lime('b', north, now + 20_000, 45.85);
+    const afterB = querySnapshot(snapshot([a, bAgain, voi]), query, 16, now + 30_000).meta;
+    expect([afterB.shownSince?.lime, afterB.readThrough?.lime]).toEqual([at(now - 10_000), at(now + 20_000)]);
+    // Nothing read again, and the view moves south so that B leaves it: the oldest is A's again, no later either.
+    const moved = querySnapshot(snapshot([a, b, voi]), { ...query, bounds: { ...south, north: 45.79 } }, 16, now + 5_000).meta;
+    expect([moved.shownSince?.lime, moved.readThrough?.lime]).toEqual([at(now - 10_000), at(now - 10_000)]);
+    // A read again: now the oldest is later than the newest of the answer that missed the scooter.
+    const aAgain = lime('a', south, now + 50_000, 45.75);
+    const afterA = querySnapshot(snapshot([aAgain, bAgain, voi]), query, 16, now + 60_000).meta;
+    expect(Date.parse(afterA.shownSince!.lime)).toBeGreaterThan(Date.parse(missed.readThrough!.lime));
+    expect(afterA.readThrough?.lime).toBe(at(now + 50_000));
+    // Nothing shown, nothing named: neither is sent.
+    const none = querySnapshot(snapshot([]), query, 16, now).meta;
+    expect([none.shownSince, none.readThrough]).toEqual([undefined, undefined]);
+  });
+
   describe('Lime\'s groups in a wide view', () => {
     const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
     const wide = { bounds: berlin, minBattery: 0 };

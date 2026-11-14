@@ -320,7 +320,12 @@
           "additionalProperties": { "type": "string", "format": "date-time" }
         },
         "shownSince": {
-          "description": "In an answer of scooters, stale or not: each app with positions shown, by provider, with when they were read: its feeds' last collections, the oldest where it has several (of a feed read over many minutes, as a Bird area's sweep, when its last part was read), or the start of a sweep under way. An app's time moves only when its positions shown are collected again, unlike generatedAt, which the oldest position of every app's holds: a walk tells a new read of its scooter's app from the same one served again by it. An app with nothing shown, or only faded scooters, is not among them.",
+          "description": "In an answer of scooters, stale or not: each app with positions shown, by provider, with when they were read: its feeds' last collections, the oldest where it has several (of a feed read over many minutes, as a Bird area's sweep, when its last part was read), or the start of a sweep under way. Unlike generatedAt, which the oldest position of every app's holds, it stays put while another app is late. Where the app has one feed in view, it moves only when that feed is collected again; where it has several, as Lime's groups, it also moves when another of them is read, or comes into or leaves the view: readThrough tells a walk when that is a new read of its scooter. An app with nothing shown, or only faded scooters, is not among them.",
+          "type": "object",
+          "additionalProperties": { "type": "string", "format": "date-time" }
+        },
+        "readThrough": {
+          "description": "Beside shownSince, for the same apps: the newest of each app's reads in view, where shownSince has the oldest. Once an app's shownSince is later than the readThrough of an answer, every feed of the app in view has been read since that answer's: a walk whose scooter one answer left out says it was taken only then, so that another of the app's feeds read, or the view moving, is not taken for a second read of the scooter's own (Desk [373] S-1, from 14 November 2026). A server that does not send it, and the clients before it, compare shownSince as before.",
           "type": "object",
           "additionalProperties": { "type": "string", "format": "date-time" }
         },
