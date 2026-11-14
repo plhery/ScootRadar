@@ -102,8 +102,11 @@ Portrait, PNG without alpha, one set for each listing language:
   Pro), the size App Store Connect requires (`APP_IPHONE_61`);
 - `screenshots/<locale>/13/`: 2064×2752 (iPad Pro 13-inch), which App Store
   Connect requires since the app runs on iPad (`APP_IPAD_PRO_3GEN_129`): the
-  same seven frames, made on 23 October 2026, on a drawn iPad with the panel
+  same frames, made on 23 October 2026, on a drawn iPad with the panel
   beside the map, the headlines saying "iPad" where the iPhone's say "iPhone".
+  There are six: the battery frame showed the levels that 1.5.0's range slider
+  replaced, so it left the iPad sets with 1.5.0 until the iPad's is taken again
+  with a minimum range.
 
 Each frame, made on 20 October 2026, sets a headline on blue above a drawn
 iPhone showing the app with live data, and lifts the part of the screen the
@@ -117,10 +120,12 @@ translated. Every language opens on the providers and shows the pier second:
   with the location at 34.01016,-118.49496 and the flat terrain users get;
 - the price on a Voi scooter's card;
 - the route to a scooter 3 to 5 minutes' walk away;
-- the battery filter at 60%+, which the version after 1.3.0 replaces with the
-  range slider (issue #12's third take): its frame and headline ("Set a minimum
-  battery level") wait to be taken again with a minimum range, such as 5 km+
-  (set it back to Any afterwards: the app keeps it);
+- the range filter at 5 km+ (3 mi+ in English, which the app shows in miles),
+  taken again from 1.5.0 on 13 November 2026 when the range slider replaced the
+  battery levels (issue #12's third take): the Filters sheet lifted down to the
+  end of the slider's help text, which makes the panel taller than the others,
+  so it grows downward and the sheet's title stays in view (set the range back
+  to Any afterwards: the app keeps it);
 - the same street at night;
 - Europe at night, with each city's count.
 

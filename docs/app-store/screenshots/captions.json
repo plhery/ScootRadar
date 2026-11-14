@@ -18,7 +18,7 @@
     ],
     "battery": [
       "Skip the dead ones.",
-      "Set a minimum battery level, or keep only the providers you use"
+      "Set the minimum range you need, or keep only the providers you use"
     ],
     "night": [
       "Light by day. Dark by night.",
@@ -48,7 +48,7 @@
     ],
     "battery": [
       "Skip the flat ones.",
-      "Set a minimum battery level, or keep only the providers you use"
+      "Set the minimum range you need, or keep only the providers you use"
     ],
     "night": [
       "Light by day. Dark by night.",
@@ -78,7 +78,7 @@
     ],
     "battery": [
       "Leere Akkus ausblenden.",
-      "Mindestladestand festlegen oder nur deine Anbieter zeigen"
+      "Mindestreichweite festlegen oder nur deine Anbieter zeigen"
     ],
     "night": [
       "Hell bei Tag. Dunkel bei Nacht.",
@@ -108,7 +108,7 @@
     ],
     "battery": [
       "Écartez les batteries à plat.",
-      "Fixez un seuil de batterie ou ne gardez que vos opérateurs"
+      "Fixez une autonomie minimale ou ne gardez que vos opérateurs"
     ],
     "night": [
       "Claire le jour. Sombre la nuit.",
@@ -138,7 +138,7 @@
     ],
     "battery": [
       "Salta quelli scarichi.",
-      "Imposta una carica minima o mostra solo i tuoi operatori"
+      "Imposta un’autonomia minima o mostra solo i tuoi operatori"
     ],
     "night": [
       "Chiara di giorno. Scura di notte.",
@@ -168,7 +168,7 @@
     ],
     "battery": [
       "Sáltate los descargados.",
-      "Fija un mínimo de batería o deja solo los operadores que usas"
+      "Fija una autonomía mínima o deja solo los operadores que usas"
     ],
     "night": [
       "Claro de día. Oscuro de noche.",
@@ -198,7 +198,7 @@
     ],
     "battery": [
       "Olvídate de los descargados.",
-      "Elige un mínimo de batería o muestra solo los operadores que usas"
+      "Elige una autonomía mínima o muestra solo los operadores que usas"
     ],
     "night": [
       "Claro de día. Oscuro de noche.",
@@ -228,7 +228,7 @@
     ],
     "battery": [
       "Sla de lege over.",
-      "Stel een minimaal batterijniveau in, of kies je aanbieders"
+      "Stel een minimaal bereik in, of kies je aanbieders"
     ],
     "night": [
       "Licht overdag. Donker ’s nachts.",
@@ -258,7 +258,7 @@
     ],
     "battery": [
       "Styr unna tomme batterier.",
-      "Velg et minimum for batteriet, eller bare operatørene du bruker"
+      "Velg et minimum for rekkevidden, eller bare operatørene du bruker"
     ],
     "night": [
       "Lyst om dagen. Mørkt om natten.",
@@ -288,7 +288,7 @@
     ],
     "battery": [
       "Esqueça as descarregadas.",
-      "Defina um mínimo de bateria ou mostre só os operadores que usa"
+      "Defina uma autonomia mínima ou mostre só os operadores que usa"
     ],
     "night": [
       "Claro de dia. Escuro à noite.",
