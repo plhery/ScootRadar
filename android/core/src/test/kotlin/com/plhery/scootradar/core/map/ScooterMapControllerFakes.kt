@@ -370,6 +370,7 @@ internal fun TestScope.makeController(
     catalog: ScooterCatalog = TestCatalog.catalog,
     debug: Boolean = false,
     cityZoneFiles: CoroutineContext = Dispatchers.IO,
+    providersOfEarlierBuilds: Set<String> = ScooterMapController.PROVIDERS_TO_BUILD_10,
 ): ScooterMapController {
     val scheduler = testScheduler
     val startedAt = TestClock().now
@@ -396,6 +397,7 @@ internal fun TestScope.makeController(
         catalog = catalog,
         debug = debug,
         cityZoneFiles = cityZoneFiles,
+        providersOfEarlierBuilds = providersOfEarlierBuilds,
     )
 }
 

@@ -150,6 +150,11 @@ class ScooterMapController(
     cityZoneCache: CityZoneCache? = null,
     /** Where those files are read, checked and written: away from the main thread. */
     cityZoneFiles: CoroutineContext = Dispatchers.IO,
+    /**
+     * The providers the builds before only-provider knew, which a list of those turned off that one of them kept is
+     * read against, once: [PROVIDERS_TO_BUILD_10], or a test's own, which pretends a provider was added since.
+     */
+    providersOfEarlierBuilds: Set<String> = PROVIDERS_TO_BUILD_10,
 ) {
     internal val clock: () -> Instant = now
 
@@ -259,13 +264,11 @@ class ScooterMapController(
     private val _locationIssue = MutableStateFlow<ScooterLocationIssue?>(null)
     val locationIssue: StateFlow<ScooterLocationIssue?> = _locationIssue.asStateFlow()
 
-    private val _enabledProviders = MutableStateFlow(savedProviders(defaults) ?: ScooterProvider.entries.toSet())
-
     init {
-        // Filters saved before only-provider that leave one app alone on keep it the only one from now on, as the
-        // website does on each visit: those a later catalog adds stay off (Desk card 350, item 4).
-        _enabledProviders.value.singleOrNull()?.let { defaults.set(it.rawValue, forKey = ONLY_PROVIDER_KEY) }
+        keepOneAppOfEarlierBuilds(defaults, providersOfEarlierBuilds)
     }
+
+    private val _enabledProviders = MutableStateFlow(savedProviders(defaults) ?: ScooterProvider.entries.toSet())
     val enabledProviders: StateFlow<Set<ScooterProvider>> = _enabledProviders.asStateFlow()
 
     private val _selectedScooterID = MutableStateFlow<String?>(null)
@@ -1926,6 +1929,37 @@ class ScooterMapController(
         private const val DISABLED_PROVIDERS_KEY = "disabled-providers"
         /** The provider on where it is the only one, kept beside those turned off since 10 November 2026. */
         private const val ONLY_PROVIDER_KEY = "only-provider"
+        /** True once the providers turned off were read against those of the builds before only-provider. */
+        private const val ONE_APP_CHECKED_KEY = "providers-one-app-checked"
+
+        /**
+         * The 40 providers every build knew from the first on Play to 10 (1.5.0, 14 November 2026), frozen: the builds
+         * before only-provider (to 7) kept a rider's one app as all of these but it turned off. A later catalog adds
+         * others, which those lists leave out.
+         */
+        internal val PROVIDERS_TO_BUILD_10: Set<String> = setOf(
+            "alpaca", "beam", "beryl", "binbin", "bird", "bolt", "bolt_hopp", "dart", "deer", "dott", "elerent", "flamingo",
+            "gcoo", "hopp", "hoppy", "jet", "jolt", "kickgoing", "lime", "luup", "lyft", "move", "naolib", "pony",
+            "publibike", "qick", "ride_mobility", "ridemovi", "ryde", "saham", "spin", "swing", "veo", "voi", "whoosh",
+            "xingxing", "yoio", "zelectra", "zeus", "zippy",
+        )
+
+        /**
+         * A rider of a build before only-provider who kept one app alone keeps it the only one, those added since
+         * staying off (Desk card 350, item 4): where no only-provider is kept and the providers turned off leave one
+         * of [earlier] alone on, that one is kept as it. Read against [earlier], not this build's catalog, so that an
+         * update that also adds a provider finds the one app (review of 14 November 2026, S6; Desk [373]); and once,
+         * at the first launch of a build with it, so that a later rider's list, which leaves out a provider added
+         * since that they turned on beside it, is not cut back to one app.
+         */
+        private fun keepOneAppOfEarlierBuilds(defaults: ScooterDefaults, earlier: Set<String>) {
+            if (defaults.bool(forKey = ONE_APP_CHECKED_KEY)) return
+            defaults.set(true, forKey = ONE_APP_CHECKED_KEY)
+            if (defaults.string(forKey = ONLY_PROVIDER_KEY) != null) return
+            val off = defaults.stringArray(forKey = DISABLED_PROVIDERS_KEY) ?: return
+            val only = (earlier - off.toSet()).singleOrNull()?.let { ScooterProvider.fromRawValue(it) } ?: return
+            defaults.set(only.rawValue, forKey = ONLY_PROVIDER_KEY)
+        }
         private const val RIDE_ESTIMATE_MINUTES_KEY = "ride-estimate-minutes-v1"
         private const val RIDE_PASSES_KEY = "provider-ride-passes-v1"
         private const val HAS_LOCATED_ONCE_KEY = "has-located-once"

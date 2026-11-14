@@ -798,13 +798,55 @@ class ScooterMapControllerTest {
         assertEquals(ScooterProvider.entries.toSet() - Voi, makeModel().enabledProviders.value)
 
         // Saved by a version before only-provider, the providers turned off leaving Lime alone on: the app keeps it
-        // the only one once it starts, and Voi, added since, stays off.
+        // the only one once it starts, and Voi, added since, stays off. Those versions kept no check either.
         defaults.removeObject(forKey = "only-provider")
+        defaults.removeObject(forKey = "providers-one-app-checked")
         defaults.set((ScooterProvider.entries - Lime).map { it.rawValue }.sorted(), forKey = "disabled-providers")
         assertEquals(setOf(Lime), makeModel().enabledProviders.value)
         assertEquals("lime", defaults.string(forKey = "only-provider"))
         saveWithoutVoi()
         assertEquals(setOf(Lime), makeModel().enabledProviders.value)
+    }
+
+    @Test
+    fun oneAppAloneFromABuildBeforeOnlyProviderSurvivesAnUpdateThatAlsoAddsAProvider() = runTest {
+        // The builds to 7 kept no only-provider: Lime alone was all the providers they knew but Lime turned off. An
+        // update that also adds a provider, Voi here, reads that list against the providers of those builds, not its
+        // own, so Lime stays alone and Voi off (review of 14 November 2026, S6; Desk [373]). Read against the
+        // update's own catalog, Lime and Voi were both on.
+        assertTrue(ScooterProvider.entries.map { it.rawValue }.containsAll(ScooterMapController.PROVIDERS_TO_BUILD_10))
+        assertEquals(40, ScooterMapController.PROVIDERS_TO_BUILD_10.size)
+        val earlier = ScooterProvider.entries.map { it.rawValue }.toSet() - "voi"
+        val defaults = InMemoryScooterDefaults()
+        defaults.set((earlier - "lime").sorted(), forKey = "disabled-providers")
+        fun makeModel() = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            defaults = defaults,
+            providersOfEarlierBuilds = earlier,
+        )
+
+        val updated = makeModel()
+        assertEquals(setOf(Lime), updated.enabledProviders.value)
+        assertEquals("lime", defaults.string(forKey = "only-provider"))
+        assertTrue(defaults.bool(forKey = "providers-one-app-checked"))
+
+        // The rider turns Voi on beside Lime. Their list of those turned off leaves Lime alone of the earlier
+        // builds' providers, but it is read so once only: they keep both at the next launch.
+        updated.toggle(Voi)
+        assertEquals(setOf(Lime, Voi), updated.enabledProviders.value)
+        assertNull(defaults.string(forKey = "only-provider"))
+        assertEquals(setOf(Lime, Voi), makeModel().enabledProviders.value)
+        assertNull(defaults.string(forKey = "only-provider"))
+
+        // Two of the earlier builds' providers left on, or none turned off: nothing is kept as the only one.
+        for (off in listOf(earlier - "lime" - "bolt", emptySet())) {
+            val others = InMemoryScooterDefaults()
+            others.set(off.sorted(), forKey = "disabled-providers")
+            val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = others, providersOfEarlierBuilds = earlier)
+            assertEquals(ScooterProvider.entries.toSet() - off.mapNotNull { ScooterProvider.fromRawValue(it) }.toSet(), model.enabledProviders.value)
+            assertNull(others.string(forKey = "only-provider"))
+            assertTrue(others.bool(forKey = "providers-one-app-checked"))
+        }
     }
 
     @Test
@@ -3263,7 +3305,7 @@ class ScooterMapControllerTest {
         val allowed = setOf(
             "minimum-range", "apple-map-style", "map-zones", "appearance", "disabled-providers",
             "ride-estimate-minutes-v1", "provider-ride-passes-v1", "has-located-once", "only-provider",
-            "review-use-days", "review-last-use-day", "review-bad-day", "review-asked-version", "review-asked-day",
+            "providers-one-app-checked", "review-use-days", "review-last-use-day", "review-bad-day", "review-asked-version", "review-asked-day",
         )
         val keys = defaults.writes.map { it.substringBefore(" = ") }.toSet()
         assertTrue("Stored: $keys", allowed.containsAll(keys))
