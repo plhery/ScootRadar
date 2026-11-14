@@ -140,6 +140,32 @@ describe('ControlSheet filters', () => {
     expect(track).toHaveBeenCalledTimes(2);
   });
 
+  it('counts nothing where the slider is dragged away and back to where it started before it rests', () => {
+    // In kilometres wherever the runtime places the visitor.
+    localStorage.setItem('scooters-units', 'metric');
+    vi.useFakeTimers();
+    const { rerender } = renderSheet({ minRange: 5000 });
+    const range = screen.getByRole('slider', { name: 'Range' });
+    // Out to 7 km and back to 5 within the second: the minimum has not changed.
+    for (const value of ['6', '7', '6', '5']) {
+      fireEvent.input(range, { target: { value } });
+      rerender({ minRange: Number(value) * 1000 });
+    }
+    fireEvent.change(range);
+    vi.advanceTimersByTime(1000);
+    expect(track).not.toHaveBeenCalled();
+    // The next move starts from where it rested: a move to 6 km is counted, and so is one back to 5 after it.
+    fireEvent.input(range, { target: { value: '6' } });
+    rerender({ minRange: 6000 });
+    vi.advanceTimersByTime(1000);
+    expect(track).toHaveBeenCalledExactlyOnceWith('range_filter', { value: 6000 });
+    fireEvent.input(range, { target: { value: '5' } });
+    rerender({ minRange: 5000 });
+    vi.advanceTimersByTime(1000);
+    expect(track).toHaveBeenLastCalledWith('range_filter', { value: 5000 });
+    expect(track).toHaveBeenCalledTimes(2);
+  });
+
   it('says under the slider what battery the scooters that only report one need, of the apps switched on', () => {
     const batteryRanges = { lime: 11_500, bolt: 29_400, voi: 72_800 };
     const { rerender } = renderSheet({ minRange: 6000, batteryRanges });

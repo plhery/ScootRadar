@@ -169,8 +169,10 @@ export default function ControlSheet({
     ? rangeFilterHelp(minRange, batteryRanges, provider => enabledProviders.has(provider), i18n)
     : null;
   // A drag of the slider, or the arrow keys pressed one after another, passes many steps and is one choice: the
-  // minimum is counted where it rests a second, as the apps count it, even once the sheet is closed.
+  // minimum is counted where it rests a second, as the apps count it, even once the sheet is closed. One left where
+  // the slider started, after a drag away and back, is no choice and is not counted.
   const rangeCounting = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const rangeStart = useRef<number | null>(null);
   // In catalogue order, as the iOS filters list them.
   const providers = PROVIDER_KEYS.filter(key => availableProviders.includes(key)).map(key => {
     const count = providerCounts[key] ?? 0;
@@ -230,7 +232,11 @@ export default function ControlSheet({
                 const meters = rangeStepsMeters(step, rangeSystem);
                 selectionFeedback();
                 clearTimeout(rangeCounting.current);
-                rangeCounting.current = setTimeout(() => track('range_filter', { value: meters }), RANGE_REST_MS);
+                const start = rangeStart.current ??= minRange;
+                rangeCounting.current = setTimeout(() => {
+                  rangeStart.current = null;
+                  if (meters !== start) track('range_filter', { value: meters });
+                }, RANGE_REST_MS);
                 onMinRangeChange(meters);
               }}
             />
