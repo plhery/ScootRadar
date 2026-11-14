@@ -8,6 +8,8 @@ import android.provider.Settings
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.BuildConfig
+import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.RidePriceFormatter
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCardContent
@@ -21,6 +23,9 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterMeasureFormat
 import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterStartPlace
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import okhttp3.Request
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -354,5 +359,19 @@ class AppContainerTest {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"))
         assertEquals("GMT+01:00", TimeZone.getDefault().id)
         assertEquals(ScooterMapStart.switzerland, AppContainer(context).start)
+    }
+
+    /** The app's recent place is kept with this build's version code, and read back as this build kept it (Desk [372]). */
+    @Test
+    fun theRecentPlaceIsReadAsThisBuildKeptIt() {
+        val place = MapDestination("Paradeplatz", "Lungern OW", GeoPoint(46.7741, 8.1558), MapDestination.Kind.Address, isCovered = true)
+        try {
+            AppContainer(context).recentPlace.save(place)
+            val text = SharedPreferencesScooterDefaults(context.getSharedPreferences("RecentPlace", Context.MODE_PRIVATE)).string(forKey = "recent-place-v1")
+            assertEquals(JsonPrimitive(BuildConfig.VERSION_CODE.toString()), Json.parseToJsonElement(text!!).jsonObject["build"])
+            assertEquals(place, AppContainer(context).recentPlace.load())
+        } finally {
+            AppContainer(context).recentPlace.save(null)
+        }
     }
 }

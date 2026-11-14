@@ -43,9 +43,12 @@ class AppContainer(private val context: Context) {
     /**
      * The last place chosen in the search, in a file of its own, RecentPlace.xml, so that no backup takes it: the
      * backups take ScooterDefaults.xml and the app's language only (backup_rules.xml, data_extraction_rules.xml).
+     * Whether the place has data is read as it was written by this build, by its version code, as versionName is
+     * shared by several.
      */
     val recentPlace = RecentPlaceStore(
         SharedPreferencesScooterDefaults(context.getSharedPreferences("RecentPlace", Context.MODE_PRIVATE)),
+        build = BuildConfig.VERSION_CODE.toString(),
     )
 
     val languages = AppLanguages(context)
