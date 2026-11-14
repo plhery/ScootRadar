@@ -243,16 +243,15 @@ data class ScooterFadedCount(
 ) {
     /** "last seen 14:02", or "last seen Fri 14:02" on another day: under the provider's name in the list. */
     fun seenLine(now: Instant = Instant.now()): String =
-        stringFormat(localized("last seen %@"), ScooterDockStatus.seenTime(seenAt, now = now))
+        ScooterDockStatus.seenSentence(seenAt, now) { stringFormat(localized("last seen %@"), it) }
 
     /**
      * What TalkBack reads after the chip's or row's own label: "44 faded, last seen at 14:02, updating.", its words in
      * the form the count takes in the language shown, "1 sbiadito, visto l’ultima volta alle 14:02." in Italian, where
      * one faded scooter was read in the plural (fresh-eyes review of 14 November 2026, S8; the iPhone's 89c1a12f).
      */
-    fun accessibilityLabel(now: Instant = Instant.now()): String {
-        val time = ScooterDockStatus.seenTime(seenAt, now = now)
-        return if (updating) {
+    fun accessibilityLabel(now: Instant = Instant.now()): String = ScooterDockStatus.seenSentence(seenAt, now) { time ->
+        if (updating) {
             localizedCounting("%lld faded, last seen at %@, updating.", count.toLong(), time)
         } else {
             localizedCounting("%lld faded, last seen at %@.", count.toLong(), time)

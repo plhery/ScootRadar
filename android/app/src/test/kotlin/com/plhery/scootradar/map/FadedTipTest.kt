@@ -14,7 +14,9 @@ import androidx.compose.ui.test.getBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.app.AndroidFormats
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -27,6 +29,7 @@ import com.plhery.scootradar.ui.theme.useFontScale
 import java.time.Instant
 import java.time.ZoneId
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -47,6 +50,7 @@ class FadedTipTest {
     val compose = createComposeRule()
     private val locale = java.util.Locale.getDefault()
     private val launchLocale = ScooterLanguage.launchLocale
+    private val skeleton = ScooterDateFormat.skeleton
 
     @After
     fun tearDown() {
@@ -55,6 +59,7 @@ class FadedTipTest {
         ScooterLanguage.launchLocale = launchLocale
         ScooterLanguage.current = ScooterLanguage.atLaunch
         ScooterDateFormat.timeZone = ZoneId::systemDefault
+        ScooterDateFormat.skeleton = skeleton
     }
 
     @Test
@@ -68,6 +73,30 @@ class FadedTipTest {
     @Test
     @Config(qualifiers = "w412dp-h915dp-xxhdpi")
     fun wholeAt2On412() = assertWhole(scale = 2f, width = 412)
+
+    /**
+     * The tip of a scooter seen on another day says "kl." once in Norwegian by Android's own time format, on Android 12
+     * as on the newest: "Lime · sist sett fre. kl. 14:02", where it read "Lime · sist sett kl. fre. kl. 14:02" (the
+     * lane's device notes of 14 November 2026).
+     */
+    @Test
+    @Config(sdk = [31])
+    fun norwegianSaysKlOnceOnAndroid12() = assertKlOnce()
+
+    @Test
+    fun norwegianSaysKlOnce() = assertKlOnce()
+
+    private fun assertKlOnce() {
+        ScooterDateFormat.skeleton = AndroidFormats(ApplicationProvider.getApplicationContext())::skeleton
+        ScooterDateFormat.timeZone = { ZoneId.of("Europe/Oslo") }
+        java.util.Locale.setDefault(java.util.Locale.forLanguageTag("nb-NO"))
+        ScooterLanguage.launchLocale = { java.util.Locale.forLanguageTag("nb-NO") }
+        ScooterLanguage.current = ScooterLanguage.Nb
+        val now = Instant.parse("2026-11-14T13:00:00Z")
+        val title = { at: Instant -> ScooterDockStatus.seenSentence(at, now) { stringFormat(localized("%1\$@ · last seen %2\$@"), "Lime", it) } }
+        assertEquals("Lime · sist sett fre. kl. 14:02", title(Instant.parse("2026-11-13T13:02:00Z")))
+        assertEquals("Lime · sist sett kl. 13:32", title(Instant.parse("2026-11-14T12:32:00Z")))
+    }
 
     private fun assertWhole(scale: Float, width: Int) {
         useFontScale(scale)
@@ -89,7 +118,7 @@ class FadedTipTest {
         for (language in ScooterLanguage.entries) {
             ScooterLanguage.current = language
             for ((day, at) in seen) {
-                val words = stringFormat(localized("%1\$@ · last seen %2\$@"), "Lime", ScooterDockStatus.seenTime(at, now))
+                val words = ScooterDockStatus.seenSentence(at, now) { stringFormat(localized("%1\$@ · last seen %2\$@"), "Lime", it) }
                 val under = localized("May have moved · new positions on the way")
                 compose.runOnIdle {
                     title = words

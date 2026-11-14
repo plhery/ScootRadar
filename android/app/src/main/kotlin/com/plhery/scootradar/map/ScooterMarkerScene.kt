@@ -509,7 +509,7 @@ class ScooterMarkerScene(
 
     /** The tip's title, which TalkBack reads of the faded scooter: "Lime · last seen 14:02", or "… Fri 14:02". */
     fun fadedTitle(provider: ScooterProvider, status: ScooterLastSeenStatus): String =
-        stringFormat(localized("%1\$@ · last seen %2\$@"), provider.displayName, ScooterDockStatus.seenTime(status.seenAt))
+        ScooterDockStatus.seenSentence(status.seenAt) { stringFormat(localized("%1\$@ · last seen %2\$@"), provider.displayName, it) }
 
     /** The faded scooters TalkBack reads, those of the apps whose last sight is known, by their tips' titles. */
     fun fadedTitle(mark: LastSeenMark): String? {

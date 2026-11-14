@@ -207,25 +207,29 @@ sealed interface ScooterDockStatus {
             } else {
                 stringFormat(localized("Data delayed · showing %@"), clockTime(showing))
             }
-            is Updating -> when (providers.size) {
-                1 -> stringFormat(localized("%1\$@ updating · faded ones seen at %2\$@"), providers[0].displayName, seenTime(seenAt))
-                2 -> stringFormat(
-                    localized("%1\$@ and %2\$@ updating · faded ones seen at %3\$@"),
-                    providers[0].displayName,
-                    providers[1].displayName,
-                    seenTime(seenAt),
-                )
-                else -> stringFormat(localized("Updating · faded ones seen at %@"), seenTime(seenAt))
+            is Updating -> seenSentence(seenAt) { time ->
+                when (providers.size) {
+                    1 -> stringFormat(localized("%1\$@ updating · faded ones seen at %2\$@"), providers[0].displayName, time)
+                    2 -> stringFormat(
+                        localized("%1\$@ and %2\$@ updating · faded ones seen at %3\$@"),
+                        providers[0].displayName,
+                        providers[1].displayName,
+                        time,
+                    )
+                    else -> stringFormat(localized("Updating · faded ones seen at %@"), time)
+                }
             }
-            is LastSeen -> when (providers.size) {
-                1 -> stringFormat(localized("%1\$@: faded ones last seen at %2\$@"), providers[0].displayName, seenTime(seenAt))
-                2 -> stringFormat(
-                    localized("%1\$@ and %2\$@: faded ones last seen at %3\$@"),
-                    providers[0].displayName,
-                    providers[1].displayName,
-                    seenTime(seenAt),
-                )
-                else -> stringFormat(localized("Faded ones last seen at %@"), seenTime(seenAt))
+            is LastSeen -> seenSentence(seenAt) { time ->
+                when (providers.size) {
+                    1 -> stringFormat(localized("%1\$@: faded ones last seen at %2\$@"), providers[0].displayName, time)
+                    2 -> stringFormat(
+                        localized("%1\$@ and %2\$@: faded ones last seen at %3\$@"),
+                        providers[0].displayName,
+                        providers[1].displayName,
+                        time,
+                    )
+                    else -> stringFormat(localized("Faded ones last seen at %@"), time)
+                }
             }
             Live -> localized("Live")
             is UpdatedMinutesAgo -> stringFormat(localized("Updated %lld min ago"), minutes.toLong())
@@ -268,6 +272,24 @@ sealed interface ScooterDockStatus {
         fun seenTime(date: Instant, now: Instant = Instant.now(), zone: ZoneId = ScooterDateFormat.timeZone()): String {
             if (date.atZone(zone).toLocalDate() == now.atZone(zone).toLocalDate()) return clockTime(date)
             return ScooterDateFormat.skeleton("Ejm", date, ScooterDateFormat.timeZone(), ScooterLanguage.current.locale)
+        }
+
+        /**
+         * A sentence about when faded scooters were seen, [sentence] made with their [seenTime], that says the word
+         * before the time once: Norwegian's sentences say "kl." before it, "sist sett kl. 14:02", and its time on
+         * another day holds its own, "fre. kl. 14:02", so the sentence reads "sist sett fre. kl. 14:02" where it read
+         * "sist sett kl. fre. kl. 14:02" (the lane's device notes of 14 November 2026). Only a word the time itself
+         * holds goes: every other language reads as written, Icelandic's "sást síðast kl. fös., 14:02" too.
+         */
+        fun seenSentence(seenAt: Instant, now: Instant = Instant.now(), sentence: (time: String) -> String): String {
+            val time = seenTime(seenAt, now)
+            val text = sentence(time)
+            val at = text.indexOf(time)
+            if (at <= 0) return text
+            val before = text.substring(0, at).trimEnd()
+            val word = before.substringAfterLast(' ')
+            if (word.isEmpty() || word !in time.split(' ', '\u00A0', '\u202F')) return text
+            return before.dropLast(word.length) + text.substring(at)
         }
 
         /** The body of the out-of-date card: "Last update 14:02. You’re offline. Check your connection." */

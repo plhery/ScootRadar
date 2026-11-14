@@ -82,6 +82,74 @@ class ScooterFilteringTest {
         }
     }
 
+    /**
+     * Norwegian says "kl." once before a time on another day, "sist sett fre. kl. 14:02", where it read "sist sett kl.
+     * fre. kl. 14:02": its sentences say "kl." before the time, and its time with the day holds its own. A time today
+     * reads as before, "sist sett kl. 14:02", and every other language as written (the lane's device notes of 14
+     * November 2026).
+     */
+    @Test
+    fun norwegianSaysKlOnceBeforeATimeOnAnotherDay() {
+        val zone = ScooterDateFormat.timeZone
+        ScooterDateFormat.timeZone = { ZoneOffset.UTC }
+        // A phone in Norway: its region gives the 24-hour clock, and the time with the day "fre. kl. 14:02".
+        ScooterLanguage.launchLocale = { Locale.forLanguageTag("nb-NO") }
+        try {
+            val now = Instant.now()
+            val daysAgo = now.minusSeconds(3 * 86_400)
+            val lime = ScooterProvider.Lime
+            val bird = ScooterProvider.Bird
+            val dott = ScooterProvider.Dott
+            // Every sentence a seen time is said in, made as the app makes it and as written, without the helper.
+            fun sentences(seenAt: Instant): List<Pair<String, String>> {
+                val time = ScooterDockStatus.seenTime(seenAt, now)
+                val faded = { count: Int, updating: Boolean -> ScooterFadedCount(count, seenAt, updating) }
+                return listOf(
+                    faded(3, false).seenLine(now) to stringFormat(localized("last seen %@"), time),
+                    faded(1, false).accessibilityLabel(now) to localizedCounting("%lld faded, last seen at %@.", 1L, time),
+                    faded(3, true).accessibilityLabel(now) to localizedCounting("%lld faded, last seen at %@, updating.", 3L, time),
+                    ScooterDockStatus.LastSeen(listOf(lime), seenAt).text to
+                        stringFormat(localized("%1\$@: faded ones last seen at %2\$@"), lime.displayName, time),
+                    ScooterDockStatus.LastSeen(listOf(lime, bird), seenAt).text to
+                        stringFormat(localized("%1\$@ and %2\$@: faded ones last seen at %3\$@"), lime.displayName, bird.displayName, time),
+                    ScooterDockStatus.LastSeen(listOf(lime, bird, dott), seenAt).text to
+                        stringFormat(localized("Faded ones last seen at %@"), time),
+                    ScooterDockStatus.Updating(listOf(lime), seenAt).text to
+                        stringFormat(localized("%1\$@ updating · faded ones seen at %2\$@"), lime.displayName, time),
+                    ScooterDockStatus.Updating(listOf(lime, bird), seenAt).text to
+                        stringFormat(localized("%1\$@ and %2\$@ updating · faded ones seen at %3\$@"), lime.displayName, bird.displayName, time),
+                    ScooterDockStatus.Updating(listOf(lime, bird, dott), seenAt).text to
+                        stringFormat(localized("Updating · faded ones seen at %@"), time),
+                )
+            }
+
+            ScooterLanguage.current = ScooterLanguage.Nb
+            val day = ScooterDockStatus.seenTime(daysAgo, now)
+            val today = ScooterDockStatus.seenTime(now, now)
+            assertTrue(day, day.contains(" kl. "))
+            assertEquals("sist sett $day", ScooterFadedCount(3, daysAgo, updating = false).seenLine(now))
+            assertEquals("1 blek, sist sett $day.", ScooterFadedCount(1, daysAgo, updating = false).accessibilityLabel(now))
+            assertEquals("3 bleke, sist sett $day, oppdateres.", ScooterFadedCount(3, daysAgo, updating = true).accessibilityLabel(now))
+            assertEquals("Bleke sist sett $day", ScooterDockStatus.LastSeen(listOf(lime, bird, dott), daysAgo).text)
+            assertEquals("Lime oppdateres · bleke: sett $day", ScooterDockStatus.Updating(listOf(lime), daysAgo).text)
+            for ((said, written) in sentences(daysAgo)) {
+                assertEquals(written.replace("kl. $day", day), said)
+                assertEquals(said, 1, Regex("""\bkl\.""").findAll(said).count())
+            }
+            assertEquals("sist sett kl. $today", ScooterFadedCount(3, now, updating = false).seenLine(now))
+            for ((said, written) in sentences(now)) assertEquals(written, said)
+
+            for (language in ScooterLanguage.entries - ScooterLanguage.Nb) {
+                ScooterLanguage.current = language
+                for (seenAt in listOf(now, daysAgo)) {
+                    for ((said, written) in sentences(seenAt)) assertEquals(language.rawValue, written, said)
+                }
+            }
+        } finally {
+            ScooterDateFormat.timeZone = zone
+        }
+    }
+
     /** Scooters that report only their battery, judged at 5 km by a full battery's 10 km: 50% or more. */
     @Test
     fun rangeAndProviderFilteringForMapAnnotations() {
