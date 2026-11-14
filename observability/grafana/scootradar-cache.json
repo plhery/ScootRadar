@@ -2687,13 +2687,168 @@
       }
     },
     {
+      "id": 44,
+      "type": "timeseries",
+      "title": "Lime calls held for the address's budget, and refused, per hour",
+      "description": "Lime calls held for the fifty in any ten seconds all accounts share from the cache's one address (PaceGate, LIME_ADDRESS_CALLS), though their own account had a turn: how often that budget is reached, counted since 14 November 2026. Beside them, the calls Lime refused with HTTP 429, all accounts together (scootradar_lime_account_throttled_total, by account in docs/OBSERVABILITY.md). A call held by its own account's twelve a minute alone is in neither.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 110,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(increase(scootradar_lime_address_held_total{job=\"scootradar-cache\"}[1h]))",
+          "legendFormat": "held",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(increase(scootradar_lime_account_throttled_total{job=\"scootradar-cache\"}[1h]))",
+          "legendFormat": "refused (429)",
+          "range": true,
+          "instant": false,
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 45,
+      "type": "timeseries",
+      "title": "Mean wait of a Lime call held for the address's budget",
+      "description": "Of the Lime calls the address's fifty in ten seconds held though their account had a turn, the mean seconds from that turn until they started, over the hour before each point. A town's 51st call of a burst waits for its first to be ten seconds old, so a mean near ten is a burst of one town; nothing is drawn for an hour with none held.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 110,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(increase(scootradar_lime_address_held_seconds_total{job=\"scootradar-cache\"}[1h])) / sum(increase(scootradar_lime_address_held_total{job=\"scootradar-cache\"}[1h]))",
+          "legendFormat": "mean wait",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
       "id": 22,
       "type": "row",
       "title": "Process",
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 110,
+        "y": 118,
         "w": 24,
         "h": 1
       },
@@ -2710,7 +2865,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 111,
+        "y": 119,
         "w": 8,
         "h": 8
       },
@@ -2796,7 +2951,7 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 111,
+        "y": 119,
         "w": 8,
         "h": 8
       },
@@ -2870,7 +3025,7 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 111,
+        "y": 119,
         "w": 8,
         "h": 8
       },
