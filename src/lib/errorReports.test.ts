@@ -101,7 +101,7 @@ beforeEach(() => {
   const meta = document.createElement('meta');
   meta.name = 'scootradar-release';
   meta.content = commit;
-  document.head.append(meta);
+  document.head.appendChild(meta);
 });
 afterEach(() => {
   vi.unstubAllGlobals();
