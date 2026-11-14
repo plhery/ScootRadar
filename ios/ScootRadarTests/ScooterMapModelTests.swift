@@ -2662,6 +2662,45 @@ extension ScooterMapModelTests {
         XCTAssertTrue(reset)
     }
 
+    /// A drag of the range slider away and back to where it rested is no choice, and sends no `range_filter`; a drag
+    /// that rests elsewhere sends one, once, and Reset forgets the drag under way (the website, and Android's
+    /// ScooterMapEventsTest.aDragAwayAndBackToWhereTheSliderRestedSendsNothing, 29147765). Without it the drags back to
+    /// Any and to 5 are sent too.
+    func testADragAwayAndBackToWhereTheSliderRestedSendsNothing() async throws {
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: isolatedDefaults(),
+            rangeRest: .milliseconds(100),
+            builtInZones: []
+        )
+        var events: [String] = []
+        ScooterAnalytics.shared.observer = { name, value in
+            if let name { events.append(value.map { "\(name) \($0)" } ?? name) }
+        }
+        defer { ScooterAnalytics.shared.observer = nil }
+        func metres(_ steps: Int) -> Int { ScooterRangeFilter.metres(steps: steps, unit: model.rangeUnit) }
+        // A rest missed on a busy simulator joins two drags into one, which ends where the second does.
+        func drag(_ steps: [Int]) async {
+            for step in steps { model.setMinimumRange(metres(step)) }
+            try? await Task.sleep(for: .milliseconds(400))
+        }
+
+        await drag([1, 2, 3, 2, 1, 0])
+        await drag([2, 4, 5])
+        await drag([6, 8, 6, 5])
+        await drag([6, 7, 8])
+        let eight = await waitUntil { events.count == 2 }
+        XCTAssertTrue(eight)
+        model.resetFilters()
+        await drag([1, 0])
+        await drag([1, 2])
+        let two = await waitUntil { events.count == 4 }
+        XCTAssertTrue(two)
+        XCTAssertEqual(events, ["range_filter \(metres(5))", "range_filter \(metres(8))", "filters_reset",
+                                "range_filter \(metres(2))"])
+    }
+
     func testGroupsLastSeenKeepTheProvidersShownAndGoWithTheGroupsWhenTheMinimumChanges() async throws {
         let api = StubScooterAPI(response: ScooterResponse(
             vehicles: [],

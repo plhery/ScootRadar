@@ -410,6 +410,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// How long before an area whose zones are still on their way is asked for again (zonePendingRetry).
     @ObservationIgnored private let zonePendingRetry: Duration
     @ObservationIgnored private let refreshPolicy: ScooterRefreshPolicy
+    /// How long the range slider rests before its minimum counts as chosen (setMinimumRange).
+    @ObservationIgnored private let rangeRest: Duration
     @ObservationIgnored private let clock: () -> Date
     @ObservationIgnored private let directions: any WalkingDirectionsClient
     @ObservationIgnored private let openInMaps: @MainActor (ScooterWalkTarget) -> Void
@@ -435,6 +437,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var pendingQueryMinimumRange: Int?
     /// Counts the minimum range once the slider rests (setMinimumRange).
     @ObservationIgnored private var rangeTracking: Task<Void, Never>?
+    /// The minimum the slider rested on before the drag under way, if one is: a drag back to it is no choice.
+    @ObservationIgnored private var rangeBeforeDrag: Int?
     @ObservationIgnored private var fetchTask: Task<Void, Never>?
     @ObservationIgnored private var refreshTimerTask: Task<Void, Never>?
     @ObservationIgnored private var parkingExpiryTask: Task<Void, Never>?
@@ -535,6 +539,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         locationTimeout: Duration = .seconds(5),
         zonePendingRetry: Duration = ScooterMapModel.zonePendingRetry,
         refreshPolicy: ScooterRefreshPolicy = .standard,
+        rangeRest: Duration = .seconds(1),
         now: @escaping () -> Date = Date.init,
         directions: any WalkingDirectionsClient = MapKitWalkingDirections(),
         openInMaps: @escaping @MainActor (ScooterWalkTarget) -> Void = { $0.openInMaps() },
@@ -562,6 +567,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         self.locationTimeout = locationTimeout
         self.zonePendingRetry = zonePendingRetry
         self.refreshPolicy = refreshPolicy
+        self.rangeRest = rangeRest
         clock = now
         lastInteractionAt = now()
         knownAuthorizationStatus = locationManager.authorizationStatus
@@ -1387,6 +1393,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         ScooterAnalytics.shared.track("filters_reset")
         // A range the slider had not rested on was never chosen.
         rangeTracking?.cancel()
+        rangeBeforeDrag = nil
         let minimumChanged = minimumRange != 0
         chosenMinimumRange = 0
         enabledProviders = Set(ScooterProvider.allCases)
@@ -1398,14 +1405,19 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func setMinimumRange(_ metres: Int) {
         let normalizedValue = ScooterRangeFilter.snapped(metres, unit: rangeUnit)
         guard normalizedValue != minimumRange else { return }
+        // The first step after a rest starts a drag.
+        let before = rangeBeforeDrag ?? minimumRange
+        rangeBeforeDrag = before
         chosenMinimumRange = normalizedValue
         refetchFilteredClusters()
         // A drag of the slider passes many steps and is one choice: the minimum is counted where it rests,
-        // in metres.
+        // in metres, unless it rests where the drag started, a choice that changed nothing (the website and
+        // Android 29147765 since 14 November 2026).
         rangeTracking?.cancel()
-        rangeTracking = Task {
-            do { try await Task.sleep(for: .seconds(1)) } catch { return }
-            ScooterAnalytics.shared.track("range_filter", value: normalizedValue)
+        rangeTracking = Task { [rangeRest] in
+            do { try await Task.sleep(for: rangeRest) } catch { return }
+            rangeBeforeDrag = nil
+            if normalizedValue != before { ScooterAnalytics.shared.track("range_filter", value: normalizedValue) }
         }
     }
 

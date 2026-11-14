@@ -13,6 +13,9 @@ final class ScooterAnalytics {
     private var disabledByServer = false
     private var pending = 0
     private var previous: Task<Void, Never>?
+    /// Each event with its value as it is asked for, before the checks that keep tests, previews and the Simulator
+    /// from sending it: the tests watch the events with it.
+    var observer: ((_ name: String?, _ value: Int?) -> Void)?
     private let session: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.httpShouldSetCookies = false
@@ -67,6 +70,7 @@ final class ScooterAnalytics {
 
     func track(_ name: String? = nil, provider: String? = nil, value: Int? = nil,
                result: String? = nil, target: String? = nil, screen: String = "/") {
+        observer?(name, value)
         guard enabled, pending < 30 else { return }
         let payload = Self.payload(name, provider: provider, value: value, result: result, target: target, screen: screen)
         guard let body = try? JSONSerialization.data(withJSONObject: ["type": "event", "payload": payload]) else { return }
