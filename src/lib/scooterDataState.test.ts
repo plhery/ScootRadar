@@ -298,21 +298,25 @@ describe('scooterDataReducer', () => {
     expect(scooterDataReducer(failedBefore, { type: 'started', key: 'a' }).vehicles).toHaveLength(1);
   });
 
-  it('removes scooters and clusters when the request after the expiry fails', () => {
+  it('removes scooters, clusters and their battery figures when the request after the expiry fails', () => {
+    const withBatteries = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', now: T0,
+      response: { ...response(), batteryRanges: { lime: 11_500, bolt: 29_400 } } });
     const state = run([
       { type: 'failed', failure: 'failed', now: T0 + 269_000 },
       { type: 'started', key: 'a' },
       { type: 'failed', failure: 'offline', now: T0 + 279_000 },
-    ], loaded);
+    ], withBatteries);
     expect(state).toMatchObject({
       hasData: false, dataKey: null, outOfDate: true, failure: 'offline',
       lastUpdated: T0 - 30_000, lastAttemptAt: T0 + 279_000,
     });
     expect(state.vehicles).toEqual([]);
     expect(state.clusters).toEqual([]);
+    // The range filter's help names no battery minimum of scooters no longer shown.
+    expect(state.batteryRanges).toEqual({});
     // Parking follows its own expiry, and the last metadata stays for the card.
     expect(state.parking).toHaveLength(1);
-    expect(state.meta).toBe(loaded.meta);
+    expect(state.meta).toBe(withBatteries.meta);
   });
 
   it('goes out of date when a request that was running across the expiry fails', () => {

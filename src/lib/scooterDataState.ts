@@ -241,7 +241,8 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
       const next = { ...state, lastAttemptAt: event.now, requestInFlight: false, failure: event.failure,
         attemptGapMs: MIN_ATTEMPT_GAP_MS };
       if (failedRequestOutcome(state, event.now) !== 'out-of-date') return next;
-      return { ...next, vehicles: [], clusters: [], lastSeenVehicles: [], lastSeenClusters: [], lastSeenProviders: {}, hasData: false, dataKey: null, outOfDate: true };
+      return { ...next, vehicles: [], clusters: [], lastSeenVehicles: [], lastSeenClusters: [], lastSeenProviders: {}, batteryRanges: {},
+        hasData: false, dataKey: null, outOfDate: true };
     }
 
     case 'aborted':
