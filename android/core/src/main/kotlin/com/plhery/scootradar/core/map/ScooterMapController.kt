@@ -882,6 +882,8 @@ class ScooterMapController(
         _isPausedForIdle.value = false
         if (hasStarted) startHeadingUpdates()
         expireParkingIfNeeded()
+        // A city's rules may have started or ended with their hours meanwhile.
+        rebuildMapZones()
         // Back in the foreground a due refresh starts at once. The old data stays on the map until the outcome
         // is known.
         refreshIfDue(respectingAttemptGap = false)
@@ -967,8 +969,7 @@ class ScooterMapController(
             // Nobody has touched the map for a while: it stops asking until someone does.
             if (clock().timeIntervalSince(lastInteractionAt) >= refreshPolicy.idlePause) {
                 _isPausedForIdle.value = true
-                refreshTimerTask?.cancel()
-                refreshTimerTask = null
+                scheduleRulesCheckWhilePaused()
             } else {
                 refresh()
             }
@@ -984,7 +985,28 @@ class ScooterMapController(
         reviewDue = false
         if (!_isPausedForIdle.value) return
         _isPausedForIdle.value = false
+        // A city's rules may have started or ended with their hours since the last look.
+        rebuildMapZones()
         refreshIfDue(respectingAttemptGap = false)
+    }
+
+    /**
+     * The paused map has no refresh timer, whose ticks redraw a city's rules by the clock: its rules over the map are
+     * looked at every [ScooterRefreshPolicy.pausedRulesCheck] instead, and redrawn when one has started or ended with
+     * its hours, as Seoul's at noon and 23:00 (fresh-eyes review of 14 November 2026, S5; the iPhone's b9eafbd2).
+     * Nothing is fetched.
+     */
+    private fun scheduleRulesCheckWhilePaused() {
+        refreshTimerTask?.cancel()
+        val wait = refreshPolicy.pausedRulesCheck
+        refreshTimerTask = scope.launch {
+            delay(wait.seconds)
+            if (!_isPausedForIdle.value) return@launch
+            refreshTimerTask = null
+            val now = clock()
+            if (mapRuleZones.value.any { it.inForce != it.rule.inForce(at = now) }) rebuildMapZones()
+            scheduleRulesCheckWhilePaused()
+        }
     }
 
     private fun scheduleAutomaticRefresh() {

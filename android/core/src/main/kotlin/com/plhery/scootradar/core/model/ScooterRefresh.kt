@@ -32,6 +32,11 @@ data class ScooterRefreshPolicy(
      * November 2026 did for three days (Desk [316]).
      */
     val idlePause: Double = 30.0 * 60,
+    /**
+     * While the refreshes are paused, the cities' rules over the map are looked at this often, and redrawn when one has
+     * started or ended with its hours. Nothing is fetched.
+     */
+    val pausedRulesCheck: Double = 60.0,
 ) {
     /**
      * The gap before the follow-up a refreshing response asks for with `followUpMs`, which also takes the

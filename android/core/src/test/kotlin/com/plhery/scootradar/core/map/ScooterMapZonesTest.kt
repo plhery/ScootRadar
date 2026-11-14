@@ -4,6 +4,7 @@ import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.CityRuleZone
+import com.plhery.scootradar.core.model.CityZoneIndex
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -11,15 +12,18 @@ import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.PinnedStreets
 import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
+import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneResponse
 import com.plhery.scootradar.core.model.ScooterZoneState
+import com.plhery.scootradar.core.model.addingTimeInterval
 import java.time.Instant
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.currentTime
 import kotlinx.coroutines.test.runCurrent
@@ -291,6 +295,74 @@ class ScooterMapZonesTest {
     }
 
     // The catalog's Porto is a few of its parking places (TestCatalog), as the iPhone's test reads them all.
+    /**
+     * A map paused while nobody touches it draws a city's rule outside its hours once they end, without asking for
+     * anything: the timer that redrew the rules stopped with the refreshes, and Hongdae's red road was drawn in force
+     * past 23:00 (fresh-eyes review of 14 November 2026, S5; the iPhone's b9eafbd2).
+     */
+    @Test
+    fun aPausedMapDrawsACitysRuleOutsideItsHoursOnceTheyEndWithoutAskingForAnything() = runTest {
+        val (model, api, clock) = hongdaeAt22(rulesCheck = 0.1)
+        // Nobody touches the map: at 22:31 its refreshes pause.
+        clock.now = seoulNoon.addingTimeInterval(10 * 3600.0 + 31 * 60)
+        assertTrue(waitUntil { model.isPausedForIdle.value })
+        val asked = api.scootersAsked
+
+        // 23:01: the red road's hours are over.
+        clock.now = seoulNoon.addingTimeInterval(11 * 3600.0 + 60)
+        assertTrue("Hongdae's rule still drawn in force at 23:01", waitUntil { model.mapRuleZones.value.map { it.inForce } == listOf(false) })
+        assertTrue(model.isPausedForIdle.value)
+        assertEquals(asked, api.scootersAsked)
+    }
+
+    /**
+     * A touch on the paused map, or coming back to the app, draws the cities' rules as they are at once, where they
+     * waited for the timer's next tick, up to a minute (the iPhone's b9eafbd2).
+     */
+    @Test
+    fun aTouchOnThePausedMapOrComingBackToTheAppDrawsACitysRulesAsTheyAreAtOnce() = runTest {
+        // Paused at 22:31, its rules not looked at again before the touch at 23:01.
+        val (touched, _, touchedClock) = hongdaeAt22(rulesCheck = 3600.0)
+        touchedClock.now = seoulNoon.addingTimeInterval(10 * 3600.0 + 31 * 60)
+        assertTrue(waitUntil { touched.isPausedForIdle.value })
+        touchedClock.now = seoulNoon.addingTimeInterval(11 * 3600.0 + 60)
+        touched.noteInteraction()
+        assertEquals("touched at 23:01", listOf(false), touched.mapRuleZones.value.map { it.inForce })
+
+        // In the background from 22:00, back at 23:05.
+        val (away, _, awayClock) = hongdaeAt22(rulesCheck = 3600.0)
+        away.becameInactive()
+        awayClock.now = seoulNoon.addingTimeInterval(11 * 3600.0 + 5 * 60)
+        away.becameActive()
+        assertEquals("back at 23:05", listOf(false), away.mapRuleZones.value.map { it.inForce })
+    }
+
+    /** Noon in Seoul. Hongdae's red road holds from 12:00 to 23:00 there. */
+    private val seoulNoon = Instant.ofEpochSecond(1_792_983_600)
+
+    /**
+     * A map loaded on Hongdae at 22:00 in Seoul, with the zones off and its red road drawn in force. Its refresh timer
+     * comes round every tenth of a second; paused, it looks at the rules every [rulesCheck] seconds. The cities' zone
+     * index it asks for has none, as one at hand asks for nothing more.
+     */
+    private fun TestScope.hongdaeAt22(rulesCheck: Double): Triple<ScooterMapController, ZoneStubAPI, TestClock> {
+        val hongdae = MapRegion(center = GeoPoint(latitude = 37.5545, longitude = 126.9245), latitudeDelta = 0.008, longitudeDelta = 0.008)
+        val clock = TestClock().apply { now = seoulNoon.addingTimeInterval(10 * 3600.0) }
+        val api = ZoneStubAPI(cityIndex = """{"format":1,"cities":[]}""".toByteArray())
+        val model = makeController(
+            api,
+            clock = clock,
+            refreshPolicy = ScooterRefreshPolicy(defaultRefreshAfter = 0.1, minimumAttemptGap = 0.1, pausedRulesCheck = rulesCheck),
+        )
+        model.setShowsZones(false)
+        model.updateViewport(hongdae, zoom = 16)
+        model.refresh()
+        assertTrue(waitUntil { api.scootersAsked == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(listOf("seoul-hongdae-red-road"), model.mapRuleZones.value.map { it.rule.id })
+        assertEquals(listOf(true), model.mapRuleZones.value.map { it.inForce })
+        return Triple(model, api, clock)
+    }
+
     @Test
     fun aCitysZonesAreDrawnFromZoom14WithTheZonesOffAndTheSameOnesOverAShortPan() = runTest {
         val model = makeController(ZoneStubAPI())
@@ -752,7 +824,18 @@ class ScooterMapZonesTest {
 }
 
 /** Lime's no riding and Bird's no parking, and [more] after them. */
-private class ZoneStubAPI(more: List<ScooterZone> = emptyList()) : ScooterAPIClient {
+private class ZoneStubAPI(
+    more: List<ScooterZone> = emptyList(),
+    /** The cities' zone index it gives, or none: asked for, it fails. */
+    private val cityIndex: ByteArray? = null,
+) : ScooterAPIClient {
+    /** How many times the scooters were asked for. */
+    var scootersAsked = 0
+        private set
+
+    override suspend fun cityZoneFile(name: String): ByteArray =
+        cityIndex?.takeIf { name == CityZoneIndex.fileName } ?: throw ScooterAPIError.HttpStatus(404)
+
     private var failure: ScooterAPIError? = null
 
     /** The zones after Lime's and Bird's in the answers asked for from now on. */
@@ -769,8 +852,10 @@ private class ZoneStubAPI(more: List<ScooterZone> = emptyList()) : ScooterAPICli
 
     val zoneAreas: List<ScooterZoneArea> get() = areas.toList()
 
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse =
-        ScooterResponse(vehicles = emptyList())
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
+        scootersAsked += 1
+        return ScooterResponse(vehicles = emptyList())
+    }
 
     override suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse {
         areas += area
