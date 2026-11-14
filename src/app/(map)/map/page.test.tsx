@@ -1032,6 +1032,47 @@ it('says the scooter walked to was taken from two reads of its app, while anothe
   expect(routeOnMap()).toHaveTextContent('gone 0 null');
 });
 
+it('says the scooter walked to was taken only once every group of its app in view was read after the one that missed it', async () => {
+  // Two of Lime's groups in view, the walked scooter's (A) and another (B), each read on its own: the app's oldest
+  // read (shownSince) moves when B is read or the view moves, with A read once without the scooter (fresh-eyes
+  // review of 14 November 2026, cache finding 1).
+  const start = Date.now();
+  const at = (seconds: number) => new Date(start + seconds * 1000).toISOString();
+  const elsewhere: Vehicle = { ...OTHER, vehicle_id: 'elsewhere', lng: OTHER.lng + 0.001 };
+  let vehicles = [FAR, elsewhere];
+  let reads = { a: -70, b: -40, bInView: true };
+  stubServer(() => {
+    const shown = reads.bInView ? [reads.a, reads.b] : [reads.a];
+    return data(vehicles, [], { shownSince: { lime: at(Math.min(...shown)) }, readThrough: { lime: at(Math.max(...shown)) } });
+  });
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  // A read again without it: missed once, with A's read the newest.
+  vehicles = [elsewhere];
+  reads = { ...reads, a: -10 };
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  // B alone read again: Lime's oldest read is A's, the same that missed it.
+  reads = { ...reads, b: 20 };
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  // B leaves the view, and comes back: nothing read again.
+  reads = { ...reads, b: -40, bInView: false };
+  await refreshData();
+  reads = { ...reads, b: 20, bInView: true };
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+
+  // A read again without it: taken.
+  reads = { ...reads, a: 50 };
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('gone 0 null');
+});
+
 it('keeps where a scooter taken was beside its card, and gives Directions back if it returns', async () => {
   let vehicles = [FAR];
   stubServer(() => data(vehicles));

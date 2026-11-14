@@ -831,9 +831,13 @@ export default function Home() {
   // single scooters are sent whatever their range and battery and its app's feed answered,
   // nor standing faded where it was last seen.
   // Twice, from two reads of its app: a scooter missing from one comes back. A read is told by the time of its
-  // app's scooters shown (meta.shownSince), which moves only when they are read again; the answer's own time is
-  // the oldest of every app's, and stays put while another app in view is late or being swept. A server that
-  // does not name the app's time is judged by the answer's.
+  // app's scooters shown (meta.shownSince), the oldest of its feeds' reads in view; the answer's own time is the
+  // oldest of every app's, and stays put while another app in view is late or being swept. Where the app has
+  // several feeds in view, as Lime's groups, its time moves too when another of them is read, or the view moves:
+  // taken only once it is later than the newest of the app's reads (meta.readThrough) in the answer that first
+  // missed the scooter, every one of them read since (Desk [373] S-1). Until 14 November 2026 a read of Lime's
+  // group beside the scooter's said it was taken after one read of its own. A server that does not name the app's
+  // newest read is judged by the app's time as before, and one that does not name that by the answer's.
   const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
     answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
     (scooterQuery?.minRange ?? 0) === 0 &&
@@ -843,10 +847,15 @@ export default function Home() {
   const walkedRead = pinnedProvider !== null && responseMeta
     ? responseMeta.shownSince?.[pinnedProvider] ?? responseMeta.generatedAt
     : null;
-  const [walkMissedIn, setWalkMissedIn] = useState<string | null>(null);
-  if (walkedSeen === false && walkMissedIn === null) setWalkMissedIn(walkedRead);
-  if (walkedSeen === true && walkMissedIn !== null) setWalkMissedIn(null);
-  const walkedTaken = walkedSeen === false && walkMissedIn !== null && walkedRead !== walkMissedIn;
+  const walkedReadThrough = pinnedProvider !== null && responseMeta
+    ? responseMeta.readThrough?.[pinnedProvider] ?? walkedRead
+    : null;
+  const [walkMissedThrough, setWalkMissedThrough] = useState<string | null>(null);
+  if (walkedSeen === false && walkMissedThrough === null) setWalkMissedThrough(walkedReadThrough);
+  if (walkedSeen === true && walkMissedThrough !== null) setWalkMissedThrough(null);
+  // Not before it: the same read served again, nor an older one, as when the view takes in a group read before.
+  const walkedTaken = walkedSeen === false && walkMissedThrough !== null && walkedRead !== walkMissedThrough &&
+    !(walkedRead !== null && Date.parse(walkedRead) <= Date.parse(walkMissedThrough));
   useEffect(() => {
     if (walkedTaken) walkGone();
   }, [walkGone, walkedTaken]);
@@ -962,7 +971,7 @@ export default function Home() {
       if (!pin) return;
       const target = 'vehicle' in pin ? pin.vehicle : pin.parking;
       setWalkPin(pin);
-      setWalkMissedIn(null);
+      setWalkMissedThrough(null);
       walk.start({
         key: 'vehicle' in pin ? `vehicle:${vehicleKey(pin.vehicle)}` : `parking:${pin.parking.id}`,
         point: [target.lat, target.lng],
