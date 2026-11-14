@@ -227,16 +227,20 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `process_*` and `nodejs_*`: memory, CPU, start time and event loop delay. Each hold of
   the loop of a second or more is in Loki as `event_loop_held`, with the collections that
   ended around it, and a garbage collection of half a second or more as `gc_pause`
-  (`server/stallLog.ts`). The container has one CPU (DEPLOY.md), which the main thread
-  shares with V8's and libuv's threads: when they run together, the kernel stops all of
-  them for the rest of each 100 ms, and the loop is held with no long work of its own.
-  `/sys/fs/cgroup/cpu.stat` in the container counts it (`nr_throttled`,
-  `throttled_usec`). On 12 November 2026, 79% of the day's holds began within five
-  seconds of the minute's save of the snapshot (logged as `snapshot_health`), whose own
-  work holds the loop 3 ms at most without a CPU limit, and in the container
-  `throttled_usec` rose by 3 to 4.8 seconds within a second or two of a full Prometheus
-  scrape. The holds of 2 seconds or more grew over the container's life with its heap,
-  from 22 on the 11th to 114 on the 12th.
+  (`server/stallLog.ts`). The container had one CPU until 14 November 2026 and has two
+  since (DEPLOY.md). With one, the main thread shared it with V8's and libuv's threads:
+  when they ran together, the kernel stopped all of them for the rest of each 100 ms,
+  and the loop was held with no long work of its own. `/sys/fs/cgroup/cpu.stat` in the
+  container counts it (`nr_throttled`, `throttled_usec`). On 12 November 2026, 79% of
+  the day's holds began within five seconds of the minute's save of the snapshot
+  (logged as `snapshot_health`), whose own work holds the loop 3 ms at most without a
+  CPU limit, and in the container `throttled_usec` rose by 3 to 4.8 seconds within a
+  second or two of a full Prometheus scrape. The holds of 2 seconds or more grew over
+  the container's life with its heap, from 22 on the 11th to 114 on the 12th. In the
+  last day on one CPU, 18:00 UTC 13 November to 18:00 the 14th, there were 842 holds of
+  a second or more, 21 of them of 2 seconds or more, the longest 2.4 seconds; from its
+  start at 08:20 UTC on the 14th to 17:58, the container was throttled in 25,409 of its
+  305,645 periods (8.3%).
 
 Counters start at zero with the process; the dashboard's "Deploys" annotation marks
 restarts.

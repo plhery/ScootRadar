@@ -294,7 +294,12 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 - Repository: `plhery/ScootRadar`, branch `production-cache`, Dockerfile `/server/Dockerfile`.
 - Origin: `https://scooter-data.plhery.com`, container port 3001.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
-- Resource limits: 1 CPU, 3072 MiB. No host port is exposed.
+- Resource limits: 2 CPUs, 3072 MiB, set in the application's Resource Limits
+  (`limits_cpus` in Coolify's database), which every deploy applies. No host port is
+  exposed. It had one CPU until 14 November 2026, when the kernel's throttling of
+  that CPU held the event loop at the minute's save and at each full Prometheus
+  scrape (Desk [362]; [Metrics](docs/OBSERVABILITY.md#metrics)). netcup has 12 cores,
+  at a load of 4.9 to 6.5 that evening.
 - Network alias `scootradar-cache` on the `coolify` network, where Prometheus scrapes
   `scootradar-cache:3001/metrics` for the gauges and `up` (job `scootradar-cache`), and
   each container the alias resolves to for the counters (job
