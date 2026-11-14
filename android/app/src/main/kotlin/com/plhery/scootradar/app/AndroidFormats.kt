@@ -12,10 +12,23 @@ import android.provider.Settings
 import com.plhery.scootradar.core.model.ScooterLengthUnit
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.CharacterIterator
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
+
+/** The fields of a time of day, which a line does not break between. */
+private val timeOfDay: Set<DateFormat.Field> = setOf(
+    DateFormat.Field.HOUR0,
+    DateFormat.Field.HOUR1,
+    DateFormat.Field.HOUR_OF_DAY0,
+    DateFormat.Field.HOUR_OF_DAY1,
+    DateFormat.Field.MINUTE,
+    DateFormat.Field.AM_PM,
+    DateFormat.Field.AM_PM_MIDNIGHT_NOON,
+    DateFormat.Field.FLEXIBLE_DAY_PERIOD,
+)
 
 /**
  * Numbers, lengths, dates and lists as Android's ICU writes them in a locale, as Foundation writes the
@@ -93,9 +106,36 @@ class AndroidFormats(private val context: Context) {
             else -> null
         }
         val pattern = if (hour == null) skeleton else skeleton.replace("j", hour)
-        return DateFormat.getInstanceForSkeleton(pattern, locale)
-            .apply { timeZone = TimeZone.getTimeZone(zone.id) }
-            .format(Date.from(instant))
+        val format = DateFormat.getInstanceForSkeleton(pattern, locale).apply { timeZone = TimeZone.getTimeZone(zone.id) }
+        return withTimeOnOneLine(format, Date.from(instant))
+    }
+
+    /**
+     * The date as [format] writes it, with no line break inside its time: from its first field of the time of day
+     * to its last, the hour, the minutes and the day period, its plain spaces become no-break ones of the same width.
+     * Android 12's ICU writes "10:13 AM" with a plain space, and the dock's offline line broke before "AM" at 360 dp
+     * (the lane's device notes of 14 November 2026); Portugal's "10:13 da manhã" and Canadian French's "10 h 13" have
+     * them inside. Newer ICU writes a narrow no-break space before the day period, except in Dutch, and keeps it. A
+     * weekday or a zone beside the time may still go to a line of its own.
+     */
+    private fun withTimeOnOneLine(format: DateFormat, date: Date): String {
+        val text = StringBuilder()
+        var first = -1
+        var last = -1
+        val iterator = format.formatToCharacterIterator(date)
+        var char = iterator.first()
+        while (char != CharacterIterator.DONE) {
+            if (iterator.attributes.keys.any { it in timeOfDay }) {
+                if (first < 0) first = text.length
+                last = text.length
+            }
+            text.append(char)
+            char = iterator.next()
+        }
+        for (index in maxOf(first, 0)..last) {
+            if (text[index] == ' ') text.setCharAt(index, '\u00A0')
+        }
+        return text.toString()
     }
 
     /** The phone's time zone, read each time, as Android changes it when the phone does. */
