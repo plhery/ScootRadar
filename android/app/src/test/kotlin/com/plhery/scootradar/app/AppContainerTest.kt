@@ -364,7 +364,8 @@ class AppContainerTest {
     /** The app's recent place is kept with this build's version code, and read back as this build kept it (Desk [372]). */
     @Test
     fun theRecentPlaceIsReadAsThisBuildKeptIt() {
-        val place = MapDestination("Paradeplatz", "Lungern OW", GeoPoint(46.7741, 8.1558), MapDestination.Kind.Address, isCovered = true)
+        // "No data" where the bundled areas say there is: read as kept only by the build that kept it.
+        val place = MapDestination("Bahnhofstrasse 12", "8001 Zürich", GeoPoint(47.3717, 8.5392), MapDestination.Kind.Address, isCovered = false)
         try {
             AppContainer(context).recentPlace.save(place)
             val text = SharedPreferencesScooterDefaults(context.getSharedPreferences("RecentPlace", Context.MODE_PRIVATE)).string(forKey = "recent-place-v1")

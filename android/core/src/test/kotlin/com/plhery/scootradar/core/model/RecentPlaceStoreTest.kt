@@ -51,10 +51,11 @@ class RecentPlaceStoreTest {
     }
 
     /**
-     * Whether the map has data at the place kept is as it is today, not as when the place was chosen: Manama, kept as
-     * "No data" before Hopp's feed there was added on 4 November 2026, has data, and Lungern, kept as having some, has
-     * none (week review, finding 3.4; the iPhone's 9fb2c282). The flag is still written, for the iPhone's file and
-     * older versions.
+     * A place kept as "No data" by a version before the build field has data where the map has it today: Manama, kept
+     * so before Hopp's feed there was added on 4 November 2026, has data (week review, finding 3.4; the iPhone's
+     * 9fb2c282). One kept as having data has it: Lungern, which the bundled areas leave out, stands for a town whose
+     * feed is newer than the build (Desk [373] S-5). The flag is still written, for the iPhone's file and older
+     * versions.
      */
     @Test
     fun aPlaceKeptHasDataAsTheMapHasItTodayNotAsWhenItWasChosen() {
@@ -65,11 +66,12 @@ class RecentPlaceStoreTest {
         )
         assertEquals(true, RecentPlaceStore(kept).load()?.isCovered)
 
+        // Kept as having data, it has it, though the bundled areas leave Lungern out (Desk [373] S-5).
         kept.set(
             """{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}""",
             forKey = key,
         )
-        assertEquals(false, RecentPlaceStore(kept).load()?.isCovered)
+        assertEquals(true, RecentPlaceStore(kept).load()?.isCovered)
 
         RecentPlaceStore(kept).save(MapDestination("Paradeplatz", "Lungern OW", GeoPoint(46.7741, 8.1558), MapDestination.Kind.Address, false))
         assertEquals(JsonPrimitive(false), Json.parseToJsonElement(kept.string(forKey = key)!!).jsonObject["isCovered"])
@@ -92,10 +94,11 @@ class RecentPlaceStoreTest {
             assertEquals(place, RecentPlaceStore(kept).load())
         }
 
-        // By the version code the app gives the store.
+        // By the version code the app gives the store. Kept as having data, it has it from the build after too, where
+        // the bundled areas leave Lungern out (Desk [373] S-5); kept as having none, it is worked out again there.
         RecentPlaceStore(kept, build = "11").save(lungern)
         assertEquals(true, RecentPlaceStore(kept, build = "11").load()?.isCovered)
-        assertEquals(false, RecentPlaceStore(kept, build = "12").load()?.isCovered)
+        assertEquals(true, RecentPlaceStore(kept, build = "12").load()?.isCovered)
         RecentPlaceStore(kept, build = "11").save(zurich)
         assertEquals(false, RecentPlaceStore(kept, build = "11").load()?.isCovered)
         assertEquals(true, RecentPlaceStore(kept, build = "12").load()?.isCovered)
@@ -103,13 +106,20 @@ class RecentPlaceStoreTest {
         RecentPlaceStore(kept, build = "12").save(lungern)
         assertEquals(true, RecentPlaceStore(kept, build = "12").load()?.isCovered)
 
-        // What a build before the field kept is read as the bundled areas have it, by any build.
+        // What a build before the field kept: having data, it has it; having none, it is read as the bundled areas
+        // have it, by any build.
         kept.set(
             """{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}""",
             forKey = key,
         )
-        assertEquals(false, RecentPlaceStore(kept).load()?.isCovered)
-        assertEquals(false, RecentPlaceStore(kept, build = "11").load()?.isCovered)
+        assertEquals(true, RecentPlaceStore(kept).load()?.isCovered)
+        assertEquals(true, RecentPlaceStore(kept, build = "11").load()?.isCovered)
+        kept.set(
+            """{"title":"Bahnhofstrasse 12","subtitle":"8001 Zürich","latitude":47.3717,"longitude":8.5392,"kind":"address","isCovered":false}""",
+            forKey = key,
+        )
+        assertEquals(true, RecentPlaceStore(kept).load()?.isCovered)
+        assertEquals(true, RecentPlaceStore(kept, build = "11").load()?.isCovered)
     }
 
     /** What is not a place is not offered, and is removed so that it is not read again. */

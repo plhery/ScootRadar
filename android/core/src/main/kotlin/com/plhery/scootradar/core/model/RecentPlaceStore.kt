@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  */
 class RecentPlaceStore(
     private val defaults: ScooterDefaults = InMemoryScooterDefaults(),
-    /** The build of the app that keeps the place, its version code: what it wrote itself, it reads as it wrote it. */
+    /** The app's version code, written beside the place: a "No data" it wrote itself, it reads as it wrote it. */
     private val build: String = "",
 ) {
     /** The place kept, or null when none is or what is kept is not a place. */
@@ -65,12 +65,14 @@ class RecentPlaceStore(
         )
 
         /**
-         * The place, or null for a kind this version doesn't know, an empty title or a point off the globe. Whether it
-         * has data is as it was written where the build reading it wrote it: a town the search knew from that day's
-         * service areas still has data, where the bundled ones, older than the town's feed, would say "No data" (Desk
-         * [372]). Read by another build, or written by one before the field, it is worked out again from the bundled
-         * service areas, as for a place the search answers without saying (the iPhone's 9fb2c282): a feed may have been
-         * added there since, as Hopp's in Manama, or taken away, as in Lungern.
+         * The place, or null for a kind this version doesn't know, an empty title or a point off the globe. A place
+         * kept as having data has it, whichever build kept it: a town the search knew from that day's service areas
+         * still has data, where the bundled ones, older than the town's feed, would say "No data" (Desk [372], and
+         * [373] S-5 for every build, as the iPhone's f589bebb). One kept as having none has none where the build
+         * reading it kept it; read by another build, or kept by one before the field, it is worked out again from the
+         * bundled service areas, as for a place the search answers without saying (the iPhone's 9fb2c282): a feed may
+         * have been added there since, as Hopp's in Manama. A feed taken away still shows as having data, as the user
+         * chose.
          */
         fun destination(readBy: String): MapDestination? {
             val kind = when (kind) {
@@ -84,7 +86,7 @@ class RecentPlaceStore(
                 subtitle = subtitle,
                 point = GeoPoint(latitude, longitude),
                 kind = kind,
-                isCovered = isCovered.takeIf { build == readBy },
+                isCovered = isCovered.takeIf { it == true || build == readBy },
             )
         }
     }
