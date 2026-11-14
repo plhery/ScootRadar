@@ -1488,6 +1488,18 @@ struct MapDestination: Equatable, Identifiable, Sendable {
 /// on this device. UserDefaults would go into iCloud and computer backups.
 struct RecentPlaceStore: Sendable {
     let directory: URL
+    /// The build of the app that keeps the place, written beside it: the build that kept it reads whether it had data
+    /// as it saved it, another works it out again from its own service areas.
+    let build: String
+
+    /// The app's own build number, which scripts/upload-ios-app.sh makes the commit count, so that each upload has its
+    /// own, where several share a version.
+    static let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+
+    init(directory: URL, build: String = Self.appBuild) {
+        self.directory = directory
+        self.build = build
+    }
 
     /// Library/Application Support/recent-place-v1.json.
     static let standard: RecentPlaceStore? = FileManager.default
@@ -1504,22 +1516,26 @@ struct RecentPlaceStore: Sendable {
         let longitude: Double
         /// "address" or "city".
         let kind: String
-        /// Whether it had data when it was chosen. A feed may have been added there since, or taken away: whether
-        /// it has data is worked out again when the place is read, as for a place the search answers without it.
+        /// Whether it had data when it was chosen, as the search said from that day's service areas. Read by the
+        /// build that saved it, it stands: a town whose feed is newer than the build's bundled areas has data at the
+        /// next launch too, where it read "No data" (Desk [372]). Read by another build, a feed may have been added
+        /// there since, or taken away: it is worked out again, as for a place the search answers without it.
         let isCovered: Bool
+        /// The build that saved it; none in a file an earlier version kept, which every build works out again.
+        let build: String?
     }
 
     /// The place saved, or nil when there is none. A file that does not hold one is deleted.
     func load() -> MapDestination? {
         guard let data = try? Data(contentsOf: file) else { return nil }
-        guard let place = Self.place(from: data) else {
+        guard let place = place(from: data) else {
             try? FileManager.default.removeItem(at: file)
             return nil
         }
         return place
     }
 
-    private static func place(from data: Data) -> MapDestination? {
+    private func place(from data: Data) -> MapDestination? {
         guard let saved = try? JSONDecoder().decode(Saved.self, from: data),
               !saved.title.isEmpty,
               (-90...90).contains(saved.latitude),
@@ -1534,7 +1550,8 @@ struct RecentPlaceStore: Sendable {
             title: saved.title,
             subtitle: saved.subtitle,
             point: GeoPoint(latitude: saved.latitude, longitude: saved.longitude),
-            kind: kind
+            kind: kind,
+            isCovered: saved.build == build ? saved.isCovered : nil
         )
     }
 
@@ -1550,7 +1567,8 @@ struct RecentPlaceStore: Sendable {
             latitude: place.point.latitude,
             longitude: place.point.longitude,
             kind: place.kind == .city ? "city" : "address",
-            isCovered: place.isCovered
+            isCovered: place.isCovered,
+            build: build
         )
         do {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

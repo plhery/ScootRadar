@@ -3340,6 +3340,48 @@ extension ScooterMapModelTests {
         XCTAssertEqual(store.load()?.isCovered, false)
     }
 
+    /// The build that kept the place reads whether it has data as the search said, from that day's service areas: a
+    /// town whose feed is newer than the build's bundled ones still has data at the next launch, where it read "No
+    /// data" (Desk [372] S-b; Android's RecentPlaceStoreTest.aPlaceKeptByThisBuildHasDataAsTheSearchSaid, 1a819ca8).
+    /// Lungern stands for such a town, which the bundled areas leave out, and Zürich for a place the search said has
+    /// none. Another build works it out again from its own bundled areas, as the test above.
+    func testAPlaceKeptByThisBuildHasDataAsTheSearchSaid() throws {
+        let directory = recentPlaceStore().directory
+        func store(_ build: String) -> RecentPlaceStore { RecentPlaceStore(directory: directory, build: build) }
+        let lungern = MapDestination(
+            title: "Paradeplatz", subtitle: "Lungern OW", point: GeoPoint(latitude: 46.7741, longitude: 8.1558),
+            isCovered: true
+        )
+        let zurich = MapDestination(
+            title: "Bahnhofstrasse 12", subtitle: "8001 Zürich", point: GeoPoint(latitude: 47.3717, longitude: 8.5392),
+            isCovered: false
+        )
+
+        store("11").save(lungern)
+        XCTAssertEqual(store("11").load()?.isCovered, true)
+        XCTAssertEqual(store("12").load()?.isCovered, false)
+        let saved = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: store("11").file)) as? [String: Any])
+        XCTAssertEqual(Set(saved.keys), ["title", "subtitle", "latitude", "longitude", "kind", "isCovered", "build"])
+        XCTAssertEqual(saved["build"] as? String, "11")
+        store("11").save(zurich)
+        XCTAssertEqual(store("11").load()?.isCovered, false)
+        XCTAssertEqual(store("12").load()?.isCovered, true)
+        // Kept again by the build after, it is that build's.
+        store("12").save(lungern)
+        XCTAssertEqual(store("12").load()?.isCovered, true)
+
+        // The app's own build, at the next launch.
+        let app = RecentPlaceStore(directory: directory)
+        app.save(lungern)
+        XCTAssertEqual(RecentPlaceStore(directory: directory).load(), lungern)
+
+        // What a build before the field kept is read as the bundled areas have it, by any build.
+        let before = #"{"title":"Paradeplatz","subtitle":"Lungern OW","latitude":46.7741,"longitude":8.1558,"kind":"address","isCovered":true}"#
+        try Data(before.utf8).write(to: app.file)
+        XCTAssertEqual(app.load()?.isCovered, false)
+        XCTAssertEqual(store("11").load()?.isCovered, false)
+    }
+
     /// A store in a directory of its own, deleted when the test ends.
     private func recentPlaceStore() -> RecentPlaceStore {
         let directory = FileManager.default.temporaryDirectory
