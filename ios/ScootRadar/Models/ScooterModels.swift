@@ -847,6 +847,10 @@ struct ScooterResponseMetadata: Sendable {
     /// seen, which moves only when its positions are collected again, unlike generatedAt, the oldest of every
     /// app's. Nil from a server that does not say; an app with nothing shown, or only faded scooters, is left out.
     let shownSince: [String: String]?
+    /// The same apps as shownSince, with the newest of each one's reads in view where shownSince has the oldest: once
+    /// an app's shownSince is later than an answer's readThrough, every feed of the app in view, as each of Lime's
+    /// groups, was read since that answer. Nil from a server that does not say (Desk [373] S-1).
+    let readThrough: [String: String]?
     let parkingStatus: String?
     let expiresAt: String?
     let parkingExpiresAt: String?
@@ -871,6 +875,7 @@ struct ScooterResponseMetadata: Sendable {
         lastSeenAt: String? = nil,
         staleProviders: [String: String]? = nil,
         shownSince: [String: String]? = nil,
+        readThrough: [String: String]? = nil,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
         parkingExpiresAt: String? = nil,
@@ -892,6 +897,7 @@ struct ScooterResponseMetadata: Sendable {
         self.lastSeenAt = lastSeenAt
         self.staleProviders = staleProviders
         self.shownSince = shownSince
+        self.readThrough = readThrough
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
         self.parkingExpiresAt = parkingExpiresAt
@@ -964,6 +970,7 @@ extension ScooterResponseMetadataPayload {
             lastSeenAt: lastSeenAt,
             staleProviders: staleProviders,
             shownSince: shownSince,
+            readThrough: readThrough,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
             parkingExpiresAt: parkingExpiresAt,

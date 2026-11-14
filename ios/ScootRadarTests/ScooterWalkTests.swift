@@ -702,6 +702,43 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.walk?.phase, .gone)
     }
 
+    func testAScooterIsTakenOnlyOnceEveryGroupOfItsAppInViewWasReadAfterTheOneThatMissedIt() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        // Two of Lime's groups in view, the walked scooter's (A) and another (B), each read on its own: Lime's oldest
+        // read (shownSince) moves when B is read or the view moves, with A read once without the scooter (fresh-eyes
+        // review of 14 November 2026, cache finding 1).
+        let lime = scooter("s3", at: point(east: -300, north: 0))
+        let h = try await shownWalk(to: target, others: [lime])
+        let start = h.clock.now
+        func answer(a: TimeInterval, b: TimeInterval?) -> ScooterResponse {
+            let reads = [a] + (b.map { [$0] } ?? [])
+            let oldest = iso(start.addingTimeInterval(reads.min()!)), newest = iso(start.addingTimeInterval(reads.max()!))
+            return ScooterResponse(vehicles: [lime], meta: ScooterResponseMetadata(
+                partial: false, failedSources: [], generatedAt: oldest, mode: "vehicles",
+                shownSince: ["lime": oldest], readThrough: ["lime": newest]
+            ))
+        }
+
+        // A read again without it: missed once, with A's read the newest.
+        h.clock.advance(60)
+        try await load(h, answer(a: 50, b: 20), call: 2)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        // B alone read again: Lime's oldest read is A's, the one that missed it.
+        h.clock.advance(60)
+        try await load(h, answer(a: 50, b: 80), call: 3)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        // B leaves the view: nothing read again.
+        try await load(h, answer(a: 50, b: nil), call: 4)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        XCTAssertNotNil(h.model.walkTrail)
+
+        // A read again without it: taken.
+        h.clock.advance(60)
+        try await load(h, answer(a: 140, b: 80), call: 5)
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+        XCTAssertEqual(h.model.walkNote(for: .scooter(target)), .gone)
+    }
+
     // MARK: Neighbours renamed
 
     func testTheWalkIsNotHandedToANeighbourAfterItsAppStoodFadedForOneAnswer() async throws {

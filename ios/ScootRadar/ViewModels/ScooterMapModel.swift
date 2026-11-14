@@ -2518,12 +2518,14 @@ extension ScooterMapModel {
         }
         let read = Self.read(of: scooter.provider, in: meta) ?? receivedAt
         guard let missedRead = walk.missedRead else {
-            walk.missedRead = read
+            walk.missedRead = meta?.readThrough?[scooter.provider].flatMap(ScooterServerTime.date) ?? read
             self.walk = walk
             return
         }
-        // The same read of its app again says nothing new, however late another app in view is.
-        guard missedRead != read else { return }
+        // The same read of its app again says nothing new, however late another app in view is, nor one of its
+        // feeds read beside the scooter's own, or the view moving: until 14 November 2026 a read of Lime's group
+        // beside the scooter's said it was taken after one read of its own.
+        guard read > missedRead else { return }
         cancelRouteRequest()
         walk.phase = .gone
         walk.route = nil

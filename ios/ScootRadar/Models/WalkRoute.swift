@@ -398,10 +398,13 @@ struct ScooterWalk: Equatable, Sendable {
     /// New paths asked for on the way, and when the last path was asked for.
     var reroutes = 0
     var lastRequestAt: Date?
-    /// The read of its app in which data that would list the scooter walked to first didn't, under any id: when
-    /// that app's positions shown were seen (meta.shownSince), or else the answer's generatedAt. From data of
-    /// another read that doesn't list it either, it was taken; the same read served again, while another app in
-    /// view is late or swept, says nothing new. Cleared as soon as data lists it again.
+    /// The read of its app in which data that would list the scooter walked to first didn't, under any id: the
+    /// newest of that app's reads in view (meta.readThrough), or else when its positions shown were seen
+    /// (meta.shownSince, the oldest), or else the answer's generatedAt. From data of a later read that doesn't list
+    /// it either, it was taken: when the app's positions shown were seen after it, every one of its feeds in view, as
+    /// each of Lime's groups, was read since. The same read served again, while another app in view is late or swept,
+    /// says nothing new, nor one of the app's other feeds read, or the view moving (Desk [373] S-1). Cleared as soon
+    /// as data lists it again.
     var missedRead: Date?
 
     init(target: ScooterWalkTarget, phase: ScooterWalkPhase, origin: ScooterWalkOrigin? = nil) {
