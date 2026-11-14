@@ -464,6 +464,13 @@ describe('feeds collected on demand', () => {
       const late = querySnapshot(snapshot([stalled]), query, 16, now, refreshing(stalled));
       expect(late.vehicles).toEqual([]);
       expect(late.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['north', 'south', 'gone', 'moved']);
+      // While its last collection still shows, as a Lime group collected every minute, its sweep under way is not
+      // shown: it ends within minutes (unlike a Bird area's, below).
+      const shown = { ...sweeping, observedAt: now - minutes(2) };
+      const ended = querySnapshot(snapshot([shown]), query, 16, now, refreshing(shown));
+      expect(ended.vehicles.map(item => item.vehicle_id)).toEqual(['north', 'south', 'gone', 'moved']);
+      expect(ended.lastSeen).toBeUndefined();
+      expect(ended.meta.generatedAt).toBe(new Date(now - minutes(2)).toISOString());
     });
 
     it('groups its last-seen scooters apart from the others', () => {
@@ -540,6 +547,55 @@ describe('feeds collected on demand', () => {
       // Late, its last collection having failed, it is named among the stale apps by its oldest scooter shown, as it was.
       const failing = querySnapshot(snapshot([{ ...swept, failed: true }]), view, 16, now + minutes(6));
       expect(failing.meta).toMatchObject({ staleProviders: { bird: at(now - minutes(1)) }, shownSince: first.meta.shownSince });
+    });
+
+    describe('swept again while the last sweep still shows', () => {
+      // The last sweep took 10 minutes and ended 8 minutes ago; the next began 30 seconds after it, as a watched town is
+      // swept again once its sweep outlasts five minutes, and has read the south of the view, which both read first.
+      const south = { ...view.bounds, north: lat };
+      const spot = (id: string, north: number): Vehicle => ({ ...scooter(0), vehicle_id: id, lat: lat + north });
+      const lastSweep = (vehicles: Vehicle[], at: Record<string, number>, sweep: NonNullable<FeedSnapshot['sweep']>) => ({
+        ...swept, observedAt: now - minutes(18), collectionMs: minutes(10), vehicles, reads: { lastAt: now - minutes(8), at }, sweep });
+      const where = (vehicles: Vehicle[] | undefined) => vehicles?.map(item => `${item.vehicle_id}@${(item.lat - lat).toFixed(4)}`).sort();
+
+      it('shows the sweep under way where it has swept and the last sweep elsewhere, each scooter once, under ids the map changed', () => {
+        // Under new ids: 'moved' was taken 400 m north within the part swept again, 'taken' is gone, and 'north' is found
+        // where it stood at the edge of a reply, outside the parts swept.
+        const austinAgain = lastSweep([spot('bird:moved', -0.005), spot('bird:taken', -0.006), spot('bird:north', 0.005)],
+          { 'bird:moved': now - minutes(17), 'bird:taken': now - minutes(16.5), 'bird:north': now - minutes(9) },
+          { startedAt: now - minutes(7.5), swept: [south], vehicles: [spot('bird:moved-2', -0.0014), spot('bird:north-2', 0.005)] });
+        const answer = querySnapshot(snapshot([austinAgain]), view, 16, now, { refreshing: new Set([austinAgain.id]) });
+        // Until 14 November 2026: only 'bird:north' live, and 'bird:moved' and 'bird:taken' faded where the last sweep read them.
+        expect(where(answer.vehicles)).toEqual(['bird:moved-2@-0.0014', 'bird:north@0.0050']);
+        expect(answer.lastSeen).toBeUndefined();
+        // The answer's time is the oldest position shown; Bird's read stays the last sweep's until the next ends (S2).
+        expect(answer.meta).toMatchObject({ generatedAt: at(now - minutes(9)), shownSince: { bird: at(now - minutes(8)) } });
+        expect(answer.meta.refreshing).toBeUndefined();
+        // A minute and six and a half minutes on, swept through the view: its scooters alone, as old as its start, and the
+        // same read of Bird, though the last sweep's last scooter would stand faded by then.
+        const further = { ...austinAgain, sweep: { ...austinAgain.sweep, swept: [view.bounds] } };
+        const later = [minutes(1), minutes(6.5)].map(on => querySnapshot(snapshot([further]), view, 16, now + on));
+        for (const answerOn of later) {
+          expect(where(answerOn.vehicles)).toEqual(['bird:moved-2@-0.0014', 'bird:north-2@0.0050']);
+          expect(answerOn.lastSeen).toBeUndefined();
+          expect(answerOn.meta).toMatchObject({ generatedAt: at(now - minutes(7.5)), shownSince: answer.meta.shownSince });
+        }
+        // Once the last sweep's last part is too old to show, the sweep under way shows alone, Bird read at its start.
+        const alone = querySnapshot(snapshot([further]), view, 16, now + minutes(7.25), { refreshing: new Set([further.id]) });
+        expect(where(alone.vehicles)).toEqual(['bird:moved-2@-0.0014', 'bird:north-2@0.0050']);
+        expect(alone.meta.shownSince).toEqual({ bird: at(now - minutes(7.5)) });
+      });
+
+      it('shows a scooter both sweeps name where the sweep under way found it, in the parts it has swept or not', () => {
+        // Bird's map mostly keeps its ids: 'a' was taken from the part swept again to beyond it, 'b' read again where it stood.
+        const kept = lastSweep([spot('bird:a', -0.005), spot('bird:b', 0.003)],
+          { 'bird:a': now - minutes(17), 'bird:b': now - minutes(9) },
+          { startedAt: now - minutes(7.5), swept: [south], vehicles: [spot('bird:a', 0.002), spot('bird:b', 0.0031)] });
+        const answer = querySnapshot(snapshot([kept]), view, 16, now);
+        expect(where(answer.vehicles)).toEqual(['bird:a@0.0020', 'bird:b@0.0031']);
+        expect(answer.lastSeen).toBeUndefined();
+        expect(answer.meta).toMatchObject({ generatedAt: at(now - minutes(7.5)), shownSince: { bird: at(now - minutes(8)) } });
+      });
     });
 
     it('showed none of them live once it was over 15 minutes old, as old as its start, until 10 November 2026', () => {

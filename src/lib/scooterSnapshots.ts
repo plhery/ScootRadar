@@ -140,9 +140,13 @@ const shows = (feed: FeedSnapshot, vehicle: Vehicle, now: number) => now - readA
  */
 export const showsPositions = (feed: FeedSnapshot, now: number) => now - (feed.reads?.lastAt ?? feed.observedAt) <= VEHICLE_MAX_AGE_MS;
 
-/** When the oldest of a feed's positions the map shows were read, of one that shows them. */
-const oldestShown = (feed: FeedSnapshot, now: number) => !feed.reads ? feed.observedAt
-  : feed.vehicles.reduce((oldest, vehicle) => shows(feed, vehicle, now) ? Math.min(oldest, readAt(feed, vehicle)) : oldest, feed.reads.lastAt);
+/**
+ * When the oldest of a feed's positions the map shows were read, of one that shows them: of one read over many minutes
+ * whose sweep under way shows beside them, of those the sweep has not read again, or else the sweep's, as old as its start.
+ */
+const oldestShown = (feed: FeedSnapshot, now: number, again?: SweptAgain) => !feed.reads ? feed.observedAt
+  : feed.vehicles.reduce((oldest, vehicle) => shows(feed, vehicle, now) && !again?.last(vehicle) ? Math.min(oldest, readAt(feed, vehicle)) : oldest,
+    again?.startedAt ?? feed.reads.lastAt);
 /**
  * The read of a feed whose positions the map shows: when its last collection was, of one read over many minutes when
  * its last part was. It moves only when the feed is read again, where its oldest position shown (oldestShown) moves
@@ -152,9 +156,38 @@ const oldestShown = (feed: FeedSnapshot, now: number) => !feed.reads ? feed.obse
  */
 const lastRead = (feed: FeedSnapshot) => feed.reads?.lastAt ?? feed.observedAt;
 
-/** The sweep under way that the map shows, of a feed whose last positions are too old to. */
+/**
+ * The sweep under way that the map shows, within 15 minutes of its start: of a feed read over many minutes, as a Bird
+ * area's, beside its last positions, each where the other has not read (sweptAgain); of another, once its last
+ * positions are too old to show, as its sweep ends within minutes. Until 14 November 2026 a Bird area's waited for that
+ * as well: a town swept again soon, as a watched one, showed the parts its last sweep read first, the view someone
+ * opened, faded where the sweep under way had read them again, and that sweep not at all (fresh-eyes review of
+ * 14 November 2026, cache finding 2).
+ */
 const shownSweep = (feed: FeedSnapshot, now: number) =>
-  !showsPositions(feed, now) && feed.sweep && now - feed.sweep.startedAt <= VEHICLE_MAX_AGE_MS ? feed.sweep : undefined;
+  (feed.reads || !showsPositions(feed, now)) && feed.sweep && now - feed.sweep.startedAt <= VEHICLE_MAX_AGE_MS ? feed.sweep : undefined;
+
+/**
+ * What a sweep under way shown beside its feed's last positions (shownSweep) has read again: the last sweep's scooters
+ * in the parts it has swept, or that it names elsewhere, as Bird's map keeps most ids, leave the map to its own. Of
+ * its own, those elsewhere, at the edges of its replies (a part swept is the square within a reply's circle), wait for
+ * their part, unless the last sweep names them: under an id the map changed, one would show beside itself.
+ */
+interface SweptAgain {
+  startedAt: number;
+  /** Whether a scooter of the last sweep's has been read again, and leaves the map to the sweep's. */
+  last(vehicle: Vehicle): boolean;
+  /** Whether a scooter of the sweep's shows. */
+  sweep(vehicle: Vehicle): boolean;
+}
+
+function sweptAgain(feed: FeedSnapshot, sweep: NonNullable<FeedSnapshot['sweep']>): SweptAgain {
+  const inSwept = (vehicle: Vehicle) => sweep.swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng));
+  const sweepNames = new Set(sweep.vehicles.map(vehicleKey)), lastNames = new Set(feed.vehicles.map(vehicleKey));
+  return { startedAt: sweep.startedAt,
+    last: vehicle => inSwept(vehicle) || sweepNames.has(vehicleKey(vehicle)),
+    sweep: vehicle => inSwept(vehicle) || lastNames.has(vehicleKey(vehicle)) };
+}
 
 /**
  * A feed whose collection takes longer than a request can wait for it (COLD_WAIT_MS in
@@ -667,10 +700,10 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const meta = healthFor(counted, now, undefined, options.refreshing);
   const showing = (feed: FeedSnapshot) => showsPositions(feed, now);
   // Collected again for this request, but quiet in its pause: it is not said to be on its way. Nor is a slow
-  // feed whose positions still show: its sweep shows nothing until it ends, and the next request at the
-  // usual pace finds it. Watched, it is collected again every minute, so said to be on its way, it kept a
-  // map left open on Zürich from 23:37 UTC on 31 October 2026 asking every 3 seconds for 14 hours,
-  // about 1,250 requests an hour, by Lime's, Bolt's, Dott's and Bird's rider maps there.
+  // feed whose positions still show: the next request at the usual pace finds its sweep ended, or a Bird
+  // area's under way beside them (shownSweep). Watched, it is collected again every minute, so said to be on
+  // its way, it kept a map left open on Zürich from 23:37 UTC on 31 October 2026 asking every 3 seconds for
+  // 14 hours, about 1,250 requests an hour, by Lime's, Bolt's, Dott's and Bird's rider maps there.
   const coming = relevant.filter(feed => !feed.skipped && options.refreshing?.has(feed.id) && !quietInPause(feed, now, showing) &&
     !(collectsSlowly(feed) && showsPositions(feed, now) && !options.awaitingView?.has(feed.id)));
   const refreshing = coming.length > 0;
@@ -697,6 +730,11 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const gone = (feed: FeedSnapshot, at: number, vehicle: Vehicle) => options.listedAreas?.some(area =>
     area.feeds.has(feed.id) && at < area.at && haversineM(area.lat, area.lng, vehicle.lat, vehicle.lng) <= area.radiusM) === true;
   const unique = new Map<string, Vehicle>();
+  // Of each feed read over many minutes whose sweep under way shows beside its last positions, what the sweep has read again.
+  const beside = new Map(relevant.flatMap(feed => {
+    const sweep = !feed.skipped && showsPositions(feed, now) ? shownSweep(feed, now) : undefined;
+    return sweep ? [[feed, sweptAgain(feed, sweep)] as const] : [];
+  }));
   // Only viewport-observed identities need reconciliation with the full feeds. An observation
   // outside the box can still confirm that its old marker in the box has moved away.
   const newest = new Map<string, number>();
@@ -707,17 +745,20 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
       newest.set(key, Math.max(feed.observedAt, newest.get(key) ?? -Infinity));
     }
   }
+  const later = (vehicle: Vehicle, at: number) => {
+    const key = vehicleKey(vehicle);
+    if (newest.has(key)) newest.set(key, Math.max(at, newest.get(key)!));
+  };
   if (newest.size) for (const feed of relevant) {
     if (feed.skipped) continue;
-    const sweep = shownSweep(feed, now);
-    if (!showsPositions(feed, now) && !sweep) continue;
-    for (const vehicle of sweep?.vehicles ?? feed.vehicles) {
-      const key = vehicleKey(vehicle);
-      if (newest.has(key)) newest.set(key, Math.max(sweep?.startedAt ?? readAt(feed, vehicle), newest.get(key)!));
-    }
+    const sweep = shownSweep(feed, now), again = beside.get(feed);
+    if (showsPositions(feed, now)) for (const vehicle of feed.vehicles) if (!again?.last(vehicle)) later(vehicle, readAt(feed, vehicle));
+    if (sweep) for (const vehicle of sweep.vehicles) if (again?.sweep(vehicle) !== false) later(vehicle, sweep.startedAt);
   }
   // When each feed's positions shown were seen: its last collection's, the oldest shown of one read over many
-  // minutes, or its sweep's under way. Per app, the oldest of them, and the oldest of its feeds' reads (lastRead).
+  // minutes (beside its sweep under way, of those the sweep has not read again), or its sweep's under way. Per app,
+  // the oldest of them, and the oldest of its feeds' reads (lastRead): beside a sweep under way, still its last
+  // sweep's, which moves when the next ends (S2).
   const shownSince: number[] = [];
   const oldestShownByProvider = new Map<string, number>();
   const readByProvider = new Map<string, number>();
@@ -725,15 +766,17 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     times.set(provider, Math.min(times.get(provider) ?? Infinity, at));
   for (const feed of relevant) {
     if (feed.skipped) continue;
-    const sweep = shownSweep(feed, now);
-    if (showsPositions(feed, now)) shownSince.push(oldestShown(feed, now));
+    const sweep = shownSweep(feed, now), again = beside.get(feed);
+    const last = showsPositions(feed, now);
+    if (last) shownSince.push(oldestShown(feed, now, again));
     else if (sweep) shownSince.push(sweep.startedAt);
     else continue;
     earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
-    earliest(readByProvider, feed.provider, sweep?.startedAt ?? lastRead(feed));
-    const at = (vehicle: Vehicle) => sweep?.startedAt ?? readAt(feed, vehicle);
-    pick(unique, sweep?.vehicles ?? feed.vehicles, (vehicle, key) => (!sweep && !shows(feed, vehicle, now)) ||
-      at(vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, at(vehicle), vehicle));
+    earliest(readByProvider, feed.provider, last ? lastRead(feed) : sweep!.startedAt);
+    if (last) pick(unique, feed.vehicles, (vehicle, key) => !shows(feed, vehicle, now) || again?.last(vehicle) === true ||
+      readAt(feed, vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, readAt(feed, vehicle), vehicle));
+    if (sweep) pick(unique, sweep.vehicles, (vehicle, key) => again?.sweep(vehicle) === false ||
+      sweep.startedAt < (newest.get(key) ?? -Infinity) || gone(feed, sweep.startedAt, vehicle));
   }
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
@@ -749,13 +792,15 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     const firstParts = !feed.skipped && feed.reads !== undefined && showsPositions(feed, now);
     const maxAgeMs = options.lastSeenMaxAgeMs?.(feed.id);
     if (!(firstParts || showsLastSeen(feed, now, fading, maxAgeMs)) || quietInPause(feed, now, showing)) continue;
-    const swept = shownSweep(feed, now)?.swept ?? [];
+    // Where the sweep under way has looked; beside the last positions, what it has read again (sweptAgain).
+    const swept = shownSweep(feed, now)?.swept ?? [], again = beside.get(feed);
+    const readAgain = (vehicle: Vehicle) => again ? again.last(vehicle) : swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng));
     const before = lastSeen.size;
     let seenAt = Infinity;
     pick(lastSeen, feed.vehicles, (vehicle, key) => {
       const at = readAt(feed, vehicle);
       if (now - at <= VEHICLE_MAX_AGE_MS || now - at > (maxAgeMs ?? LAST_SEEN_MAX_AGE_MS) || unique.has(key) || newest.has(key) ||
-        swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)) || gone(feed, at, vehicle)) return true;
+        readAgain(vehicle) || gone(feed, at, vehicle)) return true;
       seenAt = Math.min(seenAt, at);
       return false;
     });

@@ -287,8 +287,11 @@ scooters show as soon as it answers; 3000 while only slow feeds are. The web app
 asks again then, as often as it is told, at least 200 ms apart; the iOS app from
 the build after 26 October 2026. Older apps ask once more 3 seconds later, or every 3
 seconds while scooters stand faded, and otherwise after their usual 10 seconds.
-A slow feed whose positions still show is not counted as on its way: its sweep shows
-nothing until it ends, and the next request at the usual minute finds it. Counted, a
+A slow feed whose positions still show is not counted as on its way: the next request
+at the usual minute finds its sweep ended, or a Bird area's (Spin's among them) under
+way, which shows beside the last sweep in the parts it has swept
+([bird-app-map.md](bird-app-map.md)); another feed's sweep, of minutes, shows nothing
+until it ends. Counted, a
 watched one, collected again every minute, kept a map open on Zürich from 23:37 UTC
 on 31 October 2026 asking every 3 seconds for 14 hours, about 1,250 requests an hour
 where a viewer usually sends one a minute, until it stopped at 14:15 UTC.
