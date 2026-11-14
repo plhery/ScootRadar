@@ -802,15 +802,6 @@ function kotlinCatalogData() {
       ...(zone.maxSpeedKph === undefined ? {} : { maxSpeedKph: zone.maxSpeedKph }),
       ...(zone.ring ? { ring: zone.ring.flat() } : { lines: zone.lines.map(line => line.flat()) }),
     }))),
-    // The zones were checked as the Swift catalog was written.
-    cityZones: list(cityZones.flatMap(city => city.zones.map(zone => ({
-      id: zone.id,
-      authority: city.authority,
-      timeZone: city.timeZone,
-      kind: zone.kind,
-      source: city.source.url,
-      ring: zone.ring.flat(),
-    })))),
     // The cities whose zones the app downloads, as the iPhone's CityZoneDownloads.builtIn has them, and the
     // cities whose zones are built in (builtInCities): docs/city-zone-downloads.md.
     zoneDownloads: list(downloadCityZones.map(city => ({
@@ -825,6 +816,31 @@ function kotlinCatalogData() {
     countries: JSON.stringify(kotlinCountries(countries), null, 1),
   };
   const data = `{\n${Object.entries(sections).map(([key, value]) => `${JSON.stringify(key)}: ${value}`).join(',\n')}\n}\n`;
+  JSON.parse(data);
+  return data;
+}
+
+// The cities' zones built in, apart from the rest of the catalog: nine tenths of its bytes, which only the map's zones
+// need, from zoom 14 in. The app reads them after the rest, and its map opens without waiting for them (CityZoneData).
+// Their rings are in whole millionths of a degree, which the app reads without parsing a decimal number for each of
+// the 600 000 or so: a coordinate has six decimals at most, and one with a seventh stops the build rather than be
+// rounded. The zones were checked as the Swift catalog was written.
+function kotlinCityZonesData() {
+  const microdegrees = value => {
+    const micro = Math.round(value * 1e6);
+    if (micro / 1e6 !== value) throw new Error(`A city zone's coordinate ${value} has more than six decimals`);
+    return micro;
+  };
+  const zones = cityZones.flatMap(city => city.zones.map(zone => ({
+    id: zone.id,
+    authority: city.authority,
+    timeZone: city.timeZone,
+    kind: zone.kind,
+    source: city.source.url,
+    ring: zone.ring.flat().map(microdegrees),
+  })));
+  // One zone a line, to read when a test fails.
+  const data = zones.length ? `[\n${zones.map(zone => JSON.stringify(zone)).join(',\n')}\n]\n` : '[]\n';
   JSON.parse(data);
   return data;
 }
@@ -852,6 +868,7 @@ if (androidDirectory) {
     [`kotlin/${generated}/ProviderCatalog.kt`, kotlinCatalog()],
     [`kotlin/${generated}/RentalLinkPolicies.kt`, kotlinRentalLinks()],
     [`resources/${generated}/catalog.json`, kotlinCatalogData()],
+    [`resources/${generated}/city-zones.json`, kotlinCityZonesData()],
   ]) {
     mkdirSync(dirname(resolve(androidDirectory, path)), { recursive: true });
     writeFileSync(resolve(androidDirectory, path), contents);

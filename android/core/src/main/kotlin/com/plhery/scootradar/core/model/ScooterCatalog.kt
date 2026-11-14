@@ -17,6 +17,8 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 // The catalog the iPhone app has in ProviderCatalog.generated.swift, read from the generated
 // catalog.json (CatalogData) the first time it is used, as Swift's static lets are.
@@ -281,6 +283,15 @@ interface ScooterCatalog {
     /** The cities' own rules for streets, and the zones they set for scooters, as the map shows them. */
     val ruleZones: List<CityRuleZone>
 
+    /**
+     * [ruleZones] if they have been read, and null while they are being read: the generated catalog reads the cities'
+     * zones built in apart from the rest, off the main thread, and the map draws them once they have been.
+     */
+    val ruleZonesIfRead: List<CityRuleZone>? get() = ruleZones
+
+    /** [ruleZones], waited for away from the caller's thread. */
+    suspend fun readRuleZones(): List<CityRuleZone> = ruleZones
+
     /** The cities whose zones the app downloads, until an index of them has come (CityZoneDownloads). */
     val zoneDownloads: List<CityZoneDownload>
 
@@ -301,6 +312,7 @@ interface ScooterCatalog {
         override val cities: List<ScooterCity> get() = ScooterCityCatalog.cities
         override val curfews: List<RentalCurfew> get() = RentalCurfew.all
         override val ruleZones: List<CityRuleZone> get() = CityRuleZone.onMap
+        override val ruleZonesIfRead: List<CityRuleZone>? get() = if (CityZoneData.isRead) CityRuleZone.onMap else null
         override val zoneDownloads: List<CityZoneDownload> get() = CityZoneDownloads.builtIn
         override val zoneCities: Set<String> get() = CityZoneDownloads.builtInCities
 
@@ -308,9 +320,15 @@ interface ScooterCatalog {
 
         override fun contains(point: GeoPoint): Boolean = ScooterProviderCoverage.contains(point.latitude, point.longitude)
 
-        /** Reads the catalog now, if nothing has yet, as the app does off the main thread at launch. */
+        override suspend fun readRuleZones(): List<CityRuleZone> = withContext(Dispatchers.IO) { CityRuleZone.onMap }
+
+        /**
+         * Reads the catalog now, if nothing has yet, as the app does off the main thread at launch: the cities and the
+         * providers' areas, which the map opens on, then the cities' zones built in.
+         */
         fun load() {
             CatalogData.value
+            CityZoneData.value
         }
     }
 

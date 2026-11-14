@@ -3,6 +3,7 @@ package com.plhery.scootradar.core.model
 import com.plhery.scootradar.core.generated.ScooterProvider
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.decodeFromStream
@@ -17,18 +18,14 @@ internal class CatalogData(
     val countryCount: Int,
     val curfews: List<RentalCurfew>,
     val ruleZones: List<CityRuleZone>,
-    val cityZones: List<CityRuleZone>,
     /** The cities whose zones the app downloads, as data/city-zones.json had them when the app was built. */
     val zoneDownloads: List<CityZoneDownload>,
-    /** The cities whose zones are built into the catalog, [cityZones]. */
+    /** The cities whose zones are built into the app, [CityZoneData.cityZones]. */
     val zoneCities: Set<String>,
     val anchors: Map<String, GeoPoint>,
     val credits: List<Pair<String, String>>,
     val regionTotals: Map<String, Map<String, ScooterRegion>>,
 ) {
-    /** Seoul's streets and the cities' zones, put together once (CityRuleZone.onMap). */
-    val onMap: List<CityRuleZone> = ruleZones + cityZones
-
     companion object {
         private const val RESOURCE = "/com/plhery/scootradar/core/generated/catalog.json"
 
@@ -93,17 +90,6 @@ internal class CatalogData(
                         lines = zone.lines.map(::points),
                     )
                 },
-                cityZones = file.cityZones.map { zone ->
-                    val kind = checkNotNull(ScooterZoneKind.fromRawValue(zone.kind)) { "Unknown zone kind ${zone.kind}" }
-                    CityRuleZone(
-                        id = zone.id,
-                        authority = zone.authority,
-                        timeZone = zone.timeZone,
-                        kind = kind,
-                        source = zone.source,
-                        ring = points(zone.ring),
-                    )
-                },
                 zoneDownloads = file.zoneDownloads.map { city ->
                     CityZoneDownload(
                         id = city.id,
@@ -142,7 +128,6 @@ internal class CatalogData(
         val cities: List<CityEntry>,
         val curfews: List<CurfewEntry>,
         val ruleZones: List<RuleZoneEntry>,
-        val cityZones: List<CityZoneEntry>,
         val zoneDownloads: List<ZoneDownloadEntry>,
         val zoneCities: List<String>,
         val countries: CountriesEntry,
@@ -198,17 +183,6 @@ internal class CatalogData(
     @Serializable
     private class HoursEntry(val fromMinute: Int, val untilMinute: Int)
 
-    /** One of a city's zones, its ring as latitude, longitude, latitude, longitude… */
-    @Serializable
-    private class CityZoneEntry(
-        val id: String,
-        val authority: String,
-        val timeZone: String,
-        val kind: String,
-        val source: String,
-        val ring: DoubleArray,
-    )
-
     /** A city whose zones the app downloads, its bounds south, west, north, east. */
     @Serializable
     private class ZoneDownloadEntry(
@@ -236,5 +210,65 @@ internal class CatalogData(
         val names: Map<String, String> = emptyMap(),
         val latitude: Double,
         val longitude: Double,
+    )
+}
+
+/**
+ * The cities' zones built into the app, read from the city-zones.json scripts/generate-provider-catalog.mjs writes beside
+ * catalog.json: nine tenths of the catalog's bytes, which only the map's zones need, from zoom 14 in. The app reads them
+ * off the main thread at launch, after the rest of the catalog, and the map opens without waiting for them
+ * (ScooterCatalog.ruleZonesIfRead): reading both kept the map's activity waiting about 150 ms (STATE.md, 14 November).
+ */
+internal class CityZoneData private constructor(val cityZones: List<CityRuleZone>, ruleZones: List<CityRuleZone>) {
+    /** Seoul's streets and the cities' zones, put together once (CityRuleZone.onMap). */
+    val onMap: List<CityRuleZone> = ruleZones + cityZones
+
+    companion object {
+        private const val RESOURCE = "/com/plhery/scootradar/core/generated/city-zones.json"
+
+        private val read = lazy { CityZoneData(load(), CatalogData.value.ruleZones) }
+
+        /** Read the first time it is used, after the rest of the catalog. */
+        val value: CityZoneData by read
+
+        /** Whether they have been read, which asking doesn't wait for. */
+        val isRead: Boolean get() = read.isInitialized()
+
+        @OptIn(ExperimentalSerializationApi::class)
+        private fun load(): List<CityRuleZone> {
+            val stream = checkNotNull(CityZoneData::class.java.getResourceAsStream(RESOURCE)) { "$RESOURCE is missing" }
+            val zones = stream.use { Json.decodeFromStream(ListSerializer(CityZoneEntry.serializer()), it) }
+            return zones.map { zone ->
+                val kind = checkNotNull(ScooterZoneKind.fromRawValue(zone.kind)) { "Unknown zone kind ${zone.kind}" }
+                CityRuleZone(
+                    id = zone.id,
+                    authority = zone.authority,
+                    timeZone = zone.timeZone,
+                    kind = kind,
+                    source = zone.source,
+                    ring = points(zone.ring),
+                )
+            }
+        }
+
+        /**
+         * Millionths of a degree, latitude, longitude, latitude, longitude…: each the double a coordinate of six decimals
+         * reads as, as the division of two whole numbers a double holds exactly is rounded as reading the decimal is.
+         */
+        private fun points(microdegrees: IntArray): List<GeoPoint> {
+            check(microdegrees.size % 2 == 0) { "A ring needs pairs of coordinates" }
+            return List(microdegrees.size / 2) { GeoPoint(microdegrees[2 * it] / 1e6, microdegrees[2 * it + 1] / 1e6) }
+        }
+    }
+
+    /** One of a city's zones, its ring in whole millionths of a degree, latitude, longitude, latitude, longitude… */
+    @Serializable
+    private class CityZoneEntry(
+        val id: String,
+        val authority: String,
+        val timeZone: String,
+        val kind: String,
+        val source: String,
+        val ring: IntArray,
     )
 }

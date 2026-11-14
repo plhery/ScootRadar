@@ -560,6 +560,12 @@ class ScooterMapController(
     internal var ruleZoneArea: GeoBounds? = null
 
     /**
+     * The catalog's cities' zones being read away from the map's thread, which the map's first frame doesn't wait for:
+     * they are drawn once read.
+     */
+    internal var ruleZonesTask: Job? = null
+
+    /**
      * The zones of the cities the app downloads rather than has built in (docs/city-zone-downloads.md): asked for over
      * the same area as the cities' zones built in, and drawn with them once here.
      */

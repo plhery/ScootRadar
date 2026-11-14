@@ -168,6 +168,15 @@ internal fun ScooterMapController.askAgainForFailedZones() {
     requestZones(answer.area, after = Duration.ZERO, retries = ScooterMapController.zonePendingRetries)
 }
 
+/** Reads the catalog's cities' zones away from the map's thread, once, and draws the map's zones again with them. */
+private fun ScooterMapController.readRuleZones() {
+    if (ruleZonesTask != null) return
+    ruleZonesTask = scope.launch {
+        catalog.readRuleZones()
+        rebuildMapZones()
+    }
+}
+
 private fun ScooterMapController.cancelZoneRequest() {
     zoneTask?.cancel()
     zoneTask = null
@@ -204,7 +213,9 @@ internal fun ScooterMapController.rebuildMapZones() {
         cityZoneDownloads.request(over = area)
         val downloaded = cityZoneDownloads.shown(over = area)
         val now = clock()
-        rules = CityRuleZone.shown(over = area, zoom = viewportZoom.value, at = now, among = catalog.ruleZones) +
+        // The cities' zones built in, once read: until then the map's thread doesn't wait for them.
+        val builtIn = catalog.ruleZonesIfRead ?: emptyList<CityRuleZone>().also { readRuleZones() }
+        rules = CityRuleZone.shown(over = area, zoom = viewportZoom.value, at = now, among = builtIn) +
             CityRuleZone.shown(over = area, zoom = viewportZoom.value, at = now, among = downloaded.zones)
         notices = downloaded.notices.filter { it.city.bounds.intersects(view) }
     }

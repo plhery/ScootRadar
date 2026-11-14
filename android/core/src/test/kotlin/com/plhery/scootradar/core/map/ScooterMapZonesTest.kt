@@ -649,6 +649,41 @@ class ScooterMapZonesTest {
         assertEquals(revision + 1, model.mapZonesRevision.value)
     }
 
+    /**
+     * Android's own (STATE.md, 14 November): the map's thread doesn't wait for the cities' zones built in, which the app
+     * reads apart from the rest of the catalog, off the main thread, as it opens; they are drawn once read, the view
+     * unmoved. The controller read them as the map's first view came, and the map's activity waited about 150 ms for them.
+     */
+    @Test
+    fun theCitiesZonesBuiltInAreDrawnOnceReadWithoutTheMapsThreadWaitingForThem() = runTest {
+        val station = CityRuleZone(
+            id = "porto-parking-station", authority = "Porto", timeZone = "Europe/Lisbon", kind = ScooterZoneKind.Parking,
+            source = "https://example.com/porto",
+            ring = listOf(GeoPoint(41.147, -8.611), GeoPoint(41.14705, -8.611), GeoPoint(41.14705, -8.61095)),
+        )
+        val listed = ScooterCatalog.Listed(ruleZones = listOf(station))
+        val read = CompletableDeferred<Unit>()
+        val catalog = object : ScooterCatalog by listed {
+            override val ruleZones: List<CityRuleZone>
+                get() = listed.ruleZones.also { check(read.isCompleted) { "The map's thread waited for the cities' zones" } }
+            override val ruleZonesIfRead: List<CityRuleZone>? get() = if (read.isCompleted) listed.ruleZones else null
+            override suspend fun readRuleZones(): List<CityRuleZone> = read.await().let { listed.ruleZones }
+        }
+        val model = makeController(ZoneStubAPI(), catalog = catalog)
+        model.setShowsZones(false)
+        model.updateViewport(porto, zoom = 16)
+        runCurrent()
+        assertTrue(model.mapZones.value.isEmpty())
+        assertTrue(model.mapRuleZones.value.isEmpty())
+        val revision = model.mapZonesRevision.value
+
+        read.complete(Unit)
+        runCurrent()
+        assertEquals(listOf("rule:porto-parking-station"), model.mapZones.value.map { it.id })
+        assertEquals(listOf("porto-parking-station"), model.mapRuleZones.value.map { it.rule.id })
+        assertEquals(revision + 1, model.mapZonesRevision.value)
+    }
+
     @Test
     fun aCitysZonesArePickedFromZoom14AsTheMapsLevelRoundsUpTo() = runTest {
         val model = makeController(ZoneStubAPI())

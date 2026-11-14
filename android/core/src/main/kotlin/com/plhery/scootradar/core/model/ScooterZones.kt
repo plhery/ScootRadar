@@ -429,10 +429,10 @@ data class CityRuleZone private constructor(
          * The zones cities set for shared scooters, as src/lib/ruleZones.ts reads data/city-zones.json: where to park,
          * where not to, where to ride slowly and where not to ride, each one ring.
          */
-        val cityZones: List<CityRuleZone> get() = CatalogData.value.cityZones
+        val cityZones: List<CityRuleZone> get() = CityZoneData.value.cityZones
 
         /** The streets and areas, and the cities' zones, put together once, as the map shows them. */
-        val onMap: List<CityRuleZone> get() = CatalogData.value.onMap
+        val onMap: List<CityRuleZone> get() = CityZoneData.value.onMap
 
         /** How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14. */
         const val bandWidthMeters = 14.0

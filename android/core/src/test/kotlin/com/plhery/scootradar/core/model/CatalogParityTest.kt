@@ -184,7 +184,7 @@ class CatalogParityTest {
     @Test
     fun cityZonesAreTheIPhoneOnes() {
         // The iPhone app reads its cities' zones from CityZones.generated.json, which the generator writes
-        // beside its catalog: each city as a downloaded city's file is, its zones with who sets them, its
+        // beside its catalog, as it writes city-zones.json beside catalog.json here: each city as a downloaded city's file is, its zones with who sets them, its
         // time zone and its source. The same zones in the same order, ring for ring.
         val file = File(System.getProperty("scootradar.repo"), "ios/ScootRadar/Models/CityZones.generated.json")
         val iPhone = Json.parseToJsonElement(file.readText()).jsonObject.getValue("cities").jsonArray.flatMap { entry ->
@@ -200,7 +200,7 @@ class CatalogParityTest {
                 )
             }
         }
-        val android = data.cityZones.map { zone ->
+        val android = CityZoneData.value.cityZones.map { zone ->
             listOf(
                 zone.id, zone.authority, zone.timeZone, zone.kind.rawValue, zone.source,
                 zone.polygons.single().single().flatMap { listOf(it.latitude, it.longitude) },
@@ -210,6 +210,23 @@ class CatalogParityTest {
         android.zip(iPhone).forEach { (ours, theirs) -> assertEquals(ours[0].toString(), ours, theirs) }
         assertTrue("The Swift catalog still holds zone rings", swift.none { it.contains("ZoneRings: [[Double]]") })
         assertTrue("The iPhone reads its zones from elsewhere", "    static let cityZones: [CityRuleZone] = CityZoneFile.builtIn()" in swift)
+    }
+
+    /**
+     * Android's own (STATE.md, 14 November): city-zones.json has the zones' rings in whole millionths of a degree, which
+     * the app reads without parsing a decimal number for each of the 600 000 or so coordinates, as it opens; the
+     * decimals cost the launch a string each and kept the collector busy as the map's first frame was drawn. They read
+     * as the iPhone's doubles (cityZonesAreTheIPhoneOnes).
+     */
+    @Test
+    fun cityZonesAreWrittenInWholeMillionthsOfADegree() {
+        val resource = "/com/plhery/scootradar/core/generated/city-zones.json"
+        val text = checkNotNull(CityZoneData::class.java.getResourceAsStream(resource)) { "$resource is missing" }.use { it.readBytes().decodeToString() }
+        val rings = Json.parseToJsonElement(text).jsonArray.map { it.jsonObject.getValue("ring").jsonArray }
+        assertEquals(CityZoneData.value.cityZones.size, rings.size)
+        for (number in rings.flatten()) {
+            assertTrue(number.toString(), number.jsonPrimitive.content.trimStart('-').all { it.isDigit() })
+        }
     }
 
     @Test
@@ -235,7 +252,7 @@ class CatalogParityTest {
             swift.single { it.startsWith("    static let builtInCities: Set<String> = ") },
             "    static let builtInCities: Set<String> = [${data.zoneCities.joinToString(", ") { string(it) }}]",
         )
-        assertEquals(data.cityZones.map { it.id.substringBefore('-') }.toSet(), data.zoneCities)
+        assertEquals(CityZoneData.value.cityZones.map { it.id.substringBefore('-') }.toSet(), data.zoneCities)
         assertTrue(data.zoneDownloads.none { it.id in data.zoneCities })
     }
 
