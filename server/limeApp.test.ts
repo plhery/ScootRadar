@@ -565,6 +565,28 @@ describe('complete Lime scooter maps', () => {
     expect(reports[0]).toEqual({ found: [`lime_cz_test:${first.south}:${first.west}`], swept: [first] });
     expect(result.vehicles).toHaveLength(api.pins.mock.calls.length);
   });
+  it('reads the finished view where people look first on a sweep it has planned, and the capped view over it after', async () => {
+    const api = { pins: vi.fn(async (b: typeof system.bounds) => b.north - b.south === .01
+      ? map(...Array.from({ length: 200 }, (_, i) => pin(String(i))))
+      : map(pin(`${b.south}:${b.west}`, (b.south + b.north) / 2, (b.west + b.east) / 2))) };
+    const collector = new LimeMapCollector(api);
+    // The first sweep finds the town capped and reads its four quarters.
+    await collector.collect(system);
+    expect(api.pins).toHaveBeenCalledTimes(5);
+    api.pins.mockClear();
+    const focus = { south: .006, west: .006, north: .007, east: .007 };
+    const reports: { calls: number; swept: typeof focus[] }[] = [];
+    const result = await withinCollection({ urgent: () => true, focus: () => focus,
+      progress: (_found, swept) => { reports.push({ calls: api.pins.mock.calls.length, swept }); } },
+    () => collector.collect(system));
+    const quarter = { south: .005, north: .01, west: .005, east: .01 };
+    expect(api.pins.mock.calls[0][0]).toEqual(quarter);
+    expect(reports[0]).toEqual({ calls: 1, swept: [quarter] });
+    // The capped view is still read, for the pins a narrower view leaves out.
+    expect(api.pins.mock.calls.map(([b]) => b.north - b.south)).toContain(.01);
+    expect(api.pins).toHaveBeenCalledTimes(5);
+    expect(result.vehicles).toHaveLength(204);
+  });
   it('reads a registered market\'s own polygons by its region and town', async () => {
     const api = { pins: vi.fn(async () => map()) };
     const registered = { ...system, limeAppRegion: 'E7CO5RS5CDCVW', city: 'Deva', limeServiceAreas: undefined,

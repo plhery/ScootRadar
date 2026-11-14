@@ -334,7 +334,12 @@ export class LimeMapCollector {
         progress.done(cell.bounds);
       }
     }
-    this.plans.set(system.id, leaves);
+    // The capped views are read again after the views under them, which the map shows: a sweep that starts
+    // where people look reads the finished view there first, not the capped one over it, which has nothing to
+    // show and took a turn more for each level. Lime's turns go to the views someone looks at in the order they
+    // ask, so each of those calls waited behind every other watched view's: until 14 November 2026 a town's
+    // dense middle, capped twice, showed its first scooters three calls in.
+    this.plans.set(system.id, [...leaves.filter(cell => !cell.probe), ...leaves.filter(cell => cell.probe)]);
     return { observedAt: started, stale: false, vehicles: [...vehicles.values()].map(published) };
   }
 }

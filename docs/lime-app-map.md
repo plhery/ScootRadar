@@ -40,7 +40,10 @@ request and time limits fail the collection if completeness cannot be
 established. Parent observations are retained and those parent views are
 queried again on warm refreshes: a live Brisbane child view omitted a valid
 scooter seen in its parent, despite returning no pins. Discarding the parent
-would therefore lose a known available scooter. Nearby pins outside the
+would therefore lose a known available scooter. Since 14 November 2026 a
+warm refresh reads them after the views under them: a sweep starting where
+someone looks reads the finished view there first, so a dense middle capped
+twice shows its first scooters one call in, not three. Nearby pins outside the
 owned cell still count toward the cap;
 only positions inside that cell and a reviewed service polygon are published.
 The source's selection behaviour was checked against a conservative complete
