@@ -975,9 +975,9 @@ private actor CancelledAPI: ScooterAPIClient {
 }
 
 
-/// Holds a request until the test releases it, optionally with a failure.
+/// Holds a request until the test releases it, optionally with a failure. Answers its response, which a test may change.
 private actor HeldScooterAPI: ScooterAPIClient {
-    private let response: ScooterResponse
+    private var response: ScooterResponse
     private var calls = 0
     private var holdsNextRequest = false
     private var held: CheckedContinuation<Void, Never>?
@@ -990,6 +990,10 @@ private actor HeldScooterAPI: ScooterAPIClient {
     var isHolding: Bool { held != nil }
 
     func callCount() -> Int { calls }
+
+    func setResponse(_ response: ScooterResponse) {
+        self.response = response
+    }
 
     func holdNextRequest() {
         holdsNextRequest = true
@@ -2612,6 +2616,52 @@ extension ScooterMapModelTests {
         if case .outsideCoverage = model.dock { XCTFail("Faded scooters on screen are not outside coverage") }
     }
 
+    /// A range chosen where the server groups the scooters: the groups are asked for again, filtered there. Until they
+    /// come, the map keeps those it had and every count with them, not the scooters standing alone: Zürich's overview
+    /// said "Show 1 scooter" for a second or two (Android 1e8ebe2c). Reset asks again too.
+    func testARangeKeepsTheGroupsAndTheirCountsUntilTheFilteredOnesCome() async throws {
+        let lone = scooter(id: "lone", provider: "lime", battery: nil, rangeMeters: 20_000)
+        func grouped(_ count: Int) -> ScooterResponse {
+            ScooterResponse(
+                vehicles: [lone],
+                clusters: [ScooterCluster(id: "z", latitude: 47.377, longitude: 8.542, count: count, providers: ["lime": count])],
+                meta: ScooterResponseMetadata(partial: false, failedSources: [], mode: "clusters", zoom: 13)
+            )
+        }
+        let api = HeldScooterAPI(response: grouped(120))
+        let model = makeModel(api: api)
+        model.updateViewport(zurichRegion, zoom: 13)
+        let loaded = await waitUntil { await api.callCount() == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        XCTAssertEqual(model.visibleCount, 121)
+
+        await api.holdNextRequest()
+        await api.setResponse(grouped(80))
+        model.setMinimumRange(5_000)
+        let held = await waitUntil { await api.isHolding }
+        XCTAssertTrue(held)
+        XCTAssertEqual(model.visibleCount, 121)
+        XCTAssertEqual(model.showResultsTitle, ScooterFiltering.showResultsTitle(count: 121))
+        XCTAssertEqual(model.dockChips.first { $0.provider == .lime }?.count, 121)
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.count, 121)
+
+        await api.release()
+        let filtered = await waitUntil { !model.isLoading && model.visibleCount == 81 }
+        XCTAssertTrue(filtered)
+        XCTAssertEqual(model.showResultsTitle, ScooterFiltering.showResultsTitle(count: 81))
+
+        await api.holdNextRequest()
+        await api.setResponse(grouped(120))
+        model.resetFilters()
+        let heldAgain = await waitUntil { await api.isHolding }
+        XCTAssertTrue(heldAgain)
+        XCTAssertEqual(model.visibleCount, 81)
+        await api.release()
+        let reset = await waitUntil { !model.isLoading && model.visibleCount == 121 }
+        XCTAssertTrue(reset)
+    }
+
     func testGroupsLastSeenKeepTheProvidersShownAndGoWithTheGroupsWhenTheMinimumChanges() async throws {
         let api = StubScooterAPI(response: ScooterResponse(
             vehicles: [],
@@ -2635,10 +2685,11 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.mapLastSeenClusters.map(\.providers), [["lime": 5]])
         XCTAssertEqual(model.visibleLastSeenCount, 5)
 
-        // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again.
+        // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again,
+        // and the faded groups stay as they were until the new ones come.
         model.setMinimumRange(5_000)
-        XCTAssertTrue(model.mapLastSeenClusters.isEmpty)
-        XCTAssertEqual(model.visibleLastSeenCount, 0)
+        XCTAssertEqual(model.mapLastSeenClusters.map(\.providers), [["lime": 5]])
+        XCTAssertEqual(model.visibleLastSeenCount, 5)
         let asked = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
         XCTAssertTrue(asked)
         let snapshot = await api.snapshot()

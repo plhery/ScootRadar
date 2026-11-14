@@ -1409,11 +1409,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
-    /// The groups the server counted were counted with the minimums of before: they are asked for again.
+    /// The groups the server counted were counted with the minimums of before: they are asked for again. They stay
+    /// on the map until the new ones come, as any answer stays until the next, and every count with them: until
+    /// 14 November 2026 they went at once, and for a second or two the count, the chips, the dock and "Show n
+    /// scooters" were those of the scooters standing alone, "Show 1 scooter" over Zürich (Android 1e8ebe2c). Nothing
+    /// reads them as the new minimum's meanwhile: the request takes its minimum when it is sent, an older answer is
+    /// dropped by its request id, and `queryCovers` tells the loaded minimum from the chosen one.
     private func refetchFilteredClusters() {
         guard ScooterClusteringPolicy.shouldCluster(at: viewportZoom) else { return }
-        clusters = []
-        lastSeenClusters = []
         scheduleFetch(for: viewport.expanded(by: 0.25), zoom: viewportZoom, debounce: true)
     }
 
