@@ -29,8 +29,14 @@ export interface RydeScan {
  * bound its cost and the time only stops one that outlasts any fair share of them. On 4 November 2026
  * the worker answered about nine reads a minute; central Turku's group got one every 26 seconds or so,
  * and had made 24 of the 34 or so reads it needed when its ten minutes ran out (SCOOTRADAR-CACHE-66).
+ * A saturated cell is quartered up to six times, to circles of about 12 m on Linköping's 1 km cells.
+ * With three, to 97 m, the racks by Linköping's station failed every scan while they held more than
+ * about 120 scooters (150 to 215 at weekends): one or two of their 97 m reads still came back with
+ * Ryde's 100, and group 025 expired from 14 November 2026 at 01:12 UTC, with Uppsala's station and
+ * Turku's on other days. The densest circles seen there from 6 to 14 November held at most 131 at
+ * 49 m, 102 at 24 m and 77 at 12 m; a deeper quarter costs about four reads, within the 80.
  */
-export const RYDE_SCAN_LIMITS = { requests: 80, milliseconds: 30 * 60_000, depth: 3 };
+export const RYDE_SCAN_LIMITS = { requests: 80, milliseconds: 30 * 60_000, depth: 6 };
 /** Overlapping circles cover each cell geometrically. Selection completeness is a separate rollout gate. */
 export async function scanRydeArea(area: RydeArea, api: Pick<RydeBroker, 'query'>,
   limits = RYDE_SCAN_LIMITS, now = Date.now, onProgress?: (scan: RydeScan) => void): Promise<RydeScan> {

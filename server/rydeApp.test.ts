@@ -33,6 +33,24 @@ it('skips gaps outside disconnected operating rings',async()=>{
   expect(calls).toBe(2);expect(scan.unfinished).toBe(0);
 });
 
+it('quarters a saturated cell down to about 12 m, as racks by a station need',async()=>{
+  // Ryde answers the nearest 100 within the radius. 150 scooters stand 4 m apart in a 48 m square, as at
+  // Linköping's station: a 97 m circle (three quarters) still returns 100, a 12 m one (six) about 30.
+  const station={...area,bounds:{south:59.74,north:59.749,west:10.2,east:10.2179},
+    rings:[[[59.74,10.2],[59.74,10.2179],[59.749,10.2179],[59.749,10.2]] as [number,number][]],coverageValidated:true,saturationCount:100};
+  const racks=Array.from({length:150},(_,i)=>({id:`r${i}`,lat:59.7431+Math.floor(i/12)*4/111_195,lng:10.2061+(i%12)*4/(111_195*Math.cos(59.744*Math.PI/180))}));
+  const metres=(a:{lat:number;lng:number},b:{lat:number;lng:number})=>Math.hypot((a.lat-b.lat)*111_195,(a.lng-b.lng)*111_195*Math.cos(a.lat*Math.PI/180));
+  let reads=0;
+  const ryde={query:async(q:RydeQuery)=>{reads++;const here={lat:q.latitude,lng:q.longitude};
+    return api(racks.filter(r=>metres(r,here)<=q.radius*1000).sort((a,b)=>metres(a,here)-metres(b,here)).slice(0,100)).query(q);}};
+  const shallow=await scanRydeArea(station,ryde,{requests:80,milliseconds:60_000,depth:3});
+  expect(shallow.complete).toBe(false);expect(shallow.unfinished).toBeGreaterThan(0);
+  reads=0;
+  const scan=await scanRydeArea(station,ryde);
+  expect(scan.complete).toBe(true);expect(scan.unfinished).toBe(0);expect(scan.observations).toHaveLength(150);
+  expect(reads).toBeLessThanOrEqual(80);
+});
+
 it('publishes positive partial observations without claiming any completed area',async()=>{
   const {withinCollection}=await import('./sweeps');
   const progress:{vehicles:number;bounds:number}[]=[];

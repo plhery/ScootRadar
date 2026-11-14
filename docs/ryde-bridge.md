@@ -27,9 +27,15 @@ refreshed at most once a minute, so switching cities does not wait for a group's
 adaptive scan to finish.
 The queue coalesces identical work and serves up to three urgent reads before a
 routine read while both wait. These are conservative operating settings, not an upstream quota.
-Saturated cells subdivide within request/depth/time budgets (80 reads, three
+Saturated cells subdivide within request/depth/time budgets (80 reads, six
 halvings, 30 minutes: `RYDE_SCAN_LIMITS`); unresolved groups fail and preserve
-prior observations. The reads bound a scan's cost; the time only stops one that
+prior observations. Three halvings, to circles of 97 m, were not enough at
+Linköping's station: from 14 November 2026 at 01:12 UTC its group 025 expired,
+as one or two of its 97 m reads still returned Ryde's 100 while 150 to 215
+scooters stood in the racks there, and it failed so every weekend, as did
+Uppsala's station and Turku's on other days. The densest circles seen there from
+6 to 14 November held at most 131 at 49 m, 102 at 24 m and 77 at 12 m, so six
+halvings resolve them, each extra quarter at about four reads. The reads bound a scan's cost; the time only stops one that
 outlasts any fair share of the worker, which every group being swept shares. It
 was ten minutes until 5 November 2026: the worker then answered about nine reads
 a minute, central Turku's group got one every 26 seconds or so and failed after
