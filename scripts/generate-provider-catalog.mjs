@@ -6,6 +6,7 @@ import {
   townOutlinesProblem,
   typescriptCatalogs, typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
+import { rentalProblem } from './rental-links.mjs';
 import { swiftZoneDownloads, ZONE_DOWNLOAD_DIRECTORY, zoneDownloadFiles } from './zone-downloads.mjs';
 
 const root = process.cwd();
@@ -100,46 +101,10 @@ function validateCatalog() {
   }
 }
 
-// The links a scooter's "Open in" may open, which the feeds give: the URL schemes the operator's app claims and
-// the https hosts its links are on, each host's subdomains with it (src/lib/rentalLinks.ts on the website and in
-// the cache's answers, ScooterRentalLinkPolicy in both apps). website is what only the website's rules take: a
-// host more (Bolt's store link) and the query dropped (Ryde's IMEI). A provider without rental, or with none, has
-// every link refused. Until 13 November 2026 (LOG-367) each of the three kept its own table by hand.
-const RENTAL_SCHEME = /^[a-z][a-z0-9+.-]*$/;
-const RENTAL_HOST = /^[a-z0-9-]+(\.[a-z0-9-]+)+$/;
-// Schemes no operator's app claims, which a browser or the phone itself runs: a link on one would run a script, show
-// a page made of the link itself, read a file or start whatever app it names.
-const NOT_APP_SCHEMES = new Set(['http', 'https', 'javascript', 'vbscript', 'data', 'file', 'blob', 'about', 'content', 'intent']);
-
+// The rental links' rules (the schemes and hosts "Open in" may open) are checked in rental-links.mjs.
 function validateRental({ key, rental }) {
-  const problem = message => new Error(`Provider ${key}: rental ${message}`);
-  const only = (object, names) => typeof object === 'object' && object !== null && !Array.isArray(object)
-    && Object.keys(object).every(name => names.includes(name));
-  const distinct = (values, pattern) => Array.isArray(values)
-    && values.every(value => typeof value === 'string' && pattern.test(value)) && new Set(values).size === values.length;
-  if (!only(rental, ['schemes', 'hosts', 'website', 'note'])) throw problem('takes schemes, hosts, website and note');
-  // The schemes are the app's own: a link on http is never a rental's, and one on https is told by its host.
-  if (!distinct(rental.schemes, RENTAL_SCHEME) || rental.schemes.some(scheme => NOT_APP_SCHEMES.has(scheme))) {
-    throw problem(`schemes need to be distinct lower-case URL schemes of the operator's app, none of ${[...NOT_APP_SCHEMES].join(', ')}`);
-  }
-  if (!distinct(rental.hosts, RENTAL_HOST)) throw problem('hosts need to be distinct lower-case host names');
-  const { website } = rental;
-  if (website !== undefined) {
-    if (!only(website, ['hosts', 'withoutQuery']) || Object.keys(website).length === 0) {
-      throw problem('website takes hosts and withoutQuery');
-    }
-    if (website.hosts !== undefined && (
-      !distinct(website.hosts, RENTAL_HOST) || website.hosts.length === 0 || website.hosts.some(host => rental.hosts.includes(host))
-    )) {
-      throw problem('website.hosts need to be distinct lower-case host names besides hosts');
-    }
-    if (website.withoutQuery !== undefined && website.withoutQuery !== true) {
-      throw problem('website.withoutQuery is true or left out');
-    }
-  }
-  if (rental.note !== undefined && (typeof rental.note !== 'string' || !rental.note.trim())) {
-    throw problem('note needs to be text');
-  }
+  const problem = rentalProblem(rental);
+  if (problem) throw new Error(`Provider ${key}: rental ${problem}`);
 }
 
 const rentalProviders = providers.filter(provider => provider.rental);
