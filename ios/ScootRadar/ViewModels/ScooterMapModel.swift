@@ -2646,6 +2646,9 @@ extension ScooterMapModel {
             return
         }
         if let answer = zoneAnswer, answer.serves(area) {
+            // Back before another area's zones came: that request goes, or its answer would be drawn over this view
+            // (Android review of 14 November 2026, S1).
+            if let taskArea = zoneTaskArea, taskArea != answer.area { cancelZoneRequest() }
             // Unless a pending answer is being asked for again, it stands; the
             // cities' zones follow the map either way.
             if zoneTaskArea == nil { setZones(state: answer.state) } else { rebuildMapZones() }

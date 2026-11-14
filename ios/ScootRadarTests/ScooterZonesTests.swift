@@ -717,6 +717,42 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertEqual(areas.count, 2)
     }
 
+    /// Back on the area answered for before another area's zones come, the view's own are drawn and the legend is not
+    /// left loading: that request goes, where its answer was drawn over the view until the map next moved, and the
+    /// view's no-ride and no-parking zones went (Android review of 14 November 2026, S1).
+    func testComingBackBeforeAnotherAreasZonesComeKeepsTheViewsOwn() async throws {
+        let api = ZoneStubAPI()
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let first = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .shown }
+        XCTAssertTrue(first)
+
+        // The map rests on Bern, whose zones are asked for and are slow to come...
+        let ring = [
+            GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54),
+            GeoPoint(latitude: 47.38, longitude: 8.55), GeoPoint(latitude: 47.37, longitude: 8.54)
+        ]
+        await api.setMore([ScooterZone(id: "lime:bern", provider: "lime", kind: .noParking, maxSpeedKph: nil, polygons: [[ring]])])
+        await api.hold()
+        var bern = zurich
+        bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
+        model.updateViewport(bern, zoom: 16)
+        XCTAssertEqual(model.zoneState, .loading)
+        let asked = await waitUntil { await api.zoneAreas().count == 2 }
+        XCTAssertTrue(asked)
+
+        // ...and the rider is back in Zürich before they come.
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .shown)
+        await api.release()
+        try await Task.sleep(for: .milliseconds(300))
+        XCTAssertEqual(model.zoneState, .shown)
+        XCTAssertEqual(operatorZones(model).map(\.id), ["lime:0", "bird:0"])
+        let areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 2, "Zürich's answer at hand serves it")
+    }
+
     /// Zoomed in while the wide area's answer is on its way, the view waits for it, as it serves any area within its
     /// own; one with zones left out serves its own alone, and the close view's area is asked for once it comes, rather
     /// than "Zoom in to see the zones" staying at street level (week review, finding 5.1).
@@ -779,7 +815,7 @@ final class ScooterZonesModelTests: XCTestCase {
 private actor ZoneStubAPI: ScooterAPIClient {
     private var failure: ScooterAPIError?
     private var areas: [ScooterZoneArea] = []
-    private let more: [ScooterZone]
+    private var more: [ScooterZone]
     /// What the answers say besides their zones: some still on their way, unreadable, or left out.
     private var pending = false
     private var unavailable = false
@@ -797,7 +833,7 @@ private actor ZoneStubAPI: ScooterAPIClient {
 
     func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
         areas.append(area)
-        let (pending, unavailable, truncated) = (pending, unavailable, truncated)
+        let (pending, unavailable, truncated, more) = (pending, unavailable, truncated, more)
         if held { await withCheckedContinuation { waiting.append($0) } }
         if let failure { throw failure }
         let ring = [
@@ -825,6 +861,11 @@ private actor ZoneStubAPI: ScooterAPIClient {
         self.pending = pending
         self.unavailable = unavailable
         self.truncated = truncated
+    }
+
+    /// The zones after Lime's and Bird's in the answers asked for from now on.
+    func setMore(_ zones: [ScooterZone]) {
+        more = zones
     }
 
     func setFailure(_ failure: ScooterAPIError?) {
