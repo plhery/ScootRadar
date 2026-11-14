@@ -17,9 +17,12 @@ import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.ui.LocalClock
 import com.plhery.scootradar.ui.theme.ScootTheme
+import com.plhery.scootradar.ui.theme.resetFontScale
+import com.plhery.scootradar.ui.theme.useFontScale
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,6 +55,7 @@ class PassRowTest {
     fun tearDown() {
         controllers.close()
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        resetFontScale()
     }
 
     private fun show(provider: ScooterProvider) {
@@ -88,6 +92,41 @@ class PassRowTest {
         // On one line, the name left "Non configuré" 46 dp, "Non c…".
         assertFalse(laidOut("Non configuré").isCut)
         assertEquals(2, laidOut("PubliBike / Velospot").lineCount)
+    }
+
+    /**
+     * German's "Nicht eingerichtet" shows whole beside PubliBike / Velospot with text at 1.3, under the name: its
+     * "eingerichtet" is wider than half the row, which showed "Nicht" over "eingeric…" (the lane's device notes of 14
+     * November 2026). On Android 12, as on that phone, no line breaks before the name's "/", so the two cannot share
+     * the row whole; newer Android breaks there, and its row reads the same.
+     */
+    @Test
+    fun aStatusThatHalfTheRowWouldCutGoesUnderTheName() = assertGermanWhole()
+
+    @Test
+    @Config(sdk = [31])
+    fun aStatusThatHalfTheRowWouldCutGoesUnderTheNameOnAndroid12() = assertGermanWhole()
+
+    private fun assertGermanWhole() {
+        useFontScale(1.3f)
+        ScooterLanguage.current = ScooterLanguage.De
+        show(ScooterProvider.Publibike)
+
+        val name = "PubliBike / Velospot"
+        val status = "Nicht eingerichtet"
+        for (text in listOf(name, status)) {
+            val layout = laidOut(text)
+            assertFalse(text, layout.isCut)
+            assertEquals(text, 1, layout.lineCount)
+        }
+        // Where each is laid out in the sheet, which may scroll it out of the window.
+        val nameNode = compose.onNode(hasText(name), useUnmergedTree = true).fetchSemanticsNode()
+        val statusNode = compose.onNode(hasText(status), useUnmergedTree = true).fetchSemanticsNode()
+        assertTrue(
+            "${statusNode.positionInRoot} under ${nameNode.positionInRoot} + ${nameNode.size}",
+            statusNode.positionInRoot.y >= nameNode.positionInRoot.y + nameNode.size.height,
+        )
+        assertEquals(nameNode.positionInRoot.x, statusNode.positionInRoot.x, 0.5f)
     }
 
     @Test

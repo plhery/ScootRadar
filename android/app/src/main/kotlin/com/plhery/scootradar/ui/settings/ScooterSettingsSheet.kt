@@ -620,7 +620,10 @@ private fun SettingsRoot(
  * room it needs and the status the rest, unless the status would then be cut short: the name then wraps, and the
  * status keeps the room it needs up to half the row. So the iPhone's HStack shares the row, which on a 320-point screen
  * wraps "PubliBike / Velospot" and shows "Non configuré" whole; here the name kept its one line and left the status
- * 46 dp, "Non" over "conf…", and at 360 dp with text at 1.3 "Non" over "con…".
+ * 46 dp, "Non" over "conf…", and at 360 dp with text at 1.3 "Non" over "con…". A status that half the row cuts too
+ * goes under the name, as every status does at very large text: German's "Nicht eingerichtet" at 320 dp with text at
+ * 1.3, whose "eingerichtet" is wider than half the row, showed "Nicht" over "eingeric…" (the lane's device notes of 14
+ * November 2026).
  */
 @Composable
 private fun PassNameAndStatus(name: String, status: String, modifier: Modifier = Modifier) {
@@ -644,13 +647,33 @@ private fun PassNameAndStatus(name: String, status: String, modifier: Modifier =
         // The row's own spacing, which held the two apart as children of it.
         val gap = 8.dp.roundToPx()
         val room = maxOf(0, width - gap)
-        val nameNeeds = start.maxIntrinsicWidth(Constraints.Infinity)
-        val rest = maxOf(0, room - nameNeeds)
-        val cut = measurer.measure(status, statusStyle, maxLines = 2, constraints = Constraints(maxWidth = rest)).let {
-            it.didOverflowHeight || it.didOverflowWidth
+        // Whether the status shows whole in a column this wide: in two lines, and no line ending inside a word.
+        val whole = { columnWidth: Int ->
+            measurer.measure(status, statusStyle, maxLines = 2, constraints = Constraints(maxWidth = columnWidth)).let { laid ->
+                !laid.didOverflowHeight && !laid.didOverflowWidth &&
+                    (0 until laid.lineCount - 1).none { line ->
+                        val end = laid.getLineEnd(line)
+                        end in 1 until status.length && status[end - 1].isLetterOrDigit() && status[end].isLetterOrDigit()
+                    }
+            }
         }
-        val statusWidth = if (cut) maxOf(rest, minOf(end.maxIntrinsicWidth(Constraints.Infinity), room / 2)) else rest
+        val rest = maxOf(0, room - start.maxIntrinsicWidth(Constraints.Infinity))
+        val half = maxOf(rest, minOf(end.maxIntrinsicWidth(Constraints.Infinity), room / 2))
         val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val statusWidth = when {
+            whole(rest) -> rest
+            whole(half) -> half
+            else -> {
+                // Under the name, as FormText puts a detail.
+                val namePlaceable = start.measure(loose)
+                val statusPlaceable = end.measure(loose)
+                val spacing = 2.dp.roundToPx()
+                return@Layout layout(width, namePlaceable.height + spacing + statusPlaceable.height) {
+                    namePlaceable.placeRelative(0, 0)
+                    statusPlaceable.placeRelative(0, namePlaceable.height + spacing)
+                }
+            }
+        }
         val namePlaceable = start.measure(loose.copy(maxWidth = room - statusWidth))
         val statusPlaceable = end.measure(loose.copy(minWidth = statusWidth, maxWidth = statusWidth))
         val height = maxOf(namePlaceable.height, statusPlaceable.height)
