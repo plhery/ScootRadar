@@ -24,6 +24,14 @@ export const ATOM_START_HOLD_MS = 90_000;
 export const ATOM_INTERVAL_MS = 4000;
 /** Every third turn, while a region's idle sweep waits, is kept for it (Pacer in sweeps.ts). */
 export const ATOM_ROUTINE_EVERY = 3;
+/**
+ * Of the minute's 15, the turns kept for the first view of a town opened with nothing shown, which goes before
+ * the towns swept again while someone looks (PaceOptions.opening). A town looked at is swept whole each minute
+ * for ten, Kassel's 20 views and Münster's 24 spending the minute's turns within seconds: from 11 to 12 November
+ * 2026, three Qick towns opened beside such sweeps waited 5, 10 and 30 seconds for their first scooters, where
+ * one opened alone had them in about 2.4 seconds. The towns swept again keep 13 a minute.
+ */
+export const ATOM_OPENING_TURNS = 2;
 export const atomMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
@@ -76,7 +84,8 @@ export class AtomClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'atom-sessions.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? ATOM_INTERVAL_MS, this.now, this.now() + (options.startHoldMs ?? 0), ATOM_ROUTINE_EVERY);
+    this.pace = new Pacer(options.intervalMs ?? ATOM_INTERVAL_MS, this.now, this.now() + (options.startHoldMs ?? 0), ATOM_ROUTINE_EVERY,
+      { opening: ATOM_OPENING_TURNS });
     this.timeoutMs = options.timeoutMs ?? 10_000;
   }
 

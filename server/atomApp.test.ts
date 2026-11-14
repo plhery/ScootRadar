@@ -2,7 +2,7 @@ import { mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promise
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ATOM_INTERVAL_MS, ATOM_ROUTINE_EVERY, AtomClient, atomMapCenters, collectAtomRegion, parseAtomVehicles,
+import { ATOM_INTERVAL_MS, ATOM_OPENING_TURNS, ATOM_ROUTINE_EVERY, AtomClient, atomMapCenters, collectAtomRegion, parseAtomVehicles,
   withAtomAppCollectors } from './atomApp';
 import { Pacer, withinCollection } from './sweeps';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
@@ -126,6 +126,40 @@ describe('ATOM map coverage and availability', () => {
       expect(await sweep(ATOM_ROUTINE_EVERY)).toBeLessThanOrEqual(18 * 3 * ATOM_INTERVAL_MS);
       // Without them, Münster's sweeps take every turn and Linköping's waits until nobody looks.
       expect(await sweep(Infinity)).toBeGreaterThan(10 * 60_000);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('gives a town opened with nothing shown its first view at once while watched Münster and Kassel are swept again', async () => {
+    // On 12 November 2026 five Qick towns someone had looked at were swept again each minute, and a town opened
+    // beside them waited up to 30 s for its first scooters, behind the minute's turns their sweeps had spent.
+    const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === id)!;
+    const [munster, kassel, orebro] = [system('qick_de_munster'), system('qick_de_kassel'), system('qick_se_orebro')];
+    const scope = (cold: boolean) => ({ urgent: () => true, cold: () => cold, focus: () => undefined, progress: () => {} });
+    /** How long Örebro, opened cold 30 s into the others' sweeps, waits for its first view to start. */
+    async function opened(options: { opening?: number }): Promise<number> {
+      const pacer = new Pacer(ATOM_INTERVAL_MS, Date.now, Date.now(), ATOM_ROUTINE_EVERY, options);
+      await vi.advanceTimersByTimeAsync(60_000);
+      let watched = true, first: number | undefined;
+      const api = (town?: string) => ({ vehicles: async () => { await pacer.turn(); if (town) first ??= Date.now(); return map(); } });
+      const again = [munster, kassel].map(async town => {
+        while (watched) await withinCollection(scope(false), () => collectAtomRegion(town, api()));
+      });
+      await vi.advanceTimersByTimeAsync(30_000);
+      const asked = Date.now();
+      const town = withinCollection(scope(true), () => collectAtomRegion(orebro, api('orebro')));
+      await vi.advanceTimersByTimeAsync(5 * 60_000);
+      watched = false;
+      await vi.advanceTimersByTimeAsync(10 * 60_000);
+      await Promise.all([...again, town]);
+      return first! - asked;
+    }
+    vi.useFakeTimers();
+    try {
+      expect(await opened({ opening: ATOM_OPENING_TURNS })).toBe(0);
+      // Without kept turns, its first view waits for the minute the others spent.
+      expect(await opened({})).toBeGreaterThan(20_000);
     } finally {
       vi.useRealTimers();
     }

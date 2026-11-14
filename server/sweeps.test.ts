@@ -224,6 +224,78 @@ describe('Pacer', () => {
   });
 });
 
+describe('Pacer opening', () => {
+  const run = (pacer: Pacer, turns: string[]) => (name: string, count: number, scope: CollectionScope) => withinCollection(scope, async () => {
+    for (let i = 1; i <= count; i++) {
+      await pacer.turn();
+      turns.push(`${name}${i} ${(Date.now() - T0) / 1000}`);
+    }
+  });
+  const shown = collection({ urgent: () => true, cold: () => false });
+  const opened = () => collection({ urgent: () => true, cold: () => true });
+
+  const ask = (pacer: Pacer, turns: string[], name: string, scope: CollectionScope) => withinCollection(scope, async () => {
+    await pacer.turn();
+    turns.push(`${name} ${(Date.now() - T0) / 1000}`);
+  });
+  const shownTurns = (count: number) => Array.from({ length: count }, () => collection({ urgent: () => true, cold: () => false }));
+
+  it('starts a town opened with nothing shown at once, on turns kept from those still shown, and its others before theirs', async () => {
+    const pacer = new Pacer(4000, Date.now, 0, Infinity, { opening: 2 });
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    const turns: string[] = [];
+    const again = Promise.all(shownTurns(30).map((scope, i) => ask(pacer, turns, `shown${i + 1}`, scope)));
+    await vi.advanceTimersByTimeAsync(1_000);
+    const town = run(pacer, turns)('opened', 2, opened());
+    await vi.advanceTimersByTimeAsync(3 * PACE_WINDOW_MS);
+    await Promise.all([again, town]);
+    // Of the minute's 15, 13 go to the towns swept again and 2 are kept: the opened town's first takes one at 61 s,
+    // and its second goes first once the minute frees turns, at 120 s.
+    const shownAt = (from: number, to: number, at: number) => Array.from({ length: to - from + 1 }, (_, i) => `shown${from + i} ${at}`);
+    expect(turns).toEqual([...shownAt(1, 13, 60), 'opened1 61', 'opened2 120', ...shownAt(14, 24, 120), 'shown25 121', ...shownAt(26, 30, 180)]);
+  });
+
+  it('keeps no turn and ranks every town looked at alike without it, as before', async () => {
+    const pacer = new Pacer(4000);
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    const turns: string[] = [];
+    const again = Promise.all(shownTurns(30).map((scope, i) => ask(pacer, turns, `shown${i + 1}`, scope)));
+    await vi.advanceTimersByTimeAsync(1_000);
+    const town = ask(pacer, turns, 'opened', opened());
+    await vi.advanceTimersByTimeAsync(3 * PACE_WINDOW_MS);
+    await Promise.all([again, town]);
+    expect(turns.at(-1)).toBe('opened 180');
+  });
+
+  it('starts as many towns opened in a minute as it keeps turns for, and the next when the minute frees one', async () => {
+    const pacer = new Pacer(4000, Date.now, 0, Infinity, { opening: 2 });
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    const turns: string[] = [];
+    const sweep = run(pacer, turns);
+    const again = sweep('shown', 13, shown);
+    await vi.advanceTimersByTimeAsync(1_000);
+    const towns = ['a', 'b', 'c'].map((name, i) => vi.advanceTimersByTimeAsync(i * 1_000).then(() => sweep(name, 1, opened())));
+    await vi.advanceTimersByTimeAsync(2 * PACE_WINDOW_MS);
+    await Promise.all([again, ...towns]);
+    expect(turns.slice(13)).toEqual(['a1 61', 'b1 62', 'c1 120']);
+  });
+
+  it('lets a town opened go before the turn kept for an idle sweep', async () => {
+    const pacer = new Pacer(4000, Date.now, 0, 3, { opening: 2 });
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    const turns: string[] = [];
+    const sweep = run(pacer, turns);
+    const again = sweep('shown', 13, shown);
+    const idle = sweep('idle', 1, collection());
+    await vi.advanceTimersByTimeAsync(1_000);
+    const town = sweep('opened', 1, opened());
+    await vi.advanceTimersByTimeAsync(2 * PACE_WINDOW_MS);
+    await Promise.all([again, idle, town]);
+    expect(turns).toContain('opened1 61');
+    expect(turns.find(turn => turn.startsWith('idle'))).not.toBe('idle1 61');
+  });
+});
+
 describe('PaceGate', () => {
   const looking = collection({ urgent: () => true });
   const calls = (pacer: Pacer, count: number, into: number[], scope = looking) => withinCollection(scope, async () => {

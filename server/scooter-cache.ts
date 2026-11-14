@@ -367,7 +367,10 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   const priced = (vehicles: Vehicle[]) => system ? withListedPricing(system, vehicles, Date.now()) : vehicles;
   // What an app map's sweep has found so far, shown until it ends (sweeps.ts): the record it ends
   // with has no sweep. A Bird sweep tells when it began, and when it read each scooter it ends with.
-  const scope = sweepScope(attention, startedAt, (vehicles: Vehicle[], swept: MapBounds[], sweptSince: number) => {
+  // Whoever looks at a feed the map showed nothing of waits for its first scooters: a pacer may serve it first (sweeps.ts).
+  const shown = records.get(definition.id);
+  const cold = !shown || !showsPositions(shown, startedAt);
+  const scope = sweepScope({ ...attention, cold: () => cold }, startedAt, (vehicles: Vehicle[], swept: MapBounds[], sweptSince: number) => {
     const record = records.get(definition.id);
     if (!running || stopping || !record) return;
     records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, vehicles: priced(vehicles), swept } });

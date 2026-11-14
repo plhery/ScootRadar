@@ -15,6 +15,11 @@ export interface CollectionScope {
   focus(): MapBounds | undefined;
   /** The scooters the sweep has found so far, and the parts of the area it has finished. */
   progress(found: Vehicle[], swept: MapBounds[]): void;
+  /**
+   * The map showed none of the feed's positions when the collection started, so whoever looks at it waits
+   * for its first scooters (PaceOptions.opening).
+   */
+  cold?(): boolean;
 }
 
 const scope = new AsyncLocalStorage<CollectionScope>();
@@ -47,6 +52,13 @@ export interface PaceOptions {
    * and the gate both let it.
    */
   gate?: PaceGate;
+  /**
+   * Given, the requests of a collection someone waits on with nothing shown (CollectionScope.cold) go before
+   * those of the collections whose scooters still show, and this many of the minute's turns, and of each span's,
+   * are kept for such a collection's first request, which every other request leaves: a town opened while
+   * those someone looked at are swept again gets its first scooters at once, not when their minute frees a turn.
+   */
+  opening?: number;
 }
 
 /** No more than `requests` start in any `ms`, and an idle sweep's only while fewer than `idle` have. */
@@ -105,7 +117,10 @@ export class PaceGate {
  *
  * Given `spaced` (PaceOptions), every request keeps the spacing. Given `spans`, the requests of the
  * longest span count too, and an idle sweep leaves part of each span's to the towns someone opens.
- * Given `gate`, its requests also wait for a budget other pacers share.
+ * Given `gate`, its requests also wait for a budget other pacers share. Given `opening`, a town opened with
+ * nothing shown goes before those whose scooters still show, its first request on turns the others leave:
+ * on 12 November 2026, while five Qick towns someone had looked at were swept again each minute, a town
+ * opened beside them waited up to 30 seconds for its first scooters, behind their minute's turns.
  */
 export class Pacer {
   /** How many requests may start in PACE_WINDOW_MS; unlimited for an interval of 0. */
@@ -121,8 +136,14 @@ export class Pacer {
   private lastSpaced = -Infinity;
   private readonly spaced: boolean;
   private readonly gate?: PaceGate;
-  /** The requests waiting, each with when the gate began to hold it, once its own budgets let it start but the gate did not. */
-  private readonly waiting: { urgent: boolean; began: number; go: () => void; gatedFrom?: number }[] = [];
+  /** The turns kept for an opening request (PaceOptions.opening); undefined, every request someone looks at ranks alike. */
+  private readonly opening?: number;
+  /**
+   * The requests waiting, each with when the gate began to hold it, once its own budgets let it start but the gate
+   * did not, in the order they go by rank: 0 a collection's first request while someone waits on it with nothing
+   * shown (PaceOptions.opening), 1 its others, 2 any other someone is looking at, 3 an idle sweep's.
+   */
+  private readonly waiting: { urgent: boolean; rank: number; began: number; go: () => void; gatedFrom?: number }[] = [];
   /** When each collection first asked for a turn. */
   private readonly began = new WeakMap<CollectionScope, number>();
   /** The turns given in a row to collections someone is looking at while an idle sweep waited. */
@@ -134,6 +155,7 @@ export class Pacer {
     this.spaced = options.spaced ?? false;
     this.gate = options.gate;
     this.perWindow = intervalMs > 0 ? Math.max(1, options.perMinute ?? Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
+    if (options.opening !== undefined) this.opening = Math.max(0, Math.min(options.opening, this.perWindow - 1));
     this.spans = intervalMs > 0 ? options.spans ?? [] : [];
     this.keepMs = Math.max(PACE_WINDOW_MS, ...this.spans.map(span => span.ms));
     if (this.perWindow === Infinity || this.spans.length) return;
@@ -168,12 +190,14 @@ export class Pacer {
   turn(): Promise<void> {
     const collection = currentCollection();
     const urgent = collection?.urgent() ?? false;
-    const began = (collection && this.began.get(collection)) ?? this.now();
+    const asked = collection && this.began.get(collection);
+    const began = asked ?? this.now();
     if (collection) this.began.set(collection, began);
+    const rank = !urgent ? 3 : this.opening === undefined || !collection?.cold?.() ? 2 : asked === undefined ? 0 : 1;
     return new Promise(go => {
-      const after = urgent ? this.waiting.findIndex(other => !other.urgent) : -1;
-      if (after < 0) this.waiting.push({ urgent, began, go });
-      else this.waiting.splice(after, 0, { urgent, began, go });
+      const after = this.waiting.findIndex(other => other.rank > rank);
+      if (after < 0) this.waiting.push({ urgent, rank, began, go });
+      else this.waiting.splice(after, 0, { urgent, rank, began, go });
       // The turn awaited may have been an idle sweep's spacing, which this one need not keep.
       clearTimeout(this.timer);
       this.timer = undefined;
@@ -221,15 +245,19 @@ export class Pacer {
     return Math.max(this.ownStart(now, urgent), this.gate?.free(now) ?? -Infinity);
   }
 
-  /** When the pacer's own budgets and spacing, without the gate's, next let a request of this kind start. */
-  private ownStart(now: number, urgent: boolean): number {
+  /**
+   * When the pacer's own budgets and spacing, without the gate's, next let a request of this kind start: all its
+   * budgets for an opening request (PaceOptions.opening), all but the turns kept for one for any other.
+   */
+  private ownStart(now: number, urgent: boolean, opening = false): number {
     this.forget(now);
+    const kept = opening ? 0 : this.opening ?? 0;
     // Once the limit-th latest start is a span old, fewer than limit have started within it.
     const free = (limit: number, ms: number) => limit < 1 ? Infinity
       : this.started.length < limit ? now : this.started[this.started.length - limit] + ms;
-    const spans = this.spans.map(span => free(urgent ? span.requests : span.idle, span.ms));
+    const spans = this.spans.map(span => free(urgent ? span.requests - kept : Math.min(span.idle, span.requests - kept), span.ms));
     const spacing = urgent && !this.spaced ? -Infinity : this.lastSpaced + this.intervalMs;
-    return Math.max(this.heldUntil, free(this.perWindow, PACE_WINDOW_MS), spacing, ...spans);
+    return Math.max(this.heldUntil, free(this.perWindow - kept, PACE_WINDOW_MS), spacing, ...spans);
   }
 
   private forget(now: number): void {
@@ -241,7 +269,7 @@ export class Pacer {
       const now = this.now();
       const { index, idleWaits } = this.next();
       const waiter = this.waiting[index];
-      const own = this.ownStart(now, waiter.urgent), shared = this.gate?.free(now) ?? -Infinity;
+      const own = this.ownStart(now, waiter.urgent, waiter.rank === 0), shared = this.gate?.free(now) ?? -Infinity;
       const start = Math.max(own, shared);
       if (start > now) {
         // Its own budgets let it start before the gate does: the gate holds it from then (PaceGate.held).
@@ -259,13 +287,17 @@ export class Pacer {
     }
   }
 
-  /** The first in line, but the idle sweep that began first when its turn is kept for it. */
+  /**
+   * The first in line, but the idle sweep that began first when its turn is kept for it, unless an opening
+   * request waits, which the turns kept for it let start when no other may.
+   */
   private next(): { index: number; idleWaits: boolean } {
     let oldest = -1;
     this.waiting.forEach((waiter, index) => {
       if (!waiter.urgent && (oldest < 0 || waiter.began < this.waiting[oldest].began)) oldest = index;
     });
-    return { index: oldest >= 0 && this.urgentTurns >= this.routineEvery - 1 ? oldest : 0, idleWaits: oldest >= 0 };
+    const kept = oldest >= 0 && this.urgentTurns >= this.routineEvery - 1 && this.waiting[0].rank > 0;
+    return { index: kept ? oldest : 0, idleWaits: oldest >= 0 };
   }
 }
 

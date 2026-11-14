@@ -184,6 +184,18 @@ city, and the watched city keeps two turns in three. The grace is
 unchanged, and so is when a collection counts as done: a sweep that
 truly stalls still lets its feed expire and alert.
 
+A town opened with nothing shown goes before the towns whose scooters
+still show, and 2 of the minute's 15 turns are kept for its first view
+(`ATOM_OPENING_TURNS`, `PaceOptions.opening` in `server/sweeps.ts`). A town
+someone looks at is swept whole each minute for ten minutes, and Kassel's
+20 views or Münster's 24 spend the minute's turns within seconds: from 11
+to 12 November 2026, three Qick towns opened beside such sweeps waited 5,
+10 and 30 seconds for their first scooters, where one opened alone had them
+in about 2.4 seconds. Now the first view starts at once, and the rest of
+its sweep goes before the watched towns' re-sweeps, which keep 13 turns a
+minute. Idle sweeps keep their every third turn, after an opened town's
+first view.
+
 A deploy runs the new cache beside the old one for about a minute (53 to
 64 seconds on 24 October 2026), and both swept Qick on the same schedule:
 ATOM answered 429 after each of three deploys that day, and Qick's cities
