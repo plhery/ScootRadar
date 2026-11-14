@@ -513,11 +513,34 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let disabledProvidersKey = "disabled-providers"
     /// The provider on where it is the only one, kept beside those turned off since 10 November 2026.
     private static let onlyProviderKey = "only-provider"
+    /// Kept at each launch since 14 November 2026: the providers turned off were read once against the catalog's 40 of
+    /// then (Desk [373] S-4).
+    private static let disabledProvidersCheckedKey = "disabled-providers-checked"
+    /// The catalog's 40 providers from before 10 November 2026 to 14 November 2026, the most a list of those turned off
+    /// kept before only-provider can name.
+    static let providersOfNovember2026 = [
+        "alpaca", "beam", "beryl", "binbin", "bird", "bolt", "bolt_hopp", "dart", "deer", "dott", "elerent", "flamingo",
+        "gcoo", "hopp", "hoppy", "jet", "jolt", "kickgoing", "lime", "luup", "lyft", "move", "naolib", "pony",
+        "publibike", "qick", "ride_mobility", "ridemovi", "ryde", "saham", "spin", "swing", "veo", "voi", "whoosh",
+        "xingxing", "yoio", "zelectra", "zeus", "zippy",
+    ]
     /// Until 4 November 2026 the app kept the providers that were on, so those the catalog added after a rider's
     /// last change of the filters stayed off: RideMovi, new in 1.3.0, for everyone who had changed them in 1.2.0.
     private static let legacyEnabledProvidersKey = "enabled-providers"
     /// The catalog's providers until 11 October 2026, the only ones a rider could have turned off in every version.
     private static let providersBefore11October2026: Set<ScooterProvider> = [.bird, .bolt, .dott, .hopp, .lime, .pony, .publibike, .voi]
+
+    /// The providers on, of the catalog's, from those turned off. A list not yet checked that leaves exactly one of the
+    /// 40 of November 2026 on was kept by a rider with one app alone, before the app kept only-provider beside it: that
+    /// one stays alone, and those the catalog added since stay off, as on the website (Desk [373] S-4). Once checked, a
+    /// list leaving one of the 40 on is a choice made beside a provider added later.
+    static func providersOn(disabled: [String], checked: Bool, catalog: [String]) -> Set<String> {
+        if !checked {
+            let on = providersOfNovember2026.filter { !disabled.contains($0) }
+            if on.count == 1, catalog.contains(on[0]) { return [on[0]] }
+        }
+        return Set(catalog).subtracting(disabled)
+    }
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
     private static let ridePassesKey = "provider-ride-passes-v1"
     private static let hasLocatedOnceKey = "has-located-once"
@@ -606,7 +629,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             // One app alone was on: those the catalog added since stay off.
             enabledProviders = [only]
         } else if let disabledIDs = defaults.array(forKey: Self.disabledProvidersKey) as? [String] {
-            enabledProviders = Set(ScooterProvider.allCases).subtracting(disabledIDs.compactMap(ScooterProvider.init(rawValue:)))
+            enabledProviders = Set(Self.providersOn(
+                disabled: disabledIDs,
+                checked: defaults.bool(forKey: Self.disabledProvidersCheckedKey),
+                catalog: ScooterProvider.allCases.map(\.rawValue)
+            ).compactMap(ScooterProvider.init(rawValue:)))
         } else if let savedProviderIDs = defaults.array(forKey: Self.legacyEnabledProvidersKey) as? [String] {
             // A legacy list of those on turns off only the providers of before 11 October 2026 it lacks: it also lacks
             // those added after it was written, which the rider never saw.
@@ -624,6 +651,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if enabledProviders.count == 1, let only = enabledProviders.first {
             defaults.set(only.rawValue, forKey: Self.onlyProviderKey)
         }
+        defaults.set(true, forKey: Self.disabledProvidersCheckedKey)
 
         cityZoneDownloads.onChange = { [weak self] in self?.rebuildMapZones() }
         locationManager.delegate = self

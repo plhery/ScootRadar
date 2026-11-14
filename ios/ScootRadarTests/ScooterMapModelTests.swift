@@ -585,6 +585,39 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(makeModel().enabledProviders, [.lime])
     }
 
+    func testAListKeptBeforeOnlyProviderLeavingOneOfThe40OnKeepsItAloneWhenTheCatalogGrows() {
+        let forty = ScooterMapModel.providersOfNovember2026
+        XCTAssertEqual(Set(forty).count, 40)
+        XCTAssertTrue(forty.allSatisfy { ScooterProvider(rawValue: $0) != nil })
+        let later = forty + ["newco"]
+        let limeAlone = forty.filter { $0 != "lime" }
+
+        // Kept before only-provider, read on a catalog that has grown since: Lime alone, newco off.
+        XCTAssertEqual(ScooterMapModel.providersOn(disabled: limeAlone, checked: false, catalog: later), ["lime"])
+        XCTAssertEqual(ScooterMapModel.providersOn(disabled: limeAlone, checked: false, catalog: forty), ["lime"])
+        // Read once: Lime and newco saved since are both on.
+        XCTAssertEqual(ScooterMapModel.providersOn(disabled: limeAlone, checked: true, catalog: later), ["lime", "newco"])
+        // Two on: newco comes on, checked or not.
+        let twoOn = forty.filter { $0 != "lime" && $0 != "bolt" }
+        XCTAssertEqual(ScooterMapModel.providersOn(disabled: twoOn, checked: false, catalog: later), ["bolt", "lime", "newco"])
+        XCTAssertEqual(ScooterMapModel.providersOn(disabled: twoOn, checked: true, catalog: later), ["bolt", "lime", "newco"])
+        // The one left on is no longer in the catalog: the list is read as kept.
+        let withoutZippy = forty.filter { $0 != "zippy" }
+        XCTAssertEqual(ScooterMapModel.providersOn(disabled: withoutZippy, checked: false, catalog: withoutZippy), [])
+
+        // The app checks once: the flag is kept at launch.
+        let defaults = isolatedDefaults()
+        defaults.set(limeAlone, forKey: "disabled-providers")
+        XCTAssertFalse(defaults.bool(forKey: "disabled-providers-checked"))
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: defaults
+        )
+        XCTAssertEqual(model.enabledProviders, [.lime])
+        XCTAssertTrue(defaults.bool(forKey: "disabled-providers-checked"))
+    }
+
     func testAppearanceGoesByTheSunUntilOneIsChosenAndIsKept() throws {
         let defaults = isolatedDefaults()
         let clock = TestClock()
