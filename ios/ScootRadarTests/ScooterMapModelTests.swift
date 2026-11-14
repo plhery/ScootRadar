@@ -6091,3 +6091,137 @@ extension ScooterMapModelTests {
         text.replacingOccurrences(of: "\u{00A0}", with: " ").replacingOccurrences(of: "\u{202F}", with: " ")
     }
 }
+
+// The dock's buttons where their labels are longest (Android b9b21516, 14 November 2026).
+extension ScooterMapModelTests {
+    /// A dock card's row on an iPhone SE: its 375 pt less the dock's margins and the card's padding.
+    private static let phoneRow: CGFloat = 375 - 2 * 10 - 2 * 16
+
+    /// The labels of the dock's buttons, in the language in use: the card's, the walk's and those of positions out of date.
+    private static func dockLabels() -> [String] {
+        [
+            String(format: String(localized: "Open in %@"), "Lime"),
+            String(localized: "Directions"),
+            String(localized: "Open in Maps"),
+            String(localized: "Hide route"),
+            String(localized: "Try again"),
+        ]
+    }
+
+    private func dockRowHeight(_ titles: [String], width: CGFloat, size: DynamicTypeSize, weights: [CGFloat] = []) -> CGFloat {
+        let renderer = ImageRenderer(
+            content: DockActionRow(weights: weights) {
+                ForEach(Array(titles.enumerated()), id: \.offset) { index, title in
+                    Button {} label: { Label(title, systemImage: "scooter") }
+                        .buttonStyle(DockActionStyle(prominent: index == 0))
+                }
+            }
+            .frame(width: width)
+            .environment(\.dynamicTypeSize, size)
+        )
+        return renderer.uiImage?.size.height ?? 0
+    }
+
+    /// How tall a label is in a button of the row's width, with as many lines as it needs.
+    private func dockLabelHeight(_ title: String, width: CGFloat, size: DynamicTypeSize) -> CGFloat {
+        let renderer = ImageRenderer(
+            content: Label(title, systemImage: "scooter")
+                .designFont(14, .bold, relativeTo: .subheadline)
+                .multilineTextAlignment(.center)
+                // The button's padding.
+                .frame(width: width - 2 * 12)
+                .environment(\.dynamicTypeSize, size)
+        )
+        return renderer.uiImage?.size.height ?? 0
+    }
+
+    /// On an iPhone SE with the largest text, a button alone on its row wraps
+    /// its label to a second line rather than cutting it short: the card's
+    /// "Ouvrir dans Lime" or "Opna Lime-appið", stacked, and the out-of-date
+    /// card's "Erneut versuchen" were cut on their one line on Android.
+    func testADockButtonAloneOnItsRowWrapsItsLabelWholeWithTheLargestText() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let width = Self.phoneRow
+        let oneLine = dockRowHeight(["Go"], width: width, size: .accessibility5)
+        XCTAssertGreaterThan(oneLine, 0)
+        var wrapped: [String] = []
+        for language in ScooterLanguage.allCases {
+            ScooterLanguage.current = language
+            for title in Self.dockLabels() {
+                let height = dockRowHeight([title], width: width, size: .accessibility5)
+                // As tall as its label needs: nothing is cut.
+                XCTAssertGreaterThanOrEqual(
+                    height + 0.5, dockLabelHeight(title, width: width, size: .accessibility5), "\(language): \(title)"
+                )
+                if height > oneLine + 1 { wrapped.append("\(language.rawValue): \(title)") }
+                // Stacked, each button of the card is drawn the same.
+                let card = dockRowHeight([title, title], width: width, size: .accessibility5)
+                XCTAssertEqual(card, 2 * height + 8, accuracy: 1, "\(language): \(title)")
+            }
+        }
+        // Those that need a second line take it.
+        XCTAssertFalse(wrapped.isEmpty)
+        for label in ["fr: Ouvrir dans Lime", "de: Erneut versuchen"] {
+            XCTAssertTrue(wrapped.contains(label), "\(label) in \(wrapped)")
+        }
+    }
+
+    /// At the standard size the card's two buttons, side by side, keep a line
+    /// each in every language.
+    func testAtTheStandardSizeTheCardsButtonsSideBySideKeepALineEach() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let oneLine = dockRowHeight(["Go"], width: Self.phoneRow, size: .large)
+        XCTAssertEqual(oneLine, 48, accuracy: 0.5)
+        for language in ScooterLanguage.allCases {
+            ScooterLanguage.current = language
+            let open = String(format: String(localized: "Open in %@"), "Lime")
+            let height = dockRowHeight([open, String(localized: "Directions")], width: Self.phoneRow, size: .large, weights: [1.5, 1])
+            XCTAssertEqual(height, oneLine, accuracy: 0.5, "\(language)")
+        }
+    }
+
+    /// Side by side, a button whose share falls short of its one line by under
+    /// half a point, as the row allows, keeps its label on that line now that
+    /// it may take two: SwiftUI draws it there, where Android had to take the
+    /// half point from the gap.
+    func testAButtonBesideAnotherGivenUnderHalfAPointTooLittleKeepsItsLine() throws {
+        let title = "Directions"
+        let ideal = try XCTUnwrap(dockButtonIdealWidth(title))
+        let oneLine = dockRowHeight([title], width: Self.phoneRow, size: .large)
+        // Each share 0.3 pt short of the button's line.
+        let width = 2 * (ideal - 0.3) + 8
+        XCTAssertEqual(dockRowHeight([title, title], width: width, size: .large), oneLine, accuracy: 0.5)
+        // A full point short, they stack.
+        XCTAssertGreaterThan(dockRowHeight([title, title], width: 2 * (ideal - 1) + 8, size: .large), oneLine + 1)
+    }
+
+    /// The width a dock button asks for to keep its label on one line, as its row reads it.
+    private func dockButtonIdealWidth(_ title: String) -> CGFloat? {
+        let reading = IdealWidthReading()
+        _ = ImageRenderer(
+            content: IdealWidthReader(reading: reading) {
+                Button {} label: { Label(title, systemImage: "scooter") }
+                    .buttonStyle(DockActionStyle(prominent: true))
+            }
+            .environment(\.dynamicTypeSize, .large)
+        ).uiImage
+        return reading.width
+    }
+}
+
+private final class IdealWidthReading { var width: CGFloat? }
+
+/// Lays out its one view at its ideal size, and notes its width.
+private struct IdealWidthReader: Layout {
+    let reading: IdealWidthReading
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let size = subviews.first?.sizeThatFits(.unspecified) ?? .zero
+        reading.width = size.width
+        return size
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        subviews.first?.place(at: bounds.origin, proposal: .unspecified)
+    }
+}

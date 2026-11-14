@@ -910,9 +910,11 @@ private struct DockSymbolTile: View {
     }
 }
 
-/// One or two buttons whose labels stay on one line: side by side where
-/// they fit, one above the other where they do not or the text is very large.
-private struct DockActionRow<Content: View>: View {
+/// One or two buttons: side by side where their labels fit on one line, one
+/// above the other where they do not or the text is very large. Side by side
+/// each label keeps its one line; a button with the row to itself may take two
+/// (DockActionStyle).
+struct DockActionRow<Content: View>: View {
     /// The share of the row each button takes; equal shares when empty.
     var weights: [CGFloat] = []
     @ViewBuilder let content: Content
@@ -926,7 +928,9 @@ private struct DockActionRow<Content: View>: View {
 /// Buttons share the row, equally or by their weights, while every label
 /// fits on one line. When the shares are too narrow the last button takes the
 /// room the others leave, and when that is too narrow as well each button
-/// gets a row.
+/// gets a row. A share may miss a label's one line by up to half a point,
+/// which SwiftUI draws on that line still: Android takes that half point from
+/// the gap, or its labels would wrap side by side now that they may (b9b21516).
 private struct DockActionLayout: Layout {
     var spacing: CGFloat = 9
     var weights: [CGFloat] = []
@@ -991,22 +995,41 @@ private struct DockActionLayout: Layout {
 }
 
 /// A button of a dock card, 48 pt high: filled with the app's blue, or quiet
-/// beside it.
-private struct DockActionStyle: ButtonStyle {
+/// beside it. Its label takes up to two lines, centred, which it does only
+/// with the row to itself (DockActionLayout): on an iPhone SE with the largest
+/// text, a label stacked alone, as "Ouvrir dans Lime", "Opna Lime-appið" or
+/// "Erneut versuchen", was cut short on its one line (Android b9b21516).
+struct DockActionStyle: ButtonStyle {
     let prominent: Bool
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
         let shape = RoundedRectangle(cornerRadius: 16, style: .continuous)
         configuration.label
+            .labelStyle(DockActionLabelStyle())
             .designFont(14, .bold, relativeTo: .subheadline)
-            .lineLimit(1)
+            .lineLimit(2)
+            .multilineTextAlignment(.center)
             .foregroundStyle(prominent ? Color.white : ScooterPalette.dockText)
             .padding(.horizontal, 12)
             .frame(maxWidth: .infinity, minHeight: 48)
             .background(prominent ? ScooterPalette.cardActionFill : ScooterPalette.dockQuietFill, in: shape)
             .opacity(configuration.isPressed ? 0.78 : isEnabled ? 1 : 0.6)
             .contentShape(shape)
+    }
+}
+
+/// A dock button's title and icon as Label draws them, with the title's two
+/// lines centred: a Label's title does not take the button's alignment, and
+/// kept its second line to the left.
+private struct DockActionLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Label {
+            configuration.title.multilineTextAlignment(.center)
+        } icon: {
+            configuration.icon
+        }
+        .labelStyle(.titleAndIcon)
     }
 }
 
