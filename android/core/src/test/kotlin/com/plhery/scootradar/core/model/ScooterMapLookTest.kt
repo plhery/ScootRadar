@@ -453,6 +453,52 @@ class ScooterMapLookTest {
     }
 
     /**
+     * The selected scooter's name shows whole or not at all at every size, where any other may lose a third to the edge
+     * of the map and what floats over it: at 360 dp Near me covered about a quarter of the selected "Hopp"
+     * (ctl-0130-sra).
+     */
+    @Test
+    fun theSelectedScootersNameShowsWholeOrNotAtAll() {
+        val visible = ScreenRect(x = 0.0, y = 100.0, width = 390.0, height = 700.0)
+        val nearMe = ScreenRect(x = 250.0, y = 540.0, width = 130.0, height = 50.0)
+        val dock = ScreenRect(x = 10.0, y = 600.0, width = 370.0, height = 180.0)
+        // 26 of its 66 points across under Near me, for 16 of its 26 down: about a quarter.
+        val hopp = ScreenRect(x = 210.0, y = 530.0, width = 66.0, height = 26.0)
+        val lime = ScreenRect(x = 40.0, y = 300.0, width = 66.0, height = 26.0)
+        val names = listOf("hopp" to hopp, "lime" to lime)
+
+        assertEquals(emptySet<String>(), ScooterMapLook.unreadablePills(names, inside = visible, under = listOf(nearMe, dock)))
+        assertEquals(
+            setOf("hopp"),
+            ScooterMapLook.unreadablePills(names, inside = visible, under = listOf(nearMe, dock), selected = "hopp"),
+        )
+        // Another scooter selected, Hopp's keeps its third.
+        assertEquals(
+            emptySet<String>(),
+            ScooterMapLook.unreadablePills(names, inside = visible, under = listOf(nearMe, dock), selected = "lime"),
+        )
+        // Clear of it all, it shows; a point past the edge of the map, the search bar's foot, it does not.
+        assertEquals(
+            emptySet<String>(),
+            ScooterMapLook.unreadablePills(
+                listOf("hopp" to hopp.offsetBy(dx = -100.0, dy = 0.0)),
+                inside = visible,
+                under = listOf(nearMe, dock),
+                selected = "hopp",
+            ),
+        )
+        assertEquals(
+            setOf("hopp"),
+            ScooterMapLook.unreadablePills(
+                listOf("hopp" to lime.offsetBy(dx = 0.0, dy = -201.0)),
+                inside = visible,
+                under = listOf(nearMe, dock),
+                selected = "hopp",
+            ),
+        )
+    }
+
+    /**
      * ScooterMapLookTests.testTheTextOnTheMapFollowsLargerTextUpToTwiceItsSize (4f64d247), given the caption's size: 12
      * at the standard size, smaller below it, about 17 at the iPhone's xxxLarge, 24 and more at AX3 and past it. On
      * Android it is the 12 sp caption at the phone's font scale, in dp (TextScaleTest).

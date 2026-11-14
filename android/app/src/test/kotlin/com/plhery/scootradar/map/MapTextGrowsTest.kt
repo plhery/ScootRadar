@@ -124,20 +124,36 @@ class MapTextGrowsTest {
     fun aLargerNameShowsWholeOrNotAtAll() {
         // A dot in a band of the map 50 high between what floats over it: the standard name fits, a larger one
         // would lose 1 point at its top and at its foot, wherever it went, and is left out; in a band 60 high it fits.
-        fun names(scale: Double, band: Double): List<ScreenRect> {
-            val map = FlatMarkerMap()
-            val above = ScreenRect(0.0, 200.0, 390.0, 200.0 - band / 2)
-            val below = ScreenRect(0.0, 400.0 + band / 2, 390.0, 444.0 - band / 2)
-            val scene = ScooterMarkerScene(ScooterMarkerArt(3f, fonts, textScale = scale), animates = { false })
-            scene.parent = MarkerParent(origin = map.at(195.0, 400.0), bottomChromeFrames = listOf(above, below))
-            scene.updateClusteringMode(zoomLevel = 17.0, map = map)
-            scene.reconcile(listOf(scooter("banded", "voi", at = map.at(195.0, 400.0))), revision = 1)
-            scene.updateLook(map)
-            return scene.shownPillFrames(map).map { it.second }
-        }
-        assertEquals(listOf(26.0), names(scale = 1.0, band = 50.0).map { it.height })
-        assertEquals(emptyList<ScreenRect>(), names(scale = 2.0, band = 50.0))
-        assertEquals(listOf(52.0), names(scale = 2.0, band = 60.0).map { it.height })
+        assertEquals(listOf(26.0), bandedNames(scale = 1.0, band = 50.0).map { it.height })
+        assertEquals(emptyList<ScreenRect>(), bandedNames(scale = 2.0, band = 50.0))
+        assertEquals(listOf(52.0), bandedNames(scale = 2.0, band = 60.0).map { it.height })
+    }
+
+    /**
+     * The selected scooter's name shows whole or not at all at every size: at 360 dp Near me covered about a quarter
+     * of the selected "Hopp", which the third any other name may lose let through (ctl-0130-sra). In a band 24 high
+     * the standard name loses 1 point at its top and at its foot, wherever it goes: shown for any other scooter, left
+     * out for the selected one; in a band 28 high it shows whole.
+     */
+    @Test
+    fun theSelectedScootersNameShowsWholeOrNotAtAllAtEverySize() {
+        assertEquals(listOf(26.0), bandedNames(scale = 1.0, band = 24.0).map { it.height })
+        assertEquals(emptyList<ScreenRect>(), bandedNames(scale = 1.0, band = 24.0, selected = true))
+        assertEquals(listOf(26.0), bandedNames(scale = 1.0, band = 28.0, selected = true).map { it.height })
+    }
+
+    /** The names shown for a dot in a band of the map [band] high between what floats over it. */
+    private fun bandedNames(scale: Double, band: Double, selected: Boolean = false): List<ScreenRect> {
+        val map = FlatMarkerMap()
+        val above = ScreenRect(0.0, 200.0, 390.0, 200.0 - band / 2)
+        val below = ScreenRect(0.0, 400.0 + band / 2, 390.0, 444.0 - band / 2)
+        val scene = ScooterMarkerScene(ScooterMarkerArt(3f, fonts, textScale = scale), animates = { false })
+        scene.parent = MarkerParent(origin = map.at(195.0, 400.0), bottomChromeFrames = listOf(above, below))
+        scene.updateClusteringMode(zoomLevel = 17.0, map = map)
+        scene.reconcile(listOf(scooter("banded", "voi", at = map.at(195.0, 400.0))), revision = 1)
+        if (selected) scene.applySelection("voi:banded", map)
+        scene.updateLook(map)
+        return scene.shownPillFrames(map).map { it.second }
     }
 
     /** How tall the count's dark digits are in a light cluster's picture, in pixels. */

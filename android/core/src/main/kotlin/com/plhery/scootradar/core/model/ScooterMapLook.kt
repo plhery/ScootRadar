@@ -438,20 +438,23 @@ object ScooterMapLook {
     /**
      * The names to leave out of those placed, the first of them counting most: one cut by the edge of the map
      * or by what floats over it, and one lying on a name that stays. Where there is no room, a name less is
-     * better than two that cannot be read. With larger text, [whole]: nothing may cover a name at all.
+     * better than two that cannot be read. With larger text, [whole]: nothing may cover a name at all. The [selected]
+     * scooter's shows whole or not at all at every size, the edge of the map being the search bar's foot or the
+     * screen's: at 360 dp Near me covered about a quarter of the selected "Hopp" (ctl-0130-sra).
      */
     fun unreadablePills(
         pills: List<Pair<String, ScreenRect>>,
         inside: ScreenRect,
         under: List<ScreenRect>,
         whole: Boolean = false,
+        selected: String? = null,
     ): Set<String> {
         val unreadable = LinkedHashSet<String>()
         val shown = mutableListOf<ScreenRect>()
         for ((id, frame) in pills) {
             val covered = shown.fold(0.0) { sum, rect -> sum + area(rect.intersection(frame)) }
             val clear = if (whole) covered < 1 else covered * 10 <= area(frame)
-            if (pillCanBeRead(frame, inside, under, whole) && clear) {
+            if (pillCanBeRead(frame, inside, under, whole = whole || id == selected) && clear) {
                 shown += frame
             } else {
                 unreadable += id

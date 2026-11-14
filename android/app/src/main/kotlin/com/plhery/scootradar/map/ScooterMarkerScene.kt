@@ -1061,8 +1061,15 @@ class ScooterMarkerScene(
             moved += mark
         }
         // Nor does a name that would be cut by the edge of the map or by the dock, or that found no place but on
-        // another name. A larger name loses whole letters there: it shows whole or not at all.
-        covered += ScooterMapLook.unreadablePills(frames, inside = visible, under = chrome, whole = art.textScale > 1)
+        // another name. A larger name loses whole letters there: it shows whole or not at all, as the selected
+        // scooter's does at every size.
+        covered += ScooterMapLook.unreadablePills(
+            frames,
+            inside = visible,
+            under = chrome,
+            whole = art.textScale > 1,
+            selected = appliedSelectionID,
+        )
         for (id in namedIDs) {
             val mark = marksByID[id] ?: continue
             if (mark.pillIsCovered == (id in covered)) continue
