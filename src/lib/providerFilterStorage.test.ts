@@ -108,7 +108,7 @@ describe('a visitor who kept one provider before the map kept that choice', () =
     expect(both[PROVIDER_ONLY_STORAGE_KEY]).toBeUndefined();
     expect(shown(LATER, both)).toEqual(['lime', 'newco']);
     // Without the flag the same list would read as Lime alone.
-    const { [PROVIDERS_OFF_CHECKED_STORAGE_KEY]: _flag, ...unflagged } = both;
+    const unflagged = Object.fromEntries(Object.entries(both).filter(([key]) => key !== PROVIDERS_OFF_CHECKED_STORAGE_KEY));
     expect(shown(LATER, unflagged)).toEqual(['lime']);
   });
 
