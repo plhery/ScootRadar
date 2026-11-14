@@ -299,9 +299,15 @@ class CityRuleZoneTest {
         assertEquals("10 mph", plain(speedText(16.1..16.1, gb)))
         assertEquals("10 mph", plain(speedText(16.09..16.09, gb)))
         assertEquals("10 mph", plain(speedText(16.0..16.1, gb)))
-        // Kilometres are rounded to the nearest, as before.
-        assertEquals("6–15 km/h", plain(speedText(6.0..15.0, Locale.forLanguageTag("en-CH"))))
-        assertEquals("6–16 km/h", plain(speedText(6.4..15.6, Locale.forLanguageTag("en-CH"))))
+        // Kilometres are rounded down too, unless within a tenth of the next whole one: a US 8 mph zone, 12.87 km/h,
+        // is 12 km/h to a metric visitor, not 13 (the iPhone's e17fb7f5).
+        val swiss = Locale.forLanguageTag("en-CH")
+        assertEquals("6–15 km/h", plain(speedText(6.0..15.0, swiss)))
+        assertEquals("6–15 km/h", plain(speedText(6.4..15.6, swiss)))
+        assertEquals("12 km/h", plain(speedText(12.87..12.87, swiss)))
+        assertEquals("12–16 km/h", plain(speedText(12.87..16.09, swiss)))
+        assertEquals("20 km/h", plain(speedText(19.95..19.95, swiss)))
+        assertEquals("16 km/h", plain(speedText(16.1..16.1, swiss)))
         // French writes a narrow space before the unit.
         assertEquals("3\u202Fmi/\u2060h", speedText(6.0..6.0, Locale.forLanguageTag("fr-US")))
         // In the user's region, as the legend writes it.

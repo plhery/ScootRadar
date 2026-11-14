@@ -337,18 +337,19 @@ internal fun kindLabel(kind: ScooterZoneKind, speeds: ScooterZoneSpeeds, locale:
 }
 
 /**
- * "6 km/h", or from the least to the greatest, "6–15 km/h", each rounded to a whole number; in mph where the region
- * measures distances in miles ("10 mph"), each rounded down once converted, unless within a tenth of the next whole one:
- * 6 km/h (3.73 mph) is 3 mph and 25 km/h (15.53) 15, not above the limit, and a UK 10 mph zone 10 mph, written 16.09 km/h
- * (9.998) or, as Dott writes it, 16 km/h (9.94) (Desk cards 350, item 7, and 353). As on the web (formatSpeedLimits)
- * and the iPhone. Whole on
+ * "6 km/h", or from the least to the greatest, "6–15 km/h"; in mph where the region measures distances in miles
+ * ("10 mph"). Each is rounded down to a whole number, once converted, unless within a tenth of the next whole one, so
+ * that none is said above the limit: 6 km/h (3.73 mph) is 3 mph and 25 km/h (15.53) 15, a UK 10 mph zone 10 mph,
+ * written 16.09 km/h (9.998) or, as Dott writes it, 16 km/h (9.94) (Desk cards 350, item 7, and 353), and a US 8 mph
+ * zone, 12.87 km/h, 12 km/h, not 13 (fresh-eyes review of 14 November 2026). As on the web (formatSpeedLimits) and the
+ * iPhone (e17fb7f5). Whole on
  * its line: where the legend wraps a slow zone's name, it breaks before the speed, never in it, where a line may break
  * after "/" or "–" ("Velocidade reduzida: 5 km/" over "h" beside the locate button, Portuguese at font scale 1.3 on
  * ScootRadar_Phone_Min).
  */
 internal fun speedText(range: ClosedFloatingPointRange<Double>, locale: Locale = ScooterLanguage.current.locale): String {
     val miles = locale.measurementSystem != ScooterMeasurementSystem.Metric
-    val whole = { kph: Double -> if (miles) floor(kph / KM_PER_MILE + 0.1).toLong() else Math.round(kph) }
+    val whole = { kph: Double -> floor((if (miles) kph / KM_PER_MILE else kph) + 0.1).toLong() }
     val least = whole(range.start)
     val greatest = whole(range.endInclusive)
     val unit = if (miles) MeasureUnit.MILE_PER_HOUR else MeasureUnit.KILOMETER_PER_HOUR
