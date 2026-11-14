@@ -66,14 +66,23 @@ the `Retry-After` Bird asks, up to six hours.
 ## Pace and budget
 
 One client serves every area, and Rome's additions (`BIRD_PACE`). Since
-10 November 2026 a town someone opens has up to ten requests a minute, at
-once, and all requests together no more than 30 in any five minutes and 120
+14 November 2026 a town someone opens has up to 20 requests a minute, at
+once, and all requests together no more than 50 in any five minutes and 120
 in any hour. An idle sweep keeps a request every 30 seconds
 (`BIRD_QUERY_INTERVAL_MS`) and waits once 20 have started in five minutes, or
-90 in the hour, which leaves the rest to the towns someone opens. Until then
-every request came 30 seconds after the one before: a town opened waited for
-its first scooters 38 seconds at the median from 8 to 10 November, and
-Austin's sweeps of 31 to 37 requests took 17 to 39 minutes.
+90 in the hour, which leaves the rest to the towns someone opens. The first
+request of a town opened with nothing shown goes before the others and has two
+more of each (`BIRD_OPENING_TURNS`, `PaceOptions.opening` in
+`server/sweeps.ts`), so it does not wait for another town's sweep to free the
+minute: from 10 to 14 November, at ten a minute and 30 in five minutes, 9 of
+the 33 Bird and Spin towns opened with nothing shown waited 15 seconds to 5
+minutes for their first scooters, the others had them within 8, and Austin's
+sweep of about 29 requests took two minutes. Production sent about 800
+requests a day then, at most 122 in an hour, and Bird refused none and made
+none up. Until 10 November every request came 30 seconds after the one
+before: a town opened waited for its first scooters 38 seconds at the median
+from 8 to 10 November, and Austin's sweeps of 31 to 37 requests took 17 to 39
+minutes.
 
 On 27 October 2026 the map made up its scooters twice, both times after
 about 200 requests: in eleven minutes 2.5 to 3 seconds apart, and in 23
@@ -85,8 +94,14 @@ real scooters: Austin's 2,844 in 45 requests and 31 seconds, where the
 cache's sweeps found 2,846 to 2,874 that day. A minute later a second run, a
 request every two seconds, had Bird's API refuse the Mac's address after 139
 requests in four minutes (HTTP 403 in 15 ms, 22:32:10 UTC), while Bird's
-public feeds (`mds.bird.co`) still answered it. So 30 in five minutes is
-under a quarter of what that firewall let through.
+public feeds (`mds.bird.co`) still answered it. On 14 November 2026, from
+20:39 UTC, the research account's map answered 120 requests from the Mac three
+seconds apart (21 in a minute, 101 in five), all with real scooters by the
+production client's checks, and the API refused none: the five minutes' 50 is
+half that. The test runs from a home address, and the firewall may hold the
+server's datacenter address to less, hence the half. Too many still costs
+little: a 403 holds every Bird request for 15 minutes, while the map keeps its
+last positions.
 
 An area nobody looks at is swept once a day (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
 two hours after a day without a sweep (`BIRD_IDLE_GRACE_MS`): its turn falls at

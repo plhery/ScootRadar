@@ -27,19 +27,31 @@ export const BIRD_REACH_M = 5_000;
  */
 export const BIRD_QUERY_INTERVAL_MS = 30_000;
 /**
- * What all Bird requests may take together (Pacer): a town someone opens up to ten a minute at once
- * (BIRD_BURST_EVERY_MS), 30 in any five minutes and 120 in any hour, of which an idle sweep, at its 30
- * seconds, leaves ten and 30 to the towns someone opens. On 10 November 2026 the research account's map
- * answered 66 requests in 44 seconds, four at a time, with real scooters (Austin's 2,844 in 45 requests;
- * the cache's sweeps found 2,846 to 2,874 that day), and its API refused the Mac's address (HTTP 403,
- * Bird's public feeds still answering it) after 139 in four minutes: 30 in five minutes is under a
- * quarter of that, and 120 an hour well under the 200 the map made up scooters after. Until then two a
- * minute, so a town opened waited up to 30 seconds for its first scooters, 38 at the median from 8 to 10
- * November, and Austin's sweep of 31 to 37 took 17 to 39 minutes.
+ * The turns of the minute, of five minutes and of the hour kept for the first request of a town opened with
+ * nothing shown (PaceOptions.opening), on top of those the others have: a town opened while another's sweep had
+ * spent the minute's turns waited for them. From 10 to 14 November 2026, 9 of the 33 Bird and Spin towns opened
+ * so waited 15 seconds to 5 minutes for their first scooters, the others had them within 8.
+ */
+export const BIRD_OPENING_TURNS = 2;
+/**
+ * What all Bird requests may take together (Pacer): a town someone opens up to 20 a minute at once
+ * (BIRD_BURST_EVERY_MS), 50 in any five minutes and 120 in any hour, of which an idle sweep, at its 30
+ * seconds, leaves 30 of the five minutes' and 30 of the hour's to the towns someone opens; and the first
+ * request of a town opened with nothing shown two more of each (BIRD_OPENING_TURNS). On 14 November 2026,
+ * from 20:39 UTC, the research account's map answered 120 requests from the Mac three seconds apart, 101
+ * of them in five minutes, all with real scooters, and Bird's API refused none: 50 is half that. On 10
+ * November it had answered 66 in 44 seconds, four at a time (Austin's 2,844 in 45 requests; the cache's
+ * sweeps found 2,846 to 2,874 that day), then refused the Mac's address (HTTP 403, Bird's public feeds
+ * still answering it) after 139 more in four minutes. 120 an hour stays well under the 200 the map made up
+ * scooters after; production, from another address, sent at most 122 in an hour from 10 to 14 November.
+ * From 10 to 14 November ten a minute and 30 in five: Austin's sweep of about 29 took two minutes. Until
+ * then two a minute, so a town opened waited up to 30 seconds for its first scooters, 38 at the median
+ * from 8 to 10 November, and Austin's sweep of 31 to 37 took 17 to 39 minutes.
  */
 export const BIRD_PACE: PaceOptions = {
-  perMinute: 10,
-  spans: [{ ms: 5 * 60_000, requests: 30, idle: 20 }, { ms: 60 * 60_000, requests: 120, idle: 90 }],
+  perMinute: 20 + BIRD_OPENING_TURNS,
+  spans: [{ ms: 5 * 60_000, requests: 50 + BIRD_OPENING_TURNS, idle: 20 }, { ms: 60 * 60_000, requests: 120 + BIRD_OPENING_TURNS, idle: 90 }],
+  opening: BIRD_OPENING_TURNS,
 };
 /** After an unverified map, no Bird request for a quarter of an hour: the research reader's hold. */
 export const BIRD_UNTRUSTED_HOLD_MS = 15 * 60_000;

@@ -196,20 +196,20 @@ describe('Bird map client', () => {
 
   const looked = { urgent: () => true, focus: () => undefined, progress: () => {} };
 
-  it('asks Bird up to ten times at once for a town someone looks at', async () => {
+  it('asks Bird up to 20 times at once for a town someone looks at', async () => {
     await writeFile(sessionPath, JSON.stringify(session(Date.now() + 20 * HOUR)));
     const times: number[] = [];
     const fetcher = vi.fn(async () => { times.push(Date.now()); return ok({ birds: [], cell_ids: [] }); });
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
     try {
       const paced = new BirdClient({ sessionPath, fetch: fetcher });
-      const town = withinCollection(looked, () => Promise.all(Array.from({ length: 12 }, (_, i) => paced.nearest(at.lat + i * 0.01, at.lng))));
+      const town = withinCollection(looked, () => Promise.all(Array.from({ length: 22 }, (_, i) => paced.nearest(at.lat + i * 0.01, at.lng))));
       // Its session is read from disk before the first.
-      await vi.waitFor(() => expect(times).toHaveLength(10));
+      await vi.waitFor(() => expect(times).toHaveLength(20));
       await vi.advanceTimersByTimeAsync(60_000);
       await town;
     } finally { vi.useRealTimers(); }
-    expect(times.map(time => time - times[0])).toEqual([...Array(10).fill(0), 60_000, 60_000]);
+    expect(times.map(time => time - times[0])).toEqual([...Array(20).fill(0), 60_000, 60_000]);
   });
 
   it('counts the requests of the cache it replaces once its start hold is over, and keeps its own for the next', async () => {
@@ -219,8 +219,8 @@ describe('Bird map client', () => {
     const fetcher = vi.fn(async () => { times.push(Date.now()); return ok({ birds: [], cell_ids: [] }); });
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
     const t0 = Date.now();
-    // The cache it replaces spent five minutes' 30 requests in the minute before it started.
-    const before = Array.from({ length: 30 }, (_, i) => t0 - 60_000 + i * 1_000);
+    // The cache it replaces spent five minutes' 50 requests in the minute before it started.
+    const before = Array.from({ length: 50 }, (_, i) => t0 - 60_000 + i * 1_000);
     await mkdir(dirname(pacePath), { recursive: true });
     await writeFile(pacePath, JSON.stringify({ version: 1, started: before }));
     try {

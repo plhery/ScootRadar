@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { BIRD_PACE } from './birdApp';
 import { nearestFirst, PACE_WINDOW_MS, PaceGate, Pacer, PROGRESS_EVERY_MS, SweepProgress, takeNearest, withinCollection, type CollectionScope,
   type PaceOptions } from './sweeps';
 
@@ -153,7 +154,7 @@ describe('Pacer', () => {
     expect(at).toEqual([200, 30_000]);
   });
 
-  // Bird's (BIRD_PACE): ten a minute, 30 in five minutes and 120 an hour, of which an idle sweep may take 20 and 90.
+  // Bird's until 14 November 2026 (BIRD_PACE): ten a minute, 30 in five minutes and 120 an hour, of which an idle sweep may take 20 and 90.
   const MINUTE = 60_000;
   const spans: PaceOptions = { perMinute: 10, spans: [{ ms: 5 * MINUTE, requests: 30, idle: 20 }, { ms: 60 * MINUTE, requests: 120, idle: 90 }] };
 
@@ -278,6 +279,21 @@ describe('Pacer opening', () => {
     await vi.advanceTimersByTimeAsync(2 * PACE_WINDOW_MS);
     await Promise.all([again, ...towns]);
     expect(turns.slice(13)).toEqual(['a1 61', 'b1 62', 'c1 120']);
+  });
+
+  it('starts Bird\'s town opened with nothing shown at once, on two turns of its own, while those still shown have spent five minutes\' 50 (BIRD_PACE)', async () => {
+    const pacer = new Pacer(30_000, Date.now, 0, Infinity, BIRD_PACE);
+    const turns: string[] = [];
+    const again = Promise.all(shownTurns(60).map((scope, i) => ask(pacer, turns, `shown${i + 1}`, scope)));
+    await vi.advanceTimersByTimeAsync(130_000);
+    const town = run(pacer, turns)('opened', 2, opened());
+    await vi.advanceTimersByTimeAsync(6 * PACE_WINDOW_MS);
+    await Promise.all([again, town]);
+    const shownAt = (from: number, to: number, at: number) => Array.from({ length: to - from + 1 }, (_, i) => `shown${from + i} ${at}`);
+    // Twenty a minute and 50 in five minutes for those still shown, as before the two kept for an opened town's first:
+    // its others go first once the five minutes free turns, at 300 s.
+    expect(turns).toEqual([...shownAt(1, 20, 0), ...shownAt(21, 40, 60), ...shownAt(41, 50, 120), 'opened1 130', 'opened2 300',
+      ...shownAt(51, 60, 300)]);
   });
 
   it('lets a town opened go before the turn kept for an idle sweep', async () => {
