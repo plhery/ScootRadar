@@ -131,8 +131,6 @@
 "Faded ones last seen at %@" = "En pâle, vues à %@";
 "updating…" = "mise à jour…";
 "last seen %@" = "vues à %@";
-"%1$lld faded, last seen at %2$@." = "%1$lld en pâle, vues à %2$@.";
-"%1$lld faded, last seen at %2$@, updating." = "%1$lld en pâle, vues à %2$@, mise à jour en cours.";
 "%1$@ · last seen %2$@" = "%1$@ · vue à %2$@";
 "May have moved since" = "Peut-être déplacée depuis";
 "May have moved · new positions on the way" = "Peut-être déplacée · nouvelles positions en route";

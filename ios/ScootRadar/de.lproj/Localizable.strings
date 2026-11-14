@@ -131,8 +131,6 @@
 "Faded ones last seen at %@" = "Blasse Scooter: Stand %@";
 "updating…" = "wird aktualisiert…";
 "last seen %@" = "Stand %@";
-"%1$lld faded, last seen at %2$@." = "%1$lld blass, Stand %2$@.";
-"%1$lld faded, last seen at %2$@, updating." = "%1$lld blass, Stand %2$@, wird aktualisiert.";
 "%1$@ · last seen %2$@" = "%1$@ · Stand %2$@";
 "May have moved since" = "Seither vielleicht bewegt";
 "May have moved · new positions on the way" = "Vielleicht bewegt · neue Standorte kommen";

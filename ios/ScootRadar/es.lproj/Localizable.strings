@@ -131,8 +131,6 @@
 "Faded ones last seen at %@" = "Los tenues, vistos por última vez a las %@";
 "updating…" = "actualizando…";
 "last seen %@" = "vistos a las %@";
-"%1$lld faded, last seen at %2$@." = "%1$lld tenues, vistos por última vez a las %2$@.";
-"%1$lld faded, last seen at %2$@, updating." = "%1$lld tenues, vistos por última vez a las %2$@, actualizando.";
 "%1$@ · last seen %2$@" = "%1$@ · visto a las %2$@";
 "May have moved since" = "Puede haberse movido";
 "May have moved · new positions on the way" = "Puede haberse movido · nuevas posiciones en camino";

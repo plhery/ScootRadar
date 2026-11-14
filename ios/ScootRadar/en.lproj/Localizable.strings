@@ -131,8 +131,6 @@
 "Faded ones last seen at %@" = "Faded ones last seen at %@";
 "updating…" = "updating…";
 "last seen %@" = "last seen %@";
-"%1$lld faded, last seen at %2$@." = "%1$lld faded, last seen at %2$@.";
-"%1$lld faded, last seen at %2$@, updating." = "%1$lld faded, last seen at %2$@, updating.";
 "%1$@ · last seen %2$@" = "%1$@ · last seen %2$@";
 "May have moved since" = "May have moved since";
 "May have moved · new positions on the way" = "May have moved · new positions on the way";

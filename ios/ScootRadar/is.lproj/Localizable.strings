@@ -131,8 +131,6 @@
 "Faded ones last seen at %@" = "Daufar sáust síðast kl. %@";
 "updating…" = "uppfærist…";
 "last seen %@" = "sáust síðast kl. %@";
-"%1$lld faded, last seen at %2$@." = "%1$lld daufar, sáust síðast kl. %2$@.";
-"%1$lld faded, last seen at %2$@, updating." = "%1$lld daufar, sáust síðast kl. %2$@, uppfærist.";
 "%1$@ · last seen %2$@" = "%1$@ · sást síðast kl. %2$@";
 "May have moved since" = "Gæti hafa færst síðan";
 "May have moved · new positions on the way" = "Gæti hafa færst · nýjar staðsetningar á leiðinni";

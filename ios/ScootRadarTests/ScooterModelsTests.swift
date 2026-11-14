@@ -1245,10 +1245,6 @@ extension ScooterModelsTests {
             ("Faded ones last seen at %@", ["%@"]),
             ("updating…", []),
             ("last seen %@", ["%@"]),
-            // Android's, which reads these files: the iPhone reads these two sentences from Localizable.stringsdict, in
-            // the form each count takes (ScooterFilteringTests).
-            ("%1$lld faded, last seen at %2$@.", ["%1$lld", "%2$@"]),
-            ("%1$lld faded, last seen at %2$@, updating.", ["%1$lld", "%2$@"]),
             ("%1$@ · last seen %2$@", ["%1$@", "%2$@"]),
             ("May have moved since", []),
             ("May have moved · new positions on the way", [])
