@@ -1817,6 +1817,14 @@ Bonaire had feeds to add. Survey files are in
   are still polled; their "feed empty" alerts are silenced in Grafana until
   1 December, 08:00 UTC. Then read them from Netcup and look for a notice,
   with Lubliniec's and Tarnowskie Góry's.
+- **1 December 2026:** Dott Trondheim and Stjørdal (`dott_no_trondheim`,
+  `dott_no_stjordal`), paused from 14 November to 15 March after Entur stopped
+  serving both on 13 November 2026, with 840 and 61 scooters out; Dott's
+  `trondheim` region answered 403 `ERR_REGION_OFFLINE`
+  ([Norway's feeds](belgian-norwegian-british-scooter-feeds.md#dott-trondheim-and-stjørdal-november-2026)).
+  Read Entur's manifest for `dotttrondheim` and `dottstjordal`. If they are
+  back, the map shows them already: move Trondheim's `from` back to `12-02`
+  and give Stjørdal the season its kommune sets, or none.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and

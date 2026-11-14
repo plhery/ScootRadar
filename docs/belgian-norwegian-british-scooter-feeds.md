@@ -231,6 +231,37 @@ directory.
   holders, with 250 scooters each. Ryde listed about 720 available on
   22 October 2026, and Dott publishes nothing for Bodø.
 
+## Dott Trondheim and Stjørdal, November 2026
+
+Entur stopped serving Dott's two Norwegian systems on 13 November 2026. The
+cache last read Trondheim at 09:46 UTC, with 840 scooters, and Stjørdal at
+10:54 UTC, with 61. Both counts had been steady through the week, so the
+fleet was not taken in before the feeds went. On 14 November:
+
+- Entur's manifest listed no Dott system.
+- `dotttrondheim/gbfs` and `dottstjordal/gbfs` answered 404, under both
+  `gbfs/v3` and `gbfs/v2`.
+- Entur's mobility GraphQL still listed 835 Dott scooters in Trondheim and 85
+  around Stjørdal. But none of Trondheim's moved or changed battery in five
+  minutes (06:33 to 06:38 UTC), while 223 of Voi's and Ryde's moved in forty
+  seconds. Those are Dott's last positions, kept.
+- Dott's own `trondheim` region answered 403 `ERR_REGION_OFFLINE`. That is
+  how Dott answers for a region it has paused, as for Tignes
+  ([French feeds](french-scooter-feeds.md)). The 403 stopped the reading
+  there; Dott's Norwegian listing was not read.
+
+So both feeds pause from 14 November to 15 March, Trondheim's season end
+under its forskrift moved two weeks forward for Dott. Voi's and Ryde's
+Trondheim feeds run on to 1 December, so Trondheim is not shown as off
+season. Stjørdal, where Dott is the only operator covered, is shown off
+season until March. That date is Trondheim's, since Stjørdal publishes no
+season of its own.
+
+A paused feed is still collected for the map. If Entur serves Dott again
+before March, its scooters show as soon as the feed answers, and the only
+thing left to change is the catalog's `from`. The alerts come back on 15
+March 2027. The [coverage gaps](coverage-gaps.md) recheck it on 1 December.
+
 ## Data handling
 
 - **Entur** answers only clients that identify themselves. Every request to
@@ -499,6 +530,8 @@ stays open at night.
     or ice is likely
     ([FOR-2022-02-08-192](https://lovdata.no/dokument/LF/forskrift/2022-02-08-192)
     § 3), so Voi's, Ryde's and Dott's feeds pause from 2 December to 15 March.
+    Dott's, and its Stjørdal feed, pause from 14 November instead: see
+    [Dott Trondheim and Stjørdal, November 2026](#dott-trondheim-and-stjørdal-november-2026).
   - Skien and Porsgrunn: from 15 December until the streets are clear, with
     no set end. Skien kommune's
     [Sykkel page](https://www.skien.kommune.no/kultur-idrett-og-frivillighet/parker-og-friluftsliv/sykkel/),

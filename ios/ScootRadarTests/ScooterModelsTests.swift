@@ -2184,7 +2184,7 @@ extension ScooterModelsTests {
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-07-20T16:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: GeoPoint(latitude: 45.65, longitude: -73.6), on: january, among: Self.quebec))
         // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
-        // 2 December until 15 March, Porsgrunn and Skien from 15 December until the streets are
+        // 2 December until 15 March (Dott's feed from 14 November, with Stjørdal's), Porsgrunn and Skien from 15 December until the streets are
         // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
         // 1 March, Bodø from 1 December until 1 April, Dalvík from 21 October, Leduc from 22 October
         // and Ólafsvík with Hellissandur from 23 October and Stykkishólmur from 26 October until 1 May,
@@ -2196,7 +2196,7 @@ extension ScooterModelsTests {
         // Târgoviște from 30 October until 1 April, and Pietarsaari from 31 October until 1 April, each
         // by its own clock. Hopp's Faliraki pauses from 31 October too, but Hoppy runs on there.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
-                       ["fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
+                       ["fr:Tignes", "no:Stjørdal", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
                         "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "is:Stykkishólmur", "fi:Pietarsaari",
                         "us:mn:Winona", "us:ca:South Lake Tahoe",
                         "ca:ab:Leduc", "ca:on:Ottawa", "ca:on:Vaughan", "ca:on:Windsor", "ca:on:Brampton", "ca:ab:Cochrane",

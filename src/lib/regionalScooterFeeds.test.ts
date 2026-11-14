@@ -636,6 +636,24 @@ describe('German and Italian scooter coverage', () => {
     }
   });
 
+  it('pauses Dott\'s Trondheim and Stjørdal feeds from 14 November to 15 March, as Entur stopped serving both on 13 November 2026, while Voi\'s and Ryde\'s Trondheim feeds run on to 1 December', () => {
+    const trondheim: [number, number] = [63.4305, 10.3951];
+    const stjordal: [number, number] = [63.4714, 10.9139];
+    // Norway is an hour ahead of UTC in November: 23:30 on 13 November is before the pause; 00:30 on the 14th is in it.
+    for (const feed of ['dott_no_trondheim', 'dott_no_stjordal']) {
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2026, 10, 13, 22, 30)), feed).toBe(false);
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2026, 10, 13, 23, 30)), feed).toBe(true);
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2027, 2, 14, 12)), feed).toBe(true);
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2027, 2, 15, 12)), feed).toBe(false);
+    }
+    // Trondheim keeps Voi's and Ryde's scooters to 1 December, so it is not shown as off season; Stjørdal, Dott's alone, is.
+    const lateNovember = Date.UTC(2026, 10, 20, 12);
+    expect(feedPaused('norway:voi_no_trondheim', lateNovember)).toBe(false);
+    expect(feedPaused('norway:ryde_no_trondheim', lateNovember)).toBe(false);
+    expect(activeSeasonalPause(trondheim, lateNovember)).toBeNull();
+    expect(activeSeasonalPause(stjordal, lateNovember)).toEqual({ city: 'Stjørdal', month: 3 });
+  });
+
   it('takes Skien\'s and Porsgrunn\'s scooters off from 15 December until the streets are clear, and its alerts back by 1 May', () => {
     const skien: [number, number] = [59.2075, 9.6107];
     const porsgrunn: [number, number] = [59.1411, 9.6555];
