@@ -26,8 +26,17 @@ import kotlin.math.floor
  * On more lines than one, SwiftUI counts a word broken in the middle, one longer than the line, as not fitting, as it
  * does a text cut short: the search bar's "Bahnhofstrasse" at the accessibility sizes is drawn smaller, on one line
  * where it fits so, and else broken at `factor` of its size (SwiftUI's own layout, drawn with ImageRenderer, app-bb).
+ *
+ * The iPhone draws in SF, which runs 2 to 4% narrower than the Inter drawn here (CoreText, the search bar's
+ * placeholder in the nine languages at 15, 19.5 and 27 points: 0.962 to 0.985), so a text it fits at `factor` could be
+ * cut here: "Search city or addre…" at 360 dp with text at 1.3. Where that is all it lacks, the text goes on down to
+ * [SF_IN_INTER] of the floor, as wide as the iPhone's at its floor; one that fits at none of those sizes is drawn at
+ * `factor` of its size, as before.
  */
 internal fun shrinking(style: TextStyle, factor: Float): TextAutoSize = MinimumScale(style.fontSize, factor)
+
+/** SF's width against Inter's for the same text and size, at the narrowest measured. */
+internal const val SF_IN_INTER = 0.96f
 
 /** The size in sp that is drawn at [factor] of what [size] is drawn at. */
 internal fun shrunk(size: TextUnit, factor: Float, density: Density): TextUnit = with(density) { (size.toDp() * factor).toSp() }
@@ -38,7 +47,8 @@ private data class MinimumScale(val size: TextUnit, val factor: Float) : TextAut
         fun fits(px: Float) = performLayout(constraints, text, px.toSp()).let { !it.overflows() && !it.breaksAWord(breaks) }
         val largest = size.toPx()
         if (fits(largest)) return size
-        val smallest = shrunk(size, factor, this).toPx()
+        val atFactor = shrunk(size, factor, this)
+        val smallest = atFactor.toPx() * SF_IN_INTER
         val step = 0.25.dp.toPx()
         val steps = floor((largest - smallest) / step).toInt()
         // The fewest steps down that fit; the floor if none does.
@@ -54,7 +64,7 @@ private data class MinimumScale(val size: TextUnit, val factor: Float) : TextAut
                 low = middle + 1
             }
         }
-        return (if (fewest <= steps) largest - fewest * step else smallest).toSp()
+        return if (fewest <= steps) (largest - fewest * step).toSp() else atFactor
     }
 }
 

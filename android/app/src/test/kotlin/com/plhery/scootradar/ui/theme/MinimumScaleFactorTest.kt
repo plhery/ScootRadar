@@ -11,9 +11,11 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -63,6 +65,36 @@ class MinimumScaleFactorTest {
         assertEquals("lines", 2, title.layout.lineCount)
         assertEquals("the first line", "Rue de la ", title.layout.layoutInput.text.text.substring(0, title.layout.getLineEnd(0)))
         assertEquals("drawn at its size: ${title.seen}", title.own, title.drawn, 1f)
+    }
+
+    /**
+     * The iPhone draws the bar in SF, 2 to 4% narrower than Inter: at 360 dp with text at 1.3, "Search city or address"
+     * fits its 166 dp there at 0.81 of its size (CoreText), and was cut here at 0.8, "Search city or addre…" (ctl-0130-sra).
+     * It goes on down as far as SF's width at 0.8 would, and shows whole.
+     */
+    @Test
+    fun aTextTheIPhoneFitsAtItsFloorIsNotCutForInterBeingWider() {
+        useFontScale(1.3f)
+        var laidOut: TextLayoutResult? = null
+        compose.setContent {
+            ScootTheme(dark = false) {
+                val style = ScootType.subheadline.weight(FontWeight.Medium)
+                Box(Modifier.width(166.dp)) {
+                    Text(
+                        "Search city or address",
+                        style = style,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        autoSize = shrinking(style, 0.8f),
+                        onTextLayout = { laidOut = it },
+                    )
+                }
+            }
+        }
+        compose.waitForIdle()
+        val layout = checkNotNull(laidOut)
+        assertEquals("lines", 1, layout.lineCount)
+        assertFalse("cut short", layout.isLineEllipsized(0))
     }
 
     /**
