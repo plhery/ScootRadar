@@ -89,6 +89,23 @@ describe('Whoosh map contract', () => {
     expect(() => parseWhooshRideAreas({ areas: [{ enabled: true, type: 'LIMITED', borders: { coordinates: [] } }] })).toThrow();
   });
 
+  it('says once how far a ride area that grew past the reviewed coverage reaches, and collects nothing of it', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    try {
+      const { client, counts } = await fixture();
+      const narrow = { ...coverage, north: 1.012 };
+      await expect(client.vehicles(REGION, narrow)).rejects.toThrow('exceeds reviewed coverage');
+      await expect(client.vehicles(REGION, narrow)).rejects.toThrow('exceeds reviewed coverage');
+      const said = warn.mock.calls.map(([line]) => JSON.parse(String(line))).filter(line => line.event === 'whoosh_area_crosses_coverage');
+      expect(said).toEqual([{ event: 'whoosh_area_crosses_coverage', region: REGION, coverage: narrow,
+        areas: [{ south: 1.004, north: 1.016, west: 2.004, east: 2.016 }] }]);
+      expect(counts().maps).toBe(0);
+      await client.vehicles(REGION, coverage);
+      await expect(client.vehicles(REGION, narrow)).rejects.toThrow('exceeds reviewed coverage');
+      expect(warn.mock.calls.filter(([line]) => String(line).includes('whoosh_area_crosses_coverage'))).toHaveLength(2);
+    } finally { warn.mockRestore(); }
+  });
+
   it('renews one session for concurrent collections and binds requests to the reviewed region', async () => {
     const { client, counts } = await fixture();
     const results = await Promise.all([client.vehicles(REGION, coverage), client.vehicles(REGION, coverage)]);

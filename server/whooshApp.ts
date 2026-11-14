@@ -162,6 +162,8 @@ export class WhooshClient {
   private readonly metadata = new Map<string, Metadata>();
   // How many of each region's ride polygons lie outside its coverage, last time it was swept.
   private readonly outside = new Map<string, number>();
+  // The envelopes of each region's ride polygons that cross its coverage's edge, last said.
+  private readonly crossing = new Map<string, string>();
   private readonly loading = new Map<string, Promise<Metadata>>();
 
   constructor(options: Options = {}) {
@@ -302,6 +304,15 @@ export class WhooshClient {
       console.warn(JSON.stringify({ event: 'whoosh_areas_outside_coverage', region, outside, areas: metadata.areas.length }));
     }
     this.outside.set(region, outside);
+    // An expansion fails every sweep (whooshMapViews), so its envelope is said once, to review the coverage by:
+    // from 13 November 2026 at 09:42 UTC Campo Grande's failed so, and nothing told how far its area had grown.
+    const crossing = metadata.areas.filter(area => !outsideCoverage(area, coverage) && (area.south < coverage.south ||
+      area.north > coverage.north || area.west < coverage.west || area.east > coverage.east));
+    const said = JSON.stringify(crossing);
+    if (crossing.length && this.crossing.get(region) !== said) {
+      console.warn(JSON.stringify({ event: 'whoosh_area_crosses_coverage', region, coverage, areas: crossing }));
+    }
+    this.crossing.set(region, said);
     const targets = nearestFirst(whooshMapViews(metadata.areas, coverage), view => view);
     const vehicles = sweep?.found ?? new Map<string, WhooshScooter>();
     let requests = 0;

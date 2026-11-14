@@ -49,7 +49,10 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   coverage, which is the other region's to collect, and logs
   `whoosh_areas_outside_coverage` once, and again when that count changes; one
   that crosses the coverage's edge still fails the sweep, and so does a region
-  with no polygon inside its coverage.
+  with no polygon inside its coverage. Such a polygon's envelope is logged as
+  `whoosh_area_crosses_coverage` (region, coverage, areas) once, and again when it
+  changes, to review the coverage by: from 13 November 2026 at 09:42 UTC Campo
+  Grande's sweeps failed so, and no line said how far its area had grown.
 
   The catalog first took each region's bounds from that list, so Joinville
   had Curitiba's and Temuco and Villarrica the box around all three towns.
