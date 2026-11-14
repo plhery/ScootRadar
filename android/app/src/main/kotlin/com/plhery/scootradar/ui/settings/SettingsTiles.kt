@@ -42,6 +42,8 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.text
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -125,8 +127,20 @@ internal fun SettingsTile(
             .background(if (isSelected) colors.accentColor.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
             .border(1.5.dp, if (isSelected) colors.accentColor else colors.dockHairline, shape)
             .selectable(isSelected, interaction, FocusRing(shape), role = Role.RadioButton, onClick = onClick)
-            // TalkBack reads "Automatic" where the tile shows "Auto", as the units' segment does (review choice 16).
-            .then(if (spokenTitle == title) Modifier else Modifier.semantics { contentDescription = spokenTitle })
+            // TalkBack reads "Automatic" where the tile shows "Auto", as the units' segment does (review choice 16), and
+            // Voice Access answers to "Auto". Its name is set on the tile, not left to its text: Compose hands TalkBack
+            // the description of a tile with children as a child of its own, so TalkBack was given both,
+            // "Automatic" and "Auto" (ctl-2245's TalkBack pass).
+            .then(
+                if (spokenTitle == title) {
+                    Modifier
+                } else {
+                    Modifier.clearAndSetSemantics {
+                        contentDescription = spokenTitle
+                        text = AnnotatedString(title)
+                    }
+                },
+            )
             .padding(top = 4.dp, bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

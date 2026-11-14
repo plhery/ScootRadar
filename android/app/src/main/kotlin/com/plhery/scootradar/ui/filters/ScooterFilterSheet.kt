@@ -225,7 +225,7 @@ private fun RangeFilter(minimum: Int, unit: ScooterRangeFilter.Unit, help: Strin
                 .fillMaxWidth()
                 .heightIn(min = 52.dp)
                 .background(colors.tertiarySystemFill, SquircleShape(16.dp))
-                .padding(horizontal = 14.dp, vertical = 4.dp),
+                .padding(horizontal = 14.dp, vertical = 2.dp),
             contentAlignment = Alignment.Center,
         ) {
             RangeSlider(minimum, unit, onChoose)
@@ -270,9 +270,20 @@ private fun RangeSlider(minimum: Int, unit: ScooterRangeFilter.Unit, onChoose: (
     )
 }
 
-/** UISlider's thumb: white by day and by night, with the switch's knob's shadow. */
+/**
+ * UISlider's thumb: white by day and by night, with the switch's knob's shadow. It stands in the middle of a box 48
+ * high, which makes the slider as high, for touches and on the node TalkBack and Accessibility Scanner are given:
+ * Material's slider is as high as its thumb, and it was 24 (ctl-2245's TalkBack pass).
+ */
 @Composable
 private fun RangeThumb(interaction: MutableInteractionSource) {
+    Box(Modifier.height(RANGE_TARGET_HEIGHT), contentAlignment = Alignment.Center) {
+        Capsule(interaction)
+    }
+}
+
+@Composable
+private fun Capsule(interaction: MutableInteractionSource) {
     Box(
         Modifier
             .size(RANGE_THUMB_WIDTH, RANGE_THUMB_HEIGHT)
@@ -311,6 +322,9 @@ private fun RangeTrack(fraction: Float) {
 private val RANGE_THUMB_WIDTH = 36.dp
 private val RANGE_THUMB_HEIGHT = 24.dp
 private val RANGE_TRACK_HEIGHT = 6.dp
+
+/** The slider's height, Android's touch target: its card's 52 less 2 above and under it. */
+private val RANGE_TARGET_HEIGHT = 48.dp
 
 /** UIKit's systemFill, the grey of a slider's track past its thumb. */
 private val RANGE_TRACK_LIGHT = Color(0x33787880)

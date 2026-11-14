@@ -1,6 +1,9 @@
 package com.plhery.scootradar.ui.settings
 
+import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
@@ -53,6 +56,9 @@ class SettingsAccessibilityTest {
     private val model = controllers.make(EmptyScooterAPI, TestClock())
     private val version = ScooterLinks.appVersion
 
+    /** The sheet's view, which hands TalkBack its nodes. */
+    private lateinit var view: View
+
     @Before
     fun setUp() {
         ScooterLanguage.current = ScooterLanguage.En
@@ -69,6 +75,7 @@ class SettingsAccessibilityTest {
 
     private fun show(pages: List<SettingsPage>) {
         compose.setContent {
+            view = LocalView.current
             ScootTheme(dark = false, reduceMotion = true) {
                 ScooterSettingsSheet(
                     controller = model,
@@ -194,5 +201,41 @@ class SettingsAccessibilityTest {
         val notice = row("Read the privacy notice")
         assertEquals(listOf("Read the privacy notice"), notice.config[SemanticsProperties.Text].map { it.text })
         assertEquals(Role.Button, notice.config[SemanticsProperties.Role])
+    }
+
+    /**
+     * The Auto tile and the units' segments are read by their names in full alone, "Automatic", "Kilometres" and
+     * "Miles", what they show their text: nothing under them is read. Compose hands TalkBack the description of a
+     * node with children of its own as a child of its own, and the chosen segment's capsule and the tile's name are
+     * children, so TalkBack was given both, "Automatic" and "Auto" (ctl-2245's TalkBack pass).
+     */
+    @Test
+    fun autoAndTheUnitsAreReadByTheirNamesInFullAlone() {
+        show(listOf(SettingsPage.Root))
+        val units = hasAnySibling(hasContentDescription("Kilometres") or hasContentDescription("Miles"))
+        val tile = compose.onNode(hasContentDescription("Automatic") and isSelectable() and !units).fetchSemanticsNode()
+        val segments = listOf("Automatic", "Kilometres", "Miles").map { label ->
+            compose.onNode(hasContentDescription(label) and isSelectable() and units).fetchSemanticsNode()
+        }
+        for ((node, spoken, shown) in listOf(Triple(tile, "Automatic", "Auto")) +
+            segments.zip(listOf("Automatic" to "Auto", "Kilometres" to "km", "Miles" to "mi")) { node, (spoken, shown) -> Triple(node, spoken, shown) }
+        ) {
+            val info = view.accessibilityNodeProvider.createAccessibilityNodeInfo(node.id)!!
+            assertEquals(shown, spoken, info.contentDescription?.toString())
+            assertEquals(spoken, shown, info.text?.toString())
+            val under = descendants(info).mapNotNull { (it.contentDescription ?: it.text)?.toString() }
+            assertEquals(spoken, emptyList<String>(), under)
+        }
+    }
+
+    /** The nodes TalkBack is given under [info], its children's ids read as AccessibilityNodeInfo keeps them. */
+    private fun descendants(info: AccessibilityNodeInfo): List<AccessibilityNodeInfo> {
+        val childId = AccessibilityNodeInfo::class.java.getDeclaredMethod("getChildId", Int::class.javaPrimitiveType)
+        val virtualId = AccessibilityNodeInfo::class.java.getDeclaredMethod("getVirtualDescendantId", Long::class.javaPrimitiveType)
+        return (0 until info.childCount).flatMap { index ->
+            val id = virtualId.invoke(null, childId.invoke(info, index) as Long) as Int
+            val child = view.accessibilityNodeProvider.createAccessibilityNodeInfo(id) ?: return@flatMap emptyList()
+            listOf(child) + descendants(child)
+        }
     }
 }

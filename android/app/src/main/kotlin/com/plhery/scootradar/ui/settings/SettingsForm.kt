@@ -422,7 +422,10 @@ internal fun <T> FormSegmentedRow(
                 Modifier
                     .weight(1f)
                     .selectable(isSelected, interaction, indication = null, role = Role.RadioButton) { onSelect(choice) }
-                    .semantics {
+                    // Nothing under it read: the chosen one's capsule has its shape's semantics, and Compose hands
+                    // TalkBack the description of a segment with children as a child of its own, so TalkBack was
+                    // given both, "km" and "Kilometres" (ctl-2245's TalkBack pass).
+                    .clearAndSetSemantics {
                         contentDescription = spoken
                         // Voice Access answers to "km" as shown; TalkBack reads "Kilometres".
                         if (shown != spoken) text = AnnotatedString(shown)

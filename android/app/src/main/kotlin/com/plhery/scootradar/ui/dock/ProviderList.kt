@@ -124,7 +124,7 @@ internal fun ProviderList(controller: ScooterMapController, chips: List<ScooterP
 
 /**
  * A row of the panel's providers: the provider's dot, its name, its count or a warning while it isn't sharing data,
- * and a check while it is shown, dashed while it is shown but down. 44 points high at least, under a line. Of its
+ * and a check while it is shown, dashed while it is shown but down. 48 high at least, under a line. Of its
  * scooters drawn faded, a line under the name says whether they are being updated or since when they stand as last
  * seen, and with none counted, the count is of them, greyed.
  */
@@ -166,7 +166,9 @@ internal fun ProviderListRow(
                 onClick(label = hint) { onClick(); true }
             }
             .drawBehind { drawRect(colors.dockHairline, size = Size(size.width, 1.dp.toPx())) }
-            .heightIn(min = 44.dp)
+            // 48 where the iPhone's are 44: one under the other, Compose can't widen them to Android's 48 for touches
+            // without one taking from the next, and the list's first and last were 46 (ctl-2245's TalkBack pass).
+            .heightIn(min = 48.dp)
             .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
             .padding(horizontal = 16.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),

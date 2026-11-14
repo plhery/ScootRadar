@@ -239,6 +239,9 @@ fun ScooterSearchIsland(
 /** The room above and under the collapsed bar's content, inside the glass. */
 private val COLLAPSED_PADDING = 6.dp
 
+/** The room between the bar's buttons, each of whose 44 is widened to 48 for touches: 2 on either side of it. */
+private val BAR_BUTTON_GAP = 4.dp
+
 @Composable
 private fun CollapsedBar(
     state: ScooterSearchBarState,
@@ -253,7 +256,10 @@ private fun CollapsedBar(
     val colors = scootColors
     val analytics = LocalAnalytics.current
     val isAccessibility = TextSize.isAccessibility
-    Row(modifier, horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
+    // 4 between the buttons, where the iPhone's are 2 apart: Compose widens each 44 to the 48 a touch target takes on
+    // Android, and 2 apart they shared 2 of it, which went to the button drawn after, so that TalkBack and
+    // Accessibility Scanner were given Filters, and Clear place, 46 wide (ctl-2245's TalkBack pass).
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(BAR_BUTTON_GAP), verticalAlignment = Alignment.CenterVertically) {
         // A plain button is tapped on its label only, so the label fills the bar: its whole height, up to the
         // bar's edges.
         Row(
