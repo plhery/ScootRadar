@@ -554,6 +554,9 @@ apart. Fifty in ten seconds is 300
 a minute, twenty-five accounts' worth at twelve each; eight accounts make 96.
 A town's first fifty calls still start at once and its 51st ten seconds
 after its first, and nothing waits longer. Idle sweeps wait on the same budget.
+The calls it holds though their account had a turn, and how long they wait,
+are counted from 14 November 2026 (`scootradar_lime_address_held_total` and
+`scootradar_lime_address_held_seconds_total`, docs/OBSERVABILITY.md).
 
 Lime answered a view through two datacenter proxy exits on 12 November 2026
 (HTTP 200, the same 87 pins as directly; about one second through a new
@@ -577,8 +580,10 @@ refresh-token file between the local research process and production. The
 protected metric `scootradar_lime_account_requests_total{account,kind}` shows
 requests from each production account using only its manifest id,
 `scootradar_lime_account_lent_requests_total{account}` those of its status
-requests made for another account's groups, and
-`scootradar_lime_account_throttled_total{account}` those Lime refused with a 429.
+requests made for another account's groups,
+`scootradar_lime_account_throttled_total{account}` those Lime refused with a 429,
+and `scootradar_lime_address_held_total` the calls of all accounts the address's
+fifty in ten seconds held.
 
 Only actual scooter pins are retained. Battery is a percentage; range, fares,
 vehicle-specific rental links, parking and zone overlays are not supplied by

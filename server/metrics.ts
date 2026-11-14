@@ -47,6 +47,8 @@ interface MetricsSources {
   upstreamRequests?: () => Record<string, number>;
   /** Lime requests by a manifest's non-secret account id, including idle accounts at zero, and Lime's 429s to them. */
   limeAccountRequests?: () => readonly { account: string; status: number; metadata: number; lent?: number; throttled?: number }[];
+  /** The Lime calls the address's budget held though their account had a turn, and how long in all (PaceGate). */
+  limeAddressHeld?: () => { requests: number; ms: number };
   /** Pricing plans fetched again for scooters naming plans they did not list, by outcome. */
   planRefreshes?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
@@ -295,6 +297,15 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_lime_account_throttled_total', 'counter',
           'Of a Lime account\'s requests, those Lime answered with HTTP 429, lent or not: it counts the calls of the cache\'s one address, whichever accounts make them, and the account then cools down for its Retry-After, a minute at least.',
           sources.limeAccountRequests().map((row): [Labels, number] => [{ account: row.account }, row.throttled ?? 0]));
+      }
+      if (sources.limeAddressHeld) {
+        const held = sources.limeAddressHeld();
+        metric('scootradar_lime_address_held_total', 'counter',
+          'Lime requests held for the fifty calls in any ten seconds the accounts share from the cache\'s one address, though their own account had a turn: how often that budget is reached.',
+          [[{}, held.requests]]);
+        metric('scootradar_lime_address_held_seconds_total', 'counter',
+          'How long those requests waited for it, in all, from when their own account would have let them start.',
+          [[{}, round(held.ms / 1000)]]);
       }
       if (sources.planRefreshes) {
         metric('scootradar_pricing_plan_refreshes_total', 'counter',

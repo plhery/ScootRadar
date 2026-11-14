@@ -409,12 +409,14 @@ export function limeAccount(error: unknown): { account?: string; lent?: boolean;
 export class LimeAccountPool {
   readonly accounts: readonly LimeAccount[];
   readonly requests: LimeAccountRequests[];
+  /** The address's budget the accounts share (LIME_ADDRESS_CALLS), with the calls it held. */
+  readonly gate: PaceGate;
   private readonly clients: Map<string, LimeClient>;
   private readonly collectors: Map<string, LimeMapCollector>;
   constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest' | 'onThrottled'> = {}) {
     this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
     this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0, throttled: 0 }));
-    const gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
+    const gate = this.gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
     this.clients = new Map(this.accounts.map((account, index) => [account.id, new LimeClient({
       ...options, gate, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
       onThrottled: () => { this.requests[index].throttled++; },
@@ -466,6 +468,8 @@ export class LimeAccountPool {
 let productionPool: LimeAccountPool | undefined;
 const pool = () => productionPool ??= new LimeAccountPool(readLimeAccounts());
 export const limeAccountRequests = () => productionPool?.requests ?? [];
+/** The calls the address's budget held though their account had a turn, and how long in all (PaceGate.held). */
+export const limeAddressHeld = () => productionPool?.gate.held ?? { requests: 0, ms: 0 };
 export const collectLimeRegion = (system: RegionalScooterSystem) => pool().collect(system);
 /**
  * When a Lime group's idle sweeps fall (daytimeSweeps). Its interval is three whole days, so a night's count

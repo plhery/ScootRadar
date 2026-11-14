@@ -242,6 +242,38 @@ describe('PaceGate', () => {
     await vi.advanceTimersByTimeAsync(1);
     await Promise.all([first, second]);
     expect(times).toEqual([0, 0, 0, 0, 0, 10_000, 10_000, 10_000]);
+    // The two it held, one of each pacer's, ten seconds each; the third at ten seconds was asked for then.
+    expect(gate.held).toEqual({ requests: 2, ms: 20_000 });
+  });
+
+  it('counts the requests it holds though their own pacer had a turn, from that turn until they start', async () => {
+    const gate = new PaceGate(2, 10_000);
+    // An idle sweep's requests five seconds apart, and another pacer's someone is looking at.
+    const sweep = new Pacer(5_000, Date.now, 0, Infinity, { gate }), other = new Pacer(0, Date.now, 0, Infinity, { gate });
+    const swept: number[] = [], looked: number[] = [];
+    const sweeping = calls(sweep, 3, swept, collection());
+    await vi.advanceTimersByTimeAsync(1_000);
+    const looking = calls(other, 2, looked);
+    await vi.advanceTimersByTimeAsync(30_000);
+    await Promise.all([sweeping, looking]);
+    expect(swept).toEqual([0, 11_000, 20_000]);
+    expect(looked).toEqual([1_000, 10_000]);
+    // The second look from 1 s, the sweep's second from 5 s, its spacing's, not from when it was asked for, and
+    // its third from 16 s, though the gate was full when it was asked for at 11 s.
+    expect(gate.held).toEqual({ requests: 3, ms: 9_000 + 6_000 + 4_000 });
+  });
+
+  it('counts none held by their own pacer alone', async () => {
+    const gate = new PaceGate(50, 10_000);
+    // Twelve a minute: the thirteenth waits for the first to be a minute old.
+    const account = new Pacer(5_000, Date.now, 0, Infinity, { gate });
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    const looked: number[] = [];
+    const opened = calls(account, 13, looked);
+    await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    await opened;
+    expect(looked.at(-1)).toBe(looked[0] + PACE_WINDOW_MS);
+    expect(gate.held).toEqual({ requests: 0, ms: 0 });
   });
 
   it('counts over any span, not from a mark: a start frees its place when it is a span old', async () => {

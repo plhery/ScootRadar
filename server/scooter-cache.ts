@@ -41,7 +41,7 @@ import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
-import { limeAccountRequests, limeMapRequests, withLimeAppCollectors } from './limeApp';
+import { limeAccountRequests, limeAddressHeld, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 import { birdMapRequests, sweepScope, withBirdAppCollectors } from './birdApp';
 import { restoreBirdSupplements, savedBirdSupplements, withBirdSupplements } from './birdSupplement';
@@ -196,7 +196,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visi
       boltMapRequests.metadata + birdMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
-  limeAccountRequests,
+  limeAccountRequests, limeAddressHeld,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ rydeBridge, rydeViews, snapshot: () => snapshot,

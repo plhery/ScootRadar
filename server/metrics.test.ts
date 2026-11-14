@@ -272,6 +272,7 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
     cadenceModes: () => ({ always: 20, watched: 2, idle: 150 }),
     upstreamRequests: () => requests,
     limeAccountRequests: () => [{ account: 'primary', status: 4, metadata: 1, lent: 3, throttled: 2 }, { account: 'second', status: 0, metadata: 0, lent: 0, throttled: 0 }],
+    limeAddressHeld: () => ({ requests: 7, ms: 12_345 }),
     upstreamCache: () => ({ entries: 1_900, capacity: 2_322, evictions: 4 }),
   });
   metrics.recordCollectionStart('idle');
@@ -303,6 +304,9 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
   // Lime's 429s by the account that made the call, idle accounts at zero.
   expect(sample(text, 'scootradar_lime_account_throttled_total{account="primary"}')).toBe('2');
   expect(sample(text, 'scootradar_lime_account_throttled_total{account="second"}')).toBe('0');
+  // The calls the address's fifty in ten seconds held though their account had a turn, and for how long.
+  expect(sample(text, 'scootradar_lime_address_held_total')).toBe('7');
+  expect(sample(text, 'scootradar_lime_address_held_seconds_total')).toBe('12.345');
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="used"}')).toBe('1900');
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="capacity"}')).toBe('2322');
   expect(sample(text, 'scootradar_upstream_cache_evictions_total')).toBe('4');

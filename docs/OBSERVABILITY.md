@@ -139,6 +139,15 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   line names it, see [Logs](#logs)). Since 13 November 2026; 195 refusals in the two
   days before all accounts together were held to fifty calls in ten seconds (12 November).
   Per hour: `sum by (account) (increase(scootradar_lime_account_throttled_total[1h]))`.
+- `scootradar_lime_address_held_total` and `scootradar_lime_address_held_seconds_total`:
+  the Lime calls held for the fifty in any ten seconds all accounts share from the
+  cache's one address (`PaceGate` in `server/sweeps.ts`), though their own account had
+  a turn, and how long they waited for it in all, from that turn until they started.
+  They tell how often that budget is reached, which until 14 November 2026 only the
+  calls' times could. A call its own account's twelve a minute holds is not counted.
+  The mean wait of a held call over a day:
+  `sum(increase(scootradar_lime_address_held_seconds_total[1d])) / sum(increase(scootradar_lime_address_held_total[1d]))`.
+  Counters, so read them from the containers' job, as above.
 - `scootradar_lime_wake_clients_total{refreshes="1|2-3|4-7|8-15|16+"}` and
   `scootradar_lime_wakes_total{refreshes}`: visitors whose requests set off refreshes of
   Lime rider-map feeds, by how many they set off in a quarter hour (UTC), and those
