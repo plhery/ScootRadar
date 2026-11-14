@@ -414,7 +414,7 @@ private fun SummaryHeader(
     if (TextSize.isAccessibility) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             main(Modifier.fillMaxWidth())
-            if (showsTryAgain) TryAgainPill(isLoading, onRetry, Modifier)
+            if (showsTryAgain) TryAgainPill(isLoading, onRetry, Modifier, wraps = true)
         }
     } else {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {

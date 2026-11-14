@@ -62,6 +62,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
@@ -246,9 +247,13 @@ internal fun DockNoteRow(symbol: ImageVector, text: String, tint: Color? = null)
     }
 }
 
-/** Try again beside the count or the status after a failed refresh; a spinner in its place while it loads. */
+/**
+ * Try again beside the count or the status after a failed refresh; a spinner in its place while it loads. Beside them
+ * it keeps its one line, as the iPhone's fixedSize does; under them with very large text it wraps, [wraps], where the
+ * iPhone's is no longer fixed in width and has no line limit: "Opnieuw proberen" was cut short there at 320 dp.
+ */
 @Composable
-internal fun TryAgainPill(isLoading: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun TryAgainPill(isLoading: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier, wraps: Boolean = false) {
     val colors = scootColors
     val title = localized("Try again")
     Box(
@@ -264,7 +269,9 @@ internal fun TryAgainPill(isLoading: Boolean, onClick: () -> Unit, modifier: Mod
             title,
             style = ScootType.subheadline.weight(FontWeight.SemiBold),
             color = colors.actionText,
-            maxLines = 1,
+            maxLines = if (wraps) Int.MAX_VALUE else 1,
+            // Wrapped, it takes the row's width: its lines centred in it, as a dock button's.
+            textAlign = if (wraps) TextAlign.Center else TextAlign.Unspecified,
             modifier = Modifier.alpha(if (isLoading) 0f else 1f),
         )
         if (isLoading) Spinner(SpinnerSize.Small)
@@ -333,7 +340,8 @@ internal fun BodySymbol(symbol: ImageVector, points: Float, maximum: Float, colo
 
 /**
  * A button of a dock card, 48 points high: filled with the app's blue, or quiet beside it. Its label stays on one
- * line; it dims to 0.78 under the finger, a little under a mouse's pointer, and to 0.6 while it can't be used.
+ * line beside another button and takes two where it has the row to itself (DockActionRow); it dims to 0.78 under the
+ * finger, a little under a mouse's pointer, and to 0.6 while it can't be used.
  */
 @Composable
 internal fun DockActionButton(
@@ -377,20 +385,37 @@ internal fun DockActionButton(
     }
 }
 
-/** The label of a dock button: its text on one line, with a symbol before it when it has one. */
+/**
+ * The label of a dock button, with a symbol before it when it has one: its text in up to two lines, centred, which it
+ * takes only where its button has the row to itself, as beside another button it is given the room of one line.
+ */
 @Composable
 internal fun DockActionLabel(title: String, symbol: ImageVector? = null) {
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
         if (symbol != null) {
             SymbolIcon(symbol, textSymbolSize(14f), androidx.compose.material3.LocalContentColor.current)
         }
-        Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        DockActionTitle(title)
     }
 }
 
 /**
- * One or two buttons whose labels stay on one line: side by side where they fit, by their [weights] or in equal
- * shares, one above the other where they do not or the text is very large (DockActionLayout).
+ * A dock button's text: in up to two lines, centred. On a phone of 320 dp with the text at its largest, a label
+ * stacked alone on its row, as "Ouvrir dans Lime", "Opna Lime-appið" or "Erneut versuchen", was cut short on its one
+ * line, "Ouvrir dans Li…"; it now takes a second (ctl-0130-sra).
+ */
+@Composable
+internal fun DockActionTitle(title: String) {
+    Text(title, maxLines = DOCK_ACTION_LINES, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
+}
+
+/** The lines a dock button's label may take where its button has the row to itself. */
+internal const val DOCK_ACTION_LINES = 2
+
+/**
+ * One or two buttons: side by side where their labels fit on one line, by their [weights] or in equal shares, one
+ * above the other where they do not or the text is very large (DockActionLayout). Side by side, each is given at least
+ * the room of its one line, so its label never wraps there; a button alone on its row may wrap its label to two.
  */
 @Composable
 internal fun DockActionRow(
@@ -429,15 +454,20 @@ internal fun DockActionRow(
                 }
             }
         } else {
-            val height = measurables.zip(widths).maxOfOrNull { (button, width) -> button.minIntrinsicHeight(width) } ?: 0
-            val placeables = measurables.zip(widths).map { (button, width) ->
+            // Beside another, a button given up to half a point less than its one line takes it from the gap: its label
+            // would wrap there, where before it kept its line.
+            val fitted = if (count == 1) widths else widths.zip(ideal) { width, needs -> maxOf(width, needs) }
+            val taken = fitted.sum() - widths.sum()
+            val gap = if (count > 1) spacing - (taken + count - 2) / (count - 1) else spacing
+            val height = measurables.zip(fitted).maxOfOrNull { (button, width) -> button.minIntrinsicHeight(width) } ?: 0
+            val placeables = measurables.zip(fitted).map { (button, width) ->
                 button.measure(Constraints.fixed(maxOf(0, width), height))
             }
-            layout(placeables.sumOf { it.width } + gaps, height) {
+            layout(placeables.sumOf { it.width } + gap * maxOf(0, count - 1), height) {
                 var x = 0
                 placeables.forEach {
                     it.place(x, 0)
-                    x += it.width + spacing
+                    x += it.width + gap
                 }
             }
         }

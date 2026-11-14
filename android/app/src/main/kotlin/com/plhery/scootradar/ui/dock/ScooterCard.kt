@@ -540,7 +540,7 @@ internal fun DirectionsButton(
                 }
             }
             CrossFaded(directionsTitle(control), spring, reduceMotion, label = "directions title") { title ->
-                Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                DockActionTitle(title)
             }
         }
     }
