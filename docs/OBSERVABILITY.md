@@ -137,6 +137,9 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_lime_account_lent_requests_total{account}`: of an account's status
   requests, those it made for another account's group someone was looking at,
   when its own account had no turn as soon (`server/limeApp.ts`, LimeAccountPool).
+  Each call that goes out counts: a view retried after a refused token is two, and
+  one refused before its turn, as the lender cooled down meanwhile, none. Until
+  14 November 2026 it counted each lend once, as it was decided.
 - `scootradar_lime_account_throttled_total{account}`: of an account's requests, those
   Lime answered with HTTP 429, renewals included, counted on the account that made the
   call, lent or not. Lime counts the calls of the cache's one address in ten-second

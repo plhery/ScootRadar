@@ -334,6 +334,33 @@ describe('independent Lime production accounts', () => {
     } finally { vi.useRealTimers(); }
   });
 
+  it('counts the lent calls that go out: a lent view retried after a refused token is two', async () => {
+    const a = await fixture('-a'), b = await fixture('-b');
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      let refused = false;
+      const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+        { intervalMs: LIME_QUERY_INTERVAL_MS, peerSaveMs: 0, transport: async (_path, headers) => {
+          // b's first lent view: the other container has just replaced b's token, so Lime refuses the one b sent.
+          if (headers['X-Device-Token'] === b.seed.deviceToken && !refused) {
+            refused = true;
+            await writeFile(b.sessionPath, JSON.stringify({ ...b.seed, accessToken: 'replacement-access-b' }));
+            return response({}, 401);
+          }
+          return response(map());
+        } });
+      await vi.advanceTimersByTimeAsync(60_000);
+      const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}`, limeMapTiles: sixteenViews }));
+      const opened = candidates.find(s => pool.accountFor(s.id).id === 'a')!;
+      await withinCollection(looking, () => pool.collect(opened));
+      // a's twelve of the minute, then four views through b, one of them sent twice.
+      expect(pool.requests).toEqual([
+        { account: 'a', status: 12, metadata: 0, lent: 0, throttled: 0 },
+        { account: 'b', status: 5, metadata: 0, lent: 5, throttled: 0 },
+      ]);
+    } finally { vi.useRealTimers(); }
+  });
+
   it('never borrows from an account cooling down after a 429, and a group whose own account cools down fails there', async () => {
     const a = await fixture('-a'), b = await fixture('-b');
     vi.useFakeTimers(); vi.setSystemTime(initialTime);

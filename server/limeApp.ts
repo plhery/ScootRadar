@@ -54,7 +54,8 @@ interface LimeClientOptions {
   sessionPath?: string; now?: () => number; intervalMs?: number; peerSaveMs?: number; transport?: Transport;
   /** The budget of the address, shared with the other accounts' clients (LIME_ADDRESS_CALLS). */
   gate?: PaceGate;
-  onRequest?: (kind: 'status' | 'metadata') => void;
+  /** A call goes out: a map view's (status) or a renewal's (metadata), lent when made for another account's group. */
+  onRequest?: (kind: 'status' | 'metadata', lent: boolean) => void;
   /** Lime answered a call of this client's with HTTP 429, a map view's or a renewal's. */
   onThrottled?: () => void;
 }
@@ -153,13 +154,13 @@ export class LimeClient {
     return { Authorization: `Bearer ${s.accessToken}`, 'X-Device-Token': s.deviceToken, Platform: 'Android',
       'App-Version': '3.286.0', 'User-Agent': 'okhttp/4.12.0', Accept: 'application/json', 'Content-Type': 'application/json' };
   }
-  private async call(path: string, session: Session, body?: string) {
+  private async call(path: string, session: Session, body?: string, lent = false) {
     if (this.now() < this.blockedUntil) throw new Error('Lime is temporarily rate limited');
     await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Lime is temporarily rate limited');
     const kind = body === undefined ? 'status' : 'metadata';
     limeMapRequests[kind]++;
-    this.options.onRequest?.(kind);
+    this.options.onRequest?.(kind, lent);
     let reply: Reply;
     const headers = this.headers(session);
     if (path === '/api/auth/v2/oauth/token') delete headers.Authorization;
@@ -222,18 +223,19 @@ export class LimeClient {
   }
   /** When a call for a town someone is looking at, asked for now, would start (Pacer.urgentStartAt). */
   urgentStartAt(): number { return this.pace.urgentStartAt(); }
-  async pins(bounds: MapBounds): Promise<unknown> {
+  /** A view's scooters; lent when this account reads it for another account's group (LimeAccountPool.pins). */
+  async pins(bounds: MapBounds, lent = false): Promise<unknown> {
     const query = new URLSearchParams({ ne_lat: String(bounds.north), ne_lng: String(bounds.east),
       sw_lat: String(bounds.south), sw_lng: String(bounds.west), user_latitude: String((bounds.north + bounds.south) / 2),
       user_longitude: String((bounds.east + bounds.west) / 2), zoom: '18', vehicle_filter: '["scooter"]',
       bounding_box_restriction: 'limit_to_box' });
     const path = '/api/rider/v2/map/bike_pins?' + query;
     let s = await this.current();
-    let r = await this.call(path, s);
+    let r = await this.call(path, s, undefined, lent);
     if (r.status === 401) {
       // A concurrent region may already have replaced this token.
       s = this.session?.accessToken !== s.accessToken ? await this.current() : await this.current(s.accessToken);
-      r = await this.call(path, s);
+      r = await this.call(path, s, undefined, lent);
       if (r.status === 401) {
         this.failure = new Error('Lime map authorization was rejected');
         this.retryAt = this.now() + RETRY_MS;
@@ -418,7 +420,13 @@ export class LimeAccountPool {
     this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0, throttled: 0 }));
     const gate = this.gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
     this.clients = new Map(this.accounts.map((account, index) => [account.id, new LimeClient({
-      ...options, gate, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
+      ...options, gate, sessionPath: account.sessionPath, onRequest: (kind, lent) => {
+        this.requests[index][kind]++;
+        // The calls that go out, as Lime counts them: two for a view retried after a refused token, none for a
+        // lent view refused before its turn, as the lender cooled down meanwhile. Until 14 November 2026 a lend
+        // counted once as it was decided, whatever went out.
+        if (lent) this.requests[index].lent++;
+      },
       onThrottled: () => { this.requests[index].throttled++; },
     })]));
     this.collectors = new Map(this.accounts.map(account => [account.id,
@@ -444,11 +452,10 @@ export class LimeAccountPool {
       if (at < soonest) { lender = id; soonest = at; }
     }
     if (lender === undefined) return this.call(home, bounds, false);
-    this.requests.find(row => row.account === lender)!.lent++;
     return this.call(lender, bounds, true);
   }
   private call(id: string, bounds: MapBounds, lent: boolean): Promise<unknown> {
-    return this.clients.get(id)!.pins(bounds).catch(error => { throw new LimeAccountError(error, id, lent); });
+    return this.clients.get(id)!.pins(bounds, lent).catch(error => { throw new LimeAccountError(error, id, lent); });
   }
   accountFor(feedId: string): LimeAccount {
     // Rendezvous hashing keeps assignments stable when the manifest is reordered, and moves
