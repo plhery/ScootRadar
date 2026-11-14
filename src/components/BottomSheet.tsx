@@ -191,11 +191,16 @@ function ChipCount({ chip, className }: { chip: DockChip; className: string }) {
   );
 }
 
-/** "02:46", or "Wed 02:46" when the faded ones were seen on another day; a sentence counting one of them is singular. */
+/**
+ * "02:46", or "Wed 02:46" when the faded ones were seen on another day. A sentence counting one of them is singular,
+ * and so is the legend's line under its count when that is the count of the faded ones, "1 · vue à 02:46"; beside the
+ * count of an app's scooters shown (counted false), where a singular would seem to say how many those are, it stays
+ * plural.
+ */
 function seenText(faded: NonNullable<DockChip['faded']>, key: 'providers.faded.seen' | 'providers.faded.label' | 'providers.faded.labelUpdating',
-  i18n: ReturnType<typeof useI18n>) {
+  i18n: ReturnType<typeof useI18n>, counted = true) {
   const weekday = new Date(faded.seenAt).toDateString() !== new Date().toDateString();
-  const one = key === 'providers.faded.seen' ? {} : { one: { key: `${key}.one` as const, count: faded.count } };
+  const one = counted ? { one: { key: `${key}.one` as const, count: faded.count } } : {};
   return formatUiText({ key, numbers: { count: faded.count }, time: faded.seenAt, ...(weekday ? { weekday } : {}), ...one }, i18n);
 }
 
@@ -244,7 +249,7 @@ function ProviderLegend({ chips, onToggle }: { chips: DockChips; onToggle: (prov
             {/* Of its faded ones: being updated, or since when they stand as last seen. */}
             {chip.faded && !chip.down && (
               <small className="legend-faded">
-                {chip.faded.updating ? t('providers.faded.updating') : seenText(chip.faded, 'providers.faded.seen', i18n)}
+                {chip.faded.updating ? t('providers.faded.updating') : seenText(chip.faded, 'providers.faded.seen', i18n, chip.count === 0)}
               </small>
             )}
           </span>

@@ -624,6 +624,22 @@ describe('BottomSheet', () => {
       expect(screen.getByText('Live')).toBeVisible();
     });
 
+    it('says one faded scooter was seen in the singular under its count, but not beside the count of those shown', async () => {
+      localStorage.setItem('scooters-locale', 'fr');
+      const faded = (count: number, fadedCount: number) => dock({ providerCounts: { lime: count }, count,
+        fadedCounts: { lime: fadedCount }, lastSeenProviders: { lime: { seenAt: UPDATED, updating: false } } });
+      const sheet = renderSheet({ desktop: true, dock: faded(0, 1) });
+      const lime = () => screen.getByRole('button', { name: /^Lime,/ });
+      await vi.waitFor(() => expect(lime().querySelector('.legend-faded')).toHaveTextContent(/^vue à /));
+      expect(lime().querySelector('.legend-count')).toHaveTextContent('1');
+      // Beside the 5 shown, "vue" would seem to say there is one of them.
+      sheet.update({ desktop: true, dock: faded(5, 1) });
+      expect(lime().querySelector('.legend-count')).toHaveTextContent('5');
+      expect(lime().querySelector('.legend-faded')).toHaveTextContent(/^vues à /);
+      sheet.update({ desktop: true, dock: faded(0, 2) });
+      expect(lime().querySelector('.legend-faded')).toHaveTextContent(/^vues à /);
+    });
+
     it('marks a row as shown with a check and toggles a provider like its chip', () => {
       const props = renderSheet({ desktop: true, dock: dock({ enabledProviders: new Set(['lime']), count: 3 }) });
 
