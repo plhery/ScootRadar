@@ -1468,9 +1468,13 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(ZoneLegend.speedText(16.1 ... 16.1, locale: gb), "10 mph")
         XCTAssertEqual(ZoneLegend.speedText(16.09 ... 16.09, locale: gb), "10 mph")
         XCTAssertEqual(ZoneLegend.speedText(16 ... 16.1, locale: gb), "10 mph")
-        // Kilometres are rounded to the nearest, as before.
+        // Kilometres are rounded down too, unless within a tenth of the next whole one: a US 8 mph zone, 12.87 km/h,
+        // is 12 km/h to a metric visitor, not 13.
         XCTAssertEqual(ZoneLegend.speedText(6 ... 15, locale: Locale(identifier: "en_CH")), "6–15 km/h")
-        XCTAssertEqual(ZoneLegend.speedText(6.4 ... 15.6, locale: Locale(identifier: "en_CH")), "6–16 km/h")
+        XCTAssertEqual(ZoneLegend.speedText(6.4 ... 15.6, locale: Locale(identifier: "en_CH")), "6–15 km/h")
+        XCTAssertEqual(ZoneLegend.speedText(12.87 ... 12.87, locale: Locale(identifier: "en_CH")), "12 km/h")
+        XCTAssertEqual(ZoneLegend.speedText(12.87 ... 16.09, locale: Locale(identifier: "en_CH")), "12–16 km/h")
+        XCTAssertEqual(ZoneLegend.speedText(19.95 ... 19.95, locale: Locale(identifier: "en_CH")), "20 km/h")
         // French writes a narrow space before the unit.
         XCTAssertEqual(plainSpaces(ZoneLegend.speedText(6 ... 6, locale: Locale(identifier: "fr_US"))), "3 mi/h")
     }

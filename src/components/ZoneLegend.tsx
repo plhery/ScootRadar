@@ -68,10 +68,11 @@ const PAVEMENT_KPH = 6;
 
 /**
  * The limits of the slow zones a line of the legend counts, given in km/h, as it says them: "6 km/h", or from the
- * least to the greatest, "6–15 km/h", each rounded to a whole number; in mph where the units chosen, or else the region,
- * measure distances in miles, as walking.ts does, each rounded down once converted, unless within a tenth of the next
- * whole one: 6 km/h (3.73 mph) is "3 mph" and 25 km/h (15.53) "15 mph", not above the limit, and a UK 10 mph zone
- * "10 mph", written 16 km/h (9.94) by Dott, 16.1 (10.004) by Bolt or 16.09 (9.998) (Desk cards 350, item 7, and 353).
+ * least to the greatest, "6–15 km/h"; in mph where the units chosen, or else the region, measure distances in miles, as
+ * walking.ts does. Each is rounded down to a whole number, once converted, unless within a tenth of the next whole one,
+ * so that none is said above the limit: 6 km/h (3.73 mph) is "3 mph" and 25 km/h (15.53) "15 mph", a UK 10 mph zone
+ * "10 mph", written 16 km/h (9.94) by Dott, 16.1 (10.004) by Bolt or 16.09 (9.998) (Desk cards 350, item 7, and 353),
+ * and a US 8 mph zone, 12.87 km/h, "12 km/h", not 13 (fresh-eyes review of 14 November 2026).
  * As in the iPhone and Android apps (speedText). Null where one of them has none, or none is counted: the line then
  * says "Slow" alone.
  */
@@ -82,7 +83,7 @@ export function formatSpeedLimits(speedsKph: readonly (number | undefined)[], lo
   let greatest = -Infinity;
   for (const speed of speedsKph) {
     if (typeof speed !== 'number' || !Number.isFinite(speed)) return null;
-    const value = miles ? Math.floor(speed / KM_PER_MILE + 0.1) : Math.round(speed);
+    const value = Math.floor((miles ? speed / KM_PER_MILE : speed) + 0.1);
     least = Math.min(least, value);
     greatest = Math.max(greatest, value);
   }

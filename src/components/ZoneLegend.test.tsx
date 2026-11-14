@@ -237,8 +237,17 @@ it('rounds a limit in mph down, unless within a tenth of the next whole one (Des
   expect(formatSpeedLimits([16.1], 'en', 'GB')).toBe('10 mph');
   expect(formatSpeedLimits([16.09], 'en', 'GB')).toBe('10 mph');
   expect(formatSpeedLimits([16, 16.1, 16.09], 'en', 'GB')).toBe('10 mph');
-  // Kilometres are rounded to the nearest, as before.
-  expect(formatSpeedLimits([6.4, 15.6], 'en', 'CH')).toBe('6–16 km/h');
+});
+
+it('rounds a limit in km/h down too, unless within a tenth of the next whole one, so none is said above the limit', () => {
+  // A US 8 mph zone is 12.87 km/h, a 10 mph one 16.09: "12 km/h" and "16 km/h" to a metric visitor, not "13 km/h".
+  expect(formatSpeedLimits([12.87], 'en', 'US', 'metric')).toBe('12 km/h');
+  expect(formatSpeedLimits([12.87, 16.09], 'de', 'CH')).toBe('12–16 km/h');
+  expect(formatSpeedLimits([6.4, 15.6], 'en', 'CH')).toBe('6–15 km/h');
+  expect(formatSpeedLimits([16.1], 'en', 'CH')).toBe('16 km/h');
+  // Within a tenth of the next whole one: a 20 km/h limit written 19.95 is 20.
+  expect(formatSpeedLimits([19.95], 'en', 'CH')).toBe('20 km/h');
+  expect(formatSpeedLimits([6, 25], 'en', 'CH')).toBe('6–25 km/h');
 });
 
 it('writes a limit in the language, as its region writes it, and in miles where it measures in them', () => {
