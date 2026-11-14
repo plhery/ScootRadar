@@ -1679,6 +1679,10 @@ Bonaire had feeds to add. Survey files are in
   ([Auckland Council](https://www.aucklandcouncil.govt.nz/en/licences-regulations/e-scooter-licences-regulations-auckland.html)).
   Check that Flamingo's `auckland` feed still lists scooters that are
   ridden; if it empties, take it out of `data/new-zealand-scooter-feeds.json`.
+  On 14 November 2026, at 07:33 on a Sunday morning in Auckland, the feed
+  listed 1,278 scooters. Five minutes later it listed 1,289: 3 had left and
+  14 had come in, 11 of them where none had stood. Lime's 27 Auckland groups
+  held 1,438. Both still run.
 - **November 2026:** Beaumont's pilot runs "until the end of October 2026",
   and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
   still holds scooters in Beaumont, and whether the town goes on in 2027;
