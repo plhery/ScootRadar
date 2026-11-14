@@ -2,6 +2,7 @@ import Analytics from "@/components/Analytics";
 import type { Metadata, Viewport } from "next";
 import { Geist, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import { RELEASE_META } from "@/lib/errorReportsConfig";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
 import { formatLocale } from "@/lib/formatLocale";
 import { I18nProvider } from "@/lib/i18n";
@@ -86,6 +87,8 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
         {/* Before the map's script, which adds no style of its own once this is here. */}
         <style id={ROTATE_PANES_STYLE_ID}>{ROTATE_PANES_STYLE}</style>
+        {/* The commit the page is built from, as Workers Builds names it, for its error reports. */}
+        {process.env.WORKERS_CI_COMMIT_SHA && <meta name={RELEASE_META} content={process.env.WORKERS_CI_COMMIT_SHA} />}
       </head>
       <body className={`${geistSans.variable} ${display.variable} ${text.variable}`}>
         <I18nProvider>{children}</I18nProvider>

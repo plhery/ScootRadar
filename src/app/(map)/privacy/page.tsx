@@ -2,6 +2,7 @@ import AnalyticsPreference from '@/components/AnalyticsPreference';
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import SmartAppBanner from '@/components/SmartAppBanner';
+import { SENTRY_BROWSER_DSN } from '@/lib/errorReportsConfig';
 import { MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
 
 const TITLE = 'Privacy — ScootRadar';
@@ -43,7 +44,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 10 November 2026</p>
+        <p>Last updated: 14 November 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -114,7 +115,8 @@ export default function PrivacyPage() {
           self-hosted Umami service at u.plhery.com. These include which page of the website
           you view, a guide for example, and whether you open the map from it; searches (only
           result counts), filters, map selections, directions and rental button taps, settings
-          changes, and generic error outcomes. Events distinguish web, installed web app, iOS and Android usage.
+          changes, generic error outcomes and, from the website, reports of its own errors (see Error reports below).
+          Events distinguish web, installed web app, iOS and Android usage.
           Rental taps do not tell us whether you actually rented a vehicle.
         </p>
         <p>
@@ -181,6 +183,32 @@ export default function PrivacyPage() {
           includes your IP address, request headers or search text. Sentry keeps these reports for
           up to 90 days.
         </p>
+        <p>
+          When the website&apos;s own scripts fail in your browser while usage analytics is on, the
+          website sends Umami a report of the error, which Umami handles as it does the analytics above.
+          It holds the error&apos;s name and message, its stack (where in the website&apos;s scripts it
+          happened), the page by the same address analytics counts it under (/map, for example), the
+          version of the website, the language of your browser and whether you use the website or the
+          installed web app. Before it is sent, the addresses in it lose their query and fragment,
+          where the map keeps its position, and it loses any email address, number with three decimals
+          or more (as a coordinate), quoted text with a space in it (as a search) and anything shaped
+          like a key or a long number. At most five reports are sent each time you load the website,
+          and none for an error of a browser extension, of another website&apos;s script or of the
+          network.
+        </p>
+        {SENTRY_BROWSER_DSN && (
+          <p>
+            The website sends these reports to Sentry too, with your browser&apos;s user agent (the
+            name and version of your browser and system) and what happened on the page before the
+            error: the pages of the website you opened and its requests to the ScootRadar API, each by
+            its path alone and with the status of its answer. Unlike the analytics, they are sent
+            whether usage analytics is on or off and whatever your Do Not Track and Global Privacy
+            Control settings, as the server&apos;s reports are: they hold no identifier, and they are how
+            we learn that the website fails in a browser like yours. Sentry receives your IP address
+            with each report, as any server you connect to does, and is told not to store it. Sentry
+            keeps these reports for up to 90 days.
+          </p>
+        )}
 
         <h2>Your choices</h2>
         <p>

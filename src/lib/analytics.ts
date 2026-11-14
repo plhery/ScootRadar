@@ -103,14 +103,50 @@ let sitePage: CountedPage | undefined;
 let disabledByServer = false;
 let pending = 0;
 let chain = Promise.resolve();
+// Until when Umami asked for no more error reports: it takes only so many a minute from each website.
+let errorsHeldUntil = 0;
+
+/** The address a page is counted under: the page of the site given, or the app's page, or the map. */
+export function countedPath(page: CountedPage | undefined = sitePage): string {
+  if (page && SITE_PATH.test(page.path)) return page.path;
+  return PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH;
+}
+
+/** `pwa` in the web app installed on a home screen, `web` in a browser. */
+export function analyticsPlatform(): 'web' | 'pwa' {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
+}
+
+/** Sends to Umami after what was sent before, in the same session (its cache), and never throws. */
+function send(type: 'event' | 'error', body: string): void {
+  pending++;
+  chain = chain.then(async () => {
+    if (!analyticsEnabled() || disabledByServer || (type === 'error' && Date.now() < errorsHeldUntil)) return;
+    const response = await fetch(ANALYTICS_ENDPOINT, {
+      method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', keepalive: true,
+      signal: AbortSignal.timeout(5000),
+      headers: { 'Content-Type': 'application/json', ...(cache ? { 'x-umami-cache': cache } : {}) },
+      body,
+    });
+    if (type === 'error' && response.status === 429) {
+      const seconds = Number(response.headers.get('Retry-After')) || 60;
+      errorsHeldUntil = Date.now() + Math.max(1, Math.min(seconds, 300)) * 1000;
+    }
+    if (!response.ok) return;
+    const result = await response.json();
+    if (!result || typeof result !== 'object') return;
+    if ('cache' in result && typeof result.cache === 'string') cache = result.cache;
+    disabledByServer = 'disabled' in result && result.disabled === true;
+  }).catch(() => { /* Analytics must never interrupt the map or navigation. */ }).finally(() => { pending--; });
+}
 
 export function track(event?: AnalyticsEvent, data: AnalyticsData = {}, page?: CountedPage): void {
-  if (!analyticsEnabled() || disabledByServer || pending >= 30) return;
   if (!event && page) sitePage = page;
+  if (!analyticsEnabled() || disabledByServer || pending >= 30) return;
   const given = page ?? sitePage;
   const counted = given && SITE_PATH.test(given.path) ? given : undefined;
-  const platform = window.matchMedia('(display-mode: standalone)').matches ||
-    (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
+  const platform = analyticsPlatform();
   const source = !event && landing ? visitSource(document.referrer, window.location.search) : undefined;
   if (!event) landing = false;
   const payload = {
@@ -118,25 +154,31 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}, page?: C
     // Only these public screens exist. Exclude even unknown paths, fragments and every query but the
     // first view's campaign tags: what is not one of them is counted as the map, which sends every
     // event but the page views.
-    url: (counted?.path ?? (PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH)) +
-      (source?.query ?? ''),
+    url: countedPath(given) + (source?.query ?? ''),
     title: counted?.title.slice(0, 120) ?? PUBLIC_PAGES.get(window.location.pathname) ?? 'ScootRadar',
     referrer: source?.referrer ?? '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };
-  pending++;
-  chain = chain.then(async () => {
-    if (!analyticsEnabled() || disabledByServer) return;
-    const response = await fetch(ANALYTICS_ENDPOINT, {
-      method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', keepalive: true,
-      signal: AbortSignal.timeout(5000),
-      headers: { 'Content-Type': 'application/json', ...(cache ? { 'x-umami-cache': cache } : {}) },
-      body: JSON.stringify({ type: 'event', payload }),
-    });
-    if (!response.ok) return;
-    const result = await response.json();
-    if (!result || typeof result !== 'object') return;
-    if ('cache' in result && typeof result.cache === 'string') cache = result.cache;
-    disabledByServer = 'disabled' in result && result.disabled === true;
-  }).catch(() => { /* Analytics must never interrupt the map or navigation. */ }).finally(() => { pending--; });
+  send('event', JSON.stringify({ type: 'event', payload }));
+}
+
+/** What Umami 3.5 keeps of an error (its `errorPayloadSchema`): src/lib/errorReports.ts. */
+export interface ErrorReportPayload {
+  version: 1; website: string; eventId: string; timestamp: number;
+  name: string; message: string; stack: string; handled: boolean; url: string;
+  release: string; environment: string; language?: string; tags: Record<string, string>;
+}
+// Umami refuses a larger one.
+const MAX_ERROR_BYTES = 48_000;
+
+/**
+ * Sends a report of one of the page's own errors to Umami, in the session of its page views
+ * and events, under the same rules: nothing while analytics is off. After a 429 nothing more
+ * for the seconds its Retry-After says (a minute without one, five minutes at most).
+ */
+export function sendErrorReport(payload: ErrorReportPayload): void {
+  if (!analyticsEnabled() || disabledByServer || pending >= 30 || Date.now() < errorsHeldUntil) return;
+  const body = JSON.stringify({ type: 'error', payload });
+  if (new TextEncoder().encode(body).byteLength > MAX_ERROR_BYTES) return;
+  send('error', body);
 }

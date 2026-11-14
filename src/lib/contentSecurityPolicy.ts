@@ -1,3 +1,5 @@
+import { SENTRY_BROWSER_DSN, sentryIngestOrigin } from './errorReportsConfig';
+
 const policy = (directives: string[]): string => `${directives.join('; ')};`;
 
 const MAP_TILES_ORIGIN = 'https://tiles.openfreemap.org';
@@ -6,12 +8,16 @@ export function documentContentSecurityPolicy({
   nonce,
   development,
   upgradeInsecureRequests = !development,
+  sentryDsn = SENTRY_BROWSER_DSN,
 }: {
   nonce: string;
   development: boolean;
   upgradeInsecureRequests?: boolean;
+  sentryDsn?: string;
 }): string {
   const nonceSource = `'nonce-${nonce}'`;
+  // Where the page's error reports go once the website has a Sentry project (src/lib/errorReports.ts).
+  const sentry = development ? null : sentryIngestOrigin(sentryDsn);
 
   return policy([
     "default-src 'self'",
@@ -24,8 +30,8 @@ export function documentContentSecurityPolicy({
     "style-src-attr 'unsafe-inline'",
     "font-src 'self'",
     "img-src 'self' data:",
-    // The map's vector tiles, which the page draws itself.
-    `connect-src 'self' ${MAP_TILES_ORIGIN}${development ? ' ws: wss:' : ' https://u.plhery.com'}`,
+    // The map's vector tiles, which the page draws itself, the analytics, and Sentry once set.
+    `connect-src 'self' ${MAP_TILES_ORIGIN}${development ? ' ws: wss:' : ' https://u.plhery.com'}${sentry ? ` ${sentry}` : ''}`,
     `worker-src 'self'${development ? ' blob:' : ''}`,
     "child-src 'self'",
     "frame-src 'none'",

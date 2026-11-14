@@ -19,7 +19,8 @@ it('redeploys the cache for every file of the repository it is built from', asyn
 
 it('leaves the cache running for the website and the tests', () => {
   for (const file of ['src/lib/landingCopy.ts', 'src/lib/i18n.tsx', 'src/app/(map)/layout.tsx', 'src/components/MapCredits.tsx',
-    'public/share/en.png', 'server/collectFeed.test.ts', 'src/lib/scooterFeeds.test.ts', 'README.md']) {
+    'src/lib/errorReports.ts', 'src/lib/errorReporter.ts', 'src/lib/errorReportsConfig.ts', 'src/lib/errorScrub.ts',
+    'src/instrumentation-client.ts', 'public/share/en.png', 'server/collectFeed.test.ts', 'src/lib/scooterFeeds.test.ts', 'README.md']) {
     expect(deploys(file), file).toBe(false);
   }
 });

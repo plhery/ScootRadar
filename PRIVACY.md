@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 10 November 2026
+Last updated: 14 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches, except the last place chosen in the search, which stays on the device (see below).
@@ -57,6 +57,21 @@ searches, except the last place chosen in the search, which stays on the device 
   request URL (the visible map bounds, zoom level and filters) and the server's
   state at the time, never the IP address, request headers or search text.
   Sentry keeps it for up to 90 days.
+- When the website's own scripts fail in a browser while usage analytics is on,
+  the website sends Umami a report of the error (see Usage analytics below): its
+  name, message and stack, the page by the path analytics counts it under, the
+  website's version (the deployed commit), the browser's language and the
+  platform tag. Before it is sent, the addresses in it lose their query and
+  fragment, and it loses email addresses, numbers with three decimals or more
+  (coordinates), quoted text with a space in it (a search) and anything shaped
+  like a key or a long number. At most five are sent per page load, none for an
+  error of a browser extension, of another site's script or of the network.
+  The website names no Sentry project of its own yet (`SENTRY_BROWSER_DSN` in
+  `src/lib/errorReportsConfig.ts`), so these reports go to Umami alone. Once it
+  does, they also go to Sentry with the user agent and the pages opened and API
+  requests made before the error, each by its path and status, whatever the
+  analytics, Do Not Track and Global Privacy Control settings, and the privacy
+  page says so; Sentry is told not to store the IP address.
 
 - Location permission can be withdrawn in the browser or device settings, and
   analytics turned off (see below); the map works without either. Nothing kept
@@ -74,7 +89,8 @@ Questions: `hello@scootradar.com`.
 The public web/PWA and the native iOS and Android apps send page/screen views and named actions
 (the website pages viewed, such as guides, and links to the map followed from them;
 search result counts, filters, selections, directions/rental taps, preferences,
-and generic failures) to our self-hosted Umami at `u.plhery.com`. Platform tags
+and generic failures), and from the website reports of its own errors (see
+above), to our self-hosted Umami at `u.plhery.com`. Platform tags
 separate web, PWA, iOS and Android. With the first page view of a page load, the website
 also sends where the visit came from: the referring website's origin alone (no
 path or query) and the link's `utm_source`, `utm_medium` and `utm_campaign` tags.

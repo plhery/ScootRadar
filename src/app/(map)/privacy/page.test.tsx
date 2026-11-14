@@ -52,3 +52,30 @@ it('lists what the Android app keeps of a refused location, and the site of its 
   expect(stored).toMatch(/in the Android app, the fact that you refused it your location/);
   expect(stored).toMatch(/invitation to test the Android app/);
 });
+
+it('says what the website\'s error reports hold and lose, and that they go to Umami only while analytics is on', () => {
+  const reports = text().match(/.* Error reports (.*?) Your choices /)?.[1];
+  expect(reports).toMatch(/while usage analytics is on, the website sends Umami a report of the error/);
+  expect(reports).toMatch(/lose their query and fragment/);
+  expect(reports).toMatch(/number with three decimals or more \(as a coordinate\), quoted text with a space in it/);
+  expect(reports).toMatch(/At most five reports/);
+  // src/lib/errorReportsConfig.ts names no Sentry project for the website yet.
+  expect(reports).not.toMatch(/to Sentry too|Do Not Track/);
+});
+
+it('says, once the website has a Sentry project, that its reports go there whatever the visitor\'s analytics settings', async () => {
+  vi.resetModules();
+  vi.doMock('@/lib/errorReportsConfig', async importOriginal => ({
+    ...await importOriginal<typeof import('@/lib/errorReportsConfig')>(),
+    SENTRY_BROWSER_DSN: 'https://0123456789abcdef@o1.ingest.sentry.io/2',
+  }));
+  try {
+    const { default: Page } = await import('./page');
+    const reports = renderToStaticMarkup(<Page />).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').match(/.* Error reports (.*?) Your choices /)?.[1];
+    expect(reports).toMatch(/The website sends these reports to Sentry too/);
+    expect(reports).toMatch(/whether usage analytics is on or off and whatever your Do Not Track and Global Privacy Control settings/);
+    expect(reports).toMatch(/is told not to store it/);
+  } finally {
+    vi.doUnmock('@/lib/errorReportsConfig');
+  }
+});

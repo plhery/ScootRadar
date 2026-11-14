@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.13",
+    "@sentry/browser": "11.6.0",
     "@tomickigrzegorz/leaflet-rotate": "0.2.4",
     "h3-js": "^4.5.0",
     "leaflet": "^1.9.4",

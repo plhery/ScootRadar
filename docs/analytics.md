@@ -147,11 +147,48 @@ measure the app on an emulator): a debug build sends when started with `--ez ana
 never under its tests. Physical-device installations collect after rebuilding/installing
 this revision. Existing installed binaries cannot gain tracking through a web deploy.
 
+## Error reports
+
+Since 14 November 2026 the website also sends Umami a report of each error of its own
+scripts (`src/lib/errorReports.ts`), as Umami 3.5's error reports (`type: "error"`), to
+the same collector, with the same session cache and under the same conditions as its
+events: on `scootradar.com`, in a production build, while analytics is on. They are in
+the ScootRadar website's Errors tab,
+<https://umami.plhery.com/websites/6e60b4ab-b4ee-4785-9699-a7f32127b358/errors>, where
+Umami groups them by name and the top ten frames of their stack.
+
+- Sent: an uncaught error thrown in the site's scripts (`/_next/`), and an unhandled
+  rejection with an `Error` whose stack runs through them. Not sent: "Script error."
+  (another site's script), an error with a frame of a browser extension
+  (`chrome-extension:`, `moz-extension:`, `safari-web-extension:`, `webkit-masked-url:`…),
+  a rejection with anything but an `Error`, and the noise `IGNORED_ERRORS` lists
+  (`src/lib/errorScrub.ts`): a network failure, a request aborted or timed out, a script
+  that did not arrive, a ResizeObserver loop. At most five a page load, one per message.
+- A report holds the error's name, message and stack (cut at 16,000 characters), the
+  page by the path its page views are counted under (`/map`, a guide's address, `/`),
+  `release`, the deployed commit (`WORKERS_CI_COMMIT_SHA` at the build, in the pages'
+  `<meta name="scootradar-release">`; empty in a build outside Workers Builds),
+  `environment: "production"`, the browser's language and the tag `platform` (`web`,
+  `pwa`).
+- Before it goes, `scrubText` takes out of the message and stack the query and fragment
+  of each address, and the ids of its path (a segment of six characters or more with a
+  digit, or with three digits in a row, reads `:id`; the site's scripts keep their
+  names); email addresses; numbers with three decimals or more (coordinates); quoted
+  text with a space in it or over 40 characters (a search), while a quoted name such as
+  `'map'` in "Cannot read properties of undefined (reading 'map')" stays; and anything
+  shaped like a key or a long number. Each becomes `[Filtered]`.
+- Umami 3.5 answers 429 with `Retry-After: 60` past its quota of error reports: the page
+  then sends none for that long, its events still going. A body over Umami's 48,000
+  bytes is not sent.
+- The stacks are of minified scripts; no source maps are built or uploaded (OBSERVABILITY.md,
+  "Browser errors", which also has what Sentry will get once the website has a project there).
+
 ## Deployment/verification
 
 Run lint, web tests, OpenNext build and iOS tests. Deploy with `npm run deploy`
 (the existing Cloudflare auth is required). Check production CSP allows only the
-specific collector origin in `connect-src`; script restrictions stay unchanged.
+specific collector origin in `connect-src` (and the Sentry ingest origin once
+`SENTRY_BROWSER_DSN` is set); script restrictions stay unchanged.
 Use Chrome to interact with the deployed map and verify named events in Umami.
 Use a simulator smoke launch for native API/transport verification, and check that
 its visit shows in ScootRadar iOS: Umami answers a user agent it takes for a bot

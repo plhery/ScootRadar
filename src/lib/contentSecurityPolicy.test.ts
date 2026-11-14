@@ -4,6 +4,7 @@ import {
   documentContentSecurityPolicy,
   SERVICE_WORKER_CONTENT_SECURITY_POLICY,
 } from '@/lib/contentSecurityPolicy';
+import { SENTRY_BROWSER_DSN } from '@/lib/errorReportsConfig';
 
 function directive(policy: string, name: string): string {
   return policy
@@ -43,6 +44,22 @@ describe('documentContentSecurityPolicy', () => {
     expect(directive(csp, 'connect-src')).toBe("connect-src 'self' https://tiles.openfreemap.org ws: wss:");
     expect(directive(csp, 'worker-src')).toBe("worker-src 'self' blob:");
     expect(csp).not.toContain('upgrade-insecure-requests');
+  });
+
+  it('lets the page reach Sentry only once the website has a Sentry project', () => {
+    // SENTRY_BROWSER_DSN is empty until then: no Sentry host at all.
+    expect(SENTRY_BROWSER_DSN).toBe('');
+    expect(documentContentSecurityPolicy({ nonce: 'n', development: false })).not.toMatch(/sentry/i);
+
+    const dsn = 'https://0123456789abcdef@o4509.ingest.de.sentry.io/4510';
+    expect(directive(documentContentSecurityPolicy({ nonce: 'n', development: false, sentryDsn: dsn }), 'connect-src')).toBe(
+      "connect-src 'self' https://tiles.openfreemap.org https://u.plhery.com https://o4509.ingest.de.sentry.io"
+    );
+    // The page sends no report while it is developed, nor to an address that is no DSN.
+    expect(documentContentSecurityPolicy({ nonce: 'n', development: true, sentryDsn: dsn })).not.toMatch(/sentry/i);
+    for (const notADsn of ['http://key@o1.ingest.sentry.io/2', 'https://o1.ingest.sentry.io/2', 'https://key@o1.ingest.sentry.io/', 'sentry']) {
+      expect(documentContentSecurityPolicy({ nonce: 'n', development: false, sentryDsn: notADsn }), notADsn).not.toMatch(/sentry/i);
+    }
   });
 
   it('can preserve the production policy on a local HTTP origin', () => {

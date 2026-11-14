@@ -22,6 +22,10 @@ tsconfig.json
 !src/lib/dataHealth.ts
 !src/lib/deviceHeading.ts
 !src/lib/dockModel.ts
+!src/lib/errorReporter.ts
+!src/lib/errorReports.ts
+!src/lib/errorReportsConfig.ts
+!src/lib/errorScrub.ts
 !src/lib/feedback.ts
 !src/lib/firstPaintTheme.ts
 !src/lib/frenchScooterSystems.ts

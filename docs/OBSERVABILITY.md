@@ -14,6 +14,9 @@ The Worker is not in Prometheus or Sentry: its `scooter_origin_failure` lines ar
 the Cloudflare dashboard's Workers Logs for `swiss-scooters`. Only its count of requests
 to Geoapify reaches Prometheus, through the cache (see below).
 
+The website's pages report the errors of their own scripts to Umami, and will to Sentry
+once the website has a project there (see Browser errors).
+
 ## Metrics
 
 `GET /metrics` answers 404 unless `METRICS_TOKEN` is set, and 401 without it as a
@@ -709,6 +712,46 @@ Tracing is off, and no trace headers go to the operators' feeds.
   the feed neither fails nor expires; each failure is logged as `swiss_app_map_failed`.
 
 Routine feed failures are not sent; the metrics and logs cover them.
+
+## Browser errors
+
+Since 14 November 2026 the website's pages report the errors of their own scripts
+(`src/lib/errorReports.ts`, started by `src/instrumentation-client.ts` before the page
+renders, on scootradar.com in a production build) to Umami: they are in the Errors tab of
+the ScootRadar website there,
+<https://umami.plhery.com/websites/6e60b4ab-b4ee-4785-9699-a7f32127b358/errors>.
+docs/analytics.md ("Error reports") says which errors are sent, what a report holds and
+what it loses first. These follow the analytics settings: a browser with analytics off,
+Do Not Track or Global Privacy Control sends none.
+
+Sentry waits for a project of the website's own, `scootradar-web`. Until its public DSN
+is in `SENTRY_BROWSER_DSN` (`src/lib/errorReportsConfig.ts`), which is empty, the page
+never downloads the Sentry SDK, the CSP names no Sentry host and `/privacy` says nothing
+of it. To turn it on, create the project (platform Browser JavaScript), turn on "Prevent
+Storing of IP Addresses" in its Security & Privacy settings and put its DSN in the
+constant: the CSP's `connect-src` gains the DSN's ingest origin and `/privacy` its
+paragraph on Sentry with it (`contentSecurityPolicy.test.ts` and the privacy page's
+test). PRIVACY.md says these reports go to Umami alone: change it then. From then on:
+
+- `@sentry/browser` (11.6.0, the version of `@sentry/node`) is a chunk of its own
+  (`src/lib/errorReporter.ts`), downloaded with the first error a page has to report.
+  Reports go straight to Sentry's ingest, with no tunnel, whatever the analytics, Do Not
+  Track and Global Privacy Control settings: Sentry sees the visitor's IP
+  address with the connection, and the SDK asks it not to keep it
+  (`dataCollection.userInfo: false`, `infer_ip: never`), which the project setting makes
+  sure of.
+- The same filters, the same five reports a page load at most and the same scrubbing as
+  Umami's, applied again in `beforeSend` to the SDK's own event, with its linked causes.
+  Release the deployed commit, environment `production`, tags `platform` (`web`, `pwa`)
+  and `page`, the path analytics counts the page under, which is also the request's URL;
+  of the headers only the user agent.
+- Breadcrumbs: the site's pages opened (by path, and not a change of the map's address
+  alone) and its requests to `/api/` (method, path, status), nothing of clicks, the
+  console or other sites. They are recorded from the SDK's start, so a page's first
+  report has none and its later ones what happened since the first.
+- Stack frames name the minified chunks, by line and column: the build makes no source
+  maps of the browser's scripts and none are uploaded. To read a frame, build the same
+  commit with `productionBrowserSourceMaps` on, or add an upload of the maps to the build.
 
 ## Logs
 

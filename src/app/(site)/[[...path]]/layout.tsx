@@ -2,6 +2,7 @@ import PageView from '@/components/PageView';
 import type { Metadata, Viewport } from 'next';
 import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import { RELEASE_META } from '@/lib/errorReportsConfig';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
 import { PLAY_TEST_ON, PLAY_TEST_SCRIPT } from '@/lib/playTest';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
@@ -100,6 +101,8 @@ export default async function LandingLayout({
         <script dangerouslySetInnerHTML={{ __html: MOVED_MAP_SCRIPT }} />
         {/* Before the first paint, so that a guide's card or the landing page's Android button moves nothing. */}
         {PLAY_TEST_ON && page.kind !== 'guides' && <script dangerouslySetInnerHTML={{ __html: PLAY_TEST_SCRIPT }} />}
+        {/* The commit the page is built from, as Workers Builds names it, for its error reports. */}
+        {process.env.WORKERS_CI_COMMIT_SHA && <meta name={RELEASE_META} content={process.env.WORKERS_CI_COMMIT_SHA} />}
       </head>
       <body>
         {children}
