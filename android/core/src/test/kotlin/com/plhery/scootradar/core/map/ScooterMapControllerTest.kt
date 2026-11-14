@@ -4763,9 +4763,64 @@ class ScooterMapControllerTest {
         model.open(ScooterMapLink("https://scootradar.com/map?minBattery=60&minRange=5000") ?: error("A map link"))
         assertEquals(5_000, model.minimumRange.value)
 
-        // A link that only gives a battery keeps the rider's range.
+        // A link that only gives a battery keeps the range shown.
         model.open(ScooterMapLink("https://scootradar.com/map?minBattery=60") ?: error("A map link"))
         assertEquals(5_000, model.minimumRange.value)
+    }
+
+    @Test
+    fun aLinksMinimumRangeIsForItsVisitAlone() = runTest {
+        // A friend's link with 10 km over the rider's 6 km shows 10 km, and the rider keeps 6 km on the device for the
+        // next launch; the link sends no range_filter, as the rider chose none (review of 14 November 2026, S4; Desk
+        // [373]; the website's 1a271490). Before, the link was saved as the rider's minimum, and counted as their choice.
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val analytics = RecordingAnalytics()
+        fun makeModel() = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults, analytics = analytics)
+        val model = makeModel()
+        model.setMinimumRange(6_000)
+        advanceTimeBy(1_001)
+        runCurrent()
+
+        model.open(ScooterMapLink(minimumRange = 10_000))
+        advanceTimeBy(1_001)
+        runCurrent()
+        assertEquals(10_000, model.minimumRange.value)
+        assertEquals(6_000, defaults.int(forKey = "minimum-range"))
+        // Read in the steps of the units chosen, as the rider's own is: 6 mi, and 10 km again.
+        model.setUnits(ScooterUnits.Imperial)
+        assertEquals(9_656, model.minimumRange.value)
+        model.setUnits(ScooterUnits.Metric)
+        assertEquals(10_000, model.minimumRange.value)
+        assertEquals(6_000, makeModel().minimumRange.value)
+
+        // A minimum the rider chooses during the visit is theirs: saved and counted, and the link's is over.
+        model.setMinimumRange(8_000)
+        advanceTimeBy(1_001)
+        runCurrent()
+        assertEquals(8_000, defaults.int(forKey = "minimum-range"))
+        model.open(ScooterMapLink())
+        assertEquals(8_000, model.minimumRange.value)
+        assertEquals(8_000, makeModel().minimumRange.value)
+
+        // Reset too, where a link set the minimum.
+        model.open(ScooterMapLink(minimumRange = 3_000))
+        assertEquals(3_000, model.minimumRange.value)
+        model.resetFilters()
+        assertEquals(0, model.minimumRange.value)
+        assertEquals(0, defaults.int(forKey = "minimum-range"))
+
+        assertEquals(
+            listOf(
+                TrackedEvent("range_filter", value = 6_000),
+                TrackedEvent("link_open", result = "map"),
+                TrackedEvent("range_filter", value = 8_000),
+                TrackedEvent("link_open", result = "map"),
+                TrackedEvent("link_open", result = "map"),
+                TrackedEvent("filters_reset"),
+            ),
+            analytics.events.filter { it.name in setOf("range_filter", "link_open", "filters_reset") },
+        )
     }
 
     private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')

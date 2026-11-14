@@ -354,6 +354,13 @@ class ScooterMapController(
      */
     private var chosenMinimumRange: Int = max(0, defaults.int(forKey = MINIMUM_RANGE_KEY) ?: 0)
 
+    /**
+     * The minimum range in metres a link to the map set, which the map filters by in place of the one chosen for this
+     * visit alone: it is not saved, and the next launch shows the rider's own again, as the website does since
+     * 1a271490 (review of 14 November 2026, S4; Desk [373]). Any choice of the rider's, Reset too, ends it.
+     */
+    private var linkMinimumRange: Int? = null
+
     init {
         // The battery minimum of the builds with a battery filter is kept, now that the range is the filters' only
         // minimum, as the range that share of a full battery's 10 km reaches, 60% as 6 km, where no range is set:
@@ -709,7 +716,7 @@ class ScooterMapController(
      * it changed.
      */
     private fun readMinimumRange(): Boolean {
-        val next = ScooterRangeFilter.snapped(chosenMinimumRange, rangeUnit)
+        val next = ScooterRangeFilter.snapped(linkMinimumRange ?: chosenMinimumRange, rangeUnit)
         if (next == _minimumRange.value) return false
         _minimumRange.value = next
         filtersDidChange()
@@ -818,6 +825,7 @@ class ScooterMapController(
     }
 
     private fun assignMinimumRange(metres: Int) {
+        linkMinimumRange = null
         chosenMinimumRange = metres
         defaults.set(metres, forKey = MINIMUM_RANGE_KEY)
         if (!readMinimumRange()) filtersDidChange()
@@ -1253,7 +1261,12 @@ class ScooterMapController(
     fun open(link: ScooterMapLink) {
         // A link changes the map: a moment to ask for a rating waits for its fresh load.
         reviewDue = false
-        link.minimumRange?.let { setMinimumRange(it) }
+        // The link's minimum is for this visit: the rider's own stays saved, and no range_filter is sent, as the rider
+        // chose none.
+        link.minimumRange?.let { metres ->
+            linkMinimumRange = max(0, metres)
+            if (readMinimumRange()) refetchFilteredClusters()
+        }
         val origin = link.origin
         if (origin == null) {
             analytics?.track("link_open", result = "map")
