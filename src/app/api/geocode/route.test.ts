@@ -839,6 +839,44 @@ describe('Geoapify', () => {
     expect((await search([...lottstetten.slice(1), zurich[0]])).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
   });
 
+  it('lists a street within 5 km once, before the addresses and shops on it, but not a place named as typed on it', async () => {
+    const lottstetten: GeoapifyRow[] = Array.from({ length: 20 }, (_, index) =>
+      [{ result_type: 'building', housenumber: String(index + 1), street: 'Bahnhofstraße', postcode: '79807', city: 'Lottstetten', country_code: 'de' }, 47.626, 8.5675]);
+    const house = (street: string, housenumber: string, lat: number, lon: number, name?: string): GeoapifyRow =>
+      [{ result_type: name ? 'amenity' : 'building', ...(name ? { name } : {}), housenumber, street, postcode: '8001', city: 'Zurich', country_code: 'ch' }, lat, lon];
+    // As the live search showed Geoapify's places within 5 km of Zürich HB for "Bahnhof" on 15 November 2026, then
+    // the square itself, a shop on it named as typed, and the one address found on Bahnhofquai.
+    const zurich: GeoapifyRow[] = [
+      house('Bahnhofstrasse', '80', 47.375, 8.5392),
+      house('Bahnhofstrasse', '78', 47.3749, 8.5391, 'Swarovski'),
+      house('Bahnhofstrasse', '78', 47.3749, 8.5391),
+      house('Bahnhofstrasse', '76', 47.3748, 8.539, 'Salt'),
+      house('Bahnhofstrasse', '76', 47.3748, 8.5391),
+      house('Bahnhofplatz', '15', 47.3772, 8.5394, 'Bahnhof Buffet'),
+      house('Bahnhofplatz', '5', 47.3767, 8.5403, 'McDonald\'s'),
+      [{ result_type: 'street', name: 'Bahnhofplatz', city: 'Zurich', country_code: 'ch' }, 47.3775, 8.5389],
+      house('Bahnhofquai', '9', 47.3786, 8.5416),
+    ];
+    const rows = async (query: string, close: GeoapifyRow[]) => {
+      stubUpstreams({ geoapify: { towns: [], nearby: lottstetten, close } });
+      return (await shownRows(await POST(postRequest(query, 'en', [47.378, 8.54])))).map(([title, subtitle]) => `${title}, ${subtitle}`);
+    };
+
+    expect(await rows('Bahnhof', zurich)).toEqual([
+      // At its address nearest the map centre: Bahnhofstrasse 80.
+      'Bahnhofstrasse, Zurich',
+      'Bahnhof Buffet, Bahnhofplatz 15, 8001 Zurich',
+      'Bahnhofplatz, Zurich',
+      'Bahnhofquai 9, 8001 Zurich',
+      'Bahnhofstraße 1, 79807 Lottstetten',
+    ]);
+    const [street] = await (await POST(postRequest('Bahnhof', 'en', [47.378, 8.54]))).json() as { lat: number; lng: number; display_name: string }[];
+    expect(street).toMatchObject({ lat: 47.375, lng: 8.5392, display_name: 'Bahnhofstrasse, Zurich' });
+    // An address typed with its number is the address.
+    expect((await rows('Bahnhofstrasse 7', [house('Bahnhofstrasse', '78', 47.3749, 8.5391), house('Bahnhofstrasse', '76', 47.3748, 8.5391)])).slice(0, 2))
+      .toEqual(['Bahnhofstrasse 78, 8001 Zurich', 'Bahnhofstrasse 76, 8001 Zurich']);
+  });
+
   it('asks Photon anywhere, still near the map centre, when Geoapify finds nothing: "Bahnhofstrase 10"', async () => {
     const fetchMock = stubRecordedAnswer('Bahnhofstrase 10');
 

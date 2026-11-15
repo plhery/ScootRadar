@@ -198,6 +198,9 @@ interface Candidate extends Ranked {
   listed?: boolean;
   /** The outline of a landmark, a building or a shop, as a box: what lies in it, of its name, is part of it. */
   outline?: Box;
+  /** A street's own row, or the row of the street an address is on where only the street bears what was typed:
+      what the rows of one street fold into (streetsFolded). */
+  street?: { title: string; subtitle: string; itself: boolean };
 }
 
 /** The places the services asked found, and their names. */
@@ -510,7 +513,62 @@ function photonCandidates(features: PhotonFeature[], ranking: Ranking): Candidat
     const outline = properties.type === 'house' || properties.type === 'other' ? outlineBox(properties.extent) : undefined;
     const countryCode = placeCountry(properties, lat, lng);
     const typed = typedNaming(ranking, properties, countryCode);
-    return [{ place, ...placeRank(typed, place, town, nearMiss, countryCode, ranking), ...(outline ? { outline } : {}) }];
+    const street = streetRow(properties, typed, title, subtitle, lat, lng);
+    return [{ place, ...placeRank(typed, place, town, nearMiss, countryCode, ranking), ...(outline ? { outline } : {}), ...(street ? { street } : {}) }];
+  });
+}
+
+/** Whether every word typed starts a word of a name, its umlauts spelled out or not. */
+function startsAsTyped(typed: string[], name: string): boolean {
+  const words = placeSpellings(name).flat();
+  return typed.length > 0 && typed.every(word => words.some(candidate => candidate.startsWith(word)));
+}
+
+/** A street's own row; or, for an address or a shop that only its street names as typed, as Swarovski at
+    Bahnhofstrasse 78 for "Bahnhof", the row of that street, written as Photon writes a street. Not for text with
+    a number, which asks for an address. */
+function streetRow(properties: Record<string, unknown>, typed: string[], title: string, subtitle: string, lat: number, lng: number): Candidate['street'] {
+  if (typed.some(word => /\d/.test(word))) return undefined;
+  if (properties.type === 'street') return startsAsTyped(typed, title) ? { title, subtitle, itself: true } : undefined;
+  const street = text(properties.street);
+  if (properties.type !== 'house' || !startsAsTyped(typed, street) || startsAsTyped(typed, text(properties.name))) return undefined;
+  return { ...photonLines({ ...properties, type: 'street', name: street }, lat, lng), itself: false };
+}
+
+/**
+ * The rows of one street as one, the street's: its own where the answer has it, else, for two addresses or more on
+ * it, the address of them nearest the map centre named as the street. In the place of the first of them, ranked as
+ * the best. Over Zürich HB, "Bahnhof" within 5 km is Bahnhofstrasse 80, Swarovski at 78, Bahnhofstrasse 78, Salt
+ * at 76 and Bahnhofstrasse 76: one street, which takes one row. A near miss stays as it is.
+ */
+function streetsFolded(candidates: Candidate[], { near }: From): Candidate[] {
+  const key = ({ title, subtitle }: { title: string; subtitle: string }) => `${searchText(title)}\n${searchText(subtitle)}`;
+  const streets = new Map<string, Candidate[]>();
+  for (const candidate of candidates) {
+    if (!candidate.street || candidate.miss) continue;
+    const of = key(candidate.street);
+    streets.set(of, [...(streets.get(of) ?? []), candidate]);
+  }
+  const away = ({ place }: Candidate) => near ? haversineM(near[0], near[1], place.lat, place.lng) : 0;
+  const folded = new Set<string>();
+  return candidates.flatMap(candidate => {
+    const of = candidate.street && !candidate.miss ? key(candidate.street) : undefined;
+    const rows = of !== undefined ? streets.get(of)! : [];
+    const own = rows.find(({ street }) => street!.itself);
+    if (of === undefined || (!own && rows.length < 2)) return [candidate];
+    if (folded.has(of)) return [];
+    folded.add(of);
+    const rank = Math.min(...rows.map(row => row.rank));
+    if (own) return [{ ...own, rank }];
+    const nearest = rows.reduce((best, row) => away(row) < away(best) ? row : best);
+    const { title, subtitle } = candidate.street!;
+    // Not a shop's outline: what lies in it is no part of the street.
+    return [{
+      ...nearest,
+      rank,
+      outline: undefined,
+      place: { ...nearest.place, display_name: subtitle ? `${title}, ${subtitle}` : title, title, subtitle },
+    }];
   });
 }
 
@@ -695,11 +753,12 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
     // are may have been left out for places farther away that it ranks above them.
     // Over Zürich HB, it found Lottstetten's Bahnhofstraße, 28 km away, for "Bahnhof",
     // and nothing in Zürich, whose Bahnhofstrasse, Bahnhofplatz and Bahnhofquai it
-    // finds for "Bahnhofs", "Bahnhofp" and "Bahnhofq". Those close by come first, as they rank.
+    // finds for "Bahnhofs", "Bahnhofp" and "Bahnhofq". Those close by come first, as they rank,
+    // the addresses of one street as that street: within 5 km, Geoapify may answer with a street's houses and shops.
     if (search.address || !nearby.value.full || found.some(({ remoteness }) => remoteness === 0)) return nearby;
     const close = await searchGeoapify(search, key, { withinM: CLOSE_M, timeoutMs: GEOAPIFY_TIMEOUT_MS });
     if (!close.ok) return nearby;
-    return { ok: true, value: { sources: ['Geoapify'], candidates: [...close.value.candidates, ...nearby.value.candidates] } };
+    return { ok: true, value: { sources: ['Geoapify'], candidates: [...streetsFolded(close.value.candidates, search), ...nearby.value.candidates] } };
   }
   const farther = await anywhere();
   if (!farther.ok) return farther;
