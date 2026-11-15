@@ -464,6 +464,10 @@ instead of a centre, and places in Switzerland where none is sent.
 With a map centre it asks first for places within 50 km of it, and for places
 anywhere, still the nearest first, only when none of those is what was typed
 (Geoapify's near misses, as Zürichstrasse for "Zürich HB", do not count).
+When all 20 it gives within 50 km are more than 5 km away, it asks for places
+within 5 km too, which come first: over Zürich HB, those for "Bahnhof" begin
+with Lottstetten's Bahnhofstraße, 28 km away over the German border, and hold
+nothing in Zürich.
 Without one it asks at the same time for places in that country and for places
 anywhere, and lists that country's first: asked anywhere alone, Geoapify finds
 Rothschild, Wisconsin, alone for "Rothschild", and the places of Tel Aviv's

@@ -30,13 +30,14 @@ const PHOTON_HOST = 'photon.komoot.io';
 
 type PhotonRow = [properties: Record<string, unknown>, lat: number, lon: number];
 type GeoapifyRow = [fields: Record<string, unknown>, lat: number, lon: number];
-type GeoapifyRequest = 'towns' | 'nearby' | 'anywhere';
+type GeoapifyRequest = 'towns' | 'nearby' | 'close' | 'anywhere';
 /** What Geoapify answers every request, or each of a search's requests; one not given fails. */
 type GeoapifyAnswers = GeoapifyRow[] | number | Partial<Record<GeoapifyRequest, GeoapifyRow[] | number>>;
 
-/** Which of a search's requests Geoapify is asked: for towns, for places close by, or for places anywhere. */
+/** Which of a search's requests Geoapify is asked: for towns, for places within 50 km or 5 km, or for places anywhere. */
 function geoapifyRequest(url: URL): GeoapifyRequest {
-  return url.searchParams.get('type') === 'city' ? 'towns' : url.searchParams.has('filter') ? 'nearby' : 'anywhere';
+  const filter = url.searchParams.get('filter');
+  return url.searchParams.get('type') === 'city' ? 'towns' : filter?.endsWith(',5000') ? 'close' : filter ? 'nearby' : 'anywhere';
 }
 
 /** Answers Geoapify with its results and each Photon with its features, or with a status for a service that fails. */
@@ -811,6 +812,33 @@ describe('Geoapify', () => {
     expect((await search([zurichHb])).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
   });
 
+  it('asks for places within 5 km of the map centre when the twenty within 50 km are all farther: "Bahnhof" over Zürich HB', async () => {
+    // Twenty houses of Lottstetten's Bahnhofstraße, 28 km away, as Geoapify answered "Bahnhof" within 50 km.
+    const lottstetten: GeoapifyRow[] = Array.from({ length: 20 }, (_, index) =>
+      [{ result_type: 'building', housenumber: String(index + 1), street: 'Bahnhofstraße', postcode: '79807', city: 'Lottstetten', country_code: 'de' }, 47.626, 8.5675]);
+    const zurich: GeoapifyRow[] = [
+      [{ result_type: 'street', name: 'Bahnhofstrasse', city: 'Zürich', country_code: 'ch' }, 47.3758, 8.5392],
+      [{ result_type: 'street', name: 'Bahnhofplatz', city: 'Zürich', country_code: 'ch' }, 47.3775, 8.5389],
+      [{ result_type: 'street', name: 'Bahnhofquai', city: 'Zürich', country_code: 'ch' }, 47.3785, 8.5415],
+    ];
+    const search = async (nearby: GeoapifyRow[]) => {
+      const fetchMock = stubUpstreams({ geoapify: { towns: [], nearby, close: zurich } });
+      const response = await POST(postRequest('Bahnhof', 'de', [47.378, 8.54]));
+      return {
+        asked: asked(fetchMock, GEOAPIFY_HOST).map(url => [geoapifyRequest(url), url.searchParams.get('filter')]),
+        rows: (await shownRows(response)).map(([title, subtitle]) => `${title}, ${subtitle}`),
+      };
+    };
+
+    expect(await search(lottstetten)).toEqual({
+      asked: [['towns', null], ['nearby', 'circle:8.54,47.38,50000'], ['close', 'circle:8.54,47.38,5000']],
+      rows: ['Bahnhofstrasse, Zürich', 'Bahnhofplatz, Zürich', 'Bahnhofquai, Zürich', 'Bahnhofstraße 1, 79807 Lottstetten', 'Bahnhofstraße 2, 79807 Lottstetten'],
+    });
+    // Not when Geoapify gave fewer, which are all it has within 50 km, nor when one of them is close.
+    expect((await search(lottstetten.slice(1))).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
+    expect((await search([...lottstetten.slice(1), zurich[0]])).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
+  });
+
   it('asks Photon anywhere, still near the map centre, when Geoapify finds nothing: "Bahnhofstrase 10"', async () => {
     const fetchMock = stubRecordedAnswer('Bahnhofstrase 10');
 
@@ -1284,7 +1312,9 @@ describe('recorded Geoapify answers', () => {
     // Zürich's postcode, not those elsewhere that start with it.
     ['8004', 'de', [47.37, 8.54], ['nearby'], [['8004', 'Zürich', DATA]]],
     // The town at the falls, then the streets named after them, not the towns Geoapify found for a near miss of the name.
-    ['Rheinfall', 'de', [47.37, 8.54], ['towns', 'nearby'], [
+    // Its twenty within 50 km are all farther than 5 km: places within 5 km are asked for too, which were not recorded
+    // and answer here with an error, as for "Ber" and "Laus" (the rows are those of the 50 km answer alone).
+    ['Rheinfall', 'de', [47.37, 8.54], ['towns', 'nearby', 'close'], [
       ['Neuhausen am Rheinfall', 'Schaffhausen, Schweiz', DATA],
       ['Rheinfallweg 3', '8447 Dachsen', DATA],
       ['Rheinfallweg 11', '8447 Dachsen', DATA],
@@ -1339,7 +1369,7 @@ describe('recorded Geoapify answers', () => {
       ['Freiburg (Elbe)', 'Niedersachsen, Deutschland', NO_DATA],
     ]],
     // The cities of our list it may become, then the towns it starts close by.
-    ['Ber', 'de', [47.37, 8.54], ['towns', 'nearby'], [
+    ['Ber', 'de', [47.37, 8.54], ['towns', 'nearby', 'close'], [
       ['Bergamo', 'Italien', DATA],
       ['Bergen', 'Norwegen', DATA],
       ['Berkeley, CA', 'Vereinigte Staaten', DATA],
@@ -1355,7 +1385,7 @@ describe('recorded Geoapify answers', () => {
       ['Römerswil', 'Luzern, Schweiz', NO_DATA],
     ]],
     // On its way to Lausanne, then to Lausen, farther.
-    ['Laus', 'fr', [46.52, 6.63], ['towns', 'nearby'], [
+    ['Laus', 'fr', [46.52, 6.63], ['towns', 'nearby', 'close'], [
       ['Lausanne', 'Vaud, Suisse', NO_DATA],
       ['Lausen', 'Bâle-Campagne, Suisse', DATA],
       ['Route de Lausanne', 'Villette (Lavaux)', NO_DATA],

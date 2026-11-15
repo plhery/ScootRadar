@@ -621,7 +621,7 @@ interface GeoapifyAsk {
   timeoutMs: number;
 }
 
-async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Promise<Upstream<Found>> {
+async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Promise<Upstream<Found & { full: boolean }>> {
   const { near } = search;
   const query = ask.text ?? search.query;
   const params = new URLSearchParams({
@@ -653,13 +653,21 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
     return feature ? [feature] : [];
   });
   const candidates = photonCandidates(features, search);
-  // Towns, not the hamlets, quarters and stations Geoapify also has, nor near misses of their names.
-  return { ok: true, value: { sources: ['Geoapify'], candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates } };
+  return {
+    ok: true,
+    value: {
+      sources: ['Geoapify'],
+      // Towns, not the hamlets, quarters and stations Geoapify also has, nor near misses of their names.
+      candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates,
+      full: results.length >= GEOAPIFY_RESULT_LIMIT,
+    },
+  };
 }
 
-/** Geoapify's places: those close to the map centre, and those anywhere when none of
-    these is what was typed; without a centre, those in the rider's country and those
-    anywhere, asked at once. An address typed with its city, in the city. */
+/** Geoapify's places: those close to the map centre, those closer still when as many as it
+    gives are farther, and those anywhere when none of these is what was typed; without a
+    centre, those in the rider's country and those anywhere, asked at once. An address typed
+    with its city, in the city. */
 async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Found>> {
   const anywhere = () => searchGeoapify(search, key, { timeoutMs: GEOAPIFY_TIMEOUT_MS });
   if (!search.near) {
@@ -680,7 +688,19 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
   const nearby = await searchGeoapify(search, key, search.address
     ? { text: search.address, withinM: CITY_SEARCH_M, timeoutMs: GEOAPIFY_TIMEOUT_MS }
     : { withinM: NEARBY_SEARCH_M, timeoutMs: GEOAPIFY_TIMEOUT_MS });
-  if (!nearby.ok || nearby.value.candidates.some(({ miss }) => !miss)) return nearby;
+  if (!nearby.ok) return nearby;
+  const found = nearby.value.candidates.filter(({ miss }) => !miss);
+  if (found.length) {
+    // As many places as Geoapify gives, and none close to the map centre: those that
+    // are may have been left out for places farther away that it ranks above them.
+    // Over Zürich HB, it found Lottstetten's Bahnhofstraße, 28 km away, for "Bahnhof",
+    // and nothing in Zürich, whose Bahnhofstrasse, Bahnhofplatz and Bahnhofquai it
+    // finds for "Bahnhofs", "Bahnhofp" and "Bahnhofq". Those close by come first, as they rank.
+    if (search.address || !nearby.value.full || found.some(({ remoteness }) => remoteness === 0)) return nearby;
+    const close = await searchGeoapify(search, key, { withinM: CLOSE_M, timeoutMs: GEOAPIFY_TIMEOUT_MS });
+    if (!close.ok) return nearby;
+    return { ok: true, value: { sources: ['Geoapify'], candidates: [...close.value.candidates, ...nearby.value.candidates] } };
+  }
   const farther = await anywhere();
   if (!farther.ok) return farther;
   // The near misses close by, after what is found farther.
