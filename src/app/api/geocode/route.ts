@@ -539,7 +539,8 @@ function streetRow(properties: Record<string, unknown>, typed: string[], title: 
  * The rows of one street as one, the street's: its own where the answer has it, else, for two addresses or more on
  * it, the address of them nearest the map centre named as the street. In the place of the first of them, ranked as
  * the best. Over Zürich HB, "Bahnhof" within 5 km is Bahnhofstrasse 80, Swarovski at 78, Bahnhofstrasse 78, Salt
- * at 76 and Bahnhofstrasse 76: one street, which takes one row. A near miss stays as it is.
+ * at 76 and Bahnhofstrasse 76: one street, which takes one row; within 50 km, Lottstetten's Bahnhofstraße 7, 2
+ * and 8 are another. A near miss stays as it is.
  */
 function streetsFolded(candidates: Candidate[], { near }: From): Candidate[] {
   const key = ({ title, subtitle }: { title: string; subtitle: string }) => `${searchText(title)}\n${searchText(subtitle)}`;
@@ -753,12 +754,15 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
     // are may have been left out for places farther away that it ranks above them.
     // Over Zürich HB, it found Lottstetten's Bahnhofstraße, 28 km away, for "Bahnhof",
     // and nothing in Zürich, whose Bahnhofstrasse, Bahnhofplatz and Bahnhofquai it
-    // finds for "Bahnhofs", "Bahnhofp" and "Bahnhofq". Those close by come first, as they rank,
-    // the addresses of one street as that street: within 5 km, Geoapify may answer with a street's houses and shops.
-    if (search.address || !nearby.value.full || found.some(({ remoteness }) => remoteness === 0)) return nearby;
+    // finds for "Bahnhofs", "Bahnhofp" and "Bahnhofq". Those close by come first, as they rank.
+    // The addresses of one street are that street, close by or not: Geoapify may answer with a
+    // street's houses and shops, Zürich's Bahnhofstrasse within 5 km and Lottstetten's within 50.
+    const folded = (candidates: Candidate[]): Upstream<Found> =>
+      ({ ok: true, value: { sources: ['Geoapify'], candidates: streetsFolded(candidates, search) } });
+    if (search.address || !nearby.value.full || found.some(({ remoteness }) => remoteness === 0)) return folded(nearby.value.candidates);
     const close = await searchGeoapify(search, key, { withinM: CLOSE_M, timeoutMs: GEOAPIFY_TIMEOUT_MS });
-    if (!close.ok) return nearby;
-    return { ok: true, value: { sources: ['Geoapify'], candidates: [...streetsFolded(close.value.candidates, search), ...nearby.value.candidates] } };
+    if (!close.ok) return folded(nearby.value.candidates);
+    return folded([...close.value.candidates, ...nearby.value.candidates]);
   }
   const farther = await anywhere();
   if (!farther.ok) return farther;

@@ -832,7 +832,8 @@ describe('Geoapify', () => {
 
     expect(await search(lottstetten)).toEqual({
       asked: [['towns', null], ['nearby', 'circle:8.54,47.38,50000'], ['close', 'circle:8.54,47.38,5000']],
-      rows: ['Bahnhofstrasse, Zürich', 'Bahnhofplatz, Zürich', 'Bahnhofquai, Zürich', 'Bahnhofstraße 1, 79807 Lottstetten', 'Bahnhofstraße 2, 79807 Lottstetten'],
+      // Lottstetten's twenty houses as their street.
+      rows: ['Bahnhofstrasse, Zürich', 'Bahnhofplatz, Zürich', 'Bahnhofquai, Zürich', 'Bahnhofstraße, Lottstetten'],
     });
     // Not when Geoapify gave fewer, which are all it has within 50 km, nor when one of them is close.
     expect((await search(lottstetten.slice(1))).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
@@ -868,13 +869,52 @@ describe('Geoapify', () => {
       'Bahnhof Buffet, Bahnhofplatz 15, 8001 Zurich',
       'Bahnhofplatz, Zurich',
       'Bahnhofquai 9, 8001 Zurich',
-      'Bahnhofstraße 1, 79807 Lottstetten',
+      'Bahnhofstraße, Lottstetten',
     ]);
     const [street] = await (await POST(postRequest('Bahnhof', 'en', [47.378, 8.54]))).json() as { lat: number; lng: number; display_name: string }[];
     expect(street).toMatchObject({ lat: 47.375, lng: 8.5392, display_name: 'Bahnhofstrasse, Zurich' });
     // An address typed with its number is the address.
     expect((await rows('Bahnhofstrasse 7', [house('Bahnhofstrasse', '78', 47.3749, 8.5391), house('Bahnhofstrasse', '76', 47.3748, 8.5391)])).slice(0, 2))
       .toEqual(['Bahnhofstrasse 78, 8001 Zurich', 'Bahnhofstrasse 76, 8001 Zurich']);
+  });
+
+  it('lists a street within 50 km once too: Lottstetten\'s Bahnhofstraße for "Bahnhof" over Zürich HB', async () => {
+    const lottstetten = (housenumber: string): GeoapifyRow =>
+      [{ result_type: 'building', housenumber, street: 'Bahnhofstraße', postcode: '79807', city: 'Lottstetten', country_code: 'de' }, 47.6262, 8.5690];
+    // As the live search showed Geoapify's places within 50 km of Zürich HB for "Bahnhof" on 15 November 2026: three
+    // houses of Lottstetten's Bahnhofstraße, the stop named after it on Hauptstraße, and Grießen's Bahnhofstraße 1,
+    // then more of Lottstetten's houses up to twenty.
+    const nearby: GeoapifyRow[] = [
+      lottstetten('7'),
+      [{ result_type: 'amenity', name: 'Lottstetten Bahnhofstraße', street: 'Hauptstraße', postcode: '79807', city: 'Lottstetten', country_code: 'de' }, 47.626, 8.5701],
+      lottstetten('2'),
+      lottstetten('8'),
+      [{ result_type: 'building', housenumber: '1', street: 'Bahnhofstraße', postcode: '79771', city: 'Grießen', country_code: 'de' }, 47.6273, 8.4125],
+      ...Array.from({ length: 15 }, (_, index) => lottstetten(String(index + 10))),
+    ];
+    // And within 5 km, as many places of Zürich's Bahnhofstrasse, which fold into one.
+    const close: GeoapifyRow[] = Array.from({ length: 20 }, (_, index) =>
+      [{ result_type: 'building', housenumber: String(80 - index * 2), street: 'Bahnhofstrasse', postcode: '8001', city: 'Zurich', country_code: 'ch' }, 47.375 - index * 0.0001, 8.5392]);
+    const rows = async (answers: { nearby: GeoapifyRow[]; close?: GeoapifyRow[] }) => {
+      stubUpstreams({ geoapify: { towns: [], ...answers } });
+      return (await shownRows(await POST(postRequest('Bahnhof', 'en', [47.378, 8.54])))).map(([title, subtitle]) => `${title}, ${subtitle}`);
+    };
+
+    expect(await rows({ nearby, close })).toEqual([
+      'Bahnhofstrasse, Zurich',
+      'Bahnhofstraße, Lottstetten',
+      // Named as typed, and not on the street.
+      'Lottstetten Bahnhofstraße, Hauptstraße, 79807 Lottstetten',
+      // One house of its street.
+      'Bahnhofstraße 1, 79771 Grießen',
+    ]);
+    // Without places within 5 km to ask for, as when one within 50 km is close.
+    expect(await rows({ nearby: [close[0], ...nearby.slice(0, 5)] })).toEqual([
+      'Bahnhofstrasse 80, 8001 Zurich',
+      'Bahnhofstraße, Lottstetten',
+      'Lottstetten Bahnhofstraße, Hauptstraße, 79807 Lottstetten',
+      'Bahnhofstraße 1, 79771 Grießen',
+    ]);
   });
 
   it('asks Photon anywhere, still near the map centre, when Geoapify finds nothing: "Bahnhofstrase 10"', async () => {
@@ -1349,15 +1389,16 @@ describe('recorded Geoapify answers', () => {
     ]],
     // Zürich's postcode, not those elsewhere that start with it.
     ['8004', 'de', [47.37, 8.54], ['nearby'], [['8004', 'Zürich', DATA]]],
-    // The town at the falls, then the streets named after them, not the towns Geoapify found for a near miss of the name.
-    // Its twenty within 50 km are all farther than 5 km: places within 5 km are asked for too, which were not recorded
-    // and answer here with an error, as for "Ber" and "Laus" (the rows are those of the 50 km answer alone).
+    // The town at the falls, then the streets named after them, each once and not as its houses, and the church at
+    // them, not the towns Geoapify found for a near miss of the name. Its twenty within 50 km are all farther than
+    // 5 km: places within 5 km are asked for too, which were not recorded and answer here with an error, as for "Ber"
+    // and "Laus" (the rows are those of the 50 km answer alone).
     ['Rheinfall', 'de', [47.37, 8.54], ['towns', 'nearby', 'close'], [
       ['Neuhausen am Rheinfall', 'Schaffhausen, Schweiz', DATA],
-      ['Rheinfallweg 3', '8447 Dachsen', DATA],
-      ['Rheinfallweg 11', '8447 Dachsen', DATA],
-      ['Rheinfallweg 17', '8447 Dachsen', DATA],
-      ['Rheinfallstrasse 20', '8447 Dachsen', DATA],
+      ['Rheinfallweg', 'Dachsen', DATA],
+      ['Rheinfallstrasse', 'Dachsen', DATA],
+      ['Rheinfallstraße', 'Altenburg', DATA],
+      ['Ev. ref. Kirche Laufen am Rheinfall', 'Rheinfallweg 7, 8447 Dachsen', DATA],
     ]],
     // None in Switzerland, whose places would come first; of twenty across the world, the American ones Geoapify knows best, none of them nearer Switzerland than another.
     ['Springfield', 'en', undefined, ['towns', 'nearby', 'anywhere'], [

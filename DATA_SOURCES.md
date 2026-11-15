@@ -467,11 +467,12 @@ anywhere, still the nearest first, only when none of those is what was typed
 When all 20 it gives within 50 km are more than 5 km away, it asks for places
 within 5 km too, which come first: over Zürich HB, those for "Bahnhof" begin
 with Lottstetten's Bahnhofstraße, 28 km away over the German border, and hold
-nothing in Zürich. Of those within 5 km, the addresses and shops that only their
-street names as typed are listed as that street, once, before the rest of it:
-not Bahnhofstrasse 80, Swarovski at 78 and Bahnhofstrasse 78, but Bahnhofstrasse.
-A place on it named as typed, as a "Bahnhof Buffet", keeps its row, and nothing
-is folded for text with a number, an address.
+nothing in Zürich. Of those within 5 km and those within 50 km, the addresses
+and shops that only their street names as typed are listed as that street, once,
+before the rest of it: not Bahnhofstrasse 80, Swarovski at 78 and Bahnhofstrasse
+78, but Bahnhofstrasse, and further on not Lottstetten's Bahnhofstraße 7, 2 and
+8, but its Bahnhofstraße. A place on it named as typed, as a "Bahnhof Buffet",
+keeps its row, and nothing is folded for text with a number, an address.
 Without one it asks at the same time for places in that country and for places
 anywhere, and lists that country's first: asked anywhere alone, Geoapify finds
 Rothschild, Wisconsin, alone for "Rothschild", and the places of Tel Aviv's
