@@ -103,10 +103,10 @@ import org.robolectric.annotation.GraphicsMode
  * The device matrix's passes (X.md X-M03 to X-M11, X-M14 to X-M17) over each screen of ui.md §1, on the windows of
  * ScootRadar_Fold and ScootRadar_Tablet: the foldable folded (its outer screen, a phone's) and open, upright and
  * across, open like a book and standing like a laptop; the tablet across and upright, and in a half and a third of
- * its width, as split screen gives it. Light and dark, at font scale 1.0 and 2.0. In each, as ui.md §2 has it: the
- * panel or the dock as the iPad's and the iPhone Duo's thresholds pick it, the chrome inside the window and clear of
- * itself, the panel clear of a fold down the middle, and no text cut off or clipped by what holds it, outside what
- * scrolls. One picture per screen for each class and appearance, at font scale 1.0, under matrix/; the panel's own
+ * its width, as split screen gives it; and on ScootRadar_Phone_Min's, the smallest phone's. Light and dark, at font
+ * scale 1.0 and 2.0. In each, as ui.md §2 has it: the panel or the dock as the iPad's and the iPhone Duo's thresholds
+ * pick it, the chrome inside the window and clear of itself, the panel clear of a fold down the middle, and no text cut
+ * off or clipped by what holds it, outside what scrolls. One picture per screen for each class and appearance, at font scale 1.0, under matrix/; the panel's own
  * screens at these sizes are PanelScreenshotTest's and PanelPresentationScreenshotTest's.
  *
  * At one dp to the pixel, as the panel's baselines, and with no system bars: Robolectric draws none, so the safe
@@ -181,6 +181,10 @@ class DeviceMatrixTest(private val look: Look) {
     @Test
     @Config(qualifiers = "w400dp-h800dp-mdpi")
     fun tabletThird() = pass(MatrixWindow.Third)
+
+    @Test
+    @Config(qualifiers = "w360dp-h640dp-mdpi")
+    fun phoneMin() = pass(MatrixWindow.PhoneMin)
 
     /** A screen shown: the controller its scene made, and the scene. */
     private class Shown(val scene: MatrixScene, val model: ScooterMapController, val clock: TestClock)
@@ -434,6 +438,9 @@ enum class MatrixWindow(val width: Int, val height: Int, val fold: FoldingFeatur
 
     /** A third of it. */
     Third(400, 800),
+
+    /** ScootRadar_Phone_Min, the smallest phone the app is checked on: 720 × 1280 px at 320 dpi. */
+    PhoneMin(360, 640),
     ;
 
     /** Where a window's pictures are named from. */
