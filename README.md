@@ -134,11 +134,38 @@ or newer. Anyone can join it, in about a minute, with one Google account:
 You can leave the test at any time, on the same page of Google Play. The site
 offers the same steps under its *Android app* button.
 
+The same beta, signed by Google Play, is in [ScootRadar's F-Droid repository](https://raw.githubusercontent.com/plhery/ScootRadar/fdroid/repo?fingerprint=682DDF19FD7F9CD56882825B4ABCE3254ED5B528C6D1D95E06D54791B4F8CCA0)
+and on [GitHub Releases](https://github.com/plhery/ScootRadar/releases).
+To add the repository, open the F-Droid app, go to Settings → Repositories → +,
+and paste the whole address, `?fingerprint=…` included:
+
+```
+https://raw.githubusercontent.com/plhery/ScootRadar/fdroid/repo?fingerprint=682DDF19FD7F9CD56882825B4ABCE3254ED5B528C6D1D95E06D54791B4F8CCA0
+```
+
+Opened in a browser, the address shows a 404 page; that's expected.
+
 To build it yourself, run `npm ci` at the top of the repository first (the
 build writes the app's API models and provider catalog with the site's
 scripts), then open `android/` in Android Studio and run the `app`
 configuration, or connect a phone and run `./gradlew :app:installDebug` in
 `android/` with JDK 21.
+
+Once a release reaches Google Play's closed test, its APK as Google Play signs
+it goes to the F-Droid repository and GitHub Releases:
+
+```sh
+SCOOTRADAR_FDROID_DIR=<path> android/scripts/publish-fdroid.sh <play-signed.apk> <commit> [notes.md]
+```
+
+The APK is Play Console's signed universal APK (App bundle explorer, the
+version, Downloads). The script refuses an APK Google Play did not sign, signs
+the repository's index with the repository's key, which stays outside the
+repository in `SCOOTRADAR_FDROID_DIR` with fdroid's `config.yml`, puts the
+repository alone on the `fdroid` branch, which raw.githubusercontent.com
+serves, and attaches the APK to a pre-release. The app's entry in the
+repository, with the anti-features F-Droid shows, is
+[`android/fdroid/com.plhery.scootradar.yml`](android/fdroid/com.plhery.scootradar.yml).
 
 ## Host your own
 

@@ -1,0 +1,49 @@
+# The app's entry in the F-Droid repository of the Android beta, which scripts/publish-fdroid.sh copies there.
+Categories:
+  - Navigation
+License: MIT
+AuthorName: ScootRadar
+WebSite: https://scootradar.com
+SourceCode: https://github.com/plhery/ScootRadar
+IssueTracker: https://github.com/plhery/ScootRadar/issues
+Changelog: https://github.com/plhery/ScootRadar/releases
+
+AntiFeatures:
+  NonFreeDep:
+    en-US: Google Play's in-app review, which asks for a rating through Google Play.
+  NonFreeNet:
+    en-US: The scooters come from scootradar.com, which reads them from the operators' own services, and its address search
+      from Geoapify. A walk of more than 10 km, or one with no route found, opens in Google Maps.
+  TetheredNet:
+    en-US: It works with scootradar.com alone. The server is free software, in the same repository, but the app has to be
+      built again to use another.
+  NonFreeAdd:
+    en-US: '"Open in" hands each rental to its operator''s own app, which is not free software, or to that app''s page on
+      Google Play when it isn''t installed.'
+  Tracking:
+    en-US: Sends which screens and actions are used to the project's own Umami analytics, without your position, your
+      searches or an identifier; Umami works out a rough area from the connection. Settings › About › Privacy › Share
+      anonymous usage turns it off.
+
+Name: ScootRadar
+Summary: Every shared e-scooter near you on one live map
+Description: |-
+  This is the beta of ScootRadar for Android: the same APK, signed by Google Play, as Google Play's closed test.
+
+  ScootRadar puts every shared e-scooter around you on one map, whoever runs it, so the closest ride is the first thing you see.
+
+  Each operator's app shows only its own fleet. ScootRadar shows them all, so the nearest scooter is simply the nearest one.
+
+  Know the walk: distance and walking time from where you stand, or from an address you look up. Directions draws the way on foot on the map and follows you as you walk.
+
+  Skip the flat ones: battery and remaining range, where the operator publishes them. Set a minimum and the map keeps only the scooters that reach it.
+
+  Price before you commit: an estimate from the operator's published rates for a ride of 5 to 30 minutes, with the free unlocks and free minutes of your passes taken into account. The operator's app shows the final price.
+
+  One tap to the right app: "Open in" takes you to the operator's own app, where you unlock and pay as usual. ScootRadar doesn't rent or reserve scooters.
+
+  The scooters of 39 operators, in more than 1,000 towns and cities in 58 countries. Where no operator publishes its data, the map says so and shows the closest cities that do.
+
+  No account and no ads. Your location is used on your phone to centre the map and work out walking times; the server only receives the part of the map you are looking at. Anonymous usage statistics can be turned off in Settings.
+
+  Positions come from the operators and public authorities, and can be a few minutes old. ScootRadar is independent and not affiliated with the operators; their names are trademarks of their owners.
