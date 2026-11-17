@@ -3422,6 +3422,9 @@ struct MapStatusBanner: View {
     var isBusy = false
     var systemImage = "exclamationmark.triangle.fill"
     var tint = ScooterPalette.critical
+    /// A capsule unless given, or the text is large enough to stack: a notice of several lines, as the
+    /// maintenance one, takes a rounded rectangle.
+    var cornerRadius: CGFloat?
     var action: (() -> Void)?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -3452,7 +3455,7 @@ struct MapStatusBanner: View {
         }
         .padding(.leading, 14)
         .padding(.trailing, stacks || action == nil ? 14 : 5)
-        .padding(.vertical, stacks ? 10 : 2)
+        .padding(.vertical, stacks || cornerRadius != nil ? 10 : 2)
         // As wide as the search bar above it, whatever the length of the sentence.
         .frame(maxWidth: 560)
         .background {
@@ -3474,7 +3477,7 @@ struct MapStatusBanner: View {
     }
 
     private var bannerCornerRadius: CGFloat {
-        stacks ? 22 : 999
+        cornerRadius ?? (stacks ? 22 : 999)
     }
 
     private var statusIndicator: some View {

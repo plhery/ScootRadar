@@ -678,6 +678,8 @@ struct ScooterResponse: Sendable {
     /// How far the clock of this device is ahead of the server's (negative when
     /// it is behind), from the response's Date header. 0 without the header.
     var clockOffset: TimeInterval
+    /// Set when these are scooters the Worker kept, given while the server behind it is down.
+    var maintenance: ScooterMaintenance?
 
     init(
         vehicles: [Scooter],
@@ -689,7 +691,8 @@ struct ScooterResponse: Sendable {
         batteryRanges: [String: Int] = [:],
         meta: ScooterResponseMetadata? = nil,
         parking: [ScooterParking] = [],
-        clockOffset: TimeInterval = 0
+        clockOffset: TimeInterval = 0,
+        maintenance: ScooterMaintenance? = nil
     ) {
         self.vehicles = vehicles
         self.clusters = clusters
@@ -701,6 +704,7 @@ struct ScooterResponse: Sendable {
         self.meta = meta
         self.parking = parking
         self.clockOffset = clockOffset
+        self.maintenance = maintenance
     }
 
     /// Each app's among the faded scooters, on this device's clock and never later than `receivedAt`.
@@ -1665,8 +1669,17 @@ struct ScooterRefreshPolicy: Equatable, Sendable {
     /// While the refreshes are paused, the cities' rules over the map are looked at this often, and redrawn when one
     /// has started or ended with its hours. Nothing is fetched.
     var pausedRulesCheck: TimeInterval = 60
+    /// The longest wait a `Retry-After` gets while the server is down.
+    var maximumRetryAfter: TimeInterval = 5 * 60
 
     static let standard = ScooterRefreshPolicy()
+
+    /// While the server is down, the gap before asking again: when the Worker says (`Retry-After`), never sooner
+    /// than any other attempt, and never later than `maximumRetryAfter`. It also takes the place of the
+    /// interval of the kept answer, so the scooters come back soon after the server does.
+    func maintenanceGap(_ maintenance: ScooterMaintenance) -> TimeInterval {
+        min(maximumRetryAfter, max(minimumAttemptGap, maintenance.retryAfter ?? 0))
+    }
 
     /// The gap before the follow-up a refreshing response asks for with `followUpMs`, which also
     /// takes the place of its `refreshAfterSeconds`; nil when it asks for none.
@@ -1806,6 +1819,9 @@ struct ScooterDockSummary: Equatable, Sendable {
     let isOverview: Bool
     /// The server answered with data it could not renew.
     let isDelayed: Bool
+    /// The server behind the data is down, for maintenance or a reboot: the data on the map is delayed, which
+    /// the notice under the search bar explains, and the map asks again by itself, with no Try again.
+    var underMaintenance = false
     /// One calm line each, under the status.
     let notices: [ScooterDockNotice]
     let hint: ScooterDockHint?
@@ -1829,10 +1845,11 @@ struct ScooterDockSummary: Equatable, Sendable {
     var countLabel: String { countContext.label(for: count) }
 
     /// The Try again pill at the right of the dock header.
-    var showsTryAgain: Bool { refreshFailure != nil }
+    var showsTryAgain: Bool { refreshFailure != nil && !underMaintenance }
 
     /// The status line, nil when there is none. It changes as the data ages, so ask again over time.
     func status(at now: Date = .now) -> ScooterDockStatus? {
+        if underMaintenance { return .delayed(showing: lastUpdated) }
         if let refreshFailure {
             return refreshFailure == .offline
                 ? .offline(showing: lastUpdated)

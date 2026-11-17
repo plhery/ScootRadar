@@ -213,6 +213,7 @@ final class ScooterAPITests: XCTestCase {
             (.httpStatus(500), .unavailable),
             (.httpStatus(503), .unavailable),
             (.httpStatus(599), .unavailable),
+            (.serverDown(ScooterMaintenance()), .maintenance),
             (.httpStatus(404), .failed),
             (.invalidURL, .failed),
             (.invalidResponse, .failed),
@@ -224,7 +225,7 @@ final class ScooterAPITests: XCTestCase {
             XCTAssertEqual(ScooterLoadFailure(error), failure, "\(error)")
         }
         XCTAssertEqual(ScooterLoadFailure(URLError(.badURL)), .failed)
-        XCTAssertEqual(Set(ScooterLoadFailure.allCases.map(\.message)).count, 5)
+        XCTAssertEqual(Set(ScooterLoadFailure.allCases.map(\.message)).count, 6)
 
         // The reason survives the trip through the real client.
         for (api, failure) in [
@@ -240,6 +241,47 @@ final class ScooterAPITests: XCTestCase {
                 XCTFail("Expected a \(failure) failure")
             } catch {
                 XCTAssertEqual(ScooterLoadFailure(error), failure)
+            }
+        }
+    }
+
+    func testTheWorkerSaysWhenTheServerBehindItIsDown() async throws {
+        let down = ["X-Scooter-Origin": "down", "Retry-After": "30", "X-Scooter-Back-Around": "2026-11-18T22:20:00.000Z"]
+        let backAround = try XCTUnwrap(ScooterServerTime.date("2026-11-18T22:20:00Z"))
+
+        // Scooters it kept from before: shown, with the server's state.
+        let kept = try await ScooterAPI(session: StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData), headers: down))
+            .scooters(bounds: bounds, zoom: 16)
+        XCTAssertEqual(kept.maintenance, ScooterMaintenance(backAround: backAround, retryAfter: 30))
+        let live = try await makeAPI(responseStatus: 200, data: emptyResponseData).scooters(bounds: bounds, zoom: 16)
+        XCTAssertNil(live.maintenance)
+
+        // None kept: a 503 that says the same, a maintenance rather than a failure.
+        let withoutTime = ["X-Scooter-Origin": "down", "Retry-After": "soon"]
+        for (statusCode, headers, expected) in [
+            (503, down, ScooterMaintenance(backAround: backAround, retryAfter: 30)),
+            (503, withoutTime, ScooterMaintenance()),
+            (502, ["x-scooter-origin": "DOWN"], ScooterMaintenance())
+        ] {
+            let api = ScooterAPI(session: StubNetworkSession(mode: .response(statusCode: statusCode, data: Data()), headers: headers))
+            do {
+                _ = try await api.scooters(bounds: bounds, zoom: 16)
+                XCTFail("Expected the server to be down")
+            } catch let error as ScooterAPIError {
+                XCTAssertEqual(error.maintenance, expected, "\(statusCode) \(headers)")
+                XCTAssertEqual(ScooterLoadFailure(error), .maintenance)
+            }
+        }
+
+        // A 503 the server itself sent, or a 4xx, says nothing of the kind.
+        for (statusCode, headers) in [(503, ["Retry-After": "30"]), (404, ["X-Scooter-Origin": "down"])] {
+            let api = ScooterAPI(session: StubNetworkSession(mode: .response(statusCode: statusCode, data: Data()), headers: headers))
+            do {
+                _ = try await api.scooters(bounds: bounds, zoom: 16)
+                XCTFail("Expected a failure")
+            } catch let error as ScooterAPIError {
+                XCTAssertNil(error.maintenance)
+                XCTAssertNotEqual(ScooterLoadFailure(error), .maintenance)
             }
         }
     }

@@ -156,6 +156,9 @@
 "ScootRadar took too long to respond." = "ScootRadar took too long to respond.";
 "ScootRadar is busy right now. Try again in a moment." = "ScootRadar is busy right now. Try again in a moment.";
 "ScootRadar is having trouble. Try again in a moment." = "ScootRadar is having trouble. Try again in a moment.";
+"Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@.";
+"ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly.";
+"Scheduled maintenance, back around %@." = "Scheduled maintenance, back around %@.";
 "Couldn’t load scooters." = "Couldn’t load scooters.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

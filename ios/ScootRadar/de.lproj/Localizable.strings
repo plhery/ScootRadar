@@ -156,6 +156,9 @@
 "ScootRadar took too long to respond." = "ScootRadar hat zu lange nicht geantwortet.";
 "ScootRadar is busy right now. Try again in a moment." = "ScootRadar ist gerade ausgelastet. Versuche es gleich nochmals.";
 "ScootRadar is having trouble. Try again in a moment." = "ScootRadar hat gerade Probleme. Versuche es gleich nochmals.";
+"Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "Die Scooter-Daten sind wegen Wartung für ein paar Minuten pausiert. Du siehst die Scooter von %@.";
+"ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar ist für ein paar Minuten in Wartung. Die Scooter sind gleich wieder da.";
+"Scheduled maintenance, back around %@." = "Geplante Wartung, wieder da gegen %@.";
 "Couldn’t load scooters." = "Scooter konnten nicht geladen werden.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

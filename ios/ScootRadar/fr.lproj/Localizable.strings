@@ -156,6 +156,9 @@
 "ScootRadar took too long to respond." = "ScootRadar a mis trop de temps à répondre.";
 "ScootRadar is busy right now. Try again in a moment." = "ScootRadar est très sollicité en ce moment. Réessayez dans un instant.";
 "ScootRadar is having trouble. Try again in a moment." = "ScootRadar rencontre un problème. Réessayez dans un instant.";
+"Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "Les données des trottinettes sont en pause quelques minutes pour une maintenance. Les trottinettes affichées datent de %@.";
+"ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar est en maintenance pour quelques minutes. Les trottinettes seront bientôt de retour.";
+"Scheduled maintenance, back around %@." = "Maintenance programmée, retour vers %@.";
 "Couldn’t load scooters." = "Impossible de charger les trottinettes.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

@@ -156,6 +156,9 @@
 "ScootRadar took too long to respond." = "ScootRadar brukte for lang tid på å svare.";
 "ScootRadar is busy right now. Try again in a moment." = "ScootRadar er opptatt akkurat nå. Prøv igjen om litt.";
 "ScootRadar is having trouble. Try again in a moment." = "ScootRadar har problemer. Prøv igjen om litt.";
+"Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "Dataene om elsparkesykler er satt på pause i noen minutter på grunn av vedlikehold. Viser elsparkesykler fra kl. %@.";
+"ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar er nede i noen minutter på grunn av vedlikehold. Elsparkesyklene er snart tilbake.";
+"Scheduled maintenance, back around %@." = "Planlagt vedlikehold, tilbake rundt kl. %@.";
 "Couldn’t load scooters." = "Kunne ikke laste inn elsparkesykler.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

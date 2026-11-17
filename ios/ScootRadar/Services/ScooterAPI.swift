@@ -85,6 +85,8 @@ actor ScooterAPI: ScooterAPIClient {
         do {
             var scooters = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: data).model
             scooters.clockOffset = clockOffset
+            // Scooters the Worker kept, given while the server behind them is down.
+            scooters.maintenance = ScooterMaintenance(httpResponse)
             return scooters
         } catch {
             throw ScooterAPIError.invalidData(error)
@@ -161,6 +163,9 @@ actor ScooterAPI: ScooterAPIClient {
             throw ScooterAPIError.invalidResponse
         }
         guard (200 ... 299).contains(httpResponse.statusCode) else {
+            if (500 ... 599).contains(httpResponse.statusCode), let maintenance = ScooterMaintenance(httpResponse) {
+                throw ScooterAPIError.serverDown(maintenance)
+            }
             throw ScooterAPIError.httpStatus(httpResponse.statusCode)
         }
         return (data, httpResponse)
@@ -191,6 +196,9 @@ enum ScooterLoadFailure: String, CaseIterable, Equatable, Sendable {
     case busy
     /// HTTP 5xx.
     case unavailable
+    /// The server behind the scooter data is down, for maintenance or a reboot, and nothing was kept for this view
+    /// (ScooterMaintenance).
+    case maintenance
     case failed
 
     init(_ error: any Error) {
@@ -203,6 +211,7 @@ enum ScooterLoadFailure: String, CaseIterable, Equatable, Sendable {
         case .timeout: String(localized: "ScootRadar took too long to respond.")
         case .busy: String(localized: "ScootRadar is busy right now. Try again in a moment.")
         case .unavailable: String(localized: "ScootRadar is having trouble. Try again in a moment.")
+        case .maintenance: String(localized: "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly.")
         case .failed: String(localized: "Couldn’t load scooters.")
         }
     }
@@ -214,16 +223,48 @@ enum ScooterAPIError: Error {
     case timedOut
     case invalidResponse
     case httpStatus(Int)
+    /// A 5xx the Worker marked: the server behind it is down.
+    case serverDown(ScooterMaintenance)
     case invalidData(Error)
     case network(Error)
+
+    /// The server's state, when the Worker said it is down.
+    var maintenance: ScooterMaintenance? {
+        if case let .serverDown(maintenance) = self { maintenance } else { nil }
+    }
 
     var loadFailure: ScooterLoadFailure {
         switch self {
         case .offline: .offline
         case .timedOut: .timeout
         case .httpStatus(429): .busy
+        case .serverDown: .maintenance
         case let .httpStatus(statusCode) where (500 ... 599).contains(statusCode): .unavailable
         default: .failed
         }
+    }
+}
+
+/// The server behind the scooter data (Netcup, through the Cloudflare Tunnel) is down, as the Worker says on its
+/// answers kept from before and on its 503s alike (`X-Scooter-Origin: down`): rebooted, or under maintenance
+/// (DEPLOY.md, "Maintenance"). The map says so calmly and asks again when the Worker says.
+struct ScooterMaintenance: Equatable, Sendable {
+    /// When an announced maintenance should be over (`X-Scooter-Back-Around`); nil when none was announced.
+    var backAround: Date?
+    /// How long to wait before asking again (`Retry-After`, in seconds); nil when the Worker says nothing.
+    var retryAfter: TimeInterval?
+
+    init(backAround: Date? = nil, retryAfter: TimeInterval? = nil) {
+        self.backAround = backAround
+        self.retryAfter = retryAfter
+    }
+
+    /// Nil unless the response says the server is down.
+    init?(_ response: HTTPURLResponse) {
+        guard response.value(forHTTPHeaderField: "X-Scooter-Origin")?.lowercased() == "down" else { return nil }
+        backAround = response.value(forHTTPHeaderField: "X-Scooter-Back-Around").flatMap(ScooterServerTime.date)
+        // Seconds only: the Worker never sends a date.
+        retryAfter = response.value(forHTTPHeaderField: "Retry-After")
+            .flatMap { $0.allSatisfy(\.isASCII) && $0.allSatisfy(\.isNumber) ? TimeInterval($0) : nil }
     }
 }

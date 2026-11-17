@@ -259,6 +259,7 @@ struct ScooterMapScreen: View {
             }
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: firstLoadFailure)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.isPausedForIdle)
+            .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.maintenance != nil)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.locationIssue)
 
             Spacer(minLength: 0)
@@ -384,6 +385,7 @@ struct ScooterMapScreen: View {
             .padding(.top, searchBarHeight + 8)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: firstLoadFailure)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.isPausedForIdle)
+            .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.maintenance != nil)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.locationIssue)
             .opacity(searchIsExpanded ? 0 : 1)
             .scaleEffect(searchIsExpanded ? 0.96 : 1, anchor: .top)
@@ -494,8 +496,9 @@ struct ScooterMapScreen: View {
 
     /// Only a first load that failed is reported under the search bar; later
     /// failures are the dock's to report, next to the data they concern.
+    /// The server being down is no failure to retry by hand: the maintenance notice says it instead.
     private var firstLoadFailure: ScooterLoadFailure? {
-        guard case let .firstLoadFailed(failure) = model.loadIssue else { return nil }
+        guard case let .firstLoadFailed(failure) = model.loadIssue, model.maintenance == nil else { return nil }
         return failure
     }
 
@@ -517,13 +520,13 @@ struct ScooterMapScreen: View {
     }
 
     private var hasTopNotices: Bool {
-        firstLoadFailure != nil || showsPausedNotice || model.locationIssue != nil
+        firstLoadFailure != nil || model.maintenanceNotice != nil || showsPausedNotice || model.locationIssue != nil
     }
 
     /// The map stopped refreshing itself, half an hour after the last touch.
     /// A first load that failed says more.
     private var showsPausedNotice: Bool {
-        model.isPausedForIdle && firstLoadFailure == nil
+        model.isPausedForIdle && firstLoadFailure == nil && model.maintenanceNotice == nil
     }
 
     /// The room between the search bar and the locate button above the dock.
@@ -569,6 +572,15 @@ struct ScooterMapScreen: View {
                 actionTitle: String(localized: "Try again"),
                 isBusy: model.isLoading,
                 action: model.retryLoad
+            )
+            .transition(.move(edge: .top).combined(with: .opacity))
+        } else if let maintenanceNotice = model.maintenanceNotice {
+            // Calm: no warning, no button. The map asks again by itself, and the notice goes once the server answers.
+            MapStatusBanner(
+                message: maintenanceNotice,
+                systemImage: "clock",
+                tint: ScooterPalette.secondaryText,
+                cornerRadius: 22
             )
             .transition(.move(edge: .top).combined(with: .opacity))
         } else if showsPausedNotice {

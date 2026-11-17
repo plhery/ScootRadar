@@ -942,6 +942,16 @@ extension ScooterModelsTests {
         )
     }
 
+    func testWhileTheServerIsDownTheMapAsksAgainWhenTheWorkerSays() {
+        let policy = ScooterRefreshPolicy.standard
+        XCTAssertEqual(policy.maintenanceGap(ScooterMaintenance(retryAfter: 30)), 30)
+        XCTAssertEqual(policy.maintenanceGap(ScooterMaintenance(retryAfter: 120)), 120)
+        // Never sooner than any other attempt, nor later than five minutes.
+        XCTAssertEqual(policy.maintenanceGap(ScooterMaintenance()), 10)
+        XCTAssertEqual(policy.maintenanceGap(ScooterMaintenance(retryAfter: 2)), 10)
+        XCTAssertEqual(policy.maintenanceGap(ScooterMaintenance(retryAfter: 86_400)), 300)
+    }
+
     func testARefreshingResponseGetsAQuickFollowUp() {
         let loaded = Date(timeIntervalSince1970: 1_790_000_000)
         let policy = ScooterRefreshPolicy.standard
@@ -1200,6 +1210,14 @@ extension ScooterModelsTests {
         }
         XCTAssertTrue(summary(failure: .busy).showsTryAgain)
         XCTAssertFalse(summary().showsTryAgain)
+
+        // While the server is down for maintenance the data is delayed from the start, and the map asks again by
+        // itself: no Try again, whatever failed.
+        var maintenance = summary(failure: .maintenance)
+        maintenance.underMaintenance = true
+        XCTAssertEqual(maintenance.status(at: updated), .delayed(showing: updated))
+        XCTAssertFalse(maintenance.status(at: updated)?.isWarning ?? true)
+        XCTAssertFalse(maintenance.showsTryAgain)
 
         // With every provider here down, there is no line, unless a refresh failed or the data is delayed.
         var down = summary()

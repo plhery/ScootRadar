@@ -1200,6 +1200,104 @@ extension ScooterMapModelTests {
         XCTAssertEqual(healthy.status(at: clock.now)?.isWarning, false)
     }
 
+    func testWhileTheServerIsDownTheMapSaysSoCalmlyAndAsksAgainWhenTheWorkerSays() async throws {
+        let clock = TestClock()
+        let api = StubScooterAPI(response: timedResponse(generatedAt: clock.now, expiresIn: 300))
+        let model = makeModel(api: api, clock: clock)
+        model.refresh()
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        let shownAt = try XCTUnwrap(model.lastUpdated)
+        XCTAssertNil(model.maintenanceNotice)
+
+        // Nothing kept for this view: a 503 that says the server is down, with an announced return.
+        let backAround = clock.now.addingTimeInterval(1_200)
+        await api.setFailure(.serverDown(ScooterMaintenance(backAround: backAround, retryAfter: 30)))
+        clock.advance(61)
+        model.autoRefreshIfNeeded()
+        let failed = await waitUntil { await api.snapshot().calls == 2 && model.loadIssue != nil && !model.isLoading }
+        XCTAssertTrue(failed)
+        XCTAssertEqual(model.loadIssue, .refreshFailed(.maintenance, showing: shownAt))
+        XCTAssertEqual(model.mapScooters.count, 1, "The scooters shown stay")
+        XCTAssertEqual(model.maintenanceNotice, [
+            String(format: String(localized: "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+                   ScooterDockStatus.clockTime(shownAt)),
+            String(format: String(localized: "Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround))
+        ].joined(separator: " "))
+        // Delayed, with no warning and no Try again.
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.status(at: clock.now), .delayed(showing: shownAt))
+        XCTAssertFalse(summary.showsTryAgain)
+        XCTAssertEqual(model.cardStatus, .delayed(showing: shownAt))
+
+        // Asked again after the thirty seconds the Worker said, not the usual ten.
+        clock.advance(29)
+        model.autoRefreshIfNeeded()
+        try await Task.sleep(for: .milliseconds(100))
+        let notYet = await api.snapshot().calls
+        XCTAssertEqual(notYet, 2)
+        clock.advance(1)
+        model.autoRefreshIfNeeded()
+        let askedAgain = await waitUntil { await api.snapshot().calls == 3 && !model.isLoading }
+        XCTAssertTrue(askedAgain)
+
+        // Scooters the Worker kept, still down: shown, and the notice stays.
+        var kept = timedResponse(generatedAt: clock.now.addingTimeInterval(-600), expiresIn: 300)
+        kept.maintenance = ScooterMaintenance(retryAfter: 30)
+        await api.setResponse(kept)
+        await api.setFailure(nil)
+        clock.advance(30)
+        model.autoRefreshIfNeeded()
+        let keptShown = await waitUntil { await api.snapshot().calls == 4 && model.loadIssue == nil && !model.isLoading }
+        XCTAssertTrue(keptShown)
+        XCTAssertEqual(model.maintenance, ScooterMaintenance(retryAfter: 30))
+        XCTAssertEqual(model.maintenanceNotice, String(
+            format: String(localized: "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+            ScooterDockStatus.clockTime(try XCTUnwrap(model.lastUpdated))
+        ))
+        clock.advance(29)
+        model.autoRefreshIfNeeded()
+        try await Task.sleep(for: .milliseconds(100))
+        let stillFour = await api.snapshot().calls
+        XCTAssertEqual(stillFour, 4)
+
+        // The server is back: the notice goes by itself.
+        await api.setResponse(timedResponse(generatedAt: clock.now, expiresIn: 300))
+        clock.advance(1)
+        model.autoRefreshIfNeeded()
+        let back = await waitUntil { await api.snapshot().calls == 5 && model.maintenance == nil && !model.isLoading }
+        XCTAssertTrue(back)
+        XCTAssertNil(model.maintenanceNotice)
+        XCTAssertNil(model.loadIssue)
+    }
+
+    func testAFirstLoadWhileTheServerIsDownWaitsCalmly() async {
+        let clock = TestClock()
+        let api = StubScooterAPI(response: timedResponse(generatedAt: clock.now, expiresIn: 300))
+        await api.setFailure(.serverDown(ScooterMaintenance()))
+        let model = makeModel(api: api, clock: clock)
+        model.refresh()
+        let failed = await waitUntil { await api.snapshot().calls == 1 && model.loadIssue != nil && !model.isLoading }
+        XCTAssertTrue(failed)
+        XCTAssertEqual(model.loadIssue, .firstLoadFailed(.maintenance))
+        XCTAssertEqual(model.maintenanceNotice, ScooterLoadFailure.maintenance.message)
+        XCTAssertEqual(model.dock, .waiting)
+
+        // Kept scooters that expired and a refresh that failed: cleared, and still no out-of-date card.
+        await api.setFailure(nil)
+        clock.advance(10)
+        model.autoRefreshIfNeeded()
+        let loaded = await waitUntil { await api.snapshot().calls == 2 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        await api.setFailure(.serverDown(ScooterMaintenance()))
+        clock.advance(301)
+        model.autoRefreshIfNeeded()
+        let expired = await waitUntil { await api.snapshot().calls == 3 && model.mapScooters.isEmpty && !model.isLoading }
+        XCTAssertTrue(expired)
+        XCTAssertEqual(model.dock, .waiting)
+        XCTAssertEqual(model.maintenanceNotice, ScooterLoadFailure.maintenance.message)
+    }
+
     func testFailedRefreshKeepsScootersForFifteenMinutesAtMost() async {
         let clock = TestClock()
         let generatedAt = clock.now

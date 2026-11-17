@@ -156,6 +156,9 @@
 "ScootRadar took too long to respond." = "ScootRadar reageerde niet op tijd.";
 "ScootRadar is busy right now. Try again in a moment." = "ScootRadar heeft het nu druk. Probeer het zo opnieuw.";
 "ScootRadar is having trouble. Try again in a moment." = "ScootRadar heeft problemen. Probeer het zo opnieuw.";
+"Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "De data van de deelsteps staan een paar minuten op pauze voor onderhoud. Je ziet de deelsteps van %@.";
+"ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar is een paar minuten offline voor onderhoud. De deelsteps zijn zo weer terug.";
+"Scheduled maintenance, back around %@." = "Gepland onderhoud, terug rond %@.";
 "Couldn’t load scooters." = "De deelsteps konden niet worden geladen.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

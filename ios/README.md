@@ -286,6 +286,17 @@ There is no refresh button. **Try again** appears only when something failed:
 - the data expired and the refresh after that failed: the map is cleared and the
   dock says the positions are out of date.
 
+While the server behind the data is down, for maintenance or a reboot, the
+Worker says so (`X-Scooter-Origin: down`; DEPLOY.md, "Maintenance") and none of
+this applies: a calm notice under the search bar, with a clock and no button,
+says "Scooter data is paused for a few minutes of maintenance. Showing scooters
+from 22:02." over the scooters the Worker kept, or "ScootRadar is down for a few
+minutes of maintenance. Scooters will be back shortly." without any, and adds
+"Scheduled maintenance, back around 22:20." when it was announced. The dock
+reads "Data delayed" without **Try again**, the out-of-date card waits, and the
+map asks again when `Retry-After` says (ten seconds to five minutes), dropping
+the notice once the server answers.
+
 ## What stays on the phone
 
 The filters, the appearance, the map style, whether the zones are shown, the language, the passes, the ride

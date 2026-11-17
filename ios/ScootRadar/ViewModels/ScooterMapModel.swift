@@ -130,6 +130,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     var isLocating = false
     /// What went wrong with loading, until a load succeeds again.
     private(set) var loadIssue: ScooterLoadIssue?
+    /// The server behind the scooter data is down, as the last answer said, whether it gave scooters kept from
+    /// before or none: the calm notice under the search bar (maintenanceNotice). Nil once the server answers.
+    private(set) var maintenance: ScooterMaintenance?
     /// When the data on the map was observed. It survives the map being cleared,
     /// so the out-of-date card can say when the last update was.
     var lastUpdated: Date?
@@ -884,6 +887,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if let selectedScooter { return .scooter(selectedScooter) }
         if let selectedParking { return .parking(selectedParking) }
         if case let .outOfDate(failure, lastUpdate) = loadIssue {
+            // The notice under the search bar says why the map is empty, and that it is coming back.
+            if maintenance != nil { return .waiting }
             return .outOfDate(failure, lastUpdate: lastUpdate)
         }
         guard let lastUpdated else {
@@ -923,6 +928,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             refreshFailure: refreshFailure,
             isOverview: isOverview,
             isDelayed: responseMetadata?.stale == true,
+            underMaintenance: maintenance != nil,
             notices: dockNotices,
             hint: hint,
             chips: dockChips,
@@ -938,8 +944,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         loadIssue == nil && fadedApps.contains(where: \.status.updating)
     }
 
+    /// A refresh that failed while the server is down is no failure to retry by hand: the notice says it, and
+    /// the map asks again by itself.
     private var refreshFailure: ScooterLoadFailure? {
-        guard case let .refreshFailed(failure, _) = loadIssue else { return nil }
+        guard case let .refreshFailed(failure, _) = loadIssue, maintenance == nil else { return nil }
         return failure
     }
 
@@ -948,11 +956,31 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// and while faded scooters stand where they were last seen, which the dock
     /// reports as an update rather than a delay.
     var cardStatus: ScooterDockStatus? {
+        if maintenance != nil, let lastUpdated { return .delayed(showing: lastUpdated) }
         if case let .refreshFailed(failure, showing) = loadIssue {
             return failure == .offline ? .offline(showing: showing) : .refreshFailed(showing: showing)
         }
         guard !isFilling else { return nil }
         return delayedStatus
+    }
+
+    /// While the server behind the scooter data is down: the calm notice under the search bar, as on the web.
+    /// "Scooter data is paused for a few minutes of maintenance. Showing scooters from 22:02." over the scooters
+    /// kept, "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." without any,
+    /// and "Scheduled maintenance, back around 22:20." after either when it was announced. Nil otherwise.
+    var maintenanceNotice: String? {
+        guard let maintenance else { return nil }
+        let showing: Date? = if case .outOfDate = loadIssue { nil } else { lastUpdated }
+        var lines = [showing.map {
+            String(
+                format: String(localized: "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+                ScooterDockStatus.clockTime($0)
+            )
+        } ?? ScooterLoadFailure.maintenance.message]
+        if let backAround = maintenance.backAround {
+            lines.append(String(format: String(localized: "Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround)))
+        }
+        return lines.joined(separator: " ")
     }
 
     /// Data the dock calls delayed: a stale answer naming an app switched on as late by `delayedAfter` or more, or
@@ -1267,6 +1295,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     private var refreshAfter: TimeInterval {
+        if let maintenance { return refreshPolicy.maintenanceGap(maintenance) }
         if let asked = refreshPolicy.askedFollowUp(responseMetadata) { return asked }
         guard let seconds = responseMetadata?.refreshAfterSeconds, seconds > 0 else {
             return refreshPolicy.defaultRefreshAfter
@@ -1847,7 +1876,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 )
                 let refreshing = response.meta?.refreshing == true
                 let filling = !response.lastSeenVehicles.isEmpty || !response.lastSeenClusters.isEmpty
-                followUpGap = refreshPolicy.askedFollowUp(response.meta)
+                // Kept scooters while the server is down: asked again when the Worker says.
+                maintenance = response.maintenance
+                followUpGap = response.maintenance.map(refreshPolicy.maintenanceGap) ?? refreshPolicy.askedFollowUp(response.meta)
                     ?? (refreshing && (filling || followedUpQuery != query) ? refreshPolicy.followUpGap : nil)
                 followedUpQuery = refreshing ? query : nil
                 loadIssue = nil
@@ -1864,7 +1895,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                     ScooterAnalytics.shared.track("data_error", result: "request_failed")
                 }
                 lastAttemptAt = clock()
-                followUpGap = nil
+                // Asked again quietly while the server is down, when the Worker says.
+                maintenance = (error as? ScooterAPIError)?.maintenance
+                followUpGap = maintenance.map(refreshPolicy.maintenanceGap)
                 handleLoadFailure(ScooterLoadFailure(error))
                 reviewAfterLoad()
             }
