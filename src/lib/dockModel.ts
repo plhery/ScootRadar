@@ -3,7 +3,7 @@ import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, type NearbyCoveredCity } fro
 import { deviceTime } from '@/lib/dataExpiry';
 import { providerHealth, providersDownNotice, type ProviderHealth } from '@/lib/dataHealth';
 import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
-import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
+import { failureReasonKey, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
 import {
   nothingToShow,
   type FilterSummaryPart,
@@ -209,6 +209,11 @@ export interface DockInput {
   failure: LoadFailure | null;
   outOfDate: boolean;
   hasData: boolean;
+  /**
+   * The server behind the scooter data is down for maintenance (useScooterData): the notice under the search bar
+   * says so, and the dock calls what it shows delayed, without a warning or a Try again.
+   */
+  maintenance?: MapMaintenance | null;
   meta: ScooterResponseMeta | null;
   lastUpdated: number | null;
   now: number;
@@ -233,7 +238,7 @@ export interface DockInput {
   unfilteredCount: number | null;
 }
 
-type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now' | 'clockOffsetMs' | 'lastSeenCount' |
+type StatusInput = Pick<DockInput, 'failure' | 'maintenance' | 'meta' | 'lastUpdated' | 'now' | 'clockOffsetMs' | 'lastSeenCount' |
   'fadedCounts' | 'lastSeenProviders' | 'enabledProviders'>;
 
 /** The apps whose scooters are drawn faded on the map now, in catalogue order. */
@@ -283,6 +288,8 @@ function delayedApps(input: StatusInput): { provider: string; at: number }[] | n
 function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boolean } {
   const { failure, meta, lastUpdated, now } = input;
   if (lastUpdated === null) return { status: null, retry: false };
+  // The scooters shown are kept from before the server went down, whatever their age: the map asks again by itself.
+  if (input.maintenance) return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };
   if (failure) {
     return {
       status: { kind: 'failure', text: { key: failure === 'offline' ? 'dock.offline' : 'dock.refreshFailed', time: lastUpdated } },
@@ -383,7 +390,8 @@ function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
 export function dockModel(input: DockInput): DockModel {
   const busy = input.loading !== null;
 
-  if (input.outOfDate) {
+  // Gone out of date while the server is down: no warning card, the notice under the search bar says it all.
+  if (input.outOfDate && !input.maintenance) {
     return {
       kind: 'outOfDate',
       title: { key: 'fail.outOfDate.title' },

@@ -5,6 +5,7 @@ import { selectionFeedback } from '@/lib/feedback';
 import { useI18n } from '@/lib/i18n';
 import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
 import type { LiveLocationError } from '@/lib/useLiveLocation';
+import { formatUiText, type UiText } from '@/lib/uiText';
 import Icon from './Icon';
 
 interface MapNoticesProps {
@@ -16,6 +17,8 @@ interface MapNoticesProps {
   locationError: LiveLocationError | null;
   /** Nobody has touched the page for half an hour, so the scooters no longer refresh until a touch. */
   paused?: boolean;
+  /** The server behind the scooter data is down for maintenance: what to say, from maintenanceNotice(). */
+  maintenance?: UiText[] | null;
   hidden: boolean;
   onRetryLoad: () => void;
   onRetryLocate: () => void;
@@ -33,6 +36,7 @@ export default function MapNotices({
   loading,
   locationError,
   paused = false,
+  maintenance = null,
   hidden,
   onRetryLoad,
   onRetryLocate,
@@ -41,7 +45,8 @@ export default function MapNotices({
   onDismissLocation,
   children,
 }: MapNoticesProps) {
-  const { t } = useI18n();
+  const i18n = useI18n();
+  const { t } = i18n;
   const stackRef = useRef<HTMLDivElement>(null);
   const tap = (action: () => void) => () => { selectionFeedback(); action(); };
 
@@ -78,7 +83,14 @@ export default function MapNotices({
           element that is already on the page, not one that arrives with its text. */}
       <div className="map-status" role="status">
         {/* Any touch, click or key refreshes, wherever it lands (useScooterData). */}
-        {paused && !loadFailure && (
+        {/* Calm: no warning and no button, as the map asks again by itself, and gone once the data is back. */}
+        {maintenance && !loadFailure && (
+          <div className="load-banner paused-banner maintenance-banner glass">
+            <Icon name="clock" size={17} strokeWidth={2.2} />
+            <span>{maintenance.map(line => formatUiText(line, i18n)).join(' ')}</span>
+          </div>
+        )}
+        {paused && !loadFailure && !maintenance && (
           <div className="load-banner paused-banner glass">
             <Icon name="refresh" size={17} strokeWidth={2.2} />
             <span>{t('dock.paused')}</span>
@@ -131,7 +143,7 @@ export default function MapNotices({
           </div>
         )}
       </div>
-      {!loadFailure && !locationError && children}
+      {!loadFailure && !maintenance && !locationError && children}
     </div>
   );
 }

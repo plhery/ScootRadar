@@ -382,6 +382,48 @@ describe('useScooterData', () => {
     expect(result.current).toMatchObject({ failure: null, hasData: true });
   });
 
+  it('says the server is down for maintenance from a kept answer and a 503, asks again when told, and forgets it once data is back', async () => {
+    const back = '2026-10-03T12:20:00.000Z';
+    const down = { 'X-Scooter-Origin': 'down', 'Retry-After': '30', 'X-Scooter-Back-Around': back };
+    // The answer kept from before the server went down, then none left to give.
+    const kept = body({ stale: true });
+    fetcher.mockImplementationOnce(ok())
+      .mockImplementationOnce(async () => Response.json(kept, { headers: down }))
+      .mockImplementation(async () => Response.json({ error: 'no', maintenance: { planned: true } }, { status: 503, headers: down }));
+    const { result } = mount();
+    await advance(180);
+    expect(result.current.maintenance).toBeNull();
+
+    await advance(60_000);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(result.current).toMatchObject({ failure: null, hasData: true, maintenance: { backAround: Date.parse(back) } });
+
+    // Not after ten seconds: after the thirty the server asked for.
+    await advance(29_999);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    await advance(1);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(result.current).toMatchObject({ failure: 'maintenance', hasData: true, maintenance: { backAround: Date.parse(back) } });
+    await advance(29_999);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    await advance(1);
+    expect(fetcher).toHaveBeenCalledTimes(4);
+
+    fetcher.mockImplementation(ok());
+    await advance(30_000);
+    expect(result.current).toMatchObject({ failure: null, hasData: true, maintenance: null });
+  });
+
+  it('says maintenance without a time where none was announced, and an ordinary failure where the server answered', async () => {
+    fetcher.mockImplementationOnce(async () => Response.json({ error: 'no' }, { status: 503, headers: { 'X-Scooter-Origin': 'down', 'Retry-After': '30' } }))
+      .mockImplementation(async () => Response.json({ error: 'no' }, { status: 503, headers: { 'Retry-After': '30' } }));
+    const { result } = mount();
+    await advance(180);
+    expect(result.current).toMatchObject({ failure: 'maintenance', hasData: false, maintenance: { backAround: null } });
+    await advance(30_000);
+    expect(result.current).toMatchObject({ failure: 'unavailable', maintenance: null });
+  });
+
   it('reports a failure once, however often the retries fail, and again after a recovery', async () => {
     fetcher.mockImplementation(networkError);
     const { result } = mount();

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { track } from '@/lib/analytics';
 import { refreshDecision } from '@/lib/autoRefresh';
 import { clockOffset } from '@/lib/dataExpiry';
-import { classifyLoadFailure, type LoadFailure } from '@/lib/loadFailure';
+import { classifyLoadFailure, retryAfterMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
 import { requestDeadline } from '@/lib/requestDeadline';
 import { REFRESH_PACE, VIEW_PACE, noteRequest, paceOpensAt, recentRequests, refusedForMs } from '@/lib/requestPace';
 import {
@@ -65,6 +65,8 @@ export interface ScooterData {
   outOfDate: boolean;
   /** Nobody has touched the page for IDLE_PAUSE_MS, so it no longer refreshes on its own; the next touch refreshes it. */
   paused: boolean;
+  /** The server behind the scooter data is down for maintenance: the scooters on screen, if any, are kept from before. */
+  maintenance: MapMaintenance | null;
   /** Fetches at once, for "Try again" and "Refresh". Resolves to whether it succeeded. */
   refresh: () => Promise<boolean>;
 }
@@ -72,6 +74,17 @@ export interface ScooterData {
 export interface ScooterDataOptions {
   /** Called when the scooters are removed, so the caller can drop its selection. */
   onOutOfDate?: () => void;
+}
+
+/**
+ * What an answer says of the server behind the scooter data (src/lib/scooterProxy.ts): down for maintenance, with
+ * when it should be back on this device's clock, or null; and when to ask again.
+ */
+export function originState(headers: Headers, clockOffsetMs: number): { maintenance: MapMaintenance | null; retryAfterMs: number } {
+  const retry = retryAfterMs(headers.get('Retry-After'));
+  if (headers.get('X-Scooter-Origin') !== 'down') return { maintenance: null, retryAfterMs: retry };
+  const back = Date.parse(headers.get('X-Scooter-Back-Around') ?? '');
+  return { maintenance: { backAround: Number.isFinite(back) ? back + clockOffsetMs : null }, retryAfterMs: retry };
 }
 
 function clearTimer(timer: number | null): null {
@@ -164,6 +177,7 @@ function createScooterDataController() {
 
     let response: ScooterResponse | null = null;
     let clockOffsetMs = 0;
+    let origin: ReturnType<typeof originState> = { maintenance: null, retryAfterMs: 0 };
     let failure: LoadFailure = 'failed';
     let cause: unknown;
     try {
@@ -175,19 +189,22 @@ function createScooterDataController() {
         cache: 'no-store',
         signal: deadline.signal,
       });
+      // The server's times are compared with this device's clock, which may be wrong.
+      clockOffsetMs = clockOffset(res.headers.get('Date'), Date.now());
+      origin = originState(res.headers, clockOffsetMs);
       if (res.ok) {
-        // The server's times are compared with this device's clock, which may be wrong.
-        clockOffsetMs = clockOffset(res.headers.get('Date'), Date.now());
         const data = await res.json() as ScooterResponse;
         if (!Array.isArray(data.vehicles) || !data.meta) throw new Error('Invalid scooter response');
         response = data;
       } else {
         if (res.status === 429) refusedUntil = Date.now() + refusedForMs(res);
-        failure = classifyLoadFailure({ status: res.status });
+        failure = classifyLoadFailure({ status: res.status, originDown: origin.maintenance !== null });
         cause = new Error(`HTTP ${res.status}`);
       }
     } catch (error) {
       failure = classifyLoadFailure({ timedOut: deadline.signal.aborted, online: navigator.onLine });
+      // No answer that could be read: nothing it said holds.
+      origin = { maintenance: null, retryAfterMs: 0 };
       cause = error;
     } finally {
       deadline.dispose();
@@ -197,10 +214,10 @@ function createScooterDataController() {
     request = null;
 
     if (response) {
-      apply({ type: 'succeeded', key, response, now: Date.now(), clockOffsetMs });
+      apply({ type: 'succeeded', key, response, now: Date.now(), clockOffsetMs, ...origin });
     } else {
       const previous = state;
-      apply({ type: 'failed', failure, now: Date.now() });
+      apply({ type: 'failed', failure, now: Date.now(), ...origin });
       // Retries repeat every few seconds; report a failure once, when it starts.
       if (!previous.failure) {
         track('data_error', { result: failure === 'timeout' ? 'timeout' : 'request_failed' });
@@ -331,6 +348,7 @@ export function useScooterData(query: ScooterDataQuery | null, options: ScooterD
     failure: state.failure,
     outOfDate: state.outOfDate,
     paused: state.paused,
+    maintenance: state.maintenance,
     refresh: controller.refresh,
   }), [answersQuery, controller, loading, state]);
 }

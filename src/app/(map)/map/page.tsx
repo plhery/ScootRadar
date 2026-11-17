@@ -46,7 +46,7 @@ import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/do
 import { activeCurfew } from '@/lib/rentalCurfews';
 import { RULE_ZONES, ruleZonesInView } from '@/lib/ruleZones';
 import { useI18n } from '@/lib/i18n';
-import { failureSurface } from '@/lib/loadFailure';
+import { failureSurface, maintenanceNotice } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
 import { placeForCity, recentPlace, searchNear, type Place } from '@/lib/places';
 import { shortcutFor } from '@/lib/shortcuts';
@@ -455,6 +455,7 @@ export default function Home() {
     failure,
     outOfDate,
     paused,
+    maintenance,
     refresh,
   } = useScooterData(scooterQuery, { onOutOfDate: clearSelection });
   const zoneData = useZoneData(mapQuery, zonesOn);
@@ -913,6 +914,7 @@ export default function Home() {
     failure,
     outOfDate,
     hasData,
+    maintenance,
     meta: responseMeta,
     lastUpdated,
     now,
@@ -1141,6 +1143,7 @@ export default function Home() {
         loading={loading !== null}
         locationError={locating || locationNoticeDismissed ? null : locationError}
         paused={paused}
+        maintenance={maintenanceNotice({ maintenance, hasData, lastUpdated })}
         hidden={searchExpanded}
         onRetryLoad={retryLoad}
         onRetryLocate={handleLocateMe}

@@ -2368,6 +2368,17 @@ svg {
 .load-banner.paused-banner > svg {
   color: var(--ink-2);
 }
+/* The server down for maintenance: as calm, in two sentences or three, so with a card's corners rather than a pill's. */
+.load-banner.maintenance-banner {
+  max-width: min(100%, 440px);
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-weight: 500;
+}
+.load-banner.maintenance-banner > svg {
+  align-self: flex-start;
+  margin-top: 1px;
+}
 .load-banner button {
   flex-shrink: 0;
   min-height: 44px;

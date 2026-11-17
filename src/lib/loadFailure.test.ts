@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyLoadFailure, failureReasonKey, failureSurface } from '@/lib/loadFailure';
+import { classifyLoadFailure, failureReasonKey, failureSurface, maintenanceNotice, retryAfterMs, retryGapMs } from '@/lib/loadFailure';
 
 describe('classifyLoadFailure', () => {
   it('reads an HTTP error status', () => {
@@ -53,5 +53,40 @@ describe('failureSurface', () => {
 
   it('uses the card once the data was removed', () => {
     expect(failureSurface({ failure: 'offline', hasData: false, outOfDate: true })).toBe('card');
+  });
+});
+
+describe('the server down for maintenance', () => {
+  it('is maintenance only where the answer said the server is down', () => {
+    expect(classifyLoadFailure({ status: 503, originDown: true })).toBe('maintenance');
+    expect(classifyLoadFailure({ status: 503 })).toBe('unavailable');
+    expect(classifyLoadFailure({ status: 429, originDown: true })).toBe('busy');
+    expect(failureReasonKey('maintenance')).toBe('maint.down');
+  });
+
+  it('has its own notice, never the banner, the status line or the card', () => {
+    for (const [hasData, outOfDate] of [[false, false], [true, false], [false, true]]) {
+      expect(failureSurface({ failure: 'maintenance', hasData, outOfDate })).toBeNull();
+    }
+  });
+
+  it('says what is shown, and when it should be back where that was announced', () => {
+    const at = Date.parse('2026-11-18T22:02:00Z');
+    const back = Date.parse('2026-11-18T22:20:00Z');
+    expect(maintenanceNotice({ maintenance: null, hasData: true, lastUpdated: at })).toBeNull();
+    expect(maintenanceNotice({ maintenance: { backAround: null }, hasData: true, lastUpdated: at }))
+      .toEqual([{ key: 'maint.paused', time: at }]);
+    expect(maintenanceNotice({ maintenance: { backAround: back }, hasData: false, lastUpdated: at }))
+      .toEqual([{ key: 'maint.down' }, { key: 'maint.backAround', time: back }]);
+  });
+
+  it('waits as long as Retry-After says, ten seconds at least and five minutes at most', () => {
+    expect(retryAfterMs('30')).toBe(30_000);
+    expect(retryAfterMs(' 120 ')).toBe(120_000);
+    expect(retryAfterMs('86400')).toBe(300_000);
+    for (const value of [null, '', 'soon', '-5', '1.5', 'Wed, 21 Oct 2026 07:28:00 GMT']) expect(retryAfterMs(value)).toBe(0);
+    expect(retryGapMs(0)).toBe(10_000);
+    expect(retryGapMs()).toBe(10_000);
+    expect(retryGapMs(30_000)).toBe(30_000);
   });
 });

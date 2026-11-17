@@ -1,7 +1,7 @@
 import { DEFAULT_REFRESH_AFTER_MS, FOLLOW_UP_GAP_MS, MIN_ATTEMPT_GAP_MS, MIN_FOLLOW_UP_MS } from '@/lib/autoRefresh';
 import { deviceTime, failedRequestOutcome, isExpired, responseExpiry } from '@/lib/dataExpiry';
 import { expandBounds } from '@/lib/geo';
-import type { LoadFailure } from '@/lib/loadFailure';
+import { retryGapMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
 import { scooterAnswerZoom } from '@/lib/scooterQuery';
 import type {
   MapBounds,
@@ -144,6 +144,11 @@ export interface ScooterDataState {
   outOfDate: boolean;
   /** Nobody has touched the page for a while, so it no longer refreshes on its own (IDLE_PAUSE_MS). */
   paused: boolean;
+  /**
+   * The server behind the scooter data is down for maintenance, as the last answer said (a stale one, or a 503):
+   * null once an answer does not say so.
+   */
+  maintenance: MapMaintenance | null;
 }
 
 export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
@@ -171,13 +176,18 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   failure: null,
   outOfDate: false,
   paused: false,
+  maintenance: null,
 };
 
 export type ScooterDataEvent =
   | { type: 'started'; key: string }
-  /** clockOffsetMs: how far this device's clock is ahead of the server's, from clockOffset(). */
-  | { type: 'succeeded'; key: string; response: ScooterResponse; now: number; clockOffsetMs?: number }
-  | { type: 'failed'; failure: LoadFailure; now: number }
+  /**
+   * clockOffsetMs: how far this device's clock is ahead of the server's, from clockOffset(). maintenance: the answer
+   * was kept from before the server went down. retryAfterMs: its Retry-After, from retryAfterMs().
+   */
+  | { type: 'succeeded'; key: string; response: ScooterResponse; now: number; clockOffsetMs?: number;
+    maintenance?: MapMaintenance | null; retryAfterMs?: number }
+  | { type: 'failed'; failure: LoadFailure; now: number; maintenance?: MapMaintenance | null; retryAfterMs?: number }
   /** The running request was cancelled without a replacement. */
   | { type: 'aborted' }
   | { type: 'parkingChecked'; now: number }
@@ -223,10 +233,12 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         parkingExpiresAt: expiry.parking,
         lastSuccessAt: now,
         lastAttemptAt: now,
-        refreshAfterMs: followUpMs ?? (typeof refreshAfter === 'number' && refreshAfter > 0
+        // A kept answer while the server is down is asked again when the Worker says (Retry-After), so the
+        // scooters come back soon after the server does, and not before.
+        refreshAfterMs: event.maintenance ? retryGapMs(event.retryAfterMs) : followUpMs ?? (typeof refreshAfter === 'number' && refreshAfter > 0
           ? refreshAfter * 1000
           : DEFAULT_REFRESH_AFTER_MS),
-        attemptGapMs: followUpMs ?? (followUp ? FOLLOW_UP_GAP_MS : MIN_ATTEMPT_GAP_MS),
+        attemptGapMs: event.maintenance ? retryGapMs(event.retryAfterMs) : followUpMs ?? (followUp ? FOLLOW_UP_GAP_MS : MIN_ATTEMPT_GAP_MS),
         followedUpKey: refreshing ? event.key : null,
         requestKey: event.key,
         requestInFlight: false,
@@ -234,12 +246,14 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         outOfDate: false,
         // A load the map asked for, as a view that moved, leaves a pause as it is: only a touch ends it.
         paused: state.paused,
+        maintenance: event.maintenance ?? null,
       };
     }
 
     case 'failed': {
+      // Asked again quietly, when the server's Retry-After says.
       const next = { ...state, lastAttemptAt: event.now, requestInFlight: false, failure: event.failure,
-        attemptGapMs: MIN_ATTEMPT_GAP_MS };
+        attemptGapMs: retryGapMs(event.retryAfterMs), maintenance: event.maintenance ?? null };
       if (failedRequestOutcome(state, event.now) !== 'out-of-date') return next;
       return { ...next, vehicles: [], clusters: [], lastSeenVehicles: [], lastSeenClusters: [], lastSeenProviders: {}, batteryRanges: {},
         hasData: false, dataKey: null, outOfDate: true };

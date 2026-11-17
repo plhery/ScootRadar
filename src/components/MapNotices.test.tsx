@@ -141,6 +141,20 @@ describe('MapNotices', () => {
     expect(document.documentElement.style.getPropertyValue('--notices-h')).toBe('');
   });
 
+  it('says calmly that the server is down for maintenance, with no warning and no button', () => {
+    const at = new Date(2026, 10, 18, 22, 2).getTime();
+    const back = new Date(2026, 10, 18, 22, 20).getTime();
+    const { container } = renderNotices({ maintenance: [{ key: 'maint.paused', time: at }, { key: 'maint.backAround', time: back }] });
+    const banner = container.querySelector('.maintenance-banner')!;
+    expect(banner).toHaveTextContent('Scooter data is paused for a few minutes of maintenance. Showing scooters from 22:02. '
+      + 'Scheduled maintenance, back around 22:20.');
+    expect(banner.closest('[role="status"]')).not.toBeNull();
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.queryByRole('button')).toBeNull();
+    expect(banner.querySelector('svg')).not.toBeNull();
+    expect(container.querySelector('.paused-banner:not(.maintenance-banner)')).toBeNull();
+  });
+
   it('is out of reach while the search panel is open', () => {
     const { container } = renderNotices({ loadFailure: 'failed', hidden: true });
 
