@@ -162,8 +162,13 @@ expected home map with no sheet. The helper checks activity again before activat
 and while waiting. Its window stays minimized, but keyboard focus briefly belongs
 to Ryde, for at most two seconds plus cleanup; the helper then restores the previous
 app. If the user switches apps in the meantime, their selection wins. The cursor
-is never moved. A failure to keep the window minimized or restore focus disables
-fast mode. This is a desktop helper, not a promise of entirely background execution.
+is never moved. A failure to keep the window minimized, or to restore focus and the
+cursor when the user did not interrupt, pauses fast mode for an hour (`pausedUntil`
+and `lastRestorationFailure` in the control file); three in a row disable it, with
+the reason, until the operator enables it again, and a clean read resets the count.
+Until 17 November 2026 the first failure disabled it: warm reads were off from
+14 November 10:27 CET, for one failed restoration, until they were turned on by hand.
+This is a desktop helper, not a promise of entirely background execution.
 
 Install it with `python3 scripts/ryde-bridge/install.py --map-control`. Its bundle is
 `~/.local/share/scootradar/ryde-bridge/Ryde Map Control.app`. The operator must grant
@@ -246,8 +251,17 @@ Output contains hashed gateway identities, rolling request counts and HTTP byte
 counters. Byte counters exclude TLS/proxy overhead and are not the provider's
 billed bandwidth. `egress.sqlite3` retains approximately one day of attempts;
 the endpoint/status journal rotates at 8 MiB with one previous file. Credentials,
-proofs and payloads are absent from this journal. Operating-fence response caching
-is not implemented: the native app still fetches its metadata normally.
+proofs and payloads are absent from this journal.
+
+The proxy answers the app's `getCityFences` itself, for the job's city, from the last
+full reply it kept for that city (`producer/city-metadata/<city>-getCityFences.json`)
+while that is under a day old, with its content type and the job's city in it; an
+older or missing one, or one kept before its content type was, goes to Ryde, and
+Ryde's reply replaces it. The fences were 579 of the 743 MB Ryde sent in the 28
+hours to 17 November 2026 21:42 CET, about 165 KB a launch, unchanged from one
+launch to the next. A reply the proxy gave never left the Mac: its charge is
+refunded (`Pool.refund`) and the journal records it with `"gateway": null` and
+`"answeredLocally": true`. The app's other metadata calls still go to Ryde.
 
 To pause collection, boot out only `com.scootradar.ryde-worker`. Keep the proxy,
 the required-route setting, pool config and session recovery files. For rollback,
@@ -336,12 +350,22 @@ proxy until restoration is verified.
 - `GET /internal/ryde/job`: one lease or JSON null.
 - `POST /internal/ryde/result`: version 1 normalized observations, exact query and
   job identity, original observation time and `coverage: "unknown"`.
+- `POST /internal/ryde/status`: the worker saying it holds itself off, when a hold
+  starts and about once a minute during it:
+  `{"version":1,"state":"held","reason":"AppFailing","until":1794951316.47,"detail":"…","at":1794936976.54}`.
+  `reason` is 1 to 40 letters, `until` (or null) and `at` are epoch seconds on the
+  Mac's clock, and `detail` is 300 characters at most. Any other key, or a body over
+  4 KB, is refused (400, 413); it answers 204. It is no request for a job, so the
+  worker's silence (below) goes on. The cache keeps the latest, with when it heard it,
+  until the worker next asks for a job.
 - Results are bounded, checked for age, duplicate IDs, unexpected fields and
   distance from the requested centre; acknowledgements are idempotent. A server
   restart expires the old queue rather than accepting a result into a new job.
 - The authenticated `/metrics` includes queue/completion/expiry/rejection counts,
   pending jobs and the worker's last poll time. A poll proves connectivity, not
   successful native collection. Feed expiry remains the existing cache contract.
+  `scootradar_ryde_bridge_worker_held{reason}` is 1 while the worker's last word on a
+  hold is under 3 minutes old, and absent otherwise.
 
 `scripts/generate-ryde-app-feeds.mjs` derives compact grids and country catalog
 entries from `data/ryde-bridge-areas.json`. `generate:providers` and
@@ -569,6 +593,19 @@ when that silence began with its feed states, so a restart goes on with it
 until the worker asks again; counting from the restart reported the groups one
 by one for 10 minutes after each deploy, then the silence again.
 
+Every silence was the one Sentry issue SCOOTRADAR-CACHE-68, 14 events in the 6
+days to 17 November 2026, and nothing in it told the AppFailing hold of that day,
+from 02:33 to 20:48 CET while macOS refused to launch Ryde (below), from a Mac
+switched off. The worker now says why it holds (`POST /internal/ryde/status`), and
+the event's title ends with the hold it said it was in within the 15 minutes before
+the report: "Ryde opened but brought no map" (AppFailing), "Ryde refused it"
+(RydeRefused), "Ryde could not be opened on the Mac" (LaunchFailed), "the datacenter
+pool's hourly budget is spent" (DatacenterBudget), or any other reason's code; or
+"no word from the Mac" when it said nothing (the Mac off, asleep or offline, or the
+worker not running). Each cause is an issue of its own, fingerprinted with the
+reason or `NoWord`, and the `worker` context adds `reason`, `until`, `detail` and
+`statusReceivedAt`.
+
 
 A failed map transport retires that job and uses the worker's existing bounded
 backoff; it does not permanently pause an otherwise valid encryption session.
@@ -614,5 +651,34 @@ helper's `open` only exits 1), and the worker held itself off as AppFailing,
 doubling to 4 hours, until the job was removed by hand with `launchctl remove` at
 20:48. When the helper's `open` fails, the worker now removes any such Ryde job
 that runs no process, records `stale-launch-job-removed` in `lifecycle.jsonl`, and
-opens Ryde once more (`remove_stale_launch_jobs` in `worker.py`). An `open` that
-fails with no such job left behind is still an app failure.
+opens Ryde once more (`remove_stale_launch_jobs` in `worker.py`).
+
+A launch that fails on the Mac (the proxy not ready, Ryde not quitting, or `open`
+failing with no such job left behind) is no longer an app failure, since Ryde was
+not contacted: the job goes back as `worker_failed`, the worker says `LaunchFailed`
+with the reason, tries to open Ryde again every minute with no job, and leases jobs
+once it opens. The lifecycle helper now says why on stderr: the chain of errors
+LaunchServices gave for an `open` (domain, code and reason of each, up to four), "Ryde
+did not quit within 10 seconds", or "Ryde did not stop within 3 seconds of a forced
+quit". `lifecycle.jsonl` records it as `open-failed` or
+`quit-failed` with `error`, and `worker-status.json` as `detail`. A wait for the
+datacenter pool's hourly budget is said as `DatacenterBudget` and is not a hold
+either: neither one hides a refusal Ryde makes meanwhile.
+
+The worker keeps results for a day and the Map Control helper's replies for an hour,
+deleting older ones hourly, and `lifecycle.jsonl` rotates at 8 MiB with one previous
+file (`lifecycle.previous.jsonl`). Nothing else reads a result once the cache has
+it, and on 17 November 2026 `results/` held 91,188 files, 533 MB, and
+`lifecycle.jsonl` 20 MB.
+
+For the bridge at a glance, read only and without stopping the worker:
+
+```sh
+/usr/bin/python3 ~/.local/share/scootradar/ryde-bridge/worker.py --status
+```
+
+It gives the worker's state and hold with its reason, the maps of the last hour,
+Ryde's process, any Ryde launchd job left with no process, the launches of the last
+hour and the last lifecycle event, the session, the proxy, the egress pool's
+rolling hour, refusal hold and cooling IPs, warm reads (on, paused or off, and why),
+and when the certificate expires and collection stops for its renewal.

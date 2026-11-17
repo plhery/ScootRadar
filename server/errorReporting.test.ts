@@ -152,3 +152,23 @@ it('does not report again a silence Sentry heard of before a restart, and says w
   expect(Sentry.captureMessage).toHaveBeenCalledTimes(1);
   expect(reportedWorkerSilence('Mac bridge')).toBe(since + 4 * 3600_000);
 });
+
+it('says why the worker stopped asking for jobs, as an issue of its own for each cause', () => {
+  const since = Date.UTC(2026, 10, 17, 1, 33);
+  const feeds = { total: 1332, expired: 0 };
+  reportWorkerSilent('Ryde bridge', since, feeds, since + 10 * 60_000, { reason: 'AppFailing', phrase: 'Ryde opened but brought no map',
+    until: since + 15 * 60_000, detail: 'CalledProcessError: open exited 1', receivedAt: since + 9 * 60_000 });
+  expect(Sentry.captureMessage).toHaveBeenLastCalledWith('The Ryde bridge worker stopped asking for jobs: Ryde opened but brought no map');
+  expect(scope.setFingerprint).toHaveBeenLastCalledWith(['worker-silent', 'Ryde bridge', 'AppFailing']);
+  expect(scope.setContext).toHaveBeenLastCalledWith('worker', { silentSince: '2026-11-17T01:33:00.000Z', minutesSilent: 10,
+    feeds: 1332, expiredFeeds: 0, reason: 'AppFailing', until: '2026-11-17T01:48:00.000Z', detail: 'CalledProcessError: open exited 1',
+    statusReceivedAt: '2026-11-17T01:42:00.000Z' });
+  // The Mac said nothing during the next silence.
+  reportWorkerSilent('Ryde bridge', since + 3600_000, feeds, since + 70 * 60_000,
+    { reason: 'NoWord', phrase: 'no word from the Mac', until: null, detail: null, receivedAt: null });
+  expect(Sentry.captureMessage).toHaveBeenLastCalledWith('The Ryde bridge worker stopped asking for jobs: no word from the Mac');
+  expect(scope.setFingerprint).toHaveBeenLastCalledWith(['worker-silent', 'Ryde bridge', 'NoWord']);
+  expect(scope.setContext).toHaveBeenLastCalledWith('worker', { silentSince: '2026-11-17T02:33:00.000Z', minutesSilent: 10,
+    feeds: 1332, expiredFeeds: 0, reason: 'NoWord', until: null, detail: null, statusReceivedAt: null });
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(2);
+});

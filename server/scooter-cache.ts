@@ -563,13 +563,16 @@ const persistenceTimer = setInterval(() => {
   }
   void persist();
 }, TICK_MS);
-/** Once the Ryde bridge's worker has stopped asking for jobs, one event for each silence (reportWorkerSilent). */
+/**
+ * Once the Ryde bridge's worker has stopped asking for jobs, one event for each silence (reportWorkerSilent),
+ * with the hold the worker last said it was in, or no word from the Mac (RydeBroker.silenceCause).
+ */
 function reportRydeWorkerSilent(now: number) {
   const silentSince = rydeBridge?.silentSince(now);
-  if (silentSince === undefined || !snapshot) return;
+  if (!rydeBridge || silentSince === undefined || !snapshot) return;
   const feeds = snapshot.feeds.filter(feed => workerOf.get(feed.id) === rydeBridge);
   reportWorkerSilent(RYDE_WORKER, silentSince, { total: feeds.length,
-    expired: feeds.filter(feed => expiredBeside(feed, now, cadence)).length }, now);
+    expired: feeds.filter(feed => expiredBeside(feed, now, cadence)).length }, now, rydeBridge.silenceCause(now));
 }
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));
 function shutDown() {

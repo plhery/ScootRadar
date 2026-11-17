@@ -168,23 +168,43 @@ export function reportedWorkerSilence(worker: string): number | undefined { retu
 /** A silence Sentry heard of before a restart, which the restart does not end: not reported again. */
 export function restoreWorkerSilence(worker: string, silentSince: number) { reportedSilence.set(worker, silentSince); }
 
+/** Why a worker stopped asking for jobs, as far as the cache heard (RydeBroker.silenceCause). */
+export interface WorkerSilenceCause {
+  /** The hold the worker said it was in, as AppFailing, or a code for having no word of one, as NoWord. */
+  reason: string;
+  /** The same in a few plain words, for the title. */
+  phrase: string;
+  /** When the worker said the hold would end, in ms, or null. */
+  until: number | null;
+  detail: string | null;
+  /** When the cache heard it, in ms, or null with no word. */
+  receivedAt: number | null;
+}
+
+const isoOrNull = (ms: number | null) => (ms === null ? null : new Date(ms).toISOString());
+
 /**
  * A worker feeds are collected through that has stopped asking for jobs (`silentSince`, see
  * RydeBroker.silentSince): paused, holding off after a refusal, or gone. Its feeds expire one after
  * another meanwhile, and this one event stands for them (scooter-cache.ts), once for each silence.
  * On 5 November 2026, with the Ryde bridge's worker paused after Ryde refused the Mac, they were
- * some ten events an hour (SCOOTRADAR-CACHE-66).
+ * some ten events an hour (SCOOTRADAR-CACHE-66). With a `cause`, the title says it and each cause is
+ * an issue of its own: until 17 November 2026 every silence was the one issue SCOOTRADAR-CACHE-68,
+ * 14 events in 6 days, and nothing in them told the worker holding itself off as AppFailing that day
+ * from 02:33 to 20:48 CET, as macOS refused to launch Ryde, from a Mac switched off.
  */
 export function reportWorkerSilent(worker: string, silentSince: number, feeds: { total: number; expired: number },
-  now = Date.now()) {
+  now = Date.now(), cause?: WorkerSilenceCause) {
   if (reportedSilence.get(worker) === silentSince) return;
   reportedSilence.set(worker, silentSince);
   Sentry.withScope(scope => {
     scope.setLevel('warning');
-    scope.setFingerprint(['worker-silent', worker]);
+    scope.setFingerprint(cause ? ['worker-silent', worker, cause.reason] : ['worker-silent', worker]);
     scope.setTags({ worker });
     scope.setContext('worker', { silentSince: new Date(silentSince).toISOString(),
-      minutesSilent: Math.floor((now - silentSince) / 60_000), feeds: feeds.total, expiredFeeds: feeds.expired });
-    Sentry.captureMessage(`The ${worker} worker stopped asking for jobs`);
+      minutesSilent: Math.floor((now - silentSince) / 60_000), feeds: feeds.total, expiredFeeds: feeds.expired,
+      ...(cause && { reason: cause.reason, until: isoOrNull(cause.until), detail: cause.detail,
+        statusReceivedAt: isoOrNull(cause.receivedAt) }) });
+    Sentry.captureMessage(`The ${worker} worker stopped asking for jobs${cause ? `: ${cause.phrase}` : ''}`);
   });
 }

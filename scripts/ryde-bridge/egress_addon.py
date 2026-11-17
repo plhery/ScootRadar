@@ -54,10 +54,13 @@ class Datacenter:
         if not identity: return
         status = flow.response.status_code if flow.response else 0
         size = len(flow.response.raw_content or b'')+len(bytes(flow.response.headers)) if flow.response else 0
-        self.pool.settle(flow.id, status, size)
+        local = bool(flow.metadata.get('answeredLocally'))
+        if local: self.pool.refund(flow.id)
+        else: self.pool.settle(flow.id, status, size)
         # Only endpoint paths and counters; no proofs, identifiers, request bodies or headers.
-        value = {'at': time.time(), 'gateway': identity, 'path': urlsplit(flow.request.url).path[:120],
+        value = {'at': time.time(), 'gateway': None if local else identity, 'path': urlsplit(flow.request.url).path[:120],
                  'httpStatus': status, 'responseBytes': size}
+        if local: value['answeredLocally'] = True
         log = BASE/'egress-requests.jsonl'
         if log.exists() and log.stat().st_size > 8*1024*1024:
             log.replace(BASE/'egress-requests.previous.jsonl')

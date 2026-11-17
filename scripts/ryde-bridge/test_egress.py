@@ -266,5 +266,19 @@ class RoutingTests(unittest.TestCase):
         for secret in ['private payload', 'private header', 'synthetic', '192.0.2.']:
             self.assertNotIn(secret, log)
 
+    def test_a_reply_the_proxy_gave_itself_is_refunded_and_marked(self):
+        from mitmproxy.http import Response
+        key = self.pool.begin_cycle()
+        sent = self.flow(); self.addon.requestheaders(sent)
+        sent.response = Response.make(200, b'{}'); self.addon.response(sent)
+        local = self.flow('https://api.ryde.vip/appRyde/getCityFences'); self.addon.requestheaders(local)
+        self.assertEqual(self.pool.snapshot()['rollingHour'][key], 2)
+        local.response = Response.make(200, b'{}'); local.metadata['answeredLocally'] = True
+        self.addon.response(local)
+        self.assertEqual(self.pool.snapshot()['rollingHour'][key], 1)
+        rows = [json.loads(line) for line in (self.base/'egress-requests.jsonl').read_text().splitlines()]
+        self.assertEqual([(r['path'], r['gateway'] is None, r.get('answeredLocally')) for r in rows],
+            [('/appRyde/getTimeService', False, None), ('/appRyde/getCityFences', True, True)])
+
 
 if __name__ == '__main__': unittest.main()

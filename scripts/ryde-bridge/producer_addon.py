@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlencode, parse_qsl, urlsplit
 from cryptography.hazmat.primitives import serialization
+from mitmproxy import http
 from native_protocol import LOGIN, READS, BridgeTrial, MAP, ROTATE, origin_path, private_json, verified_form, success
 from bridge_crypto import decrypt_envelope, thumbprint, public_key
 
@@ -17,6 +18,24 @@ FENCES = {'/appRyde/getCityFences', '/appRyde/getFencesInfo'}
 READS.update(FENCES)
 # Ryde's load balancer refusing the app's connection, whatever it asked.
 REFUSED = {403, 429}
+# The app asks for its city's fences at every launch, and the proxy asks for the job's city's in full
+# (no mapVersion), as the bootstrap of 4 November 2026 needed: from 15 to 17 November that was 144 MB
+# of the 176 MB Ryde sent, about 230 KB a launch, for geometry that rarely changes. The city's last
+# full reply answers the app for FENCE_CACHE seconds, and the call never leaves the Mac.
+CITY_FENCES = '/appRyde/getCityFences'
+FENCE_CACHE = 24*3600
+
+def cached_fences(city):
+    """The city's last full getCityFences reply, while fresh, unencrypted and kept with its content type."""
+    try: captured=json.loads((ROOT/'city-metadata'/f'{city}-getCityFences.json').read_text())
+    except (FileNotFoundError,ValueError): return None
+    if not isinstance(captured,dict): return None
+    reply=captured.get('reply')
+    if (not isinstance(captured.get('contentType'),str) or type(captured.get('at')) not in (int,float)
+        or not time.time()-FENCE_CACHE<captured['at']<=time.time()+60 or not isinstance(reply,dict)
+        or reply.get('status')!=200 or 'key' in reply or 'decrypted' in reply
+        or str((reply.get('city') or {}).get('cityId'))!=str(city)): return None
+    return captured
 
 class Producer(BridgeTrial):
     def status(self, phase=None):
@@ -144,6 +163,12 @@ class Producer(BridgeTrial):
                 if 'gpsLo' in fields: fields['gpsLo']=str(target['longitude'])
                 fields.pop('mapVersion',None) # request complete geometry, not a cached delta
                 flow.request.content=urlencode(fields).encode()
+                captured=cached_fences(target['cityId']) if path==CITY_FENCES else None
+                if captured:
+                    flow.response=http.Response.make(200,json.dumps(captured['reply'],separators=(',',':'),ensure_ascii=False).encode(),
+                        {'Content-Type':captured['contentType']})
+                    flow.metadata['answeredLocally']=True
+                    return
             flow.metadata['fenceCityId']=fields.get('cityId',fields.get('userCityId'))
         if path == MAP: flow.metadata['nativeRecipient'] = fields.get('ekt')
         renewal = path == ROTATE and self.bound and self.stage == 'bridge-active' and not (ROOT/'stop.json').exists()
@@ -289,7 +314,7 @@ class Producer(BridgeTrial):
             private_json(ROOT/'results'/f"{job['id']}.json", result, replace=True)
             if self.pending==job['id']: self.pending=None
             self.status()
-        if origin_path(flow) in FENCES and flow.response:
+        if origin_path(flow) in FENCES and flow.response and not flow.metadata.get('answeredLocally'):
             try:
                 reply=json.loads(flow.response.content)
                 if success(flow, reply):
@@ -299,6 +324,7 @@ class Producer(BridgeTrial):
                     # Only metadata response, never request headers, token or proof.
                     reply.pop('token',None)
                     captured={'path':origin_path(flow),'at':time.time(),'reply':reply}
+                    if flow.response.headers.get('content-type'):captured['contentType']=flow.response.headers['content-type']
                     private_json(ROOT/('native-'+origin_path(flow).rsplit('/',1)[1]+'.json'),captured,replace=True)
                     city=flow.metadata.get('fenceCityId')
                     if city and str(city).isdigit():

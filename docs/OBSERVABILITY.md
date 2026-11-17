@@ -62,7 +62,7 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   ignore it. In the cache it is also 1 while the feed is collected through a worker that
   has not asked for a job for 10 minutes, as the Ryde bridge's 1,332 feeds since the user
   paused it on 5 November 2026, until the worker asks again; the map says nothing of it,
-  and Sentry hears once of the worker's silence.
+  and Sentry hears once of the worker's silence, and why (see [Sentry](#sentry)).
 - `scootradar_feed_curfewed`: 1 while a night ban (data/rental-curfews.json) holds at
   every service area of the feed, else 0. Its operator may take the feed down until
   morning, as Dott does in Trondheim on Friday and Saturday nights while Entur keeps
@@ -706,6 +706,21 @@ Tracing is off, and no trace headers go to the operators' feeds.
   holds, at the addresses the registry gives them: three deploys while sharedmobility.ch
   refused HTTPS on 31 October 2026 had left the 15 Swiss feeds uncollected, the 8 read
   from rider maps included.
+- **The Ryde bridge worker stopped asking for jobs**: a warning once for each silence of
+  10 minutes (`RYDE_WORKER_SILENT_MS`), which stands for the expiries of the worker's
+  feeds; a restart goes on with a silence already reported and does not report it again
+  (docs/ryde-bridge.md). The title ends with the cause: the hold the worker last said it
+  was in (`POST /internal/ryde/status`), if the cache heard it in the 15 minutes before,
+  as "Ryde opened but brought no map" (AppFailing), "Ryde refused it" (RydeRefused),
+  "Ryde could not be opened on the Mac" (LaunchFailed), "the datacenter pool's hourly
+  budget is spent" (DatacenterBudget), or any other reason's code; otherwise "no word
+  from the Mac": the Mac off, asleep or offline, or the worker not running. Each cause is
+  an issue of its own. Until 17 November 2026 all were SCOOTRADAR-CACHE-68, 14 events in
+  6 days, and the AppFailing hold that day from 02:33 to 20:48 CET, while macOS refused
+  to launch Ryde, read the same as a Mac switched off. The `worker` context has when the
+  silence began, the worker's feeds and how many have expired, and the cause's `reason`,
+  `until`, `detail` and `statusReceivedAt`. Prometheus has the hold meanwhile as
+  `scootradar_ryde_bridge_worker_held{reason}`.
 - **A Swiss rider map failing**: Bolt's, Voi's or Dott's rider map read for a Swiss
   national feed (DATA_SOURCES.md) that has failed for ten minutes, at most once an hour
   for each feed (`swiss-app-map:<feed>`). The national feed alone stands meanwhile, so

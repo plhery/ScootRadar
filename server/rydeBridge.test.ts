@@ -109,6 +109,64 @@ describe('worker HTTP boundary',()=>{
       expect(submitted.status).toBe(204);await p;
     } finally {await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
   });
+  it('takes the worker\'s word that it holds itself off, strictly, without counting it as asking for a job',async()=>{
+    const {createSnapshotServer}=await import('./snapshotServer');
+    let now=Date.UTC(2026,10,17,1,33);const b=broker('worker-token-'.repeat(4),()=>now,0);
+    const server=createSnapshotServer({snapshot:()=>undefined,token:'public-api-token',rydeBridge:b});
+    await new Promise<void>(resolve=>server.listen(0,'127.0.0.1',resolve));
+    try {
+      const address=server.address() as {port:number};const url=`http://127.0.0.1:${address.port}/internal/ryde/status`;
+      const post=(body:unknown,token='worker-token-'.repeat(4))=>fetch(url,{method:'POST',headers:{Authorization:'Bearer '+token},
+        body:typeof body==='string'?body:JSON.stringify(body)}).then(r=>r.status);
+      const held={version:1,state:'held',reason:'AppFailing',until:now/1000+900,detail:'CalledProcessError: open exited 1',at:now/1000};
+      expect(await post(held,'public-api-token')).toBe(401);
+      for(const invalid of [{...held,reason:'App Failing'},{...held,reason:'a'.repeat(41)},{...held,reason:''},{...held,version:2},
+        {...held,state:'running'},{...held,detail:'x'.repeat(301)},{...held,detail:7},{...held,until:'later'},{...held,until:1e300},
+        {...held,at:undefined},{...held,pid:812},[held],null,'{'])expect(await post(invalid)).toBe(400);
+      expect(await post({...held,detail:'x'.repeat(5000)})).toBe(413);
+      expect(b.silenceCause().reason).toBe('NoWord');
+      expect(await post(held)).toBe(204);
+      expect(await fetch(url,{headers:{Authorization:'Bearer '+'worker-token-'.repeat(4)}}).then(r=>r.status)).toBe(404);
+      expect(b.stats.lastWorkerAt).toBe(0);expect(b.stats.rejected).toBe(0);
+      expect(b.silenceCause()).toEqual({reason:'AppFailing',phrase:'Ryde opened but brought no map',until:now+900_000,
+        detail:'CalledProcessError: open exited 1',receivedAt:now});
+      now+=60_000;expect(await post({version:1,state:'held',reason:'DatacenterBudget',until:null,at:now/1000})).toBe(204);
+      expect(b.silenceCause()).toEqual({reason:'DatacenterBudget',phrase:'the datacenter pool\'s hourly budget is spent',until:null,
+        detail:null,receivedAt:now});
+    } finally {await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
+  });
+});
+
+describe('the worker\'s word on a hold',()=>{
+  const held=(reason:string,at:number)=>({version:1,state:'held',reason,until:at/1000+900,at:at/1000});
+  it('neither ends nor delays a silence, and is the cause Sentry is given for it until the worker asks again',()=>{
+    let now=Date.UTC(2026,10,17,1,33);const b=broker('x'.repeat(32),()=>now,0);
+    b.lease();const asked=now;
+    for(let minute=1;minute<=10;minute++){now+=60_000;b.acceptStatus(held('AppFailing',now));}
+    expect(b.silentSince()).toBe(asked);
+    expect(b.silenceCause()).toMatchObject({reason:'AppFailing',phrase:'Ryde opened but brought no map',receivedAt:now});
+    expect(b.metrics()).toContain('scootradar_ryde_bridge_worker_held{reason="AppFailing"} 1\n');
+    b.lease();
+    expect(b.silenceCause()).toEqual({reason:'NoWord',phrase:'no word from the Mac',until:null,detail:null,receivedAt:null});
+    expect(b.metrics()).not.toContain('scootradar_ryde_bridge_worker_held');
+    expect(b.silentSince()).toBeUndefined();
+  });
+  it('names each hold the worker gives in plain words, and any other by its code',()=>{
+    const now=Date.UTC(2026,10,17,1,33);const b=broker('x'.repeat(32),()=>now,0);
+    const phrase=(reason:string)=>{b.acceptStatus(held(reason,now));return b.silenceCause().phrase;};
+    expect(['AppFailing','RydeRefused','LaunchFailed','DatacenterBudget','DatacenterAccounting','constructor'].map(phrase)).toEqual([
+      'Ryde opened but brought no map','Ryde refused it','Ryde could not be opened on the Mac',
+      'the datacenter pool\'s hourly budget is spent','DatacenterAccounting','constructor']);
+    expect(b.silenceCause().reason).toBe('constructor');
+  });
+  it('says the worker holds for 3 minutes after its last word, and gives that word as a silence\'s cause for 15',()=>{
+    let now=Date.UTC(2026,10,17,1,33);const b=broker('x'.repeat(32),()=>now,0);
+    b.acceptStatus(held('RydeRefused',now));const said=now;
+    now+=3*60_000-1;expect(b.metrics()).toContain('scootradar_ryde_bridge_worker_held{reason="RydeRefused"} 1\n');
+    now++;expect(b.metrics()).not.toContain('scootradar_ryde_bridge_worker_held');
+    now=said+15*60_000;expect(b.silenceCause().reason).toBe('RydeRefused');
+    now++;expect(b.silenceCause().reason).toBe('NoWord');
+  });
 });
 
 it('a failed city job releases the account queue immediately',async()=>{

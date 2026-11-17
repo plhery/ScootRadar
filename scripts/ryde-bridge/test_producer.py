@@ -194,6 +194,35 @@ class ProducerTests(unittest.TestCase):
         self.producer.request(f);f.response=Response.make(200,json.dumps({'status':200,'key':json.dumps(encrypt_envelope(native.public_key(),b'{}'))}).encode());self.producer.response(f)
         self.assertEqual(self.producer.stage,'needs-sign-in');self.assertFalse(self.producer.bound)
 
+    def fences(self,city='43',reply=None,headers=None):
+        f=self.flow('/appRyde/getCityFences',{'userCityId':'12','gpsLa':'47','gpsLo':'8','mapVersion':'v1'});f.response=None
+        self.producer.request(f)
+        if f.response is None:
+            f.response=Response.make(200,json.dumps(reply or {'status':200,'city':{'cityId':int(city),'cityName':'Drammen'},
+                'fences':[{'fenceType':4}],'mapVersion':'v2'}).encode(),headers or {'Content-Type':'application/json;charset=UTF-8'})
+            f.metadata['sentUpstream']=True
+        self.producer.response(f);return f
+    def test_a_city_s_fences_answer_the_app_from_its_last_full_reply_for_a_day(self):
+        self.job();cache=self.root/'city-metadata'/'43-getCityFences.json'
+        first=self.fences()
+        self.assertTrue(first.metadata.get('sentUpstream'));self.assertNotIn('mapVersion',parse_qs(first.request.content.decode()))
+        self.assertEqual(parse_qs(first.request.content.decode())['userCityId'],['43'])
+        kept=json.loads(cache.read_text());self.assertEqual(kept['contentType'],'application/json;charset=UTF-8')
+        second=self.fences()
+        self.assertFalse(second.metadata.get('sentUpstream'));self.assertTrue(second.metadata['answeredLocally'])
+        self.assertEqual(json.loads(second.response.content),kept['reply'])
+        self.assertEqual(second.response.headers['Content-Type'],'application/json;charset=UTF-8')
+        self.assertEqual(json.loads(cache.read_text())['at'],kept['at'])
+        kept['at']=time.time()-24*3600-1;cache.write_text(json.dumps(kept))
+        self.assertTrue(self.fences().metadata.get('sentUpstream'))
+    def test_fences_kept_before_their_content_type_was_or_for_another_city_go_to_ryde(self):
+        job=self.job();directory=self.root/'city-metadata';directory.mkdir()
+        reply={'status':200,'city':{'cityId':43},'fences':[]}
+        (directory/'43-getCityFences.json').write_text(json.dumps({'path':'/appRyde/getCityFences','at':time.time(),'reply':reply}))
+        self.assertTrue(self.fences().metadata.get('sentUpstream'))
+        (directory/'43-getCityFences.json').write_text(json.dumps({'at':time.time(),'contentType':'application/json',
+            'reply':{**reply,'city':{'cityId':44}}}))
+        self.assertTrue(self.fences().metadata.get('sentUpstream'))
     def test_a_refused_connection_is_kept_for_the_worker_without_holding_the_session(self):
         f=self.flow('/appRyde/getAppKeyInfo')
         f.response=Response.make(403,b'<html><head><title>403 Forbidden</title></head></html>',{'server':'awselb/2.0','content-type':'text/html'})

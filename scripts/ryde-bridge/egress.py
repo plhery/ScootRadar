@@ -192,6 +192,16 @@ class Pool:
             self.db.rollback()
             raise
 
+    def refund(self, request_id):
+        """A request the proxy answered itself (producer_addon.cached_fences) never left the Mac."""
+        self.db.execute('BEGIN IMMEDIATE')
+        try:
+            self.db.execute('DELETE FROM requests WHERE id=? AND status IS NULL', (request_id,))
+            self.db.commit()
+        except Exception:
+            self.db.rollback()
+            raise
+
     def settle(self, request_id, status, response_bytes, now=None):
         self.db.execute('BEGIN IMMEDIATE')
         try:

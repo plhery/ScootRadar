@@ -42,17 +42,84 @@ INSTALLED_APP=Path('/Applications/Ryde.app')
 # already in progress", and the worker held itself off as AppFailing until the job was removed by
 # hand at 20:48.
 RYDE_LAUNCH_JOB=re.compile(r'application\.com\.ryde\.NewRyde\.[0-9.]+')
+# A launch that fails on the Mac (the helper could not quit or open Ryde, or the proxy was not ready)
+# never reached Ryde. The worker takes no job meanwhile and tries a launch again every LAUNCH_RETRY,
+# taking jobs once one opens. Counted as app failures, the failed launches of 17 November 2026 held it
+# off for 18 hours, the last holds 4 hours long.
+LAUNCH_RETRY=60
+# A warm read that leaves the desktop other than it found it pauses warm reads for WARM_PAUSE, and
+# WARM_FAILURES_BEFORE_OFF in a row turn them off until the operator turns them on again. A single
+# one on 14 November 2026 at 10:27 turned them off, and every read till 17 November relaunched Ryde.
+WARM_PAUSE=3600
+WARM_FAILURES_BEFORE_OFF=3
+# While held, the worker tells the cache why once a minute, so its report of the silence says.
+STATUS_EVERY=60
+# Results the cache has had for a day are deleted, and the lifecycle journal is rotated at
+# JOURNAL_LIMIT with one previous file: on 17 November 2026 results/ held 90,934 files, 532 MB.
+RESULTS_KEPT=86400
+JOURNAL_LIMIT=8*1024*1024
 
 def remove_stale_launch_jobs():
     """Removes the launchd jobs for Ryde that run no process, returning their labels."""
-    listed=subprocess.run(['/bin/launchctl','list'],check=True,capture_output=True,text=True,timeout=5).stdout
-    stale=[fields[2] for fields in (line.split('\t') for line in listed.splitlines())
-        if len(fields)==3 and fields[0]=='-' and RYDE_LAUNCH_JOB.fullmatch(fields[2])]
-    for label in stale:subprocess.run(['/bin/launchctl','remove',label],check=True,timeout=5)
-    return stale
+    removed=[]
+    try:
+        listed=subprocess.run(['/bin/launchctl','list'],check=True,capture_output=True,text=True,timeout=5).stdout
+        for fields in (line.split('\t') for line in listed.splitlines()):
+            if len(fields)==3 and fields[0]=='-' and RYDE_LAUNCH_JOB.fullmatch(fields[2]):
+                subprocess.run(['/bin/launchctl','remove',fields[2]],check=True,capture_output=True,timeout=5)
+                removed.append(fields[2])
+    except (subprocess.SubprocessError,OSError):pass
+    return removed
 
 class JobDeadline(Exception):
     """Queued work ran out of time; this is not evidence that Ryde failed."""
+
+class LaunchFailed(RuntimeError):
+    """Ryde could not be quit or opened on the Mac, or the proxy was not ready: Ryde was not contacted."""
+
+def why(error):
+    """What a failed helper command said (RydeLifecycle.swift's fail), else the exception's own words."""
+    said=(getattr(error,'stderr',None) or '').strip() if isinstance(getattr(error,'stderr',None),str) else ''
+    return (type(error).__name__+': '+(said or str(error)))[:300]
+
+def journal(path,value):
+    """Appends a line, rotating the file at JOURNAL_LIMIT with one previous file."""
+    try:
+        if path.stat().st_size>JOURNAL_LIMIT:path.replace(path.with_name(path.stem+'.previous'+path.suffix))
+    except FileNotFoundError:pass
+    with path.open('a') as handle:handle.write(json.dumps(value)+'\n')
+
+def prune(base,now=None):
+    """Deletes results the cache has had for RESULTS_KEPT, and map-control replies older than an hour."""
+    now=time.time() if now is None else now
+    for directory,kept in [(base/'results',RESULTS_KEPT),(base/'map-control-results',3600)]:
+        try:entries=list(os.scandir(directory))
+        except FileNotFoundError:continue
+        for entry in entries:
+            try:
+                if entry.name.endswith('.json') and entry.is_file() and entry.stat().st_mtime<now-kept:os.unlink(entry.path)
+            except FileNotFoundError:pass
+
+def note_warm_restoration(base,details):
+    """Pauses warm reads after one that left the desktop other than it found it, and turns them off
+    after WARM_FAILURES_BEFORE_OFF in a row; a clean one clears the count."""
+    failed=(not details.get('stayedMinimized') or
+        (not details.get('userInterrupted') and (not details.get('focusRestored') or not details.get('cursorPreserved'))))
+    path=base/'warm-control.json'
+    try:control=json.loads(path.read_text())
+    except (FileNotFoundError,ValueError):return
+    if not isinstance(control,dict):return
+    failures=control.get('restorationFailures') if type(control.get('restorationFailures')) is int else 0
+    if not failed:
+        if failures:control.pop('restorationFailures');save(path,control)
+        return
+    failures+=1
+    control.update(restorationFailures=failures,lastRestorationFailure={'at':time.time(),
+        **{k:details.get(k) for k in ['stayedMinimized','userInterrupted','focusRestored','cursorPreserved']}})
+    if failures>=WARM_FAILURES_BEFORE_OFF:
+        control.update(enabled=False,reason=f'desktop restoration failed {failures} times in a row',at=time.time())
+    else:control['pausedUntil']=time.time()+WARM_PAUSE
+    save(path,control)
 
 def warm_helper(root):
     return root/'Ryde Map Control.app/Contents/MacOS/RydeMapControl'
@@ -146,28 +213,34 @@ def relaunch(root=ROOT, after_quit=None):
                 os.kill(ready['pid'],0);break
         except (FileNotFoundError,ProcessLookupError): pass
         time.sleep(.25)
-    else: raise RuntimeError('Recovered proxy is not ready; Ryde was not relaunched')
-    def lifecycle_event(phase):
+    else: raise LaunchFailed('Recovered proxy is not ready; Ryde was not relaunched')
+    def lifecycle_event(phase,**details):
         try:
             observed=subprocess.run([str(helper),'status'],check=True,capture_output=True,text=True,timeout=5)
-            value={'at':time.time(),'phase':phase,**json.loads(observed.stdout)}
+            value={'at':time.time(),'phase':phase,**json.loads(observed.stdout),**details}
         except (subprocess.TimeoutExpired,subprocess.CalledProcessError,ValueError) as error:
             # Diagnostics must not invalidate an otherwise successful native map.
-            value={'at':time.time(),'phase':phase,'statusUnavailable':type(error).__name__}
-        with (root/'producer/lifecycle.jsonl').open('a') as handle: handle.write(json.dumps(value)+'\n')
+            value={'at':time.time(),'phase':phase,'statusUnavailable':type(error).__name__,**details}
+        journal(root/'producer/lifecycle.jsonl',value)
+    def run(*command,timeout):
+        return subprocess.run([str(helper),*command],check=True,capture_output=True,text=True,timeout=timeout)
     lifecycle_event('before-quit')
     try:
-        subprocess.run([str(helper),'quit'],check=True,timeout=12)
-    except subprocess.CalledProcessError as error:
-        if error.returncode!=1:raise
-        lifecycle_event('graceful-quit-stuck')
-        # Never kill a live native map/rotation, even after its public job deadline.
-        # A new control nonce is acknowledged on the proxy's native-hook loop.
-        if not cold_fallback_ready({'id':uuid.uuid4().hex},root,time.time()+3):
-            raise RuntimeError('Ryde quit stalled; native activity prevents forced recovery') from error
-        lifecycle_event('before-forced-quit')
-        subprocess.run([str(helper),'force-quit'],check=True,timeout=5)
-        lifecycle_event('after-forced-quit')
+        try:
+            run('quit',timeout=12)
+        except subprocess.CalledProcessError as error:
+            if error.returncode!=1:raise
+            lifecycle_event('graceful-quit-stuck')
+            # Never kill a live native map/rotation, even after its public job deadline.
+            # A new control nonce is acknowledged on the proxy's native-hook loop.
+            if not cold_fallback_ready({'id':uuid.uuid4().hex},root,time.time()+3):
+                raise LaunchFailed('Ryde quit stalled; native activity prevents forced recovery') from error
+            lifecycle_event('before-forced-quit')
+            run('force-quit',timeout=5)
+            lifecycle_event('after-forced-quit')
+    except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
+        lifecycle_event('quit-failed',error=why(error))
+        raise LaunchFailed(why(error)) from error
     lifecycle_event('after-quit')
     egress.begin_cycle(root/'producer')
     if after_quit is not None: after_quit()
@@ -177,17 +250,20 @@ def relaunch(root=ROOT, after_quit=None):
     app=str(unpacked if unpacked.exists() else INSTALLED_APP)
     try:
         try:
-            subprocess.run([str(helper),'open',app],check=True,timeout=15)
-        except subprocess.CalledProcessError:
+            run('open',app,timeout=15)
+        except subprocess.CalledProcessError as error:
             # Ryde has quit above, so a launchd job of its with no process is one left behind.
             if not remove_stale_launch_jobs():raise
-            lifecycle_event('stale-launch-job-removed')
-            subprocess.run([str(helper),'open',app],check=True,timeout=15)
+            lifecycle_event('stale-launch-job-removed',error=why(error))
+            run('open',app,timeout=15)
     except subprocess.TimeoutExpired:
         # LaunchServices can start Ryde before its completion callback returns.
         # Wait for the authenticated native response; don't kill/reopen it again.
         lifecycle_event('open-callback-late')
         return
+    except subprocess.CalledProcessError as error:
+        lifecycle_event('open-failed',error=why(error))
+        raise LaunchFailed(why(error)) from error
     lifecycle_event('after-open')
 
 def validate_job(job):
@@ -226,9 +302,7 @@ def query(job, root=ROOT, timeout=60):
         try:
             details=run_map_control(root,'refresh')
             if not details.get('dispatched'):raise ValueError('Warm trigger unavailable')
-            if (not details.get('stayedMinimized') or
-                (not details.get('userInterrupted') and (not details.get('focusRestored') or not details.get('cursorPreserved')))):
-                save(base/'warm-control.json',{'enabled':False,'reason':'desktop restoration failed','at':time.time()})
+            note_warm_restoration(base,details)
             save(base/'last-trigger.json',{'mode':'warm','at':time.time(),'trigger':details.get('trigger'),
                 'pid':details.get('pid'),'focusRestored':details.get('focusRestored'),
                 'cursorPreserved':details.get('cursorPreserved'),'stayedMinimized':details.get('stayedMinimized'),
@@ -307,24 +381,47 @@ def refused_after(base, since):
     except (FileNotFoundError,ValueError,KeyError,TypeError): return None
     return at if type(at) in (int,float) and at>since else None
 
+def tell_broker(config, value):
+    """While held, tells the cache why (RydeBroker's status), so its report of the silence says. Best effort:
+    a cache that does not answer, or does not know the route yet, changes nothing here."""
+    body={'version':1,'state':'held','reason':value['reason'],'until':value.get('until'),'at':value['at']}
+    if value.get('detail'):body['detail']=value['detail'][:300]
+    try: broker(config,'POST','/internal/ryde/status',body)
+    except BrokerError: pass
+
 def serve(config, base):
     """Takes the broker's jobs until an operator stop."""
     stop=base/'stop.json'
     started=last_trigger=time.time()
-    hold_until=0;holds=0;failures=0;retry=BROKER_RETRY;reason=None
+    hold_until=0;holds=0;failures=0;retry=BROKER_RETRY;reason=None;detail=None;launch_failed=False;pruned=0
+    # Waits that are not about Ryde (LaunchFailed, DatacenterBudget) keep their own deadline: a refusal
+    # counts only once later than hold_until.
+    wait_until=0;wait_reason=None;wait_detail=None
+    def held(reason,until,detail=None,tell=True):
+        value={'state':'held','reason':reason,'until':until,'at':time.time()}
+        if detail:value['detail']=detail
+        save(base/'worker-status.json',value)
+        if tell:tell_broker(config,value)
     while not stop.exists():
+        if time.time()-pruned>=3600:
+            prune(base);pruned=time.time()
         # A refusal counts once its hold is over: one launch's several refused requests are one refusal.
         refused=refused_after(base,max(hold_until,started))
         if refused:
-            holds+=1;failures=0;hold_until=refused+hold_for(holds);reason='RydeRefused'
+            holds+=1;failures=0;hold_until=refused+hold_for(holds);reason='RydeRefused';detail=None;launch_failed=False
         if time.time()<hold_until:
-            save(base/'worker-status.json',{'state':'held','reason':reason,'until':hold_until,'at':time.time()})
-            wait_interval(hold_until-time.time(),stop);continue
+            held(reason,hold_until,detail)
+            wait_interval(min(STATUS_EVERY,hold_until-time.time()),stop);continue
+        if time.time()<wait_until:
+            held(wait_reason,wait_until,wait_detail)
+            wait_interval(min(STATUS_EVERY,wait_until-time.time()),stop);continue
         try:
+            if launch_failed:
+                # Ryde could not be opened: try again with no job, and take jobs once it opens.
+                relaunch();launch_failed=False;last_trigger=time.time()
             available=egress.available_at(base)
             if available>time.time():
-                save(base/'worker-status.json',{'state':'held','reason':'DatacenterBudget','until':available,'at':time.time()})
-                wait_interval(available-time.time(),stop);continue
+                wait_until=available;wait_reason='DatacenterBudget';wait_detail=None;continue
             job=broker(config,'GET','/internal/ryde/job')
             retry=BROKER_RETRY
             if job:
@@ -349,25 +446,107 @@ def serve(config, base):
             # accumulate app failures or force a healthy worker into a long hold.
             save(base/'worker-status.json',{'state':'ready','reason':'BrokerJobExpired','at':time.time()})
             wait_interval(0,stop)
+        except LaunchFailed as error:
+            # Not counted as an app failure: Ryde was not contacted.
+            launch_failed=True;wait_until=time.time()+LAUNCH_RETRY;wait_reason='LaunchFailed';wait_detail=why(error)
+        except egress.EgressWait as error:
+            # The pool's hourly budget ran out between the readiness check and the launch.
+            wait_until=error.until;wait_reason='DatacenterBudget';wait_detail=None
         except sqlite3.OperationalError:
             # Local accounting contention is neither an app failure nor an upstream denial.
             # Keep routing closed and retry promptly without killing the worker.
-            save(base/'worker-status.json',{'state':'held','reason':'DatacenterAccounting','at':time.time()})
+            held('DatacenterAccounting',time.time()+BROKER_RETRY,tell=False)
             wait_interval(BROKER_RETRY,stop)
         except BrokerError as error:
             save(base/'worker-status.json',{'state':'held','reason':'BrokerError','detail':str(error),'at':time.time()})
             wait_interval(retry,stop);retry=min(retry*2,BROKER_RETRY_MAX)
         except Exception as error:
-            failures+=1
+            failures+=1;detail=why(error)
             if failures>=FAILURES_BEFORE_HOLD:
                 holds+=1;failures=0;hold_until=time.time()+hold_for(holds);reason='AppFailing'
-            save(base/'worker-status.json',{'state':'held','reason':type(error).__name__,'at':time.time()})
+            save(base/'worker-status.json',{'state':'held','reason':type(error).__name__,'detail':detail,'at':time.time()})
             wait_interval(60,stop)
 
+def status_report(root=ROOT, now=None):
+    """The bridge at a glance, for the operator (--status): read only, and never takes the worker lock."""
+    now=time.time() if now is None else now;base=root/'producer';lines=[]
+    def read(path):
+        try:return json.loads(path.read_text())
+        except (FileNotFoundError,ValueError):return None
+    def when(at):
+        if not at:return 'never'
+        moment=time.strftime('%d %b %H:%M:%S',time.localtime(at));seconds=int(at-now)
+        span=abs(seconds);text=f'{span//86400}d {span%86400//3600}h' if span>=86400 else f'{span//3600}h {span%3600//60}m' if span>=3600 else f'{span//60}m {span%60}s'
+        return f'{moment} (just now)' if span<5 else f'{moment} ({"in "+text if seconds>=0 else text+" ago"})'
+    def line(name,text):lines.append(f'{name:<12}{text}')
+    try:listed=subprocess.run(['/bin/launchctl','list'],capture_output=True,text=True,timeout=5).stdout
+    except (subprocess.SubprocessError,OSError):listed=''
+    jobs={fields[2]:fields[0] for fields in (l.split('\t') for l in listed.splitlines()) if len(fields)==3}
+    worker=read(base/'worker-status.json') or {}
+    pid=jobs.get('com.scootradar.ryde-worker')
+    state=worker.get('state','unknown')+(': '+worker['reason'] if worker.get('reason') else '')
+    if worker.get('until'):state+=' until '+when(worker['until'])
+    line('Worker',('not loaded' if pid is None else 'not running' if pid=='-' else f'pid {pid}')+', '+state)
+    if worker.get('detail'):line('',worker['detail'])
+    count=0;latest=0
+    try:
+        for entry in os.scandir(base/'results'):
+            at=entry.stat().st_mtime;latest=max(latest,at);count+=at>now-3600
+    except FileNotFoundError:pass
+    line('Maps',f'{count} in the last hour, last {when(latest)}')
+    launches=0;last=None
+    try:
+        with (base/'lifecycle.jsonl').open('rb') as handle:
+            handle.seek(max(0,handle.seek(0,2)-2_000_000));handle.readline()
+            for raw in handle:
+                try:event=json.loads(raw)
+                except ValueError:continue
+                launches+=event.get('phase')=='after-open' and event.get('at',0)>now-3600;last=event
+    except FileNotFoundError:pass
+    ryde=[label for label in jobs if RYDE_LAUNCH_JOB.fullmatch(label)]
+    running=[jobs[label] for label in ryde if jobs[label]!='-']
+    text=f'running (pid {", ".join(running)})' if running else 'not running'
+    if len(ryde)>len(running):text+=f'; {len(ryde)-len(running)} launchd job(s) left with no process'
+    line('Ryde',f'{text}; {launches} launches in the last hour')
+    if last:line('',f'last lifecycle event: {last.get("phase")} {when(last.get("at"))}'+(f' ({last["error"]})' if last.get('error') else ''))
+    session=read(base/'session/status.json') or {}
+    line('Session',f'{session.get("bridgeStage","unknown")}'+(f', paused: {session.get("pauseReason") or "yes"}' if session.get('paused') else '')
+        +(f', last error: {session["lastError"]}' if session.get('lastError') else ''))
+    ready=read(base/'proxy-ready.json') or {};transport=read(root/'transport-status.json') or {}
+    proxy=transport.get('proxyPid')
+    try:os.kill(proxy,0);alive=True
+    except (TypeError,ProcessLookupError,PermissionError):alive=False
+    line('Proxy',f'pid {proxy}, '+('running' if alive else 'not running')+(', ready' if ready.get('pid')==proxy else ', not ready')+f', mode {transport.get("mode")}')
+    try:
+        pool=egress.Pool(base)
+        try:
+            snap=pool.snapshot(now);rolling=snap['rollingHour']
+            full=sum(1 for n in rolling.values() if n+egress.LAUNCH_RESERVE>200)
+            text=f'{sum(rolling.values())} calls in the last hour over {snap["gatewayCount"]} IPs (200 each); {full} without room for a launch'
+            if snap['holdUntil']>now:text+=f'; refusal hold until {when(snap["holdUntil"])}'
+            cooling=[u for u in snap['transportCooldowns'].values() if u>now]
+            if cooling:text+=f'; {len(cooling)} cooling'
+            line('Egress',text)
+        finally:pool.close()
+    except (OSError,ValueError,sqlite3.Error) as error:line('Egress',f'unavailable ({type(error).__name__})')
+    control=read(base/'warm-control.json') or {}
+    if control.get('enabled') is not True:text='off'+(f' ({control["reason"]})' if control.get('reason') else '')
+    elif float(control.get('pausedUntil',0))>now:text='paused until '+when(float(control['pausedUntil']))
+    else:text='on'
+    if control.get('restorationFailures'):text+=f'; {control["restorationFailures"]} restoration failure(s) in a row'
+    trigger=read(base/'last-trigger.json') or {}
+    line('Warm reads',text+(f'; last trigger {trigger.get("mode")} {when(trigger.get("at"))}' if trigger else ''))
+    config=read(root/'config.json') or {}
+    expires=config.get('certificateExpiresTimestamp')
+    if expires:line('Certificate',f'expires {when(expires)}; collection stops for its renewal {when(expires-7*86400)}')
+    if (base/'stop.json').exists():line('Stop','requested: the worker takes no jobs')
+    return '\n'.join(lines)
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--once',action='store_true');p.add_argument('--stop',action='store_true');p.add_argument('--arm',action='store_true')
+    p=argparse.ArgumentParser();p.add_argument('--once',action='store_true');p.add_argument('--stop',action='store_true');p.add_argument('--arm',action='store_true');p.add_argument('--status',action='store_true')
     p.add_argument('--city',type=int,default=43);p.add_argument('--lat',type=float,default=59.744);p.add_argument('--lng',type=float,default=10.205);p.add_argument('--radius',type=float,default=10)
     args=p.parse_args();base=ROOT/'producer'
+    if args.status:print(status_report());return
     lock=(base/'worker.lock').open('a')
     if args.stop: save(base/'stop.json',{'at':time.time()})
     until=time.time()+50 if args.stop else time.time()

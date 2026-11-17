@@ -8,7 +8,8 @@ import tempfile
 import unittest
 import uuid
 from unittest.mock import patch
-from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control,JobDeadline
+from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control,JobDeadline,LaunchFailed,\
+    note_warm_restoration,prune,journal,status_report
 import time
 import urllib.error
 
@@ -225,6 +226,18 @@ class WorkerTests(unittest.TestCase):
             phases=[json.loads(line)['phase'] for line in (root/'producer/lifecycle.jsonl').read_text().splitlines()]
             self.assertEqual(phases,['before-quit','after-quit','stale-launch-job-removed','after-open'])
 
+    def test_a_failed_open_says_why_in_the_journal_and_the_error(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=self.relaunch_root(name)
+            def run(command,**kwargs):
+                if command[1]=='open':raise subprocess.CalledProcessError(1,command,stderr='NSOSStatusErrorDomain -10810: Launch failed\n')
+                return subprocess.CompletedProcess(command,0,stdout='PID\tStatus\tLabel\n' if command[1]=='list' else '{}')
+            with patch('worker.subprocess.run',side_effect=run),patch('worker.egress.begin_cycle'):
+                with self.assertRaises(LaunchFailed) as caught:relaunch(root)
+            self.assertEqual(str(caught.exception),'CalledProcessError: NSOSStatusErrorDomain -10810: Launch failed')
+            last=json.loads((root/'producer/lifecycle.jsonl').read_text().splitlines()[-1])
+            self.assertEqual((last['phase'],last['error']),('open-failed',str(caught.exception)))
+
     def test_a_failed_open_with_no_launch_job_left_behind_is_still_a_failure(self):
         with tempfile.TemporaryDirectory() as name:
             root=self.relaunch_root(name);calls=[]
@@ -234,7 +247,7 @@ class WorkerTests(unittest.TestCase):
                 listed='PID\tStatus\tLabel\n4321\t0\tapplication.com.ryde.NewRyde.16394764.16394858\n'
                 return subprocess.CompletedProcess(command,0,stdout=listed if command[1]=='list' else '{}')
             with patch('worker.subprocess.run',side_effect=run),patch('worker.egress.begin_cycle'):
-                with self.assertRaises(subprocess.CalledProcessError):relaunch(root)
+                with self.assertRaises(LaunchFailed):relaunch(root)
             self.assertEqual([c[0] for c in calls if c[0]!='status'],['quit','open','list'])
 
     def test_expiring_broker_job_does_not_launch_or_activate_ryde(self):
@@ -306,7 +319,7 @@ class WorkerTests(unittest.TestCase):
             # A failed termination must still prevent both arming and opening the next job.
             with patch('worker.subprocess.run',side_effect=subprocess.CalledProcessError(2,['helper','quit'])), \
                  patch('worker.time.sleep'), patch('worker.egress.begin_cycle') as cycle:
-                with self.assertRaises(subprocess.CalledProcessError): relaunch(root,arm)
+                with self.assertRaises(LaunchFailed): relaunch(root,arm)
                 cycle.assert_not_called()
 
 def http_error(code):
@@ -314,11 +327,13 @@ def http_error(code):
 
 class ServeTests(unittest.TestCase):
     """The worker's loop against a scripted broker and app, on a fake clock."""
-    def run_serve(self, replies, queries, waits_before_stop):
+    def run_serve(self, replies, queries, waits_before_stop, relaunches=(), status_every=10**6):
         with tempfile.TemporaryDirectory() as name:
             base=Path(name);(base/'results').mkdir();self.base=base
-            clock=[1000.0];waits=[];self.held=[]
+            clock=[1000.0];waits=[];self.held=[];self.told=[];relaunches=list(relaunches)
             def call(config,method,path,value=None):
+                if path=='/internal/ryde/status':
+                    self.told.append((value['reason'],value.get('detail')));return None
                 reply=replies.pop(0)
                 if isinstance(reply,Exception):raise reply
                 if reply=='job':return {'version':1,'id':uuid.uuid4().hex,'cityId':43,'latitude':59.744,'longitude':10.205,'radius':1,'expiresAt':clock[0]+120}
@@ -329,15 +344,19 @@ class ServeTests(unittest.TestCase):
                     save(base/'upstream-refused.json',{'at':clock[0]+1,'httpStatus':403});raise TimeoutError('No fresh native map within job deadline')
                 if isinstance(outcome,Exception):raise outcome
                 return {'version':1,'id':job['id'],'query':job,'observedAt':clock[0],'coverage':'unknown','scooters':[]}
+            def run_relaunch(*args,**kwargs):
+                outcome=relaunches.pop(0) if relaunches else None
+                if isinstance(outcome,Exception):raise outcome
             def wait(seconds,stop):
                 status=json.loads((base/'worker-status.json').read_text())
                 if status.get('until'):self.held.append(status['reason'])
                 waits.append(round(seconds));clock[0]+=seconds
                 if len(waits)==waits_before_stop:stop.write_text('{}')
-            with patch('worker.call',side_effect=call),patch('worker.query',side_effect=run_query),patch('worker.relaunch'),\
-                 patch('worker.wait_interval',side_effect=wait),patch('worker.time.time',side_effect=lambda:clock[0]):
+            with patch('worker.call',side_effect=call),patch('worker.query',side_effect=run_query),patch('worker.relaunch',side_effect=run_relaunch),\
+                 patch('worker.wait_interval',side_effect=wait),patch('worker.time.time',side_effect=lambda:clock[0]),\
+                 patch('worker.STATUS_EVERY',status_every):
                 serve({'url':'https://cache.test','token':'t'*32},base)
-            self.assertEqual(replies,[]);self.assertEqual(queries,[])
+            self.assertEqual(replies,[]);self.assertEqual(queries,[]);self.assertEqual(relaunches,[])
             return waits
 
     def test_expired_backlog_does_not_trigger_app_failure_backoff(self):
@@ -367,12 +386,14 @@ class ServeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as name:
             base=Path(name)
             def stop(seconds,path):
-                self.assertGreater(seconds,100)
+                self.assertGreater(seconds,50)
                 path.write_text('{}')
             with patch('worker.egress.available_at',return_value=time.time()+120), \
                  patch('worker.broker') as broker,patch('worker.wait_interval',side_effect=stop):
                 serve({},base)
-            broker.assert_not_called()
+            # Only the cache is told why; no job is leased.
+            self.assertEqual([c.args[1:3] for c in broker.call_args_list],[('POST','/internal/ryde/status')])
+            self.assertEqual(broker.call_args.args[3]['reason'],'DatacenterBudget')
             self.assertEqual(json.loads((base/'worker-status.json').read_text())['reason'],'DatacenterBudget')
 
     def test_accounting_lock_retries_without_crashing_or_holding_the_app(self):
@@ -389,5 +410,86 @@ class ServeTests(unittest.TestCase):
             self.assertEqual(waits,[5]*5)
             broker.assert_not_called(); relaunch.assert_not_called()
             self.assertEqual(json.loads((base/'worker-status.json').read_text())['reason'],'DatacenterAccounting')
+
+    def test_a_hold_tells_the_cache_why_every_minute(self):
+        timeout=TimeoutError('No fresh native map within job deadline')
+        replies=['job',None,'job',None,'job',None,'job',None]
+        waits=self.run_serve(replies,[timeout,timeout,timeout,'ok'],18,status_every=60)
+        self.assertEqual(waits,[60,60,60]+[60]*14+[0])
+        self.assertEqual(len(self.told),14);self.assertEqual({reason for reason,_ in self.told},{'AppFailing'})
+        self.assertIn('TimeoutError: No fresh native map',self.told[0][1])
+
+    def test_a_launch_that_fails_on_the_mac_is_tried_again_each_minute_without_jobs(self):
+        failed=LaunchFailed('CalledProcessError: NSOSStatusErrorDomain -10810 <- OSLaunchdErrorDomain 37')
+        # The job's launch fails and the job goes back; two more launches with no job fail a minute apart;
+        # the third opens Ryde, and only then is a job leased.
+        replies=['job',None,'job',None,None]
+        waits=self.run_serve(replies,[failed,'ok'],5,relaunches=[failed,failed,None])
+        self.assertEqual(waits,[60,60,60,0,2])
+        self.assertEqual(self.held,['LaunchFailed']*3)
+        self.assertEqual([reason for reason,_ in self.told],['LaunchFailed']*3)
+        self.assertIn('OSLaunchdErrorDomain 37',self.told[0][1])
+        # Never an app failure: three of them would have held the worker off Ryde for 15 minutes.
+        self.assertNotIn('AppFailing',self.held)
+
+class HousekeepingTests(unittest.TestCase):
+    def test_warm_reads_pause_an_hour_after_a_bad_restoration_and_stop_after_three(self):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name);path=base/'warm-control.json'
+            save(path,{'enabled':True,'mode':'minimized-idle'})
+            bad={'stayedMinimized':True,'userInterrupted':False,'focusRestored':False,'cursorPreserved':True}
+            good={'stayedMinimized':True,'userInterrupted':False,'focusRestored':True,'cursorPreserved':True}
+            with patch('worker.time.time',return_value=1000.0):
+                note_warm_restoration(base,bad)
+            control=json.loads(path.read_text())
+            self.assertTrue(control['enabled']);self.assertEqual(control['pausedUntil'],4600.0);self.assertEqual(control['restorationFailures'],1)
+            note_warm_restoration(base,good)
+            self.assertNotIn('restorationFailures',json.loads(path.read_text()))
+            for _ in range(3):note_warm_restoration(base,bad)
+            control=json.loads(path.read_text())
+            self.assertFalse(control['enabled']);self.assertIn('3 times in a row',control['reason'])
+            self.assertFalse(control['lastRestorationFailure']['focusRestored'])
+
+    def test_an_interrupted_warm_read_is_not_a_bad_restoration(self):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name);save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
+            note_warm_restoration(base,{'stayedMinimized':True,'userInterrupted':True,'focusRestored':False,'cursorPreserved':False})
+            self.assertEqual(json.loads((base/'warm-control.json').read_text()),{'enabled':True,'mode':'minimized-idle'})
+
+    def test_results_older_than_a_day_and_old_map_control_replies_are_deleted(self):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name)
+            for directory in ['results','map-control-results']:(base/directory).mkdir()
+            for path,age in [('results/old.json',86401),('results/new.json',86399),('results/note.txt',10**6),
+                             ('map-control-results/old.json',3601),('map-control-results/new.json',60)]:
+                (base/path).write_text('{}');os.utime(base/path,(10**7-age,10**7-age))
+            prune(base,now=10**7)
+            self.assertEqual(sorted(str(p.relative_to(base)) for p in base.rglob('*') if p.is_file()),
+                ['map-control-results/new.json','results/new.json','results/note.txt'])
+
+    def test_the_lifecycle_journal_keeps_one_previous_file(self):
+        with tempfile.TemporaryDirectory() as name:
+            path=Path(name)/'lifecycle.jsonl'
+            with patch('worker.JOURNAL_LIMIT',50):
+                for n in range(6):journal(path,{'n':n,'pad':'x'*10})
+            previous=Path(name)/'lifecycle.previous.jsonl'
+            self.assertTrue(previous.exists());self.assertLessEqual(path.stat().st_size,100)
+            numbers=[json.loads(l)['n'] for f in [previous,path] for l in f.read_text().splitlines()]
+            self.assertEqual(numbers,sorted(numbers));self.assertEqual(numbers[-1],5)
+
+    def test_the_status_report_reads_a_bridge_without_touching_it(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name);base=root/'producer';(base/'results').mkdir(parents=True)
+            save(base/'worker-status.json',{'state':'held','reason':'LaunchFailed','until':2000,'detail':'CalledProcessError: 37','at':1000})
+            save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle','pausedUntil':1500})
+            save(root/'config.json',{'certificateExpiresTimestamp':1000+16*86400})
+            listed='PID\tStatus\tLabel\n42\t0\tcom.scootradar.ryde-worker\n-\t0\tapplication.com.ryde.NewRyde.1.2\n'
+            before=sorted(p.name for p in root.rglob('*'))
+            with patch('worker.subprocess.run',return_value=subprocess.CompletedProcess([],0,stdout=listed)):
+                report=status_report(root,now=1000)
+            self.assertEqual(sorted(p.name for p in root.rglob('*')),before)
+            self.assertIn('held: LaunchFailed until',report);self.assertIn('CalledProcessError: 37',report)
+            self.assertIn('1 launchd job(s) left with no process',report);self.assertIn('paused until',report)
+            self.assertIn('collection stops for its renewal',report)
 
 if __name__=='__main__':unittest.main()
