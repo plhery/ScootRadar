@@ -8,7 +8,7 @@
 # hw.gps=no, as a Wi-Fi tablet) takes no fix from the host: with `providers` after the folder, the fixes go to test
 # providers in place of its own, as the shell may set them.
 #
-# Usage, from android/ after `./gradlew :app:assembleDebug :app:assembleDebugAndroidTest`:
+# Usage, from android/ after `./gradlew :app:assemblePlayDebug :app:assemblePlayDebugAndroidTest`:
 #   app/src/androidTest/rider-location-pass.sh <folder for the screens> [providers]
 set -u
 screens=${1:?the folder for the screens}
@@ -117,8 +117,8 @@ run() {
     device pull "$output/." "$screens" > /dev/null 2>&1
 }
 
-device install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk > /dev/null
-device install -r app/build/outputs/apk/debug/app-debug.apk > /dev/null
+device install -r app/build/outputs/apk/androidTest/play/debug/app-play-debug-androidTest.apk > /dev/null
+device install -r app/build/outputs/apk/play/debug/app-play-debug.apk > /dev/null
 mkdir -p "$screens"
 
 reset; run noFixWithinFiveSecondsSaysTheRiderCouldNotBeFound

@@ -18,7 +18,7 @@ import kotlinx.coroutines.delay
 
 /**
  * What asks the rider to rate the app in the store: StoreKit's requestReview on the iPhone, Google Play's card here
- * (app/PlayReviewRequester).
+ * (app/PlayReviewRequester). The build for F-Droid's catalog has none (app/StoreReview).
  */
 fun interface ReviewRequester {
     /**
@@ -32,6 +32,12 @@ fun interface ReviewRequester {
      * card comes when the rest ends, as the iPhone's sheet does.
      */
     fun prepare() {}
+
+    /**
+     * A touch or a key anywhere in the window, which MainActivity hears: an ask the store has not answered yet shows
+     * no card, the map no longer at rest.
+     */
+    fun noteInteraction() {}
 
     companion object {
         /** Asks nothing: a test's screen, or a preview's. */

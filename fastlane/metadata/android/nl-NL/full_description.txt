@@ -1,0 +1,31 @@
+ScootRadar zet alle deelsteps om je heen op één kaart, van welke aanbieder ook. Zo is de dichtstbijzijnde deelstep het eerste wat je ziet.
+
+Elke aanbieder heeft een eigen app die alleen zijn eigen vloot toont. ScootRadar toont ze allemaal, dus de dichtstbijzijnde is gewoon de dichtstbijzijnde.
+
+Weet hoe ver het is
+De afstand en hoeveel minuten het te voet is, vanaf waar je staat of vanaf een adres dat je opzoekt. ‘Route’ tekent de weg te voet op de kaart en volgt je terwijl je loopt.
+
+Sla de lege over
+Het batterijniveau en het resterende bereik, als de aanbieder die publiceert. Stel een minimum in en de kaart houdt alleen de deelsteps over die het halen.
+
+De prijs, voor je opstapt
+Een schatting op basis van de gepubliceerde tarieven van de aanbieder, voor een rit van 5 tot 30 minuten, met het gratis ontgrendelen en de gratis minuten van je passes meegerekend. De eindprijs zie je in de app van de aanbieder.
+
+Eén tik naar de juiste app
+‘Openen in’ brengt je naar de eigen app van de aanbieder, waar je zoals gewoonlijk ontgrendelt en betaalt. ScootRadar verhuurt en reserveert geen deelsteps.
+
+Waar het werkt
+De steps van 39 aanbieders, in meer dan 1.000 steden en gemeenten in 58 landen: Zwitserland, Frankrijk, Duitsland, België, Italië, het Verenigd Koninkrijk, Spanje, Polen, Noorwegen, Zweden, Finland en elders in Europa; de Verenigde Staten en Canada; Brazilië, Chili en Mexico; Japan en Zuid-Korea; Israël, Turkije, Nieuw-Zeeland en meer. Daaronder zijn Berlijn, Brussel, Oslo, Tokio, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul en Zürich. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben.
+
+Privacy ingebouwd
+Geen account en geen reclame. Je locatie wordt op je telefoon gebruikt, om de kaart te centreren en de tijd te voet te berekenen; de server krijgt alleen het deel van de kaart waar je naar kijkt. Anonieme gebruiksstatistieken kun je uitzetten in Instellingen.
+
+Ook
+• Lichte en donkere weergave, en de kaarten Standaard en Rustig
+• Parkeerplekken waar een aanbieder die verplicht stelt
+• Grote tekst, TalkBack en Animaties verwijderen
+• Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans en IJslands
+
+De posities komen van de aanbieders en overheden, en kunnen een paar minuten oud zijn. Op de kaart staan Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh en 31 andere aanbieders, afhankelijk van de stad.
+
+ScootRadar is onafhankelijk en niet verbonden aan de aanbieders; hun namen zijn handelsmerken van hun eigenaars. ScootRadar is open source.

@@ -1,6 +1,5 @@
 import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { transform } from 'esbuild';
 import {
   binbinAreasProblem, birdAreasProblem, catalogSystems, coverageAreas, curfewZoneProblem, kotlinCountries, scooterCities, swissCatalogProblem, swiftCityFeeds, swiftCityPauses, swiftCountries,
   townOutlinesProblem,
@@ -24,8 +23,20 @@ const checkOnly = process.argv.includes('--check');
 
 const readJson = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
 // A catalog's Lime market is one entry there, and a system for each of its refresh groups
-// everywhere else, as src/lib/regionalScooterSystems.ts reads it.
-const { code: limeGrid } = await transform(readFileSync(resolve(root, 'src/lib/limeGrid.ts'), 'utf8'), { loader: 'ts', format: 'esm' });
+// everywhere else, as src/lib/regionalScooterSystems.ts reads it, through src/lib/limeGrid.ts as
+// JavaScript. esbuild writes it, and it is kept in scripts/lime-grid.generated.mjs for a run without the
+// repository's npm packages, which reads it in esbuild's place: F-Droid's build of the Android app
+// (android/fdroid/install-node-packages.mjs). A run with esbuild fails when that file is out of date. It
+// lies outside src/ for the scooter cache, which is built from src/generated/ but never reads it.
+const limeGridPath = resolve(root, 'scripts/lime-grid.generated.mjs');
+const esbuild = await import('esbuild').catch(error => {
+  if (error?.code === 'ERR_MODULE_NOT_FOUND' && !checkOnly && androidDirectory) return null;
+  throw error;
+});
+const limeGrid = esbuild
+  ? `// Written by scripts/generate-provider-catalog.mjs: src/lib/limeGrid.ts as JavaScript, for a run without esbuild.\n${
+    (await esbuild.transform(readFileSync(resolve(root, 'src/lib/limeGrid.ts'), 'utf8'), { loader: 'ts', format: 'esm' })).code}`
+  : readFileSync(limeGridPath, 'utf8');
 const { limeGridGroups, rydeGridGroups } = await import(`data:text/javascript;base64,${Buffer.from(limeGrid).toString('base64')}`);
 const readCatalog = path => {
   const catalog = readJson(path);
@@ -863,6 +874,16 @@ validateCityZones();
 const swift = swiftCatalog() + swiftRentalLinks() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftRuleZones() +
   swiftCityZones() + swiftZoneDownloads(downloadCityZones, cityZones) + swiftCountries(countries);
 if (androidDirectory) {
+  // The Android app's build never writes the website's files, but tells when the JavaScript kept for
+  // a run without esbuild is out of date, as --check does.
+  let kept = '';
+  try {
+    kept = readFileSync(limeGridPath, 'utf8');
+  } catch {}
+  if (esbuild && kept !== limeGrid) {
+    console.error(`${limeGridPath} is out of date. Run npm run generate:providers.`);
+    process.exitCode = 1;
+  }
   const generated = 'com/plhery/scootradar/core/generated';
   for (const [path, contents] of [
     [`kotlin/${generated}/ProviderCatalog.kt`, kotlinCatalog()],
@@ -879,5 +900,6 @@ if (androidDirectory) {
   writeOrCheck(catalogsPath, typescriptCatalogs(countries));
   writeOrCheck(swiftPath, swift);
   writeOrCheck(swiftCityZonesPath, swiftCityZonesData());
+  writeOrCheck(limeGridPath, limeGrid);
   writeZoneDownloads();
 }

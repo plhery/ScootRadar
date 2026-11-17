@@ -4,8 +4,9 @@
 // Analytics sends from neither (AppContainer.sendsAnalytics). Never run by CI or a plain build: they need a device,
 // with no other UiAutomation client connected to it (an agent's snapshot helper takes it, and the run fails).
 //
-// - The profile: ./gradlew :app:generateReleaseBaselineProfile, with one device or emulator connected, rooted below
-//   Android 13 (adb root). It is saved in app/src/release/generated/baselineProfiles.
+// - The profile: ./gradlew :app:generatePlayReleaseBaselineProfile, with one device or emulator connected, rooted below
+//   Android 13 (adb root). The plugin saves it in app/src/playRelease/generated/baselineProfiles: move it to
+//   app/src/release/generated/baselineProfiles, where both stores' release builds take it.
 // - Startup: ./gradlew :baselineprofile:connectedBenchmarkReleaseAndroidTest
 //   -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
 plugins {
@@ -24,6 +25,9 @@ android {
         // The lane has only emulators, where Macrobenchmark refuses to measure unless told that the numbers are
         // only indicative.
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
+        // :app's play build, the one Google Play installs; the fdroid build's code is the same but for the store's
+        // card to rate the app.
+        missingDimensionStrategy("store", "play")
     }
 
     targetProjectPath = ":app"

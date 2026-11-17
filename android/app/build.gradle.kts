@@ -53,6 +53,21 @@ android {
         }
     }
 
+    // Which store the build is for. play, the default: Google Play's, which the beta's own F-Droid repository and the
+    // GitHub releases also carry as Play signed it, with Google Play's card to rate the app (X-AD27). fdroid: F-Droid's
+    // catalog, which builds the app from source and signs it with its own key, and takes no library that isn't free
+    // software, so it has no card (app/StoreReview).
+    flavorDimensions += "store"
+    productFlavors {
+        create("play") {
+            dimension = "store"
+            isDefault = true
+        }
+        create("fdroid") {
+            dimension = "store"
+        }
+    }
+
     buildFeatures {
         compose = true
         // The version the feedback mail and the review prompt name, and whether this is a debug build.
@@ -85,13 +100,15 @@ android {
 }
 
 baselineProfile {
-    // The profile is recorded on a device by hand (generateReleaseBaselineProfile) and kept in
-    // src/release/generated/baselineProfiles, so neither a plain build nor CI needs a device.
+    // The profile is recorded on a device by hand (generatePlayReleaseBaselineProfile) and kept in
+    // src/release/generated/baselineProfiles, so neither a plain build nor CI needs a device. Both stores' release
+    // builds ship it.
     automaticGenerationDuringBuild = false
 }
 
 roborazzi {
-    // The baselines, recorded on the Mac with recordRoborazziDebug and checked on CI with verifyRoborazziDebug.
+    // The baselines, recorded on the Mac with recordRoborazziPlayDebug and checked on CI with verifyRoborazziPlayDebug.
+    // The fdroid build's screens are the same, so its tests compare with them too.
     outputDir.set(file("src/test/screenshots"))
 }
 
@@ -118,8 +135,8 @@ dependencies {
     // Installs the Baseline Profile where Play does not, and lets the startup benchmark compile the app with it.
     implementation(libs.profileinstaller)
     // Google Play's card to rate the app, as StoreKit's requestReview on the iPhone (X-AD27); its FakeReviewManager
-    // stands in for Play in the tests.
-    implementation(libs.play.review)
+    // stands in for Play in the tests. Not in the fdroid build: it isn't free software.
+    "playImplementation"(libs.play.review)
     baselineProfile(project(":baselineprofile"))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
@@ -156,9 +173,10 @@ dependencies {
 /**
  * LOG-331 (ScooterAnalytics.swift:4): the app reads no advertising id, as the iPhone's reads none. A build's merged
  * manifest asks for no AD_ID permission, which Play services' ads libraries merge in, and the libraries it ships hold
- * nothing of Play services or Firebase but the two that Google Play's review card is asked through (X-AD27): the Task
- * API and the base it stands on, which read no id. The unit tests run once the debug and the release builds are
- * checked.
+ * nothing of Google Play, Play services or Firebase but what Google Play's review card is asked through (X-AD27):
+ * Play's review library and its common core, and the Task API and the base it stands on, which read no id. The fdroid
+ * build holds none of them, as F-Droid's catalog takes no library that isn't free software. The unit tests run once
+ * the store's debug and release builds are checked.
  */
 abstract class AdvertisingIdCheck : DefaultTask() {
     @get:InputFile
@@ -169,6 +187,10 @@ abstract class AdvertisingIdCheck : DefaultTask() {
     @get:Input
     abstract val libraries: SetProperty<String>
 
+    /** Those of [GROUPS] the build may ship: [PLAY_REVIEW] in the play build, none in the fdroid one. */
+    @get:Input
+    abstract val allowed: SetProperty<String>
+
     @get:OutputFile
     abstract val checked: RegularFileProperty
 
@@ -176,19 +198,29 @@ abstract class AdvertisingIdCheck : DefaultTask() {
     fun check() {
         val merged = manifest.get().asFile
         if (merged.readText().contains(PERMISSION)) throw GradleException("$merged asks for $PERMISSION (LOG-331)")
-        val found = libraries.get().filter { library -> GROUPS.any { library.startsWith("$it:") } && library !in ALLOWED }.sorted()
+        val allowed = allowed.get()
+        val found = libraries.get().filter { library -> GROUPS.any { library.startsWith("$it:") } && library !in allowed }.sorted()
         if (found.isNotEmpty()) throw GradleException("The build ships ${found.joinToString()} (LOG-331)")
+        val but = if (allowed.isEmpty()) "" else " but ${allowed.sorted().joinToString()}"
         checked.get().asFile.writeText(
-            "No $PERMISSION and none of ${GROUPS.joinToString()} but ${ALLOWED.joinToString()} among ${libraries.get().size} libraries.\n",
+            "No $PERMISSION and none of ${GROUPS.joinToString()}$but among ${libraries.get().size} libraries.\n",
         )
     }
 
     companion object {
         const val PERMISSION = "com.google.android.gms.permission.AD_ID"
-        val GROUPS = listOf("com.google.android.gms", "com.google.firebase")
+        val GROUPS = listOf("com.google.android.play", "com.google.android.gms", "com.google.firebase")
 
-        /** What com.google.android.play:review stands on: Play services' Task API and its base, no id among them. */
-        val ALLOWED = setOf("com.google.android.gms:play-services-basement", "com.google.android.gms:play-services-tasks")
+        /**
+         * com.google.android.play:review and what it stands on: Play's common core, and Play services' Task API and its
+         * base, no id among them.
+         */
+        val PLAY_REVIEW = setOf(
+            "com.google.android.play:review",
+            "com.google.android.play:core-common",
+            "com.google.android.gms:play-services-basement",
+            "com.google.android.gms:play-services-tasks",
+        )
 
         /** Every library the dependency graph under [root] selects. */
         fun libraries(root: ResolvedComponentResult): Set<String> {
@@ -209,11 +241,14 @@ androidComponents {
         tasks.register<AdvertisingIdCheck>("check${name}AdvertisingId") {
             manifest.set(variant.artifacts.get(SingleArtifact.MERGED_MANIFEST))
             libraries.set(variant.runtimeConfiguration.incoming.resolutionResult.rootComponent.map { AdvertisingIdCheck.libraries(it) })
+            allowed.set(if (variant.flavorName == "fdroid") emptySet() else AdvertisingIdCheck.PLAY_REVIEW)
             checked.set(layout.buildDirectory.file("advertising-id/${variant.name}.txt"))
         }
     }
 }
 
 tasks.withType<Test>().configureEach {
-    if (name == "testDebugUnitTest") dependsOn("checkDebugAdvertisingId", "checkReleaseAdvertisingId")
+    // test<Store>DebugUnitTest: once that store's debug and release builds are checked.
+    val store = Regex("test(\\w+)DebugUnitTest").matchEntire(name)?.groupValues?.get(1) ?: return@configureEach
+    dependsOn("check${store}DebugAdvertisingId", "check${store}ReleaseAdvertisingId")
 }

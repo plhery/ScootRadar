@@ -38,7 +38,7 @@ class PlayReviewRequester(
      * the controller's noteInteraction): an ask Play has not answered yet shows no card, as the rider is panning or
      * typing by then (week review, finding 6.3).
      */
-    fun noteInteraction() {
+    override fun noteInteraction() {
         interactions += 1
     }
 

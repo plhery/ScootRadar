@@ -21,19 +21,18 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.testing.FakeReviewManager
 import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.AppLink
 import com.plhery.scootradar.app.HeadingOrientationWatcher
 import com.plhery.scootradar.app.LaunchArgumentDefaults
-import com.plhery.scootradar.app.PlayReviewRequester
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.app.ScreenOrientation
+import com.plhery.scootradar.app.storeReviewRequester
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.map.ScooterMap
+import com.plhery.scootradar.ui.ReviewRequester
 import com.plhery.scootradar.ui.ScooterMapScreen
 import com.plhery.scootradar.ui.ScreenShortcuts
 import com.plhery.scootradar.ui.keyboardShortcutGroups
@@ -83,12 +82,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * Google Play's card to rate the app, asked for when the map rests from the third day of use (UI-106). A debug build launched
      * with ReviewPromptDue asks Play's stand-in, which answers as Play would, as Play shows its card only in a copy it
-     * installed, and logs the ask (LOG-312).
+     * installed, and logs the ask (LOG-312). None in the build for F-Droid's catalog (app/StoreReview).
      */
     @VisibleForTesting
-    internal val reviewRequester = PlayReviewRequester(this) {
-        if (askPlaysStandIn) FakeReviewManager(applicationContext) else ReviewManagerFactory.create(applicationContext)
-    }
+    internal val reviewRequester: ReviewRequester? = storeReviewRequester(this) { askPlaysStandIn }
 
     /** Whether the launch asked for Play's stand-in: read as the activity is made, not from a link it opens later. */
     private var askPlaysStandIn = false
@@ -207,7 +204,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun noteInteraction() {
         model.controller.noteInteraction()
-        reviewRequester.noteInteraction()
+        reviewRequester?.noteInteraction()
     }
 
     override fun onNewIntent(intent: Intent) {
