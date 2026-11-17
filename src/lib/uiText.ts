@@ -111,5 +111,21 @@ export function formatUiText(text: UiText, formatter: UiTextFormatter): string {
   if (text.month !== undefined) values.month = formatMonth(text.month, locale, region);
   if (text.date !== undefined) values.date = formatDayOfYear(text.date, locale, region);
   for (const [name, part] of Object.entries(text.parts ?? {})) values[name] = formatUiText(part, formatter);
-  return t(text.one && isSingular(text.one.count, locale) ? text.one.key : text.key, values);
+  const sentence = t(text.one && isSingular(text.one.count, locale) ? text.one.key : text.key, values);
+  return text.weekday && typeof values.time === 'string' ? sayOnce(sentence, values.time) : sentence;
+}
+
+/**
+ * A sentence with a time of another day says the word before the time once: Norwegian's sentences say "kl." before
+ * it, "sist sett kl. 14:02", and its time on another day holds its own, "fre. kl. 14:02", so the sentence reads
+ * "sist sett fre. kl. 14:02" where it read "sist sett kl. fre. kl. 14:02". Only a word the time itself holds goes,
+ * as on Android (ScooterDockStatus.seenSentence): every other language reads as written.
+ */
+function sayOnce(sentence: string, time: string): string {
+  const at = sentence.indexOf(time);
+  if (at <= 0) return sentence;
+  const before = sentence.slice(0, at).trimEnd();
+  const word = before.split(/[   ]/).pop() ?? '';
+  if (!word || !time.split(/[   ]/).includes(word)) return sentence;
+  return before.slice(0, before.length - word.length) + sentence.slice(at);
 }
