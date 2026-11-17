@@ -12,7 +12,7 @@ const zone: MapZone = { id: 'f:0', provider: 'dott', kind: 'noRide', polygons: [
 const answer = (pending: boolean, meta: { unavailable?: boolean; truncated?: boolean } = {}) =>
   Response.json({ zones: [zone], meta: { generatedAt: '', pending, unavailable: false, truncated: false, ...meta } });
 
-beforeEach(() => vi.useFakeTimers());
+beforeEach(() => { vi.useFakeTimers(); localStorage.clear(); });
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.mocked(track).mockClear(); });
 
 it('asks for nothing while off or zoomed out, and says why', () => {

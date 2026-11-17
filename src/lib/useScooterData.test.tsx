@@ -77,6 +77,7 @@ function mount(query: ScooterDataQuery | null = ZURICH, onOutOfDate?: () => void
 beforeEach(() => {
   vi.useFakeTimers();
   vi.setSystemTime(T0);
+  localStorage.clear();
   fetcher.mockReset();
   vi.stubGlobal('fetch', fetcher);
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -653,6 +654,67 @@ describe('useScooterData', () => {
     await act(async () => { setVisibility('visible'); });
     expect(result.current.parking).toEqual([]);
     expect(result.current.vehicles).toHaveLength(1);
+  });
+
+  it('leaves the server alone for as long as a refusal asks, at a refresh and at a view that moves, but not at "Try again"', async () => {
+    const refused = async () => Response.json({ error: 'no' }, { status: 429, headers: { 'Retry-After': '60' } });
+    fetcher.mockImplementationOnce(ok()).mockImplementationOnce(refused).mockImplementation(ok());
+    const { result, rerender } = mount();
+    await advance(180);
+    await advance(60_000);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(result.current).toMatchObject({ failure: 'busy', hasData: true });
+
+    // Neither the retry of every ten seconds nor a pan asks before the minute is over.
+    await advance(30_000);
+    rerender({ query: BERN });
+    await advance(29_000);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    await advance(1_000);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(fetcher.mock.calls[2][0]).toContain('south=46.93000');
+    expect(result.current.failure).toBeNull();
+  });
+
+  it('asks at once on request during a refusal', async () => {
+    fetcher.mockImplementationOnce(async () => Response.json({ error: 'no' }, { status: 429, headers: { 'Retry-After': '120' } }))
+      .mockImplementation(ok());
+    const { result } = mount();
+    await advance(180);
+    await advance(100_000);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    await act(async () => { await result.current.refresh(); });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(result.current).toMatchObject({ failure: null, hasData: true });
+  });
+
+  it('waits with a refresh once this browser has asked 30 times in the minute, and with a moved view at 45', async () => {
+    const asked = (count: number, from: number) =>
+      localStorage.setItem('scooters-requests', JSON.stringify(Array.from({ length: count }, (_, i) => from + i * 1000)));
+    fetcher.mockImplementation(ok({ refreshAfterSeconds: 10 }));
+    const { rerender } = mount();
+    await advance(180);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+
+    // Another tab's 30 requests, the oldest 40 seconds ago: the refresh due in 10 seconds waits 20 for it to be a minute old.
+    asked(30, Date.now() - 40_000);
+    await advance(19_999);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    await advance(1);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+
+    // A view that moves is still loaded at once...
+    asked(44, Date.now() - 50_000);
+    rerender({ query: BERN });
+    await advance(180);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    // ...until 45 were asked for in the minute: then when the oldest is a minute old.
+    asked(45, Date.now() - 50_000);
+    rerender({ query: ZURICH });
+    await advance(9_999);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    await advance(1);
+    expect(fetcher).toHaveBeenCalledTimes(4);
   });
 
   it('stops requesting and aborts the running request when it unmounts', async () => {

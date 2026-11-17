@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { track } from '@/lib/analytics';
+import { noteRequest } from '@/lib/requestPace';
 import type { MapBounds } from '@/lib/types';
 import { ZONES_MIN_ZOOM, type MapZone, type ZoneResponse } from '@/lib/zones';
 
@@ -73,6 +74,8 @@ export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, e
     const load = async (retries: number) => {
       let status = 0;
       try {
+        // Counted with the scooter requests, which share the Worker's limit and keep under it (requestPace.ts).
+        noteRequest(Date.now());
         const response = await fetch(`/api/zones?${key}`, { signal: controller.signal, headers: { Accept: 'application/json' } });
         if (!response.ok) { status = response.status; throw new Error(`HTTP ${response.status}`); }
         const body = await response.json() as ZoneResponse;

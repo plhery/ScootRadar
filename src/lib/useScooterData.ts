@@ -6,6 +6,7 @@ import { refreshDecision } from '@/lib/autoRefresh';
 import { clockOffset } from '@/lib/dataExpiry';
 import { classifyLoadFailure, type LoadFailure } from '@/lib/loadFailure';
 import { requestDeadline } from '@/lib/requestDeadline';
+import { REFRESH_PACE, VIEW_PACE, noteRequest, paceOpensAt, recentRequests, refusedForMs } from '@/lib/requestPace';
 import {
   INITIAL_SCOOTER_DATA_STATE,
   notUpdating,
@@ -97,7 +98,15 @@ function createScooterDataController() {
   let onOutOfDate: (() => void) | undefined;
   // The last touch, click, key or return to the foreground: the map pauses IDLE_PAUSE_MS after it.
   let lastInteractionAt = Date.now();
+  // Until when a 429 asked to be left alone (Retry-After).
+  let refusedUntil = 0;
   const listeners = new Set<() => void>();
+
+  /**
+   * Until when a request the map makes by itself waits: out a refusal, and for room under `pace` requests a
+   * minute (requestPace.ts). "Try again" and "Refresh" do not wait.
+   */
+  const heldUntil = (pace: number, now: number) => Math.max(refusedUntil, paceOpensAt(recentRequests(now), now, pace));
 
   const apply = (event: ScooterDataEvent) => {
     const next = scooterDataReducer(state, event);
@@ -133,8 +142,11 @@ function createScooterDataController() {
       lastInteractionAt,
     });
     if (decision.action === 'pause') apply({ type: 'paused', paused: true });
-    else if (decision.action === 'refresh') void load();
-    else if (decision.at !== null) refreshTimer = window.setTimeout(() => schedule(), Math.max(0, decision.at - now));
+    else if (decision.action === 'refresh') {
+      const held = heldUntil(REFRESH_PACE, now);
+      if (held > now) refreshTimer = window.setTimeout(() => schedule(returning), held - now);
+      else void load();
+    } else if (decision.at !== null) refreshTimer = window.setTimeout(() => schedule(), Math.max(0, decision.at - now));
   };
 
   const load = async (): Promise<boolean> => {
@@ -155,6 +167,7 @@ function createScooterDataController() {
     let failure: LoadFailure = 'failed';
     let cause: unknown;
     try {
+      noteRequest(Date.now());
       // Past the browser's cache: the response may be served stale while it is
       // revalidated, which would answer every refresh with the previous one.
       const res = await fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
@@ -169,6 +182,7 @@ function createScooterDataController() {
         if (!Array.isArray(data.vehicles) || !data.meta) throw new Error('Invalid scooter response');
         response = data;
       } else {
+        if (res.status === 429) refusedUntil = Date.now() + refusedForMs(res);
         failure = classifyLoadFailure({ status: res.status });
         cause = new Error(`HTTP ${res.status}`);
       }
@@ -261,10 +275,11 @@ function createScooterDataController() {
       if (key === wantedKey) return;
       wantedKey = key;
       debounceTimer = clearTimer(debounceTimer);
+      const now = Date.now();
       debounceTimer = window.setTimeout(() => {
         debounceTimer = null;
         void load();
-      }, QUERY_DEBOUNCE_MS);
+      }, Math.max(QUERY_DEBOUNCE_MS, heldUntil(VIEW_PACE, now) - now));
     },
     refresh: load,
   };
