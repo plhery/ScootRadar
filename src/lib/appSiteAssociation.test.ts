@@ -84,8 +84,10 @@ describe('the Android app’s links', () => {
   });
 
   // The site's side, which verifies the filter: Play App Signing's certificate (Play Console › App signing), the one
-  // every copy from Google Play is signed with. The application id can never change once the app is on Play.
-  it('is verified by the site for the app Gradle builds, signed by Google Play', () => {
+  // every copy from Google Play is signed with, and the upload key's, which signs the fdroid build on the beta's F-Droid
+  // repository and GitHub (android/scripts/publish-fdroid.sh). The application id can never change once the app is on
+  // Play, and both flavors keep it.
+  it('is verified by the site for the app Gradle builds, signed by Google Play or with the upload key', () => {
     const links = JSON.parse(readFileSync('public/.well-known/assetlinks.json', 'utf8')) as {
       relation: string[];
       target: { namespace: string; package_name: string; sha256_cert_fingerprints: string[] };
@@ -97,6 +99,7 @@ describe('the Android app’s links', () => {
     expect(links[0].target.package_name).toBe(/applicationId = "([^"]+)"/.exec(gradle)?.[1]);
     expect(links[0].target.sha256_cert_fingerprints).toEqual([
       '2B:7A:F8:0C:CC:BC:0D:07:BA:DB:DD:7A:74:27:4B:20:A8:B6:DD:BB:93:D1:82:1E:33:0F:45:D9:6F:95:DB:6E',
+      '00:93:1B:28:5E:98:7C:A1:82:42:39:65:61:10:20:42:57:39:63:D2:78:D7:5B:D4:7E:48:1A:F2:A7:EE:65:ED',
     ]);
     expect(readFileSync('public/_headers', 'utf8')).toMatch(/\/\.well-known\/assetlinks\.json\n {2}Content-Type: application\/json/);
   });
