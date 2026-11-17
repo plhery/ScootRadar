@@ -1,4 +1,5 @@
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.HostTestBuilder
 import java.util.Properties
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedComponentResult
@@ -236,6 +237,11 @@ abstract class AdvertisingIdCheck : DefaultTask() {
 }
 
 androidComponents {
+    // Unit tests for every variant, though only the debug ones run: AGP 9.5 sets up a Compose Preview task for each
+    // variant (generate<Variant>ComposePreviewRunfiles) that fails where the variant has none, and AGP gives them to
+    // debug alone, the Baseline Profile plugin turning them off for its own variants too. No build runs that task, but
+    // whatever sets every task up failed on it, as ./gradlew :app:tasks --all did.
+    beforeVariants { variant -> variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = true }
     onVariants { variant ->
         val name = variant.name.replaceFirstChar { it.uppercase() }
         tasks.register<AdvertisingIdCheck>("check${name}AdvertisingId") {
