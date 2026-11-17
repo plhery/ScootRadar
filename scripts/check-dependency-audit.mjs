@@ -20,11 +20,20 @@ const lintPackages = new Set([
   '@typescript-eslint/parser',
   '@typescript-eslint/type-utils',
   '@typescript-eslint/utils',
+  '@typescript-eslint/typescript-estree',
+  'eslint-import-resolver-typescript',
   'minimatch',
+  'picomatch',
+  'fdir',
+  'tinyglobby',
+  'vite',
+  'vitest',
+  '@vitejs/plugin-react',
 ]);
 const lintAdvisories = {
-  braces: { version: '3.0.3', url: 'https://github.com/advisories/GHSA-vfj7-8cjw-p6xm' },
-  minimatch: { version: '3.1.5', url: 'https://github.com/advisories/GHSA-g3hv-75wg-m249' },
+  braces: { versions: ['3.0.3'], url: 'https://github.com/advisories/GHSA-vfj7-8cjw-p6xm' },
+  minimatch: { versions: ['3.1.5'], url: 'https://github.com/advisories/GHSA-g3hv-75wg-m249' },
+  picomatch: { versions: ['2.3.2', '4.0.7'], url: 'https://github.com/advisories/GHSA-fc5q-39xc-vjpf' },
 };
 
 export function checkAuditReport(report, packages) {
@@ -35,7 +44,10 @@ export function checkAuditReport(report, packages) {
   // The braces advisory is unpatched and only processes repository-controlled
   // lint patterns. The minimatch one is fixed only in minimatch 11, and ESLint
   // and its plugins still need minimatch 3, which has no `optimizationLevel` and
-  // none of the `**/../` rewriting the advisory amplifies. Check npm's inherited
+  // none of the `**/../` rewriting the advisory amplifies. The picomatch one, a
+  // ReDoS through repeated extglobs, has no patched release yet (4.0.7 is the
+  // latest); it reaches the website only through ESLint's plugins, Vite and
+  // Vitest, which match repository-controlled patterns. Check npm's inherited
   // findings too, down to the advisories behind them, without accepting another
   // advisory or allowing the vulnerable dependency into the production
   // dependency graph.
@@ -53,7 +65,7 @@ export function checkAuditReport(report, packages) {
         advisories += 1;
         const accepted = lintAdvisories[name];
         return cause.name === name && cause.url === accepted?.url
-          && finding.nodes.every(node => packages[node].version === accepted.version);
+          && finding.nodes.every(node => accepted.versions.includes(packages[node].version));
       });
     }
     return walk(name) && advisories > 0;
@@ -95,7 +107,7 @@ function auditTree({ name, directory, lockOnly }) {
   const { failures, exceptions } = checkAuditReport(report, lock.packages);
   if (exceptions.length) {
     const urls = Object.values(lintAdvisories).map(advisory => advisory.url);
-    console.log(`${name}: known development-only lint advisories: ${urls.join(', ')}`);
+    console.log(`${name}: known development-only lint and test advisories: ${urls.join(', ')}`);
     console.log(`${name}: affected lint packages: ${exceptions.join(', ')}`);
   }
   for (const failure of failures) {

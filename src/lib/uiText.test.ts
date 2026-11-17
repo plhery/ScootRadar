@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { TranslationKey } from '@/lib/i18n';
+import { translate, type AppLocale, type TranslationKey } from '@/lib/i18n';
 import { formatClockTime, formatUiText, formatWallTime, isSingular, type UiTextFormatter } from '@/lib/uiText';
 
 // Echoes the key and its values, so the test shows what reaches the dictionary.
@@ -25,6 +25,21 @@ describe('formatClockTime', () => {
     // 3 October 2026 is a Saturday.
     expect(formatClockTime(AT, 'en', 'CH', undefined, true)).toBe('Sat 14:02');
     expect(formatUiText({ key: 'dock.lastSeen', time: AT, weekday: true }, i18n)).toBe('dock.lastSeen time=Sa., 14:02');
+  });
+
+  it('says the word before a time of another day once where the time holds it, as Norwegian does', () => {
+    const say = (locale: AppLocale): UiTextFormatter =>
+      ({ locale, t: (key, values) => translate(locale, key, values), formatNumber: value => String(value) });
+    const faded = (count: number, weekday: boolean) => formatUiText({ key: 'providers.faded.label', numbers: { count }, time: AT,
+      ...(weekday ? { weekday } : {}), one: { key: 'providers.faded.label.one', count } }, say('nb'));
+    // 3 October 2026 is a Saturday: "lør. kl. 14:02".
+    expect(faded(1, true)).toBe('1 blek, sist sett lør. kl. 14:02.');
+    expect(faded(2, true)).toBe('2 bleke, sist sett lør. kl. 14:02.');
+    expect(faded(2, false)).toBe('2 bleke, sist sett kl. 14:02.');
+    expect(formatUiText({ key: 'lastSeen.tip', values: { name: 'Voi' }, time: AT, weekday: true }, say('nb'))).toBe('Voi · sist sett lør. kl. 14:02');
+    // A time without the word reads as written: Icelandic's has none.
+    const icelandic = formatUiText({ key: 'providers.faded.seen', time: AT, weekday: true }, say('is'));
+    expect(icelandic).toBe(`sáust síðast kl. ${formatClockTime(AT, 'is', undefined, undefined, true)}`);
   });
 
   it('tells the time of a place by its clock, and names its time zone where the device\'s clock reads otherwise', () => {

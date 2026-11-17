@@ -63,9 +63,39 @@ describe('CI dependency audit', () => {
 
   it('rejects moderate findings outside the lint chain, including development dependencies', () => {
     const { report, packages } = lintAudit();
-    report.vulnerabilities.vitest = { severity: 'moderate', nodes: ['node_modules/vitest'], via: ['braces'] };
-    packages['node_modules/vitest'] = { dev: true };
-    expect(checkAuditReport(report, packages).failures).toEqual(['vitest']);
+    report.vulnerabilities['dev-tool'] = { severity: 'moderate', nodes: ['node_modules/dev-tool'], via: ['braces'] };
+    packages['node_modules/dev-tool'] = { dev: true };
+    expect(checkAuditReport(report, packages).failures).toEqual(['dev-tool']);
+  });
+
+  it('accepts the unpatched picomatch advisory on both installed versions through Vitest, and nowhere else', () => {
+    const picomatchAudit = () => {
+      const vias = {
+        picomatch: [{ name: 'picomatch', url: 'https://github.com/advisories/GHSA-fc5q-39xc-vjpf' }],
+        micromatch: ['picomatch'],
+        tinyglobby: ['picomatch'],
+        vitest: ['picomatch', 'tinyglobby'],
+      };
+      const packages = {
+        'node_modules/picomatch': { dev: true, version: '4.0.7' },
+        'node_modules/micromatch/node_modules/picomatch': { dev: true, version: '2.3.2' },
+      };
+      const vulnerabilities = {};
+      for (const [name, via] of Object.entries(vias)) {
+        const nodes = name === 'picomatch' ? Object.keys(packages) : [`node_modules/${name}`];
+        if (name !== 'picomatch') packages[nodes[0]] = { dev: true, version: '1.0.0' };
+        vulnerabilities[name] = { severity: 'high', nodes, via };
+      }
+      return { report: { auditReportVersion: 2, vulnerabilities }, packages };
+    };
+    const { report, packages } = picomatchAudit();
+    expect(checkAuditReport(report, packages)).toEqual({ failures: [], exceptions: Object.keys(report.vulnerabilities) });
+    const updated = picomatchAudit();
+    updated.packages['node_modules/picomatch'].version = '4.0.8';
+    expect(checkAuditReport(updated.report, updated.packages).failures).toEqual(Object.keys(updated.report.vulnerabilities));
+    const shipped = picomatchAudit();
+    delete shipped.packages['node_modules/picomatch'].dev;
+    expect(checkAuditReport(shipped.report, shipped.packages).failures).toEqual(Object.keys(shipped.report.vulnerabilities));
   });
 
   it('rejects missing lockfile entries and additional production copies of braces', () => {
