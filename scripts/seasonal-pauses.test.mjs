@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { feedPaused } from '../src/lib/seasonalPauses';
-import { heldPauses, pauseHolds } from './seasonal-pauses.mjs';
+import { heldPauses, pauseHolds, seasonalPaused } from './seasonal-pauses.mjs';
 
 const countries = JSON.parse(readFileSync(new URL('../data/countries.json', import.meta.url), 'utf8')).countries
   .filter(country => country.catalog);
@@ -32,6 +32,24 @@ describe('the live catalog check\'s seasonal pauses', () => {
     expect(heldPauses({ areas: [{ seasonal: edmonton }, {}] }, now)).toBeUndefined();
     expect(heldPauses({}, now)).toBeUndefined();
     expect(heldPauses({ seasonal: edmonton }, Date.parse('2027-07-01T12:00:00Z'))).toBeUndefined();
+  });
+
+  it('pauses a feed that is gone in its window, as Dott\'s Trondheim, which left Entur on 13 November 2026', () => {
+    // The weekly check of 16 November 2026, 13:57 UTC, failed on this answer, in the window from 14 November.
+    const trondheim = systems.find(system => system.id === 'dott_no_trondheim');
+    const gone = { system: 'dott_no_trondheim', state: 'gone', error: 'HTTP 404 at /mobility/v2/gbfs/v3/dotttrondheim/gbfs' };
+    const inWindow = Date.parse('2026-11-16T13:57:00Z');
+    expect(seasonalPaused(trondheim, gone, inWindow))
+      .toEqual({ ...gone, state: 'paused', error: 'Seasonal pause until 03-15: HTTP 404 at /mobility/v2/gbfs/v3/dotttrondheim/gbfs' });
+    expect(seasonalPaused(trondheim, { ...gone, state: 'failed', error: 'Missing vehicle array' }, inWindow))
+      .toMatchObject({ state: 'paused', error: 'Seasonal pause until 03-15: Missing vehicle array' });
+    expect(seasonalPaused(trondheim, { system: 'dott_no_trondheim', state: 'ok' }, inWindow)).toEqual({ system: 'dott_no_trondheim', state: 'ok' });
+    // Once the window ends, a feed still gone is reported, as the cache's alerts report it again.
+    expect(seasonalPaused(trondheim, gone, Date.parse('2027-03-15T12:00:00Z'))).toEqual(gone);
+    // And a feed with no window is gone whenever it is.
+    const oslo = systems.find(system => system.id === 'voi_no_oslo');
+    expect(oslo?.seasonal).toBeUndefined();
+    expect(seasonalPaused(oslo, { ...gone, system: 'voi_no_oslo' }, inWindow)).toMatchObject({ state: 'gone' });
   });
 
   it('answers as the map and the cache\'s alerts do, for every seasonal catalog entry through a year', () => {

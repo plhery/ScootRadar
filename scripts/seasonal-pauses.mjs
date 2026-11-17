@@ -34,3 +34,17 @@ export function heldPauses(system, now) {
   const pauses = (system.areas ?? [system]).map(area => area.seasonal ?? system.seasonal);
   return pauses.every(pause => pause && pauseHolds(pause, now)) ? pauses : undefined;
 }
+
+/**
+ * The check's answer for a feed that it could not read: in its catalog's seasonal window, a feed may list nothing or
+ * stop answering, as Bird's Leduc from 22 October, or leave its host altogether, as Dott's Trondheim and Stjørdal left
+ * Entur on 13 November 2026 and answer 404. Its failure, gone included, is then a pause, as on the map and in the
+ * cache's alerts, with the window's end in its error. Once the window ends, a feed still gone is reported, and the
+ * cache's alerts are back too.
+ */
+export function seasonalPaused(system, result, now) {
+  const pauses = ['failed', 'gone'].includes(result.state) && heldPauses(system, now);
+  if (!pauses) return result;
+  const until = [...new Set(pauses.map(pause => pause.until === 'clear' ? 'the streets are clear' : pause.until))];
+  return { ...result, state: 'paused', error: `Seasonal pause until ${until.join(', ')}: ${result.error}` };
+}

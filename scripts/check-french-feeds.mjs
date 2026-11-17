@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { holdOffMs, hostPacer } from './host-pacing.mjs';
-import { heldPauses } from './seasonal-pauses.mjs';
+import { seasonalPaused } from './seasonal-pauses.mjs';
 
 // The catalogs of data/countries.json. --countries= takes country codes (FR,DE), a continent
 // (--help lists them) or all; --except= leaves countries out: check:europe skips France,
@@ -117,7 +117,7 @@ const dottRegion = url => {
 };
 
 // paused: Dott has closed the region for a while, as Tignes out of season; the map skips it. A feed that
-// fails in its catalog's seasonal window is paused too (seasonalPaused below).
+// fails or is gone in its catalog's seasonal window is paused too (seasonalPaused in seasonal-pauses.mjs).
 // gone: the operator no longer serves the feed publicly, so the entry should leave the catalog.
 function state(system, error) {
   if (!error) return 'ok';
@@ -215,17 +215,8 @@ async function inspect(system) {
       updatedAt: new Date(updatedAt).toISOString(), ageSeconds,
     };
   } catch (error) {
-    return seasonalPaused(system, { ...result, state: state(system, error), error: error.message });
+    return seasonalPaused(system, { ...result, state: state(system, error), error: error.message }, Date.now());
   }
-}
-
-// In its catalog's seasonal window, as Leduc from 22 October, a feed may list nothing or stop answering, so
-// its failure is a pause, as on the map and in the cache's alerts; a feed that is gone is still reported.
-function seasonalPaused(system, result) {
-  const pauses = result.state === 'failed' && heldPauses(system, Date.now());
-  if (!pauses) return result;
-  const until = [...new Set(pauses.map(pause => pause.until === 'clear' ? 'the streets are clear' : pause.until))];
-  return { ...result, state: 'paused', error: `Seasonal pause until ${until.join(', ')}: ${result.error}` };
 }
 
 // One request per country: the regions Dott lists, each with its feeds.

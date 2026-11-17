@@ -260,7 +260,10 @@ season of its own.
 A paused feed is still collected for the map. If Entur serves Dott again
 before March, its scooters show as soon as the feed answers, and the only
 thing left to change is the catalog's `from`. The alerts come back on 15
-March 2027. The [coverage gaps](coverage-gaps.md) recheck it on 1 December.
+March 2027. Until then the weekly catalog check lists both feeds as paused,
+with their 404, as it does any feed that fails or is gone in its seasonal
+window. On 16 November it still reported them as gone, and failed. The
+[coverage gaps](coverage-gaps.md) recheck it on 1 December.
 
 ## Data handling
 
@@ -661,4 +664,5 @@ node scripts/check-french-feeds.mjs --countries=BE,NO,GB --json
 ```
 
 The [catalog check workflow](../.github/workflows/catalog-check.yml) runs every
-Monday and fails when an entry of a country's catalog is gone.
+Monday and fails when an entry of a country's catalog is gone, outside the
+entry's seasonal window.
