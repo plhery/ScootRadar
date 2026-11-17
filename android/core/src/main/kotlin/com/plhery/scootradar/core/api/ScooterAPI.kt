@@ -123,7 +123,9 @@ class ScooterAPI(
         val clockOffset = clockOffset(dateHeader = response.headers["Date"], receivedAt = Instant.now())
 
         return decoded(response) { text ->
-            ScooterAPIJson.decodeFromString(ScooterAPIResponsePayload.serializer(), text).model.copy(clockOffset = clockOffset)
+            // Scooters the Worker kept, given while the server behind them is down, carry its state.
+            ScooterAPIJson.decodeFromString(ScooterAPIResponsePayload.serializer(), text).model
+                .copy(clockOffset = clockOffset, maintenance = ScooterMaintenance.of(response.headers))
         }
     }
 
@@ -172,7 +174,10 @@ class ScooterAPI(
             if (underWay.remove(call) == true) http.connectionPool.evictAll()
         }
 
-        if (response.code !in 200..299) throw ScooterAPIError.HttpStatus(response.code)
+        if (response.code !in 200..299) {
+            if (response.code in 500..599) ScooterMaintenance.of(response.headers)?.let { throw ScooterAPIError.ServerDown(it) }
+            throw ScooterAPIError.HttpStatus(response.code)
+        }
         return response
     }
 
@@ -289,6 +294,8 @@ enum class ScooterLoadFailure(val rawValue: String) {
     Busy("busy"),
     /** HTTP 5xx. */
     Unavailable("unavailable"),
+    /** The server behind the scooter data is down, for maintenance or a reboot, and nothing was kept for this view (ScooterMaintenance). */
+    Maintenance("maintenance"),
     Failed("failed"),
     ;
 
@@ -298,6 +305,7 @@ enum class ScooterLoadFailure(val rawValue: String) {
             Timeout -> localized("ScootRadar took too long to respond.")
             Busy -> localized("ScootRadar is busy right now. Try again in a moment.")
             Unavailable -> localized("ScootRadar is having trouble. Try again in a moment.")
+            Maintenance -> localized("ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly.")
             Failed -> localized("Couldn’t load scooters.")
         }
 
@@ -309,6 +317,9 @@ enum class ScooterLoadFailure(val rawValue: String) {
 }
 
 sealed class ScooterAPIError(message: String, cause: Throwable? = null) : Exception(message, cause) {
+    /** The server's state, when the Worker said it is down. */
+    open val maintenance: ScooterMaintenance? get() = null
+
     class InvalidURL : ScooterAPIError("invalidURL")
 
     class Offline : ScooterAPIError("offline")
@@ -319,6 +330,9 @@ sealed class ScooterAPIError(message: String, cause: Throwable? = null) : Except
 
     class HttpStatus(val statusCode: Int) : ScooterAPIError("httpStatus($statusCode)")
 
+    /** A 5xx the Worker marked: the server behind it is down. */
+    class ServerDown(override val maintenance: ScooterMaintenance) : ScooterAPIError("serverDown")
+
     class InvalidData(cause: Throwable) : ScooterAPIError("invalidData", cause)
 
     class Network(cause: Throwable) : ScooterAPIError("network", cause)
@@ -328,6 +342,7 @@ sealed class ScooterAPIError(message: String, cause: Throwable? = null) : Except
             this is Offline -> ScooterLoadFailure.Offline
             this is TimedOut -> ScooterLoadFailure.Timeout
             this is HttpStatus && statusCode == 429 -> ScooterLoadFailure.Busy
+            this is ServerDown -> ScooterLoadFailure.Maintenance
             this is HttpStatus && statusCode in 500..599 -> ScooterLoadFailure.Unavailable
             else -> ScooterLoadFailure.Failed
         }
@@ -344,6 +359,38 @@ internal val IOException.isConnectionLost: Boolean
 private const val CONNECTION_ABORT = "Software caused connection abort"
 
 /** What came back from a server: the status, the headers and the whole body. */
+/**
+ * The server behind the scooter data (Netcup, through the Cloudflare Tunnel) is down, as the Worker says on its answers
+ * kept from before and on its 503s alike (`X-Scooter-Origin: down`): rebooted, or under maintenance (DEPLOY.md,
+ * "Maintenance"). The map says so calmly and asks again when the Worker says. From the iPhone's ScooterMaintenance.
+ */
+data class ScooterMaintenance(
+    /** When an announced maintenance should be over (`X-Scooter-Back-Around`); null when none was announced. */
+    val backAround: Instant? = null,
+    /** How long to wait before asking again, in seconds (`Retry-After`); null when the Worker says nothing. */
+    val retryAfter: Double? = null,
+) {
+    companion object {
+        private val seconds = Regex("[0-9]+")
+
+        /** Null unless the response says the server is down. */
+        fun of(headers: Headers): ScooterMaintenance? {
+            if (!headers["X-Scooter-Origin"].equals("down", ignoreCase = true)) return null
+            return ScooterMaintenance(
+                backAround = headers["X-Scooter-Back-Around"]?.let { text ->
+                    try {
+                        Instant.parse(text)
+                    } catch (_: DateTimeException) {
+                        null
+                    }
+                },
+                // Seconds only: the Worker never sends a date.
+                retryAfter = headers["Retry-After"]?.takeIf(seconds::matches)?.toDoubleOrNull(),
+            )
+        }
+    }
+}
+
 internal class ScooterHTTPResponse(val code: Int, val headers: Headers, val body: ByteArray)
 
 internal val jsonMediaType: MediaType = "application/json".toMediaType()

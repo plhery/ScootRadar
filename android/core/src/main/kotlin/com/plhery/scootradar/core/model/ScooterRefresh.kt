@@ -1,6 +1,7 @@
 package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.generated.ScooterProvider
 import java.time.Instant
 
@@ -37,7 +38,17 @@ data class ScooterRefreshPolicy(
      * started or ended with its hours. Nothing is fetched.
      */
     val pausedRulesCheck: Double = 60.0,
+    /** The longest wait a `Retry-After` gets while the server is down. */
+    val maximumRetryAfter: Double = 5 * 60.0,
 ) {
+    /**
+     * While the server is down, the gap before asking again: when the Worker says (`Retry-After`), never sooner than any
+     * other attempt, and never later than [maximumRetryAfter]. It also takes the place of the interval of the kept
+     * answer, so the scooters come back soon after the server does.
+     */
+    fun maintenanceGap(maintenance: ScooterMaintenance): Double =
+        minOf(maximumRetryAfter, maxOf(minimumAttemptGap, maintenance.retryAfter ?: 0.0))
+
     /**
      * The gap before the follow-up a refreshing response asks for with `followUpMs`, which also takes the
      * place of its `refreshAfterSeconds`; null when it asks for none.

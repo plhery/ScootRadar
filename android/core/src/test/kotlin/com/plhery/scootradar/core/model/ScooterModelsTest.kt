@@ -2,6 +2,7 @@ package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.generated.ScooterAPIResponsePayload
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterResponseMetadataPayload
@@ -1581,6 +1582,17 @@ class ScooterModelsTest {
     }
 
     @Test
+    fun whileTheServerIsDownTheMapAsksAgainWhenTheWorkerSays() {
+        val policy = ScooterRefreshPolicy.standard
+        assertEquals(30.0, policy.maintenanceGap(ScooterMaintenance(retryAfter = 30.0)), 0.0)
+        assertEquals(120.0, policy.maintenanceGap(ScooterMaintenance(retryAfter = 120.0)), 0.0)
+        // Never sooner than any other attempt, nor later than five minutes.
+        assertEquals(10.0, policy.maintenanceGap(ScooterMaintenance()), 0.0)
+        assertEquals(10.0, policy.maintenanceGap(ScooterMaintenance(retryAfter = 2.0)), 0.0)
+        assertEquals(300.0, policy.maintenanceGap(ScooterMaintenance(retryAfter = 86_400.0)), 0.0)
+    }
+
+    @Test
     fun aRefreshingResponseGetsAQuickFollowUp() {
         val loaded = Instant.ofEpochSecond(1_790_000_000)
         val policy = ScooterRefreshPolicy.standard
@@ -1990,6 +2002,13 @@ class ScooterModelsTest {
         }
         assertTrue(summary(failure = ScooterLoadFailure.Busy).showsTryAgain)
         assertFalse(summary().showsTryAgain)
+
+        // While the server is down for maintenance the data is delayed from the start, and the map asks again by itself:
+        // no Try again, whatever failed.
+        val maintenance = summary(failure = ScooterLoadFailure.Maintenance).copy(underMaintenance = true)
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), maintenance.status(at = updated))
+        assertEquals(false, maintenance.status(at = updated)?.isWarning)
+        assertFalse(maintenance.showsTryAgain)
 
         // With every provider here down, there is no line, unless a refresh failed or the data is delayed.
         val down = summary().copy(everyProviderDown = true)

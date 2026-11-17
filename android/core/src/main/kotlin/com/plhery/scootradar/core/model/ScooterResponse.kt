@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.model
 
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.generated.ScooterAPIResponsePayload
 import com.plhery.scootradar.core.generated.ScooterClusterPayload
 import com.plhery.scootradar.core.generated.ScooterProvider
@@ -64,6 +65,8 @@ data class ScooterResponse(
      * from the response's Date header. 0 without the header.
      */
     val clockOffset: Double = 0.0,
+    /** Set when these are scooters the Worker kept, given while the server behind it is down. */
+    val maintenance: ScooterMaintenance? = null,
 )
 
 /** Of an app among the faded scooters, as the server says it (response.lastSeen.providers). */

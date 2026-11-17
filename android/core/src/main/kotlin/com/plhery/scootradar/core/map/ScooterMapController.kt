@@ -1,9 +1,11 @@
 package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.AppleMapStyle
@@ -227,6 +229,13 @@ class ScooterMapController(
     /** What went wrong with loading, until a load succeeds again. */
     private val _loadIssue = MutableStateFlow<ScooterLoadIssue?>(null)
     val loadIssue: StateFlow<ScooterLoadIssue?> = _loadIssue.asStateFlow()
+
+    /**
+     * The server behind the scooter data is down, as the last answer said, whether it gave scooters kept from before or
+     * none: the calm notice under the search bar (maintenanceNotice). Null once the server answers.
+     */
+    private val _maintenance = MutableStateFlow<ScooterMaintenance?>(null)
+    val maintenance: StateFlow<ScooterMaintenance?> = _maintenance.asStateFlow()
 
     /**
      * When the data on the map was observed. It survives the map being cleared, so the out-of-date card can
@@ -962,6 +971,7 @@ class ScooterMapController(
 
     private val refreshAfter: Double
         get() {
+            maintenance.value?.let { return refreshPolicy.maintenanceGap(it) }
             refreshPolicy.askedFollowUp(responseMetadata.value)?.let { return it }
             val seconds = responseMetadata.value?.refreshAfterSeconds
             if (seconds == null || seconds <= 0) return refreshPolicy.defaultRefreshAfter
@@ -1502,7 +1512,10 @@ class ScooterMapController(
                         analytics?.track("data_error", result = "request_failed")
                     }
                     lastAttemptAt = clock()
-                    followUpGap = null
+                    // Asked again quietly while the server is down, when the Worker says.
+                    val maintenance = (error as? ScooterAPIError)?.maintenance
+                    _maintenance.value = maintenance
+                    followUpGap = maintenance?.let(refreshPolicy::maintenanceGap)
                     handleLoadFailure(ScooterLoadFailure(error))
                     reviewAfterLoad()
                     return@launch
@@ -1557,7 +1570,10 @@ class ScooterMapController(
                 )
                 val refreshing = response.meta?.refreshing == true
                 val filling = response.lastSeenVehicles.isNotEmpty() || response.lastSeenClusters.isNotEmpty()
-                followUpGap = refreshPolicy.askedFollowUp(response.meta)
+                // Kept scooters while the server is down: asked again when the Worker says.
+                _maintenance.value = response.maintenance
+                followUpGap = response.maintenance?.let(refreshPolicy::maintenanceGap)
+                    ?: refreshPolicy.askedFollowUp(response.meta)
                     ?: if (refreshing && (filling || followedUpQuery != query)) refreshPolicy.followUpGap else null
                 followedUpQuery = if (refreshing) query else null
                 _loadIssue.value = null

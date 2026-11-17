@@ -1,6 +1,7 @@
 package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.RentalCurfew
@@ -284,6 +285,8 @@ val ScooterMapController.dock: ScooterDockContent
         selectedParking?.let { return ScooterDockContent.Parking(it) }
         val loadIssue = loadIssue.value
         if (loadIssue is ScooterLoadIssue.OutOfDate) {
+            // The notice under the search bar says why the map is empty, and that it is coming back.
+            if (maintenance.value != null) return ScooterDockContent.Waiting
             return ScooterDockContent.OutOfDate(loadIssue.failure, lastUpdate = loadIssue.lastUpdate)
         }
         val lastUpdated = lastUpdated.value
@@ -327,6 +330,7 @@ val ScooterMapController.dock: ScooterDockContent
                 refreshFailure = refreshFailure,
                 isOverview = isOverview,
                 isDelayed = responseMetadata.value?.stale == true,
+                underMaintenance = maintenance.value != null,
                 notices = dockNotices,
                 hint = hint,
                 chips = dockChips,
@@ -342,8 +346,12 @@ val ScooterMapController.dock: ScooterDockContent
 internal val ScooterMapController.isFilling: Boolean
     get() = loadIssue.value == null && fadedApps.any { it.status.updating }
 
+/**
+ * A refresh that failed while the server is down is no failure to retry by hand: the notice says it, and the map asks
+ * again by itself.
+ */
 private val ScooterMapController.refreshFailure: ScooterLoadFailure?
-    get() = (loadIssue.value as? ScooterLoadIssue.RefreshFailed)?.failure
+    get() = (loadIssue.value as? ScooterLoadIssue.RefreshFailed)?.failure?.takeIf { maintenance.value == null }
 
 /**
  * The failed refresh or the delay to report at the top of a scooter or bay card, which hides the dock's
@@ -352,6 +360,7 @@ private val ScooterMapController.refreshFailure: ScooterLoadFailure?
  */
 val ScooterMapController.cardStatus: ScooterDockStatus?
     get() {
+        if (maintenance.value != null) lastUpdated.value?.let { return ScooterDockStatus.Delayed(showing = it) }
         val loadIssue = loadIssue.value
         if (loadIssue is ScooterLoadIssue.RefreshFailed) {
             return if (loadIssue.failure == ScooterLoadFailure.Offline) {
@@ -363,6 +372,33 @@ val ScooterMapController.cardStatus: ScooterDockStatus?
         if (isFilling) return null
         return delayedStatus
     }
+
+/**
+ * While the server behind the scooter data is down: the calm notice under the search bar, as on the web and the
+ * iPhone. "Scooter data is paused for a few minutes of maintenance. Showing scooters from 22:02." over the scooters
+ * kept, "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." without any, and
+ * "Scheduled maintenance, back around 22:20." after either when it was announced. Null otherwise.
+ */
+val ScooterMapController.maintenanceNotice: String?
+    get() = maintenanceNotice(maintenance.value, loadIssue.value, lastUpdated.value)
+
+/** The notice of [maintenanceNotice], from the states a screen collects. */
+fun maintenanceNotice(maintenance: ScooterMaintenance?, loadIssue: ScooterLoadIssue?, lastUpdated: Instant?): String? {
+    maintenance ?: return null
+    val showing = if (loadIssue is ScooterLoadIssue.OutOfDate) null else lastUpdated
+    val lines = mutableListOf(
+        showing?.let {
+            stringFormat(
+                localized("Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+                ScooterDockStatus.clockTime(it),
+            )
+        } ?: ScooterLoadFailure.Maintenance.message,
+    )
+    maintenance.backAround?.let {
+        lines += stringFormat(localized("Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(it))
+    }
+    return lines.joinToString(" ")
+}
 
 /**
  * Data the dock calls delayed: a stale answer naming an app switched on as late by [ScooterDockStatus.delayedAfter]

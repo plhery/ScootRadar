@@ -4,6 +4,7 @@ import com.plhery.scootradar.core.api.AddressSearchResult
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.api.WalkingDirectionsError
 import com.plhery.scootradar.core.generated.ScooterProvider
@@ -1188,6 +1189,105 @@ class ScooterMapControllerTest {
         val healthy = summaryOf(model.dock)
         assertFalse(healthy.showsTryAgain)
         assertEquals(false, healthy.status(at = clock.now)?.isWarning)
+    }
+
+    @Test
+    fun whileTheServerIsDownTheMapSaysSoCalmlyAndAsksAgainWhenTheWorkerSays() = runTest {
+        val clock = TestClock()
+        val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        val model = makeController(api, clock = clock)
+        model.refresh()
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        val shownAt = unwrap(model.lastUpdated.value)
+        assertNull(model.maintenanceNotice)
+
+        // Nothing kept for this view: a 503 that says the server is down, with an announced return.
+        val backAround = clock.now.plusSeconds(1_200)
+        api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance(backAround = backAround, retryAfter = 30.0)))
+        clock.advance(61.0)
+        model.autoRefreshIfNeeded()
+        val failed = waitUntil { api.calls == 2 && model.loadIssue.value != null && !model.isLoading.value }
+        assertTrue(failed)
+        assertEquals(ScooterLoadIssue.RefreshFailed(ScooterLoadFailure.Maintenance, showing = shownAt), model.loadIssue.value)
+        assertEquals("The scooters shown stay", 1, model.mapScooters.value.size)
+        assertEquals(
+            listOf(
+                stringFormat(
+                    localized("Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+                    ScooterDockStatus.clockTime(shownAt),
+                ),
+                stringFormat(localized("Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround)),
+            ).joinToString(" "),
+            model.maintenanceNotice,
+        )
+        // Delayed, with no warning and no Try again.
+        val summary = summaryOf(model.dock)
+        assertEquals(ScooterDockStatus.Delayed(showing = shownAt), summary.status(at = clock.now))
+        assertFalse(summary.showsTryAgain)
+        assertEquals(ScooterDockStatus.Delayed(showing = shownAt), model.cardStatus)
+
+        // Asked again after the thirty seconds the Worker said, not the usual ten.
+        clock.advance(29.0)
+        model.autoRefreshIfNeeded()
+        assertFalse(waitUntil(attempts = 10) { api.calls > 2 })
+        clock.advance(1.0)
+        model.autoRefreshIfNeeded()
+        assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
+
+        // Scooters the Worker kept, still down: shown, and the notice stays.
+        api.setResponse(
+            timedResponse(generatedAt = clock.now.minusSeconds(600), expiresIn = 300.0)
+                .copy(maintenance = ScooterMaintenance(retryAfter = 30.0)),
+        )
+        api.setFailure(null)
+        clock.advance(30.0)
+        model.autoRefreshIfNeeded()
+        assertTrue(waitUntil { api.calls == 4 && model.loadIssue.value == null && !model.isLoading.value })
+        assertEquals(ScooterMaintenance(retryAfter = 30.0), model.maintenance.value)
+        assertEquals(
+            stringFormat(
+                localized("Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+                ScooterDockStatus.clockTime(unwrap(model.lastUpdated.value)),
+            ),
+            model.maintenanceNotice,
+        )
+        clock.advance(29.0)
+        model.autoRefreshIfNeeded()
+        assertFalse(waitUntil(attempts = 10) { api.calls > 4 })
+
+        // The server is back: the notice goes by itself.
+        api.setResponse(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        clock.advance(1.0)
+        model.autoRefreshIfNeeded()
+        assertTrue(waitUntil { api.calls == 5 && model.maintenance.value == null && !model.isLoading.value })
+        assertNull(model.maintenanceNotice)
+        assertNull(model.loadIssue.value)
+    }
+
+    @Test
+    fun aFirstLoadWhileTheServerIsDownWaitsCalmly() = runTest {
+        val clock = TestClock()
+        val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
+        api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance()))
+        val model = makeController(api, clock = clock)
+        model.refresh()
+        assertTrue(waitUntil { api.calls == 1 && model.loadIssue.value != null && !model.isLoading.value })
+        assertEquals(ScooterLoadIssue.FirstLoadFailed(ScooterLoadFailure.Maintenance), model.loadIssue.value)
+        assertEquals(ScooterLoadFailure.Maintenance.message, model.maintenanceNotice)
+        assertEquals(ScooterDockContent.Waiting, model.dock)
+
+        // Kept scooters that expired and a refresh that failed: cleared, and still no out-of-date card.
+        api.setFailure(null)
+        clock.advance(10.0)
+        model.autoRefreshIfNeeded()
+        assertTrue(waitUntil { api.calls == 2 && model.lastUpdated.value != null && !model.isLoading.value })
+        api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance()))
+        clock.advance(301.0)
+        model.autoRefreshIfNeeded()
+        assertTrue(waitUntil { api.calls == 3 && model.mapScooters.value.isEmpty() && !model.isLoading.value })
+        assertEquals(ScooterDockContent.Waiting, model.dock)
+        assertEquals(ScooterLoadFailure.Maintenance.message, model.maintenanceNotice)
     }
 
     @Test

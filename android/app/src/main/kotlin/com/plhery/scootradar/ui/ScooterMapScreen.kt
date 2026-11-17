@@ -110,6 +110,7 @@ import com.plhery.scootradar.core.map.hasActiveFilters
 import com.plhery.scootradar.core.map.nearbyCities
 import com.plhery.scootradar.core.map.searchBarState
 import com.plhery.scootradar.core.map.searchNear
+import com.plhery.scootradar.core.map.maintenanceNotice
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterFold
@@ -507,7 +508,9 @@ private fun DockChrome(
     // Only a first load that failed is reported under the search bar; later failures are the dock's to report.
     val firstLoadFailure = (loadIssue as? ScooterLoadIssue.FirstLoadFailed)?.failure
     val pausedForIdle by controller.isPausedForIdle.collectAsStateWithLifecycle()
-    val banner = TopBanner.of(firstLoadFailure, pausedForIdle)
+    val maintenance by controller.maintenance.collectAsStateWithLifecycle()
+    val dataTime by controller.lastUpdated.collectAsStateWithLifecycle()
+    val banner = TopBanner.of(firstLoadFailure, pausedForIdle, maintenanceNotice(maintenance, loadIssue, dataTime))
     // A card that follows its scooter to a new id is no new choice.
     SelectionFeedback(scooterChoices)
     SelectionFeedback(selectedParking)
@@ -840,7 +843,9 @@ private fun PanelChrome(
     val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
     val firstLoadFailure = (loadIssue as? ScooterLoadIssue.FirstLoadFailed)?.failure
     val pausedForIdle by controller.isPausedForIdle.collectAsStateWithLifecycle()
-    val banner = TopBanner.of(firstLoadFailure, pausedForIdle)
+    val maintenance by controller.maintenance.collectAsStateWithLifecycle()
+    val dataTime by controller.lastUpdated.collectAsStateWithLifecycle()
+    val banner = TopBanner.of(firstLoadFailure, pausedForIdle, maintenanceNotice(maintenance, loadIssue, dataTime))
     // A card that follows its scooter to a new id is no new choice.
     SelectionFeedback(scooterChoices)
     SelectionFeedback(selectedParking)
@@ -1243,9 +1248,16 @@ internal sealed interface TopBanner {
         override val message: String get() = localized("Paused to save data · tap to refresh")
     }
 
+    /** The server behind the data is down, for maintenance or a reboot (maintenanceNotice): calm, with no button. */
+    data class Maintenance(override val message: String) : TopBanner
+
     companion object {
-        /** A first load that failed says more than the pause. */
-        fun of(failure: ScooterLoadFailure?, paused: Boolean): TopBanner? = failure?.let(::Failed) ?: Paused.takeIf { paused }
+        /**
+         * A first load that failed says more than the pause, and the server being down more than either: it is no
+         * failure to retry by hand, and the map asks again by itself.
+         */
+        fun of(failure: ScooterLoadFailure?, paused: Boolean, maintenance: String? = null): TopBanner? =
+            maintenance?.let(::Maintenance) ?: failure?.let(::Failed) ?: Paused.takeIf { paused }
     }
 }
 
@@ -1376,6 +1388,16 @@ private fun NoticeStack(
                         actionTitle = localized("Try again"),
                         onAction = controller::retryLoad,
                         isBusy = isLoading,
+                        animation = changes,
+                        onRestingHeight = { heights.banner = it },
+                    )
+                    // Calm: no warning, no button. The map asks again by itself, and the notice goes once the server
+                    // answers.
+                    is TopBanner.Maintenance -> MapStatusBanner(
+                        message = shown.message,
+                        symbol = Symbols.clock,
+                        tint = scootColors.secondaryText,
+                        cornerRadius = 22.dp,
                         animation = changes,
                         onRestingHeight = { heights.banner = it },
                     )

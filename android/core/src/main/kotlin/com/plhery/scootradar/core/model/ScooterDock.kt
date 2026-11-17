@@ -55,6 +55,11 @@ data class ScooterDockSummary(
     val isOverview: Boolean,
     /** The server answered with data it could not renew. */
     val isDelayed: Boolean,
+    /**
+     * The server behind the data is down, for maintenance or a reboot: the data on the map is delayed, which the notice
+     * under the search bar explains, and the map asks again by itself, with no Try again.
+     */
+    val underMaintenance: Boolean = false,
     /** One calm line each, under the status. */
     val notices: List<ScooterDockNotice>,
     val hint: ScooterDockHint?,
@@ -87,10 +92,11 @@ data class ScooterDockSummary(
     val countLabel: String get() = countContext.label(count)
 
     /** The Try again pill at the right of the dock header. */
-    val showsTryAgain: Boolean get() = refreshFailure != null
+    val showsTryAgain: Boolean get() = refreshFailure != null && !underMaintenance
 
     /** The status line, null when there is none. It changes as the data ages, so ask again over time. */
     fun status(at: Instant = Instant.now()): ScooterDockStatus? {
+        if (underMaintenance) return ScooterDockStatus.Delayed(showing = lastUpdated)
         if (refreshFailure != null) {
             return if (refreshFailure == ScooterLoadFailure.Offline) {
                 ScooterDockStatus.Offline(showing = lastUpdated)

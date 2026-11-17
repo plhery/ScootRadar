@@ -502,6 +502,7 @@ class ScooterAPITest {
             ScooterAPIError.HttpStatus(500) to ScooterLoadFailure.Unavailable,
             ScooterAPIError.HttpStatus(503) to ScooterLoadFailure.Unavailable,
             ScooterAPIError.HttpStatus(599) to ScooterLoadFailure.Unavailable,
+            ScooterAPIError.ServerDown(ScooterMaintenance()) to ScooterLoadFailure.Maintenance,
             ScooterAPIError.HttpStatus(404) to ScooterLoadFailure.Failed,
             ScooterAPIError.InvalidURL() to ScooterLoadFailure.Failed,
             ScooterAPIError.InvalidResponse() to ScooterLoadFailure.Failed,
@@ -513,7 +514,7 @@ class ScooterAPITest {
             assertEquals("$error", expected, ScooterLoadFailure(error))
         }
         assertEquals(ScooterLoadFailure.Failed, ScooterLoadFailure(MalformedURLException("badURL")))
-        assertEquals(5, ScooterLoadFailure.entries.map { it.message }.toSet().size)
+        assertEquals(6, ScooterLoadFailure.entries.map { it.message }.toSet().size)
 
         // The reason survives the trip through the real client.
         for ((api, expected) in listOf(
@@ -530,6 +531,35 @@ class ScooterAPITest {
         )) {
             val error = failure { api.scooters(bounds = bounds, zoom = 16) }
             if (error == null) fail("Expected a $expected failure") else assertEquals(expected, ScooterLoadFailure(error))
+        }
+    }
+
+    @Test
+    fun theWorkerSaysWhenTheServerBehindItIsDown() = runBlocking<Unit> {
+        val down = mapOf("X-Scooter-Origin" to "down", "Retry-After" to "30", "X-Scooter-Back-Around" to "2026-11-18T22:20:00.000Z")
+        val backAround = Instant.parse("2026-11-18T22:20:00Z")
+
+        // Scooters it kept from before: shown, with the server's state.
+        val kept = makeAPI(responseStatus = 200, data = emptyResponseData, headers = down).scooters(bounds = bounds, zoom = 16)
+        assertEquals(ScooterMaintenance(backAround = backAround, retryAfter = 30.0), kept.maintenance)
+        assertNull(makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16).maintenance)
+
+        // None kept: a 503 that says the same, a maintenance rather than a failure.
+        for ((status, headers, expected) in listOf(
+            Triple(503, down, ScooterMaintenance(backAround = backAround, retryAfter = 30.0)),
+            Triple(503, mapOf("X-Scooter-Origin" to "down", "Retry-After" to "soon"), ScooterMaintenance()),
+            Triple(502, mapOf("x-scooter-origin" to "DOWN"), ScooterMaintenance()),
+        )) {
+            val error = failure { makeAPI(responseStatus = status, headers = headers).scooters(bounds = bounds, zoom = 16) }
+            assertEquals("$status $headers", expected, (error as? ScooterAPIError)?.maintenance)
+            assertEquals(ScooterLoadFailure.Maintenance, error?.let { ScooterLoadFailure(it) })
+        }
+
+        // A 503 the server itself sent, or a 4xx, says nothing of the kind.
+        for ((status, headers) in listOf(503 to mapOf("Retry-After" to "30"), 404 to mapOf("X-Scooter-Origin" to "down"))) {
+            val error = failure { makeAPI(responseStatus = status, headers = headers).scooters(bounds = bounds, zoom = 16) }
+            assertNull((error as? ScooterAPIError)?.maintenance)
+            assertNotEquals(ScooterLoadFailure.Maintenance, error?.let { ScooterLoadFailure(it) })
         }
     }
 

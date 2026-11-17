@@ -41,6 +41,7 @@ import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -50,6 +51,7 @@ import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.scooter
@@ -70,6 +72,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -205,6 +208,34 @@ class TopNoticeChangeTest {
         val along = film.map { blend(it.band, shownBefore, shownAfter, words) }
         assertTrue("the words on their way on the first frames: $along", along.take(6).count { it in 0.1..0.9 } >= 3)
         assertEquals("the words settled: $along", 1.0, along.last(), 0.02)
+    }
+
+    /**
+     * While the server behind the data is down, the banner says so calmly, with the time the Worker gave and no Try
+     * again: the map asks again by itself. It goes once the data is back.
+     */
+    @Test
+    fun theServerBeingDownIsSaidCalmlyAndGoesOnceTheDataIsBack() {
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        val backAround = Instant.parse("2026-11-18T21:20:00Z")
+        api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance(backAround = backAround, retryAfter = 30.0)))
+        val clock = TestClock()
+        val model = controllers.make(api, clock, locationManager = FakeLocationManager(ScooterAuthorizationStatus.Denied))
+        show(model, clock)
+        compose.runOnIdle { model.updateViewport(zurichRegion, zoom = 16) }
+        assertTrue(controllers.waitUntil { model.loadIssue.value is ScooterLoadIssue.FirstLoadFailed && !model.isLoading.value })
+        compose.waitForIdle()
+        val said = "${ScooterLoadFailure.Maintenance.message} " + stringFormat(localized("Scheduled maintenance, back around %@."), "22:20")
+        assertTrue(compose.onAllNodes(hasText(said)).fetchSemanticsNodes().isNotEmpty())
+        assertTrue(compose.onAllNodesWithText(localized("Try again")).fetchSemanticsNodes().isEmpty())
+
+        // Asked again when the Worker said, half a minute on.
+        api.setFailure(null)
+        clock.advance(30.0)
+        compose.runOnIdle { model.autoRefreshIfNeeded() }
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        compose.waitForIdle()
+        assertTrue(compose.onAllNodes(hasText(ScooterLoadFailure.Maintenance.message, substring = true)).fetchSemanticsNodes().isEmpty())
     }
 
     /**

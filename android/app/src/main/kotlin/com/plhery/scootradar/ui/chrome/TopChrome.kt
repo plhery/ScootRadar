@@ -43,6 +43,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.localized
@@ -103,10 +104,13 @@ fun MapStatusBanner(
     isBusy: Boolean = false,
     animation: FiniteAnimationSpec<Float>? = null,
     onRestingHeight: (Int) -> Unit = {},
+    /** A capsule unless given, or the text is large enough to stack: a notice of several lines, as the maintenance one, takes a rounded rectangle. */
+    cornerRadius: Dp? = null,
 ) {
     val colors = scootColors
     val stacks = TextSize.isXLargeOrMore
-    val shape = if (stacks) SquircleShape(22.dp) else CapsuleShape
+    val shape = cornerRadius?.let(::SquircleShape) ?: if (stacks) SquircleShape(22.dp) else CapsuleShape
+    val roomy = stacks || cornerRadius != null
     val indicator = @Composable { SymbolIcon(symbol, textSymbolSize(17f), tint ?: colors.critical) }
     val text = @Composable { textModifier: Modifier ->
         CrossFade(message, animation, textModifier) {
@@ -152,7 +156,7 @@ fun MapStatusBanner(
             .chromeGlass(shape)
             .overTheMap()
             .easedHeight(message, animation, onRestingHeight, centred = true)
-            .padding(start = 14.dp, end = if (stacks || !hasAction) 14.dp else 5.dp, top = if (stacks) 10.dp else 2.dp, bottom = if (stacks) 10.dp else 2.dp),
+            .padding(start = 14.dp, end = if (stacks || !hasAction) 14.dp else 5.dp, top = if (roomy) 10.dp else 2.dp, bottom = if (roomy) 10.dp else 2.dp),
     ) {
         if (stacks) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
