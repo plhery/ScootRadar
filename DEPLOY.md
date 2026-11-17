@@ -503,14 +503,13 @@ is down or to check for `hard`. `GET /maintenance.json` answers
 `{"planned", "mode", "since", "backAround"}` from the Worker alone (no-store,
 any origin). Without the binding, nothing is announced and the rest works.
 
-To turn announcements on, bind the namespace in `wrangler.jsonc`
-(`"kv_namespaces": [{ "binding": "MAINTENANCE", "id": "<namespace id>" }]`,
-the id from `npx wrangler kv namespace list`) and deploy. Then, for example:
+`wrangler.jsonc` binds the namespace (`kv_namespaces`). The netcup server's
+`maint` switch writes the announcements; by hand, for example:
 
 ```bash
-npx wrangler kv key put --remote --namespace-id <namespace id> all \
+npx wrangler kv key put --remote --namespace-id 8b0f39fd21c2415e83cffc05a0307b37 all \
   '{"since":"2026-11-18T22:00:00Z","backAround":"2026-11-18T22:20:00Z"}'
-npx wrangler kv key put --remote --namespace-id <namespace id> all '{"on":false}'
+npx wrangler kv key put --remote --namespace-id 8b0f39fd21c2415e83cffc05a0307b37 all '{"on":false}'
 ```
 
 ## Public launch checklist

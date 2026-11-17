@@ -76,6 +76,9 @@
       }
     }
   ],
+  // Announced maintenance, shared with the other sites' edge guards: src/lib/maintenance.ts, DEPLOY.md
+  // ("Maintenance").
+  "kv_namespaces": [{ "binding": "MAINTENANCE", "id": "8b0f39fd21c2415e83cffc05a0307b37" }],
   "observability": {
     "enabled": true,
     "logs": {
