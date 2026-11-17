@@ -1,0 +1,31 @@
+ScootRadar mette su una sola mappa tutti i monopattini elettrici in sharing intorno a te, di qualunque operatore. Così il mezzo più vicino è la prima cosa che vedi.
+
+Ogni operatore ha la sua app, che mostra solo la propria flotta. ScootRadar li mostra tutti: il mezzo più vicino è semplicemente il più vicino.
+
+Sai quanto c’è da camminare
+La distanza e il tempo a piedi da dove ti trovi, o da un indirizzo che hai cercato. «Indicazioni» traccia il percorso a piedi sulla mappa e ti segue mentre cammini.
+
+Salta quelli scarichi
+Batteria e autonomia residua, quando l’operatore le pubblica. Imposta un minimo e la mappa mostra solo i monopattini che lo raggiungono.
+
+Il prezzo, prima di decidere
+Una stima calcolata sulle tariffe pubblicate dall’operatore, per una corsa da 5 a 30 minuti, che tiene conto degli sblocchi gratuiti e dei minuti gratuiti dei tuoi pass. Il prezzo finale è quello dell’app dell’operatore.
+
+L’app giusta, con un tocco
+«Apri in» ti porta all’app dell’operatore, dove sblocchi e paghi come sempre. ScootRadar non noleggia né prenota monopattini.
+
+Dove funziona
+I monopattini di 39 operatori, in oltre 1.000 città e comuni di 58 paesi: Svizzera, Italia, Francia, Germania, Regno Unito, Belgio, Spagna, Polonia, Norvegia, Svezia, Finlandia e altri paesi d’Europa; Stati Uniti e Canada; Brasile, Cile e Messico; Giappone e Corea del Sud; Israele, Turchia, Nuova Zelanda e altri ancora. Tra queste ci sono Berlino, Oslo, Tokyo, Chicago, Santiago del Cile, Roma, San Paolo, Stoccolma, Seul e Zurigo. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno.
+
+Privacy fin dalla progettazione
+Niente account, niente pubblicità. La tua posizione viene usata sul tuo telefono, per centrare la mappa e calcolare i tempi a piedi; il server riceve solo la parte di mappa che stai guardando. Le statistiche di utilizzo anonime si possono disattivare in Impostazioni.
+
+E anche
+• Aspetto chiaro e scuro, e le mappe Standard ed Essenziale
+• Parcheggi riservati dove un operatore li richiede
+• Testo grande, TalkBack e Rimuovi animazioni
+• Italiano, tedesco, francese, inglese, olandese, norvegese, portoghese, spagnolo e islandese
+
+Le posizioni provengono dagli operatori e dalle autorità, e possono risalire a qualche minuto fa. Sulla mappa, a seconda della città, ci sono Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh e altri 31 operatori.
+
+ScootRadar è un’app indipendente, non affiliata agli operatori; i loro nomi sono marchi dei rispettivi titolari. ScootRadar è open source.

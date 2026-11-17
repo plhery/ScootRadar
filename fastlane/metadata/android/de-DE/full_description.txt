@@ -1,0 +1,31 @@
+ScootRadar zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der nächste Scooter das Erste, was du siehst.
+
+Jeder Anbieter hat eine eigene App, und jede zeigt nur die eigene Flotte. ScootRadar zeigt alle. Dann ist der nächste Scooter auch wirklich der nächste.
+
+Wissen, wie weit es ist
+Distanz und Gehzeit von deinem Standort oder einer gesuchten Adresse aus. «Route» zeichnet den Weg dorthin auf der Karte ein und folgt dir beim Gehen.
+
+Leere Akkus ausblenden
+Akkustand und Reichweite, sofern der Anbieter sie veröffentlicht. Lege einen Mindestladestand fest, und die Karte zeigt nur noch Scooter, die ihn erreichen.
+
+Den Preis kennen, bevor du fährst
+Eine Schätzung nach den veröffentlichten Tarifen des Anbieters, für eine Fahrt von 5 bis 30 Minuten. Kostenlose Entsperrungen und Freiminuten deiner Pässe sind eingerechnet. Den Endpreis zeigt die App des Anbieters.
+
+Ein Fingertipp zur richtigen App
+«In … öffnen» bringt dich zur App des Anbieters. Entsperrt und bezahlt wird dort wie gewohnt. ScootRadar vermietet und reserviert keine Scooter.
+
+Wo es funktioniert
+Die Scooter von 39 Anbietern, in über 1.000 Städten und Gemeinden in 58 Ländern: in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Spanien, Polen, Norwegen, Schweden und Finnland, im Vereinigten Königreich und in weiteren Ländern Europas; in den Vereinigten Staaten und Kanada; in Brasilien, Chile und Mexiko; in Japan und Südkorea; in Israel, in der Türkei, in Neuseeland und anderswo. Darunter sind Berlin, Oslo, Tokio, Chicago, Santiago de Chile, Rom, São Paulo, Stockholm, Seoul und Zürich. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
+
+Privat von Grund auf
+Kein Konto, keine Werbung. Dein Standort wird auf deinem Smartphone genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen; der Server erhält nur den Kartenausschnitt, den du gerade ansiehst. Anonyme Nutzungsstatistiken lassen sich in den Einstellungen ausschalten.
+
+Außerdem
+• Helle und dunkle Darstellung sowie die Kartenstile Standard und Ruhig
+• Ausgewiesene Parkplätze, wo ein Anbieter sie vorschreibt
+• Große Schrift, TalkBack und Animationen entfernen
+• Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Norwegisch, Portugiesisch, Spanisch und Isländisch
+
+Die Positionen stammen von den Anbietern und Behörden und können einige Minuten alt sein. Auf der Karte sind je nach Stadt Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh und 31 weitere Anbieter.
+
+ScootRadar ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. ScootRadar ist Open Source.
