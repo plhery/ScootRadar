@@ -68,7 +68,7 @@ class MainActivityReviewTest {
     /** Asks Play's stand-in, does [between] before it answers, and says how many cards were shown then. */
     private fun MainActivity.askThen(between: MainActivity.() -> Unit): Int {
         val before = cards
-        reviewRequester.request { true }
+        checkNotNull(reviewRequester).request { true }
         between()
         idle()
         return cards - before

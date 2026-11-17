@@ -148,8 +148,10 @@ Opened in a browser, the address shows a 404 page; that's expected.
 To build it yourself, run `npm ci` at the top of the repository first (the
 build writes the app's API models and provider catalog with the site's
 scripts), then open `android/` in Android Studio and run the `app`
-configuration, or connect a phone and run `./gradlew :app:installDebug` in
+configuration, or connect a phone and run `./gradlew :app:installPlayDebug` in
 `android/` with JDK 21.
+The `fdroid` flavor (`:app:assembleFdroidRelease`) is the build for F-Droid's
+catalog, without Google Play's card to rate the app.
 
 Once a release reaches Google Play's closed test, its APK as Google Play signs
 it goes to the F-Droid repository and GitHub Releases:

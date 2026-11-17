@@ -75,10 +75,15 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
 
-      # verifyRoborazziDebug has the JVM tests compare their screenshots with the baselines recorded on the
+      # verifyRoborazziPlayDebug has the JVM tests compare their screenshots with the baselines recorded on the
       # Mac (android/app/src/test/screenshots). All their text is the bundled Inter, so Linux's fonts don't enter.
-      # assembleRelease runs R8 and the resource shrinker over the release build, unsigned (X-AD30).
-      - run: ./gradlew --console=plain :core:test :core:animalsnifferMain :app:testDebugUnitTest :app:verifyRoborazziDebug :app:lintDebug :app:assembleDebug :app:assembleRelease
+      # assemblePlayRelease runs R8 and the resource shrinker over the release build, unsigned (X-AD30).
+      # The fdroid build, for F-Droid's catalog: its own test, after the check that it ships no library of Google's
+      # (checkFdroidReleaseAdvertisingId), and its release build, as F-Droid builds it.
+      - run: >-
+          ./gradlew --console=plain :core:test :core:animalsnifferMain
+          :app:testPlayDebugUnitTest :app:verifyRoborazziPlayDebug :app:lintPlayDebug :app:assemblePlayDebug :app:assemblePlayRelease
+          :app:testFdroidDebugUnitTest --tests com.plhery.scootradar.MainActivityStoreReviewTest :app:assembleFdroidRelease
 
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

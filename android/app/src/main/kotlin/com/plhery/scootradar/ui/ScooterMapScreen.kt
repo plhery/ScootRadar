@@ -177,8 +177,11 @@ fun ScooterMapScreen(
     addressSearch: AddressSearchAPIClient? = null,
     /** Where Settings keeps the rider's choice about usage data, for ScooterAnalytics to read; none in tests. */
     defaults: ScooterDefaults? = null,
-    /** What asks for a rating once the map has rested on a fresh feed, with nothing over it (ScooterReviewPrompt). */
-    reviewRequester: ReviewRequester = ReviewRequester.none,
+    /**
+     * What asks for a rating once the map has rested on a fresh feed, with nothing over it (ScooterReviewPrompt). None
+     * where there is no store to ask, as in the build for F-Droid's catalog: the map waits for no moment and counts no ask.
+     */
+    reviewRequester: ReviewRequester? = ReviewRequester.none,
     /** Where the location card's Open Settings goes, and what its Try again asks first: the phone's location service. */
     locationSettings: LocationSettings = LocationSettings.appPage,
     /** The scootradar.com links to the map the phone opens in the app, as they come. */
@@ -453,13 +456,15 @@ fun ScooterMapScreen(
     // The app in front, with no search, sheet or location being found or gone wrong over the map.
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
-    ReviewWhenTheMapRests(
-        controller,
-        nothingOverTheMap = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && !searchIsExpanded && !sheetOpen &&
-            !isLocating && locationIssue == null,
-        requester = reviewRequester,
-        analytics = analytics,
-    )
+    if (reviewRequester != null) {
+        ReviewWhenTheMapRests(
+            controller,
+            nothingOverTheMap = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && !searchIsExpanded && !sheetOpen &&
+                !isLocating && locationIssue == null,
+            requester = reviewRequester,
+            analytics = analytics,
+        )
+    }
 }
 
 /** `.onChange(of:)`: [action] each time [value] changes, not for the value first shown. */
