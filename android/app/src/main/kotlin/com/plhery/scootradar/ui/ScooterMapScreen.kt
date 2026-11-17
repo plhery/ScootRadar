@@ -178,8 +178,9 @@ fun ScooterMapScreen(
     /** Where Settings keeps the rider's choice about usage data, for ScooterAnalytics to read; none in tests. */
     defaults: ScooterDefaults? = null,
     /**
-     * What asks for a rating once the map has rested on a fresh feed, with nothing over it (ScooterReviewPrompt). None
-     * where there is no store to ask, as in the build for F-Droid's catalog: the map waits for no moment and counts no ask.
+     * What asks for a rating once the map has rested on a fresh feed, with nothing over it (ScooterReviewPrompt).
+     * None where there is no store to ask, as in the build for F-Droid's catalog: the map waits for no moment to ask,
+     * and counts no ask.
      */
     reviewRequester: ReviewRequester? = ReviewRequester.none,
     /** Where the location card's Open Settings goes, and what its Try again asks first: the phone's location service. */

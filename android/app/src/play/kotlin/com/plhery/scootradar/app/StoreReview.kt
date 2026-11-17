@@ -10,7 +10,8 @@ import com.plhery.scootradar.ui.ReviewRequester
  * ask. Where [standIn] says so then (a debug build launched with ReviewPromptDue), Play's stand-in answers as Play
  * would, as Play shows its card only in a copy it installed. The fdroid flavor's StoreReview has none.
  */
-internal fun storeReviewRequester(activity: Activity, standIn: () -> Boolean): ReviewRequester? = PlayReviewRequester(activity) {
-    val context = activity.applicationContext
-    if (standIn()) FakeReviewManager(context) else ReviewManagerFactory.create(context)
-}
+internal fun storeReviewRequester(activity: Activity, standIn: () -> Boolean): ReviewRequester? =
+    PlayReviewRequester(activity) {
+        val context = activity.applicationContext
+        if (standIn()) FakeReviewManager(context) else ReviewManagerFactory.create(context)
+    }
