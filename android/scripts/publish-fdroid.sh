@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Puts a beta's APK, as Google Play signed it, in the F-Droid repository of the Android beta and on GitHub Releases.
+# Puts a beta's APK, the fdroid build signed with ScootRadar's upload key, in the F-Droid repository of the Android beta
+# and on GitHub Releases. Play's own copy doesn't go there: Play protects the copies it signs, and they refuse to open on
+# a phone without the Play Store.
 #
-#   scripts/publish-fdroid.sh <play-signed.apk> <commit> [notes.md]
+#   scripts/publish-fdroid.sh <fdroid.apk> <commit> [notes.md]
 #
-# <play-signed.apk> is Play Console's signed universal APK of the release (App bundle explorer, the version,
-# Downloads). <commit> is the commit the release was built from, which its GitHub release, android-<versionName>-<versionCode>,
+# <fdroid.apk> is `./gradlew :app:assembleFdroidRelease -Pscootradar.uploadKey=<upload.properties>` from a clean checkout
+# of <commit>, the commit the release was built from, which its GitHub release, android-<versionName>-<versionCode>,
 # names. SCOOTRADAR_FDROID_DIR names the repository's folder on this Mac, made by `fdroid init`, whose config.yml and key
 # stay outside every git tree. The repository keeps the newest beta alone; the older ones stay on GitHub Releases.
 set -euo pipefail
@@ -18,13 +20,22 @@ android=$(cd "$(dirname "$0")/.." && pwd)
 tools=$(find "$sdk/build-tools" -mindepth 1 -maxdepth 1 | sort -V | tail -1)
 app=com.plhery.scootradar
 github=plhery/ScootRadar
-# Google Play's app-signing certificate, which public/.well-known/assetlinks.json names too.
-play=2b7af80cccbc0d07badbdd7a74274b20a8b6ddbb93d1821e330f45d96f95db6e
+# The certificate of ScootRadar's upload key, which signs the builds sent to Google Play too; Play re-signs its own copies.
+upload=00931b285e987ca18242396561102042573963d278d75bd47e481af2a7ee65ed
+# The APK installed from Google Play, or from this repository or GitHub before 18 November 2026, is signed by Google Play,
+# so it has to go before this one goes on.
+uninstall="If your ScootRadar came from Google Play, or from GitHub or the ScootRadar beta F-Droid repository before 18 November 2026, uninstall it first: this copy is signed with a different key."
 
-# Play signs with its v3 key for every device, and adds keys of its own for the newest Android versions.
-certs=$("$tools/apksigner" verify --print-certs "$apk" 2>/dev/null)
-if ! grep -Eq "^(Signer #1|V3\.0 Signer:) certificate SHA-256 digest: $play$" <<<"$certs"; then
-  echo "$apk is not signed by Google Play" >&2
+certs=$("$tools/apksigner" verify --print-certs "$apk" 2>/dev/null) || certs=
+digests=$(sed -n 's/.*certificate SHA-256 digest: //p' <<<"$certs" | sort -u)
+if [ "$digests" != "$upload" ]; then
+  echo "$apk is not signed with ScootRadar's upload key alone" >&2
+  exit 1
+fi
+# The fdroid flavor carries no Google library: no Play In-App Review, Play Core, Play services or Firebase.
+manifest=$("$tools/aapt2" dump xmltree --file AndroidManifest.xml "$apk")
+if grep -Eq 'com\.google\.(firebase|android\.gms|mlkit|android\.play)' <<<"$manifest"; then
+  echo "$apk carries Google's libraries: publish the fdroid build" >&2
   exit 1
 fi
 badging=$("$tools/aapt2" dump badging "$apk")
@@ -78,8 +89,9 @@ else
     push -q "https://github.com/$github.git" "refs/tags/$tag"
   cp "$apk" "$site/scootradar-$name-$code.apk"
   {
-    printf 'ScootRadar for Android %s (%s), the beta: the same APK, signed by Google Play, as Google Play'"'"'s closed test, built from %s.\n\n' \
+    printf 'ScootRadar for Android %s (%s), the beta, built from %s without Google'"'"'s libraries and signed with ScootRadar'"'"'s own key.\n\n' \
       "$name" "$code" "$target"
+    printf '%s\n\n' "$uninstall"
     printf 'In F-Droid, add the repository %s\n' "$address"
     if [ -n "$notes" ]; then printf '\n'; cat "$notes"; fi
   } > "$site/notes.md"

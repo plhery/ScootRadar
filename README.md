@@ -134,7 +134,7 @@ or newer. Anyone can join it, in about a minute, with one Google account:
 You can leave the test at any time, on the same page of Google Play. The site
 offers the same steps under its *Android app* button.
 
-The same beta, signed by Google Play, is in [ScootRadar's F-Droid repository](https://raw.githubusercontent.com/plhery/ScootRadar/fdroid/repo?fingerprint=682DDF19FD7F9CD56882825B4ABCE3254ED5B528C6D1D95E06D54791B4F8CCA0)
+The same beta, built without Google's libraries and signed with ScootRadar's own key, is in [ScootRadar's F-Droid repository](https://raw.githubusercontent.com/plhery/ScootRadar/fdroid/repo?fingerprint=682DDF19FD7F9CD56882825B4ABCE3254ED5B528C6D1D95E06D54791B4F8CCA0)
 and on [GitHub Releases](https://github.com/plhery/ScootRadar/releases).
 To add the repository, open the F-Droid app, go to Settings → Repositories → +,
 and paste the whole address, `?fingerprint=…` included:
@@ -153,19 +153,24 @@ configuration, or connect a phone and run `./gradlew :app:installPlayDebug` in
 The `fdroid` flavor (`:app:assembleFdroidRelease`) is the build for F-Droid's
 catalog, without Google Play's card to rate the app.
 
-Once a release reaches Google Play's closed test, its APK as Google Play signs
-it goes to the F-Droid repository and GitHub Releases:
+Once a release reaches Google Play's closed test, the same commit's `fdroid`
+build, signed with the upload key, goes to the F-Droid repository and GitHub
+Releases. Play's own copies don't: Play protects the copies it signs, and they
+refuse to open on a phone without the Play Store.
 
 ```sh
-SCOOTRADAR_FDROID_DIR=<path> android/scripts/publish-fdroid.sh <play-signed.apk> <commit> [notes.md]
+./gradlew :app:assembleFdroidRelease -Pscootradar.uploadKey=<path>   # in android/
+SCOOTRADAR_FDROID_DIR=<path> android/scripts/publish-fdroid.sh android/app/build/outputs/apk/fdroid/release/app-fdroid-release.apk <commit> [notes.md]
 ```
 
-The APK is Play Console's signed universal APK (App bundle explorer, the
-version, Downloads). The script refuses an APK Google Play did not sign, signs
-the repository's index with the repository's key, which stays outside the
-repository in `SCOOTRADAR_FDROID_DIR` with fdroid's `config.yml`, puts the
-repository alone on the `fdroid` branch, which raw.githubusercontent.com
-serves, and attaches the APK to a pre-release. The app's entry in the
+The script refuses an APK that the upload key alone did not sign, or that
+carries Google's libraries, signs the repository's index with the repository's
+key, which stays outside the repository in `SCOOTRADAR_FDROID_DIR` with
+fdroid's `config.yml`, puts the repository alone on the `fdroid` branch, which
+raw.githubusercontent.com serves, and attaches the APK to a pre-release. Copies
+from Google Play, and the ones the repository and GitHub had before 18 November
+2026, are signed by Google Play, so they have to be uninstalled before this one
+goes on; the release notes and the repository's entry say so. The app's entry in the
 repository, with the anti-features F-Droid shows, is
 [`android/fdroid/com.plhery.scootradar.yml`](android/fdroid/com.plhery.scootradar.yml).
 

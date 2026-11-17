@@ -4,9 +4,6 @@
 NonFreeAdd:
   description: This app promotes non-free add-ons
   name: Non-Free Addons
-NonFreeDep:
-  description: This app depends on other non-free apps
-  name: Non-Free Dependencies
 NonFreeNet:
   description: This app promotes or depends entirely on a non-free network service
   name: Non-Free Network Services
