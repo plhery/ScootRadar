@@ -103,7 +103,7 @@ android {
 baselineProfile {
     // The profile is recorded on a device by hand (generatePlayReleaseBaselineProfile) and kept in
     // src/release/generated/baselineProfiles, so neither a plain build nor CI needs a device. Both stores' release
-    // builds ship it.
+    // builds ship it, and the benchmark build that :baselineprofile measures (androidComponents below).
     automaticGenerationDuringBuild = false
 }
 
@@ -250,11 +250,51 @@ androidComponents {
             allowed.set(if (variant.flavorName == "fdroid") emptySet() else AdvertisingIdCheck.PLAY_REVIEW)
             checked.set(layout.buildDirectory.file("advertising-id/${variant.name}.txt"))
         }
+        // The plugin gives a variant src/<variant>/generated/baselineProfiles alone, src/playRelease/… since the
+        // stores' flavors, so the recorded profile is given to the release and benchmark builds by name. From
+        // 9899d80f the release builds shipped the libraries' rules without the app's.
+        if (variant.buildType == "release" || variant.buildType == "benchmarkRelease") {
+            variant.sources.baselineProfiles?.addStaticSourceDirectory(BaselineProfileCheck.RECORDED)
+        }
+        if (variant.buildType == "release") {
+            tasks.register<BaselineProfileCheck>("check${name}BaselineProfile") {
+                variant.sources.baselineProfiles?.let { profiles.from(it.all) }
+                checked.set(layout.buildDirectory.file("baseline-profile/${variant.name}.txt"))
+            }
+        }
+    }
+}
+
+/**
+ * X-AD30: a store's release build ships the app's own Baseline Profile, the rules :baselineprofile recorded for the
+ * app's code, besides those its libraries bring. The unit tests run once the store's release build is checked.
+ */
+abstract class BaselineProfileCheck : DefaultTask() {
+    /** The variant's baseline profile sources. */
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val profiles: ConfigurableFileCollection
+
+    @get:OutputFile
+    abstract val checked: RegularFileProperty
+
+    @TaskAction
+    fun check() {
+        val rules = profiles.asFileTree.filter { it.name == "baseline-prof.txt" }.sumOf { file ->
+            file.useLines { lines -> lines.count { it.contains("L$APP/") } }
+        }
+        if (rules == 0) throw GradleException("The release build's Baseline Profile has no rule for $APP (X-AD30): see $RECORDED")
+        checked.get().asFile.writeText("$rules rules for $APP.\n")
+    }
+
+    companion object {
+        const val APP = "com/plhery/scootradar"
+        const val RECORDED = "src/release/generated/baselineProfiles"
     }
 }
 
 tasks.withType<Test>().configureEach {
     // test<Store>DebugUnitTest: once that store's debug and release builds are checked.
     val store = Regex("test(\\w+)DebugUnitTest").matchEntire(name)?.groupValues?.get(1) ?: return@configureEach
-    dependsOn("check${store}DebugAdvertisingId", "check${store}ReleaseAdvertisingId")
+    dependsOn("check${store}DebugAdvertisingId", "check${store}ReleaseAdvertisingId", "check${store}ReleaseBaselineProfile")
 }
