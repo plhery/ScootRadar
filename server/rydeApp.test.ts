@@ -77,14 +77,27 @@ it('enables only catalogued groups through an explicit production pilot and leav
   const {independentCollectableFeeds}=await import('../src/lib/scooterFeeds');
   const {REGIONAL_SCOOTER_SYSTEMS}=await import('../src/lib/regionalScooterSystems');
   const feeds=independentCollectableFeeds();
-  const wrapped=withRydeAppCollectors(feeds,api([]) as never,'*',undefined,REGIONAL_SCOOTER_SYSTEMS,true);
-  expect(wrapped).toHaveLength(feeds.length);
   const groups=REGIONAL_SCOOTER_SYSTEMS.filter(s=>s.rydeAppArea);
+  // A visitor has opened the first group's city within the week: its groups are swept every day, the others every three.
+  const opened=groups[0].rydeAppArea!;
+  const wrapped=withRydeAppCollectors(feeds,api([]) as never,'*',undefined,REGIONAL_SCOOTER_SYSTEMS,true,id=>id===opened);
+  expect(wrapped).toHaveLength(feeds.length);
+  const DAY=24*60*60_000,midnight=Date.now()-Date.now()%DAY;
+  const zones={NO:'Europe/Oslo',SE:'Europe/Stockholm',FI:'Europe/Helsinki',DE:'Europe/Berlin'} as Record<string,string>;
+  const hour=(at:number,timeZone:string)=>Number(new Intl.DateTimeFormat('en-GB',{timeZone,hour:'2-digit',hourCycle:'h23'}).format(at));
   expect(new Set(groups.map(s=>s.rydeAppArea)).size).toBe(64);
   for(const system of groups){
     const feed=wrapped.find(f=>f.id.endsWith(':'+system.id))!;
     expect(feed.paced).toBe(true);expect(feed.keepsIdleTurns).toBe(true);expect(feed.worker).toBeDefined();
-    expect(feed.idleIntervalMs).toBeGreaterThanOrEqual(2*60*60_000);
+    expect(feed.idleIntervalMs).toBe(3*DAY);
+    const daily=feed.idleSooner!();
+    expect(daily?.intervalMs).toBe(system.rydeAppArea===opened?DAY:undefined);
+    // Both turns fall between 08:00 and 21:00 in its town.
+    for(const at of [feed.idlePhase!*3*DAY,...daily?[daily.phase*DAY]:[]]){
+      const local=hour(midnight+at%DAY,zones[system.country]);
+      expect(local).toBeGreaterThanOrEqual(8);expect(local).toBeLessThan(21);
+    }
+    expect(feed.nightEnds).toBeDefined();
     expect(feed.lastSeenMaxAgeMs).toBe(3*60*60_000);
     expect(system.rydeMapTiles!.length).toBeLessThanOrEqual(2);
   }

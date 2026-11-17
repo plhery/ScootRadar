@@ -204,4 +204,38 @@ describe('watched Ryde native views', () => {
     now += 16 * 60_000;
     expect(views.read([feed], bounds, false).observations).toEqual([]);
   });
+
+  it('tells the feeds of a city a visitor opens, once for the week it counts as looked at, across a restart too', async () => {
+    const DAY = 24 * 60 * 60_000;
+    let now = 1_000_000;
+    const query = vi.fn(async (q: RydeQuery) => result(q, now));
+    const views = new RydeWatchedViews({ query }, [area], '*', [system], () => now);
+    const onLooked = views.onLooked = vi.fn();
+    // A request whose visitor is past their areas of the quarter hour reads nothing, and is no look.
+    views.read([feed], bounds, false);
+    expect(views.looked(area.id)).toBe(false);
+    expect(views.savedLooks()).toBeUndefined();
+    views.read([feed], bounds, true); await settle();
+    expect(onLooked).toHaveBeenCalledTimes(1);
+    expect([...onLooked.mock.calls[0][0]]).toContain(feed.id);
+    expect(views.metrics()).toContain('scootradar_ryde_looked_areas 1\n');
+    now += 6 * DAY;
+    views.read([feed], bounds, true); await settle();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(onLooked).toHaveBeenCalledTimes(1);
+    expect(views.savedLooks()).toEqual({ [area.id]: now });
+
+    const restarted = new RydeWatchedViews({ query }, [area], '*', [system], () => now);
+    restarted.restoreLooks({ ...views.savedLooks(), 'de-gone': now });
+    expect(restarted.savedLooks()).toEqual({ [area.id]: now });
+    now += 7 * DAY - 1;
+    expect(restarted.looked(area.id)).toBe(true);
+    now += 1;
+    expect(restarted.looked(area.id)).toBe(false);
+    expect(restarted.savedLooks()).toBeUndefined();
+    expect(restarted.metrics()).toContain('scootradar_ryde_looked_areas 0\n');
+    restarted.onLooked = onLooked;
+    restarted.read([feed], bounds, true); await settle();
+    expect(onLooked).toHaveBeenCalledTimes(2);
+  });
 });

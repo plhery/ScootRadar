@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined; idleSooner?: () => { intervalMs: number; phase: number } | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -241,6 +241,47 @@ it('collects an idle feed when the night it was collected in ends, then at its p
     expect(night.calls.map(call => call.at)).toEqual([0, 4 * HOUR + 100_000, 48 * HOUR]);
     expect(day.times('durham')).toEqual([0, 48 * 60]);
   } finally { night.scheduler.stop(); day.scheduler.stop(); }
+});
+
+it('collects an idle feed at its shorter interval while that holds, and at its own once it no longer does', async () => {
+  const HOUR = 60 * MINUTE;
+  // T0 is 08:00 UTC, 32 hours into a three-day interval: 08:00 comes every day, and every third from two days on.
+  let looked = true;
+  const { scheduler, calls } = schedule([{ id: 'oslo', host: 'ryde', idleIntervalMs: 72 * HOUR, idlePhase: 8 / 72,
+    idleSooner: () => looked ? { intervalMs: 24 * HOUR, phase: 8 / 24 } : undefined }], { phase: undefined });
+  try {
+    await vi.advanceTimersByTimeAsync(49 * HOUR);
+    looked = false;
+    await vi.advanceTimersByTimeAsync(96 * HOUR);
+    // The sweep set while it held is made, a day on; the next falls at the feed's own turn.
+    expect(calls.map(call => call.at / HOUR)).toEqual([0, 24, 48, 72, 120]);
+  } finally { scheduler.stop(); }
+});
+
+it('brings an idle feed forward once its shorter interval holds: now if its turn has gone by, or when the night there ends', async () => {
+  const HOUR = 60 * MINUTE;
+  let looked = false;
+  const feed = { host: 'ryde', idleIntervalMs: 72 * HOUR, idlePhase: 8 / 72, keepsIdleTurns: true,
+    idleSooner: () => looked ? { intervalMs: 24 * HOUR, phase: 8 / 24 } : undefined };
+  const { scheduler, calls } = schedule([{ ...feed, id: 'oslo' },
+    { ...feed, id: 'bergen', nightEnds: time => time === T0 + 30 * HOUR ? T0 + 32 * HOUR : undefined },
+    { ...feed, id: 'lund' }], { phase: undefined });
+  try {
+    await vi.advanceTimersByTimeAsync(30 * HOUR);
+    looked = true;
+    // Lund's city is not the one opened: it keeps its turn of the three days, which the shorter interval then replaces.
+    scheduler.hasten(['oslo', 'bergen', 'unknown']);
+    await vi.advanceTimersByTimeAsync(19 * HOUR);
+    const at = (id: string) => calls.filter(call => call.id === id).map(call => call.at / MINUTE);
+    expect(at('oslo')).toEqual([0, 30 * 60, 48 * 60]);
+    // Five minutes after the night, its phase's share of a quarter of an hour.
+    expect(at('bergen')).toEqual([0, 32 * 60 + 5, 48 * 60]);
+    expect(at('lund')).toEqual([0, 48 * 60]);
+    // A feed already due sooner is left as it is.
+    scheduler.hasten(['oslo']);
+    await vi.advanceTimersByTimeAsync(24 * HOUR);
+    expect(at('oslo')).toEqual([0, 30 * 60, 48 * 60, 72 * 60]);
+  } finally { scheduler.stop(); }
 });
 
 it('collects an idle feed again when the night ban it was collected in ends, sooner than its phase', async () => {

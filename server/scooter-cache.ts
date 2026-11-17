@@ -79,7 +79,8 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withRidemoviAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
   withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
-  (current: CollectableScooterFeed[]) => withRydeAppCollectors(current,rydeBridge,rydeConfig?.areas,undefined,REGIONAL_SCOOTER_SYSTEMS,rydeConfig?.productionPilot),
+  (current: CollectableScooterFeed[]) => withRydeAppCollectors(current,rydeBridge,rydeConfig?.areas,undefined,REGIONAL_SCOOTER_SYSTEMS,rydeConfig?.productionPilot,
+    area => rydeViews?.looked(area) ?? false),
   (current: CollectableScooterFeed[]) => withLimeStandby(current, id => records.get(id)),
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
@@ -169,6 +170,8 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason),
   // A group a visitor only panned past, whose watch lapsed before it started: its wait is no visitor's.
   onLapse: feed => metrics.recordRefreshLapsed(feed.id) });
+// A Ryde city a visitor opens after a week or more without one has its groups swept every day from now, not at their turn of three days.
+if (rydeViews) rydeViews.onLooked = feeds => scheduler.hasten(feeds);
 // The expiry of the feeds collected less often on purpose (Lime, BinBin, GCOO), from their definitions.
 let ownIdleExpiry = ownIdleExpiries([]);
 // How old a feed's last positions may stand faded, of the feeds that say (Ryde's).
@@ -253,6 +256,8 @@ try {
       rydeBridge.restoreSilence(silence);
       restoreWorkerSilence(RYDE_WORKER, silence);
     }
+    // The Ryde cities visitors looked at within the week go on being swept every day (rydeApp.ts).
+    if (saved.rydeLooks) rydeViews?.restoreLooks(saved.rydeLooks);
     console.log(JSON.stringify({ event: 'feed_states_restored', feeds: Object.keys(saved.feeds).length,
       ageSeconds: Math.round(saved.ageMs / 1000),
       discoveryAgeSeconds: discoveredAt ? Math.round((Date.now() - discoveredAt) / 1000) : null,
@@ -460,7 +465,7 @@ async function persist(final = false) {
   // which a restart builds again from what it holds.
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
-  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), sweeps = savedBirdSupplements(),
+  const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), looks = rydeViews?.savedLooks(now), sweeps = savedBirdSupplements(),
     ids = vehicleIds.saved(), plans = limePlans.saved();
   persisting = (async () => {
     try {
@@ -471,7 +476,7 @@ async function persist(final = false) {
       reportError('persist', error);
     }
     try {
-      await saveAtomically(feedStatesPath, temporaryDirectory, 'feed-states', path => writeFeedStates(path, states, now, discovered, silences));
+      await saveAtomically(feedStatesPath, temporaryDirectory, 'feed-states', path => writeFeedStates(path, states, now, discovered, silences, looks));
     } catch (error) {
       console.error('Feed state persistence failed', error);
       reportError('persist:feed-states', error);

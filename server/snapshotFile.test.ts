@@ -134,6 +134,15 @@ describe('the saved feed states', () => {
     expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
   });
 
+  it('keep when a visitor last looked at each Ryde city however old they are, and leave a time that cannot be one', async () => {
+    const path = join(directory, 'feed-states.json');
+    const lookedAt = now - 26 * 3600_000;
+    await writeFeedStates(path, states, now - 25 * 3600_000, undefined, undefined, { 'no-oslo': lookedAt });
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 25 * 3600_000, rydeLooks: { 'no-oslo': lookedAt }, feeds: {} });
+    await writeFile(path, JSON.stringify({ version: 1, savedAt: now, rydeLooks: { 'no-oslo': now + 1, 'se-lund': 'yesterday' }, feeds: states }));
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
+  });
+
   it('are refused when missing, cut short or not JSON, left when of another version, and keep only entries of their shape', async () => {
     const path = join(directory, 'feed-states.json');
     await expect(readFeedStates(path, now)).rejects.toMatchObject({ code: 'ENOENT' });

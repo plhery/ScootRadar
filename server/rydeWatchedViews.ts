@@ -2,7 +2,7 @@ import { boundsCenter, boundsContainPoint, haversineM, polygonContainsPoint } fr
 import { regionalSource, serviceAreas, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { SLOW_COLLECTION_MS, VEHICLE_MAX_AGE_MS, viewReadsOf, type FeedSnapshot, type ListedArea } from '../src/lib/scooterSnapshots';
 import type { MapBounds } from '../src/lib/types';
-import { rydeVehicles, type RydeArea } from './rydeApp';
+import { RYDE_LOOKED_MS, rydeVehicles, type RydeArea } from './rydeApp';
 import type { RydeBroker, RydeQuery, RydeResult } from './rydeBridge';
 
 const REFRESH_MS = 60_000;
@@ -32,6 +32,10 @@ export class RydeWatchedViews {
   private readonly feedsOfArea = new Map<string, Set<string>>();
   private readonly publicBounds = new Map<string, MapBounds[]>();
   private readonly counts = { requested: 0, completed: 0, failed: 0, cancelled: 0 };
+  // When a visitor's read of each area was last asked for: its groups are swept every day for a week after (rydeApp.ts).
+  private readonly lookedAt = new Map<string, number>();
+  /** Told the feeds of an area a visitor's read is asked for, after a week or more without one. */
+  onLooked?: (feeds: ReadonlySet<string>) => void;
   constructor(private readonly broker: Pick<RydeBroker, 'query'> & Partial<Pick<RydeBroker, 'silentSince' | 'cancelQueued'>>, areas: readonly RydeArea[], enabled: string,
     systems: readonly RegionalScooterSystem[], private readonly clock = Date.now) {
     const selected = new Set(enabled.split(','));
@@ -53,6 +57,16 @@ export class RydeWatchedViews {
     }
   }
   handles(feed: { id: string }): boolean { return this.areaOfFeed.has(feed.id); }
+  /** A visitor's read of the area was asked for within the week. */
+  looked(areaId: string, now = this.clock()): boolean { return now - (this.lookedAt.get(areaId) ?? -Infinity) < RYDE_LOOKED_MS; }
+  /** The areas looked at and when, for a restart to go on with (restoreLooks). */
+  savedLooks(now = this.clock()): Record<string, number> | undefined {
+    const looks = [...this.lookedAt].filter(([id]) => this.looked(id, now));
+    return looks.length ? Object.fromEntries(looks) : undefined;
+  }
+  restoreLooks(looks: Readonly<Record<string, number>>): void {
+    for (const [id, at] of Object.entries(looks)) if (this.feedsOfArea.has(id)) this.lookedAt.set(id, at);
+  }
 
   read(feeds: readonly FeedSnapshot[], bounds: MapBounds, demand: boolean, now = this.clock(), viewer?: { id: string; sequence: number }): WatchedRydeViews {
     for (const [key, entry] of this.entries) {
@@ -127,6 +141,9 @@ export class RydeWatchedViews {
         const current = entry;
         current.pending = true;
         this.counts.requested++;
+        const looked = this.looked(area.id, now);
+        this.lookedAt.set(area.id, now);
+        if (!looked) this.onLooked?.(this.feedsOfArea.get(area.id)!);
         void this.broker.query(query, true, current).then(result => {
           current.result = result; current.failed = false; this.counts.completed++;
         }, () => { if (current.cancelled) return; current.failed = true; current.retryAt = this.clock() + REFRESH_MS; this.counts.failed++; })
@@ -169,6 +186,7 @@ export class RydeWatchedViews {
   metrics(): string {
     return Object.entries(this.counts).map(([outcome, count]) =>
       `scootradar_ryde_watched_views_total{outcome="${outcome}"} ${count}\n`).join('') +
-      `scootradar_ryde_watched_views_pending ${[...this.entries.values()].filter(entry => entry.pending).length}\n`;
+      `scootradar_ryde_watched_views_pending ${[...this.entries.values()].filter(entry => entry.pending).length}\n` +
+      `scootradar_ryde_looked_areas ${[...this.lookedAt.keys()].filter(id => this.looked(id)).length}\n`;
   }
 }

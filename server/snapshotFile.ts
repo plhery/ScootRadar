@@ -102,11 +102,12 @@ function isFeedStateEntry(value: unknown): value is FeedStateEntry {
 
 /**
  * Writes the feed states, saved at `savedAt`, to the path, with when the catalog was last discovered
- * if it was, and since when each worker reported silent has been (RydeBroker.restoreSilence).
+ * if it was, since when each worker reported silent has been (RydeBroker.restoreSilence), and when a
+ * visitor last looked at each Ryde city (RydeWatchedViews.restoreLooks).
  */
 export async function writeFeedStates(path: string, feeds: Readonly<Record<string, FeedStateEntry>>, savedAt: number,
-  discoveredAt?: number, workerSilences?: Readonly<Record<string, number>>): Promise<void> {
-  await writeFile(path, `${JSON.stringify({ version: 1, savedAt, discoveredAt, workerSilences, feeds })}\n`);
+  discoveredAt?: number, workerSilences?: Readonly<Record<string, number>>, rydeLooks?: Readonly<Record<string, number>>): Promise<void> {
+  await writeFile(path, `${JSON.stringify({ version: 1, savedAt, discoveredAt, workerSilences, rydeLooks, feeds })}\n`);
 }
 
 /**
@@ -116,21 +117,23 @@ export async function writeFeedStates(path: string, feeds: Readonly<Record<strin
  * however old the file is: a restart doesn't make it any more recent, and the "feed discovery
  * stale" alert goes on counting from it, where it counted from the restart while sharedmobility.ch
  * was down on 31 October 2026, and each deploy put it out. So are the workers' silences: a worker
- * cannot ask for jobs while the cache is down.
+ * cannot ask for jobs while the cache is down. And the Ryde cities looked at, which count a week.
  */
 export async function readFeedStates(path: string, now: number): Promise<{ ageMs: number; discoveredAt?: number;
-  workerSilences?: Record<string, number>; feeds: Record<string, FeedStateEntry> } | null> {
+  workerSilences?: Record<string, number>; rydeLooks?: Record<string, number>; feeds: Record<string, FeedStateEntry> } | null> {
   const saved = JSON.parse(await readFile(path, 'utf8')) as
-    { version?: unknown; savedAt?: unknown; discoveredAt?: unknown; workerSilences?: unknown; feeds?: unknown } | null;
+    { version?: unknown; savedAt?: unknown; discoveredAt?: unknown; workerSilences?: unknown; rydeLooks?: unknown; feeds?: unknown } | null;
   if (saved?.version !== 1 || typeof saved.savedAt !== 'number' || !saved.feeds || typeof saved.feeds !== 'object') return null;
   const ageMs = now - saved.savedAt;
   const savedAt = saved.savedAt;
   const past = (value: unknown): value is number => typeof value === 'number' && value > 0 && value <= savedAt;
   const discoveredAt = past(saved.discoveredAt) ? saved.discoveredAt : undefined;
-  const silences = saved.workerSilences && typeof saved.workerSilences === 'object' && !Array.isArray(saved.workerSilences)
-    ? Object.entries(saved.workerSilences).filter((entry): entry is [string, number] => past(entry[1])) : [];
+  const times = (value: unknown) => value && typeof value === 'object' && !Array.isArray(value)
+    ? Object.entries(value).filter((entry): entry is [string, number] => past(entry[1])) : [];
+  const silences = times(saved.workerSilences), looks = times(saved.rydeLooks);
   return { ageMs, ...(discoveredAt ? { discoveredAt } : {}),
-    ...(silences.length ? { workerSilences: Object.fromEntries(silences) } : {}), feeds: ageMs < FEED_STATES_MAX_AGE_MS
+    ...(silences.length ? { workerSilences: Object.fromEntries(silences) } : {}),
+    ...(looks.length ? { rydeLooks: Object.fromEntries(looks) } : {}), feeds: ageMs < FEED_STATES_MAX_AGE_MS
     ? Object.fromEntries(Object.entries(saved.feeds).filter(([, entry]) => isFeedStateEntry(entry))) : {} };
 }
 

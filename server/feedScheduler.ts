@@ -43,6 +43,13 @@ export interface ScheduledFeed {
    * the night ends: the next is then, not a whole idle interval on.
    */
   nightEnds?: (time: number) => number | undefined;
+  /**
+   * A shorter idle interval while it holds, and where in it the feed is collected, in [0, 1): a Ryde group
+   * is swept every day, not every three, while someone has opened its city within the week (rydeApp.ts).
+   * Only when its next idle sweep falls changes (hasten): its scooters expire by idleIntervalMs still, and
+   * it is late by it.
+   */
+  idleSooner?: () => { intervalMs: number; phase: number } | undefined;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -316,10 +323,33 @@ export class FeedScheduler<T extends ScheduledFeed> {
 
   private activeInterval(feed: T): number { return feed.activeIntervalMs ?? this.options.activeIntervalMs; }
 
+  /**
+   * Sets the idle feeds' next sweeps again, once their idleSooner starts to hold: each is due at its turn of
+   * the shorter interval, now if that has gone by, or at the end of its town's night if it is night there.
+   * Never later than it was due, and not a feed being collected, asked for or retried.
+   */
+  hasten(ids: Iterable<string>, now = Date.now()): void {
+    let changed = false;
+    for (const id of ids) {
+      const feed = this.byId.get(id), started = this.startedAt.get(id);
+      if (!feed || started === undefined || this.running.has(id) || this.woken.has(id) || this.failures.has(id) ||
+        this.mode(feed, now) !== 'idle') continue;
+      const turn = this.nextDue(feed, started, now, false), night = feed.nightEnds?.(now);
+      const due = turn <= now && night !== undefined ? night + this.share(feed) * NIGHT_END_SPREAD_MS : turn;
+      if (due < (this.due.get(id) ?? Infinity)) { this.due.set(id, due); changed = true; }
+    }
+    if (changed) this.pump();
+  }
+
+  /** Where in its idle interval the feed is collected, in [0, 1). */
+  private share(feed: T): number {
+    return feed.idleSooner?.()?.phase ?? (this.options.phase ?? (candidate => candidate.idlePhase ?? idPhase(candidate.id)))(feed);
+  }
+
   private nextDue(feed: T, startedAt: number, finishedAt: number, failed: boolean): number {
     const { retryMs } = this.options;
     const activeIntervalMs = this.activeInterval(feed);
-    const idleIntervalMs = feed.idleIntervalMs ?? this.options.idleIntervalMs;
+    const idleIntervalMs = feed.idleSooner?.()?.intervalMs ?? feed.idleIntervalMs ?? this.options.idleIntervalMs;
     if (this.mode(feed, finishedAt) !== 'idle') return startedAt + activeIntervalMs;
     if (failed) {
       const failures = this.failures.get(feed.id) ?? 1;
@@ -327,7 +357,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     }
     // The next time of the feed's phase at least an active interval away, or sooner the end of the night
     // or the night ban it was collected in, when its scooters show again.
-    const share = (this.options.phase ?? (candidate => candidate.idlePhase ?? idPhase(candidate.id)))(feed);
+    const share = this.share(feed);
     const phase = share * idleIntervalMs;
     const earliest = startedAt + activeIntervalMs;
     const next = earliest + ((((phase - earliest) % idleIntervalMs) + idleIntervalMs) % idleIntervalMs);

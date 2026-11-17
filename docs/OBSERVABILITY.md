@@ -271,7 +271,8 @@ looks:
   are every three days, so that sweeping all its markets takes at most half of the
   requests a single account may send, even with several configured production
   accounts, in each town's daytime, and at 08:00 after a sweep by night
-  ([guide](lime-app-map.md#cache-behaviour)). Any idle feed collected in a night ban is
+  ([guide](lime-app-map.md#cache-behaviour)). Ryde's groups are too, and every day in a
+  city a visitor opened within the week ([guide](ryde-bridge.md)). Any idle feed collected in a night ban is
   collected again within a quarter of an hour of its end (`feedCurfewEnds`). Each
   expires 10 minutes after its own interval and waits up to half of it between
   retries; Bird's areas, swept once a day, two hours after it, as their sweeps queue on
@@ -319,7 +320,7 @@ A slow feed's sweep can take minutes, so while one runs for a request:
   and keep asking every 3 seconds while they stand. They stand up to 3 hours old, or
   until the feed is due again while nobody looks for one collected less often: a day
   and two hours for Bird's areas, Spin's among them, three days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
-  `server/scooter-cache.ts`). Ryde's groups, due again after many hours, say 3 hours
+  `server/scooter-cache.ts`). Ryde's groups, due again after a day or three, say 3 hours
   in their definitions: a read of the view clears only its circle. The dock gives the day of the week of a time on
   another day. A feed quick to collect has none: it is waited for instead.
 

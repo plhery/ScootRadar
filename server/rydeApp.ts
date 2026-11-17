@@ -6,7 +6,7 @@ import { boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { LAST_SEEN_MAX_AGE_MS } from '../src/lib/dataFreshness';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
+import { daytimeSweeps } from './appMapCadence';
 import { ringsMeetBounds } from './nearestSweep';
 import { currentCollection, takeNearest } from './sweeps';
 import { RydeBroker, type RydeObservation } from './rydeBridge';
@@ -115,6 +115,20 @@ export async function collectRydeArea(area: RydeArea, api: Pick<RydeBroker,'quer
   // The oldest retained observation sets the feed's age. Partial views never delete an old snapshot.
   return {vehicles:rydeVehicles(scan),observedAt:scan.observedAt,stale:false};
 }
+/**
+ * How often a group is swept while nobody looks at it, in its town's daytime (daytimeSweeps): every three
+ * days, and every day in a city a visitor has opened within the week (RydeWatchedViews.looked). A visitor's
+ * view is read on its own, within a minute, whatever the sweeps (rydeWatchedViews.ts): they keep the city
+ * totals and the groups a wide view shows. Until 18 November 2026 every group was swept about every 16 hours
+ * (936 minutes), day and night, some 300 reads an hour of which visitors' were 3%. A sweep by night counted
+ * what a town's night ban hid and was made again at its end.
+ */
+export const RYDE_IDLE_INTERVAL_MS = 72 * 60 * 60_000;
+export const RYDE_LOOKED_INTERVAL_MS = 24 * 60 * 60_000;
+/** How long after a visitor's read of a city its groups are swept every day. */
+export const RYDE_LOOKED_MS = 7 * 24 * 60 * 60_000;
+const RYDE_TIME_ZONES: Record<RydeArea['country'], string> = { NO: 'Europe/Oslo', SE: 'Europe/Stockholm', FI: 'Europe/Helsinki', DE: 'Europe/Berlin' };
+
 export interface RydeRuntimeConfig { token: string; areas: string; productionPilot: boolean }
 export function loadRydeRuntimeConfig(path=process.env.RYDE_BRIDGE_CONFIG_PATH ?? join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'),'ryde-bridge.json')): RydeRuntimeConfig | undefined {
   if(process.env.RYDE_BRIDGE_TOKEN)return {token:process.env.RYDE_BRIDGE_TOKEN,areas:process.env.RYDE_BRIDGE_AREAS ?? '',productionPilot:false};
@@ -128,7 +142,8 @@ export function loadRydeRuntimeConfig(path=process.env.RYDE_BRIDGE_CONFIG_PATH ?
 
 export function withRydeAppCollectors(feeds: CollectableScooterFeed[], broker: RydeBroker | undefined,
   enabled = process.env.RYDE_BRIDGE_AREAS ?? '', areas = catalog.areas as unknown as RydeArea[],
-  systems: readonly RegionalScooterSystem[] = [], productionPilot=false): CollectableScooterFeed[] {
+  systems: readonly RegionalScooterSystem[] = [], productionPilot=false,
+  looked: (areaId: string) => boolean = () => false): CollectableScooterFeed[] {
   if(!broker || !enabled)return feeds;
   const selected=new Set(enabled.split(',')),byArea=new Map(areas.map(a=>[a.id,a]));
   if(!selected.has('*'))for(const id of selected)if(!byArea.has(id))throw new Error(`Unknown reviewed Ryde area: ${id}`);
@@ -136,16 +151,16 @@ export function withRydeAppCollectors(feeds: CollectableScooterFeed[], broker: R
     if(!area.geometryEvidence || (!productionPilot && (!area.coverageValidated || !area.coverageEvidence || !area.uptimeValidated || !area.uptimeEvidence)))throw new Error('Unreviewed Ryde area enabled');
   }
   const regions=new Map(systems.filter(s=>s.rydeAppArea).map(s=>[`${({NO:'norway',SE:'sweden',FI:'finland',DE:'germany'} as Record<string,string>)[s.country]}:${s.id}`,s]));
-  // The account queue reserves idle turns. Its actual cost determines the idle cadence.
-  const views=systems.reduce((n,s)=>n+(s.rydeMapTiles?.length ?? 0),0);
-  const idleIntervalMs=Math.max(APP_MAP_IDLE_INTERVAL_MS,Math.ceil(views*6_000*2/60_000)*60_000);
   return feeds.map(feed=>{
     const system=regions.get(feed.id);if(!system || (!selected.has('*') && !selected.has(system.rydeAppArea!)))return feed;
     const area=byArea.get(system.rydeAppArea!);if(!area)throw new Error('Missing Ryde market geometry');
     const excludeBounds=systems.filter(s=>s.country===area.country && s.provider==='ryde' && !s.rydeAppArea).flatMap(s=>s.areas?.map(a=>a.bounds) ?? [s.bounds]);
     // Its old positions go after 3 hours, not when a scan is due: a read of the view lists only its
     // circle, and in a wide view of Augsburg on 7 November 2026 82 scooters stood faded 13 hours old.
-    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs,watchMs:2*60_000,worker:broker,lastSeenMaxAgeMs:LAST_SEEN_MAX_AGE_MS,
+    const timeZone=RYDE_TIME_ZONES[area.country];
+    const daily={intervalMs:RYDE_LOOKED_INTERVAL_MS,phase:daytimeSweeps(feed.id,timeZone,RYDE_LOOKED_INTERVAL_MS).idlePhase};
+    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs:RYDE_IDLE_INTERVAL_MS,...daytimeSweeps(feed.id,timeZone,RYDE_IDLE_INTERVAL_MS),
+      idleSooner:()=>looked(area.id)?daily:undefined,watchMs:2*60_000,worker:broker,lastSeenMaxAgeMs:LAST_SEEN_MAX_AGE_MS,
       collect:()=>collectRydeArea({...area,tiles:system.rydeMapTiles,excludeBounds},broker,productionPilot)};
   });
 }

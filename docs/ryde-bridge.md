@@ -19,10 +19,27 @@ the same scooters. No riding zones or parking are inferred from these envelopes.
 The 1 km grids (2.5 km for Sola's envelope) contain 4,679 initial views in
 2,356 independently refreshed groups. At five seconds between job starts, plus
 native launch overhead, a full round needs roughly eight hours before adaptive
-subdivision. The initial idle interval is about 16 hours, originally sized for half
-the shared account turns. Under sustained visible demand, routine work now gets
+subdivision. Under sustained visible demand, routine work gets
 one in four turns and full rounds can take longer. Each background group has at most two initial
-views. The visible map uses a separate focused read, shared between viewers and
+views.
+
+Since 18 November 2026 a group nobody looks at is swept in its town's daytime, between
+08:00 and 21:00 there (`daytimeSweeps`): every three days (`RYDE_IDLE_INTERVAL_MS` in
+`server/rydeApp.ts`), and every day (`RYDE_LOOKED_INTERVAL_MS`) in a city a visitor's
+read was asked for within the last seven days (`RYDE_LOOKED_MS`,
+`RydeWatchedViews.looked`). The sweeps keep the city totals and the groups a wide view
+shows; what a visitor looks at is read on its own (below), so a city swept every
+three days is as fresh as any once someone opens it. When a city is opened after a
+week or more without a read, its groups are brought forward (`FeedScheduler.hasten`):
+those whose turn of the day has gone by are swept at once, or from 08:00 if it is
+night there, the others at their turn. A city nobody opens for a week has one more
+daily sweep and goes back to three days. When each city was last looked at is saved
+with the feed states (`rydeLooks` in `feed-states.json`), so a deploy keeps it, and
+`scootradar_ryde_looked_areas` counts the cities swept daily. Every group's scooters
+expire three days and 10 minutes after its last sweep, in either case. Before, every
+group was swept about every 16 hours (936 minutes, sized for half the shared account
+turns), day and night: some 300 reads an hour, of which visitors' were about 3%, and
+a sweep by night counted what a night ban hid and was made again at its end. The visible map uses a separate focused read, shared between viewers and
 refreshed at most once a minute, so switching cities does not wait for a group's
 adaptive scan to finish.
 The queue coalesces identical work and serves up to three urgent reads before a
@@ -135,6 +152,8 @@ request cost and city-by-city completeness remain production observations.
   outcome and is not counted as a provider failure.
   `scootradar_ryde_watched_views_total` separates requested, completed and failed reads;
   `scootradar_ryde_watched_views_pending` reports current pending reads.
+  `scootradar_ryde_looked_areas` is how many cities had a visitor's read asked for
+  within the week, whose groups are swept every day.
 - `server/rydeApp.ts`: bounded overlapping scans, adaptive subdivision, retained
   parent observations, stable pseudonyms and a separate coverage-validation gate.
   An unfinished scan fails collection, preserving the old snapshot. The private production pilot explicitly bypasses preproduction coverage/uptime gates.
