@@ -464,12 +464,54 @@ for scooters and a day for zones (`src/lib/scooterProxy.ts`), or less where the
 cache's `X-Scooter-Keep-Seconds` says when Bird's, Spin's or Bolt's data in it
 turns fifteen minutes old (0: not kept; the browser never sees it): `meta.stale` is
 true, which the apps show as delayed, and `X-Scooter-Last-Good-Age` gives its
-age in seconds. Without one, the map shows its "temporarily unavailable"
-banner. Either way the Worker logs `scooter_origin_failure` with the origin
-status or error name, and `lastGoodAge` when it gave a last good answer; read
-it in the Worker's Logs in the Cloudflare dashboard. The cache's Prometheus metrics, Grafana
+age in seconds. An answer of scooters is also kept for its area (the zoom and
+the zoom's tile of its centre, the last one asked there), and given to a view
+of the same zoom and filters that it holds whole, from its tile or the eight
+around it, if it was not cut short (`meta.truncated`) and the cache would have
+answered both at that zoom; its age and limit are kept as for its own request.
+Without one, the map shows its "temporarily unavailable" banner. Either way the
+Worker logs `scooter_origin_failure` with the origin status or error name,
+`down` when the server did not answer, `lastGoodAge` when it gave a last good
+answer and `lastGoodArea` when that was a neighbour's; read it in the Worker's
+Logs in the Cloudflare dashboard. The cache's Prometheus metrics, Grafana
 dashboard and alerts, and Sentry reports are described in
 [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
+
+### Maintenance
+
+Pages, scripts and the zones the apps download come from the Worker, so they
+stay up while Netcup reboots. When the server does not answer (the request
+fails or times out, or 502, 503, 504, 520–527 or 530: the tunnel gone, Traefik
+with no container behind it, or the cache warming up after a start; not the
+cache's own 503 for feeds that all failed), the Worker's stale answers and 503s
+carry `X-Scooter-Origin: down` and `Retry-After` (30 seconds, up to two minutes
+before an announced return), and the 503's JSON a `maintenance` object
+`{"planned", "mode", "since", "backAround"}`. The web map and the apps then say
+in a calm notice that scooter data is paused for maintenance, ask again quietly
+when `Retry-After` says, and drop the notice once data comes back.
+
+Planned maintenance is announced in the account's `MAINTENANCE` KV namespace,
+which the edge guards of the other sites share: a JSON value under `all` (the
+server) or `scootradar`, such as
+`{"since":"2026-11-18T22:00:00Z","backAround":"2026-11-18T22:20:00Z"}`. With a
+`backAround`, the Worker sends it as `X-Scooter-Back-Around` and the notice
+says "back around" that time. `"mode":"hard"` stops the Worker asking the
+server from `since` on, giving what it keeps instead; `{"on":false}` ends it,
+and one left on ends three hours after `backAround` (or at `ends`). Each
+isolate reads the namespace at most every 30 seconds, and only when the server
+is down or to check for `hard`. `GET /maintenance.json` answers
+`{"planned", "mode", "since", "backAround"}` from the Worker alone (no-store,
+any origin). Without the binding, nothing is announced and the rest works.
+
+To turn announcements on, bind the namespace in `wrangler.jsonc`
+(`"kv_namespaces": [{ "binding": "MAINTENANCE", "id": "<namespace id>" }]`,
+the id from `npx wrangler kv namespace list`) and deploy. Then, for example:
+
+```bash
+npx wrangler kv key put --remote --namespace-id <namespace id> all \
+  '{"since":"2026-11-18T22:00:00Z","backAround":"2026-11-18T22:20:00Z"}'
+npx wrangler kv key put --remote --namespace-id <namespace id> all '{"on":false}'
+```
 
 ## Public launch checklist
 

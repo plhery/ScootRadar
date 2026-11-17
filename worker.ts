@@ -11,6 +11,7 @@ import { documentContentSecurityPolicy } from './src/lib/contentSecurityPolicy';
 import { landingLanguageRedirect } from './src/lib/landingAddress';
 import { guessLanguage } from './src/lib/languageGuess';
 import { legacyHostRedirect } from './src/lib/legacyHost';
+import { maintenanceJson } from './src/lib/maintenance';
 import { movedMapRedirect } from './src/lib/mapAddress';
 import { pageRequest } from './src/lib/pageRequest';
 import { proxyScooterSnapshot } from './src/lib/scooterProxy';
@@ -112,6 +113,8 @@ const scootRadarWorker = {
     }
 
     const { pathname } = new URL(request.url);
+    // Whether maintenance was announced, and until when: answered here, whatever the server's state (src/lib/maintenance.ts).
+    if (pathname === '/maintenance.json') return maintenanceJson(env);
     if ((pathname === '/api/scooters' || pathname === '/api/zones') && env.SCOOTER_SNAPSHOT_API_URL) {
       return proxyScooterSnapshot(request, env, { cache: await caches.open('scooter-last-good'), waitUntil: promise => ctx.waitUntil(promise) });
     }
