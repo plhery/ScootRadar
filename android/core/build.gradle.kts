@@ -17,7 +17,9 @@ val repo: File = rootDir.parentFile
 // The API contract's models and the provider catalog come from the scripts that write the website's and
 // the iPhone app's (scripts/generate-api-contract.mjs, generate-provider-catalog.mjs), run with node into
 // the build directory: never stale, and never checked in for the website's checks to fail on. The
-// catalog's script needs the repository's npm packages (`npm ci` at the top of the repository).
+// catalog's script needs the repository's npm packages (`npm ci` at the top of the repository), or, for a
+// build without them such as F-Droid's, tldts alone (node android/fdroid/install-node-packages.mjs): it then
+// reads scripts/lime-grid.generated.mjs, which a build with them checks is up to date.
 // -Pscootradar.node=/path/to/node when node is not on the PATH Gradle sees.
 val node = providers.gradleProperty("scootradar.node").orElse("node")
 val apiContractKotlin = layout.buildDirectory.dir("generated/apiContract/kotlin")
@@ -39,6 +41,7 @@ val generateCatalog by tasks.registering(Exec::class) {
         repo.resolve("scripts/rental-links.mjs"),
         repo.resolve("scripts/zone-downloads.mjs"),
         repo.resolve("src/lib/limeGrid.ts"),
+        repo.resolve("scripts/lime-grid.generated.mjs"),
         repo.resolve("src/generated/timeZones.ts"),
     ).withPropertyName("sources")
     outputs.dir(catalogSources)

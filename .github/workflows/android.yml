@@ -10,7 +10,9 @@ on:
       - 'ios/ScootRadar/*.lproj/**'
       - 'scripts/generate-*.mjs'
       - 'scripts/country-catalog.mjs'
+      - 'scripts/rental-links.mjs'
       - 'scripts/zone-downloads.mjs'
+      - 'scripts/lime-grid.generated.mjs'
       - 'src/lib/limeGrid.ts'
       - 'src/lib/clustering.ts'
       - 'src/generated/countries.ts'
@@ -30,7 +32,9 @@ on:
       - 'ios/ScootRadar/*.lproj/**'
       - 'scripts/generate-*.mjs'
       - 'scripts/country-catalog.mjs'
+      - 'scripts/rental-links.mjs'
       - 'scripts/zone-downloads.mjs'
+      - 'scripts/lime-grid.generated.mjs'
       - 'src/lib/limeGrid.ts'
       - 'src/lib/clustering.ts'
       - 'src/generated/countries.ts'
@@ -49,6 +53,37 @@ permissions:
   contents: read
 
 jobs:
+  # F-Droid builds the fdroid flavor with Debian's node 20 and tldts alone of the repository's npm packages
+  # (android/fdroid/install-node-packages.mjs, and the build recipe in fdroiddata): the generators then write
+  # what they write with all of them and node 26, byte for byte.
+  fdroid-generators:
+    name: F-Droid's generators
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20
+
+      - run: |
+          node android/fdroid/install-node-packages.mjs
+          node scripts/generate-api-contract.mjs --kotlin="$RUNNER_TEMP/fdroid/api"
+          node scripts/generate-provider-catalog.mjs --android="$RUNNER_TEMP/fdroid/catalog"
+          rm -rf node_modules
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 26
+          cache: npm
+
+      - run: |
+          npm ci
+          node scripts/generate-api-contract.mjs --kotlin="$RUNNER_TEMP/all/api"
+          node scripts/generate-provider-catalog.mjs --android="$RUNNER_TEMP/all/catalog"
+          diff -r "$RUNNER_TEMP/fdroid" "$RUNNER_TEMP/all"
+
   android:
     name: Android app
     runs-on: ubuntu-latest
