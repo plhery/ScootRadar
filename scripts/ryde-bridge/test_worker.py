@@ -202,6 +202,41 @@ class WorkerTests(unittest.TestCase):
                 relaunch(root)
             self.assertEqual(opened,[str(unpacked),str(root/'Applications/Ryde.app')])
 
+    def relaunch_root(self,name):
+        root=Path(name);(root/'producer').mkdir();unpacked=root/'X/Wrapper/Ryde.app';unpacked.mkdir(parents=True)
+        save(root/'config.json',{'appBinary':str(unpacked/'Ryde')})
+        save(root/'producer/proxy-ready.json',{'pid':os.getpid()});save(root/'transport-status.json',{'proxyPid':os.getpid()})
+        return root
+
+    def test_a_launch_job_runningboard_left_behind_is_removed_and_ryde_opened_again(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=self.relaunch_root(name);calls=[]
+            listed=('PID\tStatus\tLabel\n-\t0\tapplication.com.ryde.NewRyde.16394764.16394858\n'
+                '812\t0\tapplication.com.ryde.NewRydeWidget.1.2\n-\t0\tapplication.com.example.Other.1.2\n')
+            def run(command,**kwargs):
+                calls.append(command[1:])
+                if command[1]=='open' and not any(c[0]=='remove' for c in calls):
+                    raise subprocess.CalledProcessError(1,command)
+                return subprocess.CompletedProcess(command,0,stdout=listed if command[1]=='list' else '{}')
+            with patch('worker.subprocess.run',side_effect=run),patch('worker.egress.begin_cycle'):
+                relaunch(root)
+            self.assertEqual([c for c in calls if c[0]!='status'],[['quit'],['open',str(root/'X/Wrapper/Ryde.app')],['list'],
+                ['remove','application.com.ryde.NewRyde.16394764.16394858'],['open',str(root/'X/Wrapper/Ryde.app')]])
+            phases=[json.loads(line)['phase'] for line in (root/'producer/lifecycle.jsonl').read_text().splitlines()]
+            self.assertEqual(phases,['before-quit','after-quit','stale-launch-job-removed','after-open'])
+
+    def test_a_failed_open_with_no_launch_job_left_behind_is_still_a_failure(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=self.relaunch_root(name);calls=[]
+            def run(command,**kwargs):
+                calls.append(command[1:])
+                if command[1]=='open':raise subprocess.CalledProcessError(1,command)
+                listed='PID\tStatus\tLabel\n4321\t0\tapplication.com.ryde.NewRyde.16394764.16394858\n'
+                return subprocess.CompletedProcess(command,0,stdout=listed if command[1]=='list' else '{}')
+            with patch('worker.subprocess.run',side_effect=run),patch('worker.egress.begin_cycle'):
+                with self.assertRaises(subprocess.CalledProcessError):relaunch(root)
+            self.assertEqual([c[0] for c in calls if c[0]!='status'],['quit','open','list'])
+
     def test_expiring_broker_job_does_not_launch_or_activate_ryde(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,job=self.warm_root(name);job['expiresAt']=time.time()+2

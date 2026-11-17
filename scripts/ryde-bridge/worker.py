@@ -35,6 +35,21 @@ WARM_WAIT=8
 # fails, and the worker held itself off as AppFailing from the restart of 12 November 2026 at
 # 21:28 CET until Ryde was opened by hand from here, which unpacked it again at the same place.
 INSTALLED_APP=Path('/Applications/Ryde.app')
+# The launchd job RunningBoard submits to run Ryde, under the same label at every launch. On
+# 17 November 2026 at 02:33 CET RunningBoard took a launch's pid for a ShipIt updater's that had
+# held it before ("Two equal instances have unequal identities"), so when that Ryde quit it never
+# asked launchd to remove the job. launchd then refused every launch with error 37, "Operation
+# already in progress", and the worker held itself off as AppFailing until the job was removed by
+# hand at 20:48.
+RYDE_LAUNCH_JOB=re.compile(r'application\.com\.ryde\.NewRyde\.[0-9.]+')
+
+def remove_stale_launch_jobs():
+    """Removes the launchd jobs for Ryde that run no process, returning their labels."""
+    listed=subprocess.run(['/bin/launchctl','list'],check=True,capture_output=True,text=True,timeout=5).stdout
+    stale=[fields[2] for fields in (line.split('\t') for line in listed.splitlines())
+        if len(fields)==3 and fields[0]=='-' and RYDE_LAUNCH_JOB.fullmatch(fields[2])]
+    for label in stale:subprocess.run(['/bin/launchctl','remove',label],check=True,timeout=5)
+    return stale
 
 class JobDeadline(Exception):
     """Queued work ran out of time; this is not evidence that Ryde failed."""
@@ -158,9 +173,16 @@ def relaunch(root=ROOT, after_quit=None):
     if after_quit is not None: after_quit()
     # The lifecycle helper waits for confirmed process termination before returning.
     # Routing and job arming above finish synchronously, so no additional fixed pause is needed.
+    unpacked=Path(config['appBinary']).parent
+    app=str(unpacked if unpacked.exists() else INSTALLED_APP)
     try:
-        unpacked=Path(config['appBinary']).parent
-        subprocess.run([str(helper),'open',str(unpacked if unpacked.exists() else INSTALLED_APP)],check=True,timeout=15)
+        try:
+            subprocess.run([str(helper),'open',app],check=True,timeout=15)
+        except subprocess.CalledProcessError:
+            # Ryde has quit above, so a launchd job of its with no process is one left behind.
+            if not remove_stale_launch_jobs():raise
+            lifecycle_event('stale-launch-job-removed')
+            subprocess.run([str(helper),'open',app],check=True,timeout=15)
     except subprocess.TimeoutExpired:
         # LaunchServices can start Ryde before its completion callback returns.
         # Wait for the authenticated native response; don't kill/reopen it again.

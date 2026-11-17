@@ -603,3 +603,16 @@ the certificate's trust on that path still held and no sign-in was needed. The w
 now opens `/Applications/Ryde.app` itself when the unpacked folder is missing
 (`INSTALLED_APP` in `worker.py`). The Mac had stopped at 18:07 CET with no clean
 shutdown recorded; why was not found.
+
+RunningBoard runs Ryde as a launchd job it submits under the same label at every
+launch (`application.com.ryde.NewRyde.…`), and removes it when Ryde quits. On
+17 November 2026 at 02:33 CET it took a launch's pid for that of a ShipIt updater
+that had held it before ("Two equal instances have unequal identities"), so when
+that Ryde quit at 02:33:54 the job was never removed. launchd then refused every
+launch with error 37, "Operation already in progress" (`log show` has it; the
+helper's `open` only exits 1), and the worker held itself off as AppFailing,
+doubling to 4 hours, until the job was removed by hand with `launchctl remove` at
+20:48. When the helper's `open` fails, the worker now removes any such Ryde job
+that runs no process, records `stale-launch-job-removed` in `lifecycle.jsonl`, and
+opens Ryde once more (`remove_stale_launch_jobs` in `worker.py`). An `open` that
+fails with no such job left behind is still an app failure.
