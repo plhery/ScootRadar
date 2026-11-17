@@ -145,6 +145,8 @@ class MainActivity : AppCompatActivity() {
             when (event.eventType) {
                 AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED -> if (focusStranded) focusStranded = false else noteInteraction()
                 AccessibilityEvent.TYPE_VIEW_CLICKED -> noteInteraction()
+                // A scroll, a change of text or of the window, an announcement: the app's own doing as often as not.
+                else -> Unit
             }
             return super.onRequestSendAccessibilityEvent(host, child, event)
         }
