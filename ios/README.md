@@ -179,9 +179,8 @@ city's **Open the map** in a guide, opens in the app when it is installed
 `ScootRadar.entitlements`). `Models/ScooterMapLink.swift` reads it as the web
 map does: a city's centre opens like the city chosen in the search, any other
 point moves the map there and `minRange` sets the range filter, in metres, for
-that visit: it is not kept, so the rider's own minimum comes back at the next
-launch, after Reset or a link without one, and a choice on the slider is kept as
-the rider's own, as on the website. The battery minimum of an older link,
+that visit. The next launch or a link without a range restores the rider's saved
+minimum. Moving the slider saves the new choice. Reset saves **Any** as the minimum. The battery minimum of an older link,
 `minBattery`, is left out. The first location
 fix after a link leaves the map where the link put it. Safari's Smart
 App Banner on the site names the page it is on, with the link's parameters, so

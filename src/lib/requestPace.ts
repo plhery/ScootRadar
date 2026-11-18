@@ -52,3 +52,27 @@ export function noteRequest(now: number): void {
     localStorage.setItem(STORAGE_KEY, JSON.stringify([...recentRequests(now), now]));
   } catch {}
 }
+
+const REFUSAL_KEY = 'scooters-refused-until';
+let storageUnavailableDeadline = 0;
+
+function refusalDeadline(): number {
+  try {
+    return Math.max(Number(localStorage.getItem(REFUSAL_KEY)) || 0, storageUnavailableDeadline);
+  } catch {
+    return storageUnavailableDeadline;
+  }
+}
+
+export function noteRefusal(response: Pick<Response, 'headers'>, now: number): void {
+  const deadline = Math.max(refusalDeadline(), now + refusedForMs(response));
+  try {
+    localStorage.setItem(REFUSAL_KEY, String(deadline));
+  } catch {
+    storageUnavailableDeadline = deadline;
+  }
+}
+
+export function heldUntil(pace: number, now: number): number {
+  return Math.max(refusalDeadline(), paceOpensAt(recentRequests(now), now, pace));
+}

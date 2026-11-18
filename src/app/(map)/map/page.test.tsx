@@ -1436,6 +1436,19 @@ it('closes the card of a scooter taken while the phone was locked, rather than m
   expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
 });
 
+it('rejects a renamed neighbour whose battery shifted to the target level', async () => {
+  const neighbour = { ...BESIDE, battery: 81, lat: FAR.lat + 0.000108 };
+  let vehicles = [FAR, neighbour];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  vehicles = [{ ...neighbour, vehicle_id: 'renamed', battery: FAR.battery }];
+  await refreshData();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
 it('forgets the scooters beside the one of a card once another is chosen', async () => {
   let vehicles = [FAR, BESIDE];
   stubServer(() => data(vehicles));

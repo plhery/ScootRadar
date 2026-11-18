@@ -14,7 +14,7 @@ describe('announced maintenance', () => {
 
   it('reads the server’s key and ScootRadar’s, and takes the one that ends last', async () => {
     const kv = namespace({ all: { backAround: '2026-11-18T22:20:00Z' }, scootradar: { backAround: '2026-11-18T23:00:00+01:00', mode: 'hard' } });
-    expect(await readAnnouncement({ MAINTENANCE: kv }, NOW)).toEqual({ since: null, backAround: '2026-11-18T22:20:00.000Z', mode: 'soft', ends: null });
+    expect(await readAnnouncement({ MAINTENANCE: kv }, NOW)).toEqual({ since: null, backAround: '2026-11-18T22:20:00.000Z', mode: 'hard', ends: null });
     expect(kv.get.mock.calls).toEqual([['all', 'json'], ['scootradar', 'json']]);
     expect(pickAnnouncement([{ backAround: '2026-11-18T22:20:00Z' }, { backAround: '2026-11-18T22:30:00Z', mode: 'hard' }], NOW))
       .toMatchObject({ backAround: '2026-11-18T22:30:00.000Z', mode: 'hard' });
@@ -59,4 +59,12 @@ describe('announced maintenance', () => {
     forgetAnnouncement();
     expect(await (await maintenanceJson({})).json()).toEqual({ planned: false, mode: null, since: null, backAround: null });
   });
+});
+
+it('keeps an active hard window when the other announcement cannot be read', async () => {
+  const kv = { get: async (key: string) => {
+    if (key === 'all') return { mode: 'hard' };
+    throw new Error('KV unavailable');
+  } };
+  expect((await readAnnouncement({ MAINTENANCE: kv }, NOW))?.mode).toBe('hard');
 });

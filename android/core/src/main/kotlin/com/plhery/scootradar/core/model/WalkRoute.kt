@@ -427,6 +427,7 @@ data class ScooterWalk(
      * (Desk [373] S-1). Cleared as soon as data lists it again.
      */
     val missedAt: Instant? = null,
+    val pendingReplacementIDs: Set<String> = emptySet(),
 ) {
     /**
      * Locating, finding or showing the path. The scooter or the bay stays selected and on the map wherever

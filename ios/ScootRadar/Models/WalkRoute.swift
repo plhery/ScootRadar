@@ -317,7 +317,8 @@ struct ScooterNeighbours: Equatable, Sendable {
         let metres = point.distance(to: stood)
         let hasItsBattery = candidate.battery != nil && candidate.battery == battery
         return positions.allSatisfy { id, spot in
-            metres < point.distance(to: spot) || (hasItsBattery && batteries[id].map { $0 != candidate.battery } == true)
+            let neighbourMetres = point.distance(to: spot)
+            return metres < neighbourMetres || (metres - neighbourMetres <= 3 && hasItsBattery && batteries[id].map { $0 != candidate.battery } == true)
         }
     }
 }
@@ -406,6 +407,8 @@ struct ScooterWalk: Equatable, Sendable {
     /// says nothing new, nor one of the app's other feeds read, or the view moving (Desk [373] S-1). Cleared as soon
     /// as data lists it again.
     var missedRead: Date?
+    // New IDs close enough to be the target in the last incomplete answer.
+    var pendingReplacementIDs: Set<String> = []
 
     init(target: ScooterWalkTarget, phase: ScooterWalkPhase, origin: ScooterWalkOrigin? = nil) {
         self.target = target

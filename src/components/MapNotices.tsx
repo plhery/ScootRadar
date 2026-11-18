@@ -70,7 +70,7 @@ export default function MapNotices({
 
   return (
     <div ref={stackRef} className="map-notices" inert={hidden} aria-hidden={hidden}>
-      {loadFailure && (
+      {loadFailure && !paused && (
         <div className="load-banner glass" role="alert">
           <Icon name="warning" size={17} strokeWidth={2.2} />
           <span>{t(failureReasonKey(loadFailure))}</span>
@@ -84,13 +84,13 @@ export default function MapNotices({
       <div className="map-status" role="status">
         {/* Any touch, click or key refreshes, wherever it lands (useScooterData). */}
         {/* Calm: no warning and no button, as the map asks again by itself, and gone once the data is back. */}
-        {maintenance && !loadFailure && (
+        {maintenance && !loadFailure && !paused && (
           <div className="load-banner paused-banner maintenance-banner glass">
             <Icon name="clock" size={17} strokeWidth={2.2} />
             <span>{maintenance.map(line => formatUiText(line, i18n)).join(' ')}</span>
           </div>
         )}
-        {paused && !loadFailure && !maintenance && (
+        {paused && (
           <div className="load-banner paused-banner glass">
             <Icon name="refresh" size={17} strokeWidth={2.2} />
             <span>{t('dock.paused')}</span>

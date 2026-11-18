@@ -731,3 +731,25 @@ it('collects a feed a wide view keeps shown after the towns asked for and before
       { id: 'mitte', at: 22.5 * MINUTE, reason: 'wide' }, { id: 'idle', at: 22.5 * MINUTE, reason: 'idle' }]);
   } finally { scheduler.stop(); }
 });
+
+it('queues an expired wide view behind the older idle sweep', async () => {
+  const release = new Map<string, () => void>();
+  let held = false;
+  const { scheduler, calls } = schedule([{ id: 'first', host: 'lime' }, { id: 'second', host: 'lime' },
+    { id: 'idle', host: 'lime' }, { id: 'mitte', ...group }], {},
+  feed => held ? new Promise<void>(resolve => release.set(feed.id, resolve)) : Promise.resolve());
+  try {
+    await vi.advanceTimersByTimeAsync(12 * MINUTE);
+    wide(scheduler, ['mitte']);
+    await vi.advanceTimersByTimeAsync(7.5 * MINUTE);
+    held = true;
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    expect([...release.keys()]).toEqual(['first', 'second']);
+    wide(scheduler, ['mitte']);
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    held = false;
+    release.get('first')!();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(calls.slice(-2).map(({ id, reason }) => [id, reason])).toEqual([['idle', 'idle'], ['mitte', 'idle']]);
+  } finally { scheduler.stop(); }
+});

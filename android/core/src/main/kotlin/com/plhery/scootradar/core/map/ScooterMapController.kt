@@ -986,7 +986,7 @@ class ScooterMapController(
             return
         }
 
-        val due = if (respectingAttemptGap) {
+        val due = if (respectingAttemptGap || maintenance.value != null) {
             refreshPolicy.nextAttempt(
                 lastSuccess = lastSuccessAt,
                 refreshAfter = refreshAfter,

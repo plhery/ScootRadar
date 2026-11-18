@@ -150,7 +150,7 @@ async function storedAnswer(store: LastGoodStore, key: string, seconds: number, 
     if (scooterAnswerZoom(area.zoom, bounds) !== scooterAnswerZoom(area.zoom, area.bounds)) return null;
   }
   const body = await stored.json() as Stored['body'];
-  if (area && (!body.meta || body.meta.truncated !== false)) return null;
+  if (area && (!body.meta || body.meta.truncated !== false || body.meta.mode === 'clusters')) return null;
   return { age, body };
 }
 

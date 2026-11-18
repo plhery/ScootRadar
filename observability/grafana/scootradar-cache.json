@@ -2634,7 +2634,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (provider) (increase(scootradar_refresh_seconds_bucket{job=\"scootradar-cache\", kind=\"cold\", phase=\"start\", le=\"15.0\"}[1h])) / sum by (provider) (increase(scootradar_refreshes_total{job=\"scootradar-cache\", kind=\"cold\"}[1h]))",
+          "expr": "(sum by (provider) (increase(scootradar_refresh_seconds_bucket{job=\"scootradar-cache\", kind=\"cold\", phase=\"start\", le=\"15.0\"}[1h])) or (0 * sum by (provider) (increase(scootradar_refreshes_total{job=\"scootradar-cache\", kind=\"cold\"}[1h])))) / (sum by (provider) (increase(scootradar_refreshes_total{job=\"scootradar-cache\", kind=\"cold\"}[1h])) > 0)",
           "legendFormat": "{{provider}}",
           "range": true,
           "instant": false,

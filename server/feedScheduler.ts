@@ -428,6 +428,9 @@ export class FeedScheduler<T extends ScheduledFeed> {
    * visitor's.
    */
   private lapse(now: number): void {
+    for (const id of this.glancing) {
+      if (!this.glanced(id, now)) this.glancing.delete(id);
+    }
     for (const id of [...this.woken]) {
       if (this.running.has(id) || this.late.has(id) || this.watched(id, now) || this.glanced(id, now)) continue;
       this.settle(id);

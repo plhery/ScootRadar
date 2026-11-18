@@ -72,8 +72,9 @@ internal class ScooterNeighbours {
         val distance = candidate.distance(from = followed.coordinate)
         val hasItsBattery = candidate.battery != null && candidate.battery == followed.battery
         return positions.all { (id, spot) ->
-            candidate.distance(from = spot) > distance ||
-                (hasItsBattery && batteries[id].let { it != null && it != candidate.battery })
+            val neighbourDistance = candidate.distance(from = spot)
+            neighbourDistance > distance ||
+                (distance - neighbourDistance <= 3.0 && hasItsBattery && batteries[id].let { it != null && it != candidate.battery })
         }
     }
 

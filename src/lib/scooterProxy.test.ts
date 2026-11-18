@@ -356,14 +356,14 @@ describe('the server down', () => {
 
   it('leaves the server alone once maintenance announced hard starts, and gives what is kept', async () => {
     const { store, settled } = memory();
-    const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-11-18T21:59:00Z'));
+    const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-11-18T21:59:59Z'));
     const hard = announced({ all: { since: '2026-11-18T22:00:00Z', backAround: '2026-11-18T22:20:00Z', mode: 'hard' } });
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(answer({ stale: false, truncated: false }));
     // Before its start, it only words the notice.
     expect((await proxyScooterSnapshot(request(), hard, store)).status).toBe(200);
     await settled();
     expect(fetcher).toHaveBeenCalledOnce();
-    now.mockReturnValue(Date.parse('2026-11-18T22:00:31Z'));
+    now.mockReturnValue(Date.parse('2026-11-18T22:00:01Z'));
     const stale = await proxyScooterSnapshot(request(), hard, store);
     expect(stale.status).toBe(200);
     expect(stale.headers.get('X-Scooter-Origin')).toBe('down');
@@ -413,6 +413,12 @@ describe('the server down', () => {
         const cut = await keep(wide, meta);
         expect((await proxyScooterSnapshot(scooters(inside), env, cut.store)).status).toBe(503);
       }
+    });
+
+    it('serves a clustered fallback only for its exact view', async () => {
+      const { store } = await keep(wide, { mode: 'clusters', truncated: false });
+      expect((await proxyScooterSnapshot(scooters(wide), env, store)).status).toBe(200);
+      expect((await proxyScooterSnapshot(scooters(inside), env, store)).status).toBe(503);
     });
 
     it('is not given one the cache would have answered at a lower zoom', async () => {

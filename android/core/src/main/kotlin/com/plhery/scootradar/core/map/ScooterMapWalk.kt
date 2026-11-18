@@ -299,7 +299,7 @@ internal fun ScooterMapController.followWalkTarget(
     observedAt: Instant,
     previousIDs: Set<String>,
 ) {
-    val walk = walk.value ?: return
+    var walk = walk.value ?: return
     val scooter = (walk.target as? ScooterWalkTarget.Scooter)?.scooter ?: return
     val fresh = vehiclesByID[scooter.id]
     if (fresh != null) {
@@ -309,13 +309,14 @@ internal fun ScooterMapController.followWalkTarget(
             setWalk(null)
             return
         }
-        if (fresh == scooter && walk.missedAt == null) return
-        setWalk(walk.copy(target = ScooterWalkTarget.Scooter(fresh), missedAt = null))
+        if (fresh == scooter && walk.missedAt == null && walk.pendingReplacementIDs.isEmpty()) return
+        setWalk(walk.copy(target = ScooterWalkTarget.Scooter(fresh), missedAt = null, pendingReplacementIDs = emptySet()))
         val userLocation = userLocation.value
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
     }
-    val newlyListed = vehicles.value.filter { it.id !in previousIDs }
+    val pendingIDs = walk.pendingReplacementIDs
+    val newlyListed = vehicles.value.filter { it.id !in previousIDs || it.id in pendingIDs }
     if (!walk.isUnderway) {
         // Back after all, under a new id: the card is the scooter's again, and Directions with it. Data that lists it
         // says so, whatever else it leaves out (the iPhone's ScooterMapModel). A walk that got there or found no way
@@ -327,7 +328,16 @@ internal fun ScooterMapController.followWalkTarget(
         return
     }
     val point = scooter.coordinate
-    if (!listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) return
+    if (!listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) {
+        val pending = newlyListed.filter { it.provider == scooter.provider && it.distance(from = point) <= WalkRoute.rebindDistance }
+            .mapTo(mutableSetOf()) { it.id }
+        if (pending != pendingIDs) setWalk(walk.copy(pendingReplacementIDs = pending))
+        return
+    }
+    if (pendingIDs.isNotEmpty()) {
+        walk = walk.copy(pendingReplacementIDs = emptySet())
+        setWalk(walk)
+    }
     val successor = successor(of = scooter, among = newlyListed)
     if (successor != null) {
         setWalk(walk.copy(target = ScooterWalkTarget.Scooter(successor), missedAt = null))

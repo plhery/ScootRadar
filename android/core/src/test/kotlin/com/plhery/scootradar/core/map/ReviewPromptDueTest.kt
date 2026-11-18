@@ -56,6 +56,21 @@ class ReviewPromptDueTest {
         }
     }
 
+    @Test
+    fun cachedMaintenanceCannotCountAsUseOrAskForReview() = runTest {
+        val defaults = InMemoryScooterDefaults().apply { set(true, forKey = "ReviewPromptDue") }
+        val api = StubScooterAPI(ScooterResponse(
+            vehicles = listOf(scooter(id = "one", provider = "lime")),
+            maintenance = com.plhery.scootradar.core.api.ScooterMaintenance(),
+        ))
+        val model = makeController(api, clock = TestClock(), defaults = defaults, debug = true)
+        model.refresh()
+        assertTrue(waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(0, defaults.integer("review-use-days"))
+        assertEquals(0, model.reviewMoments.value)
+        assertFalse(model.takeReviewMoment())
+    }
+
     /** A controller of a fresh feed, its first load in, on the first day it is used. */
     private fun TestScope.loaded(clock: TestClock, defaults: ScooterDefaults, debug: Boolean): Pair<ScooterMapController, StubScooterAPI> {
         val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "one", provider = "lime"))))

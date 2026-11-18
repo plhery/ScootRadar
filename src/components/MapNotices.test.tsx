@@ -155,6 +155,12 @@ describe('MapNotices', () => {
     expect(container.querySelector('.paused-banner:not(.maintenance-banner)')).toBeNull();
   });
 
+  it('shows how to resume an idle map during maintenance', () => {
+    const { container } = renderNotices({ paused: true, maintenance: [{ key: 'maint.backAround', time: 0 }] });
+    expect(screen.getByRole('status')).toHaveTextContent(/tap to refresh/i);
+    expect(container.querySelector('.maintenance-banner')).toBeNull();
+  });
+
   it('is out of reach while the search panel is open', () => {
     const { container } = renderNotices({ loadFailure: 'failed', hidden: true });
 

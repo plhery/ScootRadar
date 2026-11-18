@@ -102,6 +102,8 @@ class ScooterNeighboursTest {
         // The one with the battery of the scooter followed is it; the other is the neighbour renamed.
         assertTrue(neighbours.mayBe(followed, candidate = pony("p1-new", battery = 54)))
         assertFalse(neighbours.mayBe(followed, candidate = pony("p2-new", battery = 80)))
+        neighbours.note(followed, seen = listOf(pony("p2", east = 12, battery = 55)))
+        assertFalse(neighbours.mayBe(followed, candidate = pony("p2-new", east = 12, battery = 54)))
         // Moved a little, nearer the neighbour's spot than its own: still told apart.
         neighbours.note(followed, seen = listOf(pony("p2", east = 4, battery = 80)))
         assertTrue(neighbours.mayBe(followed, candidate = pony("p1-new", east = 3, battery = 54)))

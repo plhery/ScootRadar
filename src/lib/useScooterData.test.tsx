@@ -801,3 +801,37 @@ describe('useScooterData', () => {
     expect(result.current.refresh).toBe(refresh);
   });
 });
+
+it('holds a queued pan and a remounted map until Retry-After', async () => {
+  let finish!: (value: Response) => void;
+  fetcher.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; })).mockImplementation(ok());
+  const first = mount();
+  await advance(180);
+  first.rerender({ query: BERN });
+  await act(async () => finish(new Response(null, { status: 429, headers: { 'Retry-After': '60' } })));
+  await advance(180);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  first.unmount();
+  const second = mount();
+  await advance(59_819);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await advance(1);
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  second.unmount();
+});
+
+it('waits out first-load maintenance when returning to the tab', async () => {
+  fetcher.mockImplementationOnce(async () => new Response(null, { status: 503, headers: {
+    'X-Scooter-Origin': 'down', 'Retry-After': '60',
+  } })).mockImplementation(ok());
+  const hook = mount();
+  await advance(180);
+  act(() => setVisibility('hidden'));
+  await advance(1000);
+  act(() => setVisibility('visible'));
+  await advance(58_999);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await advance(1);
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  hook.unmount();
+});

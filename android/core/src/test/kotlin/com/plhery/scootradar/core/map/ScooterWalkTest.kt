@@ -1011,7 +1011,7 @@ class ScooterWalkTest {
 
             for (read in 3..4) {
                 h.clock.advance(60.0)
-                val walked = scooter("x$read", provider = "bird", at = point(east = 300, north = 0))
+                val walked = if (sameReadBackIn) x1 else scooter("x$read", provider = "bird", at = point(east = 300, north = 0))
                 load(h, ScooterResponse(vehicles = listOf(walked, other)), call = read + 1)
                 assertEquals("$name, read $read", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
                 assertEquals("$name, read $read", ScooterWalkTarget.Scooter(walked), h.model.walk.value?.target)

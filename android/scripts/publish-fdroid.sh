@@ -57,6 +57,19 @@ if ! git -C "$android" merge-base --is-ancestor "$target" FETCH_HEAD; then
   echo "$target is not on GitHub's main" >&2
   exit 1
 fi
+# Serialize writers sharing this signed repository and pin the remote snapshot used for the version check.
+lock="$dir/.publication-lock"
+mkdir "$lock"
+trap 'rmdir "$lock"' EXIT
+remoteRef=$(git -C "$android" ls-remote origin refs/heads/fdroid)
+published=${remoteRef%%[[:space:]]*}
+if [ -n "$published" ]; then
+  git -C "$android" fetch -q origin "$published"
+  git -C "$android" show "$published:repo/index-v2.json" | python3 "$android/scripts/check-fdroid-version.py" "$code"
+fi
+if [ -f "$dir/repo/index-v2.json" ]; then
+  python3 "$android/scripts/check-fdroid-version.py" "$code" < "$dir/repo/index-v2.json"
+fi
 git -C "$android" push -q origin "$target:refs/tags/$tag"
 
 # The index, signed with the repository's key. The site's icon is the repository's and the app's.
@@ -80,7 +93,7 @@ git -C "$site" init -q -b fdroid
 git -C "$site" add README.md repo ':!repo/status'
 git -C "$site" commit -q -m "ScootRadar $name ($code)"
 git -C "$site" -c credential.helper= -c 'credential.helper=!gh auth git-credential' \
-  push -q --force "https://github.com/$github.git" fdroid:refs/heads/fdroid
+  push -q "--force-with-lease=refs/heads/fdroid:$published" "https://github.com/$github.git" fdroid:refs/heads/fdroid
 
 # The same APK on GitHub Releases, on the tag above. A release made already stays as it is.
 if gh release view "$tag" --repo "$github" >/dev/null 2>&1; then

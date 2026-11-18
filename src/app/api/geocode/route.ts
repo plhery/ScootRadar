@@ -200,7 +200,7 @@ interface Candidate extends Ranked {
   outline?: Box;
   /** A street's own row, or the row of the street an address is on where only the street bears what was typed:
       what the rows of one street fold into (streetsFolded). */
-  street?: { title: string; subtitle: string; itself: boolean };
+  street?: { title: string; subtitle: string; itself: boolean; ranking?: Ranked };
 }
 
 /** The places the services asked found, and their names. */
@@ -514,6 +514,9 @@ function photonCandidates(features: PhotonFeature[], ranking: Ranking): Candidat
     const countryCode = placeCountry(properties, lat, lng);
     const typed = typedNaming(ranking, properties, countryCode);
     const street = streetRow(properties, typed, title, subtitle, lat, lng);
+    if (street && !street.itself) {
+      street.ranking = placeRank(typed, { ...place, title: street.title, subtitle: street.subtitle }, false, nearMiss, countryCode, ranking);
+    }
     return [{ place, ...placeRank(typed, place, town, nearMiss, countryCode, ranking), ...(outline ? { outline } : {}), ...(street ? { street } : {}) }];
   });
 }
@@ -566,7 +569,7 @@ function streetsFolded(candidates: Candidate[], { near }: From): Candidate[] {
     // Not a shop's outline: what lies in it is no part of the street.
     return [{
       ...nearest,
-      rank,
+      ...nearest.street?.ranking,
       outline: undefined,
       place: { ...nearest.place, display_name: subtitle ? `${title}, ${subtitle}` : title, title, subtitle },
     }];

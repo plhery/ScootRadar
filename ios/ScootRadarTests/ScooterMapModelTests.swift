@@ -1274,7 +1274,7 @@ extension ScooterMapModelTests {
     func testAFirstLoadWhileTheServerIsDownWaitsCalmly() async {
         let clock = TestClock()
         let api = StubScooterAPI(response: timedResponse(generatedAt: clock.now, expiresIn: 300))
-        await api.setFailure(.serverDown(ScooterMaintenance()))
+        await api.setFailure(.serverDown(ScooterMaintenance(retryAfter: 30)))
         let model = makeModel(api: api, clock: clock)
         model.refresh()
         let failed = await waitUntil { await api.snapshot().calls == 1 && model.loadIssue != nil && !model.isLoading }
@@ -1285,8 +1285,13 @@ extension ScooterMapModelTests {
 
         // Kept scooters that expired and a refresh that failed: cleared, and still no out-of-date card.
         await api.setFailure(nil)
-        clock.advance(10)
-        model.autoRefreshIfNeeded()
+        model.becameInactive()
+        clock.advance(1)
+        model.becameActive()
+        XCTAssertFalse(model.isLoading)
+        model.becameInactive()
+        clock.advance(29)
+        model.becameActive()
         let loaded = await waitUntil { await api.snapshot().calls == 2 && model.lastUpdated != nil && !model.isLoading }
         XCTAssertTrue(loaded)
         await api.setFailure(.serverDown(ScooterMaintenance()))
@@ -6313,8 +6318,7 @@ extension ScooterMapModelTests {
         XCTAssertNil(defaults.object(forKey: "minimum-battery"))
     }
 
-    /// A link's minimum range is for that visit: the rider's own stays kept, and comes back at the next launch, after
-    /// a choice on the slider (kept), Reset, or a link without one. Opening it is no choice of the rider's.
+    /// A link's minimum range lasts for the visit. Moving the slider saves the new choice and Reset saves Any.
     func testALinksMinimumRangeIsForThatVisitAndNotTheRidersOwn() async throws {
         defer { ScooterUnits.current = .automatic }
         let defaults = isolatedDefaults()
