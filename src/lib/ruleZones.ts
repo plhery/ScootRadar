@@ -226,12 +226,18 @@ function shapeOf(zone: RuleZone) {
 
 const NONE: RuleZoneShape[] = [];
 
+export function visibleRules(view: { bounds: MapBounds; zoom: number } | null, zones: RuleZone[]) {
+  if (!view || view.zoom < ZONES_MIN_ZOOM) return NONE;
+  return zones.filter(zone => boundsOf(zone).some(bounds => boundsIntersect(view.bounds, bounds)));
+}
+
+export function ruleShape(zone: RuleZone, inForce: boolean): RuleZoneShape {
+  return { ...zone, polygons: shapeOf(zone), inForce };
+}
+
 /** The rule zones over the view, from zoom 14 in, each with whether it holds at that instant. */
 export function ruleZonesInView(view: { bounds: MapBounds; zoom: number } | null, now: number,
   zones: RuleZone[] = RULE_ZONES): RuleZoneShape[] {
-  if (!view || view.zoom < ZONES_MIN_ZOOM) return NONE;
-  const shown = zones.flatMap(zone => boundsOf(zone).some(bounds => boundsIntersect(view.bounds, bounds))
-    ? [{ ...zone, polygons: shapeOf(zone), inForce: ruleInForce(zone, now) }] : []);
-  // The same empty list every time, so that a map without them does not draw again.
-  return shown.length ? shown : NONE;
+  const shown = visibleRules(view, zones);
+  return shown.length ? shown.map(zone => ruleShape(zone, ruleInForce(zone, now))) : NONE;
 }

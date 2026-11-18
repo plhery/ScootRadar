@@ -1498,6 +1498,7 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   expect(await bergenLoaded()).toBe(false);
 
   // Bergen's Torget, at street level, with the operators' zones off.
+  await page.clock.install();
   await page.goto('/map?origin=60.3955,5.3245&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
   // Each kind once, and the city credited once, linked to where it says so.
@@ -1512,6 +1513,10 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   await expect(paths).toHaveCount(8);
   expect(await paths.evaluateAll(elements => elements.map(element => element.getAttribute('class')))).toEqual(
     ['fill', 'edge'].flatMap(part => ['parking', 'slow', 'noParking', 'noRide'].map(kind => `zone-${part}-${kind}`)));
+  const firstPath = await paths.first().elementHandle();
+  await page.clock.fastForward(31_000);
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(resolve)));
+  expect(await firstPath!.evaluate(path => path.isConnected)).toBe(true);
   // Parking in its green, filled as one shape within a solid edge, as its swatch is.
   const parking = await page.evaluate(() => {
     const fill = document.querySelector('.leaflet-zones-parking-pane .zone-fill-parking')!;

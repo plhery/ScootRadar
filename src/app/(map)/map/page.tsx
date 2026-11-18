@@ -44,7 +44,7 @@ import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCitie
 import { providerForFailedSource, providerHealth, providersInView } from '@/lib/dataHealth';
 import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/dockModel';
 import { activeCurfew } from '@/lib/rentalCurfews';
-import { RULE_ZONES, ruleZonesInView } from '@/lib/ruleZones';
+import { RULE_ZONES, ruleInForce, ruleShape, ruleZonesInView, visibleRules } from '@/lib/ruleZones';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface, maintenanceNotice } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
@@ -479,10 +479,13 @@ export default function Home() {
   // move within that area merges nothing anew, which in Münster's no-parking zones would take
   // tens of milliseconds at every move. The legend names those in view.
   const zoneAreaAddress = zoneAreaKey(mapQuery);
-  const drawnRuleZones = useMemo(
-    () => ruleZonesInView(zoneAreaAddress ? zoneArea(zoneAreaAddress) : null, now, [...RULE_ZONES, ...cityZones]),
-    [cityZones, now, zoneAreaAddress]
+  const areaRules = useMemo(
+    () => visibleRules(zoneAreaAddress ? zoneArea(zoneAreaAddress) : null, [...RULE_ZONES, ...cityZones]),
+    [cityZones, zoneAreaAddress]
   );
+  const activeRules = areaRules.map(zone => ruleInForce(zone, now) ? '1' : '0').join('');
+  const drawnRuleZones = useMemo(() => areaRules.map((zone, index) => ruleShape(zone, activeRules[index] === '1')),
+    [areaRules, activeRules]);
 
   const handleProviderToggle = (provider: string) => {
     track('provider_filter', { provider, enabled: !enabledProviders.has(provider), source: 'filters' });
