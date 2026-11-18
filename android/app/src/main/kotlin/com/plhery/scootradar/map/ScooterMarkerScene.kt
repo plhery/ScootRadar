@@ -512,9 +512,9 @@ class ScooterMarkerScene(
         ScooterDockStatus.seenSentence(status.seenAt) { stringFormat(localized("%1\$@ · last seen %2\$@"), provider.displayName, it) }
 
     /** The faded scooters TalkBack reads, those of the apps whose last sight is known, by their tips' titles. */
-    fun fadedTitle(mark: LastSeenMark): String? {
-        val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider ?: return null
-        return lastSeenStatuses[provider]?.let { fadedTitle(provider, it) }
+    fun hasFadedDetail(mark: LastSeenMark): Boolean {
+        val provider = (mark.mark as? LastSeenMark.Kind.Single)?.provider ?: return false
+        return provider in lastSeenStatuses
     }
 
     /**
@@ -522,7 +522,7 @@ class ScooterMarkerScene(
      * unless a walk is under way.
      */
     fun showFadedTip(mark: LastSeenMark, map: MarkerMap) {
-        if (fadedTitle(mark) == null) return
+        if (!hasFadedDetail(mark)) return
         showsCallout = false
         if (!parent.isWalking) clearSelection(map)
         fadedTipID = mark.id
@@ -709,7 +709,7 @@ class ScooterMarkerScene(
                 changed = true
             }
         }
-        if (fadedTipID?.let { lastSeenByID[it] }?.let { fadedTitle(it) } == null) fadedTipID = null
+        if (fadedTipID?.let { lastSeenByID[it] }?.let(::hasFadedDetail) != true) fadedTipID = null
         // TalkBack reads the faded scooters of the apps whose last sight is known: told again as they change.
         if (changed || statuses.keys != previous.keys) lastSeenVersion += 1
     }

@@ -39,6 +39,32 @@ export const PROVIDERS_OF_NOVEMBER_2026: readonly string[] = [
 /** The map's providers until 11 October 2026, the only ones a visitor could have turned off on purpose since the first. */
 const PROVIDERS_BEFORE_11_OCTOBER_2026: readonly string[] = ['bird', 'bolt', 'dott', 'hopp', 'lime', 'pony', 'publibike', 'voi'];
 
+// Providers introduced together, in catalog history order.
+const additions = [
+  ['zeus'],
+  ['beryl', 'ryde', 'hoppy'],
+  ['ride_mobility'],
+  ['yoio'],
+  ['naolib'],
+  ['elerent'],
+  ['zelectra'],
+  ['spin', 'veo', 'lyft', 'bolt_hopp'],
+  ['saham'],
+  ['flamingo', 'jolt'],
+  ['qick'],
+  ['luup'],
+  ['jet'],
+  ['whoosh'],
+  ['move', 'zippy'],
+  ['binbin'],
+  ['beam'],
+  ['gcoo', 'kickgoing', 'xingxing', 'swing'],
+  ['alpaca'],
+  ['deer'],
+  ['dart'],
+  ['ridemovi'],
+];
+
 const stringList = (raw: string | null): string[] | null => {
   if (raw === null) return null;
   try {
@@ -51,8 +77,8 @@ const stringList = (raw: string | null): string[] | null => {
 
 /**
  * The providers kept off, among those the map has; null where none were kept. Every one but the one kept on, where
- * that is one the map has, or the one of the 40 a list kept before the flag left on. A legacy list of those on counts as turning off only the providers of before 11 October
- * 2026 it lacks: one written on a visit since then also lacks the providers added after it, which nobody had turned off.
+ * that is one the map has, or the one of the 40 a list kept before the flag left on. A legacy list proves the catalog
+ * included every provider introduced through the newest one it names.
  */
 export function savedProvidersOff(read: (key: string) => string | null, providers: readonly string[]): Set<string> | null {
   const only = read(PROVIDER_ONLY_STORAGE_KEY);
@@ -67,7 +93,14 @@ export function savedProvidersOff(read: (key: string) => string | null, provider
   }
   const on = stringList(read(LEGACY_PROVIDERS_STORAGE_KEY));
   if (!on || !on.every(provider => providers.includes(provider))) return null;
-  return new Set(PROVIDERS_BEFORE_11_OCTOBER_2026.filter(provider => providers.includes(provider) && !on.includes(provider)));
+  let known = [...PROVIDERS_BEFORE_11_OCTOBER_2026];
+  for (let i = additions.length - 1; i >= 0; i--) {
+    if (additions[i].some(provider => on.includes(provider))) {
+      known = known.concat(additions.slice(0, i + 1).flat());
+      break;
+    }
+  }
+  return new Set(known.filter(provider => providers.includes(provider) && !on.includes(provider)));
 }
 
 /** What to keep: the providers not shown, sorted. */

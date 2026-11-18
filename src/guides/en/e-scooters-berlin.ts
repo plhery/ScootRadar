@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Berlin: apps, prices, parking zones and the rules',
   lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you need a payment card but no driving licence, and Bolt, Dott and Lime rent only to over-18s. Ten minutes cost about €3.19 with Voi and €3.65 with Dott at their standard rates (as of November 2026); the others show their price in the app. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-11-03',
   city: 'de:Berlin',
   sections: [
     {

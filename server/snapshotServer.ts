@@ -16,6 +16,8 @@ import { snapshotPaused } from '../src/lib/seasonalPauses';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
+import { standbyNationalFeed } from '../src/lib/feedCoverage';
+import { eligibleForView } from './swissAppMaps';
 import { gaugedFeeds, type SnapshotMetrics } from './metrics';
 import type { VisitorLedger } from './visitorLedger';
 import type { PublicVehicleIds } from './publicVehicleIds';
@@ -187,13 +189,21 @@ export function createSnapshotServer(options: ServerOptions) {
       // (--apps=cache): only the cache holds their sessions. No error text, which can name a key.
       if (!operator(request)) { response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return; }
       response.writeHead(snapshot ? 200 : 503);
-      response.end(JSON.stringify({ updatedAt: snapshot?.updatedAt, feeds: (snapshot?.feeds ?? []).map(feed => ({
-        id: feed.id,
-        state: feed.skipped ? 'skipped' : feed.attemptedAt === 0 ? 'warming' : feedState(feed, now, cadence),
-        ...(feed.seasonOver && { seasonOver: true }),
-        vehicles: feed.vehicles.length,
-        observedAt: feed.observedAt || null,
-      })) }));
+      const feeds = snapshot?.feeds ?? [];
+      const byId = new Map(feeds.map(feed => [feed.id, feed]));
+      response.end(JSON.stringify({ updatedAt: snapshot?.updatedAt, feeds: feeds.map(feed => {
+        const national = standbyNationalFeed(feed.id);
+        const servedBy = national && !eligibleForView(feed, id => byId.get(id), now) ? national : undefined;
+        return {
+          id: feed.id,
+          servedBy,
+          state: servedBy ? 'standby' : feed.skipped && !national ? 'skipped'
+            : feed.skipped || feed.attemptedAt === 0 ? 'warming' : feedState(feed, now, cadence),
+          ...(feed.seasonOver && { seasonOver: true }),
+          vehicles: feed.vehicles.length,
+          observedAt: feed.observedAt || null,
+        };
+      }) }));
       return;
     }
     if (url.pathname === '/metrics' && metricsTokenHash && options.metrics) {
@@ -243,7 +253,9 @@ export function createSnapshotServer(options: ServerOptions) {
     let idleInView: Set<string> | undefined;
     let comingSoon: Set<string> | undefined;
     const refresher = options.refresher;
-    const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
+    const records = snapshot.feeds;
+    const inView = feedsForQuery(snapshot, parsed.query, zoom)
+      .filter(feed => eligibleForView(feed, id => records.find(record => record.id === id), now));
     const viewHeader = request.headers['x-scooter-view'];
     const view = scooterView(typeof viewHeader === 'string' ? viewHeader : undefined);
     const viewer = view && { ...view, id: createHash('sha256').update(`${key}:${view.id}`).digest('hex') };

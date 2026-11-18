@@ -171,6 +171,20 @@ class ScooterMapUpdatesTest {
     }
 
     @Test
+    fun anEmptyMapReportsItsFirstFrameAfterTheResponse() {
+        val controller = onMain { testController(scope) }
+        withScooterMap(controller, streetStart) { shown ->
+            shown.phone.onMain { controller.refresh() }
+            waitFor("a completed empty map frame") {
+                shown.phone.onMain {
+                    controller.lastUpdated.value != null && controller.mapScooters.value.isEmpty() &&
+                        shown.phone.view.markers?.markersShown == true
+                }
+            }
+        }
+    }
+
+    @Test
     fun theRiderTakesTheThemesContrastWhileTheMapIsShown() {
         // MAP-192: the rider's blue is Increase Contrast's in either appearance once the theme asks for more
         // contrast, without the map made again.

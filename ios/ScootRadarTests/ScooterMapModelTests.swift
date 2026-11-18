@@ -523,6 +523,10 @@ final class ScooterMapModelTests: XCTestCase {
                 defaults: defaults
             )
         }
+        defaults.set(["whoosh"], forKey: "enabled-providers")
+        XCTAssertFalse(makeModel().enabledProviders.contains(.zeus))
+        XCTAssertTrue(makeModel().enabledProviders.contains(.ridemovi))
+
         // As 1.2.0 kept "Lime only": RideMovi, which came in 1.3.0, was missing from it.
         defaults.set(["lime"], forKey: "enabled-providers")
         let migrated = makeModel()
@@ -4186,6 +4190,24 @@ extension ScooterMapModelTests {
         window.isHidden = false
         window.layoutIfNeeded()
         return window
+    }
+
+    func testTypingInTheSearchFieldCountsAsInteraction() throws {
+        let search = SwissAddressSearchModel()
+        var edits = 0
+        let window = try window(showing: ScooterSearchPanel(
+            searchModel: search, autofocus: false, onSelect: { _ in },
+            onEdit: { edits += 1 }, onUseCurrentLocation: {}, onCancel: {}
+        ))
+        defer { window.isHidden = true }
+        func field(in view: UIView) -> UITextField? {
+            if let text = view as? UITextField { return text }
+            return view.subviews.lazy.compactMap { field(in: $0) }.first
+        }
+        let input = try XCTUnwrap(field(in: window))
+        input.insertText("Z")
+        XCTAssertEqual(search.query, "Z")
+        XCTAssertGreaterThan(edits, 0)
     }
 
     func testTopOfTheMapRendersWithoutCrashing() {

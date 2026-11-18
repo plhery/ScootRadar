@@ -22,6 +22,7 @@ struct ScooterSearchIsland: View {
     var onChooseCity: (ScooterCity) -> Void = { _ in }
     var onChooseRecentPlace: () -> Void = {}
     var onForgetRecentPlace: () -> Void = {}
+    var onEdit: () -> Void = {}
     let onClear: () -> Void
     let onUseCurrentLocation: () -> Void
     let onShowFilters: () -> Void
@@ -50,6 +51,7 @@ struct ScooterSearchIsland: View {
                         setSearching(false)
                     },
                     onForgetRecentPlace: onForgetRecentPlace,
+                    onEdit: onEdit,
                     onUseCurrentLocation: {
                         onUseCurrentLocation()
                         setSearching(false)
@@ -317,6 +319,7 @@ struct ScooterSearchPanel: View {
     private let onChooseRecentPlace: () -> Void
     private let onForgetRecentPlace: () -> Void
     private let onUseCurrentLocation: () -> Void
+    private let onEdit: () -> Void
     private let onCancel: () -> Void
 
     init(
@@ -330,6 +333,7 @@ struct ScooterSearchPanel: View {
         onChooseCity: @escaping (ScooterCity) -> Void = { _ in },
         onChooseRecentPlace: @escaping () -> Void = {},
         onForgetRecentPlace: @escaping () -> Void = {},
+        onEdit: @escaping () -> Void = {},
         onUseCurrentLocation: @escaping () -> Void,
         onCancel: @escaping () -> Void
     ) {
@@ -344,6 +348,7 @@ struct ScooterSearchPanel: View {
         self.onChooseRecentPlace = onChooseRecentPlace
         self.onForgetRecentPlace = onForgetRecentPlace
         self.onUseCurrentLocation = onUseCurrentLocation
+        self.onEdit = onEdit
         self.onCancel = onCancel
     }
 
@@ -415,14 +420,16 @@ struct ScooterSearchPanel: View {
     }
 
     private var field: some View {
-        @Bindable var searchModel = searchModel
 
         return HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
 
-            TextField("City or address", text: $searchModel.query)
+            TextField("City or address", text: Binding(get: { searchModel.query }, set: { query in
+                searchModel.query = query
+                onEdit()
+            }))
                 .focused($fieldIsFocused)
                 .accessibilityFocused($fieldHasVoiceOverFocus)
                 // No address content type: with one, iOS offered the rider's

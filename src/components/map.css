@@ -405,6 +405,8 @@
 }
 
 .last-seen-light {
+  padding: 0;
+  border: 0;
   width: 10px;
   height: 10px;
   border-radius: 50%;

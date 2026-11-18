@@ -57,6 +57,15 @@ describe('the map’s chip', () => {
     expect(vi.mocked(track).mock.calls).toEqual([['invite_view', { place: 'map' }]]);
   });
 
+  it('keeps dismissal in this page when a storage write fails', async () => {
+    browser(ANDROID);
+    await renderChip();
+    await touch();
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('full'); });
+    fireEvent.click(screen.getByRole('button', { name: 'Not now' }));
+    expect(chip()).toBeNull();
+  });
+
   it('invites no one on an iPhone', async () => {
     browser(IPHONE);
     await renderChip();
@@ -110,7 +119,7 @@ describe('the map’s chip', () => {
 
   it('thanks a tester back after the last step, once', async () => {
     browser(ANDROID);
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 3 }));
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ steps: [1, 2, 3] }));
     const first = await renderChip();
     await touch();
     expect(chip()).toBeNull();
@@ -149,16 +158,16 @@ describe('the steps, over the map', () => {
   it('remembers each step taken, counts it, and offers the next', () => {
     const { dialog } = renderSheet();
     fireEvent.click(within(dialog).getByRole('link', { name: 'Join' }));
-    expect(remembered().step).toBe(1);
+    expect(remembered().steps).toEqual([1]);
     expect(track).toHaveBeenLastCalledWith('invite_group', { place: 'map' });
     expect(steps(dialog).map(step => step.dataset.state)).toEqual(['done', 'next', 'later']);
     expect(within(dialog).getByText(/^Join the testers’ group/)).toHaveTextContent('Join the testers’ group, done');
     fireEvent.click(within(dialog).getByRole('link', { name: 'Install' }));
     expect(track).toHaveBeenLastCalledWith('invite_install', { place: 'map' });
-    // Back to an earlier step, the furthest one stays.
+    expect(steps(dialog).map(step => step.dataset.state)).toEqual(['done', 'next', 'done']);
     fireEvent.click(within(dialog).getByRole('link', { name: 'Open' }));
     expect(track).toHaveBeenLastCalledWith('invite_optin', { place: 'map' });
-    expect(remembered().step).toBe(3);
+    expect(remembered().steps).toEqual([1, 2, 3]);
     expect(steps(dialog).map(step => step.dataset.state)).toEqual(['done', 'done', 'done']);
   });
 

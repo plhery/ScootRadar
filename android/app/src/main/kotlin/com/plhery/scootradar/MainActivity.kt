@@ -103,8 +103,9 @@ class MainActivity : AppCompatActivity() {
         ScreenOrientation.apply(this)
         // AppCompat has put a language chosen for the app in the activity's configuration by now. An activity made
         // after the phone's languages changed in the background takes them, as one kept running does.
-        (application as ScooterApplication).container.languages.launched(resources.configuration)
-        model.controller.phoneLanguagesChanged()
+        val languages = (application as ScooterApplication).container.languages
+        languages.launched(resources.configuration)
+        model.controller.phoneLanguagesChanged(languages.platformChoice())
         // Only this activity asks the rider, and only while it exists: the location service outlives it.
         model.location.permissionRequester = permissionRequester
         lifecycle.addObserver(model)
@@ -272,8 +273,9 @@ class MainActivity : AppCompatActivity() {
         // The phone's languages changed while the map is open (locale is among the changes the activity takes
         // itself): the region and units follow, and on Automatic the app's text at once, the card, the search and the
         // camera kept (X-M23).
-        (application as ScooterApplication).container.languages.phoneLocalesChanged(newConfig)
-        model.controller.phoneLanguagesChanged()
+        val languages = (application as ScooterApplication).container.languages
+        languages.phoneLocalesChanged(newConfig)
+        model.controller.phoneLanguagesChanged(languages.platformChoice())
     }
 
     internal companion object {

@@ -43,6 +43,29 @@ class AppLanguagesTest {
     }
 
     @Test
+    @Config(sdk = [33])
+    fun changingOnlyThePlatformAppLocaleUpdatesALiveController() {
+        Robolectric.buildActivity(AppCompatActivity::class.java).setup().use { activity ->
+            val context = activity.get()
+            val languages = AppLanguages(context)
+            languages.launched(context.resources.configuration)
+            val controller = testController(scope, phoneLanguages = languages::phoneLanguages)
+            val phone = languages.phoneLanguages()
+
+            requireNotNull(context.getSystemService(android.app.LocaleManager::class.java)).applicationLocales =
+                android.os.LocaleList.forLanguageTags("de")
+            val config = android.content.res.Configuration(context.resources.configuration)
+            config.setLocales(android.os.LocaleList.forLanguageTags("de,en-GB"))
+            languages.phoneLocalesChanged(config)
+            controller.phoneLanguagesChanged(languages.platformChoice())
+
+            assertEquals(phone, languages.phoneLanguages())
+            assertEquals(ScooterLanguage.De, ScooterLanguage.atLaunch)
+            assertEquals(ScooterLanguageChoice.Language(ScooterLanguage.De), controller.languageChoice.value)
+        }
+    }
+
+    @Test
     fun theIPhonesLanguagesStayTheIPhonesOnceTheAppHasOneOfItsOwn() {
         // Automatic says "English, the language of your phone" after Icelandic was chosen for the app, not
         // "Íslenska": Locale.getDefault() would give the app's. The phone's languages are the system's, which

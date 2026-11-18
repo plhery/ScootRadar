@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Tallinn: Bolt, what a ride costs, Estonia’s rules and where to park in the Old Town',
   lede: 'E-scooters in Tallinn are rented from Bolt, which calls the city its hometown: open the Bolt app, find a scooter on its map and scan the QR code on it to unlock. Bolt rents only to riders of 18 and over and, as of November 2026, charges from €0.15 a minute plus an unlock fee across Estonia; its app shows Tallinn’s price before you unlock. Estonian law lets e-scooters use cycle tracks and pavements, at walking pace near pedestrians, and asks for a helmet only under 16. In the Old Town and the city centre you can end a ride only in a marked parking area; the Old Town is limited to 10 km/h, and the whole city to 17 km/h on Friday and Saturday nights.',
   published: '2026-10-26',
-  updated: '2026-10-26',
+  updated: '2026-11-18',
   city: 'ee:Tallinn',
   sections: [
     {
@@ -71,7 +71,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Fines are counted in fine units of €8 each (Penal Code, § 47): 15 units, €120, for most scooter offences. The police can settle one on the spot with a fixed €40 fine (§ 262¹). Over the alcohol limit, or if you hurt someone or cause damage or danger, the maximum is €800 (§ 259).',
+        'Fines are counted in fine units of €8 each (Penal Code, § 47): 15 units, €120, for most scooter offences. The police can settle one on the spot with a fixed €40 fine (§ 262¹). Riding over the alcohol limit carries a fine of up to €400 (§ 224²). A separate traffic violation committed under the influence, or one that causes injury, property damage or traffic danger, can carry a fine of up to €800 (§ 259).',
         '**The pavement is allowed**, whatever Bolt’s scooter pages say: the Traffic Act lists it among the places a kergliikur may ride.',
       ],
     },

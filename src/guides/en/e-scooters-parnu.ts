@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Pärnu: Bolt, the city’s speed limits and where not to ride or park',
   lede: 'E-scooters in Pärnu are rented from Bolt, under a contract with the city government. The city lists Pärnu’s exceptions to Estonia’s rules: 17 km/h instead of 25 on summer nights, 9 km/h on Supeluse, Rüütli and the Kesklinna bridge from June to August, and places such as the pier boardwalk where you may neither ride nor park. On city and county buses an e-scooter needs the driver’s permission.',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-18',
   city: 'ee:Pärnu',
   sections: [
     {
@@ -91,7 +91,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Fines are counted in fine units of €8 each (Penal Code, § 47): up to 15 units, €120, for most scooter offences. In summary proceedings such an offence is settled with a fixed €40 fine (§ 262¹). Over the alcohol limit, or if you hurt someone or cause damage or danger, the maximum is €800 (§ 259). For a rider under 18, the fine is worked out from half the maximum (Penal Code, § 47).',
+        'Fines are counted in fine units of €8 each (Penal Code, § 47): up to 15 units, €120, for most scooter offences. In summary proceedings such an offence is settled with a fixed €40 fine (§ 262¹). Riding over the alcohol limit carries a fine of up to €400 (§ 224²). A separate traffic violation committed under the influence, or one that causes injury, property damage or traffic danger, can carry a fine of up to €800 (§ 259). For a rider under 18, the fine is worked out from half the maximum (Penal Code, § 47).',
         '**The pavement is allowed**: the Traffic Act lists it among the places a kergliikur may ride, beside cycle tracks and footpaths. Pass people on foot at about their speed, slow down where a path meets a road and you can’t see far, and cross the road at walking pace (§ 32, § 32¹).',
         'The same national rules apply in our guides to [Tartu](guide:tartu) and [Tallinn](guide:tallinn).',
       ],

@@ -788,15 +788,17 @@ test('an empty covered area keeps the count and the chips and says what to do', 
 });
 
 test('scooters being collected again stand faded where they were last seen until the server has them again', async ({ page }) => {
-  let stage: 'none' | 'some' | 'all' = 'none';
+  let stage: 'none' | 'idle' | 'some' | 'all' = 'none';
   const seenAt = Date.now() - 40 * 60_000;
   const seen = (id: string, lat: number, lng: number) => ({ ...scooterResponse.vehicles[0], vehicle_id: id, lat, lng });
   await page.route('**/api/scooters?**', async route => {
     const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
     if (zoom <= 15) return route.fallback();
     const sweeping = { stale: true, refreshing: true, refreshAfterSeconds: 3, lastSeenAt: new Date(seenAt).toISOString() };
-    await route.fulfill({ json: stage === 'none' ? {
-      ...scooterResponse, vehicles: [], providers: {}, lastSeen: { vehicles: [seen('lime-2', 47.3775, 8.5427), seen('lime-3', 47.3763, 8.5405)], clusters: [] },
+    await route.fulfill({ json: stage === 'none' || stage === 'idle' ? {
+      ...scooterResponse, vehicles: [], providers: {}, lastSeen: {
+        ...(stage === 'idle' && { providers: { lime: { seenAt: new Date(seenAt).toISOString(), updating: false } } }),
+        vehicles: [seen('lime-2', 47.3775, 8.5427), seen('lime-3', 47.3763, 8.5405)], clusters: [] },
       meta: { ...scooterResponse.meta, ...sweeping, totalVehicles: 0, mode: 'vehicles', zoom },
     } : stage === 'some' ? {
       ...scooterResponse, lastSeen: { vehicles: [seen('lime-3', 47.3763, 8.5405)], clusters: [] },
@@ -821,9 +823,18 @@ test('scooters being collected again stand faded where they were last seen until
   const fadedTip = page.locator('.last-seen-tip');
   await expect(fadedTip.locator('strong')).toHaveText(/^Lime · last seen (?:[A-Z][a-z]{2} )?\d\d:\d\d$/);
   await expect(fadedTip.locator('span')).toHaveText('May have moved · new positions on the way');
+  const detail = page.getByRole('button', { name: /Lime · last seen/ }).first();
+  for (const key of ['Enter', 'Space']) {
+    await page.mouse.click(highest.x + highest.width / 2, highest.y + highest.height / 2);
+    await detail.focus();
+    await detail.press(key);
+    await expect(fadedTip).toBeVisible();
+  }
   // It has nothing to rent: no card opens.
   await expect(page.locator('.dock-card')).toHaveCount(0);
 
+  stage = 'idle';
+  await expect(fadedTip.locator('span')).toHaveText('May have moved since', { timeout: 10_000 });
   // The next answers, a few seconds apart, bring the scooters the sweep has found.
   stage = 'some';
   await expect(page.locator('.scooter-marker')).toHaveCount(3, { timeout: 10_000 });
@@ -1491,6 +1502,7 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   expect(await bergenLoaded()).toBe(false);
 
   // Bergen's Torget, at street level, with the operators' zones off.
+  await page.clock.install();
   await page.goto('/map?origin=60.3955,5.3245&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
   // Each kind once, and the city credited once, linked to where it says so.
@@ -1505,6 +1517,10 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   await expect(paths).toHaveCount(8);
   expect(await paths.evaluateAll(elements => elements.map(element => element.getAttribute('class')))).toEqual(
     ['fill', 'edge'].flatMap(part => ['parking', 'slow', 'noParking', 'noRide'].map(kind => `zone-${part}-${kind}`)));
+  const firstPath = await paths.first().elementHandle();
+  await page.clock.fastForward(31_000);
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(resolve)));
+  expect(await firstPath!.evaluate(path => path.isConnected)).toBe(true);
   // Parking in its green, filled as one shape within a solid edge, as its swatch is.
   const parking = await page.evaluate(() => {
     const fill = document.querySelector('.leaflet-zones-parking-pane .zone-fill-parking')!;

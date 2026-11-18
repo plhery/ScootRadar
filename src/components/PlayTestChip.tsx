@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { selectionFeedback } from '@/lib/feedback';
 import { useI18n } from '@/lib/i18n';
-import { playTestInvitation, readPlayTestMemory, type PlayTestMemory } from '@/lib/playTest';
+import { playTestInvitation, type PlayTestMemory } from '@/lib/playTest';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
-import { playTest, usePlayTestAudience, usePlayTestMemory } from '@/lib/usePlayTest';
+import { playTest, playTestSnapshot, usePlayTestAudience, usePlayTestMemory } from '@/lib/usePlayTest';
 import Icon from './Icon';
 import './playTest.css';
 
@@ -31,7 +31,7 @@ export default function PlayTestChip({ onOpen }: { onOpen: () => void }) {
   useEffect(() => {
     if (!audience || arrival) return;
     const touched = () => {
-      const remembered = readPlayTestMemory();
+      const remembered = playTestSnapshot();
       setArrival({ shown: playTestInvitation(remembered, Date.now(), 'map'), memory: remembered });
     };
     const options = { capture: true, passive: true } as const;
@@ -41,7 +41,7 @@ export default function PlayTestChip({ onOpen }: { onOpen: () => void }) {
   }, [audience, arrival]);
 
   // Until it is hidden here, or by the sheet: "Not now", "Don't ask again", or the last step taken.
-  const offer = arrival?.shown === 'offer' && !memory.never && (memory.step ?? 0) < 3 &&
+  const offer = arrival?.shown === 'offer' && !memory.never && memory.steps?.length !== 3 &&
     memory.until === arrival.memory.until;
   const thanks = arrival?.shown === 'thanks' && !thanksClosed;
 

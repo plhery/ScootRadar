@@ -156,7 +156,8 @@ function cachedFeeds(system) {
 // which only the operator could say.
 function cachedFeed(system, result, version) {
   if (cacheFeeds.error) throw new Error(`Scooter cache feeds unreadable: ${cacheFeeds.error}`);
-  const feeds = cachedFeeds(system);
+  const groups = cachedFeeds(system);
+  const feeds = [...new Set(groups.map(feed => feed.servedBy ? cacheFeeds.byId.get(feed.servedBy) ?? feed : feed))];
   if (!feeds.length) throw new Error('Not among the scooter cache\'s feeds');
   const observedAt = Math.min(...feeds.map(feed => feed.observedAt || Infinity));
   const age = Number.isFinite(observedAt) && { updatedAt: new Date(observedAt).toISOString(),

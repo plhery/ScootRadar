@@ -464,6 +464,7 @@ struct ScooterMapScreen: View {
             onChooseCity: model.chooseCity,
             onChooseRecentPlace: model.chooseRecentPlace,
             onForgetRecentPlace: model.forgetRecentPlace,
+            onEdit: { model.noteInteraction() },
             onClear: model.clearAddressSearch,
             onUseCurrentLocation: model.focusOnUser,
             onShowFilters: {

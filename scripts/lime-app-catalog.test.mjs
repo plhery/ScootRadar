@@ -5,6 +5,16 @@ import { boundsContainPoint } from '../src/lib/geo';
 import { limeGridGroups } from '../src/lib/limeGrid';
 import { serviceAreas } from '../src/lib/regionalScooterSystems';
 
+it('removes the last generated market while preserving public feeds', () => {
+  const publicFeed = { id: 'public' };
+  const previous = { systems: [publicFeed, { id: 'retired', limeAppMap: true }] };
+  const warnings = [];
+  const catalogs = limeAppCatalogs({ verifiedOn: '2026-11-18', markets: [] },
+    [{ code: 'RO', catalog: 'ro.json' }], () => previous, {}, message => warnings.push(message));
+  expect(catalogs.get('ro.json')?.systems).toEqual([publicFeed]);
+  expect(warnings.join(' ')).toContain('retired');
+});
+
 it('partitions the complete service grid into bounded groups and preserves public feeds and their provenance', () => {
   const publicFeed = { id: 'public', provider: 'lime', city: 'Public city', discoveryUrl: 'https://example.com/gbfs.json' };
   const previous = { verifiedOn: '2026-10-25', catalogSource: 'https://example.com/catalog', serviceAreaSources: ['https://example.com/public-geofence'], systems: [publicFeed,
