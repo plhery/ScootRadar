@@ -299,11 +299,16 @@ class ScooterMarkerAccessibility(
         event.contentDescription = null
     }
 
+    private fun visibleElement(id: Int): MarkerElement? {
+        if (covered) return null
+        current()
+        return listed[id]
+    }
+
     // ExploreByTouchHelper makes the bounds on the screen, and whether the view is visible, from those in the map.
     @Suppress("DEPRECATION")
     override fun onPopulateNodeForVirtualView(virtualViewId: Int, node: AccessibilityNodeInfoCompat) {
-        current()
-        val element = listed[virtualViewId]
+        val element = visibleElement(virtualViewId)
         if (element == null) {
             // A marker gone since TalkBack last asked: a view with nothing to read, nowhere.
             node.contentDescription = ""
@@ -331,8 +336,7 @@ class ScooterMarkerAccessibility(
 
     override fun onPerformActionForVirtualView(virtualViewId: Int, action: Int, arguments: Bundle?): Boolean {
         if (action != AccessibilityNodeInfoCompat.ACTION_CLICK) return false
-        current()
-        val element = listed[virtualViewId] ?: return false
+        val element = visibleElement(virtualViewId) ?: return false
         MarkerElements.activate(element, scene, map)
         changed()
         sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_CLICKED)

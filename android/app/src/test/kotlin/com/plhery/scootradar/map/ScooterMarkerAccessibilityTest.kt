@@ -434,6 +434,8 @@ class ScooterMarkerAccessibilityTest {
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 300.0))
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 700.0))
         assertEquals(emptyList<Int>(), accessibility.virtualViews())
+        assertTrue(accessibility.node(free).bounds().isEmpty)
+        assertFalse(accessibility.click(free))
         accessibility.covered = false
         assertEquals(free, at(195.0, 300.0))
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 700.0))
