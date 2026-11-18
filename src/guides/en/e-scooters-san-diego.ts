@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in San Diego: Spin on campus, what a ride costs, and where you can’t ride',
   lede: 'In San Diego, Spin rents e-scooters on two campuses, UC San Diego and San Diego State; the City’s contractors had all pulled out by November 2023. Sign up in the Spin app, with your @ucsd.edu address at UC San Diego, scan the QR code to unlock and end the ride in a campus parking spot. As of November 2026 a ride costs $1 to unlock plus $0.40 a minute at UC San Diego for @ucsd.edu accounts, and from $0.50 to unlock plus $0.34 a minute at San Diego State; anyone else sees the price in the app before unlocking. State law asks for a driving licence and caps scooters at 15 mph, sidewalks are off limits, and the City bans every motorised scooter, rented or owned, from its beach boardwalks.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-11-07',
   city: 'us:ca:San Diego',
   sections: [
     {

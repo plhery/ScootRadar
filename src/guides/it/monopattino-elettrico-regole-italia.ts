@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattino elettrico, regole 2026 in Italia: casco, targa, assicurazione e multe',
   lede: 'In Italia il monopattino elettrico si guida dai 14 anni, senza patente, con il casco, obbligatorio per tutti dal 14 dicembre 2024, il contrassegno (la «targa»), obbligatorio dal 17 maggio 2026, e l’assicurazione, obbligatoria dal 16 luglio 2026. Si va a 20 km/h al massimo, 6 nelle aree pedonali, solo su strade urbane con limite fino a 50 km/h e mai sul marciapiede; per l’alcol vale il limite di 0,5 g/l, come in auto. Senza casco, sul marciapiede o oltre i 20 km/h la multa va da 50 a 250 euro; senza contrassegno o assicurazione da 100 a 400 euro. In sharing contrassegno e assicurazione spettano all’operatore, il casco lo porti tu.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'it:Roma',
   sections: [
     {

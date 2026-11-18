@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife: Dott, sus normas, la ordenanza, el casco y el tranvía',
   lede: 'Para el alquiler de patinete eléctrico en Santa Cruz de Tenerife tienes Dott: descarga su app, añade un método de pago, desbloquea el patinete desde el móvil y cierra el viaje en la app al terminar. La app te muestra el precio antes de desbloquear, y pagas hasta que cierras el viaje. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco, también en los de alquiler: lleva el tuyo. Nunca por la acera, y el patinete no sube al tranvía, donde, según Metrotenerife, está «prohibido transportar patinetas eléctricas a bordo».',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-10',
   city: 'es:Santa Cruz de Tenerife',
   sections: [
     {

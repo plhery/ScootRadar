@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Bremen: Anbieter, Parken und die Regeln der Stadt',
   lede: 'E-Scooter in Bremen leihst du bei Dott oder Lime in der App, ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Den Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. Abstellen darfst du meist frei auf dem Gehweg, parallel zur Fahrbahn und mit 1,80 m Platz; wer falsch parkt, zahlt dem Anbieter ab dem zweiten Mal 15 €. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'de:Bremen',
   sections: [
     {

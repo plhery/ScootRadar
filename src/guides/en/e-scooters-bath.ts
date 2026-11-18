@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in Bath: Dott’s prices, no-ride zones and where to park',
   lede: 'You can hire an e-scooter in Bath from Dott, the only operator in the West of England trial, at any hour, in Dott’s app. As of November 2026 it costs £1 to unlock and 25p a minute, so 10 minutes cost £3.50. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle routes but never on pavements, and end every ride in one of Dott’s parking bays. The scooter stops itself around the Roman Baths and the Abbey, in most parks and on the canal towpath.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-11-07',
   city: 'gb:Bath',
   sections: [
     {

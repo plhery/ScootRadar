@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to end in May 2028. Five companies run them: Voi, Beryl, Lime, Dott and Bolt. To hire one you need a full or provisional driving licence with category Q, and in most areas you must be 18 or over. As of November 2026, 15 minutes pay as you go cost from £4 in the West Midlands (Lime, £1 to unlock and 20p a minute) to £4.75 in Liverpool (Bolt) and Bristol and Bath (Dott), both £1 and 25p a minute. Ride on roads and in cycle lanes, never on the pavement. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-26',
+  updated: '2026-11-07',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Recife: JET and Whoosh, how they charge, where to ride and where to park',
   lede: 'You can rent an e-scooter in Recife from JET, whose app in Brazil is Go Jet, or from Whoosh: the two firms in the Prefeitura’s 12-month pilot, which began on 22 March 2026. Sign up in the app, which validates your account (you must be 18) and shows the price before you ride; prices change with demand. Under the pilot’s rules, as the Diario de Pernambuco reported them, you ride on cycle lanes and on streets with a limit of 40 km/h or less at up to 20 km/h, slow to 6 km/h where people walk, and park only at the points your app shows, with a photo to end the ride. Get off and push across pedestrian crossings.',
   published: '2026-10-25',
-  updated: '2026-10-26',
+  updated: '2026-11-07',
   city: 'br:Recife',
   sections: [
     {

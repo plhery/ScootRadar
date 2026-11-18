@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattini sharing a Roma: operatori, casco, parcheggio e multe nel 2026',
   lede: 'I monopattini sharing a Roma, a ottobre 2026, sono quelli di Bird, Dott e Lime: gli unici tre operatori autorizzati dal Comune, in proroga per il tempo necessario a scegliere i nuovi operatori. Le domande per il nuovo bando si sono chiuse il 2 novembre 2026. Per noleggiarli servono 18 anni e un documento d’identità, e il casco lo porti tu: è obbligatorio per tutti e nessun operatore lo fornisce. Il prezzo te lo mostra l’app prima dello sblocco, e al Colosseo, a Fontana di Trevi o in piazza San Pietro l’app di Bird non ti fa chiudere il noleggio.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'it:Roma',
   sections: [
     {

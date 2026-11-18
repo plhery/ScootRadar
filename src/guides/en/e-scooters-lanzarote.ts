@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters on Lanzarote: Hoppy in Puerto del Carmen, what a ride costs, the promenade, the airport and Spain’s rules',
   lede: 'On Lanzarote you can rent Hoppy’s shared e-scooters in one resort, Puerto del Carmen, along about 6 km of coast, from just west of the old harbour to Matagorda, beside the airport. As of November 2026 a ride costs €1.20 to unlock plus €0.35–0.37 a minute, so ten minutes cost €4.70–4.90. You must be 18 to rent, and since 1 October 2026 Spanish law requires a helmet on every e-scooter, rentals included, so bring your own. Rides start and end only at Hoppy’s marked spots, and you can’t ride on the promenade, the pavements or the beach.',
   published: '2026-10-31',
-  updated: '2026-10-31',
+  updated: '2026-11-10',
   city: 'es:Puerto del Carmen',
   sections: [
     {

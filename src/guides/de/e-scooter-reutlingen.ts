@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Reutlingen: Preise, Sperrzonen und Abstellregeln von der Wilhelmstrasse bis zur Pomologie',
   lede: 'Einen E-Scooter in Reutlingen leihst du in der App von Voi, Bolt oder Dott, ab 18 und ohne Führerschein. Voi und Bolt vermieten rund um die Uhr und verlangen keine Entsperrgebühr und 0,20 € pro Minute (Stand November 2026): Zehn Minuten kosten bei beiden 2,00 €, zwanzig 4,00 €. Bei Dott zeigt die App den Preis vor dem Entsperren. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Altstadt rund um Wilhelmstrasse und Marktplatz, in Pomologie und Volkspark beendest du keine Fahrt, am Hauptbahnhof schon.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-11-07',
   city: 'de:Reutlingen',
   sections: [
     {

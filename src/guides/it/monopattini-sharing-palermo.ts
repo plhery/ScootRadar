@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattini in sharing a Palermo: operatori, orari in centro, parcheggio e multe nel 2026',
   lede: 'A Palermo i monopattini in sharing sono quelli di Bird, Dott e Lime, gli unici tre operatori autorizzati dal Comune, per cinque anni dal 2025, e il servizio funziona giorno e notte. Per noleggiarne uno scarichi l’app, ti iscrivi con un documento d’identità e una carta (servono 18 anni) e inquadri il QR code; il prezzo te lo mostra l’app prima dello sblocco. Il casco, obbligatorio per tutti, lo porti tu. In centro conta l’ora: su via Maqueda, tra via Cavour e piazza Bellini, e sul Cassaro i monopattini passano solo dalle 5 alle 10 del mattino, anche se l’app di Bird non te lo impedisce.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'it:Palermo',
   sections: [
     {

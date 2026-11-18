@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter rules in Switzerland: who may ride, where, and what gets you fined',
   lede: 'Under the e-scooter rules in Switzerland, an e-scooter is a light moped ridden by the rules for cyclists: its motor may assist up to 20 km/h, and it needs no plate or compulsory insurance. You may ride from 16 without a licence, or from 14 with a category M licence, on bike lanes or the road, never the pavement; rental operators require 18. As of November 2026 a helmet is optional, lights stay on day and night, passengers are banned and the alcohol limit is 0.5‰.',
   published: '2026-10-12',
-  updated: '2026-10-13',
+  updated: '2026-11-07',
   sections: [
     {
       heading: 'Are e-scooters legal in Switzerland? The rules at a glance',

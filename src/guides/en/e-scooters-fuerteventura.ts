@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Fuerteventura: Hoppy and Bird in four resorts, what a ride costs, and where you can’t ride',
   lede: 'You can rent an e-scooter in Fuerteventura in four resorts: from Hoppy and Bird in Caleta de Fuste, from Hoppy in Corralejo, and from Bird in Costa Calma and Morro Jable. As of November 2026, ten minutes on a Hoppy cost €4.20–4.90; Bird shows its price in its app. Both rent only to over-18s, and since 1 October 2026 Spanish law requires a helmet on every e-scooter, rentals included, so bring your own. You can’t ride on the promenades or on the FV-1 and FV-2 between resorts and to the airport, and the island’s buses take no e-scooters.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-11-10',
   city: 'es:Caleta de Fuste',
   sections: [
     {

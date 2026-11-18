@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Petah Tikva: Lime and Dott, the City’s tenders, parking bays, the Red Line and Shabbat',
   lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott: sign up in the app, which scans your ID to check your age, scan the scooter’s QR code to unlock it, and end the ride in a marked bay when one is near. As of November 2026 Dott charges ₪5 to unlock and ₪1.25 a minute, so 10 minutes cost ₪17.50; Lime’s app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. The City’s 2023 contract had the companies rent around the clock, Shabbat included, but not on Yom Kippur, and its 2026 tender keeps that.',
   published: '2026-10-30',
-  updated: '2026-10-30',
+  updated: '2026-11-07',
   city: 'il:Petah Tikva',
   sections: [
     {

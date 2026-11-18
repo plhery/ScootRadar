@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Estepona: Dott, the town’s 2026 bylaw, the Paseo Marítimo and old town, buses and Spain’s rules',
   lede: 'In Estepona, on the Costa del Sol, you can rent Dott’s shared e-scooters in the town itself. Dott’s app shows its price before you unlock. You must be 18 to rent, and Spanish law has required a helmet since 1 October 2026, so bring one. Estepona’s scooter bylaw, in force since 8 April 2026, keeps you off pavements and pedestrian areas, the town council said; in 2025 it signposted the Paseo Marítimo and the shopping streets Calle Real and Calle Terraza as off-limits.',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-10',
   city: 'es:Estepona',
   sections: [
     {

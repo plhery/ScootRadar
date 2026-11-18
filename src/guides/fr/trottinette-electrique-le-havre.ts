@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique au Havre : Voi, prix, zones et stationnement en 2026',
   lede: 'Pour louer une trottinette électrique au Havre, il n’y a qu’un opérateur : **Voi**, qui a succédé à Lime le 15 janvier 2025. Installez l’app Voi, créez un compte avec un moyen de paiement, puis scannez le QR code du guidon. Comptez 1 € pour déverrouiller, puis 0,22 € la minute, soit 3,20 € les 10 minutes et 5,40 € les 20 minutes (novembre 2026). La location ne se termine que sur un emplacement Voi. On roule à 25 km/h au plus, jamais sur le trottoir, et en octobre 2026, Voi a ajouté des zones interdites autour de plusieurs lycées et de l’Hôtel de Ville.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-11-07',
   city: 'fr:Le Havre',
   sections: [
     {
