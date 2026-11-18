@@ -6318,8 +6318,7 @@ extension ScooterMapModelTests {
         XCTAssertNil(defaults.object(forKey: "minimum-battery"))
     }
 
-    /// A link's minimum range is for that visit: the rider's own stays kept, and comes back at the next launch, after
-    /// a choice on the slider (kept), Reset, or a link without one. Opening it is no choice of the rider's.
+    /// A link's minimum range lasts for the visit. Moving the slider saves the new choice and Reset saves Any.
     func testALinksMinimumRangeIsForThatVisitAndNotTheRidersOwn() async throws {
         defer { ScooterUnits.current = .automatic }
         let defaults = isolatedDefaults()
