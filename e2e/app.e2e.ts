@@ -788,15 +788,17 @@ test('an empty covered area keeps the count and the chips and says what to do', 
 });
 
 test('scooters being collected again stand faded where they were last seen until the server has them again', async ({ page }) => {
-  let stage: 'none' | 'some' | 'all' = 'none';
+  let stage: 'none' | 'idle' | 'some' | 'all' = 'none';
   const seenAt = Date.now() - 40 * 60_000;
   const seen = (id: string, lat: number, lng: number) => ({ ...scooterResponse.vehicles[0], vehicle_id: id, lat, lng });
   await page.route('**/api/scooters?**', async route => {
     const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
     if (zoom <= 15) return route.fallback();
     const sweeping = { stale: true, refreshing: true, refreshAfterSeconds: 3, lastSeenAt: new Date(seenAt).toISOString() };
-    await route.fulfill({ json: stage === 'none' ? {
-      ...scooterResponse, vehicles: [], providers: {}, lastSeen: { vehicles: [seen('lime-2', 47.3775, 8.5427), seen('lime-3', 47.3763, 8.5405)], clusters: [] },
+    await route.fulfill({ json: stage === 'none' || stage === 'idle' ? {
+      ...scooterResponse, vehicles: [], providers: {}, lastSeen: {
+        ...(stage === 'idle' && { providers: { lime: { seenAt: new Date(seenAt).toISOString(), updating: false } } }),
+        vehicles: [seen('lime-2', 47.3775, 8.5427), seen('lime-3', 47.3763, 8.5405)], clusters: [] },
       meta: { ...scooterResponse.meta, ...sweeping, totalVehicles: 0, mode: 'vehicles', zoom },
     } : stage === 'some' ? {
       ...scooterResponse, lastSeen: { vehicles: [seen('lime-3', 47.3763, 8.5405)], clusters: [] },
@@ -831,6 +833,8 @@ test('scooters being collected again stand faded where they were last seen until
   // It has nothing to rent: no card opens.
   await expect(page.locator('.dock-card')).toHaveCount(0);
 
+  stage = 'idle';
+  await expect(fadedTip.locator('span')).toHaveText('May have moved since', { timeout: 10_000 });
   // The next answers, a few seconds apart, bring the scooters the sweep has found.
   stage = 'some';
   await expect(page.locator('.scooter-marker')).toHaveCount(3, { timeout: 10_000 });

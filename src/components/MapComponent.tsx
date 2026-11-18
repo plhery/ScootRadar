@@ -781,6 +781,35 @@ export default function MapComponent({
     }
   }, [frameLng, readyMap, parking, selectedParkingId, t]);
 
+  // A faded scooter pressed: whose it is, when it was seen, and that it may have moved since. It has
+  // nothing to rent: the light of the scooter, when it is found again, has.
+  useEffect(() => {
+    showFadedTipRef.current = (key: string) => {
+      const map = mapRef.current;
+      const tip = fadedTipRef.current;
+      const entry = lastSeenMarkersRef.current.get(key);
+      const vehicle = entry?.vehicle;
+      const status = vehicle && lastSeenProviders[vehicle.provider];
+      if (!map || !tip || !entry || !vehicle || !status) return;
+      const weekday = new Date(status.seenAt).toDateString() !== new Date().toDateString();
+      const title = document.createElement('strong');
+      title.textContent = formatUiText({ key: 'lastSeen.tip', values: { name: PROVIDERS[vehicle.provider]?.name ?? vehicle.provider },
+        time: status.seenAt, ...(weekday ? { weekday } : {}) }, i18n);
+      const body = document.createElement('span');
+      body.textContent = t(status.updating ? 'lastSeen.tip.updating' : 'lastSeen.tip.moved');
+      tip.replaceChildren(title, body);
+      tip.hidden = false;
+      fadedTipKeyRef.current = key;
+      const box = map.getContainer().getBoundingClientRect();
+      const point = map.latLngToContainerPoint(entry.marker.getLatLng());
+      const x = box.left + point.x, y = box.top + point.y;
+      const centred = x - tip.offsetWidth / 2;
+      const above = y - FADED_RADIUS - TIP_GAP - tip.offsetHeight;
+      tip.style.left = `${Math.round(Math.max(TIP_MARGIN, Math.min(centred, window.innerWidth - tip.offsetWidth - TIP_MARGIN)))}px`;
+      tip.style.top = `${Math.round(above < TIP_MARGIN ? y + FADED_RADIUS + TIP_GAP : above)}px`;
+    };
+  }, [i18n, lastSeenProviders, t]);
+
   // Where scooters were last seen: faded, under the others, until a collection reaches them and the
   // server sends them as the others. Presses go through them to the map, which finds them (fadedUnder).
   useEffect(() => {
@@ -826,39 +855,11 @@ export default function MapComponent({
     // The tip of one that has gone goes with it; that of one still there says what is now known.
     const shown = fadedTipKeyRef.current;
     if (shown !== null && fadedTipRef.current) {
-      if (markers.has(shown)) showFadedTipRef.current(shown);
+      const provider = markers.get(shown)?.vehicle?.provider;
+      if (provider && lastSeenProviders[provider]) showFadedTipRef.current(shown);
       else { fadedTipRef.current.hidden = true; fadedTipKeyRef.current = null; }
     }
   }, [clustered, formatNumber, frameLng, i18n, lastSeenClusters, lastSeenProviders, lastSeenVehicles, readyMap]);
-
-  // A faded scooter pressed: whose it is, when it was seen, and that it may have moved since. It has
-  // nothing to rent: the light of the scooter, when it is found again, has.
-  useEffect(() => {
-    showFadedTipRef.current = (key: string) => {
-      const map = mapRef.current;
-      const tip = fadedTipRef.current;
-      const entry = lastSeenMarkersRef.current.get(key);
-      const vehicle = entry?.vehicle;
-      const status = vehicle && lastSeenProviders[vehicle.provider];
-      if (!map || !tip || !entry || !vehicle || !status) return;
-      const weekday = new Date(status.seenAt).toDateString() !== new Date().toDateString();
-      const title = document.createElement('strong');
-      title.textContent = formatUiText({ key: 'lastSeen.tip', values: { name: PROVIDERS[vehicle.provider]?.name ?? vehicle.provider },
-        time: status.seenAt, ...(weekday ? { weekday } : {}) }, i18n);
-      const body = document.createElement('span');
-      body.textContent = t(status.updating ? 'lastSeen.tip.updating' : 'lastSeen.tip.moved');
-      tip.replaceChildren(title, body);
-      tip.hidden = false;
-      fadedTipKeyRef.current = key;
-      const box = map.getContainer().getBoundingClientRect();
-      const point = map.latLngToContainerPoint(entry.marker.getLatLng());
-      const x = box.left + point.x, y = box.top + point.y;
-      const centred = x - tip.offsetWidth / 2;
-      const above = y - FADED_RADIUS - TIP_GAP - tip.offsetHeight;
-      tip.style.left = `${Math.round(Math.max(TIP_MARGIN, Math.min(centred, window.innerWidth - tip.offsetWidth - TIP_MARGIN)))}px`;
-      tip.style.top = `${Math.round(above < TIP_MARGIN ? y + FADED_RADIUS + TIP_GAP : above)}px`;
-    };
-  }, [i18n, lastSeenProviders, t]);
 
   // The operators' zones and the cities' are drawn under the rest of what is drawn on the ground,
   // in panes inside the one that turns with the map: each kind's fills in a pane of its own that
