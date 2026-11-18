@@ -212,15 +212,11 @@ async function serveAppShell(request, refresh, clientId) {
   }
 
   const fresh = await refresh;
-  if (fresh) return openedAt(fresh, request.url);
-  return (
-    // A page that cannot be kept is shown all the same: only offline is there none.
-    (await fetch(request).catch(() => null)) ??
-    new Response("The app is unavailable offline until it has loaded once.", {
-      status: 503,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    })
-  );
+  if (fresh) return openedAt(fresh.clone(), request.url);
+  return new Response("The app is unavailable offline until it has loaded once.", {
+    status: 503,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
 }
 
 // The map is asked for at its own address, whatever link opened it: the
@@ -237,7 +233,7 @@ function refreshAppShell() {
     try {
       const fresh = await fetch(new Request(APP_SHELL_URL, { cache: "no-store" }));
 
-      if (!fresh.ok || !responseNonce(fresh)) return null;
+      if (!fresh.ok || !responseNonce(fresh)) return fresh;
 
       const changed = cached
         ? (await comparableAppShell(cached)) !== (await comparableAppShell(fresh))
