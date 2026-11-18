@@ -15,7 +15,8 @@ import './playTest.css';
  */
 export default function PlayTestSteps({ copy, place }: { copy: PlayTestCopy; place: PlayTestPlace }) {
   const id = useId();
-  const reached = usePlayTestMemory().step ?? 0;
+  const followed = usePlayTestMemory().steps ?? [];
+  const next = [1, 2, 3].find(number => !followed.includes(number));
 
   return (
     <>
@@ -23,10 +24,10 @@ export default function PlayTestSteps({ copy, place }: { copy: PlayTestCopy; pla
       <ol className="play-steps" role="list">
         {PLAY_TEST_STEPS.map((step, index) => {
           const number = (index + 1) as 1 | 2 | 3;
-          const done = number <= reached;
+          const done = followed.includes(number);
           const words = copy.steps[index];
           return (
-            <li key={step} data-state={done ? 'done' : number === reached + 1 ? 'next' : 'later'}>
+            <li key={step} data-state={done ? 'done' : number === next ? 'next' : 'later'}>
               <span className="play-step-number" aria-hidden="true">
                 {done ? <Icon name="check" size={15} strokeWidth={3} /> : number}
               </span>

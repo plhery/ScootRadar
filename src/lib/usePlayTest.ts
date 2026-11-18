@@ -107,7 +107,7 @@ export const playTest = {
   },
   /** A step's link was followed: the next one is the one offered. */
   stepped(step: 1 | 2 | 3, place: PlayTestPlace) {
-    remember({ step: Math.max(readPlayTestMemory().step ?? 0, step) });
+    remember({ steps: [...new Set([...(snapshot().steps ?? []), step])].sort() });
     track(STEP_EVENTS[step - 1], { place });
   },
   /** × or "Not now": hidden for a week. */

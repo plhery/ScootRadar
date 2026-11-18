@@ -41,7 +41,7 @@ export default function PlayTestChip({ onOpen }: { onOpen: () => void }) {
   }, [audience, arrival]);
 
   // Until it is hidden here, or by the sheet: "Not now", "Don't ask again", or the last step taken.
-  const offer = arrival?.shown === 'offer' && !memory.never && (memory.step ?? 0) < 3 &&
+  const offer = arrival?.shown === 'offer' && !memory.never && memory.steps?.length !== 3 &&
     memory.until === arrival.memory.until;
   const thanks = arrival?.shown === 'thanks' && !thanksClosed;
 
