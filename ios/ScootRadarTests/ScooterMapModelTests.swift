@@ -4192,6 +4192,24 @@ extension ScooterMapModelTests {
         return window
     }
 
+    func testTypingInTheSearchFieldCountsAsInteraction() throws {
+        let search = SwissAddressSearchModel()
+        var edits = 0
+        let window = try window(showing: ScooterSearchPanel(
+            searchModel: search, autofocus: false, onSelect: { _ in },
+            onEdit: { edits += 1 }, onUseCurrentLocation: {}, onCancel: {}
+        ))
+        defer { window.isHidden = true }
+        func field(in view: UIView) -> UITextField? {
+            if let text = view as? UITextField { return text }
+            return view.subviews.lazy.compactMap { field(in: $0) }.first
+        }
+        let input = try XCTUnwrap(field(in: window))
+        input.insertText("Z")
+        XCTAssertEqual(search.query, "Z")
+        XCTAssertGreaterThan(edits, 0)
+    }
+
     func testTopOfTheMapRendersWithoutCrashing() {
         let covered = MapDestination(title: "Zürich HB", point: GeoPoint(latitude: 47.3782, longitude: 8.5402))
         let uncovered = MapDestination(
