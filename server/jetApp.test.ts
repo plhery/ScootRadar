@@ -115,7 +115,7 @@ describe('Go Jet passing failures', () => {
     vi.spyOn(Date, 'now').mockReturnValue(1_800_000_000_000);
     const f = await fixture();
     f.request.mockResolvedValue({ status: 200, body: { transports: [scooter()] } });
-    f.request.mockRejectedValueOnce(new Error('JET map request timed out'));
+    f.request.mockRejectedValueOnce(Object.assign(new Error('JET map request timed out'), { passing: true }));
     await expect(collectJetRegion(system, f.client)).resolves.toMatchObject({ vehicles: [{ vehicle_id: 'jet:S.123' }] });
     expect(f.request).toHaveBeenCalledTimes(4);
     f.request.mockClear();
@@ -125,10 +125,19 @@ describe('Go Jet passing failures', () => {
     expect(new URL(f.request.mock.calls[2][0]).search).toBe(new URL(f.request.mock.calls[1][0]).search);
   });
 
+  it.each(['JET map exceeds the size limit', 'JET returned invalid JSON', 'JET returned a non-JSON map'])(
+    'preserves a transport validation error without retrying: %s', async message => {
+      vi.spyOn(Date, 'now').mockReturnValue(1_800_000_000_000);
+      const f = await fixture();
+      f.request.mockRejectedValue(new Error(message));
+      await expect(collectJetRegion(system, f.client)).rejects.toThrow(message);
+      expect(f.request).toHaveBeenCalledTimes(1);
+    });
+
   it('asks only once more, and not again after a refusal or a bad map', async () => {
     vi.spyOn(Date, 'now').mockReturnValue(1_800_000_000_000);
     const f = await fixture();
-    f.request.mockRejectedValue(new Error('socket hang up'));
+    f.request.mockRejectedValue(Object.assign(new Error('JET map request failed or timed out'), { passing: true }));
     await expect(collectJetRegion(system, f.client)).rejects.toThrow('failed or timed out');
     expect(f.request).toHaveBeenCalledTimes(2);
     for (const [reply, error] of [[{ status: 404 }, 'HTTP 404'], [{ status: 403 }, 'HTTP 403'],
@@ -142,6 +151,16 @@ describe('Go Jet passing failures', () => {
 });
 
 describe('Go Jet production transport', () => {
+  it.each([['ECONNRESET', true], ['CERT_HAS_EXPIRED', false]])('classifies request error %s', async (code, retry) => {
+    const request = Object.assign(new EventEmitter(), { destroy: vi.fn() });
+    vi.mocked(get).mockReturnValue(request as unknown as ClientRequest);
+    const result = requestJetMap('https://example.invalid/map', {}, 1000);
+    request.emit('error', Object.assign(new Error('request failed'), { code }));
+    request.emit('close');
+    const error = await result.catch(reason => reason);
+    expect(error.passing === true).toBe(retry);
+  });
+
   it('pins TLS 1.2, rejects redirects, and stops an oversized response before parsing it', async () => {
     const response = Object.assign(new EventEmitter(), { statusCode: 200, headers: { 'content-type': 'application/json' }, destroy: vi.fn() });
     const request = Object.assign(new EventEmitter(), { destroy: vi.fn() });
