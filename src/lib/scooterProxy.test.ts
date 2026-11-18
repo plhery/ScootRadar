@@ -415,6 +415,12 @@ describe('the server down', () => {
       }
     });
 
+    it('serves a clustered fallback only for its exact view', async () => {
+      const { store } = await keep(wide, { mode: 'clusters', truncated: false });
+      expect((await proxyScooterSnapshot(scooters(wide), env, store)).status).toBe(200);
+      expect((await proxyScooterSnapshot(scooters(inside), env, store)).status).toBe(503);
+    });
+
     it('is not given one the cache would have answered at a lower zoom', async () => {
       // As wide as two 4K screens across at zoom 15: answered at 14.
       const { store } = await keep('south=47.2&west=8.2&north=47.6&east=8.9&zoom=15');
