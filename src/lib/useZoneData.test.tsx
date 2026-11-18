@@ -2,6 +2,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { track } from '@/lib/analytics';
+import { heldUntil, VIEW_PACE } from '@/lib/requestPace';
 import { useZoneData } from '@/lib/useZoneData';
 import type { MapZone } from '@/lib/zones';
 
@@ -123,4 +124,29 @@ it('counts a request that gets no answer, and not one given up for another area'
   rerender({ query: view });
   await act(() => vi.advanceTimersByTimeAsync(250));
   expect(vi.mocked(track)).toHaveBeenCalledTimes(1);
+});
+
+it('waits for shared map capacity before loading zones', async () => {
+  localStorage.setItem('scooters-requests', JSON.stringify(Array(60).fill(Date.now())));
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(answer(false));
+  const hook = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(59_999));
+  expect(fetcher).not.toHaveBeenCalled();
+  await act(() => vi.advanceTimersByTimeAsync(1));
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  hook.unmount();
+});
+
+it('shares a zone refusal and waits out its full deadline before retrying', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch')
+    .mockResolvedValueOnce(new Response(null, { status: 429, headers: { 'Retry-After': '120' } }))
+    .mockResolvedValueOnce(answer(false));
+  const hook = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250));
+  expect(heldUntil(VIEW_PACE, Date.now())).toBe(Date.now() + 120_000);
+  await act(() => vi.advanceTimersByTimeAsync(119_999));
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await act(() => vi.advanceTimersByTimeAsync(1));
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  hook.unmount();
 });
