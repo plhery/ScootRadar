@@ -52,6 +52,13 @@ it.each(['vilnius', 'kaunas'])('%s distinguishes courtyard supervision from the 
   expect(age).not.toMatch(/no age limit in residential zones/i);
 });
 
+it.each(['vilnius', 'kaunas'])('%s gives operating limits for the road and for passing pedestrians', topic => {
+  const guide = GUIDES.find(guide => guide.topic === topic && guide.locale === 'en')!;
+  const text = guideTexts(guide);
+  expect(text[text.indexOf('Speed') + 1]).toMatch(/20 km\/h.*7 km\/h/);
+  if (topic === 'vilnius') expect(guide.faq.some(item => /20 km\/h.*7 km\/h/.test(item.answer))).toBe(true);
+});
+
 describe('the guides', () => {
   it('has each at an address of its own, in words of its language joined by hyphens', () => {
     const addresses = GUIDES.map(guidePath);
