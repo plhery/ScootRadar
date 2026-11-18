@@ -112,7 +112,7 @@ const IDENTIFY_PAUSE_MS = 1000;
 async function arcgisZones(city, { kind, url, layer, envelope, match = {}, nameField = 'Navn', nameTrim, unnamed = [], pointName, outside }, earlier) {
   const { maxRecordCount = 1000 } = await getJson(`${url}?f=json`);
   const results = new Map();
-  const identify = async ([west, south, east, north]) => {
+  const identify = async ([west, south, east, north], depth = 0) => {
     const box = [west, south, east, north].join(',');
     const query = new URLSearchParams({ geometry: box, geometryType: 'esriGeometryEnvelope', sr: '4326',
       layers: `all:${layer}`, tolerance: '0', mapExtent: box, imageDisplay: '2000,2000,96', returnGeometry: 'true', f: 'json' });
@@ -122,10 +122,11 @@ async function arcgisZones(city, { kind, url, layer, envelope, match = {}, nameF
       for (const result of body.results) results.set(String(result.attributes.OBJECTID), result);
       return;
     }
+    if (depth >= 12) throw new Error(city.id + ': ArcGIS subdivision limit reached');
     const [x, y] = [(west + east) / 2, (south + north) / 2];
     for (const quarter of [[west, south, x, y], [x, south, east, y], [west, y, x, north], [x, y, east, north]]) {
       await new Promise(done => setTimeout(done, IDENTIFY_PAUSE_MS));
-      await identify(quarter);
+      await identify(quarter, depth + 1);
     }
   };
   await identify(envelope.split(',').map(Number));
