@@ -81,7 +81,10 @@ export class BirdSupplement {
       this.sweeping = this.sweep(now).finally(() => { this.sweeping = undefined; });
     }
     const added = this.additions(result.vehicles, now, !result.stale);
-    return added.length ? { ...result, vehicles: [...result.vehicles, ...added] } : result;
+    if (!added.length) return result;
+    const at = Object.fromEntries(added.map(scooter => [this.system.provider + ':' + scooter.id, scooter.readAt ?? this.sweptAt!]));
+    return { ...result, reads: { lastAt: result.observedAt ?? now, at },
+      vehicles: [...result.vehicles, ...added.map(scooter => birdVehicle(this.system.provider, scooter))] };
   }
 
   /** Once the sweep under way, if any, has ended. */
@@ -94,7 +97,7 @@ export class BirdSupplement {
     return now - this.startedAt >= SUPPLEMENT_IDLE_MS && minutes >= DAY_FROM && minutes < DAY_UNTIL;
   }
 
-  private additions(listed: readonly Vehicle[], now: number, fresh: boolean): Vehicle[] {
+  private additions(listed: readonly Vehicle[], now: number, fresh: boolean): BirdScooter[] {
     if (this.sweptAt === undefined || now - this.sweptAt > SUPPLEMENT_MAX_AGE_MS) return [];
     const standing = pairWithin(this.scooters, listed.filter(vehicle => vehicle.provider === this.system.provider), SUPPLEMENT_MATCH_M);
     // Those the feed listed then are its own wherever they go: one ridden away is not left standing on the map's old spot.
@@ -102,15 +105,19 @@ export class BirdSupplement {
       if (!fresh) return [];
       this.added = new Set(this.scooters.filter((_, index) => !standing.has(index)).map(scooter => scooter.id));
     }
-    return this.scooters.filter((scooter, index) => this.added!.has(scooter.id) && !standing.has(index))
-      .map(scooter => birdVehicle(this.system.provider, scooter));
+    return this.scooters.filter((scooter, index) => this.added!.has(scooter.id) && !standing.has(index));
   }
 
   /** Never fails: the feed's own scooters stand while Bird's map cannot be read. */
   private async sweep(now: number): Promise<void> {
     this.startedAt = now;
     try {
-      const sweep = await sweepBirdArea(this.api, this.rings, this.scooters, SUPPLEMENT_LIMITS);
+      const reading: Pick<BirdClient, 'nearest'> = { nearest: async (...args) => {
+        const reply = await this.api.nearest(...args);
+        const readAt = this.now();
+        return { ...reply, scooters: reply.scooters.map(scooter => ({ ...scooter, readAt })) };
+      } };
+      const sweep = await sweepBirdArea(reading, this.rings, this.scooters, SUPPLEMENT_LIMITS);
       this.scooters = sweep.scooters.filter(scooter => scooter.brand === this.system.provider &&
         boundsContainPoint(this.system.bounds, scooter.lat, scooter.lng) && this.rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng)));
       this.sweptAt = now;

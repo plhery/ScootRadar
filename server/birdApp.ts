@@ -100,7 +100,7 @@ export const BIRD_BRANDS: Readonly<Record<string, 'bird' | 'spin'>> = {
 };
 const BIRD_MAP: NearestMap = { name: 'Bird', page: BIRD_PAGE, reachM: BIRD_REACH_M, cellM: 7_000 };
 
-export interface BirdScooter { id: string; brand: 'bird' | 'spin'; lat: number; lng: number; battery: number | null; range: number | null }
+export interface BirdScooter { readAt?: number; id: string; brand: 'bird' | 'spin'; lat: number; lng: number; battery: number | null; range: number | null }
 export interface BirdReply { scooters: BirdScooter[]; completeM: number }
 interface Session { version: 1; deviceId: string; accessToken: string; refreshToken: string }
 interface ClientOptions {
@@ -404,7 +404,7 @@ const savedDisc = (value: unknown): value is Disc => {
 /** A scooter as a file the cache saved holds it, read back: a checkpoint's, or a supplement's (birdSupplement.ts). */
 export const savedScooter = (value: unknown): value is BirdScooter => {
   const entry = object(value);
-  return typeof entry?.id === 'string' && (entry.brand === 'bird' || entry.brand === 'spin') && finite(entry.lat) && finite(entry.lng) &&
+  return typeof entry?.id === 'string' && (entry.readAt === undefined || finite(entry.readAt)) && (entry.brand === 'bird' || entry.brand === 'spin') && finite(entry.lat) && finite(entry.lng) &&
     (entry.battery === null || finite(entry.battery)) && (entry.range === null || finite(entry.range));
 };
 
