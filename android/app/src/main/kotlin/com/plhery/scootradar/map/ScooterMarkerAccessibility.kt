@@ -99,7 +99,7 @@ object MarkerElements {
         }
         for (bay in scene.parking) elements += MarkerElement.Bay(bay, scene.bayFrame(bay, projection))
         for (mark in scene.lastSeen) {
-            if (scene.fadedTitle(mark) == null) continue
+            if (!scene.hasFadedDetail(mark)) continue
             elements += MarkerElement.Faded(mark, square(projection.point(mark.coordinate), ScooterMarkerScene.MARKER_SIZE), scene)
         }
         for (cluster in scene.clusters()) {
