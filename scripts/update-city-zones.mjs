@@ -542,8 +542,8 @@ async function geopdfFeatures(url, ocg, symbols) {
       if (/^[/([\]<>]/.test(token) || token.startsWith('%')) { if (!token.startsWith('%')) operands.push(token); continue; }
       const values = operands.filter(operand => typeof operand === 'number');
       switch (token) {
-        case 'q': saved.push(ctm); break;
-        case 'Q': ctm = saved.pop() ?? ctm; break;
+        case 'q': saved.push({ ctm, fill }); break;
+        case 'Q': if (saved.length) ({ ctm, fill } = saved.pop()); break;
         case 'cm': {
           const [a, b, c, d, e, f] = values.slice(-6);
           ctm = [a * ctm[0] + b * ctm[2], a * ctm[1] + b * ctm[3], c * ctm[0] + d * ctm[2], c * ctm[1] + d * ctm[3],
