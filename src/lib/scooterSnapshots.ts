@@ -101,6 +101,7 @@ interface CityTotals {
   // app's full battery range. Bin i holds from REACH_STEPS[i] to the next step; the last step's, 100 km or
   // more; one more, neither. Totals saved before they were counted so have none, those counted by whole
   // kilometres alone none either, and are built again (overviewNeedsRefresh).
+  joint?: Record<string, Record<string, number>>;
   reaches?: Record<string, number[]>;
   // The apps with a scooter here that says its battery and not its range, for the answer's batteryRanges,
   // in alphabetical order, so that totals built apart and joined are those built together.
@@ -283,7 +284,7 @@ export function overviewNeedsRefresh(snapshot: Pick<MobilitySnapshot, 'overview'
     now - snapshot.overview.generatedAt >= OVERVIEW_REFRESH_MS) return true;
   // Totals saved before the reaches were counted could not answer a range minimum, those by whole
   // kilometres alone not one in miles.
-  if (snapshot.overview.cities.some(city => !city.reaches || !city.batteryOnly)) return true;
+  if (snapshot.overview.cities.some(city => !city.reaches || !city.batteryOnly || !city.joint)) return true;
   // A feed discovered or retired since the totals were built would be missing from them or linger.
   // Totals saved before feedIds existed list none, so they refresh once.
   const built = new Set(snapshot.overview.feedIds);
@@ -418,7 +419,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
     const relevant = feeds.filter(feed => (countrySource ? feed.source === countrySource : isSwissSource(feed.source)) && coverageIntersects(feed.coverage, city.bounds));
     const health = healthFor(relevant, now, counts);
     totals.set(city.id, { id: city.id, city: city.city, lat: city.center[0], lng: city.center[1],
-      batteries: {}, reaches: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
+      batteries: {}, reaches: {}, joint: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
     yield;
   }
   const seen = new Set<string>();
@@ -440,6 +441,11 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
       bins[vehicle.battery ?? 101]++;
       const reaches = total.reaches![vehicle.provider] ??= Array<number>(REACH_STEPS.length + 1).fill(0);
       const reach = effectiveRange(vehicle, batteryFullRange(vehicle.provider));
+      if (vehicle.battery !== null && reach !== null) {
+        const joint = total.joint![vehicle.provider] ??= {};
+        const key = vehicle.battery + ':' + reach;
+        joint[key] = (joint[key] ?? 0) + 1;
+      }
       reaches[reach === null ? REACH_STEPS.length : reachBin(reach)]++;
       if (reportsBatteryOnly(vehicle) && !total.batteryOnly!.includes(vehicle.provider)) total.batteryOnly!.push(vehicle.provider);
     }
@@ -495,12 +501,18 @@ export function joinCityOverviews(a: MobilitySnapshot['overview'], b: MobilitySn
       // Without the reaches of either, the two together have none.
       const counted = city.reaches && other.reaches && city.batteryOnly && other.batteryOnly;
       const reaches = counted ? joinBins(city.reaches!, other.reaches!) : undefined;
+      const joint = city.joint && other.joint ? { ...city.joint } : undefined;
+      if (joint) for (const [provider, counts] of Object.entries(other.joint!)) {
+        const merged = { ...joint[provider] };
+        for (const [key, count] of Object.entries(counts)) merged[key] = (merged[key] ?? 0) + count;
+        joint[provider] = merged;
+      }
       const batteryOnly = counted ? [...new Set([...city.batteryOnly!, ...other.batteryOnly!])].sort() : undefined;
       const sources = { ...city.sources };
       for (const source of Object.keys(sources) as Array<keyof typeof sources>) {
         sources[source] = joinStatus(sources[source], other.sources[source] ?? 'skipped');
       }
-      return { ...city, batteries, reaches, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
+      return { ...city, batteries, reaches, joint, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
     }),
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
@@ -530,8 +542,15 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
     for (const [provider, bins] of Object.entries(city.batteries)) {
       if (query.providers && !query.providers.has(provider)) continue;
       const charged = sum(bins, query.minBattery, query.minBattery > 0 ? 101 : 102);
-      // With both minimums, which the clients never ask for, the fewer of the two: no more than pass both.
-      const count = minRange > 0 ? Math.min(charged, sum(city.reaches?.[provider] ?? [], fromStep, REACH_STEPS.length)) : charged;
+      let count = minRange > 0 ? sum(city.reaches?.[provider] ?? [], fromStep, REACH_STEPS.length) : charged;
+      if (minRange > 0 && query.minBattery > 0) {
+        if (!city.joint) throw new ScooterFeedsUnavailableError(['city-overview']);
+        count = 0;
+        for (const [key, vehicles] of Object.entries(city.joint[provider] ?? {})) {
+          const [battery, reach] = key.split(':').map(Number);
+          if (battery >= query.minBattery && reach >= minRange) count += vehicles;
+        }
+      }
       if (count > 0) {
         counts[provider] = count;
         providers[provider] = (providers[provider] ?? 0) + count;

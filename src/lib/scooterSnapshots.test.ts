@@ -140,6 +140,10 @@ describe('persistent map snapshots', () => {
       const count = (minBattery: number) => querySnapshot(cached, { ...query, minBattery }, 8, now).clusters[0]?.count ?? 0;
       expect(count(50)).toBe(5);
       expect(count(91)).toBe(0);
+      const disjoint = snapshot([feed({ vehicles: [
+        { ...vehicle('charged', 90), range_m: 1_000 }, { ...vehicle('far', 10), range_m: 20_000 },
+      ] })]);
+      expect(querySnapshot(disjoint, { ...query, minBattery: 50, minRange: 10_000 }, 8, now).clusters).toEqual([]);
     });
 
     it('counts in the city totals each scooter’s range, or else its battery times its app’s full range, by step of the sliders', () => {
@@ -167,8 +171,8 @@ describe('persistent map snapshots', () => {
       expect(count(4_828)).toBe(7);
       expect(ids(querySnapshot(cached, { ...query, minRange: 4_828 }, 16, now))).toEqual(['far', 'flat', 'lime52', 'lime53', 'short', 'unknown', 'unsaid']);
       expect(count(100_000)).toBe(0);
-      // Both: no more than either lets through.
-      expect(count(13_000, 50)).toBe(2);
+      // Only the battery-only Dott meets both minimums.
+      expect(count(13_000, 50)).toBe(1);
     });
 
     it('counts in the city totals what passes at street zoom and in groups, at every step of the sliders and up to 100 km', () => {
