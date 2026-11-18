@@ -201,6 +201,12 @@ export function withLimeStandby(feeds: CollectableScooterFeed[], recordOf: (id: 
   });
 }
 
+/** A visible standby follows the current national positions, even after a skipped collection. */
+export function eligibleForView(feed: FeedSnapshot, recordOf: (id: string) => FeedSnapshot | undefined, now: number) {
+  const national = standbyNationalFeed(feed.id);
+  return national ? !nationalServes(recordOf(national), now) : !feed.skipped;
+}
+
 /** A standby group's record once its national feed serves again, emptied, as the two would count the same scooters. */
 export function standingDown(record: FeedSnapshot, recordOf: (id: string) => FeedSnapshot | undefined, now: number): FeedSnapshot {
   if (!record.vehicles.length && !record.sweep) return record;

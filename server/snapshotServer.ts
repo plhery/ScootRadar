@@ -16,6 +16,7 @@ import { snapshotPaused } from '../src/lib/seasonalPauses';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
+import { eligibleForView } from './swissAppMaps';
 import { gaugedFeeds, type SnapshotMetrics } from './metrics';
 import type { VisitorLedger } from './visitorLedger';
 import type { PublicVehicleIds } from './publicVehicleIds';
@@ -243,7 +244,9 @@ export function createSnapshotServer(options: ServerOptions) {
     let idleInView: Set<string> | undefined;
     let comingSoon: Set<string> | undefined;
     const refresher = options.refresher;
-    const inView = feedsForQuery(snapshot, parsed.query, zoom).filter(feed => !feed.skipped);
+    const records = snapshot.feeds;
+    const inView = feedsForQuery(snapshot, parsed.query, zoom)
+      .filter(feed => eligibleForView(feed, id => records.find(record => record.id === id), now));
     const viewHeader = request.headers['x-scooter-view'];
     const view = scooterView(typeof viewHeader === 'string' ? viewHeader : undefined);
     const viewer = view && { ...view, id: createHash('sha256').update(`${key}:${view.id}`).digest('hex') };

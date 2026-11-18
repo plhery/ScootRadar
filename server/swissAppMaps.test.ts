@@ -4,7 +4,7 @@ import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterF
 import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { Vehicle } from '../src/lib/types';
 import { reportError } from './errorReporting';
-import { collectFromAppMap, LIME_STANDBY_INTERVAL_MS, mergeAppMap, readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps,
+import { collectFromAppMap, LIME_STANDBY_INTERVAL_MS, mergeAppMap, readsSwissAppMap, eligibleForView, standingDown, withLimeStandby, withSwissAppMaps,
   type SwissAppMapState } from './swissAppMaps';
 
 vi.mock('./errorReporting', () => ({ reportError: vi.fn() }));
@@ -149,6 +149,12 @@ describe('withLimeStandby', () => {
 
   describe('standingDown', () => {
     const groupRecord = (changes: Partial<FeedSnapshot> = {}) => record({ id: 'switzerland:lime_ch_app_zurich_004', source: 'switzerland' as FeedSnapshot['source'], ...changes });
+
+    it('wakes a skipped group as soon as its national positions expire', () => {
+      const skipped = groupRecord({ skipped: true });
+      expect(eligibleForView(skipped, () => record({}), now)).toBe(false);
+      expect(eligibleForView(skipped, () => record({}), now + VEHICLE_MAX_AGE_MS + 1)).toBe(true);
+    });
 
     it('empties a standby group once its national feed serves, so nothing counts twice', () => {
       const sweep = { startedAt: now - 1_000, vehicles: [seen('a')], swept: [] };
