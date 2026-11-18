@@ -34,6 +34,16 @@ describe('the live catalog check', () => {
     }
   });
 
+  it('counts the national feed once when it serves the Basel standby groups', () => {
+    const national = 'national:lime_basel';
+    const feeds = ['000', '001'].map(group => ({ id: 'switzerland:lime_ch_app_basel_' + group,
+      state: 'standby', servedBy: national, vehicles: 0 }));
+    const result = runWithFeeds([...feeds, { id: national, state: 'ok', vehicles: 12, observedAt: Date.now() }],
+      '--countries=CH', '--apps=cache', '--fail-on=gone', '--json');
+    const market = JSON.parse(result.stdout).systems.find(system => system.system === 'lime_ch_app_basel');
+    expect(market).toMatchObject({ state: 'ok', availableScooters: 12 });
+  });
+
   it('reads Japan\'s app maps from the scooter cache, a Lime market from its groups', () => {
     const now = Date.now();
     const luup = JSON.parse(readFileSync(new URL('../data/japanese-scooter-feeds.json', import.meta.url), 'utf8'))
