@@ -124,8 +124,8 @@ export function readPlayTestMemory(): PlayTestMemory {
 }
 
 /** Adds to what is remembered, and returns all of it. */
-export function rememberPlayTest(change: PlayTestMemory): PlayTestMemory {
-  const memory = { ...readPlayTestMemory(), ...change };
+export function rememberPlayTest(change: PlayTestMemory, previous = readPlayTestMemory()): PlayTestMemory {
+  const memory = { ...previous, ...change };
   try { localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(memory)); } catch { /* Private mode: it asks again next time. */ }
   return memory;
 }

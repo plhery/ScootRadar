@@ -38,9 +38,9 @@ function subscribe(listener: () => void) {
 }
 
 /** The same object for as long as what is stored stays the same. */
-function snapshot(): PlayTestMemory {
-  let stored: string | null = null;
-  try { stored = localStorage.getItem(PLAY_TEST_STORAGE_KEY); } catch { /* Nothing stored, then. */ }
+export function playTestSnapshot(): PlayTestMemory {
+  let stored: string | null;
+  try { stored = localStorage.getItem(PLAY_TEST_STORAGE_KEY); } catch { return memory; }
   if (stored !== raw) {
     raw = stored;
     memory = readPlayTestMemory();
@@ -50,11 +50,11 @@ function snapshot(): PlayTestMemory {
 
 /** What this browser remembers of the invitation; nothing on the server and until the page has hydrated. */
 export function usePlayTestMemory(): PlayTestMemory {
-  return useSyncExternalStore(subscribe, snapshot, () => NOTHING);
+  return useSyncExternalStore(subscribe, playTestSnapshot, () => NOTHING);
 }
 
 function remember(change: PlayTestMemory) {
-  rememberPlayTest(change);
+  memory = rememberPlayTest(change, playTestSnapshot());
   listeners.forEach(listener => listener());
 }
 
@@ -107,7 +107,7 @@ export const playTest = {
   },
   /** A step's link was followed: the next one is the one offered. */
   stepped(step: 1 | 2 | 3, place: PlayTestPlace) {
-    remember({ steps: [...new Set([...(snapshot().steps ?? []), step])].sort() });
+    remember({ steps: [...new Set([...(playTestSnapshot().steps ?? []), step])].sort() });
     track(STEP_EVENTS[step - 1], { place });
   },
   /** × or "Not now": hidden for a week. */
@@ -128,5 +128,7 @@ export const playTest = {
 
 /** For tests: forget which places were counted as shown. */
 export function resetPlayTestViews() {
+  raw = undefined;
+  memory = {};
   viewed.clear();
 }
