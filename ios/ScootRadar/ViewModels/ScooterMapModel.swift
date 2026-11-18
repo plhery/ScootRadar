@@ -1311,7 +1311,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             return
         }
 
-        let due = respectingAttemptGap
+        let due = respectingAttemptGap || maintenance != nil
             ? refreshPolicy.nextAttempt(
                 lastSuccess: lastSuccessAt,
                 refreshAfter: refreshAfter,

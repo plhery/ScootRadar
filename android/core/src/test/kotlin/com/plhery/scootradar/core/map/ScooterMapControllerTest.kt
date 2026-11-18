@@ -1269,7 +1269,7 @@ class ScooterMapControllerTest {
     fun aFirstLoadWhileTheServerIsDownWaitsCalmly() = runTest {
         val clock = TestClock()
         val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
-        api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance()))
+        api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance(retryAfter = 30.0)))
         val model = makeController(api, clock = clock)
         model.refresh()
         assertTrue(waitUntil { api.calls == 1 && model.loadIssue.value != null && !model.isLoading.value })
@@ -1279,8 +1279,13 @@ class ScooterMapControllerTest {
 
         // Kept scooters that expired and a refresh that failed: cleared, and still no out-of-date card.
         api.setFailure(null)
-        clock.advance(10.0)
-        model.autoRefreshIfNeeded()
+        model.becameInactive()
+        clock.advance(1.0)
+        model.becameActive()
+        assertFalse(model.isLoading.value)
+        model.becameInactive()
+        clock.advance(29.0)
+        model.becameActive()
         assertTrue(waitUntil { api.calls == 2 && model.lastUpdated.value != null && !model.isLoading.value })
         api.setFailure(ScooterAPIError.ServerDown(ScooterMaintenance()))
         clock.advance(301.0)

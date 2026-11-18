@@ -141,7 +141,7 @@ function createScooterDataController() {
       attemptGapMs: state.attemptGapMs,
       now,
       visible: document.visibilityState === 'visible',
-      returning,
+      returning: returning && state.maintenance === null,
       requestInFlight: request !== null || debounceTimer !== null,
       hasQuery: query !== null,
       lastInteractionAt,
