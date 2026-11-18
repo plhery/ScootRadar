@@ -50,7 +50,7 @@ export interface PublicVehicleIds {
   /** How many scooters have an id that is still in use. */
   size(): number;
   /** Every id kept, the longest out of the answers first, for a restart to take back (restore). */
-  saved(): IterableIterator<SavedPublicId>;
+  saved(now?: number, aheadMs?: number): IterableIterator<SavedPublicId>;
   /** Takes back the ids saved before a restart, those past their time left out, as given before any answer. */
   restore(saved: Iterable<SavedPublicId>, now: number): void;
 }
@@ -88,7 +88,7 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
     for (const [key, entry] of issued) if (now - entry.seenAt > entry.keptMs) issued.delete(key);
   };
 
-  const publicId = (vehicle: Vehicle, now: number): string | null => {
+  const publicId = (vehicle: Vehicle, now: number, observedAt: number): string | null => {
     if (!vehicle.vehicle_id) return null;
     const key = `${vehicle.provider}:${vehicle.vehicle_id}`;
     let entry = issued.get(key);
@@ -98,13 +98,16 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
     } else {
       entry.seenAt = now;
     }
+    if (options.capped?.(vehicle.vehicle_id)) {
+      entry.keptMs = Math.min(cappedKeptMs, observedAt + 15 * 60_000 - now);
+    }
     issued.delete(key);
     issued.set(key, entry);
     return entry.id;
   };
 
-  const published = (vehicles: Vehicle[], now: number) =>
-    vehicles.map(vehicle => vehicle.vehicle_id ? { ...vehicle, vehicle_id: publicId(vehicle, now) } : vehicle);
+  const published = (vehicles: Vehicle[], now: number, sourceTime: string) =>
+    vehicles.map(vehicle => vehicle.vehicle_id ? { ...vehicle, vehicle_id: publicId(vehicle, now, Number.isFinite(Date.parse(sourceTime)) ? Date.parse(sourceTime) : now) } : vehicle);
 
   return {
     publish(body, now) {
@@ -112,19 +115,20 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
         sweptAt = now;
         sweep(now);
       }
-      const result = { ...body, vehicles: published(body.vehicles, now) };
-      if (body.lastSeen) result.lastSeen = { ...body.lastSeen, vehicles: published(body.lastSeen.vehicles, now) };
+      const result = { ...body, vehicles: published(body.vehicles, now, body.meta.generatedAt) };
+      if (body.lastSeen) result.lastSeen = { ...body.lastSeen, vehicles: published(body.lastSeen.vehicles, now, body.meta.lastSeenAt ?? body.meta.generatedAt) };
       trim();
       return result;
     },
     size: () => issued.size,
-    saved() {
+    saved(now, aheadMs = 0) {
+      if (now !== undefined) sweep(now);
       // The keys of now: an id moved to the end by an answer while it is written is written once, where it stood.
       const keys = [...issued.keys()];
       return (function* () {
         for (const key of keys) {
           const entry = issued.get(key);
-          if (entry) yield [key, entry.id, entry.lat, entry.lng, entry.seenAt, entry.keptMs] satisfies SavedPublicId;
+          if (entry && (now === undefined || now + aheadMs <= entry.seenAt + entry.keptMs)) yield [key, entry.id, entry.lat, entry.lng, entry.seenAt, entry.keptMs] satisfies SavedPublicId;
         }
       })();
     },

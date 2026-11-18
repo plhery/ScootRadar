@@ -439,7 +439,7 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
 
 async function persist(final = false) {
   if (persisting) return persisting;
-  if (!snapshot || !dirty) return;
+  if (!snapshot || (!dirty && !vehicleIds.size())) return;
   const now = Date.now();
   if (now - lastHealthLogAt >= 60_000) {
     lastHealthLogAt = now;
@@ -468,7 +468,7 @@ async function persist(final = false) {
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
   const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), looks = rydeViews?.savedLooks(now), sweeps = savedBirdSupplements(),
-    ids = vehicleIds.saved(), plans = limePlans.saved();
+    ids = vehicleIds.saved(now, 2 * SAVE_EVERY_MS), plans = limePlans.saved();
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
