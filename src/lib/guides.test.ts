@@ -44,6 +44,12 @@ const segments = (path: string) => path.split('/').filter(Boolean);
 // What the page of a guide already calls by these names.
 const PAGE_ANCHORS = ['top', 'contents', 'find', 'faq', 'more', 'guides'];
 
+it.each(['tallinn', 'tartu', 'parnu'])('%s distinguishes the standalone alcohol fine from an aggravated violation', topic => {
+  const text = guideTexts(GUIDES.find(guide => guide.topic === topic && guide.locale === 'en')!);
+  const fines = text.find(line => line.includes('€800') && line.includes('§ 259'));
+  expect(fines).toMatch(/€400 \(§ 224²\).*€800 \(§ 259\)/);
+});
+
 describe('the guides', () => {
   it('has each at an address of its own, in words of its language joined by hyphens', () => {
     const addresses = GUIDES.map(guidePath);
