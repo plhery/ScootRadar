@@ -236,11 +236,19 @@ const clusterSize = (count: number) => count < 10 ? 34 : count < 100 ? 40 : coun
  * A scooter where it was last seen: a faded light in the colour of its app, breathing while new
  * positions of its app are on their way, still when nothing is collecting them.
  */
-function createLastSeenIcon(provider: string, updating: boolean): L.DivIcon {
+function createLastSeenIcon(provider: string, updating: boolean, label: string | undefined, activate: () => void): L.DivIcon {
   const color = providerSurfaceColor(provider, PROVIDERS[provider]?.color ?? '#999');
+  const light = document.createElement(label ? 'button' : 'div');
+  light.className = 'last-seen-light' + (updating ? ' last-seen-updating' : '');
+  light.style.setProperty('--marker-color', color);
+  if (label) {
+    light.setAttribute('aria-label', label);
+    light.onclick = event => { event.stopPropagation(); activate(); };
+    light.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') event.stopPropagation(); };
+  } else light.setAttribute('aria-hidden', 'true');
   return L.divIcon({
     className: 'last-seen-wrap',
-    html: `<div class="last-seen-light${updating ? ' last-seen-updating' : ''}" style="--marker-color:${color}" aria-hidden="true"></div>`,
+    html: light,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
   });
@@ -783,9 +791,13 @@ export default function MapComponent({
     const wanted = new Map<string, { at: [number, number]; signature: string; icon: () => L.DivIcon; vehicle?: Vehicle }>();
     for (const vehicle of lastSeenVehicles) {
       const breathing = updating(vehicle.provider);
-      wanted.set(`v:${vehicleMarkerKey(vehicle)}`, {
-        at: [vehicle.lat, lngNear(vehicle.lng, frameLng)], signature: JSON.stringify([vehicle.provider, breathing]),
-        icon: () => createLastSeenIcon(vehicle.provider, breathing), vehicle,
+      const key = `v:${vehicleMarkerKey(vehicle)}`;
+      const status = lastSeenProviders[vehicle.provider];
+      const label = status && formatUiText({ key: 'lastSeen.tip', values: { name: PROVIDERS[vehicle.provider]?.name ?? vehicle.provider },
+        time: status.seenAt }, i18n);
+      wanted.set(key, {
+        at: [vehicle.lat, lngNear(vehicle.lng, frameLng)], signature: JSON.stringify([vehicle.provider, breathing, label]),
+        icon: () => createLastSeenIcon(vehicle.provider, breathing, label, () => showFadedTipRef.current(key)), vehicle,
       });
     }
     for (const cluster of clustered ? lastSeenClusters : []) {
@@ -817,7 +829,7 @@ export default function MapComponent({
       if (markers.has(shown)) showFadedTipRef.current(shown);
       else { fadedTipRef.current.hidden = true; fadedTipKeyRef.current = null; }
     }
-  }, [clustered, formatNumber, frameLng, lastSeenClusters, lastSeenProviders, lastSeenVehicles, readyMap]);
+  }, [clustered, formatNumber, frameLng, i18n, lastSeenClusters, lastSeenProviders, lastSeenVehicles, readyMap]);
 
   // A faded scooter pressed: whose it is, when it was seen, and that it may have moved since. It has
   // nothing to rent: the light of the scooter, when it is found again, has.
