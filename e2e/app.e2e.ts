@@ -821,6 +821,13 @@ test('scooters being collected again stand faded where they were last seen until
   const fadedTip = page.locator('.last-seen-tip');
   await expect(fadedTip.locator('strong')).toHaveText(/^Lime · last seen (?:[A-Z][a-z]{2} )?\d\d:\d\d$/);
   await expect(fadedTip.locator('span')).toHaveText('May have moved · new positions on the way');
+  const detail = page.getByRole('button', { name: /Lime · last seen/ }).first();
+  for (const key of ['Enter', 'Space']) {
+    await page.mouse.click(highest.x + highest.width / 2, highest.y + highest.height / 2);
+    await detail.focus();
+    await detail.press(key);
+    await expect(fadedTip).toBeVisible();
+  }
   // It has nothing to rent: no card opens.
   await expect(page.locator('.dock-card')).toHaveCount(0);
 
