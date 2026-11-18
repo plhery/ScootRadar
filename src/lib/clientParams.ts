@@ -150,11 +150,11 @@ export function serializeClientParams({
   theme: ThemeName;
   map: MapStyleName;
   zones?: boolean;
-}): URLSearchParams {
+}, explicit?: ReadonlySet<LinkSetting>): URLSearchParams {
   const params = new URLSearchParams();
-  if (minRange !== 0) params.set('minRange', String(minRange));
-  if (theme !== 'auto') params.set('theme', theme);
-  if (map !== 'calm') params.set('map', map);
-  if (!zones) params.set('zones', '0');
+  if (minRange !== 0 || explicit?.has('minRange')) params.set('minRange', String(minRange));
+  if (theme !== 'auto' || explicit?.has('theme')) params.set('theme', theme);
+  if (map !== 'calm' || explicit?.has('map')) params.set('map', map);
+  if (!zones || explicit?.has('zones')) params.set('zones', zones ? '1' : '0');
   return params;
 }

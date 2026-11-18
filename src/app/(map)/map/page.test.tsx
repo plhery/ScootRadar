@@ -2469,3 +2469,16 @@ it('keeps the walk active while only another provider has been read', async () =
   await refreshData();
   expect(routeOnMap()).toHaveTextContent('shown');
 });
+
+it('retains explicit link defaults across a reload', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  localStorage.setItem('scooters-params', JSON.stringify({ minRange: '6000', theme: 'dark' }));
+  window.history.replaceState(null, '', '/map?minRange=0&theme=auto');
+  for (let visit = 0; visit < 2; visit++) {
+    const view = mount();
+    await act(async () => vi.advanceTimersByTimeAsync(180));
+    expect(window.location.search).toBe('?minRange=0&theme=auto');
+    expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark' });
+    view.unmount();
+  }
+});
