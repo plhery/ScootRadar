@@ -52,6 +52,15 @@ export function limeAppCatalogs(source, countries, readCatalog, geometry, warn =
     catalog.limeServiceAreaSources = [...new Set(catalog.limeServiceAreaSources)];
     catalogs.set(country.catalog, catalog);
   }
+  for (const { catalog: path } of countries) {
+    if (!path || catalogs.has(path)) continue;
+    const previous = readCatalog(path);
+    const retired = previous?.systems?.filter(system => system.limeAppMap);
+    if (!retired?.length) continue;
+    kept.set(path, new Map(retired.map(system => [system.id, system])));
+    catalogs.set(path, { ...previous, limeVerifiedOn: source.verifiedOn, limeServiceAreaSources: [],
+      systems: previous.systems.filter(system => !system.limeAppMap) });
+  }
   for (const [path, systems] of kept) {
     const written = new Set(catalogs.get(path).systems.map(system => system.id));
     for (const id of systems.keys()) {
