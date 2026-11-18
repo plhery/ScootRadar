@@ -677,12 +677,11 @@ class ScooterWalkTest {
         // Another provider's scooter where it stood is not it.
         val neighbour = scooter("b1", provider = "bird", at = point(east = 303, north = 0))
         val h = shownWalk(to = target, others = listOf(other))
-        h.api.setResponse(
-            ScooterResponse(
-                vehicles = listOf(other, neighbour),
-                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList()),
-            ),
+        fun missing() = ScooterResponse(
+            vehicles = listOf(other, neighbour),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), shownSince = mapOf("lime" to h.clock.now.toString())),
         )
+        h.api.setResponse(missing())
 
         // Missing from one update: it may be back with the next, so the way stays.
         h.model.refresh()
@@ -698,6 +697,7 @@ class ScooterWalkTest {
 
         // Missing from a second, later update as well.
         h.clock.advance(60.0)
+        h.api.setResponse(missing())
         h.model.refresh()
         val gone = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone }
         assertTrue(gone)
@@ -1213,7 +1213,7 @@ class ScooterWalkTest {
 
     /** An older server, or an app with no positions shown, names no time of its: the data's own then tells the reads apart. */
     @Test
-    fun aScooterIsTakenFromTwoUpdatesWhereTheDataDoesNotSayItsAppsTime() = runTest {
+    fun otherProviderUpdatesCannotConfirmAMissingScooter() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val bolt = scooter("bolt-1", provider = "bolt", at = point(east = -200, north = 0))
         val h = shownWalk(to = target, others = listOf(bolt))
@@ -1236,7 +1236,7 @@ class ScooterWalkTest {
             if (index < 2) assertEquals("update ${index + 1}", ScooterWalkPhase.Shown, h.model.walk.value?.phase)
         }
 
-        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
     }
 
     /**
@@ -1246,7 +1246,7 @@ class ScooterWalkTest {
      * testAnAnswerThatDoesNotNameItsAppIsToldApartByWhenItWasGenerated).
      */
     @Test
-    fun anAnswerThatDoesNotNameItsAppIsToldApartByWhenItWasGenerated() = runTest {
+    fun responseClockChangesDoNotConfirmAMissingScooter() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val bird = scooter("b1", provider = "bird", at = point(east = -200, north = 0))
         val h = shownWalk(to = target, others = listOf(bird))
@@ -1277,7 +1277,7 @@ class ScooterWalkTest {
         h.api.setResponse(answer(generatedAt.plusSeconds(60), shownSince = null, clockOffset = 0.4))
         h.model.refresh()
         assertTrue(waitUntil { h.api.calls == 4 && !h.model.isLoading.value })
-        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
     }
 
     @Test
@@ -1306,19 +1306,19 @@ class ScooterWalkTest {
         // Its app's new positions are in, without it; another app's faded scooter where it stood is not it: from two
         // updates, taken.
         val neighbour = scooter("b1", provider = "bird", at = point(east = 302, north = 0))
-        h.api.setResponse(
-            ScooterResponse(
-                vehicles = listOf(other),
-                lastSeenVehicles = listOf(neighbour),
-                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList()),
-            ),
+        fun missing() = ScooterResponse(
+            vehicles = listOf(other),
+            lastSeenVehicles = listOf(neighbour),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), shownSince = mapOf("lime" to h.clock.now.toString())),
         )
+        h.api.setResponse(missing())
         val before = h.api.calls
         h.model.refresh()
         val missedOnce = waitUntil { h.api.calls > before && !h.model.isLoading.value }
         assertTrue(missedOnce)
         assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
         h.clock.advance(60.0)
+        h.api.setResponse(missing())
         h.model.refresh()
 
         val gone = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Gone }
@@ -1406,10 +1406,13 @@ class ScooterWalkTest {
         rider: GeoPoint?,
         status: ScooterAuthorizationStatus = ScooterAuthorizationStatus.AuthorizedWhenInUse,
     ): Harness {
-        val api = StubScooterAPI(ScooterResponse(vehicles = vehicles, parking = parking))
+        val clock = TestClock()
+        val providers = vehicles.map { it.provider }.toSet()
+        val api = StubScooterAPI(ScooterResponse(vehicles = vehicles, parking = parking), readTimes = {
+            providers.associateWith { clock.now.toString() }
+        })
         val directions = FakeWalkingDirections(result = Result.success(detour))
         val manager = FakeLocationManager(status)
-        val clock = TestClock()
         val opened = mutableListOf<ScooterWalkTarget>()
         val analytics = RecordingAnalytics()
         val model = makeController(

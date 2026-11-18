@@ -628,7 +628,7 @@ test('a scooter that leaves the map while you walk to it is said to be gone, and
       vehicles: scooterResponse.vehicles.filter(vehicle => vehicle.provider !== 'lime'),
       providers: { bird: 1, bolt: 1 },
       // Each answer is a new update of the data.
-      meta: { ...scooterResponse.meta, mode: 'vehicles', totalVehicles: 2, zoom, generatedAt: new Date().toISOString() },
+      meta: { ...scooterResponse.meta, mode: 'vehicles', totalVehicles: 2, zoom, generatedAt: new Date().toISOString(), shownSince: { lime: new Date().toISOString() } },
     }) });
   });
   await locateAt(page, HERE);

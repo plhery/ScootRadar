@@ -63,6 +63,7 @@ import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.localized
@@ -730,7 +731,10 @@ private fun walked(controllers: TestControllers, clock: TestClock, end: ScooterW
     val other = scooter(id = "b", provider = "voi", latitude = 47.3765, longitude = 8.5430)
     var vehicles = listOf(target, other)
     val api = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = ScooterResponse(vehicles = vehicles)
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) = ScooterResponse(
+            vehicles = vehicles,
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), shownSince = mapOf("lime" to clock.now.toString())),
+        )
     }
     val noRoute = Result.failure<List<GeoPoint>>(WalkingDirectionsError(WalkingDirectionsError.Reason.NoRoute))
     val directions = FakeWalkingDirections(result = if (end == ScooterWalkPhase.Gone) null else noRoute)

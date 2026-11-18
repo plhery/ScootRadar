@@ -1543,7 +1543,7 @@ class ScooterMapController(
                 queryZoom = zoom
                 queryMinimumRange = requestMinimumRange
                 rebuildVehicleIndex()
-                followWalkTarget(response.meta, loadedFor = bounds, observedAt = observedAt, previousIDs = previousIDs)
+                followWalkTarget(response.meta, loadedFor = bounds, previousIDs = previousIDs)
                 if (cardScooter != null) followCardScooter(cardScooter, previousIDs = previousIDs)
                 // Only from an answer that lists the card's scooter under its own id, live or faded, is every other id
                 // near it another scooter: one that doesn't (groups, cut short, or faded under the id of a read the walk

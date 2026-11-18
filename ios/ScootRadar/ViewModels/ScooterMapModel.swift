@@ -1855,7 +1855,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 queryZoom = zoom
                 queryMinimumRange = requestMinimumRange
                 rebuildVehicleIndex()
-                followWalkTarget(in: response.meta, loadedFor: bounds, receivedAt: receivedAt, previousIDs: previousIDs)
+                followWalkTarget(in: response.meta, loadedFor: bounds, previousIDs: previousIDs)
                 if let cardScooter { followCardScooter(cardScooter, previousIDs: previousIDs) }
                 noteNeighbours()
                 rebuildMapScooters()
@@ -2503,7 +2503,6 @@ extension ScooterMapModel {
     private func followWalkTarget(
         in meta: ScooterResponseMetadata?,
         loadedFor bounds: GeoBounds,
-        receivedAt: Date,
         previousIDs: Set<String>
     ) {
         guard var walk, case let .scooter(scooter) = walk.target else { return }
@@ -2566,7 +2565,7 @@ extension ScooterMapModel {
             }) != nil {
             return
         }
-        let read = Self.read(of: scooter.provider, in: meta) ?? receivedAt
+        guard let read = Self.read(of: scooter.provider, in: meta) else { return }
         guard let missedRead = walk.missedRead else {
             walk.missedRead = meta?.readThrough?[scooter.provider].flatMap(ScooterServerTime.date) ?? read
             self.walk = walk
@@ -2583,10 +2582,9 @@ extension ScooterMapModel {
         announceWalk(ScooterWalkNote.gone.text)
     }
 
-    /// When the positions shown of `provider` were seen, as the server wrote it: its own time (meta.shownSince), or
-    /// the answer's (generatedAt), the oldest of every app's, from a server that doesn't name it. Nil without either.
+    /// A completed read of this provider, on the server's clock.
     private static func read(of provider: String, in meta: ScooterResponseMetadata?) -> Date? {
-        meta?.shownSince?[provider].flatMap(ScooterServerTime.date) ?? meta?.generatedAt.flatMap(ScooterServerTime.date)
+        meta?.shownSince?[provider].flatMap(ScooterServerTime.date)
     }
 
     /// A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on

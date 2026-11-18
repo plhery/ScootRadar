@@ -296,7 +296,6 @@ private fun ScooterMapController.reportArrival(target: ScooterWalkTarget) {
 internal fun ScooterMapController.followWalkTarget(
     meta: ScooterResponseMetadata?,
     loadedFor: GeoBounds,
-    observedAt: Instant,
     previousIDs: Set<String>,
 ) {
     var walk = walk.value ?: return
@@ -349,7 +348,7 @@ internal fun ScooterMapController.followWalkTarget(
     if (!walk.isUnderway || standsFaded(scooter)) return
     // The read of its app this data is of: the same read served again, while another app in view is late or swept
     // and holds the data's own time back, says nothing new.
-    val read = appRead(scooter.provider, meta = meta) ?: observedAt
+    val read = appRead(scooter.provider, meta = meta) ?: return
     val missedAt = walk.missedAt
     if (missedAt == null) {
         // The newest of the app's reads in view (meta.readThrough), read on the server's clock as appRead's.
@@ -365,15 +364,10 @@ internal fun ScooterMapController.followWalkTarget(
 }
 
 /**
- * When the positions of [provider] in the data were seen, as the server wrote it: their own time (meta.shownSince), the
- * oldest of its reads in view, which moves when its feed is collected again, and, where it has several in view, as
- * Lime's groups, when another of them is read or the view takes one in or leaves one out; or, where the data does not
- * say, from an older server or of an app with no positions shown, the data's own (generatedAt). Read on the server's clock, not this device's: the clock
- * offset is measured anew from each answer's Date header, to the second, and would tell one answer served twice from
- * itself (the iPhone's ScooterMapModel.read). Null without either.
+ * A completed read of the target provider, on the server's clock. An unrelated provider cannot confirm a miss.
  */
 private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? =
-    serverTime(meta?.shownSince?.get(provider)) ?: serverTime(meta?.generatedAt)
+    serverTime(meta?.shownSince?.get(provider))
 
 private fun serverTime(value: String?): Instant? {
     value ?: return null
