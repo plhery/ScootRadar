@@ -98,7 +98,7 @@ it('fails closed without an origin credential and forwards only a trusted client
     headers: expect.objectContaining({ 'X-Scooter-Client-IP': '2001:db8:12:3400::' }) }));
 });
 
-it('tells the cache who asks, from a pass, a view or an app\'s user agent, and asks the web map for its pass', async () => {
+it('tells the cache who asks, from a pass, a view or an app\'s user agent, and asks the maps for their pass', async () => {
   const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({ vehicles: [] }));
   const passes = { ...env, MAP_PASS_SECRET: 'pass-secret', TURNSTILE_SECRET_KEY: 'turnstile-secret' };
   const pass = await issueMapPass('pass-secret', '192.0.2.1');
@@ -113,7 +113,13 @@ it('tells the cache who asks, from a pass, a view or an app\'s user agent, and a
   expect(await ask({ 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)' })).toEqual({ client: 'other', pass: 'none' });
   // A pass of another network, or forged, is none.
   expect(await ask({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}`, 'cf-connecting-ip': '192.0.2.2' })).toEqual({ client: 'map', pass: 'none' });
-  expect(await ask({ Cookie: `${MAP_PASS_COOKIE}=${pass.slice(0, -1)}A` })).toEqual({ client: 'other', pass: 'none' });
+  const forged = `${pass.slice(0, -1)}${pass.endsWith('A') ? 'B' : 'A'}`;
+  expect(await ask({ Cookie: `${MAP_PASS_COOKIE}=${forged}` })).toEqual({ client: 'other', pass: 'none' });
+  // An app's pass comes in the header, as the apps hold no cookie.
+  const app = { ...view, 'User-Agent': 'okhttp/5.5.1' };
+  expect(await ask({ ...app, 'X-Scooter-Pass': pass })).toEqual({ client: 'verified', pass: null });
+  expect(await ask({ ...app, 'X-Scooter-Pass': forged })).toEqual({ client: 'map', pass: 'none' });
+  expect(await ask({ ...app, 'X-Scooter-Pass': pass, 'cf-connecting-ip': '192.0.2.2' })).toEqual({ client: 'map', pass: 'none' });
   // No pass is asked for where none can be given, nor for the zones.
   expect(await ask(view, env)).toEqual({ client: 'map', pass: null });
   expect(await ask(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof env)).toEqual({ client: 'map', pass: null });

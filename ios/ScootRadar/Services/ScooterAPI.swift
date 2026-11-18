@@ -51,13 +51,18 @@ actor ScooterAPI: ScooterAPIClient {
     private let viewID = UUID().uuidString.lowercased()
     private var viewSequence = 0
     let session: any ScooterNetworkSession
+    /// Shows the server that the scooters are asked for by this app (ScooterPassProvider); without, they are asked
+    /// for with no pass.
+    private let pass: ScooterPassProvider?
 
     init(
         baseURL: URL = productionBaseURL,
-        session: any ScooterNetworkSession = privateSession
+        session: any ScooterNetworkSession = privateSession,
+        pass: ScooterPassProvider? = nil
     ) {
         self.baseURL = baseURL
         self.session = session
+        self.pass = pass
     }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int = 0) async throws -> ScooterResponse {
@@ -75,7 +80,7 @@ actor ScooterAPI: ScooterAPIClient {
         if minimumRange > 0 {
             query.append(URLQueryItem(name: "minRange", value: String(minimumRange)))
         }
-        let (data, httpResponse) = try await get("api/scooters", query: query, view: view)
+        let (data, httpResponse) = try await get("api/scooters", query: query, view: view, withPass: true)
         // The server's times are compared with this device's clock, which may be wrong.
         let clockOffset = Self.clockOffset(
             dateHeader: httpResponse.value(forHTTPHeaderField: "Date"),
@@ -118,8 +123,11 @@ actor ScooterAPI: ScooterAPIClient {
         }
     }
 
-    /// A GET to the app's server, with what went wrong told apart as the dock reports it.
-    private func get(_ path: String, query: [URLQueryItem], view: String? = nil) async throws -> (Data, HTTPURLResponse) {
+    /// A GET to the app's server, with what went wrong told apart as the dock reports it. Only the scooters go
+    /// `withPass`: zones and the cities' files are the same for everyone.
+    private func get(
+        _ path: String, query: [URLQueryItem], view: String? = nil, withPass: Bool = false
+    ) async throws -> (Data, HTTPURLResponse) {
         var components = URLComponents(
             url: baseURL.appending(path: path),
             resolvingAgainstBaseURL: false
@@ -134,6 +142,8 @@ actor ScooterAPI: ScooterAPIClient {
         request.timeoutInterval = 20
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         if let view { request.setValue(view, forHTTPHeaderField: "X-Scooter-View") }
+        let pass = withPass ? pass : nil
+        if let held = await pass?.current() { request.setValue(held, forHTTPHeaderField: "X-Scooter-Pass") }
 
         let data: Data
         let response: URLResponse
@@ -161,6 +171,10 @@ actor ScooterAPI: ScooterAPIClient {
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ScooterAPIError.invalidResponse
+        }
+        // The server saw no valid pass: one is asked for aside, whatever the answer, which doesn't wait for it.
+        if let pass, httpResponse.value(forHTTPHeaderField: "X-Scooter-Pass")?.lowercased() == "none" {
+            await pass.askIfDue()
         }
         guard (200 ... 299).contains(httpResponse.statusCode) else {
             if (500 ... 599).contains(httpResponse.statusCode), let maintenance = ScooterMaintenance(httpResponse) {

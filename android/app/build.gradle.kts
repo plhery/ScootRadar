@@ -56,9 +56,9 @@ android {
     }
 
     // Which store the build is for. play, the default: Google Play's, which the beta's own F-Droid repository and the
-    // GitHub releases also carry as Play signed it, with Google Play's card to rate the app (X-AD27). fdroid: F-Droid's
-    // catalog, which builds the app from source and signs it with its own key, and takes no library that isn't free
-    // software, so it has no card (app/StoreReview).
+    // GitHub releases also carry as Play signed it, with Google Play's card to rate the app (X-AD27) and Play Integrity's
+    // token for the server's pass. fdroid: F-Droid's catalog, which builds the app from source and signs it with its own
+    // key, and takes no library that isn't free software, so it has neither (app/StoreReview, app/StorePass).
     flavorDimensions += "store"
     productFlavors {
         create("play") {
@@ -139,6 +139,9 @@ dependencies {
     // Google Play's card to rate the app, as StoreKit's requestReview on the iPhone (X-AD27); its FakeReviewManager
     // stands in for Play in the tests. Not in the fdroid build: it isn't free software.
     "playImplementation"(libs.play.review)
+    // Play Integrity's classic token, which proves to the server the app is the one Play installed, for its pass
+    // (core's ScooterPasses). Not in the fdroid build either: it isn't free software.
+    "playImplementation"(libs.play.integrity)
     baselineProfile(project(":baselineprofile"))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
@@ -175,10 +178,10 @@ dependencies {
 /**
  * LOG-331 (ScooterAnalytics.swift:4): the app reads no advertising id, as the iPhone's reads none. A build's merged
  * manifest asks for no AD_ID permission, which Play services' ads libraries merge in, and the libraries it ships hold
- * nothing of Google Play, Play services or Firebase but what Google Play's review card is asked through (X-AD27):
- * Play's review library and its common core, and the Task API and the base it stands on, which read no id. The fdroid
- * build holds none of them, as F-Droid's catalog takes no library that isn't free software. The unit tests run once
- * the store's debug and release builds are checked.
+ * nothing of Google Play, Play services or Firebase but what Google Play's review card (X-AD27) and Play Integrity's
+ * token for the server's pass are asked through: Play's review and integrity libraries and their common core, and the
+ * Task API and the base it stands on, which read no id. The fdroid build holds none of them, as F-Droid's catalog takes
+ * no library that isn't free software. The unit tests run once the store's debug and release builds are checked.
  */
 abstract class AdvertisingIdCheck : DefaultTask() {
     @get:InputFile
@@ -189,7 +192,7 @@ abstract class AdvertisingIdCheck : DefaultTask() {
     @get:Input
     abstract val libraries: SetProperty<String>
 
-    /** Those of [GROUPS] the build may ship: [PLAY_REVIEW] in the play build, none in the fdroid one. */
+    /** Those of [GROUPS] the build may ship: [PLAY] in the play build, none in the fdroid one. */
     @get:Input
     abstract val allowed: SetProperty<String>
 
@@ -214,11 +217,12 @@ abstract class AdvertisingIdCheck : DefaultTask() {
         val GROUPS = listOf("com.google.android.play", "com.google.android.gms", "com.google.firebase")
 
         /**
-         * com.google.android.play:review and what it stands on: Play's common core, and Play services' Task API and its
-         * base, no id among them.
+         * com.google.android.play:review and :integrity, and what they stand on: Play's common core, and Play services'
+         * Task API and its base, no id among them.
          */
-        val PLAY_REVIEW = setOf(
+        val PLAY = setOf(
             "com.google.android.play:review",
+            "com.google.android.play:integrity",
             "com.google.android.play:core-common",
             "com.google.android.gms:play-services-basement",
             "com.google.android.gms:play-services-tasks",
@@ -248,7 +252,7 @@ androidComponents {
         tasks.register<AdvertisingIdCheck>("check${name}AdvertisingId") {
             manifest.set(variant.artifacts.get(SingleArtifact.MERGED_MANIFEST))
             libraries.set(variant.runtimeConfiguration.incoming.resolutionResult.rootComponent.map { AdvertisingIdCheck.libraries(it) })
-            allowed.set(if (variant.flavorName == "fdroid") emptySet() else AdvertisingIdCheck.PLAY_REVIEW)
+            allowed.set(if (variant.flavorName == "fdroid") emptySet() else AdvertisingIdCheck.PLAY)
             checked.set(layout.buildDirectory.file("advertising-id/${variant.name}.txt"))
         }
         // The plugin gives a variant src/<variant>/generated/baselineProfiles alone, src/playRelease/… since the

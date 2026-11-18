@@ -1,5 +1,5 @@
 import { clientNetwork } from '@/lib/clientNetwork';
-import { holdsMapPass, MAP_PASS_HEADER } from '@/lib/mapPass';
+import { holdsMapPass, MAP_PASS_HEADER, validMapPass } from '@/lib/mapPass';
 import { SCOOTER_CLIENT_HEADER, scooterClient } from '@/lib/scooterClient';
 import { scooterView } from '@/lib/scooterView';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
@@ -240,9 +240,10 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
     const view = scooterView(request.headers.get('X-Scooter-View'));
-    // Who asks: a browser with a pass, a map of ours, an app too old to name its view, or another client, which
-    // the cache answers from what it holds (scooterClient.ts).
-    const pass = await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client);
+    // Who asks: a map with a pass (a browser's cookie, an app's header), a map of ours, an app too old to name its
+    // view, or another client, which the cache answers from what it holds (scooterClient.ts).
+    const pass = await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client)
+      || await validMapPass(request.headers.get(MAP_PASS_HEADER), env.MAP_PASS_SECRET, client);
     const asker = scooterClient({ pass, view: !!view, userAgent: request.headers.get('User-Agent') });
     let response: Response;
     try {
@@ -265,7 +266,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     result.headers.delete('X-Scooter-Public-Cache-Control');
     result.headers.delete(KEEP_SECONDS);
     for (const [key, value] of Object.entries(securityHeaders)) result.headers.set(key, value);
-    // The web map asks for a pass when an answer says it has none (mapPassClient.ts); the apps never do.
+    // The maps ask for a pass when an answer says they have none (mapPassClient.ts, appPass.ts).
     if (!zones && !pass && env.MAP_PASS_SECRET && env.TURNSTILE_SECRET_KEY) result.headers.set(MAP_PASS_HEADER, 'none');
     // Not an answer the cache is still collecting feeds or zones for: the one after it is kept.
     if (lastGood && response.status === 200 && publicPolicy?.startsWith('public') && seconds > 0) {

@@ -87,4 +87,9 @@ it('names the invisible Turnstile check, its privacy addendum and the pass cooki
   // MAP_PASS_COOKIE and MAP_PASS_SECONDS (src/lib/mapPass.ts).
   expect(section).toMatch(/cookie for 24 hours, __Host-scootradar-pass , which holds when it expires/);
   expect(section).toMatch(/no IP address is stored/);
+  // The apps' passes (src/lib/appPass.ts).
+  expect(section).toMatch(/The iOS app uses Apple&#x27;s App Attest/);
+  expect(section).toMatch(/Google&#x27;s Play Integrity API/);
+  expect(section).toMatch(/which the server neither stores nor logs/);
+  expect(section).toMatch(/The Android app built for F-Droid does not use Play Integrity/);
 });

@@ -2,7 +2,7 @@
  * Who a request for scooters comes from, as the Worker makes it out (scooterProxy.ts) and tells the cache in
  * SCOOTER_CLIENT_HEADER, which only an authenticated Worker may set:
  *
- * - verified: a browser holding a map pass, which Turnstile gave it (mapPass.ts);
+ * - verified: a map holding a pass, which Turnstile gave a browser, App Attest or Play Integrity an app (mapPass.ts);
  * - map: one of our maps naming its view (X-Scooter-View), the web map before it holds a pass, and the iPhone
  *   and Android apps since 8 and 12 November 2026;
  * - app: our iPhone or Android app too old to name its view, told by its user agent;

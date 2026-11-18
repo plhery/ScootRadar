@@ -583,7 +583,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     override convenience init() {
         self.init(
-            api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard, start: Self.start,
+            api: ScooterAPI(pass: .shared), locationManager: CLLocationManager(), defaults: .standard, start: Self.start,
             cityZoneCache: CityZoneCache.standard, recentPlaceStore: RecentPlaceStore.standard
         )
     }

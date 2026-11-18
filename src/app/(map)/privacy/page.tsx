@@ -184,7 +184,21 @@ export default function PrivacyPage() {
           Once it has passed, the website sets a cookie for 24 hours, <code>__Host-scootradar-pass</code>, which holds
           when it expires and a signature of that time and of your network (your IP address, or its first half for
           IPv6), and no identifier, so that the map&apos;s requests keep the scooters up to date. The map works
-          without it. The iOS and Android apps do not use Turnstile.
+          without it.
+        </p>
+        <p>
+          The iOS and Android apps do not use Turnstile: they get the same pass, held on your device until it expires
+          and sent with their requests for scooters, by proving in the background that they are ScootRadar&apos;s own
+          apps, when the server says they have none, at most once every 10 minutes. The iOS app uses Apple&apos;s App
+          Attest: it makes a key in your device&apos;s Secure Enclave, which Apple certifies the first time, and signs
+          the server&apos;s challenge with it. The Android app from Google Play uses Google&apos;s Play Integrity API,
+          through Google Play services, which tells whether it is the copy Google Play distributes on a device that
+          passes Google&apos;s integrity checks. <a href="https://www.apple.com/legal/privacy/">Apple</a> and{' '}
+          <a href="https://policies.google.com/privacy">Google</a> process your device&apos;s signals under their own
+          policies. The server checks the proof and keeps nothing of it: the iOS app sends its key&apos;s identifier,
+          the same each time on your device, which the server neither stores nor logs; the iOS app keeps the
+          identifier and the server&apos;s signed copy of the key on your device until you delete the app. The Android
+          app built for F-Droid does not use Play Integrity. The apps work without a pass.
         </p>
         <p>
           To tell a map&apos;s requests from a script&apos;s, the server counts each visitor&apos;s requests for

@@ -25,6 +25,7 @@ window = "1.5.1"
 benchmark = "1.5.0"
 profileinstaller = "1.4.1"
 play-review = "2.0.2"
+play-integrity = "1.6.0"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -64,6 +65,7 @@ androidx-window-testing = { module = "androidx.window:window-testing", version.r
 profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
 benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmark" }
 play-review = { module = "com.google.android.play:review", version.ref = "play-review" }
+play-integrity = { module = "com.google.android.play:integrity", version.ref = "play-integrity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

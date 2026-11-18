@@ -12,7 +12,7 @@ import { landingLanguageRedirect } from './src/lib/landingAddress';
 import { guessLanguage } from './src/lib/languageGuess';
 import { legacyHostRedirect } from './src/lib/legacyHost';
 import { maintenanceJson } from './src/lib/maintenance';
-import { answerMapPass, MAP_PASS_PATH } from './src/lib/mapPassEndpoint';
+import { answerMapPass, answerPassChallenge, MAP_PASS_PATH, PASS_CHALLENGE_PATH } from './src/lib/mapPassEndpoint';
 import { movedMapRedirect } from './src/lib/mapAddress';
 import { pageRequest } from './src/lib/pageRequest';
 import { proxyScooterSnapshot } from './src/lib/scooterProxy';
@@ -116,8 +116,10 @@ const scootRadarWorker = {
     const { pathname } = new URL(request.url);
     // Whether maintenance was announced, and until when: answered here, whatever the server's state (src/lib/maintenance.ts).
     if (pathname === '/maintenance.json') return maintenanceJson(env);
-    // The web map's pass, once Turnstile has found the browser is not a script (src/lib/mapPass.ts).
+    // The map's pass, once Turnstile has found the browser is not a script, or App Attest or Play Integrity the
+    // app ours (src/lib/mapPass.ts, src/lib/appPass.ts).
     if (pathname === MAP_PASS_PATH) return answerMapPass(request, env);
+    if (pathname === PASS_CHALLENGE_PATH) return answerPassChallenge(request, env);
     if ((pathname === '/api/scooters' || pathname === '/api/zones') && env.SCOOTER_SNAPSHOT_API_URL) {
       return proxyScooterSnapshot(request, env, { cache: await caches.open('scooter-last-good'), waitUntil: promise => ctx.waitUntil(promise) });
     }

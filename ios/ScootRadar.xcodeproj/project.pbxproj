@@ -15,6 +15,8 @@
 		A00000000000000000000001 /* ScootRadarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* ScootRadarApp.swift */; };
 		A00000000000000000000002 /* ScooterModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000002 /* ScooterModels.swift */; };
 		A00000000000000000000003 /* ScooterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* ScooterAPI.swift */; };
+		A00000000000000000005F01 /* ScooterPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005F01 /* ScooterPass.swift */; };
+		A00000000000000000005F02 /* ScooterPassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005F02 /* ScooterPassTests.swift */; };
 		A00000000000000000000004 /* ScooterMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000004 /* ScooterMapModel.swift */; };
 		A00000000000000000000005 /* ScooterMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000005 /* ScooterMapView.swift */; };
 		A00000000000000000000006 /* ScooterControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000006 /* ScooterControls.swift */; };
@@ -77,6 +79,8 @@
 		B00000000000000000000001 /* ScootRadarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScootRadarApp.swift; sourceTree = "<group>"; };
 		B00000000000000000000002 /* ScooterModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterModels.swift; sourceTree = "<group>"; };
 		B00000000000000000000003 /* ScooterAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterAPI.swift; sourceTree = "<group>"; };
+		B00000000000000000005F01 /* ScooterPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterPass.swift; sourceTree = "<group>"; };
+		B00000000000000000005F02 /* ScooterPassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterPassTests.swift; sourceTree = "<group>"; };
 		B00000000000000000000004 /* ScooterMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapModel.swift; sourceTree = "<group>"; };
 		B00000000000000000000005 /* ScooterMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapView.swift; sourceTree = "<group>"; };
 		B00000000000000000000006 /* ScooterControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterControls.swift; sourceTree = "<group>"; };
@@ -227,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				B00000000000000000000003 /* ScooterAPI.swift */,
+				B00000000000000000005F01 /* ScooterPass.swift */,
 				B0000000000000000000001B /* AddressSearchAPI.swift */,
 				B0000000000000000000001F /* ScooterAnalytics.swift */,
 				B00000000000000000000026 /* WalkingDirections.swift */,
@@ -271,6 +276,7 @@
 				B00000000000000000000029 /* ScooterWalkTests.swift */,
 				B00000000000000000000010 /* ScooterMapModelTests.swift */,
 				B00000000000000000000011 /* ScooterAPITests.swift */,
+				B00000000000000000005F02 /* ScooterPassTests.swift */,
 				B0000000000000000000002B /* ScooterMapLinkTests.swift */,
 				B00000000000000000005B02 /* ScooterReviewPromptTests.swift */,
 			);
@@ -451,6 +457,7 @@
 				A00000000000000000000001 /* ScootRadarApp.swift in Sources */,
 				A00000000000000000000002 /* ScooterModels.swift in Sources */,
 				A00000000000000000000003 /* ScooterAPI.swift in Sources */,
+				A00000000000000000005F01 /* ScooterPass.swift in Sources */,
 				A00000000000000000000004 /* ScooterMapModel.swift in Sources */,
 				A00000000000000000000005 /* ScooterMapView.swift in Sources */,
 				A00000000000000000000016 /* ScooterUserLocationView.swift in Sources */,
@@ -494,6 +501,7 @@
 				A00000000000000000000021 /* ScooterWalkTests.swift in Sources */,
 				A0000000000000000000000E /* ScooterMapModelTests.swift in Sources */,
 				A0000000000000000000000F /* ScooterAPITests.swift in Sources */,
+				A00000000000000000005F02 /* ScooterPassTests.swift in Sources */,
 				A00000000000000000000023 /* ScooterMapLinkTests.swift in Sources */,
 				A00000000000000000005B02 /* ScooterReviewPromptTests.swift in Sources */,
 			);

@@ -58,7 +58,8 @@ class AppContainer(private val context: Context) {
     /** The app's own scope, which outlives every screen: where analytics sends from. */
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    val api = ScooterAPI(isOffline = ::isOffline)
+    /** The server, with the pass that proves the app genuine where the store's build has one (StorePass). */
+    val api = ScooterAPI(isOffline = ::isOffline, pass = storePassSource(context, scope))
 
     val directions = ScootRadarWalkingDirections()
 

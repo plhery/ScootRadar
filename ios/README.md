@@ -296,11 +296,23 @@ reads "Data delayed" without **Try again**, the out-of-date card waits, and the
 map asks again when `Retry-After` says (ten seconds to five minutes), dropping
 the notice once the server answers.
 
+The server collects feeds only for its own maps and apps. When an answer for
+scooters says the app holds no pass (`X-Scooter-Pass: none`), the app asks for
+one aside, never holding the scooters up, at most every 10 minutes and one ask
+at a time: it signs a challenge from `/api/pass/challenge` with App Attest, the
+first time by attesting a new key, then with an assertion of that key, and
+sends it to `/api/pass`. The pass goes with each request for scooters, not for
+zones or files, as `X-Scooter-Pass` until it expires a day later, and works
+only from the network it was given on. Nothing is enforced yet: where App
+Attest is not supported, as on the Simulator, or an ask fails, the app asks as
+before (`Services/ScooterPass.swift`).
+
 ## What stays on the phone
 
 The filters, the appearance, the map style, whether the zones are shown, the language, the passes, the ride
-length used for price estimates, the usage choice and whether the phone was
-ever located are kept in the app's settings, and for the rating prompt the
+length used for price estimates, the usage choice, whether the phone was
+ever located, the server's pass with its expiry and the App Attest key's
+identifier with the server's signed copy of it are kept in the app's settings, and for the rating prompt the
 number of days with a fresh feed, the last day something went wrong, the
 version and day of the last ask (up to 1.4.0 also the time of the last **Open in**,
 which later versions delete). The last
@@ -332,8 +344,8 @@ update it.
   `CityZoneFile.builtIn`) and `ScooterAPIContract.generated.swift` (the API's shape) are written
   by `npm run generate:providers` and `npm run generate:api-contract` from the
   repository's shared data; do not edit them by hand.
-- `Services/` — the scooter API, the address search, MapKit's walking directions
-  and analytics.
+- `Services/` — the scooter API and its pass, the address search, MapKit's
+  walking directions and analytics.
 - `ViewModels/ScooterMapModel.swift` — the state of the screen: loading and
   refreshing, location, the selection, filters, passes, and what the dock shows.
 - `Views/` — `ScooterMapScreen.swift` lays the screen out; `ScooterMapView.swift`

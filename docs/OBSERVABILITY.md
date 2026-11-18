@@ -592,7 +592,7 @@ Since 18 November 2026 the cache collects only for our maps and apps
 (`src/lib/scooterClient.ts`). The Worker tells it who asks, in `X-Scooter-Client`,
 which it believes only with its token:
 
-- `verified`: a browser holding the map pass (below);
+- `verified`: a map holding the map pass (below): a browser its cookie, an app its header;
 - `map`: a request naming its view (`X-Scooter-View`), as the website's map, the
   iPhone app and the Android app send;
 - `app`: an iPhone or Android app too old to name it, by its user agent
@@ -622,8 +622,30 @@ in `server/visitorLedger.ts`); past that, once enforced, their requests would be
 from what the cache holds until the day ends. It is counted, not enforced
 (`enforceAllowance`), until a week of `scootradar_visitor_days_total` shows how many
 of the apps' users would reach it: a phone network's carrier NAT puts many behind one
-address, and enforcement needs the day's counts to outlive a restart. The apps are not
-challenged: App Attest and Play Integrity would be their passes, if it comes to that.
+address, and enforcement needs the day's counts to outlive a restart.
+
+The apps get the same pass by proving they are ours (`src/lib/appPass.ts`), when an
+answer says they have none, at most once every 10 minutes, out of sight: they ask
+`/api/pass/challenge` for a challenge (48 bytes: its time, random bytes and an HMAC of
+them and the network; five minutes, that network only), prove it, and post the proof
+to `/api/pass`, which answers the pass and its expiry; they send it in the
+`X-Scooter-Pass` header, kept on the device until it expires. The iPhone app attests a
+key of the Secure Enclave with Apple's App Attest the first time (`src/lib/appAttest.ts`:
+the certificate chain to Apple's App Attestation root, the nonce, our App ID, the key's
+identifier, either environment: development builds use Apple's development one) and is
+handed it signed by the Worker; later it signs each challenge with it, an assertion.
+The Worker keeps nothing, so an assertion's counter is checked above 0 but not against
+the last one: the challenge's five minutes on one network do that work. The Android
+app from Google Play passes Play Integrity's verdict on a classic request whose nonce is
+the challenge (`src/lib/playIntegrity.ts`): decrypted and checked in the Worker with
+Play Console's keys, it must name our package and the challenge, be under five minutes
+old, come from a copy Google Play recognizes (`PLAY_RECOGNIZED`) and a device that
+meets `MEETS_DEVICE_INTEGRITY`. Play allows 10,000 requests a day for all users; an
+app asks again only on a new network or after a day, and asks for its challenge with
+`?platform=android`, which the Worker answers 503 while it has no keys for Play's
+verdicts, so that none is spent before. The F-Droid build asks for no pass. A refusal is logged as `app_pass_refused` with the platform and the check that
+failed (`challenge`, `chain`, `nonce`, `app`, `key`, `signature`, `device`, …), never
+the key's identifier. Until enforcement, an app without a pass is the `map` it was.
 
 Not done on purpose: Bot Fight Mode or a challenge on `/api` itself, which the iPhone
 and Android apps cannot pass, and a lower limit: a map waiting for its feeds asks

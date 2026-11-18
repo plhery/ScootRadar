@@ -58,7 +58,19 @@ searches, except the last place chosen in the search, which stays on the device 
   cookie for 24 hours, `__Host-scootradar-pass`, holding when it expires and a signature of that
   time and of the visitor's network (the IP address, or its first half for IPv6), and no
   identifier, so that the map's requests keep the scooters up to date. The map works without it.
-  The iOS and Android apps do not use Turnstile.
+- The iOS and Android apps do not use Turnstile: they get the same pass, held on the device until
+  it expires and sent with their requests for scooters, by proving in the background that they are
+  ScootRadar's own apps, when the server says they have none, at most once every 10 minutes. The
+  iOS app uses Apple's App Attest: it makes a key in the device's Secure Enclave, which Apple
+  certifies the first time, and signs the server's challenge with it. The Android app from Google
+  Play uses Google's Play Integrity API, through Google Play services, which tells whether it is
+  the copy Google Play distributes on a device that passes Google's integrity checks. Apple
+  (<https://www.apple.com/legal/privacy/>) and Google (<https://policies.google.com/privacy>)
+  process the device's signals under their own policies. The server checks the proof and keeps
+  nothing of it: the iOS app sends its key's identifier, the same each time on that device, which
+  the server neither stores nor logs; the iOS app keeps the identifier and the server's signed copy
+  of the key on the device until the app is deleted. The Android app built for F-Droid does not use
+  Play Integrity. The apps work without a pass.
 - To tell a map's requests from a script's, the server counts each visitor's requests for
   scooters under a hash of their IP address (or its first half for IPv6), salted afresh each time
   the server starts: by quarter hour, and by UTC day the quarter hours in which they kept the

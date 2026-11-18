@@ -27,6 +27,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.CookieJar
@@ -37,6 +40,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 
 // From ios/ScootRadar/Services/ScooterAPI.swift.
@@ -68,6 +72,11 @@ class ScooterAPI(
      * has failed.
      */
     private val isOffline: () -> Boolean = { false },
+    /**
+     * The pass the requests for scooters carry, and what an answer saying the server saw none asks for one with
+     * (ScooterPassSource): null for none, as in the fdroid build.
+     */
+    val pass: ScooterPassSource? = null,
 ) : ScooterAPIClient {
     // A request waits 20 seconds at most for the server: to connect, and between bytes. Nothing is kept, whatever
     // client the app hands over (privateClient).
@@ -78,6 +87,9 @@ class ScooterAPI(
         .readTimeout(20, TimeUnit.SECONDS)
         .writeTimeout(20, TimeUnit.SECONDS)
         .build()
+
+    // A pass is not asked for again on a dropped connection: the challenge is spent, and Play's token with it.
+    private val passHttp: OkHttpClient by lazy { http.newBuilder().retryOnConnectionFailure(false).build() }
 
     /** The requests under way, each with whether [networkLost] ended it. */
     private val underWay = ConcurrentHashMap<Call, Boolean>()
@@ -118,7 +130,7 @@ class ScooterAPI(
         // Only with a minimum, in whole metres: a server from before the range filter answers as it did, and the app
         // filters the scooters itself. The battery minimum of the builds before is no longer sent.
         if (minimumRange > 0) query += "minRange" to minimumRange.toString()
-        val response = get("api/scooters", query, view = "$viewID.${viewSequence.incrementAndGet()}")
+        val response = get("api/scooters", query, view = "$viewID.${viewSequence.incrementAndGet()}", withPass = true)
         // The server's times are compared with this device's clock, which may be wrong.
         val clockOffset = clockOffset(dateHeader = response.headers["Date"], receivedAt = Instant.now())
 
@@ -137,6 +149,40 @@ class ScooterAPI(
     /** A static file of the website: the same for everyone, it asks with no coordinates. */
     override suspend fun cityZoneFile(name: String): ByteArray = get("zones/v1/$name", emptyList()).body
 
+    /**
+     * The server's challenge for a pass (ScooterPasses), good for 5 minutes from this network. The app names itself: the
+     * server gives an Android app none while it cannot read Play's verdicts, and none of Play's tokens is spent.
+     */
+    internal suspend fun passChallenge(): String {
+        val response = get("api/pass/challenge", listOf("platform" to "android"))
+        return decoded(response) { text -> ScooterAPIJson.decodeFromString(PassChallenge.serializer(), text).challenge }
+    }
+
+    /**
+     * The pass the server gives for Play Integrity's token of [challenge], its expiry moved to this device's clock by
+     * the answer's Date (clockOffset): a clock that is wrong neither drops the pass early, to ask again every 10
+     * minutes, nor keeps it once it has ended.
+     */
+    internal suspend fun passFor(challenge: String, integrityToken: String): ScooterPass {
+        val body = buildJsonObject {
+            put("platform", "android")
+            put("challenge", challenge)
+            put("integrityToken", integrityToken)
+        }
+        val request = Request.Builder()
+            .url(baseURL.newBuilder().addPathSegments("api/pass").build())
+            .header("Accept", "application/json")
+            .post(body.toString().encodeToByteArray().toRequestBody(jsonMediaType))
+            .build()
+        val response = checked(exchange(request, passHttp))
+        val clockOffset = clockOffset(dateHeader = response.headers["Date"], receivedAt = Instant.now())
+        val answer = decoded(response) { text -> ScooterAPIJson.decodeFromString(PassAnswer.serializer(), text) }
+        // OkHttp refuses a header with a line break or beyond ASCII, which would fail every request for scooters.
+        if (!headerSafe.matches(answer.pass)) throw ScooterAPIError.InvalidResponse()
+        val expiresAt = Instant.ofEpochSecond(answer.expiresAt).plusMillis((clockOffset * 1_000).toLong())
+        return ScooterPass(value = answer.pass, expiresAt = expiresAt)
+    }
+
     /** The answer read off the main thread; anything that cannot be read is invalid data. */
     private suspend fun <T> decoded(response: ScooterHTTPResponse, read: (String) -> T): T = try {
         withContext(Dispatchers.Default) { read(response.body.decodeToString()) }
@@ -146,18 +192,34 @@ class ScooterAPI(
         throw ScooterAPIError.InvalidData(error)
     }
 
-    /** A GET to the app's server, with what went wrong told apart as the dock reports it. */
-    private suspend fun get(path: String, query: List<Pair<String, String>>, view: String? = null): ScooterHTTPResponse {
+    /**
+     * A GET to the app's server, with what went wrong told apart as the dock reports it. [withPass], for scooters
+     * alone: with the pass held, and an answer saying the server saw none, whatever its status, has one asked for.
+     */
+    private suspend fun get(
+        path: String,
+        query: List<Pair<String, String>>,
+        view: String? = null,
+        withPass: Boolean = false,
+    ): ScooterHTTPResponse {
         val url = baseURL.newBuilder().addPathSegments(path).apply {
             for ((name, value) in query) addQueryParameter(name, value)
         }.build()
         val request = Request.Builder().url(url).header("Accept", "application/json").apply {
             if (view != null) header("X-Scooter-View", view)
+            if (withPass) pass?.current()?.let { header(PASS_HEADER, it) }
         }.build()
 
-        val call = http.newCall(request)
+        val response = exchange(request)
+        if (withPass && response.headers[PASS_HEADER].equals("none", ignoreCase = true)) pass?.noPass(this)
+        return checked(response)
+    }
+
+    /** The answer to the request, through [client], or what kept it from coming told apart as the dock reports it. */
+    private suspend fun exchange(request: Request, client: OkHttpClient = http): ScooterHTTPResponse {
+        val call = client.newCall(request)
         underWay[call] = false
-        val response = try {
+        return try {
             call.fetch()
         } catch (error: CancellationException) {
             throw error
@@ -173,7 +235,10 @@ class ScooterAPI(
         } finally {
             if (underWay.remove(call) == true) http.connectionPool.evictAll()
         }
+    }
 
+    /** The answer, if its status says it is one; else what the server said told apart as the dock reports it. */
+    private fun checked(response: ScooterHTTPResponse): ScooterHTTPResponse {
         if (response.code !in 200..299) {
             if (response.code in 500..599) ScooterMaintenance.of(response.headers)?.let { throw ScooterAPIError.ServerDown(it) }
             throw ScooterAPIError.HttpStatus(response.code)
@@ -181,8 +246,20 @@ class ScooterAPI(
         return response
     }
 
+    @Serializable
+    private class PassChallenge(val challenge: String)
+
+    @Serializable
+    private class PassAnswer(val pass: String, val expiresAt: Long)
+
     companion object {
         val productionBaseURL: HttpUrl = "https://scootradar.com".toHttpUrl()
+
+        /** The request header of the pass, and of the answer saying the server saw none (ScooterPassSource). */
+        const val PASS_HEADER = "X-Scooter-Pass"
+
+        /** A pass any request may carry: printable ASCII, no space. */
+        private val headerSafe = Regex("[!-~]{1,4096}")
 
         /**
          * The client for the app's own server. A request for scooters carries the bounds of the map, which give

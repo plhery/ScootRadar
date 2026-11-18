@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { holdsMapPass, issueMapPass, MAP_PASS_COOKIE, MAP_PASS_SECONDS, mapPassCookie } from './mapPass';
+import { holdsMapPass, issueMapPass, MAP_PASS_COOKIE, MAP_PASS_SECONDS, mapPassCookie, validMapPass } from './mapPass';
 import { isAppUserAgent, parseScooterClient, scooterClient } from './scooterClient';
 
 const secret = 'a-test-secret-of-the-worker-that-signs-map-passes';
@@ -29,6 +29,14 @@ describe('map pass', () => {
     // A pass made to last longer than a day is no pass of ours.
     const later = await issueMapPass(secret, '192.0.2.1', now + 2 * MAP_PASS_SECONDS * 1000);
     expect(await holdsMapPass(cookie(later), secret, '192.0.2.1', now)).toBe(false);
+  });
+
+  it('is the same pass in an app\'s header as in a browser\'s cookie', async () => {
+    const value = await issueMapPass(secret, '192.0.2.1', now);
+    expect(await validMapPass(value, secret, '192.0.2.1', now)).toBe(true);
+    expect(await validMapPass(value, secret, '192.0.2.2', now)).toBe(false);
+    expect(await validMapPass(`theme=dark; ${value}`, secret, '192.0.2.1', now)).toBe(false);
+    expect(await validMapPass(null, secret, '192.0.2.1', now)).toBe(false);
   });
 
   it('is a cookie for this site alone, out of the page scripts\' reach, for a day', () => {

@@ -202,6 +202,20 @@ The widget's domains must list a host before a map served from it can get a pass
 Cloudflare's test keys (site key `1x00000000000000000000BB`, secret
 `1x0000000000000000000000000000000AA`) always pass, for a local `wrangler dev`.
 
+The apps' passes need the same `MAP_PASS_SECRET`, which also signs their challenges and
+the iPhone app's attested keys: a new one voids those too, and each iPhone attests a
+new key at its next ask. App Attest needs nothing more: the App ID
+(`HGC93X794T.com.plhery.scootradar`) and Apple's App Attestation root key are in
+`src/lib/appAttest.ts`. Play Integrity needs Play Console's response encryption
+managed by us (Play Console → the app → Protected with Play → Play Integrity API →
+Classic requests → Response encryption → "Manage and download my response
+encryption keys"; it asks for a public key to encrypt the downloaded keys to), and
+the two keys stored as the Worker secrets `PLAY_INTEGRITY_DECRYPTION_KEY` (the AES
+key) and `PLAY_INTEGRITY_VERIFICATION_KEY` (the EC public key), each as Play Console
+gives them, in base64. Without them, `/api/pass` answers the Android app 503 and it
+goes without a pass, as before. Switching Play Console back to Google-managed
+encryption voids the downloaded keys at once.
+
 ## Deploys wait for CI
 
 Production deploys a commit only once CI has passed on it. Workers Builds and

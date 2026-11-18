@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
-import { holdsMapPass, MAP_PASS_COOKIE } from './mapPass';
-import { answerMapPass } from './mapPassEndpoint';
+import { appAttestKit, playIntegrityKit } from '@/test/attestationKit';
+import { signAppKey } from './appPass';
+import { holdsMapPass, MAP_PASS_COOKIE, validMapPass } from './mapPass';
+import { answerMapPass, answerPassChallenge } from './mapPassEndpoint';
 
 const env = () => ({ TURNSTILE_SECRET_KEY: 'turnstile-secret', MAP_PASS_SECRET: 'pass-secret',
   SCOOTER_API_RATE_LIMITER: { limit: vi.fn(async () => ({ success: true })) } });
@@ -57,5 +59,65 @@ describe('map pass endpoint', () => {
     const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
     expect((await answerMapPass(ask(), env())).status).toBe(503);
     expect(JSON.parse(logged.mock.calls[0][0])).toEqual({ event: 'map_pass_unverified', error: 'TimeoutError' });
+  });
+});
+
+describe('app pass endpoint', () => {
+  type Environment = Parameters<typeof answerPassChallenge>[1];
+  const challengeOf = async (environment: Environment = env(), method = 'GET', query = '') => answerPassChallenge(new Request(
+    `https://scootradar.com/api/pass/challenge${query}`, { method, headers: { 'cf-connecting-ip': '2001:db8:1:2:3:4:5:6' } }), environment);
+  const challenge = async (environment: Environment = env()) => ((await (await challengeOf(environment)).json()) as { challenge: string }).challenge;
+
+  it('gives an app a challenge, kept nowhere, and says when passes are not set up or limited', async () => {
+    const response = await challengeOf();
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(((await response.json()) as { challenge: string }).challenge).toMatch(/^[\w-]{64}$/);
+    expect((await challengeOf(env(), 'POST')).status).toBe(405);
+    expect((await challengeOf({ ...env(), MAP_PASS_SECRET: undefined })).status).toBe(503);
+    // The Android app, before Play Console's keys are set: it then spends none of Play's daily requests.
+    expect((await challengeOf(env(), 'GET', '?platform=android')).status).toBe(503);
+    expect((await challengeOf({ ...env(), PLAY_INTEGRITY_DECRYPTION_KEY: 'a', PLAY_INTEGRITY_VERIFICATION_KEY: 'b' }, 'GET',
+      '?platform=android')).status).toBe(200);
+    const limited = env();
+    limited.SCOOTER_API_RATE_LIMITER.limit.mockResolvedValue({ success: false });
+    expect((await challengeOf(limited)).status).toBe(429);
+  });
+
+  it('gives the Android app from Google Play a pass for its network, from Play\'s verdict on the challenge', async () => {
+    const play = await playIntegrityKit();
+    const environment = { ...env(), TURNSTILE_SECRET_KEY: undefined, PLAY_INTEGRITY_DECRYPTION_KEY: play.keys.decryptionKey,
+      PLAY_INTEGRITY_VERIFICATION_KEY: play.keys.verificationKey };
+    const fetcher = vi.spyOn(globalThis, 'fetch');
+    const given = await challenge(environment);
+    const response = await answerMapPass(ask({ platform: 'android', challenge: given, integrityToken: await play.token(play.verdict(given)) }), environment);
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(response.headers.has('Set-Cookie')).toBe(false);
+    const { pass, expiresAt, ...rest } = await response.json() as { pass: string; expiresAt: number };
+    expect(rest).toEqual({});
+    expect(expiresAt).toBe(Number(pass.split('.')[0]));
+    expect(await validMapPass(pass, 'pass-secret', '2001:db8:1:2::')).toBe(true);
+    expect(await validMapPass(pass, 'pass-secret', '2001:db8:1:3::')).toBe(false);
+    // Play's verdict is read here: Google is not asked, nor Cloudflare.
+    expect(fetcher).not.toHaveBeenCalled();
+    // Without Play Console's keys, none is given.
+    expect((await answerMapPass(ask({ platform: 'android', challenge: given, integrityToken: 'x.y.z.a.b' }), env())).status).toBe(503);
+  });
+
+  it('gives the iPhone app a pass for an assertion of the key it was handed, and logs only why it refuses one', async () => {
+    const apple = await appAttestKit();
+    const key = await signAppKey('pass-secret', apple.keyId, apple.point);
+    const given = await challenge();
+    const response = await answerMapPass(ask({ platform: 'ios', challenge: given, keyId: apple.keyId, key, assertion: await apple.assert(given) }), env());
+    expect(response.status).toBe(200);
+    expect(await validMapPass(((await response.json()) as { pass: string }).pass, 'pass-secret', '2001:db8:1:2::')).toBe(true);
+
+    const logged = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const refused = await answerMapPass(ask({ platform: 'ios', challenge: await challenge(), keyId: apple.keyId, key,
+      assertion: await apple.assert(given) }), env());
+    expect(refused.status).toBe(403);
+    expect(JSON.parse(logged.mock.calls[0][0])).toEqual({ event: 'app_pass_refused', platform: 'ios', reason: 'signature' });
+    expect((await answerMapPass(ask({ platform: 'ios', challenge: given }), env())).status).toBe(400);
   });
 });

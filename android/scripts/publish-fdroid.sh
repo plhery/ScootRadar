@@ -32,7 +32,7 @@ if [ "$digests" != "$upload" ]; then
   echo "$apk is not signed with ScootRadar's upload key alone" >&2
   exit 1
 fi
-# The fdroid flavor carries no Google library: no Play In-App Review, Play Core, Play services or Firebase.
+# The fdroid flavor carries no Google library: no Play In-App Review, Play Integrity, Play Core, Play services or Firebase.
 manifest=$("$tools/aapt2" dump xmltree --file AndroidManifest.xml "$apk")
 if grep -Eq 'com\.google\.(firebase|android\.gms|mlkit|android\.play)' <<<"$manifest"; then
   echo "$apk carries Google's libraries: publish the fdroid build" >&2
