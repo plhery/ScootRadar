@@ -71,6 +71,7 @@ class SearchPanelTest {
     private val chosen = mutableListOf<MapDestination>()
     private var recentPlace by mutableStateOf<MapDestination?>(null)
     private var recentChoices = 0
+    private var edits = 0
 
     @Before
     fun setUp() {
@@ -101,6 +102,7 @@ class SearchPanelTest {
                             onSelect = { chosen += it },
                             onChooseRecentPlace = { recentChoices += 1 },
                             onForgetRecentPlace = { recentPlace = null },
+                            onEdit = { edits += 1 },
                             onClear = {},
                             onUseCurrentLocation = {},
                             onShowFilters = {},
@@ -142,6 +144,23 @@ class SearchPanelTest {
      * label is read with the text, as a text of the field's own, and the field has no description, which TalkBack
      * would read instead of the text. ui/SearchFieldLabelTest checks the node TalkBack is given.
      */
+    /**
+     * Text typed on the screen's keyboard reaches the window as no touch or key, so each change tells the map: a map
+     * paused half an hour after the last touch, its search left open, goes on as the rider types, as the iPhone's does.
+     */
+    @Test
+    fun eachChangeToTheTextCountsAsTheRidersTouch() {
+        show("")
+        assertEquals(0, edits)
+
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahn")
+        compose.waitForIdle()
+        assertEquals(1, edits)
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("hof")
+        compose.waitForIdle()
+        assertEquals(2, edits)
+    }
+
     @Test
     fun theFieldKeepsItsLabelOnceSomethingIsTyped() {
         show("")

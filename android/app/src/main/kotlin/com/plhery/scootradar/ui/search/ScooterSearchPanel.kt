@@ -112,6 +112,11 @@ internal fun ScooterSearchPanel(
     onUseCurrentLocation: () -> Unit,
     onCancel: () -> Unit,
     autofocus: Boolean = true,
+    /**
+     * Each change to the field's text. Typed on the screen's keyboard it reaches the window as no touch or key, so the
+     * map counts it as the rider's here: a map paused half an hour after the last touch, its field left open, goes on.
+     */
+    onEdit: () -> Unit = {},
 ) {
     val density = LocalDensity.current
     val focus = remember { FocusRequester() }
@@ -141,7 +146,7 @@ internal fun ScooterSearchPanel(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val field = @Composable { fieldModifier: Modifier ->
                 // Return chooses the first place; with none, it puts the keyboard away and leaves the search open.
-                SearchField(model, focus, onSubmit = { model.firstResult?.let(::choose) ?: focusManager.clearFocus() }, modifier = fieldModifier)
+                SearchField(model, focus, onSubmit = { model.firstResult?.let(::choose) ?: focusManager.clearFocus() }, onEdit = onEdit, modifier = fieldModifier)
             }
             if (TextSize.isAccessibility) {
                 // Large text leaves no room for the field beside Cancel.
@@ -223,7 +228,13 @@ private fun announcement(status: SwissAddressSearchStatus): String? = when (stat
 
 /** The field, with a search icon before it and, once something is typed, a button that empties it. */
 @Composable
-private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, onSubmit: () -> Unit, modifier: Modifier = Modifier) {
+private fun SearchField(
+    model: SwissAddressSearchModel,
+    focus: FocusRequester,
+    onSubmit: () -> Unit,
+    onEdit: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = scootColors
     val focusManager = LocalFocusManager.current
     val query by model.queryState.collectAsState()
@@ -240,7 +251,10 @@ private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, o
         SymbolIcon(Symbols.searchRegular, textSymbolSize(17f), colors.secondaryLabel)
         BasicTextField(
             value = query,
-            onValueChange = { model.query = it },
+            onValueChange = {
+                model.query = it
+                onEdit()
+            },
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focus)

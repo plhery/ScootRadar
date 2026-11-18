@@ -1526,6 +1526,7 @@ private fun SearchIsland(
         onChooseCity = controller::chooseCity,
         onChooseRecentPlace = controller::chooseRecentPlace,
         onForgetRecentPlace = controller::forgetRecentPlace,
+        onEdit = controller::noteInteraction,
         onClear = controller::clearAddressSearch,
         onUseCurrentLocation = controller::focusOnUser,
         onShowFilters = onShowFilters,

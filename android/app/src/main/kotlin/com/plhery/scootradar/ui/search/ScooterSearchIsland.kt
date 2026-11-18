@@ -121,6 +121,8 @@ fun ScooterSearchIsland(
     onChooseRecentPlace: () -> Unit = {},
     /** Its ✕: the search stays open. */
     onForgetRecentPlace: () -> Unit = {},
+    /** Each change to the open search's text, which counts as the rider's touch (ScooterSearchPanel's onEdit). */
+    onEdit: () -> Unit = {},
     /** The collapsed bar's height in pixels, as it is measured: the room the island takes over the map. */
     onCollapsedHeightChange: (Int) -> Unit = {},
     /** The Filters button's frame in the window, in pixels, as it is placed: where a large window's popover points. */
@@ -218,6 +220,7 @@ fun ScooterSearchIsland(
                             onSearchingChange(false)
                         },
                         onCancel = { onSearchingChange(false) },
+                        onEdit = onEdit,
                     )
                 }
             } else {
