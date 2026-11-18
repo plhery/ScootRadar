@@ -1257,7 +1257,7 @@ internal sealed interface TopBanner {
          * failure to retry by hand, and the map asks again by itself.
          */
         fun of(failure: ScooterLoadFailure?, paused: Boolean, maintenance: String? = null): TopBanner? =
-            maintenance?.let(::Maintenance) ?: failure?.let(::Failed) ?: Paused.takeIf { paused }
+            if (paused) Paused else maintenance?.let(::Maintenance) ?: failure?.let(::Failed)
     }
 }
 

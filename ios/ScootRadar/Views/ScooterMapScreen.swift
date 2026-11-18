@@ -526,7 +526,7 @@ struct ScooterMapScreen: View {
     /// The map stopped refreshing itself, half an hour after the last touch.
     /// A first load that failed says more.
     private var showsPausedNotice: Bool {
-        model.isPausedForIdle && firstLoadFailure == nil && model.maintenanceNotice == nil
+        model.isPausedForIdle
     }
 
     /// The room between the search bar and the locate button above the dock.
@@ -566,7 +566,19 @@ struct ScooterMapScreen: View {
 
     @ViewBuilder
     private var topNotices: some View {
-        if let firstLoadFailure {
+        if showsPausedNotice {
+            // Any touch refreshes it (WindowTouchProbe); VoiceOver's double tap, which may not
+            // touch the window, presses it.
+            MapStatusBanner(
+                message: String(localized: "Paused to save data · tap to refresh"),
+                systemImage: "arrow.clockwise",
+                tint: ScooterPalette.secondaryText
+            )
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { model.noteInteraction() }
+            .transition(.move(edge: .top).combined(with: .opacity))
+        } else if let firstLoadFailure {
             MapStatusBanner(
                 message: firstLoadFailure.message,
                 actionTitle: String(localized: "Try again"),
@@ -583,18 +595,7 @@ struct ScooterMapScreen: View {
                 cornerRadius: 22
             )
             .transition(.move(edge: .top).combined(with: .opacity))
-        } else if showsPausedNotice {
-            // Any touch refreshes it (WindowTouchProbe); VoiceOver's double tap, which may not
-            // touch the window, presses it.
-            MapStatusBanner(
-                message: String(localized: "Paused to save data · tap to refresh"),
-                systemImage: "arrow.clockwise",
-                tint: ScooterPalette.secondaryText
-            )
-            .accessibilityElement(children: .combine)
-            .accessibilityAddTraits(.isButton)
-            .accessibilityAction { model.noteInteraction() }
-            .transition(.move(edge: .top).combined(with: .opacity))
+
         }
 
         if let issue = model.locationIssue {
