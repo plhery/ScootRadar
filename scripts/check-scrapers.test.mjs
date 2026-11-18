@@ -65,12 +65,22 @@ process.stdout.write(JSON.stringify({ status: 'success', data: { resultType: 've
   });
   afterAll(() => { if (dir) rmSync(dir, { recursive: true, force: true }); });
 
-  const check = date => {
-    const { stdout } = spawnSync(process.execPath, ['--disable-warning=MODULE_TYPELESS_PACKAGE_JSON', '--import', join(dir, 'no-internet.mjs'),
+  const check = (date, fixture = 'no-internet.mjs') => {
+    const { stdout } = spawnSync(process.execPath, ['--disable-warning=MODULE_TYPELESS_PACKAGE_JSON', '--import', join(dir, fixture),
       script, `--date=${date}`, '--json'], { encoding: 'utf8', timeout: 20_000,
       env: { ...process.env, PATH: `${join(dir, 'bin')}:${process.env.PATH}`, CLOUDFLARE_API_TOKEN: 'none' } });
     return JSON.parse(stdout);
   };
+
+  it('checks script traffic below the ten busiest networks', () => {
+    const top = Array.from({ length: 11 }, (_, i) => ({ count: i < 10 ? 200 : 120,
+      dimensions: { clientIP: '192.0.2.' + (i + 1), clientCountryName: 'CH', userAgent: i < 10 ? 'Mozilla/5.0 browser' : 'script' } }));
+    writeFileSync(join(dir, 'traffic.mjs'), 'globalThis.fetch = async () => Response.json(' +
+      JSON.stringify({ data: { viewer: { zones: [{ top, limited: [], total: [] }] } } }) + ')');
+    const report = check('2026-11-06', 'traffic.mjs');
+    expect(report.traffic.busiest).toHaveLength(10);
+    expect(report.suspicions.join(' ')).toContain('120 requests with a script');
+  });
 
   it('names the quarter hour of each sweep, for Cloudflare\'s clients to be matched by the hour', () => {
     const report = check('2026-11-05');
