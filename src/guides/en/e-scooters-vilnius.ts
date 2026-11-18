@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Vilnius: Bolt and Ride, the helmet rule, who may ride and where to park in the Old Town',
   lede: 'Bolt rents e-scooters across Vilnius, and Ride, which calls itself an e-bike sharing service, runs there too. Since 1 January 2026 Lithuanian law has required every e-scooter rider, adults included, to wear a helmet; the amendment, the traffic news site Reidas reported in March 2025, made the rental company provide one. In 2023 the city set 12 km/h in the Old Town and on bridges, and from September it required shared scooters in the centre to be left at marked parking places.',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-18',
   city: 'lt:Vilnius',
   sections: [
     {
@@ -55,14 +55,14 @@ const guide: Guide = {
     {
       heading: 'Lithuania’s e-scooter rules in 2026',
       blocks: [
-        'On 12 March 2026 Reidas, a Lithuanian road news site, summarised the tightened traffic rules (KET) in force since 1 January 2026:',
+        'The age rules apply to private scooters too. Rental companies can set a higher minimum age.',
         {
           table: {
-            caption: 'E-scooter rules in Lithuania, as Reidas summarised them on 12 March 2026 (helmet law: Reidas, 27 March 2025)',
+            caption: 'Lithuanian riding rules and rental age limits',
             head: ['Rule', 'What applies'],
             rows: [
               ['Helmet', 'Every rider, at any age, on the road, the pavement or a cycle path; certified and the right size'],
-              ['Age', 'From 16 on the carriageway and on cycle lanes and tracks; from 14 with the certificate of a course set by the Ministry of Education, Science and Sport; no age limit in residential zones, where an adult must watch children under 10'],
+              ['Age', 'On residential streets, other carriageways and cycle lanes and tracks, the minimum age is 16, or 14 with the required training certificate. In a residential building’s courtyard there is no minimum age. An adult must supervise children under 10 there.'],
               ['Renting', 'Ride rents only to riders of 18 and over (its terms and FAQ); check Bolt’s limit in its app'],
               ['Speed', '25 km/h at most; slow to walking pace, about 3–7 km/h, when you pass someone on foot, and keep a safe distance'],
               ['Where to ride', 'A cycle track or cycle lane first; without one, a paved shoulder; the carriageway only when there is no other suitable place'],
@@ -134,6 +134,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Tauragė County Police: age limits on residential streets and in courtyards (Lithuanian)', url: 'https://taurage.policija.lrv.lt/lt/naujienos/vairuoji-mikrojudumo-priemone-isitikink-kad-zinai-taisykles-ir-vaziuoji-saugiai/' },
     { title: 'Reidas: e-scooter rules in Lithuania in 2026 (12 March 2026), Lithuanian', url: 'https://reidasofficial.lt/patarimai-ir-rekomendacijos/keliu-eismo-taisykles-naujienos/elektriniu-paspirtuku-taisykles-lietuvoje-2026/' },
     { title: 'Reidas: helmets compulsory for all riders from 2026 (27 March 2025), Lithuanian', url: 'https://reidasofficial.lt/eismas/nuo-2026-salmas-privalomas-visiems-paspirtuku-vairuotojams/' },
     { title: 'Reidas: 800 bike and scooter parking places in Vilnius (6 May 2025), Lithuanian', url: 'https://reidasofficial.lt/eismas/800-dviraciu-ir-paspirtuku-stovejimo-vietu-vilniuje-tvarka-ar-tik-iliuzija/' },
