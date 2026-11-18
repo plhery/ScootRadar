@@ -1145,7 +1145,8 @@ for (const city of catalog.cities) {
   try {
     await updateCity(city);
   } catch (error) {
-    console.log(`${city.id}: ${error.message}; its last zones are kept`);
+    process.exitCode = 1;
+    console.error(`${city.id}: ${error.message}; its last zones are kept`);
   }
 }
 
@@ -1179,5 +1180,5 @@ async function updateCity(city) {
 }
 
 // The day here, as the other catalogs' verifiedOn are.
-catalog.verifiedOn = new Date().toLocaleDateString('en-CA');
+if (!process.exitCode && catalog.cities.every(city => !only.length || only.includes(city.id))) catalog.verifiedOn = new Date().toLocaleDateString('en-CA');
 writeCatalog(path, catalog);
