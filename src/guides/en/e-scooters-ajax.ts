@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Ajax: Lime, where the Town and Durham Region let you ride, parking, buses and fines',
   lede: 'You can rent a Lime e-scooter in Ajax, Ontario, in Lime’s app, which shows the price before you unlock and Lime’s minimum age for renting. Ontario’s pilot, the Town of Ajax’s By-law 87-2024 and, on Regional roads, Durham Region’s By-law 23-2022 set the rules for every e-scooter: you must be 16, with a helmet if you’re under 18, and you may ride on roads posted at 60 km/h or less, in bike lanes and cycle tracks, and on multi-use paths and paved trails at least 2 metres wide, never within a crosswalk, and on a sidewalk only where a Regional sign allows it. From half an hour before sunset to half an hour after sunrise, you need a front and a rear light.',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-07',
   city: 'ca:on:Ajax',
   sections: [
     {

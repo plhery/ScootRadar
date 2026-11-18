@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Fayetteville, Arkansas: Veo and Spin, what a ride costs, and where to ride and park',
   lede: 'E-scooters in Fayetteville are rented from Veo and Spin, the two operators the University of Arkansas names for the city and its campus: get the Veo or Spin app and scan the scooter’s QR code to unlock it. As of November 2026 Veo charges $1 to unlock plus $0.38 a minute, plus tax, so 10 minutes cost $4.80; Spin’s app shows its price before you unlock. Arkansas law holds e-scooters to 15 mph and riders to 16 or over, Spin requires 18, and no one may ride on a sidewalk that abuts a building. On the University of Arkansas campus, leave a scooter only near a bike rack or in a marked corral.',
   published: '2026-10-26',
-  updated: '2026-10-26',
+  updated: '2026-11-07',
   city: 'us:ar:Fayetteville',
   sections: [
     {

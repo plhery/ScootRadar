@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Culver City, California: Bird, the City’s rules, and where to ride and park',
   lede: 'E-scooters in Culver City come from Bird, which holds the City’s only operating agreement (July 2026 to June 2027); Lime’s app draws its Los Angeles area over the city too. To rent, open the Bird app and scan the scooter’s QR code: the app shows the price before you unlock, and the City must approve Bird’s rates. Riders must be 18 with a driving licence, keep to 15 mph, stay off sidewalks and end the ride upright in the furniture zone, by a bike rack or in a drop zone, with a photo in the app.',
   published: '2026-10-27',
-  updated: '2026-10-27',
+  updated: '2026-11-07',
   city: 'us:ca:Culver City',
   sections: [
     {

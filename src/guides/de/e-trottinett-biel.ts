@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Trottinett Biel/Bienne: Voi und PubliBike mieten, Preise, Sperrzonen und Parkieren',
   lede: 'Ein E-Trottinett in Biel/Bienne mietest du bei Voi oder bei PubliBike, bei beiden ab 18. Voi stellt seit dem 30. März 2026 mit einer Bewilligung der Stadt bis zu 160 Trottis frei im Stadtgebiet auf und verlangt CHF 1.– plus 39 Rappen pro Minute, zehn Minuten kosten also CHF 4.90 (Stand November 2026). Günstiger sind die 80 E-Scooter von PubliBike, die du an einer Velostation ausleihst: CHF 1.– plus 20 Rappen pro Minute, zehn Minuten also CHF 3.–. Am Bahnhof, im Stadtpark, im Elfenaupark und auf den Friedhöfen gilt für Voi Fahr- und Parkverbot; in der Altstadt, der Innenstadt, auf der Schüssinsel und am Strandboden fährst du höchstens 10 km/h und parkierst nur auf Veloplätzen.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-11-07',
   city: 'ch:biel',
   sections: [
     {

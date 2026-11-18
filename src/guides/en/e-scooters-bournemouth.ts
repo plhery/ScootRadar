@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in Bournemouth, Christchurch and Poole: Beryl’s prices, hours and where you can ride',
   lede: 'You can hire an e-scooter in Bournemouth, Christchurch and Poole from Beryl, in a trial that runs to May 2028. It costs £1 to unlock and 22p a minute, so 15 minutes cost £4.30, and you must be 18 or over with a full or provisional UK driving licence. You can’t hire one from 10pm to 5am, and in July and August BCP Council bans them from the seafront promenades from 10am to 6pm. Your own e-scooter is illegal on BCP’s roads, pavements and promenades.',
   published: '2026-10-18',
-  updated: '2026-10-18',
+  updated: '2026-11-07',
   city: 'gb:Bournemouth',
   sections: [
     {

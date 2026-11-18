@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Hamm: Dott, Parken, Grünanlagen, Kanal und was in Bus und Bahn gilt',
   lede: 'E-Scooter in Hamm verleiht Dott: Du mietest ab 18 und ohne Führerschein, den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone an Weststrasse und Bahnhofstrasse. Abstellen darfst du wie ein Fahrrad, solange du niemanden behinderst; wo die Stadt mit dem Anbieter Parkverbotszonen festgelegt hat, zeigt die App.',
   published: '2026-10-26',
-  updated: '2026-10-26',
+  updated: '2026-11-07',
   city: 'de:Hamm',
   sections: [
     {

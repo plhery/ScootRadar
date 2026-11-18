@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Louer une trottinette électrique en libre-service : le mode d’emploi, de l’app à la photo de fin',
   lede: 'Pour louer une trottinette électrique en libre-service en France, installez l’app de l’opérateur, créez un compte avec un moyen de paiement et scannez le QR code du guidon ; à l’arrivée, garez-vous là où l’app l’autorise et terminez la location, souvent avec une photo. Il n’y en a plus à Paris depuis le 1er septembre 2023, mais vous en trouverez à Lyon (Dott), à Bordeaux (Dott et Pony), à Marseille (Lime et Voi), à Grenoble et au Havre (Voi), dans la métropole lilloise hors Lille (Lime), autour de Paris et dans une quinzaine d’autres villes avec Bird ou Pony, d’Ajaccio à Lorient. Vous payez un déverrouillage puis la minute : en novembre 2026, 10 minutes coûtent 2,99 € chez Voi à Grenoble, 3,20 € chez Voi au Havre, 3,60 € chez Pony à Angers, 3,70 € chez Voi à Marseille et 3,90 € chez Dott à Lyon comme chez Dott et Pony à Bordeaux ; ailleurs, l’app affiche le prix avant le déverrouillage. Aucun permis n’est demandé, mais la plupart des opérateurs exigent 18 ans (Pony 16, sauf à Bordeaux). On roule seul, à 25 km/h au plus, sur la piste cyclable ou une route limitée à 50 km/h, jamais sur le trottoir (135 €), et le casque est obligatoire dans plusieurs départements, dont Paris, le Rhône et le Nord. En Suisse, Voi demande CHF 1 plus CHF 0.42 la minute à Zurich et à Berne (novembre 2026).',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-11-07',
   sections: [
     {
       heading: 'Où louer une trottinette électrique en France ?',

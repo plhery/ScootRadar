@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Hamilton, New Zealand: Lime, the rules, Garden Place, Hamilton Gardens and the river path',
   lede: 'Shared e-scooters in Hamilton, New Zealand, come from Lime, the one company Hamilton City Council lists: download Lime’s app, sign up, add a payment card and scan the scooter’s QR code. The app shows the price before you unlock. You need no driving licence, and no law requires a helmet. You may ride on the footpath with care (the council asks for 15 km/h or less), on the road and, since 1 October 2026, in cycle lanes, but not in Garden Place, inside Hamilton Gardens or on part of the Hamilton Lake walkway.',
   published: '2026-10-30',
-  updated: '2026-10-30',
+  updated: '2026-11-07',
   city: 'nz:wko:Hamilton',
   sections: [
     {

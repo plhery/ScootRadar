@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Stuttgart: Anbieter, Preise, Parkzonen und was auf dem Wasen gilt',
   lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt, jeweils über deren App: Sie zeigt freie Scooter auf einer Karte, und mit ihr entsperrst du einen. Zehn Minuten kosten 2,89 € bei Voi, 3,19 € bei Bolt und 3,39 € bei Dott; Lime nennt 1,00 € plus 0,22 € pro Minute, zzgl. MwSt. (Stand November 2026). Bis etwa 25 Minuten ist Voi am günstigsten, bei längeren Fahrten Bolt. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
   published: '2026-10-13',
-  updated: '2026-10-23',
+  updated: '2026-11-07',
   city: 'de:Stuttgart',
   sections: [
     {

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Raleigh, North Carolina: Spin and Lime, the 11 p.m. stop, and where to ride and park',
   lede: 'You can rent an e-scooter in Raleigh from Spin or Lime, the two companies with City agreements, in the Spin or Lime app. A Spin ride that starts on NC State’s campus costs $1 to unlock and $0.30 a minute, as NC State published it in July 2026; off campus, and on Lime, the app shows the price before you unlock. NC State says Spin’s scooters can be ridden from 6 a.m. to 11 p.m., seven days a week, and you must be 18 to ride one. A 2018 City ordinance keeps scooters off sidewalks and greenway trails and puts them in bike lanes, and downtown you end your ride in a painted corral if one is within 320 feet.',
   published: '2026-10-27',
-  updated: '2026-11-02',
+  updated: '2026-11-07',
   city: 'us:nc:Raleigh',
   sections: [
     {

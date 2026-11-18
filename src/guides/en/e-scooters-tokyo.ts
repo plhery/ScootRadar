@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Tokyo: who rents them, who may ride, where to ride and where to park',
   lede: 'Yes: you can rent e-scooters in Tokyo from LUUP and Lime, in their apps, and, if you are 16 or over, ride one without a driving licence. As of November 2026, LUUP charges ¥50 to start a ride and ¥25 a minute in Tokyo, so 10 minutes cost ¥300; Lime’s app shows its price before you unlock. Since 1 July 2023 Japanese law has put e-scooters that go no faster than 20 km/h, and meet its other standards, in a class of their own, the specified small motorised bicycle (特定小型原動機付自転車), and it asks riders only to try to wear a helmet. Ride at the left edge of the road or on a cycle track, and on the pavement only where a sign lets bicycles on it, in the scooter’s 6 km/h mode. Japan’s guideline asks rental companies to have you pass a rules test or watch a video before your first ride, and to make you end each ride at a rental point.',
   published: '2026-10-27',
-  updated: '2026-10-27',
+  updated: '2026-11-07',
   city: 'jp:Tokyo',
   sections: [
     {

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep Antwerpen: Voi, Lime en Bolt, wat een rit kost, dropzones binnen de Leien en waar je step stilvalt',
   lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad: je installeert de app, maakt een account aan met je gsm-nummer en een betaalkaart, en scant de QR-code op het stuur. Bij Voi betaal je in november 2026 € 0,99 om te ontgrendelen en daarna € 0,25 per minuut. Lime vraagt € 0,99 plus € 0,27 per minuut en Bolt € 0,99 plus € 1,13 per kilometer, zoals de stad die prijzen publiceerde in juli 2026. Tien minuten kosten zo € 3,49 bij Voi en € 3,69 bij Lime; bij Bolt kost 2 km € 3,25. Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen, maar Bolt verhuurt pas vanaf 18.',
   published: '2026-10-13',
-  updated: '2026-10-26',
+  updated: '2026-11-07',
   city: 'be:Antwerpen',
   sections: [
     {
