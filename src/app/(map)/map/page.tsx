@@ -387,7 +387,7 @@ export default function Home() {
   // Sync state to URL + localStorage
   useEffect(() => {
     if (!preferencesReady) return;
-    const p = serializeClientParams({ minRange: rangeMinimum, theme, map: mapStyle, zones: zonesOn });
+    const p = serializeClientParams({ minRange: rangeMinimum, theme, map: mapStyle, zones: zonesOn }, linkSettings.only);
     const qs = p.toString();
     const newUrl = qs ? `?${qs}` : window.location.pathname;
     window.history.replaceState(null, '', newUrl);
