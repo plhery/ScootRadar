@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Salford: Lime hire, prices and where you can ride and park',
   lede: 'E-scooters in Salford are hired from Lime, the only operator, which has run the city’s trial since 26 October 2020; the trial now runs to May 2028. As of November 2026 a ride costs £1 to unlock plus 17p a minute, so 20 minutes cost £4.40, the council says. Download the Lime app, scan the QR code on the handlebars and end your ride in a marked parking bay with a photo. You must be 18 or over, with a full or provisional driving licence. Ride on roads and in cycle lanes, never on pavements. Manchester, across the Irwell, isn’t a trial area: its council is drawing up a proposal that could start in summer 2027.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-11-06',
   city: 'gb:Salford',
   sections: [
     {

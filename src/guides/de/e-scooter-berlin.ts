@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Berlin: Anbieter, Preise, Parkzonen und was du wissen musst',
   lede: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi oder Dott, in Spandau und Reinickendorf auch bei Zeus: App laden, ohne Führerschein registrieren, QR-Code scannen. Bolt, Dott, Lime und Zeus vermieten erst ab 18. Zehn Minuten kosten bei Voi rund 3,19 € und bei Dott rund 3,65 € (Standardtarife, Stand November 2026); die anderen zeigen den Preis in der App. Du fährst auf dem Radweg, nie auf dem Gehweg oder durch Parks, und rund um die Sehenswürdigkeiten in Mitte beendest du die Fahrt nur an markierten Flächen wie den Jelbi-Punkten.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-11-03',
   city: 'de:Berlin',
   sections: [
     {
