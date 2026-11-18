@@ -587,7 +587,7 @@ describe('feeds collected on demand', () => {
         // Once the last sweep's last part is too old to show, the sweep under way shows alone, Bird read at its start.
         const alone = querySnapshot(snapshot([further]), view, 16, now + minutes(7.25), { refreshing: new Set([further.id]) });
         expect(where(alone.vehicles)).toEqual(['bird:moved-2@-0.0014', 'bird:north-2@0.0050']);
-        expect(alone.meta.shownSince).toEqual({ bird: at(now - minutes(7.5)) });
+        expect(alone.meta.shownSince).toBeUndefined();
       });
 
       it('shows a scooter both sweeps name where the sweep under way found it, in the parts it has swept or not', () => {
@@ -908,4 +908,13 @@ describe('a map across the 180° line', () => {
     expect(querySnapshot(snapshot([nz]), { bounds: east, minBattery: 0 }, 16, now).vehicles).toEqual([]);
     expect(querySnapshot(snapshot([nz]), { bounds: east, minBattery: 0 }, 6, now).clusters).toEqual([]);
   });
+});
+
+it('names a provider after its first completed empty read', () => {
+  const empty = feed({ vehicles: [] });
+  const cold = { ...empty, observedAt: 0, attemptedAt: 0 };
+  const warming = querySnapshot(snapshot([voi, cold]), query, 16, now, { refreshing: new Set([cold.id]) });
+  expect(warming.meta.shownSince).toEqual({ voi: new Date(now).toISOString() });
+  const read = querySnapshot(snapshot([voi, empty]), query, 16, now);
+  expect(read.meta.shownSince?.dott).toBe(new Date(now).toISOString());
 });

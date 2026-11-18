@@ -446,10 +446,13 @@ final class ScooterWalkTests: XCTestCase {
         // Another provider's scooter where it stood is not it.
         let neighbour = scooter("b1", provider: "bird", at: point(east: 303, north: 0))
         let h = try await shownWalk(to: target, others: [other])
-        await h.api.setResponse(ScooterResponse(
-            vehicles: [other, neighbour],
-            meta: ScooterResponseMetadata(partial: false, failedSources: [])
-        ))
+        func missing() -> ScooterResponse {
+            ScooterResponse(
+                vehicles: [other, neighbour],
+                meta: ScooterResponseMetadata(partial: false, failedSources: [], shownSince: ["lime": iso(h.clock.now)])
+            )
+        }
+        await h.api.setResponse(missing())
 
         // Missing from one update: it may be back with the next, so the way stays.
         h.model.refresh()
@@ -465,6 +468,7 @@ final class ScooterWalkTests: XCTestCase {
 
         // Missing from a second, later update as well.
         h.clock.advance(60)
+        await h.api.setResponse(missing())
         h.model.refresh()
         let gone = await waitUntil { h.model.walk?.phase == .gone }
         XCTAssertTrue(gone)
@@ -595,19 +599,23 @@ final class ScooterWalkTests: XCTestCase {
         }
 
         // Faded, another app's where it stood is not it, nor one of its app further away: from two updates, taken.
-        await h.api.setResponse(ScooterResponse(
-            vehicles: [other],
-            lastSeenVehicles: [
-                scooter("b1", provider: "bird", at: point(east: 302, north: 0)),
-                scooter("s3", at: point(east: 330, north: 0))
-            ],
-            meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [])
-        ))
+        func missing() -> ScooterResponse {
+            ScooterResponse(
+                vehicles: [other],
+                lastSeenVehicles: [
+                    scooter("b1", provider: "bird", at: point(east: 302, north: 0)),
+                    scooter("s3", at: point(east: 330, north: 0))
+                ],
+                meta: ScooterResponseMetadata(partial: false, stale: true, failedSources: [], shownSince: ["lime": iso(h.clock.now)])
+            )
+        }
+        await h.api.setResponse(missing())
         h.model.refresh()
         let missedOnce = await waitUntil { await h.api.calls == faded.count + 2 && !h.model.isLoading }
         XCTAssertTrue(missedOnce)
         XCTAssertEqual(h.model.walk?.phase, .shown)
         h.clock.advance(60)
+        await h.api.setResponse(missing())
         h.model.refresh()
         let gone = await waitUntil { h.model.walk?.phase == .gone }
         XCTAssertTrue(gone)
@@ -680,7 +688,7 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.walkNote(for: .scooter(target)), .gone)
     }
 
-    func testAnAnswerThatDoesNotNameItsAppIsToldApartByWhenItWasGenerated() async throws {
+    func testOtherProvidersCannotConfirmAMissingScooter() async throws {
         let target = scooter("s1", at: point(east: 300, north: 0))
         let bird = scooter("b1", provider: "bird", at: point(east: -200, north: 0))
         let h = try await shownWalk(to: target, others: [bird])
@@ -699,7 +707,7 @@ final class ScooterWalkTests: XCTestCase {
 
         h.clock.advance(60)
         try await load(h, answer(generatedAt: first.addingTimeInterval(60), shownSince: nil), call: 4)
-        XCTAssertEqual(h.model.walk?.phase, .gone)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
     }
 
     func testAScooterIsTakenOnlyOnceEveryGroupOfItsAppInViewWasReadAfterTheOneThatMissedIt() async throws {
@@ -1247,13 +1255,21 @@ private actor WalkStubAPI: ScooterAPIClient {
     private var response: ScooterResponse
     private(set) var calls = 0
 
+    private let providers: Set<String>
     init(response: ScooterResponse) {
+        providers = Set(response.vehicles.map(\.provider))
         self.response = response
     }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) async throws -> ScooterResponse {
         calls += 1
-        return response
+        if response.meta != nil { return response }
+        let read = ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: Double(calls)))
+        return ScooterResponse(vehicles: response.vehicles, clusters: response.clusters, lastSeenVehicles: response.lastSeenVehicles,
+                              lastSeenClusters: response.lastSeenClusters, lastSeenProviders: response.lastSeenProviders,
+                              providers: response.providers, batteryRanges: response.batteryRanges, meta: ScooterResponseMetadata(
+                                partial: false, failedSources: [], shownSince: Dictionary(uniqueKeysWithValues: providers.map { ($0, read) })
+                              ), parking: response.parking, clockOffset: response.clockOffset, maintenance: response.maintenance)
     }
 
     func setResponse(_ response: ScooterResponse) {

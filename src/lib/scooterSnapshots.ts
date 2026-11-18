@@ -801,9 +801,12 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     }, sweep.reads?.lastAt ?? sweep.startedAt));
     else continue;
     earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
-    const read = last ? lastRead(feed) : sweep!.startedAt;
-    earliest(readByProvider, feed.provider, read);
-    readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
+    if (last && feed.observedAt > 0) {
+      // A completed empty read counts too. Partial sweeps cannot confirm an absence.
+      const read = lastRead(feed);
+      earliest(readByProvider, feed.provider, read);
+      readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
+    }
     if (last) pick(unique, feed.vehicles, (vehicle, key) => !shows(feed, vehicle, now) || again?.last(vehicle) === true ||
       readAt(feed, vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, readAt(feed, vehicle), vehicle));
     if (sweep) pick(unique, sweep.vehicles, (vehicle, key) => again?.sweep(vehicle) === false ||

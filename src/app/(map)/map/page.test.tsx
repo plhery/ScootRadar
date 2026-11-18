@@ -672,7 +672,7 @@ const TAKEN = 'No longer on the map. Someone may have taken it.';
 /** Scooter data as `response()` has it, with these scooters and bays: a new update each time. */
 function data(vehicles: Vehicle[], parking: ParkingLocation[] = [], meta: Partial<ScooterResponse['meta']> = {}): ScooterResponse {
   const body = response();
-  return { ...body, vehicles, parking, meta: { ...body.meta, totalVehicles: vehicles.length, ...meta } };
+  return { ...body, vehicles, parking, meta: { ...body.meta, shownSince: { lime: body.meta.generatedAt, bird: body.meta.generatedAt }, totalVehicles: vehicles.length, ...meta } };
 }
 type Way = { from: [number, number]; to: [number, number] };
 /** Along two streets: north or south first, then east or west. */
@@ -2459,4 +2459,13 @@ it('ends the walk when only a known neighbour stands faded', async () => {
   await refreshData();
   await refreshData();
   expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
+it('keeps the walk active while only another provider has been read', async () => {
+  let answer = () => data([FAR, BESIDE]);
+  await walkToFarBeside(() => answer());
+  answer = () => data([], [], { shownSince: { voi: new Date().toISOString() }, refreshing: true });
+  await refreshData();
+  await refreshData();
+  expect(routeOnMap()).toHaveTextContent('shown');
 });

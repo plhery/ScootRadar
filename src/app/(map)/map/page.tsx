@@ -841,7 +841,7 @@ export default function Home() {
   // taken only once it is later than the newest of the app's reads (meta.readThrough) in the answer that first
   // missed the scooter, every one of them read since (Desk [373] S-1). Until 14 November 2026 a read of Lime's
   // group beside the scooter's said it was taken after one read of its own. A server that does not name the app's
-  // newest read is judged by the app's time as before, and one that does not name that by the answer's.
+  // newest read is judged by the app's own time. Without that time the answer cannot confirm a miss.
   const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
     answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
     (scooterQuery?.minRange ?? 0) === 0 &&
@@ -849,17 +849,17 @@ export default function Home() {
     !responseMeta.failedSources.some(source => providerForFailedSource(source) === pinnedVehicle.provider);
   const walkedSeen = liveWalkedVehicle ? true : walkedCovered && !walkedFaded ? false : null;
   const walkedRead = pinnedProvider !== null && responseMeta
-    ? responseMeta.shownSince?.[pinnedProvider] ?? responseMeta.generatedAt
+    ? responseMeta.shownSince?.[pinnedProvider] ?? null
     : null;
   const walkedReadThrough = pinnedProvider !== null && responseMeta
     ? responseMeta.readThrough?.[pinnedProvider] ?? walkedRead
     : null;
   const [walkMissedThrough, setWalkMissedThrough] = useState<string | null>(null);
-  if (walkedSeen === false && walkMissedThrough === null) setWalkMissedThrough(walkedReadThrough);
+  if (walkedSeen === false && walkedRead !== null && walkedReadThrough !== null && walkMissedThrough === null) setWalkMissedThrough(walkedReadThrough);
   if (walkedSeen === true && walkMissedThrough !== null) setWalkMissedThrough(null);
   // Not before it: the same read served again, nor an older one, as when the view takes in a group read before.
-  const walkedTaken = walkedSeen === false && walkMissedThrough !== null && walkedRead !== walkMissedThrough &&
-    !(walkedRead !== null && Date.parse(walkedRead) <= Date.parse(walkMissedThrough));
+  const walkedTaken = walkedSeen === false && walkMissedThrough !== null && walkedRead !== null &&
+    Date.parse(walkedRead) > Date.parse(walkMissedThrough);
   useEffect(() => {
     if (walkedTaken) walkGone();
   }, [walkGone, walkedTaken]);
