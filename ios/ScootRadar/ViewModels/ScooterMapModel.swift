@@ -536,7 +536,31 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// Until 4 November 2026 the app kept the providers that were on, so those the catalog added after a rider's
     /// last change of the filters stayed off: RideMovi, new in 1.3.0, for everyone who had changed them in 1.2.0.
     private static let legacyEnabledProvidersKey = "enabled-providers"
-    /// The catalog's providers until 11 October 2026, the only ones a rider could have turned off in every version.
+    /// Providers introduced together, in catalog history order.
+    private static let catalogAdditions: [[ScooterProvider]] = [
+        [.zeus],
+        [.beryl, .ryde, .hoppy],
+        [.ride_mobility],
+        [.yoio],
+        [.naolib],
+        [.elerent],
+        [.zelectra],
+        [.spin, .veo, .lyft, .bolt_hopp],
+        [.saham],
+        [.flamingo, .jolt],
+        [.qick],
+        [.luup],
+        [.jet],
+        [.whoosh],
+        [.move, .zippy],
+        [.binbin],
+        [.beam],
+        [.gcoo, .kickgoing, .xingxing, .swing],
+        [.alpaca],
+        [.deer],
+        [.dart],
+        [.ridemovi],
+    ]
     private static let providersBefore11October2026: Set<ScooterProvider> = [.bird, .bolt, .dott, .hopp, .lime, .pony, .publibike, .voi]
 
     /// The providers on, of the catalog's, from those turned off. A list not yet checked that leaves exactly one of the
@@ -644,12 +668,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 catalog: ScooterProvider.allCases.map(\.rawValue)
             ).compactMap(ScooterProvider.init(rawValue:)))
         } else if let savedProviderIDs = defaults.array(forKey: Self.legacyEnabledProvidersKey) as? [String] {
-            // A legacy list of those on turns off only the providers of before 11 October 2026 it lacks: it also lacks
-            // those added after it was written, which the rider never saw.
+            // The newest provider saved as enabled dates the catalog the rider could filter.
             let savedProviders = Set(savedProviderIDs.compactMap(ScooterProvider.init(rawValue:)))
             if savedProviders.count == savedProviderIDs.count {
-                enabledProviders = Set(ScooterProvider.allCases)
-                    .subtracting(Self.providersBefore11October2026.subtracting(savedProviders))
+                var known = Self.providersBefore11October2026
+                if let last = Self.catalogAdditions.lastIndex(where: { !savedProviders.isDisjoint(with: $0) }) {
+                    known.formUnion(Self.catalogAdditions[...last].joined())
+                }
+                enabledProviders = Set(ScooterProvider.allCases).subtracting(known.subtracting(savedProviders))
             }
         }
 
