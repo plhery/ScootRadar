@@ -56,6 +56,14 @@ it('dates every Berlin and Salford byline at least as recently as its November f
   }
 });
 
+it.each(['vilnius', 'kaunas'])('%s distinguishes courtyard supervision from the street age limit', topic => {
+  const text = guideTexts(GUIDES.find(guide => guide.topic === topic && guide.locale === 'en')!);
+  const age = text[text.indexOf('Age') + 1];
+  expect(age).toMatch(/16.*14.*certificate/);
+  expect(age).toMatch(/courtyard.*adult.*under 10/i);
+  expect(age).not.toMatch(/no age limit in residential zones/i);
+});
+
 describe('the guides', () => {
   it('has each at an address of its own, in words of its language joined by hyphens', () => {
     const addresses = GUIDES.map(guidePath);
