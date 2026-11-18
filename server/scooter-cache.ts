@@ -377,10 +377,10 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   // Whoever looks at a feed the map showed nothing of waits for its first scooters: a pacer may serve it first (sweeps.ts).
   const shown = records.get(definition.id);
   const cold = !shown || !showsPositions(shown, startedAt);
-  const scope = sweepScope({ ...attention, cold: () => cold }, startedAt, (vehicles: Vehicle[], swept: MapBounds[], sweptSince: number) => {
+  const scope = sweepScope({ ...attention, cold: () => cold }, startedAt, (vehicles, swept, sweptSince, reads) => {
     const record = records.get(definition.id);
     if (!running || stopping || !record) return;
-    records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, vehicles: priced(vehicles), swept } });
+    records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, reads, vehicles: priced(vehicles), swept } });
     publish();
     metrics.recordRefreshProgress(definition.id);
   });

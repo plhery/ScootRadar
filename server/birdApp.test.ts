@@ -452,7 +452,7 @@ describe('Bird sweeps resumed after a deploy', () => {
     expect(checkpoint.savedAt).toBeGreaterThanOrEqual(result.observedAt!);
     // The scooters found so far, as the sweep holds them.
     expect((checkpoint.scooters as BirdScooter[]).length).toBeGreaterThan(0);
-    expect(Object.keys((checkpoint.scooters as BirdScooter[])[0]).sort()).toEqual(['battery', 'brand', 'id', 'lat', 'lng', 'range']);
+    expect(Object.keys((checkpoint.scooters as BirdScooter[])[0]).sort()).toEqual(['battery', 'brand', 'id', 'lat', 'lng', 'range', 'readAt']);
     await gone();
     const failed = reading(2, map.nearest, true);
     await expect(collectBirdArea(austin, [], failed.api, undefined, checkpoints)).rejects.toThrow('HTTP 400');
@@ -536,6 +536,11 @@ describe('Bird sweeps resumed after a deploy', () => {
       { bounds: { south: 30.26, west: -97.75, north: 30.28, east: -97.73 }, minBattery: 0 }, 16, asked, { refreshing: new Set([record.id]) });
     expect(answer.vehicles).toEqual([]);
     expect(answer.meta.shownSince).toBeUndefined();
+    const recent = { ...found[0], vehicle_id: 'bird:fresh' };
+    record.sweep = { startedAt: since, vehicles: [...found, recent], swept, reads: { lastAt: asked, at: { 'bird:fresh': asked } } };
+    const partial = querySnapshot({ version: 1, updatedAt: asked, feeds: [record], overview: buildCityOverview([record], asked) },
+      { bounds: { south: 30.26, west: -97.75, north: 30.28, east: -97.73 }, minBattery: 0 }, 16, asked, { refreshing: new Set([record.id]) });
+    expect(partial.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['bird:fresh']);
     // A sweep begun with the collection is as old as it.
     const fresh: number[] = [];
     const begun = Date.now();
