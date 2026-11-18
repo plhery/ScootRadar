@@ -132,6 +132,7 @@ function networks(rows) {
 }
 
 let metrics; let traffic;
+let outsideNetworks = [];
 const failures = [];
 try { metrics = cache(); } catch (error) { failures.push(error.message); }
 const mine = await thisMachine();
@@ -144,7 +145,8 @@ try {
     if (whose) ownRows.set(whose, (ownRows.get(whose) ?? 0) + row.count);
     return !whose;
   });
-  traffic = { requests: zone.total[0]?.count ?? 0, own: Object.fromEntries(ownRows), busiest: networks(outside).slice(0, 10),
+  outsideNetworks = networks(outside);
+  traffic = { requests: zone.total[0]?.count ?? 0, own: Object.fromEntries(ownRows), busiest: outsideNetworks.slice(0, 10),
     limited: networks(zone.limited.filter(row => !ownTraffic(row, mine, own))) };
 } catch (error) { failures.push(error.message); }
 
@@ -152,7 +154,7 @@ const suspicions = [];
 if (metrics?.sweeps) suspicions.push(`${metrics.sweeps} visitor(s) asked for 32 areas or more in a quarter hour (UTC ${metrics.sweptAt.join(', ')})`);
 if (metrics?.unwatched) suspicions.push(`${metrics.unwatched} requests past a visitor's 32 areas were not collected`);
 if (metrics?.loweredZooms) suspicions.push(`${metrics.loweredZooms} requests asked for a box no screen shows at their zoom`);
-for (const entry of traffic?.busiest ?? []) {
+for (const entry of outsideNetworks) {
   const scripted = entry.agents.filter(({ agent }) => !usualAgent(agent)).reduce((sum, { requests }) => sum + requests, 0);
   if (entry.requests >= BUSY_REQUESTS) suspicions.push(`${entry.network} (${entry.country}) made ${entry.requests} requests`);
   else if (scripted >= SCRIPT_REQUESTS) suspicions.push(`${entry.network} (${entry.country}) made ${scripted} requests with a script's user agent`);
