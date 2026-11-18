@@ -61,7 +61,7 @@ const guide: Guide = {
               ['Helmet', 'Every rider, at any age, on the road, the pavement or a cycle path; certified and the right size'],
               ['Age', 'On residential streets, other carriageways and cycle lanes and tracks, the minimum age is 16, or 14 with the required training certificate. In a residential building’s courtyard there is no minimum age. An adult must supervise children under 10 there.'],
               ['Renting', 'Ride rents only to riders of 18 and over (its terms and FAQ); check Bolt’s limit in its app'],
-              ['Speed', '25 km/h at most; slow to walking pace, about 3–7 km/h, when you pass someone on foot, and keep a safe distance'],
+              ['Speed', 'Ride at up to 20 km/h. When passing close to a pedestrian on a shared path, shoulder or pavement, keep to 7 km/h or less.'],
               ['Where to ride', 'A cycle track or cycle lane first; without one, a paved shoulder; the carriageway only when there is no other suitable place'],
               ['On the carriageway', 'A bright vest with reflective parts, or lights: white at the front, red at the back and reflectors on the sides'],
               ['Pedestrian crossings', 'Don’t ride across: get off and walk the scooter over'],
@@ -135,6 +135,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Lithuanian Ministry of Transport: Road Traffic Rules, point 66⁹.13 (English)', url: 'https://sumin.lrv.lt/public/canonical/1776407758/16319/Road%20Traffic%20Rules%20%28Consolidated%20version%20from%201%20JANUARY%202026%29.pdf' },
     { title: 'Tauragė County Police: age limits on residential streets and in courtyards (Lithuanian)', url: 'https://taurage.policija.lrv.lt/lt/naujienos/vairuoji-mikrojudumo-priemone-isitikink-kad-zinai-taisykles-ir-vaziuoji-saugiai/' },
     { title: 'Reidas: e-scooter rules in Lithuania in 2026 (12 March 2026), Lithuanian', url: 'https://reidasofficial.lt/patarimai-ir-rekomendacijos/keliu-eismo-taisykles-naujienos/elektriniu-paspirtuku-taisykles-lietuvoje-2026/' },
     { title: 'Reidas: helmets compulsory for all riders from 2026 (27 March 2025), Lithuanian', url: 'https://reidasofficial.lt/eismas/nuo-2026-salmas-privalomas-visiems-paspirtuku-vairuotojams/' },
