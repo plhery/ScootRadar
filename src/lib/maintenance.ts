@@ -40,32 +40,31 @@ const ANNOUNCEMENT_TTL_MS = 30_000;
 /** An announcement nobody switched off ends this long after the time it gave, so a forgotten one can't linger. */
 const ANNOUNCEMENT_GRACE_MS = 3 * 60 * 60_000;
 
-let announcement: { value: Announcement | null; readAt: number } = { value: null, readAt: -Infinity };
+let announcement: { values: unknown[]; readAt: number } = { values: [], readAt: -Infinity };
 
 /** Forgets the announcement read, for tests. */
 export function forgetAnnouncement() {
-  announcement = { value: null, readAt: -Infinity };
+  announcement = { values: [], readAt: -Infinity };
 }
 
 /** The announcement in force, or null. Never throws: a KV failure means nothing is announced. */
 export async function readAnnouncement(env: MaintenanceEnvironment, now = Date.now()): Promise<Announcement | null> {
   if (!env.MAINTENANCE) return null;
-  if (now - announcement.readAt < ANNOUNCEMENT_TTL_MS) return current(announcement.value, now);
-  let value: Announcement | null = null;
-  try {
-    const [all, own] = await Promise.all([env.MAINTENANCE.get('all', 'json'), env.MAINTENANCE.get(MAINTENANCE_KEY, 'json')]);
-    value = pickAnnouncement([all, own], now);
-  } catch {
-    value = null;
+  if (now - announcement.readAt >= ANNOUNCEMENT_TTL_MS) {
+    const namespace = env.MAINTENANCE;
+    const reads = await Promise.allSettled(['all', MAINTENANCE_KEY].map(async key => namespace.get(key, 'json')));
+    const values = reads.map(read => read.status === 'fulfilled' ? read.value : null);
+    announcement = { values, readAt: now };
   }
-  announcement = { value, readAt: now };
-  return current(value, now);
+  return pickAnnouncement(announcement.values, now);
 }
 
 /** Of the announcements given, the one in force that ends last. */
 export function pickAnnouncement(values: unknown[], now = Date.now()): Announcement | null {
-  return values.map(value => current(normalize(value), now)).filter((value): value is Announcement => value !== null)
-    .sort((a, b) => (Date.parse(b.backAround ?? '') || 0) - (Date.parse(a.backAround ?? '') || 0))[0] ?? null;
+  const applicable = values.map(value => current(normalize(value), now)).filter((value): value is Announcement => value !== null)
+    .sort((a, b) => (Date.parse(b.backAround ?? '') || 0) - (Date.parse(a.backAround ?? '') || 0));
+  const latest = applicable[0];
+  return latest ? { ...latest, mode: applicable.some(value => value.mode === 'hard') ? 'hard' : 'soft' } : null;
 }
 
 function normalize(value: unknown): Announcement | null {
