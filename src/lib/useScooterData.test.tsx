@@ -801,3 +801,21 @@ describe('useScooterData', () => {
     expect(result.current.refresh).toBe(refresh);
   });
 });
+
+it('holds a queued pan and a remounted map until Retry-After', async () => {
+  let finish!: (value: Response) => void;
+  fetcher.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; })).mockImplementation(ok());
+  const first = mount();
+  await advance(180);
+  first.rerender({ query: BERN });
+  await act(async () => finish(new Response(null, { status: 429, headers: { 'Retry-After': '60' } })));
+  await advance(180);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  first.unmount();
+  const second = mount();
+  await advance(59_819);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  await advance(1);
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  second.unmount();
+});

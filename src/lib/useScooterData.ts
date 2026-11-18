@@ -6,7 +6,7 @@ import { refreshDecision } from '@/lib/autoRefresh';
 import { clockOffset } from '@/lib/dataExpiry';
 import { classifyLoadFailure, retryAfterMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
 import { requestDeadline } from '@/lib/requestDeadline';
-import { REFRESH_PACE, VIEW_PACE, noteRequest, paceOpensAt, recentRequests, refusedForMs } from '@/lib/requestPace';
+import { REFRESH_PACE, VIEW_PACE, heldUntil, noteRefusal, noteRequest } from '@/lib/requestPace';
 import {
   INITIAL_SCOOTER_DATA_STATE,
   notUpdating,
@@ -111,15 +111,7 @@ function createScooterDataController() {
   let onOutOfDate: (() => void) | undefined;
   // The last touch, click, key or return to the foreground: the map pauses IDLE_PAUSE_MS after it.
   let lastInteractionAt = Date.now();
-  // Until when a 429 asked to be left alone (Retry-After).
-  let refusedUntil = 0;
   const listeners = new Set<() => void>();
-
-  /**
-   * Until when a request the map makes by itself waits: out a refusal, and for room under `pace` requests a
-   * minute (requestPace.ts). "Try again" and "Refresh" do not wait.
-   */
-  const heldUntil = (pace: number, now: number) => Math.max(refusedUntil, paceOpensAt(recentRequests(now), now, pace));
 
   const apply = (event: ScooterDataEvent) => {
     const next = scooterDataReducer(state, event);
@@ -197,7 +189,7 @@ function createScooterDataController() {
         if (!Array.isArray(data.vehicles) || !data.meta) throw new Error('Invalid scooter response');
         response = data;
       } else {
-        if (res.status === 429) refusedUntil = Date.now() + refusedForMs(res);
+        if (res.status === 429) noteRefusal(res, Date.now());
         failure = classifyLoadFailure({ status: res.status, originDown: origin.maintenance !== null });
         cause = new Error(`HTTP ${res.status}`);
       }
@@ -293,10 +285,17 @@ function createScooterDataController() {
       wantedKey = key;
       debounceTimer = clearTimer(debounceTimer);
       const now = Date.now();
-      debounceTimer = window.setTimeout(() => {
+      const loadView = () => {
+        const now = Date.now();
+        const opens = heldUntil(VIEW_PACE, now);
+        if (opens > now) {
+          debounceTimer = window.setTimeout(loadView, opens - now);
+          return;
+        }
         debounceTimer = null;
         void load();
-      }, Math.max(QUERY_DEBOUNCE_MS, heldUntil(VIEW_PACE, now) - now));
+      };
+      debounceTimer = window.setTimeout(loadView, Math.max(QUERY_DEBOUNCE_MS, heldUntil(VIEW_PACE, now) - now));
     },
     refresh: load,
   };
