@@ -33,7 +33,7 @@ fun ScooterMapController.dropReviewMoment(moment: Int) {
  */
 internal fun ScooterMapController.reviewAfterLoad() {
     val now = clock()
-    if (loadIssue.value == null && delayedStatus == null) reviewPrompt.noteUse(at = now)
+    if (maintenance.value == null && loadIssue.value == null && delayedStatus == null) reviewPrompt.noteUse(at = now)
     if (reviewTrouble) reviewPrompt.noteBadMoment(at = now)
     if (!isSceneActive || reviewDue || !reviewPrompt.isDue(at = now, calm = reviewCalm)) return
     reviewDue = true
@@ -50,7 +50,7 @@ private val ScooterMapController.reviewCalm: Boolean
         if (dock !is ScooterDockContent.Summary || isLocating.value || locationIssue.value != null || isWalking || isFilling) {
             return false
         }
-        return !reviewTrouble
+        return maintenance.value == null && !reviewTrouble
     }
 
 /**

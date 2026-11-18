@@ -2942,7 +2942,7 @@ extension ScooterMapModel {
     /// screen has seen it rest; a moment already waiting goes on waiting.
     private func reviewAfterLoad() {
         let now = clock()
-        if loadIssue == nil, delayedStatus == nil { reviewPrompt.noteUse(at: now) }
+        if maintenance == nil, loadIssue == nil, delayedStatus == nil { reviewPrompt.noteUse(at: now) }
         if reviewTrouble { reviewPrompt.noteBadMoment(at: now) }
         guard isSceneActive, !reviewDue, reviewPrompt.isDue(at: now, calm: reviewCalm) else { return }
         reviewDue = true
@@ -2953,7 +2953,7 @@ extension ScooterMapModel {
     /// card or a reason for an empty map; no location being found or gone wrong, no walk, no scooters faded while
     /// they are collected again. What is over the map, the search, the sheets and the popover, is the screen's.
     private var reviewCalm: Bool {
-        guard case .summary = dock, !isLocating, locationIssue == nil, !isWalking, !isFilling else { return false }
+        guard maintenance == nil, case .summary = dock, !isLocating, locationIssue == nil, !isWalking, !isFilling else { return false }
         return !reviewTrouble
     }
 
