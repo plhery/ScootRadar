@@ -840,6 +840,20 @@ describe('Geoapify', () => {
     expect((await search([...lottstetten.slice(1), zurich[0]])).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
   });
 
+  it('ranks a synthesized local Broadway above the distant town', async () => {
+    const building = (number: string): GeoapifyRow => [
+      { result_type: 'building', street: 'Broadway', housenumber: number, city: 'New York', country_code: 'us' }, 40.717, -74.005,
+    ];
+    stubUpstreams({ geoapify: {
+      nearby: [building('100'), building('102')],
+      towns: [[{ result_type: 'city', name: 'Broadway', city: 'Broadway', country: 'United Kingdom', country_code: 'gb' }, 52.035, -1.86]],
+    } });
+    const rows = await shownRows(await POST(postRequest('Broadway', 'en', [40.717, -74.006])));
+    expect(rows.filter(row => row[0] === 'Broadway')).toHaveLength(2);
+    expect(rows[0][0]).toBe('Broadway');
+    expect(rows[0][1]).toContain('New York');
+  });
+
   it('lists a street within 5 km once, before the addresses and shops on it, but not a place named as typed on it', async () => {
     const lottstetten: GeoapifyRow[] = Array.from({ length: 20 }, (_, index) =>
       [{ result_type: 'building', housenumber: String(index + 1), street: 'Bahnhofstraße', postcode: '79807', city: 'Lottstetten', country_code: 'de' }, 47.626, 8.5675]);
