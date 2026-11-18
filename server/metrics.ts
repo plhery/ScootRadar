@@ -194,7 +194,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       if (entry && entry.startedAt === undefined) entry.startedAt = now;
     },
     /** A sweep of the feed published the scooters it had found so far. */
-    recordRefreshProgress(id: string, now = Date.now()) {
+    recordRefreshProgress(id: string, now = Date.now(), vehicleCount = 1) {
+      if (vehicleCount === 0) return;
       const entry = asked.get(id);
       if (entry && entry.firstAt === undefined) entry.firstAt = now;
     },
@@ -364,7 +365,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         'Collections requests asked for, as the feed\'s data was over a minute old, by provider, map (app: a rider app\'s map; feed: a public feed), kind (cold: no position recent enough to show; warm: the map still showed its scooters) and outcome (ok, failed, or abandoned: its watch lapsed before it started, as a group the visitor panned past).',
         [...refreshOutcomes.values()].map(entry => [entry.labels, entry.count]));
       metric('scootradar_refresh_seconds', 'histogram',
-        'Of those that succeeded, the seconds from the request that asked for them until their collection started (phase start), published its first scooters (first: a sweep\'s nearest the view) and ended (done). The map asks again every 3 seconds while a feed refreshes.',
+        'Of those that succeeded, the seconds from the request that asked for them until their collection started (phase start), published its first scooters (first: a sweep\'s nearest the view, or completion for an entirely empty collection) and ended (done). The map asks again every 3 seconds while a feed refreshes.',
         []);
       for (const entry of refreshTimes.values()) {
         REFRESH_BUCKETS.forEach((bound, index) => out.push(`scootradar_refresh_seconds_bucket${formatLabels({ ...entry.labels, le: String(bound) })} ${entry.buckets[index]}`));

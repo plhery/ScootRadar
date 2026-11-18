@@ -176,6 +176,7 @@ it('times the refreshes requests ask for, from the first request to their start,
   metrics.recordRefreshAsked(lime, true, true, now);
   metrics.recordRefreshAsked(lime, true, true, now + 2_000);
   metrics.recordRefreshStarted(lime.id, now + 4_000);
+  metrics.recordRefreshProgress(lime.id, now + 1_000, 0);
   metrics.recordRefreshProgress(lime.id, now + 6_000);
   metrics.recordRefreshProgress(lime.id, now + 9_000);
   metrics.recordRefreshEnded(lime.id, false, now + 40_000);
