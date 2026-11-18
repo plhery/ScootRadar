@@ -523,6 +523,10 @@ final class ScooterMapModelTests: XCTestCase {
                 defaults: defaults
             )
         }
+        defaults.set(["whoosh"], forKey: "enabled-providers")
+        XCTAssertFalse(makeModel().enabledProviders.contains(.zeus))
+        XCTAssertTrue(makeModel().enabledProviders.contains(.ridemovi))
+
         // As 1.2.0 kept "Lime only": RideMovi, which came in 1.3.0, was missing from it.
         defaults.set(["lime"], forKey: "enabled-providers")
         let migrated = makeModel()

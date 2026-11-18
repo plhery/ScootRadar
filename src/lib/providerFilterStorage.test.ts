@@ -26,6 +26,7 @@ describe('the providers a visitor keeps off', () => {
       .toEqual(['bird', 'bolt', 'dott', 'hopp', 'pony', 'publibike', 'voi']);
     expect(sorted(savedProvidersOff(reading({ [LEGACY_PROVIDERS_STORAGE_KEY]: '["lime","zeus"]' }), NOW)))
       .toEqual(['bird', 'bolt', 'dott', 'hopp', 'pony', 'publibike', 'voi']);
+    expect(sorted(savedProvidersOff(reading({ [LEGACY_PROVIDERS_STORAGE_KEY]: JSON.stringify([...BEFORE, 'whoosh']) }), NOW))).toEqual(['zeus']);
     // Written since: every provider of its day, those added after it missing.
     expect(sorted(savedProvidersOff(reading({ [LEGACY_PROVIDERS_STORAGE_KEY]: JSON.stringify([...BEFORE, 'zeus']) }), NOW))).toEqual([]);
   });
