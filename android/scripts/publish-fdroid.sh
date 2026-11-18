@@ -6,8 +6,8 @@
 #   scripts/publish-fdroid.sh <fdroid.apk> <commit> [notes.md]
 #
 # <fdroid.apk> is `./gradlew :app:assembleFdroidRelease -Pscootradar.uploadKey=<upload.properties>` from a clean checkout
-# of <commit>, the commit the release was built from, which its GitHub release, android-<versionName>-<versionCode>,
-# names. SCOOTRADAR_FDROID_DIR names the repository's folder on this Mac, made by `fdroid init`, whose config.yml and key
+# of <commit>, the commit on main the release was built from, which its GitHub release and tag,
+# android-<versionName>-<versionCode>, point at. SCOOTRADAR_FDROID_DIR names the repository's folder on this Mac, made by `fdroid init`, whose config.yml and key
 # stay outside every git tree. The repository keeps the newest beta alone; the older ones stay on GitHub Releases.
 set -euo pipefail
 
@@ -49,6 +49,16 @@ fi
 target=$(git -C "$android" rev-parse --verify "$commit^{commit}")
 tag="android-$name-$code"
 
+# The release's tag is the commit it was built from, which has to be on GitHub's main already. It goes up through this
+# checkout's own remote: a ref on a commit that carries .github/workflows needs a credential that may write workflows,
+# which gh's token may lack. A tag of that name on another commit stops everything here, before anything is published.
+git -C "$android" fetch -q origin main
+if ! git -C "$android" merge-base --is-ancestor "$target" FETCH_HEAD; then
+  echo "$target is not on GitHub's main" >&2
+  exit 1
+fi
+git -C "$android" push -q origin "$target:refs/tags/$tag"
+
 # The index, signed with the repository's key. The site's icon is the repository's and the app's.
 mkdir -p "$dir/metadata/$app/en-US" "$dir/older" "$dir/config"
 cp "$android/../public/icon-512.png" "$dir/icon.png"
@@ -72,21 +82,10 @@ git -C "$site" commit -q -m "ScootRadar $name ($code)"
 git -C "$site" -c credential.helper= -c 'credential.helper=!gh auth git-credential' \
   push -q --force "https://github.com/$github.git" fdroid:refs/heads/fdroid
 
-# The same APK on GitHub Releases. The tag sits on a commit of its own that names the release's commit: a new ref on the
-# release's commit carries .github/workflows, which a token without the workflow scope may not create. A release made
-# already stays as it is.
+# The same APK on GitHub Releases, on the tag above. A release made already stays as it is.
 if gh release view "$tag" --repo "$github" >/dev/null 2>&1; then
   echo "$tag is on GitHub Releases already" >&2
 else
-  release=$(mktemp -d)
-  printf 'ScootRadar for Android %s (%s), the beta, is built from https://github.com/%s/tree/%s\n' "$name" "$code" "$github" "$target" \
-    > "$release/README.md"
-  git -C "$release" init -q -b release
-  git -C "$release" add README.md
-  git -C "$release" commit -q -m "ScootRadar for Android $name ($code)"
-  git -C "$release" tag "$tag"
-  git -C "$release" -c credential.helper= -c 'credential.helper=!gh auth git-credential' \
-    push -q "https://github.com/$github.git" "refs/tags/$tag"
   cp "$apk" "$site/scootradar-$name-$code.apk"
   {
     printf 'ScootRadar for Android %s (%s), the beta, built from %s without Google'"'"'s libraries and signed with ScootRadar'"'"'s own key.\n\n' \

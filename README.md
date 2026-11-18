@@ -164,10 +164,12 @@ SCOOTRADAR_FDROID_DIR=<path> android/scripts/publish-fdroid.sh android/app/build
 ```
 
 The script refuses an APK that the upload key alone did not sign, or that
-carries Google's libraries, signs the repository's index with the repository's
-key, which stays outside the repository in `SCOOTRADAR_FDROID_DIR` with
-fdroid's `config.yml`, puts the repository alone on the `fdroid` branch, which
-raw.githubusercontent.com serves, and attaches the APK to a pre-release. Copies
+carries Google's libraries, and a commit that isn't on GitHub's `main`. It tags
+that commit `android-<versionName>-<versionCode>`, signs the repository's index
+with the repository's key, which stays outside the repository in
+`SCOOTRADAR_FDROID_DIR` with fdroid's `config.yml`, puts the repository alone
+on the `fdroid` branch, which raw.githubusercontent.com serves, and attaches
+the APK to a pre-release on the tag. Copies
 from Google Play, and the ones the repository and GitHub had before 18 November
 2026, are signed by Google Play, so they have to be uninstalled before this one
 goes on; the release notes and the repository's entry say so. The app's entry in the
