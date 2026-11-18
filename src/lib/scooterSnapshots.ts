@@ -584,21 +584,6 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
 }
 
 /**
- * The answer's batteryRanges at street zoom: of each app with a scooter in view that says its battery
- * and not its range, `observations` with the feeds, whichever the provider filter and the minimum keep,
- * so the filters say what battery each app's need as soon as it is switched on again.
- */
-function batteryRangesIn(snapshot: MobilitySnapshot, bounds: MapBounds, observations: readonly FeedSnapshot[] = []): Record<string, number> {
-  const ranges: Record<string, number> = {};
-  for (const feed of [...snapshot.feeds.filter(feed => coverageIntersects(feed.coverage, bounds)), ...observations]) {
-    if (feed.skipped) continue;
-    addBatteryRanges(ranges, feed.vehicles, bounds);
-    if (feed.sweep) addBatteryRanges(ranges, feed.sweep.vehicles, bounds);
-  }
-  return ranges;
-}
-
-/**
  * The feeds whose positions answer the query: none for the city totals of
  * the zoomed-out map, which are a snapshot of their own.
  */
@@ -720,7 +705,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   options: SnapshotQueryOptions = {}): ScooterResponse {
   if (query.outsideCoverage) return scooterResponse({ vehicles: [], meta: emptyHealth() }, zoom, { availableProviders: [] });
   if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return overviewResponse(snapshot, query, zoom, now);
-  const relevant = [...feedsForQuery(snapshot, query, zoom), ...(options.observations ?? [])];
+  const candidates = [...feedsForQuery(snapshot, { ...query, providers: undefined }, zoom), ...(options.observations ?? [])];
+  const relevant = candidates.filter(feed => !query.providers || query.providers.has(feed.provider));
   const counted = relevant.filter(feed => !options.idleInView?.has(feed.id) || showsPositions(feed, now));
   const meta = healthFor(counted, now, undefined, options.refreshing);
   const showing = (feed: FeedSnapshot) => showsPositions(feed, now);
@@ -740,10 +726,10 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   if (asked.length > 0 && !refreshing && asked.every(feed => !showsPositions(feed, now) && !failedAtOperator(feed))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
+  const requested = (vehicle: Vehicle) => (!query.providers || query.providers.has(vehicle.provider)) && passesMinimums(vehicle, query, batteryFullRange);
   const pick = (into: Map<string, Vehicle>, vehicles: Vehicle[], skip?: (vehicle: Vehicle, key: string) => boolean) => {
     for (const vehicle of vehicles) {
       if (!boundsContainPoint(query.bounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinimums(vehicle, query, batteryFullRange)) continue;
       const key = vehicleKey(vehicle);
       if (skip?.(vehicle, key)) continue;
       into.set(key, query.origin ? { ...vehicle,
@@ -756,7 +742,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     area.feeds.has(feed.id) && at < area.at && haversineM(area.lat, area.lng, vehicle.lat, vehicle.lng) <= area.radiusM) === true;
   const unique = new Map<string, Vehicle>();
   // Of each feed read over many minutes whose sweep under way shows beside its last positions, what the sweep has read again.
-  const beside = new Map(relevant.flatMap(feed => {
+  const beside = new Map(candidates.flatMap(feed => {
     const sweep = !feed.skipped && showsPositions(feed, now) ? shownSweep(feed, now) : undefined;
     return sweep ? [[feed, sweptAgain(feed, sweep, now)] as const] : [];
   }));
@@ -774,7 +760,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     const key = vehicleKey(vehicle);
     if (newest.has(key)) newest.set(key, Math.max(at, newest.get(key)!));
   };
-  if (newest.size) for (const feed of relevant) {
+  if (newest.size) for (const feed of candidates) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now), again = beside.get(feed);
     if (showsPositions(feed, now)) for (const vehicle of feed.vehicles) if (!again?.last(vehicle)) later(vehicle, readAt(feed, vehicle));
@@ -790,22 +776,24 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const readThroughByProvider = new Map<string, number>();
   const earliest = (times: Map<string, number>, provider: string, at: number) =>
     times.set(provider, Math.min(times.get(provider) ?? Infinity, at));
-  for (const feed of relevant) {
+  for (const feed of candidates) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now), again = beside.get(feed);
     const last = showsPositions(feed, now);
-    if (last) shownSince.push(oldestShown(feed, now, again));
-    else if (sweep) shownSince.push(sweep.vehicles.reduce((oldest, vehicle) => {
-      const at = sweepReadAt(sweep, vehicle);
-      return now - at <= VEHICLE_MAX_AGE_MS ? Math.min(oldest, at) : oldest;
-    }, sweep.reads?.lastAt ?? sweep.startedAt));
-    else continue;
-    earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
-    if (last && feed.observedAt > 0) {
-      // A completed empty read counts too. Partial sweeps cannot confirm an absence.
-      const read = lastRead(feed);
-      earliest(readByProvider, feed.provider, read);
-      readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
+    if (!query.providers || query.providers.has(feed.provider)) {
+      if (last) shownSince.push(oldestShown(feed, now, again));
+      else if (sweep) shownSince.push(sweep.vehicles.reduce((oldest, vehicle) => {
+        const at = sweepReadAt(sweep, vehicle);
+        return now - at <= VEHICLE_MAX_AGE_MS ? Math.min(oldest, at) : oldest;
+      }, sweep.reads?.lastAt ?? sweep.startedAt));
+      else continue;
+      earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
+      if (last && feed.observedAt > 0) {
+        // A completed empty read counts too. Partial sweeps cannot confirm an absence.
+        const read = lastRead(feed);
+        earliest(readByProvider, feed.provider, read);
+        readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
+      }
     }
     if (last) pick(unique, feed.vehicles, (vehicle, key) => !shows(feed, vehicle, now) || again?.last(vehicle) === true ||
       readAt(feed, vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, readAt(feed, vehicle), vehicle));
@@ -821,7 +809,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const lastSeenProviders = new Map<string, { seenAt: number; updating: boolean }>();
   const comingIds = new Set(coming.map(feed => feed.id));
   const fading = { refreshing: options.refreshing, idle: options.idleInView };
-  for (const feed of relevant) {
+  for (const feed of candidates) {
     // Of a feed read over many minutes whose last parts show, its first parts' too old to show stand faded, whatever
     // collects it: they are its last, and a scooter a walk heads for does not leave the map as its part grows old.
     const firstParts = !feed.skipped && feed.reads !== undefined && showsPositions(feed, now);
@@ -830,16 +818,15 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     // Where the sweep under way has looked; beside the last positions, what it has read again (sweptAgain).
     const swept = shownSweep(feed, now)?.swept ?? [], again = beside.get(feed);
     const readAgain = (vehicle: Vehicle) => again ? again.last(vehicle) : swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng));
-    const before = lastSeen.size;
     let seenAt = Infinity;
     pick(lastSeen, feed.vehicles, (vehicle, key) => {
       const at = readAt(feed, vehicle);
       if (now - at <= VEHICLE_MAX_AGE_MS || now - at > (maxAgeMs ?? LAST_SEEN_MAX_AGE_MS) || unique.has(key) || newest.has(key) ||
         readAgain(vehicle) || gone(feed, at, vehicle)) return true;
-      seenAt = Math.min(seenAt, at);
+      if (requested(vehicle)) seenAt = Math.min(seenAt, at);
       return false;
     });
-    if (lastSeen.size === before) continue;
+    if (!Number.isFinite(seenAt)) continue;
     lastSeenTimes.push(seenAt);
     const known = lastSeenProviders.get(feed.provider);
     const updating = comingIds.has(feed.id) || comingIds.has(viewReadsOf(feed.id));
@@ -848,8 +835,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
       updating: (known?.updating ?? false) || updating,
     });
   }
-  const vehicles = [...unique.values()];
-  const previous = [...lastSeen.values()];
+  const batteryRanges = addBatteryRanges(addBatteryRanges({}, unique.values()), lastSeen.values());
+  const vehicles = [...unique.values()].filter(requested);
+  const previous = [...lastSeen.values()].filter(requested);
   if (query.origin) for (const list of [vehicles, previous]) list.sort((a, b) => (a.distance_m ?? 0) - (b.distance_m ?? 0));
   const observedAt = Math.min(now, ...shownSince);
   const byApp = (times: Map<string, number>, apps?: Set<string>) => Object.fromEntries([...times]
@@ -869,7 +857,6 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     (showsPositions(feed, now) ? feed.stale || feed.failed : !failedAtOperator(feed) && options.refreshing?.has(feed.id) === true))
     .map(feed => feed.provider));
   const staleProviders = byApp(oldestShownByProvider, staleApps);
-  const batteryRanges = batteryRangesIn(snapshot, query.bounds, options.observations);
   const response = scooterResponse({ vehicles, meta, batteryRanges }, zoom, {
     ...(meta.stale ? { staleProviders } : {}),
     ...(readByProvider.size ? { shownSince: shownSinceByApp, readThrough: byApp(readThroughByProvider) } : {}),

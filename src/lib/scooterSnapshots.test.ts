@@ -216,6 +216,8 @@ describe('persistent map snapshots', () => {
       // None outside the view, and none where every scooter says its range.
       const elsewhere = { south: 45.76, west: 4.86, north: 45.8, east: 4.9 };
       expect(querySnapshot(cached, { ...query, bounds: elsewhere }, 16, now)).not.toHaveProperty('batteryRanges');
+      const expired = feed({ observedAt: now - 86_400_000 });
+      expect(querySnapshot(snapshot([vois, expired]), query, 16, now)).not.toHaveProperty('batteryRanges');
       expect(querySnapshot(snapshot([vois]), query, 16, now)).not.toHaveProperty('batteryRanges');
       expect(querySnapshot(snapshot([vois]), query, 8, now)).not.toHaveProperty('batteryRanges');
     });
