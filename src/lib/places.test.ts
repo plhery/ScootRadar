@@ -167,6 +167,16 @@ describe('storedPlace', () => {
 });
 
 describe('recent place store', () => {
+  it('rereads a forgotten place when the first subscriber returns', () => {
+    const storage = memoryStorage();
+    const store = createRecentPlaceStore(() => storage);
+    const leave = store.subscribe(() => {});
+    store.set(place('Home'));
+    leave();
+    storage.clear();
+    store.subscribe(() => {});
+    expect(store.get()).toBeNull();
+  });
   it('remembers the last place chosen, one at a time, and tells its subscribers', () => {
     const store = createRecentPlaceStore(memoryStorage);
     const listener = vi.fn();
