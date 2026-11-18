@@ -449,6 +449,9 @@ class ScooterMarkers(
                 controller.selectedScooterID,
                 controller.selectedParkingID,
                 controller.responseMetadata,
+                controller.lastUpdated,
+                controller.loadIssue,
+                controller.maintenance,
                 controller.userLocation,
                 controller.searchedDestination,
                 controller.language,
@@ -577,6 +580,12 @@ class ScooterMarkers(
         // The dock may have grown over a name.
         scene.movePills(markerMap)
         flush()
+        // A completed empty response or a first-load failure can leave the marker revision unchanged.
+        if (!markersAwaited && (controller.lastUpdated.value != null || controller.loadIssue.value != null ||
+                controller.maintenance.value != null)) {
+            markersAwaited = true
+            whenDrawn { markersShown = true }
+        }
         // TalkBack finds the rider where it is now.
         if (riderMoved) accessibility.refresh()
     }
@@ -963,6 +972,7 @@ class ScooterMarkers(
         main.post {
             queued += true to action
             listen()
+            map.triggerRepaint()
         }
     }
 
