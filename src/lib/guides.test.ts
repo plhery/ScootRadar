@@ -50,6 +50,12 @@ it.each(['tallinn', 'tartu', 'parnu'])('%s distinguishes the standalone alcohol 
   expect(fines).toMatch(/€400 \(§ 224²\).*€800 \(§ 259\)/);
 });
 
+it('dates every Berlin and Salford byline at least as recently as its November fare revision', () => {
+  for (const guide of GUIDES.filter(guide => ['berlin', 'salford'].includes(guide.topic))) {
+    expect(guide.updated >= (guide.topic === 'berlin' ? '2026-11-03' : '2026-11-06'), guide.slug).toBe(true);
+  }
+});
+
 describe('the guides', () => {
   it('has each at an address of its own, in words of its language joined by hyphens', () => {
     const addresses = GUIDES.map(guidePath);
