@@ -2445,7 +2445,7 @@ test('a chosen appearance is on the page before the app starts, under the conten
   // That it applies at all shows that the policy let the script through: it carries
   // the nonce of its response, like the app's own scripts.
   expect(await firstPaint()).toEqual({ theme: 'light', ...light });
-  expect((await page.request.get('/map')).headers()['content-security-policy']).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic';/);
+  expect((await page.request.get('/map')).headers()['content-security-policy']).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic' https:\/\/challenges\.cloudflare\.com;/);
 });
 
 test('the map starts with nothing refused by its content security policy', async ({ page }) => {
@@ -2461,6 +2461,39 @@ test('the map starts with nothing refused by its content security policy', async
   expect(await page.evaluate(() => (window as Window & { refused?: string[] }).refused)).toEqual([]);
   await expect(page.locator('style#leaflet-rotate-panes')).toHaveCount(1);
   expect(await page.locator('.leaflet-norotate-pane').evaluate(pane => getComputedStyle(pane).zIndex)).toBe('600');
+});
+
+test('the map asks Turnstile for its pass in the background, once, under its content security policy', async ({ page }) => {
+  await page.addInitScript(() => {
+    const refused: string[] = [];
+    Object.assign(window, { refused });
+    document.addEventListener('securitypolicyviolation', event => refused.push(`${event.violatedDirective} ${event.blockedURI}`));
+  });
+  // Turnstile, stood in for by a script that answers with a token naming what it was asked for.
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', route => route.fulfill({
+    contentType: 'text/javascript',
+    body: 'window.turnstile = { render(container, options) { setTimeout(() => options.callback(`${options.sitekey}:${options.action}`), 0); return "widget"; }, remove() {} };',
+  }));
+  const passes: unknown[] = [];
+  await page.route('**/api/pass', async route => {
+    passes.push({ method: route.request().method(), body: route.request().postDataJSON() });
+    await route.fulfill({ status: 204 });
+  });
+  // Every answer says the browser holds no pass, as the Worker does until it has one.
+  await page.route('**/api/scooters?**', route => route.fulfill({ status: 200, contentType: 'application/json',
+    headers: { 'X-Scooter-Pass': 'none' }, body: JSON.stringify({ ...scooterResponse, vehicles: [],
+      clusters: [{ id: '15:1:1', lat: 47.37691, lng: 8.54171, count: 3, providers: { lime: 1, bird: 1, bolt: 1 } }],
+      meta: { ...scooterResponse.meta, mode: 'clusters', zoom: Number(new URL(route.request().url()).searchParams.get('zoom')) } }) }));
+  await page.goto('/map');
+  // The map is not kept waiting: the check starts once its first answer is shown.
+  await expect(page.locator('.cluster-marker')).toHaveCount(1);
+  expect(passes).toEqual([]);
+  await expect.poll(() => passes, { timeout: 15_000 }).toEqual([{ method: 'POST', body: { token: '0x4AAAAAAGHng4PaY6p_ONop:map' } }]);
+  // Later answers say so too, and are not checked again.
+  await zoomTo(page, Number(await page.locator('.leaflet-container').getAttribute('data-zoom')) - 1);
+  await expect(page.locator('.cluster-marker')).toHaveCount(1);
+  expect(passes).toHaveLength(1);
+  expect(await page.evaluate(() => (window as Window & { refused?: string[] }).refused)).toEqual([]);
 });
 
 test('the tiles are not loaded again when the appearance or the map style changes', async ({ page }) => {

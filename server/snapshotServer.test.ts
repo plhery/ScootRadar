@@ -515,6 +515,32 @@ describe('collection on demand', () => {
     expect(metrics.render(undefined, now)).toContain('scootradar_unwatched_requests_total 2');
   });
 
+  it('answers a client the Worker found is none of our maps and apps from what it holds, collecting nothing', async () => {
+    const now = Date.now();
+    const feeds = [feed('france:dott_fr_lyon', lyon, now - minutes(5))];
+    const demanded: string[] = [];
+    const visitors = createVisitorLedger();
+    const metrics = createSnapshotMetrics('local', { visitors: at => visitors.counts(at) });
+    const refresher = { demand: (ids: string[]) => { demanded.push(...ids); return []; }, refreshing: () => false, wait: async () => true };
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, { metrics, visitors, refresher });
+    const body = await (await fetch(lyonUrl(port), { headers: { ...headers, 'X-Scooter-Client': 'other' } })).json() as ScooterResponse;
+    expect(body.vehicles.map(item => item.vehicle_id)).toEqual(['france:dott_fr_lyon-old']);
+    expect(demanded).toEqual([]);
+    await (await fetch(lyonUrl(port), { headers: { ...headers, 'X-Scooter-Client': 'map' } })).text();
+    expect(demanded).toEqual(['france:dott_fr_lyon']);
+    expect(metrics.render(undefined, now)).toContain('scootradar_scooter_requests_by_client_total{client="other"} 1');
+  });
+
+  it('takes who asks only from the Worker, which holds the token', async () => {
+    const now = Date.now();
+    const feeds = [feed('france:dott_fr_lyon', lyon, now - minutes(5))];
+    const demanded: string[] = [];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, { token: undefined,
+      production: false, refresher: { demand: ids => { demanded.push(...ids); return []; }, refreshing: () => false, wait: async () => true } });
+    await (await fetch(lyonUrl(port), { headers: { 'X-Scooter-Client': 'other' } })).text();
+    expect(demanded).toEqual(['france:dott_fr_lyon']);
+  });
+
   it('asks for the Lime groups nearest the middle of a wide view, and shows the others where last seen', async () => {
     const now = Date.now();
     const groups = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.id.startsWith('lime_de_app_berlin_')).map(system => {

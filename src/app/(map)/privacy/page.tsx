@@ -44,7 +44,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 14 November 2026</p>
+        <p>Last updated: 18 November 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -173,6 +173,24 @@ export default function PrivacyPage() {
           in the application&apos;s log stream. Cloudflare may still process limited network and security
           metadata under its own policies. Application error logs contain event names and error
           messages, not precise locations or search text.
+        </p>
+
+        <h2>Protection against scraping</h2>
+        <p>
+          A few seconds after the map on the website shows its first scooters, at most once a day, Cloudflare
+          Turnstile checks in the background that your browser is not a script. You see nothing: its script and its
+          invisible frame come from challenges.cloudflare.com and read signals of your browser and device, under
+          the <a href="https://www.cloudflare.com/turnstile-privacy-policy/">Cloudflare Turnstile Privacy Addendum</a>.
+          Once it has passed, the website sets a cookie for 24 hours, <code>__Host-scootradar-pass</code>, which holds
+          when it expires and a signature of that time and of your network (your IP address, or its first half for
+          IPv6), and no identifier, so that the map&apos;s requests keep the scooters up to date. The map works
+          without it. The iOS and Android apps do not use Turnstile.
+        </p>
+        <p>
+          To tell a map&apos;s requests from a script&apos;s, the server counts each visitor&apos;s requests for
+          scooters under a hash of their IP address (or its first half for IPv6), salted afresh each time the server
+          starts: by quarter hour, and by day the quarter hours in which they kept the scooters up to date. A hash is
+          kept for its quarter hour or its day, then only the counts; no IP address is stored.
         </p>
 
         <h2>Error reports</h2>

@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 14 November 2026
+Last updated: 18 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches, except the last place chosen in the search, which stays on the device (see below).
@@ -50,6 +50,20 @@ searches, except the last place chosen in the search, which stays on the device 
 - Cloudflare hosts and protects the service. Persisted Worker invocation logs
   are disabled so full coordinate-bearing request URLs are not retained in the
   application's log stream.
+- On the website, a few seconds after the map shows its first scooters, at most once a day,
+  Cloudflare Turnstile checks in the background that the browser is not a script. Nothing is
+  shown: its script and invisible frame come from `challenges.cloudflare.com` and read signals of
+  the browser and device, under the Cloudflare Turnstile Privacy Addendum
+  (<https://www.cloudflare.com/turnstile-privacy-policy/>). Once it has passed, the website sets a
+  cookie for 24 hours, `__Host-scootradar-pass`, holding when it expires and a signature of that
+  time and of the visitor's network (the IP address, or its first half for IPv6), and no
+  identifier, so that the map's requests keep the scooters up to date. The map works without it.
+  The iOS and Android apps do not use Turnstile.
+- To tell a map's requests from a script's, the server counts each visitor's requests for
+  scooters under a hash of their IP address (or its first half for IPv6), salted afresh each time
+  the server starts: by quarter hour, and by UTC day the quarter hours in which they kept the
+  scooters up to date. A hash is kept for its quarter hour or its day, then only the counts; no IP
+  address is stored.
 - Structured application error logs contain event names and error messages, not
   precise locations or search text.
 - When the server fails to answer a map request, an error report is sent to

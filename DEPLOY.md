@@ -185,6 +185,23 @@ Before setting `PHOTON_API_URL`, update the privacy notice (PRIVACY.md and
 `src/app/(map)/privacy/page.tsx`), which names komoot as the recipient of
 address text when Geoapify cannot answer or finds nothing.
 
+### Map passes
+
+The web map proves it is a browser with Cloudflare Turnstile (docs/OBSERVABILITY.md,
+"Scraping"): the widget "ScootRadar map", invisible, for `scootradar.com` alone, in
+the account's Turnstile settings. Its site key is `TURNSTILE_SITE_KEY` in
+`src/lib/mapPassClient.ts`; its secret is the Worker secret `TURNSTILE_SECRET_KEY`,
+and `MAP_PASS_SECRET` (32 random bytes, e.g. `openssl rand -base64 32`) signs the
+pass cookie, both stored with `npx wrangler secret put …`. Without either, the Worker
+asks no browser for a pass and `/api/pass` answers 503; every request is then a map's,
+an app's or another client's as before. A new `MAP_PASS_SECRET` voids every pass:
+browsers ask again at their next answer, out of sight. Rotating the widget's secret
+in the dashboard keeps the old one valid for a while, long enough to store the new.
+The widget's domains must list a host before a map served from it can get a pass
+(previews and `localhost` are not listed: they are served as before).
+Cloudflare's test keys (site key `1x00000000000000000000BB`, secret
+`1x0000000000000000000000000000000AA`) always pass, for a local `wrangler dev`.
+
 ## Deploys wait for CI
 
 Production deploys a commit only once CI has passed on it. Workers Builds and

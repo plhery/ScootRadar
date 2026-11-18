@@ -4,6 +4,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { clientNetwork } from '../src/lib/clientNetwork';
+import { parseScooterClient } from '../src/lib/scooterClient';
 import { scooterView } from '../src/lib/scooterView';
 import { parseScooterQuery, scooterAnswerZoom } from '../src/lib/scooterQuery';
 import { shouldClusterAtZoom } from '../src/lib/clustering';
@@ -247,8 +248,10 @@ export function createSnapshotServer(options: ServerOptions) {
     // A box no screen shows at its zoom is answered as the view it could be: clusters, or the city totals.
     const zoom = scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
     if (zoom !== parsed.zoom) options.metrics?.recordLoweredZoom();
-    // A visitor past their areas of the quarter hour, as a sweep of a country, collects nothing more.
-    const watches = options.visitors?.record(key, parsed.query.bounds, zoom, now) ?? true;
+    // A visitor past their areas of the quarter hour, as a sweep of a country, collects nothing more, nor does a
+    // client the Worker found is none of our maps and apps (src/lib/scooterClient.ts); only it may say so.
+    const asker = parseScooterClient(tokenHash ? request.headers['x-scooter-client'] : undefined);
+    const watches = options.visitors?.record(key, parsed.query.bounds, zoom, now, asker) ?? asker !== 'other';
     let refreshing: Set<string> | undefined;
     let idleInView: Set<string> | undefined;
     let comingSoon: Set<string> | undefined;

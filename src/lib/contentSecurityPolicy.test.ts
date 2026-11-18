@@ -17,8 +17,9 @@ describe('documentContentSecurityPolicy', () => {
   it('uses a strict nonce-based production script policy', () => {
     const csp = documentContentSecurityPolicy({ nonce: 'test-nonce', development: false });
 
+    // Turnstile's host, for the map pass, counts only in browsers without 'strict-dynamic'.
     expect(directive(csp, 'script-src')).toBe(
-      "script-src 'self' 'nonce-test-nonce' 'strict-dynamic'"
+      "script-src 'self' 'nonce-test-nonce' 'strict-dynamic' https://challenges.cloudflare.com"
     );
     expect(directive(csp, 'script-src')).not.toContain("'unsafe-inline'");
     expect(directive(csp, 'script-src')).not.toContain("'unsafe-eval'");
@@ -31,7 +32,8 @@ describe('documentContentSecurityPolicy', () => {
     expect(directive(csp, 'worker-src')).toBe("worker-src 'self'");
     // The map is drawn by the page: no picture comes from another site.
     expect(directive(csp, 'img-src')).toBe("img-src 'self' data:");
-    expect(directive(csp, 'frame-src')).toBe("frame-src 'none'");
+    // Turnstile's frame alone, which gives the map its pass.
+    expect(directive(csp, 'frame-src')).toBe('frame-src https://challenges.cloudflare.com');
     expect(directive(csp, 'base-uri')).toBe("base-uri 'none'");
     expect(csp).toContain('upgrade-insecure-requests;');
   });

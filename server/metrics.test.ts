@@ -146,6 +146,32 @@ it('exports the visitors by requests and areas, counters to each container and t
   expect(sample(gauges, 'scootradar_visitor_max_areas')).toBe('40');
 });
 
+it('exports the requests by client, the visitors of each closed day by quarter hours, and those past the allowance', () => {
+  const visitors = createVisitorLedger();
+  const metrics = createSnapshotMetrics('abc123', { visitors: at => visitors.counts(at) });
+  const quarter = 15 * 60_000;
+  const day = 24 * 60 * quarter / 15;
+  const start = Math.floor(now / day) * day;
+  const view = { south: 47.36, west: 8.53, north: 47.38, east: 8.56 };
+  for (let index = 0; index < 10; index++) visitors.record('192.0.2.1', view, 16, start + index * quarter, 'app');
+  visitors.record('192.0.2.2', view, 16, start, 'verified');
+  visitors.record('192.0.2.3', view, 16, start, 'other');
+  const today = metrics.render(undefined, start + 9 * quarter);
+  expect(sample(today, 'scootradar_scooter_requests_by_client_total{client="app"}')).toBe('10');
+  expect(sample(today, 'scootradar_scooter_requests_by_client_total{client="verified"}')).toBe('1');
+  expect(sample(today, 'scootradar_scooter_requests_by_client_total{client="other"}')).toBe('1');
+  expect(sample(today, 'scootradar_scooter_requests_by_client_total{client="map"}')).toBe('0');
+  expect(sample(today, 'scootradar_past_allowance_requests_total')).toBe('2');
+  expect(sample(today, 'scootradar_visitor_max_quarter_hours')).toBe('10');
+  expect(sample(today, 'scootradar_visitor_days_total{client="unverified",quarter_hours="9-15"}')).toBe('0');
+  const counters = metrics.render(undefined, start + day, true);
+  expect(sample(counters, 'scootradar_visitor_days_total{client="unverified",quarter_hours="9-15"}')).toBe('1');
+  expect(sample(counters, 'scootradar_visitor_days_total{client="verified",quarter_hours="1"}')).toBe('1');
+  // The client that collects nothing keeps no quarter hour.
+  expect(sample(counters, 'scootradar_visitor_days_total{client="unverified",quarter_hours="1"}')).toBe('0');
+  expect(counters).not.toContain('scootradar_visitor_max_quarter_hours');
+});
+
 it('counts collections from zero by outcome, and requests by route and status', () => {
   const metrics = createSnapshotMetrics();
   const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };

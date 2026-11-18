@@ -1,4 +1,6 @@
 import { clientNetwork } from '@/lib/clientNetwork';
+import { holdsMapPass, MAP_PASS_HEADER } from '@/lib/mapPass';
+import { SCOOTER_CLIENT_HEADER, scooterClient } from '@/lib/scooterClient';
 import { scooterView } from '@/lib/scooterView';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
 import { VEHICLE_MAX_AGE_MS } from '@/lib/dataFreshness';
@@ -11,6 +13,9 @@ interface SnapshotProxyEnvironment extends MaintenanceEnvironment {
   SCOOTER_SNAPSHOT_API_URL: string;
   SCOOTER_SNAPSHOT_API_TOKEN?: string;
   SCOOTER_API_RATE_LIMITER: { limit(options: { key: string }): Promise<{ success: boolean }> };
+  /** The key of the web map's passes (mapPass.ts); without it, or without Turnstile's secret, none is asked for. */
+  MAP_PASS_SECRET?: string;
+  TURNSTILE_SECRET_KEY?: string;
 }
 
 /** A cache of the data centre (`caches.open` in worker.ts) and the invocation's waitUntil. */
@@ -235,11 +240,15 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
     const view = scooterView(request.headers.get('X-Scooter-View'));
+    // Who asks: a browser with a pass, a map of ours, an app too old to name its view, or another client, which
+    // the cache answers from what it holds (scooterClient.ts).
+    const pass = await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client);
+    const asker = scooterClient({ pass, view: !!view, userAgent: request.headers.get('User-Agent') });
     let response: Response;
     try {
       response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
         ...(view && !zones ? { 'X-Scooter-View': `${view.id}.${view.sequence}` } : {}),
-        'X-Scooter-Client-IP': client }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
+        'X-Scooter-Client-IP': client, [SCOOTER_CLIENT_HEADER]: asker }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
     } catch (error) {
       // Unreached, or no answer in time: the server is down, as while Netcup reboots.
       // The name only: a message may hold the request URL and its coordinates.
@@ -256,6 +265,8 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     result.headers.delete('X-Scooter-Public-Cache-Control');
     result.headers.delete(KEEP_SECONDS);
     for (const [key, value] of Object.entries(securityHeaders)) result.headers.set(key, value);
+    // The web map asks for a pass when an answer says it has none (mapPassClient.ts); the apps never do.
+    if (!zones && !pass && env.MAP_PASS_SECRET && env.TURNSTILE_SECRET_KEY) result.headers.set(MAP_PASS_HEADER, 'none');
     // Not an answer the cache is still collecting feeds or zones for: the one after it is kept.
     if (lastGood && response.status === 200 && publicPolicy?.startsWith('public') && seconds > 0) {
       const keep = (key: string, extra: Record<string, string> = {}) => lastGood.waitUntil(lastGood.cache.put(key,

@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { boundsCenter } from '../src/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM } from '../src/lib/mapCoverage';
+import { SCOOTER_CLIENTS, type ScooterClient } from '../src/lib/scooterClient';
 import type { MapBounds } from '../src/lib/types';
 
 /** The visitors are counted by UTC quarter hours, as the Lime refreshes they set off (metrics.ts). */
@@ -16,6 +17,16 @@ export const AREA_DEGREES = 0.5;
 export const AREAS_WATCHED_PER_WINDOW = 32;
 const AREAS_KEPT = 64;
 const MAX_VISITORS = 10_000;
+/** The visitors are also counted by UTC day: how many quarter hours their requests kept feeds collected. */
+export const VISITOR_DAY_MS = 24 * 60 * 60_000;
+/**
+ * The quarter hours of a day a visitor without a map pass (a map of ours not yet verified, an app, or anyone
+ * claiming to be one) may keep feeds collected: two hours. The web map holds a pass once Turnstile has passed
+ * (src/lib/mapPass.ts) and is not held to it. Counted, not enforced (`enforceAllowance`), until a week of counts
+ * shows how many of the apps' users would reach it (docs/OBSERVABILITY.md, "Scraping").
+ */
+export const UNVERIFIED_QUARTER_HOURS_PER_DAY = 8;
+const MAX_DAY_VISITORS = 50_000;
 
 // The visitors of a quarter hour by their requests for scooters: a map left open asks every minute (15),
 // one whose feeds are being collected again every three seconds (300).
@@ -23,6 +34,10 @@ export const REQUEST_BUCKETS: [string, number][] = [['1-15', 15], ['16-60', 60],
 // And by the areas they asked for, at a zoom past the city totals: up to 1, 3, 7… and 64 or more.
 export const AREA_BUCKETS: [string, number][] = [['1', 1], ['2-3', 3], ['4-7', 7], ['8-15', 15], ['16-31', 31],
   ['32-63', 63], ['64+', Infinity]];
+// The visitors of a day by the quarter hours their requests kept feeds collected: up to the allowance (8),
+// past it, and from 8 hours (32), which no map we have seen keeps busy.
+export const QUARTER_HOUR_BUCKETS: [string, number][] = [['1', 1], ['2-3', 3], ['4-8', 8], ['9-15', 15], ['16-31', 31],
+  ['32+', Infinity]];
 
 export interface VisitorCounts {
   /** Visitors of the closed quarter hours by their requests, counted since the start. */
@@ -33,6 +48,17 @@ export interface VisitorCounts {
   unwatched: number;
   /** Of the last closed quarter hour, the most requests and the most areas one visitor made (areas at most 64). */
   lastWindow: { requests: number; areas: number };
+  /** Requests for scooters by the client the Worker made them out to be (scooterClient.ts); other collects nothing. */
+  byClient: [ScooterClient, number][];
+  /**
+   * Visitors of the closed UTC days by the quarter hours their requests kept feeds collected, those without a
+   * pass (unverified) and with one (verified) apart.
+   */
+  days: { unverified: [string, number][]; verified: [string, number][] };
+  /** Requests without a pass past their visitor's UNVERIFIED_QUARTER_HOURS_PER_DAY: refused collection once enforced. */
+  pastAllowance: number;
+  /** The most quarter hours one visitor without a pass has kept feeds collected today. */
+  mostUnverifiedToday: number;
 }
 
 /** The area of a box: the cell its middle is in. */
@@ -41,19 +67,37 @@ export function areaOf(bounds: MapBounds): string {
   return `${Math.floor(lat / AREA_DEGREES)},${Math.floor(lng / AREA_DEGREES)}`;
 }
 
+interface VisitorDay {
+  /** Quarter hours kept collected without a pass, and with one. */
+  unverified: number;
+  verified: number;
+  /** The last quarter hour counted of each. */
+  unverifiedWindow: number;
+  verifiedWindow: number;
+}
+
 /**
  * The requests and areas of each visitor in the current quarter hour, by a hash of their address salted
  * afresh by each process. No address is kept, and the hashes go when the quarter hour closes, into the
- * buckets' counts. A scraper reads as one visitor asking for many areas; a map, for one or a few.
+ * buckets' counts; those of the day's quarter hours, when the UTC day closes. A scraper reads as one visitor
+ * asking for many areas, or for a town all day; a map, for one or a few, for a while.
+ * `enforceAllowance`: a visitor without a pass past UNVERIFIED_QUARTER_HOURS_PER_DAY collects nothing more
+ * that day.
  */
-export function createVisitorLedger() {
+export function createVisitorLedger({ enforceAllowance = false }: { enforceAllowance?: boolean } = {}) {
   const salt = randomBytes(16);
   let window = 0;
   const visitors = new Map<string, { requests: number; watched: Set<string>; areas: Set<string> }>();
   const byRequests = new Map(REQUEST_BUCKETS.map(([bucket]) => [bucket, 0]));
   const byAreas = new Map(AREA_BUCKETS.map(([bucket]) => [bucket, 0]));
+  const byClient = new Map(SCOOTER_CLIENTS.map(client => [client, 0]));
   let unwatched = 0;
   let lastWindow = { requests: 0, areas: 0 };
+  let day = 0;
+  const visitorDays = new Map<string, VisitorDay>();
+  const unverifiedDays = new Map(QUARTER_HOUR_BUCKETS.map(([bucket]) => [bucket, 0]));
+  const verifiedDays = new Map(QUARTER_HOUR_BUCKETS.map(([bucket]) => [bucket, 0]));
+  let pastAllowance = 0;
   const count = (counts: Map<string, number>, buckets: [string, number][], value: number) => {
     const [bucket] = buckets.find(([, most]) => value <= most)!;
     counts.set(bucket, counts.get(bucket)! + 1);
@@ -73,35 +117,72 @@ export function createVisitorLedger() {
     visitors.clear();
     window = current;
   };
+  const closeDay = (now: number) => {
+    const current = Math.floor(now / VISITOR_DAY_MS);
+    if (current === day) return;
+    for (const { unverified, verified } of visitorDays.values()) {
+      if (unverified) count(unverifiedDays, QUARTER_HOUR_BUCKETS, unverified);
+      if (verified) count(verifiedDays, QUARTER_HOUR_BUCKETS, verified);
+    }
+    visitorDays.clear();
+    day = current;
+  };
+  /** Counts the quarter hour against the visitor's day; whether it may still collect. */
+  const allowance = (id: string, verified: boolean) => {
+    let visitor = visitorDays.get(id);
+    if (!visitor) {
+      if (visitorDays.size >= MAX_DAY_VISITORS) return true;
+      visitor = { unverified: 0, verified: 0, unverifiedWindow: -1, verifiedWindow: -1 };
+      visitorDays.set(id, visitor);
+    }
+    if (verified) {
+      if (visitor.verifiedWindow !== window) { visitor.verified++; visitor.verifiedWindow = window; }
+      return true;
+    }
+    if (visitor.unverifiedWindow !== window) { visitor.unverified++; visitor.unverifiedWindow = window; }
+    if (visitor.unverified <= UNVERIFIED_QUARTER_HOURS_PER_DAY) return true;
+    pastAllowance++;
+    return !enforceAllowance;
+  };
 
   return {
     /**
-     * Counts a request for scooters by `client` (its address) for `bounds` at the zoom it is answered at.
-     * Whether it may keep its view's feeds collected: false once its visitor has asked for
-     * AREAS_WATCHED_PER_WINDOW other areas this quarter hour. The city totals collect nothing and count
-     * no area. Past MAX_VISITORS in a quarter hour, a new visitor is neither counted nor held back.
+     * Counts a request for scooters by `client` (its address) for `bounds` at the zoom it is answered at, from
+     * `asker`, the client the Worker made it out to be. Whether it may keep its view's feeds collected: never for
+     * a client other than our maps and apps; false once its visitor has asked for AREAS_WATCHED_PER_WINDOW other
+     * areas this quarter hour, and, with `enforceAllowance`, once one without a pass has kept feeds collected
+     * UNVERIFIED_QUARTER_HOURS_PER_DAY quarter hours today. The city totals collect nothing and count no area
+     * nor quarter hour. Past MAX_VISITORS in a quarter hour, a new visitor is neither counted nor held back.
      */
-    record(client: string, bounds: MapBounds, zoom: number | null, now = Date.now()): boolean {
+    record(client: string, bounds: MapBounds, zoom: number | null, now = Date.now(), asker: ScooterClient = 'map'): boolean {
       close(now);
+      closeDay(now);
+      byClient.set(asker, byClient.get(asker)! + 1);
       const id = createHash('sha256').update(salt).update(client).digest('base64url');
       let visitor = visitors.get(id);
       if (!visitor) {
-        if (visitors.size >= MAX_VISITORS) return true;
+        if (visitors.size >= MAX_VISITORS) return asker !== 'other';
         visitor = { requests: 0, watched: new Set(), areas: new Set() };
         visitors.set(id, visitor);
       }
       visitor.requests++;
-      if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return true;
+      if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return asker !== 'other';
       const area = areaOf(bounds);
       if (visitor.areas.size < AREAS_KEPT) visitor.areas.add(area);
-      if (visitor.watched.has(area)) return true;
-      if (visitor.watched.size < AREAS_WATCHED_PER_WINDOW) { visitor.watched.add(area); return true; }
-      unwatched++;
-      return false;
+      if (asker === 'other') return false;
+      if (!visitor.watched.has(area)) {
+        if (visitor.watched.size >= AREAS_WATCHED_PER_WINDOW) { unwatched++; return false; }
+        visitor.watched.add(area);
+      }
+      return allowance(id, asker === 'verified');
     },
     counts(now = Date.now()): VisitorCounts {
       close(now);
-      return { byRequests: [...byRequests], byAreas: [...byAreas], unwatched, lastWindow };
+      closeDay(now);
+      let mostUnverifiedToday = 0;
+      for (const { unverified } of visitorDays.values()) mostUnverifiedToday = Math.max(mostUnverifiedToday, unverified);
+      return { byRequests: [...byRequests], byAreas: [...byAreas], unwatched, lastWindow, byClient: [...byClient],
+        days: { unverified: [...unverifiedDays], verified: [...verifiedDays] }, pastAllowance, mostUnverifiedToday };
     },
   };
 }

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { forgetAnnouncement } from './maintenance';
+import { issueMapPass, MAP_PASS_COOKIE } from './mapPass';
 import { proxyScooterSnapshot, type LastGoodStore } from './scooterProxy';
 
 const env = { SCOOTER_SNAPSHOT_API_TOKEN: 'test-service-token', SCOOTER_SNAPSHOT_API_URL: 'https://cache.example',
@@ -88,12 +89,35 @@ it('fails closed without an origin credential and forwards only a trusted client
   const req = new Request(request(), { headers: { 'cf-connecting-ip': '192.0.2.1', 'X-Scooter-Client-IP': 'spoofed' } });
   await proxyScooterSnapshot(req, env);
   expect(fetcher).toHaveBeenCalledWith(expect.any(URL), expect.objectContaining({
-    redirect: 'manual', headers: { Accept: 'application/json', Authorization: 'Bearer test-service-token', 'X-Scooter-Client-IP': '192.0.2.1' },
+    redirect: 'manual', headers: { Accept: 'application/json', Authorization: 'Bearer test-service-token', 'X-Scooter-Client-IP': '192.0.2.1',
+      'X-Scooter-Client': 'other' },
   }));
   // An IPv6 client as its /64, which the cache's limits and count of visitors go by.
   await proxyScooterSnapshot(new Request(request(), { headers: { 'cf-connecting-ip': '2001:db8:12:3400:a1b2:c3d4:e5f6:1' } }), env);
   expect(fetcher).toHaveBeenLastCalledWith(expect.any(URL), expect.objectContaining({
     headers: expect.objectContaining({ 'X-Scooter-Client-IP': '2001:db8:12:3400::' }) }));
+});
+
+it('tells the cache who asks, from a pass, a view or an app\'s user agent, and asks the web map for its pass', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({ vehicles: [] }));
+  const passes = { ...env, MAP_PASS_SECRET: 'pass-secret', TURNSTILE_SECRET_KEY: 'turnstile-secret' };
+  const pass = await issueMapPass('pass-secret', '192.0.2.1');
+  const ask = async (headers: Record<string, string>, environment: typeof env = passes, url = request().url) => {
+    const response = await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
+    return { client: new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Client'), pass: response.headers.get('X-Scooter-Pass') };
+  };
+  const view = { 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' };
+  expect(await ask({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}` })).toEqual({ client: 'verified', pass: null });
+  expect(await ask(view)).toEqual({ client: 'map', pass: 'none' });
+  expect(await ask({ 'User-Agent': 'ScootRadar/2437 CFNetwork/3896.200.61 Darwin/27.2.0' })).toEqual({ client: 'app', pass: 'none' });
+  expect(await ask({ 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)' })).toEqual({ client: 'other', pass: 'none' });
+  // A pass of another network, or forged, is none.
+  expect(await ask({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}`, 'cf-connecting-ip': '192.0.2.2' })).toEqual({ client: 'map', pass: 'none' });
+  expect(await ask({ Cookie: `${MAP_PASS_COOKIE}=${pass.slice(0, -1)}A` })).toEqual({ client: 'other', pass: 'none' });
+  // No pass is asked for where none can be given, nor for the zones.
+  expect(await ask(view, env)).toEqual({ client: 'map', pass: null });
+  expect(await ask(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof env)).toEqual({ client: 'map', pass: null });
+  expect((await ask(view, passes, 'https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15')).pass).toBeNull();
 });
 
 it('rejects an origin redirect without forwarding it to clients or following it with the credential', async () => {

@@ -5,6 +5,8 @@ import { track } from '@/lib/analytics';
 import { refreshDecision } from '@/lib/autoRefresh';
 import { clockOffset } from '@/lib/dataExpiry';
 import { classifyLoadFailure, retryAfterMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
+import { MAP_PASS_HEADER } from '@/lib/mapPass';
+import { askForMapPass } from '@/lib/mapPassClient';
 import { requestDeadline } from '@/lib/requestDeadline';
 import { REFRESH_PACE, VIEW_PACE, heldUntil, noteRefusal, noteRequest } from '@/lib/requestPace';
 import {
@@ -184,6 +186,8 @@ function createScooterDataController() {
       // The server's times are compared with this device's clock, which may be wrong.
       clockOffsetMs = clockOffset(res.headers.get('Date'), Date.now());
       origin = originState(res.headers, clockOffsetMs);
+      // Without a pass, Turnstile is asked for one in the background, once this answer is shown (mapPassClient.ts).
+      if (res.headers.get(MAP_PASS_HEADER) === 'none') askForMapPass();
       if (res.ok) {
         const data = await res.json() as ScooterResponse;
         if (!Array.isArray(data.vehicles) || !data.meta) throw new Error('Invalid scooter response');

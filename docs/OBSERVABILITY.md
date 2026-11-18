@@ -203,6 +203,17 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_visitor_max_requests` and `scootradar_visitor_max_areas` (gauges): the
   most requests, and the most areas (up to 64), one visitor made in the last closed
   quarter hour, as the container Prometheus reads counted them.
+- `scootradar_scooter_requests_by_client_total{client="verified|map|app|other"}`: the
+  requests for scooters by the client the Worker made them out to be (see
+  [Scraping](#scraping)). Since 18 November 2026.
+- `scootradar_visitor_days_total{client="unverified|verified", quarter_hours="1|2-3|4-8|9-15|16-31|32+"}`:
+  the visitors of each closed UTC day by the quarter hours in which their requests kept
+  feeds collected, those without a map pass (`unverified`) and with one apart, by the
+  same salted hashes, kept the day. A restart starts the day's counts afresh, so a
+  deploy splits a visitor's day in two. `scootradar_past_allowance_requests_total`:
+  the requests without a pass past their visitor's 8 quarter hours of the day, and
+  `scootradar_visitor_max_quarter_hours` (gauge): the most quarter hours one visitor
+  without a pass has kept feeds collected today. Since 18 November 2026.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
@@ -425,7 +436,7 @@ The alert rules:
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 2.7 GB, or a V8 heap over 1.5 GB, for 15 minutes (the container's limit is 3072 MiB, of which Node gives the heap 1632 MiB, and the heap runs out first) |
 | ScootRadar Geoapify near its daily limit | address searches sent Geoapify over 2,400 requests in 24 hours (its free plan allows 3,000 a day); a rolling day, so it fires no later than the calendar day does |
-| ScootRadar possible scraper | in the last hour a visitor asked for 32 areas or more in a quarter hour, over 50 requests went uncollected past a visitor's areas, or over 20 asked for a box no screen shows (see [Scraping](#scraping)); a warning, which clears an hour after |
+| ScootRadar possible scraper | in the last hour a visitor asked for 32 areas or more in a quarter hour, over 50 requests went uncollected past a visitor's areas, over 20 asked for a box no screen shows, or over 200 came from `other` clients; or a visitor without a map pass has kept feeds collected 32 quarter hours today (see [Scraping](#scraping)); a warning, which clears an hour after (the last at the end of the UTC day) |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
 "target down" keeps its last state rather than resolving and firing again. So every
@@ -577,8 +588,45 @@ data. Since 6 November 2026:
   feeds, which change them on every read. A rental link comes whole from the
   operator's feed and does not use the id.
 
-Not done on purpose: Bot Fight Mode or a JavaScript challenge on `/api`, which the
-iPhone and Android apps cannot pass, and a lower limit: a map waiting for its feeds asks
+Since 18 November 2026 the cache collects only for our maps and apps
+(`src/lib/scooterClient.ts`). The Worker tells it who asks, in `X-Scooter-Client`,
+which it believes only with its token:
+
+- `verified`: a browser holding the map pass (below);
+- `map`: a request naming its view (`X-Scooter-View`), as the website's map, the
+  iPhone app and the Android app send;
+- `app`: an iPhone or Android app too old to name it, by its user agent
+  (`ScootRadar/…`, `okhttp/…`);
+- `other`: anything else, as a script. It is answered from what the cache holds,
+  collecting nothing, not even the city totals: what the daily sweeps (and our maps'
+  views) leave there, at most a day old. On 18 November 2026 a script polling
+  North Rhine-Westphalia under its own user agent made some 2,800 requests in seven
+  and a half hours, each read setting the region's feeds collecting.
+
+The website's map proves it is a browser with Cloudflare Turnstile, invisible
+(`src/lib/mapPassClient.ts`). An answer for scooters to a request without a pass says
+so (`X-Scooter-Pass: none`); 3 seconds later, once its scooters are shown, the map
+loads Turnstile's script with the page's nonce, renders the widget out of sight and
+posts its token to `/api/pass`, at most once every 10 minutes and never in the way of
+its own requests. The Worker checks the token with Cloudflare (`siteverify`), for
+`scootradar.com` and the widget's action `map`, and sets a cookie for 24 hours,
+`__Host-scootradar-pass`: when it expires and an HMAC of that and the visitor's
+network (`src/lib/mapPass.ts`), no identifier, so it is no use from another network.
+A refusal is logged as `map_pass_refused` with Turnstile's error codes, a failure to
+ask as `map_pass_unverified`. The widget, its keys and their rotation are in
+[DEPLOY.md](../DEPLOY.md), "Map passes".
+
+Without a pass, a visitor (a map not yet verified, an app, or a client claiming to be
+one) may keep feeds collected 8 quarter hours of a UTC day (`UNVERIFIED_QUARTER_HOURS_PER_DAY`
+in `server/visitorLedger.ts`); past that, once enforced, their requests would be answered
+from what the cache holds until the day ends. It is counted, not enforced
+(`enforceAllowance`), until a week of `scootradar_visitor_days_total` shows how many
+of the apps' users would reach it: a phone network's carrier NAT puts many behind one
+address, and enforcement needs the day's counts to outlive a restart. The apps are not
+challenged: App Attest and Play Integrity would be their passes, if it comes to that.
+
+Not done on purpose: Bot Fight Mode or a challenge on `/api` itself, which the iPhone
+and Android apps cannot pass, and a lower limit: a map waiting for its feeds asks
 every 3 seconds, 20 times a minute.
 
 Since 17 November 2026 the web map keeps under the 60 by itself
@@ -621,7 +669,24 @@ on a suspicion, 2 when a source could not be read:
   hour after the last touch);
 - one with 100 requests or more under a user agent neither a browser's
   (`Mozilla/5.0 …`) nor our apps' (`ScootRadar/… CFNetwork`, `okhttp/…`);
-- one limited 20 times or more.
+- one limited 20 times or more;
+- one that asked in 12 quarter hours of the day or more with 20 requests or more in
+  each, or in 24 or more with 300 requests or more in the day, whatever its user agent
+  (read by quarter hour for the networks with 240 requests or more). A map is looked at
+  for a while; a script polling a town never stops. A home server's script polling one
+  town on 14 November 2026 asked in 32 quarter hours (399 requests), the North
+  Rhine-Westphalia script on the 18th in 31, 28 of them busy (2,880); from 11 to 18
+  November no other outside network asked in more than 28, nor in more than 7 busy;
+- from the cache, 300 requests or more from `other` clients, or a visitor without a
+  map pass that kept feeds collected 32 quarter hours or more (8 hours). The report
+  also gives the requests by client, the visitors of the day by quarter hours, with a
+  pass and without, and the requests past the allowance.
+
+The check would have reported the North Rhine-Westphalia script the morning after,
+by its day's requests and its user agent. One under a browser's user agent and 1,500
+requests a day went unseen before the quarter-hour rule. And the check reads the day
+before: Grafana's "possible scraper" tells the same day of 200 `other` requests in an
+hour, or of a visitor kept collected 8 hours.
 
 Cloudflare's Free plan gives the client's address, country, user agent, path and
 status, not its network (ASN) or query: `whois <address>` names the network, a
@@ -643,7 +708,11 @@ the live requests in full (boxes, zooms, network); delete what it captured, whic
 coordinates. Report the verdict (nothing, a suspicion, a scraper) with the network,
 country, user agent, count and hours. A scraper is blocked by a Cloudflare WAF custom
 rule on its address or network, with the user's say-so: an address can be a school's
-or a company's.
+or a company's. The rules are in the dashboard, scootradar.com → Security → Security
+rules; wrangler's login cannot write them (it has no WAF scope), so a rule is made
+there, by hand or through the browser. The North Rhine-Westphalia script was blocked
+by its address on 18 November 2026 at 20:45 UTC; the check above shows if it comes
+back from another.
 
 ## Sentry
 

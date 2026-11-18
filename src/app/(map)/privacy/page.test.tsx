@@ -79,3 +79,12 @@ it('says, once the website has a Sentry project, that its reports go there whate
     vi.doUnmock('@/lib/errorReportsConfig');
   }
 });
+
+it('names the invisible Turnstile check, its privacy addendum and the pass cookie it leads to, as PRIVACY.md does', () => {
+  const section = text().match(/ Protection against scraping (.*?) Error reports /)?.[1];
+  expect(section).toMatch(/Cloudflare Turnstile checks in the background/);
+  expect(renderToStaticMarkup(<PrivacyPage />)).toContain('href="https://www.cloudflare.com/turnstile-privacy-policy/"');
+  // MAP_PASS_COOKIE and MAP_PASS_SECONDS (src/lib/mapPass.ts).
+  expect(section).toMatch(/cookie for 24 hours, __Host-scootradar-pass , which holds when it expires/);
+  expect(section).toMatch(/no IP address is stored/);
+});

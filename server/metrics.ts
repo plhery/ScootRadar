@@ -349,9 +349,21 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_unwatched_requests_total', 'counter',
           'Requests for scooters answered from what the cache holds without collecting their view again: their visitor had already asked for 32 other areas that quarter hour.',
           [[{}, visitors.unwatched]]);
+        metric('scootradar_scooter_requests_by_client_total', 'counter',
+          'Requests for scooters by the client the Worker made them out to be: verified (a browser with a map pass from Turnstile), map (a map of ours naming its view), app (our iPhone or Android app too old to name it), other (none of these, as a script: answered from what the cache holds, collecting nothing).',
+          visitors.byClient.map(([client, count]) => [{ client }, count]));
+        metric('scootradar_visitor_days_total', 'counter',
+          'Visitors of each closed UTC day, told apart as the quarter hours\' are, by the quarter hours their requests kept feeds collected (1, 2-3, 4-8, 9-15, 16-31, 32+), those without a map pass (unverified: maps not yet verified, apps, or clients claiming to be one) and with one (verified) apart. Unverified ones are allowed 8.',
+          (['unverified', 'verified'] as const).flatMap(client => visitors.days[client]
+            .map(([quarter_hours, count]): [Labels, number] => [{ client, quarter_hours }, count])));
+        metric('scootradar_past_allowance_requests_total', 'counter',
+          'Requests for scooters without a map pass past their visitor\'s 8 quarter hours of the UTC day: counted, not refused, until the allowance is enforced.',
+          [[{}, visitors.pastAllowance]]);
         if (!countersOnly) {
           metric('scootradar_visitor_max_requests', 'gauge', 'The most requests for scooters one visitor made in the last closed quarter hour.',
             [[{}, visitors.lastWindow.requests]]);
+          metric('scootradar_visitor_max_quarter_hours', 'gauge', 'The most quarter hours one visitor without a map pass has kept feeds collected today (UTC), out of the 8 allowed.',
+            [[{}, visitors.mostUnverifiedToday]]);
           metric('scootradar_visitor_max_areas', 'gauge', 'The most areas one visitor asked for in the last closed quarter hour, up to 64.',
             [[{}, visitors.lastWindow.areas]]);
         }

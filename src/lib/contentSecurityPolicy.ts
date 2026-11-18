@@ -3,6 +3,9 @@ import { SENTRY_BROWSER_DSN, sentryIngestOrigin } from './errorReportsConfig';
 const policy = (directives: string[]): string => `${directives.join('; ')};`;
 
 const MAP_TILES_ORIGIN = 'https://tiles.openfreemap.org';
+// Cloudflare Turnstile, which gives the web map its pass (src/lib/mapPassClient.ts): its script, which the map
+// loads under 'strict-dynamic' with the page's nonce (the host is for browsers without it), and its frame.
+const TURNSTILE_ORIGIN = 'https://challenges.cloudflare.com';
 
 export function documentContentSecurityPolicy({
   nonce,
@@ -21,7 +24,7 @@ export function documentContentSecurityPolicy({
 
   return policy([
     "default-src 'self'",
-    `script-src 'self' ${nonceSource} 'strict-dynamic'${development ? " 'unsafe-eval'" : ''}`,
+    `script-src 'self' ${nonceSource} 'strict-dynamic' ${TURNSTILE_ORIGIN}${development ? " 'unsafe-eval'" : ''}`,
     "script-src-attr 'none'",
     // CSP2 fallback. Modern browsers use the narrower style-src-elem and
     // style-src-attr directives below.
@@ -34,7 +37,7 @@ export function documentContentSecurityPolicy({
     `connect-src 'self' ${MAP_TILES_ORIGIN}${development ? ' ws: wss:' : ' https://u.plhery.com'}${sentry ? ` ${sentry}` : ''}`,
     `worker-src 'self'${development ? ' blob:' : ''}`,
     "child-src 'self'",
-    "frame-src 'none'",
+    `frame-src ${TURNSTILE_ORIGIN}`,
     "media-src 'none'",
     "manifest-src 'self'",
     "object-src 'none'",
