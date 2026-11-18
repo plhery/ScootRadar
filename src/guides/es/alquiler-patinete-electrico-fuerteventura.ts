@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alquiler de patinete eléctrico en Fuerteventura: Hoppy y Bird pueblo a pueblo, precios, casco y ordenanzas',
   lede: 'Para el alquiler de patinete eléctrico en Fuerteventura tienes Hoppy y Bird en Caleta de Fuste, Hoppy en Corralejo y Bird en Costa Calma y Morro Jable. Descarga la app, añade una tarjeta y escanea el código QR del patinete; con Hoppy, el viaje empieza y acaba en uno de sus puntos, a cualquier hora. En noviembre de 2026, un Hoppy cuesta 1 € por desbloquear en Caleta de Fuste y 1,20 € en Corralejo, más 0,32 a 0,37 € por minuto, así que diez minutos salen por 4,20 a 4,90 €; Bird te enseña su precio en la app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, también en los de alquiler, así que llévate uno. Y cada municipio tiene sus normas: Antigua y Pájara prohíben los patinetes en paseos y zonas peatonales, Pájara solo los deja ir por la calzada en las zonas 30, y La Oliva aprobó inicialmente la suya en febrero de 2026.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-11-10',
   city: 'es:Caleta de Fuste',
   sections: [
     {

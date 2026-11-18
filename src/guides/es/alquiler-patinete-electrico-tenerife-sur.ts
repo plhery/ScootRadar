@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, precios, casco y paseos prohibidos',
   lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Descargas la app del operador, desbloqueas el patinete con ella y pagas por minuto. En noviembre de 2026, diez minutos cuestan 3,45 € con Hopp y de 4,50 a 4,70 € con Hoppy; Dott y Bird te muestran su precio en la app antes de desbloquear. Con Hoppy y Bird, el viaje solo termina en uno de sus puntos de aparcamiento. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-11-10',
   city: 'es:Playa de las Américas',
   sections: [
     {

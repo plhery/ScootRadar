@@ -176,6 +176,7 @@ it('times the refreshes requests ask for, from the first request to their start,
   metrics.recordRefreshAsked(lime, true, true, now);
   metrics.recordRefreshAsked(lime, true, true, now + 2_000);
   metrics.recordRefreshStarted(lime.id, now + 4_000);
+  metrics.recordRefreshProgress(lime.id, now + 1_000, 0);
   metrics.recordRefreshProgress(lime.id, now + 6_000);
   metrics.recordRefreshProgress(lime.id, now + 9_000);
   metrics.recordRefreshEnded(lime.id, false, now + 40_000);
@@ -321,4 +322,15 @@ it('says which feeds are under a night ban, for the feed-stopped alert to wait',
   // Switzerland bans no night.
   expect(createSnapshotMetrics().render(snapshot([feed({})]), now)).toContain(
     'scootradar_feed_curfewed{feed="national:voiscooters.com",source="national",provider="voi"} 0');
+});
+
+it('keeps a running refresh through an unrelated request after an hour', () => {
+  const metrics = createSnapshotMetrics('test');
+  const bird = { id: 'bird', source: 'rome', provider: 'bird' };
+  metrics.recordRefreshAsked(bird, true, true, now);
+  metrics.recordRefreshStarted(bird.id, now);
+  metrics.recordRefreshAsked({ ...bird, id: 'other' }, false, false, now + 65 * 60_000);
+  metrics.recordRefreshLapsed(bird.id);
+  metrics.recordRefreshEnded(bird.id, false, now + 70 * 60_000);
+  expect(metrics.render(undefined, now, true)).toContain('scootradar_refreshes_total{provider="bird",map="app",kind="cold",outcome="ok"} 1');
 });

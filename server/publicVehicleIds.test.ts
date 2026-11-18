@@ -166,3 +166,11 @@ describe('public vehicle ids', () => {
     }));
   });
 });
+
+it('drops capped identifiers at source expiry even when nobody asks again', () => {
+  const ids = createPublicVehicleIds({ capped: () => true });
+  const body = answer([scooter('capped:1')]);
+  body.meta.generatedAt = new Date(start).toISOString();
+  ids.publish(body, start + 14 * 60_000);
+  expect([...ids.saved(start + 15 * 60_000 + 1)]).toEqual([]);
+});

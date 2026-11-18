@@ -187,3 +187,10 @@ it('keeps the map without the place of the link that opened it, and names that l
   expect(asked()).toEqual([shellUrl, shellUrl]);
   expect(await (await worker.appCache().match(shellUrl))!.text()).not.toMatch(/46\.95|7\.44/);
 });
+
+it.each([200, 503])('keeps the shared origin local on a %i uncached shell', async status => {
+  const worker = appWorker({ '/map': () => new Response('canonical', { status }) });
+  const response = await launch(worker, 'fresh', shellUrl + '?origin=1,2');
+  expect(response?.status).toBe(status);
+  expect(worker.fetch.mock.calls.map(([request]) => request.url)).toEqual([shellUrl]);
+});

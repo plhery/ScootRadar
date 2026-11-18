@@ -62,7 +62,7 @@ class ReviewWaitTest {
         val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = analytics.analytics)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { launch -> if (launch()) asked += 1 }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(4_000)
         assertEquals(0, asked)
@@ -81,7 +81,7 @@ class ReviewWaitTest {
         val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = analytics.analytics)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { launch -> if (launch()) asked += 1 }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(3_000)
         compose.runOnUiThread { model.noteInteraction() }
@@ -102,7 +102,7 @@ class ReviewWaitTest {
         val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = analytics.analytics)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { launch -> if (launch()) asked += 1 }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(1_000)
         compose.runOnUiThread { model.noteInteraction() }
@@ -150,7 +150,7 @@ class ReviewWaitTest {
         val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { asked += 1 }, analytics = analytics.analytics)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { launch -> if (launch()) asked += 1 }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(3_000)
         // The search opened and closed again: each a frame of its own.
@@ -175,15 +175,15 @@ class ReviewWaitTest {
     fun somethingOverTheMapBeforeTheStoreAnswersTakesBackItsCard() {
         val model = calmOnTheThirdDay()
         var nothingOver by mutableStateOf(true)
+        val analytics = RecordingAnalytics()
         var stillAsked: (() -> Boolean)? = null
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { stillAsked = it }, analytics = null)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { stillAsked = it }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(5_500)
-        assertTrue(stillAsked!!())
+        // Play is still preparing and has not claimed the ask.
         compose.mainClock.advanceTimeBy(1_000)
-        assertTrue("the map still at rest", stillAsked!!())
         compose.runOnUiThread {
             nothingOver = false
             Snapshot.sendApplyNotifications()
@@ -197,6 +197,7 @@ class ReviewWaitTest {
         }
         compose.mainClock.advanceTimeBy(10_000)
         assertFalse(stillAsked!!())
+        assertEquals(emptyList<TrackedEvent>(), analytics.events)
     }
 
     /** A controller on its third day, its first fresh feed in on a calm map: the moment to ask. */

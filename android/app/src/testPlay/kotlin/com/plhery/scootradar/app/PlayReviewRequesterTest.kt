@@ -142,10 +142,12 @@ class PlayReviewRequesterTest {
         val answer = TaskCompletionSource<ReviewInfo>()
         val manager = CountingReviewManager(answer.task)
         val requester = PlayReviewRequester(activity.get()) { manager }
-        requester.request { true }
+        var claims = 0
+        requester.request { claims++; true }
         requester.noteInteraction()
         answer.setResult(reviewInfo())
         idle()
+        assertEquals(0, claims)
         assertEquals(0, manager.shown.size)
 
         // A touch before an ask takes back none of it.

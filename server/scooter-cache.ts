@@ -377,12 +377,12 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   // Whoever looks at a feed the map showed nothing of waits for its first scooters: a pacer may serve it first (sweeps.ts).
   const shown = records.get(definition.id);
   const cold = !shown || !showsPositions(shown, startedAt);
-  const scope = sweepScope({ ...attention, cold: () => cold }, startedAt, (vehicles: Vehicle[], swept: MapBounds[], sweptSince: number) => {
+  const scope = sweepScope({ ...attention, cold: () => cold }, startedAt, (vehicles, swept, sweptSince, reads) => {
     const record = records.get(definition.id);
     if (!running || stopping || !record) return;
-    records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, vehicles: priced(vehicles), swept } });
+    records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, reads, vehicles: priced(vehicles), swept } });
     publish();
-    metrics.recordRefreshProgress(definition.id);
+    metrics.recordRefreshProgress(definition.id, Date.now(), vehicles.length);
   });
   const timed = async () => {
     const started = performance.now();
@@ -439,7 +439,7 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
 
 async function persist(final = false) {
   if (persisting) return persisting;
-  if (!snapshot || !dirty) return;
+  if (!snapshot || (!dirty && !vehicleIds.size())) return;
   const now = Date.now();
   if (now - lastHealthLogAt >= 60_000) {
     lastHealthLogAt = now;
@@ -468,7 +468,7 @@ async function persist(final = false) {
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
   const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), looks = rydeViews?.savedLooks(now), sweeps = savedBirdSupplements(),
-    ids = vehicleIds.saved(), plans = limePlans.saved();
+    ids = vehicleIds.saved(now, 2 * SAVE_EVERY_MS), plans = limePlans.saved();
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));

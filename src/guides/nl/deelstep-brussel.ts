@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep Brussel: huren tot eind 2026, prijzen, dropzones en het verbod vanaf 2027',
   lede: 'Een deelstep huren in Brussel kan nog tot en met 31 december 2026: Bolt en Dott rijden er onder een overgangsregeling. Bolt vraagt € 0,99 om te ontgrendelen en € 0,31 per minuut, Dott € 1 en € 0,37 per minuut: 10 minuten kosten dus € 4,09 bij Bolt en € 4,70 bij Dott (tarieven in november 2026). Je moet 18 zijn, een identiteitsbewijs scannen en je rit in een dropzone beëindigen. De Brusselse regering heeft beslist dat de deelsteps op 1 januari 2027 verdwijnen en dat deelfietsen hun plaats innemen; je eigen elektrische step blijft toegelaten.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'be:Bruxelles',
   sections: [
     {

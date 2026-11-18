@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Normativa del patinete eléctrico en España (2026): casco, edad, seguro, registro y multas',
   lede: 'La normativa del patinete eléctrico ha cambiado mucho en 2026: desde el 1 de octubre, el casco es obligatorio en toda España, la edad mínima es de 15 años y, de noche, tienes que llevar un elemento reflectante o luminoso homologado. Desde enero, además, tu patinete tiene que estar inscrito en la DGT y asegurado. No hace falta carné, por la acera no puedes ir nunca y la mayoría de las multas son de 200 €.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-11-10',
   sections: [
     {
       heading: 'Normativa del patinete eléctrico en 2026: lo esencial',

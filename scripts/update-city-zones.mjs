@@ -112,7 +112,7 @@ const IDENTIFY_PAUSE_MS = 1000;
 async function arcgisZones(city, { kind, url, layer, envelope, match = {}, nameField = 'Navn', nameTrim, unnamed = [], pointName, outside }, earlier) {
   const { maxRecordCount = 1000 } = await getJson(`${url}?f=json`);
   const results = new Map();
-  const identify = async ([west, south, east, north]) => {
+  const identify = async ([west, south, east, north], depth = 0) => {
     const box = [west, south, east, north].join(',');
     const query = new URLSearchParams({ geometry: box, geometryType: 'esriGeometryEnvelope', sr: '4326',
       layers: `all:${layer}`, tolerance: '0', mapExtent: box, imageDisplay: '2000,2000,96', returnGeometry: 'true', f: 'json' });
@@ -122,10 +122,11 @@ async function arcgisZones(city, { kind, url, layer, envelope, match = {}, nameF
       for (const result of body.results) results.set(String(result.attributes.OBJECTID), result);
       return;
     }
+    if (depth >= 12) throw new Error(city.id + ': ArcGIS subdivision limit reached');
     const [x, y] = [(west + east) / 2, (south + north) / 2];
     for (const quarter of [[west, south, x, y], [x, south, east, y], [west, y, x, north], [x, y, east, north]]) {
       await new Promise(done => setTimeout(done, IDENTIFY_PAUSE_MS));
-      await identify(quarter);
+      await identify(quarter, depth + 1);
     }
   };
   await identify(envelope.split(',').map(Number));
@@ -197,7 +198,7 @@ function featurePolygons(rings) {
  * goes into each zone's id where two layers of one kind number theirs alike, as Ottawa's two of
  * parking places do.
  */
-async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag, pointName }) {
+async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag, pointName, mphField, maxSpeedKph }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
@@ -216,7 +217,10 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
       return [{ id, kind, name: name || corral, ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
-    return polygonZones(id, kind, name || city.place, featurePolygons(geometry.rings));
+    const zones = polygonZones(id, kind, name || city.place, featurePolygons(geometry.rings));
+    const speed = mphField ? Number(String(attributes[mphField]).match(/(\d+(?:\.\d+)?)\s*mph/i)?.[1]) * 1.609344 : maxSpeedKph;
+    if (mphField && !Number.isFinite(speed)) throw new Error(city.id + ': missing speed for ' + id);
+    return speed === undefined ? zones : zones.map(zone => ({ ...zone, maxSpeedKph: speed }));
   });
 }
 

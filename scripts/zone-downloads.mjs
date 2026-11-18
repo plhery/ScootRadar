@@ -9,7 +9,7 @@ export const ZONE_DOWNLOAD_DIRECTORY = 'public/zones/v1';
 
 /** A city's file: its id, then its zones, one a line, each ring as latitude, longitude, latitude, longitude… */
 export function zoneDownloadFile(city) {
-  const zones = city.zones.map(zone => JSON.stringify({ id: zone.id, kind: zone.kind, ring: zone.ring.flat() }));
+  const zones = city.zones.map(zone => JSON.stringify({ id: zone.id, kind: zone.kind, maxSpeedKph: zone.maxSpeedKph, ring: zone.ring.flat() }));
   return `{"id":${JSON.stringify(city.id)},"zones":[\n${zones.join(',\n')}\n]}\n`;
 }
 

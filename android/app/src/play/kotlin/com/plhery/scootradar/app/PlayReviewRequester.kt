@@ -56,7 +56,7 @@ class PlayReviewRequester(
         // Heard only while the activity shows: one left before Play answered shows no card, nor does a map with
         // something come over it or a touch on it by then.
         asked.addOnCompleteListener(activity) { answer ->
-            if (!answer.isSuccessful || !stillAsked() || interactions != touched || activity.isFinishing || activity.isDestroyed) {
+            if (!answer.isSuccessful || interactions != touched || activity.isFinishing || activity.isDestroyed || !stillAsked()) {
                 return@addOnCompleteListener
             }
             manager.launchReviewFlow(activity, answer.result).addOnCompleteListener {

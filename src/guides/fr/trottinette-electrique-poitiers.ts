@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique à Poitiers : Pony, où se garer, où rouler et à quelle vitesse en 2026',
   lede: 'À Poitiers, les trottinettes électriques en libre-service sont celles de **Pony**, l’opérateur retenu par Grand Poitiers, qui les exploite depuis octobre 2022. En novembre 2026, une trottinette Pony coûte 1 € au déverrouillage puis 0,23 € la minute, selon les données ouvertes de Pony ; l’âge minimum se vérifie dans l’application. Selon Grand Poitiers, l’usager ne peut finir son trajet que sur un emplacement autorisé, une station Pony marquée au sol ou un appui-vélo de Grand Poitiers, et la trottinette Pony ne dépasse pas 10 km/h dans le centre-ville. Le Code de la route fixe le reste : 25 km/h au plus, 14 ans minimum, une seule personne, et pas de trottoir sauf autorisation du maire.',
   published: '2026-11-03',
-  updated: '2026-11-03',
+  updated: '2026-11-07',
   city: 'fr:Poitiers',
   sections: [
     {

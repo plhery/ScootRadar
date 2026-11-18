@@ -672,7 +672,7 @@ const TAKEN = 'No longer on the map. Someone may have taken it.';
 /** Scooter data as `response()` has it, with these scooters and bays: a new update each time. */
 function data(vehicles: Vehicle[], parking: ParkingLocation[] = [], meta: Partial<ScooterResponse['meta']> = {}): ScooterResponse {
   const body = response();
-  return { ...body, vehicles, parking, meta: { ...body.meta, totalVehicles: vehicles.length, ...meta } };
+  return { ...body, vehicles, parking, meta: { ...body.meta, shownSince: { lime: body.meta.generatedAt, bird: body.meta.generatedAt }, totalVehicles: vehicles.length, ...meta } };
 }
 type Way = { from: [number, number]; to: [number, number] };
 /** Along two streets: north or south first, then east or west. */
@@ -2450,4 +2450,35 @@ it('on a phone keeps the card in the dock, the chips, and no keys', async () => 
   expect(getCurrentPosition).not.toHaveBeenCalled();
   expect(screen.getByTestId('zoom-steps')).toHaveTextContent('0:1');
   expect(screen.getByTestId('search')).toHaveTextContent('closed');
+});
+
+it('ends the walk when only a known neighbour stands faded', async () => {
+  let answer = () => data([FAR, BESIDE]);
+  await walkToFarBeside(() => answer());
+  answer = () => ({ ...data([], [], { shownSince: { lime: new Date().toISOString() } }), lastSeen: { vehicles: [BESIDE], clusters: [] } });
+  await refreshData();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
+it('keeps the walk active while only another provider has been read', async () => {
+  let answer = () => data([FAR, BESIDE]);
+  await walkToFarBeside(() => answer());
+  answer = () => data([], [], { shownSince: { voi: new Date().toISOString() }, refreshing: true });
+  await refreshData();
+  await refreshData();
+  expect(routeOnMap()).toHaveTextContent('shown');
+});
+
+it('retains explicit link defaults across a reload', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  localStorage.setItem('scooters-params', JSON.stringify({ minRange: '6000', theme: 'dark' }));
+  window.history.replaceState(null, '', '/map?minRange=0&theme=auto');
+  for (let visit = 0; visit < 2; visit++) {
+    const view = mount();
+    await act(async () => vi.advanceTimersByTimeAsync(180));
+    expect(window.location.search).toBe('?minRange=0&theme=auto');
+    expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ minRange: '6000', theme: 'dark' });
+    view.unmount();
+  }
 });

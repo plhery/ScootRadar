@@ -17,6 +17,7 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.addingTimeInterval
 import java.time.Instant
@@ -56,6 +57,7 @@ import org.junit.Assert.assertTrue
 internal class StubScooterAPI(
     private var response: ScooterResponse,
     private val delaysFirstRequest: Boolean = false,
+    private val readTimes: (() -> Map<String, String>)? = null,
 ) : ScooterAPIClient {
     private var failure: ScooterAPIError? = null
     var calls = 0
@@ -83,6 +85,10 @@ internal class StubScooterAPI(
             }
         }
         failure?.let { throw it }
+        val reads = readTimes
+        if (response.meta == null && reads != null) return response.copy(meta = ScooterResponseMetadata(
+            partial = false, failedSources = emptyList(), shownSince = reads(),
+        ))
         return response
     }
 

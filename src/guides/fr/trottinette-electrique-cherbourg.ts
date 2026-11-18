@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique à Cherbourg : Bird, prix, stationnement et casque en 2026',
   lede: 'Pour louer une trottinette électrique à Cherbourg-en-Cotentin, vous passerez par **Bird**, présent depuis 2022. Comptez 1 € pour déverrouiller, puis 0,23 € la minute, soit 3,30 € les 10 minutes, selon les tarifs publiés par la Ville en août 2026 ; l’app affiche le prix en vigueur, et il faut avoir 18 ans. La location ne se termine que sur un emplacement Bird marqué au sol, et depuis le 1er septembre 2026, le casque et le gilet réfléchissant sont obligatoires dans la Manche, location comprise.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-11-07',
   city: 'fr:Cherbourg-en-Cotentin',
   sections: [
     {

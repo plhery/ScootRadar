@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Paderborn: Anbieter, Preise, Parken und Verbote',
   lede: 'E-Scooter in Paderborn leihst du laut Stadt bei Voi, Dott und Bolt; sie vermieten erst ab 18, einen Führerschein brauchst du nicht. Voi verlangt laut seinem veröffentlichten Tarif 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026); Dott und Bolt zeigen ihren Preis in der App. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone um Westernstrasse und Marienplatz. Abstellen dürfen die Verleiher laut Stadt nicht in Fussgängerzonen und Parks, an Haltestellen, auf Brücken und auf dem Vorplatz des Hauptbahnhofs; im Inneren Ring gelten die Abstellzonen der App. In die Busse von PaderSprinter darfst du seit 1. April 2024 keinen E-Scooter mehr mitnehmen.',
   published: '2026-10-25',
-  updated: '2026-10-26',
+  updated: '2026-11-07',
   city: 'de:Paderborn',
   sections: [
     {

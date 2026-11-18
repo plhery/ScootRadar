@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Long Beach: Lime and Bird, the rules, the beach path and where to park',
   lede: 'You can rent e-scooters in Long Beach from Lime and Bird, the two companies the City names as its permitted operators: find one in the Lime or Bird app, scan its QR code to unlock it, and end the ride in a marked drop zone where there is one. Each app shows its price before you unlock, and both offer reduced fares to riders on low incomes. California law asks for a driving licence or instruction permit and caps scooters at 15 mph; the City adds a minimum age of 18, bans riding on every sidewalk and keeps shared scooters out of parks, the Port and the airport.',
   published: '2026-10-29',
-  updated: '2026-11-05',
+  updated: '2026-11-07',
   city: 'us:ca:Long Beach',
   sections: [
     {

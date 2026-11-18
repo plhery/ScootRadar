@@ -119,7 +119,7 @@ object CityZoneFile {
             val kind = ScooterZoneKind.fromRawValue(zone.kind)
             if (kind == null || zone.ring.size < 6 || zone.ring.size % 2 != 0) return@mapNotNull null
             CityRuleZone(
-                id = zone.id, authority = of.authority, timeZone = of.timeZone, kind = kind, source = of.source,
+                id = zone.id, authority = of.authority, timeZone = of.timeZone, kind = kind, maxSpeedKph = zone.maxSpeedKph, source = of.source,
                 ring = List(zone.ring.size / 2) { GeoPoint(latitude = zone.ring[2 * it], longitude = zone.ring[2 * it + 1]) },
             )
         }
@@ -140,7 +140,7 @@ object CityZoneFile {
     @Serializable
     private class Payload(val id: String, val zones: List<Zone>) {
         @Serializable
-        class Zone(val id: String, val kind: String, val ring: DoubleArray)
+        class Zone(val id: String, val kind: String, val maxSpeedKph: Double? = null, val ring: DoubleArray)
     }
 }
 

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in London: Lime and Voi, the 11 boroughs, and where you can ride and park',
   lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. To rent, download either app, verify that you are 18 or over with a full or provisional driving licence, complete the in-app lesson, then scan the scooter’s QR code. Prices vary by operator: Lime and Voi set their own, and each app shows its rate before you unlock. The scooters are capped at 12.5 mph, and every ride starts and ends in a marked parking bay. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
   published: '2026-10-24',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'gb:London',
   sections: [
     {

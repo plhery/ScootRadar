@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Zürich: operators, prices, no-go zones and parking',
   lede: 'To rent an e-scooter in Zürich, open the app of Lime, Bolt, Bird, Voi, Dott, Hopp or PubliBike, scan a scooter and ride on the bike lane at up to 20 km/h. Ten minutes cost CHF 3.00 with PubliBike (CHF 1.00 plus CHF 0.20 a minute, November 2026) and CHF 5.20 with Bolt or Voi (CHF 1.00 plus CHF 0.42, published rates on 7 November 2026). You can’t end a ride in the Old Town or on the station forecourt, so park in a parking zone shown in the app or outside the no-parking area.',
   published: '2026-10-12',
-  updated: '2026-10-23',
+  updated: '2026-11-07',
   city: 'ch:zurich',
   sections: [
     {

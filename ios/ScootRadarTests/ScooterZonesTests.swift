@@ -564,8 +564,8 @@ final class ScooterZonesModelTests: XCTestCase {
             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         )
         let ring = [
-            GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54),
-            GeoPoint(latitude: 47.38, longitude: 8.55), GeoPoint(latitude: 47.37, longitude: 8.54)
+            GeoPoint(latitude: 41.146, longitude: -8.611), GeoPoint(latitude: 41.148, longitude: -8.611),
+            GeoPoint(latitude: 41.148, longitude: -8.610), GeoPoint(latitude: 41.146, longitude: -8.611)
         ]
         let slow = { (provider: String, kph: Double?) in
             ScooterZone(id: "\(provider):slow", provider: provider, kind: .slow, maxSpeedKph: kph, polygons: [[ring]])
@@ -960,10 +960,10 @@ private actor ZoneStubAPI: ScooterAPIClient {
         let (pending, unavailable, truncated, more) = (pending, unavailable, truncated, more)
         if held { await withCheckedContinuation { waiting.append($0) } }
         if let failure { throw failure }
-        let ring = [
-            GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54),
-            GeoPoint(latitude: 47.38, longitude: 8.55), GeoPoint(latitude: 47.37, longitude: 8.54)
-        ]
+        let south = Double(area.south) / 50, north = Double(area.north) / 50
+        let west = Double(area.west) / 50, east = Double(area.east) / 50
+        let ring = [GeoPoint(latitude: south, longitude: west), GeoPoint(latitude: north, longitude: west),
+                    GeoPoint(latitude: north, longitude: east), GeoPoint(latitude: south, longitude: east)]
         return ScooterZoneResponse(zones: [
             ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]]),
             ScooterZone(id: "bird:0", provider: "bird", kind: .noParking, maxSpeedKph: nil, polygons: [[ring]])
@@ -1214,7 +1214,7 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(try rule("calgary-8-avenue-sw-downtown").maxSpeedKph, 15)
         XCTAssertNil(try rule("gavle-drottninggatan").maxSpeedKph)
         XCTAssertTrue(CityRuleZone.all.filter { $0.maxSpeedKph != nil }.allSatisfy { $0.kind == .slow })
-        XCTAssertTrue(CityRuleZone.cityZones.allSatisfy { $0.maxSpeedKph == nil })
+        XCTAssertEqual(CityRuleZone.cityZones.first { $0.id == "austin-slow-9" }?.maxSpeedKph, 8.04672)
         XCTAssertEqual(CityRuleZone.Shown(rule: try rule("linkoping-stora-torget"), inForce: true).mapZone.maxSpeedKph, 6)
     }
 

@@ -107,6 +107,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
   const limeWakeClients = new Map(LIME_WAKE_BUCKETS.map(([bucket]) => [bucket, 0]));
   const limeWakes = new Map(LIME_WAKE_BUCKETS.map(([bucket]) => [bucket, 0]));
   // The refreshes requests asked for, by feed, until their collection ends; and their times and outcomes, by kind.
+  const running = new Set<string>();
   const asked = new Map<string, { labels: Labels; at: number; startedAt?: number; firstAt?: number }>();
   const refreshTimes = new Map<string, { labels: Labels; buckets: number[]; seconds: number; count: number }>();
   const refreshOutcomes = new Map<string, { labels: Labels; count: number }>();
@@ -169,7 +170,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
      * request times the refresh; the others asking meanwhile join it.
      */
     recordRefreshAsked(feed: FeedLabels, app: boolean, cold: boolean, now = Date.now()) {
-      for (const [id, entry] of asked) if (now - entry.at > REFRESH_FORGET_MS) asked.delete(id);
+      for (const [id, entry] of asked) if (!running.has(id) && now - entry.at > REFRESH_FORGET_MS) asked.delete(id);
       if (asked.has(feed.id)) return;
       asked.set(feed.id, { labels: { provider: feed.provider, map: app ? 'app' : 'feed', kind: cold ? 'cold' : 'warm' }, at: now });
     },
@@ -180,6 +181,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
      * request asking, so not within 15 seconds of the first. A request asking for the feed again times a refresh of its own.
      */
     recordRefreshLapsed(id: string) {
+      if (running.has(id)) return;
       const entry = asked.get(id);
       if (!entry) return;
       asked.delete(id);
@@ -187,16 +189,19 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     },
     /** The feed's collection started; one under way when the request came answers it from then. */
     recordRefreshStarted(id: string, now = Date.now()) {
+      running.add(id);
       const entry = asked.get(id);
       if (entry && entry.startedAt === undefined) entry.startedAt = now;
     },
     /** A sweep of the feed published the scooters it had found so far. */
-    recordRefreshProgress(id: string, now = Date.now()) {
+    recordRefreshProgress(id: string, now = Date.now(), vehicleCount = 1) {
+      if (vehicleCount === 0) return;
       const entry = asked.get(id);
       if (entry && entry.firstAt === undefined) entry.firstAt = now;
     },
     /** The feed's collection ended and its scooters were published, or it failed. */
     recordRefreshEnded(id: string, failed: boolean, now = Date.now()) {
+      running.delete(id);
       const entry = asked.get(id);
       if (!entry) return;
       asked.delete(id);
@@ -360,7 +365,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         'Collections requests asked for, as the feed\'s data was over a minute old, by provider, map (app: a rider app\'s map; feed: a public feed), kind (cold: no position recent enough to show; warm: the map still showed its scooters) and outcome (ok, failed, or abandoned: its watch lapsed before it started, as a group the visitor panned past).',
         [...refreshOutcomes.values()].map(entry => [entry.labels, entry.count]));
       metric('scootradar_refresh_seconds', 'histogram',
-        'Of those that succeeded, the seconds from the request that asked for them until their collection started (phase start), published its first scooters (first: a sweep\'s nearest the view) and ended (done). The map asks again every 3 seconds while a feed refreshes.',
+        'Of those that succeeded, the seconds from the request that asked for them until their collection started (phase start), published its first scooters (first: a sweep\'s nearest the view, or completion for an entirely empty collection) and ended (done). The map asks again every 3 seconds while a feed refreshes.',
         []);
       for (const entry of refreshTimes.values()) {
         REFRESH_BUCKETS.forEach((bound, index) => out.push(`scootradar_refresh_seconds_bucket${formatLabels({ ...entry.labels, le: String(bound) })} ${entry.buckets[index]}`));

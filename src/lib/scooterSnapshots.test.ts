@@ -140,6 +140,10 @@ describe('persistent map snapshots', () => {
       const count = (minBattery: number) => querySnapshot(cached, { ...query, minBattery }, 8, now).clusters[0]?.count ?? 0;
       expect(count(50)).toBe(5);
       expect(count(91)).toBe(0);
+      const disjoint = snapshot([feed({ vehicles: [
+        { ...vehicle('charged', 90), range_m: 1_000 }, { ...vehicle('far', 10), range_m: 20_000 },
+      ] })]);
+      expect(querySnapshot(disjoint, { ...query, minBattery: 50, minRange: 10_000 }, 8, now).clusters).toEqual([]);
     });
 
     it('counts in the city totals each scooter’s range, or else its battery times its app’s full range, by step of the sliders', () => {
@@ -167,8 +171,8 @@ describe('persistent map snapshots', () => {
       expect(count(4_828)).toBe(7);
       expect(ids(querySnapshot(cached, { ...query, minRange: 4_828 }, 16, now))).toEqual(['far', 'flat', 'lime52', 'lime53', 'short', 'unknown', 'unsaid']);
       expect(count(100_000)).toBe(0);
-      // Both: no more than either lets through.
-      expect(count(13_000, 50)).toBe(2);
+      // Only the battery-only Dott meets both minimums.
+      expect(count(13_000, 50)).toBe(1);
     });
 
     it('counts in the city totals what passes at street zoom and in groups, at every step of the sliders and up to 100 km', () => {
@@ -212,6 +216,8 @@ describe('persistent map snapshots', () => {
       // None outside the view, and none where every scooter says its range.
       const elsewhere = { south: 45.76, west: 4.86, north: 45.8, east: 4.9 };
       expect(querySnapshot(cached, { ...query, bounds: elsewhere }, 16, now)).not.toHaveProperty('batteryRanges');
+      const expired = feed({ observedAt: now - 86_400_000 });
+      expect(querySnapshot(snapshot([vois, expired]), query, 16, now)).not.toHaveProperty('batteryRanges');
       expect(querySnapshot(snapshot([vois]), query, 16, now)).not.toHaveProperty('batteryRanges');
       expect(querySnapshot(snapshot([vois]), query, 8, now)).not.toHaveProperty('batteryRanges');
     });
@@ -583,7 +589,7 @@ describe('feeds collected on demand', () => {
         // Once the last sweep's last part is too old to show, the sweep under way shows alone, Bird read at its start.
         const alone = querySnapshot(snapshot([further]), view, 16, now + minutes(7.25), { refreshing: new Set([further.id]) });
         expect(where(alone.vehicles)).toEqual(['bird:moved-2@-0.0014', 'bird:north-2@0.0050']);
-        expect(alone.meta.shownSince).toEqual({ bird: at(now - minutes(7.5)) });
+        expect(alone.meta.shownSince).toBeUndefined();
       });
 
       it('shows a scooter both sweeps name where the sweep under way found it, in the parts it has swept or not', () => {
@@ -904,4 +910,13 @@ describe('a map across the 180° line', () => {
     expect(querySnapshot(snapshot([nz]), { bounds: east, minBattery: 0 }, 16, now).vehicles).toEqual([]);
     expect(querySnapshot(snapshot([nz]), { bounds: east, minBattery: 0 }, 6, now).clusters).toEqual([]);
   });
+});
+
+it('names a provider after its first completed empty read', () => {
+  const empty = feed({ vehicles: [] });
+  const cold = { ...empty, observedAt: 0, attemptedAt: 0 };
+  const warming = querySnapshot(snapshot([voi, cold]), query, 16, now, { refreshing: new Set([cold.id]) });
+  expect(warming.meta.shownSince).toEqual({ voi: new Date(now).toISOString() });
+  const read = querySnapshot(snapshot([voi, empty]), query, 16, now);
+  expect(read.meta.shownSince?.dott).toBe(new Date(now).toISOString());
 });

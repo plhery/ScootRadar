@@ -22,7 +22,7 @@ export async function collectSnapshotFeed(
   const started = performance.now();
   try {
     const result = await definition.collect();
-    record = { ...base, vehicles: result.vehicles, observedAt: result.observedAt ?? Date.now(),
+    record = { ...base, ...(result.reads ? { reads: result.reads } : {}), vehicles: result.vehicles, observedAt: result.observedAt ?? Date.now(),
       attemptedAt: Date.now(), collectedAt: Date.now(), stale: result.stale, failed: false, skipped: result.skipped ?? false,
       collectionMs: smoothedCollectionMs(old?.collectionMs, performance.now() - started),
       ...(result.seasonOver ? { seasonOver: true } : {}), parking: result.skipped ? undefined : old?.parking };

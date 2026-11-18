@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Dunedin, New Zealand: Flamingo, prices, the rules, the University and Baldwin Street',
   lede: 'You can rent an e-scooter in Dunedin, New Zealand, in the Flamingo app: Flamingo won the city council’s 2024 tender to be its sole e-scooter operator. As of November 2026 it charges NZ$1 to unlock plus 45c a minute, 24 hours a day, so a 10-minute ride costs $5.50; it may pause the service in severe winter conditions. You need no driving licence, and no law requires a helmet, though Flamingo’s terms do. You may ride on the footpath with care, on shared paths and on the road, and since 1 October 2026 in cycle lanes, but Flamingo keeps its scooters off Baldwin Street, the Botanic Garden and the heart of the University of Otago’s campus.',
   published: '2026-10-31',
-  updated: '2026-10-31',
+  updated: '2026-11-07',
   city: 'nz:ota:Dunedin',
   sections: [
     {

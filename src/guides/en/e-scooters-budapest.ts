@@ -10,11 +10,11 @@ const guide: Guide = {
   headline: 'E-scooters in Budapest: Lime, Mobi-pontok, the rules and District VII',
   lede: 'E-scooters in Budapest are rented through Lime, which shows its prices in its app. Dott has listed no scooters in the city since 4 November 2026; a Hatvan news site had reported in October that Dott told that town it was leaving Hungary. On streets the city owns or manages, its public-space decree lets rental scooters stand only at a Mobi-pont, a marked parking bay, except in the outer zone, where they may be left elsewhere if they block no one. BKK asks riders to keep off the pavement, and Hungary’s police say alcohol is forbidden to e-scooter riders too. New national rules, with rental scooters capped at 20 km/h, were proposed on 28 October 2026 but are not law yet.',
   published: '2026-10-27',
-  updated: '2026-10-27',
+  updated: '2026-11-07',
   city: 'hu:Budapest',
   sections: [
     {
-      heading: 'Who rents e-scooters in Budapest: Lime, and Dott since 4 November',
+      heading: 'Lime rents e-scooters in Budapest. Dott listings ended on 4 November',
       blocks: [
         '**Lime** rents out e-scooters (elektromos roller) in Budapest. Its app shows the price before you unlock, and where you may ride and park; where a scooter is free right now, the [Budapest map](map:hu:Budapest) shows.',
         '**Dott** has listed no scooters for rent in Budapest since 4 November 2026, when its listings for Dunaújváros and Pápa emptied too. In Győr it still listed about 170 on 7 November.',

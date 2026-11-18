@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Wels: der Verhaltenskodex der Stadt, die Abstellverbote und die Regeln seit Mai 2026',
   lede: 'In Wels leihst du E-Scooter von Dott und Lime in deren App: Konto anlegen, Zahlungsmittel hinterlegen, QR-Code am Lenker scannen. Dott vermietet laut seinen Bedingungen für Österreich ab 18, den Preis zeigt die App vor dem Entsperren. Für die Verleihfirmen gibt es einen Verhaltenskodex, laut Amtsblatt vom April 2021 eine verbindliche Vereinbarung mit der Stadt. Danach dürfen Leih-Scooter etwa nicht auf Gehsteigen unter 2,5 Meter Breite, auf Radwegen oder in Haltestellen stehen, die Firmen sperren die Rückgabe in Burggarten, Pollheimerpark und mehreren Fussgängerzonen und drosseln ihre Roller in den Fussgängerzonen auf 10 km/h. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-11-03',
-  updated: '2026-11-03',
+  updated: '2026-11-07',
   city: 'at:Wels',
   sections: [
     {

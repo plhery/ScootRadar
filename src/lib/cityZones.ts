@@ -23,7 +23,7 @@ export interface ZoneCity {
 
 /** A city's file of zones, data/city-zones/<id>.json: each zone one ring, or lines, as a pavement is. */
 export interface ZoneFile {
-  zones: ({ id: string; kind: string; name: string }
+  zones: ({ id: string; kind: string; name: string; maxSpeedKph?: number }
     & ({ ring: number[][]; lines?: undefined } | { lines: number[][][]; ring?: undefined }))[];
 }
 
@@ -132,7 +132,7 @@ export function cityRuleZones(city: ZoneCity, file: ZoneFile): RuleZone[] {
   return file.zones.map(zone => {
     const common = {
       id: zone.id, place: zone.name, authority: city.authority, rule: zone.kind as RuleKind,
-      timeZone: city.timeZone, source: city.source,
+      maxSpeedKph: zone.maxSpeedKph, timeZone: city.timeZone, source: city.source,
     };
     return zone.lines ? { ...common, lines: zone.lines as [number, number][][] } : { ...common, ring: zone.ring as [number, number][] };
   });

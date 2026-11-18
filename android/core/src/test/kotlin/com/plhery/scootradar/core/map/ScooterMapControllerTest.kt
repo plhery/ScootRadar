@@ -4480,6 +4480,27 @@ class ScooterMapControllerTest {
         }
     }
 
+    @Test
+    fun onlyDaysServedByAFeedCountEvenWhenItsFleetIsEmpty() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val defaults = InMemoryScooterDefaults()
+            val api = StubScooterAPI(ScooterResponse(vehicles = emptyList(), meta = ScooterResponseMetadata(
+                partial = false, failedSources = emptyList(), sources = emptyMap(),
+            )))
+            val (model, _) = reviewController(clock, earlierDays = 0, defaults = defaults, api = api)
+            clock.advance(86_400.0)
+            reload(model, api)
+            assertEquals(0, defaults.integer(forKey = "review-use-days"))
+            clock.advance(86_400.0)
+            api.setResponse(ScooterResponse(vehicles = emptyList(), meta = ScooterResponseMetadata(
+                partial = false, failedSources = emptyList(), shownSince = mapOf("lime" to iso(clock.now)),
+            )))
+            reload(model, api)
+            assertEquals(1, defaults.integer(forKey = "review-use-days"))
+        }
+    }
+
     /** The cache's answer while it collects the view's feeds again, none of them late: stale, and no app named. */
     private fun collectedAgain(clock: TestClock) = ScooterResponseMetadata(
         partial = false, stale = true, failedSources = emptyList(), generatedAt = iso(clock.now.addingTimeInterval(-2.0)),

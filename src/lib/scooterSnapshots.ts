@@ -45,7 +45,7 @@ export interface FeedSnapshot {
    * An app map's sweep under way: the scooters it has found since it started, and the parts of
    * the area it has finished. The map shows them before the sweep ends; its end replaces them.
    */
-  sweep?: { startedAt: number; vehicles: Vehicle[]; swept: MapBounds[] };
+  sweep?: { reads?: PositionReads; startedAt: number; vehicles: Vehicle[]; swept: MapBounds[] };
   attemptedAt: number;
   /** When the last successful collection finished; absent from snapshots saved before it existed. */
   collectedAt?: number;
@@ -101,6 +101,7 @@ interface CityTotals {
   // app's full battery range. Bin i holds from REACH_STEPS[i] to the next step; the last step's, 100 km or
   // more; one more, neither. Totals saved before they were counted so have none, those counted by whole
   // kilometres alone none either, and are built again (overviewNeedsRefresh).
+  joint?: Record<string, Record<string, number>>;
   reaches?: Record<string, number[]>;
   // The apps with a scooter here that says its battery and not its range, for the answer's batteryRanges,
   // in alphabetical order, so that totals built apart and joined are those built together.
@@ -165,7 +166,7 @@ const lastRead = (feed: FeedSnapshot) => feed.reads?.lastAt ?? feed.observedAt;
  * 14 November 2026, cache finding 2).
  */
 const shownSweep = (feed: FeedSnapshot, now: number) =>
-  (feed.reads || !showsPositions(feed, now)) && feed.sweep && now - feed.sweep.startedAt <= VEHICLE_MAX_AGE_MS ? feed.sweep : undefined;
+  (feed.reads || !showsPositions(feed, now)) && feed.sweep && now - (feed.sweep.reads?.lastAt ?? feed.sweep.startedAt) <= VEHICLE_MAX_AGE_MS ? feed.sweep : undefined;
 
 /**
  * What a sweep under way shown beside its feed's last positions (shownSweep) has read again: the last sweep's scooters
@@ -181,10 +182,16 @@ interface SweptAgain {
   sweep(vehicle: Vehicle): boolean;
 }
 
-function sweptAgain(feed: FeedSnapshot, sweep: NonNullable<FeedSnapshot['sweep']>): SweptAgain {
+const sweepReadAt = (sweep: NonNullable<FeedSnapshot['sweep']>, vehicle: Vehicle) =>
+  (vehicle.vehicle_id ? sweep.reads?.at[vehicle.vehicle_id] : undefined) ?? sweep.startedAt;
+
+function sweptAgain(feed: FeedSnapshot, sweep: NonNullable<FeedSnapshot['sweep']>, now: number): SweptAgain {
   const inSwept = (vehicle: Vehicle) => sweep.swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng));
   const sweepNames = new Set(sweep.vehicles.map(vehicleKey)), lastNames = new Set(feed.vehicles.map(vehicleKey));
-  return { startedAt: sweep.startedAt,
+  return { startedAt: sweep.vehicles.reduce((oldest, vehicle) => {
+    const at = sweepReadAt(sweep, vehicle);
+    return now - at <= VEHICLE_MAX_AGE_MS ? Math.min(oldest, at) : oldest;
+  }, sweep.reads?.lastAt ?? sweep.startedAt),
     last: vehicle => inSwept(vehicle) || sweepNames.has(vehicleKey(vehicle)),
     sweep: vehicle => inSwept(vehicle) || lastNames.has(vehicleKey(vehicle)) };
 }
@@ -277,7 +284,7 @@ export function overviewNeedsRefresh(snapshot: Pick<MobilitySnapshot, 'overview'
     now - snapshot.overview.generatedAt >= OVERVIEW_REFRESH_MS) return true;
   // Totals saved before the reaches were counted could not answer a range minimum, those by whole
   // kilometres alone not one in miles.
-  if (snapshot.overview.cities.some(city => !city.reaches || !city.batteryOnly)) return true;
+  if (snapshot.overview.cities.some(city => !city.reaches || !city.batteryOnly || !city.joint)) return true;
   // A feed discovered or retired since the totals were built would be missing from them or linger.
   // Totals saved before feedIds existed list none, so they refresh once.
   const built = new Set(snapshot.overview.feedIds);
@@ -412,7 +419,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
     const relevant = feeds.filter(feed => (countrySource ? feed.source === countrySource : isSwissSource(feed.source)) && coverageIntersects(feed.coverage, city.bounds));
     const health = healthFor(relevant, now, counts);
     totals.set(city.id, { id: city.id, city: city.city, lat: city.center[0], lng: city.center[1],
-      batteries: {}, reaches: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
+      batteries: {}, reaches: {}, joint: {}, batteryOnly: [], sources: health.sources, failedSources: health.failedSources });
     yield;
   }
   const seen = new Set<string>();
@@ -434,6 +441,11 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnp
       bins[vehicle.battery ?? 101]++;
       const reaches = total.reaches![vehicle.provider] ??= Array<number>(REACH_STEPS.length + 1).fill(0);
       const reach = effectiveRange(vehicle, batteryFullRange(vehicle.provider));
+      if (vehicle.battery !== null && reach !== null) {
+        const joint = total.joint![vehicle.provider] ??= {};
+        const key = vehicle.battery + ':' + reach;
+        joint[key] = (joint[key] ?? 0) + 1;
+      }
       reaches[reach === null ? REACH_STEPS.length : reachBin(reach)]++;
       if (reportsBatteryOnly(vehicle) && !total.batteryOnly!.includes(vehicle.provider)) total.batteryOnly!.push(vehicle.provider);
     }
@@ -489,12 +501,18 @@ export function joinCityOverviews(a: MobilitySnapshot['overview'], b: MobilitySn
       // Without the reaches of either, the two together have none.
       const counted = city.reaches && other.reaches && city.batteryOnly && other.batteryOnly;
       const reaches = counted ? joinBins(city.reaches!, other.reaches!) : undefined;
+      const joint = city.joint && other.joint ? { ...city.joint } : undefined;
+      if (joint) for (const [provider, counts] of Object.entries(other.joint!)) {
+        const merged = { ...joint[provider] };
+        for (const [key, count] of Object.entries(counts)) merged[key] = (merged[key] ?? 0) + count;
+        joint[provider] = merged;
+      }
       const batteryOnly = counted ? [...new Set([...city.batteryOnly!, ...other.batteryOnly!])].sort() : undefined;
       const sources = { ...city.sources };
       for (const source of Object.keys(sources) as Array<keyof typeof sources>) {
         sources[source] = joinStatus(sources[source], other.sources[source] ?? 'skipped');
       }
-      return { ...city, batteries, reaches, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
+      return { ...city, batteries, reaches, joint, batteryOnly, sources, failedSources: [...city.failedSources, ...other.failedSources] };
     }),
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
@@ -524,8 +542,15 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
     for (const [provider, bins] of Object.entries(city.batteries)) {
       if (query.providers && !query.providers.has(provider)) continue;
       const charged = sum(bins, query.minBattery, query.minBattery > 0 ? 101 : 102);
-      // With both minimums, which the clients never ask for, the fewer of the two: no more than pass both.
-      const count = minRange > 0 ? Math.min(charged, sum(city.reaches?.[provider] ?? [], fromStep, REACH_STEPS.length)) : charged;
+      let count = minRange > 0 ? sum(city.reaches?.[provider] ?? [], fromStep, REACH_STEPS.length) : charged;
+      if (minRange > 0 && query.minBattery > 0) {
+        if (!city.joint) throw new ScooterFeedsUnavailableError(['city-overview']);
+        count = 0;
+        for (const [key, vehicles] of Object.entries(city.joint[provider] ?? {})) {
+          const [battery, reach] = key.split(':').map(Number);
+          if (battery >= query.minBattery && reach >= minRange) count += vehicles;
+        }
+      }
       if (count > 0) {
         counts[provider] = count;
         providers[provider] = (providers[provider] ?? 0) + count;
@@ -556,21 +581,6 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
       mode: 'clusters', zoom, overview: true, refreshAfterSeconds: 3600,
       availableProviders: providersForViewport(query.bounds), ...seasonOverIn(snapshot, query.bounds) },
   };
-}
-
-/**
- * The answer's batteryRanges at street zoom: of each app with a scooter in view that says its battery
- * and not its range, `observations` with the feeds, whichever the provider filter and the minimum keep,
- * so the filters say what battery each app's need as soon as it is switched on again.
- */
-function batteryRangesIn(snapshot: MobilitySnapshot, bounds: MapBounds, observations: readonly FeedSnapshot[] = []): Record<string, number> {
-  const ranges: Record<string, number> = {};
-  for (const feed of [...snapshot.feeds.filter(feed => coverageIntersects(feed.coverage, bounds)), ...observations]) {
-    if (feed.skipped) continue;
-    addBatteryRanges(ranges, feed.vehicles, bounds);
-    if (feed.sweep) addBatteryRanges(ranges, feed.sweep.vehicles, bounds);
-  }
-  return ranges;
 }
 
 /**
@@ -695,7 +705,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   options: SnapshotQueryOptions = {}): ScooterResponse {
   if (query.outsideCoverage) return scooterResponse({ vehicles: [], meta: emptyHealth() }, zoom, { availableProviders: [] });
   if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return overviewResponse(snapshot, query, zoom, now);
-  const relevant = [...feedsForQuery(snapshot, query, zoom), ...(options.observations ?? [])];
+  const candidates = [...feedsForQuery(snapshot, { ...query, providers: undefined }, zoom), ...(options.observations ?? [])];
+  const relevant = candidates.filter(feed => !query.providers || query.providers.has(feed.provider));
   const counted = relevant.filter(feed => !options.idleInView?.has(feed.id) || showsPositions(feed, now));
   const meta = healthFor(counted, now, undefined, options.refreshing);
   const showing = (feed: FeedSnapshot) => showsPositions(feed, now);
@@ -715,10 +726,10 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   if (asked.length > 0 && !refreshing && asked.every(feed => !showsPositions(feed, now) && !failedAtOperator(feed))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
+  const requested = (vehicle: Vehicle) => (!query.providers || query.providers.has(vehicle.provider)) && passesMinimums(vehicle, query, batteryFullRange);
   const pick = (into: Map<string, Vehicle>, vehicles: Vehicle[], skip?: (vehicle: Vehicle, key: string) => boolean) => {
     for (const vehicle of vehicles) {
       if (!boundsContainPoint(query.bounds, vehicle.lat, vehicle.lng)) continue;
-      if (!passesMinimums(vehicle, query, batteryFullRange)) continue;
       const key = vehicleKey(vehicle);
       if (skip?.(vehicle, key)) continue;
       into.set(key, query.origin ? { ...vehicle,
@@ -731,9 +742,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     area.feeds.has(feed.id) && at < area.at && haversineM(area.lat, area.lng, vehicle.lat, vehicle.lng) <= area.radiusM) === true;
   const unique = new Map<string, Vehicle>();
   // Of each feed read over many minutes whose sweep under way shows beside its last positions, what the sweep has read again.
-  const beside = new Map(relevant.flatMap(feed => {
+  const beside = new Map(candidates.flatMap(feed => {
     const sweep = !feed.skipped && showsPositions(feed, now) ? shownSweep(feed, now) : undefined;
-    return sweep ? [[feed, sweptAgain(feed, sweep)] as const] : [];
+    return sweep ? [[feed, sweptAgain(feed, sweep, now)] as const] : [];
   }));
   // Only viewport-observed identities need reconciliation with the full feeds. An observation
   // outside the box can still confirm that its old marker in the box has moved away.
@@ -749,11 +760,11 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     const key = vehicleKey(vehicle);
     if (newest.has(key)) newest.set(key, Math.max(at, newest.get(key)!));
   };
-  if (newest.size) for (const feed of relevant) {
+  if (newest.size) for (const feed of candidates) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now), again = beside.get(feed);
     if (showsPositions(feed, now)) for (const vehicle of feed.vehicles) if (!again?.last(vehicle)) later(vehicle, readAt(feed, vehicle));
-    if (sweep) for (const vehicle of sweep.vehicles) if (again?.sweep(vehicle) !== false) later(vehicle, sweep.startedAt);
+    if (sweep) for (const vehicle of sweep.vehicles) if (again?.sweep(vehicle) !== false) later(vehicle, sweepReadAt(sweep, vehicle));
   }
   // When each feed's positions shown were seen: its last collection's, the oldest shown of one read over many
   // minutes (beside its sweep under way, of those the sweep has not read again), or its sweep's under way. Per app,
@@ -765,21 +776,30 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const readThroughByProvider = new Map<string, number>();
   const earliest = (times: Map<string, number>, provider: string, at: number) =>
     times.set(provider, Math.min(times.get(provider) ?? Infinity, at));
-  for (const feed of relevant) {
+  for (const feed of candidates) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now), again = beside.get(feed);
     const last = showsPositions(feed, now);
-    if (last) shownSince.push(oldestShown(feed, now, again));
-    else if (sweep) shownSince.push(sweep.startedAt);
-    else continue;
-    earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
-    const read = last ? lastRead(feed) : sweep!.startedAt;
-    earliest(readByProvider, feed.provider, read);
-    readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
+    if (!query.providers || query.providers.has(feed.provider)) {
+      if (last) shownSince.push(oldestShown(feed, now, again));
+      else if (sweep) shownSince.push(sweep.vehicles.reduce((oldest, vehicle) => {
+        const at = sweepReadAt(sweep, vehicle);
+        return now - at <= VEHICLE_MAX_AGE_MS ? Math.min(oldest, at) : oldest;
+      }, sweep.reads?.lastAt ?? sweep.startedAt));
+      else continue;
+      earliest(oldestShownByProvider, feed.provider, shownSince.at(-1)!);
+      if (last && feed.observedAt > 0) {
+        // A completed empty read counts too. Partial sweeps cannot confirm an absence.
+        const read = lastRead(feed);
+        earliest(readByProvider, feed.provider, read);
+        readThroughByProvider.set(feed.provider, Math.max(readThroughByProvider.get(feed.provider) ?? -Infinity, read));
+      }
+    }
     if (last) pick(unique, feed.vehicles, (vehicle, key) => !shows(feed, vehicle, now) || again?.last(vehicle) === true ||
       readAt(feed, vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, readAt(feed, vehicle), vehicle));
     if (sweep) pick(unique, sweep.vehicles, (vehicle, key) => again?.sweep(vehicle) === false ||
-      sweep.startedAt < (newest.get(key) ?? -Infinity) || gone(feed, sweep.startedAt, vehicle));
+      now - sweepReadAt(sweep, vehicle) > VEHICLE_MAX_AGE_MS ||
+      sweepReadAt(sweep, vehicle) < (newest.get(key) ?? -Infinity) || gone(feed, sweepReadAt(sweep, vehicle), vehicle));
   }
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
@@ -789,7 +809,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const lastSeenProviders = new Map<string, { seenAt: number; updating: boolean }>();
   const comingIds = new Set(coming.map(feed => feed.id));
   const fading = { refreshing: options.refreshing, idle: options.idleInView };
-  for (const feed of relevant) {
+  for (const feed of candidates) {
     // Of a feed read over many minutes whose last parts show, its first parts' too old to show stand faded, whatever
     // collects it: they are its last, and a scooter a walk heads for does not leave the map as its part grows old.
     const firstParts = !feed.skipped && feed.reads !== undefined && showsPositions(feed, now);
@@ -798,16 +818,15 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     // Where the sweep under way has looked; beside the last positions, what it has read again (sweptAgain).
     const swept = shownSweep(feed, now)?.swept ?? [], again = beside.get(feed);
     const readAgain = (vehicle: Vehicle) => again ? again.last(vehicle) : swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng));
-    const before = lastSeen.size;
     let seenAt = Infinity;
     pick(lastSeen, feed.vehicles, (vehicle, key) => {
       const at = readAt(feed, vehicle);
       if (now - at <= VEHICLE_MAX_AGE_MS || now - at > (maxAgeMs ?? LAST_SEEN_MAX_AGE_MS) || unique.has(key) || newest.has(key) ||
         readAgain(vehicle) || gone(feed, at, vehicle)) return true;
-      seenAt = Math.min(seenAt, at);
+      if (requested(vehicle)) seenAt = Math.min(seenAt, at);
       return false;
     });
-    if (lastSeen.size === before) continue;
+    if (!Number.isFinite(seenAt)) continue;
     lastSeenTimes.push(seenAt);
     const known = lastSeenProviders.get(feed.provider);
     const updating = comingIds.has(feed.id) || comingIds.has(viewReadsOf(feed.id));
@@ -816,8 +835,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
       updating: (known?.updating ?? false) || updating,
     });
   }
-  const vehicles = [...unique.values()];
-  const previous = [...lastSeen.values()];
+  const batteryRanges = addBatteryRanges(addBatteryRanges({}, unique.values()), lastSeen.values());
+  const vehicles = [...unique.values()].filter(requested);
+  const previous = [...lastSeen.values()].filter(requested);
   if (query.origin) for (const list of [vehicles, previous]) list.sort((a, b) => (a.distance_m ?? 0) - (b.distance_m ?? 0));
   const observedAt = Math.min(now, ...shownSince);
   const byApp = (times: Map<string, number>, apps?: Set<string>) => Object.fromEntries([...times]
@@ -837,7 +857,6 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     (showsPositions(feed, now) ? feed.stale || feed.failed : !failedAtOperator(feed) && options.refreshing?.has(feed.id) === true))
     .map(feed => feed.provider));
   const staleProviders = byApp(oldestShownByProvider, staleApps);
-  const batteryRanges = batteryRangesIn(snapshot, query.bounds, options.observations);
   const response = scooterResponse({ vehicles, meta, batteryRanges }, zoom, {
     ...(meta.stale ? { staleProviders } : {}),
     ...(readByProvider.size ? { shownSince: shownSinceByApp, readThrough: byApp(readThroughByProvider) } : {}),

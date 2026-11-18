@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Konstanz: Anbieter, Preise und Verbotszonen zwischen Altstadt, Uni und Schweizer Grenze',
   lede: 'Einen E-Scooter in Konstanz leihst du ohne Führerschein in der App von Hopp, Lime oder Zeus und entsperrst ihn per QR-Code; Hopp und Zeus vermieten ab 18. Hopp und Zeus verlangen 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten kosten also 3,50 €; Lime nennt 1 € plus 0,29 € oder 0,31 € pro Minute, zzgl. MwSt. (Stand November 2026). Seit 2024 braucht jeder Anbieter eine Erlaubnis der Stadt und darf höchstens 150 Scooter aufstellen. Durch Fussgängerzone, Friedhof und Uferpromenade sollen Leih-Scooter nicht fahren, und abgestellt werden sie dort nicht, auch nicht auf Brücken, im Umfeld von Schulen und auf den 250 Metern zum Ufer.',
   published: '2026-10-22',
-  updated: '2026-10-23',
+  updated: '2026-11-10',
   city: 'de:Konstanz',
   sections: [
     {

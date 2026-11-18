@@ -283,3 +283,14 @@ it('says the limit in each language with the kind\'s own name', async () => {
     unmount();
   }
 });
+
+it('omits speeds in a multipolygon gap and inside a hole', () => {
+  const box = (s: number, n: number): [number, number][] => [[s,s], [n,s], [n,n], [s,n]];
+  const zones = [
+    { kind: 'slow' as const, maxSpeedKph: 10, polygons: [[box(0,1)], [box(4,5)]] },
+    { kind: 'slow' as const, maxSpeedKph: 20, polygons: [[box(0,5), box(1,4)]] },
+  ];
+  const { container } = render(<I18nProvider><ZoneLegend state="shown" zones={zones}
+    view={{ south: 2, west: 2, north: 3, east: 3 }} /></I18nProvider>);
+  expect(listed(container).items).toContain('Slow');
+});

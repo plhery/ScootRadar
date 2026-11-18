@@ -294,3 +294,16 @@ describe('the pages of the site', () => {
     }
   });
 });
+
+it('dates the end of Dott listings in the Budapest operator heading', () => {
+  const guide = GUIDES.find(guide => guide.slug === 'e-scooters-budapest')!;
+  expect(guide.sections[0].heading).toMatch(/Lime.*Dott listings ended on 4 November/);
+});
+
+it.each([
+  ['e-scooters-budapest', '2026-10-27', '2026-11-07'],
+  ['trottinette-electrique-le-havre', '2026-10-14', '2026-11-07'],
+  ['e-scooter-konstanz', '2026-10-22', '2026-11-10'],
+])('keeps publication and November revision dates for %s', (slug, published, updated) => {
+  expect(GUIDES.find(guide => guide.slug === slug)).toMatchObject({ published, updated });
+});

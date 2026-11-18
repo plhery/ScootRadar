@@ -303,7 +303,8 @@
           "kind": "slow",
           "url": "https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/Shared_Mobility_Operations_Micromobility_Regulations/FeatureServer",
           "layer": 0,
-          "where": "Description LIKE '%mph slow zone%'"
+          "where": "Description LIKE '%mph slow zone%'",
+          "mphField": "Description"
         },
         {
           "kind": "noRide",
@@ -3634,6 +3635,7 @@
         },
         {
           "kind": "slow",
+          "maxSpeedKph": 12,
           "url": "https://services1.arcgis.com/vVI5TNykiYD9EhM5/arcgis/rest/services/Greičio_ribojimo_zona_naujas_viešinimui/FeatureServer",
           "layer": 0,
           "nameField": null

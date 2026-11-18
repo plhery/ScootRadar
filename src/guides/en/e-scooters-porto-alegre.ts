@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Porto Alegre: JET and Whoosh, how to rent, where to ride and where to park',
   lede: 'You can rent an e-scooter in Porto Alegre from Whoosh or from JET, whose app in Brazil is Go Jet: sign up in the app, scan the scooter’s QR code and end the ride at a parking spot the app shows, the only places you may leave it. Both charge a fee to start plus a rate per minute that changes with demand, and each app shows the price before you ride. You must be 18. Since July 2026 a city decree lets you ride on cycle lanes at 20 km/h, on the Orla do Guaíba at 10 km/h and on pavements at walking pace.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-11-07',
   city: 'br:Porto Alegre',
   sections: [
     {

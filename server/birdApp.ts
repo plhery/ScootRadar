@@ -100,7 +100,7 @@ export const BIRD_BRANDS: Readonly<Record<string, 'bird' | 'spin'>> = {
 };
 const BIRD_MAP: NearestMap = { name: 'Bird', page: BIRD_PAGE, reachM: BIRD_REACH_M, cellM: 7_000 };
 
-export interface BirdScooter { id: string; brand: 'bird' | 'spin'; lat: number; lng: number; battery: number | null; range: number | null }
+export interface BirdScooter { readAt?: number; id: string; brand: 'bird' | 'spin'; lat: number; lng: number; battery: number | null; range: number | null }
 export interface BirdReply { scooters: BirdScooter[]; completeM: number }
 interface Session { version: 1; deviceId: string; accessToken: string; refreshToken: string }
 interface ClientOptions {
@@ -404,7 +404,7 @@ const savedDisc = (value: unknown): value is Disc => {
 /** A scooter as a file the cache saved holds it, read back: a checkpoint's, or a supplement's (birdSupplement.ts). */
 export const savedScooter = (value: unknown): value is BirdScooter => {
   const entry = object(value);
-  return typeof entry?.id === 'string' && (entry.brand === 'bird' || entry.brand === 'spin') && finite(entry.lat) && finite(entry.lng) &&
+  return typeof entry?.id === 'string' && (entry.readAt === undefined || finite(entry.readAt)) && (entry.brand === 'bird' || entry.brand === 'spin') && finite(entry.lat) && finite(entry.lng) &&
     (entry.battery === null || finite(entry.battery)) && (entry.range === null || finite(entry.range));
 };
 
@@ -508,9 +508,9 @@ export interface BirdSweepScope extends CollectionScope {
  * showed as live, with the restart's time (week review, finding 2.4).
  */
 export function sweepScope(attention: Omit<CollectionScope, 'progress'>, startedAt: number,
-  progress: (found: Vehicle[], swept: MapBounds[], startedAt: number) => void): BirdSweepScope & { reads(): PositionReads | undefined } {
+  progress: (found: Vehicle[], swept: MapBounds[], startedAt: number, reads?: PositionReads) => void): BirdSweepScope & { reads(): PositionReads | undefined } {
   let reads: PositionReads | undefined;
-  return { ...attention, progress: (found, swept) => progress(found, swept, startedAt),
+  return { ...attention, progress: (found, swept) => progress(found, swept, startedAt, reads),
     sweepStarted: at => { startedAt = at; }, sweepRead: read => { reads = read; }, reads: () => reads };
 }
 
@@ -529,9 +529,6 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   const inside = (scooter: BirdScooter) => scooter.brand === system.provider &&
     areas.some(area => boundsContainPoint(area.bounds, scooter.lat, scooter.lng)) &&
     rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng));
-  // By the operator's own id, so a scooter where two areas meet is shown once.
-  const published = (scooters: Iterable<BirdScooter>): Vehicle[] =>
-    [...scooters].filter(inside).map(scooter => birdVehicle(system.provider as 'bird' | 'spin', scooter));
   const scope = currentCollection() as BirdSweepScope | undefined;
   // The client hears someone looks only during the area's one such sweep of the half hour (BIRD_BURST_EVERY_MS).
   const token = {}, began = Date.now();
@@ -545,20 +542,34 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   const found = new Map<string, BirdScooter>();
   // When each scooter was last read, and the last reply: the scooters a long sweep read last show live when
   // it ends, those it read first faded (sweepRead).
-  const readAt = new Map<string, number>();
   let lastReadAt: number | undefined;
   const reading = { nearest: async (lat: number, lng: number, radiusM?: number) => {
     const reply = await (paced ? withinCollection(paced, () => api.nearest(lat, lng, radiusM)) : api.nearest(lat, lng, radiusM));
-    lastReadAt = Date.now();
-    for (const scooter of reply.scooters) readAt.set(scooter.id, lastReadAt);
-    return reply;
+    const readAt = Date.now();
+    lastReadAt = readAt;
+    return { ...reply, scooters: reply.scooters.map(scooter => ({ ...scooter, readAt })) };
   } };
-  const progress = new SweepProgress(() => published(found.values()));
+  const publishScooters = (scooters: Iterable<BirdScooter>) => {
+    const vehicles: Vehicle[] = [];
+    const at: Record<string, number> = {};
+    for (const scooter of scooters) {
+      if (!inside(scooter)) continue;
+      const vehicle = birdVehicle(system.provider as 'bird' | 'spin', scooter);
+      vehicles.push(vehicle);
+      if (scooter.readAt !== undefined) at[vehicle.vehicle_id!] = scooter.readAt;
+    }
+    if (lastReadAt !== undefined) scope?.sweepRead?.({ lastAt: lastReadAt, at });
+    return vehicles;
+  };
+  const progress = new SweepProgress(() => publishScooters(found.values()));
   const resume = await checkpoints?.resumable(system.id, limits);
   if (resume) {
     // The map shows at once what the stopped sweep had found, and where, as old as that sweep.
     scope?.sweepStarted?.(resume.startedAt);
-    for (const seen of resume.scooters) found.set(seen.id, seen);
+    for (const seen of resume.scooters) {
+      found.set(seen.id, seen);
+      if (seen.readAt !== undefined) lastReadAt = Math.max(lastReadAt ?? resume.startedAt, seen.readAt);
+    }
     progress.done(...resume.discs.map(({ lat, lng, r }) => heldSquare(lat, lng, r)));
   }
   const checkpoint = checkpoints?.track(system.id);
@@ -572,14 +583,7 @@ export async function collectBirdArea(system: RegionalScooterSystem, previous: r
   console.log(JSON.stringify({ event: 'bird_sweep', system: system.id, scooters: sweep.scooters.length, requests: sweep.requests,
     planned: sweep.planned, piles: sweep.piles, ...resume ? { resumed: true, resumedRequests: resume.requests } : {},
     seconds: Math.round((Date.now() - sweep.startedAt) / 1000) }));
-  const kept = sweep.scooters.filter(inside);
-  const vehicles = kept.map(scooter => birdVehicle(system.provider as 'bird' | 'spin', scooter));
-  // Those the stopped sweep found and this one did not read again are as old as its start, observedAt.
-  if (lastReadAt !== undefined) {
-    scope?.sweepRead?.({ lastAt: lastReadAt, at: Object.fromEntries(kept.flatMap((scooter, i) =>
-      readAt.has(scooter.id) ? [[vehicles[i].vehicle_id!, readAt.get(scooter.id)!]] : [])) });
-  }
-  return { observedAt: sweep.startedAt, stale: false, vehicles };
+  return { observedAt: sweep.startedAt, stale: false, vehicles: publishScooters(sweep.scooters) };
 }
 
 /**

@@ -245,6 +245,7 @@ internal class CityZoneData private constructor(val cityZones: List<CityRuleZone
                     authority = zone.authority,
                     timeZone = zone.timeZone,
                     kind = kind,
+                    maxSpeedKph = zone.maxSpeedKph,
                     source = zone.source,
                     ring = points(zone.ring),
                 )
@@ -264,6 +265,7 @@ internal class CityZoneData private constructor(val cityZones: List<CityRuleZone
     /** One of a city's zones, its ring in whole millionths of a degree, latitude, longitude, latitude, longitude… */
     @Serializable
     private class CityZoneEntry(
+        val maxSpeedKph: Double? = null,
         val id: String,
         val authority: String,
         val timeZone: String,

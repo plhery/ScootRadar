@@ -387,7 +387,7 @@ export default function Home() {
   // Sync state to URL + localStorage
   useEffect(() => {
     if (!preferencesReady) return;
-    const p = serializeClientParams({ minRange: rangeMinimum, theme, map: mapStyle, zones: zonesOn });
+    const p = serializeClientParams({ minRange: rangeMinimum, theme, map: mapStyle, zones: zonesOn }, linkSettings.only);
     const qs = p.toString();
     const newUrl = qs ? `?${qs}` : window.location.pathname;
     window.history.replaceState(null, '', newUrl);
@@ -700,9 +700,9 @@ export default function Home() {
   // Faded where it was last seen while its app is collected again: neither seen nor taken until the
   // app's new positions say which.
   const walkedFaded = useMemo(() => pinnedProvider !== null && walkLat !== null && walkLng !== null &&
-    lastSeenVehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey || (vehicle.provider === pinnedProvider &&
-      haversineM(walkLat, walkLng, vehicle.lat, vehicle.lng) <= SAME_SCOOTER_M)),
-  [lastSeenVehicles, pinnedProvider, selectedVehicleKey, walkLat, walkLng]);
+    (lastSeenVehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey) ||
+      nearestOfItsApp({ provider: pinnedProvider, lat: walkLat, lng: walkLng, battery: pinnedBattery }, lastSeenVehicles, beside) !== null),
+  [beside, lastSeenVehicles, pinnedBattery, pinnedProvider, selectedVehicleKey, walkLat, walkLng]);
   const liveWalkedParking = useMemo(
     () => pinnedParking && (parking.find(location => location.id === pinnedParking.id) ?? null),
     [parking, pinnedParking]
@@ -841,7 +841,7 @@ export default function Home() {
   // taken only once it is later than the newest of the app's reads (meta.readThrough) in the answer that first
   // missed the scooter, every one of them read since (Desk [373] S-1). Until 14 November 2026 a read of Lime's
   // group beside the scooter's said it was taken after one read of its own. A server that does not name the app's
-  // newest read is judged by the app's time as before, and one that does not name that by the answer's.
+  // newest read is judged by the app's own time. Without that time the answer cannot confirm a miss.
   const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
     answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
     (scooterQuery?.minRange ?? 0) === 0 &&
@@ -849,17 +849,17 @@ export default function Home() {
     !responseMeta.failedSources.some(source => providerForFailedSource(source) === pinnedVehicle.provider);
   const walkedSeen = liveWalkedVehicle ? true : walkedCovered && !walkedFaded ? false : null;
   const walkedRead = pinnedProvider !== null && responseMeta
-    ? responseMeta.shownSince?.[pinnedProvider] ?? responseMeta.generatedAt
+    ? responseMeta.shownSince?.[pinnedProvider] ?? null
     : null;
   const walkedReadThrough = pinnedProvider !== null && responseMeta
     ? responseMeta.readThrough?.[pinnedProvider] ?? walkedRead
     : null;
   const [walkMissedThrough, setWalkMissedThrough] = useState<string | null>(null);
-  if (walkedSeen === false && walkMissedThrough === null) setWalkMissedThrough(walkedReadThrough);
+  if (walkedSeen === false && walkedRead !== null && walkedReadThrough !== null && walkMissedThrough === null) setWalkMissedThrough(walkedReadThrough);
   if (walkedSeen === true && walkMissedThrough !== null) setWalkMissedThrough(null);
   // Not before it: the same read served again, nor an older one, as when the view takes in a group read before.
-  const walkedTaken = walkedSeen === false && walkMissedThrough !== null && walkedRead !== walkMissedThrough &&
-    !(walkedRead !== null && Date.parse(walkedRead) <= Date.parse(walkMissedThrough));
+  const walkedTaken = walkedSeen === false && walkMissedThrough !== null && walkedRead !== null &&
+    Date.parse(walkedRead) > Date.parse(walkMissedThrough);
   useEffect(() => {
     if (walkedTaken) walkGone();
   }, [walkGone, walkedTaken]);

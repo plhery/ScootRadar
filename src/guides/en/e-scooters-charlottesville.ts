@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Charlottesville, Virginia: Veo, the speed limits, the slow zones and parking',
   lede: 'You can rent a Veo e-scooter in Charlottesville, Virginia: get the Veo app and scan the scooter’s QR code to unlock it. As of November 2026 Veo charges $1 to unlock plus $0.32 a minute, plus tax, so 10 minutes cost $4.20; Veo’s minimum age for renting is in the app. Virginia’s Code sets the rules for every e-scooter: never faster than 20 mph, no Interstates, a white headlight and a red reflector between sunset and sunrise, and riders under 14 only with someone 18 or older watching over them. The City’s permit rules hold shared scooters to 15 mph, slow them to 5 mph or less where riding and parking are barred, such as the Downtown Mall, and give the company an hour to move one that’s badly parked.',
   published: '2026-11-03',
-  updated: '2026-11-03',
+  updated: '2026-11-07',
   city: 'us:va:Charlottesville',
   sections: [
     {
