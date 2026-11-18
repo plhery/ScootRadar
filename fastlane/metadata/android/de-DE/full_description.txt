@@ -18,7 +18,7 @@ Wo es funktioniert
 Die Scooter von 39 Anbietern, in über 1.000 Städten und Gemeinden in 58 Ländern: in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Spanien, Polen, Norwegen, Schweden und Finnland, im Vereinigten Königreich und in weiteren Ländern Europas; in den Vereinigten Staaten und Kanada; in Brasilien, Chile und Mexiko; in Japan und Südkorea; in Israel, in der Türkei, in Neuseeland und anderswo. Darunter sind Berlin, Oslo, Tokio, Chicago, Santiago de Chile, Rom, São Paulo, Stockholm, Seoul und Zürich. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
 
 Privat von Grund auf
-Kein Konto, keine Werbung. Dein Standort wird auf deinem Smartphone genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen; der Server erhält nur den Kartenausschnitt, den du gerade ansiehst. Anonyme Nutzungsstatistiken lassen sich in den Einstellungen ausschalten.
+Kein Konto, keine Werbung. Dein Standort wird auf deinem Smartphone genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen. Beim Ansehen der Karte erhält der Server den sichtbaren Kartenausschnitt. Wenn du eine Fußroute anforderst, sendet die App auch die Koordinaten deines Startpunkts und Ziels an den Server. Anonyme Nutzungsstatistiken lassen sich in den Einstellungen ausschalten.
 
 Außerdem
 • Helle und dunkle Darstellung sowie die Kartenstile Standard und Ruhig

@@ -42,6 +42,6 @@ Description: |-
 
   The scooters of 39 operators, in more than 1,000 towns and cities in 58 countries. Where no operator publishes its data, the map says so and shows the closest cities that do.
 
-  No account and no ads. Your location is used on your phone to centre the map and work out walking times; the server only receives the part of the map you are looking at. Anonymous usage statistics can be turned off in Settings.
+  No account and no ads. Your location is used on your phone to centre the map and work out walking times. When you browse, the server receives the visible map area. If you request walking directions, the app also sends your starting location and destination coordinates to the server. Anonymous usage statistics can be turned off in Settings.
 
   Positions come from the operators and public authorities, and can be a few minutes old. ScootRadar is independent and not affiliated with the operators; their names are trademarks of their owners.

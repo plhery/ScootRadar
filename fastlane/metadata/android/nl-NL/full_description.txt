@@ -18,7 +18,7 @@ Waar het werkt
 De steps van 39 aanbieders, in meer dan 1.000 steden en gemeenten in 58 landen: Zwitserland, Frankrijk, Duitsland, België, Italië, het Verenigd Koninkrijk, Spanje, Polen, Noorwegen, Zweden, Finland en elders in Europa; de Verenigde Staten en Canada; Brazilië, Chili en Mexico; Japan en Zuid-Korea; Israël, Turkije, Nieuw-Zeeland en meer. Daaronder zijn Berlijn, Brussel, Oslo, Tokio, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul en Zürich. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben.
 
 Privacy ingebouwd
-Geen account en geen reclame. Je locatie wordt op je telefoon gebruikt, om de kaart te centreren en de tijd te voet te berekenen; de server krijgt alleen het deel van de kaart waar je naar kijkt. Anonieme gebruiksstatistieken kun je uitzetten in Instellingen.
+Geen account en geen reclame. Je locatie wordt op je telefoon gebruikt, om de kaart te centreren en de tijd te voet te berekenen. Bij het bekijken van de kaart ontvangt de server het zichtbare kaartgebied. Als je een wandelroute opvraagt, stuurt de app ook de coördinaten van je vertrekpunt en bestemming naar de server. Anonieme gebruiksstatistieken kun je uitzetten in Instellingen.
 
 Ook
 • Lichte en donkere weergave, en de kaarten Standaard en Rustig
