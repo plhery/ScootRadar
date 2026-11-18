@@ -255,6 +255,7 @@ export interface ScooterFetchResult {
 }
 
 export interface SourceVehicles {
+  reads?: import('./scooterSnapshots').PositionReads;
   observedAt?: number;
   vehicles: Vehicle[];
   stale: boolean;

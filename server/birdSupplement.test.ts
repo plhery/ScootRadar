@@ -56,6 +56,7 @@ describe('Bird map scooters a public feed leaves out', () => {
     expect(ids(await supplement.collect(feed(listing)))).toEqual(listing.map(vehicle => vehicle.vehicle_id));
     await supplement.settled();
     const result = await supplement.collect(feed(listing));
+    expect(result.reads?.at[`bird:${left.id}`]).toBe(NOON);
     expect(result.vehicles.slice(0, 2)).toEqual(listing);
     expect(result.vehicles.slice(2)).toEqual([
       { provider: 'bird', vehicle_id: `bird:${left.id}`, lat: left.lat, lng: left.lng, battery: 60, range_m: 20_000, deep_link: null, distance_m: null },
@@ -192,7 +193,7 @@ describe('Bird map scooters a public feed leaves out', () => {
     it('adds what the last sweep before it added, by night while nobody looks, without sweeping again', async () => {
       const own = scooter(41.903, 12.448), left = scooter(41.905, 12.450);
       const saved = await sweptAtEvening([own, left], [listed(own.lat, own.lng)]);
-      expect(saved).toEqual({ sweptAt: EVENING, scooters: expect.arrayContaining([own, left]), added: [left.id] });
+      expect(saved).toEqual({ sweptAt: EVENING, scooters: expect.arrayContaining([own, left].map(scooter => ({ ...scooter, readAt: EVENING }))), added: [left.id] });
       expect(saved.scooters).toHaveLength(2);
       const { api, supplement } = restarted([own, left], saved, () => AFTER);
       expect(ids(await supplement.collect(feed([listed(own.lat, own.lng)])))).toContain(`bird:${left.id}`);
