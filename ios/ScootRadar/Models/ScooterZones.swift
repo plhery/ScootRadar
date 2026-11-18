@@ -42,6 +42,39 @@ struct ScooterZone: Equatable, Sendable, Identifiable {
     /// A city's rule with hours, Seoul's streets: no riding hatched the other way, so that it is told
     /// from no riding at all hours where they meet.
     var timed = false
+
+    func reaches(_ view: GeoBounds) -> Bool {
+        if view.crossesDateLine {
+            return reaches(GeoBounds(south: view.south, west: view.west, north: view.north, east: 180)) ||
+                reaches(GeoBounds(south: view.south, west: -180, north: view.north, east: view.east))
+        }
+        return polygons.contains { polygon in
+            var inside = false
+            for ring in polygon {
+                guard var a = ring.last else { continue }
+                for b in ring {
+                    if view.contains(b) { return true }
+                    let dx = b.longitude - a.longitude, dy = b.latitude - a.latitude
+                    if dx != 0 {
+                        for x in [view.west, view.east] {
+                            let t = (x - a.longitude) / dx
+                            if (0...1).contains(t), (view.south...view.north).contains(a.latitude + t * dy) { return true }
+                        }
+                    }
+                    if dy != 0 {
+                        for y in [view.south, view.north] {
+                            let t = (y - a.latitude) / dy
+                            if (0...1).contains(t), (view.west...view.east).contains(a.longitude + t * dx) { return true }
+                        }
+                        if (a.latitude > view.south) != (b.latitude > view.south),
+                           a.longitude + (view.south - a.latitude) / dy * dx > view.west { inside.toggle() }
+                    }
+                    a = b
+                }
+            }
+            return inside
+        }
+    }
 }
 
 /// The limits of the slow zones a line of the zones' legend counts, in km/h, as on the web (ZoneLegend.tsx):

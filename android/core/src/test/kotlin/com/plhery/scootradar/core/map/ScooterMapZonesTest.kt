@@ -415,7 +415,25 @@ class ScooterMapZonesTest {
     }
 
     @Test
-    fun theLegendSaysTheLimitsOfTheOperatorsSlowZonesDrawn() = runTest {
+    fun panningWithinOneZoneAnswerChangesTheVisibleLimit() = runTest {
+        fun slow(id: String, lat: Double, speed: Double): ScooterZone {
+            val ring = listOf(GeoPoint(lat, 8.544), GeoPoint(lat + 0.0002, 8.544), GeoPoint(lat, 8.5442))
+            return ScooterZone(id, "lime", ScooterZoneKind.Slow, speed, listOf(listOf(ring)))
+        }
+        val api = ZoneStubAPI(more = listOf(slow("first", 47.371, 10.0), slow("second", 47.375, 20.0)))
+        val model = makeController(api)
+        val first = MapRegion(GeoPoint(47.371, 8.544), latitudeDelta = 0.002, longitudeDelta = 0.002)
+        model.setShowsZones(true)
+        model.updateViewport(first, zoom = 17)
+        assertTrue(waitUntil { model.zoneState.value == ScooterZoneState.Shown && api.zoneAreas.size == 1 })
+        assertEquals(10.0..10.0, model.mapOperatorSlowSpeeds.value.known)
+        model.updateViewport(first.copy(center = GeoPoint(47.375, 8.544)), zoom = 17)
+        assertEquals(20.0..20.0, model.mapOperatorSlowSpeeds.value.known)
+        assertEquals(1, api.zoneAreas.size)
+    }
+
+    @Test
+    fun theLegendSaysTheLimitsOfTheOperatorsSlowZonesInView() = runTest {
         // Lime's at 15 km/h and Bird's at 20: "Slow: 15–20 km/h", then Lime's alone, and none where one has no limit.
         fun slow(provider: String, maxSpeedKph: Double?) = ScooterZone(
             id = "$provider:slow", provider = provider, kind = ScooterZoneKind.Slow, maxSpeedKph = maxSpeedKph,
@@ -426,7 +444,9 @@ class ScooterMapZonesTest {
         model.setShowsZones(true)
         model.updateViewport(porto, zoom = 16)
         assertTrue(waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Shown })
-
+        assertNull(model.mapOperatorSlowSpeeds.value.known)
+        model.updateViewport(zurich, zoom = 16)
+        assertTrue(waitUntil { model.mapOperatorSlowSpeeds.value.known != null })
         assertEquals(15.0..20.0, model.mapOperatorSlowSpeeds.value.known)
         model.showProviders(setOf(ScooterProvider.Lime))
         assertEquals(15.0..15.0, model.mapOperatorSlowSpeeds.value.known)
@@ -908,10 +928,11 @@ private class ZoneStubAPI(
         val more = more
         gate?.await()
         failure?.let { throw it }
-        val ring = listOf(
-            GeoPoint(latitude = 47.37, longitude = 8.54), GeoPoint(latitude = 47.38, longitude = 8.54),
-            GeoPoint(latitude = 47.38, longitude = 8.55), GeoPoint(latitude = 47.37, longitude = 8.54),
-        )
+        val south = area.south / 50.0
+        val north = area.north / 50.0
+        val west = area.west / 50.0
+        val east = area.east / 50.0
+        val ring = listOf(GeoPoint(south, west), GeoPoint(north, west), GeoPoint(north, east), GeoPoint(south, east))
         return ScooterZoneResponse(
             zones = listOf(
                 ScooterZone(id = "lime:0", provider = "lime", kind = ScooterZoneKind.NoRide, maxSpeedKph = null, polygons = listOf(listOf(ring))),

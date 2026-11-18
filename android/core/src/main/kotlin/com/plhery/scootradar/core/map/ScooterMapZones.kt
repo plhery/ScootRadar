@@ -222,8 +222,9 @@ internal fun ScooterMapController.rebuildMapZones() {
     val rulesInView = rules.filter { it.rule.reaches(view) }
     if (rulesInView != mapRuleZones.value) _mapRuleZones.value = rulesInView
     if (notices != mapZoneNotices.value) _mapZoneNotices.value = notices
-    if (shown.size != mapOperatorZoneCount.value) _mapOperatorZoneCount.value = shown.size
-    val slowSpeeds = ScooterZoneSpeeds.ofSlowZones(shown)
+    val visible = shown.filter { it.reaches(view) }
+    if (visible.size != mapOperatorZoneCount.value) _mapOperatorZoneCount.value = visible.size
+    val slowSpeeds = ScooterZoneSpeeds.ofSlowZones(visible)
     if (slowSpeeds != mapOperatorSlowSpeeds.value) _mapOperatorSlowSpeeds.value = slowSpeeds
     val drawn = rules.map { it.mapZone } + shown
     if (drawn == mapZones.value) return

@@ -69,7 +69,35 @@ data class ScooterZone(
      * all hours where they meet.
      */
     val timed: Boolean = false,
-)
+) {
+    fun reaches(view: GeoBounds): Boolean = if (view.crossesDateLine) {
+        reaches(GeoBounds(view.south, view.west, view.north, 180.0)) || reaches(GeoBounds(view.south, -180.0, view.north, view.east))
+    } else polygons.any { polygon ->
+        var inside = false
+        for (ring in polygon) {
+            var a = ring.lastOrNull() ?: continue
+            for (b in ring) {
+                if (view.contains(b)) return@any true
+                val dx = b.longitude - a.longitude
+                val dy = b.latitude - a.latitude
+                if (dx != 0.0) for (x in listOf(view.west, view.east)) {
+                    val t = (x - a.longitude) / dx
+                    if (t in 0.0..1.0 && a.latitude + t * dy in view.south..view.north) return@any true
+                }
+                if (dy != 0.0) {
+                    for (y in listOf(view.south, view.north)) {
+                        val t = (y - a.latitude) / dy
+                        if (t in 0.0..1.0 && a.longitude + t * dx in view.west..view.east) return@any true
+                    }
+                    if ((a.latitude > view.south) != (b.latitude > view.south) &&
+                        a.longitude + (view.south - a.latitude) / dy * dx > view.west) inside = !inside
+                }
+                a = b
+            }
+        }
+        inside
+    }
+}
 
 /**
  * The limits of the slow zones a line of the zones' legend counts, in km/h, as on the web (ZoneLegend.tsx): the least
