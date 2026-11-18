@@ -3,7 +3,7 @@
 import type { PathOptions } from 'leaflet';
 import { Fragment } from 'react';
 import { formatLocale } from '@/lib/formatLocale';
-import { boundsIntersect } from '@/lib/geo';
+import { boundsContainPoint, boundsIntersect, polygonContainsPoint } from '@/lib/geo';
 import { useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
 import type { RuleKind, RuleZoneShape } from '@/lib/ruleZones';
 import type { MapBounds } from '@/lib/types';
@@ -102,18 +102,40 @@ export function formatSpeedLimits(speedsKph: readonly (number | undefined)[], lo
  * Whether a zone of these lines or rings reaches into the view, by the box around its points; every zone does
  * without a view. The zones are asked for, and drawn, over an area around the screen: one only there is off it.
  */
-function onScreen(view: MapBounds | undefined, lines: readonly (readonly (readonly [number, number])[])[]): boolean {
+type Ring = readonly [number, number][];
+
+function onScreen(view: MapBounds | undefined, rings: readonly Ring[], filled = true): boolean {
   if (!view) return true;
+  if (view.west > view.east) return onScreen({ ...view, east: 180 }, rings, filled) || onScreen({ ...view, west: -180 }, rings, filled);
+  const outer = rings[0];
+  if (!outer?.length) return false;
   let south = Infinity, west = Infinity, north = -Infinity, east = -Infinity;
-  for (const line of lines) {
-    for (const [lat, lng] of line) {
-      south = Math.min(south, lat);
-      north = Math.max(north, lat);
-      west = Math.min(west, lng);
-      east = Math.max(east, lng);
+  for (const [lat, lng] of outer) {
+    south = Math.min(south, lat);
+    north = Math.max(north, lat);
+    west = Math.min(west, lng);
+    east = Math.max(east, lng);
+  }
+  if (!boundsIntersect(view, { south, west, north, east })) return false;
+  for (const ring of rings) {
+    for (let i = 0; i < ring.length; i++) {
+      const [y, x] = ring[i];
+      if (boundsContainPoint(view, y, x)) return true;
+      if (!filled && i === 0) continue;
+      const [py, px] = ring[(i + ring.length - 1) % ring.length];
+      const dx = px - x, dy = py - y;
+      if (dx) for (const side of [view.west, view.east]) {
+        const t = (side - x) / dx, lat = y + t * dy;
+        if (t >= 0 && t <= 1 && lat >= view.south && lat <= view.north) return true;
+      }
+      if (dy) for (const side of [view.south, view.north]) {
+        const t = (side - y) / dy, lng = x + t * dx;
+        if (t >= 0 && t <= 1 && lng >= view.west && lng <= view.east) return true;
+      }
     }
   }
-  return south <= north && boundsIntersect(view, { south, west, north, east });
+  return filled && polygonContainsPoint(outer, view.south, view.west) &&
+    !rings.slice(1).some(hole => polygonContainsPoint(hole, view.south, view.west));
 }
 
 /**
@@ -143,7 +165,7 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
   // The limits "Slow" names: the operators' slow zones' while their kinds are named, and those of the cities'
   // slow rules that hold at all hours; a city's line names its own. Only of the zones on screen.
   const slowSpeeds = kinds.has('slow') ? zones.flatMap(zone =>
-    zone.kind === 'slow' && onScreen(view, zone.polygons?.map(([outer]) => outer) ?? []) ? [zone.maxSpeedKph] : []) : [];
+    zone.kind === 'slow' && (!view || zone.polygons?.some(polygon => onScreen(view, polygon))) ? [zone.maxSpeedKph] : []) : [];
   const lines = new Map<string, { zone: RuleZoneShape; hours: string; speeds: (number | undefined)[] }>();
   const credits = new Map<string, RuleZoneShape>();
   for (const zone of [...rules].sort((a, b) => RULE_KINDS.indexOf(a.rule) - RULE_KINDS.indexOf(b.rule))) {
@@ -159,7 +181,7 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
     } else {
       kinds.add(zone.rule);
     }
-    if (zone.rule === 'slow' && onScreen(view, zone.ring ? [zone.ring] : zone.lines)) speeds.push(zone.maxSpeedKph);
+    if (zone.rule === 'slow' && (zone.ring ? onScreen(view, [zone.ring]) : zone.lines.some(line => onScreen(view, [line], false)))) speeds.push(zone.maxSpeedKph);
   }
   // "Slow: 6 km/h" where each slow zone counted has a limit, else the kind's name: the text screen readers read too.
   // Riding on the pavement is at walking pace, 6 km/h, which is written in the units too: "3 mph".
