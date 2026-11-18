@@ -1887,7 +1887,7 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'route.failed': 'No se ha encontrado ninguna ruta a pie.',
     'route.unavailable': 'Ahora mismo no se pueden cargar las rutas a pie.',
     'route.arrived': 'Ya has llegado.',
-    'route.gone': 'Ya no está en el mapa. Puede que alguien lo haya cogido.',
+    'route.gone': 'Ya no está en el mapa. Puede que alguien se lo haya llevado.',
     'card.openIn': 'Abrir en {name}',
     'card.price': '≈ {price} por {minutes} min',
     'card.priceFrom': 'Desde {price} por {minutes} min',

@@ -253,7 +253,7 @@
 "Open in Maps" = "Abrir en Mapas";
 "You’re there." = "Ya has llegado.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Ruta mostrada: ≈%1$lld min a pie · %2$@";
-"No longer on the map. Someone may have taken it." = "Ya no está en el mapa. Puede que alguien lo haya cogido.";
+"No longer on the map. Someone may have taken it." = "Ya no está en el mapa. Puede que alguien se lo haya llevado.";
 
 /* The panel of a large window: the grabber that folds it, and its folded line */
 "Collapse panel" = "Contraer el panel";

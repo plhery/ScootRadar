@@ -1209,7 +1209,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         },
         {
           question: '¿Puedo desbloquear o reservar un patinete con ScootRadar?',
-          answer: 'No. Toca un patinete y luego «Abrir en …»: se abre la app del operador, donde desbloqueas y pagas como siempre. ScootRadar no reserva el patinete, así que alguien podría cogerlo antes que tú.',
+          answer: 'No. Toca un patinete y luego «Abrir en …»: se abre la app del operador, donde desbloqueas y pagas como siempre. ScootRadar no reserva el patinete, así que alguien podría llevárselo antes que tú.',
         },
         {
           question: '¿De dónde salen las posiciones de los patinetes? ¿Están actualizadas?',
