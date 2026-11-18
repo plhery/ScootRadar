@@ -8,9 +8,15 @@ import com.plhery.scootradar.core.model.ScooterDockContent
  * The screen asks for a rating now, once the map has rested since the moment came: true once, while the map
  * is still calm and nothing went wrong meanwhile.
  */
-fun ScooterMapController.takeReviewMoment(): Boolean {
+fun ScooterMapController.takeReviewMoment(): Boolean = reserveReviewMoment() && recordReviewLaunch()
+
+fun ScooterMapController.reserveReviewMoment(): Boolean {
     if (!reviewDue) return false
     reviewDue = false
+    return reviewPrompt.isDue(at = clock(), calm = reviewCalm)
+}
+
+fun ScooterMapController.recordReviewLaunch(): Boolean {
     val now = clock()
     if (!reviewPrompt.isDue(at = now, calm = reviewCalm)) return false
     reviewPrompt.asked(at = now)

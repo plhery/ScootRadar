@@ -7,7 +7,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dropReviewMoment
-import com.plhery.scootradar.core.map.takeReviewMoment
+import com.plhery.scootradar.core.map.reserveReviewMoment
+import com.plhery.scootradar.core.map.recordReviewLaunch
 import com.plhery.scootradar.core.model.ScooterReviewPrompt
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.awaitCancellation
@@ -74,10 +75,15 @@ internal fun ReviewWhenTheMapRests(
             controller.dropReviewMoment(moment)
             throw cancelled
         }
-        if (!controller.takeReviewMoment()) return@LaunchedEffect
+        if (!controller.reserveReviewMoment()) return@LaunchedEffect
         var asking = true
-        requester.request { asking }
-        analytics?.track("review_ask", result = "calm_map")
+        requester.request {
+            if (!asking || controller.reviewMoments.value != moment || !controller.recordReviewLaunch()) false else {
+                asking = false
+                analytics?.track("review_ask", result = "calm_map")
+                true
+            }
+        }
         try {
             awaitCancellation()
         } finally {
