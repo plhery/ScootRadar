@@ -87,7 +87,8 @@ jobs:
   android:
     name: Android app
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The checks took 10 to 13 minutes on 14 November 2026 and up to 19 on the 18th, as the tests grew.
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: android
