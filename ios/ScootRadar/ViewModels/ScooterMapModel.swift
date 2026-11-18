@@ -2896,7 +2896,7 @@ extension ScooterMapModel {
         var notices: [CityZoneDownloads.Notice] = []
         if let ruleZoneArea {
             // The cities' zones built in, and those downloaded; the others the area reaches are asked for.
-            cityZoneDownloads.request(over: ruleZoneArea)
+            if !isPausedForIdle { cityZoneDownloads.request(over: ruleZoneArea) }
             let downloaded = cityZoneDownloads.shown(over: ruleZoneArea)
             let now = clock()
             rules = CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now, among: builtInZones()) +

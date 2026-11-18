@@ -441,14 +441,17 @@ final class ScooterZonesModelTests: XCTestCase {
         let paused = await waitUntil { model.isPausedForIdle }
         XCTAssertTrue(paused)
         let asked = await api.scootersAsked()
+        let files = await api.cityFilesAsked
 
-        // 23:01: the red road's hours are over.
-        clock.now = seoulNoon.addingTimeInterval(11 * 3600 + 60)
+        // The following day at 23:01: the red road's hours are over.
+        clock.now = seoulNoon.addingTimeInterval(35 * 3600 + 60)
         let redrawn = await waitUntil { model.mapRuleZones.map(\.inForce) == [false] }
         XCTAssertTrue(redrawn, "Hongdae's rule still drawn in force at 23:01")
         XCTAssertTrue(model.isPausedForIdle)
         let askedSince = await api.scootersAsked()
         XCTAssertEqual(askedSince, asked)
+        let filesSince = await api.cityFilesAsked
+        XCTAssertEqual(filesSince, files)
     }
 
     /// A touch on the paused map, or coming back to the app, draws the cities' rules as they are at once, where they
@@ -942,7 +945,10 @@ private actor ZoneStubAPI: ScooterAPIClient {
         return ScooterResponse(vehicles: [])
     }
 
+    private(set) var cityFilesAsked = 0
+
     func cityZoneFile(_ name: String) async throws -> Data {
+        cityFilesAsked += 1
         guard let cityIndex, name == CityZoneIndex.fileName else { throw ScooterAPIError.httpStatus(404) }
         return cityIndex
     }

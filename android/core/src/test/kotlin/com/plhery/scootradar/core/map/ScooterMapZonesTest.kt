@@ -307,12 +307,14 @@ class ScooterMapZonesTest {
         clock.now = seoulNoon.addingTimeInterval(10 * 3600.0 + 31 * 60)
         assertTrue(waitUntil { model.isPausedForIdle.value })
         val asked = api.scootersAsked
+        val files = api.cityFilesAsked
 
-        // 23:01: the red road's hours are over.
-        clock.now = seoulNoon.addingTimeInterval(11 * 3600.0 + 60)
+        // The following day at 23:01: the red road's hours are over.
+        clock.now = seoulNoon.addingTimeInterval(35 * 3600.0 + 60)
         assertTrue("Hongdae's rule still drawn in force at 23:01", waitUntil { model.mapRuleZones.value.map { it.inForce } == listOf(false) })
         assertTrue(model.isPausedForIdle.value)
         assertEquals(asked, api.scootersAsked)
+        assertEquals(files, api.cityFilesAsked)
     }
 
     /**
@@ -868,8 +870,13 @@ private class ZoneStubAPI(
     var scootersAsked = 0
         private set
 
-    override suspend fun cityZoneFile(name: String): ByteArray =
-        cityIndex?.takeIf { name == CityZoneIndex.fileName } ?: throw ScooterAPIError.HttpStatus(404)
+    var cityFilesAsked = 0
+        private set
+
+    override suspend fun cityZoneFile(name: String): ByteArray {
+        cityFilesAsked++
+        return cityIndex?.takeIf { name == CityZoneIndex.fileName } ?: throw ScooterAPIError.HttpStatus(404)
+    }
 
     private var failure: ScooterAPIError? = null
 

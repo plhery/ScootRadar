@@ -210,7 +210,7 @@ internal fun ScooterMapController.rebuildMapZones() {
     var notices: List<CityZoneDownloads.Notice> = emptyList()
     ruleZoneArea?.let { area ->
         // The cities' zones built in, and those downloaded; the others the area reaches are asked for.
-        cityZoneDownloads.request(over = area)
+        if (!isPausedForIdle.value) cityZoneDownloads.request(over = area)
         val downloaded = cityZoneDownloads.shown(over = area)
         val now = clock()
         // The cities' zones built in, once read: until then the map's thread doesn't wait for them.
