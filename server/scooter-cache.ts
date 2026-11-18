@@ -382,7 +382,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
     if (!running || stopping || !record) return;
     records.set(definition.id, { ...record, sweep: { startedAt: sweptSince, reads, vehicles: priced(vehicles), swept } });
     publish();
-    metrics.recordRefreshProgress(definition.id);
+    metrics.recordRefreshProgress(definition.id, Date.now(), vehicles.length);
   });
   const timed = async () => {
     const started = performance.now();
