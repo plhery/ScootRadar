@@ -2906,8 +2906,9 @@ extension ScooterMapModel {
         let rulesInView = rules.filter { $0.rule.reaches(viewport) }
         if rulesInView != mapRuleZones { mapRuleZones = rulesInView }
         if notices != mapZoneNotices { mapZoneNotices = notices }
-        if shown.count != mapOperatorZoneCount { mapOperatorZoneCount = shown.count }
-        let slowSpeeds = ScooterZoneSpeeds(slowZonesOf: shown)
+        let visible = shown.filter { $0.reaches(viewport) }
+        if visible.count != mapOperatorZoneCount { mapOperatorZoneCount = visible.count }
+        let slowSpeeds = ScooterZoneSpeeds(slowZonesOf: visible)
         if slowSpeeds != mapOperatorSlowSpeeds { mapOperatorSlowSpeeds = slowSpeeds }
         let drawn = rules.map(\.mapZone) + shown
         guard drawn != mapZones else { return }
