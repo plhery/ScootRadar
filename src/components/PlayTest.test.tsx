@@ -57,6 +57,15 @@ describe('the map’s chip', () => {
     expect(vi.mocked(track).mock.calls).toEqual([['invite_view', { place: 'map' }]]);
   });
 
+  it('keeps dismissal in this page when a storage write fails', async () => {
+    browser(ANDROID);
+    await renderChip();
+    await touch();
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('full'); });
+    fireEvent.click(screen.getByRole('button', { name: 'Not now' }));
+    expect(chip()).toBeNull();
+  });
+
   it('invites no one on an iPhone', async () => {
     browser(IPHONE);
     await renderChip();
