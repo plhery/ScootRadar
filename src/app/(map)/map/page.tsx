@@ -700,9 +700,9 @@ export default function Home() {
   // Faded where it was last seen while its app is collected again: neither seen nor taken until the
   // app's new positions say which.
   const walkedFaded = useMemo(() => pinnedProvider !== null && walkLat !== null && walkLng !== null &&
-    lastSeenVehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey || (vehicle.provider === pinnedProvider &&
-      haversineM(walkLat, walkLng, vehicle.lat, vehicle.lng) <= SAME_SCOOTER_M)),
-  [lastSeenVehicles, pinnedProvider, selectedVehicleKey, walkLat, walkLng]);
+    (lastSeenVehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey) ||
+      nearestOfItsApp({ provider: pinnedProvider, lat: walkLat, lng: walkLng, battery: pinnedBattery }, lastSeenVehicles, beside) !== null),
+  [beside, lastSeenVehicles, pinnedBattery, pinnedProvider, selectedVehicleKey, walkLat, walkLng]);
   const liveWalkedParking = useMemo(
     () => pinnedParking && (parking.find(location => location.id === pinnedParking.id) ?? null),
     [parking, pinnedParking]

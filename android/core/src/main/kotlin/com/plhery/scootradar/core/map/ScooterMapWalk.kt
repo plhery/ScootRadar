@@ -420,10 +420,7 @@ private fun ScooterMapController.successor(of: Scooter, among: List<Scooter> = v
  * under its id, or one of its provider where it stood, as [successor] finds it among the others.
  */
 private fun ScooterMapController.standsFaded(scooter: Scooter): Boolean {
-    val point = scooter.coordinate
-    return lastSeenVehicles.value.any {
-        it.id == scooter.id || (it.provider == scooter.provider && it.distance(from = point) <= WalkRoute.rebindDistance)
-    }
+    return lastSeenVehicles.value.any { it.id == scooter.id } || successor(scooter, lastSeenVehicles.value) != null
 }
 
 /**
