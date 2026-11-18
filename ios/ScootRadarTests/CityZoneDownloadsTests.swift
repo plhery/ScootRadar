@@ -322,12 +322,15 @@ final class CityZoneDownloadsTests: XCTestCase {
         return defaults
     }
 
-    private func waitUntil(attempts: Int = 300, condition: @escaping () async -> Bool) async -> Bool {
-        for _ in 0 ..< attempts {
+    /// Polls until the condition holds or 20 seconds have passed: a deadline, not a count of polls, as a loaded CI
+    /// runner stretches each 10 ms sleep (300 polls took 5.8 s there on 18 November 2026 and fell short).
+    private func waitUntil(timeout: Duration = .seconds(20), condition: @escaping () async -> Bool) async -> Bool {
+        let deadline = ContinuousClock.now + timeout
+        while ContinuousClock.now < deadline {
             if await condition() { return true }
             try? await Task.sleep(for: .milliseconds(10))
         }
-        return false
+        return await condition()
     }
 }
 
