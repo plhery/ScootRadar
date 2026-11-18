@@ -294,3 +294,8 @@ describe('the pages of the site', () => {
     }
   });
 });
+
+it('dates the end of Dott listings in the Budapest operator heading', () => {
+  const guide = GUIDES.find(guide => guide.slug === 'e-scooters-budapest')!;
+  expect(guide.sections[0].heading).toMatch(/Lime.*Dott listings ended on 4 November/);
+});
