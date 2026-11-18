@@ -29,6 +29,7 @@ class AppLanguages(private val context: Context) {
      * or none for Automatic. Android's own text follows it at once; the app's follows the choice itself.
      */
     fun keep(tags: List<String>) {
+        knownAppLanguages = tags
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tags.joinToString(",")))
     }
 
@@ -41,6 +42,7 @@ class AppLanguages(private val context: Context) {
     var launchLocale: Locale = Locale.getDefault()
         private set
 
+    private var knownAppLanguages = emptyList<String>()
     private var hasLaunched = false
 
     /** The language the phone's languages gave the app when Locale.current was last made. */
@@ -55,6 +57,7 @@ class AppLanguages(private val context: Context) {
     fun launched(configuration: Configuration) {
         if (hasLaunched) return phoneLocalesChanged(configuration)
         hasLaunched = true
+        knownAppLanguages = appLanguages()
         val phone = LocaleManagerCompat.getSystemLocales(context)
         phoneLanguage = ScooterLanguage.fromPreferences(phone.tags)
         val language = ScooterLanguage.fromPreferences(LocaleListCompat.wrap(configuration.locales).tags)
@@ -74,7 +77,9 @@ class AppLanguages(private val context: Context) {
         if (!hasLaunched) return
         val phone = LocaleManagerCompat.getSystemLocales(context)
         val language = ScooterLanguage.fromPreferences(phone.tags)
-        if (language != phoneLanguage) {
+        val app = appLanguages()
+        if (language != phoneLanguage || app != knownAppLanguages) {
+            knownAppLanguages = app
             phoneLanguage = language
             ScooterLanguage.atLaunch = ScooterLanguage.fromPreferences(LocaleListCompat.wrap(configuration.locales).tags)
         }
@@ -83,6 +88,11 @@ class AppLanguages(private val context: Context) {
 
     /** What the app's language followed as it started: a language chosen for the app, or the phone's. */
     fun choiceAtLaunch(): ScooterLanguageChoice = ScooterLanguageChoice.of(appLanguages(), ScooterLanguage.atLaunch)
+
+    fun platformChoice(): ScooterLanguageChoice {
+        val tags = appLanguages()
+        return ScooterLanguageChoice.of(tags, ScooterLanguage.fromPreferences(tags))
+    }
 
     companion object {
         /** The phone's `region` and settings, in the app's `language`. */

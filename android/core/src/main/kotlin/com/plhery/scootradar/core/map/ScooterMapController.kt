@@ -776,8 +776,9 @@ class ScooterMapController(
      * they start in it). A language chosen for the app stays. An Android seam: the app calls it as its configuration's
      * locales change.
      */
-    fun phoneLanguagesChanged() {
-        if (_languageChoice.value == ScooterLanguageChoice.Automatic) setLanguage(phoneLanguage)
+    fun phoneLanguagesChanged(platformChoice: ScooterLanguageChoice = _languageChoice.value) {
+        _languageChoice.value = platformChoice
+        setLanguage((platformChoice as? ScooterLanguageChoice.Language)?.language ?: phoneLanguage)
         // The phone's region may have changed with them, and with it the units of Automatic.
         if (readMinimumRange()) refetchFilteredClusters()
     }
