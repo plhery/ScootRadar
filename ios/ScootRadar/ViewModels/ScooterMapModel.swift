@@ -2943,7 +2943,9 @@ extension ScooterMapModel {
     /// screen has seen it rest; a moment already waiting goes on waiting.
     private func reviewAfterLoad() {
         let now = clock()
-        if maintenance == nil, loadIssue == nil, delayedStatus == nil { reviewPrompt.noteUse(at: now) }
+        let served = !vehicles.isEmpty || !clusters.isEmpty || responseMetadata?.shownSince?.isEmpty == false ||
+            responseMetadata?.sources.values.contains("fresh") == true
+        if served, maintenance == nil, loadIssue == nil, delayedStatus == nil { reviewPrompt.noteUse(at: now) }
         if reviewTrouble { reviewPrompt.noteBadMoment(at: now) }
         guard isSceneActive, !reviewDue, reviewPrompt.isDue(at: now, calm: reviewCalm) else { return }
         reviewDue = true
