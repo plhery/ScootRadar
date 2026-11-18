@@ -9,6 +9,7 @@ import type { MapBounds, Vehicle } from '../src/lib/types';
 import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://api.gojet.app/api/v1/';
+const retryableNetworkErrors = new Set(['ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', 'EPIPE', 'EAI_AGAIN', 'ENETUNREACH', 'EHOSTUNREACH']);
 const MAX_BYTES = 8 * 1024 * 1024;
 export const jetMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
@@ -41,14 +42,18 @@ export const requestJetMap: Request = (url, headers, timeoutMs) => new Promise((
         response.destroy();
       } else chunks.push(chunk);
     });
-    response.on('error', () => reject(new Error('JET map response was interrupted')));
+    response.on('error', () => reject(passing('JET map response was interrupted')));
     response.on('end', () => {
       try { resolve({ status: 200, body: JSON.parse(Buffer.concat(chunks).toString('utf8')) }); }
       catch { reject(new Error('JET returned invalid JSON')); }
     });
   });
-  const timer = setTimeout(() => request.destroy(new Error('JET map request timed out')), timeoutMs);
-  request.on('error', () => reject(new Error('JET map request failed or timed out')));
+  const timer = setTimeout(() => request.destroy(passing('JET map request timed out')), timeoutMs);
+  request.on('error', (error: NodeJS.ErrnoException) => {
+    if (isPassing(error)) reject(error);
+    else if (retryableNetworkErrors.has(error.code ?? '')) reject(passing('JET map request interrupted'));
+    else reject(new Error('JET map connection failed'));
+  });
   request.on('close', () => clearTimeout(timer));
 });
 
@@ -102,14 +107,11 @@ export class JetClient {
     const url = `${ORIGIN}geo/transports?${query}`;
     const timestamp = String(this.now());
     jetMapRequests.status++;
-    let response: Reply;
-    try {
-      response = await this.request(url, {
-        'user-agent': 'Dart/3.11 (dart:io)', accept: 'application/json',
-        'X-App-Version': config.appVersion, 'X-Device-Id': config.deviceId, 'X-Timestamp': timestamp,
-        'X-Signature': createHmac('sha256', config.signingKey).update(url + timestamp).digest('base64'),
-      }, Math.min(this.timeoutMs, remaining));
-    } catch { throw passing('JET map request failed or timed out'); }
+    const response = await this.request(url, {
+      'user-agent': 'Dart/3.11 (dart:io)', accept: 'application/json',
+      'X-App-Version': config.appVersion, 'X-Device-Id': config.deviceId, 'X-Timestamp': timestamp,
+      'X-Signature': createHmac('sha256', config.signingKey).update(url + timestamp).digest('base64'),
+    }, Math.min(this.timeoutMs, remaining));
     if (!Number.isInteger(response.status) || response.status !== 200) {
       if ([401, 403, 429].includes(response.status)) {
         const retry = response.retryAfter;
