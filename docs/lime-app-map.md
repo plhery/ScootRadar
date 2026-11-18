@@ -424,7 +424,7 @@ accounts' 36 requests a minute, four or five a group. On 25 October 2026 a view
 of Berlin asked for its 128 groups; Santiago's, watched meanwhile, waited a
 quarter of an hour for theirs and expired, and the new German towns' first
 collections stalled, some past their 15-minute budget. Idle groups are swept every three days
-(`LIME_IDLE_INTERVAL_MS`), not every two hours as the other app maps: every
+(`LIME_IDLE_INTERVAL_MS`), not every day as the other app maps: every
 market Lime's rider map lists takes about 17,500 requests, a day at that pace,
 so the idle sweeps take about a third of the requests, and may take half
 (`npm run check:providers`): the rest is for the towns people look at. A town

@@ -5,7 +5,6 @@ import { boundsContainPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { Pacer, SweepProgress, nearestFirst } from './sweeps';
 
 const ORIGIN = 'https://api.whoosh.bike';
@@ -372,7 +371,7 @@ export function withWhooshAppCollectors(feeds: CollectableScooterFeed[], systems
   const regions = new Map(systems.filter(system => system.whooshAppRegion).map(system => [system.id, system]));
   return feeds.map(feed => {
     const region = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    // Its client paces every request, and sweeps take up to three minutes: idle every two hours.
-    return region ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true, collect: () => collectWhooshRegion(region) } : feed;
+    // Its client paces every request, and sweeps take up to three minutes.
+    return region ? { ...feed, paced: true, collect: () => collectWhooshRegion(region) } : feed;
   });
 }

@@ -60,8 +60,8 @@ someone looks at too, as bursts returned empty maps at the first startup (below)
 for two days from 8 November 2026 a minute's worth, 30, could start at once. HTTP 429 honors
 `Retry-After`; rejected authentication gets one renewal and retry, then a
 one-minute cooldown. Responses have streaming size limits and deadlines.
-The normal scheduler polls idle regions every 20 minutes and watched regions
-every minute.
+The scheduler reads an idle region once a day, between 08:00 and 21:00 there
+(`APP_MAP_IDLE_INTERVAL_MS`), and a watched region every minute.
 
 The discovery sweep reviewed 198 non-test candidate regions. Regions with no
 standing scooters, retired/test entries and unresolved service areas are not

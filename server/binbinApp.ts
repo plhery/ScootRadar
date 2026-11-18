@@ -3,7 +3,6 @@ import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { planNearestSweep, sweepNearestArea, type NearestMap, type NearestSweep, type SweepLimits } from './nearestSweep';
 import { Pacer, SweepProgress } from './sweeps';
 
@@ -24,8 +23,6 @@ const RETRY_MS = 60_000;
  * cache sends its first BinBin request after this, once the old one has stopped, as ATOM's does.
  */
 export const BINBIN_START_HOLD_MS = 120_000;
-/** An area nobody looks at is swept every two hours: a round of all 13 takes thousands of requests. */
-export const BINBIN_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
 export const binbinMapRequests = { status: 0, metadata: 0 };
 
 export interface BinbinScooter { id: string; lat: number; lng: number; battery: number | null }
@@ -182,7 +179,7 @@ export function withBinbinAppCollectors(feeds: CollectableScooterFeed[], systems
   const areas = new Map(systems.filter(system => system.binbinAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const area = areas.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return area ? { ...feed, idleIntervalMs: BINBIN_IDLE_INTERVAL_MS, paced: true,
+    return area ? { ...feed, paced: true,
       collect: () => collectBinbinArea(area, previous(feed.id) ?? [], api) } : feed;
   });
 }

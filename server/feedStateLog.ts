@@ -122,7 +122,7 @@ export const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
  */
 const EXPIRED_REPORT_DELAYS_MS: Readonly<Record<string, number>> = { 'national:voiscooters.com': 15 * 60_000 };
 
-/** A feed whose own idle expiry is this long or longer is swept slowly on purpose, as the app maps every two hours. */
+/** A feed whose own idle expiry is this long or longer is collected seldom on purpose, as the app maps once a day. */
 const SLOW_SWEEP_EXPIRY_MS = 60 * 60_000;
 
 /**

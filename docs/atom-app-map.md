@@ -167,8 +167,8 @@ collection of every Qick city takes about nine minutes; simultaneous watched
 cities can refresh more slowly than the scheduler's nominal one-minute
 interval. Each city is still collected independently, on at most two
 slots of ATOM's host and none of the collector's six shared ones. A city
-nobody looks at is collected every two hours (`APP_MAP_IDLE_INTERVAL_MS`),
-not every 20 minutes.
+nobody looks at is collected once a day, between 08:00 and 21:00 there
+(`APP_MAP_IDLE_INTERVAL_MS`), as every app map.
 
 A city someone looks at takes the queue's turns first, but not all of
 them: while a city nobody looks at waits for its sweep, every third turn

@@ -142,7 +142,7 @@ feeds keep their towns, zones, metrics and alerts; the scooters' ids are the
 rider maps'. While a rider map fails the national feed alone stands, and
 Sentry hears of it after ten minutes; while sharedmobility.ch fails, or answers
 over two seconds after the rider map, the scooters keep the attributes it gave
-last. These feeds are collected as the app maps are, every minute while someone
+last. These feeds are collected every minute while someone
 looks and every twenty minutes while nobody does; Switzerland's other feeds
 stay on the minute.
 
@@ -255,7 +255,7 @@ only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 
 Production collects each system independently on Netcup, with at most six
 systems in flight: Switzerland every minute, but for its rider maps' feeds, the
-others every twenty minutes, or every minute for ten minutes after someone looks at them. Bird's, Spin's and
+others every twenty minutes, an operator's app map once a day, or every minute for ten minutes after someone looks at them. Bird's, Spin's and
 Bolt's own feeds, whose licences let their data be kept fifteen minutes, are
 collected every thirteen minutes while nobody looks: the cache drops their
 positions, in memory and in its saved copy, the documents it read them from and
@@ -270,14 +270,16 @@ as soon as the first such system is in. The local direct-feed fallback selects b
 and allows four concurrent French systems. Individual scooter positions remain
 usable for at most fifteen minutes from their source timestamp, including when a
 refresh fails; missing timestamps and older data are rejected. The operators'
-app maps read in slow paced sweeps differ in three ways since 25 October 2026.
-Those of Whoosh, GCOO, ATOM and BinBin are collected every two hours while
-nobody looks, Bird's once a day, and Lime's many markets every three days. A sweep
+app maps differ in three ways. Since 18 November 2026 each is collected once a
+day while nobody looks, between 08:00 and 21:00 in its town (until then every
+twenty minutes, or every two hours for those read in slow paced sweeps), and
+Lime's many markets and Ryde's groups every three days. A sweep
 starts where the request looked and publishes each part of its area as it
 finishes it, so the map fills in as it goes. And since 26 October, any feed whose
 collection takes over three seconds, timed on each, is not waited for: while it
-is collected again, its positions up to three hours old, 26 hours for Bird's (its day
-between sweeps and two hours' grace), or three days for Lime's, stand faded where they
+is collected again, its positions up to 26 hours old (an app map's day
+between sweeps and two hours' grace), three hours for Ryde's or a feed that is no
+app map, or three days for Lime's, stand faded where they
 were last seen, counted nowhere, until the sweep reaches them. The national
 platform publishes Voi every eight to nine minutes, about ninety seconds after
 the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
@@ -2441,7 +2443,7 @@ map that Skyss, Vestland's public transport authority, shows in its travel
 app to riders who have not signed in. The user asked for it on 27 October.
 No account, key or cookie is used. A reply lists at most 500 scooters of a
 box, so the Node cache sweeps Bergen box by box, quartering each full one:
-about 27 requests a round, one a second, every two hours while nobody looks.
+about 27 requests a round, one a second, once a day while nobody looks.
 The map gives no battery, range or position time; 16 scooters of a round,
 read one by one, could all be rented. Each scooter's id is its IMEI, which is
 neither stored nor shown, only a hash of it keyed by the process. Skyss's
@@ -2897,7 +2899,7 @@ Each collection reads its town whole, on a bounded request plan, and fails
 rather than publish part of it. Alpaca's reads the country's clusters first,
 then every cell of a fixed grid, within 0.017 degrees of its centre, that
 meets a square where they say vehicles stand: 456 cells for its 29 towns on
-26 October, every two hours while nobody looks. DART's lists its whole fleet
+26 October, once a day while nobody looks. DART's lists its whole fleet
 in one reply, so one request a round serves its six towns. Bicycles, e-bikes
 and mopeds are left out. Alpaca, Beam, DART, GCOO and Kickgoing give a
 battery level, DART and GCOO a range too; Swing gives only a band, for

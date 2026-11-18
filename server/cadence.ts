@@ -63,8 +63,8 @@ export function cadenceFromEnv(env: Record<string, string | undefined> = process
 }
 
 /**
- * The idle expiry of each feed collected less often on purpose, as the app maps every two hours: its own
- * interval plus the same ten minutes, or its own grace (`idleGraceMs`, as Bird's areas), read from the feed
+ * The idle expiry of each feed collected less often on purpose, as the app maps once a day: its own
+ * interval plus the same ten minutes, or its own grace (`idleGraceMs`, the app maps' two hours), read from the feed
  * itself, so that a collector that sets an interval cannot be told as stopped between two of its collections.
  * A feed collected more often, to replace data it may not keep (withRetentionCaps), is told as stopped no
  * sooner than the others: never before `idleExpiryMs`.

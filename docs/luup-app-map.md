@@ -42,8 +42,8 @@ overnight schedules are hidden conservatively. Private campuses, resorts and
 other special-purpose regions are not included. Saitama's sampled ports had
 no standing scooters and are not included in this reviewed catalog.
 
-The normal scheduler collects idle cities every 20 minutes and watched cities
-every minute. At most 60 requests start on LUUP's host in any 60 seconds,
+The scheduler collects an idle city once a day, between 08:00 and 21:00 Japan time
+(`APP_MAP_IDLE_INTERVAL_MS`), and a watched city every minute. At most 60 requests start on LUUP's host in any 60 seconds,
 renewals included. HTTP 429 respects `Retry-After`; failed authentication backs off for
 a minute, and a rejected ID token gets one renewal and retry.
 A port read may take 90 seconds, a renewal 30. Tokyo's read, the whole city

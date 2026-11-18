@@ -336,7 +336,7 @@ into six boxes, quarters each box of 500 down to about 250 m, and fails past
 120 requests or on a reply with an error, another vendor or type, or a
 broken row. Rows outside their box are left out, as a neighbouring box
 lists them. Requests go one a second, those nearest where people look first,
-every two hours while nobody looks and every minute while someone does, as
+once a day while nobody looks and every minute while someone does, as
 the other app maps' (`APP_MAP_IDLE_INTERVAL_MS`). A 429 holds the reader off
 for at least a minute.
 

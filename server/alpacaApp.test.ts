@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { boundsContainPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import {
   ALPACA_CELL, ALPACA_CLUSTER, AlpacaClient, alpacaCells, collectAlpacaRegion, parseAlpacaClusters, parseAlpacaScooters,
   withAlpacaAppCollectors,
@@ -94,7 +93,7 @@ describe('Alpaca map', () => {
       .rejects.toThrow('collection budget');
   });
 
-  it('wires every Alpaca catalog system, collected every two hours while nobody looks, each within budget', () => {
+  it('wires every Alpaca catalog system, each within budget', () => {
     const systems = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.alpacaAppMap);
     expect(systems.length).toBeGreaterThan(0);
     expect(new Set(systems.map(system => system.provider))).toEqual(new Set(['alpaca']));
@@ -108,7 +107,7 @@ describe('Alpaca map', () => {
       }
       expect(alpacaCells(system.bounds, whole).length, system.id).toBeLessThanOrEqual(200);
       const feed = configured.find(f => f.id.endsWith(`:${system.id}`))!;
-      expect(feed).toMatchObject({ provider: 'alpaca', idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true });
+      expect(feed).toMatchObject({ provider: 'alpaca', paced: true });
       expect(feed.zoneSource).toBeUndefined();
       expect(feed.collect).not.toBe(feeds.find(f => f.id === feed.id)!.collect);
     }

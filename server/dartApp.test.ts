@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { REGIONAL_SCOOTER_SYSTEMS, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { DartClient, collectDartRegion, parseDartScooters, withDartAppCollectors } from './dartApp';
 
 const now = Date.parse('2026-10-25T17:30:00Z');
@@ -55,7 +54,7 @@ describe('DART map', () => {
     await expect(collectDartRegion(region({ dartAppMap: undefined }), api)).rejects.toThrow('Not a DART');
   });
 
-  it('wires its one catalog system, every town an area, collected every two hours while nobody looks', () => {
+  it('wires its one catalog system, every town an area', () => {
     const systems = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.dartAppMap);
     // One system reads the whole country once a round; a second would read it again.
     expect(systems.map(system => system.id)).toEqual(['dart_kr_nationwide']);
@@ -63,7 +62,7 @@ describe('DART map', () => {
     expect(systems[0].areas!.length).toBeGreaterThan(1);
     const feeds = independentCollectableFeeds();
     const feed = withDartAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS).find(f => f.id.endsWith(':dart_kr_nationwide'))!;
-    expect(feed).toMatchObject({ provider: 'dart', idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS });
+    expect(feed).toMatchObject({ provider: 'dart' });
     expect(feed.paced).toBeUndefined();
     expect(feed.zoneSource).toBeUndefined();
     expect(feed.coverage).toEqual(systems[0].areas!.map(each => each.bounds));

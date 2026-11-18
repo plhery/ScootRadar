@@ -109,7 +109,7 @@ Retry-After backoff. A generic HTTP 403 holds requests for at least 15 minutes,
 preserves the token and last snapshot, and does not request a new login.
 The slower cadence has not yet been verified through a sustained production run.
 The new cache waits two minutes so a deployment does not double the pace.
-Idle sweeps run every two hours; a map visit keeps the feed watched for two
+Idle sweeps run once a day, between 08:00 and 21:00 (`APP_MAP_IDLE_INTERVAL_MS`); a map visit keeps the feed watched for two
 minutes. Sweeps reuse previous positions to plan fewer requests, report
 completed parts progressively, and timestamp the result at the sweep's start.
 

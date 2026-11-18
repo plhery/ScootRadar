@@ -358,9 +358,10 @@ keeping road numbers after Hangul street names and before Roman ones.
 
 ## Load
 
-The cache collects each Kickgoing, Xingxing, Swing and Deer town every 20 minutes,
-each GCOO and Alpaca town, and DART's whole fleet, every two hours
-(`GCOO_IDLE_INTERVAL_MS`, `APP_MAP_IDLE_INTERVAL_MS`), and any town every
+The cache collects each town, and DART's whole fleet, once a day while nobody
+looks, between 08:00 and 21:00 Korea time (`APP_MAP_IDLE_INTERVAL_MS`; until
+18 November 2026 each Kickgoing, Xingxing, Swing and Deer town every 20
+minutes, the others every two hours), and any town every
 minute while someone looks at it, DART's whole fleet while someone looks at
 one of its towns. A round of every town takes about:
 

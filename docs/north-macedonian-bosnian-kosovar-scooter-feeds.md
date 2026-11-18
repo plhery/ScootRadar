@@ -73,7 +73,7 @@ that zone's country has none: Skopje for `Europe/Skopje`, Sarajevo for
 As in [Turkey](turkish-scooter-feeds.md#data-handling): each system sweeps
 one of BinBin's service areas, its public geofences of type 2 simplified to
 within 5 m, and keeps the electric scooters inside it, whatever their
-`status`, with their battery. An area is swept every two hours while nobody
+`status`, with their battery. An area is swept once a day while nobody
 looks at it, and every minute for ten minutes once someone does; each sweep
 takes about a minute. The list gives no price, range or position time, and
 links no scooter, so the card opens BinBin's app. Parking and zones are not

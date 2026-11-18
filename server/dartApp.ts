@@ -2,7 +2,6 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 
 const ORIGIN = 'https://app.dartsharing.com:8443/app/vehicle/main_v2';
 // The whole of South Korea in one view. The map lists every scooter in the view, its whole fleet in
@@ -125,11 +124,11 @@ export async function collectDartRegion(system: RegionalScooterSystem, api: Pick
   return { observedAt: at, stale: false, vehicles };
 }
 
-/** Collected every two hours while nobody looks, as the other app maps, to spare DART's server. */
+/** Collected once a day while nobody looks, as the other app maps (withDailySweeps). */
 export function withDartAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.dartAppMap).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, collect: () => collectDartRegion(system) } : feed;
+    return system ? { ...feed, collect: () => collectDartRegion(system) } : feed;
   });
 }

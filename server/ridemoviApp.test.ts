@@ -186,7 +186,7 @@ describe('RideMovi collector registration', () => {
     expect(area.rings.every(ring => ring.length >= 4 && ring.every(([a, b]) => boundsContainPoint(system.bounds, a, b)))).toBe(true);
     const feed = withRidemoviAppCollectors(independentCollectableFeeds(), [system], () => [])
       .find(feed => feed.id === 'germany:ridemovi_de_dresden');
-    expect(feed).toMatchObject({ provider: 'ridemovi', paced: true, idleIntervalMs: 2 * 60 * 60_000, watchMs: 2 * 60_000 });
+    expect(feed).toMatchObject({ provider: 'ridemovi', paced: true, watchMs: 2 * 60_000 });
     expect(feed?.zoneSource).toBeUndefined();
   });
 

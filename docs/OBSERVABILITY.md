@@ -264,10 +264,17 @@ looks:
   its last collection is over a minute old, the request starts one at once.
 - **Idle**: every other feed every 20 minutes, each at its own time in the interval
   (from a hash of its id), so about eight a minute start. A failed collection is
-  retried after 1, 2, 4, 8, then every 10 minutes, half the interval. The app maps
-  read in slow paced sweeps are collected every two hours when idle, for the requests
-  they take (`APP_MAP_IDLE_INTERVAL_MS` in `server/appMapCadence.ts`): BinBin's
-  ([guide](binbin-app-map.md#pace-and-failures)), GCOO's, ATOM's and Whoosh's. Lime's
+  retried after 1, 2, 4, 8, then every 10 minutes, half the interval. An operator's app
+  map is collected once a day when idle, since 18 November 2026 (`APP_MAP_IDLE_INTERVAL_MS`
+  and `withDailySweeps` in `server/appMapCadence.ts`), between 08:00 and 21:00 in its
+  town, and at 08:00 after a collection by night: the maps read in a request or a few
+  (Dott's, Bolt's, Voi's, Swing's, Deer's, Jet's, Beam's, Xingxing's, Kickgoing's and
+  LUUP's, 612 towns) as those read in slow paced sweeps (BinBin's
+  ([guide](binbin-app-map.md#pace-and-failures)), GCOO's, Alpaca's, ATOM's, Whoosh's,
+  RideMovi's, Skyss's and DART's, 163). Until then the first were collected every 20
+  minutes and the second every two hours, some 46,000 of a day's 82,000 idle
+  collections, for city totals a day's read serves: a town someone opens is collected at
+  once. Lime's
   are every three days, so that sweeping all its markets takes at most half of the
   requests a single account may send, even with several configured production
   accounts, in each town's daytime, and at 08:00 after a sweep by night
@@ -275,9 +282,12 @@ looks:
   city a visitor opened within the week ([guide](ryde-bridge.md)). Any idle feed collected in a night ban is
   collected again within a quarter of an hour of its end (`feedCurfewEnds`). Each
   expires 10 minutes after its own interval and waits up to half of it between
-  retries; Bird's areas, swept once a day, two hours after it, as their sweeps queue on
-  one client and a deploy stops those under way (`BIRD_IDLE_GRACE_MS`, [guide](bird-app-map.md)). The app maps read in a few requests keep the 20 minutes, so that one that
-  stops answering is reported within half an hour. Bird's, Spin's and Bolt's own feeds
+  retries; an app map collected once a day, Bird's areas among them, two hours after it, as their sweeps queue on
+  one client and a deploy stops those under way (`APP_MAP_IDLE_GRACE_MS`, `BIRD_IDLE_GRACE_MS`, [guide](bird-app-map.md)).
+  An operator's app that stops answering is so reported two and a half hours after the
+  first of its towns' turns: within three hours by day for an operator of many towns,
+  the next morning for a break by night, and up to 26 hours later for an operator of one
+  town, where an app map read in a few requests was reported within half an hour. Bird's, Spin's and Bolt's own feeds
   are collected every 13 minutes, as their licences let their data be kept 15
   (`RETENTION_CAPS_MS` in `server/cadence.ts`); the cache drops it then, but they
   expire after 30 minutes without a successful collection, as the others.
@@ -319,7 +329,7 @@ A slow feed's sweep can take minutes, so while one runs for a request:
   not looked yet, and `meta.lastSeenAt`; the apps draw them faded, count them nowhere,
   and keep asking every 3 seconds while they stand. They stand up to 3 hours old, or
   until the feed is due again while nobody looks for one collected less often: a day
-  and two hours for Bird's areas, Spin's among them, three days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
+  and two hours for an app map collected once a day, Bird's and Spin's areas among them, three days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
   `server/scooter-cache.ts`). Ryde's groups, due again after a day or three, say 3 hours
   in their definitions: a read of the view clears only its circle. The dock gives the day of the week of a time on
   another day. A feed quick to collect has none: it is waited for instead.
@@ -649,10 +659,10 @@ paused the cache at every exception, caught ones included, while a worker read t
 Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
-  cadence's rule (an idle feed after 30 minutes without a successful collection, or ten
-  minutes past its own interval for one collected less often on purpose: two hours and
-  ten for the app maps read in slow sweeps, a day and two hours for Bird's areas, three days
-  and ten minutes for Lime) and is
+  cadence's rule (an idle feed after 30 minutes without a successful collection, or past
+  its own interval and grace for one collected less often on purpose: a day and two
+  hours for an app map, Bird's areas among them, three days
+  and ten minutes for Lime's groups and Ryde's) and is
   still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
   short of expiring: on some weekday mornings sharedmobility.ch cuts most of its downloads off
   (see Logs), and it expired 3 times on 17 October 2026 and 9 on the 22nd, back within 8

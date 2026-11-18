@@ -395,7 +395,8 @@ apart, taking their hosts in turn (`warmUp` in `server/feedScheduler.ts`): the
 map for over half an hour. A cold start's feeds, an always-fast one and any a
 request asks for are collected at once.
 Switzerland is collected every minute; any other feed every 20 minutes (Bird's,
-Spin's and Bolt's own every 13, `RETENTION_CAPS_MS` in `server/cadence.ts`), or every
+Spin's and Bolt's own every 13, `RETENTION_CAPS_MS` in `server/cadence.ts`; an operator's
+app map once a day, `APP_MAP_IDLE_INTERVAL_MS` in `server/appMapCadence.ts`), or every
 minute for 10 minutes after a map request covers it, the request starting a
 collection at once when the last is over a minute old (see
 [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md#collection-cadence)). To collect
@@ -647,10 +648,10 @@ requests a minute, four a second on average, across all 13 areas, with three of 
 under way at once and at most two sweeps on its host. A sweep asks ten
 scooters at a time until its area is proven complete. On 24 October 2026 the 13
 areas took 4,947 requests from nothing and 3,577 planned straight after from
-those positions. An area nobody looks at is swept every two hours
-(`BINBIN_IDLE_INTERVAL_MS`), not every 20 minutes, so a round should take
-between the two, half a request a second to two thirds on average, and an idle
-area expires after two hours and ten minutes without a sweep. A cold start
+those positions. An area nobody looks at is swept once a day
+(`APP_MAP_IDLE_INTERVAL_MS`), as every app map, so a day's sweeps should take
+between the two, and an idle
+area expires after a day and two hours without a sweep. A cold start
 keeps what failed sweeps saw for the next.
 HTTP 429 stops every BinBin request for its `Retry-After`. See [pace and
 failures](docs/binbin-app-map.md#pace-and-failures).
@@ -679,11 +680,12 @@ maps need no credential: DART's sends the token "scootradar", which is no
 secret ([DART](docs/south-korean-scooter-feeds.md#dart)). See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
 Skyss's map, which shows Ryde's Bergen scooters, needs none either
 ([Ryde](docs/ryde-app-map.md#the-production-reader)).
-A GCOO town nobody looks at is collected every two hours (`GCOO_IDLE_INTERVAL_MS`),
-not every 20 minutes, and expires after two hours and ten minutes without one: a
-feed that sets its own idle interval, as GCOO, Alpaca, DART, Skyss, ATOM, Whoosh and BinBin do
-(`APP_MAP_IDLE_INTERVAL_MS`), Bird (`BIRD_IDLE_INTERVAL_MS`, a day) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
-ten minutes after it, read from the feed itself.
+A GCOO town nobody looks at is collected once a day, as every operator's app map
+(`APP_MAP_IDLE_INTERVAL_MS`, `withDailySweeps`), and expires after a day and two hours
+without a collection (`APP_MAP_IDLE_GRACE_MS`): a
+feed with its own idle interval, as those, Bird's (`BIRD_IDLE_INTERVAL_MS`, a day) and
+Lime's and Ryde's (`LIME_IDLE_INTERVAL_MS`, `RYDE_IDLE_INTERVAL_MS`, three days), expires
+its own grace, or else ten minutes, after it, read from the feed itself.
 
 Ryde's native Mac bridge reads mode-0600 `/data/ryde-bridge.json`, owned by Node
 UID 1000, from the persistent snapshot volume. It contains only a dedicated

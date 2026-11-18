@@ -5,7 +5,6 @@ import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { sweepNearestArea, type NearestMap, type Ring, type SweepLimits } from './nearestSweep';
 import { Pacer, SweepProgress } from './sweeps';
 
@@ -196,7 +195,7 @@ export function withRidemoviAppCollectors(feeds: CollectableScooterFeed[], syste
   const regions = new Map(systems.filter(system => system.ridemoviAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, watchMs: 2 * 60_000, paced: true,
+    return system ? { ...feed, watchMs: 2 * 60_000, paced: true,
       collect: () => collectRidemoviArea(system, previous(feed.id) ?? [], api) } : feed;
   });
 }

@@ -127,18 +127,16 @@ publishes nothing, so the cache keeps the area's last sweep, under the usual
 expiry rules, and the next plans from what it saw. An idle area's failed
 sweep is tried again after 1, 2, 4… minutes, an hour apart at most.
 
-An area nobody looks at is swept every two hours
-(`BINBIN_IDLE_INTERVAL_MS`), where other feeds are collected every 20 minutes.
-The 16 areas take about 4,000 to 5,500 requests a round, by the numbers above:
-a little over half a request a second to three quarters on average, where
-every 20 minutes would take three to four and a half, past the client's
-four. The street view shows no live position over
+An area nobody looks at is swept once a day, between 08:00 and 21:00 there
+(`APP_MAP_IDLE_INTERVAL_MS`, as every app map since 18 November 2026; every two
+hours before). The 16 areas take about 4,000 to 5,500 requests a round, by the
+numbers above. The street view shows no live position over
 15 minutes old, so the first person to look at an idle area waits for its
 sweep, which the request starts at once: under a minute in Eskişehir, a few
-minutes in İstanbul. Meanwhile the area's last positions, up to three hours
-old, stand faded where they were, and each ring of the sweep, nearest the view
+minutes in İstanbul. Meanwhile the area's last positions, up to a day and two
+hours old, stand faded where they were, and each ring of the sweep, nearest the view
 first, replaces them as it is done. Zoomed out, the city's total is the last sweep's. An idle area
-expires, for monitoring, after two hours and ten minutes without a sweep.
+expires, for monitoring, after a day and two hours without a sweep.
 
 A watched area is swept again a minute after its last sweep started;
 İstanbul's sweeps take longer than that, so watched İstanbul is swept back to

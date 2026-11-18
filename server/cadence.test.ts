@@ -2,9 +2,10 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
+import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, joinCityOverviews, refreshedOverview, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { withDailySweeps } from './appMapCadence';
 import { withBinbinAppCollectors } from './binbinApp';
 import { withBirdAppCollectors } from './birdApp';
 import { alwaysFastSources, cadenceFromEnv, ownIdleExpiries, retained, retentionCaps, withRetentionCaps } from './cadence';
@@ -35,18 +36,20 @@ it('reads intervals in seconds and refuses nonsense', () => {
   expect(() => cadenceFromEnv({ SCOOTER_IDLE_INTERVAL_SECONDS: '30' })).toThrow('at least 60');
 });
 
-it('tells a feed collected less often on purpose, as a GCOO town every hour, as stopped only ten minutes after its interval, and a Bird area, swept once a day, two hours after it', () => {
+it('tells a feed collected less often on purpose as stopped only after its own interval and grace: an app map, collected once a day, two hours after it, and a Lime group, every three days, ten minutes', () => {
   const MINUTE = 60_000;
   const now = 1_800_000_000_000;
-  // One town of each collector that sets its own interval, as the cache wraps them, and one feed of the default 20 minutes.
-  const ids = ['gcooAppMap', 'limeAppMap', 'binbinAppArea', 'birdAppArea'].map(flag => {
+  // One town of five operators' app maps, as the cache wraps them, and one open feed, of the default 20 minutes.
+  const ids = ['gcooAppMap', 'limeAppMap', 'binbinAppArea', 'birdAppArea', 'dottAppRegion'].map(flag => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => (candidate as unknown as Record<string, unknown>)[flag]);
     if (!system) throw new Error(`no ${flag} system`);
     return `${regionalSource(system)}:${system.id}`;
   });
-  const bare = [...ids, 'germany:dott_de_bonn'].map(id => ({ id, host: id }) as CollectableScooterFeed);
-  const feeds = withBirdAppCollectors(withBinbinAppCollectors(withLimeAppCollectors(withGcooAppCollectors(bare, REGIONAL_SCOOTER_SYSTEMS),
-    REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS, () => undefined), REGIONAL_SCOOTER_SYSTEMS, () => undefined);
+  const open = REGIONAL_SCOOTER_SYSTEMS.find(system => !isAppMapSystem(system))!;
+  const openId = `${regionalSource(open)}:${open.id}`;
+  const bare = [...ids, openId].map(id => ({ id, host: id }) as CollectableScooterFeed);
+  const feeds = withDailySweeps(withBirdAppCollectors(withBinbinAppCollectors(withLimeAppCollectors(withGcooAppCollectors(bare, REGIONAL_SCOOTER_SYSTEMS),
+    REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS, () => undefined), REGIONAL_SCOOTER_SYSTEMS, () => undefined), REGIONAL_SCOOTER_SYSTEMS);
   const cadence: FeedCadence = { fastSince: () => undefined, idleExpiryMs: 30 * MINUTE, idleExpiryMsForFeed: ownIdleExpiries(feeds) };
   const collected = (id: string, minutesAgo: number) => {
     const at = now - minutesAgo * MINUTE;
@@ -54,15 +57,15 @@ it('tells a feed collected less often on purpose, as a GCOO town every hour, as 
   };
   for (const feed of feeds.filter(candidate => candidate.idleIntervalMs)) {
     const interval = feed.idleIntervalMs! / MINUTE;
-    const grace = feed.id === ids[3] ? 120 : 10;
+    const grace = feed.id === ids[1] ? 10 : 120;
     expect(feedState(collected(feed.id, interval + grace - 1), now, cadence)).toBe('ok');
     expect(feedState(collected(feed.id, interval + grace + 1), now, cadence)).toBe('expired');
   }
   // Scottsdale's sweep of 9 November 2026 ended 24 hours and 58 minutes after the last (SCOOTRADAR-CACHE-6B).
   expect(feedState(collected(ids[3], 24 * 60 + 58), now, cadence)).toBe('ok');
   expect(feeds.filter(feed => feed.idleIntervalMs).map(feed => feed.id)).toEqual(ids);
-  expect(feedState(collected('germany:dott_de_bonn', 29), now, cadence)).toBe('ok');
-  expect(feedState(collected('germany:dott_de_bonn', 31), now, cadence)).toBe('expired');
+  expect(feedState(collected(openId, 29), now, cadence)).toBe('ok');
+  expect(feedState(collected(openId, 31), now, cadence)).toBe('expired');
 });
 
 describe('the feeds whose data may be kept 15 minutes', () => {

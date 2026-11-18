@@ -3,14 +3,12 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { Pacer, SweepProgress, nearestFirst } from './sweeps';
 
 const ORIGIN = 'https://live.api.gbike-api.com/api/v1/locations/markers';
 const RETRY_MS = 60_000;
 // A round of every town, about 3,550 requests, took over half an hour on the host's two slots
-// on 24 October 2026: a town nobody looks at is collected every two hours, not every 20 minutes.
-export const GCOO_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
+// on 24 October 2026: a town nobody looks at is collected once a day, as every app map (withDailySweeps).
 // The app's table of scooter models (SCT): ES4, MAX, MAXPro, K, MAXPlus, K2, MAXPlusX and K3.
 // Its bicycles, and ids it doesn't list, as 10006 on some B4 bicycles, are left out.
 const SCOOTER_MODELS = new Set([9, 10, 11, 12, 13, 16, 19, 23]);
@@ -223,6 +221,6 @@ export function withGcooAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const regions = new Map(systems.filter(system => system.gcooAppMap).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: GCOO_IDLE_INTERVAL_MS, paced: true, collect: () => collectGcooRegion(system) } : feed;
+    return system ? { ...feed, paced: true, collect: () => collectGcooRegion(system) } : feed;
   });
 }

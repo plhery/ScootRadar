@@ -92,10 +92,11 @@ hour. Errors never carry tokens or upstream bodies.
 
 ## Cadence
 
-Bolt's app map is collected like Voi's: each market every twenty minutes
-while nobody looks, every minute for ten minutes after someone does, one
-request each, with all markets sharing 120 requests a minute. That
-is about 7,000 requests a day while nobody looks. The fifteen-minute retention
+Bolt's app map is collected like Voi's: each market once a day
+while nobody looks, between 08:00 and 21:00 there (`APP_MAP_IDLE_INTERVAL_MS`;
+every twenty minutes until 18 November 2026, about 7,000 requests a day), every
+minute for ten minutes after someone does, one
+request each, with all markets sharing 120 requests a minute. The fifteen-minute retention
 of Bolt's GBFS licence is keyed to `mds.bolt.eu` and does not apply here.
 
 ## Completeness

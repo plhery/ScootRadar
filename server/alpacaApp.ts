@@ -3,7 +3,6 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { Pacer, SweepProgress, nearestFirst } from './sweeps';
 
 const ORIGIN = 'https://alpaca.maasasia.com/graphql';
@@ -248,6 +247,6 @@ export function withAlpacaAppCollectors(feeds: CollectableScooterFeed[], systems
   const regions = new Map(systems.filter(system => system.alpacaAppMap).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true, collect: () => collectAlpacaRegion(system) } : feed;
+    return system ? { ...feed, paced: true, collect: () => collectAlpacaRegion(system) } : feed;
   });
 }

@@ -6,7 +6,7 @@ export const LIME_MAP_PROTOCOL = 'whole-service-local-nearest-v1';
 export const LIME_QUERY_INTERVAL_MS = 5_000;
 /**
  * Every market Lime's rider map lists takes about 17,500 map requests to sweep, a day at twelve
- * requests a minute. Swept every three days while nobody looks, not every two hours as
+ * requests a minute. Swept every three days while nobody looks, not every day as
  * the other app maps (APP_MAP_IDLE_INTERVAL_MS), they take a third of the requests, and may take
  * half (scripts/generate-lime-app-feeds.mjs checks it): the rest is for the towns people look at.
  */

@@ -125,7 +125,7 @@ it('waits 15 minutes for Voi\'s Swiss feed, which Voi stalls for up to 21 minute
   expect(reported).toEqual([['national:dott_zurich', now + minutes(21)], ['national:voiscooters.com', now + minutes(56)]]);
 });
 
-it('waits 30 minutes for a feed swept slowly on purpose, as the app maps every two hours', () => {
+it('waits 30 minutes for a feed collected seldom on purpose, as the app maps were every two hours', () => {
   const reported: [string, number][] = [];
   const minutes = (count: number) => count * 60_000;
   const ownIdleExpiry = (id: string) => id === 'brazil:whoosh_br_rec' ? minutes(130) : undefined;

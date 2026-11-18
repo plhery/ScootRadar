@@ -9,7 +9,7 @@ import { discoverCollectableFeeds, independentCollectableFeeds, listedNationalFe
 import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_AGE_MS, overviewDue, refreshedOverview, showsPositions, VEHICLE_MAX_AGE_MS, type FeedSnapshot,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapFeed, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
-import { APP_MAP_WIDE_INTERVAL_MS } from './appMapCadence';
+import { APP_MAP_WIDE_INTERVAL_MS, withDailySweeps } from './appMapCadence';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
@@ -81,6 +81,8 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
   (current: CollectableScooterFeed[]) => withRydeAppCollectors(current,rydeBridge,rydeConfig?.areas,undefined,REGIONAL_SCOOTER_SYSTEMS,rydeConfig?.productionPilot,
     area => rydeViews?.looked(area) ?? false),
+  // Every app map whose collector set no interval of its own, once a day while nobody looks.
+  (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) => withDailySweeps(current, systems),
   (current: CollectableScooterFeed[]) => withLimeStandby(current, id => records.get(id)),
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 

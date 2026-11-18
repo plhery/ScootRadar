@@ -3,7 +3,6 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import { Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://cosmo-router.transhub.io/graphql';
@@ -230,11 +229,11 @@ export async function collectSkyssRegion(system: RegionalScooterSystem, api: Pic
   return { observedAt: Math.min(service.at, observedAt), stale: false, vehicles: published(scooters) };
 }
 
-/** Collected every two hours while nobody looks, as the other app maps, to spare Skyss's server. */
+/** Collected once a day while nobody looks, as the other app maps (withDailySweeps). */
 export function withSkyssAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.skyssAppZone).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true, collect: () => collectSkyssRegion(system) } : feed;
+    return system ? { ...feed, paced: true, collect: () => collectSkyssRegion(system) } : feed;
   });
 }

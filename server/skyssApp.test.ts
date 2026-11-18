@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { MapBounds } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 import {
   collectSkyssRegion, collectSkyssScooters, parseSkyssService, parseSkyssView, SkyssClient, skyssTiles, withSkyssAppCollectors,
   type SkyssScooter,
@@ -108,7 +107,7 @@ describe('Skyss collection', () => {
     expect(isAppMapSystem(systems[0])).toBe(true);
     const feeds = independentCollectableFeeds();
     const feed = withSkyssAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS).find(f => f.id === 'norway:ryde_no_app_bergen')!;
-    expect(feed).toMatchObject({ provider: 'ryde', host: 'cosmo-router.transhub.io', idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true });
+    expect(feed).toMatchObject({ provider: 'ryde', host: 'cosmo-router.transhub.io', paced: true });
     expect(feed.zoneSource).toBeUndefined();
     expect(feed.collect).not.toBe(feeds.find(f => f.id === feed.id)!.collect);
   });
