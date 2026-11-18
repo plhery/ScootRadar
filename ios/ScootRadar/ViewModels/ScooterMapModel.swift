@@ -2514,7 +2514,8 @@ extension ScooterMapModel {
                 self.walk = nil
                 return
             }
-            guard fresh != scooter || walk.missedRead != nil else { return }
+            guard fresh != scooter || walk.missedRead != nil || !walk.pendingReplacementIDs.isEmpty else { return }
+            walk.pendingReplacementIDs = []
             walk.target = .scooter(fresh)
             walk.missedRead = nil
             self.walk = walk
@@ -2534,8 +2535,22 @@ extension ScooterMapModel {
             return
         }
         let point = GeoPoint(scooter.coordinate)
-        guard Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else { return }
-        if let successor = successor(of: scooter, previousIDs: previousIDs) {
+        let knownIDs = previousIDs.subtracting(walk.pendingReplacementIDs)
+        guard Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else {
+            let pending = Set(vehicles.lazy.filter {
+                !knownIDs.contains($0.id) && $0.provider == scooter.provider && $0.distance(from: point) <= WalkRoute.rebindDistance
+            }.map(\.id))
+            if pending != walk.pendingReplacementIDs {
+                walk.pendingReplacementIDs = pending
+                self.walk = walk
+            }
+            return
+        }
+        if !walk.pendingReplacementIDs.isEmpty {
+            walk.pendingReplacementIDs = []
+            self.walk = walk
+        }
+        if let successor = successor(of: scooter, previousIDs: knownIDs) {
             walk.target = .scooter(successor)
             walk.missedRead = nil
             self.walk = walk

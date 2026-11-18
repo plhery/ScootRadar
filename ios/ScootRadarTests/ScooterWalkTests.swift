@@ -877,7 +877,7 @@ final class ScooterWalkTests: XCTestCase {
 
             for read in 3 ... 4 {
                 h.clock.advance(60)
-                let walked = scooter("x\(read)", provider: "bird", at: point(east: 300, north: 0))
+                let walked = sameReadBackIn ? x1 : scooter("x\(read)", provider: "bird", at: point(east: 300, north: 0))
                 try await load(h, ScooterResponse(vehicles: [walked, other]), call: read + 1)
                 XCTAssertEqual(h.model.walk?.phase, .shown, "\(name), read \(read)")
                 XCTAssertEqual(h.model.walk?.target, .scooter(walked), "\(name), read \(read)")

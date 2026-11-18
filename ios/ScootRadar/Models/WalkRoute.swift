@@ -406,6 +406,8 @@ struct ScooterWalk: Equatable, Sendable {
     /// says nothing new, nor one of the app's other feeds read, or the view moving (Desk [373] S-1). Cleared as soon
     /// as data lists it again.
     var missedRead: Date?
+    // New IDs close enough to be the target in the last incomplete answer.
+    var pendingReplacementIDs: Set<String> = []
 
     init(target: ScooterWalkTarget, phase: ScooterWalkPhase, origin: ScooterWalkOrigin? = nil) {
         self.target = target
