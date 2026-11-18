@@ -138,6 +138,7 @@ function browserStorage(): Storage | null {
  */
 export function createRecentPlaceStore(storage: () => Storage | null = browserStorage): RecentPlaceStore {
   let loaded = false;
+  let sessionOnly = false;
   let place: Place | null = null;
   const listeners = new Set<() => void>();
 
@@ -149,15 +150,15 @@ export function createRecentPlaceStore(storage: () => Storage | null = browserSt
     }
   };
   const read = () => {
+    loaded = true;
     try {
-      const saved = storage()?.getItem(RECENT_PLACE_STORAGE_KEY) ?? null;
+      const persistent = storage();
+      if (!persistent || sessionOnly) return;
+      const saved = persistent.getItem(RECENT_PLACE_STORAGE_KEY);
       place = saved === null ? null : parse(saved);
       // What could not be read is no place, and is not kept.
-      if (saved !== null && !place) storage()?.removeItem(RECENT_PLACE_STORAGE_KEY);
-    } catch {
-      place = null;
-    }
-    loaded = true;
+      if (saved !== null && !place) persistent.removeItem(RECENT_PLACE_STORAGE_KEY);
+    } catch { /* Keep the last session value while storage is unavailable. */ }
   };
   const notify = () => {
     for (const listener of listeners) listener();
@@ -166,14 +167,17 @@ export function createRecentPlaceStore(storage: () => Storage | null = browserSt
     place = next;
     loaded = true;
     try {
-      if (next) storage()?.setItem(RECENT_PLACE_STORAGE_KEY, JSON.stringify(next));
-      else storage()?.removeItem(RECENT_PLACE_STORAGE_KEY);
-    } catch { /* Full or blocked: it is remembered until the page is closed. */ }
+      const persistent = storage();
+      sessionOnly = !persistent;
+      if (next) persistent?.setItem(RECENT_PLACE_STORAGE_KEY, JSON.stringify(next));
+      else persistent?.removeItem(RECENT_PLACE_STORAGE_KEY);
+    } catch { sessionOnly = true; }
     notify();
   };
   // Another tab chose a place or forgot it.
   const onStorage = (event: StorageEvent) => {
     if (event.key !== RECENT_PLACE_STORAGE_KEY && event.key !== null) return;
+    sessionOnly = false;
     read();
     notify();
   };
@@ -189,7 +193,10 @@ export function createRecentPlaceStore(storage: () => Storage | null = browserSt
       if (place) write(null);
     },
     subscribe(listener) {
-      if (listeners.size === 0 && typeof window !== 'undefined') window.addEventListener('storage', onStorage);
+      if (listeners.size === 0) {
+        if (typeof window !== 'undefined') window.addEventListener('storage', onStorage);
+        read();
+      }
       listeners.add(listener);
       return () => {
         listeners.delete(listener);
