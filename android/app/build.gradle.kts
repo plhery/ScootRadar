@@ -22,7 +22,8 @@ android {
         minSdk = 31
         targetSdk = 37
         versionCode = 10
-        // The iPhone app's version (MARKETING_VERSION); versionCode goes up by one with each upload to Play.
+        // The iPhone app's version (MARKETING_VERSION). versionCode goes up by one with each release, in a commit of
+        // its own that both stores' builds are made from: Play's and the F-Droid repo's (one version, one commit).
         versionName = "1.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
