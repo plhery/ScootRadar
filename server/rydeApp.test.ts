@@ -97,7 +97,8 @@ it('enables only catalogued groups through an explicit production pilot and leav
       const local=hour(midnight+at%DAY,zones[system.country]);
       expect(local).toBeGreaterThanOrEqual(8);expect(local).toBeLessThan(21);
     }
-    expect(feed.nightEnds).toBeDefined();
+    // A sweep by night is not made again in the morning: Ryde's map shows the same by night.
+    expect(feed.nightEnds).toBeUndefined();
     expect(feed.lastSeenMaxAgeMs).toBe(3*60*60_000);
     expect(system.rydeMapTiles!.length).toBeLessThanOrEqual(2);
   }

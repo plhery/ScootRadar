@@ -32,9 +32,12 @@ export class RydeWatchedViews {
   private readonly feedsOfArea = new Map<string, Set<string>>();
   private readonly publicBounds = new Map<string, MapBounds[]>();
   private readonly counts = { requested: 0, completed: 0, failed: 0, cancelled: 0 };
-  // When a visitor's read of each area was last asked for: its groups are swept every day for a week after (rydeApp.ts).
+  // When a read of each area was last asked for by a map of ours on it: its groups are swept every day for a week
+  // after (rydeApp.ts). A script's requests name no view, and count for nothing here: on 18 November 2026 one
+  // polling North Rhine-Westphalia (NRW-availability-pilot/1.0, six requests a minute) put eleven cities,
+  // 555 groups, on the daily sweeps within two and a half hours, and a pan across the Ruhr six at once.
   private readonly lookedAt = new Map<string, number>();
-  /** Told the feeds of an area a visitor's read is asked for, after a week or more without one. */
+  /** Told the feeds of an area one of our maps is opened on, after a week or more without it. */
   onLooked?: (feeds: ReadonlySet<string>) => void;
   constructor(private readonly broker: Pick<RydeBroker, 'query'> & Partial<Pick<RydeBroker, 'silentSince' | 'cancelQueued'>>, areas: readonly RydeArea[], enabled: string,
     systems: readonly RegionalScooterSystem[], private readonly clock = Date.now) {
@@ -57,7 +60,7 @@ export class RydeWatchedViews {
     }
   }
   handles(feed: { id: string }): boolean { return this.areaOfFeed.has(feed.id); }
-  /** A visitor's read of the area was asked for within the week. */
+  /** One of our maps was opened on the area within the week. */
   looked(areaId: string, now = this.clock()): boolean { return now - (this.lookedAt.get(areaId) ?? -Infinity) < RYDE_LOOKED_MS; }
   /** The areas looked at and when, for a restart to go on with (restoreLooks). */
   savedLooks(now = this.clock()): Record<string, number> | undefined {
@@ -72,6 +75,8 @@ export class RydeWatchedViews {
     for (const [key, entry] of this.entries) {
       if (!entry.pending && now - entry.usedAt > VEHICLE_MAX_AGE_MS) this.entries.delete(key);
     }
+    // A map of ours names its view (X-Scooter-View): only its reads count as a look at a city.
+    const fromMap = viewer !== undefined;
     const [lat, lng] = boundsCenter(bounds);
     const candidates = new Map<string, { area: RydeArea; feed: FeedSnapshot; distance: number }>();
     for (const feed of feeds) {
@@ -141,9 +146,12 @@ export class RydeWatchedViews {
         const current = entry;
         current.pending = true;
         this.counts.requested++;
-        const looked = this.looked(area.id, now);
-        this.lookedAt.set(area.id, now);
-        if (!looked) this.onLooked?.(this.feedsOfArea.get(area.id)!);
+        // The city the view is on, not the next one over, which a read is asked of too.
+        if (fromMap && area === requests[0].area) {
+          const looked = this.looked(area.id, now);
+          this.lookedAt.set(area.id, now);
+          if (!looked) this.onLooked?.(this.feedsOfArea.get(area.id)!);
+        }
         void this.broker.query(query, true, current).then(result => {
           current.result = result; current.failed = false; this.counts.completed++;
         }, () => { if (current.cancelled) return; current.failed = true; current.retryAt = this.clock() + REFRESH_MS; this.counts.failed++; })

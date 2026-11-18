@@ -120,8 +120,12 @@ export async function collectRydeArea(area: RydeArea, api: Pick<RydeBroker,'quer
  * days, and every day in a city a visitor has opened within the week (RydeWatchedViews.looked). A visitor's
  * view is read on its own, within a minute, whatever the sweeps (rydeWatchedViews.ts): they keep the city
  * totals and the groups a wide view shows. Until 18 November 2026 every group was swept about every 16 hours
- * (936 minutes), day and night, some 300 reads an hour of which visitors' were 3%. A sweep by night counted
- * what a town's night ban hid and was made again at its end.
+ * (936 minutes), day and night, some 420 reads an hour of which visitors' were 3%.
+ *
+ * A sweep by night is as good as one by day: on 18 November 2026 1,277 groups read between 01:00 and 08:00
+ * and again by day held 30,157 scooters then and 30,026 after, the same in each country. Until then one was
+ * made again at 08:00, as Lime's are (daytimeSweeps), and since the bridge had recovered from an outage by
+ * night, every group was swept twice that day. A night ban's sweep is still made again at its end (feedCurfewEnds).
  */
 export const RYDE_IDLE_INTERVAL_MS = 72 * 60 * 60_000;
 export const RYDE_LOOKED_INTERVAL_MS = 24 * 60 * 60_000;
@@ -159,7 +163,8 @@ export function withRydeAppCollectors(feeds: CollectableScooterFeed[], broker: R
     // circle, and in a wide view of Augsburg on 7 November 2026 82 scooters stood faded 13 hours old.
     const timeZone=RYDE_TIME_ZONES[area.country];
     const daily={intervalMs:RYDE_LOOKED_INTERVAL_MS,phase:daytimeSweeps(feed.id,timeZone,RYDE_LOOKED_INTERVAL_MS).idlePhase};
-    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs:RYDE_IDLE_INTERVAL_MS,...daytimeSweeps(feed.id,timeZone,RYDE_IDLE_INTERVAL_MS),
+    // By day, but a sweep by night is not made again at 08:00, as Lime's is: Ryde's map shows the same by night.
+    return {...feed,paced:true,keepsIdleTurns:true,idleIntervalMs:RYDE_IDLE_INTERVAL_MS,idlePhase:daytimeSweeps(feed.id,timeZone,RYDE_IDLE_INTERVAL_MS).idlePhase,
       idleSooner:()=>looked(area.id)?daily:undefined,watchMs:2*60_000,worker:broker,lastSeenMaxAgeMs:LAST_SEEN_MAX_AGE_MS,
       collect:()=>collectRydeArea({...area,tiles:system.rydeMapTiles,excludeBounds},broker,productionPilot)};
   });

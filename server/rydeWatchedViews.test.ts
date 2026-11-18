@@ -215,13 +215,18 @@ describe('watched Ryde native views', () => {
     views.read([feed], bounds, false);
     expect(views.looked(area.id)).toBe(false);
     expect(views.savedLooks()).toBeUndefined();
+    // Nor is a script's, which names no view, though its read is made.
     views.read([feed], bounds, true); await settle();
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(views.looked(area.id)).toBe(false);
+    now += 60_000;
+    views.read([feed], bounds, true, now, { id: 'map', sequence: 1 }); await settle();
     expect(onLooked).toHaveBeenCalledTimes(1);
     expect([...onLooked.mock.calls[0][0]]).toContain(feed.id);
     expect(views.metrics()).toContain('scootradar_ryde_looked_areas 1\n');
     now += 6 * DAY;
-    views.read([feed], bounds, true); await settle();
-    expect(query).toHaveBeenCalledTimes(2);
+    views.read([feed], bounds, true, now, { id: 'map', sequence: 2 }); await settle();
+    expect(query).toHaveBeenCalledTimes(3);
     expect(onLooked).toHaveBeenCalledTimes(1);
     expect(views.savedLooks()).toEqual({ [area.id]: now });
 
@@ -235,7 +240,20 @@ describe('watched Ryde native views', () => {
     expect(restarted.savedLooks()).toBeUndefined();
     expect(restarted.metrics()).toContain('scootradar_ryde_looked_areas 0\n');
     restarted.onLooked = onLooked;
-    restarted.read([feed], bounds, true); await settle();
+    restarted.read([feed], bounds, true, now, { id: 'map', sequence: 1 }); await settle();
     expect(onLooked).toHaveBeenCalledTimes(2);
+  });
+
+  it('counts a look at the city the view is on, not at the next one over, which is read too', async () => {
+    const east = { south: 48.36, north: 48.37, west: 10.95, east: 10.96 };
+    const next: RydeArea = { ...area, id: 'de-next', cityId: 112, bounds: east,
+      rings: [[[48.36, 10.95], [48.36, 10.96], [48.37, 10.96], [48.37, 10.95]]] };
+    const nextSystem = { ...system, id: 'ryde_app_de_next_000', bounds: east, rydeAppArea: next.id } as RegionalScooterSystem;
+    const nextFeed = { ...feed, id: `germany:${nextSystem.id}`, coverage: [east] };
+    const query = vi.fn(async (q: RydeQuery) => result(q, 1_000_000));
+    const views = new RydeWatchedViews({ query }, [area, next], '*', [system, nextSystem], () => 1_000_000);
+    views.read([feed, nextFeed], bounds, true, 1_000_000, { id: 'map', sequence: 1 }); await settle();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(views.savedLooks()).toEqual({ [area.id]: 1_000_000 });
   });
 });
