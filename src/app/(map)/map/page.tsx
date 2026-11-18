@@ -147,7 +147,10 @@ function mayBeRenamed(candidate: Vehicle, scooter: Pick<Vehicle, 'lat' | 'lng' |
   const fromIt = haversineM(scooter.lat, scooter.lng, candidate.lat, candidate.lng);
   const hasItsBattery = candidate.battery !== null && candidate.battery === scooter.battery;
   for (const [besideLat, besideLng, besideBattery] of beside.values()) {
-    if (haversineM(besideLat, besideLng, candidate.lat, candidate.lng) > fromIt) continue;
+    const fromNeighbour = haversineM(besideLat, besideLng, candidate.lat, candidate.lng);
+    if (fromNeighbour > fromIt) continue;
+    // Only distances within three metres can be resolved by matching battery levels.
+    if (fromIt - fromNeighbour > 3) return false;
     if (!hasItsBattery || besideBattery === null || besideBattery === candidate.battery) return false;
   }
   return true;

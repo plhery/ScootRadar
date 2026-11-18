@@ -317,7 +317,8 @@ struct ScooterNeighbours: Equatable, Sendable {
         let metres = point.distance(to: stood)
         let hasItsBattery = candidate.battery != nil && candidate.battery == battery
         return positions.allSatisfy { id, spot in
-            metres < point.distance(to: spot) || (hasItsBattery && batteries[id].map { $0 != candidate.battery } == true)
+            let neighbourMetres = point.distance(to: spot)
+            return metres < neighbourMetres || (metres - neighbourMetres <= 3 && hasItsBattery && batteries[id].map { $0 != candidate.battery } == true)
         }
     }
 }

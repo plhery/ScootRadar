@@ -165,6 +165,9 @@ final class WalkRouteTests: XCTestCase {
         // The one with the battery of the scooter followed is it; the other is the neighbour renamed.
         XCTAssertTrue(neighbours.mayTakeOver(scooter("p1-new", at: start, battery: 54), from: start, battery: 54))
         XCTAssertFalse(neighbours.mayTakeOver(scooter("p2-new", at: start, battery: 80), from: start, battery: 54))
+        let east12 = point(east: 12, north: 0)
+        neighbours.note([scooter("p2", at: east12, battery: 55)], around: followed)
+        XCTAssertFalse(neighbours.mayTakeOver(scooter("p2-new", at: east12, battery: 54), from: start, battery: 54))
         // Moved a little, nearer the neighbour's spot than its own: still told apart.
         let east3 = point(east: 3, north: 0)
         neighbours.note([scooter("p2", at: point(east: 4, north: 0), battery: 80)], around: followed)
