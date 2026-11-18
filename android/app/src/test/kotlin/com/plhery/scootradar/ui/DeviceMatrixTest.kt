@@ -43,6 +43,8 @@ import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.AddressSearchResult
 import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.api.ScooterAPIError
+import com.plhery.scootradar.core.api.ScooterMaintenance
 import com.plhery.scootradar.core.api.WalkingDirectionsError
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.showWalkingRoute
@@ -505,6 +507,19 @@ enum class MatrixScene(
         override fun make(controllers: TestControllers, clock: TestClock) = located(controllers, clock, ScooterLocationIssue.NotFound)
     },
 
+    /**
+     * The server down for an announced maintenance, a neighbour's kept view shown: the calm notice under the search bar
+     * in its three sentences, "…paused…Showing scooters from 14:13. Scheduled maintenance, back around 14:33."
+     */
+    MaintenanceKept(pictured = setOf(MatrixWindow.Picture.Half), notices = true) {
+        override fun make(controllers: TestControllers, clock: TestClock) = undergoing(controllers, clock, kept = true)
+    },
+
+    /** The server down for an announced maintenance with no view kept: "ScootRadar is down…", and the dock delayed. */
+    MaintenanceDown(notices = true) {
+        override fun make(controllers: TestControllers, clock: TestClock) = undergoing(controllers, clock, kept = false)
+    },
+
     /** The operators' zones on: the legend beside the locate button. */
     Zones(pictured = foldAndTablet) {
         override fun make(controllers: TestControllers, clock: TestClock): ScooterMapController {
@@ -683,6 +698,25 @@ internal fun located(controllers: TestControllers, clock: TestClock, issue: Scoo
     // Near me; with no fix, the card comes 5 s later.
     model.focusOnUser()
     assertTrue(controllers.waitUntil(attempts = 700) { model.locationIssue.value == issue && !model.isLocating.value })
+    return model
+}
+
+/**
+ * The server down for maintenance, back around 20 minutes on: with Lime's scooter kept from a neighbour's view when
+ * `kept`, or answering 503 with nothing.
+ */
+private fun undergoing(controllers: TestControllers, clock: TestClock, kept: Boolean): ScooterMapController {
+    val maintenance = ScooterMaintenance(backAround = clock.now.plusSeconds(1200), retryAfter = 60.0)
+    val api = StubScooterAPI(
+        ScooterResponse(
+            vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)),
+            maintenance = maintenance,
+        ),
+    )
+    if (!kept) api.setFailure(ScooterAPIError.ServerDown(maintenance))
+    val model = controllers.make(api, clock)
+    model.updateViewport(zurichRegion, zoom = 16)
+    assertTrue(controllers.waitUntil { api.calls == 1 && model.maintenance.value != null && !model.isLoading.value })
     return model
 }
 
