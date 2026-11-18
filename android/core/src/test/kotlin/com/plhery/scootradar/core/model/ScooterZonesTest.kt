@@ -948,7 +948,7 @@ class CityRuleZoneTest {
         assertTrue(speeds.containsKey("gavle-drottninggatan"))
         assertNull(speeds["gavle-drottninggatan"])
         assertTrue(CityRuleZone.all.filter { it.maxSpeedKph != null }.all { it.kind == ScooterZoneKind.Slow })
-        assertTrue(CityRuleZone.cityZones.all { it.maxSpeedKph == null })
+        assertEquals(8.04672, unwrap(CityRuleZone.cityZones.single { it.id == "austin-slow-9" }.maxSpeedKph), 0.0)
         val drawn = CityRuleZone.Shown(rule = CityRuleZone.all.single { it.id == "linkoping-stora-torget" }, inForce = true).mapZone
         assertEquals(6.0, unwrap(drawn.maxSpeedKph), 0.0)
     }

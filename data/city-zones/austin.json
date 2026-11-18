@@ -619,6 +619,7 @@
     {
       "id": "austin-slow-8",
       "kind": "slow",
+      "maxSpeedKph": 12.874752,
       "name": "Area near Waller Creek Trail",
       "ring": [
         [30.256509, -97.740322],
@@ -645,6 +646,7 @@
     {
       "id": "austin-slow-9",
       "kind": "slow",
+      "maxSpeedKph": 8.04672,
       "name": "Republic Square Park Perimeter",
       "ring": [
         [30.268352, -97.747726],
@@ -656,6 +658,7 @@
     {
       "id": "austin-slow-14",
       "kind": "slow",
+      "maxSpeedKph": 8.04672,
       "name": "Q2 Stadium",
       "ring": [
         [30.387368, -97.721778],

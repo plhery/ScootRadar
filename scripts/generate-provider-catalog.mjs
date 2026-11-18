@@ -664,7 +664,7 @@ extension CityRuleZone {
 function swiftCityZonesData() {
   const cities = cityZones.map(city => {
     const head = JSON.stringify({ id: city.id, authority: city.authority, timeZone: city.timeZone, source: city.source.url });
-    const zones = city.zones.map(zone => JSON.stringify({ id: zone.id, kind: zone.kind, ring: zone.ring.flat() }));
+    const zones = city.zones.map(zone => JSON.stringify({ id: zone.id, kind: zone.kind, maxSpeedKph: zone.maxSpeedKph, ring: zone.ring.flat() }));
     return `${head.slice(0, -1)}, "zones": [\n${zones.join(',\n')}\n]}`;
   });
   const data = `{"cities": [\n${cities.join(',\n')}\n]}\n`;
@@ -847,6 +847,7 @@ function kotlinCityZonesData() {
     authority: city.authority,
     timeZone: city.timeZone,
     kind: zone.kind,
+    maxSpeedKph: zone.maxSpeedKph,
     source: city.source.url,
     ring: zone.ring.flat().map(microdegrees),
   })));

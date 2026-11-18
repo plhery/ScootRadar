@@ -16517,6 +16517,7 @@
     {
       "id": "vilnius-slow-4",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.685868, 25.286073],
@@ -16544,6 +16545,7 @@
     {
       "id": "vilnius-slow-5",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.687353, 25.286973],
@@ -16597,6 +16599,7 @@
     {
       "id": "vilnius-slow-6",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.689025, 25.269068],
@@ -16613,6 +16616,7 @@
     {
       "id": "vilnius-slow-7",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.687193, 25.279612],
@@ -16624,6 +16628,7 @@
     {
       "id": "vilnius-slow-8",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.692417, 25.271923],
@@ -16636,6 +16641,7 @@
     {
       "id": "vilnius-slow-9",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.691933, 25.279782],
@@ -16647,6 +16653,7 @@
     {
       "id": "vilnius-slow-10",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.689502, 25.288189],
@@ -16658,6 +16665,7 @@
     {
       "id": "vilnius-slow-11",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.690549, 25.258031],
@@ -16669,6 +16677,7 @@
     {
       "id": "vilnius-slow-12",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.676542, 25.274273],
@@ -16682,6 +16691,7 @@
     {
       "id": "vilnius-slow-13",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.67211, 25.290289],
@@ -16697,6 +16707,7 @@
     {
       "id": "vilnius-slow-14",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.671822, 25.287854],
@@ -16717,6 +16728,7 @@
     {
       "id": "vilnius-slow-15",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.679863, 25.277728],
@@ -16732,6 +16744,7 @@
     {
       "id": "vilnius-slow-16",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.679163, 25.297693],
@@ -16750,6 +16763,7 @@
     {
       "id": "vilnius-slow-17",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.666918, 25.253073],
@@ -16769,6 +16783,7 @@
     {
       "id": "vilnius-slow-18",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.680048, 25.275974],
@@ -16788,6 +16803,7 @@
     {
       "id": "vilnius-slow-19",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.678777, 25.27655],
@@ -16799,6 +16815,7 @@
     {
       "id": "vilnius-slow-20",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.677563, 25.278077],
@@ -16822,6 +16839,7 @@
     {
       "id": "vilnius-slow-21",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.682424, 25.267755],
@@ -16839,6 +16857,7 @@
     {
       "id": "vilnius-slow-23",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.687281, 25.279397],
@@ -16853,6 +16872,7 @@
     {
       "id": "vilnius-slow-24",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.698168, 25.267581],
@@ -16869,6 +16889,7 @@
     {
       "id": "vilnius-slow-25",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.705832, 25.304597],
@@ -16880,6 +16901,7 @@
     {
       "id": "vilnius-slow-26",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.711766, 25.31473],
@@ -16894,6 +16916,7 @@
     {
       "id": "vilnius-slow-27",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.711669, 25.315076],
@@ -16905,6 +16928,7 @@
     {
       "id": "vilnius-slow-28",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.714988, 25.286591],
@@ -16920,6 +16944,7 @@
     {
       "id": "vilnius-slow-29",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.699309, 25.243477],
@@ -16933,6 +16958,7 @@
     {
       "id": "vilnius-slow-30",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.695111, 25.300844],
@@ -16944,6 +16970,7 @@
     {
       "id": "vilnius-slow-31",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.689089, 25.25753],
@@ -16955,6 +16982,7 @@
     {
       "id": "vilnius-slow-32",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.696514, 25.263628],
@@ -16974,6 +17002,7 @@
     {
       "id": "vilnius-slow-33",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.727453, 25.313562],
@@ -16987,6 +17016,7 @@
     {
       "id": "vilnius-slow-34",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.728401, 25.314861],
@@ -17004,6 +17034,7 @@
     {
       "id": "vilnius-slow-35",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.723616, 25.319358],
@@ -17020,6 +17051,7 @@
     {
       "id": "vilnius-slow-36",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.690969, 25.241301],
@@ -17031,6 +17063,7 @@
     {
       "id": "vilnius-slow-37",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.671228, 25.227286],
@@ -17042,6 +17075,7 @@
     {
       "id": "vilnius-slow-38",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.669273, 25.237612],
@@ -17053,6 +17087,7 @@
     {
       "id": "vilnius-slow-40",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.668589, 25.237558],
@@ -17064,6 +17099,7 @@
     {
       "id": "vilnius-slow-42",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.712709, 25.26824],
@@ -17075,6 +17111,7 @@
     {
       "id": "vilnius-slow-43",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.713123, 25.268048],
@@ -17087,6 +17124,7 @@
     {
       "id": "vilnius-slow-44",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.713326, 25.265125],
@@ -17100,6 +17138,7 @@
     {
       "id": "vilnius-slow-45",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.710418, 25.251982],
@@ -17111,6 +17150,7 @@
     {
       "id": "vilnius-slow-46",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.710117, 25.250523],
@@ -17122,6 +17162,7 @@
     {
       "id": "vilnius-slow-47",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.71684, 25.24611],
@@ -17133,6 +17174,7 @@
     {
       "id": "vilnius-slow-48",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.729596, 25.238667],
@@ -17144,6 +17186,7 @@
     {
       "id": "vilnius-slow-49",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.736892, 25.264466],
@@ -17155,6 +17198,7 @@
     {
       "id": "vilnius-slow-50",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.736948, 25.264579],
@@ -17166,6 +17210,7 @@
     {
       "id": "vilnius-slow-51",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.700875, 25.207569],
@@ -17177,6 +17222,7 @@
     {
       "id": "vilnius-slow-52",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.700607, 25.207282],
@@ -17188,6 +17234,7 @@
     {
       "id": "vilnius-slow-53",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.690583, 25.199944],
@@ -17199,6 +17246,7 @@
     {
       "id": "vilnius-slow-54",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.676805, 25.221884],
@@ -17210,6 +17258,7 @@
     {
       "id": "vilnius-slow-55",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.677796, 25.21629],
@@ -17221,6 +17270,7 @@
     {
       "id": "vilnius-slow-56",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.681327, 25.208689],
@@ -17232,6 +17282,7 @@
     {
       "id": "vilnius-slow-57",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.684781, 25.206728],
@@ -17243,6 +17294,7 @@
     {
       "id": "vilnius-slow-58",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.688038, 25.208594],
@@ -17254,6 +17306,7 @@
     {
       "id": "vilnius-slow-59",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.694782, 25.218604],
@@ -17265,6 +17318,7 @@
     {
       "id": "vilnius-slow-60",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.722027, 25.314935],
@@ -17287,6 +17341,7 @@
     {
       "id": "vilnius-slow-61",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.730437, 25.226403],
@@ -17326,6 +17381,7 @@
     {
       "id": "vilnius-slow-62",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.737, 25.231378],
@@ -17345,6 +17401,7 @@
     {
       "id": "vilnius-slow-63",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.742323, 25.223865],
@@ -17358,6 +17415,7 @@
     {
       "id": "vilnius-slow-64",
       "kind": "slow",
+      "maxSpeedKph": 12,
       "name": "Vilnius",
       "ring": [
         [54.742059, 25.223114],

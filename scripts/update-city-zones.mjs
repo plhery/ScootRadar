@@ -197,7 +197,7 @@ function featurePolygons(rings) {
  * goes into each zone's id where two layers of one kind number theirs alike, as Ottawa's two of
  * parking places do.
  */
-async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag, pointName }) {
+async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag, pointName, mphField, maxSpeedKph }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
@@ -216,7 +216,10 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
       return [{ id, kind, name: name || corral, ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
-    return polygonZones(id, kind, name || city.place, featurePolygons(geometry.rings));
+    const zones = polygonZones(id, kind, name || city.place, featurePolygons(geometry.rings));
+    const speed = mphField ? Number(String(attributes[mphField]).match(/(\d+(?:\.\d+)?)\s*mph/i)?.[1]) * 1.609344 : maxSpeedKph;
+    if (mphField && !Number.isFinite(speed)) throw new Error(city.id + ': missing speed for ' + id);
+    return speed === undefined ? zones : zones.map(zone => ({ ...zone, maxSpeedKph: speed }));
   });
 }
 

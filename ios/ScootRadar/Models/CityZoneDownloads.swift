@@ -85,6 +85,7 @@ enum CityZoneFile {
     private struct Zone: Decodable {
         let id: String
         let kind: String
+        let maxSpeedKph: Double?
         let ring: [Double]
     }
 
@@ -137,7 +138,7 @@ enum CityZoneFile {
                 return nil
             }
             return CityRuleZone(
-                id: zone.id, authority: authority, timeZone: timeZone, kind: kind, source: source,
+                id: zone.id, authority: authority, timeZone: timeZone, kind: kind, maxSpeedKph: zone.maxSpeedKph, source: source,
                 ring: stride(from: 0, to: zone.ring.count, by: 2).map { GeoPoint(latitude: zone.ring[$0], longitude: zone.ring[$0 + 1]) }
             )
         }
