@@ -39,7 +39,9 @@ fun ScooterMapController.dropReviewMoment(moment: Int) {
  */
 internal fun ScooterMapController.reviewAfterLoad() {
     val now = clock()
-    if (maintenance.value == null && loadIssue.value == null && delayedStatus == null) reviewPrompt.noteUse(at = now)
+    val served = vehicles.value.isNotEmpty() || clusters.value.isNotEmpty() ||
+        !responseMetadata.value?.shownSince.isNullOrEmpty() || responseMetadata.value?.sources?.containsValue("fresh") == true
+    if (served && maintenance.value == null && loadIssue.value == null && delayedStatus == null) reviewPrompt.noteUse(at = now)
     if (reviewTrouble) reviewPrompt.noteBadMoment(at = now)
     if (!isSceneActive || reviewDue || !reviewPrompt.isDue(at = now, calm = reviewCalm)) return
     reviewDue = true
