@@ -1,6 +1,7 @@
 import { readdirSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import index from '../../data/city-zones.json';
+import { cityRuleZones } from './cityZones';
 import { boundsContainPoint } from './geo';
 import { ruleInForce, ruleZonesInView } from './ruleZones';
 
@@ -1033,6 +1034,7 @@ describe('the cities\' zones', () => {
     // The restricted parking zone reaches Žirmūnai, across the Neris, but not Naujoji Vilnia.
     expect(at(54.71, 25.3)).toEqual(['racksOnly']);
     expect(at(54.692, 25.42)).toEqual([]);
+    expect(cityRuleZones(vilnius, file).filter(zone => zone.rule === 'slow').every(zone => zone.maxSpeedKph === 12)).toBe(true);
     await loadCityZones(vilnius);
     const shown = ruleZonesInView({ bounds: VILNIUS_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly', 'noParking', 'slow', 'noRide']));
@@ -1679,6 +1681,7 @@ describe('the cities\' zones', () => {
     const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name).sort();
     expect(at(30.2747, -97.7404)).toEqual(['State Capitol']);
     expect(at(30.267794, -97.747377)).toEqual(['Republic Square Park Perimeter', 'Republic Square Parkland']);
+    expect(cityRuleZones(austin, file).filter(zone => zone.rule === 'slow').map(zone => zone.maxSpeedKph)).toEqual([12.874752, 8.04672, 8.04672]);
     await loadCityZones(austin);
     const shown = ruleZonesInView({ bounds: AUSTIN_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));

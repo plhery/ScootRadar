@@ -1214,7 +1214,7 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(try rule("calgary-8-avenue-sw-downtown").maxSpeedKph, 15)
         XCTAssertNil(try rule("gavle-drottninggatan").maxSpeedKph)
         XCTAssertTrue(CityRuleZone.all.filter { $0.maxSpeedKph != nil }.allSatisfy { $0.kind == .slow })
-        XCTAssertTrue(CityRuleZone.cityZones.allSatisfy { $0.maxSpeedKph == nil })
+        XCTAssertEqual(CityRuleZone.cityZones.first { $0.id == "austin-slow-9" }?.maxSpeedKph, 8.04672)
         XCTAssertEqual(CityRuleZone.Shown(rule: try rule("linkoping-stora-torget"), inForce: true).mapZone.maxSpeedKph, 6)
     }
 

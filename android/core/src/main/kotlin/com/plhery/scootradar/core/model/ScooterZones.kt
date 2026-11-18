@@ -348,10 +348,11 @@ data class CityRuleZone private constructor(
         authority: String,
         timeZone: String,
         kind: ScooterZoneKind,
+        maxSpeedKph: Double? = null,
         source: String,
         ring: List<GeoPoint>,
     ) : this(
-        id = id, authority = authority, timeZone = timeZone, kind = kind, maxSpeedKph = null, firstDay = "",
+        id = id, authority = authority, timeZone = timeZone, kind = kind, maxSpeedKph = maxSpeedKph, firstDay = "",
         hours = emptyList(), source = source, lines = emptyList(), bounds = bounds(of = ring),
         polygons = listOf(listOf(ring)),
     )
