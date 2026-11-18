@@ -335,6 +335,13 @@ the bundle. Coolify matches the webhook to the application by repository name,
 so a renamed repository must be renamed in Coolify as well. After a deploy,
 `/health` and `/ready` return 200 again.
 
+The cache opens `public-ids.sqlite` on the shared local data volume before serving.
+SQLite serializes ID assignment across serving replicas. For the first upgrade
+from JSON, stop the old cache before starting the new one so its last write is
+available for import. Startup imports unexpired long-lived IDs. Capped feeds
+receive new IDs because their JSON rows lack a source observation time.
+Subsequent releases can use the usual rolling deploy.
+
 A deploy starts the new container beside the old one, and Traefik sends it
 requests once Docker finds it healthy, at its first check that passes, a few
 seconds in. Coolify waits out the start period, then stops the old one with

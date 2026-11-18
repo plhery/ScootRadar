@@ -2,7 +2,7 @@ import { RydeBroker } from './rydeBridge';
 import { RydeWatchedViews } from './rydeWatchedViews';
 import { loadRydeRuntimeConfig, withRydeAppCollectors, type RydeArea } from './rydeApp';
 import rydeAreas from '../data/ryde-bridge-areas.json';
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, listedNationalFeeds, planRefreshCounts,
   type CollectableScooterFeed } from '../src/lib/scooterFeeds';
@@ -10,7 +10,7 @@ import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapFeed, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import { APP_MAP_WIDE_INTERVAL_MS, withDailySweeps } from './appMapCadence';
-import type { MapBounds, Vehicle } from '../src/lib/types';
+import type { Vehicle } from '../src/lib/types';
 import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache, UpstreamHttpError } from '../src/lib/upstreamJsonCache';
@@ -25,7 +25,7 @@ import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, resto
   type FeedFailure, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { createVisitorLedger } from './visitorLedger';
-import { createPublicVehicleIds, readPublicVehicleIds, writePublicVehicleIds } from './publicVehicleIds';
+import { createPublicVehicleIds, importLegacyPublicIds } from './publicVehicleIds';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
   restoreWorkerSilence } from './errorReporting';
@@ -109,8 +109,7 @@ const feedStatesPath = join(dirname(snapshotPath), 'feed-states.json');
 // restored after a restart: its additions stand across a deploy, until too old, rather than none until a new
 // sweep has ended, by night until someone looks.
 const birdSupplementsPath = join(dirname(snapshotPath), 'bird-supplements.json');
-// The ids the answers give scooters (publicVehicleIds.ts), saved beside the snapshot with it and restored
-// after a restart: a deploy renames no scooter.
+// Before the SQLite registry, the cache saved its public IDs here on each snapshot write.
 const publicIdsPath = join(dirname(snapshotPath), 'public-ids.json');
 // The views each Lime group's sweeps read (LimePlans in limeApp.ts), saved beside the snapshot with it and restored
 // after a restart: a deploy does not send each group's next sweep through its capped views again.
@@ -183,7 +182,8 @@ let retentionCap = retentionCaps([]);
 // Their systems, which name their scooters `<system>:<id>` (scooterFeeds.ts), whose public ids are kept only
 // minutes out of the answers (PUBLIC_ID_CAPPED_KEPT_MS).
 let cappedSystems = new Set<string>();
-const vehicleIds = createPublicVehicleIds({ capped: vehicleId => cappedSystems.has(vehicleId.slice(0, vehicleId.indexOf(':'))) });
+await mkdir(dirname(snapshotPath), { recursive: true });
+const vehicleIds = createPublicVehicleIds({ databasePath: join(dirname(snapshotPath), 'public-ids.sqlite'), capped: vehicleId => cappedSystems.has(vehicleId.slice(0, vehicleId.indexOf(':'))) });
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
   idleExpiryMsForFeed: id => ownIdleExpiry(id) };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
@@ -280,7 +280,7 @@ try {
   }
 }
 try {
-  vehicleIds.restore(await readPublicVehicleIds(publicIdsPath), Date.now());
+  await importLegacyPublicIds(publicIdsPath, vehicleIds, Date.now());
 } catch (error) {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
     console.error('Public id restore failed', error);
@@ -439,7 +439,7 @@ function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (fe
 
 async function persist(final = false) {
   if (persisting) return persisting;
-  if (!snapshot || (!dirty && !vehicleIds.size())) return;
+  if (!snapshot || !dirty) return;
   const now = Date.now();
   if (now - lastHealthLogAt >= 60_000) {
     lastHealthLogAt = now;
@@ -468,7 +468,7 @@ async function persist(final = false) {
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
   const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), looks = rydeViews?.savedLooks(now), sweeps = savedBirdSupplements(),
-    ids = vehicleIds.saved(now, 2 * SAVE_EVERY_MS), plans = limePlans.saved();
+    plans = limePlans.saved();
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
@@ -489,12 +489,6 @@ async function persist(final = false) {
     } catch (error) {
       console.error('Bird supplement persistence failed', error);
       reportError('persist:bird-supplements', error);
-    }
-    try {
-      await saveAtomically(publicIdsPath, temporaryDirectory, 'public-ids', path => writePublicVehicleIds(path, ids, now));
-    } catch (error) {
-      console.error('Public id persistence failed', error);
-      reportError('persist:public-ids', error);
     }
     try {
       await saveAtomically(limePlansPath, temporaryDirectory, 'lime-plans',
@@ -559,6 +553,7 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
   } }, restoredFeedStates, id => lastErrors.get(id));
 const persistenceTimer = setInterval(() => {
   const now = Date.now();
+  vehicleIds.prune(now + TICK_MS);
   if (dropExpiredData(now)) publish();
   upstreamJsonCache.evictExpired(TICK_MS);
   if (snapshot) {

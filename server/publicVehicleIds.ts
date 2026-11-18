@@ -1,6 +1,8 @@
 import { randomBytes } from 'node:crypto';
 import { createWriteStream } from 'node:fs';
-import { open } from 'node:fs/promises';
+import { DatabaseSync } from 'node:sqlite';
+import { publicIdSchema } from './migrations/001-public-id-registry';
+import { open, unlink } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import { haversineM } from '../src/lib/geo';
 import type { ScooterResponse, Vehicle } from '../src/lib/types';
@@ -47,6 +49,8 @@ export type SavedPublicId = [key: string, id: string, lat: number, lng: number, 
 export interface PublicVehicleIds {
   /** The answer with each scooter's id replaced by its public one. */
   publish(body: ScooterResponse, now: number): ScooterResponse;
+  /** Discard expired mappings even during periods with no requests. */
+  prune(now: number): void;
   /** How many scooters have an id that is still in use. */
   size(): number;
   /** Every id kept, the longest out of the answers first, for a restart to take back (restore). */
@@ -62,12 +66,12 @@ export interface PublicVehicleIds {
  * while the scooter stands within PUBLIC_ID_MOVED_M of where it got it, in the answers or missing from them for
  * up to PUBLIC_ID_KEPT_MS, and a new one once it has moved further. One that comes back where it stood after a
  * ride nobody saw keeps its id, which says no more than that it stands there again. The apps follow a scooter to
- * its new id: one of its operator's standing within a few metres of where it stood. The cache saves them beside
- * the snapshot, with it, and a restart takes them back (writePublicVehicleIds), so a deploy renames none.
+ * its new id: one of its operator's standing within a few metres of where it stood. Replicas share the SQLite
+ * registry beside the snapshot so each serves the same public id across a deploy.
  *
  * `capped` tells a scooter of a feed with a licence's cap on keeping its data by its id (PUBLIC_ID_CAPPED_KEPT_MS).
  */
-export function createPublicVehicleIds(options: { movedM?: number; keptMs?: number; cappedKeptMs?: number; maxKept?: number;
+export function createPublicVehicleIds(options: { databasePath?: string; movedM?: number; keptMs?: number; cappedKeptMs?: number; maxKept?: number;
   capped?: (vehicleId: string) => boolean } = {}): PublicVehicleIds {
   const movedM = options.movedM ?? PUBLIC_ID_MOVED_M;
   const keptMs = options.keptMs ?? PUBLIC_ID_KEPT_MS;
@@ -75,9 +79,36 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
   const maxKept = options.maxKept ?? MAX_KEPT;
   // By when each was last in an answer, the longest ago first.
   const issued = new Map<string, Issued>();
+  const db = options.databasePath ? new DatabaseSync(options.databasePath) : undefined;
+  db?.exec('PRAGMA busy_timeout=5000; PRAGMA secure_delete=ON;');
+  db?.exec(publicIdSchema);
+  const get = db?.prepare('SELECT id, lat, lng, seenAt, keptMs FROM public_ids WHERE key = ?');
+  const put = db?.prepare('INSERT OR REPLACE INTO public_ids VALUES (?, ?, ?, ?, ?, ?)');
+  const restore = db?.prepare('INSERT OR IGNORE INTO public_ids VALUES (?, ?, ?, ?, ?, ?)');
+  const remove = db?.prepare('DELETE FROM public_ids WHERE key = ?');
+  const expire = db?.prepare('DELETE FROM public_ids WHERE seenAt + keptMs < ?');
+  const count = db?.prepare('SELECT count(*) AS n FROM public_ids');
+  const trimOldest = db?.prepare('DELETE FROM public_ids WHERE key IN (SELECT key FROM public_ids ORDER BY seenAt LIMIT ?)');
+  function transaction<T>(work: () => T): T {
+    if (!db) return work();
+    db.exec('BEGIN IMMEDIATE');
+    try {
+      const result = work();
+      db.exec('COMMIT');
+      return result;
+    } catch (error) {
+      db.exec('ROLLBACK');
+      throw error;
+    }
+  }
   let sweptAt = -Infinity;
 
   const trim = () => {
+    if (count) {
+      const excess = Number(count.get()!.n) - maxKept;
+      if (excess > 0) trimOldest!.run(excess);
+      return;
+    }
     for (const key of issued.keys()) {
       if (issued.size <= maxKept) break;
       issued.delete(key);
@@ -85,13 +116,14 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
   };
   // Kept for one time or the other, they are not in the order they go: each is looked at.
   const sweep = (now: number) => {
+    expire?.run(now);
     for (const [key, entry] of issued) if (now - entry.seenAt > entry.keptMs) issued.delete(key);
   };
 
   const publicId = (vehicle: Vehicle, now: number, observedAt: number): string | null => {
     if (!vehicle.vehicle_id) return null;
     const key = `${vehicle.provider}:${vehicle.vehicle_id}`;
-    let entry = issued.get(key);
+    let entry = get ? get.get(key) as unknown as Issued | undefined : issued.get(key);
     if (!entry || now - entry.seenAt > entry.keptMs || haversineM(entry.lat, entry.lng, vehicle.lat, vehicle.lng) > movedM) {
       entry = { id: randomBytes(9).toString('base64url'), lat: vehicle.lat, lng: vehicle.lng, seenAt: now,
         keptMs: options.capped?.(vehicle.vehicle_id) ? cappedKeptMs : keptMs };
@@ -101,16 +133,27 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
     if (options.capped?.(vehicle.vehicle_id)) {
       entry.keptMs = Math.min(cappedKeptMs, observedAt + 15 * 60_000 - now);
     }
-    issued.delete(key);
-    issued.set(key, entry);
+    if (entry.keptMs <= 0) {
+      issued.delete(key);
+      remove?.run(key);
+      return entry.id;
+    }
+    if (put) put.run(key, entry.id, entry.lat, entry.lng, entry.seenAt, entry.keptMs);
+    else {
+      issued.delete(key);
+      issued.set(key, entry);
+    }
     return entry.id;
   };
 
-  const published = (vehicles: Vehicle[], now: number, sourceTime: string) =>
-    vehicles.map(vehicle => vehicle.vehicle_id ? { ...vehicle, vehicle_id: publicId(vehicle, now, Number.isFinite(Date.parse(sourceTime)) ? Date.parse(sourceTime) : now) } : vehicle);
+  const published = (vehicles: Vehicle[], now: number, sourceTime: string) => {
+    const at = Date.parse(sourceTime);
+    const observedAt = Number.isFinite(at) ? Math.min(at, now) : now;
+    return vehicles.map(vehicle => vehicle.vehicle_id ? { ...vehicle, vehicle_id: publicId(vehicle, now, observedAt) } : vehicle);
+  };
 
   return {
-    publish(body, now) {
+    publish: (body, now) => transaction(() => {
       if (now - sweptAt >= SWEEP_EVERY_MS) {
         sweptAt = now;
         sweep(now);
@@ -119,10 +162,17 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
       if (body.lastSeen) result.lastSeen = { ...body.lastSeen, vehicles: published(body.lastSeen.vehicles, now, body.meta.lastSeenAt ?? body.meta.generatedAt) };
       trim();
       return result;
-    },
-    size: () => issued.size,
+    }),
+    prune: sweep,
+    size: () => count ? Number(count.get()!.n) : issued.size,
     saved(now, aheadMs = 0) {
       if (now !== undefined) sweep(now);
+      // Materialize a stable view before returning the iterator.
+      if (db) {
+        const entries = db.prepare('SELECT key, id, lat, lng, seenAt, keptMs FROM public_ids WHERE seenAt + keptMs >= ? ORDER BY seenAt')
+          .all((now ?? 0) + aheadMs);
+        return entries.map(row => [row.key, row.id, row.lat, row.lng, row.seenAt, row.keptMs] as SavedPublicId).values();
+      }
       // The keys of now: an id moved to the end by an answer while it is written is written once, where it stood.
       const keys = [...issued.keys()];
       return (function* () {
@@ -132,12 +182,14 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
         }
       })();
     },
-    restore(saved, now) {
+    restore: (saved, now) => transaction(() => {
       for (const [key, id, lat, lng, seenAt, kept] of saved) {
-        if (now - seenAt <= kept && !issued.has(key)) issued.set(key, { id, lat, lng, seenAt, keptMs: kept });
+        if (now - seenAt > kept) continue;
+        if (restore) restore.run(key, id, lat, lng, seenAt, kept);
+        else if (!issued.has(key)) issued.set(key, { id, lat, lng, seenAt, keptMs: kept });
       }
       trim();
-    },
+    }),
   };
 }
 
@@ -191,4 +243,11 @@ export async function readPublicVehicleIds(path: string): Promise<SavedPublicId[
   }
   if (!ended) throw new Error('Public id file is cut short');
   return ids;
+}
+
+/** Move the old JSON registry into SQLite. Its capped rows only recorded the last request time. */
+export async function importLegacyPublicIds(path: string, ids: PublicVehicleIds, now: number): Promise<void> {
+  const saved = await readPublicVehicleIds(path);
+  ids.restore(saved.filter(([, , , , , keptMs]) => keptMs > PUBLIC_ID_CAPPED_KEPT_MS), now);
+  await unlink(path);
 }

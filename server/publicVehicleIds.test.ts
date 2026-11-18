@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { createPublicVehicleIds, PUBLIC_ID_CAPPED_KEPT_MS, PUBLIC_ID_KEPT_MS, readPublicVehicleIds, writePublicVehicleIds } from './publicVehicleIds';
+import { createPublicVehicleIds, PUBLIC_ID_CAPPED_KEPT_MS, PUBLIC_ID_KEPT_MS, importLegacyPublicIds, readPublicVehicleIds, writePublicVehicleIds } from './publicVehicleIds';
 import type { ScooterResponse, Vehicle } from '../src/lib/types';
 
 // About 11 m of latitude per 0.0001°.
@@ -132,6 +132,19 @@ describe('public vehicle ids', () => {
       expect(after.publish(answer([scooter('lime:80', 47.3869)]), start + 4 * 60_000).vehicles[0].vehicle_id).not.toBe(named[0]);
     }));
 
+    it('imports unexpired long-lived IDs and drops legacy capped rows whose observation time is unknown', () => withFile(async path => {
+      const key = 'bolt:legacy';
+      await writePublicVehicleIds(path, [
+        [key, 'stationary', 47.37, 8.54, start, PUBLIC_ID_KEPT_MS],
+        ['bird:capped', 'short', 47.37, 8.54, start, PUBLIC_ID_CAPPED_KEPT_MS],
+        ['bolt:expired', 'old', 47.37, 8.54, start - PUBLIC_ID_KEPT_MS, PUBLIC_ID_KEPT_MS],
+      ], start);
+      const databasePath = path + '.sqlite';
+      await importLegacyPublicIds(path, createPublicVehicleIds({ databasePath }), start + 1);
+      expect([...createPublicVehicleIds({ databasePath }).saved()].map(([id, name]) => [id, name])).toEqual([[key, 'stationary']]);
+      await expect(readFile(path)).rejects.toMatchObject({ code: 'ENOENT' });
+    }));
+
     it('writes an id to a line, reads none past its time or unreadable, and refuses a file cut short', () => withFile(async path => {
       const ids = createPublicVehicleIds();
       await writePublicVehicleIds(path, ids.saved(), start);
@@ -173,4 +186,31 @@ it('drops capped identifiers at source expiry even when nobody asks again', () =
   body.meta.generatedAt = new Date(start).toISOString();
   ids.publish(body, start + 14 * 60_000);
   expect([...ids.saved(start + 15 * 60_000 + 1)]).toEqual([]);
+});
+
+it('overlapping replicas agree on first sightings and moves', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'shared-ids-'));
+  try {
+    const databasePath = join(dir, 'ids.sqlite');
+    const old = createPublicVehicleIds({ databasePath }), fresh = createPublicVehicleIds({ databasePath });
+    const id = (ids: typeof old, lat: number) => ids.publish(answer([scooter('one', lat)]), start).vehicles[0].vehicle_id;
+    const first = id(old, 47.37);
+    expect(id(fresh, 47.37001)).toBe(first);
+    const moved = id(fresh, 47.38);
+    expect(moved).not.toBe(first);
+    expect(id(old, 47.38)).toBe(moved);
+  } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
+it('prunes idle capped rows from the shared registry at their source deadline', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'capped-ids-'));
+  try {
+    const databasePath = join(dir, 'ids.sqlite');
+    const ids = createPublicVehicleIds({ databasePath, capped: () => true });
+    const body = answer([scooter('source:1')]);
+    body.meta.generatedAt = new Date(start).toISOString();
+    ids.publish(body, start + 14 * 60_000);
+    ids.prune(start + 15 * 60_000 + 1);
+    expect(createPublicVehicleIds({ databasePath }).size()).toBe(0);
+  } finally { await rm(dir, { recursive: true, force: true }); }
 });
