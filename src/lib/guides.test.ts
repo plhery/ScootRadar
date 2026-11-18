@@ -59,6 +59,12 @@ it.each(['vilnius', 'kaunas'])('%s gives operating limits for the road and for p
   if (topic === 'vilnius') expect(guide.faq.some(item => /20 km\/h.*7 km\/h/.test(item.answer))).toBe(true);
 });
 
+it.each(['tallinn', 'tartu', 'parnu'])('%s distinguishes the standalone alcohol fine from an aggravated violation', topic => {
+  const text = guideTexts(GUIDES.find(guide => guide.topic === topic && guide.locale === 'en')!);
+  const fines = text.find(line => line.includes('€800') && line.includes('§ 259'));
+  expect(fines).toMatch(/€400 \(§ 224²\).*€800 \(§ 259\)/);
+});
+
 describe('the guides', () => {
   it('has each at an address of its own, in words of its language joined by hyphens', () => {
     const addresses = GUIDES.map(guidePath);

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Tartu: Bolt, Estonia’s rules and where to park in the centre',
   lede: 'E-scooters in Tartu are rented from Bolt, which began putting up charging docks and marking parking spots on the street with the city in 2025. Estonian law lets e-scooters use cycle tracks, footpaths and pavements, passing pedestrians at about walking pace, and riders under 16 must wear a helmet. Park at the edge of the pavement with 1.5 metres left clear, or in a dock or a marked spot, and check the price in the Bolt app before you start.',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-18',
   city: 'ee:Tartu',
   sections: [
     {
@@ -45,7 +45,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Fines are counted in fine units of €8 each (Penal Code, § 47): up to 15 units, €120, for most scooter offences. In summary proceedings such an offence is settled with a fixed €40 fine (§ 262¹). Over the alcohol limit, or if you hurt someone or cause damage or danger, the maximum is €800 (§ 259). For a rider under 18, the fine is worked out from half the maximum (Penal Code, § 47).',
+        'Fines are counted in fine units of €8 each (Penal Code, § 47): up to 15 units, €120, for most scooter offences. In summary proceedings such an offence is settled with a fixed €40 fine (§ 262¹). Riding over the alcohol limit carries a fine of up to €400 (§ 224²). A separate traffic violation committed under the influence, or one that causes injury, property damage or traffic danger, can carry a fine of up to €800 (§ 259). For a rider under 18, the fine is worked out from half the maximum (Penal Code, § 47).',
         '**The pavement is allowed**: the Traffic Act lists it among the places a kergliikur may ride, beside cycle tracks and footpaths. Pass people on foot at about their speed, slow down where a path meets a road and you can’t see far, and cross the road at walking pace (§ 32, § 32¹).',
         'If you ride your own scooter, it must have a working brake, a bell and reflectors or lights: white at the front, red at the back and yellow, red or white at the sides (§ 87).',
       ],
