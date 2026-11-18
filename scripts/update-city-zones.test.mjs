@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -10,7 +10,7 @@ it('retains a layer when co-located ArcGIS features saturate every subdivision',
     mkdirSync(join(cwd, 'data/city-zones'), { recursive: true });
     const url = 'https://fixture.invalid/MapServer';
     const layer = { kind: 'parking', layer: 0, url, envelope: '0,0,1,1' };
-    writeFileSync(join(cwd, 'data/city-zones.json'), JSON.stringify({ cities: [{ id: 'test', layers: [layer] }] }));
+    writeFileSync(join(cwd, 'data/city-zones.json'), JSON.stringify({ verifiedOn: '2026-10-30', cities: [{ id: 'test', layers: [layer] }] }));
     const previous = join(cwd, 'data/city-zones/test.json');
     writeFileSync(previous, '{"zones":[]}');
     writeFileSync(join(cwd, 'fixture.mjs'), `let requests = 0;
@@ -19,8 +19,10 @@ it('retains a layer when co-located ArcGIS features saturate every subdivision',
         if (++requests > 30) throw Error("request budget exceeded");
         return Response.json(url.includes('/identify?') ? { results: [{}, {}] } : { maxRecordCount: 2 });
       };`);
-    const output = execFileSync(process.execPath, ['--import', './fixture.mjs', resolve('scripts/update-city-zones.mjs'), 'test'], { cwd, encoding: 'utf8' });
-    expect(output).toContain('subdivision limit');
+    const output = spawnSync(process.execPath, ['--import', './fixture.mjs', resolve('scripts/update-city-zones.mjs'), 'test'], { cwd, encoding: 'utf8' });
+    expect(output.status).toBe(1);
+    expect(JSON.parse(readFileSync(join(cwd, 'data/city-zones.json'))).verifiedOn).toBe('2026-10-30');
+    expect(output.stderr).toContain('subdivision limit');
     expect(readFileSync(previous, 'utf8')).toBe('{"zones":[]}');
   } finally {
     rmSync(cwd, { recursive: true, force: true });
