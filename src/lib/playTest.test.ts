@@ -109,23 +109,23 @@ describe('what this browser remembers', () => {
   });
 
   it('adds to what it remembers', () => {
-    expect(rememberPlayTest({ step: 1 })).toEqual({ step: 1 });
-    expect(rememberPlayTest({ until: 10 })).toEqual({ step: 1, until: 10 });
-    expect(JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY)!)).toEqual({ step: 1, until: 10 });
+    expect(rememberPlayTest({ steps: [1] })).toEqual({ steps: [1] });
+    expect(rememberPlayTest({ until: 10 })).toEqual({ steps: [1], until: 10 });
+    expect(JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY)!)).toEqual({ steps: [1], until: 10 });
   });
 
   it('offers until × or "Not now" for a week, never after "Never", and thanks a tester back on the map once', () => {
     const now = 1_000_000;
     const shown = (memory: PlayTestMemory, place: 'map' | 'site' = 'map') => playTestInvitation(memory, now, place);
     expect(shown({})).toBe('offer');
-    expect(shown({ step: 2 })).toBe('offer');
+    expect(shown({ steps: [2] })).toBe('offer');
     expect(shown({ until: now + 1 })).toBe('quiet');
     expect(shown({ until: now })).toBe('offer');
-    expect(shown({ never: true, step: 3 })).toBe('quiet');
-    expect(shown({ step: 3 })).toBe('thanks');
-    expect(shown({ step: 3, until: now + 1 })).toBe('thanks');
-    expect(shown({ step: 3, thanked: true })).toBe('quiet');
-    expect(shown({ step: 3 }, 'site')).toBe('quiet');
+    expect(shown({ never: true, steps: [1, 2, 3] })).toBe('quiet');
+    expect(shown({ steps: [1, 2, 3] })).toBe('thanks');
+    expect(shown({ steps: [1, 2, 3], until: now + 1 })).toBe('thanks');
+    expect(shown({ steps: [1, 2, 3], thanked: true })).toBe('quiet');
+    expect(shown({ steps: [1, 2, 3] }, 'site')).toBe('quiet');
     expect(shown({}, 'site')).toBe('offer');
   });
 });
@@ -152,8 +152,8 @@ describe('the script of the site, before the first paint', () => {
   it('marks the page as playTestInvitation() and the user agent decide, for every browser and memory', () => {
     const now = Date.now();
     const memories: PlayTestMemory[] = [
-      {}, { step: 1 }, { step: 2 }, { step: 3 }, { step: 3, thanked: true }, { never: true },
-      { until: now + 60_000 }, { until: now - 60_000 }, { until: now + 60_000, step: 2 },
+      {}, { steps: [3] }, { steps: [1] }, { steps: [2] }, { steps: [1, 2, 3] }, { steps: [1, 2, 3], thanked: true }, { never: true },
+      { until: now + 60_000 }, { until: now - 60_000 }, { until: now + 60_000, steps: [2] },
     ];
     for (const userAgent of Object.values(AGENTS)) {
       for (const memory of memories) {

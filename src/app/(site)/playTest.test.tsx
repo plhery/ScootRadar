@@ -64,7 +64,7 @@ describe('a guide’s card', () => {
     expect(track).toHaveBeenLastCalledWith('invite_group', { place: 'guide' });
     fireEvent.click(within(sheet()).getByRole('button', { name: 'Nicht jetzt' }));
     expect(sheet()).toHaveProperty('open', false);
-    expect(remembered()).toMatchObject({ step: 1, until: expect.any(Number) });
+    expect(remembered()).toMatchObject({ steps: [1], until: expect.any(Number) });
     expect(shown()).toBe('quiet');
   });
 
@@ -81,7 +81,7 @@ describe('a guide’s card', () => {
   });
 
   it('stays hidden after the last step, without thanks: those are the map’s', async () => {
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 3 }));
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ steps: [1, 2, 3] }));
     await renderGuide();
     expect(shown()).toBe('quiet');
     expect(track).not.toHaveBeenCalled();

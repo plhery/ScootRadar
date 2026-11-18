@@ -95,8 +95,8 @@ export interface PlayTestMemory {
   until?: number;
   /** "Never show" or "Don't ask again": nothing more, in this browser. */
   never?: boolean;
-  /** The last step whose link was followed, 1 to 3. */
-  step?: number;
+  /** The individual links followed, numbered 1 to 3. */
+  steps?: number[];
   /** The thanks after step 3 has been shown. */
   thanked?: boolean;
 }
@@ -109,11 +109,13 @@ export function readPlayTestMemory(): PlayTestMemory {
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY) ?? 'null');
     if (!saved || typeof saved !== 'object') return {};
-    const { until, never, step, thanked } = saved as Record<string, unknown>;
+    const { until, never, steps, step, thanked } = saved as Record<string, unknown>;
+    // The old highest-step value proves only that link was followed.
+    const followed = [1, 2, 3].filter(n => Array.isArray(steps) ? steps.includes(n) : step === n);
     return {
       ...(typeof until === 'number' && Number.isFinite(until) ? { until } : {}),
       ...(never === true ? { never } : {}),
-      ...(typeof step === 'number' && step >= 1 && step <= 3 ? { step: Math.floor(step) } : {}),
+      ...(followed.length ? { steps: followed } : {}),
       ...(thanked === true ? { thanked } : {}),
     };
   } catch {
@@ -136,7 +138,7 @@ export function rememberPlayTest(change: PlayTestMemory): PlayTestMemory {
  */
 export function playTestInvitation(memory: PlayTestMemory, now: number, place: 'map' | 'site'): 'offer' | 'thanks' | 'quiet' {
   if (memory.never) return 'quiet';
-  if ((memory.step ?? 0) >= 3) return place === 'map' && !memory.thanked ? 'thanks' : 'quiet';
+  if (memory.steps?.length === 3) return place === 'map' && !memory.thanked ? 'thanks' : 'quiet';
   if (memory.until !== undefined && memory.until > now) return 'quiet';
   return 'offer';
 }
@@ -168,7 +170,7 @@ export const PLAY_TEST_SCRIPT = `(function () {
     var memory = null;
     try { memory = JSON.parse(localStorage.getItem(${JSON.stringify(PLAY_TEST_STORAGE_KEY)}) || 'null'); } catch (error) {}
     if (!memory || typeof memory !== 'object') memory = {};
-    var quiet = memory.never === true || (typeof memory.step === 'number' && memory.step >= 3) ||
+    var quiet = memory.never === true || (Array.isArray(memory.steps) && [1, 2, 3].every(function (n) { return memory.steps.includes(n); })) ||
       (typeof memory.until === 'number' && memory.until > Date.now());
     var root = document.documentElement;
     root.setAttribute(${JSON.stringify(PLAY_TEST_ATTRIBUTE)}, quiet ? 'quiet' : 'offer');
