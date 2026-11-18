@@ -1001,6 +1001,18 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun externalAppLanguageChangesWhilePhoneStaysEnglish() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            phoneLanguages = { listOf("en-US") }, keepAppLanguages = { error("Platform choice already saved") })
+        val german = ScooterLanguageChoice.Language(ScooterLanguage.De)
+        model.phoneLanguagesChanged(german)
+        assertEquals(german, model.languageChoice.value)
+        assertEquals(ScooterLanguage.De, model.language.value)
+        model.phoneLanguagesChanged(ScooterLanguageChoice.Automatic)
+        assertEquals(ScooterLanguage.En, model.language.value)
+    }
+
+    @Test
     fun rideDurationAndProviderPassesPersistIndependently() = runTest {
         val defaults = InMemoryScooterDefaults()
         val firstModel = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
