@@ -2451,3 +2451,12 @@ it('on a phone keeps the card in the dock, the chips, and no keys', async () => 
   expect(screen.getByTestId('zoom-steps')).toHaveTextContent('0:1');
   expect(screen.getByTestId('search')).toHaveTextContent('closed');
 });
+
+it('ends the walk when only a known neighbour stands faded', async () => {
+  let answer = () => data([FAR, BESIDE]);
+  await walkToFarBeside(() => answer());
+  answer = () => ({ ...data([], [], { shownSince: { lime: new Date().toISOString() } }), lastSeen: { vehicles: [BESIDE], clusters: [] } });
+  await refreshData();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});

@@ -2561,7 +2561,9 @@ extension ScooterMapModel {
         // Faded where it was last seen while its app is collected again: neither seen nor taken until the
         // app's new positions say which.
         if lastSeenVehicles.contains(where: { $0.id == scooter.id }) ||
-            Self.nearest(ofTheProviderOf: scooter, among: lastSeenVehicles) != nil {
+            Self.nearest(ofTheProviderOf: scooter, among: lastSeenVehicles.filter {
+                neighbours?.mayTakeOver($0, from: point, battery: scooter.battery) != false
+            }) != nil {
             return
         }
         let read = Self.read(of: scooter.provider, in: meta) ?? receivedAt
