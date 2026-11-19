@@ -55,6 +55,7 @@ import { useRecentPlace } from '@/lib/useRecentPlace';
 import { useCityZones } from '@/lib/useCityZones';
 import { viewportFetchBounds } from '@/lib/scooterDataState';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
+import { askFirstScooters, startQuery } from '@/lib/useFirstScooters';
 import { useZoneData, zoneArea, zoneAreaKey } from '@/lib/useZoneData';
 import { groupCityTotals } from '@/lib/clustering';
 import { mapRepresentationsMatch, providersForViewport } from '@/lib/mapCoverage';
@@ -355,7 +356,16 @@ export default function Home() {
     // Preserve old shared links without persisting their coordinates again.
     // It opens there at once, as the covered city below does: not at the zoom of all of Switzerland, which
     // drew and fetched a region's tiles and scooters on the way in.
+    // The map's first scooters are asked for now, while its code is on its way (useFirstScooters.ts): with no
+    // range minimum, or from zoom 16, where the server is asked for none, the query is the map's first.
+    const shell = document.querySelector<HTMLElement>('.app-shell');
+    const askFirst = (center: [number, number], zoom: number) => {
+      if (shell && (zoom > 15 || !params.minRange)) {
+        askFirstScooters(startQuery(center, zoom, { width: shell.clientWidth, height: shell.clientHeight }));
+      }
+    };
     if (params.origin) {
+      askFirst(params.origin, LINK_ZOOM);
       setInitialCenter(params.origin);
       setInitialZoom(LINK_ZOOM);
       setFocusRequest(current => ({ location: params.origin, zoom: LINK_ZOOM, version: current.version + 1 }));
@@ -364,6 +374,7 @@ export default function Home() {
       // zone (startPlace.ts), as the iOS app does: Paris for Europe/Paris.
       const start = startCity(deviceTimeZone());
       if (start) {
+        askFirst(start.center, CITY_ZOOM);
         setInitialCenter(start.center);
         setInitialZoom(CITY_ZOOM);
         setFocusRequest(current => ({ location: start.center, zoom: CITY_ZOOM, version: current.version + 1 }));

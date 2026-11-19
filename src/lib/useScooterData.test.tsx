@@ -5,6 +5,7 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { track } from '@/lib/analytics';
 import { useScooterData, type ScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
+import { askFirstScooters, resetFirstScooters } from '@/lib/useFirstScooters';
 import type { ScooterResponse, ScooterResponseMeta } from '@/lib/types';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
@@ -84,9 +85,57 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  resetFirstScooters();
   setVisibility('visible');
   vi.useRealTimers();
   vi.unstubAllGlobals();
+});
+
+describe('the first scooters, asked for as the page hydrates', () => {
+  const answer = (id: string) => async () => Response.json(body({}, { vehicles: [{ provider: 'lime', vehicle_id: id,
+    lat: 47.377, lng: 8.542, battery: 80, range_m: null, distance_m: null, deep_link: null }] }));
+
+  it('takes that request for the map\'s first view of the same key, and sends no other', async () => {
+    fetcher.mockImplementation(answer('asked-at-hydration'));
+    askFirstScooters(ZURICH);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0][0]).toBe('/api/scooters?south=47.36000&west=8.52000&north=47.39000&east=8.57000&zoom=16');
+    const { result, rerender } = mount(ZURICH);
+    await advance(180);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(result.current).toMatchObject({ loading: null, hasData: true, failure: null });
+    expect(result.current.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['asked-at-hydration']);
+    // The map's next request is the second of the same view.
+    rerender({ query: BERN });
+    await advance(180);
+    const view = (index: number) => new Headers(fetcher.mock.calls[index][1].headers).get('X-Scooter-View')!;
+    expect(view(1)).toBe(`${view(0).split('.')[0]}.2`);
+  });
+
+  it('cancels that request when the map\'s first view is another, and shows only that view\'s answer', async () => {
+    fetcher.mockImplementation(async input => (input.includes('south=46.93') ? answer('bern') : answer('zurich'))());
+    askFirstScooters(ZURICH);
+    const sentAtHydration = fetcher.mock.calls[0][1].signal!;
+    const { result } = mount(BERN);
+    await advance(180);
+    expect(sentAtHydration.aborted).toBe(true);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher.mock.calls[1][0]).toBe('/api/scooters?south=46.93000&west=7.42000&north=46.96000&east=7.47000&zoom=16');
+    expect(result.current).toMatchObject({ loading: null, hasData: true, failure: null });
+    expect(result.current.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['bern']);
+  });
+
+  it('is taken once: a later view of the same key asks again', async () => {
+    fetcher.mockImplementation(answer('fresh'));
+    askFirstScooters(ZURICH);
+    const { rerender } = mount(ZURICH);
+    await advance(180);
+    rerender({ query: BERN });
+    await advance(180);
+    rerender({ query: ZURICH });
+    await advance(180);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
 });
 
 describe('useScooterData', () => {

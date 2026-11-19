@@ -7,6 +7,7 @@ import { clockOffset } from '@/lib/dataExpiry';
 import { classifyLoadFailure, retryAfterMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
 import { MAP_PASS_HEADER } from '@/lib/mapPass';
 import { askForMapPass } from '@/lib/mapPassClient';
+import { takeFirstScooters } from '@/lib/useFirstScooters';
 import { requestDeadline } from '@/lib/requestDeadline';
 import { REFRESH_PACE, VIEW_PACE, heldUntil, noteRefusal, noteRequest } from '@/lib/requestPace';
 import {
@@ -178,7 +179,14 @@ function createScooterDataController() {
       noteRequest(Date.now());
       // Past the browser's cache: the response may be served stale while it is
       // revalidated, which would answer every refresh with the previous one.
-      const res = await fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
+      // The page's first request (useFirstScooters.ts), when it was sent for this view: the same request, on its way.
+      const first = takeFirstScooters(key);
+      if (first) {
+        viewId = first.viewId;
+        viewSequence = 1;
+        deadline.signal.addEventListener('abort', () => first.controller.abort(), { once: true });
+      }
+      const res = first ? await first.response : await fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
         headers: { 'X-Scooter-View': `${viewId ??= crypto.randomUUID()}.${++viewSequence}` },
         cache: 'no-store',
         signal: deadline.signal,
