@@ -198,6 +198,7 @@ it('names the limits of the slow zones on screen only, not of those in the area 
 });
 
 it('says the limits in mph where the region measures in miles', async () => {
+  process.env.TZ = 'America/New_York';
   vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-US']);
   const zones = [{ kind: 'slow' as const, maxSpeedKph: 16.09 }, { kind: 'slow' as const, maxSpeedKph: 12.87 }];
   const rules = [bergenSlow('slow-night', 16, [{ from: '22:00', until: '06:00' }])];

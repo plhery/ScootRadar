@@ -48,7 +48,7 @@ import {
 import { scooterTip } from '@/lib/scooterTip';
 import type { LastSeenStatus } from '@/lib/scooterDataState';
 import { formatUiText } from '@/lib/uiText';
-import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
+import { formatDistance as formatWalkingDistance, formatMetricLength, formatterSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
 import type { RuleZoneShape } from '@/lib/ruleZones';
@@ -189,16 +189,8 @@ const ROUTE_EDGE_VERTICAL = 28;
 
 /** As walking.ts writes it, with a decimal on every kilometre: "1.0 km", so the label keeps its width. */
 function formatDistance(meters: number, formatter: DistanceFormatter): string {
-  if (measurementSystem(formatter.region, formatter.units) !== 'metric') return formatWalkingDistance(meters, formatter);
-  const { t, formatNumber } = formatter;
-  return meters < 1000
-    ? t('distance.meters', { count: formatNumber(Math.round(meters)) })
-    : t('distance.kilometers', {
-        count: formatNumber(meters / 1000, {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      });
+  if (formatterSystem(formatter) !== 'metric') return formatWalkingDistance(meters, formatter);
+  return formatMetricLength(meters, formatter, true);
 }
 
 function createClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
@@ -487,7 +479,7 @@ export default function MapComponent({
   mapStyle = 'calm',
 }: MapComponentProps) {
   const i18n = useI18n();
-  const { t, formatNumber, locale, region, units, nameLanguage } = i18n;
+  const { t, formatNumber, locale, region, unitsRegion, units, nameLanguage } = i18n;
   const systemDark = useSyncExternalStore(subscribeToScheme, () => window.matchMedia(DARK_SCHEME).matches, () => false);
   const ground: GroundTheme = theme === 'dark' || (theme === 'auto' && systemDark) ? 'night' : 'day';
   const containerRef = useRef<HTMLDivElement>(null);
@@ -1086,7 +1078,7 @@ export default function MapComponent({
         ? t('marker.scooter', { name })
         : t('marker.scooterAway', {
             name,
-            distance: formatDistance(distanceM, { t, formatNumber, locale, region, units }),
+            distance: formatDistance(distanceM, { formatNumber, locale, region, unitsRegion, units }),
           });
     };
 
@@ -1315,6 +1307,7 @@ export default function MapComponent({
     scooterIcon,
     selectedVehicleKey,
     units,
+    unitsRegion,
     walkedGone,
     t,
     vehicles,

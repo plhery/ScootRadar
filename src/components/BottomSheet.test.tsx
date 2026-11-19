@@ -176,7 +176,8 @@ describe('BottomSheet', () => {
 
     it.each([
       ['de', 'Nächster Scooter: Lime, 91 m entfernt, 2 Min. zu Fuss. Details anzeigen.', 'bis zum nächsten Scooter', 'Lime, 2 Min. zu Fuss'],
-      ['fr', 'Trottinette la plus proche : Lime, à 91 m, 2 min à pied. Afficher les détails.', 'Trottinette la plus proche', 'Lime, 2 min à pied'],
+      // French writes the narrow no-break space before a unit, as ICU and the apps do.
+      ['fr', 'Trottinette la plus proche : Lime, à 91\u202Fm, 2 min à pied. Afficher les détails.', 'Trottinette la plus proche', 'Lime, 2 min à pied'],
       ['it', 'Monopattino più vicino: Lime, a 91 m, 2 min a piedi. Mostra i dettagli.', 'al monopattino più vicino', 'Lime, 2 min a piedi'],
     ])('is written in %s', async (locale, name, label, detail) => {
       localStorage.setItem('scooters-locale', locale);

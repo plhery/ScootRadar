@@ -12,7 +12,6 @@ import SmartAppBanner from '@/components/SmartAppBanner';
 import { appStoreUrl } from '@/lib/appStore';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
-import type { TranslationKey } from '@/lib/i18n';
 import { landingCountries } from '@/lib/landingCities';
 import {
   LANDING_COPY,
@@ -156,12 +155,9 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
 function formatters(locale: LandingLocale) {
   const formatNumber = (value: number, options?: Intl.NumberFormatOptions) =>
     new Intl.NumberFormat(formatLocale(locale), options).format(value);
-  // The two units of a distance, which none of the four languages spells differently.
-  const t = (key: TranslationKey, values?: Record<string, string | number>) =>
-    `${values?.count} ${key === 'distance.meters' ? 'm' : 'km'}`;
 
   return {
-    distance: (meters: number) => formatDistance(meters, { t, formatNumber }),
+    distance: (meters: number) => formatDistance(meters, { formatNumber, locale }),
     price: (pricing: RidePricing) =>
       formatRidePrice(ridePriceQuote(pricing, DEFAULT_RIDE_DURATION).totalMinorUnits, pricing.currency, locale),
   };

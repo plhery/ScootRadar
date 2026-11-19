@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import { afterEach, beforeEach } from 'vitest';
 
 class MemoryStorage implements Storage {
   private values = new Map<string, string>();
@@ -19,3 +19,14 @@ Object.defineProperty(globalThis, 'localStorage', {
 });
 
 afterEach(() => cleanup());
+
+// The map's units follow the browser's time zone (walking.ts), and Node follows TZ at once: a test that needs a place
+// sets it (process.env.TZ = 'Europe/London'), and the next test starts from the zone its file had.
+let timeZone: string | undefined;
+beforeEach(() => {
+  timeZone = process.env.TZ;
+});
+afterEach(() => {
+  if (timeZone === undefined) delete process.env.TZ;
+  else process.env.TZ = timeZone;
+});

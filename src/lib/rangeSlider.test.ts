@@ -42,7 +42,6 @@ describe('the range slider', () => {
 describe('formatMinimumRange', () => {
   const formatter = (locale: AppLocale, region: string, units?: UnitsChoice) => ({
     locale, region, units,
-    t: (key: TranslationKey, values?: Record<string, string | number>) => `${values?.count} ${key === 'distance.meters' ? 'm' : 'km'}`,
     formatNumber: (value: number, options?: Intl.NumberFormatOptions) => new Intl.NumberFormat(formatLocale(locale, region), options).format(value),
   });
   const plain = (text: string | null) => text?.replace(/[  ]/g, ' ') ?? null;

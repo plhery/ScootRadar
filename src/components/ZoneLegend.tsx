@@ -77,8 +77,8 @@ const PAVEMENT_KPH = 6;
  * says "Slow" alone.
  */
 export function formatSpeedLimits(speedsKph: readonly (number | undefined)[], locale: AppLocale, region?: string,
-  units: UnitsChoice = 'auto'): string | null {
-  const miles = measurementSystem(region, units) !== 'metric';
+  units: UnitsChoice = 'auto', unitsRegion: string | undefined = region): string | null {
+  const miles = measurementSystem(unitsRegion, units) !== 'metric';
   let least = Infinity;
   let greatest = -Infinity;
   for (const speed of speedsKph) {
@@ -155,7 +155,7 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
   /** The screen: the limits named are those of the slow zones on it. */
   view?: MapBounds;
 }) {
-  const { t, locale, region, units } = useI18n();
+  const { t, locale, region, unitsRegion, units } = useI18n();
   if (state === 'off' && !rules.length) return null;
   const count = zones.length;
   const note = state === 'off' ? null
@@ -186,8 +186,8 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
   // "Slow: 6 km/h" where each slow zone counted has a limit, else the kind's name: the text screen readers read too.
   // Riding on the pavement is at walking pace, 6 km/h, which is written in the units too: "3 mph".
   const label = (kind: RuleKind, speeds: readonly (number | undefined)[]) => {
-    if (kind === 'pavement') return t(LABELS[kind], { speed: formatSpeedLimits([PAVEMENT_KPH], locale, region, units) ?? '' });
-    const speed = kind === 'slow' ? formatSpeedLimits(speeds, locale, region, units) : null;
+    if (kind === 'pavement') return t(LABELS[kind], { speed: formatSpeedLimits([PAVEMENT_KPH], locale, region, units, unitsRegion) ?? '' });
+    const speed = kind === 'slow' ? formatSpeedLimits(speeds, locale, region, units, unitsRegion) : null;
     return speed ? t('zones.slowSpeed', { speed }) : t(LABELS[kind]);
   };
   return (

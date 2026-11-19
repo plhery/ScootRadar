@@ -239,7 +239,7 @@ function viewportsEqual(a: MapViewport | null, b: MapViewport): boolean {
 }
 
 export default function Home() {
-  const { t, locale, region, units } = useI18n();
+  const { t, locale, region, unitsRegion, units } = useI18n();
   // A wide window with a mouse: the dock is a legend, cards open beside their marker, keys work.
   const desktop = useDesktopLayout();
   const [initialCenter, setInitialCenter] = useState<[number, number]>(SWITZERLAND_CENTER);
@@ -256,7 +256,7 @@ export default function Home() {
   // the filters say "3 mi+" in miles, and mean the 4,828 m of 3 miles (rangeSlider.ts). The filters' only
   // minimum: a scooter that says only its battery is judged by it (range.ts).
   const [minRange, setMinRange] = useState(0);
-  const rangeMinimum = snapMinimumRange(minRange, measurementSystem(region, units));
+  const rangeMinimum = snapMinimumRange(minRange, measurementSystem(unitsRegion, units));
   const [theme, setTheme] = useState<ThemeName>('auto');
   const [mapStyle, setMapStyle] = useState<MapStyleName>('calm');
   // The operators' zones: on unless turned off in the settings or by a link.

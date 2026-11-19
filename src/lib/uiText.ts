@@ -37,6 +37,8 @@ export interface UiTextFormatter {
   locale: AppLocale;
   /** The format region, Switzerland when absent; see formatLocale.ts. */
   region?: string;
+  /** The region whose units Automatic follows, the format region's when absent. See walking.ts. */
+  unitsRegion?: string;
   /** The units chosen in the settings, over the region's; Automatic when absent. See walking.ts. */
   units?: UnitsChoice;
   t: (key: TranslationKey, values?: Record<string, string | number>) => string;
