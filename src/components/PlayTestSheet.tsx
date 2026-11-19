@@ -17,8 +17,10 @@ export default function PlayTestSheet({ open, onClose }: { open: boolean; onClos
       footer={<PlayTestDismiss copy={copy} place="map" onDone={onClose} />}
     >
       <div className="play-intro">
+        {/* Lazy, as the sheet is closed when the page is served: otherwise the server preloads the icon ahead of
+            the map's code. The service worker keeps it offline all the same. */}
         {/* eslint-disable-next-line @next/next/no-img-element -- The app's own icon, kept offline with the map. */}
-        <img src="/icon-180.png" alt="" width={56} height={56} />
+        <img src="/icon-180.png" alt="" width={56} height={56} loading="lazy" />
         <p>{copy.sheetPitch}</p>
       </div>
       <PlayTestSteps copy={copy} place="map" />

@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import { renderToString } from 'react-dom/server';
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ControlSheet from '@/components/ControlSheet';
@@ -141,6 +142,14 @@ describe('the steps, over the map', () => {
     return { onClose, dialog: screen.getByRole('dialog', { name: 'Try our Android app' }) };
   }
   const steps = (dialog: HTMLElement) => within(dialog).getAllByRole('listitem');
+
+  it('has the page served with no preload of its icon, which would come ahead of the map\'s code', () => {
+    const page = renderToString(
+      <html><body><I18nProvider><PlayTestSheet open={false} onClose={vi.fn()} /></I18nProvider></body></html>
+    );
+    expect(page).toContain('src="/icon-180.png"');
+    expect(page).not.toMatch(/<link[^>]*rel="preload"[^>]*icon-180|<link[^>]*icon-180[^>]*rel="preload"/);
+  });
 
   it('leads to the group, the opt-in and the app, each in a tab of its own, the next one in colour', () => {
     const { dialog } = renderSheet();
