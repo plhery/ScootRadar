@@ -10,7 +10,7 @@ import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapFeed, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import { APP_MAP_WIDE_INTERVAL_MS, withDailySweeps } from './appMapCadence';
-import type { MapBounds, Vehicle } from '../src/lib/types';
+import type { Vehicle } from '../src/lib/types';
 import { feedCurfewEnds, feedCurfewed, feedPaused, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache, UpstreamHttpError } from '../src/lib/upstreamJsonCache';

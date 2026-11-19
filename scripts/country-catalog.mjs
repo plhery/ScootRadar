@@ -538,6 +538,15 @@ function comment(note, indent) {
 
 const list = values => JSON.stringify(values).replace(/","/g, '", "');
 
+
+/** The text in ASCII, its accents dropped: "Linkoping". A letter it cannot write so is an error in the catalogue. */
+export function headerText(text) {
+  const ascii = text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u2013\u2014]/g, '-').replace(/\u00b7/g, '-');
+  if (!/^[\x20-\x7e]*$/.test(ascii)) throw new Error(`Not ASCII once its accents are dropped: ${JSON.stringify(text)}`);
+  return ascii;
+}
+
 export function typescriptCountries({ countries, landingFirst }) {
   const catalogs = countries.filter(country => country.catalog);
   const record = value => `{\n${countries.map(country => `  ${country.code}: ${value(country)},`).join('\n')}\n}`;
@@ -613,8 +622,11 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = ${record(
 /** The order of the countries on the landing page. */
 export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ${list(order)};
 
-/** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = ${JSON.stringify(countries.map(country => country.credits.attribution).join('; '))};
+/**
+ * Whose data the map shows, by country, which the X-Mobility-Data-Source header of an answer names for the
+ * countries whose data it holds. In ASCII, as a header must be: "Linköping" reached browsers as "Link\uFFFDping".
+ */
+export const COUNTRY_ATTRIBUTIONS: Record<CountryCode, string> = ${record(country => JSON.stringify(headerText(country.credits.attribution)))};
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [

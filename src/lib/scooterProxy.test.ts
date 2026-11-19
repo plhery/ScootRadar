@@ -26,10 +26,12 @@ describe('edge snapshot proxy', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
   it('uses one cache request and preserves freshness headers', async () => {
-    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ vehicles: [] }, { headers: { 'Cache-Control': 'private, no-store', 'X-Scooter-Public-Cache-Control': 'public, max-age=30' } }));
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ vehicles: [] }, { headers: { 'Cache-Control': 'private, no-store', 'X-Scooter-Public-Cache-Control': 'public, max-age=30', 'Server-Timing': 'read;dur=0.3, filter;dur=1.2, serialise;dur=0.8' } }));
     const response = await proxyScooterSnapshot(request(), env);
     expect(response.status).toBe(200);
     expect(response.headers.get('Cache-Control')).toBe('public, max-age=30');
+    // The cache's steps, then the Worker's wait for them.
+    expect(response.headers.get('Server-Timing')).toMatch(/^read;dur=0\.3, filter;dur=1\.2, serialise;dur=0\.8, origin;dur=\d+\.\d$/);
     expect(fetcher).toHaveBeenCalledOnce();
     expect(String(fetcher.mock.calls[0][0])).toContain('https://cache.example/api/scooters?');
   });

@@ -640,6 +640,9 @@ describe('collection on demand', () => {
     expect(body.vehicles.map(item => item.vehicle_id)).toEqual(['france:dott_fr_lyon-old']);
     expect(body.meta).toMatchObject({ refreshing: true, refreshAfterSeconds: 3 });
     expect(first.headers.get('X-Scooter-Public-Cache-Control')).toBe('no-store');
+    // Where its time went, and whose data it holds: Lyon's, in ASCII, as a header is.
+    expect(first.headers.get('Server-Timing')).toMatch(/^read;dur=\d+\.\d, filter;dur=\d+\.\d, serialise;dur=\d+\.\d$/);
+    expect(first.headers.get('X-Mobility-Data-Source')).toMatch(/^France: .*; All sources and licences: https:\/\/github\.com\/[^;]*$/);
     await new Promise(resolve => setTimeout(resolve, 150));
     const second = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
     expect(second.vehicles.map(item => item.vehicle_id)).toEqual(['france:dott_fr_lyon-new']);
@@ -806,6 +809,7 @@ describe('collection on demand', () => {
     expect(complete.status).toBe(200);
     expect(complete.headers.get('Cache-Control')).toBe('private, no-store');
     expect(complete.headers.get('X-Scooter-Public-Cache-Control')).toBe('public, max-age=300');
+    expect(complete.headers.get('Server-Timing')).toMatch(/^read;dur=\d+\.\d, serialise;dur=\d+\.\d$/);
     expect(zones).toHaveBeenCalledWith(expect.objectContaining({ bounds: { south: 47.36, west: 8.53, north: 47.38, east: 8.55 } }));
     pending = true;
     expect((await fetch(url(`${view}&zoom=15`), { headers })).headers.get('X-Scooter-Public-Cache-Control')).toBe('private, no-store');

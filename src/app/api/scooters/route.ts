@@ -5,7 +5,7 @@ import {
 } from '@/lib/scooterFeeds';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
-import { scooterResponse, scooterResponseHeaders } from '@/lib/scooterResponse';
+import { scooterResponse, scooterResponseHeaders, serverTiming } from '@/lib/scooterResponse';
 import { skippedSources } from '@/lib/scooterSources';
 
 export async function GET(request: NextRequest) {
@@ -33,9 +33,12 @@ export async function GET(request: NextRequest) {
   // As the cache: a box no screen shows at its zoom is answered as the view it could be.
   const zoom = scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
   try {
+    const asked = performance.now();
     const result = await fetchScooters(parsed.query);
+    const read = performance.now();
     const body = scooterResponse(result, zoom);
-    return NextResponse.json(body, { headers: scooterResponseHeaders(body) });
+    return NextResponse.json(body, { headers: { ...scooterResponseHeaders(body),
+      'Server-Timing': serverTiming({ read: read - asked, filter: performance.now() - read }) } });
   } catch (error) {
     if (error instanceof ScooterFeedsUnavailableError) {
       // As the cache answers: no scooters, and the failed feeds named, so the map

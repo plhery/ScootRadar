@@ -553,8 +553,70 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
 /** The order of the countries on the landing page. */
 export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "AT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE", "MK", "BA", "XK", "BH", "DO"];
 
-/** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Ryde rider map; Austria: Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0; Ryde rider map; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; Brighton & Hove's no-ride streets and skate parks traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0; Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map; Iceland: Hopp GBFS; Bolt authenticated rider map; Denmark: Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; Lime authenticated rider map; Linköping's and Gävle's slow streets traced on OpenStreetMap, ODbL; Ryde rider map; Latvia: Ride Mobility GBFS; Bolt authenticated rider map; city centres from GeoNames; Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Warsaw's no-ride areas and slow streets traced on OpenStreetMap, ODbL; Hungary: Hopp GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Cyprus: Hopp GBFS; Bolt authenticated rider map; city centres from GeoNames; Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map; Ryde rider map; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; Bolt authenticated rider map; city centres from GeoNames; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; GCOO anonymous app map and its zones; Lime authenticated rider map; Bird authenticated rider map; Arlington National Cemetery's outline from OpenStreetMap, ODbL; Chicago's no-ride trails and Tampa's no-ride streets traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0; Canada: Bird, Lime GBFS; MoVe app; Lime authenticated rider map; Bird authenticated rider map; Pickering's and Parc Jean-Drapeau's night-ban outlines from OpenStreetMap, ODbL; Edmonton's no-ride stretch of Whyte Avenue and Calgary's slow streets and 7 Avenue transit corridor traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0; United Arab Emirates: Dott GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Costa Rica: Hopp GBFS; Caribbean Netherlands: Hopp GBFS; Japan: LUUP authenticated rider map, standing scooters counted at their ports; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Brazil: JET signed-out Go Jet app map; Whoosh authenticated rider map; Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map; Bolt authenticated rider map; Azerbaijan: JET signed-out Go Jet app map; Georgia: JET signed-out Go Jet app map; Colombia: Whoosh authenticated rider map; Belarus: Whoosh authenticated rider map; South Africa: Zippy rider map; Romania: Lime authenticated rider map; Bolt authenticated rider map; city centres from GeoNames; Czechia: Lime authenticated rider map; city centres from GeoNames; Qatar: Lime authenticated rider map; city centres from GeoNames; Australia: Lime authenticated rider map; city centres from GeoNames; Beam authenticated rider map; Geraldton's night-ban boundary from OpenStreetMap, ODbL; Turkey: BinBin anonymous app map; Beam authenticated rider map; Antalya's no-ride boulevard traced on OpenStreetMap, ODbL; Malaysia: Beam authenticated rider map; South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map, Deer's scooters included; Alpaca anonymous app map; DART anonymous app map; Seoul's no-ride streets traced on OpenStreetMap, ODbL; Estonia: Bolt authenticated rider map; city centres from GeoNames; Lithuania: Bolt authenticated rider map; city centres from GeoNames; Slovakia: Bolt authenticated rider map; city centres from GeoNames; Bulgaria: Bolt authenticated rider map; city centres from GeoNames; Moldova: Bolt authenticated rider map; city centres from GeoNames; Slovenia: Bolt authenticated rider map; city centres from GeoNames; Ireland: Bolt authenticated rider map; city centres from GeoNames; North Macedonia: BinBin anonymous app map; city centres from GeoNames; Bosnia and Herzegovina: BinBin anonymous app map; city centres from GeoNames; Kosovo: BinBin anonymous app map; city centres from GeoNames; Bahrain: Hopp GBFS; Dominican Republic: Hopp GBFS";
+/**
+ * Whose data the map shows, by country, which the X-Mobility-Data-Source header of an answer names for the
+ * countries whose data it holds. In ASCII, as a header must be: "Linköping" reached browsers as "Link�ping".
+ */
+export const COUNTRY_ATTRIBUTIONS: Record<CountryCode, string> = {
+  CH: "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  FR: "France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr)",
+  DE: "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Ryde rider map",
+  AT: "Austria: Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  IT: "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  BE: "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
+  NO: "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0; Ryde rider map",
+  GB: "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; Brighton & Hove's no-ride streets and skate parks traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
+  PT: "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
+  ES: "Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map",
+  IS: "Iceland: Hopp GBFS; Bolt authenticated rider map",
+  DK: "Denmark: Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  SE: "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; Lime authenticated rider map; Linkoping's and Gavle's slow streets traced on OpenStreetMap, ODbL; Ryde rider map",
+  LV: "Latvia: Ride Mobility GBFS; Bolt authenticated rider map; city centres from GeoNames",
+  PL: "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Warsaw's no-ride areas and slow streets traced on OpenStreetMap, ODbL",
+  HU: "Hungary: Hopp GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  GR: "Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  CY: "Cyprus: Hopp GBFS; Bolt authenticated rider map; city centres from GeoNames",
+  FI: "Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map; Ryde rider map",
+  HR: "Croatia: Hoppy GBFS",
+  UA: "Ukraine: 3electra GBFS; Bolt authenticated rider map; city centres from GeoNames",
+  US: "United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; GCOO anonymous app map and its zones; Lime authenticated rider map; Bird authenticated rider map; Arlington National Cemetery's outline from OpenStreetMap, ODbL; Chicago's no-ride trails and Tampa's no-ride streets traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
+  CA: "Canada: Bird, Lime GBFS; MoVe app; Lime authenticated rider map; Bird authenticated rider map; Pickering's and Parc Jean-Drapeau's night-ban outlines from OpenStreetMap, ODbL; Edmonton's no-ride stretch of Whyte Avenue and Calgary's slow streets and 7 Avenue transit corridor traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
+  AE: "United Arab Emirates: Dott GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  SA: "Saudi Arabia: SAHAM, Dott GBFS",
+  IL: "Israel: Bird, Dott, Lime GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  NZ: "New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  CR: "Costa Rica: Hopp GBFS",
+  BQ: "Caribbean Netherlands: Hopp GBFS",
+  JP: "Japan: LUUP authenticated rider map, standing scooters counted at their ports; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  BR: "Brazil: JET signed-out Go Jet app map; Whoosh authenticated rider map",
+  CL: "Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  MX: "Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+  KZ: "Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map; Bolt authenticated rider map",
+  AZ: "Azerbaijan: JET signed-out Go Jet app map",
+  GE: "Georgia: JET signed-out Go Jet app map",
+  CO: "Colombia: Whoosh authenticated rider map",
+  BY: "Belarus: Whoosh authenticated rider map",
+  ZA: "South Africa: Zippy rider map",
+  RO: "Romania: Lime authenticated rider map; Bolt authenticated rider map; city centres from GeoNames",
+  CZ: "Czechia: Lime authenticated rider map; city centres from GeoNames",
+  QA: "Qatar: Lime authenticated rider map; city centres from GeoNames",
+  AU: "Australia: Lime authenticated rider map; city centres from GeoNames; Beam authenticated rider map; Geraldton's night-ban boundary from OpenStreetMap, ODbL",
+  TR: "Turkey: BinBin anonymous app map; Beam authenticated rider map; Antalya's no-ride boulevard traced on OpenStreetMap, ODbL",
+  MY: "Malaysia: Beam authenticated rider map",
+  KR: "South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map, Deer's scooters included; Alpaca anonymous app map; DART anonymous app map; Seoul's no-ride streets traced on OpenStreetMap, ODbL",
+  EE: "Estonia: Bolt authenticated rider map; city centres from GeoNames",
+  LT: "Lithuania: Bolt authenticated rider map; city centres from GeoNames",
+  SK: "Slovakia: Bolt authenticated rider map; city centres from GeoNames",
+  BG: "Bulgaria: Bolt authenticated rider map; city centres from GeoNames",
+  MD: "Moldova: Bolt authenticated rider map; city centres from GeoNames",
+  SI: "Slovenia: Bolt authenticated rider map; city centres from GeoNames",
+  IE: "Ireland: Bolt authenticated rider map; city centres from GeoNames",
+  MK: "North Macedonia: BinBin anonymous app map; city centres from GeoNames",
+  BA: "Bosnia and Herzegovina: BinBin anonymous app map; city centres from GeoNames",
+  XK: "Kosovo: BinBin anonymous app map; city centres from GeoNames",
+  BH: "Bahrain: Hopp GBFS",
+  DO: "Dominican Republic: Hopp GBFS",
+};
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [

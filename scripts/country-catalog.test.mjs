@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  binbinAreasProblem, birdAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swissCatalogProblem, swiftCityFeeds, swiftCityPauses,
+  binbinAreasProblem, birdAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, headerText, scooterCities, seasonalProblem, swissCatalogProblem, swiftCityFeeds, swiftCityPauses,
   swiftCountries, timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 import { limeGridGroups } from '../src/lib/limeGrid';
@@ -84,7 +84,7 @@ describe('the countries of data/countries.json', () => {
     expect(typescript).toContain('  // In Ontario, between Toronto and Winnipeg.\n  CA: [50, -85],');
     expect(typescript).toContain('  CA: { en: "Canada", de: "Kanada", fr: "Canada"');
     expect(typescript).toMatch(/LANDING_COUNTRY_ORDER: readonly CountryCode\[\] = \["CH", "DE", "FR", "IT", .*"CA"\];/);
-    expect(typescript).toMatch(/COUNTRY_DATA_ATTRIBUTION = ".*; Canada: Bird, Neuron GBFS";/);
+    expect(typescript).toContain('  CA: "Canada: Bird, Neuron GBFS",');
     expect(catalogs).toContain("import canadianCatalog from '../../data/canadian-scooter-feeds.json';");
     expect(catalogs).toContain("  ...canadianCatalog.systems.map(system => ({ ...system, country: 'CA' as const })),");
     expect(swift).toContain('        // In Ontario, between Toronto and Winnipeg.\n        "ca": (50, -85),');
@@ -462,5 +462,12 @@ describe('the countries of data/countries.json', () => {
       { provider: 'lime', bounds: tile(1, 3) },
       { provider: 'lime', bounds: tile(1, 4) },
     ]);
+  });
+});
+
+describe('headerText', () => {
+  it('writes an attribution in ASCII, as a header must be, and refuses one it cannot', () => {
+    expect(headerText("Linköping's and Gävle's slow streets · ODbL – Métropole")).toBe("Linkoping's and Gavle's slow streets - ODbL - Metropole");
+    expect(() => headerText('Seoul 서울')).toThrow(/Not ASCII/);
   });
 });

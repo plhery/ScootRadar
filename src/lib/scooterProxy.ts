@@ -8,6 +8,7 @@ import { VEHICLE_MAX_AGE_MS } from '@/lib/dataFreshness';
 import { skippedSources } from '@/lib/scooterSources';
 import { maintenanceStatus, readAnnouncement, type Announcement, type MaintenanceEnvironment } from '@/lib/maintenance';
 import { parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
+import { serverTiming } from '@/lib/scooterResponse';
 import type { MapBounds } from '@/lib/types';
 
 interface SnapshotProxyEnvironment extends MaintenanceEnvironment {
@@ -255,6 +256,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const userAgent = request.headers.get('User-Agent');
     const asker = scooterClient({ pass, view: !!view, userAgent });
     let response: Response;
+    const asked = performance.now();
     try {
       response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
         ...(view && !zones ? { 'X-Scooter-View': `${view.id}.${view.sequence}` } : {}),
@@ -277,6 +279,8 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     result.headers.delete('X-Scooter-Public-Cache-Control');
     result.headers.delete(KEEP_SECONDS);
     for (const [key, value] of Object.entries(securityHeaders)) result.headers.set(key, value);
+    // After the cache's own steps, how long the Worker waited for its answer's headers.
+    result.headers.append('Server-Timing', serverTiming({ origin: performance.now() - asked }));
     // The maps ask for a pass when an answer says they have none (mapPassClient.ts, appPass.ts): a browser only where
     // Turnstile can check it, an app, which proves itself with App Attest or Play Integrity, wherever passes are signed.
     if (!zones && !pass && env.MAP_PASS_SECRET && (env.TURNSTILE_SECRET_KEY || isAppUserAgent(userAgent))) {

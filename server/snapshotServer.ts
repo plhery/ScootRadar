@@ -11,7 +11,7 @@ import { shouldClusterAtZoom } from '../src/lib/clustering';
 import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
-import { scooterResponseHeaders } from '../src/lib/scooterResponse';
+import { scooterResponseHeaders, serverTiming } from '../src/lib/scooterResponse';
 import { collectsParking, isAppMapFeed } from '../src/lib/regionalScooterSystems';
 import { snapshotPaused } from '../src/lib/seasonalPauses';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
@@ -236,15 +236,22 @@ export function createSnapshotServer(options: ServerOptions) {
     if (zones) {
       const error = zoneQueryError(parsed.zoom, parsed.query.bounds);
       if (error) { response.writeHead(400); response.end(JSON.stringify({ error })); return; }
+      const asked = performance.now();
       const body = await zones(parsed.query);
+      const read = performance.now();
+      const json = JSON.stringify(body);
       // Zones change rarely: a complete answer may be kept for five minutes. One that lacks some feeds' zones,
       // on their way or failed, is not kept: asked again, it has them.
       response.writeHead(200, { 'Cache-Control': 'private, no-store',
-        'X-Scooter-Public-Cache-Control': body.meta.pending || body.meta.unavailable ? 'private, no-store' : 'public, max-age=300' });
-      response.end(JSON.stringify(body));
+        'X-Scooter-Public-Cache-Control': body.meta.pending || body.meta.unavailable ? 'private, no-store' : 'public, max-age=300',
+        'Server-Timing': serverTiming({ read: read - asked, serialise: performance.now() - read }) });
+      response.end(json);
       return;
     }
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
+    // Server-Timing: reading the snapshot, waiting for the view's cold feeds included; filtering it to the view;
+    // writing the answer.
+    const asked = performance.now();
     // A box no screen shows at its zoom is answered as the view it could be: clusters, or the city totals.
     const zoom = scooterAnswerZoom(parsed.zoom, parsed.query.bounds);
     if (zoom !== parsed.zoom) options.metrics?.recordLoweredZoom();
@@ -306,18 +313,23 @@ export function createSnapshotServer(options: ServerOptions) {
       refreshing ??= new Set();
       for (const id of rydeViews.refreshing) refreshing.add(id);
     }
+    const read = performance.now();
     const answeredAt = Date.now();
     const answer = querySnapshot(snapshot, parsed.query, zoom, answeredAt, { refreshing, idleInView, comingSoon,
       observations: rydeViews?.observations, listedAreas: rydeViews?.listed, awaitingView: rydeViews?.awaitingView,
       lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
     const body = options.vehicleIds?.publish(answer, answeredAt) ?? answer;
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, zoom, answeredAt, options.retention);
+    const filtered = performance.now();
+    const json = JSON.stringify(body);
+    const headers = scooterResponseHeaders(body);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps
     // an answer holding a capped feed's data no longer than X-Scooter-Keep-Seconds (0: not at all).
-    response.writeHead(200, { ...scooterResponseHeaders(body), 'Cache-Control': 'private, no-store',
-      'X-Scooter-Public-Cache-Control': scooterResponseHeaders(body)['Cache-Control'],
-      ...(keepUntil !== undefined ? { 'X-Scooter-Keep-Seconds': String(Math.max(0, Math.floor((keepUntil - answeredAt) / 1000))) } : {}) });
-    response.end(JSON.stringify(body));
+    response.writeHead(200, { ...headers, 'Cache-Control': 'private, no-store',
+      'X-Scooter-Public-Cache-Control': headers['Cache-Control'],
+      ...(keepUntil !== undefined ? { 'X-Scooter-Keep-Seconds': String(Math.max(0, Math.floor((keepUntil - answeredAt) / 1000))) } : {}),
+      'Server-Timing': serverTiming({ read: read - asked, filter: filtered - read, serialise: performance.now() - filtered }) });
+    response.end(json);
   }
   const server = createServer((request, response) => {
     if (options.metrics) {
