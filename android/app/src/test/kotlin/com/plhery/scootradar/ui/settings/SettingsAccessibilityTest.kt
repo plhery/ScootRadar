@@ -165,13 +165,14 @@ class SettingsAccessibilityTest {
         compose.onNode(hasText("Units"), useUnmergedTree = true).assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
         // The segments, not Appearance's tile, which TalkBack reads "Automatic" too.
         val units = hasAnySibling(hasContentDescription("Kilometres") or hasContentDescription("Miles"))
-        val segments = listOf("Automatic", "Kilometres", "Miles").map { label ->
+        // Automatic says what it measures in on the test phone, in the US: miles.
+        val segments = listOf("Automatic (Miles)", "Kilometres", "Miles").map { label ->
             compose.onNode(hasContentDescription(label) and isSelectable() and units).fetchSemanticsNode()
         }
         assertEquals(List(3) { Role.RadioButton }, segments.map { it.config[SemanticsProperties.Role] })
         assertEquals(listOf(false, true, false), segments.map { it.config[SemanticsProperties.Selected] })
         assertEquals(
-            listOf("Auto", "km", "mi"),
+            listOf("Auto (mi)", "km", "mi"),
             segments.map { segment -> segment.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text } },
         )
         assertTrue(segments.all { it.children.isEmpty() })
@@ -214,11 +215,11 @@ class SettingsAccessibilityTest {
         show(listOf(SettingsPage.Root))
         val units = hasAnySibling(hasContentDescription("Kilometres") or hasContentDescription("Miles"))
         val tile = compose.onNode(hasContentDescription("Automatic") and isSelectable() and !units).fetchSemanticsNode()
-        val segments = listOf("Automatic", "Kilometres", "Miles").map { label ->
+        val segments = listOf("Automatic (Miles)", "Kilometres", "Miles").map { label ->
             compose.onNode(hasContentDescription(label) and isSelectable() and units).fetchSemanticsNode()
         }
         for ((node, spoken, shown) in listOf(Triple(tile, "Automatic", "Auto")) +
-            segments.zip(listOf("Automatic" to "Auto", "Kilometres" to "km", "Miles" to "mi")) { node, (spoken, shown) -> Triple(node, spoken, shown) }
+            segments.zip(listOf("Automatic (Miles)" to "Auto (mi)", "Kilometres" to "km", "Miles" to "mi")) { node, (spoken, shown) -> Triple(node, spoken, shown) }
         ) {
             val info = view.accessibilityNodeProvider.createAccessibilityNodeInfo(node.id)!!
             assertEquals(shown, spoken, info.contentDescription?.toString())

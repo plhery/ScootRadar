@@ -184,7 +184,7 @@ class SettingsSheetTest {
         compose.onNodeWithContentDescription("Miles").assertIsSelected()
 
         // The segment, not Appearance's tile, which TalkBack reads "Automatic" too.
-        val automatic = hasContentDescription("Automatic") and hasAnySibling(hasContentDescription("Miles"))
+        val automatic = hasContentDescription("Automatic (Miles)") and hasAnySibling(hasContentDescription("Miles"))
         compose.onNode(automatic).performClick()
         compose.waitForIdle()
         assertEquals(ScooterUnits.Automatic, model.units.value)

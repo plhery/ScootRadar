@@ -282,17 +282,32 @@ class ScooterModelsTest {
     @Test
     fun talkBackReadsAutoAsTheWholeWordInEveryLanguage() {
         val spoken = mutableMapOf<ScooterLanguage, String>()
-        for (language in ScooterLanguage.entries) {
-            ScooterLanguage.current = language
-            assertEquals(language.rawValue, "Auto", ScooterAppearance.Sun.label)
-            assertEquals(language.rawValue, "Auto", ScooterUnits.Automatic.label)
-            val automatic = ScooterUnits.Automatic.spokenLabel
-            assertNotEquals(language.rawValue, "Auto", automatic)
-            assertEquals(language.rawValue, automatic, ScooterAppearance.Sun.spokenLabel)
-            for (appearance in ScooterAppearance.entries - ScooterAppearance.Sun) {
-                assertEquals("${language.rawValue}: $appearance", appearance.label, appearance.spokenLabel)
+        val launch = ScooterLanguage.launchLocale
+        ScooterLanguage.launchLocale = { Locale.forLanguageTag("de-CH") }
+        try {
+            for (language in ScooterLanguage.entries) {
+                ScooterLanguage.current = language
+                assertEquals(language.rawValue, "Auto", ScooterAppearance.Sun.label)
+                // The units' Automatic says what it measures in on this phone, as Peek's settings do.
+                assertEquals(language.rawValue, "Auto (km)", ScooterUnits.Automatic.label)
+                val automatic = ScooterAppearance.Sun.spokenLabel
+                assertNotEquals(language.rawValue, "Auto", automatic)
+                assertEquals(language.rawValue, "$automatic (${ScooterUnits.Metric.spokenLabel})", ScooterUnits.Automatic.spokenLabel)
+                for (appearance in ScooterAppearance.entries - ScooterAppearance.Sun) {
+                    assertEquals("${language.rawValue}: $appearance", appearance.label, appearance.spokenLabel)
+                }
+                spoken[language] = automatic
             }
-            spoken[language] = automatic
+            ScooterLanguage.current = ScooterLanguage.En
+            ScooterLanguage.launchLocale = { Locale.forLanguageTag("en-GB") }
+            assertEquals("Auto (mi)", ScooterUnits.Automatic.label)
+            assertEquals("Automatic (Miles)", ScooterUnits.Automatic.spokenLabel)
+            // Android 16's Measurement system, set to metric on a British phone, is the phone's units.
+            ScooterLanguage.launchLocale = { Locale.forLanguageTag("en-GB-u-ms-metric") }
+            assertEquals("Auto (km)", ScooterUnits.Automatic.label)
+        } finally {
+            ScooterLanguage.launchLocale = launch
+            ScooterLanguage.current = ScooterLanguage.En
         }
         assertEquals("Automatic", spoken[ScooterLanguage.En])
         assertEquals("Automatisch", spoken[ScooterLanguage.De])
@@ -786,6 +801,27 @@ class ScooterModelsTest {
     }
 
     // Settings › Units (issue #14): kilometres or miles whatever the region and the language.
+
+    /**
+     * One rule decides the units everywhere, the map's scale too: the system the locale names, as Android 16's
+     * Measurement system setting names it ("-u-ms-"), or else its region's; a language without a region measures in
+     * metres, English too, as the website writes it.
+     */
+    @Test
+    fun theLocaleNamesItsUnitsOrItsRegionDoesAndALanguageAloneMeasuresInMetres() {
+        assertEquals(ScooterMeasurementSystem.Metric, Locale.forLanguageTag("en").measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Metric, Locale.ENGLISH.measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Metric, Locale.forLanguageTag("de").measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Metric, Locale.forLanguageTag("en-GB-u-ms-metric").measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Uk, Locale.forLanguageTag("de-CH-u-ms-uksystem").measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Us, Locale.forLanguageTag("en-US").measurementSystem)
+        assertEquals(ScooterMeasurementSystem.Uk, Locale.forLanguageTag("en-GB").measurementSystem)
+        for (tag in listOf("en", "en-GB-u-ms-metric", "en-US", "en-GB", "de-CH-u-ms-ussystem")) {
+            val locale = Locale.forLanguageTag(tag)
+            assertEquals(tag, locale.measurementSystem != ScooterMeasurementSystem.Metric, ScooterUnits.automaticMiles(locale))
+            assertEquals(tag, ScooterUnits.automaticMiles(locale), ScooterMapScalePolicy.showsScale(locale))
+        }
+    }
 
     @Test
     fun chosenUnitsMeasureInKilometresOrMilesWhateverTheRegion() {

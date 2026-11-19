@@ -26,17 +26,17 @@ enum class ScooterMeasurementSystem(
 }
 
 /**
- * Locale.measurementSystem: the one the locale names ("en-US-u-ms-metric"), or else its region's: miles and
- * feet in the US, Liberia and Myanmar, as the website writes them there and the iPhone writes miles outside the
- * UK, miles and yards in the UK, metres everywhere else. A locale without a region is in the one its language
- * most likely means, as English is in the US.
+ * Locale.measurementSystem: the one the locale names ("en-US-u-ms-metric", as Android 16's Measurement system
+ * setting names it), or else its region's: miles and feet in the US, Liberia and Myanmar, as the website writes
+ * them there and the iPhone writes miles outside the UK, miles and yards in the UK, metres everywhere else. A
+ * locale without a region measures in metres, English too, as the website writes a language without one
+ * (formatLocale.ts): the map's riders are in Europe. This is the only rule: the map's scale reads it too.
  */
 val Locale.measurementSystem: ScooterMeasurementSystem
     get() {
         val named = getUnicodeLocaleType("ms")
         ScooterMeasurementSystem.entries.firstOrNull { it.keyword == named }?.let { return it }
-        val region = country.ifEmpty { if (language == "en") "US" else "" }
-        return when (region) {
+        return when (country) {
             "US", "LR", "MM" -> ScooterMeasurementSystem.Us
             "GB" -> ScooterMeasurementSystem.Uk
             else -> ScooterMeasurementSystem.Metric

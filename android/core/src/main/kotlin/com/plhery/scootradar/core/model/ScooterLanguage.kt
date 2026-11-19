@@ -208,10 +208,13 @@ enum class ScooterUnits(val rawValue: String) {
         return Locale.Builder().setLocale(locale).setUnicodeLocaleKeyword("ms", system.keyword).build()
     }
 
-    /** Its segment in Settings: "Auto", and "km" and "mi" as every language writes them. */
+    /**
+     * Its segment in Settings: "Auto (km)" or "Auto (mi)", saying what Automatic measures in on this phone, as Peek's
+     * settings say it, and "km" and "mi" as every language writes them.
+     */
     val label: String
         get() = when (this) {
-            Automatic -> localized("Automatic")
+            Automatic -> "${localized("Automatic")} (${if (automaticMiles()) "mi" else "km"})"
             Metric -> "km"
             Imperial -> "mi"
         }
@@ -219,13 +222,17 @@ enum class ScooterUnits(val rawValue: String) {
     /** What TalkBack reads for its segment: Auto as the whole word, which "Auto" alone is not in every language. */
     val spokenLabel: String
         get() = when (this) {
-            Automatic -> localized("Automatic (spoken)")
+            Automatic -> "${localized("Automatic (spoken)")} (${localized(if (automaticMiles()) "Miles" else "Kilometres")})"
             Metric -> localized("Kilometres")
             Imperial -> localized("Miles")
         }
 
     companion object {
         fun fromRawValue(rawValue: String): ScooterUnits? = entries.firstOrNull { it.rawValue == rawValue }
+
+        /** Whether Automatic measures in miles: the phone's region, or the Measurement system Android 16 lets it set. */
+        fun automaticMiles(locale: Locale = ScooterLanguage.current.locale(Automatic)): Boolean =
+            locale.measurementSystem != ScooterMeasurementSystem.Metric
 
         /**
          * The units the app measures in now. Choosing others in Settings changes them at once, everywhere a length

@@ -1,6 +1,5 @@
 package com.plhery.scootradar.map
 
-import android.icu.util.LocaleData
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
 import android.icu.util.ULocale
@@ -44,6 +43,7 @@ import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.ScooterLengthUnit
 import com.plhery.scootradar.core.model.ScooterMeasureFormat
 import com.plhery.scootradar.core.model.ScooterMeasurementSystem
+import com.plhery.scootradar.core.model.measurementSystem
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.atOnceUnderReduceMotion
@@ -66,12 +66,7 @@ object MapScale {
      * app formats with: its language in the phone's region, which the measurement system follows, unless the units
      * chosen in Settings name one (ScooterUnits).
      */
-    fun showsScale(locale: Locale): Boolean {
-        locale.getUnicodeLocaleType("ms")?.let { chosen ->
-            ScooterMeasurementSystem.entries.firstOrNull { it.keyword == chosen }?.let { return it != ScooterMeasurementSystem.Metric }
-        }
-        return LocaleData.getMeasurementSystem(ULocale.forLocale(locale)) != LocaleData.MeasurementSystem.SI
-    }
+    fun showsScale(locale: Locale): Boolean = locale.measurementSystem != ScooterMeasurementSystem.Metric
 
     /** A length the scale shows: a round number of feet or miles, and how long it is on the map, in points. */
     data class Step(val value: BigDecimal, val unit: ScooterLengthUnit, val points: Double)
