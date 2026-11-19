@@ -411,9 +411,10 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertNil(ScooterProviderEntry.Faded.shown(count: 3, faded: updating))
         XCTAssertNil(ScooterProviderEntry.Faded.shown(count: 0, faded: nil))
 
-        XCTAssertEqual(updating.note, String(localized: "updating…"))
+        XCTAssertEqual(updating.note(counted: true), String(localized: "updating…"))
+        XCTAssertEqual(updating.note(counted: false), String(localized: "updating…"))
         let idle = ScooterProviderEntry.Faded(count: 44, seenAt: seenAt, updating: false)
-        XCTAssertEqual(idle.note, String(format: String(localized: "last seen %@"), ScooterDockStatus.seenTime(seenAt)))
+        XCTAssertEqual(idle.note(counted: false), String(format: String(localized: "last seen %@"), ScooterDockStatus.seenTime(seenAt)))
         for faded in [updating, idle] {
             XCTAssertTrue(faded.accessibilityText.contains("44"), faded.accessibilityText)
             XCTAssertTrue(faded.accessibilityText.contains(ScooterDockStatus.seenTime(seenAt)), faded.accessibilityText)
@@ -432,6 +433,36 @@ final class ScooterFilteringTests: XCTestCase {
             QuickProviderFilterChip.accessibilityLabel(title: "Ryde", count: 0, isDown: false),
             String(format: String(localized: "%@, %lld scooters"), "Ryde", Int64(0))
         )
+    }
+
+    /// The note under a provider's name takes the form of the faded ones' number where it stands for the count, "1"
+    /// then "vue à 14:02" in French, as the website writes it (73a272e3), and stays plural beside a count of live
+    /// scooters, so it is never read as theirs.
+    @MainActor
+    func testTheFadedNoteTakesTheFormOfTheNumberItStandsBeside() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let seenAt = Date(timeIntervalSince1970: 1_792_983_600)
+        func note(_ language: ScooterLanguage, _ count: Int, counted: Bool) -> String {
+            ScooterLanguage.current = language
+            return ScooterProviderEntry.Faded(count: count, seenAt: seenAt, updating: false).note(counted: counted)
+        }
+        ScooterLanguage.current = .fr
+        let time = ScooterDockStatus.seenTime(seenAt)
+        XCTAssertEqual(note(.fr, 1, counted: true), "vue à \(time)")
+        XCTAssertEqual(note(.fr, 1, counted: false), "vues à \(time)")
+        XCTAssertEqual(note(.fr, 2, counted: true), "vues à \(time)")
+        ScooterLanguage.current = .it
+        XCTAssertEqual(note(.it, 1, counted: true), "visto alle \(ScooterDockStatus.seenTime(seenAt))")
+        ScooterLanguage.current = .is
+        let icelandicTime = ScooterDockStatus.seenTime(seenAt)
+        XCTAssertEqual(note(.is, 21, counted: true), "sást síðast kl. \(icelandicTime)")
+        XCTAssertEqual(note(.is, 11, counted: true), "sáust síðast kl. \(icelandicTime)")
+        // More than one reads as the plural note in every language; English and German have one form.
+        for language in ScooterLanguage.allCases {
+            XCTAssertEqual(note(language, 2, counted: true), note(language, 2, counted: false), language.rawValue)
+        }
+        XCTAssertEqual(note(.en, 1, counted: true), note(.en, 1, counted: false))
+        XCTAssertEqual(note(.de, 1, counted: true), note(.de, 1, counted: false))
     }
 
     /// VoiceOver reads one faded scooter in the singular in every language, as the website writes it, where Italian

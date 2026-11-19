@@ -61,5 +61,21 @@
 			<string>%lld tenues, vistos por última vez a las</string>
 		</dict>
 	</dict>
+	<key>%lld faded: last seen %@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@seen@ %@</string>
+		<key>seen</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>visto a las</string>
+			<key>other</key>
+			<string>vistos a las</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

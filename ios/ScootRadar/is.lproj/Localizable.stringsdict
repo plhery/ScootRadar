@@ -61,5 +61,21 @@
 			<string>%lld daufar, sáust síðast kl.</string>
 		</dict>
 	</dict>
+	<key>%lld faded: last seen %@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@seen@ %@</string>
+		<key>seen</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>sást síðast kl.</string>
+			<key>other</key>
+			<string>sáust síðast kl.</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -186,7 +186,8 @@ internal fun ProviderListRow(
             // Of its faded ones: being updated, or since when they stand as last seen.
             if (faded != null && !isDown) {
                 Text(
-                    if (faded.updating) ScooterFadedCount.updatingLine else faded.seenLine(),
+                    // In the form of the greyed number where it stands for the count: "1", "vue à 14:02".
+                    if (faded.updating) ScooterFadedCount.updatingLine else faded.seenLine(counted = count == 0),
                     style = designFont(11.5f, FontWeight.Medium, tabular = true),
                     color = colors.dockQuiet,
                 )

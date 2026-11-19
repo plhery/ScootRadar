@@ -1298,7 +1298,7 @@ private struct ProviderListRow: View {
                         .designFont(14.5, .semibold, relativeTo: .subheadline)
                         .foregroundStyle(isShown && !isDown ? ScooterPalette.dockText : ScooterPalette.dockQuiet)
                     if let faded, !isDown {
-                        Text(faded.note)
+                        Text(faded.note(counted: ScooterProviderEntry.Faded.shown(count: count, faded: faded) != nil))
                             .designFont(11.5, .medium, relativeTo: .caption2)
                             .monospacedDigit()
                             .foregroundStyle(ScooterPalette.dockQuiet)

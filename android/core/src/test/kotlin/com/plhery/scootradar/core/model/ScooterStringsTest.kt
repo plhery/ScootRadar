@@ -35,6 +35,9 @@ class ScooterStringsTest {
                     // 2026, the iPhone's twin of S8); Android still reads them from Localizable.strings.
                     "%lld faded, last seen at %@.",
                     "%lld faded, last seen at %@, updating.",
+                    // The list's note where one faded scooter stands for the count, "vue à 14:02" (the website's
+                    // 73a272e3).
+                    "%lld faded: last seen %@",
                 ),
                 language.strings.countingKeys,
             )

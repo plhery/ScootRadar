@@ -83,6 +83,36 @@ class ScooterFilteringTest {
     }
 
     /**
+     * The note under a provider's name takes the form of the faded ones' number where it stands for the count, "1"
+     * then "vue à 14:02" in French, as the website writes it (73a272e3) and the iPhone, and stays plural beside a count
+     * of live scooters, so it is never read as theirs.
+     */
+    @Test
+    fun theFadedNoteTakesTheFormOfTheNumberItStandsBeside() {
+        val now = Instant.now()
+        fun note(language: ScooterLanguage, count: Int, counted: Boolean): String {
+            ScooterLanguage.current = language
+            return ScooterFadedCount(count, now, updating = false).seenLine(counted, now)
+        }
+        fun time(language: ScooterLanguage): String {
+            ScooterLanguage.current = language
+            return ScooterDockStatus.seenTime(now, now)
+        }
+        assertEquals("vue à ${time(ScooterLanguage.Fr)}", note(ScooterLanguage.Fr, 1, counted = true))
+        assertEquals("vues à ${time(ScooterLanguage.Fr)}", note(ScooterLanguage.Fr, 1, counted = false))
+        assertEquals("vues à ${time(ScooterLanguage.Fr)}", note(ScooterLanguage.Fr, 2, counted = true))
+        assertEquals("visto alle ${time(ScooterLanguage.It)}", note(ScooterLanguage.It, 1, counted = true))
+        assertEquals("sást síðast kl. ${time(ScooterLanguage.Is)}", note(ScooterLanguage.Is, 21, counted = true))
+        assertEquals("sáust síðast kl. ${time(ScooterLanguage.Is)}", note(ScooterLanguage.Is, 11, counted = true))
+        // More than one reads as the plural note in every language; English and German have one form.
+        for (language in ScooterLanguage.entries) {
+            assertEquals(language.rawValue, note(language, 2, counted = false), note(language, 2, counted = true))
+        }
+        assertEquals(note(ScooterLanguage.En, 1, counted = false), note(ScooterLanguage.En, 1, counted = true))
+        assertEquals(note(ScooterLanguage.De, 1, counted = false), note(ScooterLanguage.De, 1, counted = true))
+    }
+
+    /**
      * Norwegian says "kl." once before a time on another day, "sist sett fre. kl. 14:02", where it read "sist sett kl.
      * fre. kl. 14:02": its sentences say "kl." before the time, and its time with the day holds its own. A time today
      * reads as before, "sist sett kl. 14:02", and every other language as written (the lane's device notes of 14
@@ -105,7 +135,9 @@ class ScooterFilteringTest {
                 val time = ScooterDockStatus.seenTime(seenAt, now)
                 val faded = { count: Int, updating: Boolean -> ScooterFadedCount(count, seenAt, updating) }
                 return listOf(
-                    faded(3, false).seenLine(now) to stringFormat(localized("last seen %@"), time),
+                    faded(3, false).seenLine(now = now) to stringFormat(localized("last seen %@"), time),
+                    faded(1, false).seenLine(counted = true, now = now) to
+                        localizedCounting("%lld faded: last seen %@", 1L, time),
                     faded(1, false).accessibilityLabel(now) to localizedCounting("%lld faded, last seen at %@.", 1L, time),
                     faded(3, true).accessibilityLabel(now) to localizedCounting("%lld faded, last seen at %@, updating.", 3L, time),
                     ScooterDockStatus.LastSeen(listOf(lime), seenAt).text to
@@ -127,7 +159,7 @@ class ScooterFilteringTest {
             val day = ScooterDockStatus.seenTime(daysAgo, now)
             val today = ScooterDockStatus.seenTime(now, now)
             assertTrue(day, day.contains(" kl. "))
-            assertEquals("sist sett $day", ScooterFadedCount(3, daysAgo, updating = false).seenLine(now))
+            assertEquals("sist sett $day", ScooterFadedCount(3, daysAgo, updating = false).seenLine(now = now))
             assertEquals("1 blek, sist sett $day.", ScooterFadedCount(1, daysAgo, updating = false).accessibilityLabel(now))
             assertEquals("3 bleke, sist sett $day, oppdateres.", ScooterFadedCount(3, daysAgo, updating = true).accessibilityLabel(now))
             assertEquals("Bleke sist sett $day", ScooterDockStatus.LastSeen(listOf(lime, bird, dott), daysAgo).text)
@@ -136,7 +168,7 @@ class ScooterFilteringTest {
                 assertEquals(written.replace("kl. $day", day), said)
                 assertEquals(said, 1, Regex("""\bkl\.""").findAll(said).count())
             }
-            assertEquals("sist sett kl. $today", ScooterFadedCount(3, now, updating = false).seenLine(now))
+            assertEquals("sist sett kl. $today", ScooterFadedCount(3, now, updating = false).seenLine(now = now))
             for ((said, written) in sentences(now)) assertEquals(written, said)
 
             for (language in ScooterLanguage.entries - ScooterLanguage.Nb) {

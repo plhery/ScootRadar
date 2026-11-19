@@ -241,11 +241,16 @@ struct ScooterProviderEntry: Identifiable, Equatable, Sendable {
             count == 0 ? faded : nil
         }
 
-        /// Under the provider's name in the panel's list: "updating…", or "last seen 14:02".
-        var note: String {
-            updating
-                ? String(localized: "updating…")
-                : String(format: String(localized: "last seen %@"), ScooterDockStatus.seenTime(seenAt))
+        /// Under the provider's name in the panel's list: "updating…", or "last seen 14:02". Where the faded ones'
+        /// number stands for the count (`shown`), the line takes the form that number takes, "1" then "vue à 14:02"
+        /// in French. Beside a count of live scooters it stays plural, so it is never read as theirs (the website's
+        /// 73a272e3).
+        func note(counted: Bool) -> String {
+            if updating { return String(localized: "updating…") }
+            let time = ScooterDockStatus.seenTime(seenAt)
+            return counted
+                ? String(localizedCounting: "\(count) faded: last seen \(time)")
+                : String(format: String(localized: "last seen %@"), time)
         }
 
         /// What VoiceOver adds to the chip: "44 faded, last seen at 14:02, updating.", its words in the form the count

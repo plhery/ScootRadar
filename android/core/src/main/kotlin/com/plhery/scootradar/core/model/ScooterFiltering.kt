@@ -241,9 +241,17 @@ data class ScooterFadedCount(
     /** New positions of the provider's are on their way. */
     val updating: Boolean,
 ) {
-    /** "last seen 14:02", or "last seen Fri 14:02" on another day: under the provider's name in the list. */
-    fun seenLine(now: Instant = Instant.now()): String =
-        ScooterDockStatus.seenSentence(seenAt, now) { stringFormat(localized("last seen %@"), it) }
+    /**
+     * "last seen 14:02", or "last seen Fri 14:02" on another day: under the provider's name in the list. Where the
+     * faded ones' number stands for the count ([counted], the row's count of none), the line takes the form that number
+     * takes, "1" then "vue à 14:02" in French; beside a count of live scooters it stays plural, so it is never read as
+     * theirs (the website's 73a272e3, the iPhone's `Faded.note(counted:)`).
+     */
+    fun seenLine(counted: Boolean = false, now: Instant = Instant.now()): String =
+        ScooterDockStatus.seenSentence(seenAt, now) { time ->
+            if (counted) localizedCounting("%lld faded: last seen %@", count.toLong(), time)
+            else stringFormat(localized("last seen %@"), time)
+        }
 
     /**
      * What TalkBack reads after the chip's or row's own label: "44 faded, last seen at 14:02, updating.", its words in
