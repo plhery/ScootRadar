@@ -505,8 +505,9 @@ test('the units chosen in the settings write every length in them, in a country 
 });
 
 test.describe('in a browser that asks for US English', () => {
-  // In New York: lengths follow the time zone first, and en-US in Zurich writes kilometres (walking.ts).
-  test.use({ locale: 'en-US', timezoneId: 'America/New_York' });
+  // In UTC, which names no place: the map opens on Switzerland and lengths follow the language's region, as they
+  // would not in a named zone (en-US in Zurich writes kilometres, walking.ts; a US zone opens the map on a US city).
+  test.use({ locale: 'en-US', timezoneId: 'UTC' });
 
   test('numbers, prices and distances are written the US way', async ({ page }) => {
     const hopp = { ...scooterResponse.vehicles[0], provider: 'hopp', vehicle_id: 'hopp-1', rental_uris: undefined,
