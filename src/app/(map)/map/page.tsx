@@ -85,6 +85,8 @@ const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
 const INITIAL_ZOOM = 8;
 // About 350 m across on a phone, as the iOS app shows after locating.
 const LOCATE_ZOOM = 17;
+// Where a shared link's place opens: street level, where a flight to it from further out lands (MapComponent).
+const LINK_ZOOM = 16;
 // Where a city's scooters show as clusters, the same as a tap on its total.
 const CITY_ZOOM = 13;
 // Parking bays show from street level, where the server starts to send them.
@@ -351,9 +353,12 @@ export default function Home() {
     if (params.zones !== undefined) setZonesOn(params.zones);
 
     // Preserve old shared links without persisting their coordinates again.
+    // It opens there at once, as the covered city below does: not at the zoom of all of Switzerland, which
+    // drew and fetched a region's tiles and scooters on the way in.
     if (params.origin) {
       setInitialCenter(params.origin);
-      setFocusRequest(current => ({ location: params.origin, zoom: null, version: current.version + 1 }));
+      setInitialZoom(LINK_ZOOM);
+      setFocusRequest(current => ({ location: params.origin, zoom: LINK_ZOOM, version: current.version + 1 }));
     } else {
       // Until then the map shows the covered city nearest the device's time
       // zone (startPlace.ts), as the iOS app does: Paris for Europe/Paris.

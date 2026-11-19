@@ -1902,10 +1902,12 @@ it('opens on Switzerland for a time zone with no covered city near, and on the c
   cleanup();
 
   // A shared link's place wins over the time zone.
+  // It opens at street level there, not on all of Switzerland, whose tiles and scooters it would fetch first.
   window.history.replaceState(null, '', '/map?origin=47.3769,8.5417');
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(0));
-  expect(screen.getByTestId('focus')).toHaveTextContent('47.3769,8.5417 zoom null');
+  expect(screen.getByTestId('start')).toHaveTextContent('47.3769,8.5417 zoom 16');
+  expect(screen.getByTestId('focus')).toHaveTextContent('47.3769,8.5417 zoom 16');
 });
 
 it('locates by itself where location is granted or has worked before, and never otherwise', async () => {
@@ -1953,7 +1955,7 @@ it('locates by itself where location is granted or has worked before, and never 
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(getCurrentPosition).not.toHaveBeenCalled();
-  expect(screen.getByTestId('focus')).toHaveTextContent('45.75,4.85 zoom null');
+  expect(screen.getByTestId('focus')).toHaveTextContent('45.75,4.85 zoom 16');
 });
 
 it('says that location is off, and keeps the card dismissed until the next attempt', async () => {

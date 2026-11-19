@@ -992,7 +992,11 @@ export default function MapComponent({
     map.stop();
     // To the copy of the place nearest the map's centre, not round the world.
     const target: [number, number] = [focusLocation[0], lngNear(focusLocation[1], map.getCenter().lng)];
-    map.flyTo(target, focusZoom ?? Math.max(map.getZoom(), 16), {
+    const zoom = focusZoom ?? Math.max(map.getZoom(), 16);
+    // Already there, as where the map opens on a link's place or the city of the time zone: no flight, which would
+    // move nothing for half a second and then put back a pan made meanwhile with the keys.
+    if (map.getZoom() === zoom && map.project(target, zoom).distanceTo(map.project(map.getCenter(), zoom)) < 1) return;
+    map.flyTo(target, zoom, {
       animate: !prefersReducedMotion(),
       duration: 0.5,
       easeLinearity: 0.25,
