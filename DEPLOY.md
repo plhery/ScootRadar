@@ -206,15 +206,23 @@ The apps' passes need the same `MAP_PASS_SECRET`, which also signs their challen
 the iPhone app's attested keys: a new one voids those too, and each iPhone attests a
 new key at its next ask. App Attest needs nothing more: the App ID
 (`HGC93X794T.com.plhery.scootradar`) and Apple's App Attestation root key are in
-`src/lib/appAttest.ts`. Play Integrity needs Play Console's response encryption
-managed by us (Play Console → the app → Protected with Play → Play Integrity API →
-Classic requests → Response encryption → "Manage and download my response
-encryption keys"; it asks for a public key to encrypt the downloaded keys to), and
-the two keys stored as the Worker secrets `PLAY_INTEGRITY_DECRYPTION_KEY` (the AES
-key) and `PLAY_INTEGRITY_VERIFICATION_KEY` (the EC public key), each as Play Console
-gives them, in base64. Without them, `/api/pass` answers the Android app 503 and it
-goes without a pass, as before. Switching Play Console back to Google-managed
-encryption voids the downloaded keys at once.
+`src/lib/appAttest.ts`. Play Integrity needs a Google Cloud project linked to the app
+in Play Console (Protected with Play → Play Integrity API: the project ScootRadar,
+`scootradar`, which has the Play Integrity API enabled and nothing else), Play
+Console's response encryption managed by us (Classic requests → Response encryption →
+"Manage and download my response encryption keys"), and the two keys stored as the
+Worker secrets `PLAY_INTEGRITY_DECRYPTION_KEY` (the AES key) and
+`PLAY_INTEGRITY_VERIFICATION_KEY` (the EC public key), each as Play Console gives
+them, in base64. "Download keys" asks for an RSA public key of 2048 bits in PEM
+(`openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out private.pem`,
+then `openssl rsa -in private.pem -pubout -out public.pem`) and downloads
+`com.plhery.scootradar.enc`, which `openssl pkeyutl -decrypt -inkey private.pem
+-pkeyopt rsa_padding_mode:oaep -in com.plhery.scootradar.enc` turns into a
+`DECRYPTION_KEY=` and a `VERIFICATION_KEY=` line. The key pair is used once and
+deleted: the keys can be downloaded again with a new one. Without the secrets,
+`/api/pass` answers the Android app 503 and it goes without a pass, as before.
+Switching Play Console back to Google-managed encryption voids the downloaded keys
+at once.
 
 ## Deploys wait for CI
 
