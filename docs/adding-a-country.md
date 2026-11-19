@@ -33,7 +33,9 @@
    - `anchor`, where its total stands zoomed out, with an `anchorNote` saying
      why there;
    - `featuredCities`, the city ids the landing page names;
-   - `credits`: its `attribution` in the `X-Mobility-Data-Source` header, the
+   - `credits`: its `attribution`, which the `X-Mobility-Data-Source` header
+     of each answer holding the country's data carries whole, in ASCII (the
+     generator drops accents, and stops at a letter it cannot write so), the
      providers its GBFS feeds are credited for (`gbfs`, one line per
      continent), and the `links` a licence asks for;
    - `pricesBeforeTax: true` where ride prices are given before sales tax,

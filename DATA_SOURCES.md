@@ -2355,8 +2355,10 @@ Regensburg and Schweinfurt. MobiData BW licenses its
 [dl-de/by-2-0](https://www.govdata.de/dl-de/by-2-0), which asks for the
 provider, the licence and the dataset to be named, and for changed data to be
 marked: the map's credits link "DE: MobiData BW e-scooter data" to the dataset
-and "DE: MobiData BW · dl-de/by-2-0, modified" to the licence, and the API's
-`X-Mobility-Data-Source` header names all three.
+and "DE: MobiData BW · dl-de/by-2-0, modified" to the licence, and the
+`X-Mobility-Data-Source` header of every API answer holding German data names
+all three. The header names the countries whose data the answer holds, each
+with its whole attribution, and links to this page.
 
 [NRW.Mobidrom](https://www.mobilitaetsdaten.nrw), North Rhine-Westphalia's
 mobility data platform, supplies Voi's 12 feeds there, in 18 towns from Köln

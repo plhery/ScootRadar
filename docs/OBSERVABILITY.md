@@ -950,6 +950,14 @@ test). PRIVACY.md says these reports go to Umami alone: change it then. From the
   maps of the browser's scripts and none are uploaded. To read a frame, build the same
   commit with `productionBrowserSourceMaps` on, or add an upload of the maps to the build.
 
+## Server-Timing
+
+`/api/scooters` and `/api/zones` say where an answer's time went, in milliseconds, in a `Server-Timing` header
+that the browser's Network panel and the Resource Timing API (`serverTiming`) read: the cache's `read` (the
+snapshot, and the wait for a view's cold feeds), `filter` (the snapshot cut to the view; scooters only) and
+`serialise` (the JSON), then the Worker's `origin`, how long it waited for the cache's headers. An answer the
+Worker serves from what it kept, while the cache is down, has none.
+
 ## Logs
 
 `snapshot_feed_state` (a feed changing state), `snapshot_feed_failed`,

@@ -1,13 +1,35 @@
 import { clusterVehicles, shouldClusterAtZoom } from '@/lib/clustering';
 import { MAX_SCOOTER_RESULTS } from '@/lib/scooterQuery';
 import type { ScooterFetchResult } from '@/lib/scooterFeeds';
-import { COUNTRY_DATA_ATTRIBUTION } from '@/generated/countries';
+import { COUNTRY_ATTRIBUTIONS, COUNTRY_SOURCES, type CountryCode } from '@/generated/countries';
 import type { LastSeenProvider } from '@/generated/scooterApi';
 import type { ScooterResponse, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
-// Each country's data, from data/countries.json, then the parking of Lille's open data.
-export const MOBILITY_SOURCE = `${COUNTRY_DATA_ATTRIBUTION}; Lille parking: Metropole Europeenne de Lille`;
+/** Where every source of the map and its licence is named (DATA_SOURCES.md), which each answer's header links to. */
+export const DATA_CREDITS_URL = 'https://github.com/plhery/ScootRadar/blob/main/DATA_SOURCES.md';
+const LILLE_PARKING = 'Lille parking: Metropole Europeenne de Lille';
+// Switzerland's own sources besides its country catalog's.
+const SOURCE_COUNTRY = new Map<string, CountryCode>([['national', 'CH'], ['hopp', 'CH'], ['publibike', 'CH'],
+  ...Object.entries(COUNTRY_SOURCES).map(([country, source]): [string, CountryCode] => [source, country as CountryCode])]);
+
+/**
+ * Whose data the answer holds, for its X-Mobility-Data-Source header: the whole attribution of each country whose
+ * feeds it was made from (data/countries.json), as the licences ask of the data shared (NLOD, dl-de/by-2-0,
+ * CC BY and BY-SA, ODbL, CDLA-Permissive-2.0, Licence Ouverte, opendata.swiss's BY), Lille's parking where it has
+ * any, and where all of them are named. It named every country, about 6 KB on each answer, past what HPACK keeps.
+ */
+export function mobilitySource(body: Pick<ScooterResponse, 'meta' | 'parking'>): string {
+  const countries = new Set<string>();
+  for (const [source, status] of Object.entries(body.meta.sources ?? {})) {
+    const country = SOURCE_COUNTRY.get(source);
+    if (country && status !== 'skipped') countries.add(country);
+  }
+  const named = (Object.keys(COUNTRY_ATTRIBUTIONS) as CountryCode[]).filter(country => countries.has(country))
+    .map(country => COUNTRY_ATTRIBUTIONS[country]);
+  if (body.parking?.length) named.push(LILLE_PARKING);
+  return [...named, `All sources and licences: ${DATA_CREDITS_URL}`].join('; ');
+}
 
 /**
  * `lastSeen`: scooters of slow feeds being collected again, where they were last seen. They are
@@ -68,7 +90,15 @@ export function scooterResponseHeaders(body: ScooterResponse): Record<string, st
       : degraded
         ? 'public, max-age=10, s-maxage=10, stale-while-revalidate=30'
         : 'public, max-age=30, s-maxage=30, stale-while-revalidate=60',
-    'X-Mobility-Data-Source': MOBILITY_SOURCE,
+    'X-Mobility-Data-Source': mobilitySource(body),
     'X-Mobility-Data-Status': body.meta.partial ? 'partial' : body.meta.stale ? 'stale' : 'fresh',
   };
+}
+
+/**
+ * A Server-Timing header of the steps that made an answer, in milliseconds, "read;dur=0.4, filter;dur=2.1": what
+ * the browser's and RUM's timings of the request can then say of where its time went.
+ */
+export function serverTiming(steps: Readonly<Record<string, number>>): string {
+  return Object.entries(steps).map(([name, ms]) => `${name};dur=${Math.max(0, ms).toFixed(1)}`).join(', ');
 }
