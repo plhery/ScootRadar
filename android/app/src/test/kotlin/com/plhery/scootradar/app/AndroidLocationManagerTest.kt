@@ -412,6 +412,14 @@ class AndroidLocationManagerTest {
         grant(Manifest.permission.ACCESS_COARSE_LOCATION)
         val location = manager().location
         assertEquals("the better of the providers' fixes", 47.2, location?.coordinate?.latitude)
+
+        // None fresh: the precise one of a few minutes ago, which the map may open on, rather than a vaguer newer one.
+        shadowLocations.setLastKnownLocation(LocationManager.GPS_PROVIDER, location(LocationManager.GPS_PROVIDER, 47.2, 8f, ageSeconds = 240))
+        shadowLocations.setLastKnownLocation(LocationManager.NETWORK_PROVIDER, location(LocationManager.NETWORK_PROVIDER, 47.3, 900f, ageSeconds = 60))
+        assertEquals("a recent precise fix", 47.2, manager().location?.coordinate?.latitude)
+        // None recent either: the newest.
+        shadowLocations.setLastKnownLocation(LocationManager.GPS_PROVIDER, location(LocationManager.GPS_PROVIDER, 47.2, 8f, ageSeconds = 900))
+        assertEquals("the newest", 47.3, manager().location?.coordinate?.latitude)
     }
 
     @Test

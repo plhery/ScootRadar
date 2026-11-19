@@ -140,7 +140,11 @@ class AndroidLocationManager(
             } catch (_: SecurityException) {
                 return null
             }
-            return ScooterLocationPolicy.bestCandidate(fixes, now = now()) ?: fixes.maxByOrNull { it.timestamp }
+            // A fresh fix; else the most precise of the last few minutes, which the map may open on while it waits for
+            // a fresh one (ScooterLocationPolicy.isRecent); else the newest.
+            return ScooterLocationPolicy.bestCandidate(fixes, now = now())
+                ?: fixes.filter { ScooterLocationPolicy.isRecent(it, now = now()) }.minByOrNull { it.horizontalAccuracy }
+                ?: fixes.maxByOrNull { it.timestamp }
         }
 
     /** Whether the phone has the sensor the compass is read from. */

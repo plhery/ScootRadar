@@ -55,6 +55,22 @@ object ScooterLocationPolicy {
         locations
             .filter { isAcceptable(it, maximumAccuracy, now) }
             .minByOrNull { it.horizontalAccuracy }
+
+    /**
+     * How old, in seconds, the phone's last fix may be for the map to open on its scooters while a fresh fix is
+     * found: a phone taken out of a pocket keeps one from a few minutes ago, a short walk away.
+     */
+    const val recentAge: Double = 600.0
+
+    /**
+     * Whether the phone's last fix is one the map may open on while it waits for a fresh one: as precise as a fix
+     * it takes, and at most [recentAge] old. It is not the rider's position: the fresh fix still has to be
+     * [isAcceptable].
+     */
+    fun isRecent(location: ScooterLocationFix, now: Instant = Instant.now()): Boolean =
+        location.horizontalAccuracy >= 0 &&
+            location.horizontalAccuracy <= preferredAccuracy &&
+            abs(location.timestamp.timeIntervalSince(now)) <= recentAge
 }
 
 /** Whether the app may know where the phone is, as CLAuthorizationStatus says. */

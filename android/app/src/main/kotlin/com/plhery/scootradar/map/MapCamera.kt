@@ -596,6 +596,9 @@ class MapCamera(
         rested?.invoke(animated)
         moveAgainForNewSize()
         applyFocus(controller.focusRequest.value)
+        // A move under way, as to the rider's place when the map first lays out, reports where it lands: the region
+        // it leaves, the start's city, would be loaded for nothing and stop the load of the place it goes to.
+        if (moving) return
         val region = MapZoom.region(of = projection.visibleMapRect)
         val zoomLevel = MapZoom.level(on = projection)
         val zoom = MapZoom.apiZoom(zoomLevel)

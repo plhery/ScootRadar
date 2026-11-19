@@ -25,6 +25,21 @@ enum ScooterLocationPolicy {
             .filter { isAcceptable($0, maximumAccuracy: maximumAccuracy) }
             .min(by: { $0.horizontalAccuracy < $1.horizontalAccuracy })
     }
+
+    /// How old the phone's last fix may be for the map to open on its
+    /// scooters while a fresh fix is found: a phone taken out of a pocket
+    /// keeps one from a few minutes ago, a short walk away.
+    static let recentAge: TimeInterval = 600
+
+    /// Whether the phone's last fix is one the map may open on while it waits
+    /// for a fresh one: as precise as a fix it takes, and at most `recentAge`
+    /// old. It is not the rider's position: the fresh fix still has to be
+    /// acceptable.
+    static func isRecent(_ location: CLLocation, now: Date = Date()) -> Bool {
+        location.horizontalAccuracy >= 0 &&
+            location.horizontalAccuracy <= preferredAccuracy &&
+            abs(location.timestamp.timeIntervalSince(now)) <= recentAge
+    }
 }
 
 enum NearbyOrigin: Equatable, Sendable {
@@ -1264,10 +1279,42 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 acceptLocation(cachedLocation)
             } else {
                 requestLocationAccess()
+                if let lastLocation = locationManager.location, ScooterLocationPolicy.isRecent(lastLocation) {
+                    showRecentLocation(lastLocation)
+                }
             }
         default:
             refresh()
         }
+    }
+
+    /// The phone's last fix of a few minutes ago, at the start, while the
+    /// fresh fix is found: the map opens there and asks for its scooters at
+    /// once, rather than show the start's city until the fix comes or the
+    /// wait ends. It is not taken as the rider's position: no dot and no
+    /// walking times. The fresh fix then moves the map to itself and asks
+    /// for scooters if its view isn't loaded yet; without one in time, the
+    /// map stays here and says so. A link's place, or a place chosen
+    /// meanwhile, keeps the map where it is, as for the fresh fix.
+    private func showRecentLocation(_ location: CLLocation) {
+        guard userLocation == nil, isLocating, !keepsMapOnFirstFix,
+              placeChoices == placeChoicesAtLocate else { return }
+        focusAndLoad(at: GeoPoint(location.coordinate))
+    }
+
+    /// The map goes to the rider's place at the zoom of Near me, and the
+    /// scooters there are asked for at once.
+    private func focusAndLoad(at point: GeoPoint) {
+        requestUserFocus(at: point)
+        let focusedRegion = MKCoordinateRegion(
+            center: point.coordinate,
+            latitudinalMeters: Self.userFocusMeters,
+            longitudinalMeters: Self.userFocusMeters
+        )
+        let focusedViewport = GeoBounds(region: focusedRegion)
+        viewport = focusedViewport
+        viewportZoom = Self.userFocusZoom
+        fetchIfNeeded(for: focusedViewport, zoom: viewportZoom)
     }
 
     func becameActive() {
@@ -2181,18 +2228,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             // Also when a card asked: the walking time appears and the map stays put.
             distanceOrigin = nextLocation
         } else if !hadLocation {
-            requestUserFocus(at: nextLocation)
             distanceOrigin = nextLocation
-
-            let focusedRegion = MKCoordinateRegion(
-                center: nextLocation.coordinate,
-                latitudinalMeters: Self.userFocusMeters,
-                longitudinalMeters: Self.userFocusMeters
-            )
-            let focusedViewport = GeoBounds(region: focusedRegion)
-            viewport = focusedViewport
-            viewportZoom = Self.userFocusZoom
-            fetchIfNeeded(for: focusedViewport, zoom: viewportZoom)
+            focusAndLoad(at: nextLocation)
         } else if Self.distance(from: distanceOrigin, to: nextLocation) >= max(75, location.horizontalAccuracy) {
             distanceOrigin = nextLocation
         }

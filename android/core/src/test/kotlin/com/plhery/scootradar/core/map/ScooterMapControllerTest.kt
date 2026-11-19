@@ -571,6 +571,115 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun aLastFixOfAFewMinutesIsOneToOpenOnButNotTheRidersPosition() {
+        val now = Instant.now()
+        fun fix(accuracy: Double, age: Double) =
+            ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = accuracy, timestamp = now.addingTimeInterval(-age))
+
+        assertTrue(ScooterLocationPolicy.isRecent(fix(accuracy = 50.0, age = 240.0), now))
+        assertTrue(ScooterLocationPolicy.isRecent(fix(accuracy = 200.0, age = 600.0), now))
+        assertFalse(ScooterLocationPolicy.isAcceptable(fix(accuracy = 50.0, age = 240.0), ScooterLocationPolicy.fallbackAccuracy, now))
+        // Older than ten minutes, vaguer than a fix the map takes, or no position at all.
+        assertFalse(ScooterLocationPolicy.isRecent(fix(accuracy = 50.0, age = 601.0), now))
+        assertFalse(ScooterLocationPolicy.isRecent(fix(accuracy = 201.0, age = 60.0), now))
+        assertFalse(ScooterLocationPolicy.isRecent(fix(accuracy = -1.0, age = 60.0), now))
+    }
+
+    @Test
+    fun aLastFixOfAFewMinutesAgoOpensOnItsScootersUntilTheFreshFixMovesTheMap() = runTest {
+        val lastFix = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 30.0, timestamp = Instant.now().addingTimeInterval(-240.0))
+        // A fresh fix a few steps away is in the view loaded already; one across town is not.
+        for (fresh in listOf(GeoPoint(47.3771, 8.5418), GeoPoint(47.3600, 8.5300))) {
+            val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+            val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+            manager.cachedLocation = lastFix
+            val model = makeController(api, locationManager = manager)
+
+            model.start()
+
+            // The map goes there and asks for its scooters at once; the rider's position is still being found.
+            val opening = unwrap(model.focusRequest.value)
+            assertEquals(lastFix.coordinate, opening.point)
+            assertEquals(350.0, opening.latitudinalMeters, 0.001)
+            assertEquals(17, model.viewportZoom.value)
+            assertTrue(waitUntil { api.calls == 1 && !model.isLoading.value })
+            assertTrue(api.askedBounds.single().contains(lastFix.coordinate.latitude, lastFix.coordinate.longitude))
+            assertTrue(model.isLocating.value)
+            assertEquals(ScooterSearchBarState.Locating, model.searchBarState)
+            assertNull(model.userLocation.value)
+
+            model.locationsUpdated(listOf(ScooterLocationFix(fresh, horizontalAccuracy = 20.0, timestamp = Instant.now())))
+
+            val located = unwrap(model.focusRequest.value)
+            assertNotEquals(opening.token, located.token)
+            assertEquals(fresh, located.point)
+            assertEquals(fresh, model.userLocation.value)
+            assertFalse(model.isLocating.value)
+            settle()
+            val nearby = fresh.latitude > 47.37
+            assertEquals("fresh fix at $fresh", if (nearby) 1 else 2, api.calls)
+            assertTrue(api.askedBounds.last().contains(fresh.latitude, fresh.longitude))
+        }
+    }
+
+    @Test
+    fun withoutAFreshFixInTimeTheMapStaysOnTheLastFixAndSaysItWasNotFound() = runTest {
+        val lastFix = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 30.0, timestamp = Instant.now().addingTimeInterval(-240.0))
+        val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+        manager.cachedLocation = lastFix
+        val model = makeController(api, locationManager = manager, locationTimeout = 50.milliseconds)
+
+        model.start()
+        val opening = unwrap(model.focusRequest.value)
+        val viewport = model.viewport.value
+
+        assertTrue(waitUntil { model.locationIssue.value == ScooterLocationIssue.NotFound })
+        assertFalse(model.isLocating.value)
+        assertNull(model.userLocation.value)
+        assertEquals(opening, model.focusRequest.value)
+        assertEquals(viewport, model.viewport.value)
+        settle()
+        assertEquals(1, api.calls)
+    }
+
+    @Test
+    fun aLastFixTooOldOrTooVagueLeavesTheStartAsItWas() = runTest {
+        for ((accuracy, age) in listOf(30.0 to 660.0, 400.0 to 60.0)) {
+            val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+            val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+            manager.cachedLocation = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = accuracy, timestamp = Instant.now().addingTimeInterval(-age))
+            val model = makeController(api, locationManager = manager)
+            val viewport = model.viewport.value
+
+            model.start()
+            settle()
+
+            assertNull("$accuracy m, $age s", model.focusRequest.value)
+            assertEquals(viewport, model.viewport.value)
+            assertEquals(0, api.calls)
+            assertTrue(model.isLocating.value)
+        }
+    }
+
+    @Test
+    fun aLinkOrAPlaceKeepsTheMapFromTheLastFix() = runTest {
+        val bern = TestCatalog.bern
+        val link = ScooterMapLink(origin = GeoPoint(latitude = bern.center.latitude, longitude = bern.center.longitude))
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+        manager.cachedLocation = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 30.0, timestamp = Instant.now().addingTimeInterval(-240.0))
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = manager)
+
+        model.open(link)
+        val linkedFocus = unwrap(model.focusRequest.value)
+        model.start()
+
+        assertEquals(linkedFocus, model.focusRequest.value)
+        assertEquals(bern.center, linkedFocus.point)
+        assertTrue(model.isLocating.value)
+    }
+
+    @Test
     fun userLocationFocusShowsAboutThreeHundredFiftyMetres() = runTest {
         val locationManager = FakeLocationManager()
         val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = locationManager)

@@ -302,6 +302,146 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertTrue(ScooterLocationPolicy.bestCandidate(in: [fallback, stale, preferred]) === preferred)
     }
 
+    func testALastFixOfAFewMinutesIsOneToOpenOnButNotTheRidersPosition() {
+        let now = Date()
+        func fix(accuracy: CLLocationAccuracy, age: TimeInterval) -> CLLocation {
+            lastFix(accuracy: accuracy, age: age, now: now)
+        }
+
+        XCTAssertTrue(ScooterLocationPolicy.isRecent(fix(accuracy: 50, age: 240), now: now))
+        XCTAssertTrue(ScooterLocationPolicy.isRecent(fix(accuracy: 200, age: 600), now: now))
+        XCTAssertFalse(ScooterLocationPolicy.isAcceptable(
+            fix(accuracy: 50, age: 240),
+            maximumAccuracy: ScooterLocationPolicy.fallbackAccuracy
+        ))
+        // Older than ten minutes, vaguer than a fix the map takes, or no position at all.
+        XCTAssertFalse(ScooterLocationPolicy.isRecent(fix(accuracy: 50, age: 601), now: now))
+        XCTAssertFalse(ScooterLocationPolicy.isRecent(fix(accuracy: 201, age: 60), now: now))
+        XCTAssertFalse(ScooterLocationPolicy.isRecent(fix(accuracy: -1, age: 60), now: now))
+    }
+
+    func testALastFixOfAFewMinutesAgoOpensOnItsScootersUntilTheFreshFixMovesTheMap() async {
+        let last = lastFix(accuracy: 30, age: 240)
+        let lastPoint = GeoPoint(last.coordinate)
+        // A fresh fix a few steps away is in the view loaded already; one across town is not.
+        for fresh in [GeoPoint(latitude: 47.3771, longitude: 8.5418), GeoPoint(latitude: 47.3600, longitude: 8.5300)] {
+            let api = StubScooterAPI(response: ScooterResponse(vehicles: []))
+            let manager = StubLocationManager(status: .authorizedWhenInUse)
+            manager.cachedLocation = last
+            let model = ScooterMapModel(api: api, locationManager: manager, defaults: isolatedDefaults(), builtInZones: [])
+
+            model.start()
+
+            // The map goes there and asks for its scooters at once; the rider's position is still being found.
+            guard let opening = model.focusRequest else { return XCTFail("The map stayed at the start") }
+            XCTAssertEqual(opening.point, lastPoint)
+            XCTAssertEqual(opening.latitudinalMeters, 350)
+            XCTAssertEqual(model.viewportZoom, 17)
+            let loaded = await waitUntil { await api.snapshot().calls == 1 && !model.isLoading }
+            XCTAssertTrue(loaded)
+            let opened = await api.askedBounds()
+            XCTAssertEqual(opened.count, 1)
+            XCTAssertTrue(opened.first?.contains(lastPoint) == true)
+            XCTAssertTrue(model.isLocating)
+            XCTAssertEqual(model.searchBarState, .locating)
+            XCTAssertNil(model.userLocation)
+
+            model.locationManager(manager, didUpdateLocations: [CLLocation(
+                coordinate: fresh.coordinate, altitude: 0, horizontalAccuracy: 20, verticalAccuracy: 10, timestamp: Date()
+            )])
+
+            guard let located = model.focusRequest else { return XCTFail("The fresh fix left no focus") }
+            XCTAssertNotEqual(located.token, opening.token)
+            XCTAssertEqual(located.point, fresh)
+            XCTAssertEqual(model.userLocation, fresh)
+            XCTAssertFalse(model.isLocating)
+            await settle()
+            let nearby = fresh.latitude > 47.37
+            let asked = await api.askedBounds()
+            XCTAssertEqual(asked.count, nearby ? 1 : 2, "Fresh fix at \(fresh)")
+            XCTAssertTrue(asked.last?.contains(fresh) == true)
+        }
+    }
+
+    func testWithoutAFreshFixInTimeTheMapStaysOnTheLastFixAndSaysItWasNotFound() async {
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: []))
+        let manager = StubLocationManager(status: .authorizedWhenInUse)
+        manager.cachedLocation = lastFix(accuracy: 30, age: 240)
+        let model = ScooterMapModel(
+            api: api,
+            locationManager: manager,
+            defaults: isolatedDefaults(),
+            locationTimeout: .milliseconds(50),
+            builtInZones: []
+        )
+
+        model.start()
+        let opening = model.focusRequest
+        let viewport = model.viewport
+        XCTAssertNotNil(opening)
+
+        let timedOut = await waitUntil { model.locationIssue == .notFound }
+        XCTAssertTrue(timedOut)
+        XCTAssertFalse(model.isLocating)
+        XCTAssertNil(model.userLocation)
+        XCTAssertEqual(model.focusRequest, opening)
+        XCTAssertEqual(model.viewport, viewport)
+        await settle()
+        let calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 1)
+    }
+
+    func testALastFixTooOldOrTooVagueLeavesTheStartAsItWas() async {
+        for (accuracy, age) in [(30.0, 660.0), (400.0, 60.0)] {
+            let api = StubScooterAPI(response: ScooterResponse(vehicles: []))
+            let manager = StubLocationManager(status: .authorizedWhenInUse)
+            manager.cachedLocation = lastFix(accuracy: accuracy, age: age)
+            let model = ScooterMapModel(api: api, locationManager: manager, defaults: isolatedDefaults(), builtInZones: [])
+            let viewport = model.viewport
+
+            model.start()
+            await settle()
+
+            XCTAssertNil(model.focusRequest, "\(accuracy) m, \(age) s")
+            XCTAssertEqual(model.viewport, viewport)
+            let calls = await api.snapshot().calls
+            XCTAssertEqual(calls, 0)
+            XCTAssertTrue(model.isLocating)
+        }
+    }
+
+    func testALinkOrAPlaceKeepsTheMapFromTheLastFix() throws {
+        let bern = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bern" })
+        let link = ScooterMapLink(origin: GeoPoint(latitude: bern.center.latitude, longitude: bern.center.longitude))
+        let manager = StubLocationManager(status: .authorizedWhenInUse)
+        manager.cachedLocation = lastFix(accuracy: 30, age: 240)
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: manager,
+            defaults: isolatedDefaults(),
+            builtInZones: []
+        )
+
+        model.open(link)
+        let linkedFocus = try XCTUnwrap(model.focusRequest)
+        model.start()
+
+        XCTAssertEqual(model.focusRequest, linkedFocus)
+        XCTAssertEqual(linkedFocus.point, GeoPoint(latitude: bern.center.latitude, longitude: bern.center.longitude))
+        XCTAssertTrue(model.isLocating)
+    }
+
+    /// The fix Core Location kept, of `age` seconds ago, at Zurich's centre.
+    private func lastFix(accuracy: CLLocationAccuracy, age: TimeInterval, now: Date = Date()) -> CLLocation {
+        CLLocation(
+            coordinate: CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417),
+            altitude: 0,
+            horizontalAccuracy: accuracy,
+            verticalAccuracy: 10,
+            timestamp: now.addingTimeInterval(-age)
+        )
+    }
+
     func testUserLocationFocusShowsAboutThreeHundredFiftyMetres() throws {
         let locationManager = CLLocationManager()
         let model = ScooterMapModel(
@@ -916,6 +1056,7 @@ private actor StubScooterAPI: ScooterAPIClient {
     private var cancellations = 0
     private var lastZoom: Int?
     private var lastMinimumRange: Int?
+    private var asked: [GeoBounds] = []
 
     init(response: ScooterResponse, delaysFirstRequest: Bool = false) {
         self.response = response
@@ -923,7 +1064,7 @@ private actor StubScooterAPI: ScooterAPIClient {
     }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int) async throws -> ScooterResponse {
-        _ = bounds
+        asked.append(bounds)
         calls += 1
         lastZoom = zoom
         lastMinimumRange = minimumRange
@@ -945,6 +1086,11 @@ private actor StubScooterAPI: ScooterAPIClient {
 
     func setFailure(_ failure: ScooterAPIError?) {
         self.failure = failure
+    }
+
+    /// The boxes asked for, in order.
+    func askedBounds() -> [GeoBounds] {
+        asked
     }
 
     func snapshot() -> (
@@ -4895,6 +5041,36 @@ extension ScooterMapModelTests {
         // And it stays there once the map has settled.
         try await Task.sleep(for: .milliseconds(800))
         XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
+    /// At a launch with a fix of a few minutes ago kept, the phone's map
+    /// opens on it and every request is for scooters there: none for the
+    /// place the map leaves on its way, which would take the place of the
+    /// request for the fix.
+    func testALastFixOfAFewMinutesAgoIsAllThePhonesMapAsksForAtLaunch() async throws {
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: []))
+        let manager = StubLocationManager(status: .authorizedWhenInUse)
+        let point = GeoPoint(latitude: 47.3769, longitude: 8.5417)
+        manager.cachedLocation = CLLocation(
+            coordinate: point.coordinate, altitude: 0, horizontalAccuracy: 30, verticalAccuracy: 10,
+            timestamp: Date().addingTimeInterval(-240)
+        )
+        let model = ScooterMapModel(api: api, locationManager: manager, defaults: isolatedDefaults(), builtInZones: [])
+        let window = try window(showing: ScooterMapScreen(model: model))
+        defer { window.isHidden = true }
+        let mapView = try XCTUnwrap(map(in: window))
+
+        let arrived = await waitUntil(attempts: 400) {
+            mapView.region.span.latitudeDelta < 0.05 && GeoBounds(region: mapView.region).contains(point)
+        }
+        XCTAssertTrue(arrived, "\(mapView.region)")
+        try await Task.sleep(for: .seconds(1))
+        let asked = await api.askedBounds()
+        XCTAssertFalse(asked.isEmpty)
+        for bounds in asked {
+            XCTAssertTrue(bounds.contains(point), "A request away from the fix: \(bounds) in \(asked)")
+        }
+        XCTAssertNil(model.userLocation)
     }
 
     /// A first fix can also come before the map is made at all: the move

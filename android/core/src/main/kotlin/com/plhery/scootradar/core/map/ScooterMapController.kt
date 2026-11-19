@@ -906,10 +906,34 @@ class ScooterMapController(
                 acceptLocation(cachedLocation)
             } else {
                 requestLocationAccess()
+                if (cachedLocation != null && ScooterLocationPolicy.isRecent(cachedLocation)) showRecentLocation(cachedLocation)
             }
         } else {
             refresh()
         }
+    }
+
+    /**
+     * The phone's last fix of a few minutes ago, at the start, while the fresh fix is found: the map opens there and
+     * asks for its scooters at once, rather than show the start's city until the fix comes or the wait ends. It is
+     * not taken as the rider's position: no dot and no walking times. The fresh fix then moves the map to itself and
+     * asks for scooters if its view isn't loaded yet; without one in time, the map stays here and says so. A link's
+     * place, or a place chosen meanwhile, keeps the map where it is, as for the fresh fix.
+     */
+    private fun showRecentLocation(location: ScooterLocationFix) {
+        if (userLocation.value != null || !isLocating.value || keepsMapOnFirstFix || placeChoices != placeChoicesAtLocate) return
+        focusAndLoad(location.coordinate)
+    }
+
+    /** The map goes to the rider's place at the zoom of Near me, and the scooters there are asked for at once. */
+    private fun focusAndLoad(point: GeoPoint) {
+        requestUserFocus(point)
+        val focusedViewport = GeoBounds(
+            MapRegion.around(center = point, latitudinalMeters = userFocusMeters, longitudinalMeters = userFocusMeters),
+        )
+        setViewport(focusedViewport)
+        _viewportZoom.value = USER_FOCUS_ZOOM
+        fetchIfNeeded(focusedViewport, zoom = viewportZoom.value)
     }
 
     fun becameActive() {
@@ -1819,18 +1843,8 @@ class ScooterMapController(
             // Also when a card asked: the walking time appears and the map stays put.
             distanceOrigin = nextLocation
         } else if (!hadLocation) {
-            requestUserFocus(nextLocation)
             distanceOrigin = nextLocation
-
-            val focusedRegion = MapRegion.around(
-                center = nextLocation,
-                latitudinalMeters = userFocusMeters,
-                longitudinalMeters = userFocusMeters,
-            )
-            val focusedViewport = GeoBounds(focusedRegion)
-            setViewport(focusedViewport)
-            _viewportZoom.value = USER_FOCUS_ZOOM
-            fetchIfNeeded(focusedViewport, zoom = viewportZoom.value)
+            focusAndLoad(nextLocation)
         } else if (distance(distanceOrigin, nextLocation) >= max(75.0, location.horizontalAccuracy)) {
             distanceOrigin = nextLocation
         }
