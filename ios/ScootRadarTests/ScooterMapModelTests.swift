@@ -5241,6 +5241,24 @@ extension ScooterMapModelTests {
         )
     }
 
+    /// As Android's `aFoldPastAnEdgeOfTheMapLeavesTheMapAsItWas` (0777be8c): a side that ends before it starts
+    /// is no room, however long the CGRect it makes.
+    func testAFoldPastAnEdgeOfTheMapLeavesTheMapAsItWas() {
+        func visible(_ rect: CGRect, _ fold: CGRect, _ side: ScooterMapCameraPolicy.FoldSide) -> CGRect {
+            ScooterMapCameraPolicy.visibleRect(rect, safeTop: 59, beside: fold, on: side)
+        }
+        let phone = CGRect(x: 0, y: 100, width: 400, height: 600)
+        // Across the map, above the safe area's top: 59 points from the fold down to that top.
+        XCTAssertEqual(visible(phone, CGRect(x: 0, y: 0, width: 400, height: 0), .above), phone)
+        // Down the map, right of it and left of it.
+        XCTAssertEqual(visible(phone, CGRect(x: 450, y: 0, width: 10, height: 800), .right), phone)
+        let shifted = CGRect(x: 100, y: 0, width: 500, height: 800)
+        XCTAssertEqual(visible(shifted, CGRect(x: 20, y: 0, width: 10, height: 800), .left), shifted)
+        // A fold inside the map still leaves the side past it.
+        XCTAssertEqual(visible(shifted, CGRect(x: 400, y: 0, width: 10, height: 800), .right),
+                       CGRect(x: 410, y: 0, width: 190, height: 800))
+    }
+
     /// Open like a book, the panel on the leading half: locating puts the
     /// rider in the middle of the trailing half, not on the fold side of it,
     /// and Apple's logo goes past the fold.

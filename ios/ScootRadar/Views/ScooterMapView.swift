@@ -163,7 +163,8 @@ enum ScooterMapCameraPolicy {
     /// What covers the map on the other side covers none of it: above a fold
     /// across the map, the search bar lying under it with the dock doesn't,
     /// and the map shows from the top of its safe area, `safeTop`, down to
-    /// the fold. With hardly any room left the fold is let be.
+    /// the fold. With hardly any room left the fold is let be, as it is when
+    /// it lies past an edge of the map.
     static func visibleRect(_ visible: CGRect, safeTop: CGFloat, beside fold: CGRect, on side: FoldSide) -> CGRect {
         let rect: CGRect
         switch side {
@@ -177,7 +178,9 @@ enum ScooterMapCameraPolicy {
             let maxX = min(visible.maxX, fold.minX)
             rect = CGRect(x: visible.minX, y: visible.minY, width: maxX - visible.minX, height: visible.height)
         }
-        return rect.width >= 44 && rect.height >= 44 ? rect : visible
+        // A side that ends before it starts, past an edge of the map, leaves no room either: CGRect's width and
+        // height are a rect's absolute size, so the check reads its size as it was made.
+        return rect.size.width >= 44 && rect.size.height >= 44 ? rect : visible
     }
 
     /// The camera's distance `steps` in, or out when negative: each step

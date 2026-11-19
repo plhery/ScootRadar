@@ -293,7 +293,9 @@ final class ScooterZonesModelTests: XCTestCase {
         model.showsZones = false
         model.updateViewport(zurich, zoom: 16)
         XCTAssertEqual(model.zoneState, .off)
-        let none = await waitUntil { await api.zoneAreas().isEmpty }
+        // Past the debounce, so that a request would have gone out by now: before it, an empty list says nothing.
+        try await Task.sleep(for: ScooterMapModel.zoneDebounce * 2)
+        let none = await api.zoneAreas().isEmpty
         XCTAssertTrue(none, "Nothing is asked for while the zones are off")
 
         model.showsZones = true
