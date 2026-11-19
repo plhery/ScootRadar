@@ -2166,7 +2166,7 @@ svg {
 .zone-legend {
   position: fixed;
   left: max(12px, env(safe-area-inset-left, 0px));
-  bottom: calc(var(--sheet-peek-h) + var(--dock-bottom) + 48px);
+  bottom: calc(var(--dock-bottom) + 48px);
   z-index: var(--z-map-actions);
   display: flex;
   flex-wrap: wrap;
@@ -2180,7 +2180,13 @@ svg {
   font-weight: 500;
   line-height: 1.3;
   pointer-events: none;
-  transition: bottom 280ms var(--spring);
+  /* Above the sheet by moving, not by its place: a glide of its bottom was a layout shift each frame, most
+     of the map's CLS. With translate, not transform, which a pressed credit's :active would undo where
+     motion is reduced. Placed at once where it appears, it glides only after (ZoneLegend). */
+  translate: 0 calc(-1 * var(--sheet-peek-h));
+}
+.zone-legend[data-placed] {
+  transition: translate 280ms var(--spring);
 }
 /* Each kind once. On a narrow phone a long one, as Italian's racks or marked places, takes a second
    line beside its swatch. */
@@ -2672,7 +2678,7 @@ svg {
     --credits-bottom: calc(var(--sheet-peek-h) + var(--dock-bottom) + 74px);
   }
   .app-shell:not([data-searching='true']):has(.near-me) .zone-legend {
-    bottom: calc(var(--sheet-peek-h) + var(--dock-bottom) + 116px);
+    bottom: calc(var(--dock-bottom) + 116px);
   }
   .map-style-options {
     gap: 6px;

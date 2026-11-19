@@ -1,7 +1,7 @@
 'use client';
 
 import type { PathOptions } from 'leaflet';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { formatLocale } from '@/lib/formatLocale';
 import { boundsContainPoint, boundsIntersect, polygonContainsPoint } from '@/lib/geo';
 import { useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
@@ -156,7 +156,18 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
   view?: MapBounds;
 }) {
   const { t, locale, region, unitsRegion, units } = useI18n();
-  if (state === 'off' && !rules.length) return null;
+  const shown = !(state === 'off' && !rules.length);
+  // Where it appears it is placed at once; it glides with the sheet only after that frame.
+  const [placed, setPlaced] = useState(false);
+  useEffect(() => {
+    if (!shown) {
+      setPlaced(false); // eslint-disable-line react-hooks/set-state-in-effect -- hidden, it is placed again where it next appears
+      return;
+    }
+    const frame = requestAnimationFrame(() => setPlaced(true));
+    return () => cancelAnimationFrame(frame);
+  }, [shown]);
+  if (!shown) return null;
   const count = zones.length;
   const note = state === 'off' ? null
     : NOTES[state] ?? (state === 'shown' && count === 0 && !rules.length ? 'zones.none' : null);
@@ -191,7 +202,7 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
     return speed ? t('zones.slowSpeed', { speed }) : t(LABELS[kind]);
   };
   return (
-    <div className="zone-legend glass" role="group" aria-label={t('zones.label')}>
+    <div className="zone-legend glass" role="group" aria-label={t('zones.label')} data-placed={placed || undefined}>
       {note && <span className="zone-legend-note">{t(note)}</span>}
       {RULE_KINDS.filter(kind => kinds.has(kind)).map(kind => (
         <span key={kind} className="zone-legend-item">
