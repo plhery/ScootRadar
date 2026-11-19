@@ -220,23 +220,31 @@ enum ScooterUnits: String, CaseIterable, Identifiable, Sendable {
         return Locale(components: components)
     }
 
-    /// Its segment in Settings: "Auto", and "km" and "mi" as every language writes them.
+    /// Its segment in Settings: "Auto (km)" or "Auto (mi)", with the units Automatic measures in now, as Android
+    /// and the website show it, and "km" and "mi" as every language writes them.
     var label: String {
         switch self {
-        case .automatic: String(localized: "Automatic")
+        case .automatic: "\(String(localized: "Automatic")) (\(Self.automaticMiles() ? "mi" : "km"))"
         case .metric: "km"
         case .imperial: "mi"
         }
     }
 
     /// What VoiceOver reads for its segment: the whole word for "Auto", which also means a car in German, Dutch,
-    /// Norwegian and Italian.
+    /// Norwegian and Italian, and the units it measures in, "Automatic (Miles)".
     var spokenLabel: String {
         switch self {
-        case .automatic: String(localized: "Automatic (read aloud)")
+        case .automatic:
+            "\(String(localized: "Automatic (read aloud)")) (\(Self.automaticMiles() ? Self.imperial.spokenLabel : Self.metric.spokenLabel))"
         case .metric: String(localized: "Kilometres")
         case .imperial: String(localized: "Miles")
         }
+    }
+
+    /// Whether Automatic measures in miles: in the region's system, or the one chosen in iOS's Language & Region
+    /// settings, as every length of the app is written with this locale.
+    static func automaticMiles(in locale: Locale = ScooterLanguage.current.locale(units: .automatic)) -> Bool {
+        locale.measurementSystem != .metric
     }
 }
 

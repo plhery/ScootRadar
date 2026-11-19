@@ -1788,11 +1788,30 @@ extension ScooterModelsTests {
         let spoken = String(localized: "Automatic (read aloud)")
         XCTAssertEqual(ScooterAppearance.sun.label, String(localized: "Automatic"))
         XCTAssertEqual(ScooterAppearance.sun.spokenLabel, spoken)
-        XCTAssertEqual(ScooterUnits.automatic.label, String(localized: "Automatic"))
-        XCTAssertEqual(ScooterUnits.automatic.spokenLabel, spoken)
+        // Automatic says what it measures in: "Auto (km)", read "Automatic (Kilometres)".
+        let miles = ScooterUnits.automaticMiles()
+        XCTAssertEqual(ScooterUnits.automatic.label, "\(String(localized: "Automatic")) (\(miles ? "mi" : "km"))")
+        XCTAssertEqual(
+            ScooterUnits.automatic.spokenLabel,
+            "\(spoken) (\(String(localized: miles ? "Miles" : "Kilometres")))"
+        )
         // The others read as they show.
         XCTAssertEqual(ScooterAppearance.system.spokenLabel, ScooterAppearance.system.label)
         XCTAssertEqual(ScooterAppearance.dark.spokenLabel, ScooterAppearance.dark.label)
+    }
+
+    /// Automatic measures in the region's system, or in the one chosen in iOS's settings, which the locale carries.
+    func testAutomaticUnitsAreTheLocalesOwn() {
+        XCTAssertTrue(ScooterUnits.automaticMiles(in: Locale(identifier: "en_US")))
+        XCTAssertTrue(ScooterUnits.automaticMiles(in: Locale(identifier: "en_GB")))
+        XCTAssertFalse(ScooterUnits.automaticMiles(in: Locale(identifier: "de_CH")))
+        XCTAssertFalse(ScooterUnits.automaticMiles(in: Locale(identifier: "en_CH")))
+        var british = Locale.Components(identifier: "en_GB")
+        british.measurementSystem = .metric
+        XCTAssertFalse(ScooterUnits.automaticMiles(in: Locale(components: british)))
+        var swiss = Locale.Components(identifier: "de_CH")
+        swiss.measurementSystem = .uk
+        XCTAssertTrue(ScooterUnits.automaticMiles(in: Locale(components: swiss)))
     }
 
     func testFrenchAndItalianNameTheOperatorWithOneWordAndFrenchShowsNothingInTheSingular() throws {
