@@ -1,6 +1,6 @@
 import { haversineM } from '@/lib/geo';
 import { formatLocale } from '@/lib/formatLocale';
-import type { AppLocale, TranslationKey } from '@/lib/i18n';
+import type { AppLocale } from '@/lib/i18n';
 
 // A straight line at an easy pace: the same estimate as the iOS app.
 const WALKING_METERS_PER_MINUTE = 80;
@@ -35,12 +35,13 @@ export function walkingDirectionsUrl(lat: number, lng: number): string {
 
 /** The value of useI18n() satisfies this. */
 export interface DistanceFormatter {
-  t: (key: TranslationKey, values?: Record<string, string | number>) => string;
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
   /** The UI language, which names miles, feet and yards: "pi" for feet in French. */
   locale?: AppLocale;
-  /** The format region, which picks the units; metric when absent. See formatLocale.ts. */
+  /** The format region, which writes the numbers; it picks the units too where unitsRegion is absent. See formatLocale.ts. */
   region?: string;
+  /** The region whose units Automatic follows: the time zone's, else the format region's (unitsRegion). */
+  unitsRegion?: string;
   /** The units chosen in the settings, over the region's; Automatic when absent. */
   units?: UnitsChoice;
 }
@@ -70,6 +71,32 @@ export function measurementSystem(region: string | undefined, units: UnitsChoice
   return region === 'GB' ? 'uk' : 'metric';
 }
 
+/** The units a formatter writes in: those chosen, or under Automatic those of its units region. */
+export function formatterSystem({ region, unitsRegion, units }: Pick<DistanceFormatter, 'region' | 'unitsRegion' | 'units'>): MeasurementSystem {
+  return measurementSystem(unitsRegion ?? region, units);
+}
+
+// The time zones of the regions that measure in US units (the US, Liberia, Myanmar), and of the UK and its Crown
+// dependencies, which write miles and yards: the same lists as Peek's website (delivery-tracker src/lib/units.ts).
+const US_UNIT_TIME_ZONE = new RegExp('^(America/(New_York|Detroit|Chicago|Menominee|Denver|Boise|Phoenix|Los_Angeles|Anchorage'
+  + '|Juneau|Sitka|Metlakatla|Yakutat|Nome|Adak|Indianapolis|Fort_Wayne|Knox_IN|Louisville|(Indiana|Kentucky|North_Dakota)/.+)'
+  + '|Pacific/Honolulu|US/.+|Africa/Monrovia|Asia/(Yangon|Rangoon))$');
+const UK_TIME_ZONE = /^Europe\/(London|Belfast|Guernsey|Isle_of_Man|Jersey)$/;
+
+/**
+ * The region whose units Automatic follows in a browser in this time zone: "US" for the US's zones and Liberia's
+ * and Myanmar's, "GB" for London's, and "001", the world, which measures in metres, for any other place. Undefined
+ * for a zone that names no place (UTC, an offset), where the format region decides. The zone comes first because a
+ * browser's languages say little about where it is: Chrome's English is en-US wherever it runs, which wrote miles,
+ * feet and mph in Zurich and Paris until 19 November 2026. A browser has no measurement setting to read, as an
+ * iPhone or Android 16 has.
+ */
+export function timeZoneUnitsRegion(timeZone: string | undefined): string | undefined {
+  if (!timeZone?.includes('/') || timeZone.startsWith('Etc/')) return undefined;
+  if (US_UNIT_TIME_ZONE.test(timeZone)) return 'US';
+  return UK_TIME_ZONE.test(timeZone) ? 'GB' : '001';
+}
+
 const METERS_PER_FOOT = 0.3048;
 const METERS_PER_YARD = 0.9144;
 export const METERS_PER_MILE = 1609.344;
@@ -94,18 +121,28 @@ function imperialLength(meters: number, system: 'us' | 'uk'): ImperialLength {
   return { value: Math.round(short / step) * step, unit: system === 'us' ? 'foot' : 'yard', maximumFractionDigits: 0 };
 }
 
-function imperialFormat({ unit, maximumFractionDigits }: ImperialLength, { locale, region }: DistanceFormatter): Intl.NumberFormat {
-  return new Intl.NumberFormat(formatLocale(locale ?? 'en', region), {
-    style: 'unit',
-    unit,
-    unitDisplay: 'short',
-    maximumFractionDigits,
-  });
+function lengthFormat(unit: 'meter' | 'kilometer' | ImperialLength['unit'], { locale, region }: DistanceFormatter,
+  digits: Pick<Intl.NumberFormatOptions, 'minimumFractionDigits' | 'maximumFractionDigits'>): Intl.NumberFormat {
+  return new Intl.NumberFormat(formatLocale(locale ?? 'en', region), { style: 'unit', unit, unitDisplay: 'short', ...digits });
+}
+
+function imperialFormat({ unit, maximumFractionDigits }: ImperialLength, formatter: DistanceFormatter): Intl.NumberFormat {
+  return lengthFormat(unit, formatter, { maximumFractionDigits });
+}
+
+/**
+ * "320 m" below a kilometre, "1.4 km" from there, as the language writes them (ICU, as the apps do: "1,4 km" in
+ * French with its own space). With a decimal on every kilometre where the label keeps its width: "1.0 km".
+ */
+export function formatMetricLength(meters: number, formatter: DistanceFormatter, keepDecimal = false): string {
+  return meters < 1000
+    ? lengthFormat('meter', formatter, { maximumFractionDigits: 0 }).format(Math.round(meters))
+    : lengthFormat('kilometer', formatter, { minimumFractionDigits: keepDecimal ? 1 : 0, maximumFractionDigits: 1 }).format(meters / 1000);
 }
 
 /** The same figure in two parts, for where the unit is set smaller than the number. */
 export function distanceParts(meters: number, formatter: DistanceFormatter): { value: string; unit: string } {
-  const system = measurementSystem(formatter.region, formatter.units);
+  const system = formatterSystem(formatter);
   if (system !== 'metric') {
     const length = imperialLength(meters, system);
     const parts = imperialFormat(length, formatter).formatToParts(length.value);
@@ -125,27 +162,20 @@ export function distanceParts(meters: number, formatter: DistanceFormatter): { v
  * measures in miles, "1,000 ft" or "350 yd" below half a mile, then "1.9 mi".
  */
 export function formatDistance(meters: number, formatter: DistanceFormatter): string {
-  const system = measurementSystem(formatter.region, formatter.units);
-  if (system !== 'metric') {
-    const length = imperialLength(meters, system);
-    return imperialFormat(length, formatter).format(length.value);
-  }
-  const { t, formatNumber } = formatter;
-  return meters < 1000
-    ? t('distance.meters', { count: formatNumber(Math.round(meters)) })
-    : t('distance.kilometers', { count: formatNumber(meters / 1000, { maximumFractionDigits: 1 }) });
+  const system = formatterSystem(formatter);
+  if (system === 'metric') return formatMetricLength(meters, formatter);
+  const length = imperialLength(meters, system);
+  return imperialFormat(length, formatter).format(length.value);
 }
 
 /** A whole number of kilometres, or of miles where lengths are in miles: "5 km", "3 mi". */
 export function formatWholeLength(count: number, formatter: DistanceFormatter): string {
-  if (measurementSystem(formatter.region, formatter.units) === 'metric') {
-    return formatter.t('distance.kilometers', { count: formatter.formatNumber(count) });
-  }
-  return imperialFormat({ value: count, unit: 'mile', maximumFractionDigits: 0 }, formatter).format(count);
+  const unit = formatterSystem(formatter) === 'metric' ? 'kilometer' : 'mile';
+  return lengthFormat(unit, formatter, { maximumFractionDigits: 0 }).format(count);
 }
 
 /** A city's distance in whole kilometres, or whole miles, never 0: "Bern · 61 km", "Bern · 38 mi". */
 export function formatCityDistance(meters: number, formatter: DistanceFormatter): string {
-  const unit = measurementSystem(formatter.region, formatter.units) === 'metric' ? 1000 : METERS_PER_MILE;
+  const unit = formatterSystem(formatter) === 'metric' ? 1000 : METERS_PER_MILE;
   return formatWholeLength(Math.max(1, Math.round(meters / unit)), formatter);
 }

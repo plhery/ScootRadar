@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 import { isolated } from '@/lib/bidi';
 import { formatLocale, formatRegion, placeNameLanguage } from '@/lib/formatLocale';
-import type { UnitsChoice } from '@/lib/walking';
+import { timeZoneUnitsRegion, type UnitsChoice } from '@/lib/walking';
 
 export const SUPPORTED_LOCALES = ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en'] as const;
 export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -32,8 +32,6 @@ const en = {
   'marker.cluster': '{count} scooters: {providers}. Zoom in to separate.',
   'marker.yourLocation': 'Your live location',
   'marker.searchedAddress': 'Searched address: {name}',
-  'distance.meters': '{count} m',
-  'distance.kilometers': '{count} km',
   'bar.empty': 'Search city or address',
   'bar.place.noData': 'Tap to search a city or address',
   'bar.place.sub': 'Scooters near this place',
@@ -295,8 +293,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} Scooter: {providers}. Zum Trennen vergrössern.',
     'marker.yourLocation': 'Dein aktueller Standort',
     'marker.searchedAddress': 'Gesuchte Adresse: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Stadt oder Adresse suchen',
     'bar.place.noData': 'Tippe, um einen Ort zu suchen',
     'bar.place.sub': 'Scooter in der Nähe dieses Orts',
@@ -542,8 +538,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} trottinettes : {providers}. Zoomez pour les séparer.',
     'marker.yourLocation': 'Votre position actuelle',
     'marker.searchedAddress': 'Adresse recherchée : {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Rechercher ville ou adresse',
     'bar.place.noData': 'Touchez pour rechercher un lieu',
     'bar.place.sub': 'Trottinettes près de ce lieu',
@@ -789,8 +783,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} monopattini: {providers}. Ingrandisci per separarli.',
     'marker.yourLocation': 'La tua posizione attuale',
     'marker.searchedAddress': 'Indirizzo cercato: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Cerca città o indirizzo',
     'bar.place.noData': 'Tocca per cercare un luogo',
     'bar.place.sub': 'Monopattini vicino a questo luogo',
@@ -1036,8 +1028,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} elsparkesykler: {providers}. Zoom inn for å skille dem.',
     'marker.yourLocation': 'Posisjonen din nå',
     'marker.searchedAddress': 'Søkt adresse: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Søk etter by eller adresse',
     'bar.place.noData': 'Trykk for å søke etter en by eller adresse',
     'bar.place.sub': 'Elsparkesykler nær dette stedet',
@@ -1283,8 +1273,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} deelsteps: {providers}. Zoom in om ze apart te zien.',
     'marker.yourLocation': 'Je huidige locatie',
     'marker.searchedAddress': 'Gezocht adres: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Stad of adres zoeken',
     'bar.place.noData': 'Tik om een stad of adres te zoeken',
     'bar.place.sub': 'Deelsteps rond deze plaats',
@@ -1530,8 +1518,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} trotinetes: {providers}. Amplie para as separar.',
     'marker.yourLocation': 'A sua localização atual',
     'marker.searchedAddress': 'Morada pesquisada: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Pesquisar cidade ou morada',
     'bar.place.noData': 'Toque para pesquisar uma cidade ou morada',
     'bar.place.sub': 'Trotinetes perto deste local',
@@ -1777,8 +1763,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': '{count} patinetes: {providers}. Acerca el mapa para separarlos.',
     'marker.yourLocation': 'Tu ubicación actual',
     'marker.searchedAddress': 'Dirección buscada: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Buscar ciudad o dirección',
     'bar.place.noData': 'Toca para buscar una ciudad o dirección',
     'bar.place.sub': 'Patinetes cerca de este lugar',
@@ -2024,8 +2008,6 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'marker.cluster': 'Rafskútur: {count} ({providers}). Þysjaðu inn til að sjá hverja fyrir sig.',
     'marker.yourLocation': 'Staðsetningin þín núna',
     'marker.searchedAddress': 'Heimilisfang úr leit: {name}',
-    'distance.meters': '{count} m',
-    'distance.kilometers': '{count} km',
     'bar.empty': 'Leita að stað eða heimilisfangi',
     'bar.place.noData': 'Ýttu til að leita að stað eða heimilisfangi',
     'bar.place.sub': 'Rafskútur nálægt þessum stað',
@@ -2295,6 +2277,11 @@ interface I18nContextValue {
   browserLocale: AppLocale;
   /** The region numbers, times, prices and distances are written for: "US", "CA", "CH". See formatLocale.ts. */
   region: string;
+  /**
+   * The region whose units Automatic writes lengths and speeds in: the browser's time zone's ("US", "GB", or "001"
+   * for anywhere metric), or the format region's where the zone names no place. See walking.ts.
+   */
+  unitsRegion: string;
   /** The language the map writes place names in where its tiles have them: "en", or "el" in a Greek browser. See formatLocale.ts. */
   nameLanguage: string;
   /** Shows the app in the language from now on, or in the browser's again with 'auto'. */
@@ -2337,10 +2324,12 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [localeChoice, setLocaleChoice] = useState<LocaleChoice>('auto');
   const [browserLanguages, setBrowserLanguages] = useState<readonly string[]>([]);
   const [units, setUnitsChoice] = useState<UnitsChoice>('auto');
+  const [timeZone, setTimeZone] = useState<string | undefined>(undefined);
   const browserLocale = useMemo(() => preferredLocale(browserLanguages), [browserLanguages]);
   const locale = localeChoice === 'auto' ? browserLocale : localeChoice;
   const region = useMemo(() => formatRegion(locale, browserLanguages), [browserLanguages, locale]);
   const nameLanguage = useMemo(() => placeNameLanguage(locale, browserLanguages), [browserLanguages, locale]);
+  const unitsRegion = timeZoneUnitsRegion(timeZone) ?? region;
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -2353,6 +2342,9 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
       setLocaleChoice(supportedLocale(stored) ?? 'auto');
       setUnitsChoice(storedUnits !== null && UNITS.has(storedUnits) ? storedUnits as UnitsChoice : 'auto');
       setBrowserLanguages(navigatorLanguages());
+      try {
+        setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      } catch {}
     }, 0);
     // A browser whose languages are changed while the page is open says so: Automatic follows at once.
     const followBrowser = () => setBrowserLanguages(navigatorLanguages());
@@ -2397,8 +2389,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ locale, localeChoice, browserLocale, region, nameLanguage, setLocale, units, setUnits, t, formatNumber }),
-    [browserLocale, formatNumber, locale, localeChoice, nameLanguage, region, setLocale, setUnits, t, units]
+    () => ({ locale, localeChoice, browserLocale, region, unitsRegion, nameLanguage, setLocale, units, setUnits, t, formatNumber }),
+    [browserLocale, formatNumber, locale, localeChoice, nameLanguage, region, setLocale, setUnits, t, units, unitsRegion]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

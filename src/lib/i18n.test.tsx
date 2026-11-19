@@ -128,6 +128,7 @@ describe('the units chosen', () => {
   const shows = (text: string) => waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(text));
 
   it('are the region\'s until some are chosen, and again once Automatic is, which keeps nothing', async () => {
+    process.env.TZ = 'America/New_York';
     browserLanguages(['en-US']);
     render(<I18nProvider><Units /></I18nProvider>);
     await shows('auto 2 mi');

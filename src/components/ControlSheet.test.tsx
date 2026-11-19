@@ -354,27 +354,40 @@ describe('ControlSheet settings', () => {
   it('offers the units as Automatic, km or mi, spoken in full, and keeps them', async () => {
     settings();
     const units = screen.getByRole('group', { name: 'Units' });
-    expect(pressed(units)).toEqual(['Automatic:true', 'km:false', 'mi:false']);
+    // Automatic says what it writes in here, as Peek's settings do.
+    expect(pressed(units)).toEqual(['Automatic (km):true', 'km:false', 'mi:false']);
     expect(within(units).getAllByRole('button').map(button => button.getAttribute('aria-label')))
-      .toEqual([null, 'Kilometres', 'Miles']);
+      .toEqual(['Automatic (Kilometres)', 'Kilometres', 'Miles']);
 
     fireEvent.click(within(units).getByRole('button', { name: 'Miles' }));
     expect(track).toHaveBeenCalledExactlyOnceWith('units_change', { result: 'imperial' });
     expect(localStorage.getItem('scooters-units')).toBe('imperial');
-    expect(pressed(units)).toEqual(['Automatic:false', 'km:false', 'mi:true']);
+    expect(pressed(units)).toEqual(['Automatic (km):false', 'km:false', 'mi:true']);
     expect(units.style.getPropertyValue('--segment-index')).toBe('2');
     // The units already chosen are not chosen again.
     fireEvent.click(within(units).getByRole('button', { name: 'Miles' }));
     expect(track).toHaveBeenCalledOnce();
 
-    fireEvent.click(within(units).getByRole('button', { name: 'Automatic' }));
+    fireEvent.click(within(units).getByRole('button', { name: 'Automatic (Kilometres)' }));
     expect(localStorage.getItem('scooters-units')).toBeNull();
     cleanup();
 
+    // The test browser asks for en-US; in Zurich Automatic writes kilometres all the same.
+    process.env.TZ = 'Europe/Zurich';
     localStorage.setItem('scooters-units', 'metric');
     settings();
     await vi.waitFor(() => expect(pressed(screen.getByRole('group', { name: 'Units' })))
-      .toEqual(['Automatic:false', 'km:true', 'mi:false']));
+      .toEqual(['Automatic (km):false', 'km:true', 'mi:false']));
+  });
+
+  it('says Automatic writes miles where the time zone measures in them, whatever the browser\'s language', async () => {
+    process.env.TZ = 'Europe/London';
+    vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['de-CH']);
+    localStorage.setItem('scooters-locale', 'en');
+    settings();
+    await vi.waitFor(() => expect(pressed(screen.getByRole('group', { name: 'Units' })))
+      .toEqual(['Automatic (mi):true', 'km:false', 'mi:false']));
+    expect(screen.getByRole('button', { name: 'Automatic (Miles)' })).toBeInTheDocument();
   });
 
   it('names the units in the language on screen, and writes km and mi in every one', async () => {
@@ -382,8 +395,8 @@ describe('ControlSheet settings', () => {
     settings();
     const units = await screen.findByRole('group', { name: 'Einheiten' });
     expect(within(units).getAllByRole('button').map(button => button.getAttribute('aria-label') ?? button.textContent))
-      .toEqual(['Automatisch', 'Kilometer', 'Meilen']);
-    expect(within(units).getAllByRole('button').map(button => button.textContent)).toEqual(['Automatisch', 'km', 'mi']);
+      .toEqual(['Automatisch (Kilometer)', 'Kilometer', 'Meilen']);
+    expect(within(units).getAllByRole('button').map(button => button.textContent)).toEqual(['Automatisch (km)', 'km', 'mi']);
   });
 
   it('offers the map as Calm or Detailed, each with a picture', () => {

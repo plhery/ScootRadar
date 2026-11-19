@@ -121,7 +121,7 @@ export default function ControlSheet({
   onZonesChange,
 }: ControlSheetProps) {
   const i18n = useI18n();
-  const { t, locale, localeChoice, region, units, setUnits, formatNumber } = i18n;
+  const { t, locale, localeChoice, unitsRegion, units, setUnits, formatNumber } = i18n;
   const rangeTitleId = useId();
   const rangeHelpId = useId();
   const zonesHelpId = useId();
@@ -159,7 +159,11 @@ export default function ControlSheet({
   };
 
   // Whole kilometres, or whole miles where lengths are in miles; "5 km+", spoken "5 km or more".
-  const rangeSystem = measurementSystem(region, units);
+  const rangeSystem = measurementSystem(unitsRegion, units);
+  // What Automatic writes in here, "Automatic (mi)", as Peek's settings say it: miles in London are no surprise then.
+  const automaticMiles = measurementSystem(unitsRegion) !== 'metric';
+  const automaticSymbol = automaticMiles ? 'mi' : 'km';
+  const automaticName = `${t('set.auto')} (${t(automaticMiles ? 'set.miles' : 'set.kilometres')})`;
   const rangeMax = rangeScale(rangeSystem).max;
   const rangeStep = rangeSteps(minRange, rangeSystem);
   const rangeLabel = formatMinimumRange(minRange, i18n);
@@ -377,7 +381,7 @@ export default function ControlSheet({
           </section>
           <section className="settings-section">
             <h3>{t('set.units')}</h3>
-            {/* Automatic writes lengths and speeds as the region does (walking.ts). */}
+            {/* Automatic writes lengths and speeds as the time zone's region does, and says which (walking.ts). */}
             <div
               className="seg"
               role="group"
@@ -395,7 +399,7 @@ export default function ControlSheet({
                   key={name}
                   type="button"
                   aria-pressed={units === name}
-                  aria-label={symbol && t(label)}
+                  aria-label={symbol ? t(label) : automaticName}
                   onClick={() => {
                     if (units === name) return;
                     selectionFeedback();
@@ -403,7 +407,7 @@ export default function ControlSheet({
                     setUnits(name);
                   }}
                 >
-                  {symbol ?? t(label)}
+                  {symbol ?? `${t(label)} (${automaticSymbol})`}
                 </button>
               ))}
             </div>

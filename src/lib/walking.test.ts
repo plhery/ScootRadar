@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { formatLocale } from '@/lib/formatLocale';
-import type { AppLocale, TranslationKey } from '@/lib/i18n';
+import type { AppLocale } from '@/lib/i18n';
 import {
   distanceParts,
   formatCityDistance,
   formatDistance,
   formatWholeLength,
   measurementSystem,
+  timeZoneUnitsRegion,
   walkEstimate,
   walkingDirectionsUrl,
   walkingMinutes,
@@ -54,7 +55,6 @@ function formatterFor(locale: AppLocale, region?: string, units?: UnitsChoice) {
     locale,
     region,
     units,
-    t: (key: TranslationKey, values?: Record<string, string | number>) => `${values?.count} ${key === 'distance.meters' ? 'm' : 'km'}`,
     formatNumber: (value: number, options?: Intl.NumberFormatOptions) =>
       new Intl.NumberFormat(formatLocale(locale, region), options).format(value),
   };
@@ -95,6 +95,41 @@ describe('measurementSystem', () => {
   it('measures in miles when they are chosen, with yards in the UK and feet everywhere else', () => {
     expect(measurementSystem('GB', 'imperial')).toBe('uk');
     expect(['US', 'CH', 'DE', undefined].map(region => measurementSystem(region, 'imperial'))).toEqual(Array(4).fill('us'));
+  });
+});
+
+describe('timeZoneUnitsRegion', () => {
+  it('follows the time zone: miles and feet in the US, Liberia and Myanmar, miles and yards in the UK', () => {
+    const zones = ['America/New_York', 'America/Los_Angeles', 'America/Indiana/Indianapolis', 'America/Kentucky/Louisville',
+      'Pacific/Honolulu', 'US/Eastern', 'Africa/Monrovia', 'Asia/Yangon', 'Asia/Rangoon'];
+    expect(zones.map(timeZoneUnitsRegion)).toEqual(Array(zones.length).fill('US'));
+    const british = ['Europe/London', 'Europe/Belfast', 'Europe/Guernsey', 'Europe/Isle_of_Man', 'Europe/Jersey'];
+    expect(british.map(timeZoneUnitsRegion)).toEqual(Array(british.length).fill('GB'));
+  });
+
+  it('measures in metres in any other place, Canada, Mexico and Ireland among them', () => {
+    const zones = ['Europe/Zurich', 'Europe/Paris', 'Europe/Dublin', 'Europe/Oslo', 'America/Toronto', 'America/Mexico_City',
+      'America/Puerto_Rico', 'Asia/Jerusalem', 'Australia/Sydney'];
+    expect(zones.map(zone => measurementSystem(timeZoneUnitsRegion(zone)))).toEqual(Array(zones.length).fill('metric'));
+  });
+
+  it('leaves the format region to decide where the zone names no place', () => {
+    expect(['UTC', 'Etc/GMT+5', 'GMT', '', undefined].map(timeZoneUnitsRegion)).toEqual(Array(5).fill(undefined));
+  });
+});
+
+describe('distances in the units of the time zone', () => {
+  it('writes metres for an American English browser in Zurich, and miles for a Swiss German one in New York', () => {
+    expect(formatDistance(300, { ...formatterFor('en', 'US'), unitsRegion: timeZoneUnitsRegion('Europe/Zurich') })).toBe('300 m');
+    expect(formatCityDistance(61_400, { ...formatterFor('en', 'US'), unitsRegion: '001' })).toBe('61 km');
+    expect(plain(formatDistance(3000, { ...formatterFor('de', 'CH'), unitsRegion: 'US' }))).toBe('1.9 mi');
+    expect(plain(formatDistance(300, { ...formatterFor('de', 'CH'), unitsRegion: 'US' }))).toBe("1'000 ft");
+  });
+
+  it('writes yards for an American English browser in London, under Automatic and with miles chosen', () => {
+    expect(plain(formatDistance(300, { ...formatterFor('en', 'US'), unitsRegion: 'GB' }))).toBe('350 yd');
+    expect(plain(formatDistance(300, { ...formatterFor('en', 'US', 'imperial'), unitsRegion: 'GB' }))).toBe('350 yd');
+    expect(formatDistance(300, { ...formatterFor('en', 'US', 'metric'), unitsRegion: 'GB' })).toBe('300 m');
   });
 });
 
@@ -156,7 +191,9 @@ describe('distances where the region measures in miles', () => {
 
   it('leaves Switzerland and Canada in metres', () => {
     expect(formatDistance(300, formatterFor('en', 'CH'))).toBe('300 m');
-    expect(formatDistance(1449, formatterFor('fr', 'CA'))).toBe('1,4 km');
+    // French with the no-break space ICU writes, as the iPhone and Android apps do: Canada's, and Switzerland's narrow one.
+    expect(formatDistance(1449, formatterFor('fr', 'CA'))).toBe('1,4\u00A0km');
+    expect(formatDistance(1449, formatterFor('fr', 'CH'))).toBe('1,4\u202Fkm');
     expect(formatDistance(800, formatterFor('es', 'MX'))).toBe('800 m');
   });
 });

@@ -481,7 +481,7 @@ test('the units chosen in the settings write every length in them, in a country 
   await trigger.click();
   const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
   const units = settings.getByRole('group', { name: 'Units' });
-  await expect(units.getByRole('button')).toHaveText(['Automatic', 'km', 'mi']);
+  await expect(units.getByRole('button')).toHaveText(['Automatic (km)', 'km', 'mi']);
   await expect(units.getByRole('button', { name: 'Automatic' })).toHaveAttribute('aria-pressed', 'true');
   await units.getByRole('button', { name: 'Miles' }).click();
   await expect(units.getByRole('button', { name: 'Miles' })).toHaveAttribute('aria-pressed', 'true');
@@ -505,7 +505,8 @@ test('the units chosen in the settings write every length in them, in a country 
 });
 
 test.describe('in a browser that asks for US English', () => {
-  test.use({ locale: 'en-US' });
+  // In New York: lengths follow the time zone first, and en-US in Zurich writes kilometres (walking.ts).
+  test.use({ locale: 'en-US', timezoneId: 'America/New_York' });
 
   test('numbers, prices and distances are written the US way', async ({ page }) => {
     const hopp = { ...scooterResponse.vehicles[0], provider: 'hopp', vehicle_id: 'hopp-1', rental_uris: undefined,

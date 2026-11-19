@@ -2,7 +2,7 @@ import { PROVIDERS, PROVIDER_KEYS } from '@/generated/providers';
 import { formatLocale } from '@/lib/formatLocale';
 import { batteryNeeded, DEFAULT_BATTERY_RANGE_M } from '@/lib/range';
 import type { UiTextFormatter } from '@/lib/uiText';
-import { formatWholeLength, measurementSystem, METERS_PER_MILE, type DistanceFormatter, type MeasurementSystem } from '@/lib/walking';
+import { formatterSystem, formatWholeLength, METERS_PER_MILE, type DistanceFormatter, type MeasurementSystem } from '@/lib/walking';
 
 // The filters' range minimum as the map shows it, kept in metres (range.ts filters by it), and the paragraph
 // under its slider: the website's alone.
@@ -46,7 +46,7 @@ export function snapMinimumRange(meters: number, system: MeasurementSystem): num
 
 /** "5 km" or "3 mi", the minimum as the slider has it; null for none, which reads as the translated "Any". */
 export function formatMinimumRange(meters: number, formatter: DistanceFormatter): string | null {
-  const steps = rangeSteps(meters, measurementSystem(formatter.region, formatter.units));
+  const steps = rangeSteps(meters, formatterSystem(formatter));
   return steps === 0 ? null : formatWholeLength(steps, formatter);
 }
 
