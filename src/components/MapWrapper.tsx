@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { preload } from 'react-dom';
 import type { MapViewport } from '@/lib/geo';
 import type { ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import type { CityGroup } from '@/lib/clustering';
@@ -14,6 +15,9 @@ import type { LastSeenStatus } from '@/lib/scooterDataState';
 import type { RuleZoneShape } from '@/lib/ruleZones';
 
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
+// The map's code, Leaflet's with it, is asked for as soon as the page's own has run, not once the page has
+// hydrated and first drawn it: on a slow phone that is a few hundred milliseconds sooner to the first scooters.
+if (typeof window !== 'undefined') void import('./MapComponent');
 
 interface MapWrapperProps {
   parking?: ParkingLocation[];
@@ -51,5 +55,9 @@ interface MapWrapperProps {
 }
 
 export default function MapWrapper(props: MapWrapperProps) {
+  // The address of the tiles' build (groundTileUrl in quietGround.ts), asked for with the page while the map's
+  // code is on its way, not after it: the map then asks for its first tiles at once, on a connection already
+  // open. Anonymous, as its fetch asks, or the browser would not hand it over.
+  preload('https://tiles.openfreemap.org/planet', { as: 'fetch', crossOrigin: 'anonymous' });
   return <MapComponent {...props} />;
 }

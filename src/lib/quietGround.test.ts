@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Feature } from 'protomaps-leaflet';
 import { GROUND_PALETTES, forgetGroundTileUrl, groundRules, groundTileUrl, placeNameKeys } from '@/lib/quietGround';
@@ -18,6 +19,16 @@ describe('groundTileUrl', () => {
     expect(await groundTileUrl(fetcher)).toBe(TILES);
     expect(fetcher).toHaveBeenCalledOnce();
     expect(fetcher).toHaveBeenCalledWith('https://tiles.openfreemap.org/planet');
+  });
+
+  it('asks for the address the map preloads, as the map preloads it', async () => {
+    const fetcher = answer({ tiles: [TILES] });
+    await groundTileUrl(fetcher);
+    const map = readFileSync(new URL('../components/MapWrapper.tsx', import.meta.url), 'utf8');
+
+    // The same address and the same credentials, or the browser fetches it a second time.
+    expect(fetcher.mock.calls[0]).toHaveLength(1);
+    expect(map).toContain(`preload('${(fetcher.mock.calls[0] as unknown[])[0]}', { as: 'fetch', crossOrigin: 'anonymous' });`);
   });
 
   it('does not remember a failure, so that the next try asks again', async () => {
