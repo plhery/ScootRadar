@@ -642,11 +642,17 @@ The day's counts live in memory, so a deploy gives everyone their 8 again.
 
 Also since 19 November 2026, a visitor that asks all day, pass or not, collects
 nothing more that day (`holdSustained`): from the request that makes 12 quarter hours
-with 20 requests or more, or from the first in the quarter hour after 8 in a row with
-requests. A map is looked at for a while and stops refreshing half an hour after the
-last touch; from 12 to 18 November no rider or app user came to either, while the
-North Rhine-Westphalia script came to both and a home server's script polling one town
-to the second. A kiosk or wall screen showing the map all day would look the same.
+with 20 requests or more, or from the one that makes the quarter hour after 8 in a
+row with 5 requests or more (`UNBROKEN_QUARTER_REQUESTS`). A map is looked at for a
+while and stops refreshing half an hour after the last touch; from 12 to 18 November
+no rider or app user came to either, while the North Rhine-Westphalia script came to
+both and a home server's script polling one town to the second. A kiosk or wall screen
+showing the map all day would look the same. Until 20 November a quarter hour with a
+single request counted in the run, and on 19 November a home with a few devices was
+held after 14 quarter hours in a row; from 13 to 19 November its longest run with 5
+requests or more was 3 (8 on a day the apps were tested there), while the scripts kept
+theirs (North Rhine-Westphalia's 32, at about 90 requests a quarter hour; the home
+server's 9, at about 6).
 
 Each network, an IPv4 address or an IPv6 /64, browsers and apps, pass or not, may make
 1,500 requests for scooters a UTC day and 300 a UTC hour (`NETWORK_REQUESTS_PER_DAY`
