@@ -20,6 +20,21 @@ export const SCOOTER_CLIENT_HEADER = 'X-Scooter-Client';
 /** The iPhone app's (ScootRadar/… CFNetwork/…) and the Android app's (okhttp/…) user agents. */
 export const isAppUserAgent = (agent: string | null | undefined) => !!agent && /^(ScootRadar|okhttp)\//.test(agent);
 
+/**
+ * What a request says it is by its user agent, which the Worker tells the cache in SCOOTER_AGENT_HEADER: our
+ * iPhone or Android app (any build of it, the F-Droid one too), or a browser, as anything else is taken to be.
+ * The cache holds a browser without a pass to its day's allowance (server/visitorLedger.ts), not an app yet.
+ */
+export type ScooterAgent = 'browser' | 'app';
+
+export const SCOOTER_AGENT_HEADER = 'X-Scooter-Agent';
+
+export const scooterAgent = (userAgent: string | null | undefined): ScooterAgent => isAppUserAgent(userAgent) ? 'app' : 'browser';
+
+/** The agent a request to the cache names; none from a Worker that predates the header, which holds no one. */
+export const parseScooterAgent = (value: string | string[] | null | undefined): ScooterAgent | null =>
+  value === 'browser' || value === 'app' ? value : null;
+
 export function scooterClient({ pass, view, userAgent }: { pass: boolean; view: boolean; userAgent: string | null }): ScooterClient {
   if (pass) return 'verified';
   if (view) return 'map';

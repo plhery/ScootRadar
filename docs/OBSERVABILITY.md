@@ -211,9 +211,13 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   feeds collected, those without a map pass (`unverified`) and with one apart, by the
   same salted hashes, kept the day. A restart starts the day's counts afresh, so a
   deploy splits a visitor's day in two. `scootradar_past_allowance_requests_total`:
-  the requests without a pass past their visitor's 8 quarter hours of the day, and
-  `scootradar_visitor_max_quarter_hours` (gauge): the most quarter hours one visitor
-  without a pass has kept feeds collected today. Since 18 November 2026.
+  the requests without a pass past their visitor's 8 quarter hours of the day, browsers'
+  and apps', and `scootradar_visitor_max_quarter_hours` (gauge): the most quarter hours
+  one visitor without a pass has kept feeds collected today. Since 18 November 2026.
+- `scootradar_held_requests_total{reason="allowance|busy|unbroken"}`: the requests
+  answered from what the cache holds until the day ends: a browser without a pass past
+  its 8 quarter hours, or a visitor that asks all day (see [Scraping](#scraping)).
+  Since 19 November 2026.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
@@ -618,11 +622,30 @@ ask as `map_pass_unverified`. The widget, its keys and their rotation are in
 
 Without a pass, a visitor (a map not yet verified, an app, or a client claiming to be
 one) may keep feeds collected 8 quarter hours of a UTC day (`UNVERIFIED_QUARTER_HOURS_PER_DAY`
-in `server/visitorLedger.ts`); past that, once enforced, their requests would be answered
-from what the cache holds until the day ends. It is counted, not enforced
-(`enforceAllowance`), until a week of `scootradar_visitor_days_total` shows how many
-of the apps' users would reach it: a phone network's carrier NAT puts many behind one
-address, and enforcement needs the day's counts to outlive a restart.
+in `server/visitorLedger.ts`). Since 19 November 2026 a browser is held to it: the
+Worker also tells the cache whether a request is from one of our apps or a browser,
+by its user agent, in `X-Scooter-Agent` (`app` for `ScootRadar/…` and `okhttp/…`,
+`browser` for anything else), and past its 8 quarter hours a browser's requests are
+answered from what the cache holds until the day ends. The website's map holds a pass
+within seconds, so only a browser whose Turnstile check fails, or a script calling
+itself a browser, comes to it. Apps are counted, not held (`enforceAllowance` in
+`server/scooter-cache.ts` names the agents held), until a week of
+`scootradar_visitor_days_total` shows how many of their users would reach it: a phone
+network's carrier NAT puts many behind one address, and the F-Droid build has no pass.
+The day's counts live in memory, so a deploy gives everyone their 8 again.
+
+Also since 19 November 2026, a visitor that asks all day, pass or not, collects
+nothing more that day (`holdSustained`): from the request that makes 12 quarter hours
+with 20 requests or more, or from the first in the quarter hour after 8 in a row with
+requests. A map is looked at for a while and stops refreshing half an hour after the
+last touch; from 12 to 18 November no rider or app user came to either, while the
+North Rhine-Westphalia script came to both and a home server's script polling one town
+to the second. A kiosk or wall screen showing the map all day would look the same.
+
+If riders fail Turnstile, the daily check below reports it: browsers' asks for a pass
+refused (403, `map_pass_refused`) or not checked (503, `map_pass_unverified`).
+`enforceAllowance: []` in `server/scooter-cache.ts` turns the hold off again, and
+`holdSustained: false` the other.
 
 The apps get the same pass by proving they are ours (`src/lib/appPass.ts`), when an
 answer says they have none, at most once every 10 minutes, out of sight: they ask
@@ -702,7 +725,10 @@ on a suspicion, 2 when a source could not be read:
 - from the cache, 300 requests or more from `other` clients, or a visitor without a
   map pass that kept feeds collected 32 quarter hours or more (8 hours). The report
   also gives the requests by client, the visitors of the day by quarter hours, with a
-  pass and without, and the requests past the allowance.
+  pass and without, the requests past the allowance and those held;
+- browsers' asks for a map pass (`POST /api/pass`) that failed, 5 or more and a tenth
+  of them or more: Turnstile refused them (403) or could not be asked (503). The
+  report gives the asks by browser, app and other, and status.
 
 The check would have reported the North Rhine-Westphalia script the morning after,
 by its day's requests and its user agent. One under a browser's user agent and 1,500

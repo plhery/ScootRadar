@@ -90,7 +90,7 @@ it('fails closed without an origin credential and forwards only a trusted client
   await proxyScooterSnapshot(req, env);
   expect(fetcher).toHaveBeenCalledWith(expect.any(URL), expect.objectContaining({
     redirect: 'manual', headers: { Accept: 'application/json', Authorization: 'Bearer test-service-token', 'X-Scooter-Client-IP': '192.0.2.1',
-      'X-Scooter-Client': 'other' },
+      'X-Scooter-Client': 'other', 'X-Scooter-Agent': 'browser' },
   }));
   // An IPv6 client as its /64, which the cache's limits and count of visitors go by.
   await proxyScooterSnapshot(new Request(request(), { headers: { 'cf-connecting-ip': '2001:db8:12:3400:a1b2:c3d4:e5f6:1' } }), env);
@@ -119,6 +119,10 @@ it('tells the cache who asks, from a pass, a view or an app\'s user agent, and a
   const app = { ...view, 'User-Agent': 'okhttp/5.5.1' };
   expect(await ask({ ...app, 'X-Scooter-Pass': pass })).toEqual({ client: 'verified', pass: null });
   expect(await ask({ ...app, 'X-Scooter-Pass': forged })).toEqual({ client: 'map', pass: 'none' });
+  // And whether it is one of our apps or a browser, by its user agent: the cache holds only browsers to the allowance.
+  expect(new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Agent')).toBe('app');
+  await ask(view);
+  expect(new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Agent')).toBe('browser');
   expect(await ask({ ...app, 'X-Scooter-Pass': pass, 'cf-connecting-ip': '192.0.2.2' })).toEqual({ client: 'map', pass: 'none' });
   // No pass is asked for where none can be given, nor for the zones.
   expect(await ask(view, env)).toEqual({ client: 'map', pass: null });

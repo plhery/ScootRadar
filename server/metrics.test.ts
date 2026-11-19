@@ -162,6 +162,7 @@ it('exports the requests by client, the visitors of each closed day by quarter h
   expect(sample(today, 'scootradar_scooter_requests_by_client_total{client="other"}')).toBe('1');
   expect(sample(today, 'scootradar_scooter_requests_by_client_total{client="map"}')).toBe('0');
   expect(sample(today, 'scootradar_past_allowance_requests_total')).toBe('2');
+  expect(sample(today, 'scootradar_held_requests_total{reason="allowance"}')).toBe('0');
   expect(sample(today, 'scootradar_visitor_max_quarter_hours')).toBe('10');
   expect(sample(today, 'scootradar_visitor_days_total{client="unverified",quarter_hours="9-15"}')).toBe('0');
   const counters = metrics.render(undefined, start + day, true);

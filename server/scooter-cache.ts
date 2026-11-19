@@ -192,8 +192,10 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
   ? schedule.idleIntervalMs : schedule.activeIntervalMs, undefined, id => retentionCap(id) === undefined);
 // City totals count the feeds collected on time, whatever the age of their positions.
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
-// Each visitor's requests and areas of the quarter hour, by a salted hash: metrics, and a limit on a sweep.
-const visitors = createVisitorLedger();
+// Each visitor's requests and areas of the quarter hour, by a salted hash: metrics, and a limit on a sweep. A browser
+// without a pass is held to its day's allowance (apps not yet: the F-Droid build has no pass), and anyone who asks
+// all day collects nothing more that day. `enforceAllowance: []` and `holdSustained: false` turn them off.
+const visitors = createVisitorLedger({ enforceAllowance: ['browser'], holdSustained: true });
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visitors: now => visitors.counts(now),
   paused: (feedId, now) => feedPaused(feedId, now) || workerSilent(feedId, now),
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({

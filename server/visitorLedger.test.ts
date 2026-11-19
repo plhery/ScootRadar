@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { AREA_DEGREES, AREAS_WATCHED_PER_WINDOW, areaOf, createVisitorLedger, UNVERIFIED_QUARTER_HOURS_PER_DAY, VISITOR_DAY_MS,
-  VISITOR_WINDOW_MS } from './visitorLedger';
+import { AREA_DEGREES, AREAS_WATCHED_PER_WINDOW, areaOf, BUSY_QUARTER_HOURS_PER_DAY, BUSY_QUARTER_REQUESTS, createVisitorLedger,
+  UNBROKEN_QUARTER_HOURS, UNVERIFIED_QUARTER_HOURS_PER_DAY, VISITOR_DAY_MS, VISITOR_WINDOW_MS } from './visitorLedger';
 
 // A street view in the area `index` cells east of Zürich's.
 const view = (index = 0) => ({ south: 47.36, west: 8.53 + index * AREA_DEGREES, north: 47.38, east: 8.56 + index * AREA_DEGREES });
@@ -75,16 +75,57 @@ describe('visitor ledger', () => {
     expect(closed.mostUnverifiedToday).toBe(0);
   });
 
-  it('once enforced, refuses collection to a visitor without a pass past its allowance, until the next UTC day', () => {
+  it('once enforced for browsers, refuses collection to one without a pass past its allowance, until the next UTC day', () => {
     const day = Math.ceil(start / VISITOR_DAY_MS) * VISITOR_DAY_MS;
-    const ledger = createVisitorLedger({ enforceAllowance: true });
+    const ledger = createVisitorLedger({ enforceAllowance: ['browser'] });
     const at = (quarter: number) => day + quarter * VISITOR_WINDOW_MS;
-    for (let i = 0; i < UNVERIFIED_QUARTER_HOURS_PER_DAY; i++) expect(ledger.record('192.0.2.1', view(), 16, at(i), 'app')).toBe(true);
-    expect(ledger.record('192.0.2.1', view(), 16, at(UNVERIFIED_QUARTER_HOURS_PER_DAY), 'map')).toBe(false);
+    const past = UNVERIFIED_QUARTER_HOURS_PER_DAY;
+    // An app and a browser behind one address, a quarter hour after another: the app is counted, not held.
+    for (let i = 0; i < past; i++) {
+      expect(ledger.record('192.0.2.1', view(), 16, at(i), 'map', 'app')).toBe(true);
+      expect(ledger.record('192.0.2.1', view(), 16, at(i), 'map', 'browser')).toBe(true);
+    }
+    expect(ledger.record('192.0.2.1', view(), 16, at(past), 'map', 'app')).toBe(true);
+    expect(ledger.record('192.0.2.1', view(), 16, at(past), 'map', 'browser')).toBe(false);
+    expect(ledger.record('192.0.2.1', view(), 16, at(past + 1), 'map', 'browser')).toBe(false);
+    // Nor is a request from a Worker that names no agent.
+    expect(ledger.record('192.0.2.1', view(), 16, at(past + 1), 'map', 'app')).toBe(true);
+    expect(ledger.record('192.0.2.1', view(), 16, at(past + 1), 'map')).toBe(true);
     // Once it holds a pass, it is not held back; nor is anyone else.
-    expect(ledger.record('192.0.2.1', view(), 16, at(UNVERIFIED_QUARTER_HOURS_PER_DAY), 'verified')).toBe(true);
-    expect(ledger.record('192.0.2.2', view(), 16, at(UNVERIFIED_QUARTER_HOURS_PER_DAY))).toBe(true);
-    expect(ledger.record('192.0.2.1', view(), 16, day + VISITOR_DAY_MS, 'map')).toBe(true);
+    expect(ledger.record('192.0.2.1', view(), 16, at(past + 1), 'verified', 'browser')).toBe(true);
+    expect(ledger.record('192.0.2.2', view(), 16, at(past + 1), 'map', 'browser')).toBe(true);
+    const counts = ledger.counts(at(past + 1));
+    expect(Object.fromEntries(counts.held)).toEqual({ allowance: 2, busy: 0, unbroken: 0 });
+    expect(counts.pastAllowance).toBe(5);
+    expect(ledger.record('192.0.2.1', view(), 16, day + VISITOR_DAY_MS, 'map', 'browser')).toBe(true);
+  });
+
+  it('holds a visitor that asks all day, pass or not, from its busy quarter hours or its unbroken run, until the next UTC day', () => {
+    const day = Math.ceil(start / VISITOR_DAY_MS) * VISITOR_DAY_MS;
+    const ledger = createVisitorLedger({ holdSustained: true });
+    const at = (quarter: number, second = 0) => day + quarter * VISITOR_WINDOW_MS + second * 1000;
+    // Busy every other quarter hour, so never long in a row: held from the request that makes the 12th busy.
+    for (let i = 0; i < BUSY_QUARTER_HOURS_PER_DAY; i++) {
+      for (let r = 1; r <= BUSY_QUARTER_REQUESTS; r++) {
+        const collects = ledger.record('192.0.2.1', view(), 16, at(2 * i, r), 'verified', 'browser');
+        expect(collects).toBe(i < BUSY_QUARTER_HOURS_PER_DAY - 1 || r < BUSY_QUARTER_REQUESTS);
+      }
+    }
+    expect(ledger.record('192.0.2.1', view(), 16, at(2 * BUSY_QUARTER_HOURS_PER_DAY + 1), 'verified', 'browser')).toBe(false);
+    // One request a quarter hour, in a row: held in the quarter hour after its run; a break starts the run again.
+    for (let i = 0; i < UNBROKEN_QUARTER_HOURS; i++) expect(ledger.record('192.0.2.2', view(), 16, at(i), 'map', 'app')).toBe(true);
+    for (let i = UNBROKEN_QUARTER_HOURS + 1; i < 2 * UNBROKEN_QUARTER_HOURS + 1; i++) {
+      expect(ledger.record('192.0.2.2', view(), 16, at(i), 'map', 'app')).toBe(true);
+    }
+    expect(ledger.record('192.0.2.2', view(), 16, at(2 * UNBROKEN_QUARTER_HOURS + 1), 'map', 'app')).toBe(false);
+    // The city totals' requests count in the run too, though they collect nothing either way.
+    for (let i = 0; i < UNBROKEN_QUARTER_HOURS; i++) ledger.record('192.0.2.3', view(), 8, at(i), 'map', 'app');
+    expect(ledger.record('192.0.2.3', view(), 16, at(UNBROKEN_QUARTER_HOURS), 'map', 'app')).toBe(false);
+    expect(Object.fromEntries(ledger.counts(at(2 * UNBROKEN_QUARTER_HOURS + 1)).held)).toEqual({ allowance: 0, busy: 2, unbroken: 2 });
+    expect(ledger.record('192.0.2.1', view(), 16, day + VISITOR_DAY_MS, 'verified', 'browser')).toBe(true);
+    // Without holdSustained, the same run is only counted.
+    const counted = createVisitorLedger();
+    for (let i = 0; i <= UNBROKEN_QUARTER_HOURS; i++) expect(counted.record('192.0.2.2', view(), 16, at(i), 'map', 'app')).toBe(true);
   });
 
   it('puts a box across the 180° line in the area of its middle', () => {

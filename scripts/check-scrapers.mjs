@@ -48,8 +48,16 @@ const SUSTAINED_NETWORKS = 100;
 // Requests for scooters from clients the Worker found are none of our maps and apps, which the cache answers from
 // what it holds since 18 November 2026 (src/lib/scooterClient.ts): our own scripts and tests make a few a day.
 const OTHER_REQUESTS = 300;
+// Browsers' asks for a map pass (POST /api/pass) that failed: Turnstile refused them (403, logged as
+// map_pass_refused) or could not be asked (503, map_pass_unverified). Since 19 November 2026 a browser without a pass
+// is held to 8 quarter hours of the day, so these are riders who get day-old scooters after 2 hours. On 18 and 19
+// November, before that, none of 17 failed.
+const PASS_FAILURES = 5;
+const PASS_FAILURE_SHARE = 0.1;
 // A browser, or our apps: the iPhone's (ScootRadar/… CFNetwork) and Android's (okhttp).
-const usualAgent = agent => /^Mozilla\/5\.0 /.test(agent) || /^ScootRadar\//.test(agent) || /^okhttp\//.test(agent);
+const appAgent = agent => /^ScootRadar\//.test(agent) || /^okhttp\//.test(agent);
+const usualAgent = agent => /^Mozilla\/5\.0 /.test(agent) || appAgent(agent);
+const agentKind = agent => appAgent(agent) ? 'app' : /^Mozilla\/5\.0 /.test(agent) ? 'browser' : 'other';
 
 function prometheus(path) {
   const result = spawnSync('ssh', ['-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15', 'netcup',
@@ -63,7 +71,7 @@ const instant = (query, at = dayEnd) => prometheus(`/api/v1/query?${new URLSearc
 const value = (query, at) => Math.round(Number(instant(query, at)[0]?.value[1] ?? 0));
 // In the buckets' order (server/visitorLedger.ts), which Prometheus does not keep.
 const ORDER = ['1-15', '16-60', '61-300', '301+', '1', '2-3', '4-7', '4-8', '8-15', '9-15', '16-31', '32-63', '32+', '64+',
-  'verified', 'map', 'app', 'other'];
+  'verified', 'map', 'app', 'other', 'allowance', 'busy', 'unbroken'];
 const byLabel = (query, label, at) => Object.fromEntries(instant(query, at)
   .map(series => [series.metric[label], Math.round(Number(series.value[1]))])
   .sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)));
@@ -91,6 +99,7 @@ function cache() {
     verifiedDays: byLabel(`sum by (quarter_hours) (increase(scootradar_visitor_days_total{${CACHE}, client="verified"}[24h]))`,
       'quarter_hours', closed),
     pastAllowance: value(`sum(increase(scootradar_past_allowance_requests_total{${CACHE}}[24h]))`),
+    held: byLabel(`sum by (reason) (increase(scootradar_held_requests_total{${CACHE}}[24h]))`, 'reason'),
   };
 }
 
@@ -119,7 +128,20 @@ function cloudflare() {
     filter: {date: $date, clientRequestPath: "/api/scooters"${filter}}) { count dimensions { clientIP clientCountryName userAgent } }`;
   return graphql(`total: httpRequestsAdaptiveGroups(limit: 1, filter: {date: $date, clientRequestPath: "/api/scooters"}) { count }
     ${groups('top', 500, '')}
-    ${groups('limited', 100, ', edgeResponseStatus: 429')}`);
+    ${groups('limited', 100, ', edgeResponseStatus: 429')}
+    passes: httpRequestsAdaptiveGroups(limit: 1000, filter: {date: $date, clientRequestPath: "/api/pass", clientRequestHTTPMethodName: "POST"}) {
+      count dimensions { clientIP userAgent edgeResponseStatus } }`);
+}
+
+// The asks for a map pass by who asked (browser, app, other) and status.
+function passes(rows) {
+  const counted = {};
+  for (const { count, dimensions: { userAgent, edgeResponseStatus: status } } of rows) {
+    const kind = agentKind(userAgent);
+    counted[kind] ??= {};
+    counted[kind][status] = (counted[kind][status] ?? 0) + count;
+  }
+  return counted;
 }
 
 // The requests of these addresses by quarter hour (at most 96 each, under Cloudflare's 10,000 rows). An answer
@@ -207,7 +229,8 @@ try {
   outsideNetworks = networks(outside);
   const plain = entry => Object.fromEntries(Object.entries(entry).filter(([key]) => key !== 'addresses'));
   traffic = { requests: zone.total[0]?.count ?? 0, own: Object.fromEntries(ownRows), busiest: outsideNetworks.slice(0, 10).map(plain),
-    limited: networks(zone.limited.filter(row => !ownTraffic(row, mine, own))).map(plain), sustained: await sustained(outsideNetworks) };
+    limited: networks(zone.limited.filter(row => !ownTraffic(row, mine, own))).map(plain), sustained: await sustained(outsideNetworks),
+    passes: passes(zone.passes.filter(row => !ownTraffic(row, mine, own))) };
 } catch (error) { failures.push(error.message); }
 
 const suspicions = [];
@@ -229,6 +252,12 @@ for (const entry of traffic?.sustained ?? []) {
 }
 const otherRequests = metrics?.byClient.other ?? 0;
 if (otherRequests >= OTHER_REQUESTS) suspicions.push(`${otherRequests} requests came from clients that are none of our maps and apps (answered from what the cache holds)`);
+const browserPasses = traffic?.passes.browser ?? {};
+const passesAsked = Object.values(browserPasses).reduce((sum, count) => sum + count, 0);
+const passesFailed = (browserPasses[403] ?? 0) + (browserPasses[503] ?? 0);
+if (passesFailed >= PASS_FAILURES && passesFailed >= passesAsked * PASS_FAILURE_SHARE) {
+  suspicions.push(`${passesFailed} of ${passesAsked} browsers' asks for a map pass failed (403 refused: ${browserPasses[403] ?? 0}, 503 not checked: ${browserPasses[503] ?? 0}): riders may be failing Turnstile, and are held to 8 quarter hours a day (turn it off in server/scooter-cache.ts)`);
+}
 const allDay = metrics?.unverifiedDays['32+'] ?? 0;
 if (allDay) suspicions.push(`${allDay} visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day`);
 
@@ -240,13 +269,14 @@ if (args.includes('--json')) {
   if (metrics) {
     console.log(`Cache: ${metrics.visitorQuarterHours} visitors over the quarter hours; by requests ${counts(metrics.byRequests)}; by areas ${counts(metrics.byAreas)}`);
     console.log(`  sweeps ${metrics.sweeps}, uncollected ${metrics.unwatched}, boxes too large ${metrics.loweredZooms}, origin 429s ${metrics.limited}, visitors with 16+ Lime refreshes ${metrics.limeRoundsVisitors}`);
-    console.log(`  requests by client ${counts(metrics.byClient)}; visitors by quarter hours kept collected, without a pass ${counts(metrics.unverifiedDays)}, with one ${counts(metrics.verifiedDays)}; requests past the allowance ${metrics.pastAllowance}`);
+    console.log(`  requests by client ${counts(metrics.byClient)}; visitors by quarter hours kept collected, without a pass ${counts(metrics.unverifiedDays)}, with one ${counts(metrics.verifiedDays)}; requests past the allowance ${metrics.pastAllowance}; held ${counts(metrics.held)}`);
   }
   if (traffic) {
     console.log(`Cloudflare /api/scooters: ${traffic.requests} requests (sampled); ours: ${counts(traffic.own)}`);
     console.log('Busiest outside networks:');
     for (const entry of traffic.busiest) console.log(`  ${String(entry.requests).padStart(6)}  ${entry.network}  ${entry.country}  ${entry.agents[0].agent.slice(0, 90)}`);
     console.log(`Limited (429): ${traffic.limited.map(entry => `${entry.network} ${entry.requests}`).join(', ') || 'none'}`);
+    console.log(`Map passes asked (POST /api/pass, by status): ${Object.entries(traffic.passes).map(([kind, statuses]) => `${kind} ${counts(statuses)}`).join('; ') || 'none'}`);
     console.log(`Quarter hours asked in (busy: ${BUSY_QUARTER_REQUESTS}+ requests), networks with ${SUSTAINED_FROM}+ requests:`);
     for (const entry of [...traffic.sustained].sort((a, b) => b.quarterHours - a.quarterHours).slice(0, 10)) {
       console.log(`  ${String(entry.quarterHours).padStart(3)} (${String(entry.busyQuarterHours).padStart(2)} busy)  ${entry.network}  ${entry.country}  ${entry.requests}  ${entry.agent.slice(0, 70)}`);

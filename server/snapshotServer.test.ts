@@ -541,6 +541,29 @@ describe('collection on demand', () => {
     expect(demanded).toEqual(['france:dott_fr_lyon']);
   });
 
+  it('holds a browser without a pass past its allowance, as the Worker names it, and not an app', async () => {
+    const day = 24 * 60 * 60_000;
+    const now = Math.floor(Date.now() / day) * day + 9 * 15 * 60_000;
+    vi.useFakeTimers({ now, toFake: ['Date'] });
+    try {
+      const feeds = [feed('france:dott_fr_lyon', lyon, now - minutes(5))];
+      const demanded: string[] = [];
+      const visitors = createVisitorLedger({ enforceAllowance: ['browser'] });
+      const metrics = createSnapshotMetrics('local', { visitors: at => visitors.counts(at) });
+      for (let quarter = 0; quarter < 8; quarter++) visitors.record('192.0.2.1', lyon, 16, now - (9 - quarter) * 15 * 60_000, 'map', 'browser');
+      const refresher = { demand: (ids: string[]) => { demanded.push(...ids); return []; }, refreshing: () => false, wait: async () => true };
+      const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, { metrics, visitors, refresher });
+      const ask = async (agent: string) => (await fetch(lyonUrl(port), { headers: { ...headers, 'X-Scooter-Client': 'map', 'X-Scooter-Agent': agent } })).text();
+      await ask('browser');
+      expect(demanded).toEqual([]);
+      await ask('app');
+      expect(demanded).toEqual(['france:dott_fr_lyon']);
+      expect(metrics.render(undefined, now)).toContain('scootradar_held_requests_total{reason="allowance"} 1');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('asks for the Lime groups nearest the middle of a wide view, and shows the others where last seen', async () => {
     const now = Date.now();
     const groups = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.id.startsWith('lime_de_app_berlin_')).map(system => {

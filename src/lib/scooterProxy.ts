@@ -1,6 +1,6 @@
 import { clientNetwork } from '@/lib/clientNetwork';
 import { holdsMapPass, MAP_PASS_HEADER, validMapPass } from '@/lib/mapPass';
-import { SCOOTER_CLIENT_HEADER, scooterClient } from '@/lib/scooterClient';
+import { SCOOTER_AGENT_HEADER, SCOOTER_CLIENT_HEADER, scooterAgent, scooterClient } from '@/lib/scooterClient';
 import { scooterView } from '@/lib/scooterView';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
 import { VEHICLE_MAX_AGE_MS } from '@/lib/dataFreshness';
@@ -244,12 +244,13 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     // view, or another client, which the cache answers from what it holds (scooterClient.ts).
     const pass = await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client)
       || await validMapPass(request.headers.get(MAP_PASS_HEADER), env.MAP_PASS_SECRET, client);
-    const asker = scooterClient({ pass, view: !!view, userAgent: request.headers.get('User-Agent') });
+    const userAgent = request.headers.get('User-Agent');
+    const asker = scooterClient({ pass, view: !!view, userAgent });
     let response: Response;
     try {
       response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
         ...(view && !zones ? { 'X-Scooter-View': `${view.id}.${view.sequence}` } : {}),
-        'X-Scooter-Client-IP': client, [SCOOTER_CLIENT_HEADER]: asker }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
+        'X-Scooter-Client-IP': client, [SCOOTER_CLIENT_HEADER]: asker, [SCOOTER_AGENT_HEADER]: scooterAgent(userAgent) }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
     } catch (error) {
       // Unreached, or no answer in time: the server is down, as while Netcup reboots.
       // The name only: a message may hold the request URL and its coordinates.

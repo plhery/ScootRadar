@@ -357,8 +357,11 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           (['unverified', 'verified'] as const).flatMap(client => visitors.days[client]
             .map(([quarter_hours, count]): [Labels, number] => [{ client, quarter_hours }, count])));
         metric('scootradar_past_allowance_requests_total', 'counter',
-          'Requests for scooters without a map pass past their visitor\'s 8 quarter hours of the UTC day: counted, not refused, until the allowance is enforced.',
+          'Requests for scooters without a map pass past their visitor\'s 8 quarter hours of the UTC day, browsers and apps: those of browsers are held (scootradar_held_requests_total), those of apps counted.',
           [[{}, visitors.pastAllowance]]);
+        metric('scootradar_held_requests_total', 'counter',
+          'Requests for scooters answered from what the cache holds, collecting nothing, until the UTC day ends: a browser without a map pass past its 8 quarter hours (allowance), or a visitor that asked in 12 quarter hours with 20 requests or more (busy) or in more than 8 in a row (unbroken).',
+          visitors.held.map(([reason, count]) => [{ reason }, count]));
         if (!countersOnly) {
           metric('scootradar_visitor_max_requests', 'gauge', 'The most requests for scooters one visitor made in the last closed quarter hour.',
             [[{}, visitors.lastWindow.requests]]);
