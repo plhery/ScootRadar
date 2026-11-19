@@ -553,12 +553,17 @@ describe('collection on demand', () => {
       for (let quarter = 0; quarter < 8; quarter++) visitors.record('192.0.2.1', lyon, 16, now - (9 - quarter) * 15 * 60_000, 'map', 'browser');
       const refresher = { demand: (ids: string[]) => { demanded.push(...ids); return []; }, refreshing: () => false, wait: async () => true };
       const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, { metrics, visitors, refresher });
-      const ask = async (agent: string) => (await fetch(lyonUrl(port), { headers: { ...headers, 'X-Scooter-Client': 'map', 'X-Scooter-Agent': agent } })).text();
+      const ask = async (agent: string, referrer = 'own') => (await fetch(lyonUrl(port), { headers: { ...headers, 'X-Scooter-Client': 'map',
+        'X-Scooter-Agent': agent, 'X-Scooter-Referrer': referrer } })).text();
       await ask('browser');
       expect(demanded).toEqual([]);
-      await ask('app');
+      await ask('app', 'none');
       expect(demanded).toEqual(['france:dott_fr_lyon']);
-      expect(metrics.render(undefined, now)).toContain('scootradar_held_requests_total{reason="allowance"} 1');
+      const rendered = metrics.render(undefined, now);
+      expect(rendered).toContain('scootradar_held_requests_total{reason="allowance"} 1');
+      // And the kind of referrer each carried, by agent.
+      expect(rendered).toContain('scootradar_scooter_requests_by_referrer_total{agent="browser",referrer="own"} 1');
+      expect(rendered).toContain('scootradar_scooter_requests_by_referrer_total{agent="app",referrer="none"} 1');
     } finally {
       vi.useRealTimers();
     }

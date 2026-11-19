@@ -44,7 +44,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 18 November 2026</p>
+        <p>Last updated: 19 November 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -204,7 +204,12 @@ export default function PrivacyPage() {
           To tell a map&apos;s requests from a script&apos;s, the server counts each visitor&apos;s requests for
           scooters under a hash of their IP address (or its first half for IPv6), salted afresh each time the server
           starts: by quarter hour, and by day the quarter hours in which they kept the scooters up to date. A hash is
-          kept for its quarter hour or its day, then only the counts; no IP address is stored.
+          kept for its quarter hour or its day, then only the counts; no IP address is stored. It also counts each
+          address&apos;s (or IPv6 first half&apos;s) requests for scooters of the day and hour under a keyed hash of it
+          and that day or hour, with a key only the server holds, kept across a restart until the day ends, so that an
+          address making more than a map does is answered with the scooters already held. One day&apos;s hashes cannot
+          be linked to the next&apos;s. The website tells the server whether a request for scooters came from a page of
+          ScootRadar, another site or none, never the page itself; the server only counts them.
         </p>
 
         <h2>Error reports</h2>

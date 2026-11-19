@@ -115,6 +115,10 @@ const publicIdsPath = join(dirname(snapshotPath), 'public-ids.json');
 // The views each Lime group's sweeps read (LimePlans in limeApp.ts), saved beside the snapshot with it and restored
 // after a restart: a deploy does not send each group's next sweep through its capped views again.
 const limePlansPath = join(dirname(snapshotPath), 'lime-plans.json');
+// Each network's requests for scooters of the UTC day and hour, under an HMAC of it and the day or hour
+// (visitorLedger.ts), saved beside the snapshot with it and restored after a restart: a deploy gives no network its
+// 1,500 a day and 300 an hour again, but for the requests made after the old cache's last save.
+const visitorCountsPath = join(dirname(snapshotPath), 'visitor-counts.json');
 // The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
@@ -194,8 +198,16 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 // Each visitor's requests and areas of the quarter hour, by a salted hash: metrics, and a limit on a sweep. A browser
 // without a pass is held to its day's allowance (apps not yet: the F-Droid build has no pass), and anyone who asks
-// all day collects nothing more that day. `enforceAllowance: []` and `holdSustained: false` turn them off.
-const visitors = createVisitorLedger({ enforceAllowance: ['browser'], holdSustained: true });
+// all day collects nothing more that day. `enforceAllowance: []` and `holdSustained: false` turn them off. With
+// VISITOR_COUNT_SECRET (32 characters or more), each network's requests of the day and hour are counted, and held
+// past 1,500 and 300; without it, they are neither.
+const visitorCountSecret = process.env.VISITOR_COUNT_SECRET;
+const visitors = createVisitorLedger({ enforceAllowance: ['browser'], holdSustained: true,
+  countSecret: visitorCountSecret && visitorCountSecret.length >= 32 ? visitorCountSecret : undefined });
+if (!visitors.countsNetworks) {
+  console.log(JSON.stringify({ event: 'network_limits_off', reason: visitorCountSecret
+    ? 'VISITOR_COUNT_SECRET has fewer than 32 characters' : 'VISITOR_COUNT_SECRET is not set' }));
+}
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visitors: now => visitors.counts(now),
   paused: (feedId, now) => feedPaused(feedId, now) || workerSilent(feedId, now),
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
@@ -287,6 +299,17 @@ try {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
     console.error('Public id restore failed', error);
     reportError('restore:public-ids', error);
+  }
+}
+if (visitors.countsNetworks) {
+  try {
+    const networks = visitors.restoreCounts(JSON.parse(await readFile(visitorCountsPath, 'utf8')), Date.now());
+    console.log(JSON.stringify({ event: 'network_counts_restored', networks }));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      console.error('Visitor count restore failed', error);
+      reportError('restore:visitor-counts', error);
+    }
   }
 }
 try {
@@ -470,7 +493,7 @@ async function persist(final = false) {
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
   const states = logFeedStates.saved(), discovered = discoveredAt, silences = workerSilences(now), looks = rydeViews?.savedLooks(now), sweeps = savedBirdSupplements(),
-    ids = vehicleIds.saved(now, 2 * SAVE_EVERY_MS), plans = limePlans.saved();
+    ids = vehicleIds.saved(now, 2 * SAVE_EVERY_MS), plans = limePlans.saved(), networkCounts = visitors.savedCounts(now);
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, temporaryDirectory, 'scooters', path => writeSnapshot(path, saved));
@@ -497,6 +520,15 @@ async function persist(final = false) {
     } catch (error) {
       console.error('Public id persistence failed', error);
       reportError('persist:public-ids', error);
+    }
+    if (networkCounts) {
+      try {
+        await saveAtomically(visitorCountsPath, temporaryDirectory, 'visitor-counts',
+          path => writeFile(path, `${JSON.stringify({ ...networkCounts, savedAt: now })}\n`));
+      } catch (error) {
+        console.error('Visitor count persistence failed', error);
+        reportError('persist:visitor-counts', error);
+      }
     }
     try {
       await saveAtomically(limePlansPath, temporaryDirectory, 'lime-plans',

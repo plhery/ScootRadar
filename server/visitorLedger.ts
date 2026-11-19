@@ -1,7 +1,7 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, createHmac, randomBytes } from 'node:crypto';
 import { boundsCenter } from '../src/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM } from '../src/lib/mapCoverage';
-import { SCOOTER_CLIENTS, type ScooterAgent, type ScooterClient } from '../src/lib/scooterClient';
+import { SCOOTER_CLIENTS, SCOOTER_REFERRERS, type ScooterAgent, type ScooterClient, type ScooterReferrer } from '../src/lib/scooterClient';
 import type { MapBounds } from '../src/lib/types';
 
 /** The visitors are counted by UTC quarter hours, as the Lime refreshes they set off (metrics.ts). */
@@ -38,9 +38,25 @@ export const UNVERIFIED_QUARTER_HOURS_PER_DAY = 8;
 export const BUSY_QUARTER_REQUESTS = 20;
 export const BUSY_QUARTER_HOURS_PER_DAY = 12;
 export const UNBROKEN_QUARTER_HOURS = 8;
-/** Why a request was answered from what the cache holds: its visitor's allowance, its busy quarter hours, its unbroken run. */
-export type HeldReason = 'allowance' | 'busy' | 'unbroken';
-export const HELD_REASONS: readonly HeldReason[] = ['allowance', 'busy', 'unbroken'];
+/**
+ * The requests for scooters a network (an IPv4 address or an IPv6 /64) may make in a UTC day, and in a UTC hour, before
+ * the rest are answered from what the cache holds, collecting nothing, until the day or the hour ends: anyone's,
+ * browsers' and apps', pass or not. From 12 to 18 November 2026 the busiest rider made 447 in a day and 276 in an hour,
+ * the busiest app's address 300 and 180; the script polling North Rhine-Westphalia 2,892 in a day. A carrier's NAT or a
+ * school's or hotel's address puts many behind one: on 1 to 6 November one browser's address made some 2,600 a day.
+ * Counted only with `countSecret` (VISITOR_COUNT_SECRET), under an HMAC of the network and the day or hour, which the
+ * cache saves and takes back at a restart (savedCounts): no address is kept, and one day's keys are not the next's.
+ */
+export const NETWORK_REQUESTS_PER_DAY = 1_500;
+export const NETWORK_REQUESTS_PER_HOUR = 300;
+export const VISITOR_HOUR_MS = 60 * 60_000;
+const MAX_NETWORKS = 50_000;
+/**
+ * Why a request was answered from what the cache holds: its visitor's allowance, its busy quarter hours, its unbroken
+ * run, its network's requests of the day or of the hour.
+ */
+export type HeldReason = 'allowance' | 'busy' | 'unbroken' | 'daily' | 'hourly';
+export const HELD_REASONS: readonly HeldReason[] = ['allowance', 'busy', 'unbroken', 'daily', 'hourly'];
 const MAX_DAY_VISITORS = 50_000;
 
 // The visitors of a quarter hour by their requests for scooters: a map left open asks every minute (15),
@@ -76,7 +92,24 @@ export interface VisitorCounts {
   held: [HeldReason, number][];
   /** The most quarter hours one visitor without a pass has kept feeds collected today. */
   mostUnverifiedToday: number;
+  /** Requests for scooters by the agent and the kind of referrer the Worker named (scooterClient.ts). */
+  byReferrer: [ScooterAgent, ScooterReferrer, number][];
 }
+
+/**
+ * The networks' counts of the UTC day and hour, as the cache saves them beside the snapshot: each key an HMAC of a
+ * network and its day or hour with the cache's secret, so the file holds no address, and keys of another day or
+ * secret count for no one.
+ */
+export interface SavedNetworkCounts {
+  version: 1;
+  day: number;
+  hour: number;
+  daily: [string, number][];
+  hourly: [string, number][];
+}
+
+interface PeriodCounts { period: number; counts: Map<string, number> }
 
 /** The area of a box: the cell its middle is in. */
 export function areaOf(bounds: MapBounds): string {
@@ -110,10 +143,12 @@ interface VisitorDay {
  * asking for many areas, or for a town all day; a map, for one or a few, for a while.
  * `enforceAllowance`: a visitor without a pass, of one of these agents, past UNVERIFIED_QUARTER_HOURS_PER_DAY of
  * them collects nothing more that day. `holdSustained`: nor does one that asks all day (BUSY_QUARTER_HOURS_PER_DAY,
- * UNBROKEN_QUARTER_HOURS).
+ * UNBROKEN_QUARTER_HOURS). `countSecret`: each network's requests of the UTC day and hour are counted under an HMAC
+ * of it and the day or hour with this secret, kept across a restart (savedCounts, restoreCounts), and past
+ * NETWORK_REQUESTS_PER_DAY or NETWORK_REQUESTS_PER_HOUR collect nothing more until it ends; without it, neither.
  */
-export function createVisitorLedger({ enforceAllowance = [], holdSustained = false }:
-  { enforceAllowance?: readonly ScooterAgent[]; holdSustained?: boolean } = {}) {
+export function createVisitorLedger({ enforceAllowance = [], holdSustained = false, countSecret }:
+  { enforceAllowance?: readonly ScooterAgent[]; holdSustained?: boolean; countSecret?: string } = {}) {
   const salt = randomBytes(16);
   let window = 0;
   const visitors = new Map<string, { requests: number; watched: Set<string>; areas: Set<string> }>();
@@ -129,6 +164,31 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
   let pastAllowance = 0;
   const held = new Map(HELD_REASONS.map(reason => [reason, 0]));
   const hold = (reason: HeldReason) => { held.set(reason, held.get(reason)! + 1); return false; };
+  const byReferrer = new Map(['browser', 'app'].flatMap(agent => SCOOTER_REFERRERS.map(referrer => [`${agent} ${referrer}`, 0])));
+  const daily: PeriodCounts = { period: -1, counts: new Map() };
+  const hourly: PeriodCounts = { period: -1, counts: new Map() };
+  const networkKey = (scope: 'day' | 'hour', period: number, network: string) =>
+    createHmac('sha256', countSecret!).update(`${scope}:${period}:${network}`).digest().subarray(0, 16).toString('base64url');
+  /** Moves the counts to the period, those of a past one dropped. */
+  const turn = (counts: PeriodCounts, period: number) => {
+    if (counts.period !== period) { counts.period = period; counts.counts.clear(); }
+  };
+  /** Counts a request against the network's period; how many it has made in it, 0 past MAX_NETWORKS for a new one. */
+  const tally = (counts: PeriodCounts, scope: 'day' | 'hour', period: number, network: string) => {
+    turn(counts, period);
+    const key = networkKey(scope, period, network);
+    const made = counts.counts.get(key);
+    if (made === undefined && counts.counts.size >= MAX_NETWORKS) return 0;
+    counts.counts.set(key, (made ?? 0) + 1);
+    return (made ?? 0) + 1;
+  };
+  /** Counts the request against its network's day and hour; which limit it is past, if any. */
+  const pastNetworkLimit = (network: string, now: number): 'daily' | 'hourly' | null => {
+    if (!countSecret) return null;
+    const today = tally(daily, 'day', Math.floor(now / VISITOR_DAY_MS), network);
+    const thisHour = tally(hourly, 'hour', Math.floor(now / VISITOR_HOUR_MS), network);
+    return today > NETWORK_REQUESTS_PER_DAY ? 'daily' : thisHour > NETWORK_REQUESTS_PER_HOUR ? 'hourly' : null;
+  };
   const count = (counts: Map<string, number>, buckets: [string, number][], value: number) => {
     const [bucket] = buckets.find(([, most]) => value <= most)!;
     counts.set(bucket, counts.get(bucket)! + 1);
@@ -202,14 +262,18 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
      * a client other than our maps and apps; false once its visitor has asked for AREAS_WATCHED_PER_WINDOW other
      * areas this quarter hour, with `holdSustained` once it has asked all day, and, with `enforceAllowance`, once
      * one without a pass, of an `agent` it names, has kept feeds collected UNVERIFIED_QUARTER_HOURS_PER_DAY quarter
-     * hours today. The city totals collect nothing and count no area nor quarter hour. Past MAX_VISITORS in a
-     * quarter hour, a new visitor is neither counted nor held back.
+     * hours today, and with `countSecret` once its network has made NETWORK_REQUESTS_PER_DAY requests today or
+     * NETWORK_REQUESTS_PER_HOUR this hour, which every request counts towards. The city totals collect nothing and
+     * count no area nor quarter hour. Past MAX_VISITORS in a quarter hour, a new visitor is neither counted nor held
+     * back. `referrer`, the kind the Worker named, is counted by agent, and holds no one.
      */
     record(client: string, bounds: MapBounds, zoom: number | null, now = Date.now(), asker: ScooterClient = 'map',
-      agent: ScooterAgent | null = null): boolean {
+      agent: ScooterAgent | null = null, referrer: ScooterReferrer | null = null): boolean {
       close(now);
       closeDay(now);
       byClient.set(asker, byClient.get(asker)! + 1);
+      if (agent && referrer) byReferrer.set(`${agent} ${referrer}`, byReferrer.get(`${agent} ${referrer}`)! + 1);
+      const pastLimit = pastNetworkLimit(client, now);
       const id = createHash('sha256').update(salt).update(client).digest('base64url');
       let visitor = visitors.get(id);
       if (!visitor) {
@@ -225,6 +289,7 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
       if (visitor.areas.size < AREAS_KEPT) visitor.areas.add(area);
       if (asker === 'other') return false;
       if (script) return hold(script);
+      if (pastLimit) return hold(pastLimit);
       if (!visitor.watched.has(area)) {
         if (visitor.watched.size >= AREAS_WATCHED_PER_WINDOW) { unwatched++; return false; }
         visitor.watched.add(area);
@@ -238,7 +303,43 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
       for (const { unverified } of visitorDays.values()) mostUnverifiedToday = Math.max(mostUnverifiedToday, unverified);
       return { byRequests: [...byRequests], byAreas: [...byAreas], unwatched, lastWindow, byClient: [...byClient],
         days: { unverified: [...unverifiedDays], verified: [...verifiedDays] }, pastAllowance, held: [...held],
-        mostUnverifiedToday };
+        mostUnverifiedToday, byReferrer: [...byReferrer].map(([key, count]) => {
+          const [agent, referrer] = key.split(' ') as [ScooterAgent, ScooterReferrer];
+          return [agent, referrer, count];
+        }) };
+    },
+    /** Whether the networks' requests are counted and held to NETWORK_REQUESTS_PER_DAY and _PER_HOUR (`countSecret`). */
+    countsNetworks: !!countSecret,
+    /** The networks' counts of the day and hour, to save; none without `countSecret`. */
+    savedCounts(now = Date.now()): SavedNetworkCounts | undefined {
+      if (!countSecret) return undefined;
+      const day = Math.floor(now / VISITOR_DAY_MS), hour = Math.floor(now / VISITOR_HOUR_MS);
+      turn(daily, day);
+      turn(hourly, hour);
+      return { version: 1, day, hour, daily: [...daily.counts], hourly: [...hourly.counts] };
+    },
+    /**
+     * Takes back the counts savedCounts gave, those of this UTC day and hour, added to any made since the start; those
+     * of another day or hour, or that cannot be read, are left. How many networks' counts of the day it took back.
+     */
+    restoreCounts(saved: unknown, now = Date.now()): number {
+      if (!countSecret || typeof saved !== 'object' || !saved || (saved as SavedNetworkCounts).version !== 1) return 0;
+      const { day, hour, daily: savedDaily, hourly: savedHourly } = saved as SavedNetworkCounts;
+      const restore = (counts: PeriodCounts, period: number, savedPeriod: unknown, entries: unknown) => {
+        turn(counts, period);
+        if (savedPeriod !== period || !Array.isArray(entries)) return 0;
+        let restored = 0;
+        for (const entry of entries) {
+          if (!Array.isArray(entry) || typeof entry[0] !== 'string' || !Number.isInteger(entry[1]) || entry[1] < 1) continue;
+          const made = counts.counts.get(entry[0]);
+          if (made === undefined && counts.counts.size >= MAX_NETWORKS) continue;
+          counts.counts.set(entry[0], (made ?? 0) + entry[1]);
+          restored++;
+        }
+        return restored;
+      };
+      restore(hourly, Math.floor(now / VISITOR_HOUR_MS), hour, savedHourly);
+      return restore(daily, Math.floor(now / VISITOR_DAY_MS), day, savedDaily);
     },
   };
 }

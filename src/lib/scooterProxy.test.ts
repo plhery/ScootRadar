@@ -90,7 +90,7 @@ it('fails closed without an origin credential and forwards only a trusted client
   await proxyScooterSnapshot(req, env);
   expect(fetcher).toHaveBeenCalledWith(expect.any(URL), expect.objectContaining({
     redirect: 'manual', headers: { Accept: 'application/json', Authorization: 'Bearer test-service-token', 'X-Scooter-Client-IP': '192.0.2.1',
-      'X-Scooter-Client': 'other', 'X-Scooter-Agent': 'browser' },
+      'X-Scooter-Client': 'other', 'X-Scooter-Agent': 'browser', 'X-Scooter-Referrer': 'none' },
   }));
   // An IPv6 client as its /64, which the cache's limits and count of visitors go by.
   await proxyScooterSnapshot(new Request(request(), { headers: { 'cf-connecting-ip': '2001:db8:12:3400:a1b2:c3d4:e5f6:1' } }), env);
@@ -128,6 +128,31 @@ it('tells the cache who asks, from a pass, a view or an app\'s user agent, and a
   expect(await ask(view, env)).toEqual({ client: 'map', pass: null });
   expect(await ask(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof env)).toEqual({ client: 'map', pass: null });
   expect((await ask(view, passes, 'https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15')).pass).toBeNull();
+});
+
+it('tells the cache what kind of referrer a request carries, never the referrer itself', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({ vehicles: [] }));
+  const sent = async (referrer?: string) => {
+    await proxyScooterSnapshot(new Request(request(), { headers: { 'cf-connecting-ip': '192.0.2.1',
+      ...(referrer === undefined ? {} : { Referer: referrer }) } }), env);
+    const headers = new Headers(fetcher.mock.lastCall?.[1]?.headers);
+    expect(headers.has('Referer')).toBe(false);
+    expect([...headers.values()].some(value => value.includes('/map?'))).toBe(false);
+    return headers.get('X-Scooter-Referrer');
+  };
+  // The map's own requests carry its page in full (Referrer-Policy: strict-origin-when-cross-origin).
+  expect(await sent('https://scootradar.com/map?lat=47.37&lng=8.54&z=15')).toBe('own');
+  expect(await sent('https://scootradar.com/')).toBe('own');
+  expect(await sent('https://scootradar.com:443/de')).toBe('own');
+  // Another site, another of our hosts, a look-alike, plain HTTP or what is no address: other.
+  expect(await sent('https://example.com/map?lat=47.37&lng=8.54&z=15')).toBe('other');
+  expect(await sent('https://www.scootradar.com/')).toBe('other');
+  expect(await sent('https://scootradar.com.example/')).toBe('other');
+  expect(await sent('http://scootradar.com/')).toBe('other');
+  expect(await sent('scootradar.com')).toBe('other');
+  // None, as the apps send, or empty.
+  expect(await sent()).toBe('none');
+  expect(await sent('')).toBe('none');
 });
 
 it('rejects an origin redirect without forwarding it to clients or following it with the credential', async () => {

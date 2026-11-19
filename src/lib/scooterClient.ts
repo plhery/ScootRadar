@@ -35,6 +35,37 @@ export const scooterAgent = (userAgent: string | null | undefined): ScooterAgent
 export const parseScooterAgent = (value: string | string[] | null | undefined): ScooterAgent | null =>
   value === 'browser' || value === 'app' ? value : null;
 
+/**
+ * What kind of referrer a request for scooters carries, which the Worker tells the cache in SCOOTER_REFERRER_HEADER,
+ * never the referrer itself: own for a page of ours (https://scootradar.com/…, whose map's requests carry it under
+ * its Referrer-Policy, strict-origin-when-cross-origin), other for any other, none for none, as the apps send. The
+ * cache counts them by agent, for a week of figures before deciding whether a browser without our referrer is
+ * answered from what the cache holds (docs/OBSERVABILITY.md, "Scraping"). It holds no one by it: any client can send
+ * our referrer.
+ */
+export type ScooterReferrer = 'own' | 'other' | 'none';
+
+export const SCOOTER_REFERRERS: readonly ScooterReferrer[] = ['own', 'other', 'none'];
+
+export const SCOOTER_REFERRER_HEADER = 'X-Scooter-Referrer';
+
+// The website's origin (SITE_URL in site.ts, which the cache is not built with). www.scootradar.com and the legacy
+// hosts lead their pages there, so the map's requests never carry theirs.
+const OWN_ORIGIN = 'https://scootradar.com';
+
+export function scooterReferrer(referrer: string | null | undefined): ScooterReferrer {
+  if (!referrer) return 'none';
+  try {
+    return new URL(referrer).origin === OWN_ORIGIN ? 'own' : 'other';
+  } catch {
+    return 'other';
+  }
+}
+
+/** The kind of referrer a request to the cache names; none from a Worker that predates the header, which is not counted. */
+export const parseScooterReferrer = (value: string | string[] | null | undefined): ScooterReferrer | null =>
+  SCOOTER_REFERRERS.find(referrer => referrer === value) ?? null;
+
 export function scooterClient({ pass, view, userAgent }: { pass: boolean; view: boolean; userAgent: string | null }): ScooterClient {
   if (pass) return 'verified';
   if (view) return 'map';

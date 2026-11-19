@@ -346,7 +346,11 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
   `scootradar-cache-containers`, relabelled `job="scootradar-cache"`), so a deploy's
   overlap does not inflate `increase()`; see
   [Metrics](docs/OBSERVABILITY.md#metrics).
-- Secrets: `SCOOTER_SNAPSHOT_API_TOKEN`, `METRICS_TOKEN` and `SENTRY_DSN`.
+- Secrets: `SCOOTER_SNAPSHOT_API_TOKEN`, `METRICS_TOKEN`, `SENTRY_DSN` and
+  `VISITOR_COUNT_SECRET` (32 random bytes or more, e.g. `openssl rand -base64 32`),
+  the key of each network's counts of the day and hour. Without it the networks'
+  limits of 1,500 requests a day and 300 an hour are off; a new one starts every
+  network's day afresh ([Scraping](docs/OBSERVABILITY.md#scraping)).
 - No custom Docker options. The container resolves through the host's unbound,
   which asks Cloudflare and Quad9 before netcup's resolvers: those answered
   SERVFAIL for `data.lillemetropole.fr`, Lille's parking inventory, from

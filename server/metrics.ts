@@ -360,8 +360,11 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           'Requests for scooters without a map pass past their visitor\'s 8 quarter hours of the UTC day, browsers and apps: those of browsers are held (scootradar_held_requests_total), those of apps counted.',
           [[{}, visitors.pastAllowance]]);
         metric('scootradar_held_requests_total', 'counter',
-          'Requests for scooters answered from what the cache holds, collecting nothing, until the UTC day ends: a browser without a map pass past its 8 quarter hours (allowance), or a visitor that asked in 12 quarter hours with 20 requests or more (busy) or in more than 8 in a row (unbroken).',
+          'Requests for scooters answered from what the cache holds, collecting nothing: until the UTC day ends, a browser without a map pass past its 8 quarter hours (allowance), a visitor that asked in 12 quarter hours with 20 requests or more (busy) or in more than 8 in a row (unbroken), or a network past 1,500 requests in the day (daily); until the UTC hour ends, a network past 300 in the hour (hourly).',
           visitors.held.map(([reason, count]) => [{ reason }, count]));
+        metric('scootradar_scooter_requests_by_referrer_total', 'counter',
+          'Requests for scooters by the agent the Worker named (browser or app, by the user agent) and the kind of referrer they carried: own (a page of https://scootradar.com), other, or none. Counted, not enforced.',
+          visitors.byReferrer.map(([agent, referrer, count]) => [{ agent, referrer }, count]));
         if (!countersOnly) {
           metric('scootradar_visitor_max_requests', 'gauge', 'The most requests for scooters one visitor made in the last closed quarter hour.',
             [[{}, visitors.lastWindow.requests]]);

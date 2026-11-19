@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 18 November 2026
+Last updated: 19 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches, except the last place chosen in the search, which stays on the device (see below).
@@ -75,7 +75,12 @@ searches, except the last place chosen in the search, which stays on the device 
   scooters under a hash of their IP address (or its first half for IPv6), salted afresh each time
   the server starts: by quarter hour, and by UTC day the quarter hours in which they kept the
   scooters up to date. A hash is kept for its quarter hour or its day, then only the counts; no IP
-  address is stored.
+  address is stored. It also counts each address's (or IPv6 first half's) requests for scooters of
+  the UTC day and hour under a keyed hash of it and that day or hour, with a key only the server
+  holds, kept across a restart until the day ends, so that an address making more than a map does
+  is answered with the scooters already held. One day's hashes cannot be linked to the next's.
+- The website tells the server whether a request for scooters came from a page of ScootRadar,
+  another site or none, never the page itself; the server only counts them.
 - Structured application error logs contain event names and error messages, not
   precise locations or search text.
 - When the server fails to answer a map request, an error report is sent to

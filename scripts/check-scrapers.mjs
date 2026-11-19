@@ -54,6 +54,10 @@ const OTHER_REQUESTS = 300;
 // November, before that, none of 17 failed.
 const PASS_FAILURES = 5;
 const PASS_FAILURE_SHARE = 0.1;
+// Requests held past their network's 1,500 a day (daily) or 300 an hour (hourly), since VISITOR_COUNT_SECRET is set
+// on the cache (server/visitorLedger.ts). From 12 to 18 November 2026 no rider or app came near either; a network
+// held is a script, or many riders behind one address (a carrier's NAT, a school, a hotel) getting old scooters.
+const NETWORK_HOLDS = 1;
 // A browser, or our apps: the iPhone's (ScootRadar/… CFNetwork) and Android's (okhttp).
 const appAgent = agent => /^ScootRadar\//.test(agent) || /^okhttp\//.test(agent);
 const usualAgent = agent => /^Mozilla\/5\.0 /.test(agent) || appAgent(agent);
@@ -71,10 +75,19 @@ const instant = (query, at = dayEnd) => prometheus(`/api/v1/query?${new URLSearc
 const value = (query, at) => Math.round(Number(instant(query, at)[0]?.value[1] ?? 0));
 // In the buckets' order (server/visitorLedger.ts), which Prometheus does not keep.
 const ORDER = ['1-15', '16-60', '61-300', '301+', '1', '2-3', '4-7', '4-8', '8-15', '9-15', '16-31', '32-63', '32+', '64+',
-  'verified', 'map', 'app', 'other', 'allowance', 'busy', 'unbroken'];
+  'verified', 'map', 'app', 'other', 'allowance', 'busy', 'unbroken', 'daily', 'hourly'];
 const byLabel = (query, label, at) => Object.fromEntries(instant(query, at)
   .map(series => [series.metric[label], Math.round(Number(series.value[1]))])
   .sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)));
+// By two labels, in `order`: { browser: { own: 10, none: 2 }, app: { none: 5 } }.
+const byLabels = (query, outer, inner, order) => {
+  const nested = {};
+  for (const series of [...instant(query)].sort((a, b) => order.indexOf(a.metric[outer]) - order.indexOf(b.metric[outer])
+    || order.indexOf(a.metric[inner]) - order.indexOf(b.metric[inner]))) {
+    (nested[series.metric[outer]] ??= {})[series.metric[inner]] = Math.round(Number(series.value[1]));
+  }
+  return nested;
+};
 
 function cache() {
   const closed = dayEnd + CLOSED;
@@ -100,6 +113,9 @@ function cache() {
       'quarter_hours', closed),
     pastAllowance: value(`sum(increase(scootradar_past_allowance_requests_total{${CACHE}}[24h]))`),
     held: byLabel(`sum by (reason) (increase(scootradar_held_requests_total{${CACHE}}[24h]))`, 'reason'),
+    // Counted since 19 November 2026, for a week before deciding whether a browser without our referrer is held.
+    byReferrer: byLabels(`sum by (agent, referrer) (increase(scootradar_scooter_requests_by_referrer_total{${CACHE}}[24h]))`,
+      'agent', 'referrer', ['browser', 'app', 'own', 'other', 'none']),
   };
 }
 
@@ -258,6 +274,10 @@ const passesFailed = (browserPasses[403] ?? 0) + (browserPasses[503] ?? 0);
 if (passesFailed >= PASS_FAILURES && passesFailed >= passesAsked * PASS_FAILURE_SHARE) {
   suspicions.push(`${passesFailed} of ${passesAsked} browsers' asks for a map pass failed (403 refused: ${browserPasses[403] ?? 0}, 503 not checked: ${browserPasses[503] ?? 0}): riders may be failing Turnstile, and are held to 8 quarter hours a day (turn it off in server/scooter-cache.ts)`);
 }
+const networkHolds = (metrics?.held.daily ?? 0) + (metrics?.held.hourly ?? 0);
+if (networkHolds >= NETWORK_HOLDS) {
+  suspicions.push(`${networkHolds} requests were held past their network's 1,500 a day (${metrics.held.daily ?? 0}) or 300 an hour (${metrics.held.hourly ?? 0}): a script, or riders behind one address; find the network in Cloudflare's busiest`);
+}
 const allDay = metrics?.unverifiedDays['32+'] ?? 0;
 if (allDay) suspicions.push(`${allDay} visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day`);
 
@@ -270,6 +290,7 @@ if (args.includes('--json')) {
     console.log(`Cache: ${metrics.visitorQuarterHours} visitors over the quarter hours; by requests ${counts(metrics.byRequests)}; by areas ${counts(metrics.byAreas)}`);
     console.log(`  sweeps ${metrics.sweeps}, uncollected ${metrics.unwatched}, boxes too large ${metrics.loweredZooms}, origin 429s ${metrics.limited}, visitors with 16+ Lime refreshes ${metrics.limeRoundsVisitors}`);
     console.log(`  requests by client ${counts(metrics.byClient)}; visitors by quarter hours kept collected, without a pass ${counts(metrics.unverifiedDays)}, with one ${counts(metrics.verifiedDays)}; requests past the allowance ${metrics.pastAllowance}; held ${counts(metrics.held)}`);
+    console.log(`  requests by referrer: ${Object.entries(metrics.byReferrer).map(([agent, referrers]) => `${agent} ${counts(referrers)}`).join('; ') || 'none'}`);
   }
   if (traffic) {
     console.log(`Cloudflare /api/scooters: ${traffic.requests} requests (sampled); ours: ${counts(traffic.own)}`);

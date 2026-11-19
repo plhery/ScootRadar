@@ -113,7 +113,9 @@ const series = (label, values) => Object.entries(values).map(([key, value]) => (
 const result = query.includes('by (client)') ? series('client', { verified: 900, map: 4000, app: 300, other: 450 })
   : query.includes('client="unverified"') ? series('quarter_hours', { '32+': 1, 1: 80, '4-8': 12 })
   : query.includes('past_allowance') ? [{ metric: {}, value: [at, '640'] }]
-  : query.includes('by (reason)') ? series('reason', { allowance: 120, unbroken: 30 }) : [];
+  : query.includes('by (reason)') ? series('reason', { allowance: 120, unbroken: 30, daily: 400, hourly: 0 })
+  : query.includes('by (agent, referrer)') ? [['app', 'none', 300], ['browser', 'none', 20], ['browser', 'own', 4900], ['browser', 'other', 450]]
+    .map(([agent, referrer, value]) => ({ metric: { agent, referrer }, value: [at, String(value)] })) : [];
 process.stdout.write(JSON.stringify({ status: 'success', data: { resultType: 'vector', result } }));
 `);
     chmodSync(join(dir, 'bin', 'ssh'), 0o755);
@@ -157,13 +159,17 @@ globalThis.fetch = async (url, init) => {
     expect(report.traffic.sustained.map(({ network, quarterHours, busyQuarterHours }) => [network, quarterHours, busyQuarterHours]))
       .toEqual([['198.51.100.7', 34, 34], ['2001:db8:1:2::', 26, 0], ['198.51.100.8', 3, 3]]);
     expect(report.metrics).toMatchObject({ byClient: { verified: 900, map: 4000, app: 300, other: 450 },
-      unverifiedDays: { 1: 80, '4-8': 12, '32+': 1 }, pastAllowance: 640, held: { allowance: 120, unbroken: 30 } });
+      unverifiedDays: { 1: 80, '4-8': 12, '32+': 1 }, pastAllowance: 640, held: { allowance: 120, unbroken: 30, daily: 400, hourly: 0 },
+      byReferrer: { browser: { own: 4900, other: 450, none: 20 }, app: { none: 300 } } });
+    expect(Object.keys(report.metrics.byReferrer)).toEqual(['browser', 'app']);
+    expect(Object.keys(report.metrics.byReferrer.browser)).toEqual(['own', 'other', 'none']);
     expect(report.traffic.passes).toEqual({ browser: { 204: 40, 403: 6, 503: 1 }, app: { 403: 2 } });
     expect(report.suspicions).toEqual([
       '198.51.100.7 (DE) asked in 34 quarter hours of the day, 34 of them 20 times or more (1020 requests)',
       '2001:db8:1:2:: (DE) asked in 26 quarter hours of the day, 0 of them 20 times or more (312 requests)',
       '450 requests came from clients that are none of our maps and apps (answered from what the cache holds)',
       "7 of 47 browsers' asks for a map pass failed (403 refused: 6, 503 not checked: 1): riders may be failing Turnstile, and are held to 8 quarter hours a day (turn it off in server/scooter-cache.ts)",
+      "400 requests were held past their network's 1,500 a day (400) or 300 an hour (0): a script, or riders behind one address; find the network in Cloudflare's busiest",
       '1 visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day',
     ]);
   });

@@ -214,10 +214,16 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   the requests without a pass past their visitor's 8 quarter hours of the day, browsers'
   and apps', and `scootradar_visitor_max_quarter_hours` (gauge): the most quarter hours
   one visitor without a pass has kept feeds collected today. Since 18 November 2026.
-- `scootradar_held_requests_total{reason="allowance|busy|unbroken"}`: the requests
-  answered from what the cache holds until the day ends: a browser without a pass past
-  its 8 quarter hours, or a visitor that asks all day (see [Scraping](#scraping)).
-  Since 19 November 2026.
+- `scootradar_held_requests_total{reason="allowance|busy|unbroken|daily|hourly"}`: the
+  requests answered from what the cache holds until the day ends: a browser without a
+  pass past its 8 quarter hours, a visitor that asks all day, or a network past its
+  1,500 requests of the day (`daily`); and until the hour ends, a network past its 300
+  of the hour (`hourly`). `daily` and `hourly` stay 0 while `VISITOR_COUNT_SECRET` is
+  unset (see [Scraping](#scraping)). Since 19 November 2026.
+- `scootradar_scooter_requests_by_referrer_total{agent="browser|app", referrer="own|other|none"}`:
+  the requests for scooters by the agent the Worker named and the kind of referrer they
+  carried: `own` a page of `https://scootradar.com`, `other` any other, `none` none.
+  Counted, not enforced (see [Scraping](#scraping)). Since 19 November 2026.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
@@ -642,6 +648,36 @@ last touch; from 12 to 18 November no rider or app user came to either, while th
 North Rhine-Westphalia script came to both and a home server's script polling one town
 to the second. A kiosk or wall screen showing the map all day would look the same.
 
+Each network, an IPv4 address or an IPv6 /64, browsers and apps, pass or not, may make
+1,500 requests for scooters a UTC day and 300 a UTC hour (`NETWORK_REQUESTS_PER_DAY`
+and `_PER_HOUR` in `server/visitorLedger.ts`); past either, its requests are answered
+from what the cache holds until the day or the hour ends, counted as `daily` and
+`hourly` held requests. From 12 to 18 November 2026 the busiest rider made 447 in a
+day and 276 in an hour, the busiest app's address 300 and 180, and the North
+Rhine-Westphalia script 2,892 in a day. A carrier's NAT, a school or a hotel puts many
+riders behind one address: on 1–6 November one browser's address made some 2,600 a
+day, which would have been held. The counts are kept under an HMAC of the network and
+the UTC day or hour with the cache's secret `VISITOR_COUNT_SECRET`, so no address is
+kept and one day's keys are not the next's. They are saved beside the snapshot in
+`visitor-counts.json`, every minute and on shutdown, with only the current day's and
+hour's, and taken back at a restart: a deploy gives no network its 1,500 again, but for
+the requests the old cache counted after its last save. Without the secret (or one
+under 32 characters), nothing is counted nor held, and the cache logs
+`network_limits_off` at start; with it, `network_counts_restored` and the networks it
+took back. A new secret starts every network's day afresh.
+
+Since 19 November 2026 the Worker also tells the cache what kind of referrer a request
+for scooters carries, in `X-Scooter-Referrer`, never the referrer itself: `own` for a
+page of `https://scootradar.com` (the map's same-origin requests carry the page in full
+under the site's `Referrer-Policy: strict-origin-when-cross-origin`), `other` for any
+other, `none` for none, as the apps send (`scooterReferrer` in
+`src/lib/scooterClient.ts`). The cache believes it only with its token and counts
+`scootradar_scooter_requests_by_referrer_total` by agent. Nothing is enforced: after a
+week, the share of real browsers with `none` (privacy extensions, a proxy that strips
+it) says whether a browser without an `own` referrer could be answered from what the
+cache holds, a rule that only catches lazy scripts, as a referrer is as easy to fake
+as a user agent. The user decides.
+
 If riders fail Turnstile, the daily check below reports it: browsers' asks for a pass
 refused (403, `map_pass_refused`) or not checked (503, `map_pass_unverified`).
 `enforceAllowance: []` in `server/scooter-cache.ts` turns the hold off again, and
@@ -722,10 +758,13 @@ on a suspicion, 2 when a source could not be read:
   town on 14 November 2026 asked in 32 quarter hours (399 requests), the North
   Rhine-Westphalia script on the 18th in 31, 28 of them busy (2,880); from 11 to 18
   November no other outside network asked in more than 28, nor in more than 7 busy;
-- from the cache, 300 requests or more from `other` clients, or a visitor without a
-  map pass that kept feeds collected 32 quarter hours or more (8 hours). The report
-  also gives the requests by client, the visitors of the day by quarter hours, with a
-  pass and without, the requests past the allowance and those held;
+- from the cache, 300 requests or more from `other` clients, a visitor without a map
+  pass that kept feeds collected 32 quarter hours or more (8 hours), or any request
+  held past its network's 1,500 a day or 300 an hour (`daily`, `hourly`): a script, or
+  riders behind one address, to be found among Cloudflare's busiest. The report also
+  gives the requests by client, the visitors of the day by quarter hours, with a pass
+  and without, the requests past the allowance, those held by reason, and the requests
+  by agent and kind of referrer;
 - browsers' asks for a map pass (`POST /api/pass`) that failed, 5 or more and a tenth
   of them or more: Turnstile refused them (403) or could not be asked (503). The
   report gives the asks by browser, app and other, and status.
