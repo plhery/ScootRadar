@@ -511,8 +511,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private var unfilteredVisibleCount = 0
     private var unfilteredVisibleProviders = Set<ScooterProvider>()
 
-    /// The battery minimum the filters had until the range became their only minimum (issue #12): no longer read,
-    /// and taken away at launch.
+    /// The battery minimum the filters had until the range became their only minimum (issue #12): read once at launch
+    /// as the range it reaches, then taken away.
     private static let legacyMinimumBatteryKey = "minimum-battery"
     private static let minimumRangeKey = "minimum-range"
     private static let unitsKey = "units"
@@ -640,7 +640,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         let savedUnits = ScooterUnits(rawValue: defaults.string(forKey: Self.unitsKey) ?? "") ?? .automatic
         units = savedUnits
         ScooterUnits.current = savedUnits
-        // Read in whole steps of the unit shown. A battery minimum an earlier version kept goes, unread.
+        // Read in whole steps of the unit shown. A battery minimum an earlier version kept (0, 30, 60 or 80) becomes
+        // the range it reaches, the same share of the 10 km the filters judge an app by when its answer names no
+        // figure: 60% is 6 km, read as 4 mi in miles. A range kept beside it, Any too, stays. Android does the same
+        // (cb0711ae; Desk [372]: keep the rider's minimum across updates).
+        if defaults.object(forKey: Self.minimumRangeKey) == nil,
+           let battery = defaults.object(forKey: Self.legacyMinimumBatteryKey) as? Int, battery > 0 {
+            // The didSet that saves it doesn't run in the initialiser.
+            defaults.set(min(battery, 100) * 10_000 / 100, forKey: Self.minimumRangeKey)
+        }
         chosenMinimumRange = max(0, defaults.object(forKey: Self.minimumRangeKey) as? Int ?? 0)
         defaults.removeObject(forKey: Self.legacyMinimumBatteryKey)
 
