@@ -1,6 +1,5 @@
 import Analytics from "@/components/Analytics";
 import type { Metadata, Viewport } from "next";
-import { Geist, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { RELEASE_META } from "@/lib/errorReportsConfig";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
@@ -8,26 +7,8 @@ import { formatLocale } from "@/lib/formatLocale";
 import { I18nProvider } from "@/lib/i18n";
 import { ROTATE_PANES_STYLE, ROTATE_PANES_STYLE_ID } from "@/lib/mapRotation";
 import { MAP_SHARE_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
+import { display, geistSans, text } from "../fonts";
 import "../globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-// The typefaces of the landing page: Display for figures and titles, Text for
-// what is read, on the map's own names as well.
-const display = Red_Hat_Display({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const text = Red_Hat_Text({
-  variable: "--font-text",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 // The map is one address in every language; what a search engine reads of it is in English, and
 // its description fits the 160 characters a search engine shows.
@@ -84,7 +65,6 @@ export default async function RootLayout({
   return (
     <html lang={formatLocale("en")} suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
         {/* Before the map's script, which adds no style of its own once this is here. */}
         <style id={ROTATE_PANES_STYLE_ID}>{ROTATE_PANES_STYLE}</style>
         {/* The commit the page is built from, as Workers Builds names it, for its error reports. */}

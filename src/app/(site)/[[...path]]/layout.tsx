@@ -1,6 +1,5 @@
 import PageView from '@/components/PageView';
 import type { Metadata, Viewport } from 'next';
-import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { RELEASE_META } from '@/lib/errorReportsConfig';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
@@ -9,21 +8,8 @@ import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { SITE_URL } from '@/lib/site';
 import { sitePageOf, sitePagePath, sitePaths, type SitePage } from '@/lib/sitePages';
 import { PlayTestSite } from '../playTest';
+import { display, text } from '../../fonts';
 import '../landing.css';
-
-// One family in two cuts: Display for the headlines and the figures, Text for
-// everything that is read. Both are variable, so every weight is one file.
-const display = Red_Hat_Display({
-  variable: '--font-display',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const text = Red_Hat_Text({
-  variable: '--font-text',
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
