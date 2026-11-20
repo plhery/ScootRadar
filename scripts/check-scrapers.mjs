@@ -8,7 +8,7 @@ The day's scraping check (yesterday UTC unless --date= names another): the cache
 over ssh netcup, and the busiest clients of /api/scooters and those limited from Cloudflare's analytics, with
 CLOUDFLARE_API_TOKEN or wrangler's login. Our own traffic is set apart: this machine, the Worker's cache writes, our
 scripts' user agents, Google Play's pre-launch robots and --own=. Exits 1 on a suspicion, 2 when a source fails.
-See docs/OBSERVABILITY.md, "Scraping".`;
+Today's covers the day so far. See docs/OBSERVABILITY.md, "Scraping".`;
 
 const args = process.argv.slice(2);
 if (args.includes('--help')) { console.log(usage); process.exit(0); }
@@ -17,7 +17,11 @@ for (const arg of args) {
 }
 const option = name => args.find(arg => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
 const date = option('date') ?? new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
-const dayEnd = Math.min(Date.parse(`${date}T00:00:00Z`) + 86_400_000, Date.now()) / 1000;
+const dayStart = Date.parse(`${date}T00:00:00Z`) / 1000;
+const dayEnd = Math.min(dayStart + 86_400, Date.now() / 1000);
+// The cache's counters are read over the day, today's so far: over 24 hours, today's took in yesterday's evening.
+const DAY_S = Math.max(60, Math.round(dayEnd - dayStart));
+const DAY = `${DAY_S}s`;
 
 const ZONE = '79c6a39db1a26ea42f9c97eb7d6cef3e'; // scootradar.com
 const PROMETHEUS = process.env.PROMETHEUS_CONTAINER ?? 'p13mhgbtnebkwu8rutbtz6mk';
@@ -92,29 +96,29 @@ const byLabels = (query, outer, inner, order) => {
 function cache() {
   const closed = dayEnd + CLOSED;
   // Each quarter hour by its start.
-  const sweptAt = prometheus(`/api/v1/query_range?${new URLSearchParams({ query: `sum(increase(${SWEEPS}[15m]))`,
-    start: String(closed - 86_400 + 900), end: String(closed), step: '900' })}`)[0]?.values
+  const sweptAt = DAY_S < 900 ? [] : prometheus(`/api/v1/query_range?${new URLSearchParams({ query: `sum(increase(${SWEEPS}[15m]))`,
+    start: String(closed - DAY_S + 900), end: String(closed), step: '900' })}`)[0]?.values
     .filter(([, count]) => Number(count) > 0.5).map(([at]) => new Date((at - 900 - CLOSED) * 1000).toISOString().slice(11, 16)) ?? [];
   return {
-    visitorQuarterHours: value(`sum(increase(scootradar_visitors_total{${CACHE}}[24h]))`, closed),
-    byRequests: byLabel(`sum by (requests) (increase(scootradar_visitors_total{${CACHE}}[24h]))`, 'requests', closed),
-    byAreas: byLabel(`sum by (areas) (increase(scootradar_visitor_areas_total{${CACHE}}[24h]))`, 'areas', closed),
-    sweeps: value(`sum(increase(${SWEEPS}[24h]))`, closed),
+    visitorQuarterHours: value(`sum(increase(scootradar_visitors_total{${CACHE}}[${DAY}]))`, closed),
+    byRequests: byLabel(`sum by (requests) (increase(scootradar_visitors_total{${CACHE}}[${DAY}]))`, 'requests', closed),
+    byAreas: byLabel(`sum by (areas) (increase(scootradar_visitor_areas_total{${CACHE}}[${DAY}]))`, 'areas', closed),
+    sweeps: value(`sum(increase(${SWEEPS}[${DAY}]))`, closed),
     sweptAt,
-    unwatched: value(`sum(increase(scootradar_unwatched_requests_total{${CACHE}}[24h]))`),
-    loweredZooms: value(`sum(increase(scootradar_scooter_zoom_lowered_total{${CACHE}}[24h]))`),
-    limited: value(`sum(increase(scootradar_http_requests_total{${CACHE}, route="/api/scooters", status="429"}[24h]))`),
-    limeRoundsVisitors: value(`sum(increase(scootradar_lime_wake_clients_total{${CACHE}, refreshes="16+"}[24h]))`, closed),
+    unwatched: value(`sum(increase(scootradar_unwatched_requests_total{${CACHE}}[${DAY}]))`),
+    loweredZooms: value(`sum(increase(scootradar_scooter_zoom_lowered_total{${CACHE}}[${DAY}]))`),
+    limited: value(`sum(increase(scootradar_http_requests_total{${CACHE}, route="/api/scooters", status="429"}[${DAY}]))`),
+    limeRoundsVisitors: value(`sum(increase(scootradar_lime_wake_clients_total{${CACHE}, refreshes="16+"}[${DAY}]))`, closed),
     // Counted at each request; the visitors of a day once it has closed, as the quarter hours'.
-    byClient: byLabel(`sum by (client) (increase(scootradar_scooter_requests_by_client_total{${CACHE}}[24h]))`, 'client'),
-    unverifiedDays: byLabel(`sum by (quarter_hours) (increase(scootradar_visitor_days_total{${CACHE}, client="unverified"}[24h]))`,
+    byClient: byLabel(`sum by (client) (increase(scootradar_scooter_requests_by_client_total{${CACHE}}[${DAY}]))`, 'client'),
+    unverifiedDays: byLabel(`sum by (quarter_hours) (increase(scootradar_visitor_days_total{${CACHE}, client="unverified"}[${DAY}]))`,
       'quarter_hours', closed),
-    verifiedDays: byLabel(`sum by (quarter_hours) (increase(scootradar_visitor_days_total{${CACHE}, client="verified"}[24h]))`,
+    verifiedDays: byLabel(`sum by (quarter_hours) (increase(scootradar_visitor_days_total{${CACHE}, client="verified"}[${DAY}]))`,
       'quarter_hours', closed),
-    pastAllowance: value(`sum(increase(scootradar_past_allowance_requests_total{${CACHE}}[24h]))`),
-    held: byLabel(`sum by (reason) (increase(scootradar_held_requests_total{${CACHE}}[24h]))`, 'reason'),
+    pastAllowance: value(`sum(increase(scootradar_past_allowance_requests_total{${CACHE}}[${DAY}]))`),
+    held: byLabel(`sum by (reason) (increase(scootradar_held_requests_total{${CACHE}}[${DAY}]))`, 'reason'),
     // Counted since 19 November 2026, for a week before deciding whether a browser without our referrer is held.
-    byReferrer: byLabels(`sum by (agent, referrer) (increase(scootradar_scooter_requests_by_referrer_total{${CACHE}}[24h]))`,
+    byReferrer: byLabels(`sum by (agent, referrer) (increase(scootradar_scooter_requests_by_referrer_total{${CACHE}}[${DAY}]))`,
       'agent', 'referrer', ['browser', 'app', 'own', 'other', 'none']),
   };
 }

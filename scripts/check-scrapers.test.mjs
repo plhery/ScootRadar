@@ -47,8 +47,8 @@ const counted = ${JSON.stringify(sweepsCounted)};
 const samples = at => { const from = ${day - 3600 + 10}; return at < from ? [] : [from + 30 * Math.floor((at - from) / 30)]; };
 const count = at => counted.filter(close => close <= at).length;
 function increase(at) {
-  const [, amount, unit] = /\\[(\\d+)([mh])\\]/.exec(query);
-  const window = Number(amount) * (unit === 'h' ? 3600 : 60);
+  const [, amount, unit] = /\\[(\\d+)([smh])\\]/.exec(query);
+  const window = Number(amount) * { s: 1, m: 60, h: 3600 }[unit];
   const last = samples(at)[0];
   const first = samples(at - window)[0] + 30;
   return count(last) - count(first);
@@ -93,6 +93,13 @@ process.stdout.write(JSON.stringify({ status: 'success', data: { resultType: 've
   it('counts a sweep in the day\'s last quarter hour on that day, not the next', () => {
     expect(check('2026-11-05').metrics.sweeps).toBe(2);
     expect(check('2026-11-06').metrics).toMatchObject({ sweeps: 0, sweptAt: [] });
+  });
+
+  it('reads today over the day so far, not the 24 hours before', () => {
+    writeFileSync(join(dir, 'six-am.mjs'), "globalThis.fetch = async () => { throw new Error('not asked'); };\n" +
+      "const at = Date.parse('2026-11-06T06:00:00Z');\nDate.now = () => at;\n");
+    // At 06:00 on the 6th, the day before's two sweeps are its own, the one counted at 00:00:10 too.
+    expect(check('2026-11-06', 'six-am.mjs').metrics).toMatchObject({ sweeps: 0, sweptAt: [] });
   });
 });
 

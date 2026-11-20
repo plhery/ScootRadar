@@ -739,7 +739,7 @@ devices behind one address or a client that is not our map.
 The controller lane checks the day before (UTC) each day:
 
 ```bash
-npm run check:scrapers                    # yesterday; --date=2026-11-05 for another day
+npm run check:scrapers                    # yesterday; --date=2026-11-05 for another day, today's so far
 npm run check:scrapers -- --json          # the same as JSON
 ```
 
