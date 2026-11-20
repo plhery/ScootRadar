@@ -533,12 +533,13 @@ it('refuses a client that is none of our maps and apps wherever passes are signe
   const passes = { ...env, MAP_PASS_SECRET: 'pass-secret', SCOOTER_AUDIT_TOKEN: token };
   const pass = await issueMapPass('pass-secret', '192.0.2.1');
   const forged = `${pass.slice(0, -1)}${pass.endsWith('A') ? 'B' : 'A'}`;
-  const ask = (headers: Record<string, string>, environment: typeof passes = passes, url = request().url) =>
+  const ask = (headers: Record<string, string>, environment: typeof env = passes, url = request().url) =>
     proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
   // A script under a browser's user agent, as the one that polled Mainz and Wiesbaden on 19 and 20 November 2026, a
   // forged pass, or no user agent at all: 403, and the cache is not asked.
-  for (const headers of [{ 'User-Agent': 'Mozilla/5.0' }, { Cookie: `${MAP_PASS_COOKIE}=${forged}` }, {},
-    { 'X-Scooter-Audit': 'audit-token-of-thirty-two-chars-or-mor' }]) {
+  const scripts: Record<string, string>[] = [{ 'User-Agent': 'Mozilla/5.0' }, { Cookie: `${MAP_PASS_COOKIE}=${forged}` }, {},
+    { 'X-Scooter-Audit': 'audit-token-of-thirty-two-chars-or-mor' }];
+  for (const headers of scripts) {
     const refused = await ask(headers);
     expect(refused.status).toBe(403);
     expect(await refused.json()).toEqual({ error: 'The scooter data is only for the ScootRadar map and apps.' });
@@ -554,7 +555,7 @@ it('refuses a client that is none of our maps and apps wherever passes are signe
   // A token too short to be one is no token; without the key that signs passes, nobody is refused.
   const short = { ...passes, SCOOTER_AUDIT_TOKEN: 'short' };
   expect((await ask({ 'X-Scooter-Audit': 'short' }, short)).status).toBe(403);
-  expect((await ask({ 'User-Agent': 'Mozilla/5.0' }, { ...passes, MAP_PASS_SECRET: undefined } as typeof passes)).status).toBe(200);
+  expect((await ask({ 'User-Agent': 'Mozilla/5.0' }, { ...passes, MAP_PASS_SECRET: undefined } as typeof env)).status).toBe(200);
   expect(new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Client')).toBe('other');
 });
 
@@ -564,7 +565,7 @@ it('tells the cache a browser without a pass can be given one by Turnstile, only
   const pass = await issueMapPass('pass-secret', '192.0.2.1');
   const site = 'https://scootradar.com/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13';
   const view = { 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' };
-  const check = async (headers: Record<string, string>, environment: typeof passes = passes, url = site) => {
+  const check = async (headers: Record<string, string>, environment: typeof env = passes, url = site) => {
     await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
     return new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Pass-Check');
   };
@@ -573,7 +574,7 @@ it('tells the cache a browser without a pass can be given one by Turnstile, only
   expect(await check({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}` })).toBeNull();
   expect(await check({ ...view, 'User-Agent': 'okhttp/5.5.1' })).toBeNull();
   expect(await check(view, passes, request().url)).toBeNull();
-  expect(await check(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof passes)).toBeNull();
+  expect(await check(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof env)).toBeNull();
   // Nor for the zones.
   expect(await check(view, passes, 'https://scootradar.com/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15')).toBeNull();
 });
