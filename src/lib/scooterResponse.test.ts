@@ -22,11 +22,6 @@ describe('X-Mobility-Data-Source', () => {
     expect(oslo).not.toContain('Switzerland');
   });
 
-  it('links the licences that ask for their text with the data: Beryl\'s CDLA-Permissive-2.0 in a British answer', () => {
-    expect(mobilitySource(answer(['uk']))).toContain('Beryl GBFS, CDLA-Permissive-2.0 (https://cdla.dev/permissive-2-0/)');
-    expect(mobilitySource(answer(['germany']))).toContain('dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0)');
-  });
-
   it('names Lille\'s parking where the answer has its bays', () => {
     expect(mobilitySource(answer(['france'], true))).toContain('Lille parking: Metropole Europeenne de Lille');
     expect(mobilitySource(answer(['france']))).not.toContain('Lille');

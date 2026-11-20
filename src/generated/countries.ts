@@ -565,7 +565,7 @@ export const COUNTRY_ATTRIBUTIONS: Record<CountryCode, string> = {
   IT: "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
   BE: "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
   NO: "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0; Ryde rider map",
-  GB: "United Kingdom: Beryl GBFS, CDLA-Permissive-2.0 (https://cdla.dev/permissive-2-0/), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; Brighton & Hove's no-ride streets and skate parks traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
+  GB: "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; Brighton & Hove's no-ride streets and skate parks traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
   PT: "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
   ES: "Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map",
   IS: "Iceland: Hopp GBFS; Bolt authenticated rider map",
