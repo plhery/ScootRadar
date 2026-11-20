@@ -5010,9 +5010,31 @@ class ScooterMapControllerTest {
         model.open(ScooterMapLink("https://scootradar.com/map?minBattery=60&minRange=5000") ?: error("A map link"))
         assertEquals(5_000, model.minimumRange.value)
 
-        // A link that only gives a battery keeps the range shown.
+        // A link that only gives a battery shows the rider's own, as the iPhone does.
         model.open(ScooterMapLink("https://scootradar.com/map?minBattery=60") ?: error("A map link"))
-        assertEquals(5_000, model.minimumRange.value)
+        assertEquals(3_000, model.minimumRange.value)
+    }
+
+    @Test
+    fun aSecondLinkWithoutAMinimumShowsTheRidersOwnAgain() = runTest {
+        // With Any saved, a link with 6 km and then, the app still running, a link to another place with none: the map
+        // filtered at 6 km until the app was closed, where the iPhone and the website show Any again.
+        val defaults = InMemoryScooterDefaults()
+        defaults.set("metric", forKey = "units")
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        model.open(ScooterMapLink(origin = GeoPoint(47.3769, 8.5417), minimumRange = 6_000))
+        assertEquals(6_000, model.minimumRange.value)
+
+        model.open(ScooterMapLink(origin = GeoPoint(46.948, 7.4474)))
+        assertEquals(0, model.minimumRange.value)
+        assertEquals(null, defaults.int(forKey = "minimum-range"))
+
+        // And the rider's own where one is saved.
+        model.setMinimumRange(4_000)
+        model.open(ScooterMapLink(origin = GeoPoint(47.3769, 8.5417), minimumRange = 15_000))
+        assertEquals(15_000, model.minimumRange.value)
+        model.open(ScooterMapLink())
+        assertEquals(4_000, model.minimumRange.value)
     }
 
     @Test

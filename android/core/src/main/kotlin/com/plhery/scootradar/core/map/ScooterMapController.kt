@@ -1303,11 +1303,10 @@ class ScooterMapController(
         // A link changes the map: a moment to ask for a rating waits for its fresh load.
         reviewDue = false
         // The link's minimum is for this visit: the rider's own stays saved, and no range_filter is sent, as the rider
-        // chose none.
-        link.minimumRange?.let { metres ->
-            linkMinimumRange = max(0, metres)
-            if (readMinimumRange()) refetchFilteredClusters()
-        }
+        // chose none. A link without one shows the rider's own again, as on the iPhone and the website, where each
+        // link is a page of its own: a second link, which Android hands to the running app, kept the first one's.
+        linkMinimumRange = link.minimumRange?.let { max(0, it) }
+        if (readMinimumRange()) refetchFilteredClusters()
         val origin = link.origin
         if (origin == null) {
             analytics?.track("link_open", result = "map")
