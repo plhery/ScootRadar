@@ -11,7 +11,7 @@ function leafletView(center: [number, number], zoom: number, width: number, heig
   const container = document.createElement('div');
   Object.defineProperty(container, 'clientWidth', { value: width });
   Object.defineProperty(container, 'clientHeight', { value: height });
-  document.body.append(container);
+  document.body.appendChild(container);
   const map = L.map(container, { center, zoom, zoomControl: false, attributionControl: false, rotate: true });
   const bounds = map.getBounds();
   map.remove();
