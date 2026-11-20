@@ -715,11 +715,13 @@ Since 17 November 2026 the web map keeps under the 60 by itself
 of the last minute, all its tabs and reloads together (in `localStorage`), and waits
 with a refresh of the view on screen once they are 30, and with a load for a view that
 moved once they are 45. After a 429 it asks nothing by itself until the `Retry-After`
-has passed (60 seconds), neither a refresh nor a moved view; "Try again" still asks at
-once. Before, each load counted from nothing, and a refused map asked again every 10
-seconds and at each pan, so the whole refused minute went on being asked for: on 16 and
-17 November 2026 a home connection in Munich was refused 85 and 74 times in bursts of
-80 to 100 requests a minute, a map loaded 14 times in a row. The iPhone and Android
+has passed (60 seconds from when the 429 came), neither a refresh, a moved view nor the
+request for the first scooters a page sends as it hydrates (`src/lib/useFirstScooters.ts`,
+counted when sent); "Try again" still asks at once. Before, each load counted from
+nothing, and a refused map asked again every 10 seconds and at each pan, so the whole
+refused minute went on being asked for: on 16 and 17 November 2026 a home connection
+in Munich was refused 85 and 74 times in bursts of 80 to 100 requests a minute, a map
+loaded 14 times in a row. The iPhone and Android
 apps ask as before. A browser still limited after that date is either two or more
 devices behind one address or a client that is not our map.
 

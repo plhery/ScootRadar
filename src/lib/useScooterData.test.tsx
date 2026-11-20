@@ -125,6 +125,49 @@ describe('the first scooters, asked for as the page hydrates', () => {
     expect(result.current.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['bern']);
   });
 
+  it('is not sent while a refusal holds this browser\'s requests: the map\'s first load asks once it is over', async () => {
+    // A reload within the minute a 429 asked for, which the Worker refuses to its end.
+    localStorage.setItem('scooters-refused-until', String(T0 + 60_000));
+    fetcher.mockImplementation(async () => Date.now() < T0 + 60_000
+      ? Response.json({ error: 'no' }, { status: 429, headers: { 'Retry-After': '60' } })
+      : answer('after-the-refusal')());
+    askFirstScooters(ZURICH);
+    expect(fetcher).not.toHaveBeenCalled();
+    const { result } = mount(ZURICH);
+    await advance(59_999);
+    expect(fetcher).not.toHaveBeenCalled();
+    await advance(1);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(result.current).toMatchObject({ loading: null, hasData: true, failure: null });
+    expect(result.current.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['after-the-refusal']);
+  });
+
+  it('is counted when it is sent, once', async () => {
+    fetcher.mockImplementation(answer('asked-at-hydration'));
+    askFirstScooters(ZURICH);
+    expect(JSON.parse(localStorage.getItem('scooters-requests')!)).toEqual([T0]);
+    // The map's code arrives a second later.
+    await advance(1_000);
+    mount(ZURICH);
+    await advance(180);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(localStorage.getItem('scooters-requests')!)).toEqual([T0]);
+  });
+
+  it('refused, holds the map for the minute from when the refusal came, not from when the map took it', async () => {
+    fetcher.mockImplementationOnce(async () => Response.json({ error: 'no' }, { status: 429, headers: { 'Retry-After': '60' } }))
+      .mockImplementation(answer('after-the-refusal'));
+    askFirstScooters(ZURICH);
+    await advance(5_000);
+    const { result } = mount(ZURICH);
+    await advance(180);
+    expect(result.current).toMatchObject({ failure: 'busy', hasData: false });
+    expect(localStorage.getItem('scooters-refused-until')).toBe(String(T0 + 60_000));
+    await advance(T0 + 60_000 - Date.now());
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(result.current).toMatchObject({ failure: null, hasData: true });
+  });
+
   it('is taken once: a later view of the same key asks again', async () => {
     fetcher.mockImplementation(answer('fresh'));
     askFirstScooters(ZURICH);

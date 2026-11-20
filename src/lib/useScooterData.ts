@@ -175,22 +175,28 @@ function createScooterDataController() {
     let origin: ReturnType<typeof originState> = { maintenance: null, retryAfterMs: 0 };
     let failure: LoadFailure = 'failed';
     let cause: unknown;
+    // When the answer came. The page's first request may have been answered before the map took it: a refusal
+    // (its Retry-After, which noteRefusal and the next attempt count) is waited out from then.
+    let answeredAt: number | null = null;
     try {
-      noteRequest(Date.now());
-      // Past the browser's cache: the response may be served stale while it is
-      // revalidated, which would answer every refresh with the previous one.
-      // The page's first request (useFirstScooters.ts), when it was sent for this view: the same request, on its way.
+      // The page's first request (useFirstScooters.ts), when it was sent for this view: the same request, on its way,
+      // counted when it was sent.
       const first = takeFirstScooters(key);
       if (first) {
         viewId = first.viewId;
         viewSequence = 1;
         deadline.signal.addEventListener('abort', () => first.controller.abort(), { once: true });
+      } else {
+        noteRequest(Date.now());
       }
+      // Past the browser's cache: the response may be served stale while it is
+      // revalidated, which would answer every refresh with the previous one.
       const res = first ? await first.response : await fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
         headers: { 'X-Scooter-View': `${viewId ??= crypto.randomUUID()}.${++viewSequence}` },
         cache: 'no-store',
         signal: deadline.signal,
       });
+      answeredAt = first?.answeredAt ?? Date.now();
       // The server's times are compared with this device's clock, which may be wrong.
       clockOffsetMs = clockOffset(res.headers.get('Date'), Date.now());
       origin = originState(res.headers, clockOffsetMs);
@@ -201,7 +207,7 @@ function createScooterDataController() {
         if (!Array.isArray(data.vehicles) || !data.meta) throw new Error('Invalid scooter response');
         response = data;
       } else {
-        if (res.status === 429) noteRefusal(res, Date.now());
+        if (res.status === 429) noteRefusal(res, answeredAt);
         failure = classifyLoadFailure({ status: res.status, originDown: origin.maintenance !== null });
         cause = new Error(`HTTP ${res.status}`);
       }
@@ -221,7 +227,7 @@ function createScooterDataController() {
       apply({ type: 'succeeded', key, response, now: Date.now(), clockOffsetMs, ...origin });
     } else {
       const previous = state;
-      apply({ type: 'failed', failure, now: Date.now(), ...origin });
+      apply({ type: 'failed', failure, now: answeredAt ?? Date.now(), ...origin });
       // Retries repeat every few seconds; report a failure once, when it starts.
       if (!previous.failure) {
         track('data_error', { result: failure === 'timeout' ? 'timeout' : 'request_failed' });

@@ -1,4 +1,5 @@
 import { viewBounds } from '@/lib/geo';
+import { heldUntil, noteRequest, VIEW_PACE } from '@/lib/requestPace';
 import { scooterQueryKey, scooterQueryParams, viewportFetchBounds, type ScooterDataQuery } from '@/lib/scooterDataState';
 import type { MapBounds } from '@/lib/types';
 
@@ -58,23 +59,37 @@ interface FirstScooters {
   viewId: string;
   controller: AbortController;
   response: Promise<Response>;
+  /** When its answer came, which a refusal's wait counts from (requestPace.ts): the map may take it later. */
+  answeredAt: number | null;
 }
 
 let first: FirstScooters | null = null;
 
-/** Sends the first request for the query, once a page; the later calls are ignored. */
+/**
+ * Sends the first request for the query, once a page; the later calls are ignored. It is counted with the map's
+ * requests as it is sent, and not sent while they are held (requestPace.ts), as on a reload within the minute a 429
+ * asked for: the map's first load waits for that and asks then. One sent anyway was refused, and the load that took
+ * its refusal at the end of the wait waited as long again.
+ */
 export function askFirstScooters(query: ScooterDataQuery): void {
   if (first || typeof fetch !== 'function') return;
+  const now = Date.now();
+  if (heldUntil(VIEW_PACE, now) > now) return;
+  noteRequest(now);
   const viewId = crypto.randomUUID();
   const controller = new AbortController();
-  const response = fetch(`/api/scooters?${scooterQueryParams(query)}`, {
-    headers: { 'X-Scooter-View': `${viewId}.1` },
-    cache: 'no-store',
-    signal: controller.signal,
-  });
+  const sent: FirstScooters = { key: scooterQueryKey(query), viewId, controller, answeredAt: null,
+    response: fetch(`/api/scooters?${scooterQueryParams(query)}`, {
+      headers: { 'X-Scooter-View': `${viewId}.1` },
+      cache: 'no-store',
+      signal: controller.signal,
+    }).then(response => {
+      sent.answeredAt = Date.now();
+      return response;
+    }) };
   // Failed or cancelled, it is the load that took it that reports it, or none.
-  response.catch(() => {});
-  first = { key: scooterQueryKey(query), viewId, controller, response };
+  sent.response.catch(() => {});
+  first = sent;
 }
 
 /**
