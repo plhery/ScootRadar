@@ -246,6 +246,19 @@ function createLastSeenIcon(provider: string, updating: boolean, label: string |
   });
 }
 
+/**
+ * Brings a faded scooter's light up to date where it stands, its breathing and its name, so that a
+ * light the keyboard is on keeps the focus: a new icon is a new button, and the focus would go to the
+ * page. False when it must be drawn anew, having gained or lost its name and with it its button.
+ */
+function restyleLastSeenIcon(marker: L.Marker, updating: boolean, label: string | undefined): boolean {
+  const light = marker.getElement()?.querySelector('.last-seen-light');
+  if (!light || (light instanceof HTMLButtonElement) !== (label !== undefined)) return false;
+  light.classList.toggle('last-seen-updating', updating);
+  if (label) light.setAttribute('aria-label', label);
+  return true;
+}
+
 /** A group of them: their number in a dashed ring, in the colour of the app with most of them. */
 function createLastSeenClusterIcon(cluster: ScooterCluster, count: string, updating: boolean): L.DivIcon {
   const largest = Object.entries(cluster.providers).reduce<[string, number] | null>((best, entry) => (!best || entry[1] > best[1] ? entry : best), null);
@@ -809,7 +822,8 @@ export default function MapComponent({
     if (!readyMap || !map) return;
     const markers = lastSeenMarkersRef.current;
     const updating = (provider: string) => lastSeenProviders[provider]?.updating === true;
-    const wanted = new Map<string, { at: [number, number]; signature: string; icon: () => L.DivIcon; vehicle?: Vehicle }>();
+    const wanted = new Map<string, { at: [number, number]; signature: string; icon: () => L.DivIcon;
+      restyle?: (marker: L.Marker) => boolean; vehicle?: Vehicle }>();
     for (const vehicle of lastSeenVehicles) {
       const breathing = updating(vehicle.provider);
       const key = `v:${vehicleMarkerKey(vehicle)}`;
@@ -818,7 +832,8 @@ export default function MapComponent({
         time: status.seenAt }, i18n);
       wanted.set(key, {
         at: [vehicle.lat, lngNear(vehicle.lng, frameLng)], signature: JSON.stringify([vehicle.provider, breathing, label]),
-        icon: () => createLastSeenIcon(vehicle.provider, breathing, label, () => showFadedTipRef.current(key)), vehicle,
+        icon: () => createLastSeenIcon(vehicle.provider, breathing, label, () => showFadedTipRef.current(key)),
+        restyle: marker => restyleLastSeenIcon(marker, breathing, label), vehicle,
       });
     }
     for (const cluster of clustered ? lastSeenClusters : []) {
@@ -832,11 +847,14 @@ export default function MapComponent({
     for (const [key, entry] of markers) {
       if (!wanted.has(key)) { entry.marker.remove(); markers.delete(key); }
     }
-    for (const [key, { at, signature, icon, vehicle }] of wanted) {
+    for (const [key, { at, signature, icon, restyle, vehicle }] of wanted) {
       const existing = markers.get(key);
       if (existing) {
         if (!existing.marker.getLatLng().equals(at)) existing.marker.setLatLng(at);
-        if (existing.signature !== signature) { existing.marker.setIcon(icon()); existing.signature = signature; }
+        if (existing.signature !== signature) {
+          if (!restyle?.(existing.marker)) existing.marker.setIcon(icon());
+          existing.signature = signature;
+        }
         existing.vehicle = vehicle;
         continue;
       }
