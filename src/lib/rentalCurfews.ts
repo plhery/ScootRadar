@@ -1,12 +1,11 @@
-import catalog from '../../data/rental-curfews.json';
 import { boundsContainPoint, polygonContainsPoint } from '@/lib/geo';
 import type { MapBounds } from '@/lib/types';
 
-// Cities that ban renting shared scooters at night, from data/rental-curfews.json.
-// Some operators still list their scooters as available then, so the dock and
-// the card say why they can't be rented. The iOS RentalCurfew.all is generated
-// from the same file (scripts/generate-provider-catalog.mjs); it doesn't read the
-// holiday evenings (`dates`) yet (docs/curfew-holiday-nights.md).
+// Cities that ban renting shared scooters at night, from data/rental-curfews.json (rentalCurfewCatalog.ts,
+// which the map page loads once it is up and the cache reads at once). Some operators still list their
+// scooters as available then, so the dock and the card say why they can't be rented. The iOS
+// RentalCurfew.all is generated from the same file (scripts/generate-provider-catalog.mjs); it doesn't read
+// the holiday evenings (`dates`) yet (docs/curfew-holiday-nights.md).
 
 export const WEEKDAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
 type Weekday = (typeof WEEKDAYS)[number];
@@ -24,7 +23,7 @@ interface CurfewNight {
   until: string;
 }
 
-interface RentalCurfew {
+export interface RentalCurfew {
   id: string;
   city: string;
   timeZone: string;
@@ -41,17 +40,24 @@ export interface ActiveCurfew {
   timeZone: string;
 }
 
-const CURFEWS = catalog.curfews as unknown as RentalCurfew[];
-// Each area's box: a point outside it is outside the area, whose edges then go uncounted. The cache's
-// metrics ask about every service area of its 5,000 feeds on each scrape (feedCurfewed): counting the
-// 8,200 edges of the 59 areas for each took most of the render, and held the cache's event loop a
-// second or more at its scrapes on 27 October 2026 (stallLog.ts).
-const BOXES = new Map(CURFEWS.flatMap(curfew => curfew.areas).map((ring): [[number, number][], MapBounds] => [ring, {
-  south: Math.min(...ring.map(([lat]) => lat)), north: Math.max(...ring.map(([lat]) => lat)),
-  west: Math.min(...ring.map(([, lng]) => lng)), east: Math.max(...ring.map(([, lng]) => lng)),
-}]));
+// Each area's box, made the first time the area is asked about: a point outside it is outside the area,
+// whose edges then go uncounted. The cache's metrics ask about every service area of its 5,000 feeds on
+// each scrape (feedCurfewed): counting the 8,200 edges of the 59 areas for each took most of the render,
+// and held the cache's event loop a second or more at its scrapes on 27 October 2026 (stallLog.ts).
+const BOXES = new WeakMap<[number, number][], MapBounds>();
+function areaBox(ring: [number, number][]): MapBounds {
+  let box = BOXES.get(ring);
+  if (!box) {
+    box = {
+      south: Math.min(...ring.map(([lat]) => lat)), north: Math.max(...ring.map(([lat]) => lat)),
+      west: Math.min(...ring.map(([, lng]) => lng)), east: Math.max(...ring.map(([, lng]) => lng)),
+    };
+    BOXES.set(ring, box);
+  }
+  return box;
+}
 const inArea = (area: [number, number][], [lat, lng]: [number, number]) =>
-  boundsContainPoint(BOXES.get(area)!, lat, lng) && polygonContainsPoint(area, lat, lng);
+  boundsContainPoint(areaBox(area), lat, lng) && polygonContainsPoint(area, lat, lng);
 const DAY_MINUTES = 24 * 60;
 const NOON = 12 * 60;
 const MINUTE_MS = 60_000;
@@ -146,10 +152,13 @@ function nightHolds(night: CurfewNight, { minutes, weekday, date }: ReturnType<t
   return night.dates?.some(holiday => holidayEvening(holiday, year) === evening) ?? false;
 }
 
-/** The ban in force at that point and instant, if any. */
-export function activeCurfew(point: [number, number] | null, now: number): ActiveCurfew | null {
+/**
+ * The ban of those cities in force at that point and instant, if any: none while the map page has yet to load
+ * them, when the dock and the cards say what they would with no ban known.
+ */
+export function activeCurfew(point: [number, number] | null, now: number, curfews: readonly RentalCurfew[]): ActiveCurfew | null {
   if (!point) return null;
-  for (const curfew of CURFEWS) {
+  for (const curfew of curfews) {
     if (!curfew.areas.some(area => inArea(area, point))) continue;
     const clock = localClock(now, curfew.timeZone);
     const night = curfew.nights.find(candidate => nightHolds(candidate, clock));

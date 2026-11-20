@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
+import { RENTAL_CURFEWS } from '@/lib/rentalCurfewCatalog';
 import {
   coverageBody,
   dockChips,
@@ -240,7 +241,7 @@ describe('dock status', () => {
       phase: 'ready', count: { value: 3 }, status: { kind: 'updating', text: { key: 'dock.lastSeen', values: { name: 'Ryde' }, time: seenAt } },
     });
     // None counted yet: still finding them, the faded ones and the chips on screen, the notices kept, and the line saying whose.
-    const curfew = summary({ ...filling, count: 0, providerCounts: {}, viewportCenter: [59.91, 10.75], now: Date.parse('2026-10-03T23:30:00.000Z') });
+    const curfew = summary({ ...filling, count: 0, providerCounts: {}, viewportCenter: [59.91, 10.75], curfews: RENTAL_CURFEWS, now: Date.parse('2026-10-03T23:30:00.000Z') });
     expect(curfew).toMatchObject({ phase: 'finding', count: { value: null, label: { key: 'dock.finding' } }, hint: null,
       status: { kind: 'updating' } });
     expect(curfew.notices.map(notice => notice.kind)).toContain('curfew');
@@ -344,11 +345,18 @@ describe('dock notices', () => {
   it('says first that the city in view bans renting at night, and until when', () => {
     const oslo: [number, number] = [59.9139, 10.7522];
     const night = Date.parse('2026-10-12T22:30:00Z');
-    expect(summary({ viewportCenter: oslo, now: night, lastUpdated: night - 30_000 }).notices[0]).toEqual({
+    expect(summary({ viewportCenter: oslo, curfews: RENTAL_CURFEWS, now: night, lastUpdated: night - 30_000 }).notices[0]).toEqual({
       kind: 'curfew',
       text: { key: 'dock.curfew', values: { city: 'Oslo' }, time: Date.parse('2026-10-13T03:00:00Z'), timeZone: 'Europe/Oslo' },
     });
-    expect(summary({ viewportCenter: oslo }).notices).toEqual([]);
+    expect(summary({ viewportCenter: oslo, curfews: RENTAL_CURFEWS }).notices).toEqual([]);
+  });
+
+  it('says nothing of a ban while the page has yet to load the cities\' bans', () => {
+    const oslo: [number, number] = [59.9139, 10.7522];
+    const night = Date.parse('2026-10-12T22:30:00Z');
+    expect(summary({ viewportCenter: oslo, now: night, lastUpdated: night - 30_000 }).notices).toEqual([]);
+    expect(summary({ viewportCenter: oslo, curfews: [], now: night, lastUpdated: night - 30_000 }).notices).toEqual([]);
   });
 
   it('names providers that are not sharing data and have nothing in view', () => {

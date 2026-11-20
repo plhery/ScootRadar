@@ -1,12 +1,11 @@
 import polygonClipping, { type Polygon } from 'polygon-clipping';
-import catalog from '../../data/rule-zones.json';
 import { boundsIntersect } from './geo';
 import { localClock } from './rentalCurfews';
 import type { MapBounds } from './types';
 import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 
 // Streets where a city or its police forbids riding or asks scooters to go slowly, and areas where it
-// forbids riding, from data/rule-zones.json, traced on OpenStreetMap where the city names them but
+// forbids riding, from data/rule-zones.json (ruleZoneCatalog.ts, which the map page loads once it is up), traced on OpenStreetMap where the city names them but
 // publishes no shape: Seoul's "kickboard-free streets", Warsaw's Old Town. And the zones cities set for shared e-scooters, Bergen's,
 // Porto's and Boise's, and Arlington National Cemetery, where federal rules forbid riding, from
 // data/city-zones.json (cityZones.ts loads each city's as a view reaches it): where to park,
@@ -69,8 +68,6 @@ export type RuleZoneShape = RuleZone & {
   /** Whether its hours hold now. */
   inForce: boolean;
 };
-
-export const RULE_ZONES = catalog.zones as unknown as RuleZone[];
 
 /** How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14. */
 const BAND_WIDTH_M = 14;
@@ -235,9 +232,8 @@ export function ruleShape(zone: RuleZone, inForce: boolean): RuleZoneShape {
   return { ...zone, polygons: shapeOf(zone), inForce };
 }
 
-/** The rule zones over the view, from zoom 14 in, each with whether it holds at that instant. */
-export function ruleZonesInView(view: { bounds: MapBounds; zoom: number } | null, now: number,
-  zones: RuleZone[] = RULE_ZONES): RuleZoneShape[] {
+/** The rule zones of those over the view, from zoom 14 in, each with whether it holds at that instant. */
+export function ruleZonesInView(view: { bounds: MapBounds; zoom: number } | null, now: number, zones: RuleZone[]): RuleZoneShape[] {
   const shown = visibleRules(view, zones);
   return shown.length ? shown.map(zone => ruleShape(zone, ruleInForce(zone, now))) : NONE;
 }

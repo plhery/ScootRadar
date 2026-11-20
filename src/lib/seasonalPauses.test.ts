@@ -41,7 +41,8 @@ vi.mock('@/generated/countries', async importOriginal => {
 });
 
 const { REGIONAL_SCOOTER_CITIES } = await import('@/lib/regionalScooterSystems');
-const { activeSeasonalPause, feedCurfewEnds, feedCurfewed, feedPaused, pauseHolds, pausesReturn } = await import('@/lib/seasonalPauses');
+const { activeSeasonalPause, feedPaused, pauseHolds, pausesReturn } = await import('@/lib/seasonalPauses');
+const { feedCurfewEnds, feedCurfewed } = await import('@/lib/feedCurfews');
 const { querySnapshot } = await import('@/lib/scooterSnapshots');
 const { dockModel } = await import('@/lib/dockModel');
 const { translate } = await import('@/lib/i18n');

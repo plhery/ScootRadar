@@ -197,7 +197,9 @@ function winding(ring: number[][], lat: number, lng: number): number {
 /** The module as the page first has it, nothing loaded. */
 async function fresh() {
   vi.resetModules();
-  return import('./cityZones');
+  const zones = await import('./cityZones');
+  const { ZONE_CITIES } = await import('./zoneCityCatalog');
+  return { ...zones, ZONE_CITIES, zoneCitiesInView: (view: Parameters<typeof zones.zoneCitiesInView>[0]) => zones.zoneCitiesInView(view, ZONE_CITIES) };
 }
 
 describe('the cities\' zones', () => {

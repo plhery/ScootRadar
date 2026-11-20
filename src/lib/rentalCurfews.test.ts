@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import catalog from '../../data/rental-curfews.json';
-import { activeCurfew, easterSunday, holidayEvening } from './rentalCurfews';
+import { RENTAL_CURFEWS } from './rentalCurfewCatalog';
+import { activeCurfew as curfewOf, easterSunday, holidayEvening } from './rentalCurfews';
+
+const activeCurfew = (point: [number, number] | null, now: number) => curfewOf(point, now, RENTAL_CURFEWS);
 import { polygonContainsPoint } from './geo';
 
 const OSLO: [number, number] = [59.9139, 10.7522];

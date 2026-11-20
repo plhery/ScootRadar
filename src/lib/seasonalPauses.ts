@@ -1,6 +1,5 @@
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
-import { activeCurfew } from '@/lib/rentalCurfews';
 import {
   REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, regionalCityId, regionalSource, serviceAreas,
   type RegionalScooterCity, type RegionalScooterSystem,
@@ -102,7 +101,8 @@ export function systemPauses(system: RegionalScooterSystem): (SeasonalPause | un
   return serviceAreas(system).map(area => area.seasonal ?? system.seasonal);
 }
 
-const SYSTEMS_BY_FEED = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
+/** Each regional system, by its feed's id (`<source>:<system>`). */
+export const SYSTEMS_BY_FEED = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
 
 /**
  * Whether the feed's every service area is in its seasonal pause: its operator is expected to
@@ -123,27 +123,6 @@ export function feedPaused(feedId: string, now: number, systems: ReadonlyMap<str
 export function snapshotPaused(feed: { id: string; seasonOver?: boolean }, now: number,
   systems: ReadonlyMap<string, RegionalScooterSystem> = SYSTEMS_BY_FEED): boolean {
   return !!feed.seasonOver || feedPaused(feed.id, now, systems);
-}
-
-/**
- * Whether a night ban holds at every one of the feed's service areas (rentalCurfews.ts): its
- * operator may then take the feed down until morning, as Dott takes Trondheim's on Friday and
- * Saturday nights, while Entur keeps serving its last positions. The map already says renting is
- * banned; the alerts wait for the morning.
- */
-export function feedCurfewed(feedId: string, now: number, systems: ReadonlyMap<string, RegionalScooterSystem> = SYSTEMS_BY_FEED): boolean {
-  const system = systems.get(feedId);
-  return !!system && serviceAreas(system).every(area => activeCurfew(area.center, now) !== null);
-}
-
-/**
- * When the first night ban in force then at one of the feed's service areas ends, if one is: an
- * operator hides its scooters in the ban, so a collection then finds none where they stand by morning.
- */
-export function feedCurfewEnds(feedId: string, now: number, systems: ReadonlyMap<string, RegionalScooterSystem> = SYSTEMS_BY_FEED): number | undefined {
-  const system = systems.get(feedId);
-  const ends = system ? serviceAreas(system).flatMap(area => activeCurfew(area.center, now)?.until ?? []) : [];
-  return ends.length ? Math.min(...ends) : undefined;
 }
 
 // The feed and pause of each service area, by city id.

@@ -12,8 +12,11 @@ type View = { bounds: MapBounds; zoom: number } | null;
 /** The hook as the page first has it, no city loaded. */
 async function fresh() {
   vi.resetModules();
-  const [{ useCityZones }, { CITY_ZONE_FILES }] = await Promise.all([import('@/lib/useCityZones'), import('@/lib/cityZones')]);
-  return { useCityZones, bergen: vi.spyOn(CITY_ZONE_FILES, 'bergen'), porto: vi.spyOn(CITY_ZONE_FILES, 'porto') };
+  const [{ useCityZones: hook }, { CITY_ZONE_FILES }, { ZONE_CITIES }] = await Promise.all([
+    import('@/lib/useCityZones'), import('@/lib/cityZones'), import('@/lib/zoneCityCatalog'),
+  ]);
+  const useCityZones = (view: View, cities: Parameters<typeof hook>[1] = ZONE_CITIES) => hook(view, cities);
+  return { useCityZones, ZONE_CITIES, bergen: vi.spyOn(CITY_ZONE_FILES, 'bergen'), porto: vi.spyOn(CITY_ZONE_FILES, 'porto') };
 }
 
 it('loads nothing further out than zoom 14 or away from the cities, and gives the same empty list', async () => {
@@ -51,4 +54,15 @@ it('asks again for a city whose zones failed to load once the view changes', asy
   rerender({ view: { ...PORTO, zoom: 17 } });
   await waitFor(() => expect(result.current).toHaveLength(230));
   expect(porto).toHaveBeenCalledTimes(2);
+});
+
+it('loads the zones of a city in view once the index of the cities has arrived, the page loading it after the map is up', async () => {
+  const { useCityZones, ZONE_CITIES, bergen } = await fresh();
+  const { result, rerender } = renderHook(({ cities }: { cities: typeof ZONE_CITIES }) => useCityZones(BERGEN, cities),
+    { initialProps: { cities: [] as typeof ZONE_CITIES } });
+  expect(result.current).toEqual([]);
+  expect(bergen).not.toHaveBeenCalled();
+  rerender({ cities: ZONE_CITIES });
+  await waitFor(() => expect(result.current).toHaveLength(772));
+  expect(bergen).toHaveBeenCalledTimes(1);
 });
