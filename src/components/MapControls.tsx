@@ -2,6 +2,7 @@
 
 import { useI18n } from '@/lib/i18n';
 import { selectionFeedback } from '@/lib/feedback';
+import { usePlaced } from '@/lib/usePlaced';
 
 interface MapControlsProps {
   locating?: boolean;
@@ -18,9 +19,11 @@ export default function MapControls({
   onLocateMe,
 }: MapControlsProps) {
   const { t } = useI18n();
+  // Placed at once above the sheet; it glides with the sheet only after that first frame.
+  const placed = usePlaced();
 
   return (
-    <div className="fab-stack" inert={hidden} aria-hidden={hidden}>
+    <div className="fab-stack" inert={hidden} aria-hidden={hidden} data-placed={placed || undefined}>
       <span className="sr-only" role="status">
         {locating ? t('bar.locating') : ''}
       </span>

@@ -2008,14 +2008,23 @@ svg {
 .fab-stack {
   position: fixed;
   right: 12px;
-  bottom: calc(var(--sheet-peek-h) + var(--dock-bottom) + 14px);
+  bottom: calc(var(--dock-bottom) + 14px);
   z-index: var(--z-map-actions);
   display: flex;
   flex-direction: column;
   gap: 10px;
   transform-origin: bottom right;
+  /* Above the sheet by moving, not by its place, as the zone legend: a glide of its bottom was a layout
+     shift each frame. With translate, which the transform that hides it and a pressed button's :active
+     leave alone. Placed at once, it glides only after (MapControls). */
+  translate: 0 calc(-1 * var(--sheet-peek-h));
   transition:
-    bottom 280ms var(--spring),
+    opacity 180ms ease,
+    transform 280ms var(--spring);
+}
+.fab-stack[data-placed] {
+  transition:
+    translate 280ms var(--spring),
     opacity 180ms ease,
     transform 280ms var(--spring);
 }
@@ -2069,10 +2078,15 @@ svg {
 }
 /* A single small attribution stays visible; the full source list opens on demand. */
 .map-attribution {
-  --credits-bottom: calc(var(--sheet-peek-h) + var(--dock-bottom) + 6px);
+  /* Its place, and how far it rides above it: the sheet's height, by translate, not by its bottom, as the fab
+     stack. Its credits open where it shows, from --credits-bottom. Placed at once, it glides only after. */
+  --credits-base: calc(var(--dock-bottom) + 6px);
+  --credits-rise: var(--sheet-peek-h);
+  --credits-bottom: calc(var(--credits-base) + var(--credits-rise));
   position: fixed;
   left: max(12px, env(safe-area-inset-left, 0px));
-  bottom: var(--credits-bottom);
+  bottom: var(--credits-base);
+  translate: 0 calc(-1 * var(--credits-rise));
   z-index: var(--z-map-actions);
   display: flex;
   align-items: center;
@@ -2082,7 +2096,9 @@ svg {
   color: var(--attribution-ink);
   font-size: 11px;
   line-height: 1.3;
-  transition: bottom 280ms var(--spring);
+}
+.map-attribution[data-placed] {
+  transition: translate 280ms var(--spring);
 }
 .map-attribution > a {
   color: inherit;
@@ -2160,7 +2176,8 @@ svg {
   text-underline-offset: 3px;
 }
 .app-shell[data-searching='true'] .map-attribution {
-  --credits-bottom: var(--dock-bottom);
+  --credits-base: var(--dock-bottom);
+  --credits-rise: 0px;
 }
 /* The operators' zones, a preview: what their colours mean, above the credits. */
 .zone-legend {
@@ -2577,7 +2594,8 @@ svg {
     bottom: max(24px, var(--sab));
   }
   .map-attribution {
-    --credits-bottom: max(24px, var(--sab));
+    --credits-base: max(24px, var(--sab));
+    --credits-rise: 0px;
     left: 428px;
   }
   .map-credits {
@@ -2586,6 +2604,7 @@ svg {
   .fab-stack {
     right: 24px;
     bottom: max(24px, var(--sab));
+    translate: none;
   }
   .map-notices {
     top: calc(var(--sat) + 94px);
@@ -2675,7 +2694,7 @@ svg {
   }
   /* "In meiner Nähe" is as wide as the room beside the credits: they move above the button. */
   .app-shell:not([data-searching='true']):has(.near-me) .map-attribution {
-    --credits-bottom: calc(var(--sheet-peek-h) + var(--dock-bottom) + 74px);
+    --credits-base: calc(var(--dock-bottom) + 74px);
   }
   .app-shell:not([data-searching='true']):has(.near-me) .zone-legend {
     bottom: calc(var(--dock-bottom) + 116px);

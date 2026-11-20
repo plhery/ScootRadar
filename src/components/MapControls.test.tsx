@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MapControls from '@/components/MapControls';
 import { I18nProvider } from '@/lib/i18n';
@@ -85,6 +85,15 @@ describe('MapControls', () => {
 
     expect(screen.getAllByRole('button')).toHaveLength(1);
     expect(screen.queryByRole('button', { name: /refresh/i })).not.toBeInTheDocument();
+  });
+
+  it('is placed above the sheet at once, and glides with it only from the next frame', async () => {
+    const { container } = renderControls();
+
+    const stack = container.querySelector('.fab-stack');
+    expect(stack).not.toHaveAttribute('data-placed');
+    await act(() => new Promise(resolve => requestAnimationFrame(() => resolve(undefined))));
+    expect(stack).toHaveAttribute('data-placed');
   });
 
   it('is out of reach while the search panel is open', () => {

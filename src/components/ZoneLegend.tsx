@@ -1,10 +1,11 @@
 'use client';
 
 import type { PathOptions } from 'leaflet';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { formatLocale } from '@/lib/formatLocale';
 import { boundsContainPoint, boundsIntersect, polygonContainsPoint } from '@/lib/geo';
 import { useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
+import { usePlaced } from '@/lib/usePlaced';
 import type { RuleKind, RuleZoneShape } from '@/lib/ruleZones';
 import type { MapBounds } from '@/lib/types';
 import { formatWallTime } from '@/lib/uiText';
@@ -158,15 +159,7 @@ export default function ZoneLegend({ state, zones, rules = [], view }: {
   const { t, locale, region, unitsRegion, units } = useI18n();
   const shown = !(state === 'off' && !rules.length);
   // Where it appears it is placed at once; it glides with the sheet only after that frame.
-  const [placed, setPlaced] = useState(false);
-  useEffect(() => {
-    if (!shown) {
-      setPlaced(false); // eslint-disable-line react-hooks/set-state-in-effect -- hidden, it is placed again where it next appears
-      return;
-    }
-    const frame = requestAnimationFrame(() => setPlaced(true));
-    return () => cancelAnimationFrame(frame);
-  }, [shown]);
+  const placed = usePlaced(shown);
   if (!shown) return null;
   const count = zones.length;
   const note = state === 'off' ? null

@@ -4,6 +4,7 @@ import Icon from './Icon';
 import { COUNTRY_CREDIT_LINKS } from '@/generated/countries';
 import { useI18n } from '@/lib/i18n';
 import { selectionFeedback } from '@/lib/feedback';
+import { usePlaced } from '@/lib/usePlaced';
 
 const SOURCES = [
   { href: 'https://www.openstreetmap.org/copyright', label: '© OpenStreetMap contributors' },
@@ -34,9 +35,11 @@ export function CreditsList() {
 
 export default function MapCredits() {
   const { t } = useI18n();
+  // Placed at once above the sheet; it glides with the sheet only after that first frame.
+  const placed = usePlaced();
 
   return (
-    <div className="map-attribution glass">
+    <div className="map-attribution glass" data-placed={placed || undefined}>
       <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
         © OpenStreetMap
       </a>
