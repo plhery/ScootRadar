@@ -1,1 +1,1 @@
-sparkesykkel,el-sparkesykkel,scooter,escooter,leie,utleie,deling,nærmeste,nær,batteri,tur,gbfs
+sparkesykkel,el-sparkesykkel,elsparkesykkel,utleie,leie,deling,nær,oslo,bergen,stavanger,trondheim

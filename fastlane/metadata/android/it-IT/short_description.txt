@@ -1,1 +1,1 @@
-Tutti i monopattini in sharing intorno a te su una mappa in tempo reale.
+Trova il monopattino elettrico più vicino: tutti quelli in sharing su una mappa.

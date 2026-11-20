@@ -1,1 +1,1 @@
-patín,eléctrico,patineta,monopatín,renta,compartido,escooter,movilidad,micromovilidad,cerca,gbfs
+patín,patineta,monopatín,renta,alquiler,eléctrico,compartido,cerca,monterrey,santiago,querétaro

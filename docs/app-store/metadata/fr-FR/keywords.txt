@@ -1,1 +1,1 @@
-électrique,libre-service,location,partage,scooter,escooter,mobilité,micromobilité,proche,gbfs
+trottinette,trotinette,électrique,libre-service,location,zurich,lyon,marseille,bordeaux,bruxelles

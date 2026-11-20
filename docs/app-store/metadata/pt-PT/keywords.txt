@@ -1,1 +1,1 @@
-elétrica,partilhada,aluguer,partilha,trotineta,scooter,escooter,mobilidade,perto,bateria,gbfs
+trotinete,trotineta,elétrica,aluguer,partilha,lisboa,porto,coimbra,cascais,oeiras,faro,matosinhos

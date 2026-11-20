@@ -284,6 +284,30 @@ The app record itself, the App
 Privacy answers, the EU trader status and the review contact are entered on
 the web. Nothing here submits the version for review.
 
+## Search words
+
+App Store search reads the name, the subtitle and `keywords.txt`, not the
+description or the promotional text. The name, subtitle and keywords change
+only with a new version. Words combine only within one language: "trottinette
+zurich" finds the app because the French name and keywords hold both words.
+Each storefront searches several of the listing's languages
+([Apple's table](https://developer.apple.com/help/app-store-connect/reference/app-information/app-store-localizations/)):
+Switzerland German, English (U.K.), French and Italian; Belgium English (U.K.),
+Dutch and French; Norway English (U.K.) and Norwegian; the United States
+English (U.S.), French and Spanish (Mexico); most other European storefronts
+their own language and English (U.K.), and Sweden, Finland and Poland only
+English (U.K.). So:
+
+- a word goes in one of a storefront's languages, unless a phrase needs it in
+  another (Zürich is in the German and the French keywords, for "e-scooter
+  zürich" and "trottinette zurich");
+- the keywords hold the singular when the name has the plural: a search for
+  "monopattino" doesn't find a name with "monopattini";
+- a city goes in only where the map shows scooters, never one it doesn't
+  cover (Paris, Geneva, Madrid), nor one in a country the app isn't offered in
+  (Medellín: no Colombian storefront), and an operator's name never does (App
+  Review Guidelines 2.3.7).
+
 ## Universal links
 
 `public/.well-known/apple-app-site-association` gives

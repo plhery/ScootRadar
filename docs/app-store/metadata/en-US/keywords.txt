@@ -1,1 +1,1 @@
-escooter,kick scooter,shared,rental,micromobility,nearby,finder,ride,electric,commute,gbfs,bikeshare
+escooter,electric,rental,near,los angeles,chicago,seattle,washington,austin,atlanta,denver,portland

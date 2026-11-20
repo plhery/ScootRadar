@@ -1,1 +1,1 @@
-eléctrico,alquiler,compartido,sharing,scooter,escooter,movilidad,micromovilidad,cerca,trayecto,gbfs
+patinete,eléctrico,alquiler,compartido,sharing,patín,torrevieja,gijón,oviedo,getafe,estepona

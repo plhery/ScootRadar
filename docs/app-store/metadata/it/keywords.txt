@@ -1,1 +1,1 @@
-elettrico,sharing,noleggio,scooter,escooter,micromobilità,mobilità,vicino,condiviso,bici,gbfs
+monopattino,elettrico,sharing,noleggio,condiviso,roma,milano,torino,napoli,palermo,catania,zurigo
