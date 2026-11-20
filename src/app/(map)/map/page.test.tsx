@@ -1119,11 +1119,13 @@ it('never takes the scooter walked to for gone from data that cannot tell', asyn
   await pressDirections(scooterCard());
   vehicles = [];
 
-  // A feed of Lime failed, the answer was cut short, or the scooters came in groups.
+  // A feed of Lime failed, the answer was cut short, the scooters came in groups, or the answer names no read of Lime's,
+  // as while one of its groups in view has not completed one (scooterSnapshots: fresh-eyes review of 20 November 2026).
   for (const cannotTell of [
     { failedSources: ['national:lime_zurich'], partial: true },
     { truncated: true },
     { mode: 'clusters' as const },
+    { shownSince: { bird: new Date(Date.now() + 60_000).toISOString() } },
   ]) {
     meta = cannotTell;
     await refreshData();

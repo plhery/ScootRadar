@@ -776,11 +776,18 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const readThroughByProvider = new Map<string, number>();
   const earliest = (times: Map<string, number>, provider: string, at: number) =>
     times.set(provider, Math.min(times.get(provider) ?? Infinity, at));
+  // The apps with a feed in view whose read is not complete, as a Lime group waiting for its first after the cache
+  // restarts, or partly swept, while another group beside it is read: what that feed would list is not known, so the
+  // answer names no read of the app, and a walk cannot take the other group's reads for its scooter's own (fresh-eyes
+  // review of 20 November 2026). A viewport observation only adds to its app's feeds, and an app in its pause has none.
+  const observations = new Set(options.observations ?? []);
+  const unread = new Set<string>();
   for (const feed of candidates) {
     if (feed.skipped) continue;
     const sweep = shownSweep(feed, now), again = beside.get(feed);
     const last = showsPositions(feed, now);
     if (!query.providers || query.providers.has(feed.provider)) {
+      if (!last && !observations.has(feed) && !quietInPause(feed, now, showing)) unread.add(feed.provider);
       if (last) shownSince.push(oldestShown(feed, now, again));
       else if (sweep) shownSince.push(sweep.vehicles.reduce((oldest, vehicle) => {
         const at = sweepReadAt(sweep, vehicle);
@@ -849,6 +856,10 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   // (shownSince) moves also when another of its feeds in view is read, as one of Lime's groups beside the walked
   // scooter's, or when one comes into or leaves the view; beside it, its newest (readThrough): once the oldest is later
   // than an answer's newest, every feed of the app in view was read since that answer (Desk [373] S-1).
+  for (const provider of unread) {
+    readByProvider.delete(provider);
+    readThroughByProvider.delete(provider);
+  }
   const shownSinceByApp = byApp(readByProvider);
   // The apps that make the answer stale (healthFor) and have positions shown, with the oldest's time:
   // the map names the one late app, where in Augsburg on 7 November 2026 it said "Data delayed" without

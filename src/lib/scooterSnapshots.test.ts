@@ -801,6 +801,40 @@ describe('feeds collected on demand', () => {
     expect([none.shownSince, none.readThrough]).toEqual([undefined, undefined]);
   });
 
+  it('names no read of an app while one of its feeds in view has not completed one, whatever another of them reads', () => {
+    const at = (time: number) => new Date(time).toISOString();
+    // After a restart, the walked scooter's Lime group (A) waits for its first complete read, with no position saved,
+    // while the group beside it (B) is read twice (fresh-eyes review of 20 November 2026, walk finding).
+    const south = { ...lyon, north: 45.8 }, north = { ...lyon, south: 45.8 };
+    const b = (observedAt: number) => feed({ id: 'france:lime_app_b', provider: 'lime', coverage: [north], observedAt,
+      attemptedAt: observedAt, vehicles: [{ ...vehicle('b'), provider: 'lime', lat: 45.85 }] });
+    const waiting = feed({ id: 'france:lime_app_a', provider: 'lime', coverage: [south], observedAt: 0, attemptedAt: now,
+      vehicles: [] });
+    const refreshing = { refreshing: new Set([waiting.id]) };
+    const first = querySnapshot(snapshot([waiting, b(now - 10_000), voi]), query, 16, now, refreshing).meta;
+    const second = querySnapshot(snapshot([waiting, b(now + 20_000), voi]), query, 16, now + 30_000, refreshing).meta;
+    // B's reads never stand for Lime's: no time of Lime's moves, so no walk counts them as reads of A's spot.
+    for (const meta of [first, second]) {
+      expect(meta.failedSources).toEqual([]);
+      expect([meta.shownSince?.lime, meta.readThrough?.lime]).toEqual([undefined, undefined]);
+      expect(meta.shownSince?.voi).toBeDefined();
+    }
+    // A partly swept, its sweep's first scooters shown, is no complete read either.
+    const swept = { ...waiting, sweep: { startedAt: now, swept: [{ ...south, north: 45.75 }],
+      vehicles: [{ ...vehicle('a1'), provider: 'lime', lat: 45.72 }] } };
+    const partly = querySnapshot(snapshot([swept, b(now + 20_000), voi]), query, 16, now + 30_000, refreshing);
+    expect(partly.meta.shownSince?.lime).toBeUndefined();
+    // A's first complete read, without the scooter: Lime is named again, from the oldest of its groups' reads.
+    const read = { ...waiting, observedAt: now + 40_000, attemptedAt: now + 40_000 };
+    const third = querySnapshot(snapshot([read, b(now + 20_000), voi]), query, 16, now + 50_000).meta;
+    expect([third.shownSince?.lime, third.readThrough?.lime]).toEqual([at(now + 20_000), at(now + 40_000)]);
+    // A viewport observation of Lime's beside the groups, too old to show, holds nothing back.
+    const observation = { ...b(now - minutes(30)), id: 'france:lime_view_a' };
+    const observed = querySnapshot(snapshot([read, b(now + 20_000), voi]), query, 16, now + 50_000,
+      { observations: [observation] }).meta;
+    expect(observed.shownSince?.lime).toBe(at(now + 20_000));
+  });
+
   describe('Lime\'s groups in a wide view', () => {
     const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
     const wide = { bounds: berlin, minBattery: 0 };
