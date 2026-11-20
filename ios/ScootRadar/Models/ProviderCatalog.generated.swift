@@ -8039,7 +8039,7 @@ enum ScooterProviderCoverage {
         systems.append((.jet, GeoBounds(south: -29.347669, west: -49.741659, north: -29.325042, east: -49.712762)))
         systems.append((.jet, GeoBounds(south: -23.481581, west: -45.093139, north: -23.414899, east: -45.049957)))
         systems.append((.jet, GeoBounds(south: -20.422664, west: -40.339696, north: -20.323335, east: -40.266473)))
-        systems.append((.whoosh, GeoBounds(south: -27.63594, west: -48.70573, north: -26.87967, east: -48.41937)))
+        systems.append((.whoosh, GeoBounds(south: -27.71901, west: -48.70573, north: -26.87967, east: -48.37478)))
         systems.append((.whoosh, GeoBounds(south: -30.09712, west: -51.25218, north: -30.00374, east: -51.14004)))
         systems.append((.whoosh, GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321)))
         systems.append((.whoosh, GeoBounds(south: -23.6305, west: -46.75008, north: -23.49574, east: -46.55206)))

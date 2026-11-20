@@ -163,6 +163,8 @@ export class WhooshClient {
   private readonly outside = new Map<string, number>();
   // The envelopes of each region's ride polygons that cross its coverage's edge, last said.
   private readonly crossing = new Map<string, string>();
+  // The regions that listed no ride polygon, last time they were swept.
+  private readonly unbounded = new Set<string>();
   private readonly loading = new Map<string, Promise<Metadata>>();
 
   constructor(options: Options = {}) {
@@ -278,7 +280,6 @@ export class WhooshClient {
       const info = object(object(await this.api(`/regions/location/${region}/info`, region))?.region);
       if (info?.id !== region || typeof info.seasonIsOver !== 'boolean' || info.status !== 'ACTIVE') throw new Error('Invalid Whoosh region metadata');
       const areas = info.seasonIsOver ? [] : parseWhooshRideAreas(await this.api(`/regions/location/${region}/areas`, region));
-      if (!info.seasonIsOver && !areas.length) throw new Error('Whoosh region has no ride areas');
       const value = { closed: info.seasonIsOver, areas, expiresAt: this.now() + METADATA_MS };
       this.metadata.set(region, value);
       return value;
@@ -297,6 +298,14 @@ export class WhooshClient {
     if (!validBounds(coverage)) throw new Error('Invalid Whoosh map coverage');
     const metadata = await this.region(region);
     if (metadata.closed) return [];
+    // A region open for its season that lists no ride polygon, only forbidden ones, is swept over its reviewed
+    // coverage, which is said once, and again each time it loses its polygons: from 19 November 2026 Campo Grande's
+    // list held only its two forbidden zones, while its 577 scooters stood in the coverage as before, none beyond it.
+    if (!metadata.areas.length && !this.unbounded.has(region)) {
+      console.warn(JSON.stringify({ event: 'whoosh_region_without_ride_area', region, coverage }));
+    }
+    if (metadata.areas.length) this.unbounded.delete(region); else this.unbounded.add(region);
+    const areas = metadata.areas.length ? metadata.areas : [coverage];
     // Said once, and again when it changes: a new polygon outside the coverage may be the region's own.
     const outside = metadata.areas.filter(area => outsideCoverage(area, coverage)).length;
     if ((this.outside.get(region) ?? 0) !== outside) {
@@ -312,7 +321,7 @@ export class WhooshClient {
       console.warn(JSON.stringify({ event: 'whoosh_area_crosses_coverage', region, coverage, areas: crossing }));
     }
     this.crossing.set(region, said);
-    const targets = nearestFirst(whooshMapViews(metadata.areas, coverage), view => view);
+    const targets = nearestFirst(whooshMapViews(areas, coverage), view => view);
     const vehicles = sweep?.found ?? new Map<string, WhooshScooter>();
     let requests = 0;
     const collect = async (bounds: MapBounds): Promise<void> => {

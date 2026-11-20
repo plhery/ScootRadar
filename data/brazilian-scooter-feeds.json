@@ -922,10 +922,10 @@
         -48.54689
       ],
       "bounds": {
-        "south": -27.63594,
+        "south": -27.71901,
         "north": -26.87967,
         "west": -48.70573,
-        "east": -48.41937
+        "east": -48.37478
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "249e2c6e-d867-4e2e-af98-14a51fc5c258",

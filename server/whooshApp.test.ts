@@ -25,7 +25,7 @@ const directories: string[] = [];
 afterEach(async () => { await Promise.all(directories.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
 
 async function fixture(options: { closed?: boolean; map?: (body: Record<string, unknown>, count: number) => Response;
-  info?: unknown; now?: () => number } = {}) {
+  info?: unknown; areas?: () => unknown; now?: () => number } = {}) {
   const dir = await mkdtemp(join(tmpdir(), 'whoosh-test-')); directories.push(dir);
   const sessionPath = join(dir, 'session.json');
   await writeFile(sessionPath, JSON.stringify({ version: 1, clientId: 'client123456', deviceId: 'device123456',
@@ -44,7 +44,7 @@ async function fixture(options: { closed?: boolean; map?: (body: Record<string, 
     expect(headers.get('x-region-id')).toBe(REGION);
     expect(headers.get('x-auth-token')).toBe('private-access');
     if (url.endsWith('/info')) return json(options.info ?? { region: { id: REGION, status: 'ACTIVE', seasonIsOver: options.closed ?? false } });
-    if (url.endsWith('/areas')) return json(areas);
+    if (url.endsWith('/areas')) return json(options.areas?.() ?? areas);
     if (url.endsWith('/client/devices/searches')) {
       maps++;
       const body = JSON.parse(String(init?.body));
@@ -103,6 +103,48 @@ describe('Whoosh map contract', () => {
       await client.vehicles(REGION, coverage);
       await expect(client.vehicles(REGION, narrow)).rejects.toThrow('exceeds reviewed coverage');
       expect(warn.mock.calls.filter(([line]) => String(line).includes('whoosh_area_crosses_coverage'))).toHaveLength(2);
+    } finally { warn.mockRestore(); }
+  });
+
+  it('sweeps a region that lists only forbidden polygons over its reviewed coverage, as Campo Grande from 19 November 2026', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    try {
+      let time = Date.parse('2026-11-19T22:00:00Z');
+      const forbidden = { areas: [{ enabled: true, type: 'FORBIDDEN', borders: { coordinates: [
+        { lat: 1.005, lng: 2.005 }, { lat: 1.006, lng: 2.005 }, { lat: 1.006, lng: 2.006 },
+      ] } }] };
+      let listed: unknown = forbidden;
+      // Two scooters near the coverage's corners, outside the ride polygon the region listed before, and one inside it.
+      // A view is a cell of the grid clamped to the coverage, so either way this coverage is searched in one view.
+      const fleet = [device(1, 1.002, 2.002), device(2, 1.018, 2.018), device(3)];
+      const searched: unknown[] = [];
+      const { client } = await fixture({ now: () => time, areas: () => listed, map: body => {
+        const view = (body.clientSearchDevicesParams as { visibleArea: {
+          upperLeft: { lat: number; lng: number }; bottomRight: { lat: number; lng: number } } }).visibleArea;
+        searched.push(view);
+        const { upperLeft: a, bottomRight: b } = view;
+        return json({ devices: fleet.filter(({ state: { position: { point: p } } }) =>
+          p.lat >= a.lat && p.lat <= b.lat && p.lng >= a.lng && p.lng <= b.lng) });
+      } });
+      const said = () => warn.mock.calls.filter(([line]) => String(line).includes('whoosh_region_without_ride_area'))
+        .map(([line]) => JSON.parse(String(line)));
+      expect((await client.vehicles(REGION, coverage)).map(v => v.id)).toEqual([id(1), id(2), id(3)]);
+      expect(searched).toEqual([{ upperLeft: { lat: 1.001, lng: 2.001 }, bottomRight: { lat: 1.019, lng: 2.019 } }]);
+      await client.vehicles(REGION, coverage);
+      expect(said()).toEqual([{ event: 'whoosh_region_without_ride_area', region: REGION, coverage }]);
+      // Its ride polygon listed again, it is swept as before, and its loss is said again.
+      listed = areas; time += 3600_001;
+      expect(await client.vehicles(REGION, coverage)).toHaveLength(3);
+      expect(said()).toHaveLength(1);
+      listed = forbidden; time += 3600_001;
+      expect(await client.vehicles(REGION, coverage)).toHaveLength(3);
+      expect(said()).toHaveLength(2);
+      expect(searched).toHaveLength(4);
+      // A region with polygons, none in its coverage, still fails: they are the nearest region's.
+      listed = { areas: [{ enabled: true, type: 'LIMITED', borders: { coordinates: [
+        { lat: 3, lng: 4 }, { lat: 3.01, lng: 4 }, { lat: 3.01, lng: 4.01 },
+      ] } }] }; time += 3600_001;
+      await expect(client.vehicles(REGION, coverage)).rejects.toThrow('no ride area in its reviewed coverage');
     } finally { warn.mockRestore(); }
   });
 

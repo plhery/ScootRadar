@@ -42,9 +42,12 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons
-  alone do not define coverage. The list also holds the nearest region's
-  polygons (the info's `nearestRegions`): Temuco's and Villarrica's are the
-  same three, and Joinville's, while its season was over on 24 October 2026,
+  alone do not define coverage: a region open for its season that lists no
+  ride polygon, only forbidden ones, is swept over its reviewed coverage
+  instead, and `whoosh_region_without_ride_area` (region, coverage) is logged
+  once, and again each time it loses its polygons. The list also holds the
+  nearest region's polygons (the info's `nearestRegions`): Temuco's and
+  Villarrica's are the same three, and Joinville's, while its season was over on 24 October 2026,
   only Curitiba's. The collector skips a polygon wholly outside the region's
   coverage, which is the other region's to collect, and logs
   `whoosh_areas_outside_coverage` once, and again when that count changes; one
@@ -112,6 +115,24 @@ way, and the feed expired. Once the cache logged it
 reached 5 km further west, to -54.67069, about 9.5 km from the centre and well
 inside the municipality; its other three sides had not moved. Its west bound
 went from -54.62322 to -54.67169, and a sweep plans 8 views instead of 6.
+
+From 17 November 2026 at about 13:11 UTC every sweep of Florianópolis failed
+the same way (SCOOTRADAR-CACHE-65, which regressed). Whoosh had grown the
+island's southern ride area by some 9 km, from about -27.635 to -27.71801, to
+Campeche and Morro das Pedras, and added a seventh ride polygon in the
+island's northeast, Ingleses and Santinho, out to -48.37578: wholly east of
+the coverage, it was skipped, and logged as one polygon outside it, which no
+line before 17 November had said. Both lie in the municipality. Its south
+bound went from -27.63594 to -27.71901 and its east bound from -48.41937 to
+-48.37478.
+
+From 19 November 2026 Campo Grande's list held only its two forbidden zones and
+no ride polygon, while the region stayed active and open for its season, and
+every sweep failed on that (`Whoosh region has no ride areas`); the feed
+expired at 22:20 UTC. At 00:50 UTC on 20 November a sweep of its coverage and
+0.05 degrees around it found 577 scooters, all inside the coverage, with a
+median battery of 71%. The collector now sweeps such a region over its reviewed coverage, as
+above, in Campo Grande's case the 8 views its ride polygon took.
 
 Positions are `state.position.point.{lat,lng}`. Battery is `battery.power`;
 `battery.distanceToCharge.amount` defaults to kilometres in the app's
