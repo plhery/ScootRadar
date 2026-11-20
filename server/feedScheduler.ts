@@ -40,9 +40,12 @@ export interface ScheduledFeed {
   idlePhase?: number;
   /**
    * If a collection started then is of its town's night, when the operator may hide its scooters, when
-   * the night ends: the next is then, not a whole idle interval on.
+   * the night ends: the next is then, not a whole idle interval on. A failed collection is retried by
+   * night only while that may keep the feed from expiring (idleGraceMs), then when the night ends.
    */
   nightEnds?: (time: number) => number | undefined;
+  /** How long past its idle interval it may go without a successful collection before it expires (ownIdleExpiries). */
+  idleGraceMs?: number;
   /**
    * A shorter idle interval while it holds, and where in it the feed is collected, in [0, 1): a Ryde group
    * is swept every day, not every three, while someone has opened its city within the week (rydeApp.ts).
@@ -353,7 +356,12 @@ export class FeedScheduler<T extends ScheduledFeed> {
     if (this.mode(feed, finishedAt) !== 'idle') return startedAt + activeIntervalMs;
     if (failed) {
       const failures = this.failures.get(feed.id) ?? 1;
-      return finishedAt + Math.min(retryMs * 2 ** (failures - 1), Math.max(retryMs, idleIntervalMs / 2));
+      const retry = finishedAt + Math.min(retryMs * 2 ** (failures - 1), Math.max(retryMs, idleIntervalMs / 2));
+      // By night in its town, a retry is made only while it may keep the feed from expiring, then at the night's end, as
+      // a sweep is: a map that failed at its turn at 20:59 there was retried at 23:06, 01:14 and 05:30.
+      const night = feed.nightEnds?.(retry);
+      const expires = (this.collectedAt.get(feed.id) ?? -Infinity) + (feed.idleIntervalMs ?? this.options.idleIntervalMs) + (feed.idleGraceMs ?? 0);
+      return night !== undefined && retry > expires ? night + this.share(feed) * NIGHT_END_SPREAD_MS : retry;
     }
     // The next time of the feed's phase at least an active interval away, or sooner the end of the night
     // or the night ban it was collected in, when its scooters show again.

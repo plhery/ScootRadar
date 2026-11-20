@@ -305,6 +305,9 @@ looks:
   expires 10 minutes after its own interval and waits up to half of it between
   retries; an app map collected once a day, Bird's areas among them, two hours after it, as their sweeps queue on
   one client and a deploy stops those under way (`APP_MAP_IDLE_GRACE_MS`, `BIRD_IDLE_GRACE_MS`, [guide](bird-app-map.md)).
+  A feed swept by day in its town (an app map, a Lime group, a Bird area) that fails is
+  retried by night only until it expires, then at 08:00 (`nextDue` in
+  `server/feedScheduler.ts`); a request still has it collected at once at any hour.
   An operator's app that stops answering is so reported two and a half hours after the
   first of its towns' turns: within three hours by day for an operator of many towns,
   the next morning for a break by night, and up to 26 hours later for an operator of one

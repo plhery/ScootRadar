@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined; idleSooner?: () => { intervalMs: number; phase: number } | undefined }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idleGraceMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined; idleSooner?: () => { intervalMs: number; phase: number } | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -388,6 +388,30 @@ it('retries a failed idle feed after a minute, backing off to half the idle inte
     // Back on its idle phase.
     await vi.advanceTimersByTimeAsync(25 * MINUTE);
     expect(times('lyon')).toEqual([0, 1, 3, 7, 15, 25, 35, 40, 60]);
+  } finally { scheduler.stop(); }
+});
+
+it("retries a failed idle feed by night in its town only within its grace, then at the night's end, and still at once when asked for", async () => {
+  const HOUR = 60 * MINUTE;
+  // T0 is 20:59:30 in the towns: their night runs from 30 seconds on to 08:00, 11 hours later.
+  const dusk = T0 + 30_000, dawn = dusk + 11 * HOUR;
+  const nightEnds = (time: number) => time >= dusk && time < dawn ? dawn : undefined;
+  // Collected at their turn a day ago, due again at T0, and expired two hours on without a success.
+  const feed = { host: 'dott', idleIntervalMs: 24 * HOUR, idleGraceMs: 2 * HOUR, idlePhase: 8 / 24, nightEnds };
+  const { scheduler, calls } = schedule([{ ...feed, id: 'berlin' }, { ...feed, id: 'bonn' }],
+    { phase: undefined, lastCollectedAt: () => T0 - 24 * HOUR }, async () => ({ failed: true }));
+  try {
+    await vi.advanceTimersByTimeAsync(3 * HOUR);
+    scheduler.demand(['bonn']);
+    await vi.advanceTimersByTimeAsync(10 * HOUR);
+    const at = (id: string) => calls.filter(call => call.id === id).map(call => call.at / MINUTE);
+    // A retry by night may still keep it from expiring until 23:00; after that, the next is at 08:00, after
+    // its phase's share of a quarter of an hour, not at 23:06, 01:14 and 05:30.
+    expect(at('berlin')).toEqual([0, 1, 3, 7, 15, 31, 63, 11 * 60 + 0.5 + 5]);
+    // A request by night has it collected at once, and every minute while watched.
+    const asked = calls.filter(call => call.id === 'bonn' && call.at >= 3 * HOUR);
+    expect(asked[0]).toEqual({ id: 'bonn', at: 3 * HOUR, reason: 'wake' });
+    expect(asked.slice(1, 3).map(call => call.at - 3 * HOUR)).toEqual([MINUTE, 2 * MINUTE]);
   } finally { scheduler.stop(); }
 });
 
