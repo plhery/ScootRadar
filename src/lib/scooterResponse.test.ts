@@ -24,6 +24,9 @@ describe('X-Mobility-Data-Source', () => {
 
   it('links the licences that ask for their text with the data: Beryl\'s CDLA-Permissive-2.0 in a British answer', () => {
     expect(mobilitySource(answer(['uk']))).toContain('Beryl GBFS, CDLA-Permissive-2.0 (https://cdla.dev/permissive-2-0/)');
+    // Entur's sentence, as its terms word it, then the licence it names, NLOD 2.0.
+    expect(mobilitySource(answer(['norway'])))
+      .toContain('(NLOD) distributed by Entur AS (https://data.norge.no/nlod/en/2.0)');
     expect(mobilitySource(answer(['germany']))).toContain('dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0)');
   });
 
