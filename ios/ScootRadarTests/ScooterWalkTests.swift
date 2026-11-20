@@ -773,6 +773,25 @@ final class ScooterWalkTests: XCTestCase {
         XCTAssertEqual(h.model.selectedScooterID, target.id)
     }
 
+    func testAFadedNeighbourUnderItsOwnIDNearerWhereTheScooterStoodDoesNotHoldTheWalk() async throws {
+        let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
+        // Some 9 m on, a Lime known beside it.
+        let neighbour = scooter("s2", battery: 23, at: point(east: 309, north: 0))
+        let other = scooter("b9", provider: "bird", at: point(east: -200, north: 0))
+        let h = try await shownWalk(to: target, others: [neighbour, other])
+
+        // s1 is taken. s2 stands faded under its own id, its spot shifted 6 m towards where s1 stood: 3 m from it,
+        // nearer than to its own spot (fresh-eyes review of 20 November 2026). It is s2, so two reads of Lime say s1 is gone.
+        let shifted = scooter("s2", battery: 23, at: point(east: 303, north: 0))
+        h.clock.advance(60)
+        try await load(h, ScooterResponse(vehicles: [other], lastSeenVehicles: [shifted]), call: 2)
+        XCTAssertEqual(h.model.walk?.phase, .shown)
+        h.clock.advance(60)
+        try await load(h, ScooterResponse(vehicles: [other], lastSeenVehicles: [shifted]), call: 3)
+        XCTAssertEqual(h.model.walk?.phase, .gone)
+        XCTAssertEqual(h.model.selectedScooterID, target.id)
+    }
+
     func testTheWalkIsNotHandedToANeighbourAfterZoomingOutOrPanningAwayAndBack() async throws {
         let target = scooter("s1", battery: 80, at: point(east: 300, north: 0))
         let neighbour = scooter("s2", battery: 23, at: point(east: 309, north: 0))

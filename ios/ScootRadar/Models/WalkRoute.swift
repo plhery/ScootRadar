@@ -311,8 +311,11 @@ struct ScooterNeighbours: Equatable, Sendable {
     /// Whether `candidate` stands nearer `stood`, where the scooter followed last stood with `battery`, than where any
     /// neighbour stood. One as near a neighbour's spot, or nearer, is that neighbour renamed, unless the batteries tell
     /// them apart: the candidate's is the scooter followed's, and that neighbour's another. So of two scooters at the
-    /// same spot, the one followed is told from the other where their batteries differ.
+    /// same spot, the one followed is told from the other where their batteries differ. A neighbour under its own id
+    /// is that neighbour wherever it now stands, as a faded one whose spot shifts towards where the scooter followed
+    /// stood (fresh-eyes review of 20 November 2026), and as the web's mayBeRenamed has it.
     func mayTakeOver(_ candidate: Scooter, from stood: GeoPoint, battery: Int?) -> Bool {
+        guard positions[candidate.id] == nil else { return false }
         let point = GeoPoint(candidate.coordinate)
         let metres = point.distance(to: stood)
         let hasItsBattery = candidate.battery != nil && candidate.battery == battery
