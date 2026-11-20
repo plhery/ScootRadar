@@ -212,6 +212,26 @@ describe('GET /api/geocode', () => {
     expect(response.headers.get('x-geocoding-data-source')).toBe('Photon, OpenStreetMap');
   });
 
+  it('says in Server-Timing how long the services took, when it asked them', async () => {
+    stubUpstreams({});
+    const now = vi.spyOn(performance, 'now').mockReturnValueOnce(1_000).mockReturnValueOnce(1_287.04);
+
+    const response = await POST(postRequest('Bern Bahnhof', 'de'));
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('server-timing')).toBe('origin;dur=287.0');
+    now.mockRestore();
+
+    // A failure too; and nothing for a city of our list, found without asking.
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    stubUpstreams({ geoapify: 503, photon: 503 });
+    const failed = await POST(postRequest('Bern Bahnhof', 'de'));
+    expect(failed.status).toBe(502);
+    expect(failed.headers.get('server-timing')).toMatch(/^origin;dur=\d+\.\d$/);
+    vi.stubGlobal('fetch', vi.fn());
+    expect((await POST(postRequest('Zürich'))).headers.get('server-timing')).toBeNull();
+  });
+
   it('rejects malformed POST bodies without asking a geocoding service', async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);

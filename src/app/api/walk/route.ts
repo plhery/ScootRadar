@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { haversineM } from '@/lib/geo';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { BodyTooLargeError, readJsonBody } from '@/lib/readJsonBody';
+import { serverTiming } from '@/lib/scooterResponse';
 import { DEFAULT_WALK_ROUTE_API_URL, parseValhallaWalk, valhallaWalkRequest } from '@/lib/valhalla';
 import { WALK_ROUTE_MAX_M, type WalkRouteFailure } from '@/lib/walkRoute';
 
@@ -20,18 +21,19 @@ const USER_AGENT = 'scootradar/2.0 (scootradar.com; hello@scootradar.com)';
 
 type Point = [number, number];
 
-function answer(body: object, status: number, retryAfter?: string) {
+function answer(body: object, status: number, retryAfter?: string, timing?: string) {
   return NextResponse.json(body, {
     status,
     headers: {
       'Cache-Control': 'private, no-store',
       ...(retryAfter ? { 'Retry-After': retryAfter } : {}),
+      ...(timing ? { 'Server-Timing': timing } : {}),
     },
   });
 }
 
-function failure(message: string, status: number, reason: WalkRouteFailure | 'invalid', retryAfter?: string) {
-  return answer({ error: message, reason }, status, retryAfter);
+function failure(message: string, status: number, reason: WalkRouteFailure | 'invalid', retryAfter?: string, timing?: string) {
+  return answer({ error: message, reason }, status, retryAfter, timing);
 }
 
 function asPoint(value: unknown): Point | null {
@@ -78,8 +80,13 @@ export async function POST(request: NextRequest) {
     return failure('Walking routes are busy. Please try again shortly.', 503, 'busy', '5');
   }
 
+  const url = await routingUrl();
+  const asked = performance.now();
+  // How long the routing service took to answer, its body read: Server-Timing's origin, as for
+  // the scooters (docs/OBSERVABILITY.md).
+  const waited = () => serverTiming({ origin: performance.now() - asked });
   try {
-    const response = await fetch(await routingUrl(), {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -90,21 +97,23 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(valhallaWalkRequest(from, to)),
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
-    if (response.status === 429) return failure('Walking routes are busy. Please try again shortly.', 503, 'busy', '30');
+    if (response.status === 429) return failure('Walking routes are busy. Please try again shortly.', 503, 'busy', '30', waited());
     // Valhalla says why it found no way in the body of a 400.
-    if (!response.ok && response.status !== 400) return failure('Walking routes are temporarily unavailable.', 502, 'failed', '30');
+    if (!response.ok && response.status !== 400) return failure('Walking routes are temporarily unavailable.', 502, 'failed', '30', waited());
 
     const walk = parseValhallaWalk(await response.json().catch(() => null));
-    if (walk === 'no_route') return failure('No walking route between these points.', 422, 'no_route');
-    if (!walk) return failure('Walking routes returned an invalid response.', 502, 'failed');
-    return answer(walk, 200);
+    const timing = waited();
+    if (walk === 'no_route') return failure('No walking route between these points.', 422, 'no_route', undefined, timing);
+    if (!walk) return failure('Walking routes returned an invalid response.', 502, 'failed', undefined, timing);
+    return answer(walk, 200, undefined, timing);
   } catch (error) {
     const timedOut = error instanceof DOMException && error.name === 'TimeoutError';
     return failure(
       timedOut ? 'Walking route timed out.' : 'Walking routes are temporarily unavailable.',
       timedOut ? 504 : 502,
       'failed',
-      '30'
+      '30',
+      waited()
     );
   }
 }

@@ -203,6 +203,30 @@ describe('POST /api/walk', () => {
     await expect(response.json()).resolves.toMatchObject({ reason: 'failed' });
   });
 
+  it('says in Server-Timing how long the routing service took, whatever it answered', async () => {
+    const now = vi.spyOn(performance, 'now').mockReturnValueOnce(1_000).mockReturnValueOnce(1_412.36);
+    stubValhalla(VALHALLA_TRIP);
+
+    const response = await POST(walkRequest({ from: HB, to: BELLEVUE }));
+
+    expect(response.headers.get('server-timing')).toBe('origin;dur=412.4');
+    now.mockRestore();
+
+    stubValhalla('', 429);
+    expect((await POST(walkRequest({ from: HB, to: BELLEVUE }))).headers.get('server-timing')).toMatch(/^origin;dur=\d+\.\d$/);
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new DOMException('The operation was aborted due to timeout', 'TimeoutError'); }));
+    expect((await POST(walkRequest({ from: HB, to: BELLEVUE }))).headers.get('server-timing')).toMatch(/^origin;dur=\d+\.\d$/);
+  });
+
+  it('names no origin in Server-Timing when it asked the routing service nothing', async () => {
+    stubValhalla(VALHALLA_TRIP);
+
+    const response = await POST(walkRequest({ from: HB, to: WINTERTHUR }));
+
+    expect(response.status).toBe(422);
+    expect(response.headers.get('server-timing')).toBeNull();
+  });
+
   it('asks the routing service for the walk without saying who asked', async () => {
     const fetchMock = stubValhalla(VALHALLA_TRIP);
 

@@ -967,6 +967,10 @@ snapshot, and the wait for a view's cold feeds), `filter` (the snapshot cut to t
 `serialise` (the JSON), then the Worker's `origin`, how long it waited for the cache's headers. An answer the
 Worker serves from what it kept, while the cache is down, has none.
 
+`/api/geocode` and `/api/walk` name the Worker's `origin` alone: how long the search waited on Photon and
+Geoapify, or the walk on the routing service, its answer read, in a failure too. A search answered from our
+cities alone, and a walk refused before the service is asked (too far, or too many), have none.
+
 ## Logs
 
 `snapshot_feed_state` (a feed changing state), `snapshot_feed_failed`,

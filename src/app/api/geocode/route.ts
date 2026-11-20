@@ -5,6 +5,7 @@ import { rateLimitAllows } from '@/lib/rateLimit';
 import { isPointCovered } from '@/lib/coveredCities';
 import { haversineM } from '@/lib/geo';
 import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
+import { serverTiming } from '@/lib/scooterResponse';
 import { searchText, searchWords, westernDigits } from '@/lib/searchText';
 import { streetAddress, townLine } from './addressFormats';
 import {
@@ -317,7 +318,7 @@ function remoteness(place: GeocodePlace, country: string, { near, home }: From):
   return distance <= CLOSE_M ? 0 : distance <= NEARBY_M ? 1 : 2;
 }
 
-function errorResponse(message: string, status: number, retryAfter?: string) {
+function errorResponse(message: string, status: number, retryAfter?: string, timing?: string) {
   return NextResponse.json(
     { error: message },
     {
@@ -325,6 +326,7 @@ function errorResponse(message: string, status: number, retryAfter?: string) {
       headers: {
         'Cache-Control': 'private, no-store',
         ...(retryAfter ? { 'Retry-After': retryAfter } : {}),
+        ...(timing ? { 'Server-Timing': timing } : {}),
       },
     }
   );
@@ -824,12 +826,12 @@ function samePlace(a: Candidate, b: Candidate): boolean {
     (searchText(a.place.subtitle) === searchText(b.place.subtitle) || Math.min(apartM(a, b), apartM(b, a)) <= SAME_PLACE_M);
 }
 
-function failureResponse(failure: UpstreamFailure) {
+function failureResponse(failure: UpstreamFailure, timing?: string) {
   switch (failure) {
-    case 'rateLimited': return errorResponse('Address search is temporarily rate limited upstream.', 503, '60');
-    case 'timedOut': return errorResponse('Address search timed out.', 504, '30');
-    case 'invalid': return errorResponse('Address search returned an invalid response.', 502);
-    case 'unavailable': return errorResponse('Address search is temporarily unavailable.', 502, '30');
+    case 'rateLimited': return errorResponse('Address search is temporarily rate limited upstream.', 503, '60', timing);
+    case 'timedOut': return errorResponse('Address search timed out.', 504, '30', timing);
+    case 'invalid': return errorResponse('Address search returned an invalid response.', 502, undefined, timing);
+    case 'unavailable': return errorResponse('Address search is temporarily unavailable.', 502, '30', timing);
   }
 }
 
@@ -862,6 +864,7 @@ async function geocode(input: GeocodeInput) {
   const settings = await workerSettings();
   const key = text(settings.GEOAPIFY_API_KEY);
   const asked = Date.now();
+  const searching = performance.now();
   // The towns of the name typed, wherever they are: those far from the map, which
   // places close to it leave out, and Fribourg for "Freiburg", beside Freiburg im
   // Breisgau. Not for an address, nor a postcode.
@@ -872,6 +875,9 @@ async function geocode(input: GeocodeInput) {
   const places = listed.some(({ exact }) => exact) ? null : searchPlaces(search, settings, key, deadline, listed.length > 0);
   const foundPlaces = places && await places;
   const foundTowns = towns && await within(towns, asked + TOWN_WAIT_MS - Date.now());
+  // How long the search waited on the services, Photon and Geoapify: Server-Timing's origin, as
+  // for the scooters (docs/OBSERVABILITY.md). None when it asked them nothing.
+  const timing = towns || places ? serverTiming({ origin: performance.now() - searching }) : undefined;
   // Every request to Geoapify the search makes has been sent.
   await countGeoapifyRequests(search.geoapifyRequests);
 
@@ -881,7 +887,7 @@ async function geocode(input: GeocodeInput) {
     ...(foundTowns?.ok ? foundTowns.value.candidates : []),
     ...(foundPlaces?.ok ? foundPlaces.value.candidates : []),
   ];
-  if (!candidates.length && foundPlaces && !foundPlaces.ok) return failureResponse(foundPlaces.failure);
+  if (!candidates.length && foundPlaces && !foundPlaces.ok) return failureResponse(foundPlaces.failure, timing);
 
   const shown: Candidate[] = [];
   for (const candidate of candidates) {
@@ -919,6 +925,7 @@ async function geocode(input: GeocodeInput) {
     headers: {
       'Cache-Control': 'private, no-store',
       'X-Geocoding-Data-Source': sources.join(', '),
+      ...(timing ? { 'Server-Timing': timing } : {}),
     },
   });
 }
