@@ -5064,9 +5064,12 @@ extension ScooterMapModelTests {
             mapView.region.span.latitudeDelta < 0.05 && GeoBounds(region: mapView.region).contains(point)
         }
         XCTAssertTrue(arrived, "\(mapView.region)")
+        // The first request can come later than the map's arrival on a slow runner: CI's of 20 November 2026 had
+        // asked for nothing a second after it. Then a second more for any request elsewhere, such as the default view.
+        let requested = await waitUntil(attempts: 400) { await !api.askedBounds().isEmpty }
+        XCTAssertTrue(requested)
         try await Task.sleep(for: .seconds(1))
         let asked = await api.askedBounds()
-        XCTAssertFalse(asked.isEmpty)
         for bounds in asked {
             XCTAssertTrue(bounds.contains(point), "A request away from the fix: \(bounds) in \(asked)")
         }
