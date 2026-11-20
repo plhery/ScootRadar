@@ -243,7 +243,9 @@ describe('last good answer', () => {
     fetcher.mockRejectedValue(new DOMException('The operation timed out.', 'TimeoutError'));
     now.mockReturnValue(Date.parse('2026-10-22T20:00:00Z'));
     const stale = await proxyScooterSnapshot(zones(), env, store);
-    expect(await stale.json()).toEqual({ zones: [{ id: 'z' }], meta: { pending: false, stale: true } });
+    // Unavailable: the maps keep them drawn, say the area's zones are not known now and ask again, as for a feed the
+    // cache could not read.
+    expect(await stale.json()).toEqual({ zones: [{ id: 'z' }], meta: { pending: false, stale: true, unavailable: true } });
     expect(stale.headers.get('X-Scooter-Last-Good-Age')).toBe('72000');
     now.mockReturnValue(Date.parse('2026-10-23T00:00:01Z'));
     expect((await proxyScooterSnapshot(zones(), env, store)).status).toBe(503);

@@ -138,6 +138,8 @@ const holds = (outer: MapBounds, inner: MapBounds) =>
 interface Kept {
   key: string;
   seconds: number;
+  /** An answer of the operators' zones, not of scooters. */
+  zones: boolean;
   /** Of an answer of scooters, its area (areaQuery). */
   area: AreaQuery | null;
 }
@@ -182,6 +184,10 @@ async function lastGoodAnswer(store: LastGoodStore, kept: Kept, headers: Record<
       body.meta.stale = true;
       delete body.meta.staleProviders;
     }
+    // Zones have no delayed state: kept ones, which may no longer be the operators', are said unavailable, so that
+    // the maps keep them drawn, say the area's zones are not known now and ask again, as for a feed the cache could
+    // not read (useZoneData.ts, ScooterMapModel.swift, ScooterMapZones.kt). As complete, they were never asked again.
+    if (kept.zones) body.meta = { ...body.meta, unavailable: true };
     return { age, fromArea, response: Response.json(body, { headers: { ...headers,
       'X-Mobility-Data-Status': 'stale', 'X-Scooter-Last-Good-Age': String(age) } }) };
   } catch {
@@ -235,7 +241,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const search = new URLSearchParams(url.search);
     search.sort();
     kept = { key: `${url.origin}${url.pathname}?${search}`, seconds: LAST_GOOD_SECONDS[zones ? 'zones' : 'scooters'],
-      area: zones ? null : areaQuery(url) };
+      zones, area: zones ? null : areaQuery(url) };
     if (!env.SCOOTER_SNAPSHOT_API_TOKEN) throw new Error('Missing origin credential');
     // Maintenance announced `hard`: the server is left alone from its start, and the readers given what is kept.
     if ((await readAnnouncement(env))?.mode === 'hard') return await unavailable(null, true);

@@ -3,6 +3,7 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { track } from '@/lib/analytics';
 import { heldUntil, VIEW_PACE } from '@/lib/requestPace';
+import { proxyScooterSnapshot, type LastGoodStore } from '@/lib/scooterProxy';
 import { useZoneData } from '@/lib/useZoneData';
 import type { MapZone } from '@/lib/zones';
 
@@ -62,6 +63,42 @@ it('says the zones are unavailable where some feeds\' could not be read, and ask
   await act(() => vi.advanceTimersByTimeAsync(1000));
   expect(fetcher).toHaveBeenCalledTimes(2);
   expect(result.current).toEqual({ zones: [zone], state: 'shown' });
+});
+
+it('asks again for the zones the Worker kept while the server was down, and draws those it gives once back', async () => {
+  // The Worker before the cache (scooterProxy.ts): an area kept without zones, given again while the server is down.
+  const kept = new Map<string, Response>();
+  const store: LastGoodStore = { waitUntil: () => {},
+    cache: { match: async key => kept.get(key)?.clone(), put: async (key, response) => { kept.set(key, response); } } };
+  const env = { SCOOTER_SNAPSHOT_API_URL: 'https://cache.example', SCOOTER_SNAPSHOT_API_TOKEN: 'token',
+    SCOOTER_API_RATE_LIMITER: { limit: async () => ({ success: true }) } };
+  let origin = (): Response => Response.json({ zones: [], meta: { generatedAt: '', pending: false, unavailable: false,
+    truncated: false } }, { headers: { 'X-Scooter-Public-Cache-Control': 'public, max-age=300' } });
+  const asked: string[] = [];
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async input => {
+    const url = String(input);
+    if (url.startsWith('https://cache.example/')) return origin();
+    asked.push(url);
+    return proxyScooterSnapshot(new Request(`https://map.example${url}`), env, store);
+  });
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+  const first = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250));
+  expect(first.result.current).toEqual({ zones: [], state: 'shown' });
+  first.unmount();
+
+  origin = () => new Response('error code: 1033', { status: 530 });
+  const { result } = renderHook(() => useZoneData(view, true));
+  await act(() => vi.advanceTimersByTimeAsync(250));
+  // Not "No zones published here": what is kept may no longer be the operators'.
+  expect(result.current).toEqual({ zones: [], state: 'failed' });
+  await act(() => vi.advanceTimersByTimeAsync(30_000));
+  origin = () => answer(false);
+  await act(() => vi.advanceTimersByTimeAsync(30_000));
+  expect(asked).toHaveLength(3);
+  expect(result.current).toEqual({ zones: [zone], state: 'shown' });
+  await act(() => vi.advanceTimersByTimeAsync(10 * 60_000));
+  expect(asked).toHaveLength(3);
 });
 
 it('says some zones were left out of a truncated answer', async () => {

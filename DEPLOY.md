@@ -511,10 +511,12 @@ for scooters and a day for zones (`src/lib/scooterProxy.ts`), or less where the
 cache's `X-Scooter-Keep-Seconds` says when Bird's, Spin's or Bolt's data in it
 turns fifteen minutes old (0: not kept; the browser never sees it): `meta.stale` is
 true, which the apps show as delayed, and `X-Scooter-Last-Good-Age` gives its
-age in seconds. An answer of scooters is also kept for its area (the zoom and
-the zoom's tile of its centre, the last one asked there), and given to a view
-of the same zoom and filters that it holds whole, from its tile or the eight
-around it, if it was not cut short (`meta.truncated`) and the cache would have
+age in seconds. Kept zones also say `meta.unavailable`, as zones have no delayed
+state: the maps keep them drawn, say the zones are unavailable right now and ask
+again, as for a feed the cache could not read. An answer of scooters is also kept
+for its area (the zoom and the zoom's tile of its centre, the last one asked
+there), and given to a view of the same zoom and filters that it holds whole,
+from its tile or the eight around it, if it was not cut short (`meta.truncated`) and the cache would have
 answered both at that zoom; its age and limit are kept as for its own request.
 Without one, the map shows its "temporarily unavailable" banner. Either way the
 Worker logs `scooter_origin_failure` with the origin status or error name,
