@@ -1253,8 +1253,8 @@ internal sealed interface TopBanner {
 
     companion object {
         /**
-         * A first load that failed says more than the pause, and the server being down more than either: it is no
-         * failure to retry by hand, and the map asks again by itself.
+         * The pause goes first: while paused the map asks nothing, and a touch resumes it. Then the server being down
+         * says more than a first load that failed: it is no failure to retry by hand, and the map asks again by itself.
          */
         fun of(failure: ScooterLoadFailure?, paused: Boolean, maintenance: String? = null): TopBanner? =
             if (paused) Paused else maintenance?.let(::Maintenance) ?: failure?.let(::Failed)

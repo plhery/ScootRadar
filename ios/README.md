@@ -86,7 +86,8 @@ does not promise scooters.
 
 **Search.** It opens on the field. Before you type: **Use my location**, the
 last place you chose, with a ✕ to forget it and a **No data** tag where no
-operator shares data today, and the six nearest cities with scooters. A link to a city on the site opens it without replacing that place. Typing
+operator shares data today, and the six nearest cities with scooters. A link
+to a city on the site opens it without replacing that place. Typing
 two characters or more lists places with a second line and a **No data** tag
 where no operator shares data; Return chooses the first. Streets and addresses
 are found in every country the app covers, typed in the country's own script
@@ -206,7 +207,8 @@ says how many scooters the map will show.
 
 **Settings.** Three choices as tiles, the first two each under a small picture of
 what it gives: the appearance (Auto, dark from half an hour after sunset to half
-an hour before sunrise; System, which follows the iPhone; Light; Dark), the map style (Standard, Quiet, Satellite) and the language. Then the
+an hour before sunrise; System, which follows the iPhone; Light; Dark), the map
+style (Standard, Quiet, Satellite) and the language. Then the
 units (Auto, which follows the iPhone's region, km or mi), which every
 length and speed the app writes follows at once. VoiceOver reads both Autos as
 the whole word, Automatic, Automatisch, as "Auto" alone also means a car in

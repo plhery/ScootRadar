@@ -524,8 +524,8 @@ struct ScooterMapScreen: View {
         firstLoadFailure != nil || model.maintenanceNotice != nil || showsPausedNotice || model.locationIssue != nil
     }
 
-    /// The map stopped refreshing itself, half an hour after the last touch.
-    /// A first load that failed says more.
+    /// The map stopped refreshing itself, half an hour after the last touch. It goes before a failed
+    /// first load's notice and maintenance's: while paused nothing is asked, and a touch resumes.
     private var showsPausedNotice: Bool {
         model.isPausedForIdle
     }
@@ -596,7 +596,6 @@ struct ScooterMapScreen: View {
                 cornerRadius: 22
             )
             .transition(.move(edge: .top).combined(with: .opacity))
-
         }
 
         if let issue = model.locationIssue {

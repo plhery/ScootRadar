@@ -1,7 +1,9 @@
 // Announced maintenance of the server behind the scooter data (Netcup, through the Cloudflare Tunnel), as the
 // edge guard in front of the other sites reads it (delivery-tracker's ops/cloudflare/edge/worker.js): the same
-// values, the same logic. The announcement is a JSON value in the account's MAINTENANCE KV namespace, shared by
-// every site, under `all` (the server, e.g. a reboot) and the site's own key, here `scootradar`:
+// values, and of those in force the one that ends last, hard if any is. Unlike there, a key that cannot be read
+// leaves the other's announcement in force, where the guard then reads none. The announcement is a JSON value in the
+// account's MAINTENANCE KV namespace, shared by every site, under `all` (the server, e.g. a reboot) and the site's
+// own key, here `scootradar`:
 //
 //   {"since": "2026-11-18T22:00:00Z", "backAround": "2026-11-18T22:20:00Z", "mode": "soft"}
 //
