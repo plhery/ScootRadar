@@ -106,8 +106,15 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
     return entry.id;
   };
 
-  const published = (vehicles: Vehicle[], now: number, sourceTime: string) =>
-    vehicles.map(vehicle => vehicle.vehicle_id ? { ...vehicle, vehicle_id: publicId(vehicle, now, Number.isFinite(Date.parse(sourceTime)) ? Date.parse(sourceTime) : now) } : vehicle);
+  // When a scooter's position was read, at the latest: its app's oldest read in view, else the answer's oldest of any.
+  // A capped scooter's id goes with its source data (PUBLIC_ID_CAPPED_KEPT_MS), so the answer's oldest alone, which
+  // another app's feed or Bird's additions in Rome hold up to 15 minutes back, renamed it at almost every request.
+  const published = (vehicles: Vehicle[], now: number, sourceTime: (provider: string) => string | undefined) =>
+    vehicles.map(vehicle => {
+      if (!vehicle.vehicle_id) return vehicle;
+      const readAt = Date.parse(sourceTime(vehicle.provider) ?? '');
+      return { ...vehicle, vehicle_id: publicId(vehicle, now, Number.isFinite(readAt) ? readAt : now) };
+    });
 
   return {
     publish(body, now) {
@@ -115,8 +122,13 @@ export function createPublicVehicleIds(options: { movedM?: number; keptMs?: numb
         sweptAt = now;
         sweep(now);
       }
-      const result = { ...body, vehicles: published(body.vehicles, now, body.meta.generatedAt) };
-      if (body.lastSeen) result.lastSeen = { ...body.lastSeen, vehicles: published(body.lastSeen.vehicles, now, body.meta.lastSeenAt ?? body.meta.generatedAt) };
+      const { meta } = body;
+      const result = { ...body, vehicles: published(body.vehicles, now, provider => meta.shownSince?.[provider] ?? meta.generatedAt) };
+      if (body.lastSeen) {
+        const seen = body.lastSeen.providers;
+        result.lastSeen = { ...body.lastSeen, vehicles: published(body.lastSeen.vehicles, now,
+          provider => seen?.[provider]?.seenAt ?? meta.lastSeenAt ?? meta.generatedAt) };
+      }
       trim();
       return result;
     },

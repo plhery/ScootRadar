@@ -167,6 +167,32 @@ describe('public vehicle ids', () => {
   });
 });
 
+it('keeps a capped scooter\'s id by its own app\'s read, not by the oldest of another app beside it', () => {
+  // Bird's feed in Rome read half a minute before each request, Lime's beside it 14 and a half minutes before.
+  const ids = createPublicVehicleIds({ capped: vehicleId => vehicleId.startsWith('bird-rome:') });
+  const iso = (at: number) => new Date(at).toISOString();
+  const ask = (at: number, shownSince: Record<string, string> | undefined, seenAt?: number) => {
+    const body = answer([scooter('bird-rome:1', 41.9, 12.5, 'bird'), scooter('lime:1', 41.9, 12.5, 'lime')],
+      seenAt === undefined ? undefined : [scooter('bird-rome:2', 41.91, 12.5, 'bird')]);
+    body.meta.generatedAt = iso(at - 14.5 * 60_000);
+    if (shownSince) body.meta.shownSince = shownSince;
+    if (seenAt !== undefined) {
+      body.meta.lastSeenAt = iso(at - 14.5 * 60_000);
+      body.lastSeen!.providers = { bird: { seenAt: iso(seenAt), updating: false } };
+    }
+    const published = ids.publish(body, at);
+    return [published.vehicles[0].vehicle_id, published.lastSeen?.vehicles[0].vehicle_id];
+  };
+  const reads = (at: number) => ({ bird: iso(at - 30_000), lime: iso(at - 14.5 * 60_000) });
+  const [first, faded] = ask(start, reads(start), start - 60_000);
+  for (let minute = 1; minute <= 4; minute++) {
+    expect(ask(start + minute * 60_000, reads(start + minute * 60_000), start - 60_000)).toEqual([first, faded]);
+  }
+  // With no read of its app named, as while one of its feeds in view is unread, the answer's oldest: renamed sooner.
+  expect(ask(start + 6 * 60_000, undefined)[0]).toBe(first);
+  expect(ask(start + 7 * 60_000, undefined)[0]).not.toBe(first);
+});
+
 it('drops capped identifiers at source expiry even when nobody asks again', () => {
   const ids = createPublicVehicleIds({ capped: () => true });
   const body = answer([scooter('capped:1')]);
