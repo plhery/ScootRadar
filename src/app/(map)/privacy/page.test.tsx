@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { render } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { I18nProvider } from '@/lib/i18n';
+import { MAP_PASS_RETRY_MS } from '@/lib/mapPassClient';
 import PrivacyPage, { metadata } from './page';
 
 afterEach(() => {
@@ -83,6 +84,9 @@ it('says, once the website has a Sentry project, that its reports go there whate
 it('names the invisible Turnstile check, its privacy addendum and the pass cookie it leads to, as PRIVACY.md does', () => {
   const section = text().match(/ Protection against scraping (.*?) Error reports /)?.[1];
   expect(section).toMatch(/Cloudflare Turnstile checks in the background/);
+  // Not once a day: whenever the map holds no pass, and again after MAP_PASS_RETRY_MS while it has none.
+  expect(section).not.toMatch(/once a day/);
+  expect(section).toContain(`Turnstile checks again at most every ${MAP_PASS_RETRY_MS / 60_000} minutes`);
   expect(renderToStaticMarkup(<PrivacyPage />)).toContain('href="https://www.cloudflare.com/turnstile-privacy-policy/"');
   // MAP_PASS_COOKIE and MAP_PASS_SECONDS (src/lib/mapPass.ts).
   expect(section).toMatch(/cookie for 24 hours, __Host-scootradar-pass , which holds when it expires/);

@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 19 November 2026
+Last updated: 20 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches, except the last place chosen in the search, which stays on the device (see below).
@@ -50,8 +50,11 @@ searches, except the last place chosen in the search, which stays on the device 
 - Cloudflare hosts and protects the service. Persisted Worker invocation logs
   are disabled so full coordinate-bearing request URLs are not retained in the
   application's log stream.
-- On the website, a few seconds after the map shows its first scooters, at most once a day,
-  Cloudflare Turnstile checks in the background that the browser is not a script. Nothing is
+- On the website, whenever the map holds no pass, a few seconds after it shows its scooters,
+  Cloudflare Turnstile checks in the background that the browser is not a script: on the first
+  visit, once the pass has expired after 24 hours, from another network, after cookies are
+  cleared, or when the key that signs passes changes. While the map stays open without one, as
+  after a check that did not pass, Turnstile checks again at most every 10 minutes. Nothing is
   shown: its script and invisible frame come from `challenges.cloudflare.com` and read signals of
   the browser and device, under the Cloudflare Turnstile Privacy Addendum
   (<https://www.cloudflare.com/turnstile-privacy-policy/>). Once it has passed, the website sets a
