@@ -1,3 +1,5 @@
+import { auditHeaders, auditHint } from './auditHeaders.mjs';
+
 const baseUrl = process.env.SCOOTRADAR_BASE_URL ?? 'https://scootradar.com';
 const query = new URLSearchParams({
   south: '47.36',
@@ -7,12 +9,13 @@ const query = new URLSearchParams({
 });
 const url = new URL(`/api/scooters?${query}`, baseUrl);
 const response = await fetch(url, {
-  headers: { Accept: 'application/json' },
+  // As one of our scripts: the Worker refuses a client that is none of our maps and apps.
+  headers: { Accept: 'application/json', ...auditHeaders() },
   signal: AbortSignal.timeout(30_000),
 });
 
 if (!response.ok) {
-  throw new Error(`Live scooter API returned HTTP ${response.status}`);
+  throw new Error(`Live scooter API returned HTTP ${response.status}${auditHint(response.status)}`);
 }
 
 const body = await response.json();

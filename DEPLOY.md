@@ -202,6 +202,20 @@ The widget's domains must list a host before a map served from it can get a pass
 (previews and `localhost` are not listed: they are served as before).
 Cloudflare's test keys (site key `1x00000000000000000000BB`, secret
 `1x0000000000000000000000000000000AA`) always pass, for a local `wrangler dev`.
+With both secrets, a browser on `scootradar.com` gets scooters without a pass only for
+its network's first 20 requests of the day, then a 428 until the map has its pass
+(docs/OBSERVABILITY.md, "Scraping"); `requirePass: false` in
+`server/scooter-cache.ts` turns that off.
+
+Wherever `MAP_PASS_SECRET` is set, the Worker refuses (403) a request for scooters that
+is none of our maps and apps: no pass, no `X-Scooter-View`, no app's user agent. Our own
+scripts send `X-Scooter-Audit` with the Worker secret `SCOOTER_AUDIT_TOKEN` (32
+characters or more, e.g. `openssl rand -hex 32`; a shorter one is ignored) and count as
+holding a pass. The same token is the repository secret `SCOOTRADAR_AUDIT_TOKEN`, which
+the daily live contract sends, and is kept on our machines in
+`~/.config/scootradar/audit-token` (mode 600), which `scripts/auditHeaders.mjs` reads
+when the environment has none. It is never printed nor logged. To rotate it, write a new
+one to the three places: in between, the scripts get 403.
 
 The apps' passes need the same `MAP_PASS_SECRET`, which also signs their challenges and
 the iPhone app's attested keys: a new one voids those too, and each iPhone attests a

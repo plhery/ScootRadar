@@ -4,9 +4,11 @@ import type { UiText } from '@/lib/uiText';
 
 /**
  * Why scooters could not be loaded. The same six reasons exist on iOS and Android. 'maintenance': the server behind
- * the scooter data did not answer (X-Scooter-Origin: down, src/lib/scooterProxy.ts), as while it reboots.
+ * the scooter data did not answer (X-Scooter-Origin: down, src/lib/scooterProxy.ts), as while it reboots. The web
+ * map has a seventh, 'unverified': the cache asked for its pass first (428) and Turnstile gave it none (mapPassClient.ts),
+ * as when a blocker stops Turnstile; the apps are not asked.
  */
-export type LoadFailure = 'offline' | 'timeout' | 'busy' | 'unavailable' | 'maintenance' | 'failed';
+export type LoadFailure = 'offline' | 'timeout' | 'busy' | 'unavailable' | 'maintenance' | 'unverified' | 'failed';
 
 export interface LoadFailureInput {
   /** The HTTP status, when the server answered with an error. */
@@ -22,6 +24,7 @@ export interface LoadFailureInput {
 export function classifyLoadFailure({ status, originDown = false, timedOut = false, online = true }: LoadFailureInput): LoadFailure {
   if (status !== undefined) {
     if (status === 429) return 'busy';
+    if (status === 428) return 'unverified';
     if (originDown && status >= 500) return 'maintenance';
     return status >= 500 && status <= 599 ? 'unavailable' : 'failed';
   }
@@ -36,6 +39,7 @@ const REASON_KEYS = {
   busy: 'fail.busy',
   unavailable: 'fail.unavailable',
   maintenance: 'maint.down',
+  unverified: 'fail.unverified',
   failed: 'fail.generic',
 } as const satisfies Record<LoadFailure, TranslationKey>;
 

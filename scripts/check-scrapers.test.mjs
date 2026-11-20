@@ -77,7 +77,7 @@ process.stdout.write(JSON.stringify({ status: 'success', data: { resultType: 've
     const top = Array.from({ length: 11 }, (_, i) => ({ count: i < 10 ? 200 : 120,
       dimensions: { clientIP: '192.0.2.' + (i + 1), clientCountryName: 'CH', userAgent: i < 10 ? 'Mozilla/5.0 browser' : 'script' } }));
     writeFileSync(join(dir, 'traffic.mjs'), 'globalThis.fetch = async () => Response.json(' +
-      JSON.stringify({ data: { viewer: { zones: [{ top, limited: [], passes: [], total: [] }] } } }) + ')');
+      JSON.stringify({ data: { viewer: { zones: [{ top, limited: [], refused: [], required: [], passes: [], total: [] }] } } }) + ')');
     const report = check('2026-11-06', 'traffic.mjs');
     expect(report.traffic.busiest).toHaveLength(10);
     expect(report.suspicions.join(' ')).toContain('120 requests with a script');
@@ -120,6 +120,7 @@ const series = (label, values) => Object.entries(values).map(([key, value]) => (
 const result = query.includes('by (client)') ? series('client', { verified: 900, map: 4000, app: 300, other: 450 })
   : query.includes('client="unverified"') ? series('quarter_hours', { '32+': 1, 1: 80, '4-8': 12 })
   : query.includes('past_allowance') ? [{ metric: {}, value: [at, '640'] }]
+  : query.includes('pass_required') ? [{ metric: {}, value: [at, '260'] }]
   : query.includes('by (reason)') ? series('reason', { allowance: 120, unbroken: 30, daily: 400, hourly: 0 })
   : query.includes('by (agent, referrer)') ? [['app', 'none', 300], ['browser', 'none', 20], ['browser', 'own', 4900], ['browser', 'other', 450]]
     .map(([agent, referrer, value]) => ({ metric: { agent, referrer }, value: [at, String(value)] })) : [];
@@ -140,6 +141,11 @@ const top = [['198.51.100.7', 1020], ['2001:db8:1:2::5', 156], ['2001:db8:1:2::6
 const passes = [['198.51.100.20', browser, 204, 40], ['198.51.100.21', browser, 403, 6], ['198.51.100.22', browser, 503, 1],
   ['198.51.100.23', 'okhttp/5.5.1', 403, 2], ['203.0.113.9', browser, 403, 9]]
   .map(([ip, userAgent, status, count]) => ({ count, dimensions: { clientIP: ip, userAgent, edgeResponseStatus: status } }));
+// Refused by the Worker: a script under a bare browser's user agent, one that gave up, and this machine. Asked for a
+// pass first: a script naming a view.
+const refused = [['198.51.100.30', 'Mozilla/5.0', 150], ['198.51.100.31', 'Python-urllib/3.14', 3], ['203.0.113.9', 'curl/8.7.1', 400]]
+  .map(([ip, userAgent, count]) => ({ count, dimensions: { clientIP: ip, clientCountryName: 'DE', userAgent } }));
+const required = [{ count: 260, dimensions: { clientIP: '198.51.100.32', clientCountryName: 'FR', userAgent: browser } }];
 const asked = [];
 globalThis.fetch = async (url, init) => {
   if (String(url).endsWith('/cdn-cgi/trace')) return new Response('ip=203.0.113.9\\n');
@@ -148,7 +154,7 @@ globalThis.fetch = async (url, init) => {
   if (addresses) asked.push(JSON.parse(addresses[1]));
   writeFileSync(${JSON.stringify(join(dir, 'asked.json'))}, JSON.stringify(asked));
   const zone = addresses ? { quarters: days.filter(row => JSON.parse(addresses[1]).includes(row.dimensions.clientIP)) }
-    : { total: [{ count: 7000 }], top, limited: [], passes };
+    : { total: [{ count: 7000 }], top, limited: [], refused, required, passes };
   return Response.json({ data: { viewer: { zones: [zone] } } });
 };
 `);
@@ -171,11 +177,15 @@ globalThis.fetch = async (url, init) => {
     expect(Object.keys(report.metrics.byReferrer)).toEqual(['browser', 'app']);
     expect(Object.keys(report.metrics.byReferrer.browser)).toEqual(['own', 'other', 'none']);
     expect(report.traffic.passes).toEqual({ browser: { 204: 40, 403: 6, 503: 1 }, app: { 403: 2 } });
+    expect(report.metrics.passRequired).toBe(260);
+    expect(report.traffic.refused.map(({ network, requests }) => [network, requests])).toEqual([['198.51.100.30', 150], ['198.51.100.31', 3]]);
     expect(report.suspicions).toEqual([
       '198.51.100.7 (DE) asked in 34 quarter hours of the day, 34 of them 20 times or more (1020 requests)',
       '2001:db8:1:2:: (DE) asked in 26 quarter hours of the day, 0 of them 20 times or more (312 requests)',
-      '450 requests came from clients that are none of our maps and apps (answered from what the cache holds)',
-      "7 of 47 browsers' asks for a map pass failed (403 refused: 6, 503 not checked: 1): riders may be failing Turnstile, and are held to 8 quarter hours a day (turn it off in server/scooter-cache.ts)",
+      '450 requests came from clients that are none of our maps and apps and reached the cache: the Worker refuses them since 20 November 2026, unless MAP_PASS_SECRET is unset',
+      '198.51.100.30 (DE) was refused 150 times (403, Mozilla/5.0): a script that got no scooters; watch whether it comes back naming a view',
+      "260 requests of browsers without a map pass were answered 428 past their network's 20 of the day: a script naming a view, or riders Turnstile cannot check (networks at 428: 198.51.100.32 260)",
+      "7 of 47 browsers' asks for a map pass failed (403 refused: 6, 503 not checked: 1): riders may be failing Turnstile, and get no scooters past their network's 20 requests of the day (requirePass: false in server/scooter-cache.ts turns that off)",
       "400 requests were held past their network's 1,500 a day (400) or 300 an hour (0): a script, or riders behind one address; find the network in Cloudflare's busiest",
       '1 visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day',
     ]);

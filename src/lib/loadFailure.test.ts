@@ -4,6 +4,7 @@ import { classifyLoadFailure, failureReasonKey, failureSurface, maintenanceNotic
 describe('classifyLoadFailure', () => {
   it('reads an HTTP error status', () => {
     expect(classifyLoadFailure({ status: 429 })).toBe('busy');
+    expect(classifyLoadFailure({ status: 428 })).toBe('unverified');
     expect(classifyLoadFailure({ status: 500 })).toBe('unavailable');
     expect(classifyLoadFailure({ status: 503 })).toBe('unavailable');
     expect(classifyLoadFailure({ status: 599 })).toBe('unavailable');
@@ -33,6 +34,7 @@ describe('failureReasonKey', () => {
     expect(failureReasonKey('timeout')).toBe('fail.timeout');
     expect(failureReasonKey('busy')).toBe('fail.busy');
     expect(failureReasonKey('unavailable')).toBe('fail.unavailable');
+    expect(failureReasonKey('unverified')).toBe('fail.unverified');
     expect(failureReasonKey('failed')).toBe('fail.generic');
   });
 });

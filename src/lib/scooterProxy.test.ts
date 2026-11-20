@@ -112,11 +112,10 @@ it('tells the cache who asks, from a pass, a view or an app\'s user agent, and a
   expect(await ask({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}` })).toEqual({ client: 'verified', pass: null });
   expect(await ask(view)).toEqual({ client: 'map', pass: 'none' });
   expect(await ask({ 'User-Agent': 'ScootRadar/2437 CFNetwork/3896.200.61 Darwin/27.2.0' })).toEqual({ client: 'app', pass: 'none' });
-  expect(await ask({ 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)' })).toEqual({ client: 'other', pass: 'none' });
   // A pass of another network, or forged, is none.
   expect(await ask({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}`, 'cf-connecting-ip': '192.0.2.2' })).toEqual({ client: 'map', pass: 'none' });
   const forged = `${pass.slice(0, -1)}${pass.endsWith('A') ? 'B' : 'A'}`;
-  expect(await ask({ Cookie: `${MAP_PASS_COOKIE}=${forged}` })).toEqual({ client: 'other', pass: 'none' });
+  expect(await ask({ ...view, Cookie: `${MAP_PASS_COOKIE}=${forged}` })).toEqual({ client: 'map', pass: 'none' });
   // An app's pass comes in the header, as the apps hold no cookie.
   const app = { ...view, 'User-Agent': 'okhttp/5.5.1' };
   expect(await ask({ ...app, 'X-Scooter-Pass': pass })).toEqual({ client: 'verified', pass: null });
@@ -526,4 +525,65 @@ describe('the server down', () => {
       expect(zones.entries.size).toBe(1);
     });
   });
+});
+
+it('refuses a client that is none of our maps and apps wherever passes are signed, unless it is one of our scripts', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({ vehicles: [] }));
+  const token = 'audit-token-of-thirty-two-chars-or-more';
+  const passes = { ...env, MAP_PASS_SECRET: 'pass-secret', SCOOTER_AUDIT_TOKEN: token };
+  const pass = await issueMapPass('pass-secret', '192.0.2.1');
+  const forged = `${pass.slice(0, -1)}${pass.endsWith('A') ? 'B' : 'A'}`;
+  const ask = (headers: Record<string, string>, environment: typeof passes = passes, url = request().url) =>
+    proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
+  // A script under a browser's user agent, as the one that polled Mainz and Wiesbaden on 19 and 20 November 2026, a
+  // forged pass, or no user agent at all: 403, and the cache is not asked.
+  for (const headers of [{ 'User-Agent': 'Mozilla/5.0' }, { Cookie: `${MAP_PASS_COOKIE}=${forged}` }, {},
+    { 'X-Scooter-Audit': 'audit-token-of-thirty-two-chars-or-mor' }]) {
+    const refused = await ask(headers);
+    expect(refused.status).toBe(403);
+    expect(await refused.json()).toEqual({ error: 'The scooter data is only for the ScootRadar map and apps.' });
+  }
+  expect(fetcher).not.toHaveBeenCalled();
+  // Our scripts with the token, our maps and apps, as before; the zones are not refused.
+  expect((await ask({ 'X-Scooter-Audit': token })).status).toBe(200);
+  expect(new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Client')).toBe('verified');
+  expect((await ask({ 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' })).status).toBe(200);
+  expect((await ask({ 'User-Agent': 'okhttp/5.5.1' })).status).toBe(200);
+  expect((await ask({ Cookie: `${MAP_PASS_COOKIE}=${pass}` })).status).toBe(200);
+  expect((await ask({}, passes, 'https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15')).status).toBe(200);
+  // A token too short to be one is no token; without the key that signs passes, nobody is refused.
+  const short = { ...passes, SCOOTER_AUDIT_TOKEN: 'short' };
+  expect((await ask({ 'X-Scooter-Audit': 'short' }, short)).status).toBe(403);
+  expect((await ask({ 'User-Agent': 'Mozilla/5.0' }, { ...passes, MAP_PASS_SECRET: undefined } as typeof passes)).status).toBe(200);
+  expect(new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Client')).toBe('other');
+});
+
+it('tells the cache a browser without a pass can be given one by Turnstile, only on the site\'s own host', async () => {
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({ vehicles: [] }));
+  const passes = { ...env, MAP_PASS_SECRET: 'pass-secret', TURNSTILE_SECRET_KEY: 'turnstile-secret' };
+  const pass = await issueMapPass('pass-secret', '192.0.2.1');
+  const site = 'https://scootradar.com/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13';
+  const view = { 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' };
+  const check = async (headers: Record<string, string>, environment: typeof passes = passes, url = site) => {
+    await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
+    return new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Pass-Check');
+  };
+  expect(await check(view)).toBe('turnstile');
+  // Not with a pass, not for an app, not on another host or a preview, not without Turnstile's secret.
+  expect(await check({ ...view, Cookie: `${MAP_PASS_COOKIE}=${pass}` })).toBeNull();
+  expect(await check({ ...view, 'User-Agent': 'okhttp/5.5.1' })).toBeNull();
+  expect(await check(view, passes, request().url)).toBeNull();
+  expect(await check(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof passes)).toBeNull();
+  // Nor for the zones.
+  expect(await check(view, passes, 'https://scootradar.com/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15')).toBeNull();
+});
+
+it('passes the cache\'s request for a pass on to the map, which then asks Turnstile', async () => {
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ error: 'check' }, { status: 428 }));
+  const response = await proxyScooterSnapshot(new Request('https://scootradar.com/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13',
+    { headers: { 'cf-connecting-ip': '192.0.2.1', 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' } }),
+  { ...env, MAP_PASS_SECRET: 'pass-secret', TURNSTILE_SECRET_KEY: 'turnstile-secret' });
+  expect(response.status).toBe(428);
+  expect(response.headers.get('X-Scooter-Pass')).toBe('none');
+  expect(response.headers.get('Cache-Control')).toBe('private, no-store');
 });

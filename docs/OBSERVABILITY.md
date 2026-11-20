@@ -220,6 +220,9 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   1,500 requests of the day (`daily`); and until the hour ends, a network past its 300
   of the hour (`hourly`). `daily` and `hourly` stay 0 while `VISITOR_COUNT_SECRET` is
   unset (see [Scraping](#scraping)). Since 19 November 2026.
+- `scootradar_pass_required_total`: the requests of browsers without a map pass, where
+  Turnstile could give them one, past their network's 20 answers of the UTC day,
+  answered 428 with no scooters (see [Scraping](#scraping)). Since 20 November 2026.
 - `scootradar_scooter_requests_by_referrer_total{agent="browser|app", referrer="own|other|none"}`:
   the requests for scooters by the agent the Worker named and the kind of referrer they
   carried: `own` a page of `https://scootradar.com`, `other` any other, `none` none.
@@ -449,7 +452,7 @@ The alert rules:
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 2.7 GB, or a V8 heap over 1.5 GB, for 15 minutes (the container's limit is 3072 MiB, of which Node gives the heap 1632 MiB, and the heap runs out first) |
 | ScootRadar Geoapify near its daily limit | address searches sent Geoapify over 2,400 requests in 24 hours (its free plan allows 3,000 a day); a rolling day, so it fires no later than the calendar day does |
-| ScootRadar possible scraper | in the last hour a visitor asked for 32 areas or more in a quarter hour, over 50 requests went uncollected past a visitor's areas, over 20 asked for a box no screen shows, or over 200 came from `other` clients; or a visitor without a map pass has kept feeds collected 32 quarter hours today (see [Scraping](#scraping)); a warning, which clears an hour after (the last at the end of the UTC day) |
+| ScootRadar possible scraper | in the last hour a visitor asked for 32 areas or more in a quarter hour, over 50 requests went uncollected past a visitor's areas, over 20 asked for a box no screen shows, over 200 came from `other` clients (which the Worker refuses: these passed it), or over 200 were of browsers asked for a map pass first (428); or a visitor without a map pass has kept feeds collected 32 quarter hours today (see [Scraping](#scraping)); a warning, which clears an hour after (the last at the end of the UTC day) |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
 "target down" keeps its last state rather than resolving and firing again. So every
@@ -610,11 +613,22 @@ which it believes only with its token:
   iPhone app and the Android app send;
 - `app`: an iPhone or Android app too old to name it, by its user agent
   (`ScootRadar/…`, `okhttp/…`);
-- `other`: anything else, as a script. It is answered from what the cache holds,
-  collecting nothing, not even the city totals: what the daily sweeps (and our maps'
-  views) leave there, at most a day old. On 18 November 2026 a script polling
+- `other`: anything else, as a script. Since 20 November 2026 the Worker refuses it
+  (403, "The scooter data is only for the ScootRadar map and apps.") wherever
+  `MAP_PASS_SECRET` is set, and the cache never sees it; the zones are still answered.
+  Before, it was answered from what the cache held, collecting nothing, which still
+  gave it every scooter the maps' views had collected: on 19 and 20 November a script
+  on a German home line, under a bare `Mozilla/5.0`, polled Mainz and Wiesbaden every
+  10 to 20 minutes, some 3,700 requests a day. On 18 November 2026 a script polling
   North Rhine-Westphalia under its own user agent made some 2,800 requests in seven
   and a half hours, each read setting the region's feeds collecting.
+
+Our own scripts (the daily live contract, the performance check, the landing images,
+audits) send the Worker secret `SCOOTER_AUDIT_TOKEN` in `X-Scooter-Audit` and count as
+`verified`: `scripts/auditHeaders.mjs` reads it from `SCOOTRADAR_AUDIT_TOKEN` or
+`~/.config/scootradar/audit-token` ([DEPLOY.md](../DEPLOY.md), "Map passes"). An audit
+with `curl` sends `-H "X-Scooter-Audit: $(cat ~/.config/scootradar/audit-token)"`;
+without it, production answers 403.
 
 The website's map proves it is a browser with Cloudflare Turnstile, invisible
 (`src/lib/mapPassClient.ts`). An answer for scooters to a request without a pass says
@@ -628,6 +642,27 @@ network (`src/lib/mapPass.ts`), no identifier, so it is no use from another netw
 A refusal is logged as `map_pass_refused` with Turnstile's error codes, a failure to
 ask as `map_pass_unverified`. The widget, its keys and their rotation are in
 [DEPLOY.md](../DEPLOY.md), "Map passes".
+
+Since 20 November 2026 a browser gets scooters without a pass only for its network's
+first 20 requests of the UTC day (`PASS_GRACE_REQUESTS` in `server/visitorLedger.ts`),
+enough for a first load while Turnstile runs, a slow phone and a few devices behind one
+address. The Worker says Turnstile could give it a pass, in `X-Scooter-Pass-Check:
+turnstile`, on a request for scooters without a pass from a browser (not `ScootRadar/…`
+nor `okhttp/…`) to `https://scootradar.com` with both secrets set; the cache believes it
+only with its token. Past the 20, it answers such a request 428 with no scooters
+(`scootradar_pass_required_total`) until it comes with a pass. The web map then asks
+Turnstile at once rather than 3 seconds later (`mapPassNow` in `src/lib/mapPassClient.ts`)
+and asks again with its pass, under a deadline of its own. If Turnstile gives none (a
+blocker, a refused check) or the pass is not held (cookies refused), the map says
+"ScootRadar couldn't check this browser" (`fail.unverified`), retries as after any
+failure, and asks Turnstile again after 30 seconds at the soonest
+(`MAP_PASS_URGENT_RETRY_MS`). A script naming a view under a browser's user agent gets
+the 20, then nothing without solving Turnstile. The apps are not asked: since 20
+November 2026 the user keeps them exempt by their user agents until App Attest and Play
+Integrity are on most of their installs, as few look at how an app's requests are sent;
+a script calling itself an app is still held by the network limits and the sustained
+holds below. The day's counts live in memory, as the allowance's: a deploy gives every
+network its 20 again. `requirePass: false` in `server/scooter-cache.ts` turns it off.
 
 Without a pass, a visitor (a map not yet verified, an app, or a client claiming to be
 one) may keep feeds collected 8 quarter hours of a UTC day (`UNVERIFIED_QUARTER_HOURS_PER_DAY`
@@ -688,9 +723,10 @@ cache holds, a rule that only catches lazy scripts, as a referrer is as easy to 
 as a user agent. The user decides.
 
 If riders fail Turnstile, the daily check below reports it: browsers' asks for a pass
-refused (403, `map_pass_refused`) or not checked (503, `map_pass_unverified`).
-`enforceAllowance: []` in `server/scooter-cache.ts` turns the hold off again, and
-`holdSustained: false` the other.
+refused (403, `map_pass_refused`) or not checked (503, `map_pass_unverified`), and the
+428s past the 20. Such a rider now gets no scooters past them. `requirePass: false` in
+`server/scooter-cache.ts` turns that off, `enforceAllowance: []` the hold past 8 quarter
+hours, and `holdSustained: false` the other.
 
 The apps get the same pass by proving they are ours (`src/lib/appPass.ts`), when an
 answer says they have none, at most once every 10 minutes, out of sight: they ask
@@ -748,7 +784,7 @@ a minute after the day's end, and each sweep's quarter hour a minute after its o
 they count a quarter hour once it has closed) and, from Cloudflare's analytics with
 wrangler's login (or `CLOUDFLARE_API_TOKEN`), the `/api/scooters` requests of the
 busiest outside clients, an IPv6 one by its /64, and
-of those limited (429). It sets apart our own traffic: this machine (its address by
+of those limited (429), refused (403) and asked for a pass first (428). It sets apart our own traffic: this machine (its address by
 `scootradar.com/cdn-cgi/trace`), `2a06:98c0:3600::103` (the Worker's own cache
 writes, PUT 204), user agents `scootradar-*` (our scripts), okhttp from `2001:4860:`
 (Google Play's pre-launch robots), and the addresses given with `--own=`. It exits 1
@@ -769,7 +805,14 @@ on a suspicion, 2 when a source could not be read:
   town on 14 November 2026 asked in 32 quarter hours (399 requests), the North
   Rhine-Westphalia script on the 18th in 31, 28 of them busy (2,880); from 11 to 18
   November no other outside network asked in more than 28, nor in more than 7 busy;
-- from the cache, 300 requests or more from `other` clients, a visitor without a map
+- a network refused 100 times or more (403: the Worker's refusal of a client that is
+  none of our maps and apps, or a WAF rule): a script that got no scooters, to watch in
+  case it comes back naming a view;
+- 200 requests or more of browsers asked for a pass first (428): a script naming a view
+  under a browser's user agent, or riders Turnstile cannot check; the report names the
+  networks;
+- from the cache, any request from an `other` client (the Worker refuses them since 20
+  November 2026: one there means `MAP_PASS_SECRET` is unset), a visitor without a map
   pass that kept feeds collected 32 quarter hours or more (8 hours), or any request
   held past its network's 1,500 a day or 300 an hour (`daily`, `hourly`): a script, or
   riders behind one address, to be found among Cloudflare's busiest. The report also
@@ -783,8 +826,8 @@ on a suspicion, 2 when a source could not be read:
 The check would have reported the North Rhine-Westphalia script the morning after,
 by its day's requests and its user agent. One under a browser's user agent and 1,500
 requests a day went unseen before the quarter-hour rule. And the check reads the day
-before: Grafana's "possible scraper" tells the same day of 200 `other` requests in an
-hour, or of a visitor kept collected 8 hours.
+before: Grafana's "possible scraper" tells the same day of 200 `other` requests or 200
+428s in an hour, or of a visitor kept collected 8 hours.
 
 Cloudflare's Free plan gives the client's address, country, user agent, path and
 status, not its network (ASN) or query: `whois <address>` names the network, a

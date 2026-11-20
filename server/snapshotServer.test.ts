@@ -5,7 +5,7 @@ import type { Server } from 'node:http';
 import { createSnapshotServer } from './snapshotServer';
 import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
-import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger } from './visitorLedger';
+import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger, PASS_GRACE_REQUESTS } from './visitorLedger';
 import { createPublicVehicleIds } from './publicVehicleIds';
 import { boundsCenter } from '../src/lib/geo';
 import { buildCityOverview, LIME_GROUPS_PER_REQUEST, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
@@ -564,6 +564,32 @@ describe('collection on demand', () => {
       // And the kind of referrer each carried, by agent.
       expect(rendered).toContain('scootradar_scooter_requests_by_referrer_total{agent="browser",referrer="own"} 1');
       expect(rendered).toContain('scootradar_scooter_requests_by_referrer_total{agent="app",referrer="none"} 1');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('asks a browser the Worker says Turnstile could check for its pass past its first requests of the day, and no one else', async () => {
+    const day = 24 * 60 * 60_000;
+    const now = Math.floor(Date.now() / day) * day + 9 * 15 * 60_000;
+    vi.useFakeTimers({ now, toFake: ['Date'] });
+    try {
+      const feeds = [feed('france:dott_fr_lyon', lyon, now - minutes(5))];
+      const visitors = createVisitorLedger({ requirePass: true });
+      const metrics = createSnapshotMetrics('local', { visitors: at => visitors.counts(at) });
+      for (let i = 0; i < PASS_GRACE_REQUESTS; i++) visitors.passRequired('192.0.2.1', true, 'map', now);
+      const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) }, { metrics, visitors });
+      const ask = (extra: Record<string, string>) => fetch(lyonUrl(port), { headers: { ...headers, 'X-Scooter-Client': 'map',
+        'X-Scooter-Agent': 'browser', ...extra } });
+      const refused = await ask({ 'X-Scooter-Pass-Check': 'turnstile' });
+      expect(refused.status).toBe(428);
+      expect(refused.headers.get('cache-control')).toBe('private, no-store');
+      expect(await refused.json()).toEqual({ error: 'The map needs to check this browser before it shows scooters.' });
+      // With its pass, or where Turnstile could not give it one, it is answered.
+      expect((await ask({ 'X-Scooter-Pass-Check': 'turnstile', 'X-Scooter-Client': 'verified' })).status).toBe(200);
+      expect((await ask({})).status).toBe(200);
+      expect((await ask({ 'X-Scooter-Pass-Check': 'yes' })).status).toBe(200);
+      expect(metrics.render(undefined, now)).toContain('scootradar_pass_required_total 1');
     } finally {
       vi.useRealTimers();
     }

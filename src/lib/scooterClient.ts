@@ -6,7 +6,8 @@
  * - map: one of our maps naming its view (X-Scooter-View), the web map before it holds a pass, and the iPhone
  *   and Android apps since 8 and 12 November 2026;
  * - app: our iPhone or Android app too old to name its view, told by its user agent;
- * - other: none of these, as a script. The cache answers it from what it holds, collecting nothing.
+ * - other: none of these, as a script. The Worker refuses it (403) wherever passes are signed; the cache, should one
+ *   reach it, answers it from what it holds, collecting nothing.
  *
  * A script can send any of these headers: map and app are what it claims, which the cache counts against its
  * network (server/visitorLedger.ts) and the daily check reads (docs/OBSERVABILITY.md, "Scraping").
@@ -61,6 +62,24 @@ export function scooterReferrer(referrer: string | null | undefined): ScooterRef
     return 'other';
   }
 }
+
+/**
+ * The Worker sets it to `turnstile` on a browser's request for scooters without a pass where Turnstile could give it
+ * one: passes are signed, Turnstile has its secret, and the page is the site's own host, which alone the widget lists
+ * (DEPLOY.md, "Map passes"). The cache then answers such a browser, past a few answers of the day, only once it holds
+ * a pass (server/visitorLedger.ts, PASS_GRACE_REQUESTS); without it, as on a preview or a local `wrangler dev`, as
+ * before. Believed only with the Worker's token.
+ */
+export const SCOOTER_PASS_CHECK_HEADER = 'X-Scooter-Pass-Check';
+
+export const parseScooterPassCheck = (value: string | string[] | null | undefined): boolean => value === 'turnstile';
+
+/**
+ * Our own scripts' requests for scooters (the daily live contract, the performance check, audits) carry the Worker
+ * secret SCOOTER_AUDIT_TOKEN in it, and count as a verified client's: without it, a script is none of our maps and
+ * apps, which the Worker refuses (scooterProxy.ts).
+ */
+export const SCOOTER_AUDIT_HEADER = 'X-Scooter-Audit';
 
 /** The kind of referrer a request to the cache names; none from a Worker that predates the header, which is not counted. */
 export const parseScooterReferrer = (value: string | string[] | null | undefined): ScooterReferrer | null =>

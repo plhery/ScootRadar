@@ -38,6 +38,7 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import sharp from 'sharp';
+import { auditHeaders, auditHint } from './auditHeaders.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'public/landing');
@@ -103,13 +104,13 @@ async function scootersNow(retries = 3) {
     east: RIDER.longitude + 0.006 + calls * 0.00001,
   };
   const query = new URLSearchParams({ ...Object.fromEntries(Object.entries(box).map(([side, degrees]) => [side, degrees.toFixed(5)])), zoom: '17' });
-  const response = await fetch(`${API}?${query}`, { headers: { Accept: 'application/json' } });
+  const response = await fetch(`${API}?${query}`, { headers: { Accept: 'application/json', ...auditHeaders() } });
   // The server answers 503 for a moment when its origin does not.
   if (response.status === 503 && retries > 0) {
     await sleep(10_000);
     return scootersNow(retries - 1);
   }
-  if (!response.ok) throw new Error(`${API} answered ${response.status}`);
+  if (!response.ok) throw new Error(`${API} answered ${response.status}${auditHint(response.status)}`);
   return response.json();
 }
 

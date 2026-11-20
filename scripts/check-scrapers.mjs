@@ -49,13 +49,21 @@ const ACTIVE_QUARTERS = 24;
 const ACTIVE_REQUESTS = 300;
 const SUSTAINED_FROM = Math.min(BUSY_QUARTERS * BUSY_QUARTER_REQUESTS, ACTIVE_REQUESTS);
 const SUSTAINED_NETWORKS = 100;
-// Requests for scooters from clients the Worker found are none of our maps and apps, which the cache answers from
-// what it holds since 18 November 2026 (src/lib/scooterClient.ts): our own scripts and tests make a few a day.
-const OTHER_REQUESTS = 300;
+// Requests for scooters from clients the Worker found are none of our maps and apps (src/lib/scooterClient.ts). Since
+// 20 November 2026 the Worker refuses them (403) and our scripts carry its audit token: one at the cache means the
+// refusal is off (MAP_PASS_SECRET unset). Before, the cache answered them from what it held.
+const OTHER_REQUESTS = 1;
+// A network the Worker refused (403, as one that is none of our maps and apps) or a WAF rule blocked this often: a
+// script that got no scooters. Watch whether it comes back as a map, naming a view.
+const REFUSED_REQUESTS = 100;
+// Requests of browsers without a map pass past their network's 20 answers of the day, which the cache answers 428
+// until they hold one (server/visitorLedger.ts, PASS_GRACE_REQUESTS): a script that names a view under a browser's
+// user agent, or a rider Turnstile cannot check, whose map asks again every few seconds.
+const PASS_REQUIRED = 200;
 // Browsers' asks for a map pass (POST /api/pass) that failed: Turnstile refused them (403, logged as
-// map_pass_refused) or could not be asked (503, map_pass_unverified). Since 19 November 2026 a browser without a pass
-// is held to 8 quarter hours of the day, so these are riders who get day-old scooters after 2 hours. On 18 and 19
-// November, before that, none of 17 failed.
+// map_pass_refused) or could not be asked (503, map_pass_unverified). Since 20 November 2026 a browser without a pass
+// gets no scooters past its network's 20 requests of the day (from 19 November, day-old ones past 8 quarter hours), so
+// these are riders who see none. On 18 and 19 November, before either, none of 17 failed.
 const PASS_FAILURES = 5;
 const PASS_FAILURE_SHARE = 0.1;
 // Requests held past their network's 1,500 a day (daily) or 300 an hour (hourly), since VISITOR_COUNT_SECRET is set
@@ -117,6 +125,7 @@ function cache() {
       'quarter_hours', closed),
     pastAllowance: value(`sum(increase(scootradar_past_allowance_requests_total{${CACHE}}[${DAY}]))`),
     held: byLabel(`sum by (reason) (increase(scootradar_held_requests_total{${CACHE}}[${DAY}]))`, 'reason'),
+    passRequired: value(`sum(increase(scootradar_pass_required_total{${CACHE}}[${DAY}]))`),
     // Counted since 19 November 2026, for a week before deciding whether a browser without our referrer is held.
     byReferrer: byLabels(`sum by (agent, referrer) (increase(scootradar_scooter_requests_by_referrer_total{${CACHE}}[${DAY}]))`,
       'agent', 'referrer', ['browser', 'app', 'own', 'other', 'none']),
@@ -149,6 +158,8 @@ function cloudflare() {
   return graphql(`total: httpRequestsAdaptiveGroups(limit: 1, filter: {date: $date, clientRequestPath: "/api/scooters"}) { count }
     ${groups('top', 500, '')}
     ${groups('limited', 100, ', edgeResponseStatus: 429')}
+    ${groups('refused', 100, ', edgeResponseStatus: 403')}
+    ${groups('required', 100, ', edgeResponseStatus: 428')}
     passes: httpRequestsAdaptiveGroups(limit: 1000, filter: {date: $date, clientRequestPath: "/api/pass", clientRequestHTTPMethodName: "POST"}) {
       count dimensions { clientIP userAgent edgeResponseStatus } }`);
 }
@@ -249,7 +260,9 @@ try {
   outsideNetworks = networks(outside);
   const plain = entry => Object.fromEntries(Object.entries(entry).filter(([key]) => key !== 'addresses'));
   traffic = { requests: zone.total[0]?.count ?? 0, own: Object.fromEntries(ownRows), busiest: outsideNetworks.slice(0, 10).map(plain),
-    limited: networks(zone.limited.filter(row => !ownTraffic(row, mine, own))).map(plain), sustained: await sustained(outsideNetworks),
+    limited: networks(zone.limited.filter(row => !ownTraffic(row, mine, own))).map(plain),
+    refused: networks(zone.refused.filter(row => !ownTraffic(row, mine, own))).map(plain),
+    required: networks(zone.required.filter(row => !ownTraffic(row, mine, own))).map(plain), sustained: await sustained(outsideNetworks),
     passes: passes(zone.passes.filter(row => !ownTraffic(row, mine, own))) };
 } catch (error) { failures.push(error.message); }
 
@@ -271,12 +284,19 @@ for (const entry of traffic?.sustained ?? []) {
   }
 }
 const otherRequests = metrics?.byClient.other ?? 0;
-if (otherRequests >= OTHER_REQUESTS) suspicions.push(`${otherRequests} requests came from clients that are none of our maps and apps (answered from what the cache holds)`);
+if (otherRequests >= OTHER_REQUESTS) suspicions.push(`${otherRequests} requests came from clients that are none of our maps and apps and reached the cache: the Worker refuses them since 20 November 2026, unless MAP_PASS_SECRET is unset`);
+for (const entry of traffic?.refused ?? []) {
+  if (entry.requests >= REFUSED_REQUESTS) suspicions.push(`${entry.network} (${entry.country}) was refused ${entry.requests} times (403, ${entry.agents[0].agent.slice(0, 60)}): a script that got no scooters; watch whether it comes back naming a view`);
+}
+const passRequired = metrics?.passRequired ?? 0;
+if (passRequired >= PASS_REQUIRED) {
+  suspicions.push(`${passRequired} requests of browsers without a map pass were answered 428 past their network's 20 of the day: a script naming a view, or riders Turnstile cannot check (networks at 428: ${traffic?.required.slice(0, 5).map(entry => `${entry.network} ${entry.requests}`).join(', ') || 'not read'})`);
+}
 const browserPasses = traffic?.passes.browser ?? {};
 const passesAsked = Object.values(browserPasses).reduce((sum, count) => sum + count, 0);
 const passesFailed = (browserPasses[403] ?? 0) + (browserPasses[503] ?? 0);
 if (passesFailed >= PASS_FAILURES && passesFailed >= passesAsked * PASS_FAILURE_SHARE) {
-  suspicions.push(`${passesFailed} of ${passesAsked} browsers' asks for a map pass failed (403 refused: ${browserPasses[403] ?? 0}, 503 not checked: ${browserPasses[503] ?? 0}): riders may be failing Turnstile, and are held to 8 quarter hours a day (turn it off in server/scooter-cache.ts)`);
+  suspicions.push(`${passesFailed} of ${passesAsked} browsers' asks for a map pass failed (403 refused: ${browserPasses[403] ?? 0}, 503 not checked: ${browserPasses[503] ?? 0}): riders may be failing Turnstile, and get no scooters past their network's 20 requests of the day (requirePass: false in server/scooter-cache.ts turns that off)`);
 }
 const networkHolds = (metrics?.held.daily ?? 0) + (metrics?.held.hourly ?? 0);
 if (networkHolds >= NETWORK_HOLDS) {
@@ -293,7 +313,7 @@ if (args.includes('--json')) {
   if (metrics) {
     console.log(`Cache: ${metrics.visitorQuarterHours} visitors over the quarter hours; by requests ${counts(metrics.byRequests)}; by areas ${counts(metrics.byAreas)}`);
     console.log(`  sweeps ${metrics.sweeps}, uncollected ${metrics.unwatched}, boxes too large ${metrics.loweredZooms}, origin 429s ${metrics.limited}, visitors with 16+ Lime refreshes ${metrics.limeRoundsVisitors}`);
-    console.log(`  requests by client ${counts(metrics.byClient)}; visitors by quarter hours kept collected, without a pass ${counts(metrics.unverifiedDays)}, with one ${counts(metrics.verifiedDays)}; requests past the allowance ${metrics.pastAllowance}; held ${counts(metrics.held)}`);
+    console.log(`  requests by client ${counts(metrics.byClient)}; visitors by quarter hours kept collected, without a pass ${counts(metrics.unverifiedDays)}, with one ${counts(metrics.verifiedDays)}; requests past the allowance ${metrics.pastAllowance}; held ${counts(metrics.held)}; asked for a pass first (428) ${metrics.passRequired}`);
     console.log(`  requests by referrer: ${Object.entries(metrics.byReferrer).map(([agent, referrers]) => `${agent} ${counts(referrers)}`).join('; ') || 'none'}`);
   }
   if (traffic) {
@@ -301,6 +321,8 @@ if (args.includes('--json')) {
     console.log('Busiest outside networks:');
     for (const entry of traffic.busiest) console.log(`  ${String(entry.requests).padStart(6)}  ${entry.network}  ${entry.country}  ${entry.agents[0].agent.slice(0, 90)}`);
     console.log(`Limited (429): ${traffic.limited.map(entry => `${entry.network} ${entry.requests}`).join(', ') || 'none'}`);
+    console.log(`Refused (403, the Worker or a WAF rule): ${traffic.refused.map(entry => `${entry.network} ${entry.country} ${entry.requests} ${entry.agents[0].agent.slice(0, 40)}`).join(', ') || 'none'}`);
+    console.log(`Asked for a pass first (428): ${traffic.required.map(entry => `${entry.network} ${entry.requests}`).join(', ') || 'none'}`);
     console.log(`Map passes asked (POST /api/pass, by status): ${Object.entries(traffic.passes).map(([kind, statuses]) => `${kind} ${counts(statuses)}`).join('; ') || 'none'}`);
     console.log(`Quarter hours asked in (busy: ${BUSY_QUARTER_REQUESTS}+ requests), networks with ${SUSTAINED_FROM}+ requests:`);
     for (const entry of [...traffic.sustained].sort((a, b) => b.quarterHours - a.quarterHours).slice(0, 10)) {

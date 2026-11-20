@@ -56,6 +56,14 @@ export const UNBROKEN_QUARTER_REQUESTS = 5;
  * cache saves and takes back at a restart (savedCounts): no address is kept, and one day's keys are not the next's.
  */
 export const NETWORK_REQUESTS_PER_DAY = 1_500;
+/**
+ * The answers of a UTC day a network's browser gets without a map pass where Turnstile could give it one (the Worker's
+ * SCOOTER_PASS_CHECK_HEADER); past them, with `requirePass`, it is answered 428 until it holds one. The web map asks
+ * Turnstile for its pass with its first answer and has it a few seconds later, after two or three requests, its first
+ * load's (src/lib/mapPassClient.ts); the rest leave room for a slow phone, a pass refused once, and a family or an
+ * office behind one address. A script that names a view under a browser's user agent gets as many a day.
+ */
+export const PASS_GRACE_REQUESTS = 20;
 export const NETWORK_REQUESTS_PER_HOUR = 300;
 export const VISITOR_HOUR_MS = 60 * 60_000;
 const MAX_NETWORKS = 50_000;
@@ -98,6 +106,8 @@ export interface VisitorCounts {
   pastAllowance: number;
   /** Requests answered from what the cache holds, collecting nothing, by why (HeldReason). */
   held: [HeldReason, number][];
+  /** Requests of browsers without a pass past their network's PASS_GRACE_REQUESTS of the day, answered 428. */
+  passRequired: number;
   /** The most quarter hours one visitor without a pass has kept feeds collected today. */
   mostUnverifiedToday: number;
   /** Requests for scooters by the agent and the kind of referrer the Worker named (scooterClient.ts). */
@@ -145,6 +155,8 @@ interface VisitorDay {
   activeWindow: number;
   /** Why it collects nothing more today, once its busy quarter hours or its run have said it is a script. */
   sustained: 'busy' | 'unbroken' | null;
+  /** Requests of a browser without a pass that Turnstile could have given one (PASS_GRACE_REQUESTS). */
+  withoutPass: number;
 }
 
 /**
@@ -157,10 +169,14 @@ interface VisitorDay {
  * UNBROKEN_QUARTER_HOURS). `countSecret`: each network's requests of the UTC day and hour are counted under an HMAC
  * of it and the day or hour with this secret, kept across a restart (savedCounts, restoreCounts), and past
  * NETWORK_REQUESTS_PER_DAY or NETWORK_REQUESTS_PER_HOUR collect nothing more until it ends; without it, neither.
+ * `requirePass`: a browser without a pass past PASS_GRACE_REQUESTS of the day is answered only once it holds one
+ * (passRequired).
  */
-export function createVisitorLedger({ enforceAllowance = [], holdSustained = false, countSecret }:
-  { enforceAllowance?: readonly ScooterAgent[]; holdSustained?: boolean; countSecret?: string } = {}) {
+export function createVisitorLedger({ enforceAllowance = [], holdSustained = false, countSecret, requirePass = false }:
+  { enforceAllowance?: readonly ScooterAgent[]; holdSustained?: boolean; countSecret?: string; requirePass?: boolean } = {}) {
   const salt = randomBytes(16);
+  const idOf = (client: string) => createHash('sha256').update(salt).update(client).digest('base64url');
+  let passRequired = 0;
   let window = 0;
   const visitors = new Map<string, { requests: number; watched: Set<string>; areas: Set<string> }>();
   const byRequests = new Map(REQUEST_BUCKETS.map(([bucket]) => [bucket, 0]));
@@ -234,7 +250,7 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
     let visitor = visitorDays.get(id);
     if (!visitor && visitorDays.size < MAX_DAY_VISITORS) {
       visitor = { unverified: 0, verified: 0, enforced: 0, unverifiedWindow: -1, verifiedWindow: -1, enforcedWindow: -1,
-        busy: 0, run: 0, activeWindow: -1, sustained: null };
+        busy: 0, run: 0, activeWindow: -1, sustained: null, withoutPass: 0 };
       visitorDays.set(id, visitor);
     }
     return visitor;
@@ -286,7 +302,7 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
       byClient.set(asker, byClient.get(asker)! + 1);
       if (agent && referrer) byReferrer.set(`${agent} ${referrer}`, byReferrer.get(`${agent} ${referrer}`)! + 1);
       const pastLimit = pastNetworkLimit(client, now);
-      const id = createHash('sha256').update(salt).update(client).digest('base64url');
+      const id = idOf(client);
       let visitor = visitors.get(id);
       if (!visitor) {
         if (visitors.size >= MAX_VISITORS) return asker !== 'other';
@@ -308,13 +324,26 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
       }
       return allowance(visitorDay, asker === 'verified', agent);
     },
+    /**
+     * Counts a request for scooters of a browser without a pass against its network's day, when Turnstile could have
+     * given it one (`passCheck`, the Worker's SCOOTER_PASS_CHECK_HEADER): whether it is past PASS_GRACE_REQUESTS and,
+     * with `requirePass`, gets no scooters until it holds a pass. A visitor past MAX_DAY_VISITORS is not held back.
+     */
+    passRequired(client: string, passCheck: boolean, asker: ScooterClient = 'map', now = Date.now()): boolean {
+      if (!passCheck || asker === 'verified') return false;
+      closeDay(now);
+      const visitorDay = dayOf(idOf(client));
+      if (!visitorDay || ++visitorDay.withoutPass <= PASS_GRACE_REQUESTS || !requirePass) return false;
+      passRequired++;
+      return true;
+    },
     counts(now = Date.now()): VisitorCounts {
       close(now);
       closeDay(now);
       let mostUnverifiedToday = 0;
       for (const { unverified } of visitorDays.values()) mostUnverifiedToday = Math.max(mostUnverifiedToday, unverified);
       return { byRequests: [...byRequests], byAreas: [...byAreas], unwatched, lastWindow, byClient: [...byClient],
-        days: { unverified: [...unverifiedDays], verified: [...verifiedDays] }, pastAllowance, held: [...held],
+        days: { unverified: [...unverifiedDays], verified: [...verifiedDays] }, pastAllowance, held: [...held], passRequired,
         mostUnverifiedToday, byReferrer: [...byReferrer].map(([key, count]) => {
           const [agent, referrer] = key.split(' ') as [ScooterAgent, ScooterReferrer];
           return [agent, referrer, count];

@@ -1,3 +1,5 @@
+import { auditHeaders, auditHint } from './auditHeaders.mjs';
+
 // Public city coordinates; never use saved user positions in a performance log.
 const base = process.env.SCOOTRADAR_BASE_URL ?? 'https://scootradar.com';
 const cases = [
@@ -20,9 +22,10 @@ for (const [name, query] of cases) {
   for (let sample = 0; sample < 3; sample++) {
     const started = performance.now();
     const response = await fetch(new URL(`/api/scooters?${new URLSearchParams(query)}`, base), {
+      headers: auditHeaders(),
       signal: AbortSignal.timeout(10_000),
     });
-    if (!response.ok) throw new Error(`${name}: HTTP ${response.status}`);
+    if (!response.ok) throw new Error(`${name}: HTTP ${response.status}${auditHint(response.status)}`);
     body = await response.json();
     measurements.push(Math.round(performance.now() - started));
   }

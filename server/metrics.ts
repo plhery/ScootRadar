@@ -363,6 +363,9 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_held_requests_total', 'counter',
           'Requests for scooters answered from what the cache holds, collecting nothing: until the UTC day ends, a browser without a map pass past its 8 quarter hours (allowance), a visitor that asked in 12 quarter hours with 20 requests or more (busy) or in more than 8 in a row (unbroken), or a network past 1,500 requests in the day (daily); until the UTC hour ends, a network past 300 in the hour (hourly).',
           visitors.held.map(([reason, count]) => [{ reason }, count]));
+        metric('scootradar_pass_required_total', 'counter',
+          'Requests for scooters of browsers without a map pass, which Turnstile could have given them, past their network\'s 20 answers of the UTC day: answered 428, no scooters, until they hold one. The web map has its pass after two or three requests; a script naming a view under a browser\'s user agent does not.',
+          [[{}, visitors.passRequired]]);
         metric('scootradar_scooter_requests_by_referrer_total', 'counter',
           'Requests for scooters by the agent the Worker named (browser or app, by the user agent) and the kind of referrer they carried: own (a page of https://scootradar.com), other, or none. Counted, not enforced.',
           visitors.byReferrer.map(([agent, referrer, count]) => [{ agent, referrer }, count]));

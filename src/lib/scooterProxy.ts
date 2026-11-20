@@ -1,7 +1,9 @@
+import { sameBytes, utf8 } from '@/lib/bytes';
 import { clientNetwork } from '@/lib/clientNetwork';
 import { holdsMapPass, MAP_PASS_HEADER, validMapPass } from '@/lib/mapPass';
-import { isAppUserAgent, SCOOTER_AGENT_HEADER, SCOOTER_CLIENT_HEADER, SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient,
-  scooterReferrer } from '@/lib/scooterClient';
+import { isAppUserAgent, SCOOTER_AGENT_HEADER, SCOOTER_AUDIT_HEADER, SCOOTER_CLIENT_HEADER, SCOOTER_PASS_CHECK_HEADER,
+  SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient, scooterReferrer } from '@/lib/scooterClient';
+import { SITE_URL } from '@/lib/site';
 import { scooterView } from '@/lib/scooterView';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
 import { VEHICLE_MAX_AGE_MS } from '@/lib/dataFreshness';
@@ -19,7 +21,17 @@ interface SnapshotProxyEnvironment extends MaintenanceEnvironment {
   MAP_PASS_SECRET?: string;
   /** The secret of the web map's Turnstile widget; without it, no browser is asked for a pass, the apps still are. */
   TURNSTILE_SECRET_KEY?: string;
+  /** Our own scripts' token (SCOOTER_AUDIT_HEADER), 32 characters or more; without it, no request is one of theirs. */
+  SCOOTER_AUDIT_TOKEN?: string;
 }
+
+/** Whether the request carries our scripts' token. */
+function fromOurScripts(request: Request, token: string | undefined) {
+  const sent = request.headers.get(SCOOTER_AUDIT_HEADER);
+  return !!token && token.length >= 32 && sent !== null && sameBytes(utf8(sent), utf8(token));
+}
+
+const NOT_OURS = 'The scooter data is only for the ScootRadar map and apps.';
 
 /** A cache of the data centre (`caches.open` in worker.ts) and the invocation's waitUntil. */
 export interface LastGoodStore {
@@ -228,6 +240,18 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     if (!parsed.ok) return Response.json({ error: parsed.error }, { status: 400, headers });
     // The zones of the map's layer come the same way, from the same origin (src/lib/zones.ts).
     const zones = url.pathname === '/api/zones';
+    const view = scooterView(request.headers.get('X-Scooter-View'));
+    // Who asks: a map with a pass (a browser's cookie, an app's header) or one of our scripts, a map of ours, an app
+    // too old to name its view, or another client (scooterClient.ts).
+    const pass = fromOurScripts(request, env.SCOOTER_AUDIT_TOKEN)
+      || await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client)
+      || await validMapPass(request.headers.get(MAP_PASS_HEADER), env.MAP_PASS_SECRET, client);
+    const userAgent = request.headers.get('User-Agent');
+    const asker = scooterClient({ pass, view: !!view, userAgent });
+    // Wherever passes are signed, a client that is none of our maps and apps, as a script, gets no scooters: on 19 and
+    // 20 November 2026 one under a bare `Mozilla/5.0` polled Mainz and Wiesbaden every 10 minutes and was given what
+    // the cache held (docs/OBSERVABILITY.md, "Scraping"). Without the key, as in a local `wrangler dev`, as before.
+    if (!zones && asker === 'other' && env.MAP_PASS_SECRET) return Response.json({ error: NOT_OURS }, { status: 403, headers });
     if (parsed.query.outsideCoverage) return Response.json(zones ? {
       zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, unavailable: false, truncated: false },
     } : {
@@ -248,19 +272,18 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     if ((await readAnnouncement(env))?.mode === 'hard') return await unavailable(null, true);
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
-    const view = scooterView(request.headers.get('X-Scooter-View'));
-    // Who asks: a map with a pass (a browser's cookie, an app's header), a map of ours, an app too old to name its
-    // view, or another client, which the cache answers from what it holds (scooterClient.ts).
-    const pass = await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client)
-      || await validMapPass(request.headers.get(MAP_PASS_HEADER), env.MAP_PASS_SECRET, client);
-    const userAgent = request.headers.get('User-Agent');
-    const asker = scooterClient({ pass, view: !!view, userAgent });
+    // A browser without a pass where Turnstile can give it one: past a few answers of the day, the cache asks for the
+    // pass first (SCOOTER_PASS_CHECK_HEADER). Not on another host, which the widget does not list, nor for the zones.
+    const agent = scooterAgent(userAgent);
+    const passCheck = !zones && !pass && agent === 'browser' && !!env.MAP_PASS_SECRET && !!env.TURNSTILE_SECRET_KEY
+      && url.origin === SITE_URL;
     let response: Response;
     const asked = performance.now();
     try {
       response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
         ...(view && !zones ? { 'X-Scooter-View': `${view.id}.${view.sequence}` } : {}),
-        'X-Scooter-Client-IP': client, [SCOOTER_CLIENT_HEADER]: asker, [SCOOTER_AGENT_HEADER]: scooterAgent(userAgent),
+        'X-Scooter-Client-IP': client, [SCOOTER_CLIENT_HEADER]: asker, [SCOOTER_AGENT_HEADER]: agent,
+        ...(passCheck ? { [SCOOTER_PASS_CHECK_HEADER]: 'turnstile' } : {}),
         // The kind of referrer only, never the page it names.
         [SCOOTER_REFERRER_HEADER]: scooterReferrer(request.headers.get('Referer')) }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
     } catch (error) {

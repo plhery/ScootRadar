@@ -6,9 +6,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { track } from '@/lib/analytics';
 import { useScooterData, type ScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { askFirstScooters, resetFirstScooters } from '@/lib/useFirstScooters';
+import { mapPassNow, noteMapPassUnheld } from '@/lib/mapPassClient';
 import type { ScooterResponse, ScooterResponseMeta } from '@/lib/types';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
+vi.mock('@/lib/mapPassClient', () => ({ askForMapPass: vi.fn(), mapPassNow: vi.fn(), noteMapPassUnheld: vi.fn() }));
 
 const T0 = Date.parse('2026-10-03T12:00:00.000Z');
 const iso = (time: number) => new Date(time).toISOString();
@@ -504,6 +506,35 @@ describe('useScooterData', () => {
     fetcher.mockImplementation(ok());
     await advance(30_000);
     expect(result.current).toMatchObject({ failure: null, hasData: true, maintenance: null });
+  });
+
+  it('asks Turnstile at once when the cache wants a pass first, and asks again with it', async () => {
+    vi.mocked(mapPassNow).mockResolvedValue(true);
+    fetcher.mockImplementationOnce(status(428)).mockImplementation(ok());
+    const { result } = mount();
+    await advance(180);
+    expect(mapPassNow).toHaveBeenCalledOnce();
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    // The same view, its next request.
+    const view = (call: number) => new Headers(fetcher.mock.calls[call][1].headers).get('X-Scooter-View')!;
+    expect(view(1)).toBe(`${view(0).split('.')[0]}.2`);
+    expect(result.current).toMatchObject({ failure: null, hasData: true });
+    expect(noteMapPassUnheld).not.toHaveBeenCalled();
+  });
+
+  it('says this browser could not be checked when Turnstile gives no pass, or the pass is not held', async () => {
+    vi.mocked(mapPassNow).mockResolvedValueOnce(false).mockResolvedValue(true);
+    fetcher.mockImplementation(status(428));
+    const { result } = mount();
+    await advance(180);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(result.current).toMatchObject({ failure: 'unverified', hasData: false });
+    expect(noteMapPassUnheld).not.toHaveBeenCalled();
+    // The retry: a pass, and still asked for one, as where cookies are refused.
+    await advance(10_000);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(noteMapPassUnheld).toHaveBeenCalledOnce();
+    expect(result.current).toMatchObject({ failure: 'unverified', hasData: false });
   });
 
   it('says maintenance without a time where none was announced, and an ordinary failure where the server answered', async () => {

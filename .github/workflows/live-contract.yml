@@ -21,3 +21,6 @@ jobs:
           # package.json would otherwise turn on.
           package-manager-cache: false
       - run: npm run test:contract
+        env:
+          # One of our scripts, which the Worker would otherwise refuse (DEPLOY.md, "Map passes").
+          SCOOTRADAR_AUDIT_TOKEN: ${{ secrets.SCOOTRADAR_AUDIT_TOKEN }}

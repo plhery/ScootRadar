@@ -10,6 +10,11 @@ const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?
 export const MAP_PASS_RETRY_MS = 10 * 60_000;
 /** How long after the answer that asks for it the check starts: the map, its tiles and scooters, come first. */
 export const MAP_PASS_DELAY_MS = 3_000;
+/**
+ * After a try that failed, or a pass the next answer did not count (as where cookies are refused), how long a map that
+ * needs its pass now (mapPassNow) waits before it tries again: meanwhile it says this browser could not be checked.
+ */
+export const MAP_PASS_URGENT_RETRY_MS = 30_000;
 const CHECK_TIMEOUT_MS = 30_000;
 
 interface Turnstile {
@@ -23,7 +28,8 @@ declare global {
 
 let loading: Promise<Turnstile> | null = null;
 let triedAt = -Infinity;
-let running = false;
+let failedAt = -Infinity;
+let running: Promise<boolean> | null = null;
 
 /** Turnstile's script, loaded once, with the page's nonce, which it gives what it loads (CSP, 'strict-dynamic'). */
 function loadTurnstile(): Promise<Turnstile> {
@@ -73,29 +79,54 @@ async function turnstileToken(): Promise<string> {
   }
 }
 
+/** One try, after `delayMs`: Turnstile's token, then the pass for it. Whether the Worker gave it. */
+function tryForPass(now: number, delayMs: number): Promise<boolean> {
+  triedAt = now;
+  running = (async () => {
+    if (delayMs) await new Promise(resolve => window.setTimeout(resolve, delayMs));
+    const token = await turnstileToken();
+    const response = await fetch(MAP_PASS_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }), cache: 'no-store', signal: AbortSignal.timeout(CHECK_TIMEOUT_MS) });
+    return response.ok;
+  })().catch(() => false).then(passed => {
+    if (!passed) failedAt = Date.now();
+    running = null;
+    return passed;
+  });
+  return running;
+}
+
 /**
  * Asks for the map pass (src/lib/mapPass.ts) when an answer says this browser holds none: MAP_PASS_DELAY_MS
  * later, at most once every MAP_PASS_RETRY_MS, never while a try runs, and never in the way of the map, whose
- * requests go on meanwhile.
- * A browser that blocks Turnstile, or that it refuses, is served as before; only a script's requests, or those
- * of a map that is not verified past its daily allowance once that is enforced, are answered from what the
- * cache holds (server/visitorLedger.ts).
+ * requests go on meanwhile. Its network's first answers of the day come without a pass; past them the cache asks for
+ * one first (server/visitorLedger.ts, PASS_GRACE_REQUESTS), and the map then gets it at once (mapPassNow).
  */
 export function askForMapPass(now = Date.now()): void {
   if (running || now - triedAt < MAP_PASS_RETRY_MS || typeof document === 'undefined') return;
-  triedAt = now;
-  running = true;
-  void (async () => {
-    await new Promise(resolve => window.setTimeout(resolve, MAP_PASS_DELAY_MS));
-    const token = await turnstileToken();
-    await fetch(MAP_PASS_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }),
-      cache: 'no-store', signal: AbortSignal.timeout(CHECK_TIMEOUT_MS) });
-  })().catch(() => {}).finally(() => { running = false; });
+  void tryForPass(now, MAP_PASS_DELAY_MS);
+}
+
+/**
+ * The pass now, for an answer that asks for it first (428): the try under way, or a new one at once, unless one
+ * failed within MAP_PASS_URGENT_RETRY_MS. Resolves to whether this browser was given one.
+ */
+export function mapPassNow(now = Date.now()): Promise<boolean> {
+  if (typeof document === 'undefined') return Promise.resolve(false);
+  if (running) return running;
+  if (now - failedAt < MAP_PASS_URGENT_RETRY_MS) return Promise.resolve(false);
+  return tryForPass(now, 0);
+}
+
+/** The answer after a pass still asked for one, as where the browser keeps no cookie: the next try waits. */
+export function noteMapPassUnheld(now = Date.now()): void {
+  failedAt = now;
 }
 
 /** For the tests: forget the last try and the loaded script. */
 export function resetMapPassForTests(): void {
   loading = null;
   triedAt = -Infinity;
-  running = false;
+  failedAt = -Infinity;
+  running = null;
 }

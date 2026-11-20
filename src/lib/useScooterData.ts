@@ -6,7 +6,7 @@ import { refreshDecision } from '@/lib/autoRefresh';
 import { clockOffset } from '@/lib/dataExpiry';
 import { classifyLoadFailure, retryAfterMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
 import { MAP_PASS_HEADER } from '@/lib/mapPass';
-import { askForMapPass } from '@/lib/mapPassClient';
+import { askForMapPass, mapPassNow, noteMapPassUnheld } from '@/lib/mapPassClient';
 import { takeFirstScooters } from '@/lib/useFirstScooters';
 import { requestDeadline } from '@/lib/requestDeadline';
 import { REFRESH_PACE, VIEW_PACE, heldUntil, noteRefusal, noteRequest } from '@/lib/requestPace';
@@ -167,7 +167,7 @@ function createScooterDataController() {
     wantedKey = key;
     const current = { controller: new AbortController() };
     request = current;
-    const deadline = requestDeadline(current.controller.signal, REQUEST_TIMEOUT_MS);
+    let deadline = requestDeadline(current.controller.signal, REQUEST_TIMEOUT_MS);
     apply({ type: 'started', key });
 
     let response: ScooterResponse | null = null;
@@ -191,12 +191,25 @@ function createScooterDataController() {
       }
       // Past the browser's cache: the response may be served stale while it is
       // revalidated, which would answer every refresh with the previous one.
-      const res = first ? await first.response : await fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
+      const ask = (signal: AbortSignal) => fetch(`/api/scooters?${scooterQueryParams(requestQuery)}`, {
         headers: { 'X-Scooter-View': `${viewId ??= crypto.randomUUID()}.${++viewSequence}` },
         cache: 'no-store',
-        signal: deadline.signal,
+        signal,
       });
+      let res = first ? await first.response : await ask(deadline.signal);
       answeredAt = first?.answeredAt ?? Date.now();
+      // Past its network's first answers of the day, the cache answers a browser once it holds a pass (428,
+      // server/visitorLedger.ts): Turnstile is asked at once, and the scooters again with the pass it gives, under a
+      // deadline of their own. A pass the next answer does not count, as where cookies are refused, is not asked
+      // again at once (noteMapPassUnheld); the map says this browser could not be checked.
+      if (res.status === 428 && await mapPassNow() && request === current) {
+        deadline.dispose();
+        deadline = requestDeadline(current.controller.signal, REQUEST_TIMEOUT_MS);
+        noteRequest(Date.now());
+        res = await ask(deadline.signal);
+        answeredAt = Date.now();
+        if (res.status === 428) noteMapPassUnheld();
+      }
       // The server's times are compared with this device's clock, which may be wrong.
       clockOffsetMs = clockOffset(res.headers.get('Date'), Date.now());
       origin = originState(res.headers, clockOffsetMs);

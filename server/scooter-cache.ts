@@ -199,11 +199,13 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 // Each visitor's requests and areas of the quarter hour, by a salted hash: metrics, and a limit on a sweep. A browser
 // without a pass is held to its day's allowance (apps not yet: the F-Droid build has no pass), and anyone who asks
-// all day collects nothing more that day. `enforceAllowance: []` and `holdSustained: false` turn them off. With
+// all day collects nothing more that day. A browser without a pass that Turnstile could give one gets scooters
+// again, past its network's few answers of the day, only once it holds one (`requirePass`). `enforceAllowance: []`,
+// `holdSustained: false` and `requirePass: false` turn them off. With
 // VISITOR_COUNT_SECRET (32 characters or more), each network's requests of the day and hour are counted, and held
 // past 1,500 and 300; without it, they are neither.
 const visitorCountSecret = process.env.VISITOR_COUNT_SECRET;
-const visitors = createVisitorLedger({ enforceAllowance: ['browser'], holdSustained: true,
+const visitors = createVisitorLedger({ enforceAllowance: ['browser'], holdSustained: true, requirePass: true,
   countSecret: visitorCountSecret && visitorCountSecret.length >= 32 ? visitorCountSecret : undefined });
 if (!visitors.countsNetworks) {
   console.log(JSON.stringify({ event: 'network_limits_off', reason: visitorCountSecret

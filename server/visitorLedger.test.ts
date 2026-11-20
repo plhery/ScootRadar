@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AREA_DEGREES, AREAS_WATCHED_PER_WINDOW, areaOf, BUSY_QUARTER_HOURS_PER_DAY, BUSY_QUARTER_REQUESTS, createVisitorLedger,
-  NETWORK_REQUESTS_PER_DAY, NETWORK_REQUESTS_PER_HOUR, UNBROKEN_QUARTER_HOURS, UNBROKEN_QUARTER_REQUESTS, UNVERIFIED_QUARTER_HOURS_PER_DAY, VISITOR_DAY_MS,
+  NETWORK_REQUESTS_PER_DAY, NETWORK_REQUESTS_PER_HOUR, PASS_GRACE_REQUESTS, UNBROKEN_QUARTER_HOURS, UNBROKEN_QUARTER_REQUESTS, UNVERIFIED_QUARTER_HOURS_PER_DAY, VISITOR_DAY_MS,
   VISITOR_HOUR_MS, VISITOR_WINDOW_MS } from './visitorLedger';
 
 // A street view in the area `index` cells east of Zürich's.
@@ -232,6 +232,25 @@ describe('visitor ledger', () => {
     // A file of another version, or one cut short, gives nothing back.
     expect(createVisitorLedger({ countSecret: secret }).restoreCounts({ ...saved, version: 2 }, at)).toBe(0);
     expect(createVisitorLedger({ countSecret: secret }).restoreCounts(null, at)).toBe(0);
+  });
+
+  it('answers a browser Turnstile could check its first requests of the day without a pass, then only with one', () => {
+    const day = Math.ceil(start / VISITOR_DAY_MS) * VISITOR_DAY_MS;
+    const ledger = createVisitorLedger({ requirePass: true });
+    for (let i = 0; i < PASS_GRACE_REQUESTS; i++) expect(ledger.passRequired('192.0.2.1', true, 'map', day + i)).toBe(false);
+    expect(ledger.passRequired('192.0.2.1', true, 'map', day + 30)).toBe(true);
+    expect(ledger.passRequired('192.0.2.1', true, 'map', day + 31)).toBe(true);
+    // Not once it holds a pass, nor where the Worker says Turnstile could not give it one (an app, another host).
+    expect(ledger.passRequired('192.0.2.1', true, 'verified', day + 32)).toBe(false);
+    expect(ledger.passRequired('192.0.2.1', false, 'map', day + 33)).toBe(false);
+    // Another network has its own requests; the next UTC day, this one has them again.
+    expect(ledger.passRequired('192.0.2.2', true, 'map', day + 34)).toBe(false);
+    expect(ledger.counts(day + 35).passRequired).toBe(2);
+    expect(ledger.passRequired('192.0.2.1', true, 'map', day + VISITOR_DAY_MS)).toBe(false);
+    // Without `requirePass`, counted against the day and never refused.
+    const counting = createVisitorLedger();
+    for (let i = 0; i <= PASS_GRACE_REQUESTS; i++) expect(counting.passRequired('192.0.2.1', true, 'map', day + i)).toBe(false);
+    expect(counting.counts(day + 40).passRequired).toBe(0);
   });
 
   it('counts the requests by agent and kind of referrer, holding no one by it', () => {

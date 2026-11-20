@@ -181,13 +181,15 @@ export default function PrivacyPage() {
           Turnstile checks in the background that your browser is not a script: on your first visit, once the pass
           has expired after 24 hours, from another network, after you clear your cookies, or when we change the key
           that signs passes. While the map stays open without one, as after a check that did not pass, Turnstile
-          checks again at most every 10 minutes. You see nothing: its script and its invisible frame come from
+          checks again at most every 10 minutes, or every 30 seconds once the map needs the pass to show scooters.
+          You see nothing: its script and its invisible frame come from
           challenges.cloudflare.com and read signals of your browser and device, under
           the <a href="https://www.cloudflare.com/turnstile-privacy-policy/">Cloudflare Turnstile Privacy Addendum</a>.
           Once it has passed, the website sets a cookie for 24 hours, <code>__Host-scootradar-pass</code>, which holds
           when it expires and a signature of that time and of your network (your IP address, or its first half for
-          IPv6), and no identifier, so that the map&apos;s requests keep the scooters up to date. The map works
-          without it.
+          IPv6), and no identifier, so that the map&apos;s requests keep the scooters up to date. Without it, the
+          map shows scooters for its network&apos;s first few requests of the day, then asks Turnstile at once and
+          shows them again once it has passed.
         </p>
         <p>
           The iOS and Android apps do not use Turnstile: they get the same pass, held on your device until it expires

@@ -4,7 +4,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { clientNetwork } from '../src/lib/clientNetwork';
-import { parseScooterAgent, parseScooterClient, parseScooterReferrer } from '../src/lib/scooterClient';
+import { parseScooterAgent, parseScooterClient, parseScooterPassCheck, parseScooterReferrer } from '../src/lib/scooterClient';
 import { scooterView } from '../src/lib/scooterView';
 import { parseScooterQuery, scooterAnswerZoom } from '../src/lib/scooterQuery';
 import { shouldClusterAtZoom } from '../src/lib/clustering';
@@ -261,6 +261,14 @@ export function createSnapshotServer(options: ServerOptions) {
     const asker = parseScooterClient(tokenHash ? request.headers['x-scooter-client'] : undefined);
     const agent = tokenHash ? parseScooterAgent(request.headers['x-scooter-agent']) : null;
     const referrer = tokenHash ? parseScooterReferrer(request.headers['x-scooter-referrer']) : null;
+    // A browser without a pass that Turnstile could have given one, past its network's few answers of the day: none
+    // until it holds one (visitorLedger.ts, PASS_GRACE_REQUESTS). The web map then asks for its pass at once and asks
+    // again with it (src/lib/useScooterData.ts).
+    if (options.visitors?.passRequired(key, tokenHash ? parseScooterPassCheck(request.headers['x-scooter-pass-check']) : false, asker, now)) {
+      response.writeHead(428, { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store' });
+      response.end(JSON.stringify({ error: 'The map needs to check this browser before it shows scooters.' }));
+      return;
+    }
     const watches = options.visitors?.record(key, parsed.query.bounds, zoom, now, asker, agent, referrer) ?? asker !== 'other';
     let refreshing: Set<string> | undefined;
     let idleInView: Set<string> | undefined;
