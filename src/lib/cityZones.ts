@@ -1,10 +1,10 @@
-import index from '../../data/city-zones.json';
 import { boundsIntersect } from './geo';
 import type { RuleKind, RuleZone } from './ruleZones';
 import type { MapBounds } from './types';
 import { ZONES_MIN_ZOOM } from './zones';
 
-// The zones cities set for shared e-scooters, from data/city-zones.json: each city's are a
+// The zones cities set for shared e-scooters, from data/city-zones.json, whose index of cities
+// (zoneCityCatalog.ts) the map page loads once it is up: each city's are a
 // file of their own, Bergen's about 150 KB, which the map page loads only once a view from
 // zoom 14 reaches the city, and keeps. Nagoya's are the pavements a scooter may ride on, lines
 // rather than rings; Helsingborg's the centre where scooters park only in racks or marked places.
@@ -26,12 +26,6 @@ export interface ZoneFile {
   zones: ({ id: string; kind: string; name: string; maxSpeedKph?: number }
     & ({ ring: number[][]; lines?: undefined } | { lines: number[][][]; ring?: undefined }))[];
 }
-
-/**
- * The cities whose zones the website draws: all but any held back for an iPhone release that
- * downloads them (`"website": false`, docs/city-zone-downloads.md), none since 30 October 2026.
- */
-export const ZONE_CITIES: ZoneCity[] = index.cities.filter(city => !('website' in city && city.website === false));
 
 /**
  * Each city's zones, loaded when asked for. Named one by one, so that the bundler makes each
@@ -138,10 +132,10 @@ export function cityRuleZones(city: ZoneCity, file: ZoneFile): RuleZone[] {
   });
 }
 
-/** The cities whose zones the view reaches, from zoom 14 in. */
-export function zoneCitiesInView(view: { bounds: MapBounds; zoom: number } | null): ZoneCity[] {
+/** The cities of those whose zones the view reaches, from zoom 14 in. */
+export function zoneCitiesInView(view: { bounds: MapBounds; zoom: number } | null, cities: readonly ZoneCity[]): ZoneCity[] {
   if (!view || view.zoom < ZONES_MIN_ZOOM) return [];
-  return ZONE_CITIES.filter(city => boundsIntersect(view.bounds, city.bounds));
+  return cities.filter(city => boundsIntersect(view.bounds, city.bounds));
 }
 
 const NONE: RuleZone[] = [];

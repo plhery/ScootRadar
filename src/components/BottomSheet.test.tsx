@@ -7,6 +7,7 @@ import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import { dockIssue, dockModel, type DockInput } from '@/lib/dockModel';
 import { formatLocale } from '@/lib/formatLocale';
 import { I18nProvider } from '@/lib/i18n';
+import { RENTAL_CURFEWS } from '@/lib/rentalCurfewCatalog';
 import { PROVIDERS, type ParkingLocation, type ScooterResponseMeta, type Vehicle } from '@/lib/types';
 import { formatClockTime } from '@/lib/uiText';
 
@@ -299,7 +300,7 @@ describe('BottomSheet', () => {
 
   it('tells of a night ban with a moon, not a warning', () => {
     const night = Date.parse('2026-10-12T22:30:00Z');
-    renderSheet({ dock: dock({ viewportCenter: [59.9139, 10.7522], now: night, lastUpdated: night - 30_000 }) });
+    renderSheet({ dock: dock({ viewportCenter: [59.9139, 10.7522], curfews: RENTAL_CURFEWS, now: night, lastUpdated: night - 30_000 }) });
 
     const until = formatClockTime(Date.parse('2026-10-13T03:00:00Z'), 'en', undefined, 'Europe/Oslo');
     const note = screen.getByText(`Night ban in Oslo: no scooter rentals until ${until}`).closest('.dock-note');

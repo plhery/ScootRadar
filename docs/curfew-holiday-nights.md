@@ -43,7 +43,7 @@ closed already, so they aren't listed.
 
 `src/lib/rentalCurfews.ts` reads them (`holidayEvening`, with Easter from the
 Gregorian computus), and the cache follows through `activeCurfew`
-(`feedCurfewed`, `feedCurfewEnds`). Its tests hold Easter in 2026–2028, every
+(`feedCurfewed`, `feedCurfewEnds` in `src/lib/feedCurfews.ts`). Its tests hold Easter in 2026–2028, every
 date in the catalog, and the nights above on dated cases: Ascension Day 2027
 in Stavanger, Christmas Eve 2026 in Tromsø, the eve of Maundy Thursday 2027 in
 Tønsberg, Vappu 2026 in Helsinki and Espoo, Midsummer 2026 in Lahti and New

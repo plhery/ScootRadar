@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ALWAYS_FAST, createFeedStateLog, expiredBeside, expiredReportDelay, feedState, parkingUp, restoredFailures, stalledAt, waitOutCurfew,
   type FeedCadence, type FeedFailure, type FeedStateEntry, type StillExpired } from './feedStateLog';
-import { feedCurfewed } from '../src/lib/seasonalPauses';
+import { feedCurfewed } from '../src/lib/feedCurfews';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 
 const feed = (changes: Partial<FeedSnapshot>): FeedSnapshot => ({ id: 'national:voiscooters.com', source: 'national',

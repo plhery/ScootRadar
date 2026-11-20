@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { polygonContainsPoint } from './geo';
-import { bandPolygons, RULE_ZONES, ruleInForce, ruleZonesInView, type RuleArea } from './ruleZones';
+import { RULE_ZONES } from './ruleZoneCatalog';
+import { bandPolygons, ruleInForce, ruleZonesInView as rulesIn, type RuleArea, type RuleZone } from './ruleZones';
+
+/** The rule zones in view, of the catalog's unless others are given. */
+const ruleZonesInView = (view: Parameters<typeof rulesIn>[0], now: number, zones: RuleZone[] = RULE_ZONES) => rulesIn(view, now, zones);
 
 // Seoul is UTC+9 all year.
 const SEOUL_NOON = Date.parse('2026-10-26T03:00:00Z');

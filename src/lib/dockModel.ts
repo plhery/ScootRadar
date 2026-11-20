@@ -8,7 +8,7 @@ import {
   nothingToShow,
   type FilterSummaryPart,
 } from '@/lib/nothingToShow';
-import { activeCurfew } from '@/lib/rentalCurfews';
+import { activeCurfew, type RentalCurfew } from '@/lib/rentalCurfews';
 import { activeSeasonalPause } from '@/lib/seasonalPauses';
 import type { LastSeenStatus, ScooterLoading } from '@/lib/scooterDataState';
 import type { ScooterResponseMeta } from '@/lib/types';
@@ -224,6 +224,8 @@ export interface DockInput {
   /** Providers that operate in the viewport. */
   viewportProviders: readonly string[];
   viewportCenter: [number, number] | null;
+  /** The cities' night bans on renting, once the page has loaded them (useRuleCatalogs); none, and no notice, until then. */
+  curfews?: readonly RentalCurfew[];
   /** Scooters per provider in the viewport, before the provider filter. */
   providerCounts: Readonly<Record<string, number>>;
   /**
@@ -352,7 +354,7 @@ function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
   const { meta } = input;
   const notices: DockNotice[] = [];
   // Some operators keep listing their scooters through the ban, so it comes first.
-  const curfew = activeCurfew(input.viewportCenter, input.now);
+  const curfew = activeCurfew(input.viewportCenter, input.now, input.curfews ?? []);
   if (curfew) {
     notices.push({ kind: 'curfew', text: { key: 'dock.curfew', values: { city: curfew.city }, time: curfew.until, timeZone: curfew.timeZone } });
   }

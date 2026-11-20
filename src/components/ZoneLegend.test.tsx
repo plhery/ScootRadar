@@ -3,9 +3,14 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, expect, it, vi } from 'vitest';
 import ZoneLegend, { formatSpeedLimits } from '@/components/ZoneLegend';
-import { CITY_ZONE_FILES, cityRuleZones, ZONE_CITIES } from '@/lib/cityZones';
+import { CITY_ZONE_FILES, cityRuleZones } from '@/lib/cityZones';
+import { ZONE_CITIES } from '@/lib/zoneCityCatalog';
 import { I18nProvider } from '@/lib/i18n';
-import { ruleZonesInView, type RuleKind, type RuleZoneShape } from '@/lib/ruleZones';
+import { ruleZonesInView as rulesIn, type RuleKind, type RuleZone, type RuleZoneShape } from '@/lib/ruleZones';
+import { RULE_ZONES } from '@/lib/ruleZoneCatalog';
+
+/** The rule zones in view, of the catalog's unless others are given. */
+const ruleZonesInView = (view: Parameters<typeof rulesIn>[0], now: number, zones: RuleZone[] = RULE_ZONES) => rulesIn(view, now, zones);
 
 const SEOUL_NOON = Date.parse('2026-10-26T03:00:00Z');
 const HONGDAE = { south: 37.55, west: 126.918, north: 37.558, east: 126.93 };

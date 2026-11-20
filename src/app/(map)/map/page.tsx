@@ -44,7 +44,7 @@ import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCitie
 import { providerForFailedSource, providerHealth, providersInView } from '@/lib/dataHealth';
 import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/dockModel';
 import { activeCurfew } from '@/lib/rentalCurfews';
-import { RULE_ZONES, ruleInForce, ruleShape, ruleZonesInView, visibleRules } from '@/lib/ruleZones';
+import { ruleInForce, ruleShape, ruleZonesInView, visibleRules } from '@/lib/ruleZones';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface, maintenanceNotice } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
@@ -53,6 +53,7 @@ import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlace } from '@/lib/useRecentPlace';
 import { useCityZones } from '@/lib/useCityZones';
+import { useRuleCatalogs } from '@/lib/useRuleCatalogs';
 import { viewportFetchBounds } from '@/lib/scooterDataState';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { askFirstScooters, startQuery } from '@/lib/useFirstScooters';
@@ -483,12 +484,13 @@ export default function Home() {
     () => zoneData.zones.filter(zone => enabledProviders.has(zone.provider)),
     [enabledProviders, zoneData.zones]
   );
-  // Streets a city forbids riding on, and the zones a city sets: the law, so drawn whether or
-  // not the zones are on.
-  const cityZones = useCityZones(mapQuery);
+  // The cities' rules, loaded once the map has a view: their night bans, and the streets a city
+  // forbids riding on and the zones a city sets, the law, so drawn whether or not the zones are on.
+  const rules = useRuleCatalogs(mapQuery);
+  const cityZones = useCityZones(mapQuery, rules.zoneCities);
   const ruleZones = useMemo(
-    () => ruleZonesInView(mapQuery, now, [...RULE_ZONES, ...cityZones]),
-    [cityZones, mapQuery, now]
+    () => ruleZonesInView(mapQuery, now, [...rules.ruleZones, ...cityZones]),
+    [cityZones, mapQuery, now, rules.ruleZones]
   );
   // The map draws them over the area the operators' zones are asked for, the view rounded out to
   // a grid of about 2 km, as it merges each kind of theirs with the operators' (zoneShapes.ts): a
@@ -496,8 +498,8 @@ export default function Home() {
   // tens of milliseconds at every move. The legend names those in view.
   const zoneAreaAddress = zoneAreaKey(mapQuery);
   const areaRules = useMemo(
-    () => visibleRules(zoneAreaAddress ? zoneArea(zoneAreaAddress) : null, [...RULE_ZONES, ...cityZones]),
-    [cityZones, zoneAreaAddress]
+    () => visibleRules(zoneAreaAddress ? zoneArea(zoneAreaAddress) : null, [...rules.ruleZones, ...cityZones]),
+    [cityZones, rules.ruleZones, zoneAreaAddress]
   );
   const activeRules = areaRules.map(zone => ruleInForce(zone, now) ? '1' : '0').join('');
   const drawnRuleZones = useMemo(() => areaRules.map((zone, index) => ruleShape(zone, activeRules[index] === '1')),
@@ -785,10 +787,10 @@ export default function Home() {
     return {
       vehicle,
       walk: alongRoute(walkEstimate(walkOrigin, vehicle.lat, vehicle.lng), routeRemainingM),
-      curfew: activeCurfew([vehicle.lat, vehicle.lng], now),
+      curfew: activeCurfew([vehicle.lat, vehicle.lng], now, rules.curfews),
       choice: chosenVehicleKey ?? selectedVehicleKey,
     };
-  }, [chosenVehicleKey, enabledProviders, now, routeRemainingM, selectedVehicleKey, viewportData.visibleVehicles, walkOnMap, walkOrigin,
+  }, [chosenVehicleKey, enabledProviders, now, routeRemainingM, rules.curfews, selectedVehicleKey, viewportData.visibleVehicles, walkOnMap, walkOrigin,
     walkedVehicle]);
 
   // The scooter that leads the dock: the nearest one shown, while single scooters are.
@@ -944,6 +946,7 @@ export default function Home() {
     representedCount: representedVehicleCount,
     viewportProviders: availableProviders,
     viewportCenter,
+    curfews: rules.curfews,
     providerCounts: viewportData.providerCounts,
     providersInView: loadedProviders,
     enabledProviders,
