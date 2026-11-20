@@ -65,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${SITE}/privacy`,
       // The day the notice says it was last updated.
-      lastModified: new Date('2026-11-20'),
+      lastModified: new Date('2026-11-21'),
       changeFrequency: 'yearly',
       priority: 0.3,
     },

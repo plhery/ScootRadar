@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 20 November 2026
+Last updated: 21 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches, except the last place chosen in the search, which stays on the device (see below).
@@ -87,6 +87,9 @@ searches, except the last place chosen in the search, which stays on the device 
   is answered with the scooters already held. One day's hashes cannot be linked to the next's.
 - The website tells the server whether a request for scooters came from a page of ScootRadar,
   another site or none, never the page itself; the server only counts them.
+- An IP address (or IPv6 first half) found collecting the scooters with a script can be refused
+  the website's API for a set time, usually 30 days. It is kept, with when that ends and a note
+  of why, in the website's settings at Cloudflare and on our own computer, only until then.
 - Structured application error logs contain event names and error messages, not
   precise locations or search text.
 - When the server fails to answer a map request, an error report is sent to

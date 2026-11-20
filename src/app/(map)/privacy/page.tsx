@@ -44,7 +44,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 20 November 2026</p>
+        <p>Last updated: 21 November 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -215,6 +215,11 @@ export default function PrivacyPage() {
           address making more than a map does is answered with the scooters already held. One day&apos;s hashes cannot
           be linked to the next&apos;s. The website tells the server whether a request for scooters came from a page of
           ScootRadar, another site or none, never the page itself; the server only counts them.
+        </p>
+        <p>
+          An IP address (or IPv6 first half) found collecting the scooters with a script can be refused the
+          website&apos;s API for a set time, usually 30 days. It is kept, with when that ends and a note of why, in the
+          website&apos;s settings at Cloudflare and on our own computer, only until then.
         </p>
 
         <h2>Error reports</h2>

@@ -305,8 +305,23 @@ if (networkHolds >= NETWORK_HOLDS) {
 const allDay = metrics?.unverifiedDays['32+'] ?? 0;
 if (allDay) suspicions.push(`${allDay} visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day`);
 
+// The networks banned for a while (the Worker secret SCOOTER_BANS, src/lib/scooterBans.ts), as this machine keeps the
+// list. A ban ends by itself, but its line stays until deleted, and the privacy policy keeps an address only while
+// its ban lasts: those ended are named, to be deleted and the list put again. Null without a list here.
+const BANS_FILE = process.env.SCOOTRADAR_BANS_FILE ?? `${homedir()}/.config/scootradar/scooter-bans`;
+function bans() {
+  let text;
+  try { text = readFileSync(BANS_FILE, 'utf8'); } catch { return null; }
+  const lines = text.split(/\r?\n/).map(line => line.trim().split(/\s+/))
+    .filter(([address, end]) => address && !address.startsWith('#') && /^\d{4}-\d{2}-\d{2}/.test(end ?? ''))
+    .map(([address, end]) => ({ address, ends: Date.parse(end.length === 10 ? `${end}T00:00:00Z` : end) }));
+  const ended = lines.filter(ban => ban.ends <= Date.now());
+  return { inForce: lines.length - ended.length, ended: ended.map(ban => ban.address) };
+}
+const banned = bans();
+
 if (args.includes('--json')) {
-  console.log(JSON.stringify({ date, thisMachine: mine, metrics, traffic, suspicions, failures }, null, 2));
+  console.log(JSON.stringify({ date, thisMachine: mine, metrics, traffic, bans: banned, suspicions, failures }, null, 2));
 } else {
   const counts = record => Object.entries(record ?? {}).map(([key, count]) => `${key}: ${count}`).join(', ') || 'none';
   console.log(`Scraping check for ${date} (UTC)`);
@@ -329,6 +344,8 @@ if (args.includes('--json')) {
       console.log(`  ${String(entry.quarterHours).padStart(3)} (${String(entry.busyQuarterHours).padStart(2)} busy)  ${entry.network}  ${entry.country}  ${entry.requests}  ${entry.agent.slice(0, 70)}`);
     }
   }
+  console.log(!banned ? `Bans (SCOOTER_BANS): no list at ${BANS_FILE}`
+    : `Bans (SCOOTER_BANS): ${banned.inForce} in force${banned.ended.length ? `; ended, to delete from ${BANS_FILE} and put the list again (docs/OBSERVABILITY.md, "Scraping"): ${banned.ended.join(', ')}` : ''}`);
   for (const failure of failures) console.log(`Not read: ${failure}`);
   console.log(suspicions.length ? `Suspicions:\n${suspicions.map(line => `  - ${line}`).join('\n')}` : 'Nothing suspicious.');
 }

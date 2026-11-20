@@ -5,6 +5,8 @@ import { proxyScooterSnapshot, type LastGoodStore } from './scooterProxy';
 
 const env = { SCOOTER_SNAPSHOT_API_TOKEN: 'test-service-token', SCOOTER_SNAPSHOT_API_URL: 'https://cache.example',
   SCOOTER_API_RATE_LIMITER: { limit: vi.fn(async () => ({ success: true })) } };
+// A browser's user agent, which the Worker answers wherever passes are signed (isBrowserUserAgent).
+const SAFARI = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Safari/605.1.15';
 const request = () => new Request('https://map.example/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13');
 
 describe('edge snapshot proxy', () => {
@@ -105,7 +107,7 @@ it('tells the cache who asks, from a pass, a view or an app\'s user agent, and a
   const passes = { ...env, MAP_PASS_SECRET: 'pass-secret', TURNSTILE_SECRET_KEY: 'turnstile-secret' };
   const pass = await issueMapPass('pass-secret', '192.0.2.1');
   const ask = async (headers: Record<string, string>, environment: typeof env = passes, url = request().url) => {
-    const response = await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
+    const response = await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', 'User-Agent': SAFARI, ...headers } }), environment);
     return { client: new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Client'), pass: response.headers.get('X-Scooter-Pass') };
   };
   const view = { 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' };
@@ -534,7 +536,7 @@ it('refuses a client that is none of our maps and apps wherever passes are signe
   const pass = await issueMapPass('pass-secret', '192.0.2.1');
   const forged = `${pass.slice(0, -1)}${pass.endsWith('A') ? 'B' : 'A'}`;
   const ask = (headers: Record<string, string>, environment: typeof env = passes, url = request().url) =>
-    proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
+    proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', 'User-Agent': SAFARI, ...headers } }), environment);
   // A script under a browser's user agent, as the one that polled Mainz and Wiesbaden on 19 and 20 November 2026, a
   // forged pass, or no user agent at all: 403, and the cache is not asked.
   const scripts: Record<string, string>[] = [{ 'User-Agent': 'Mozilla/5.0' }, { Cookie: `${MAP_PASS_COOKIE}=${forged}` }, {},
@@ -544,10 +546,27 @@ it('refuses a client that is none of our maps and apps wherever passes are signe
     expect(refused.status).toBe(403);
     expect(await refused.json()).toEqual({ error: 'The scooter data is only for the ScootRadar map and apps.' });
   }
+  // Nor, naming a view or showing a pass, under a user agent neither a browser's nor our apps', scooters or zones.
+  const view = { 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' };
+  const zonesUrl = 'https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15';
+  for (const userAgent of ['Mozilla/5.0', 'python-requests/2.32.3', 'curl/8.7.1', 'PiHomeSystem/1.0 (read-only nearby scooter map)', '',
+    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.4; +https://openai.com/gptbot']) {
+    expect((await ask({ ...view, 'User-Agent': userAgent })).status).toBe(403);
+    expect((await ask({ ...view, 'User-Agent': userAgent, Cookie: `${MAP_PASS_COOKIE}=${pass}` })).status).toBe(403);
+    expect((await ask({ 'User-Agent': userAgent }, passes, zonesUrl)).status).toBe(403);
+  }
   expect(fetcher).not.toHaveBeenCalled();
-  // Our scripts with the token, our maps and apps, as before; the zones are not refused.
+  // Our scripts with the token, whatever their user agent, our maps and apps, as before; the zones are not refused.
   expect((await ask({ 'X-Scooter-Audit': token })).status).toBe(200);
+  expect((await ask({ 'X-Scooter-Audit': token, 'User-Agent': 'node' })).status).toBe(200);
   expect(new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Client')).toBe('verified');
+  // Firefox, Chrome on Android and an in-app web view are browsers.
+  for (const userAgent of ['Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'Mozilla/5.0 (Linux; Android 15; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 26_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Instagram 400.0']) {
+    expect((await ask({ ...view, 'User-Agent': userAgent })).status).toBe(200);
+  }
   expect((await ask({ 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' })).status).toBe(200);
   expect((await ask({ 'User-Agent': 'okhttp/5.5.1' })).status).toBe(200);
   expect((await ask({ Cookie: `${MAP_PASS_COOKIE}=${pass}` })).status).toBe(200);
@@ -566,7 +585,7 @@ it('tells the cache a browser without a pass can be given one by Turnstile, only
   const site = 'https://scootradar.com/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13';
   const view = { 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' };
   const check = async (headers: Record<string, string>, environment: typeof env = passes, url = site) => {
-    await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', ...headers } }), environment);
+    await proxyScooterSnapshot(new Request(url, { headers: { 'cf-connecting-ip': '192.0.2.1', 'User-Agent': SAFARI, ...headers } }), environment);
     return new Headers(fetcher.mock.lastCall?.[1]?.headers).get('X-Scooter-Pass-Check');
   };
   expect(await check(view)).toBe('turnstile');
@@ -582,7 +601,7 @@ it('tells the cache a browser without a pass can be given one by Turnstile, only
 it('passes the cache\'s request for a pass on to the map, which then asks Turnstile', async () => {
   vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ error: 'check' }, { status: 428 }));
   const response = await proxyScooterSnapshot(new Request('https://scootradar.com/api/scooters?south=45.72&west=4.79&north=45.8&east=4.9&zoom=13',
-    { headers: { 'cf-connecting-ip': '192.0.2.1', 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' } }),
+    { headers: { 'cf-connecting-ip': '192.0.2.1', 'User-Agent': SAFARI, 'X-Scooter-View': '12345678-1234-1234-1234-123456789abc.2' } }),
   { ...env, MAP_PASS_SECRET: 'pass-secret', TURNSTILE_SECRET_KEY: 'turnstile-secret' });
   expect(response.status).toBe(428);
   expect(response.headers.get('X-Scooter-Pass')).toBe('none');

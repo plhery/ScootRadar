@@ -97,3 +97,9 @@ it('names the invisible Turnstile check, its privacy addendum and the pass cooki
   expect(section).toMatch(/which the server neither stores nor logs/);
   expect(section).toMatch(/The Android app built for F-Droid does not use Play Integrity/);
 });
+
+it('says an address found scraping can be refused the API for a while, and is kept only until then, as PRIVACY.md does', () => {
+  const section = text().match(/ Protection against scraping (.*?) Error reports /)?.[1];
+  expect(section).toMatch(/can be refused the website&#x27;s API for a set time, usually 30 days/);
+  expect(section).toMatch(/only until then\./);
+});

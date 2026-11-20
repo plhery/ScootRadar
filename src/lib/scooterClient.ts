@@ -22,6 +22,19 @@ export const SCOOTER_CLIENT_HEADER = 'X-Scooter-Client';
 export const isAppUserAgent = (agent: string | null | undefined) => !!agent && /^(ScootRadar|okhttp)\//.test(agent);
 
 /**
+ * A browser's user agent, as every engine's reads: `Mozilla/5.0 (` and its platform, then WebKit's or Blink's
+ * `AppleWebKit/…` (Safari, Chrome, Edge, Samsung, in-app web views) or Gecko's `Gecko/…` (Firefox). Not a script's:
+ * curl's, Python's, Node's, `PiHomeSystem/1.0`, the bare `Mozilla/5.0` of the script that polled Mainz and Wiesbaden
+ * in November 2026, nor a crawler's `Mozilla/5.0 AppleWebKit/…; compatible; …`, which names no platform. From 13 to 20
+ * November 2026 every request for scooters whose user agent was neither this nor our apps' was a script's.
+ */
+export const isBrowserUserAgent = (agent: string | null | undefined) =>
+  !!agent && /^Mozilla\/5\.0 \(/.test(agent) && /AppleWebKit\/|Gecko\//.test(agent);
+
+/** What the Worker answers, 403, a request for the scooter data it refuses (scooterProxy.ts, scooterBans.ts). */
+export const NOT_OURS_MESSAGE = 'The scooter data is only for the ScootRadar map and apps.';
+
+/**
  * What a request says it is by its user agent, which the Worker tells the cache in SCOOTER_AGENT_HEADER: our
  * iPhone or Android app (any build of it, the F-Droid one too), or a browser, as anything else is taken to be.
  * The cache holds a browser without a pass to its day's allowance (server/visitorLedger.ts), not an app yet.

@@ -623,6 +623,17 @@ which it believes only with its token:
   North Rhine-Westphalia under its own user agent made some 2,800 requests in seven
   and a half hours, each read setting the region's feeds collecting.
 
+Since 21 November 2026 the Worker also refuses (403) a request for scooters or zones
+whose user agent is neither a browser's nor our apps', even one naming a view or
+holding a pass: a browser's starts `Mozilla/5.0 (` with its platform and names
+`AppleWebKit/` (Safari, Chrome, Edge, Samsung, in-app web views) or `Gecko/` (Firefox)
+(`isBrowserUserAgent` in `src/lib/scooterClient.ts`). From 13 to 20 November 2026 every
+request for scooters under any other was a script's: the bare `Mozilla/5.0`,
+`NRW-availability-pilot`, `PiHomeSystem/1.0`, curl, Node, Python, none, and crawlers'
+`Mozilla/5.0 AppleWebKit/…; compatible; …`. A script copying a browser's whole user
+agent still gets past it, to the rules below. The rest of the API (`/api/geocode`,
+`/api/pass`, …) is not held to it.
+
 Our own scripts (the daily live contract, the performance check, the landing images,
 audits) send the Worker secret `SCOOTER_AUDIT_TOKEN` in `X-Scooter-Audit` and count as
 `verified`: `scripts/auditHeaders.mjs` reads it from `SCOOTRADAR_AUDIT_TOKEN` or
@@ -847,13 +858,34 @@ sent to `https://api.cloudflare.com/client/v4/graphql` with the same token, abou
 queries every 5 minutes at most. `npx wrangler tail swiss-scooters --format json` shows
 the live requests in full (boxes, zooms, network); delete what it captured, which holds
 coordinates. Report the verdict (nothing, a suspicion, a scraper) with the network,
-country, user agent, count and hours. A scraper is blocked by a Cloudflare WAF custom
-rule on its address or network, with the user's say-so: an address can be a school's
-or a company's. The rules are in the dashboard, scootradar.com → Security → Security
-rules; wrangler's login cannot write them (it has no WAF scope), so a rule is made
-there, by hand or through the browser. The North Rhine-Westphalia script was blocked
-by its address on 18 November 2026 at 20:45 UTC; the check above shows if it comes
-back from another.
+country, user agent, count and hours. A scraper is blocked, with the user's say-so (an
+address can be a school's or a company's), in one of two ways:
+
+- for a while, by the Worker secret `SCOOTER_BANS` (`src/lib/scooterBans.ts`), which
+  refuses a network the whole API (403, as a script the Worker refuses) until a UTC
+  date or time and then lets it be by itself; the pages are still served. One ban a
+  line, the address, when it ends, then a note:
+
+  ```text
+  203.0.113.7 2026-12-21 bare Mozilla/5.0, Mainz and Wiesbaden
+  2001:db8:1:2:: 2026-12-21T12:00:00Z
+  ```
+
+  An IPv6 address names its /64, any of its addresses will do; a line that cannot be
+  read bans nothing. Addresses are personal data, never in this repository: the list
+  is kept on our machines in `~/.config/scootradar/scooter-bans` (mode 600), and put
+  whole, as a secret cannot be read back: `npx wrangler secret put SCOOTER_BANS <
+  ~/.config/scootradar/scooter-bans`, which takes effect within a minute, without a
+  deploy. The daily check names the bans that have ended, to be deleted from the list
+  and the list put again: the privacy policy says an address is kept only while its
+  ban lasts. The Mainz and Wiesbaden script's four networks were banned on 21
+  November 2026 until 21 December;
+- until the rule is removed, by a Cloudflare WAF custom rule on its address or network,
+  which stops it at Cloudflare's edge. The rules are in the dashboard, scootradar.com → Security →
+  Security rules; wrangler's login cannot write them (it has no WAF scope), so a rule
+  is made there, by hand or through the browser. The Free plan allows five. The North
+  Rhine-Westphalia script was blocked by its address on 18 November 2026 at 20:45 UTC;
+  the check above shows if it comes back from another.
 
 ## Sentry
 

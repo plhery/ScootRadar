@@ -217,6 +217,13 @@ the daily live contract sends, and is kept on our machines in
 when the environment has none. It is never printed nor logged. To rotate it, write a new
 one to the three places: in between, the scripts get 403.
 
+Wherever `MAP_PASS_SECRET` is set, the Worker also refuses (403) a request for scooters or
+zones whose user agent is neither a browser's nor our apps', even naming a view or holding
+a pass, unless it carries the audit token: `curl` and Node audits send it. The Worker secret
+`SCOOTER_BANS` refuses networks the whole API until a date, one a line; it is put from
+`~/.config/scootradar/scooter-bans`, never written to the repository (docs/OBSERVABILITY.md,
+"Scraping"). Without it, no network is banned.
+
 The apps' passes need the same `MAP_PASS_SECRET`, which also signs their challenges and
 the iPhone app's attested keys: a new one voids those too, and each iPhone attests a
 new key at its next ask. They need no Turnstile secret: the Worker asks an app, told by

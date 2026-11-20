@@ -158,13 +158,16 @@ globalThis.fetch = async (url, init) => {
   return Response.json({ data: { viewer: { zones: [zone] } } });
 };
 `);
+    // The bans as this machine keeps them: one ended, one in force for good, a comment.
+    writeFileSync(join(dir, 'scooter-bans'), '# a note\n198.51.100.40 2026-11-01 ended\n2001:db8:9:9:: 2999-01-01T00:00:00Z\n');
   });
   afterAll(() => { if (dir) rmSync(dir, { recursive: true, force: true }); });
 
   it('finds the network that asked all day, and the visitor kept collected all day, whatever they called themselves', () => {
     const { stdout } = spawnSync(process.execPath, ['--disable-warning=MODULE_TYPELESS_PACKAGE_JSON', '--import', join(dir, 'cloudflare.mjs'),
       script, '--date=2026-11-18', '--json'], { encoding: 'utf8', timeout: 20_000,
-      env: { ...process.env, PATH: `${join(dir, 'bin')}:${process.env.PATH}`, CLOUDFLARE_API_TOKEN: 'none' } });
+      env: { ...process.env, PATH: `${join(dir, 'bin')}:${process.env.PATH}`, CLOUDFLARE_API_TOKEN: 'none',
+        SCOOTRADAR_BANS_FILE: join(dir, 'scooter-bans') } });
     const report = JSON.parse(stdout);
     expect(report.failures).toEqual([]);
     // Only the networks with 240 requests or more are read by quarter hour, this machine never.
@@ -179,6 +182,8 @@ globalThis.fetch = async (url, init) => {
     expect(report.traffic.passes).toEqual({ browser: { 204: 40, 403: 6, 503: 1 }, app: { 403: 2 } });
     expect(report.metrics.passRequired).toBe(260);
     expect(report.traffic.refused.map(({ network, requests }) => [network, requests])).toEqual([['198.51.100.30', 150], ['198.51.100.31', 3]]);
+    // A ban that has ended is named, to be deleted from the list; it is no suspicion.
+    expect(report.bans).toEqual({ inForce: 1, ended: ['198.51.100.40'] });
     expect(report.suspicions).toEqual([
       '198.51.100.7 (DE) asked in 34 quarter hours of the day, 34 of them 20 times or more (1020 requests)',
       '2001:db8:1:2:: (DE) asked in 26 quarter hours of the day, 0 of them 20 times or more (312 requests)',

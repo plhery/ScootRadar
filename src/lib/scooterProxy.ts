@@ -1,8 +1,8 @@
 import { sameBytes, utf8 } from '@/lib/bytes';
 import { clientNetwork } from '@/lib/clientNetwork';
 import { holdsMapPass, MAP_PASS_HEADER, validMapPass } from '@/lib/mapPass';
-import { isAppUserAgent, SCOOTER_AGENT_HEADER, SCOOTER_AUDIT_HEADER, SCOOTER_CLIENT_HEADER, SCOOTER_PASS_CHECK_HEADER,
-  SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient, scooterReferrer } from '@/lib/scooterClient';
+import { isAppUserAgent, isBrowserUserAgent, NOT_OURS_MESSAGE, SCOOTER_AGENT_HEADER, SCOOTER_AUDIT_HEADER, SCOOTER_CLIENT_HEADER,
+  SCOOTER_PASS_CHECK_HEADER, SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient, scooterReferrer } from '@/lib/scooterClient';
 import { SITE_URL } from '@/lib/site';
 import { scooterView } from '@/lib/scooterView';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
@@ -30,8 +30,6 @@ function fromOurScripts(request: Request, token: string | undefined) {
   const sent = request.headers.get(SCOOTER_AUDIT_HEADER);
   return !!token && token.length >= 32 && sent !== null && sameBytes(utf8(sent), utf8(token));
 }
-
-const NOT_OURS = 'The scooter data is only for the ScootRadar map and apps.';
 
 /** A cache of the data centre (`caches.open` in worker.ts) and the invocation's waitUntil. */
 export interface LastGoodStore {
@@ -243,15 +241,20 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const view = scooterView(request.headers.get('X-Scooter-View'));
     // Who asks: a map with a pass (a browser's cookie, an app's header) or one of our scripts, a map of ours, an app
     // too old to name its view, or another client (scooterClient.ts).
-    const pass = fromOurScripts(request, env.SCOOTER_AUDIT_TOKEN)
-      || await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client)
+    const ours = fromOurScripts(request, env.SCOOTER_AUDIT_TOKEN);
+    const pass = ours || await holdsMapPass(request.headers.get('Cookie'), env.MAP_PASS_SECRET, client)
       || await validMapPass(request.headers.get(MAP_PASS_HEADER), env.MAP_PASS_SECRET, client);
     const userAgent = request.headers.get('User-Agent');
     const asker = scooterClient({ pass, view: !!view, userAgent });
     // Wherever passes are signed, a client that is none of our maps and apps, as a script, gets no scooters: on 19 and
     // 20 November 2026 one under a bare `Mozilla/5.0` polled Mainz and Wiesbaden every 10 minutes and was given what
-    // the cache held (docs/OBSERVABILITY.md, "Scraping"). Without the key, as in a local `wrangler dev`, as before.
-    if (!zones && asker === 'other' && env.MAP_PASS_SECRET) return Response.json({ error: NOT_OURS }, { status: 403, headers });
+    // the cache held (docs/OBSERVABILITY.md, "Scraping"). Nor, scooters or zones, does one under a user agent neither
+    // a browser's nor our apps', whatever view it names or pass it shows. Our scripts, by their token, do. Without
+    // the key, as in a local `wrangler dev`, as before.
+    const scripted = !isBrowserUserAgent(userAgent) && !isAppUserAgent(userAgent);
+    if (env.MAP_PASS_SECRET && !ours && (scripted || (!zones && asker === 'other'))) {
+      return Response.json({ error: NOT_OURS_MESSAGE }, { status: 403, headers });
+    }
     if (parsed.query.outsideCoverage) return Response.json(zones ? {
       zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, unavailable: false, truncated: false },
     } : {

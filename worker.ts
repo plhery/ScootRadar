@@ -16,6 +16,7 @@ import { answerMapPass, answerPassChallenge, MAP_PASS_PATH, PASS_CHALLENGE_PATH 
 import { movedMapRedirect } from './src/lib/mapAddress';
 import { pageRequest } from './src/lib/pageRequest';
 import { proxyScooterSnapshot } from './src/lib/scooterProxy';
+import { bannedAnswer } from './src/lib/scooterBans';
 import { SITE_URL } from './src/lib/site';
 
 function secureDocumentResponse(request: Request, response: Response): Response {
@@ -114,6 +115,10 @@ const scootRadarWorker = {
     }
 
     const { pathname } = new URL(request.url);
+    // A network banned for a while, as a scraper's, gets nothing of the API until its ban ends (src/lib/scooterBans.ts).
+    // The secret is not among the generated bindings, which list only wrangler.jsonc's.
+    const banned = bannedAnswer(request, env as CloudflareEnv & { SCOOTER_BANS?: string });
+    if (banned) return banned;
     // Whether maintenance was announced, and until when: answered here, whatever the server's state (src/lib/maintenance.ts).
     if (pathname === '/maintenance.json') return maintenanceJson(env);
     // The map's pass, once Turnstile has found the browser is not a script, or App Attest or Play Integrity the
