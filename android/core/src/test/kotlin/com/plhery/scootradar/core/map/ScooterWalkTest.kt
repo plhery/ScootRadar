@@ -1254,6 +1254,12 @@ class ScooterWalkTest {
         // A's first read, without it: missed once.
         load(read(a = 200, b = 190))
         assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        val missedAt = h.model.walk.value?.missedAt
+        assertEquals(start.plusSeconds(200), missedAt)
+        // A collecting again, as after another restart: the answer leaves Lime out and the miss stays as it was.
+        load(collecting)
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        assertEquals(missedAt, h.model.walk.value?.missedAt)
         // A's second: taken.
         load(read(a = 260, b = 250))
         assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
