@@ -58,6 +58,16 @@ class ScooterNeighboursTest {
         assertFalse(neighbours.mayBe(followed, candidate = lime("new", north = -29.9)))
     }
 
+    /** A neighbour under its own id is never the one followed, wherever it now stands and whatever its battery. */
+    @Test
+    fun aNeighbourUnderItsOwnIDIsNeverTheOneFollowed() {
+        val neighbours = ScooterNeighbours()
+        neighbours.note(followed, seen = listOf(followed, lime("s2", east = 9)))
+        assertFalse("6 m nearer", neighbours.mayBe(followed, candidate = lime("s2", east = 3)))
+        assertFalse("where it stood", neighbours.mayBe(followed, candidate = lime("s2", east = 0)))
+        assertTrue("another id there", neighbours.mayBe(followed, candidate = lime("new", east = 3)))
+    }
+
     @Test
     fun theIDsOfTheScooterFollowedAreNeverANeighbours() {
         val neighbours = ScooterNeighbours()

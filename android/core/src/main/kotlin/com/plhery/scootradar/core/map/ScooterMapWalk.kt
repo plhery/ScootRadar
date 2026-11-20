@@ -364,7 +364,11 @@ internal fun ScooterMapController.followWalkTarget(
 }
 
 /**
- * A completed read of the target provider, on the server's clock. An unrelated provider cannot confirm a miss.
+ * A completed read of the target provider, on the server's clock. An unrelated provider cannot confirm a miss. The
+ * cache names the app (shownSince, readThrough) only when every one of its feeds in view has a completed read: one
+ * still collecting its first after a restart, or with only a sweep under way, leaves it out, and the answer then says
+ * nothing of the walked scooter (fresh-eyes review of 20 November 2026). The answer covers its position, every feed
+ * of its app in view answered (listsEveryScooter), so its own feed's read is among them.
  */
 private fun appRead(provider: String, meta: ScooterResponseMetadata?): Instant? =
     serverTime(meta?.shownSince?.get(provider))

@@ -66,9 +66,13 @@ internal class ScooterNeighbours {
      * neighbour renamed, unless the batteries tell them apart: the candidate's is [followed]'s as last seen, and that
      * neighbour's another. So of two scooters at the same spot, renamed on every read, as two Ponys in Liège, the one
      * followed is told from the other where their batteries differ, as on the website (47a39273) and the iPhone
-     * (fd21126e). A battery unknown, the same, or moved a point between reads refuses it, as before.
+     * (fd21126e). A battery unknown, the same, or moved a point between reads refuses it, as before. A neighbour under
+     * its own id is that neighbour, wherever it stands: one 9 m on, standing faded 6 m nearer once the scooter followed
+     * left the data, was 3 m from where it stood and taken for it, and kept the walk from ever saying it was taken, as
+     * the website's matcher (mayBeRenamed) never did.
      */
     fun mayBe(followed: Scooter, candidate: Scooter): Boolean {
+        if (candidate.id in positions) return false
         val distance = candidate.distance(from = followed.coordinate)
         val hasItsBattery = candidate.battery != null && candidate.battery == followed.battery
         return positions.all { (id, spot) ->

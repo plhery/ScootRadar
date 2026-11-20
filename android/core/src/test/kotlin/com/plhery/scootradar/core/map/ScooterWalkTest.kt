@@ -1211,6 +1211,54 @@ class ScooterWalkTest {
         assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
     }
 
+    /**
+     * After a cache restart the walked scooter's group of Lime (A) is collecting its first read, with nothing of it to
+     * show, while another group in view (B) is read again and again. The cache names Lime in neither shownSince nor
+     * readThrough while a feed of it in view has no completed read: none of B's reads is a miss of the scooter, nor
+     * says it was taken. Once A has read twice without it, it was (fresh-eyes review of 20 November 2026; the walk's
+     * read evidence, the same for the cache and the three apps).
+     */
+    @Test
+    fun readsOfAnotherGroupWhileTheScootersOwnIsStillCollectingDoNotTakeIt() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val lime = scooter("s3", at = point(east = -300, north = 0))
+        val h = shownWalk(to = target, others = listOf(lime))
+        val start = h.clock.now
+        // A still collecting: Lime is left out, and the answer says feeds are on their way.
+        val collecting = ScooterResponse(
+            vehicles = listOf(lime),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), refreshing = true),
+        )
+        fun read(a: Long, b: Long) = ScooterResponse(
+            vehicles = listOf(lime),
+            meta = ScooterResponseMetadata(
+                partial = false, failedSources = emptyList(), generatedAt = start.plusSeconds(minOf(a, b)).toString(),
+                shownSince = mapOf("lime" to start.plusSeconds(minOf(a, b)).toString()),
+                readThrough = mapOf("lime" to start.plusSeconds(maxOf(a, b)).toString()),
+            ),
+        )
+        var calls = 1
+        suspend fun load(response: ScooterResponse) {
+            h.clock.advance(60.0)
+            h.api.setResponse(response)
+            h.model.refresh()
+            calls += 1
+            assertTrue(waitUntil { h.api.calls == calls && !h.model.isLoading.value })
+        }
+
+        repeat(3) {
+            load(collecting)
+            assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+            assertNull(h.model.walk.value?.missedAt)
+        }
+        // A's first read, without it: missed once.
+        load(read(a = 200, b = 190))
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        // A's second: taken.
+        load(read(a = 260, b = 250))
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+    }
+
     /** An older server, or an app with no positions shown, names no time of its: the data's own then tells the reads apart. */
     @Test
     fun otherProviderUpdatesCannotConfirmAMissingScooter() = runTest {
@@ -1325,6 +1373,36 @@ class ScooterWalkTest {
         assertTrue(gone)
         assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
         assertEquals(localized("No longer on the map. Someone may have taken it."), h.model.walkAnnouncement.value?.text)
+    }
+
+    /**
+     * A neighbour 9 m on stands faded under its own id 6 m nearer where the scooter walked to stood, once that scooter
+     * left the data: 3 m from its spot, it was taken for it standing faded, and the walk never said it was taken. A
+     * neighbour under its own id is never the scooter followed, as on the website (mayBeRenamed).
+     */
+    @Test
+    fun aNeighbourStandingFadedUnderItsOwnIDNearWhereTheScooterStoodDoesNotKeepTheWalk() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val neighbour = scooter("s2", at = point(east = 309, north = 0))
+        val h = shownWalk(to = target, others = listOf(neighbour))
+        val shifted = scooter("s2", at = point(east = 303, north = 0))
+        for (index in 0 until 2) {
+            h.clock.advance(60.0)
+            h.api.setResponse(
+                ScooterResponse(
+                    vehicles = emptyList(),
+                    lastSeenVehicles = listOf(shifted),
+                    meta = ScooterResponseMetadata(
+                        partial = false, failedSources = emptyList(), shownSince = mapOf("lime" to h.clock.now.toString()),
+                    ),
+                ),
+            )
+            h.model.refresh()
+            assertTrue(waitUntil { h.api.calls == index + 2 && !h.model.isLoading.value })
+        }
+
+        assertEquals(ScooterWalkPhase.Gone, h.model.walk.value?.phase)
+        assertEquals(ScooterWalkNote.Gone, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
     }
 
     @Test
