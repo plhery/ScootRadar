@@ -931,6 +931,23 @@ describe('Geoapify', () => {
     ]);
   });
 
+  it('lists a street found anywhere once too, over a city without one or without a map centre, but not an address typed with its number', async () => {
+    const house = (housenumber: string, lat: number): GeoapifyRow =>
+      [{ result_type: 'building', housenumber, street: 'Bahnhofstrasse', postcode: '8001', city: 'Zurich', country_code: 'ch' }, lat, 8.5392];
+    const zurich = [house('80', 47.375), house('82', 47.3752)];
+    const rows = async (query: string, near: [number, number] | undefined, answers: GeoapifyAnswers) => {
+      stubUpstreams({ geoapify: answers });
+      return (await shownRows(await POST(postRequest(query, 'en', near)))).map(([title, subtitle]) => `${title}, ${subtitle}`);
+    };
+
+    // Over Paris, where Geoapify finds nothing within 50 km, its houses anywhere.
+    expect(await rows('Bahnhof', PARIS, { towns: [], nearby: [], anywhere: zurich })).toEqual(['Bahnhofstrasse, Zurich']);
+    // Without a centre, its houses in the rider's country and anywhere.
+    expect(await rows('Bahnhof', undefined, { towns: [], nearby: zurich, anywhere: zurich })).toEqual(['Bahnhofstrasse, Zurich']);
+    expect(await rows('Bahnhofstrasse 8', PARIS, { towns: [], nearby: [], anywhere: zurich }))
+      .toEqual(['Bahnhofstrasse 80, 8001 Zurich', 'Bahnhofstrasse 82, 8001 Zurich']);
+  });
+
   it('asks Photon anywhere, still near the map centre, when Geoapify finds nothing: "Bahnhofstrase 10"', async () => {
     const fetchMock = stubRecordedAnswer('Bahnhofstrase 10');
 

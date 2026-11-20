@@ -729,9 +729,14 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
 /** Geoapify's places: those close to the map centre, those closer still when as many as it
     gives are farther, and those anywhere when none of these is what was typed; without a
     centre, those in the rider's country and those anywhere, asked at once. An address typed
-    with its city, in the city. */
+    with its city, in the city. The addresses of one street are that street, wherever they are
+    found (streetsFolded). */
 async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Found>> {
   const anywhere = () => searchGeoapify(search, key, { timeoutMs: GEOAPIFY_TIMEOUT_MS });
+  // Geoapify may answer with a street's houses and shops: Zürich's Bahnhofstrasse within 5 km of Zürich HB,
+  // Lottstetten's within 50 km, and Zürich's anywhere, as for "Bahnhof" over Paris or without a centre.
+  const folded = (candidates: Candidate[]): Upstream<Found> =>
+    ({ ok: true, value: { sources: ['Geoapify'], candidates: streetsFolded(candidates, search) } });
   if (!search.near) {
     // Asked anywhere alone, even with the rider's country's places favoured, Geoapify
     // finds Rothschild, Wisconsin, alone for "Rothschild", and the places on Tel Aviv's
@@ -742,8 +747,8 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
       searchGeoapify(search, key, { atHome: true, timeoutMs: GEOAPIFY_TIMEOUT_MS }),
       anywhere(),
     ]);
-    if (!home.ok || !farther.ok) return home.ok ? home : farther;
-    return { ok: true, value: { sources: ['Geoapify'], candidates: [...home.value.candidates, ...farther.value.candidates] } };
+    if (!home.ok && !farther.ok) return farther;
+    return folded([home, farther].flatMap(answer => answer.ok ? answer.value.candidates : []));
   }
   // Without the city's name: Geoapify finds "Bahnhofstrasse 10" in Biel, but
   // nothing for "Bahnhofstrasse 10 Biel", as it calls the city Biel/Bienne.
@@ -758,10 +763,6 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
     // Over Zürich HB, it found Lottstetten's Bahnhofstraße, 28 km away, for "Bahnhof",
     // and nothing in Zürich, whose Bahnhofstrasse, Bahnhofplatz and Bahnhofquai it
     // finds for "Bahnhofs", "Bahnhofp" and "Bahnhofq". Those close by come first, as they rank.
-    // The addresses of one street are that street, close by or not: Geoapify may answer with a
-    // street's houses and shops, Zürich's Bahnhofstrasse within 5 km and Lottstetten's within 50.
-    const folded = (candidates: Candidate[]): Upstream<Found> =>
-      ({ ok: true, value: { sources: ['Geoapify'], candidates: streetsFolded(candidates, search) } });
     if (search.address || !nearby.value.full || found.some(({ remoteness }) => remoteness === 0)) return folded(nearby.value.candidates);
     const close = await searchGeoapify(search, key, { withinM: CLOSE_M, timeoutMs: GEOAPIFY_TIMEOUT_MS });
     if (!close.ok) return folded(nearby.value.candidates);
@@ -770,7 +771,7 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
   const farther = await anywhere();
   if (!farther.ok) return farther;
   // The near misses close by, after what is found farther.
-  return { ok: true, value: { sources: ['Geoapify'], candidates: [...nearby.value.candidates, ...farther.value.candidates] } };
+  return folded([...nearby.value.candidates, ...farther.value.candidates]);
 }
 
 /** Places where the app has cities: from Geoapify where the Worker has its key, from Photon
