@@ -5,7 +5,8 @@ import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, joinCi
 import { scooterResponseHeaders } from './scooterResponse';
 import { scooterAnswerZoom } from './scooterQuery';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
-import { providersForViewport, mapRepresentationsMatch } from './mapCoverage';
+import { providersForViewport } from './catalogCoverage';
+import { mapRepresentationsMatch } from './mapCoverage';
 import type { Vehicle } from './types';
 import { providerHealth, providersDownNotice } from './dataHealth';
 import { PARKING_MAX_AGE_MS } from './dataFreshness';

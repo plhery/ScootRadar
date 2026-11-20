@@ -48,18 +48,19 @@ import { ruleInForce, ruleShape, ruleZonesInView, visibleRules } from '@/lib/rul
 import { useI18n } from '@/lib/i18n';
 import { failureSurface, maintenanceNotice } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
-import { placeForCity, recentPlace, searchNear, type Place } from '@/lib/places';
+import { placeForCity, recentPlace, searchNear, withCoverage, type Place } from '@/lib/places';
 import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlace } from '@/lib/useRecentPlace';
 import { useCityZones } from '@/lib/useCityZones';
 import { useRuleCatalogs } from '@/lib/useRuleCatalogs';
+import { useCatalogCoverage } from '@/lib/useCatalogCoverage';
 import { viewportFetchBounds } from '@/lib/scooterDataState';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { askFirstScooters, startQuery } from '@/lib/useFirstScooters';
 import { useZoneData, zoneArea, zoneAreaKey } from '@/lib/useZoneData';
 import { groupCityTotals } from '@/lib/clustering';
-import { mapRepresentationsMatch, providersForViewport } from '@/lib/mapCoverage';
+import { mapRepresentationsMatch } from '@/lib/mapCoverage';
 import {
   boundsCenter,
   boundsContainBounds,
@@ -292,7 +293,7 @@ export default function Home() {
   // The origin for walking times until it is cleared; it wins over your location.
   const [searchedPlace, setSearchedPlace] = useState<Place | null>(null);
   const placeChoicesRef = useRef(0);
-  const recent = useRecentPlace();
+  const storedRecent = useRecentPlace();
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [locationHelpOpen, setLocationHelpOpen] = useState(false);
@@ -478,6 +479,13 @@ export default function Home() {
     maintenance,
     refresh,
   } = useScooterData(scooterQuery, { onOutOfDate: clearSelection });
+  // Where the operators run, loaded once the map is up and its first answer is in, or a load has failed: the apps
+  // in view, the towns' seasons, and whether the map has data at the place remembered (useCatalogCoverage.ts).
+  const coverage = useCatalogCoverage(mapQuery && (lastUpdated ?? failure));
+  const recent = useMemo(
+    () => storedRecent && coverage ? withCoverage(storedRecent, coverage.isPointCovered) : storedRecent,
+    [coverage, storedRecent]
+  );
   const zoneData = useZoneData(mapQuery, zonesOn);
   // Like the scooters: only the zones of the providers switched on.
   const mapZones = useMemo(
@@ -890,8 +898,10 @@ export default function Home() {
     if (walkedBack) endWalk();
   }, [endWalk, walkedBack]);
 
+  // The apps that run in the view, by the catalogs once they are in, and until then by the answer for the view.
   const availableProviders = viewportBounds
-    ? [...new Set([...providersForViewport(viewportBounds), ...Object.keys(viewportData.providerCounts)])]
+    ? [...new Set([...coverage ? coverage.providersForViewport(viewportBounds) : responseMeta?.availableProviders ?? [],
+      ...Object.keys(viewportData.providerCounts)])]
     : Object.keys(PROVIDERS);
   const hasActiveFilters = rangeMinimum > 0 || availableProviders.some(provider => !enabledProviders.has(provider));
 
@@ -947,6 +957,7 @@ export default function Home() {
     viewportProviders: availableProviders,
     viewportCenter,
     curfews: rules.curfews,
+    seasonalPause: coverage?.seasonalPause,
     providerCounts: viewportData.providerCounts,
     providersInView: loadedProviders,
     enabledProviders,

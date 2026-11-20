@@ -57,6 +57,8 @@ const JANUARY = Date.parse('2027-01-20T17:00:00Z');
 const NOVEMBER = Date.parse('2026-11-20T17:00:00Z');
 const JULY = Date.parse('2026-07-20T16:00:00Z');
 const winter = { from: '11-16', until: '04-15', timeZone: 'America/Toronto' };
+// The seasons the map page hands the dock once it has loaded the catalogs (useCatalogCoverage.ts).
+const seasonalPause: DockInput['seasonalPause'] = (point, now, seasonOver) => activeSeasonalPause(point, now, undefined, seasonOver);
 
 describe('a seasonal pause', () => {
   it('holds from its first day until the day the scooters are back, in its time zone, across the new year', () => {
@@ -199,7 +201,7 @@ describe('a city with a winter pause', () => {
         truncated: false, totalVehicles: 0, mode: 'vehicles', zoom: 14 },
       lastUpdated: JANUARY - 30_000, now: JANUARY, representedCount: 0, viewportProviders: ['bird', 'lime'],
       viewportCenter: MONTREAL, providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['bird', 'lime']),
-      unfilteredCount: 0,
+      unfilteredCount: 0, seasonalPause,
     };
     const model = dockModel(input);
     if (model.kind !== 'summary') throw new Error(`Expected the summary, got ${model.kind}`);
@@ -231,7 +233,7 @@ describe('a city with a winter pause', () => {
         truncated: false, totalVehicles: 0, mode: 'vehicles', zoom: 14 },
       lastUpdated: january - 30_000, now: january, representedCount: 0, viewportProviders: ['ryde'],
       viewportCenter: skien, providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['ryde']),
-      unfilteredCount: 0,
+      unfilteredCount: 0, seasonalPause,
     };
     const notices = (changes: Partial<DockInput>) => {
       const model = dockModel({ ...input, ...changes });

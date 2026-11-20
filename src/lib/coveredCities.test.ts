@@ -2,12 +2,12 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { COUNTRY_CODES } from '@/generated/countries';
 import { SWISS_PROVIDER_KEYS } from '@/generated/providers';
 import { describe, expect, it } from 'vitest';
+import { CATALOG_CITIES, isPointCovered, providersForViewport } from '@/lib/catalogCoverage';
 import {
-  COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL, isPointCovered, nearestCoveredCities,
+  COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL, nearestCoveredCities,
 } from '@/lib/coveredCities';
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
-import { providersForViewport } from '@/lib/mapCoverage';
 import {
   REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, regionalCityId, regionalSource, serviceAreas,
 } from '@/lib/regionalScooterSystems';
@@ -15,6 +15,8 @@ import {
 const PARADEPLATZ: [number, number] = [47.369, 8.539];
 const LUNGERN: [number, number] = [46.7741, 8.1558];
 const LAUSANNE: [number, number] = [46.5197, 6.6323];
+
+const boundsOf = (id: string) => CATALOG_CITIES.find(city => city.id === id)!.bounds;
 
 function viewportAround([lat, lng]: [number, number]) {
   return { south: lat - 0.001, west: lng - 0.001, north: lat + 0.001, east: lng + 0.001 };
@@ -34,7 +36,6 @@ describe('covered cities', () => {
         city: 'Zürich',
         country: 'CH',
         center: [47.3769, 8.5417],
-        bounds: { south: 47.27, west: 8.34, north: 47.49, east: 8.73 },
       },
       expect.objectContaining({ id: 'fr:Lyon', city: 'Lyon', country: 'FR', center: [45.7578, 4.832] }),
       expect.objectContaining({ id: 'de:München', city: 'München', country: 'DE' }),
@@ -42,17 +43,20 @@ describe('covered cities', () => {
     ]));
   });
 
-  it('gives a city with several operators one entry enclosing all of them', () => {
-    const bordeaux = COVERED_CITIES.filter(city => city.city === 'Bordeaux');
+  it('is the catalogs\' list, as their generator writes it so that the map page starts without them', () => {
+    expect(COVERED_CITIES).toEqual(CATALOG_CITIES.map(({ id, city, country, center }) => ({ id, city, country, center })));
+    expect(boundsOf('ch:zurich')).toEqual({ south: 47.27, west: 8.34, north: 47.49, east: 8.73 });
+  });
 
-    expect(bordeaux).toHaveLength(1);
+  it('gives a city with several operators one entry enclosing all of them', () => {
+    expect(COVERED_CITIES.filter(city => city.city === 'Bordeaux')).toHaveLength(1);
     // Dott reaches further south, north and east than Pony, Pony further west.
-    expect(bordeaux[0].bounds).toEqual({ south: 44.7393, west: -0.7866, north: 44.9989, east: -0.3947 });
+    expect(boundsOf('fr:Bordeaux')).toEqual({ south: 44.7393, west: -0.7866, north: 44.9989, east: -0.3947 });
   });
 
   it('keeps every city centre inside its own bounds and inside coverage', () => {
     for (const city of COVERED_CITIES) {
-      expect(boundsContainPoint(city.bounds, ...city.center), city.id).toBe(true);
+      expect(boundsContainPoint(boundsOf(city.id), ...city.center), city.id).toBe(true);
       expect(isPointCovered(...city.center), city.id).toBe(true);
     }
   });
@@ -81,9 +85,7 @@ describe('covered cities', () => {
   it('follows operator envelopes rather than the merged city box', () => {
     // North-east corner of the Freiburg box: north of Zeus's area and east of Yoio's.
     const corner: [number, number] = [48.06, 7.925];
-    const freiburg = COVERED_CITIES.find(city => city.id === 'de:Freiburg im Breisgau')!;
-
-    expect(boundsContainPoint(freiburg.bounds, ...corner)).toBe(true);
+    expect(boundsContainPoint(boundsOf('de:Freiburg im Breisgau'), ...corner)).toBe(true);
     expect(isPointCovered(...corner)).toBe(false);
     expect(providersForViewport(viewportAround(corner))).toEqual([]);
   });
@@ -99,7 +101,6 @@ describe('nearest covered cities', () => {
       city: 'Bern',
       country: 'CH',
       center: [46.948, 7.4474],
-      bounds: { south: 46.82, west: 7.2, north: 47.08, east: 7.7 },
       distanceM: expect.closeTo(57_227, 0),
     });
     expect(Math.round(nearest[1].distanceM / 1000)).toBe(64);
@@ -198,7 +199,7 @@ describe('iOS city catalogue', () => {
       bounds: { south: Number(south), west: Number(west), north: Number(north), east: Number(east) },
     }));
 
-    expect(cities).toEqual(COVERED_CITIES);
+    expect(cities).toEqual(CATALOG_CITIES);
   });
 
   // The app tells a town whose operators have all closed its season as closedForSeason does

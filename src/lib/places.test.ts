@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { isPointCovered } from '@/lib/catalogCoverage';
 import { COVERED_CITIES } from '@/lib/coveredCities';
 import {
   RECENT_PLACE_STORAGE_KEY,
@@ -8,6 +9,7 @@ import {
   splitDisplayName,
   storedPlace,
   toPlace,
+  withCoverage,
   type Place,
 } from '@/lib/places';
 
@@ -61,11 +63,11 @@ describe('toPlace', () => {
     expect(toPlace({ lat: 47.37, lng: 8.54, display_name: 'Zürich HB', title: 'Zürich HB', subtitle: '', covered: true }).subtitle).toBe('');
   });
 
-  it('falls back to the legacy label and works out the coverage for an older API', () => {
+  it('falls back to the legacy label for an older API, and gives no "No data" tag it does not say', () => {
     expect(toPlace({ lat: 48.14, lng: 11.58, display_name: 'München, Germany' }))
       .toEqual({ lat: 48.14, lng: 11.58, display_name: 'München, Germany', title: 'München', subtitle: 'Germany', covered: true });
     expect(toPlace({ lat: 46.7741, lng: 8.1558, display_name: 'Paradeplatz (OW) - Lungern' }))
-      .toMatchObject({ title: 'Paradeplatz (OW) - Lungern', subtitle: '', covered: false });
+      .toMatchObject({ title: 'Paradeplatz (OW) - Lungern', subtitle: '', covered: true });
   });
 
   it('takes a row at the catalogue\'s centre of a covered city for the city as a whole', () => {
@@ -154,14 +156,17 @@ describe('storedPlace', () => {
 
   it('says whether the map has data at the place as it has today, not as when it was stored', () => {
     // Manama, stored as "No data" before Hopp's feed there was added on 4 November 2026; Lungern, where there is none.
-    const manama = { lat: 26.2235, lng: 50.5876, display_name: 'Manama, Bahrain', title: 'Manama', subtitle: 'Bahrain' };
-    expect(storedPlace({ ...manama, covered: false })?.covered).toBe(true);
-    expect(storedPlace({ lat: 46.7741, lng: 8.1558, title: 'Lungern', covered: true })?.covered).toBe(false);
+    // Until the page has the catalogs, neither has a "No data" tag; with them, each says what the map has today.
+    const manama = storedPlace({ lat: 26.2235, lng: 50.5876, display_name: 'Manama, Bahrain', title: 'Manama', subtitle: 'Bahrain', covered: false })!;
+    const lungern = storedPlace({ lat: 46.7741, lng: 8.1558, title: 'Lungern', covered: true })!;
+    expect([manama.covered, lungern.covered]).toEqual([true, true]);
+    expect(withCoverage(manama, isPointCovered)).toBe(manama);
+    expect(withCoverage(lungern, isPointCovered)).toEqual({ ...lungern, covered: false });
   });
 
   it('fills in what an incomplete place leaves out', () => {
     expect(storedPlace({ lat: 46.7741, lng: 8.1558, title: 'Lungern', city: 'yes' })).toEqual({
-      lat: 46.7741, lng: 8.1558, display_name: 'Lungern', title: 'Lungern', subtitle: '', covered: false,
+      lat: 46.7741, lng: 8.1558, display_name: 'Lungern', title: 'Lungern', subtitle: '', covered: true,
     });
   });
 });

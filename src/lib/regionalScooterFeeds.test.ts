@@ -3,7 +3,7 @@ import { skippedSources } from '@/lib/scooterSources';
 import { discoveredFeedUrl, fetchScooters, independentCollectableFeeds } from './scooterFeeds';
 import { upstreamJsonCache } from './upstreamJsonCache';
 import { REGIONAL_SCOOTER_SYSTEMS, REGIONAL_SCOOTER_CITIES, regionalCityId, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
-import { providersForViewport } from './mapCoverage';
+import { providersForViewport } from './catalogCoverage';
 import { normalizeParkingLocations } from './parking';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from './scooterSnapshots';
 import { boundsContainPoint } from './geo';

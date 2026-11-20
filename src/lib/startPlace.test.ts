@@ -4,8 +4,7 @@ import type { CoveredCity } from '@/lib/coveredCities';
 import { startCity, timeZoneCountry } from '@/lib/startPlace';
 
 function city(id: string, country: CoveredCity['country'], center: [number, number]): CoveredCity {
-  const [lat, lng] = center;
-  return { id, city: id.split(':').at(-1)!, country, center, bounds: { south: lat - 0.1, west: lng - 0.1, north: lat + 0.1, east: lng + 0.1 } };
+  return { id, city: id.split(':').at(-1)!, country, center };
 }
 
 // Beside Europe, North America, Oceania and the Middle East as country agents may add them; some

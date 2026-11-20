@@ -48,21 +48,22 @@ vi.mock('@/generated/countries', async importOriginal => {
   };
 });
 
-const { COVERED_CITIES, isPointCovered } = await import('@/lib/coveredCities');
+const { isPointCovered } = await import('@/lib/catalogCoverage');
 const { REGIONAL_SCOOTER_CITIES, mergeCities, searchRegionalScooterCities } = await import('@/lib/regionalScooterSystems');
 type RegionalScooterSystem = import('@/lib/regionalScooterSystems').RegionalScooterSystem;
 const { groupCityTotals } = await import('@/lib/clustering');
 
 describe('the towns of a country with states', () => {
   it('are told apart by their state, in their id and in their name', () => {
-    expect(COVERED_CITIES.filter(city => city.country === ('US' as string)).map(({ id, city }) => ({ id, city }))).toEqual([
+    // COVERED_CITIES lists them so, as the catalogs' generator writes them from this merge (coveredCities.test.ts).
+    expect(REGIONAL_SCOOTER_CITIES.filter(city => city.country === ('US' as string)).map(({ id, city }) => ({ id, city }))).toEqual([
       { id: 'us:or:Portland', city: 'Portland, OR' },
       { id: 'us:me:Portland', city: 'Portland, ME' },
       { id: 'us:me:South Portland', city: 'South Portland, ME' },
       { id: 'us:ca:Los Angeles', city: 'Los Angeles, CA' },
     ]);
     // Each keeps its own bounds rather than one box across the continent.
-    const maine = COVERED_CITIES.find(city => city.id === 'us:me:Portland')!;
+    const maine = REGIONAL_SCOOTER_CITIES.find(city => city.id === 'us:me:Portland')!;
     expect(maine.bounds).toEqual({ south: 43.62, west: -70.33, north: 43.72, east: -70.2 });
     expect(isPointCovered(45.52, -122.68)).toBe(true);
     expect(isPointCovered(41.88, -87.63)).toBe(false);

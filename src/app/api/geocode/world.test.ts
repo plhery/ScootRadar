@@ -58,13 +58,13 @@ vi.mock('@/lib/rateLimit', () => ({ rateLimitAllows }));
 vi.mock('@opennextjs/cloudflare', () => ({ getCloudflareContext }));
 
 const { cityOfAddress, namedCities } = await import('@/app/api/geocode/cities');
-const { COVERED_CITIES } = await import('@/lib/coveredCities');
+const { CATALOG_CITIES } = await import('@/lib/catalogCoverage');
 const { searchRegionalScooterCities } = await import('@/lib/regionalScooterSystems');
 const { POST } = await import('@/app/api/geocode/route');
 
 const titles = (query: string) => namedCities(query).map(({ city }) => city.title);
 const countries = (query: string) => namedCities(query).map(({ country }) => country);
-const centreOf = (id: string) => COVERED_CITIES.find(city => city.id === id)!.center;
+const centreOf = (id: string) => CATALOG_CITIES.find(city => city.id === id)!.center;
 
 const AUCKLAND: [number, number] = [-36.85, 174.76];
 const SYDNEY: [number, number] = [-33.87, 151.21];

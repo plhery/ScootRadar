@@ -1,4 +1,4 @@
-import { COVERED_CITIES, isPointCovered, type CoveredCity } from '@/lib/coveredCities';
+import { COVERED_CITIES, type CoveredCity } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
 import type { AppLocale } from '@/lib/i18n';
 
@@ -20,7 +20,7 @@ export interface Place {
   title: string;
   /** May be empty; then the second line is not shown. */
   subtitle: string;
-  /** False gets the "No data" tag. */
+  /** False gets the "No data" tag. True where it is not known, as for a place stored before the map's catalogs load. */
   covered: boolean;
   /** A covered city chosen as a whole: the map shows the city rather than one street. */
   city?: true;
@@ -50,7 +50,8 @@ export function toPlace(result: PlaceResult): Place {
   const lines = title
     ? { title, subtitle: typeof result.subtitle === 'string' ? result.subtitle.trim() : '' }
     : splitDisplayName(result.display_name);
-  const covered = typeof result.covered === 'boolean' ? result.covered : isPointCovered(result.lat, result.lng);
+  // Every row of the API says so; one that does not gets no "No data" tag, rather than one it may not deserve.
+  const covered = typeof result.covered === 'boolean' ? result.covered : true;
   return {
     lat: result.lat,
     lng: result.lng,
@@ -92,7 +93,8 @@ export const RECENT_PLACE_STORAGE_KEY = 'scooters-recent-place';
 
 /**
  * A place as an earlier visit stored it, or null for anything else: storage is not to be trusted. Whether the map
- * has data there is as it has today, which a feed added or ended since may have changed.
+ * has data there is not taken from it: a feed added or ended since may have changed it. It is left to the page,
+ * which works it out once it has loaded the catalogs (withCoverage); until then the place counts as covered.
  */
 export function storedPlace(value: unknown): Place | null {
   if (!value || typeof value !== 'object') return null;
@@ -106,9 +108,15 @@ export function storedPlace(value: unknown): Place | null {
     display_name: typeof displayName === 'string' && displayName.trim() ? displayName : title,
     title,
     subtitle: typeof subtitle === 'string' ? subtitle : '',
-    covered: isPointCovered(lat, lng),
+    covered: true,
     ...(city === true ? { city: true as const } : {}),
   };
+}
+
+/** The place, saying whether the map has data there by the catalogs (isPointCovered); the same place if it says so already. */
+export function withCoverage(place: Place, isPointCovered: (lat: number, lng: number) => boolean): Place {
+  const covered = isPointCovered(place.lat, place.lng);
+  return covered === place.covered ? place : { ...place, covered };
 }
 
 export interface RecentPlaceStore {

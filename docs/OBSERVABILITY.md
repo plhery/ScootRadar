@@ -570,7 +570,7 @@ data. Since 6 November 2026:
   screens across), is answered at the highest zoom it fits: clusters, or the city
   totals for a country, rather than every scooter in it. One request holds a town's
   positions at most. Without a zoom (unclustered), a box gets every scooter only where
-  it fits at zoom 16 (`scooterAnswerZoom` in `src/lib/scooterQuery.ts`).
+  it fits at zoom 16 (`scooterAnswerZoom` in `src/lib/answerZoom.ts`).
 - A visitor keeps the feeds of 32 areas collected in a quarter hour. Their requests
   for any other area are answered from what the cache holds, collecting nothing, until
   the quarter hour ends: a sweep of a country takes no more of the operators' accounts

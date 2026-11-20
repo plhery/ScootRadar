@@ -1,5 +1,6 @@
 import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, type CountryCode } from '@/generated/countries';
-import { COVERED_CITIES, isPointCovered, type CoveredCountry } from '@/lib/coveredCities';
+import { CATALOG_CITIES, isPointCovered } from '@/lib/catalogCoverage';
+import type { CoveredCountry } from '@/lib/coveredCities';
 import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
 import { searchText, searchWords, TYPED_WORD } from '@/lib/searchText';
 import { outlinedTown } from '@/lib/townOutlines';
@@ -37,7 +38,7 @@ const REGIONS = new Map(REGIONAL_SCOOTER_CITIES.flatMap(city => city.region ? [[
 // answers to: "Zürich" is also found as "Zurich", "Zuerich" and "Zurigo". A
 // catalog's aliases are its city's other names: "NYC" and "Brooklyn" for New
 // York, where its catalog gives them; "Portland, OR" answers to "Portland" too.
-const CITIES = COVERED_CITIES.map(city => ({
+const CITIES = CATALOG_CITIES.map(city => ({
   ...city,
   region: REGIONS.get(city.id),
   names: [city.city, ...(SWISS_ALIASES[city.id] ?? []), ...(REGIONAL_ALIASES.get(city.id) ?? [])]

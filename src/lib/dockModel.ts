@@ -9,7 +9,7 @@ import {
   type FilterSummaryPart,
 } from '@/lib/nothingToShow';
 import { activeCurfew, type RentalCurfew } from '@/lib/rentalCurfews';
-import { activeSeasonalPause } from '@/lib/seasonalPauses';
+import type { ActiveSeasonalPause } from '@/lib/seasonalPauses';
 import type { LastSeenStatus, ScooterLoading } from '@/lib/scooterDataState';
 import type { ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
@@ -226,6 +226,11 @@ export interface DockInput {
   viewportCenter: [number, number] | null;
   /** The cities' night bans on renting, once the page has loaded them (useRuleCatalogs); none, and no notice, until then. */
   curfews?: readonly RentalCurfew[];
+  /**
+   * The season of the town at the point, as activeSeasonalPause tells it, once the page has loaded the catalogs
+   * (useCatalogCoverage); none, and no notice, until then.
+   */
+  seasonalPause?: (point: [number, number] | null, now: number, seasonOver: ReadonlySet<string>) => ActiveSeasonalPause | null;
   /** Scooters per provider in the viewport, before the provider filter. */
   providerCounts: Readonly<Record<string, number>>;
   /**
@@ -361,7 +366,7 @@ function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
   // Its operators may list nothing or stop answering: they are not named as down (scooterSnapshots.ts).
   // A pause until the streets are clear has no end to wait for: it gives way once scooters are in view.
   // So does a town whose operators have closed its season: they say when it opens again.
-  const season = activeSeasonalPause(input.viewportCenter, input.now, undefined, new Set(meta?.seasonOver));
+  const season = input.seasonalPause?.(input.viewportCenter, input.now, new Set(meta?.seasonOver)) ?? null;
   if (season && 'month' in season) {
     notices.push({ kind: 'season', text: { key: 'dock.season', values: { city: season.city }, month: season.month } });
   } else if (season && (input.unfilteredCount ?? input.count) === 0) {

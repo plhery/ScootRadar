@@ -287,6 +287,7 @@ describe('Whoosh closed seasons', () => {
         representedCount: response.vehicles.length, viewportProviders: ['whoosh'], viewportCenter: system.center,
         providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['whoosh']),
         unfilteredCount: response.vehicles.length,
+        seasonalPause: (point, now, seasonOver) => activeSeasonalPause(point, now, undefined, seasonOver),
       };
       const model = dockModel(input);
       if (model.kind !== 'summary') throw new Error(`Expected the summary, got ${model.kind}`);

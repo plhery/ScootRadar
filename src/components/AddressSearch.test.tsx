@@ -284,7 +284,7 @@ describe('typing', () => {
     expect(onSelect).toHaveBeenLastCalledWith(PARADEPLATZ[2]);
   });
 
-  it('splits the label itself and works out the coverage when the answer has neither', async () => {
+  it('splits the label itself when the answer has neither label nor coverage, and gives no "No data" tag it does not say', async () => {
     vi.stubGlobal('fetch', answer([
       { lat: 47.378, lng: 8.54, display_name: 'Zürich HB, Switzerland' },
       { lat: 46.7741, lng: 8.1558, display_name: 'Lungern, OW' },
@@ -293,7 +293,7 @@ describe('typing', () => {
     await type(input, 'Zürich HB');
 
     const options = screen.getAllByRole('option');
-    expect(options.map(option => option.getAttribute('aria-label'))).toEqual(['Zürich HB, Switzerland', 'Lungern, OW, No data']);
+    expect(options.map(option => option.getAttribute('aria-label'))).toEqual(['Zürich HB, Switzerland', 'Lungern, OW']);
     fireEvent.keyDown(input, { key: 'Enter' });
     expect(onSelect).toHaveBeenCalledExactlyOnceWith({
       lat: 47.378, lng: 8.54, display_name: 'Zürich HB, Switzerland', title: 'Zürich HB', subtitle: 'Switzerland', covered: true,

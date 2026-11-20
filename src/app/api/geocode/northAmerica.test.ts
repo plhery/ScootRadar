@@ -65,11 +65,11 @@ vi.mock('@/lib/rateLimit', () => ({ rateLimitAllows }));
 vi.mock('@opennextjs/cloudflare', () => ({ getCloudflareContext }));
 
 const { cityOfAddress, namedCities } = await import('@/app/api/geocode/cities');
-const { COVERED_CITIES } = await import('@/lib/coveredCities');
+const { CATALOG_CITIES } = await import('@/lib/catalogCoverage');
 const { POST } = await import('@/app/api/geocode/route');
 
 const titles = (query: string) => namedCities(query).map(({ city }) => city.title);
-const centreOf = (id: string) => COVERED_CITIES.find(city => city.id === id)!.center;
+const centreOf = (id: string) => CATALOG_CITIES.find(city => city.id === id)!.center;
 
 const AUSTIN: [number, number] = [30.27, -97.74];
 const PARIS: [number, number] = [48.86, 2.35];

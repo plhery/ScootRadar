@@ -1,13 +1,10 @@
 import type { CountryCode } from '@/generated/countries';
-import { PROVIDERS, SWISS_PROVIDER_KEYS } from '@/generated/providers';
-import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
-import { boundsContainPoint, haversineM } from '@/lib/geo';
-import {
-  REGIONAL_SCOOTER_CITIES,
-  REGIONAL_SCOOTER_SYSTEMS,
-  serviceAreas,
-} from '@/lib/regionalScooterSystems';
-import type { MapBounds } from '@/lib/types';
+import { COVERED_CITY_ROWS } from '@/generated/coveredCities';
+import { haversineM } from '@/lib/geo';
+
+// How many providers run the scooters of those cities, by the name riders see on them, as the landing page lists
+// them: Bolt's Hopp in Washington and the Icelandic Hopp are two companies, but one name, so one provider here.
+export { COVERED_PROVIDER_TOTAL } from '@/generated/coveredCities';
 
 /** Switzerland and the countries with a catalog: every country of data/countries.json. */
 export type CoveredCountry = CountryCode;
@@ -17,31 +14,17 @@ export interface CoveredCity {
   city: string;
   country: CoveredCountry;
   center: [number, number];
-  bounds: MapBounds;
 }
 
 export interface NearbyCoveredCity extends CoveredCity {
   distanceM: number;
 }
 
-// One entry per city with scooter data. The iOS ScooterCityCatalog is generated
-// from the same catalogs (scripts/generate-provider-catalog.mjs) and must match.
-export const COVERED_CITIES: CoveredCity[] = [
-  ...SWISS_SCOOTER_AREAS.map(area => ({
-    id: area.id,
-    city: area.city,
-    country: 'CH' as const,
-    center: [area.center[0], area.center[1]] as [number, number],
-    bounds: area.bounds,
-  })),
-  ...REGIONAL_SCOOTER_CITIES.map(city => ({
-    id: city.id,
-    city: city.city,
-    country: city.country,
-    center: city.center,
-    bounds: city.bounds,
-  })),
-];
+// One entry per city with scooter data: the Swiss areas (SWISS_SCOOTER_AREAS), then REGIONAL_SCOOTER_CITIES, as
+// scripts/generate-provider-catalog.mjs writes them from the catalogs, the same list as the iOS ScooterCityCatalog.
+// Written out, so that the map page starts without the catalogs (useCatalogCoverage.ts).
+export const COVERED_CITIES: CoveredCity[] = COVERED_CITY_ROWS.map(([id, city, country, lat, lng]) =>
+  ({ id, city, country, center: [lat, lng] }));
 
 /**
  * How many cities and countries ScootRadar covers, as the app and the landing
@@ -54,26 +37,6 @@ export const COVERED_CITIES: CoveredCity[] = [
  */
 export const COVERED_CITY_TOTAL = COVERED_CITIES.length;
 export const COVERED_COUNTRY_TOTAL = new Set(COVERED_CITIES.map(city => city.country)).size;
-
-/**
- * How many providers run the scooters of those cities, by the name riders see
- * on them, as the landing page lists them: Bolt's Hopp in Washington and the
- * Icelandic Hopp are two companies, but one name, so one provider here.
- */
-export const COVERED_PROVIDER_TOTAL = new Set(
-  [...SWISS_PROVIDER_KEYS, ...REGIONAL_SCOOTER_SYSTEMS.map(system => system.provider)].map(key => PROVIDERS[key].name)
-).size;
-
-// The operators' own envelopes rather than the merged city boxes, so a covered
-// point always has at least one provider in providersForViewport.
-const SERVICE_AREA_BOUNDS: MapBounds[] = [
-  ...SWISS_SCOOTER_AREAS.map(area => area.bounds),
-  ...REGIONAL_SCOOTER_SYSTEMS.flatMap(system => serviceAreas(system).map(area => area.bounds)),
-];
-
-export function isPointCovered(lat: number, lng: number): boolean {
-  return SERVICE_AREA_BOUNDS.some(bounds => boundsContainPoint(bounds, lat, lng));
-}
 
 /** Covered cities by distance from the point to their centre, nearest first. */
 export function nearestCoveredCities(point: [number, number], count: number): NearbyCoveredCity[] {

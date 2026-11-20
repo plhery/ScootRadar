@@ -4,7 +4,8 @@ import {
   regionalCityId, serviceAreas,
 } from '@/lib/regionalScooterSystems';
 import { boundsCenter, boundsContainPoint, crossesDateLine, haversineM } from '@/lib/geo';
-import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
+import { providersForViewport } from '@/lib/catalogCoverage';
+import { CITY_OVERVIEW_MAX_ZOOM } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
 import { snapshotPaused } from '@/lib/seasonalPauses';

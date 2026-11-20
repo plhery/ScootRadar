@@ -2,7 +2,7 @@ import { DEFAULT_REFRESH_AFTER_MS, FOLLOW_UP_GAP_MS, MIN_ATTEMPT_GAP_MS, MIN_FOL
 import { deviceTime, failedRequestOutcome, isExpired, responseExpiry } from '@/lib/dataExpiry';
 import { expandBounds } from '@/lib/geo';
 import { retryGapMs, type LoadFailure, type MapMaintenance } from '@/lib/loadFailure';
-import { scooterAnswerZoom } from '@/lib/scooterQuery';
+import { scooterAnswerZoom } from '@/lib/answerZoom';
 import type {
   MapBounds,
   ParkingLocation,

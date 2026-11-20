@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { COUNTRY_CODES, FEATURED_CITIES } from '@/generated/countries';
 import { parseClientParams } from '@/lib/clientParams';
-import { COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, isPointCovered } from '@/lib/coveredCities';
+import { isPointCovered } from '@/lib/catalogCoverage';
+import { COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import { landingCountries } from '@/lib/landingCities';
 
 describe('the cities of the landing page', () => {
