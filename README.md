@@ -169,7 +169,10 @@ that commit `android-<versionName>-<versionCode>`, signs the repository's index
 with the repository's key, which stays outside the repository in
 `SCOOTRADAR_FDROID_DIR` with fdroid's `config.yml`, puts the repository alone
 on the `fdroid` branch, which raw.githubusercontent.com serves, and attaches
-the APK to a pre-release on the tag. Copies
+the APK to a pre-release on the tag. Run again after a failure, it finishes the
+release: a draft left by a run cut off is published, with the APK uploaded again
+if it isn't there whole, and a release holding another APK of that name stops it
+(`android/scripts/publish-github-release.test.sh` runs that step on a fake `gh`). Copies
 from Google Play, and the ones the repository and GitHub had before 18 November
 2026, are signed by Google Play, so they have to be uninstalled before this one
 goes on; the release notes and the repository's entry say so. The app's entry in the

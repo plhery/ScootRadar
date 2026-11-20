@@ -95,19 +95,16 @@ git -C "$site" commit -q -m "ScootRadar $name ($code)"
 git -C "$site" -c credential.helper= -c 'credential.helper=!gh auth git-credential' \
   push -q "--force-with-lease=refs/heads/fdroid:$published" "https://github.com/$github.git" fdroid:refs/heads/fdroid
 
-# The same APK on GitHub Releases, on the tag above. A release made already stays as it is.
-if gh release view "$tag" --repo "$github" >/dev/null 2>&1; then
-  echo "$tag is on GitHub Releases already" >&2
-else
-  cp "$apk" "$site/scootradar-$name-$code.apk"
-  {
-    printf 'ScootRadar for Android %s (%s), the beta, built from %s without Google'"'"'s libraries and signed with ScootRadar'"'"'s own key.\n\n' \
-      "$name" "$code" "$target"
-    printf '%s\n\n' "$uninstall"
-    printf 'In F-Droid, add the repository %s\n' "$address"
-    if [ -n "$notes" ]; then printf '\n'; cat "$notes"; fi
-  } > "$site/notes.md"
-  gh release create "$tag" "$site/scootradar-$name-$code.apk" --repo "$github" --verify-tag --prerelease \
-    --title "ScootRadar for Android $name ($code), beta" --notes-file "$site/notes.md"
-fi
+# The same APK on GitHub Releases, on the tag above: published with it, a draft left by a run cut off finished, or the run
+# stops (publish-github-release.sh).
+cp "$apk" "$site/scootradar-$name-$code.apk"
+{
+  printf 'ScootRadar for Android %s (%s), the beta, built from %s without Google'"'"'s libraries and signed with ScootRadar'"'"'s own key.\n\n' \
+    "$name" "$code" "$target"
+  printf '%s\n\n' "$uninstall"
+  printf 'In F-Droid, add the repository %s\n' "$address"
+  if [ -n "$notes" ]; then printf '\n'; cat "$notes"; fi
+} > "$site/notes.md"
+"$android/scripts/publish-github-release.sh" "$github" "$tag" "$site/scootradar-$name-$code.apk" \
+  "ScootRadar for Android $name ($code), beta" "$site/notes.md"
 echo "$address"
