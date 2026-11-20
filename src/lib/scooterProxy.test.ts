@@ -127,6 +127,12 @@ it('tells the cache who asks, from a pass, a view or an app\'s user agent, and a
   // No pass is asked for where none can be given, nor for the zones.
   expect(await ask(view, env)).toEqual({ client: 'map', pass: null });
   expect(await ask(view, { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof env)).toEqual({ client: 'map', pass: null });
+  // Turnstile checks browsers alone: without its secret, the apps, which prove themselves another way, are still asked.
+  const noTurnstile = { ...passes, TURNSTILE_SECRET_KEY: undefined } as typeof env;
+  expect(await ask({ ...view, 'User-Agent': 'ScootRadar/2437 CFNetwork/3896.200.61 Darwin/27.2.0' }, noTurnstile))
+    .toEqual({ client: 'map', pass: 'none' });
+  expect(await ask({ ...app }, noTurnstile)).toEqual({ client: 'map', pass: 'none' });
+  expect(await ask({ ...app }, { ...noTurnstile, MAP_PASS_SECRET: undefined } as typeof env)).toEqual({ client: 'map', pass: null });
   expect((await ask(view, passes, 'https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15')).pass).toBeNull();
 });
 

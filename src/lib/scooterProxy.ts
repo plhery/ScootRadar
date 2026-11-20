@@ -1,6 +1,6 @@
 import { clientNetwork } from '@/lib/clientNetwork';
 import { holdsMapPass, MAP_PASS_HEADER, validMapPass } from '@/lib/mapPass';
-import { SCOOTER_AGENT_HEADER, SCOOTER_CLIENT_HEADER, SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient,
+import { isAppUserAgent, SCOOTER_AGENT_HEADER, SCOOTER_CLIENT_HEADER, SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient,
   scooterReferrer } from '@/lib/scooterClient';
 import { scooterView } from '@/lib/scooterView';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
@@ -14,8 +14,9 @@ interface SnapshotProxyEnvironment extends MaintenanceEnvironment {
   SCOOTER_SNAPSHOT_API_URL: string;
   SCOOTER_SNAPSHOT_API_TOKEN?: string;
   SCOOTER_API_RATE_LIMITER: { limit(options: { key: string }): Promise<{ success: boolean }> };
-  /** The key of the web map's passes (mapPass.ts); without it, or without Turnstile's secret, none is asked for. */
+  /** The key of the maps' passes (mapPass.ts); without it, none is asked for. */
   MAP_PASS_SECRET?: string;
+  /** The secret of the web map's Turnstile widget; without it, no browser is asked for a pass, the apps still are. */
   TURNSTILE_SECRET_KEY?: string;
 }
 
@@ -270,8 +271,11 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     result.headers.delete('X-Scooter-Public-Cache-Control');
     result.headers.delete(KEEP_SECONDS);
     for (const [key, value] of Object.entries(securityHeaders)) result.headers.set(key, value);
-    // The maps ask for a pass when an answer says they have none (mapPassClient.ts, appPass.ts).
-    if (!zones && !pass && env.MAP_PASS_SECRET && env.TURNSTILE_SECRET_KEY) result.headers.set(MAP_PASS_HEADER, 'none');
+    // The maps ask for a pass when an answer says they have none (mapPassClient.ts, appPass.ts): a browser only where
+    // Turnstile can check it, an app, which proves itself with App Attest or Play Integrity, wherever passes are signed.
+    if (!zones && !pass && env.MAP_PASS_SECRET && (env.TURNSTILE_SECRET_KEY || isAppUserAgent(userAgent))) {
+      result.headers.set(MAP_PASS_HEADER, 'none');
+    }
     // Not an answer the cache is still collecting feeds or zones for: the one after it is kept.
     if (lastGood && response.status === 200 && publicPolicy?.startsWith('public') && seconds > 0) {
       const keep = (key: string, extra: Record<string, string> = {}) => lastGood.waitUntil(lastGood.cache.put(key,

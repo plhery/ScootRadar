@@ -193,10 +193,11 @@ the account's Turnstile settings. Its site key is `TURNSTILE_SITE_KEY` in
 `src/lib/mapPassClient.ts`; its secret is the Worker secret `TURNSTILE_SECRET_KEY`,
 and `MAP_PASS_SECRET` (32 random bytes, e.g. `openssl rand -base64 32`) signs the
 pass cookie, both stored with `npx wrangler secret put …`. Without either, the Worker
-asks no browser for a pass and `/api/pass` answers 503; every request is then a map's,
-an app's or another client's as before. A new `MAP_PASS_SECRET` voids every pass:
-browsers ask again at their next answer, out of sight. Rotating the widget's secret
-in the dashboard keeps the old one valid for a while, long enough to store the new.
+asks no browser for a pass and `/api/pass` answers a browser 503; every browser's
+request is then a map's or another client's as before. A new `MAP_PASS_SECRET` voids
+every pass: browsers ask again at their next answer, out of sight. Rotating the
+widget's secret in the dashboard keeps the old one valid for a while, long enough to
+store the new.
 The widget's domains must list a host before a map served from it can get a pass
 (previews and `localhost` are not listed: they are served as before).
 Cloudflare's test keys (site key `1x00000000000000000000BB`, secret
@@ -204,8 +205,10 @@ Cloudflare's test keys (site key `1x00000000000000000000BB`, secret
 
 The apps' passes need the same `MAP_PASS_SECRET`, which also signs their challenges and
 the iPhone app's attested keys: a new one voids those too, and each iPhone attests a
-new key at its next ask. App Attest needs nothing more: the App ID
-(`HGC93X794T.com.plhery.scootradar`) and Apple's App Attestation root key are in
+new key at its next ask. They need no Turnstile secret: the Worker asks an app, told by
+its user agent, for its pass wherever `MAP_PASS_SECRET` is set. App Attest needs
+nothing more: the App ID (`HGC93X794T.com.plhery.scootradar`) and Apple's App
+Attestation root key are in
 `src/lib/appAttest.ts`. Play Integrity needs a Google Cloud project linked to the app
 in Play Console (Protected with Play → Play Integrity API: the project ScootRadar,
 `scootradar`, which has the Play Integrity API enabled and nothing else), Play
