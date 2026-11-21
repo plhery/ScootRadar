@@ -299,7 +299,11 @@ in an `X-ScootRadar-Build` header, the one to read by hand
 the landing page. If the website still does
 not serve it then, the job fails: the Workers build failed or hangs, the site
 keeps the build before, and the log is only in Cloudflare's dashboard (Workers
-& Pages › swiss-scooters › Deployments). It then compares the live
+& Pages › swiss-scooters › Deployments). It only warns, and tells IndexNow
+nothing, when the build the site serves comes before the commit and only files
+the website is not built from changed since (`ios/`, `android/`, `docs/` or the
+Markdown files at the top, as for the end-to-end jobs): the site is then the
+same, and the next commit that changes it deploys it. It then compares the live
 sitemap with the one IndexNow last took, which the ref `refs/indexnow/submitted`
 keeps (a commit of `sitemap.xml`; `git fetch origin refs/indexnow/submitted` and
 `git log -p FETCH_HEAD` show it). Right after a deploy, Next.js can answer with

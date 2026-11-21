@@ -232,6 +232,10 @@ jobs:
       # never does, the Workers build failed or hangs, and only Cloudflare's dashboard shows it, so
       # the job fails rather than warns. A build is live 2 to 5 minutes after the move as a rule, but
       # on 28 Oct 2026 17e4fc29's took 10 and failed the 8-minute wait of then, so it waits 15.
+      # It only warns when the build the site serves (its X-ScootRadar-Build header) comes before
+      # this commit and none of the files the website is built from changed since: only ios/,
+      # android/, docs/ or the Markdown files at the top, as for the end-to-end jobs
+      # (scripts/ci-changed.sh). The site is then the same, and IndexNow has nothing new to take.
       - name: Wait for the website to serve production
         id: live
         if: steps.deploy.outputs.website != ''
@@ -248,6 +252,14 @@ jobs:
             fi
             sleep 15
           done
+          served=$(curl --silent --max-time 20 --output /dev/null --dump-header - -H 'Cache-Control: no-cache' "$SITE/" \
+            | awk 'tolower($1) == "x-scootradar-build:" { print $2 }' | tr -d '\r' || true)
+          if [[ "$served" =~ ^[0-9a-f]{40}$ ]] && git merge-base --is-ancestor "$served" "$BUILD" 2>/dev/null \
+            && ! git diff --name-only --no-renames "$served" "$BUILD" | grep -qvE '^(ios/|android/|docs/|[^/]+\.md$)'; then
+            echo "::warning title=Website not redeployed::$SITE did not serve ${BUILD::7} within 15 minutes and still serves ${served::7}, whose website files are the same: see its Workers build in Cloudflare's dashboard (Workers & Pages › swiss-scooters › Deployments). The next commit that changes the website deploys it."
+            echo "unchanged=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           echo "::error title=Website not deployed::$SITE did not serve ${BUILD::7} within 15 minutes: see its Workers build in Cloudflare's dashboard (Workers & Pages › swiss-scooters › Deployments). IndexNow was not told; the next deploy tells it of the pages, or once the site serves it, run: node scripts/indexnow.mjs --since=refs/indexnow/submitted $SITE"
           exit 1
 
@@ -258,7 +270,7 @@ jobs:
       # moved to is taken: the landing page can name it while the sitemap still comes from the build
       # before. A refusal is shown but never fails the deploy.
       - name: Tell IndexNow about new and redated pages
-        if: steps.live.outcome == 'success'
+        if: steps.live.outcome == 'success' && steps.live.outputs.unchanged != 'true'
         continue-on-error: true
         timeout-minutes: 2
         env:
