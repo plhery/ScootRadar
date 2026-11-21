@@ -395,6 +395,42 @@ describe('PaceGate', () => {
     expect(idle).toHaveLength(2);
   });
 
+  it('keeps its opening calls for the first request of a town opened with nothing shown, whichever pacer makes it', async () => {
+    const gate = new PaceGate(5, 10_000, 2);
+    const one = new Pacer(0, Date.now, 0, Infinity, { gate, opening: 1 }), two = new Pacer(0, Date.now, 0, Infinity, { gate, opening: 1 });
+    const shown: number[] = [], opened: number[] = [], next: number[] = [];
+    const cold = () => collection({ urgent: () => true, cold: () => true });
+    const again = calls(one, 5, shown, collection({ urgent: () => true, cold: () => false }));
+    await vi.advanceTimersByTimeAsync(0);
+    // Three of the five for a town still shown, and the two kept for two towns opened, their first requests only.
+    expect(shown).toEqual([0, 0, 0]);
+    const towns = [calls(two, 2, opened, cold()), calls(one, 1, next, cold())];
+    await vi.advanceTimersByTimeAsync(0);
+    expect([shown, opened, next]).toEqual([[0, 0, 0], [0], [0]]);
+    await vi.advanceTimersByTimeAsync(10_000);
+    await Promise.all([again, ...towns]);
+    expect([shown, opened]).toEqual([[0, 0, 0, 10_000, 10_000], [0, 10_000]]);
+  });
+
+  it('gives a collection one opening request among the pacers that share when it first asked, as Lime\'s accounts lend calls', async () => {
+    for (const [shared, second] of [[true, PACE_WINDOW_MS], [false, 0]] as const) {
+      const firstAsked = shared ? new WeakMap<CollectionScope, number>() : undefined;
+      const [one, two] = [0, 1].map(() => new Pacer(5_000, Date.now, 0, Infinity, { opening: 1, firstAsked }));
+      await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+      const shown = collection({ urgent: () => true, cold: () => false });
+      await Promise.all([calls(one, 11, [], shown), calls(two, 11, [], shown)]);
+      const town = collection({ urgent: () => true, cold: () => true });
+      const now = Date.now(), startAt = (pacer: Pacer, scope: CollectionScope) => withinCollection(scope, async () => pacer.urgentStartAt());
+      // Its first request through one account, on its kept turn, which those still shown cannot take.
+      expect(await startAt(one, shown)).toBe(now + PACE_WINDOW_MS);
+      expect(await startAt(one, town)).toBe(now);
+      await calls(one, 1, [], town);
+      // Its second asks the other: not its first there either, it waits for the minute though the other's kept turn is left.
+      expect(await startAt(two, town), shared ? 'shared' : 'not shared').toBe(now + second);
+      await vi.advanceTimersByTimeAsync(PACE_WINDOW_MS);
+    }
+  });
+
   it('is counted in when a looked-at request would start', () => {
     const gate = new PaceGate(2, 10_000);
     const pacer = new Pacer(0, Date.now, 0, Infinity, { gate });

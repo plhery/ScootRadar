@@ -12,7 +12,7 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { currentCollection, PaceGate, Pacer, SweepProgress, takeNearest } from './sweeps';
+import { type CollectionScope, currentCollection, PaceGate, Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://web-production.lime.bike';
 const RETRY_MS = 60_000;
@@ -41,6 +41,17 @@ const PIN_LIMIT = 200;
  */
 export const LIME_ADDRESS_CALLS = 50;
 export const LIME_ADDRESS_WINDOW_MS = 10_000;
+/**
+ * Of each account's twelve calls a minute, the one kept for the first view of a group someone opens with nothing
+ * shown (PaceOptions.opening), and of the address's fifty in ten seconds, the five kept for such views: they go
+ * before the views of groups whose scooters still show, which take the rest, and the group's other views go next.
+ * From 14 to 21 November 2026 a Lime group opened with nothing shown showed its first scooters in 0.8 seconds at
+ * the median, but 35 at the 90th percentile and 110 at the 99th: 955 of the 963 that waited over 15 seconds did
+ * while seven or eight of the eight accounts had spent their minute, on maps open over Munich, Los Angeles,
+ * Milan or Hannover whose groups were read again every minute, and their calls ranked with a town's first.
+ */
+export const LIME_OPENING_CALLS = 1;
+export const LIME_ADDRESS_OPENING_CALLS = 5;
 // One Lime region can hold several towns' markets, as Düsseldorf's holds Neuss and Hilden: each keeps its own polygons.
 const serviceOutlines = new Map(limeRegions.markets.map(market => [`${market.regionToken}|${market.city}`, market.serviceAreas.map(area => area.polygon)]));
 export const limeMapRequests = { status: 0, metadata: 0 };
@@ -54,6 +65,8 @@ interface LimeClientOptions {
   sessionPath?: string; now?: () => number; intervalMs?: number; peerSaveMs?: number; transport?: Transport;
   /** The budget of the address, shared with the other accounts' clients (LIME_ADDRESS_CALLS). */
   gate?: PaceGate;
+  /** When each collection first asked for a call, shared with the accounts that lend it theirs (PaceOptions.firstAsked). */
+  firstAsked?: WeakMap<CollectionScope, number>;
   /** A call goes out: a map view's (status) or a renewal's (metadata), lent when made for another account's group. */
   onRequest?: (kind: 'status' | 'metadata', lent: boolean) => void;
   /** Lime answered a call of this client's with HTTP 429, a map view's or a renewal's. */
@@ -126,7 +139,8 @@ export class LimeClient {
     this.sessionPath = options.sessionPath ?? process.env.LIME_SESSION_PATH ??
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'lime-session.json');
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now, 0, LIME_ROUTINE_EVERY, { gate: options.gate });
+    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now, 0, LIME_ROUTINE_EVERY,
+      { gate: options.gate, opening: LIME_OPENING_CALLS, firstAsked: options.firstAsked });
     this.transport = options.transport ?? transport;
   }
   private async load(): Promise<Session> {
@@ -174,10 +188,16 @@ export class LimeClient {
     }
     return reply;
   }
+  /** The session, while it needs no renewal and no failure holds the account back. */
+  private fresh(): Session | undefined {
+    if (this.renewing || this.now() < this.retryAt) return undefined;
+    return this.session && this.now() < this.session.expiresAt - this.session.renewalWindow * 1000 + 5000 ? this.session : undefined;
+  }
   private current(rejectedToken?: string): Promise<Session> {
     if (this.renewing) return this.renewing;
     if (this.now() < this.retryAt) return Promise.reject(this.failure);
-    if (!rejectedToken && this.session && this.now() < this.session.expiresAt - this.session.renewalWindow * 1000 + 5000) return Promise.resolve(this.session);
+    const fresh = !rejectedToken && this.fresh();
+    if (fresh) return Promise.resolve(fresh);
     this.renewing = (async () => {
       try {
         let s = await this.load();
@@ -230,7 +250,10 @@ export class LimeClient {
       user_longitude: String((bounds.east + bounds.west) / 2), zoom: '18', vehicle_filter: '["scooter"]',
       bounding_box_restriction: 'limit_to_box' });
     const path = '/api/rider/v2/map/bike_pins?' + query;
-    let s = await this.current();
+    // With a fresh session the call asks for its turn before anything else runs, so that a group lent this account's
+    // calls in the same instant as another counts the other's (LimeAccountPool.pins): awaiting the session first, two
+    // such groups each saw the turn the other then took, and the second waited for the account's next minute.
+    let s = this.fresh() ?? await this.current();
     let r = await this.call(path, s, undefined, lent);
     if (r.status === 401) {
       // A concurrent region may already have replaced this token.
@@ -495,9 +518,11 @@ export class LimeAccountPool {
     { plans = new LimePlans(), ...options }: Omit<LimeClientOptions, 'sessionPath' | 'onRequest' | 'onThrottled'> & { plans?: LimePlans } = {}) {
     this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
     this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0, lent: 0, throttled: 0 }));
-    const gate = this.gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS);
+    const gate = this.gate = options.gate ?? new PaceGate(LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS, LIME_ADDRESS_OPENING_CALLS);
+    // A group's first view is its opening call through whichever account makes it, and its others are not.
+    const firstAsked = options.firstAsked ?? new WeakMap<CollectionScope, number>();
     this.clients = new Map(this.accounts.map((account, index) => [account.id, new LimeClient({
-      ...options, gate, sessionPath: account.sessionPath, onRequest: (kind, lent) => {
+      ...options, gate, firstAsked, sessionPath: account.sessionPath, onRequest: (kind, lent) => {
         this.requests[index][kind]++;
         // The calls that go out, as Lime counts them: two for a view retried after a refused token, none for a
         // lent view refused before its turn, as the lender cooled down meanwhile. Until 14 November 2026 a lend

@@ -7,10 +7,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { MapBounds } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
-import { LimeClient, LimeAccountError, LimeAccountPool, LimePlans, LIME_PLAN_MAX_AGE_MS, limeAccount, LIME_ADDRESS_CALLS, LIME_ADDRESS_WINDOW_MS, LIME_MAX_ACCOUNTS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { LimeClient, LimeAccountError, LimeAccountPool, LimePlans, LIME_PLAN_MAX_AGE_MS, limeAccount, LIME_ADDRESS_CALLS, LIME_ADDRESS_OPENING_CALLS, LIME_ADDRESS_WINDOW_MS, LIME_MAX_ACCOUNTS, LIME_OPENING_CALLS, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { LIME_QUERY_INTERVAL_MS, LIME_ROUTINE_EVERY } from './limeAreas';
-import { withinCollection } from './sweeps';
+import { PACE_WINDOW_MS, withinCollection } from './sweeps';
 
 const http = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock('node:https', () => ({ request: http.request }));
@@ -320,17 +320,55 @@ describe('independent Lime production accounts', () => {
       const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}`, limeMapTiles: sixteenViews }));
       const [opened, swept] = candidates.filter(s => pool.accountFor(s.id).id === 'a');
       await withinCollection(looking, () => pool.collect(opened));
-      // Its own account's twelve, then four through another, all at once.
-      expect(calls.filter(call => call.device === a.seed.deviceToken)).toHaveLength(12);
-      expect(calls.filter(call => call.device !== a.seed.deviceToken)).toHaveLength(4);
+      // Its own account's eleven, the twelfth kept for a town opened with nothing shown, then five through another, all at once.
+      expect(calls.filter(call => call.device === a.seed.deviceToken)).toHaveLength(12 - LIME_OPENING_CALLS);
+      expect(calls.filter(call => call.device !== a.seed.deviceToken)).toHaveLength(4 + LIME_OPENING_CALLS);
       expect(calls.every(call => call.at === 60_000)).toBe(true);
-      expect(pool.requests.map(row => row.lent).sort()).toEqual([0, 0, 4]);
+      expect(pool.requests.map(row => row.lent).sort()).toEqual([0, 0, 5]);
       expect(pool.requests.find(row => row.account === 'a')!.lent).toBe(0);
       calls.length = 0;
       const idle = pool.collect(swept);
       await vi.advanceTimersByTimeAsync(140_000);
       await idle;
       expect(calls.map(call => call.device)).toEqual(Array(16).fill(a.seed.deviceToken));
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('starts the first view of a group opened with nothing shown at once, on a turn kept for it, though the groups still shown have spent every account\'s minute', async () => {
+    const fixtures = await Promise.all(['-a', '-b', '-c'].map(suffix => fixture(suffix)));
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      const calls: { south: string; at: number }[] = [];
+      const pool = new LimeAccountPool(fixtures.map((f, i) => ({ id: 'abc'[i], sessionPath: f.sessionPath })),
+        { intervalMs: LIME_QUERY_INTERVAL_MS, transport: async path => {
+          calls.push({ south: new URLSearchParams(path.split('?')[1]).get('sw_lat')!, at: Date.now() - initialTime });
+          return response(map());
+        } });
+      const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}` }));
+      const onB = candidates.filter(s => pool.accountFor(s.id).id === 'b');
+      const at = (south: number) => calls.filter(call => call.south === String(south)).map(call => call.at);
+      const views = (south: number, count: number) => Array.from({ length: count }, (_, i) => ({ south, north: south + .01, west: i * .0003, east: (i + 1) * .0003 }));
+      // A view through each account first, which reads its session from the disk.
+      for (const account of pool.accounts) {
+        await pool.collect({ ...candidates.findLast(s => pool.accountFor(s.id).id === account.id)!, limeMapTiles: views(9, 1) });
+      }
+      await vi.advanceTimersByTimeAsync(60_000);
+      const opened = { ...looking, cold: () => true }, other = { ...looking, cold: () => true };
+      // A group still shown, read again: the three accounts' eleven each, and the rest of its views a minute later.
+      const shown = withinCollection(looking, () => pool.collect({ ...onB[0], limeMapTiles: views(0, 40) }));
+      await vi.advanceTimersByTimeAsync(0);
+      expect(at(0)).toEqual(Array(33).fill(60_000));
+      // A group opened with nothing shown takes its own account's kept turn at once, and the next one another's.
+      await withinCollection(other, () => pool.collect({ ...onB[1], limeMapTiles: views(1, 1) }));
+      const town = withinCollection(opened, () => pool.collect({ ...onB[2], limeMapTiles: views(2, 2) }));
+      await vi.advanceTimersByTimeAsync(0);
+      expect(at(1)).toEqual([60_000]);
+      expect(at(2)).toEqual([60_000]);
+      // Its second view is not its first through the third account, whose kept turn is left: it waits for the minute.
+      await vi.advanceTimersByTimeAsync(60_000);
+      await Promise.all([shown, town]);
+      expect(at(2)).toEqual([60_000, 120_000]);
+      expect(pool.requests.map(row => row.lent).reduce((a, b) => a + b)).toBe(23);
     } finally { vi.useRealTimers(); }
   });
 
@@ -353,10 +391,10 @@ describe('independent Lime production accounts', () => {
       const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}`, limeMapTiles: sixteenViews }));
       const opened = candidates.find(s => pool.accountFor(s.id).id === 'a')!;
       await withinCollection(looking, () => pool.collect(opened));
-      // a's twelve of the minute, then four views through b, one of them sent twice.
+      // a's eleven of the minute, the twelfth kept for an opening view, then five views through b, one of them sent twice.
       expect(pool.requests).toEqual([
-        { account: 'a', status: 12, metadata: 0, lent: 0, throttled: 0 },
-        { account: 'b', status: 5, metadata: 0, lent: 5, throttled: 0 },
+        { account: 'a', status: 11, metadata: 0, lent: 0, throttled: 0 },
+        { account: 'b', status: 6, metadata: 0, lent: 6, throttled: 0 },
       ]);
     } finally { vi.useRealTimers(); }
   });
@@ -381,7 +419,7 @@ describe('independent Lime production accounts', () => {
       calls.length = 0;
       const opened = withinCollection(looking, () => pool.collect(onA));
       await vi.advanceTimersByTimeAsync(0);
-      expect(calls).toHaveLength(12);
+      expect(calls).toHaveLength(12 - LIME_OPENING_CALLS);
       await vi.advanceTimersByTimeAsync(60_000);
       await opened;
       expect(calls).toEqual(Array(16).fill(a.seed.deviceToken));
@@ -409,13 +447,16 @@ describe('independent Lime production accounts', () => {
       await vi.advanceTimersByTimeAsync(120_000);
       calls.length = 0;
       const views: MapBounds[] = Array.from({ length: 32 }, (_, i) => ({ south: 0, north: .01, west: i * .0003125, east: (i + 1) * .0003125 }));
-      // Two groups someone opens, 64 views, on six accounts with twelve calls each to give.
+      // Two groups someone opens with their scooters still shown, 64 views, on six accounts with eleven calls each to
+      // give them: of the address's fifty, the five kept for a town opened with nothing shown are left. Two groups
+      // lent the same account's last turn in the same instant are not: the second goes to another (LimeClient.pins).
       const opened = Promise.all(['one', 'two'].map(name => withinCollection(looking, () => pool.collect({ ...system, id: `lime_opened_${name}`, limeMapTiles: views }))));
       await vi.advanceTimersByTimeAsync(LIME_ADDRESS_WINDOW_MS - 1);
-      expect(calls).toEqual(Array(LIME_ADDRESS_CALLS).fill(120_000));
+      const window = LIME_ADDRESS_CALLS - LIME_ADDRESS_OPENING_CALLS;
+      expect(calls).toEqual(Array(window).fill(120_000));
       await vi.advanceTimersByTimeAsync(1);
       await opened;
-      expect(calls.slice(LIME_ADDRESS_CALLS)).toEqual(Array(14).fill(120_000 + LIME_ADDRESS_WINDOW_MS));
+      expect(calls.slice(window)).toEqual(Array(64 - window).fill(120_000 + LIME_ADDRESS_WINDOW_MS));
       expect(pool.requests.every(row => row.status <= 13)).toBe(true);
     } finally { vi.useRealTimers(); }
   });
@@ -467,7 +508,9 @@ describe('independent Lime production accounts', () => {
       const sweep = withinCollection(scope(false), async () => {
         for (let view = 0; view < views; view++) await client.pins(system.bounds);
       }).then(() => { took = Date.now() - started; });
-      await vi.advanceTimersByTimeAsync(views * LIME_ROUTINE_EVERY * LIME_QUERY_INTERVAL_MS);
+      // Every third of the eleven turns a minute the watched town may take, the twelfth kept for a town opened with nothing shown.
+      const turns = PACE_WINDOW_MS / LIME_QUERY_INTERVAL_MS - LIME_OPENING_CALLS;
+      await vi.advanceTimersByTimeAsync(Math.ceil(views * LIME_ROUTINE_EVERY * PACE_WINDOW_MS / turns));
       expect(took).toBeDefined();
       watched = false;
       await vi.advanceTimersByTimeAsync(10 * LIME_QUERY_INTERVAL_MS);

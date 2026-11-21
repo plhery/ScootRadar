@@ -155,6 +155,8 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   the Lime calls held for the fifty in any ten seconds all accounts share from the
   cache's one address (`PaceGate` in `server/sweeps.ts`), though their own account had
   a turn, and how long they waited for it in all, from that turn until they started.
+  Since 21 November 2026 five of the fifty are kept for the first views of groups opened
+  with nothing shown, so any other call is held once 45 have started.
   They tell how often that budget is reached, which until 14 November 2026 only the
   calls' times could. A call its own account's twelve a minute holds is not counted.
   The mean wait of a held call over a day:

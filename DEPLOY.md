@@ -472,7 +472,8 @@ Lime account, where they started five seconds apart and a town of eight views to
 35 seconds. Lime's accounts together start no more than fifty calls in any ten seconds
 (`LIME_ADDRESS_CALLS`): Lime answers 60 from one address in a ten-second window of the
 clock and refuses the rest, whichever accounts make them (`docs/lime-app-map.md`, "The
-address's ten seconds"). Only the towns someone looks at start theirs at once: an idle sweep
+address's ten seconds"). Since 21 November 2026 one of each Lime account's twelve, and
+five of the fifty, are kept for the first view of a group opened with nothing shown. Only the towns someone looks at start theirs at once: an idle sweep
 keeps the old spacing, so that it cannot spend the minute's turns just before a
 town is opened, which could then wait up to 50 seconds for its first view. Beam's
 client keeps two seconds between all its requests, as bursts have returned empty

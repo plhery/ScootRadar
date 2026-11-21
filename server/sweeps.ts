@@ -59,6 +59,12 @@ export interface PaceOptions {
    * those someone looked at are swept again gets its first scooters at once, not when their minute frees a turn.
    */
   opening?: number;
+  /**
+   * When each collection first asked for a turn, shared by pacers a collection's requests take turns of in turn,
+   * as Lime's accounts lend each other calls (LimeAccountPool): its first request is the opening one whichever
+   * pacer it asks, and its others are not, where each pacer would give the first it saw of it a kept turn.
+   */
+  firstAsked?: WeakMap<CollectionScope, number>;
 }
 
 /** No more than `requests` start in any `ms`, and an idle sweep's only while fewer than `idle` have. */
@@ -69,6 +75,10 @@ export interface PaceSpan { ms: number; requests: number; idle: number }
  * limit a host keeps on the address its calls come from, whichever account makes them, as Lime's (limeApp.ts).
  * A pacer held by it starts its next request when the oldest of those `requests` is `ms` old, in the order
  * the pacers' timers fall.
+ *
+ * Given `opening`, that many of its `requests` are kept for the first request of a collection someone waits on with
+ * nothing shown (PaceOptions.opening), as each pacer keeps turns of its own for it: the others start while fewer than
+ * `requests - opening` have.
  */
 export class PaceGate {
   private readonly started: number[] = [];
@@ -77,11 +87,18 @@ export class PaceGate {
    * started: how often its count is reached, which until 14 November 2026 only the calls' times could tell.
    */
   readonly held = { requests: 0, ms: 0 };
-  constructor(private readonly requests: number, private readonly ms: number) {}
-  /** When a request may next start: `now` while fewer than `requests` have started within `ms`. */
-  free(now: number): number {
+  private readonly opening: number;
+  constructor(private readonly requests: number, private readonly ms: number, opening = 0) {
+    this.opening = Math.max(0, Math.min(opening, requests - 1));
+  }
+  /**
+   * When a request may next start: `now` while fewer than `requests` have started within `ms`, `requests - opening`
+   * but for an opening request.
+   */
+  free(now: number, opening = false): number {
     while (this.started.length && this.started[0] <= now - this.ms) this.started.shift();
-    return this.started.length < this.requests ? now : this.started[this.started.length - this.requests] + this.ms;
+    const limit = this.requests - (opening ? 0 : this.opening);
+    return this.started.length < limit ? now : this.started[this.started.length - limit] + this.ms;
   }
   start(now: number): void { this.started.push(now); }
   /** A request it held starts, `ms` after its own pacer would have let it. */
@@ -144,8 +161,8 @@ export class Pacer {
    * shown (PaceOptions.opening), 1 its others, 2 any other someone is looking at, 3 an idle sweep's.
    */
   private readonly waiting: { urgent: boolean; rank: number; began: number; go: () => void; gatedFrom?: number }[] = [];
-  /** When each collection first asked for a turn. */
-  private readonly began = new WeakMap<CollectionScope, number>();
+  /** When each collection first asked for a turn, here or of the pacers it shares them with (PaceOptions.firstAsked). */
+  private readonly began: WeakMap<CollectionScope, number>;
   /** The turns given in a row to collections someone is looking at while an idle sweep waited. */
   private urgentTurns = 0;
   private timer?: ReturnType<typeof setTimeout>;
@@ -154,14 +171,16 @@ export class Pacer {
     this.heldUntil = startAt;
     this.spaced = options.spaced ?? false;
     this.gate = options.gate;
+    this.began = options.firstAsked ?? new WeakMap();
     this.perWindow = intervalMs > 0 ? Math.max(1, options.perMinute ?? Math.floor(PACE_WINDOW_MS / intervalMs)) : Infinity;
     if (options.opening !== undefined) this.opening = Math.max(0, Math.min(options.opening, this.perWindow - 1));
     this.spans = intervalMs > 0 ? options.spans ?? [] : [];
     this.keepMs = Math.max(PACE_WINDOW_MS, ...this.spans.map(span => span.ms));
     if (this.perWindow === Infinity || this.spans.length) return;
-    // As if the minute before it starts had been spent at one request every intervalMs.
+    // As if the minute before it starts had been spent at one request every intervalMs, on the turns not kept for
+    // an opening request: the others keep the old spacing through the minute, and an opening one need not.
     const from = Math.max(startAt, now());
-    for (let i = 0; i < this.perWindow; i++) this.started.push(from - PACE_WINDOW_MS + i * intervalMs);
+    for (let i = 0; i < this.perWindow - (this.opening ?? 0); i++) this.started.push(from - PACE_WINDOW_MS + i * intervalMs);
   }
 
   /** When its requests of the longest span started, as `remember` takes them back after a restart. */
@@ -190,10 +209,9 @@ export class Pacer {
   turn(): Promise<void> {
     const collection = currentCollection();
     const urgent = collection?.urgent() ?? false;
-    const asked = collection && this.began.get(collection);
-    const began = asked ?? this.now();
+    const rank = this.rankOf(collection);
+    const began = (collection && this.began.get(collection)) ?? this.now();
     if (collection) this.began.set(collection, began);
-    const rank = !urgent ? 3 : this.opening === undefined || !collection?.cold?.() ? 2 : asked === undefined ? 0 : 1;
     return new Promise(go => {
       const after = this.waiting.findIndex(other => other.rank > rank);
       if (after < 0) this.waiting.push({ urgent, rank, began, go });
@@ -203,6 +221,12 @@ export class Pacer {
       this.timer = undefined;
       this.release();
     });
+  }
+
+  /** Where the collection's next request goes in line (waiting's rank): it asks for a turn now. */
+  private rankOf(collection: CollectionScope | undefined): number {
+    if (!collection?.urgent()) return 3;
+    return this.opening === undefined || !collection.cold?.() ? 2 : this.began.has(collection) ? 1 : 0;
   }
 
   /** How long a request asked for now would wait, were nobody ahead of it. */
@@ -215,20 +239,25 @@ export class Pacer {
    * When a request someone is looking at, asked for now, would start: after those someone is looking
    * at already waiting here, each taking the next turn the minute's budget frees. An estimate, to choose
    * between clients (LimeAccountPool): a turn kept for an idle sweep (routineEvery), or the budgets of
-   * longer spans (`spans`), can make it later.
+   * longer spans (`spans`), can make it later. The current collection's opening request (PaceOptions.opening)
+   * comes after the opening ones alone and may take the turns kept for it, the gate's too; its others after
+   * those someone waits on with nothing shown.
    */
   urgentStartAt(): number {
     const now = this.now();
-    const ahead = this.waiting.filter(waiter => waiter.urgent).length;
+    const rank = Math.min(2, this.rankOf(currentCollection()));
+    const opening = rank === 0;
+    const ahead = this.waiting.filter(waiter => waiter.urgent && waiter.rank <= rank).length;
     this.forget(now);
     let at = now;
     if (this.perWindow !== Infinity) {
-      const minute = this.started.filter(start => start > now - PACE_WINDOW_MS).slice(-this.perWindow);
-      const turns = [...Array<number>(this.perWindow - minute.length).fill(now), ...minute.map(start => start + PACE_WINDOW_MS)];
-      at = turns[ahead % this.perWindow] + Math.floor(ahead / this.perWindow) * PACE_WINDOW_MS;
+      const limit = this.perWindow - (opening ? 0 : this.opening ?? 0);
+      const minute = this.started.filter(start => start > now - PACE_WINDOW_MS).slice(-limit);
+      const turns = [...Array<number>(limit - minute.length).fill(now), ...minute.map(start => start + PACE_WINDOW_MS)];
+      at = turns[ahead % limit] + Math.floor(ahead / limit) * PACE_WINDOW_MS;
     }
     const spacing = this.spaced ? this.lastSpaced + this.intervalMs * (ahead + 1) : -Infinity;
-    return Math.max(this.heldUntil, at, spacing, this.gate?.free(now) ?? -Infinity);
+    return Math.max(this.heldUntil, at, spacing, this.gate?.free(now, opening) ?? -Infinity);
   }
 
   /** No request starts before `at`, as when the host asks to wait. */
@@ -269,7 +298,7 @@ export class Pacer {
       const now = this.now();
       const { index, idleWaits } = this.next();
       const waiter = this.waiting[index];
-      const own = this.ownStart(now, waiter.urgent, waiter.rank === 0), shared = this.gate?.free(now) ?? -Infinity;
+      const own = this.ownStart(now, waiter.urgent, waiter.rank === 0), shared = this.gate?.free(now, waiter.rank === 0) ?? -Infinity;
       const start = Math.max(own, shared);
       if (start > now) {
         // Its own budgets let it start before the gate does: the gate holds it from then (PaceGate.held).

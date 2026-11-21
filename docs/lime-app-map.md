@@ -496,7 +496,7 @@ An optional private `/data/lime-accounts.json` manifest (`LIME_ACCOUNTS_PATH`)
 assigns refresh groups to independent accounts:
 
 ```json
-{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"},{"id":"lime4","sessionPath":"lime4-session.json"},{"id":"lime5","sessionPath":"lime5-session.json"},{"id":"lime6","sessionPath":"lime6-session.json"},{"id":"lime7","sessionPath":"lime7-session.json"},{"id":"lime8","sessionPath":"lime8-session.json"}]}
+{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"},{"id":"lime4","sessionPath":"lime4-session.json"},{"id":"lime5","sessionPath":"lime5-session.json"},{"id":"lime6","sessionPath":"lime6-session.json"},{"id":"lime7","sessionPath":"lime7-session.json"},{"id":"lime8","sessionPath":"lime8-session.json"},{"id":"lime9","sessionPath":"lime9-session.json"}]}
 ```
 
 Paths resolve beside the manifest. Account ids and resolved session paths must
@@ -527,6 +527,28 @@ account's minute while the others had theirs to spare: on 9 and 10 November a
 Lime group someone opened, with its last positions standing faded, started in
 0.8 seconds (median) and showed its first scooters 32 seconds later, though
 Lime answers a view in half a second.
+
+A group someone opens with nothing shown goes first. Of each account's twelve
+calls a minute, one is kept for such a group's first view (`LIME_OPENING_CALLS`,
+`opening` in `server/sweeps.ts`), and of the address's fifty in ten seconds, five
+(`LIME_ADDRESS_OPENING_CALLS`, below): the views of groups whose positions still
+show, read again, and idle sweeps take the rest. The group's other views go
+before theirs, though not on a kept turn. A group's first view counts as its
+first whichever account makes it, and its later views never do, whichever
+accounts they go through (`firstAsked`). From 14 to
+21 November 2026 a Lime group opened with nothing shown showed its first scooters
+in 0.8 seconds at the median, but 35 at the 90th percentile and 110 at the 99th:
+955 of the 963 that waited over 15 seconds did while seven or eight of the eight
+accounts had spent their minute, mostly on maps open over big towns, Munich, Los
+Angeles, Milan or Hannover, whose groups were read again every minute, and those calls
+ranked with a town's first. A wide view reads its groups again only every ten
+minutes, so the views read again each minute were street views.
+
+A view's call asks its account for a turn as soon as it is lent, while the
+account's session needs no renewal. Until 21 November 2026 it first awaited the
+session, so two groups lent an account's last turn in the same instant each
+counted it free, and the second waited for that account's next minute while
+others had turns to spare.
 
 ### The address's ten seconds
 
@@ -562,9 +584,10 @@ wherever they begin, and ten are left for calls that arrive late. The cache a
 deploy runs beside this one for a minute counts its own, so the two could pass
 60 together in that minute, the new one's accounts keeping their five seconds
 apart. Fifty in ten seconds is 300
-a minute, twenty-five accounts' worth at twelve each; eight accounts make 96.
-A town's first fifty calls still start at once and its 51st ten seconds
-after its first, and nothing waits longer. Idle sweeps wait on the same budget.
+a minute, twenty-five accounts' worth at twelve each; nine accounts make 108.
+Five of the fifty are kept for the first views of groups opened with nothing
+shown (above): a town still shown has its first 45 calls start at once and its
+46th ten seconds after its first, and nothing waits longer. Idle sweeps wait on the same budget.
 The calls it holds though their account had a turn, and how long they wait,
 are counted from 14 November 2026 (`scootradar_lime_address_held_total` and
 `scootradar_lime_address_held_seconds_total`, docs/OBSERVABILITY.md).
@@ -572,7 +595,7 @@ are counted from 14 November 2026 (`scootradar_lime_address_held_total` and
 Lime answered a view through two datacenter proxy exits on 12 November 2026
 (HTTP 200, the same 87 pins as directly; about one second through a new
 tunnel against 0.45 directly). Sending calls through other addresses is not
-built: one address is allowed more than three times what eight accounts send.
+built: one address is allowed nearly three times what nine accounts send.
 It would matter past about 25 accounts.
 
 A failed collection's log line carries the `Retry-After` Lime sent with a 429
@@ -581,10 +604,10 @@ A failed collection's log line carries the `Retry-After` Lime sent with a 429
 The network host, vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
 cadence and the catalog's conservative single-account budget remain in place.
 
-The original account, `lime2`, `lime3`, `lime4`, `lime5`, `lime6`, `lime7`, and `lime8`
-serve production.
+The original account and `lime2` through `lime9` serve production.
 `lime4` through `lime8` were email-verified and map-checked on 10 November 2026,
-raising the configured pool capacity from 36 to 96 requests a minute.
+raising the configured pool capacity from 36 to 96 requests a minute, and `lime9`
+on 21 November, to 108.
 `lime1` is reserved
 for research, whose session has a separate renewal owner. Never share a
 refresh-token file between the local research process and production. The
