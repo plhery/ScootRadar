@@ -666,6 +666,17 @@ says; `status.json` records each as `native-flow-forgotten` with `ended-without-
 `outlived`. A renewal's unresolved recipient (`pendingPublic`) still keeps the forced quit
 refused until the renewal's reply or Ryde's next map shows which key the app kept.
 
+Nobody was told of those 20 hours. Sentry's one event came at the start, and Ryde's
+groups expire only 3 days and 10 minutes after their last sweep, so "feed stopped" in
+Grafana, which notifies no one, had the first of them about 12 hours in, and 127 by the
+end. Since 21 November 2026 Grafana's "ScootRadar Ryde bridge stopped" goes to Telegram
+when the worker has said it is held, for any reason, for 15 minutes, has asked for no job
+for 30, or has completed none of the jobs queued for 45, and it keeps firing, with a
+reminder every 4 hours, until the bridge reads a map again (docs/OBSERVABILITY.md, "The
+alert rules"). Replayed over the 14 days before, it fired for each stop told in this
+section: the 9 and 10 November quits, the 12 November restart, the 17 November launchd
+job (once for the whole day) and this one.
+
 Broker jobs with less than twenty seconds left are rejected without touching the
 native app; broker expiry during a query also stays separate from an app timeout.
 The worker immediately asks for the next job instead of accumulating app failures
@@ -723,3 +734,9 @@ Ryde's process, any Ryde launchd job left with no process, the launches of the l
 hour and the last lifecycle event, the session, the proxy, the egress pool's
 rolling hour, refusal hold and cooling IPs, warm reads (on, paused or off, and why),
 and when the certificate expires and collection stops for its renewal.
+
+Start there when "ScootRadar Ryde bridge stopped" fires. `python3
+scripts/ryde-bridge/install.py --restart` restarts the proxy alone. A new Ryde sign-in,
+anything that would get past a refusal from Ryde (RydeRefused, a 403 or 429) and a
+faster read pace are the user's call. The rule also fires when collection stops for the
+certificate's renewal, until the attended renewal is done.

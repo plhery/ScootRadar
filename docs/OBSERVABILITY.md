@@ -5,7 +5,7 @@ places. None of them holds a map URL, coordinates or a visitor's address.
 
 - **Prometheus** scrapes its `/metrics` every 30 seconds. **Grafana** draws them on the
   "ScootRadar — Scooter feeds" dashboard and alerts on them; only the site being down
-  for its users reaches Telegram.
+  for its users, and the Ryde bridge stopping, reach Telegram.
 - **Sentry** (project `scootradar-cache`) gets unexpected errors, plus one event
   each time a feed stops being served for 5 minutes.
 - **Loki** keeps its log lines for 30 days under `app="scootradar-cache"`.
@@ -446,8 +446,9 @@ The alert rules:
 | ScootRadar serves no scooters | every feed has expired for 5 minutes |
 | ScootRadar down for 15 minutes | either of the two above has held for 15 minutes: users see no scooters. The one rule sent to Telegram (see below) |
 | ScootRadar collector stalled | no collection has finished for 5 minutes (Swiss feeds alone finish one every few seconds) |
-| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes (15 for Voi Switzerland, as Sentry), by its cadence's rule; one alert per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported; nor under a night ban at all its service areas, until 30 minutes after it, as Sentry (the ban holds the feed out for 20 minutes after it ends, then the rule waits its 10) |
+| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes (15 for Voi Switzerland, as Sentry), by its cadence's rule; one alert per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported; nor under a night ban at all its service areas, until 30 minutes after it, as Sentry (the ban holds the feed out for 20 minutes after it ends, then the rule waits its 10). The Ryde bridge's groups are among them, but each expires only 3 days and 10 minutes after its last sweep, so "Ryde bridge stopped" tells of the bridge first |
 | ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning |
+| ScootRadar Ryde bridge stopped | the Ryde bridge worker on the Mac has said it is held, for any reason, for 15 minutes; or has asked the cache for no job for 30 minutes; or jobs were queued and none was completed for 45 minutes. Sent to Telegram, and it keeps firing until the bridge reads a map again (see below) |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 2.7 GB, or a V8 heap over 1.5 GB, for 15 minutes (the container's limit is 3072 MiB, of which Node gives the heap 1632 MiB, and the heap runs out first) |
@@ -485,10 +486,40 @@ Prometheus reads one, then the other. When the rule counted every change of the 
 time, one deploy made three, and the second deploy within an hour fired it: seven times
 from 11 to 13 October 2026, with no crash.
 
+"Ryde bridge stopped" is for the bridge, not each of its groups. From 20 November 2026
+at 19:45 CET to 15:59 the next day the bridge read no map, 20 hours, held as
+LaunchFailed (docs/ryde-bridge.md), and nothing told anyone: Sentry had the worker's
+silence once, at its start (SCOOTRADAR-CACHE-6F), and Ryde's groups began to expire,
+and so to show in "feed stopped", only from about 08:00 CET on the 21st, 127 of them by
+17:00, in Grafana alone. The
+rule adds three terms, each 1 or 0, and holds the sum for its 15 minutes:
+
+- the worker said it is held, for any reason (`scootradar_ryde_bridge_worker_held`,
+  which is there for 3 minutes after each word);
+- it has asked for no job for 15 minutes, so 30 by the time the rule fires. The worker's
+  last-seen time falls to 0 when the cache restarts, so the silence counts from the
+  newest one of the 2 hours before, or from the cache's start;
+- jobs were queued in the last 30 minutes and none was completed. A worker that comes
+  out of a hold, leases a job, fails it and holds again for twice as long asks for a job
+  every few hours; this term keeps the alert firing through those leases rather than
+  resolving and firing again each time.
+
+Replayed at one-minute steps over the 14 days to 21 November 2026, it fired 7 times, each
+for a bridge reading nothing: the resume after the pause on 8 November (21 minutes),
+Ryde ignoring graceful quits on 9 and 10 November (5 and 26 hours), the Mac's restart
+on 12 November (4 hours), the stale launchd job of 17 November (one alert of 17.5 hours,
+where the first two terms alone fired 6 times), a LaunchFailed hold of 28 minutes on
+18 November (18 minutes), and the 20 hours above. The 15 holds of 14 minutes or less
+from 18 November, the first Prometheus has, did not fire it. Its description names what to run on the Mac and
+what is the user's call. Collection stops, as planned, for the certificate's renewal
+seven days before it expires, and the rule fires then too, until the attended renewal.
+
 Since 26 October 2026 Grafana's default notification policy sends them to
 `grafana-only`, a contact point with no integration: they fire in Grafana and notify
 no one. Only a rule labelled `notify=user` reaches the `telegram-paul` contact point,
-grouped by alert name; here that is "ScootRadar down for 15 minutes" alone. A rule
+grouped by alert name; here that is "ScootRadar down for 15 minutes" and, since
+21 November 2026, "ScootRadar Ryde bridge stopped". The route sets no repeat interval,
+so an alert still firing is sent again every 4 hours, Grafana's default. A rule
 takes the label from `"notify": "user"` in the source, and the sync puts it back if it
 goes missing live. "Feed stopped" went to Alerting 207 times in the 14 days before, once
 per feed; Grafana still shows it. "Down for 15 minutes" adds the two critical rules
@@ -998,7 +1029,8 @@ Tracing is off, and no trace headers go to the operators' feeds.
   to launch Ryde, read the same as a Mac switched off. The `worker` context has when the
   silence began, the worker's feeds and how many have expired, and the cause's `reason`,
   `until`, `detail` and `statusReceivedAt`. Prometheus has the hold meanwhile as
-  `scootradar_ryde_bridge_worker_held{reason}`.
+  `scootradar_ryde_bridge_worker_held{reason}`, and Grafana's "Ryde bridge stopped"
+  keeps firing, on Telegram, for as long as the bridge reads nothing.
 - **A Swiss rider map failing**: Bolt's, Voi's or Dott's rider map read for a Swiss
   national feed (DATA_SOURCES.md) that has failed for ten minutes, at most once an hour
   for each feed (`swiss-app-map:<feed>`). The national feed alone stands meanwhile, so
