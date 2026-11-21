@@ -24,6 +24,13 @@ REFUSED = {403, 429}
 # full reply answers the app for FENCE_CACHE seconds, and the call never leaves the Mac.
 CITY_FENCES = '/appRyde/getCityFences'
 FENCE_CACHE = 24*3600
+# A native map or key renewal still in flight keeps the worker from force-quitting Ryde. mitmproxy can
+# end a flow without calling the response or error hook (handle_protocol_error skips the hook once
+# the client side has errored), and on 20 November 2026 at 19:45 CET one such flow was kept as in
+# flight for 20 hours: every forced quit was refused and Ryde, ignoring graceful quits, read nothing.
+# A flow mitmproxy has ended (flow.live False) no longer counts, nor one older than NATIVE_FLOW_LIMIT
+# seconds, far beyond a broker job's 180. A renewal's unresolved recipient is still held by pending_public.
+NATIVE_FLOW_LIMIT = 600
 
 def cached_fences(city):
     """The city's last full getCityFences reply, while fresh, unencrypted and kept with its content type."""
@@ -76,8 +83,9 @@ class Producer(BridgeTrial):
         self._initializing = False
         self.map_requested = True
         self.pending = None
-        self.native_jobs = set()
-        self.native_renewals = set()
+        # flow id -> flow, so the disarm acknowledgement can see whether mitmproxy still has it in flight.
+        self.native_jobs = {}
+        self.native_renewals = {}
         self.last_warm_control = None
         self.pending_deadline = 0
         self.pending_public = saved.get('pendingPublic') if saved else None
@@ -129,12 +137,20 @@ class Producer(BridgeTrial):
             try:
                 if json.loads(path.read_text()).get('id')==command['id']:path.unlink()
             except (FileNotFoundError,ValueError):pass
-        safe=not self.native_jobs and not self.native_renewals and not self.pending_public
+        safe=not self.in_flight(self.native_jobs) and not self.in_flight(self.native_renewals) and not self.pending_public
         outcome=(command['nonce'],safe)
         if outcome!=self.last_warm_control:
             private_json(ROOT/'warm-disarm-ack.json',{'id':command['id'],'nonce':command['nonce'],
                 'safeToQuit':safe,'at':time.time()},replace=True)
             self.last_warm_control=outcome
+
+    def in_flight(self, flows):
+        """Whether any of these native flows may still be under way; forgets those that cannot (NATIVE_FLOW_LIMIT)."""
+        for flow_id,flow in list(flows.items()):
+            if flow.live and time.time()-flow.timestamp_created<=NATIVE_FLOW_LIMIT:continue
+            del flows[flow_id]
+            self.event('native-flow-forgotten',flowId=flow_id,reason='outlived' if flow.live else 'ended-without-hook')
+        return bool(flows)
 
     async def poll_warm_control(self):
         while True:
@@ -183,7 +199,7 @@ class Producer(BridgeTrial):
             self.status() # record next app recipient before sending renewal
             flow.request.content = urlencode(fields).encode()
             flow.metadata['producerRenew'] = True
-            self.native_renewals.add(flow.id)
+            self.native_renewals[flow.id]=flow
             return
         if path==MAP and self.pending_public and self.key:
             fields=verified_form(flow,self.token_hash)
@@ -216,13 +232,13 @@ class Producer(BridgeTrial):
         flow.request.content = urlencode(fields).encode()
         flow.metadata['producerJob'] = job
         self.pending = job['id']
-        self.native_jobs.add(flow.id)
+        self.native_jobs[flow.id]=flow
         self.pending_deadline=min(job['expiresAt'],time.time()+30)
         self.event('job-assigned',jobId=job['id'],flowId=flow.id)
 
     def error(self, flow):
-        self.native_jobs.discard(flow.id)
-        self.native_renewals.discard(flow.id)
+        self.native_jobs.pop(flow.id,None)
+        self.native_renewals.pop(flow.id,None)
         job=flow.metadata.get('producerJob')
         self.event('native-flow-error',flowId=flow.id,jobId=job.get('id') if job else None)
         if job:
@@ -242,8 +258,8 @@ class Producer(BridgeTrial):
         self.event('upstream-refused',httpStatus=flow.response.status_code,path=urlsplit(flow.request.url).path[:80])
 
     def response(self, flow):
-        self.native_jobs.discard(flow.id)
-        self.native_renewals.discard(flow.id)
+        self.native_jobs.pop(flow.id,None)
+        self.native_renewals.pop(flow.id,None)
         if flow.metadata.get('egressDenied'): return
         self.note_refusal(flow)
         if origin_path(flow)==LOGIN and self.stage in {'needs-sign-in','native-restored'}:

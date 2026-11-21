@@ -35,7 +35,8 @@ class ProducerTests(unittest.TestCase):
         claims=b64u(json.dumps({'htm':'POST','htu':'https://api.ryde.vip'+path,'ath':b64u(hashlib.sha256(self.token.encode()).digest()),'iat':time.time(),'jti':uuid.uuid4().hex}).encode())
         sig=self.signer.sign((header+'.'+claims).encode(),ec.ECDSA(hashes.SHA256()));r,s=utils.decode_dss_signature(sig)
         proof=header+'.'+claims+'.'+b64u(r.to_bytes(32,'big')+s.to_bytes(32,'big'))
-        f=HTTPFlow(Client(peername=('127.0.0.1',1),sockname=('127.0.0.1',2)),Server(address=('api.ryde.vip',443)))
+        # mitmproxy marks a flow live while it carries the request (http layer, RequestHeaders).
+        f=HTTPFlow(Client(peername=('127.0.0.1',1),sockname=('127.0.0.1',2)),Server(address=('api.ryde.vip',443)),live=True)
         f.request=Request.make('POST','https://api.ryde.vip'+path,urlencode(fields),{'Authorization':'DPoP '+self.token,'DPoP':proof})
         f.response=Response.make(200,json.dumps(reply or {'status':200,'rotateAfterSeconds':259200}).encode());return f
     def rotate(self,app):
@@ -81,6 +82,40 @@ class ProducerTests(unittest.TestCase):
         (self.root/'job.json').write_text(json.dumps(job))
         self.producer.warm_control()
         self.assertTrue((self.root/'job.json').exists())
+
+    def disarm_ack(self,job):
+        (self.root/'warm-disarm.json').write_text(json.dumps({'id':job['id'],'nonce':uuid.uuid4().hex,'expiresAt':time.time()+5}))
+        self.producer.warm_control()
+        return json.loads((self.root/'warm-disarm-ack.json').read_text())['safeToQuit']
+
+    def test_native_job_mitmproxy_ended_without_a_hook_no_longer_blocks_a_forced_quit(self):
+        # 20 November 2026: a native flow kept as in flight for 20 hours refused every forced quit.
+        job=self.job();flow=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(flow)
+        self.assertIn(flow.id,self.producer.native_jobs)
+        self.assertFalse(self.disarm_ack(job))
+        flow.live=False # mitmproxy dropped the stream; neither response nor error hook ran
+        self.assertTrue(self.disarm_ack(job))
+        self.assertNotIn(flow.id,self.producer.native_jobs)
+        forgotten=[e for e in self.producer.events if e['event']=='native-flow-forgotten']
+        self.assertEqual([(e['flowId'],e['reason']) for e in forgotten],[(flow.id,'ended-without-hook')])
+
+    def test_live_native_job_counts_until_it_outlives_the_limit(self):
+        job=self.job();flow=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(flow)
+        flow.timestamp_created=time.time()-self.module.NATIVE_FLOW_LIMIT+30
+        self.assertFalse(self.disarm_ack(job))
+        flow.timestamp_created=time.time()-self.module.NATIVE_FLOW_LIMIT-1
+        self.assertTrue(self.disarm_ack(job))
+        self.assertEqual(self.producer.events[-1]['reason'],'outlived')
+
+    def test_renewal_ended_without_a_hook_keeps_its_unresolved_recipient_closed(self):
+        job=self.job();next_app=ec.generate_private_key(ec.SECP256R1())
+        flow=self.flow(ROTATE,{'encJwk':json.dumps(jwk(next_app)),'ekt':thumbprint(next_app)})
+        self.producer.request(flow);flow.live=False
+        self.assertFalse(self.disarm_ack(job))
+        self.assertFalse(self.producer.native_renewals)
+        self.assertIsNotNone(self.producer.pending_public)
 
     def test_invalid_warm_control_never_disarms_a_job(self):
         self.job()

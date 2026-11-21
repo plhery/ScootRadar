@@ -652,6 +652,20 @@ proxy acknowledgement leaves the process and routing untouched. Lifecycle record
 separate a stuck graceful quit from its guarded forced recovery. This handles the
 minimized native process observed ignoring all graceful quits on 9–10 November.
 
+The proxy counted a flow as in flight from its request hook until its response or error
+hook, and mitmproxy can end a flow with neither: once the client side of a stream has
+errored, `handle_protocol_error` drops it without the error hook. On 20 November 2026
+at 19:45 CET one such flow stayed counted while Ryde ignored its graceful quits, so the
+proxy refused every forced quit, about 945 of them, and the worker held itself off as
+LaunchFailed ("Ryde quit stalled; native activity prevents forced recovery") and read
+nothing for 20 hours, until the proxy was restarted with `install.py --restart` on
+21 November at 15:59 and the next forced quit went through. Sentry had the silence once,
+at its start (SCOOTRADAR-CACHE-6F). A flow mitmproxy has ended (`flow.live` false) no
+longer counts, nor one older than 10 minutes (`NATIVE_FLOW_LIMIT`), whatever mitmproxy
+says; `status.json` records each as `native-flow-forgotten` with `ended-without-hook` or
+`outlived`. A renewal's unresolved recipient (`pendingPublic`) still keeps the forced quit
+refused until the renewal's reply or Ryde's next map shows which key the app kept.
+
 Broker jobs with less than twenty seconds left are rejected without touching the
 native app; broker expiry during a query also stays separate from an app timeout.
 The worker immediately asks for the next job instead of accumulating app failures
