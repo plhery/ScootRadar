@@ -85,7 +85,7 @@ process.stdout.write(JSON.stringify({ status: 'success', data: { resultType: 've
 
   it('names the quarter hour of each sweep, for Cloudflare\'s clients to be matched by the hour', () => {
     const report = check('2026-11-05');
-    expect(report.failures).toEqual(['not asked']);
+    expect(report.failures).toEqual(['not asked', 'Workers: not asked']);
     expect(report.metrics.sweptAt).toEqual(['14:00', '23:45']);
     expect(report.suspicions[0]).toBe('2 visitor(s) asked for 32 areas or more in a quarter hour (UTC 14:00, 23:45)');
   });
@@ -147,9 +147,18 @@ const refused = [['198.51.100.30', 'Mozilla/5.0', 150], ['198.51.100.31', 'Pytho
   .map(([ip, userAgent, count]) => ({ count, dimensions: { clientIP: ip, clientCountryName: 'DE', userAgent } }));
 const required = [{ count: 260, dimensions: { clientIP: '198.51.100.32', clientCountryName: 'FR', userAgent: browser } }];
 const asked = [];
+// The account's Workers: a calm day unless WORKER_DAY gives another.
+const invocation = (scriptName, status, requests) => ({ sum: { requests }, dimensions: { scriptName, status } });
+const calm = { invocations: [invocation('swiss-scooters', 'success', 15000), invocation('swiss-scooters', 'clientDisconnected', 300),
+  invocation('other-worker', 'success', 40)], cpu: [{ quantiles: { cpuTimeP50: 3300, cpuTimeP90: 150100, cpuTimeP99: 318500 } }] };
 globalThis.fetch = async (url, init) => {
   if (String(url).endsWith('/cdn-cgi/trace')) return new Response('ip=203.0.113.9\\n');
-  const { query } = JSON.parse(init.body);
+  if (String(url).includes('/client/v4/zones/')) return Response.json({ result: { account: { id: 'account' } } });
+  const { query, variables } = JSON.parse(init.body);
+  if (query.includes('workersInvocationsAdaptive')) {
+    if (variables.tag !== 'account') throw new Error('asked for the Workers of ' + variables.tag);
+    return Response.json({ data: { viewer: { accounts: [process.env.WORKER_DAY ? JSON.parse(process.env.WORKER_DAY) : calm] } } });
+  }
   const addresses = /clientIP_in: (\\[[^\\]]*\\])/.exec(query);
   if (addresses) asked.push(JSON.parse(addresses[1]));
   writeFileSync(${JSON.stringify(join(dir, 'asked.json'))}, JSON.stringify(asked));
@@ -163,12 +172,16 @@ globalThis.fetch = async (url, init) => {
   });
   afterAll(() => { if (dir) rmSync(dir, { recursive: true, force: true }); });
 
-  it('finds the network that asked all day, and the visitor kept collected all day, whatever they called themselves', () => {
-    const { stdout } = spawnSync(process.execPath, ['--disable-warning=MODULE_TYPELESS_PACKAGE_JSON', '--import', join(dir, 'cloudflare.mjs'),
-      script, '--date=2026-11-18', '--json'], { encoding: 'utf8', timeout: 20_000,
+  const check = (env = {}) => {
+    const { status, stdout } = spawnSync(process.execPath, ['--disable-warning=MODULE_TYPELESS_PACKAGE_JSON', '--import',
+      join(dir, 'cloudflare.mjs'), script, '--date=2026-11-18', '--json'], { encoding: 'utf8', timeout: 20_000,
       env: { ...process.env, PATH: `${join(dir, 'bin')}:${process.env.PATH}`, CLOUDFLARE_API_TOKEN: 'none',
-        SCOOTRADAR_BANS_FILE: join(dir, 'scooter-bans') } });
-    const report = JSON.parse(stdout);
+        SCOOTRADAR_BANS_FILE: join(dir, 'scooter-bans'), ...env } });
+    return { status, report: JSON.parse(stdout) };
+  };
+
+  it('finds the network that asked all day, and the visitor kept collected all day, whatever they called themselves', () => {
+    const { report } = check();
     expect(report.failures).toEqual([]);
     // Only the networks with 240 requests or more are read by quarter hour, this machine never.
     expect(asked()).toEqual([['198.51.100.7', '2001:db8:1:2::5', '2001:db8:1:2::6', '198.51.100.8']]);
@@ -184,6 +197,9 @@ globalThis.fetch = async (url, init) => {
     expect(report.traffic.refused.map(({ network, requests }) => [network, requests])).toEqual([['198.51.100.30', 150], ['198.51.100.31', 3]]);
     // A ban that has ended is named, to be deleted from the list; it is no suspicion.
     expect(report.bans).toEqual({ inForce: 1, ended: ['198.51.100.40'] });
+    // The Workers answered all they were asked, a client gone counting as answered, below half the Free plan's day.
+    expect(report.workers).toEqual({ requests: 15340, byWorker: { 'swiss-scooters': 15300, 'other-worker': 40 }, stopped: [],
+      cpuMs: { p50: 3.3, p90: 150.1, p99: 318.5 } });
     expect(report.suspicions).toEqual([
       '198.51.100.7 (DE) asked in 34 quarter hours of the day, 34 of them 20 times or more (1020 requests)',
       '2001:db8:1:2:: (DE) asked in 26 quarter hours of the day, 0 of them 20 times or more (312 requests)',
@@ -193,6 +209,26 @@ globalThis.fetch = async (url, init) => {
       "7 of 47 browsers' asks for a map pass failed (403 refused: 6, 503 not checked: 1): riders may be failing Turnstile, and get no scooters past their network's 20 requests of the day (requirePass: false in server/scooter-cache.ts turns that off)",
       "400 requests were held past their network's 1,500 a day (400) or 300 an hour (0): a script, or riders behind one address; find the network in Cloudflare's busiest",
       '1 visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day',
+    ]);
+  });
+
+  // As on 30 October 2026, when Cloudflare stopped 210 page renders in an hour, with a day past half the account's
+  // 100,000 requests on top.
+  it('reports requests the Workers Free plan stopped, and a day past half its requests', () => {
+    const invocation = (scriptName, status, requests) => ({ sum: { requests }, dimensions: { scriptName, status } });
+    const day = { invocations: [invocation('swiss-scooters', 'success', 54000), invocation('swiss-scooters', 'exceededResources', 210),
+      invocation('swiss-scooters', 'scriptThrewException', 10), invocation('swiss-scooters', 'clientDisconnected', 400),
+      invocation('other-worker', 'success', 1200)], cpu: [] };
+    const { status, report } = check({ WORKER_DAY: JSON.stringify(day) });
+    expect(status).toBe(1);
+    expect(report.failures).toEqual([]);
+    expect(report.workers).toEqual({ requests: 55820, byWorker: { 'swiss-scooters': 54620, 'other-worker': 1200 },
+      stopped: [{ worker: 'swiss-scooters', status: 'exceededResources', requests: 210 },
+        { worker: 'swiss-scooters', status: 'scriptThrewException', requests: 10 }], cpuMs: null });
+    expect(report.suspicions.slice(-3)).toEqual([
+      "210 requests to the Worker swiss-scooters were stopped past the Workers Free plan's limits (exceededResources: 10 ms of CPU or 128 MB a request), and their visitors got Cloudflare's error 1102: Workers Paid, $5 a month, lifts the CPU limit (DEPLOY.md)",
+      '10 requests to the Worker swiss-scooters ended scriptThrewException, not answered',
+      "The account's Workers had 55820 requests (swiss-scooters 54620, other-worker 1200): past 100,000 in a UTC day, the Workers Free plan answers all of them with error 1027 until midnight UTC (DEPLOY.md)",
     ]);
   });
 });

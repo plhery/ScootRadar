@@ -7,8 +7,9 @@ const usage = `Usage: node scripts/check-scrapers.mjs [--date=YYYY-MM-DD] [--own
 The day's scraping check (yesterday UTC unless --date= names another): the cache's visitor metrics from Prometheus
 over ssh netcup, and the busiest clients of /api/scooters and those limited from Cloudflare's analytics, with
 CLOUDFLARE_API_TOKEN or wrangler's login. Our own traffic is set apart: this machine, the Worker's cache writes, our
-scripts' user agents, Google Play's pre-launch robots and --own=. Exits 1 on a suspicion, 2 when a source fails.
-Today's covers the day so far. See docs/OBSERVABILITY.md, "Scraping".`;
+scripts' user agents, Google Play's pre-launch robots and --own=. It also reads the account's Workers against the
+Workers Free plan: requests stopped past its limits, and the day's requests. Exits 1 on a suspicion, 2 when a
+source fails. Today's covers the day so far. See docs/OBSERVABILITY.md, "Scraping".`;
 
 const args = process.argv.slice(2);
 if (args.includes('--help')) { console.log(usage); process.exit(0); }
@@ -70,6 +71,13 @@ const PASS_FAILURE_SHARE = 0.1;
 // on the cache (server/visitorLedger.ts). From 12 to 18 November 2026 no rider or app came near either; a network
 // held is a script, or many riders behind one address (a carrier's NAT, a school, a hotel) getting old scooters.
 const NETWORK_HOLDS = 1;
+// The account is on the Workers Free plan (DEPLOY.md): 100,000 requests a UTC day for all its Workers together, past
+// which each answers error 1027 until midnight UTC, and 10 ms of CPU a request, past which Cloudflare may stop one
+// (exceededResources: the visitor gets error 1102). It lets the site's longer page renders run, but stopped 210 in
+// the hour from 14:00 UTC on 30 October 2026. Any request that ends otherwise than answered (or its client gone) is
+// a suspicion, as is a day past half the requests; the busiest so far had 31,700 (1 November 2026).
+const WORKER_REQUESTS = 50_000;
+const ANSWERED = new Set(['success', 'clientDisconnected']);
 // A browser, or our apps: the iPhone's (ScootRadar/… CFNetwork) and Android's (okhttp).
 const appAgent = agent => /^ScootRadar\//.test(agent) || /^okhttp\//.test(agent);
 const usualAgent = agent => /^Mozilla\/5\.0 /.test(agent) || appAgent(agent);
@@ -142,14 +150,48 @@ function cloudflareToken() {
   return token;
 }
 
-async function graphql(fields) {
-  const query = `query($zone: String!, $date: Date!) { viewer { zones(filter: {zoneTag: $zone}) { ${fields} } } }`;
+// The zone's datasets, or with `account` the account's (its Workers').
+// The zone's account, asked rather than written here: the repository is public.
+async function accountOfZone() {
+  const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${ZONE}`, {
+    headers: { Authorization: `Bearer ${cloudflareToken()}` }, signal: AbortSignal.timeout(30_000) });
+  const body = await response.json();
+  if (!response.ok || !body.result?.account?.id) throw new Error(`Cloudflare: no account for the zone (${response.status})`);
+  return body.result.account.id;
+}
+
+async function graphql(fields, { account = false } = {}) {
+  const scope = account ? 'accounts(filter: {accountTag: $tag})' : 'zones(filter: {zoneTag: $tag})';
+  const query = `query($tag: String!, $date: Date!) { viewer { ${scope} { ${fields} } } }`;
+  const tag = account ? await accountOfZone() : ZONE;
   const response = await fetch('https://api.cloudflare.com/client/v4/graphql', { method: 'POST',
     headers: { Authorization: `Bearer ${cloudflareToken()}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query, variables: { zone: ZONE, date } }), signal: AbortSignal.timeout(30_000) });
+    body: JSON.stringify({ query, variables: { tag, date } }), signal: AbortSignal.timeout(30_000) });
   const body = await response.json();
   if (!response.ok || body.errors?.length) throw new Error(`Cloudflare: ${body.errors?.map(error => error.message).join('; ') ?? response.status}`);
-  return body.data.viewer.zones[0];
+  const found = account ? body.data?.viewer.accounts?.[0] : body.data?.viewer.zones?.[0];
+  if (!found) throw new Error(`Cloudflare: no ${account ? 'account' : 'zone'} in the answer`);
+  return found;
+}
+
+// The account's Worker requests of the day by Worker, those that ended otherwise than answered, and the site's CPU
+// time a request (sampled, as Cloudflare's analytics are).
+async function workers() {
+  const day = await graphql(`invocations: workersInvocationsAdaptive(limit: 1000, filter: {date: $date}) {
+      sum { requests } dimensions { scriptName status } }
+    cpu: workersInvocationsAdaptive(limit: 1, filter: {date: $date, scriptName: "swiss-scooters"}) {
+      quantiles { cpuTimeP50 cpuTimeP90 cpuTimeP99 } }`, { account: true });
+  const byWorker = {}; const stopped = [];
+  for (const { sum: { requests }, dimensions: { scriptName: worker, status } } of day.invocations) {
+    byWorker[worker] = (byWorker[worker] ?? 0) + requests;
+    if (!ANSWERED.has(status)) stopped.push({ worker, status, requests });
+  }
+  const quantiles = day.cpu[0]?.quantiles;
+  const ms = microseconds => Math.round(microseconds / 100) / 10;
+  return { requests: Object.values(byWorker).reduce((sum, count) => sum + count, 0),
+    byWorker: Object.fromEntries(Object.entries(byWorker).sort(([, a], [, b]) => b - a)),
+    stopped: stopped.sort((a, b) => b.requests - a.requests),
+    cpuMs: quantiles ? { p50: ms(quantiles.cpuTimeP50), p90: ms(quantiles.cpuTimeP90), p99: ms(quantiles.cpuTimeP99) } : null };
 }
 
 function cloudflare() {
@@ -243,7 +285,7 @@ async function sustained(outside) {
   });
 }
 
-let metrics; let traffic;
+let metrics; let traffic; let account;
 let outsideNetworks = [];
 const failures = [];
 try { metrics = cache(); } catch (error) { failures.push(error.message); }
@@ -265,6 +307,7 @@ try {
     required: networks(zone.required.filter(row => !ownTraffic(row, mine, own))).map(plain), sustained: await sustained(outsideNetworks),
     passes: passes(zone.passes.filter(row => !ownTraffic(row, mine, own))) };
 } catch (error) { failures.push(error.message); }
+try { account = await workers(); } catch (error) { failures.push(`Workers: ${error.message}`); }
 
 const suspicions = [];
 if (metrics?.sweeps) suspicions.push(`${metrics.sweeps} visitor(s) asked for 32 areas or more in a quarter hour (UTC ${metrics.sweptAt.join(', ')})`);
@@ -305,6 +348,16 @@ if (networkHolds >= NETWORK_HOLDS) {
 const allDay = metrics?.unverifiedDays['32+'] ?? 0;
 if (allDay) suspicions.push(`${allDay} visitor(s) without a map pass kept feeds collected in 32 quarter hours or more of the day`);
 
+for (const { worker, status, requests } of account?.stopped ?? []) {
+  suspicions.push(/^exceeded/.test(status)
+    ? `${requests} requests to the Worker ${worker} were stopped past the Workers Free plan's limits (${status}: 10 ms of CPU or 128 MB a request), and their visitors got Cloudflare's error 1102: Workers Paid, $5 a month, lifts the CPU limit (DEPLOY.md)`
+    : `${requests} requests to the Worker ${worker} ended ${status}, not answered`);
+}
+if (account?.requests >= WORKER_REQUESTS) {
+  const byWorker = Object.entries(account.byWorker).map(([worker, count]) => `${worker} ${count}`).join(', ');
+  suspicions.push(`The account's Workers had ${account.requests} requests (${byWorker}): past 100,000 in a UTC day, the Workers Free plan answers all of them with error 1027 until midnight UTC (DEPLOY.md)`);
+}
+
 // The networks banned for a while (the Worker secret SCOOTER_BANS, src/lib/scooterBans.ts), as this machine keeps the
 // list. A ban ends by itself, but its line stays until deleted, and the privacy policy keeps an address only while
 // its ban lasts: those ended are named, to be deleted and the list put again. Null without a list here.
@@ -321,7 +374,7 @@ function bans() {
 const banned = bans();
 
 if (args.includes('--json')) {
-  console.log(JSON.stringify({ date, thisMachine: mine, metrics, traffic, bans: banned, suspicions, failures }, null, 2));
+  console.log(JSON.stringify({ date, thisMachine: mine, metrics, traffic, workers: account, bans: banned, suspicions, failures }, null, 2));
 } else {
   const counts = record => Object.entries(record ?? {}).map(([key, count]) => `${key}: ${count}`).join(', ') || 'none';
   console.log(`Scraping check for ${date} (UTC)`);
@@ -343,6 +396,11 @@ if (args.includes('--json')) {
     for (const entry of [...traffic.sustained].sort((a, b) => b.quarterHours - a.quarterHours).slice(0, 10)) {
       console.log(`  ${String(entry.quarterHours).padStart(3)} (${String(entry.busyQuarterHours).padStart(2)} busy)  ${entry.network}  ${entry.country}  ${entry.requests}  ${entry.agent.slice(0, 70)}`);
     }
+  }
+  if (account) {
+    const cpu = account.cpuMs ? `; swiss-scooters' CPU a request p50 ${account.cpuMs.p50} ms, p90 ${account.cpuMs.p90}, p99 ${account.cpuMs.p99}` : '';
+    const stopped = account.stopped.map(({ worker, status, requests }) => `${worker} ${status} ${requests}`).join(', ') || 'none';
+    console.log(`Workers (Free plan: 100,000 requests a day for the account, 10 ms of CPU a request): ${account.requests} requests (sampled), by Worker ${counts(account.byWorker)}; not answered ${stopped}${cpu}`);
   }
   console.log(!banned ? `Bans (SCOOTER_BANS): no list at ${BANS_FILE}`
     : `Bans (SCOOTER_BANS): ${banned.inForce} in force${banned.ended.length ? `; ended, to delete from ${BANS_FILE} and put the list again (docs/OBSERVABILITY.md, "Scraping"): ${banned.ended.join(', ')}` : ''}`);

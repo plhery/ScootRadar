@@ -14,6 +14,26 @@ to serve `/api/*` for older native-app installations. Their `/sw.js` remains
 available on the original origin: it replaces cached web apps with a migration
 worker that clears old app caches and opens the new address.
 
+## Workers Free plan
+
+The Cloudflare account is on the Workers Free plan (checked on its dashboard on 21
+November 2026), which this site shares with the account's other Workers, of other
+projects.
+
+- 100,000 requests a UTC day for the whole account, static assets not counted. Past
+  them every Worker of the account answers error 1027 until midnight UTC. The busiest
+  day so far was 1 November 2026, at about 31,700; most days are 10,000 to 20,000.
+- 10 ms of CPU a request, which Cloudflare lets a Worker run past now and then; when
+  it stops one, the visitor gets error 1102 (`exceededResources`). Page renders run
+  well past it: on most days a tenth of requests take 75 to 260 ms and a hundredth
+  300 to 500 ms. It was tolerated every day but 30 October 2026, when 210 requests
+  were stopped between 14:00 and 15:00 UTC, after an afternoon of guide deploys.
+
+The daily check (`npm run check:scrapers`, docs/OBSERVABILITY.md, "Daily check")
+reports any request a Worker did not answer, and a day past 50,000 requests. Workers
+Paid, $5 a month, which today's use would not take past its included requests and CPU,
+lifts both limits.
+
 ## Requirements
 
 - Node.js 26+

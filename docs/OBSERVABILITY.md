@@ -832,13 +832,23 @@ on a suspicion, 2 when a source could not be read:
   by agent and kind of referrer;
 - browsers' asks for a map pass (`POST /api/pass`) that failed, 5 or more and a tenth
   of them or more: Turnstile refused them (403) or could not be asked (503). The
-  report gives the asks by browser, app and other, and status.
+  report gives the asks by browser, app and other, and status;
+- from the account's Workers analytics, any request a Worker did not answer, above all
+  `exceededResources`: the Workers Free plan stopped it past its 10 ms of CPU a
+  request, and the visitor got error 1102, as 210 page renders on 30 October 2026 at
+  14:00 UTC; or a day of 50,000 requests or more to the account's Workers, half the
+  plan's 100,000, past which every Worker of the account answers error 1027 until
+  midnight UTC (DEPLOY.md, "Workers Free plan"). A client gone before the answer
+  (`clientDisconnected`) counts as answered. The report gives the day's requests by
+  Worker, sampled, and the site's CPU a request at p50, p90 and p99.
 
 The check would have reported the North Rhine-Westphalia script the morning after,
 by its day's requests and its user agent. One under a browser's user agent and 1,500
 requests a day went unseen before the quarter-hour rule. And the check reads the day
 before: Grafana's "possible scraper" tells the same day of 200 `other` requests or 200
-428s in an hour, or of a visitor kept collected 8 hours.
+428s in an hour, or of a visitor kept collected 8 hours. A Worker stopped by the Free
+plan is seen only the morning after: Prometheus doesn't see Cloudflare's Workers, and
+reading their analytics during the day would take a Cloudflare API token on the server.
 
 Cloudflare's Free plan gives the client's address, country, user agent, path and
 status, not its network (ASN) or query: `whois <address>` names the network, a
