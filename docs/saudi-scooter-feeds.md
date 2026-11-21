@@ -149,9 +149,14 @@ primary source was found.
 - **Dott Riyadh:** 93 to 99 scooters, all in Boulevard City, a Riyadh Season
   venue, and about 10 rides in 12.5 hours. On Friday evening 23 October,
   with Riyadh Season open there, it held 44 or 45, none of which moved more
-  than 50 m in 8.5 minutes, so it stays off; check again in mid-November.
+  than 50 m in 8.5 minutes. On Saturday evening 21 November it held 47 or
+  48 on 600 m of Boulevard City, and in 16 polls five minutes apart, from
+  19:53 to 21:09, none moved more than 50 m and none left the feed, so it
+  stays off; check again in mid-December.
 - **Dott Sports Boulevard** (`sbf`): 44 or 45 scooters and about 85 e-bikes
-  at one spot, which never moved. **Dott STC City:** empty, with a free plan,
+  at one spot, which never moved. On the evening of 21 November it held 29
+  or 30 scooters and 53 e-bikes, still at one spot, and no scooter was
+  ridden in the same 16 polls. **Dott STC City:** empty, with a free plan,
   on the stc headquarters campus: not a public service.
 - **Dott Makkah:** empty, with a free plan, over the holy sites; it may run
   in the Hajj. Check again from 15 to 30 May 2027.

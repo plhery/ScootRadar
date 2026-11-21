@@ -47,7 +47,9 @@ its own fleet's price. Dubai Hills' bounds lie inside Dubai's.
 The `dubai` feed also holds 12 or 13 scooters in Hatta, Dubai's exclave in
 the Hajar mountains, 100 km from the city. None moved or changed id in the
 whole day, so Hatta is left out: its scooters stand outside Dubai's bounds,
-and it is to be checked again on a cool-season Saturday.
+and it is to be checked again on a cool-season Saturday. On the evening of
+Saturday 21 November 2026 it held 24, and none moved, left or came in 16
+polls five minutes apart from 20:53 to 22:09; it is to be checked by day.
 
 ## Abu Dhabi
 
@@ -181,8 +183,9 @@ Emirates.
 ## Known gaps
 
 - **Hatta:** 12 or 13 scooters in Dott's Dubai feed, none ridden on a
-  Thursday in October. Hatta is a weekend and cool-season place; check again
-  on a Saturday from 21 November 2026.
+  Thursday in October, and 24, none ridden, on the evening of Saturday 21
+  November 2026. Hatta is a weekend and cool-season place; check again by
+  day on a Saturday from 28 November 2026.
 - **Sharjah:** Dott's `sharjah` region holds 93 to 96 scooters in University
   City, which had about 7 rides in 11 hours: too few yet. Check again in late
   November 2026.

@@ -1238,8 +1238,9 @@ banned shared scooters, and feeds that were empty when checked.
   Dubai, Abu Dhabi and Al Ain, from its rider map since 26 October 2026, are
   covered.
   - **Too few rides yet:** Dott's Dubai feed holds 12 or 13 scooters in Hatta,
-    which none rode in 10.5 hours on Thursday 15 October 2026; Hatta is a
-    weekend and cool-season place. Dott Sharjah (93 to 96 scooters at
+    which none rode in 10.5 hours on Thursday 15 October 2026, nor 24 of them
+    on the evening of Saturday 21 November; Hatta is a weekend and
+    cool-season place. Dott Sharjah (93 to 96 scooters at
     University City, about 7 rides in 11 hours), Dott Ras Al Khaimah (32 to
     34, about 2 rides) and Al Ain, in Dott's Abu Dhabi feed (16 to 18, about
     2 rides), are left out until they are ridden more. See
@@ -1259,11 +1260,13 @@ banned shared scooters, and feeds that were empty when checked.
 - **Saudi Arabia** ([guide](saudi-scooter-feeds.md#known-gaps)): SAHAM in
   Riyadh and Dott in Jeddah are covered.
   - **Dott Riyadh:** 93 to 99 scooters, all in Boulevard City, about 10 rides
-    in 12.5 hours on 15 October 2026, and 44 or 45 that stood still on the
-    evening of 23 October, with Riyadh Season open there; check again in
-    mid-November.
+    in 12.5 hours on 15 October 2026, 44 or 45 that stood still on the
+    evening of 23 October, with Riyadh Season open there, and 47 or 48 that
+    stood still for 75 minutes on the evening of 21 November; check again in
+    mid-December.
   - **Dott Sports Boulevard** (`sbf`): 44 or 45 scooters, all at one depot,
-    which never moved. **Dott STC City:** empty, with a free plan, on the stc
+    which never moved, and 29 or 30, with 53 e-bikes, at one spot on the
+    evening of 21 November, none ridden. **Dott STC City:** empty, with a free plan, on the stc
     headquarters campus, not a public service.
   - **Dott Makkah:** empty, with a free plan; it may run in the Hajj.
   - **No public feed:** Wing, Barqscoot, SPIDERS and Rabbit; BSKL, whose App
@@ -1666,11 +1669,17 @@ Bonaire had feeds to add. Survey files are in
   and e-bikes. Check the ranking, any act on the current permits, the
   commission's findings, and whether the winners publish; until then Bird's
   count in the cache is the daily signal.
-- **Mid-November 2026, an evening in Riyadh:** Dott Riyadh, in Boulevard
-  City (`riyadh`): 93 to 99 scooters and about 10 rides on 15 October 2026.
-  On Friday 23 October, with Riyadh Season open there, it held 44 or 45, and
-  in 8.5 minutes from 20:49 Riyadh time none moved more than 50 m, so it
-  stays off. Poll it every five minutes; Dott renews ids after each trip, so
+- **Mid-December 2026, a Thursday or Friday evening in Riyadh:** Dott
+  Riyadh, in Boulevard City (`riyadh`): 93 to 99 scooters and about 10 rides
+  on 15 October 2026. On Friday 23 October, with Riyadh Season open there, it
+  held 44 or 45, and in 8.5 minutes from 20:49 Riyadh time none moved more
+  than 50 m. On Saturday 21 November it held 47 or 48, all on 600 m of
+  Boulevard City, polled 16 times five minutes apart from 19:53 to 21:09
+  Riyadh time: none moved more than 50 m, none left the feed and one came,
+  so it stays off. Dott's Sports Boulevard region (`sbf`), polled with it,
+  held 29 or 30 scooters and 53 e-bikes at one spot (24.924° to 24.927° N),
+  and no scooter was ridden. If neither is ridden in December, stop checking
+  until the next Riyadh Season. Poll it every five minutes; Dott renews ids after each trip, so
   count rides as the [Saudi guide](saudi-scooter-feeds.md#rides) does, and
   add it to `data/saudi-scooter-feeds.json` if it is ridden. Read Dott from
   Netcup.
@@ -1743,8 +1752,10 @@ Bonaire had feeds to add. Survey files are in
   Israel). If the ban goes ahead and the feeds empty there, remove Holon's
   areas from Bird's, Dott's and Lime's feeds and its outline from
   `data/town-outlines.json`.
-- **Saturday 21 November 2026, or a Saturday after:** Hatta, in Dott's Dubai
-  feed, by day: 12 or 13 scooters, which none rode on 15 October 2026. If they
+- **Saturday 28 November 2026, or a Saturday after:** Hatta, in Dott's Dubai
+  feed, by day: 12 or 13 scooters, which none rode on 15 October 2026. On the
+  evening of Saturday 21 November it held 24, and none moved, left or came in
+  16 polls five minutes apart from 20:53 to 22:09 Dubai time. If they
   are ridden, add Hatta as an area of `dott_ae_dubai`, with bounds of Dott's
   Hatta zone plus 1 km.
 - **Late November 2026:** Dott Sharjah, at University City: 93 to 96
