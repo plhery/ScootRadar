@@ -393,6 +393,9 @@ origin and under its directory.
   on 26 October 2026 at 15:00; the selection picks up to three scooter
   operators, for three years, who then have 150 days to start
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
+  Nine companies bid by the deadline, moved to 2 November; on 21 November
+  2026 no ranking was published, and Bird, Dott and Lime still ran (see
+  [Coverage gaps](coverage-gaps.md#dates-to-check-again)).
 - **City rules:** Firenze banned shared scooters from 1 April 2026
   ([Comune di Firenze](https://www.comune.firenze.it/novita/comunicati/sharing-mobility-dal-1deg-aprile-stop-ai-monopattini-sharing)).
   Milano revoked Bird's permit in July 2026, over scooters without the plates

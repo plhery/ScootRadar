@@ -643,7 +643,8 @@ banned shared scooters, and feeds that were empty when checked.
   - Duisburg: Bolt's scooters there are on the map since 25 October 2026,
     from its rider map. Ryde's and Lime's Duisburg feeds are only on the
     closed NRW hub (Ryde's answers 401), and Lime's own `duisburg` answers
-    404; Lime's scooters there come from its rider map since 25 October 2026.
+    404; Lime's scooters there come from its rider map since 25 October 2026,
+    and Ryde's from the [Ryde bridge](ryde-bridge.md) since 4 November.
   - Zeus is moving its towns to ATOM Mobility. Rüsselsheim, Straubing,
     Kempten, Pforzheim, Göppingen, Schwäbisch Gmünd, Tübingen, Hagen,
     Hattingen and Heilbronn list only disabled scooters on `zeus.city`, and
@@ -717,8 +718,7 @@ banned shared scooters, and feeds that were empty when checked.
     scooters in Antwerpen come from its rider map since 25 October 2026; the
     map's Brussels market held no scooter that day.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
-  - RideMovi in Bergen and Ryde in Drammen still have no working
-    source. RideMovi rechecked on 28 October 2026: it isn't in Entur's GBFS
+  - RideMovi in Bergen still has no working source. RideMovi rechecked on 28 October 2026: it isn't in Entur's GBFS
     manifest (81 systems) or MobilityData's list, and Entur's mobility API
     holds no scooter within 8 km of central Bergen. Lime's Bergen scooters, about 2,100, come from its rider map
     since 27 October 2026, and Ryde's, about 4,700, from
@@ -728,16 +728,11 @@ banned shared scooters, and feeds that were empty when checked.
     and no-riding zones) are drawn since 29 October 2026, from the public
     layers of the city's map, which state no licence: since 28 October 2026
     such city layers are drawn, credited to the city (DATA_SOURCES.md).
-  - Ryde's fleet in Kristiansand is missing from Entur. Its fleets in Asker,
-    Bærum, Bodø, Lillestrøm and Lørenskog are on the map since 22 October
-    2026. Dott publishes nothing for Bodø.
-  - Ryde in Moss is missing too. Moss kommune names Ryde and Voi as its
-    scooter operators (28 March 2025), and Voi's Moss feed is on the map, but
-    neither Entur's manifest nor MobilityData's list has a Ryde system for
-    Moss (1 November 2026): Ryde Sarpsborg's scooters reach 59.30° N, short
-    of Moss at 59.43°. Only Ryde's rider app shows them
-    ([investigation](ryde-app-map.md)), and the map adds no new rider-app
-    source for now.
+  - Ryde's fleets in Drammen, Kristiansand, Moss and Sola are missing from
+    Entur, and come from Ryde's rider app, read through a Mac (the
+    [Ryde bridge](ryde-bridge.md)), since 4 November 2026. Its fleets in
+    Asker, Bærum, Bodø, Lillestrøm and Lørenskog are on the map from Entur
+    since 22 October 2026. Dott publishes nothing for Bodø.
   - Lime Oslo is empty, and seven Bolt systems in Entur are empty.
   - Bolt Oslo's 2 scooters in Lørenskog and 1 in Bærum, which didn't move in
     ten minutes on 15 October 2026, are left out since that evening: Bolt has
@@ -818,17 +813,16 @@ banned shared scooters, and feeds that were empty when checked.
     [rider map](bolt-app-map.md) since 25 October; Bolt's Göteborg market was
     empty that day. Dott names no Swedish town (29 October 2026); Göteborg's
     list no longer has it.
-  - Ryde runs in 25 Swedish towns and publishes no feed, so none of its
-    scooters there is on the map: Göteborg, Malmö, Uppsala, Helsingborg,
-    Västerås, Jönköping, Linköping, Norrköping, Örebro, Borås, Karlstad,
-    Lund, Umeå, Halmstad, Växjö, Eskilstuna, Östersund, Sundsvall, Luleå,
-    Varberg, Falun, Borlänge, Höganäs, Kristianstad and Åhus
+  - Ryde runs in 25 Swedish towns and publishes no feed: Göteborg, Malmö,
+    Uppsala, Helsingborg, Västerås, Jönköping, Linköping, Norrköping, Örebro,
+    Borås, Karlstad, Lund, Umeå, Halmstad, Växjö, Eskilstuna, Östersund,
+    Sundsvall, Luleå, Varberg, Falun, Borlänge, Höganäs, Kristianstad and Åhus
     ([locations page](https://www.ryde-technology.com/Locations), 29 October
     2026). Malmö gave it the largest share of its cap, 1,000 of 2,800
-    scooters from 1 October 2026, and Göteborg lists it beside Voi and Lime
-    (October 2026). In Norway its scooters come from Entur and, in Bergen,
-    Skyss's guest map; no such source covers Sweden, and Ryde's own rider
-    app isn't read ([investigation](ryde-app-map.md)).
+    scooters from 1 October 2026. All 25 are on the map since 4 November
+    2026, from Ryde's rider app read through a Mac (the
+    [Ryde bridge](ryde-bridge.md)), which stopped for 20 hours on 20 and 21
+    November.
   - Dott's 12 Swedish regions in the registry (Göteborg, Eskilstuna,
     Helsingborg and others) answer 404, and its Swedish listing is empty.
   - Lime Stockholm, Göteborg and Malmö answer 404. Lime's Göteborg and
@@ -885,9 +879,10 @@ banned shared scooters, and feeds that were empty when checked.
   - nextbike Latvia is empty, and the national access point
     (transportdata.gov.lv) has no shared-mobility data.
 - **Poland** ([guide](polish-scooter-feeds.md#known-gaps)): Dott in
-  Oświęcim, and Wołomin with Kobyłka and Radzymin, and Hopp in Knurów, Złotów
-  and Września are covered. Dott left Sosnowiec on 27 October 2026: its region
-  answers 404, and the feed is retired.
+  Oświęcim, and Wołomin with Kobyłka and Radzymin, and Hopp in Knurów and
+  Września are covered. Dott left Sosnowiec on 27 October 2026: its region
+  answers 404, and the feed is retired. Hopp Złotów was retired on 21 November
+  2026: its feed has listed only flat, disabled scooters since 3 November.
   - Dott's Polish site lists 85 places, but its public listing names those
     three regions only. Of its other 74 Polish entries in the registry, 73
     answer 404 (Warsaw, Kraków, Wrocław, Gdańsk, Poznań, Katowice and others)
@@ -983,8 +978,10 @@ banned shared scooters, and feeds that were empty when checked.
     shows Dott's scooters from its anonymous app map, in 20 regions including
     Helsinki, Espoo, Vantaa and Tampere, and Voi's from its rider map, in
     Helsinki, Turku, Tampere and Jyväskylä ([Dott](dott-app-map.md),
-    [Voi](voi-app-map.md)). Ryde, which also runs in Helsinki, Espoo, Vantaa,
-    Tampere, Turku and Jyväskylä, has no feed and isn't on the map. Bolt publishes none,
+    [Voi](voi-app-map.md)). Ryde has no feed; its scooters in 15
+    towns, from Helsinki, Espoo and Vantaa to Oulu and Vaasa, come from its
+    rider app through the [Ryde bridge](ryde-bridge.md) since 4 November
+    2026. Bolt publishes none,
     and its Helsinki market had no scooter on 25 October 2026. Dott's 40 Finnish regions in the registry don't answer: 34
     answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
     paused, probably for the winter. Bird Helsinki's feed is empty and stamped
@@ -1541,21 +1538,15 @@ a licence. Neither is published by its operator:
 
 | Country | Why |
 | --- | --- |
-
 | Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate. Check and Felyx run mopeds, and 7 Felyx feeds answer 410 |
-| Denmark | Voi’s authenticated map now supplies Aarhus, Odense and Aalborg, and Lime's authenticated rider map København and Odense since 25 October 2026. Lime's Aarhus market held no scooter in its full-area audit that day; Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
-| Czechia | Lime České Budějovice is now mapped through its full operating polygons, and Brno and Ostrava since 25 October 2026. Lime's Praha, Liberec and Olomouc markets held no scooter in their full-area audits that day. Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt's rider map still has a Prague market, with no scooter on 25 October 2026, and none for Brno, Ostrava, Olomouc or České Budějovice |
-| Romania | Lime Deva is now covered, and București, Cluj-Napoca, Iași, Alba Iulia, Sibiu, Târgu Mureș and Târgoviște, like Bolt's eight markets from its [rider map](bolt-app-map.md), since 25 October 2026. Lime's Arad, Brașov, Constanța and Galați markets held no scooter in their full-area audits that day, and Oradea's a single one. Its PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027 |
 | Serbia | Belgrade suspended its call for 2,000 scooters on 15 July 2026, a day after opening it; check again in January 2027 |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
-| Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt's GBFS answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Bolt's [rider map](bolt-app-map.md) supplies Almaty since 25 October 2026 (1,222 scooters); its Tbilisi, Batumi, Kutaisi and Baku markets were empty that day, and Astana's held no scooter. Eleven, Yandex Go, Urent, JET, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed; the [signed-out Go Jet map](gojet-app-map.md) now supplies Almaty (4,552 available scooters), Baku (3,004) and Batumi (1,422). JET's separate Central Asian app still needs a rider sign-in; Go Jet does not establish Tbilisi, Armenia or the rest of Kazakhstan. Whoosh's [authenticated collector](whoosh-app-map.md) covers Minsk, Borisov, Soligorsk, Almaty and Astana, with Kazakhstan's two regions currently season-closed. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals. Almaty is the biggest fleet: about 22,500 scooters in April 2026, with JET holding over 70% of the market. Yerevan has about 1,500 (JET and YerevanRide) |
+| Armenia | JET and YerevanRide (about 1,500 scooters in Yerevan) publish nothing, and JET's Central Asian app needs a rider sign-in; Go Jet's signed-out map does not reach Armenia. See Belarus, Georgia, Azerbaijan and Kazakhstan in the table below |
 | Vatican City | No operator. Bird Rome's geofence forbids riding over St Peter's, the Gardens and the Museums, and none of its 4,454 vehicles stood inside at 12:37 on 14 October 2026 |
-| Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled". Loop, Dart, OWLO, Fenix and Falcon Ride publish no feed; OTORide, which runs OWLO, answers 404 on every `/gbfs` path. data.gov.qa has no scooter data. Dott's Qatari terms (changed 23 September 2025) name TIER Mobility Doha, but Dott lists no Qatari region and its Qatari slugs answer 404 (18 October 2026). Loop had over 500 scooters in 2020 and wer2 over 700 in 2022. wer2, or ATOM, would have to switch the feed on; no one has asked |
 | Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL, Rabbit, Rent it (on OTORide) and e-Fly Scooters and More (on Joyride) publish no feed. E-scooters have been banned on Kuwait's public roads since 31 October 2020. eFly, or ATOM, would have to switch the feed on; no one has asked |
 | Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled", and `biko.rideatom.com` no longer resolves. Salik, which ran the transport ministry's trial at Knowledge Oasis Muscat, is ATOM system 1118 and answers "GBFS disabled" too. Biko, Salik or ATOM would have to switch the feed on; no one has asked |
 | Egypt | Rabbit, in Cairo, Giza and Alexandria (about 700 scooters in 2024, the last count), publishes no feed, and Cairo's governor ordered e-scooters seized |
-| South Africa | Zippy's [authorized rider map](south-african-scooter-feeds.md) now supplies Langebaan's Club Mykonos area. Its systems 2028, 2075 and 2318 still do not provide public GBFS. Cape Town has app polygons but no available scooters were observed |
 | Senegal | Reby Mobility runs e-scooters in Dakar (Mermoz, Ouakam, Almadies, Ngor) on ATOM Mobility (`reby-mobility.rideatom.com`). Its system id isn't public, so no feed was found (18 October 2026) |
 | Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot, by night and by day (02:40 and 12:48 UTC on 18 October 2026) |
 | Jordan | Sky Scooters (on OTORide) and E-Ride publish no feed; Dott's listing names no region |
@@ -1567,19 +1558,30 @@ a licence. Neither is published by its operator:
 | Rwanda | Guraride is docked bikes; eWaka's planned scooters (500, then 1,000, announced in 2023) aren't confirmed running. No scooter feed found |
 | Mauritius | No scooter feed found |
 | Namibia | No scooter feed found |
-| Australia | Beam is integrated in [11 collection regions](beam-app-map.md). Lime is covered in Brisbane, since 26 October 2026 in Port Phillip and since 27 October in Canberra, from its rider map; its Gold Coast region, where it rents e-bikes, and its Sydney region, a single small zone in St Peters, held no scooter on 26 October, nor did its Perth region, where the city suspended e-scooter hire in June 2025, on 27 October. About 8,000 scooters in about 20 towns: Brisbane (Lime 1,700 and Beam), Canberra (Lime, about 1,200), Adelaide (Neuron and Beam, about 940), Darwin (Beam, up to 750), Port Phillip (Lime and Neuron, about 460), Townsville, Cairns, Perth's Stirling and Beam's regional towns. Neuron's and Beam's feeds (one company since September 2025) answer 401, Beam's signed-in collector is integrated (see [coverage and verification](beam-app-map.md)), and Lime answers 404 for about 80 town names; no state's or city's open-data portal has positions (Brisbane publishes monthly trip counts). New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is still a static test on 18 October 2026: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
-| Japan | LUUP is now covered through its authenticated rider map in 19 cities, using standing-scooter counts at ports (see [coverage and verification](luup-app-map.md)). Lime is covered in Naha, Tokyo and Yokohama from its rider map; its Tokyo region's Chiba and Kawasaki (Takatsu) zones held no scooter on the morning of 26 October 2026. Private campuses and resorts, and Saitama's sampled ports with no standing scooters, remain outside the reviewed catalog. JOJO and TOCKLE run on Joyride, whose three feed hosts no longer resolve. Beam still lists Osaka City on its page for partner cities, but its rider page no longer lists Japan (both read on 29 October 2026), and the catalog holds no Japanese Beam region. The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING) |
-| Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago. Beam's [authenticated collector](beam-app-map.md) supplies ten collection regions, including campus networks in Johor and Sarawak; Neuron publishes no feed |
 | Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Beam, in Indonesia and Thailand (Bangkok's at Chulalongkorn University's Samyan campus), answers 401, and its signed-in map samples returned no scooters on 24 October 2026 (see [the Beam integration](beam-app-map.md)); Moovr, in Manila's BGC and Makati, runs on Joyride, whose feed hosts no longer resolve. Taiwan's shared fleets are seated mopeds, with stand-up scooters only in local pilots; Hong Kong bans e-scooters and Singapore shared ones; India's Yulu runs seated vehicles |
 | Uzbekistan, Mongolia, Kyrgyzstan | JET, which runs in Uzbekistan and Mongolia and in Kazakhstan, Georgia, Armenia and Azerbaijan, publishes no feed, and its app map needs a rider sign-in (see [the app investigation](jet-whoosh-beam-luup-app-maps.md)), nor do Whoosh, Urent, SunRent and E-motion in Bishkek. Ulaanbaatar is the biggest: JET put 3,000 scooters there in 2023 and planned 6,000 more. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), still answer "GBFS disabled" on 18 October 2026. Check again on 1 April 2027 |
 | Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
 | Montenegro, Albania, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026). Albania has banned e-scooters from urban roads and pavements since 13 October 2025 (Instruction 169, upheld when the Constitutional Court refused a challenge on 4 June 2026). BinBin's guest app map still held 14 scooters in Tirana on 25 October 2026, seven of them flat, and none was ridden in 17 minutes that Sunday afternoon (see [the Balkan guide](north-macedonian-bosnian-kosovar-scooter-feeds.md#known-gaps)). Check again in April 2027 |
-| Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026, and again at 15:51 on Saturday 24 October). Whoosh's [authenticated Medellín map](whoosh-app-map.md) is integrated; its GBFS feeds remain private. Yango, in Valledupar (400+) and licensed in Medellín, publishes no feed; its Bogotá launch waits for the city's rules. datos.gov.co has nothing. Check again on 1 March 2027 |
-| Brazil, Chile | The [signed-out Go Jet adapter](gojet-app-map.md) now supplies 48 Brazilian collection regions (32,263 available scooters) and Santiago and Temuco in Chile (3,713 combined). Brazil has about 45,000 to 55,000 scooters in 50 or more towns, most of them JET's (it claims 40,000 to 50,000 vehicles in 53 cities), with Whoosh in São Paulo, Curitiba and Florianópolis. Chile has about 14,000 in about 20 towns: Whoosh 8,000+, Lime 3,500, JET 2,000+. Whoosh's [authenticated collector](whoosh-app-map.md) now lists nine Brazilian and seven Chilean regions; its GBFS feeds remain private; Go Jet's app signing is reproduced by the Node collector, without a rider account; Lime Chile answers 404 for about 75 slugs. Lime has left Brazil. São Paulo and Rio receive live data for the city's use only, and datos.gob.cl and dados.gov.br have no scooter data. Check again on 1 April 2027 |
 | Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others, and on 24 October 2026 its app had no active region there |
 | Puerto Rico, US Virgin Islands | Bird's four Puerto Rico feeds (`san-juan-puerto-rico`, `guaynabo-puerto-rico`, `mayaguez-puerto-rico`, `ponce-puerto-rico`) publish their zones but no vehicle, with a timestamp of 0. Skootel, on OTORide, and KICK RIDE PR publish no feed; VIBES has left the US Virgin Islands. Check again on 1 April 2027. A feed there would need a decision: under the United States as a region (`PR`, `VI`), which needs `timeZoneProblem()` in `scripts/country-catalog.mjs` to accept America/Puerto_Rico and America/St_Thomas there, and gives prices before tax (Puerto Rico's IVU is 11.5%), or as a country of its own |
 | Aruba, Curaçao | e-moob, in Aruba (150+ scooters), is on ATOM Mobility, but its systems 1688 and 2319 answer "GBFS disabled", and so does Smart Wheels's 1875, in Curaçao. Aruba banned e-scooters from public roads in July 2026, and the courts upheld it. Check again on 1 April 2027. Each would be a country of its own (AW, CW), as Bonaire is |
 | Argentina, Uruguay and the rest of Latin America and the Caribbean | No scooter feed found: also Paraguay, Bolivia, Ecuador, Venezuela, Central America outside Costa Rica, Jamaica, Cuba, Haiti, Trinidad and Tobago, Barbados, the Cayman Islands, the Turks and Caicos Islands, Sint Maarten and the French Antilles. Lime has left Argentina, Uruguay's last operator left by December 2025, and Guayaquil's transit agency seizes scooters. Breeze, in the Bahamas, runs on OTORide and publishes no feed |
+
+**Covered in part since:** these countries had nothing public when surveyed, and the map now covers them from the operators' rider maps (21 November 2026). Each row keeps the gaps that remain.
+
+| Country | Covered, and what is still missing |
+| --- | --- |
+| Denmark | Voi’s authenticated map now supplies Aarhus, Odense and Aalborg, and Lime's authenticated rider map København and Odense since 25 October 2026. Lime's Aarhus market held no scooter in its full-area audit that day; Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
+| Czechia | Lime České Budějovice is now mapped through its full operating polygons, and Brno and Ostrava since 25 October 2026. Lime's Praha, Liberec and Olomouc markets held no scooter in their full-area audits that day. Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt's rider map still has a Prague market, with no scooter on 25 October 2026, and none for Brno, Ostrava, Olomouc or České Budějovice |
+| Romania | Lime Deva is now covered, and București, Cluj-Napoca, Iași, Alba Iulia, Sibiu, Târgu Mureș and Târgoviște, like Bolt's eight markets from its [rider map](bolt-app-map.md), since 25 October 2026. Lime's Arad, Brașov, Constanța and Galați markets held no scooter in their full-area audits that day, and Oradea's a single one. Its PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027 |
+| Belarus, Georgia, Azerbaijan, Kazakhstan | Bolt's GBFS answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Bolt's [rider map](bolt-app-map.md) supplies Almaty since 25 October 2026 (1,222 scooters); its Tbilisi, Batumi, Kutaisi and Baku markets were empty that day, and Astana's held no scooter. Eleven, Yandex Go, Urent, JET, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed; the [signed-out Go Jet map](gojet-app-map.md) now supplies Almaty (4,552 available scooters), Baku (3,004) and Batumi (1,422). JET's separate Central Asian app still needs a rider sign-in; Go Jet does not establish Tbilisi, Armenia or the rest of Kazakhstan. Whoosh's [authenticated collector](whoosh-app-map.md) covers Minsk, Borisov, Soligorsk, Almaty and Astana, with Kazakhstan's two regions currently season-closed. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals. Almaty is the biggest fleet: about 22,500 scooters in April 2026, with JET holding over 70% of the market. Yerevan has about 1,500 (JET and YerevanRide) |
+| Qatar | Lime's Doha scooters come from its [rider map](lime-app-map.md) since 24 October 2026 ([Qatari guide](qatari-scooter-feeds.md)). wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled". Loop, Dart, OWLO, Fenix and Falcon Ride publish no feed; OTORide, which runs OWLO, answers 404 on every `/gbfs` path. data.gov.qa has no scooter data. Dott's Qatari terms (changed 23 September 2025) name TIER Mobility Doha, but Dott lists no Qatari region and its Qatari slugs answer 404 (18 October 2026). Loop had over 500 scooters in 2020 and wer2 over 700 in 2022. wer2, or ATOM, would have to switch the feed on; no one has asked |
+| South Africa | Zippy's [authorized rider map](south-african-scooter-feeds.md) now supplies Langebaan's Club Mykonos area. Its systems 2028, 2075 and 2318 still do not provide public GBFS. Cape Town has app polygons but no available scooters were observed |
+| Australia | Beam is integrated in [11 collection regions](beam-app-map.md). Lime is covered in Brisbane, since 26 October 2026 in Port Phillip and since 27 October in Canberra, from its rider map; its Gold Coast region, where it rents e-bikes, and its Sydney region, a single small zone in St Peters, held no scooter on 26 October, nor did its Perth region, where the city suspended e-scooter hire in June 2025, on 27 October. About 8,000 scooters in about 20 towns: Brisbane (Lime 1,700 and Beam), Canberra (Lime, about 1,200), Adelaide (Neuron and Beam, about 940), Darwin (Beam, up to 750), Port Phillip (Lime and Neuron, about 460), Townsville, Cairns, Perth's Stirling and Beam's regional towns. Neuron's and Beam's feeds (one company since September 2025) answer 401, Beam's signed-in collector is integrated (see [coverage and verification](beam-app-map.md)), and Lime answers 404 for about 80 town names; no state's or city's open-data portal has positions (Brisbane publishes monthly trip counts). New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is still a static test on 18 October 2026: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
+| Japan | LUUP is now covered through its authenticated rider map in 19 cities, using standing-scooter counts at ports (see [coverage and verification](luup-app-map.md)). Lime is covered in Naha, Tokyo and Yokohama from its rider map; its Tokyo region's Chiba and Kawasaki (Takatsu) zones held no scooter on the morning of 26 October 2026. Private campuses and resorts, and Saitama's sampled ports with no standing scooters, remain outside the reviewed catalog. JOJO and TOCKLE run on Joyride, whose three feed hosts no longer resolve. Beam still lists Osaka City on its page for partner cities, but its rider page no longer lists Japan (both read on 29 October 2026), and the catalog holds no Japanese Beam region. The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING) |
+| Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago. Beam's [authenticated collector](beam-app-map.md) supplies ten collection regions, including campus networks in Johor and Sarawak; Neuron publishes no feed |
+| Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026, and again at 15:51 on Saturday 24 October). Whoosh's [authenticated Medellín map](whoosh-app-map.md) is integrated; its GBFS feeds remain private. Yango, in Valledupar (400+) and licensed in Medellín, publishes no feed; its Bogotá launch waits for the city's rules. datos.gov.co has nothing. Check again on 1 March 2027 |
+| Brazil, Chile | The [signed-out Go Jet adapter](gojet-app-map.md) now supplies 48 Brazilian collection regions (32,263 available scooters) and Santiago and Temuco in Chile (3,713 combined). Brazil has about 45,000 to 55,000 scooters in 50 or more towns, most of them JET's (it claims 40,000 to 50,000 vehicles in 53 cities), with Whoosh in São Paulo, Curitiba and Florianópolis. Chile has about 14,000 in about 20 towns: Whoosh 8,000+, Lime 3,500, JET 2,000+. Whoosh's [authenticated collector](whoosh-app-map.md) now lists nine Brazilian and seven Chilean regions; its GBFS feeds remain private; Go Jet's app signing is reproduced by the Node collector, without a rider account; Lime Chile answers 404 for about 75 slugs. Lime has left Brazil. São Paulo and Rio receive live data for the city's use only, and datos.gob.cl and dados.gov.br have no scooter data. Check again on 1 April 2027 |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
 its other systems answer 401. Its [rider map](bolt-app-map.md) supplies its
@@ -1634,37 +1636,36 @@ Bonaire had feeds to add. Survey files are in
   scooters has frozen, so read that town from its ATOM id. Check again every
   few weeks until the move is done, at one request a second on
   `zeus.rideatom.com`; id 189 is a warehouse.
-- **Monday 16 November 2026:** Rome's operator selection. Bids close at 15:00
-  on Monday 2 November 2026, extended on 15 October from 26 October
+- **Mid-December 2026:** Rome's operator selection. Bids closed at 15:00 on
+  Monday 2 November 2026
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/),
-  updated 29 October). A commission then ranks the bids, with no date set,
-  and the first three scooter operators get permits, with 150 days from the
+  unchanged since 29 October). Nine companies bid, seven for e-bikes and
+  scooters and two for e-bikes only, none named
+  ([Roma Servizi per la Mobilità, 6 November](https://romamobilita.it/primo-piano/bici-e-monopattini-sharing-verso-il-nuovo-affidamento-nove-grandi-aziende-per-la-selezione/)).
+  A commission ranks the bids, with no date set; on 17 November Il Messaggero
+  expected the award "nelle prossime settimane"
+  ([Il Messaggero](https://www.ilmessaggero.it/roma/metropoli/bici_monopattini_roma_concessioni_sharing_controlli-9894096.html)).
+  The first three scooter operators then get permits, with 150 days from the
   permit to start.
   Rome's scooter permits ran to 31 August 2026 and are extended (D.D. QG
   1649/2026) "limitatamente al periodo strettamente necessario alla
   conclusione della nuova procedura di selezione" (D.D. QG 1803/2026, 24
-  September); only the press gives 31 October as the end, and no act re-dates
-  it. On 1 November no ranking was published and no report named a winner,
-  and Bird Roma still published, fresh (ttl 60 s): about 3,790 available
-  scooters in five polls from 10:15 to 10:35 UTC, 8 to 15 of them appearing
-  or going between polls five minutes apart. The map held 3,990 Dott and
-  4,290 Lime scooters there too. The call asks the winners for GBFS and MDS data shared with Roma Servizi per la
-  Mobilità and "terze parti", not for a public feed or a licence (Avviso art.
-  6.5, Allegato E). MobilityData lists no other Rome scooter feed: Cooltra
-  Rome's lists mopeds and e-bikes. Check the ranking, any act on the current
-  permits, and whether the winners publish; until then Bird's count in the
-  cache is the daily signal.
-- **18 November 2026:** Hopp Złotów (`hopp_pl_zlotow`). Its daily high fell
-  from 7 scooters on 20 October 2026 to none on 3 November, one at a time,
-  with none charged again; on 4 November its feed listed 22, all disabled at
-  0 % battery and range, at 22 spots about town rather than in a depot. No
-  break was found on Hopp's pages or elsewhere, but Hopp's locations page no
-  longer lists Złotów (its Polish towns: Września, Piła, Oborniki, Wągrowiec,
-  Silesia and Gliwice), and `hopp.bike/in/zlotow` answers 404. Knurów (7 of
-  18 enabled) and Września (11 of 20) still run. The town stays listed and
-  polled; its "feed empty" alert is silenced in Grafana until 18 November,
-  08:00 UTC. Then read the feed and Hopp's pages: if none is charged again,
-  take it off the map.
+  September); the press gives 31 October as their end and says they run on
+  "in regime di proroga" until the award, and no act found re-dates them.
+  After a man hit by a private scooter on 6 November died, the mayor
+  announced an independent commission of experts to weigh "un'eventuale
+  eliminazione dello sharing", with no members or deadline named
+  ([La Capitale, 17 November](https://www.lacapitale.it/articolo/monopattini-roma-gualtieri-commissione-sharing-cervellati));
+  no report says the selection is paused. On 21 November no ranking was
+  published and no appeal to the TAR was found, and over the 14 days before,
+  the cache's daily highs in Rome were 3,550 to 4,230 Bird, 4,020 to 4,220
+  Dott and 4,640 to 5,460 Lime scooters. The call asks the winners for GBFS
+  and MDS data shared with Roma Servizi per la Mobilità and "terze parti",
+  not for a public feed or a licence (Avviso art. 6.5, Allegato E).
+  MobilityData lists no other Rome scooter feed: Cooltra Rome's lists mopeds
+  and e-bikes. Check the ranking, any act on the current permits, the
+  commission's findings, and whether the winners publish; until then Bird's
+  count in the cache is the daily signal.
 - **Mid-November 2026, an evening in Riyadh:** Dott Riyadh, in Boulevard
   City (`riyadh`): 93 to 99 scooters and about 10 rides on 15 October 2026.
   On Friday 23 October, with Riyadh Season open there, it held 44 or 45, and
@@ -1882,13 +1883,26 @@ Bonaire had feeds to add. Survey files are in
   art. 124 of Ley 9078 on SCIJ, and update the
   [Costa Rican guide's rules](costa-rican-scooter-feeds.md#rules) if either
   says anything of e-scooters.
-- **Mid-November 2026:** Bærum's and Asker's winter dates. Both towns close
-  renting in winter on dates each year's announcement sets (Bærum's season
-  ended on 10 December in 2025), and none was published by 22 October 2026,
-  nor by 1 November (Bærum's page was last updated on 27 April, Asker's on 21
-  August).
-  Once they are, give Voi's Bærum / Asker feed and Ryde's Asker and Bærum
-  feeds a `seasonal` window, as Lillestrøm's.
+- **Early December 2026:** Bærum's and Asker's winter dates. Both towns close
+  renting in winter (Bærum's season ended on 10 December in 2025), and
+  neither had published a date by 21 November 2026: Bærum's page was last
+  updated on 27 April, Asker's on 21 August, and still says the season is
+  under way. Bærum's rules close the service while snow, ice or other
+  conditions make it unsafe, as its kommunedirektør decides
+  ([FOR-2026-02-04-201](https://lovdata.no/dokument/LF/forskrift/2026-02-04-201),
+  § 13), so its end follows the weather, not a set date; Asker's leave the
+  season's start and end to the permit's announcement
+  ([FOR-2026-02-03-213](https://lovdata.no/dokument/LF/forskrift/2026-02-03-213),
+  § 12). Ryde and Voi hold both towns' permits from 8 May 2026 to 31 March
+  2028 ([Ruter](https://www.mynewsdesk.com/no/ruter/pressreleases/stort-steg-for-delt-mikromobilitet-i-asker-og-baerum-3448000)).
+  Ryde began taking in its Asker scooters on 9 November, with snow forecast
+  ([Budstikka](https://www.budstikka.no/snovarsel-tar-inn-elsparkesykler/s/80-55-41166)):
+  the cache's daily high of `ryde_no_asker` fell from 652 on 7 November to
+  21 on 12 November and 2 to 21 since. `ryde_no_baerum`'s fell from about
+  2,200 to about 720, and `voi_no_baerum_asker` still held about 615 on 21
+  November. Once the towns set dates, give the three feeds a `seasonal`
+  window, as Lillestrøm's; if they set none, pause each from the day it
+  empties until spring.
 - **Early December 2026:** Ryde Bodø, paused from 1 December to 1 April by
   the season Bodø kommune gave for 2025. If its scooters are still ridden
   after 1 December, the 2026 terms changed: drop the pause.
