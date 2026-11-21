@@ -16,20 +16,23 @@
 // its own: on Android the iPhone app's button gives way, on an iPhone the
 // Android app's.
 
+import { SITE } from '@/lib/site';
+
 /**
- * The switch: off, the site says nothing of the test anywhere. On since 3 November 2026, once the
- * group and Play's opt-in page existed.
+ * The switch: off, the site says nothing of the test anywhere. On where the deployment names the app
+ * and the group (ANDROID_APP_ID and PLAY_TEST_GROUP, src/lib/siteSettings.ts), as scootradar.com has
+ * since 3 November 2026, once the group and Play's opt-in page existed.
  */
-export const PLAY_TEST_ON = true;
+export const PLAY_TEST_ON = SITE.ANDROID_APP_ID !== '' && SITE.PLAY_TEST_GROUP !== '';
 
 /** Where each step leads. */
 export const PLAY_TEST_LINKS = {
-  /** The group "ScootRadar Android testers", which anyone may join. */
-  group: 'https://groups.google.com/g/scootradar-android-testers',
+  /** The group the test admits, "ScootRadar Android testers" for scootradar.com, which anyone may join. */
+  group: SITE.PLAY_TEST_GROUP,
   /** Play's page that makes a member of the group a tester. */
-  optIn: 'https://play.google.com/apps/testing/com.plhery.scootradar',
+  optIn: `https://play.google.com/apps/testing/${SITE.ANDROID_APP_ID}`,
   /** The app on Google Play, which shows a tester the test's build. */
-  install: 'https://play.google.com/store/apps/details?id=com.plhery.scootradar',
+  install: `https://play.google.com/store/apps/details?id=${SITE.ANDROID_APP_ID}`,
 } as const;
 
 export const PLAY_TEST_STEPS = ['group', 'optIn', 'install'] as const;
@@ -39,7 +42,7 @@ export type PlayTestStep = (typeof PLAY_TEST_STEPS)[number];
 export const MIN_ANDROID = 12;
 
 /** The app opens its links in the browser with this referrer: who has the app is not asked to test it. */
-const APP_REFERRER = 'android-app://com.plhery.scootradar';
+const APP_REFERRER = `android-app://${SITE.ANDROID_APP_ID}`;
 
 /**
  * What the browser's user agent says of Android. Chrome and Samsung Internet

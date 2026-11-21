@@ -1,10 +1,12 @@
 import { MAP_PASS_ACTION, MAP_PASS_PATH } from '@/lib/mapPass';
+import { SITE } from '@/lib/site';
 
 /**
- * The web map's Turnstile widget (DEPLOY.md, "Map passes"): invisible, for scootradar.com. Its secret is the
- * Worker's TURNSTILE_SECRET_KEY.
+ * The web map's Turnstile widget (DEPLOY.md, "Map passes"): invisible, for the site's host. Its key is the
+ * deployment's TURNSTILE_SITE_KEY, its secret the Worker's TURNSTILE_SECRET_KEY. Without a key the map never
+ * asks for a pass, and a Worker given the secret refuses it its scooters.
  */
-export const TURNSTILE_SITE_KEY = '0x4AAAAAAGHng4PaY6p_ONop';
+export const TURNSTILE_SITE_KEY = SITE.TURNSTILE_SITE_KEY;
 const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 /** After a try, passed or not, the next waits this long: a pass lasts a day, and a refused browser stays refused. */
 export const MAP_PASS_RETRY_MS = 10 * 60_000;
@@ -103,7 +105,7 @@ function tryForPass(now: number, delayMs: number): Promise<boolean> {
  * one first (server/visitorLedger.ts, PASS_GRACE_REQUESTS), and the map then gets it at once (mapPassNow).
  */
 export function askForMapPass(now = Date.now()): void {
-  if (running || now - triedAt < MAP_PASS_RETRY_MS || typeof document === 'undefined') return;
+  if (!TURNSTILE_SITE_KEY || running || now - triedAt < MAP_PASS_RETRY_MS || typeof document === 'undefined') return;
   void tryForPass(now, MAP_PASS_DELAY_MS);
 }
 
@@ -112,7 +114,7 @@ export function askForMapPass(now = Date.now()): void {
  * failed within MAP_PASS_URGENT_RETRY_MS. Resolves to whether this browser was given one.
  */
 export function mapPassNow(now = Date.now()): Promise<boolean> {
-  if (typeof document === 'undefined') return Promise.resolve(false);
+  if (!TURNSTILE_SITE_KEY || typeof document === 'undefined') return Promise.resolve(false);
   if (running) return running;
   if (now - failedAt < MAP_PASS_URGENT_RETRY_MS) return Promise.resolve(false);
   return tryForPass(now, 0);

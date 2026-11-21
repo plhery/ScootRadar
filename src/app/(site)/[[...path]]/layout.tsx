@@ -5,7 +5,7 @@ import { RELEASE_META } from '@/lib/errorReportsConfig';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
 import { PLAY_TEST_ON, PLAY_TEST_SCRIPT } from '@/lib/playTest';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL, SITE_NAME } from '@/lib/site';
 import { sitePageOf, sitePagePath, sitePaths, type SitePage } from '@/lib/sitePages';
 import { PlayTestSite } from '../playTest';
 import { display, text } from '../../fonts';
@@ -35,9 +35,9 @@ function followsSystem(page: SitePage): boolean {
 
 /** The title a page is counted under: the landing page's has been the same since it was first counted. */
 function countedTitle(page: SitePage): string {
-  if (page.kind === 'landing') return 'About — ScootRadar';
-  if (page.kind === 'guides') return 'Guides — ScootRadar';
-  return `${page.guide.name} — ScootRadar`;
+  if (page.kind === 'landing') return `About — ${SITE_NAME}`;
+  if (page.kind === 'guides') return `Guides — ${SITE_NAME}`;
+  return `${page.guide.name} — ${SITE_NAME}`;
 }
 
 export async function generateViewport({ params }: Props): Promise<Viewport> {

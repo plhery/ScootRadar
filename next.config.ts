@@ -4,11 +4,16 @@ import {
   API_CONTENT_SECURITY_POLICY,
   SERVICE_WORKER_CONTENT_SECURITY_POLICY,
 } from './src/lib/contentSecurityPolicy';
+import { siteSettings } from './src/lib/siteSettings';
+import { wranglerVars } from './src/lib/wranglerVars';
 
 initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // The deployment's settings, from the vars of wrangler.jsonc, which the Worker is given too: written into
+  // the pages and their scripts where src/lib/site.ts reads them (README.md, "Run your own").
+  env: siteSettings(wranglerVars()),
   // Workers Builds names the build after its commit, which every page carries (as "b" in its
   // data), so CI's Deploy job can tell when its commit is live (DEPLOY.md). Elsewhere Next
   // makes one up.

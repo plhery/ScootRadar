@@ -4,6 +4,7 @@ import { haversineM } from '@/lib/geo';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { BodyTooLargeError, readJsonBody } from '@/lib/readJsonBody';
 import { serverTiming } from '@/lib/scooterResponse';
+import { SERVICE_REFERER, SERVICE_USER_AGENT_WITH_CONTACT } from '@/lib/serviceIdentity';
 import { DEFAULT_WALK_ROUTE_API_URL, parseValhallaWalk, valhallaWalkRequest } from '@/lib/valhalla';
 import { WALK_ROUTE_MAX_M, type WalkRouteFailure } from '@/lib/walkRoute';
 
@@ -17,7 +18,6 @@ import { WALK_ROUTE_MAX_M, type WalkRouteFailure } from '@/lib/walkRoute';
 const UPSTREAM_TIMEOUT_MS = 8_000;
 // For all visitors together: FOSSGIS asks for one request a second at most.
 const UPSTREAM_LIMIT_KEY = 'walk-route-upstream';
-const USER_AGENT = 'scootradar/2.0 (scootradar.com; hello@scootradar.com)';
 
 type Point = [number, number];
 
@@ -91,8 +91,8 @@ export async function POST(request: NextRequest) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'User-Agent': USER_AGENT,
-        Referer: 'https://scootradar.com/',
+        'User-Agent': SERVICE_USER_AGENT_WITH_CONTACT,
+        Referer: SERVICE_REFERER,
       },
       body: JSON.stringify(valhallaWalkRequest(from, to)),
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),

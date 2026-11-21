@@ -3,10 +3,10 @@ import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import SmartAppBanner from '@/components/SmartAppBanner';
 import { SENTRY_BROWSER_DSN } from '@/lib/errorReportsConfig';
-import { MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
+import { ANALYTICS_SERVICE_HOST, CONTACT_EMAIL, MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
 
-const TITLE = 'Privacy — ScootRadar';
-const DESCRIPTION = 'How ScootRadar handles location, search, and service data.';
+const TITLE = `Privacy — ${SITE_NAME}`;
+const DESCRIPTION = `How ${SITE_NAME} handles location, search, and service data.`;
 
 // A shared link names this page, not the map: the layout's openGraph and twitter are the map's,
 // and a page that sets either replaces the whole of it.
@@ -42,13 +42,13 @@ export default function PrivacyPage() {
     <main className="legal-page" lang="en">
       <SmartAppBanner page="/privacy" />
       <article className="legal-content">
-        <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
+        <Link className="legal-back" href="/map">← Back to {SITE_NAME}</Link>
         <h1>Privacy</h1>
         <p>Last updated: 21 November 2026</p>
 
         <h2>Overview</h2>
         <p>
-          ScootRadar has no user accounts or advertising. It does not intentionally retain your precise location or address
+          {SITE_NAME} has no user accounts or advertising. It does not intentionally retain your precise location or address
           searches, except the last place you chose in the search, which stays on your device (see Local storage below).
         </p>
 
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           If you grant location permission, your browser or device provides your position to the
           app. Your position is used on the device to focus the map and calculate distances, and in
           the iOS and Android apps to tell day from night for their Automatic appearance. The
-          ScootRadar API receives the visible map bounds needed to find vehicles, but no
+          {' '}{SITE_NAME} API receives the visible map bounds needed to find vehicles, but no
           separate user-location coordinate, except for a walking route (see below). These
           values are not stored by the application, except in an error report when a request
           fails (see below).
@@ -73,9 +73,9 @@ export default function PrivacyPage() {
         <h2>Walking routes</h2>
         <p>
           When you press Directions on the website or in the Android app, the start of the walk (your location, or the
-          place you searched for) and the scooter or parking bay are sent through the ScootRadar
+          place you searched for) and the scooter or parking bay are sent through the {SITE_NAME}{' '}
           API, in the request body, to the Valhalla routing service run by FOSSGIS e.V. in Germany,
-          which keeps route requests in its server log. ScootRadar does not send your IP address
+          which keeps route requests in its server log. {SITE_NAME} does not send your IP address
           with them, and neither logs nor stores them. While the route is on the map, it is asked
           for again from where you are if you leave it, or if the scooter moves. In the iOS app,
           walking routes come from Apple Maps.
@@ -83,18 +83,18 @@ export default function PrivacyPage() {
 
         <h2>Address search</h2>
         <p>
-          Address search text is sent through the ScootRadar API, with the language the app is
+          Address search text is sent through the {SITE_NAME} API, with the language the app is
           shown in, to Geoapify, a search service on OpenStreetMap and other open data run by a
           company in Cyprus on servers in the European Union. When the map shows a city or less,
           the centre of the map, rounded to about a kilometre, is sent with it so that places
           nearby come first; when you follow your location, that centre is near you. When you
-          type an address followed by a city in the ScootRadar catalogue, that city&apos;s centre
+          type an address followed by a city in the {SITE_NAME} catalogue, that city&apos;s centre
           is sent instead. Without a centre, the country of your device&apos;s time zone, such as
           &ldquo;US&rdquo;, worked out on the device, is sent so that places in that country come
           first. Geoapify generally keeps the data of a successful request for no
           longer than 24 hours. When Geoapify cannot answer or finds nothing, the same is
           also sent to Photon, a search service on OpenStreetMap data run by komoot in
-          Germany. ScootRadar does not send your IP address with them. Cities in the ScootRadar
+          Germany. {SITE_NAME} does not send your IP address with them. Cities in the {SITE_NAME}{' '}
           catalogue are found without contacting either; their names are still sent to
           Geoapify, to find other towns of the same name. The current app sends search text in
           the request body, and instructs browsers and intermediary caches not to store the
@@ -104,7 +104,7 @@ export default function PrivacyPage() {
         <h2>Mobility data</h2>
         <p>
           Live vehicle data comes from the public data feeds that mobility providers and public
-          authorities publish, such as the Open data platform mobility Switzerland. ScootRadar
+          authorities publish, such as the Open data platform mobility Switzerland. {SITE_NAME}{' '}
           filters that data to the visible map area and does not build a history of vehicle
           movements.
         </p>
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
         <h2>Usage analytics</h2>
         <p>
           The public website and the iOS and Android apps send page or screen views and actions to our
-          self-hosted Umami service at u.plhery.com. These include which page of the website
+          self-hosted Umami service{ANALYTICS_SERVICE_HOST && ` at ${ANALYTICS_SERVICE_HOST}`}. These include which page of the website
           you view, a guide for example, and whether you open the map from it; searches (only
           result counts), filters, map selections, directions and rental button taps, settings
           changes, generic error outcomes and, from the website, reports of its own errors (see Error reports below).
@@ -158,7 +158,7 @@ export default function PrivacyPage() {
           outside their backups) so that the search can offer it again, until you choose another place
           or remove it with its &times;.
           The iOS and Android apps keep on your device the ride and parking zones of the cities they download
-          them for, such as Berlin, fetched from ScootRadar&apos;s website the first time the map
+          them for, such as Berlin, fetched from {SITE_NAME}&apos;s website the first time the map
           shows the city close up: the request names the city, not a position, and the zones are
           kept until the app or the system clears its cache. A
           service worker caches the application shell and static assets for faster and offline
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
         </p>
         <p>
           The iOS and Android apps do not use Turnstile: they get the same pass, held on your device until it expires
-          and sent with their requests for scooters, by proving in the background that they are ScootRadar&apos;s own
+          and sent with their requests for scooters, by proving in the background that they are {SITE_NAME}&apos;s own
           apps, when the server says they have none, at most once every 10 minutes. The iOS app uses Apple&apos;s App
           Attest: it makes a key in your device&apos;s Secure Enclave, which Apple certifies the first time, and signs
           the server&apos;s challenge with it. The Android app from Google Play uses Google&apos;s Play Integrity API,
@@ -214,7 +214,7 @@ export default function PrivacyPage() {
           and that day or hour, with a key only the server holds, kept across a restart until the day ends, so that an
           address making more than a map does is answered with the scooters already held. One day&apos;s hashes cannot
           be linked to the next&apos;s. The website tells the server whether a request for scooters came from a page of
-          ScootRadar, another site or none, never the page itself; the server only counts them.
+          {' '}{SITE_NAME}, another site or none, never the page itself; the server only counts them.
         </p>
         <p>
           An IP address (or IPv6 first half) found collecting the scooters with a script can be refused the
@@ -247,7 +247,7 @@ export default function PrivacyPage() {
           <p>
             The website sends these reports to Sentry too, with your browser&apos;s user agent (the
             name and version of your browser and system) and what happened on the page before the
-            error: the pages of the website you opened and its requests to the ScootRadar API, each by
+            error: the pages of the website you opened and its requests to the {SITE_NAME} API, each by
             its path alone and with the status of its answer. Unlike the analytics, they are sent
             whether usage analytics is on or off and whatever your Do Not Track and Global Privacy
             Control settings, as the server&apos;s reports are: they hold no identifier, and they are how
@@ -261,14 +261,14 @@ export default function PrivacyPage() {
         <p>
           You can withdraw location permission at any time in your browser or device settings, and
           turn off usage analytics as described above; the map works without either. Nothing
-          ScootRadar keeps is linked to an account or to you. To ask about an error report or have
+          {' '}{SITE_NAME} keeps is linked to an account or to you. To ask about an error report or have
           it deleted before its 90 days are up, write to us with the time and the place on the
           map, and we will delete it.
         </p>
 
         <h2 id="contact">Contact and third parties</h2>
         <p>
-          Questions and requests can be sent to <a href="mailto:hello@scootradar.com">hello@scootradar.com</a>.
+          {CONTACT_EMAIL && <>Questions and requests can be sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.{' '}</>}
           Third-party services have their own privacy policies: {' '}
           <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>, {' '}
           <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, {' '}

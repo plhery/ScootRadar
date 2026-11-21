@@ -20,6 +20,7 @@ import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, feedBase, isAppMapSystem, re
 import { passesMinimums } from '@/lib/range';
 import { addBatteryRanges, batteryFullRange } from '@/lib/batteryFullRanges';
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
+import { SERVICE_CLIENT, SERVICE_CONTACT, SERVICE_USER_AGENT } from '@/lib/serviceIdentity';
 import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
 import { systemServesPoint } from '@/lib/townOutlines';
@@ -48,7 +49,6 @@ const METADATA_REVALIDATE_SECONDS = 3600;
 const STATUS_STALE_IF_ERROR_SECONDS = VEHICLE_MAX_AGE_MS / 1000;
 const METADATA_STALE_IF_ERROR_SECONDS = 86400;
 const FETCH_TIMEOUT_MS = 15_000;
-const DEFAULT_AUTH_EMAIL = 'hello@scootradar.com';
 
 type AvailabilityFlag = boolean | 0 | 1;
 
@@ -425,18 +425,21 @@ export class ScooterFeedsUnavailableError extends Error {
   }
 }
 
+// sharedmobility.ch asks for an email address as the Authorization: SHAREDMOBILITY_AUTH_EMAIL, or the
+// deployment's contact.
 function sharedMobilityHeaders(): Record<string, string> {
+  const contact = process.env.SHAREDMOBILITY_AUTH_EMAIL || SERVICE_CONTACT;
   return {
     Accept: 'application/json',
-    Authorization: process.env.SHAREDMOBILITY_AUTH_EMAIL ?? DEFAULT_AUTH_EMAIL,
-    'User-Agent': 'scootradar/2.0 (scootradar.com)',
+    ...(contact ? { Authorization: contact } : {}),
+    'User-Agent': SERVICE_USER_AGENT,
   };
 }
 
 // Entur, Norway's open mobility API, answers only clients that name themselves
 // as "<company>-<application>" (developer.entur.no/docs/getting-started).
 export const HOST_HEADERS: Record<string, Record<string, string>> = {
-  'api.entur.io': { 'ET-Client-Name': 'scootradar-map' },
+  'api.entur.io': { 'ET-Client-Name': `${SERVICE_CLIENT}-map` },
 };
 
 // NRW.Mobidrom, North Rhine-Westphalia's mobility data platform, serves Voi's, Bolt's and Lime's
@@ -463,7 +466,7 @@ export async function fetchJson<T>(
   const headers = {
     ...(options.authenticated
       ? sharedMobilityHeaders()
-      : { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' }),
+      : { Accept: 'application/json', 'User-Agent': SERVICE_USER_AGENT }),
     ...HOST_HEADERS[host],
   };
 

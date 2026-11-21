@@ -1,5 +1,6 @@
 import { boundsCenter, boundsIntersect, haversineM } from './geo';
 import type { MapBounds } from './types';
+import { SERVICE_USER_AGENT } from './serviceIdentity';
 import { simplifyRing, storedZone, type StoredZone, type ZoneKind } from './zones';
 
 // GCOO publishes no GBFS feed, but its app's area file for America, region.gbike.io's
@@ -109,7 +110,7 @@ async function readBounded(stream: ReadableStream<Uint8Array> | null, maxBytes: 
 
 /** The file as JSON: gzipped as a file, not as the response's encoding, unless a fetch already undid it. */
 async function readAreaFile(url: string): Promise<unknown> {
-  const response = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' },
+  const response = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': SERVICE_USER_AGENT },
     redirect: 'error', signal: AbortSignal.timeout(TIMEOUT_MS) });
   if (!response.ok) {
     await response.body?.cancel().catch(() => undefined);

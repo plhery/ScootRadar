@@ -330,6 +330,7 @@ xcrun simctl openurl booted "https://scootradar.com/map?origin=47.3769,8.5417"
 
 Every link from scootradar.com to the App Store is a campaign link, built by
 `appStoreUrl()` in `src/lib/appStore.ts`: the provider token `pt=129628155`
+(the vars `APP_STORE_ID` and `APP_STORE_PROVIDER_TOKEN` in `wrangler.jsonc`)
 and a campaign `ct` for where it sits, which App Analytics counts under
 Sources › Campaigns.
 

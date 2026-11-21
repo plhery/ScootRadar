@@ -1,6 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { GUIDES } from '@/guides';
-import { guidePath, guidesIn, guidesPath, translationsOf } from '@/lib/guides';
+import { GUIDES, guidePath, guidesIn, guidesPath, translationsOf } from '@/lib/guides';
 import { DEFAULT_LANDING_LOCALE, LANDING_LOCALES, landingPath } from '@/lib/landingCopy';
 import { LANDING_SNAPSHOT_DATE } from '@/lib/landingSnapshot';
 import { MAP_PATH } from '@/lib/mapAddress';

@@ -10,7 +10,8 @@ Dashboards, one website each in Umami:
   the Android app (created 28 October 2026, before its first release), tag `android`.
 
 All three clients POST to `https://u.plhery.com/api/send`, each with its public website ID:
-`6e60b4ab-b4ee-4785-9699-a7f32127b358` from the web (`src/lib/analytics.ts`),
+`6e60b4ab-b4ee-4785-9699-a7f32127b358` from the web (the vars `ANALYTICS_URL` and
+`ANALYTICS_WEBSITE_ID` in `wrangler.jsonc`, read by `src/lib/analytics.ts`; a copy without them counts nothing),
 `72c49567-e00d-4a92-bfaf-d1ae7b083fd8` from the iOS app (`ScooterAnalytics.swift`),
 `2bba24f8-8180-4616-ae0e-4bc528957c85` from the Android app (`ScooterAnalytics.kt`). No
 API/admin secret is shipped. The Umami admin dashboard remains protected

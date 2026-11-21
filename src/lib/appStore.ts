@@ -1,13 +1,19 @@
 // The iPhone app on the App Store, and the site's links to it. Each place a
 // link sits is a campaign of its own (App Store Connect's campaign links), so
-// App Analytics counts what each one brings. It imports nothing:
-// scripts/generate-app-store-qr.mjs reads it as it is.
+// App Analytics counts what each one brings. The app is the deployment's
+// APP_STORE_ID (src/lib/siteSettings.ts): without one the site shows no iPhone
+// app, no button, no QR code and no Smart App Banner.
 
-/** The app's Apple ID. */
-export const APP_STORE_ID = '6823614854';
+import { SITE } from './site';
+
+/** The app's Apple ID, or '' where the site has no iPhone app. */
+export const APP_STORE_ID = SITE.APP_STORE_ID;
+
+/** Whether the site shows an iPhone app at all. */
+export const APP_STORE_ON = APP_STORE_ID !== '';
 
 /** The token of the account that publishes the app, the same in every campaign link and public in each. */
-const PROVIDER_TOKEN = '129628155';
+const PROVIDER_TOKEN = SITE.APP_STORE_PROVIDER_TOKEN;
 
 /** Where a link to the App Store sits, each in at most the 30 characters App Store Connect allows. */
 export const APP_STORE_CAMPAIGNS = [
@@ -26,6 +32,7 @@ export type AppStoreCampaign = (typeof APP_STORE_CAMPAIGNS)[number];
 
 /** The app's page on the App Store, from this place on the site. */
 export function appStoreUrl(campaign: AppStoreCampaign): string {
+  if (!PROVIDER_TOKEN) return `https://apps.apple.com/app/id${APP_STORE_ID}`;
   return `https://apps.apple.com/app/apple-store/id${APP_STORE_ID}?pt=${PROVIDER_TOKEN}&ct=${campaign}&mt=8`;
 }
 
@@ -43,7 +50,8 @@ export const SMART_APP_BANNER = 'apple-itunes-app';
 export function smartAppBanner(page: string | URL): string {
   const address = new URL(page);
   address.hash = '';
-  return `app-id=${APP_STORE_ID}, app-argument=${address.href.replaceAll(',', '%2C')}, affiliate-data=pt=${PROVIDER_TOKEN}&ct=web-banner`;
+  const banner = `app-id=${APP_STORE_ID}, app-argument=${address.href.replaceAll(',', '%2C')}`;
+  return PROVIDER_TOKEN ? `${banner}, affiliate-data=pt=${PROVIDER_TOKEN}&ct=web-banner` : banner;
 }
 
 /**

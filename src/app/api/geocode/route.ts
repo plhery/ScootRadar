@@ -6,6 +6,7 @@ import { isPointCovered } from '@/lib/catalogCoverage';
 import { haversineM } from '@/lib/geo';
 import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
 import { serverTiming } from '@/lib/scooterResponse';
+import { SERVICE_USER_AGENT } from '@/lib/serviceIdentity';
 import { searchText, searchWords, westernDigits } from '@/lib/searchText';
 import { streetAddress, townLine } from './addressFormats';
 import {
@@ -341,7 +342,7 @@ function validCoordinate(lat: number, lng: number): boolean {
 async function fetchJson(url: URL, headers: Record<string, string>, timeoutMs: number): Promise<Upstream<unknown>> {
   try {
     const response = await fetch(url, {
-      headers: { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)', ...headers },
+      headers: { Accept: 'application/json', 'User-Agent': SERVICE_USER_AGENT, ...headers },
       signal: AbortSignal.timeout(Math.max(0, timeoutMs)),
     });
     if (response.status === 429) return { ok: false, failure: 'rateLimited' };

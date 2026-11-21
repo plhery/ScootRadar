@@ -7,12 +7,13 @@ import { flushSync } from 'react-dom';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
 import { formatMinimumRange, rangeFilterHelp, rangeScale, rangeSteps, rangeStepsMeters } from '@/lib/rangeSlider';
+import { SITE } from '@/lib/site';
 import { isSingular } from '@/lib/uiText';
 import { measurementSystem, type UnitsChoice } from '@/lib/walking';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
 import { providerSurfaceColor } from '@/lib/providerColor';
 import { selectionFeedback } from '@/lib/feedback';
-import { appStoreUrl } from '@/lib/appStore';
+import { APP_STORE_ON, appStoreUrl } from '@/lib/appStore';
 import { useIPhone } from '@/lib/useIPhone';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { playTest, usePlayTestAudience } from '@/lib/usePlayTest';
@@ -57,8 +58,6 @@ const MAP_STYLES: { name: MapStyleName; label: TranslationKey }[] = [
   { name: 'calm', label: 'set.calm' },
   { name: 'detailed', label: 'set.detailed' },
 ];
-
-const SOURCE_CODE_URL = 'https://github.com/plhery/ScootRadar';
 
 /** How long the range slider rests on a minimum before it is counted (range_filter), as in the apps. */
 const RANGE_REST_MS = 1000;
@@ -415,7 +414,7 @@ export default function ControlSheet({
           <section className="settings-section">
             <h3>{t('set.about')}</h3>
             <div className="settings-group about-rows">
-              {iPhone && (
+              {iPhone && APP_STORE_ON && (
                 <a href={appStoreUrl('web-map-settings')}>
                   <span className="app-row-name">
                     {/* eslint-disable-next-line @next/next/no-img-element -- The app's own icon, kept offline with the map. */}
@@ -454,7 +453,7 @@ export default function ControlSheet({
                 {t('set.privacy')}
                 <Icon name="chevron" size={16} strokeWidth={2.2} />
               </a>
-              <a href={SOURCE_CODE_URL} target="_blank" rel="noreferrer">
+              <a href={SITE.SOURCE_URL} target="_blank" rel="noreferrer">
                 {t('set.source')}
                 <Icon name="chevron" size={16} strokeWidth={2.2} />
               </a>

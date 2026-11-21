@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import SmartAppBanner from '@/components/SmartAppBanner';
-import { MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
+import { CONTACT_EMAIL, MAP_SHARE_IMAGE, SITE_NAME } from '@/lib/site';
 
-const TITLE = 'Accessibility — ScootRadar';
+const TITLE = `Accessibility — ${SITE_NAME}`;
 const DESCRIPTION =
-  'Which accessibility features the ScootRadar app for iPhone and iPad supports, what comes next, and its known gaps, with what to do meanwhile.';
+  `Which accessibility features the ${SITE_NAME} app for iPhone and iPad supports, what comes next, and its known gaps, with what to do meanwhile.`;
 
 // A shared link names this page, not the map: the layout's openGraph and twitter are the map's,
 // and a page that sets either replaces the whole of it.
@@ -46,12 +46,12 @@ export default function AccessibilityPage() {
     <main className="legal-page" lang="en">
       <SmartAppBanner page="/accessibility" />
       <article className="legal-content">
-        <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
+        <Link className="legal-back" href="/map">← Back to {SITE_NAME}</Link>
         <h1>Accessibility</h1>
-        <p>This page is about the ScootRadar app on the App Store, for iPhone and iPad.</p>
+        <p>This page is about the {SITE_NAME} app on the App Store, for iPhone and iPad.</p>
 
         <h2>Works today</h2>
-        <p>The App Store lists three accessibility features for ScootRadar, on iPhone and iPad:</p>
+        <p>The App Store lists three accessibility features for {SITE_NAME}, on iPhone and iPad:</p>
         <ul>
           <li>
             <strong>Dark Interface:</strong> Settings › Appearance › Dark keeps the whole app dark,
@@ -130,7 +130,7 @@ export default function AccessibilityPage() {
 
         <h2 id="contact">Report a problem</h2>
         <p>
-          Write to <a href="mailto:hello@scootradar.com">hello@scootradar.com</a>. Tell us which
+          {CONTACT_EMAIL && <>Write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.{' '}</>}Tell us which
           device and which screen, and the feature you use, such as VoiceOver or Larger Text.
         </p>
 

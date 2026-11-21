@@ -1,9 +1,12 @@
 import { MAP_PATH } from '@/lib/mapAddress';
+import { SITE, SITE_HOST, SITE_NAME } from '@/lib/site';
 
-// First-party, cookie-free Umami collection. Never accept arbitrary URLs or data.
-export const ANALYTICS_ENDPOINT = 'https://u.plhery.com/api/send';
-export const ANALYTICS_WEBSITE = '6e60b4ab-b4ee-4785-9699-a7f32127b358';
-export const ANALYTICS_HOST = 'scootradar.com';
+// First-party, cookie-free Umami collection. Never accept arbitrary URLs or data. Where and as which
+// website: the deployment's ANALYTICS_URL and ANALYTICS_WEBSITE_ID (src/lib/siteSettings.ts); without
+// them nothing is sent. Only the site's own host counts, never a copy of a page served elsewhere.
+export const ANALYTICS_ENDPOINT = SITE.ANALYTICS_URL;
+export const ANALYTICS_WEBSITE = SITE.ANALYTICS_WEBSITE_ID;
+export const ANALYTICS_HOST = SITE_HOST;
 export type AnalyticsEvent =
   | 'search_open' | 'search_close' | 'search_results' | 'search_error' | 'search_select' | 'search_clear' | 'search_forget'
   | 'filters_open' | 'settings_open' | 'panel_close' | 'provider_filter' | 'providers_all' | 'filters_reset'
@@ -32,6 +35,7 @@ export function safeAnalyticsData(data: AnalyticsData): Record<string, string | 
 }
 
 export function analyticsEnabled(): boolean {
+  if (!ANALYTICS_ENDPOINT || !ANALYTICS_WEBSITE) return false;
   if (typeof window === 'undefined' || window.location.hostname !== ANALYTICS_HOST) return false;
   if (navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return false;
   try { return !localStorage.getItem('umami.disabled'); } catch { return false; }
@@ -41,18 +45,18 @@ export function analyticsEnabled(): boolean {
 // page, one per language, English at "/": src/lib/landingCopy.ts. The pages of
 // the site (the landing page, the guides and their lists) give theirs: PageView.
 const PUBLIC_PAGES = new Map([
-  [MAP_PATH, 'ScootRadar'],
-  ['/privacy', 'Privacy — ScootRadar'],
-  ['/accessibility', 'Accessibility — ScootRadar'],
-  ['/', 'About — ScootRadar'],
-  ['/de', 'About — ScootRadar'],
-  ['/fr', 'About — ScootRadar'],
-  ['/it', 'About — ScootRadar'],
-  ['/nl', 'About — ScootRadar'],
-  ['/nb', 'About — ScootRadar'],
-  ['/pt', 'About — ScootRadar'],
-  ['/es', 'About — ScootRadar'],
-  ['/is', 'About — ScootRadar'],
+  [MAP_PATH, `${SITE_NAME}`],
+  ['/privacy', `Privacy — ${SITE_NAME}`],
+  ['/accessibility', `Accessibility — ${SITE_NAME}`],
+  ['/', `About — ${SITE_NAME}`],
+  ['/de', `About — ${SITE_NAME}`],
+  ['/fr', `About — ${SITE_NAME}`],
+  ['/it', `About — ${SITE_NAME}`],
+  ['/nl', `About — ${SITE_NAME}`],
+  ['/nb', `About — ${SITE_NAME}`],
+  ['/pt', `About — ${SITE_NAME}`],
+  ['/es', `About — ${SITE_NAME}`],
+  ['/is', `About — ${SITE_NAME}`],
 ]);
 
 /** A page of the site, counted under its address and title as its layout gives them. */
@@ -155,7 +159,7 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}, page?: C
     // first view's campaign tags: what is not one of them is counted as the map, which sends every
     // event but the page views.
     url: countedPath(given) + (source?.query ?? ''),
-    title: counted?.title.slice(0, 120) ?? PUBLIC_PAGES.get(window.location.pathname) ?? 'ScootRadar',
+    title: counted?.title.slice(0, 120) ?? PUBLIC_PAGES.get(window.location.pathname) ?? `${SITE_NAME}`,
     referrer: source?.referrer ?? '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };

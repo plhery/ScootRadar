@@ -8,10 +8,11 @@
 // written as apostrophes, German the Swiss way, French with a no-break space
 // before its double punctuation.
 
-import { GUIDES } from '@/guides';
+import { GUIDES as WRITTEN } from '@/guides';
 import { COVERED_CITIES } from '@/lib/coveredCities';
 import { DEFAULT_LANDING_LOCALE, LANDING_LOCALES, type LandingLocale } from '@/lib/landingCopy';
 import { mapAt } from '@/lib/mapAddress';
+import { GUIDES_PUBLISHED } from '@/lib/site';
 
 /**
  * Words with links and emphasis in them. A link is written [the words](where),
@@ -59,6 +60,14 @@ export interface Guide {
   faq: readonly { question: string; answer: GuideText }[];
   sources: readonly { title: string; url: string }[];
 }
+
+/**
+ * The guides the site publishes: all those written, where the deployment's SITE_GUIDES is on
+ * (src/lib/siteSettings.ts), and none where it is not. The texts are ScootRadar's, not the code's
+ * (TRADEMARKS.md): without them a copy has no guide pages, no guides in its sitemap and no links to
+ * them, and each guide address is not found.
+ */
+export const GUIDES: readonly Guide[] = GUIDES_PUBLISHED ? WRITTEN : [];
 
 /** The word of the guides' addresses, in each language: what its footer calls them. */
 export const GUIDES_SEGMENT: Record<LandingLocale, string> = {

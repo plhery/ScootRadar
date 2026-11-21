@@ -1,4 +1,5 @@
 import { SENTRY_BROWSER_DSN, sentryIngestOrigin } from './errorReportsConfig';
+import { SITE } from './site';
 
 const policy = (directives: string[]): string => `${directives.join('; ')};`;
 
@@ -12,13 +13,17 @@ export function documentContentSecurityPolicy({
   development,
   upgradeInsecureRequests = !development,
   sentryDsn = SENTRY_BROWSER_DSN,
+  analyticsUrl = SITE.ANALYTICS_URL,
 }: {
   nonce: string;
   development: boolean;
   upgradeInsecureRequests?: boolean;
   sentryDsn?: string;
+  /** Umami's address for events, where the deployment counts visits (ANALYTICS_URL). */
+  analyticsUrl?: string;
 }): string {
   const nonceSource = `'nonce-${nonce}'`;
+  const analytics = !development && analyticsUrl ? new URL(analyticsUrl).origin : null;
   // Where the page's error reports go once the website has a Sentry project (src/lib/errorReports.ts).
   const sentry = development ? null : sentryIngestOrigin(sentryDsn);
 
@@ -34,7 +39,7 @@ export function documentContentSecurityPolicy({
     "font-src 'self'",
     "img-src 'self' data:",
     // The map's vector tiles, which the page draws itself, the analytics, and Sentry once set.
-    `connect-src 'self' ${MAP_TILES_ORIGIN}${development ? ' ws: wss:' : ' https://u.plhery.com'}${sentry ? ` ${sentry}` : ''}`,
+    `connect-src 'self' ${MAP_TILES_ORIGIN}${development ? ' ws: wss:' : ''}${analytics ? ` ${analytics}` : ''}${sentry ? ` ${sentry}` : ''}`,
     `worker-src 'self'${development ? ' blob:' : ''}`,
     "child-src 'self'",
     `frame-src ${TURNSTILE_ORIGIN}`,

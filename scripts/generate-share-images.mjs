@@ -14,7 +14,7 @@ import { readFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
-import { transform } from 'esbuild';
+import { loadSiteModule } from './site-module.mjs';
 import sharp from 'sharp';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -22,14 +22,10 @@ const out = path.join(root, 'public/share');
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// The words of the page, its snapshot and the name of the site import nothing but types: they compile on their own.
-async function load(file) {
-  const { code } = await transform(readFileSync(path.join(root, file), 'utf8'), { loader: 'ts', format: 'esm' });
-  return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
-}
-const { LANDING_COPY, LANDING_LOCALES } = await load('src/lib/landingCopy.ts');
-const { LANDING_NEAREST } = await load('src/lib/landingSnapshot.ts');
-const { SITE_NAME } = await load('src/lib/site.ts');
+// The words of the page, its snapshot and the name of the site, as the deployment's settings make them.
+const { LANDING_COPY, LANDING_LOCALES } = await loadSiteModule('src/lib/landingCopy.ts');
+const { LANDING_NEAREST } = await loadSiteModule('src/lib/landingSnapshot.ts');
+const { SITE_NAME } = await loadSiteModule('src/lib/site.ts');
 const providers = JSON.parse(readFileSync(path.join(root, 'data/providers.json'), 'utf8'));
 
 // As on the page: Bird's and Swing's black would vanish on the night, so their tiles

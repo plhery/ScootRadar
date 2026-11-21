@@ -12,7 +12,7 @@ import "../globals.css";
 
 // The map is one address in every language; what a search engine reads of it is in English, and
 // its description fits the 160 characters a search engine shows.
-const TITLE = "Live e-scooter map: Lime, Bolt, Bird, Voi, Dott | ScootRadar";
+const TITLE = `Live e-scooter map: Lime, Bolt, Bird, Voi, Dott | ${SITE_NAME}`;
 const DESCRIPTION =
   "Every e-scooter near you on a live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike and Zeus, with battery, walking time and price. Free, no account.";
 

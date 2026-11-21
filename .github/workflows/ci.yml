@@ -197,7 +197,8 @@ jobs:
   deploy:
     name: Deploy
     needs: [web, e2e, ios]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # scootradar.com's own deploy: a fork's main has no production branches for it to move (README.md, "Run your own").
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'plhery/ScootRadar'
     runs-on: ubuntu-latest
     timeout-minutes: 22
     concurrency:

@@ -27,8 +27,16 @@ The cache refuses to start in production without it; the Worker fails closed if
 its secret is absent. Store it as a Coolify environment secret and a Wrangler
 encrypted secret, never in `wrangler.jsonc` or source control. No database is required. The optional
 `SHAREDMOBILITY_AUTH_EMAIL` setting is a public contact identifier, not a
-credential. Do not put actual credentials in Wrangler `vars`; use encrypted
+credential; `CONTACT_EMAIL` stands in where it is unset. Do not put actual credentials in Wrangler `vars`; use encrypted
 Worker secrets if future features require them.
+
+The website's settings are the `vars` of `wrangler.jsonc` (README.md, "Run your own"), which
+the build and the Worker both read. The cache does not read that file: it takes the three it
+names itself with to the feeds, in its user agent and its contacts, from its own environment.
+Production's Coolify app sets `SITE_NAME=ScootRadar`, `SITE_URL=https://scootradar.com` and
+`CONTACT_EMAIL=hello@scootradar.com` (since 21 November 2026), so the feeds see
+`scootradar/2.0 (scootradar.com)` as before; without them it would name itself
+`scooter-map/2.0 (localhost:3000)`.
 
 The cache also reads `METRICS_TOKEN` (at least 32 characters in production), which
 opens `/metrics` to Prometheus, and `SENTRY_DSN`, which turns on Sentry. Both are
@@ -189,8 +197,9 @@ address text when Geoapify cannot answer or finds nothing.
 
 The web map proves it is a browser with Cloudflare Turnstile (docs/OBSERVABILITY.md,
 "Scraping"): the widget "ScootRadar map", invisible, for `scootradar.com` alone, in
-the account's Turnstile settings. Its site key is `TURNSTILE_SITE_KEY` in
-`src/lib/mapPassClient.ts`; its secret is the Worker secret `TURNSTILE_SECRET_KEY`,
+the account's Turnstile settings. Its site key is the var `TURNSTILE_SITE_KEY` in
+`wrangler.jsonc` (README.md, "Run your own"), which the map reads in
+`src/lib/mapPassClient.ts`; without it the map never asks for a pass. Its secret is the Worker secret `TURNSTILE_SECRET_KEY`,
 and `MAP_PASS_SECRET` (32 random bytes, e.g. `openssl rand -base64 32`) signs the
 pass cookie, both stored with `npx wrangler secret put …`. Without either, the Worker
 asks no browser for a pass and `/api/pass` answers a browser 503; every browser's

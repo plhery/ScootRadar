@@ -1,3 +1,5 @@
+import { SERVICE_NAME, SERVICE_ORIGIN } from './serviceIdentity';
+
 /**
  * Who a request for scooters comes from, as the Worker makes it out (scooterProxy.ts) and tells the cache in
  * SCOOTER_CLIENT_HEADER, which only an authenticated Worker may set:
@@ -32,7 +34,7 @@ export const isBrowserUserAgent = (agent: string | null | undefined) =>
   !!agent && /^Mozilla\/5\.0 \(/.test(agent) && /AppleWebKit\/|Gecko\//.test(agent);
 
 /** What the Worker answers, 403, a request for the scooter data it refuses (scooterProxy.ts, scooterBans.ts). */
-export const NOT_OURS_MESSAGE = 'The scooter data is only for the ScootRadar map and apps.';
+export const NOT_OURS_MESSAGE = `The scooter data is only for the ${SERVICE_NAME} map and apps.`;
 
 /**
  * What a request says it is by its user agent, which the Worker tells the cache in SCOOTER_AGENT_HEADER: our
@@ -63,9 +65,9 @@ export const SCOOTER_REFERRERS: readonly ScooterReferrer[] = ['own', 'other', 'n
 
 export const SCOOTER_REFERRER_HEADER = 'X-Scooter-Referrer';
 
-// The website's origin (SITE_URL in site.ts, which the cache is not built with). www.scootradar.com and the legacy
+// The website's origin, the deployment's SITE_URL (serviceIdentity.ts). Its www. host and scootradar.com's legacy
 // hosts lead their pages there, so the map's requests never carry theirs.
-const OWN_ORIGIN = 'https://scootradar.com';
+const OWN_ORIGIN = SERVICE_ORIGIN;
 
 export function scooterReferrer(referrer: string | null | undefined): ScooterReferrer {
   if (!referrer) return 'none';

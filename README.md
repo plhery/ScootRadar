@@ -105,7 +105,9 @@ npm run dev
 ```
 
 Open [localhost:3000](http://localhost:3000). That's all: there are no
-environment variables, API keys, databases or accounts to set up.
+environment variables, API keys, databases or accounts to set up. It runs as
+scootradar.com, from the settings in `wrangler.jsonc`; to run a copy of your
+own, see [Run your own](#run-your-own).
 
 [CONTRIBUTING.md](CONTRIBUTING.md) lists the checks to run before a pull
 request, and [Adding a country](docs/adding-a-country.md) walks through a new
@@ -179,24 +181,138 @@ goes on; the release notes and the repository's entry say so. The app's entry in
 repository, with the anti-features F-Droid shows, is
 [`android/fdroid/com.plhery.scootradar.yml`](android/fdroid/com.plhery.scootradar.yml).
 
-## Host your own
+## Run your own
 
-The included configuration targets Cloudflare Workers through OpenNext. Give
-your fork a Worker name and hostname in `wrangler.jsonc`. Deploy the persistent
-cache with `server/Dockerfile` and a `/data` volume, and set
-`SCOOTER_SNAPSHOT_API_URL` to that origin. Configure the same
-`SCOOTER_SNAPSHOT_API_TOKEN` secret on the cache and the Worker (see the first
-rollout's order in [DEPLOY.md](DEPLOY.md)). Then:
+Anyone can run the code under a name of their own. Without settings it is a
+neutral "Scooter map": no guides, no apps, no analytics, nothing of
+ScootRadar's own, which the code's license doesn't cover
+([Name, logo and guides](#name-logo-and-guides)).
+
+### What you need
+
+- Node.js 26+ and npm.
+- To put it on the web, a Cloudflare account: the site runs on Cloudflare
+  Workers through OpenNext.
+- Optionally, a server with Docker for the scooter cache (below).
+
+No database and no API key: the feeds the map reads are public.
+
+### Settings
+
+The settings are the `vars` of `wrangler.jsonc`. The build reads them
+(`next.config.ts`) and writes them into the pages, and the Worker is given them
+when it runs, so both always say the same; `npm run dev`, the tests and the
+scripts read the same file. The repository's are scootradar.com's: replace
+them, or delete a line to take its default. A value the code can't use, such as
+an address that isn't one or a switch that isn't `on` or `off`, stops the build.
+[`src/lib/siteSettings.ts`](src/lib/siteSettings.ts) says what each does.
+
+| Setting | Default | What it does |
+| --- | --- | --- |
+| `SITE_URL` | `http://localhost:3000` | The origin the site is served from: its links, canonical addresses, sitemap and share images, and the address it gives the feeds. |
+| `SITE_NAME` | `Scooter map` | What the site calls itself in its text and titles, and in its user agent, `scooter-map/2.0 (your.host)`. |
+| `SITE_GUIDES` | `off` | `on` publishes the guides in `src/guides`, which are ScootRadar's. Off, their pages answer 404, and they leave the sitemap, the hreflang links and the site's links. |
+| `SITE_MAKER` | `off` | `on` ends each page with the line on who makes ScootRadar. |
+| `CONTACT_EMAIL` | none | The address the privacy notice and the accessibility page give, and the contact sent to the feeds that ask for one. Without it, neither page gives one. |
+| `SOURCE_URL` | this repository | The source code the site links to: point it at your fork. |
+| `ANALYTICS_URL`, `ANALYTICS_WEBSITE_ID` | none | An Umami server's `…/api/send` and the site's ID there. Without both, nothing is counted. |
+| `TURNSTILE_SITE_KEY` | none | A Cloudflare Turnstile site key. With the Worker secrets `TURNSTILE_SECRET_KEY` and `MAP_PASS_SECRET`, the map proves it is a browser before it gets scooters ([DEPLOY.md](DEPLOY.md), "Map passes"). |
+| `APP_STORE_ID`, `APP_STORE_PROVIDER_TOKEN` | none | An iPhone app's Apple ID, and the provider token of its campaign links. Without an ID, the site shows no iPhone app. |
+| `ANDROID_APP_ID`, `PLAY_TEST_GROUP` | none | An Android app's ID on Google Play and the Google Group of its closed test. Without both, the site invites no one to a test. |
+
+Two other vars name services: `SCOOTER_SNAPSHOT_API_URL`, the scooter cache
+(below), and `WALK_ROUTE_API_URL`, the Valhalla server that routes walks.
+
+### Data sources
+
+- **Scooters:** the public feeds in [DATA_SOURCES.md](DATA_SOURCES.md), read
+  without keys. The map's credits name each source under its terms: keep them.
+  A few providers need credentials or an app's session, which only the cache
+  holds ([`.env.example`](.env.example)); without them, those providers are
+  left out. The feeds see your `SITE_NAME` and `SITE_URL` in the user agent,
+  and sharedmobility.ch your `CONTACT_EMAIL`.
+- **Address search:** komoot's public Photon, or Geoapify with the Worker secret
+  `GEOAPIFY_API_KEY` ([DEPLOY.md](DEPLOY.md)).
+- **Walking routes:** `WALK_ROUTE_API_URL`, FOSSGIS's public Valhalla in the
+  repository's file. Its terms allow one request a second and no heavy use: a
+  busy site runs its own.
+- **Map tiles:** OpenFreeMap, which needs no key.
+
+### First run
 
 ```bash
+git clone https://github.com/plhery/ScootRadar.git my-scooter-map
+cd my-scooter-map
+npm ci
+```
+
+Then, in `wrangler.jsonc`:
+
+1. give the Worker a `name` of its own, and `routes` on your own domain, or
+   delete `routes` to serve it at its `workers.dev` address;
+2. replace the `vars`, at least `SITE_URL` and `SITE_NAME`, and delete
+   `SCOOTER_SNAPSHOT_API_URL` unless you run the cache;
+3. create the KV namespace for maintenance notices,
+   `npx wrangler kv namespace create MAINTENANCE`, and put its ID in
+   `kv_namespaces`.
+
+```bash
+npm run dev        # http://localhost:3000
+npm run preview    # the production build on Cloudflare's runtime
 npx wrangler login
 npm run deploy
 ```
 
+Without the cache, the map's requests collect the feeds of the place it shows,
+which can take a few seconds.
 [DEPLOY.md](DEPLOY.md) covers rate limits, previews, production checks and
-rollbacks. CI's Deploy job tells IndexNow about new pages of scootradar.com with
-ScootRadar's key (`scripts/indexnow.mjs`): give your fork a key and address of
-its own, or remove those steps.
+rollbacks.
+
+### Off unless you turn it on
+
+- the guides, the maker line, the apps, the analytics and the map passes (the
+  settings above);
+- browser error reports to Sentry (`SENTRY_BROWSER_DSN` in
+  `src/lib/errorReportsConfig.ts`);
+- the scooter cache, and Geoapify;
+- CI's Deploy job, which runs only in `plhery/ScootRadar`: a fork's CI runs the
+  checks and deploys nothing. Workers Builds or `npm run deploy` deploys it.
+
+### What a copy replaces
+
+- the name, the logo, the icons, `public/manifest.json` and the pictures
+  (`public/share/`, which `npm run generate:share-images` draws again with your
+  `SITE_NAME`, `public/landing/` and `docs/readme/`);
+- `public/.well-known/`, which ties ScootRadar's apps to its domain, and
+  `public/f165a5c7a3d4199af0d0bc0b01c6e4e7.txt`, ScootRadar's IndexNow key
+  (`scripts/indexnow.mjs`): delete them, or use your own;
+- `src/guides/`: leave `SITE_GUIDES` off, or write guides of your own;
+- the privacy notice and the accessibility statement
+  (`src/app/(map)/privacy/` and `src/app/(map)/accessibility/`), which describe
+  ScootRadar's site, apps and services: yours say what your copy does;
+- `ios/`, `android/`, `fastlane/` and `docs/app-store/`: ScootRadar's apps and
+  their store listings, to delete, or to rename throughout;
+- the old addresses in `src/lib/legacyHost.ts`, which do nothing on another
+  domain.
+
+### The scooter cache
+
+Optional. Without it the Worker collects the feeds itself for each region it is
+asked about. With it, a server collects them all the time and the Worker asks
+it: deploy `server/Dockerfile` with a `/data` volume, set
+`SCOOTER_SNAPSHOT_API_URL` to its origin, and give the cache and the Worker the
+same `SCOOTER_SNAPSHOT_API_TOKEN` secret (the first rollout's order is in
+[DEPLOY.md](DEPLOY.md)). The cache doesn't read `wrangler.jsonc`: give it your
+`SITE_NAME`, `SITE_URL` and `CONTACT_EMAIL` in its environment, or it names
+itself `scooter-map/2.0 (localhost:3000)` to the feeds.
+
+## Name, logo and guides
+
+The code is under the [MIT License](LICENSE). The name "ScootRadar", its logo,
+its store assets and the texts of its guides are not:
+[TRADEMARKS.md](TRADEMARKS.md) says what that covers. A copy may not publish
+them or use the name, and a fork renames itself. Versions published before 21
+November 2026 stay under the terms they were published with.
 
 ## More
 
@@ -204,6 +320,8 @@ its own, or remove those steps.
 - [Privacy](PRIVACY.md)
 - [Web, iOS and Android analytics](docs/analytics.md)
 - [Contributing](CONTRIBUTING.md)
+- [Name, logo and guides](TRADEMARKS.md)
 - [Security](SECURITY.md)
 
-ScootRadar is open source under the [MIT License](LICENSE). Come build with us.
+ScootRadar's code is open source under the [MIT License](LICENSE); its name, logo,
+store assets and guides are not ([TRADEMARKS.md](TRADEMARKS.md)). Come build with us.

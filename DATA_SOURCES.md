@@ -548,7 +548,8 @@ rate-limits searches.
   ask for at most one request a second, a valid User-Agent and Referer, the
   attribution and a "fix the map" link, and no heavy use. The proxy sends
   `scootradar/2.0 (scootradar.com; hello@scootradar.com)` and the site as the
-  referrer, counts all visitors together (`WALK_UPSTREAM_RATE_LIMITER`) and each
+  referrer (a copy names itself, from its `SITE_NAME`, `SITE_URL` and
+  `CONTACT_EMAIL`: `src/lib/serviceIdentity.ts`), counts all visitors together (`WALK_UPSTREAM_RATE_LIMITER`) and each
   visitor (`WALK_API_RATE_LIMITER`), and refuses walks over 10 km in a straight
   line, which open Google Maps instead. The credits list FOSSGIS and link to
   <https://www.openstreetmap.org/fixthemap>.

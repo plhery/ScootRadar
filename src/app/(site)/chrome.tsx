@@ -7,7 +7,7 @@ import {
 } from '@/lib/landingCopy';
 import { guessLanguage } from '@/lib/languageGuess';
 import { MAP_PATH } from '@/lib/mapAddress';
-import { SITE_NAME } from '@/lib/site';
+import { SITE, SITE_NAME } from '@/lib/site';
 
 // What every page of the site has around it, the landing page and the guides:
 // the bar at the top and the footer.
@@ -225,7 +225,8 @@ export function SiteFooter({ locale, languages }: { locale: LandingLocale; langu
           <a href={SOURCE_URL}>{copy.footer.source}</a>
         </nav>
       </div>
-      <p className="maker"><Linked sentence={copy.footer.maker} links={makerLinks(locale)} /></p>
+      {/* Who makes ScootRadar, where the deployment says so (SITE_MAKER). */}
+      {SITE.SITE_MAKER === 'on' && <p className="maker"><Linked sentence={copy.footer.maker} links={makerLinks(locale)} /></p>}
     </footer>
   );
 }

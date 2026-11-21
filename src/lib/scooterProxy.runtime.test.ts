@@ -18,7 +18,7 @@ it('proxies authenticated requests and rejects redirects in the Workers runtime'
   const authorizations: Array<string | null> = [];
   let redirect = false;
   const runtime = new Miniflare(convertV4MiniflareOptions({
-    modules: true, compatibilityDate: '2026-07-13', script: bundle.outputFiles[0].text,
+    modules: true, compatibilityDate: '2026-07-13', compatibilityFlags: ['nodejs_compat'], script: bundle.outputFiles[0].text,
     outboundService(request) {
       expect(new URL(request.url).hostname).toBe('origin.example');
       authorizations.push(request.headers.get('Authorization'));
@@ -61,7 +61,7 @@ it('keeps the last good answer in the runtime\'s cache and gives it stale while 
   });
   let down = false;
   const runtime = new Miniflare(convertV4MiniflareOptions({
-    modules: true, compatibilityDate: '2026-07-13', script: bundle.outputFiles[0].text,
+    modules: true, compatibilityDate: '2026-07-13', compatibilityFlags: ['nodejs_compat'], script: bundle.outputFiles[0].text,
     outboundService() {
       return down
         ? new RuntimeResponse('{"error":"Scooter data is temporarily unavailable."}', { status: 503 })
@@ -108,7 +108,7 @@ it("gives a neighbour's view the kept answer of one that holds it while the tunn
   });
   let down = false;
   const runtime = new Miniflare(convertV4MiniflareOptions({
-    modules: true, compatibilityDate: '2026-07-13', script: bundle.outputFiles[0].text,
+    modules: true, compatibilityDate: '2026-07-13', compatibilityFlags: ['nodejs_compat'], script: bundle.outputFiles[0].text,
     outboundService() {
       return down
         ? new RuntimeResponse('error code: 1033', { status: 530 })

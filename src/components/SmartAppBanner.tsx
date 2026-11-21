@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { SMART_APP_BANNER, smartAppBanner } from '@/lib/appStore';
+import { APP_STORE_ON, SMART_APP_BANNER, smartAppBanner } from '@/lib/appStore';
 import { SITE_URL } from '@/lib/site';
 
 /** The path of the page a banner's tag opens the app on. */
@@ -16,9 +16,14 @@ function openedPath(content: string): string | undefined {
  * map it keeps (public/sw.js), writes in the link it was opened with. React keeps the document's
  * <meta> only when it renders the same content, and otherwise adds its own after it: two tags naming
  * two places, the first left on every page opened from there. So the page the document is takes up
- * the tag it came with, and a page opened after has its own address.
+ * the tag it came with, and a page opened after has its own address. A site without an iPhone app
+ * has no banner.
  */
 export default function SmartAppBanner({ page }: Readonly<{ page: string }>) {
+  return APP_STORE_ON ? <Banner page={page} /> : null;
+}
+
+function Banner({ page }: Readonly<{ page: string }>) {
   const [content] = useState(() => {
     const own = smartAppBanner(new URL(page, SITE_URL));
     if (typeof document === 'undefined') return own;

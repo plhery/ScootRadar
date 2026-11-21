@@ -8,21 +8,18 @@
 // src/lib/appStore.test.ts reads the code back and fails once the link changes
 // and this has not been run again.
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { transform } from 'esbuild';
+import { loadSiteModule } from './site-module.mjs';
 import { encode } from 'uqr';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'src/generated/appStoreQr.ts');
 
-// The links import nothing: they compile on their own.
-async function load(file) {
-  const { code } = await transform(readFileSync(path.join(root, file), 'utf8'), { loader: 'ts', format: 'esm' });
-  return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
-}
-const { appStoreUrl } = await load('src/lib/appStore.ts');
+// The link, from the deployment's APP_STORE_ID (the vars of wrangler.jsonc).
+const { APP_STORE_ON, appStoreUrl } = await loadSiteModule('src/lib/appStore.ts');
+if (!APP_STORE_ON) throw new Error('wrangler.jsonc names no APP_STORE_ID: the site shows no iPhone app, and no QR code of it');
 
 const url = appStoreUrl('web-qr');
 // Level M, which survives a seventh of the code lost. The page draws the quiet zone around it.

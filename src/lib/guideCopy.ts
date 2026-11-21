@@ -3,6 +3,7 @@
 // src/guides. They follow the rules of src/lib/landingCopy.ts.
 
 import type { LandingLocale } from '@/lib/landingCopy';
+import { SITE_NAME } from '@/lib/site';
 
 export interface GuideCopy {
   /** The list of a language's guides. */
@@ -28,7 +29,7 @@ export interface GuideCopy {
 export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
   en: {
     index: {
-      title: 'E-scooter guides: rules, prices and cities | ScootRadar',
+      title: `E-scooter guides: rules, prices and cities | ${SITE_NAME}`,
       description: 'Plain guides to shared e-scooters: the rules in Switzerland, the UK and across Europe, what a ride costs, and how it works in your city.',
       lede: 'What to know before you ride a shared e-scooter: the rules of the road, what a ride costs, and how it works in your city.',
     },
@@ -49,7 +50,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   de: {
     index: {
-      title: 'Ratgeber zu E-Trottinett und E-Scooter | ScootRadar',
+      title: `Ratgeber zu E-Trottinett und E-Scooter | ${SITE_NAME}`,
       description: 'Ratgeber zu geteilten E-Trottinetten und E-Scootern: die Regeln in der Schweiz und in Deutschland, was eine Fahrt kostet und wie es in deiner Stadt läuft.',
       lede: 'Was du wissen solltest, bevor du auf ein geteiltes E-Trottinett steigst: die Verkehrsregeln, was eine Fahrt kostet und wie es in deiner Stadt läuft.',
     },
@@ -70,7 +71,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   fr: {
     index: {
-      title: 'Guides de la trottinette électrique | ScootRadar',
+      title: `Guides de la trottinette électrique | ${SITE_NAME}`,
       description: 'Des guides clairs sur la trottinette électrique en libre-service : les règles en Suisse et en France, le prix d’un trajet, le fonctionnement en ville.',
       lede: 'Ce qu’il faut savoir avant de monter sur une trottinette électrique en libre-service : les règles de circulation, le prix d’un trajet et le fonctionnement dans votre ville.',
     },
@@ -91,7 +92,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   it: {
     index: {
-      title: 'Guide al monopattino elettrico in sharing | ScootRadar',
+      title: `Guide al monopattino elettrico in sharing | ${SITE_NAME}`,
       description: 'Guide semplici ai monopattini elettrici in sharing: le regole in Svizzera e in Italia, quanto costa una corsa e come funziona nella tua città.',
       lede: 'Cosa sapere prima di salire su un monopattino elettrico in sharing: le regole della strada, quanto costa una corsa e come funziona nella tua città.',
     },
@@ -112,7 +113,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   nl: {
     index: {
-      title: 'Gidsen over deelsteps en elektrische steps | ScootRadar',
+      title: `Gidsen over deelsteps en elektrische steps | ${SITE_NAME}`,
       description: 'Heldere gidsen over elektrische deelsteps: de regels in België, wat een rit kost en hoe het werkt in Brussel, Antwerpen en andere steden.',
       lede: 'Wat je moet weten voor je op een elektrische deelstep stapt: de verkeersregels, wat een rit kost en hoe het werkt in jouw stad.',
     },
@@ -133,7 +134,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   nb: {
     index: {
-      title: 'Guider om elsparkesykler: regler og priser | ScootRadar',
+      title: `Guider om elsparkesykler: regler og priser | ${SITE_NAME}`,
       description: 'Enkle guider om elsparkesykler til leie: reglene i Norge, hva en tur koster og hvordan det fungerer i Oslo, Trondheim og andre byer.',
       lede: 'Det du bør vite før du leier en elsparkesykkel: trafikkreglene, hva en tur koster og hvordan det fungerer i byen din.',
     },
@@ -154,7 +155,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   pt: {
     index: {
-      title: 'Guias da trotinete elétrica partilhada | ScootRadar',
+      title: `Guias da trotinete elétrica partilhada | ${SITE_NAME}`,
       description: 'Guias simples sobre trotinetes elétricas partilhadas: as regras em Portugal, quanto custa uma viagem e como funciona na sua cidade.',
       lede: 'O que saber antes de andar numa trotinete elétrica partilhada: as regras de trânsito, quanto custa uma viagem e como funciona na sua cidade.',
     },
@@ -175,7 +176,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   es: {
     index: {
-      title: 'Guías del patinete eléctrico compartido | ScootRadar',
+      title: `Guías del patinete eléctrico compartido | ${SITE_NAME}`,
       description: 'Guías claras sobre patinetes eléctricos compartidos: las normas en España, cuánto cuesta un trayecto y cómo funciona en tu ciudad.',
       lede: 'Lo que conviene saber antes de subirte a un patinete eléctrico compartido: las normas de circulación, cuánto cuesta un trayecto y cómo funciona en tu ciudad.',
     },
@@ -196,7 +197,7 @@ export const GUIDE_COPY: Record<LandingLocale, GuideCopy> = {
 
   is: {
     index: {
-      title: 'Leiðarvísar um rafskútur: reglur og verð | ScootRadar',
+      title: `Leiðarvísar um rafskútur: reglur og verð | ${SITE_NAME}`,
       description: 'Einfaldir leiðarvísar um rafskútur til leigu: reglurnar á Íslandi, hvað ferð kostar og hvernig þetta virkar í þínum bæ.',
       lede: 'Það sem gott er að vita áður en þú leigir rafskútu: umferðarreglurnar, hvað ferð kostar og hvernig þetta virkar í þínum bæ.',
     },

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useI18n, type TranslationKey } from '@/lib/i18n';
 import { locationHelp } from '@/lib/locationHelp';
-import { appStoreUrl, isIPhone } from '@/lib/appStore';
+import { APP_STORE_ON, appStoreUrl, isIPhone } from '@/lib/appStore';
 import ModalSheet from './ModalSheet';
 
 interface LocationHelpSheetProps {
@@ -34,7 +34,7 @@ export default function LocationHelpSheet({ open, onClose }: LocationHelpSheetPr
         ))}
       </ol>
       <p className="help-after">{t('help.after')}</p>
-      {help?.iPhone && (
+      {help?.iPhone && APP_STORE_ON && (
         <p className="help-after help-app">
           {beforeApp}
           <a href={appStoreUrl('web-map-location')}>{t('help.appLink')}</a>

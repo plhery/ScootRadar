@@ -9,7 +9,7 @@ import StageDepth from '@/components/StageDepth';
 import { APP_STORE_QR } from '@/generated/appStoreQr';
 import { PROVIDERS } from '@/generated/providers';
 import SmartAppBanner from '@/components/SmartAppBanner';
-import { appStoreUrl } from '@/lib/appStore';
+import { APP_STORE_ON, appStoreUrl } from '@/lib/appStore';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
 import { landingCountries } from '@/lib/landingCities';
@@ -277,10 +277,10 @@ function Actions({ copy, android, campaign, qr = false }: {
       <AppLink className="btn btn--solid" href={MAP_PATH}>{copy.openMap}</AppLink>
       {/* The two apps as one: the Android app's, still in its test, under the iPhone app's. */}
       <div className="app-buttons">
-        <a className="btn btn--line play-ios" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>
+        {APP_STORE_ON && <a className="btn btn--line play-ios" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>}
         {PLAY_TEST_ON && <PlayTestButton copy={android} />}
       </div>
-      {qr && <AppStoreQr copy={copy} />}
+      {qr && APP_STORE_ON && <AppStoreQr copy={copy} />}
     </div>
   );
 }

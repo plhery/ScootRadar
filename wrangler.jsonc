@@ -28,6 +28,23 @@
     }
   ],
   "vars": {
+    // scootradar.com's settings, which the build reads too (next.config.ts). What each does, and its
+    // default where it is left out: src/lib/siteSettings.ts and README.md, "Run your own". The name,
+    // the guides and the apps are ScootRadar's own and not for a copy: TRADEMARKS.md.
+    "SITE_URL": "https://scootradar.com",
+    "SITE_NAME": "ScootRadar",
+    "SITE_GUIDES": "on",
+    "SITE_MAKER": "on",
+    "CONTACT_EMAIL": "hello@scootradar.com",
+    "SOURCE_URL": "https://github.com/plhery/ScootRadar",
+    "ANALYTICS_URL": "https://u.plhery.com/api/send",
+    "ANALYTICS_WEBSITE_ID": "6e60b4ab-b4ee-4785-9699-a7f32127b358",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAGHng4PaY6p_ONop",
+    "APP_STORE_ID": "6823614854",
+    "APP_STORE_PROVIDER_TOKEN": "129628155",
+    "ANDROID_APP_ID": "com.plhery.scootradar",
+    "PLAY_TEST_GROUP": "https://groups.google.com/g/scootradar-android-testers",
+    // The scooter cache, without which the Worker collects the feeds itself (DEPLOY.md).
     "SCOOTER_SNAPSHOT_API_URL": "https://scooter-data.plhery.com",
     // Valhalla for walking routes: src/app/api/walk/route.ts. FOSSGIS asks
     // that its address be set here rather than in the app.
