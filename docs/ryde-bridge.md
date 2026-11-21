@@ -428,13 +428,39 @@ partial scan may make an old city appear freshly collected.
 
 ## Certificate and recovery operations
 
-The existing certificate expires **3 December 2026 at 22:41:56 UTC**. The supervisor
-requests restoration seven days before expiry and refuses to start a new proxy
-inside the final 15 minutes. Renewal must use the existing attended, Ryde-only
-trust procedure; this implementation does not install wider or permanent trust.
-If restoration cannot finish, keep the recovery material, hold collection and
-notify the operator. After an app-owned key is verified, remove obsolete trust
-and routing with the existing scoped setup tools. Never suppress TLS validation.
+The certificate `ScootRadar Ryde bridge 5c276275` expires **23 December 2027 at
+16:40:18 UTC**. It was issued on 21 November 2026 for 397 days and replaced the first
+one, which had been issued on 3 November for 30 days. The supervisor requests
+restoration seven days before expiry and refuses to start a new proxy inside the final
+15 minutes, so renew it before 16 December 2027:
+
+```sh
+~/.cache/scootradar/rider-auth/ryde/iphone-capture/venv/bin/python3 \
+  scripts/ryde-bridge/renew_certificate.py --password-file FILE
+```
+
+FILE holds the administrator password; only sudo reads it. The script refuses to run
+unless the bridge is collecting. It issues a leaf like the first one: RSA 2048, SHA-256,
+`api.ryde.vip` only, not a CA, server authentication only. It trusts the leaf in the
+System keychain for SSL, `api.ryde.vip` and the Ryde app only, and checks that scope in
+`security dump-trust-settings -d` before swapping anything. It then writes `leaf.pem`,
+`leaf-cert.pem` and `config.json` (the label, SHA-1 and expiry), restarts the proxy, and
+waits up to ten minutes for a map from the restarted proxy with no TLS handshake refused.
+Only then does it remove the old certificate and its trust. On a failure, an error or an
+interrupt, it puts the old files back, restarts the proxy and removes the new trust.
+Copies of the old files stay in `renewal/<time>/`.
+
+On 21 November the trust install needed no confirmation. Removing the old trust showed
+macOS's "You are making changes to the System Certificate Trust Settings" dialog, so
+someone must be at the Mac. The run took 93 seconds, and maps stopped for 44 of them,
+during the proxy restart. 397 days is within Apple's limits: 825 days for a certificate
+the user trusts; the 398-day limit applies only to certificates from the authorities
+macOS ships.
+
+Renewal never installs wider or permanent trust. If restoration cannot finish, keep the
+recovery material, hold collection and notify the operator. After an app-owned key is
+verified, remove obsolete trust and routing with the existing scoped setup tools. Never
+suppress TLS validation.
 
 ## Validation
 
