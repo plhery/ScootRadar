@@ -878,8 +878,10 @@ address can be a school's or a company's), in one of two ways:
   ~/.config/scootradar/scooter-bans`, which takes effect within a minute, without a
   deploy. The daily check names the bans that have ended, to be deleted from the list
   and the list put again: the privacy policy says an address is kept only while its
-  ban lasts. The Mainz and Wiesbaden script's four networks were banned on 21
-  November 2026 until 21 December;
+  ban lasts. The Mainz and Wiesbaden script's networks were banned on 21 November 2026
+  until 21 December: the four it had used, and a fifth it came back from within the
+  hour, its line giving it a new IPv6 /64 each day, which its user agent had already
+  got refused;
 - until the rule is removed, by a Cloudflare WAF custom rule on its address or network,
   which stops it at Cloudflare's edge. The rules are in the dashboard, scootradar.com → Security →
   Security rules; wrangler's login cannot write them (it has no WAF scope), so a rule
