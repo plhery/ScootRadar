@@ -23,7 +23,7 @@ describe('German and Italian scooter coverage', () => {
     ['Kiiruna', 'Kiruna, Sweden'], ['Giron', 'Kiruna, Sweden'], ['Riga', 'Rīga, Latvia'], ['Riga Latvija', 'Rīga, Latvia'],
     ['Rīga Lettland', 'Rīga, Latvia'], ['Wolomin', 'Wołomin, Poland'], ['Wołomin', 'Wołomin, Poland'], ['Kobylka Polska', 'Kobyłka, Poland'],
     ['Oswiecim', 'Oświęcim, Poland'], ['Radzymin Polen', 'Radzymin, Poland'], ['Knurow', 'Knurów, Poland'],
-    ['Zlotow Pologne', 'Złotów, Poland'], ['Wrzesnia', 'Września, Poland'], ['Września Polska', 'Września, Poland'],
+    ['Wrzesnia', 'Września, Poland'], ['Września Polska', 'Września, Poland'],
     ['Egilsstadir', 'Egilsstaðir, Iceland'], ['Egilstadir Island', 'Egilsstaðir, Iceland'], ['Fellabaer', 'Egilsstaðir, Iceland'],
     ['Hveragerdi', 'Hveragerði, Iceland'], ['Hveragerði Ísland', 'Hveragerði, Iceland'], ['Pecs', 'Pécs, Hungary'], ['Pécs Magyarország', 'Pécs, Hungary'],
     ['Fünfkirchen', 'Pécs, Hungary'], ['Funfkirchen Ungarn', 'Pécs, Hungary'], ['Békéscsaba', 'Békéscsaba, Hungary'],

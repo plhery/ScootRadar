@@ -455,7 +455,6 @@ export const COVERED_CITY_ROWS: readonly CoveredCityRow[] = [
   ["pl:Radzymin","Radzymin","PL",52.4176,21.1808],
   ["pl:Knurów","Knurów","PL",50.2217,18.6707],
   ["pl:Września","Września","PL",52.3251,17.5652],
-  ["pl:Złotów","Złotów","PL",53.3632,17.0347],
   ["pl:Brzeg","Brzeg","PL",50.8551,17.4722],
   ["pl:Warszawa","Warszawa","PL",52.2336,21.0025],
   ["pl:Katowice / Chorzów","Katowice / Chorzów","PL",50.2849,18.9938],

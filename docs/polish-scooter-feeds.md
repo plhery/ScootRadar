@@ -19,6 +19,16 @@ names Oświęcim and Wołomin only. No other feed covers the town. The weekly
 catalog check names a listed region the catalog lacks, so a return would be
 reported. The audit below records Sosnowiec as it stood in October.
 
+Update, 21 November 2026: Hopp Złotów (`hopp_pl_zlotow`) is retired. Its
+daily high fell from 7 available scooters on 20 October to none on 3
+November, one at a time, with none charged again. Its feed still answered on
+21 November at 16:54 UTC, listing the same 22 scooters, every one disabled at
+0 m of range, so it has listed nothing to rent for 18 days. Hopp's locations
+page lists Złotów again, with a phone number, but `hopp.bike/in/zlotow` still
+answers 404 (as Knurów's page does, which runs). If the feed lists charged
+scooters again, poll it as Września was and add it back. The audit below
+records Złotów as it stood in October.
+
 
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
@@ -231,7 +241,7 @@ No covered Polish town bans renting at night, so
 ## Search
 
 Town names are found with and without their Polish letters: Wołomin and
-Wolomin, Oświęcim and Oswiecim, Złotów and Zlotow, Września and Wrzesnia. The
+Wolomin, Oświęcim and Oswiecim, Września and Wrzesnia. The
 app folds `ł` to `l`, which Unicode doesn't decompose. "Auschwitz" is not an
 alias of Oświęcim: the
 address search already finds the town under that name, and the town asks to

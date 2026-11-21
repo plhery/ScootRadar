@@ -127,26 +127,6 @@
       ]
     },
     {
-      "id": "hopp_pl_zlotow",
-      "country": "PL",
-      "provider": "hopp",
-      "city": "Złotów",
-      "center": [
-        53.3632,
-        17.0347
-      ],
-      "bounds": {
-        "south": 53.3449,
-        "north": 53.3832,
-        "west": 17.0006,
-        "east": 17.0833
-      },
-      "discoveryUrl": "https://api.hopp.bike/gbfs/pl-zlotow/gbfs.json",
-      "aliases": [
-        "Zlotow"
-      ]
-    },
-    {
       "id": "dott_pl_brzeg",
       "country": "PL",
       "provider": "dott",
