@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/plhery/ScootRadar/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/plhery/ScootRadar/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square" alt="MIT license"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-2ea44f?style=flat-square" alt="AGPL-3.0 license"></a>
 </p>
 
 <p align="center">
@@ -186,7 +186,10 @@ repository, with the anti-features F-Droid shows, is
 Anyone can run the code under a name of their own. Without settings it is a
 neutral "Scooter map": no guides, no apps, no analytics, nothing of
 ScootRadar's own, which the code's license doesn't cover
-([Name, logo and guides](#name-logo-and-guides)).
+([Name, logo and guides](#name-logo-and-guides)). The license asks a copy to
+keep the credit "Based on ScootRadar by Paul-Louis Hery", with its link, and,
+if you change the code, to offer your version's source to the people who use
+it: point `SOURCE_URL` at your fork ([License](#license)).
 
 ### What you need
 
@@ -306,10 +309,23 @@ same `SCOOTER_SNAPSHOT_API_TOKEN` secret (the first rollout's order is in
 `SITE_NAME`, `SITE_URL` and `CONTACT_EMAIL` in its environment, or it names
 itself `scooter-map/2.0 (localhost:3000)` to the feeds.
 
+## License
+
+The code is under the [GNU Affero General Public License, version 3
+only](LICENSE), with one additional term under its section 7(b)
+([NOTICE](NOTICE)): copies and modified versions keep the credit "Based on
+ScootRadar by Paul-Louis Hery", with a link to
+<https://github.com/plhery/ScootRadar>, among the legal notices they show, such
+as the website's footer or an app's About screen. Once, where a user can find
+it, is enough.
+
+Earlier versions, up to and including commit `4f066f99076c` of 22 November
+2026, were published under the MIT License and stay under it.
+
 ## Name, logo and guides
 
-The code is under the [MIT License](LICENSE). The name "ScootRadar", its logo,
-its store assets and the texts of its guides are not:
+The code's license doesn't cover the name "ScootRadar", its logo, its store
+assets or the texts of its guides:
 [TRADEMARKS.md](TRADEMARKS.md) says what that covers. A copy may not publish
 them or use the name, and a fork renames itself. Versions published before 21
 November 2026 stay under the terms they were published with.
@@ -323,5 +339,6 @@ November 2026 stay under the terms they were published with.
 - [Name, logo and guides](TRADEMARKS.md)
 - [Security](SECURITY.md)
 
-ScootRadar's code is open source under the [MIT License](LICENSE); its name, logo,
-store assets and guides are not ([TRADEMARKS.md](TRADEMARKS.md)). Come build with us.
+ScootRadar's code is open source under the [GNU AGPL-3.0](LICENSE), with an
+attribution term ([NOTICE](NOTICE)); its name, logo, store assets and guides are
+not ([TRADEMARKS.md](TRADEMARKS.md)). Come build with us.

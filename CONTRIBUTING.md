@@ -59,5 +59,13 @@ TypeScript and Swift payload files with the schema.
 - Preserve accessibility, localization, privacy, and upstream fair-use behavior.
 - Use source attribution anywhere new data is displayed.
 
-By contributing, you agree that your contribution is licensed under the MIT
-License included in this repository.
+By contributing, you agree that your contribution is licensed under the GNU
+Affero General Public License, version 3 only, with the additional term in
+[NOTICE](NOTICE), as the rest of the code is. You also give Paul-Louis Hery a
+perpetual, worldwide, non-exclusive, royalty-free and irrevocable license to
+use, change and distribute your contribution under other terms too, so that
+ScootRadar's apps can still go out on the App Store and Google Play: those
+stores' terms clash with GPL-family licenses for code that anyone but the
+copyright holder wrote. You keep the copyright of your contribution. If you
+can't agree to this, open an issue rather than a pull request. So far, all of
+ScootRadar's code is the maintainer's own.

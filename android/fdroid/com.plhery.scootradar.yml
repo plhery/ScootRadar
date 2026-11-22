@@ -1,7 +1,7 @@
 # The app's entry in the F-Droid repository of the Android beta, which scripts/publish-fdroid.sh copies there.
 Categories:
   - Navigation
-License: MIT
+License: AGPL-3.0-only
 AuthorName: ScootRadar
 WebSite: https://scootradar.com
 SourceCode: https://github.com/plhery/ScootRadar

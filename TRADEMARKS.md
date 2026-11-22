@@ -1,7 +1,8 @@
 # Name, logo and guides
 
-ScootRadar's code is open source under the [MIT License](LICENSE). That license
-covers the code. It does not cover the following, which are not licensed under
+ScootRadar's code is open source under the [GNU Affero General Public License,
+version 3 only](LICENSE), with the additional term in [NOTICE](NOTICE). That
+license covers the code. It does not cover the following, which are not licensed under
 it or under any other license:
 
 - the name "ScootRadar";
@@ -15,9 +16,11 @@ it or under any other license:
 
 These are Copyright (c) 2026 Paul-Louis Hery, all rights reserved.
 
-A copy may use, change and publish the code under the MIT License. It may not
+A copy may use, change and publish the code under that license. It may not
 publish the name, the logo, the store assets or the guide texts, and it may not
-use the name "ScootRadar". A fork must rename itself: it gives its site its own
+use the name "ScootRadar", except in the credit the license's additional term
+asks for: "Based on ScootRadar by Paul-Louis Hery", with its link. A fork must
+rename itself: it gives its site its own
 `SITE_NAME`, replaces the logo, the icons and the pictures with its own, and
 leaves the guides off (`SITE_GUIDES`, off unless set) or writes its own
 ([README.md](README.md#run-your-own), "Run your own").

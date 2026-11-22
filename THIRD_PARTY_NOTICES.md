@@ -1,6 +1,7 @@
 # Third-party notices
 
-The ScootRadar source code is MIT-licensed. Installed dependencies remain
+The ScootRadar source code is licensed under the GNU AGPL-3.0-only, with an
+attribution term ([NOTICE](NOTICE)). Installed dependencies remain
 under their own licenses as declared in `package-lock.json` and their package
 metadata.
 

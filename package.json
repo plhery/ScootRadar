@@ -2,6 +2,7 @@
   "name": "scootradar",
   "version": "0.1.0",
   "private": true,
+  "license": "AGPL-3.0-only",
   "packageManager": "npm@11.20.0",
   "scripts": {
     "generate:providers": "node scripts/generate-ryde-app-feeds.mjs && node scripts/generate-lime-app-feeds.mjs && node scripts/generate-provider-catalog.mjs",
