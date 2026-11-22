@@ -79,6 +79,13 @@ volume, never in Git, command arguments or Worker variables. Token rotation
 is saved atomically under that volume. See [Voi](docs/voi-app-map.md) and
 [Lime](docs/lime-app-map.md) for the file schemas and renewal requirements.
 
+JET's separate rider app uses `/data/jet-rider-session.json`
+(`JET_RIDER_SESSION_PATH` overrides it), owned by Node UID 1000 with mode
+`0600`. It includes the rider tokens, app OAuth configuration, device headers
+and private request-hash key. Seed it over SSH stdin before enabling the
+collector; renewal saves the replacement atomically. See
+[JET session schema and verification](docs/jet-rider-app-map.md).
+
 RideMovi uses `/data/ridemovi-session.json` (`RIDEMOVI_SESSION_PATH` overrides
 it), mode `0600`, owned by Node UID 1000. Seed it through stdin before enabling
 the collector. Unlike the rotating sessions above, its lifetime is unknown

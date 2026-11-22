@@ -51,6 +51,9 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   QA: { numberFirst: true, townLine: '{town}' },
   MX: { townLine: '{postcode} {town}, {region}', postcode: /\d{5}/ },
   KZ: { postcode: /\d{6}/ },
+  // UPU Uzbekistan: street before house number, six-digit postcode before the locality.
+  // https://www.upu.int/UPU/media/upu/PostalEntitiesFiles/addressingUnit/uzbEn.pdf
+  UZ: { postcode: /\d{6}/ },
   // UPU Malaysia: house number before the road, five-digit postcode before the locality.
   MY: { numberFirst: true, postcode: /\d{5}/ },
   // Korea Post uses number + road in Roman text; Korean road names keep the number after it.

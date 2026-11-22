@@ -1,0 +1,206 @@
+{
+  "checkedAt": "2026-11-22",
+  "source": "JET authenticated rider map; reviewed rental-zone envelopes with a 0.001-degree margin. Individual available scooters only; parking totals are not added.",
+  "systems": [
+    {
+      "id": "jet_uz_tashkent",
+      "provider": "jet",
+      "city": "Tashkent",
+      "center": [
+        41.26465,
+        69.21627
+      ],
+      "bounds": {
+        "south": 41.192664,
+        "north": 41.430149,
+        "west": 69.145984,
+        "east": 69.477681
+      },
+      "timeZone": "Asia/Tashkent",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "62d9ad4a9b4cbe2f7d894653",
+      "aliases": [
+        "Toshkent",
+        "Тошкент",
+        "Ташкент"
+      ]
+    },
+    {
+      "id": "jet_uz_andijan",
+      "provider": "jet",
+      "city": "Andijan",
+      "center": [
+        40.767499,
+        72.350143
+      ],
+      "bounds": {
+        "south": 40.738665,
+        "north": 40.798519,
+        "west": 72.321505,
+        "east": 72.380346
+      },
+      "timeZone": "Asia/Tashkent",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "6644ce1f527ba141a2c3182a",
+      "aliases": [
+        "Andijon",
+        "Андижан"
+      ]
+    },
+    {
+      "id": "jet_uz_bukhara",
+      "provider": "jet",
+      "city": "Bukhara",
+      "center": [
+        39.768195,
+        64.428572
+      ],
+      "bounds": {
+        "south": 39.729954,
+        "north": 39.819433,
+        "west": 64.392144,
+        "east": 64.476026
+      },
+      "timeZone": "Asia/Samarkand",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "651c72bc9e2e5502a90bd782",
+      "aliases": [
+        "Buhara",
+        "Buxoro",
+        "Бухара"
+      ]
+    },
+    {
+      "id": "jet_uz_chirchiq",
+      "provider": "jet",
+      "city": "Chirchiq",
+      "center": [
+        41.472659,
+        69.581229
+      ],
+      "bounds": {
+        "south": 41.429179,
+        "north": 41.499614,
+        "west": 69.529169,
+        "east": 69.597865
+      },
+      "timeZone": "Asia/Tashkent",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "69ce8dd65d082ca403f80144",
+      "aliases": [
+        "Chirchik",
+        "Чирчик"
+      ]
+    },
+    {
+      "id": "jet_uz_fergana",
+      "provider": "jet",
+      "city": "Fergana",
+      "center": [
+        40.37338,
+        71.79783
+      ],
+      "bounds": {
+        "south": 40.346558,
+        "north": 40.457679,
+        "west": 71.702429,
+        "east": 71.862508
+      },
+      "timeZone": "Asia/Tashkent",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "648c7e30910e4af6e4c557de",
+      "aliases": [
+        "Fargona",
+        "Fargʻona",
+        "Фергана"
+      ]
+    },
+    {
+      "id": "jet_uz_namangan",
+      "provider": "jet",
+      "city": "Namangan",
+      "center": [
+        40.9983,
+        71.6726
+      ],
+      "bounds": {
+        "south": 40.974978,
+        "north": 41.057508,
+        "west": 71.517378,
+        "east": 71.713999
+      },
+      "timeZone": "Asia/Tashkent",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "65083d346636b45e5a93a600",
+      "aliases": [
+        "Наманган"
+      ]
+    },
+    {
+      "id": "jet_uz_navoiy",
+      "provider": "jet",
+      "city": "Navoiy",
+      "center": [
+        40.0844,
+        65.3792
+      ],
+      "bounds": {
+        "south": 40.072794,
+        "north": 40.131706,
+        "west": 65.350465,
+        "east": 65.406216
+      },
+      "timeZone": "Asia/Samarkand",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "64fd80408b5f99e697a0a637",
+      "aliases": [
+        "Navoi",
+        "Навои"
+      ]
+    },
+    {
+      "id": "jet_uz_termez",
+      "provider": "jet",
+      "city": "Termez",
+      "center": [
+        37.2242,
+        67.2783
+      ],
+      "bounds": {
+        "south": 37.209888,
+        "north": 37.256934,
+        "west": 67.247259,
+        "east": 67.329923
+      },
+      "timeZone": "Asia/Samarkand",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "68304710d830ff488ee8ee0f",
+      "aliases": [
+        "Termiz",
+        "Термез"
+      ]
+    },
+    {
+      "id": "jet_uz_urgench",
+      "provider": "jet",
+      "city": "Urgench",
+      "center": [
+        41.555882,
+        60.634334
+      ],
+      "bounds": {
+        "south": 41.535346,
+        "north": 41.58817,
+        "west": 60.595466,
+        "east": 60.673769
+      },
+      "timeZone": "Asia/Samarkand",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "64f9d018ad11005bb9b3affb",
+      "aliases": [
+        "Urganch",
+        "Ургенч"
+      ]
+    }
+  ]
+}

@@ -988,6 +988,57 @@
       ]
     },
     {
+      "code": "UZ",
+      "continent": "asia",
+      "catalog": "data/uzbek-scooter-feeds.json",
+      "source": "uzbekistan",
+      "names": {
+        "en": "Uzbekistan",
+        "de": "Usbekistan",
+        "fr": "Ouzbékistan",
+        "it": "Uzbekistan",
+        "nl": "Oezbekistan",
+        "nb": "Usbekistan",
+        "pt": "Uzbequistão",
+        "es": "Uzbekistán",
+        "is": "Úsbekistan"
+      },
+      "searchWords": [
+        "uzbekistan",
+        "usbekistan",
+        "ouzbekistan",
+        "oezbekistan",
+        "uzbequistao",
+        "ozbekiston",
+        "uzbekiston",
+        "узбекистан",
+        "узбекистон"
+      ],
+      "anchor": [
+        40.3,
+        66.8
+      ],
+      "anchorNote": "Between the reviewed JET cities, from Urgench to the Fergana Valley.",
+      "credits": {
+        "attribution": "Uzbekistan: JET authenticated rider map, individual available scooters",
+        "links": [
+          {
+            "label": "UZ: JET app",
+            "href": "https://play.google.com/store/apps/details?id=com.jetscooters"
+          }
+        ]
+      },
+      "featuredCities": [
+        "uz:Tashkent",
+        "uz:Bukhara",
+        "uz:Andijan",
+        "uz:Fergana",
+        "uz:Namangan",
+        "uz:Urgench",
+        "uz:Termez"
+      ]
+    },
+    {
       "code": "AZ",
       "continent": "asia",
       "catalog": "data/azerbaijani-scooter-feeds.json",
@@ -1055,11 +1106,11 @@
         "грузия"
       ],
       "anchor": [
-        41.65,
-        41.64
+        41.7,
+        43.2
       ],
       "credits": {
-        "attribution": "Georgia: JET signed-out Go Jet app map",
+        "attribution": "Georgia: JET signed-out Go Jet map in Batumi and authenticated rider map in Tbilisi",
         "links": [
           {
             "label": "GE: JET map",
@@ -1068,8 +1119,10 @@
         ]
       },
       "featuredCities": [
+        "ge:Tbilisi",
         "ge:Batumi"
-      ]
+      ],
+      "anchorNote": "Between Batumi and Tbilisi, the two reviewed JET cities."
     },
     {
       "code": "CO",

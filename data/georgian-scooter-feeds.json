@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-24",
-  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "checkedAt": "2026-11-22",
+  "source": "Go Jet signed-out map in Batumi; JET authenticated rider map in Tbilisi. Bounds enclose reviewed rental zones.",
   "systems": [
     {
       "id": "jet_ge_batumi",
@@ -21,6 +21,28 @@
       "jetAppMap": true,
       "aliases": [
         "Батуми"
+      ]
+    },
+    {
+      "id": "jet_ge_tbilisi",
+      "provider": "jet",
+      "city": "Tbilisi",
+      "center": [
+        41.6941,
+        44.8337
+      ],
+      "bounds": {
+        "south": 41.679833,
+        "north": 41.768279,
+        "west": 44.702798,
+        "east": 44.837965
+      },
+      "timeZone": "Asia/Tbilisi",
+      "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
+      "jetRiderAppCity": "63469a219a4e39acf9c696b2",
+      "aliases": [
+        "თბილისი",
+        "Тбилиси"
       ]
     }
   ]

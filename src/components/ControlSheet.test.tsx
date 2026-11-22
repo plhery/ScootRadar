@@ -622,6 +622,7 @@ describe('ControlSheet settings', () => {
       'NZ: Flamingo · CC BY 4.0',
       'JP: LUUP map',
       'BR: IBGE boundaries',
+      'UZ: JET app',
       'BR/CL/MX/KZ/AZ/GE: JET map',
       'BR/CL/MX/KZ/CO/BY: Whoosh map',
       'ZA: Zippy rider map',

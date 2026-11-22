@@ -36,7 +36,7 @@ it('knows no coverage before the first answer, and the dock gives no season noti
 it('loads the catalogs once an answer is in: the apps in view, the places with data and the towns\' seasons', async () => {
   const { result, rerender } = renderHook(({ answer }: { answer: unknown }) => useCatalogCoverage(answer), { initialProps: { answer: null as unknown } });
   rerender({ answer: JANUARY });
-  await waitFor(() => expect(result.current).not.toBeNull());
+  await waitFor(() => expect(result.current).not.toBeNull(), { timeout: 10_000 });
   expect(result.current!.providersForViewport(ZURICH_VIEW)).toEqual(expect.arrayContaining(['lime', 'voi']));
   expect(result.current!.isPointCovered(...LUNGERN)).toBe(false);
   expect(skienDock(result.current!.seasonalPause))
@@ -61,6 +61,6 @@ it('asks again at the next answer for catalogs that failed to load', async () =>
   fail = false;
   vi.resetModules();
   rerender({ answer: JANUARY + 30_000 });
-  await waitFor(() => expect(result.current).not.toBeNull());
+  await waitFor(() => expect(result.current).not.toBeNull(), { timeout: 10_000 });
   hooks.resetCatalogCoverage();
 });

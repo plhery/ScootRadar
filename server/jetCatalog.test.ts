@@ -26,7 +26,7 @@ describe('reviewed Go Jet coverage', () => {
   it('installs Node collectors without treating their endpoints as GBFS or exposing signing configuration', () => {
     const feeds = independentCollectableFeeds();
     const installed = withJetAppCollectors(feeds, systems);
-    const jet = installed.filter(feed => feed.provider === 'jet');
+    const jet = installed.filter(feed => systems.some(system => feed.id.endsWith(`:${system.id}`)));
     expect(jet).toHaveLength(systems.length);
     for (const feed of jet) {
       expect(feed.host).toBe('api.gojet.app');

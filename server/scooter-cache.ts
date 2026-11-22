@@ -40,6 +40,7 @@ import { voiMapRequests, withVoiAppCollectors } from './voiApp';
 import { atomMapRequests, withAtomAppCollectors } from './atomApp';
 import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
+import { jetRiderMapRequests, withJetRiderAppCollectors } from './jetRiderApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { limeAccountRequests, limeAddressHeld, limeMapRequests, limePlans, withLimeAppCollectors } from './limeApp';
@@ -68,7 +69,7 @@ function workerSilences(now: number): Record<string, number> | undefined {
 }
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
-  withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
+  withJetAppCollectors, withJetRiderAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
   // BinBin's and Bird's sweeps start from where their scooters stood at the last one.
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
@@ -216,9 +217,9 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence, visi
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
       binbinMapRequests.status + beamMapRequests.status + gcooMapRequests.status + kickgoingMapRequests.status + swingMapRequests.status +
-      alpacaMapRequests.status + dartMapRequests.status + skyssMapRequests.status + boltMapRequests.status + birdMapRequests.status + ridemoviMapRequests.status,
+      alpacaMapRequests.status + dartMapRequests.status + skyssMapRequests.status + boltMapRequests.status + birdMapRequests.status + ridemoviMapRequests.status + jetRiderMapRequests.status,
     metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata +
-      boltMapRequests.metadata + birdMapRequests.metadata,
+      boltMapRequests.metadata + birdMapRequests.metadata + jetRiderMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   limeAccountRequests, limeAddressHeld,

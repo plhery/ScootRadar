@@ -13,7 +13,7 @@ integration notes record the live tests.
 | App | Vehicle route | Signed-out reply | Sign-in | Beyond the rider token |
 | --- | --- | --- | --- | --- |
 | JET's Go Jet (Brazil, Chile, Mexico, Kazakhstan, Georgia, Azerbaijan) | `GET api.gojet.app/api/v1/geo/transports` | 200 with individual scooters after app signing | Not needed for the map | Signed app requests; TLS 1.2 on Netcup. App Check is not required for map reads |
-| JET (Kazakhstan, Georgia, Uzbekistan, Mongolia) | `GET service.jetscooters.fun/gatewayclient/api/v6/transports` | 401, `WWW-Authenticate: Bearer` | Phone and SMS code, the request behind an hCaptcha | None found |
+| JET (Kazakhstan, Georgia, Uzbekistan, Mongolia) | `GET service.jetscooters.fun/gatewayclient/api/v6/transports` | 401, `WWW-Authenticate: Bearer` | Phone and SMS code, the request behind an hCaptcha | Native request hash required for renewal (verified 22 November) |
 | Whoosh | `POST api.whoosh.bike/client/devices/searches` | 401 `{"message":"Unauthorized"}` | Kazakhstan phone login verified; Google/Apple in Latin America | None found |
 | Beam | GraphQL `vehiclesByH3` at `gateway.ridebeam.com/query` | 200 with an `Unauthorized` error | Google sign-in verified; Android phone login is for existing accounts | None on the signed-in map or session renewal (verified) |
 | LUUP | `GET mobileApiDBReader-ports/by-location` on LUUP's Cloud Functions | 403 `Forbidden` | Phone and SMS code | None on the port reader |
@@ -97,7 +97,13 @@ rider token or App Check. Linux Node needs TLS 1.2 to pass Cloudflare. The
 [Go Jet collector](gojet-app-map.md) now covers 54 reviewed regions in six
 countries; the private signing configuration is kept outside Git.
 
-### JET in Central Asia: a bearer token only
+### JET in Central Asia: authenticated rider map
+
+The user-authorized login and [JET rider integration](jet-rider-app-map.md)
+on 22 November 2026 supersede the signed-out checks below. The earlier
+inspection missed a request hash: unsigned map reads worked, but renewal
+required `UR-Request-Data`. The new integration documents the native hash,
+renewal and reviewed coverage separately from Go Jet.
 
 `com.jetscooters` is Urent's white-label app (its code is `ru.urentbike`,
 and it sends `UR-Brand: JET`). Its store listing names Kazakhstan (Almaty),
@@ -108,14 +114,14 @@ Georgia (Tbilisi, Batumi), Uzbekistan (Tashkent) and Mongolia
 | Route | Data |
 | --- | --- |
 | `GET /api/v6/transports?latitude=&longitude=&radiusByMeters=&zoom=&withEBikes=true` | Vehicles around a point (also `useBluetooth=false`, `includeEmptyParkings`) |
-| `GET /api/v6/transports/polygon` | Vehicles in an area |
+| `POST /api/v6/transports/polygon` | Vehicles in an area |
 | `GET /api/v3/zones/rent`, `/api/v5/zones/general`, `/api/v3/zones/lowspeed/` | Zones |
 | `GET /api/v1/parkings/` | Parkings |
 | `GET /api/v1/cities`, `/api/v1/cities/by_coordinates` | Cities |
 
 Requests carry `UR-*` headers (brand, version, client id, device id,
-session, country code) and `Authorization: Bearer …`, with no request
-signing. `POST /api/v2/mobile/code` sends the SMS code, with an hCaptcha
+session, country code) and `Authorization: Bearer …`. The app also adds a
+`UR-Request-Data` hash, required by renewal. `POST /api/v2/mobile/code` sends the SMS code, with an hCaptcha
 token; `POST /api/v1/connect/token`, with `grant_type=password`, the phone
 number as user name, the code as password and the app's client credentials,
 returns the token.
@@ -124,7 +130,7 @@ Signed out, `/api/v1/cities`, `/api/v6/transports` and
 `/api/v5/zones/general` answered 401 with an empty body and
 `WWW-Authenticate: Bearer`, the same bare and with the app's headers (15:50;
 `cities` again at 16:11). Whether one account sees all four countries is
-untested.
+untested in October; the November integration verifies the enabled regions.
 
 ## Whoosh
 
@@ -295,22 +301,20 @@ NAVITIME has shown LUUP's ports and live availability since February 2024
 ([Impress Watch](https://www.watch.impress.co.jp/docs/news/1567359.html));
 that route wasn't looked into.
 
-## What a sign-in would take
+## Status after the follow-up integrations
 
-Each map but Go Jet's would answer with one rider account, as Bolt's does
-([its evidence](bolt-app-map.md)): the user signs in once in the unmodified
-official app, and a collector keeps the session's renewal credential
-privately. What each would add, outside Russia:
+Each map but Go Jet's uses a user-authorized rider account. The user signs
+in through the official flow once, and the collector keeps its credentials
+privately. All four integrations now have separate operational notes:
 
-| App | Account | Would add |
+| App | Account | Coverage |
 | --- | --- | --- |
-| JET (Central Asia) | Phone and SMS code | Almaty (about 22,500 scooters, JET over 70%), Ulaanbaatar (3,000+), Tashkent, Tbilisi and Batumi |
+| JET (Central Asia) | Phone/SMS login and signed renewal verified 22 November 2026 | [Nine Uzbek cities and Tbilisi](jet-rider-app-map.md); Go Jet retains Almaty, Batumi and Baku. The Mongolian maps were empty |
 | Whoosh | Kazakhstan phone login verified; Google or Apple in Latin America | Chile (8,000+), São Paulo, Curitiba, Florianópolis, Medellín (about 400), Monterrey and San Pedro Garza García, Mexico City, Almaty |
 | Beam | Integrated; Google sign-in and renewal verified | [54 reviewed regions](beam-app-map.md) in Australia, Malaysia, South Korea and Türkiye; sampled other markets were empty |
 | LUUP | Phone and SMS code | Japan's ports, with counts of scooters, e-bikes and seated scooters |
 
 Go Jet's signed-out integration reproduces its app signature and has verified
-complete sweeps on Netcup. Beam, Whoosh and LUUP also have integrated collectors;
-see their linked notes for session renewal, response caps and production
-checks. JET's separate Central Asian app still needs a rider login
-and equivalent checks.
+complete sweeps on Netcup. JET's rider app, Beam, Whoosh and LUUP also have
+integrated collectors; see their linked notes for session renewal, response
+caps and production checks.

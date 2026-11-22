@@ -38,6 +38,7 @@ describe('the address formats', () => {
     expect(streetAddress('BH', 'Road 2209', '1234')).toBe('1234 Road 2209');
     expect(streetAddress('JP', 'Kasumigaseki', '1-3-2')).toBe('1-3-2 Kasumigaseki');
     expect(streetAddress('KR', 'Sejong-daero', '209')).toBe('209 Sejong-daero');
+    expect(streetAddress('UZ', 'Amir Temur Avenue', '107')).toBe('Amir Temur Avenue 107');
     expect(streetAddress('XX', 'Main Street', '3')).toBe('Main Street 3');
     expect(streetAddress('NZ', 'Queen Street', '')).toBe('Queen Street');
   });
@@ -66,6 +67,7 @@ describe('the address formats', () => {
     expect(townLine('CO', { town: 'Medellín', postcode: '050021', region: region('Antioquia') })).toBe('Medellín, Antioquia, 050021');
     expect(townLine('MX', { town: 'Monterrey', postcode: '64000', region: region('Nuevo León') })).toBe('64000 Monterrey, Nuevo León');
     expect(townLine('KZ', { town: 'Almaty', postcode: '050012', region: region('') })).toBe('050012 Almaty');
+    expect(townLine('UZ', { town: 'Tashkent', postcode: '100000', region: region('') })).toBe('100000 Tashkent');
     expect(townLine('KR', { town: 'Seoul', postcode: '03154', region: region('Seoul') })).toBe('Seoul 03154');
   });
 

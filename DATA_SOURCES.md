@@ -324,6 +324,18 @@ replies, or a sweep that finds no scooter, fail collection; the token may
 require an operator to sign in again when it expires. See
 [RideMovi's API, session and coverage audit](docs/ridemovi-app-map.md).
 
+## JET authenticated rider map
+
+Since 22 November 2026, JET's separate Central Asian rider map supplies
+individual available standing scooters in Tbilisi and nine Uzbek cities,
+through ten reviewed collection regions. Enclosing circles are subdivided
+before the map's 500-vehicle ceiling can truncate a sweep; bike entries and
+unidentified parking totals are excluded. The cache retains the private rider
+session, device configuration and request-hash key, renews the session, and
+publishes only positions and known charge. Go Jet's existing signed-out
+regions remain on their own collector, without duplicate JET coverage.
+See [coverage, authentication and live verification](docs/jet-rider-app-map.md).
+
 ## Dott anonymous app map
 
 Since 24 October 2026, 157 regions not served by the public GBFS feeds use

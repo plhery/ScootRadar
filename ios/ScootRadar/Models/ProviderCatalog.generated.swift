@@ -8114,8 +8114,18 @@ enum ScooterProviderCoverage {
         systems.append((.whoosh, GeoBounds(south: 43.22016, west: 76.8602, north: 43.24751, east: 76.90581)))
         systems.append((.whoosh, GeoBounds(south: 51.06534, west: 71.3469, north: 51.20139, east: 71.54021)))
         systems.append((.bolt, GeoBounds(south: 43.1775, west: 76.8164, north: 43.3038, east: 76.9769)))
+        systems.append((.jet, GeoBounds(south: 41.192664, west: 69.145984, north: 41.430149, east: 69.477681)))
+        systems.append((.jet, GeoBounds(south: 40.738665, west: 72.321505, north: 40.798519, east: 72.380346)))
+        systems.append((.jet, GeoBounds(south: 39.729954, west: 64.392144, north: 39.819433, east: 64.476026)))
+        systems.append((.jet, GeoBounds(south: 41.429179, west: 69.529169, north: 41.499614, east: 69.597865)))
+        systems.append((.jet, GeoBounds(south: 40.346558, west: 71.702429, north: 40.457679, east: 71.862508)))
+        systems.append((.jet, GeoBounds(south: 40.974978, west: 71.517378, north: 41.057508, east: 71.713999)))
+        systems.append((.jet, GeoBounds(south: 40.072794, west: 65.350465, north: 40.131706, east: 65.406216)))
+        systems.append((.jet, GeoBounds(south: 37.209888, west: 67.247259, north: 37.256934, east: 67.329923)))
+        systems.append((.jet, GeoBounds(south: 41.535346, west: 60.595466, north: 41.58817, east: 60.673769)))
         systems.append((.jet, GeoBounds(south: 40.335093, west: 49.790085, north: 40.440305, east: 49.987929)))
         systems.append((.jet, GeoBounds(south: 41.615822, west: 41.583057, north: 41.662751, east: 41.680613)))
+        systems.append((.jet, GeoBounds(south: 41.679833, west: 44.702798, north: 41.768279, east: 44.837965)))
         systems.append((.whoosh, GeoBounds(south: 6.18271, west: -75.61793, north: 6.29603, east: -75.54855)))
         systems.append((.whoosh, GeoBounds(south: 54.18871, west: 28.45654, north: 54.25148, east: 28.53523)))
         systems.append((.whoosh, GeoBounds(south: 53.83261, west: 27.40681, north: 54.01826, east: 27.72876)))
@@ -8691,7 +8701,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1126)
+        cities.reserveCapacity(1136)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -9599,8 +9609,18 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "mx:Querétaro", name: "Querétaro", countryCode: "MX", center: GeoPoint(latitude: 20.58806, longitude: -100.38806), bounds: GeoBounds(south: 20.55756, west: -100.41509, north: 20.6161, east: -100.35703), feeds: [ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_000"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_001"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_002"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_003")]))
         cities.append(ScooterCity(id: "kz:Almaty", name: "Almaty", countryCode: "KZ", center: GeoPoint(latitude: 43.298812, longitude: 76.939435), bounds: GeoBounds(south: 43.1775, west: 76.774937, north: 43.356878, east: 77.013148), feeds: [ScooterCityFeed(id: "kazakhstan:jet_kz_almaty"), ScooterCityFeed(id: "kazakhstan:whoosh_kz_ala"), ScooterCityFeed(id: "kazakhstan:bolt_kz_app_122")]))
         cities.append(ScooterCity(id: "kz:Astana", name: "Astana", countryCode: "KZ", center: GeoPoint(latitude: 51.143975, longitude: 71.43581), bounds: GeoBounds(south: 51.06534, west: 71.3469, north: 51.20139, east: 71.54021), feeds: [ScooterCityFeed(id: "kazakhstan:whoosh_kz_nqz")]))
+        cities.append(ScooterCity(id: "uz:Tashkent", name: "Tashkent", countryCode: "UZ", center: GeoPoint(latitude: 41.26465, longitude: 69.21627), bounds: GeoBounds(south: 41.192664, west: 69.145984, north: 41.430149, east: 69.477681), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_tashkent")]))
+        cities.append(ScooterCity(id: "uz:Andijan", name: "Andijan", countryCode: "UZ", center: GeoPoint(latitude: 40.767499, longitude: 72.350143), bounds: GeoBounds(south: 40.738665, west: 72.321505, north: 40.798519, east: 72.380346), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_andijan")]))
+        cities.append(ScooterCity(id: "uz:Bukhara", name: "Bukhara", countryCode: "UZ", center: GeoPoint(latitude: 39.768195, longitude: 64.428572), bounds: GeoBounds(south: 39.729954, west: 64.392144, north: 39.819433, east: 64.476026), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_bukhara")]))
+        cities.append(ScooterCity(id: "uz:Chirchiq", name: "Chirchiq", countryCode: "UZ", center: GeoPoint(latitude: 41.472659, longitude: 69.581229), bounds: GeoBounds(south: 41.429179, west: 69.529169, north: 41.499614, east: 69.597865), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_chirchiq")]))
+        cities.append(ScooterCity(id: "uz:Fergana", name: "Fergana", countryCode: "UZ", center: GeoPoint(latitude: 40.37338, longitude: 71.79783), bounds: GeoBounds(south: 40.346558, west: 71.702429, north: 40.457679, east: 71.862508), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_fergana")]))
+        cities.append(ScooterCity(id: "uz:Namangan", name: "Namangan", countryCode: "UZ", center: GeoPoint(latitude: 40.9983, longitude: 71.6726), bounds: GeoBounds(south: 40.974978, west: 71.517378, north: 41.057508, east: 71.713999), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_namangan")]))
+        cities.append(ScooterCity(id: "uz:Navoiy", name: "Navoiy", countryCode: "UZ", center: GeoPoint(latitude: 40.0844, longitude: 65.3792), bounds: GeoBounds(south: 40.072794, west: 65.350465, north: 40.131706, east: 65.406216), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_navoiy")]))
+        cities.append(ScooterCity(id: "uz:Termez", name: "Termez", countryCode: "UZ", center: GeoPoint(latitude: 37.2242, longitude: 67.2783), bounds: GeoBounds(south: 37.209888, west: 67.247259, north: 37.256934, east: 67.329923), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_termez")]))
+        cities.append(ScooterCity(id: "uz:Urgench", name: "Urgench", countryCode: "UZ", center: GeoPoint(latitude: 41.555882, longitude: 60.634334), bounds: GeoBounds(south: 41.535346, west: 60.595466, north: 41.58817, east: 60.673769), feeds: [ScooterCityFeed(id: "uzbekistan:jet_uz_urgench")]))
         cities.append(ScooterCity(id: "az:Baku", name: "Baku", countryCode: "AZ", center: GeoPoint(latitude: 40.406212, longitude: 49.883767), bounds: GeoBounds(south: 40.335093, west: 49.790085, north: 40.440305, east: 49.987929), feeds: [ScooterCityFeed(id: "azerbaijan:jet_az_baku")]))
         cities.append(ScooterCity(id: "ge:Batumi", name: "Batumi", countryCode: "GE", center: GeoPoint(latitude: 41.639193, longitude: 41.62466), bounds: GeoBounds(south: 41.615822, west: 41.583057, north: 41.662751, east: 41.680613), feeds: [ScooterCityFeed(id: "georgia:jet_ge_batumi")]))
+        cities.append(ScooterCity(id: "ge:Tbilisi", name: "Tbilisi", countryCode: "GE", center: GeoPoint(latitude: 41.6941, longitude: 44.8337), bounds: GeoBounds(south: 41.679833, west: 44.702798, north: 41.768279, east: 44.837965), feeds: [ScooterCityFeed(id: "georgia:jet_ge_tbilisi")]))
         cities.append(ScooterCity(id: "co:Medellín", name: "Medellín", countryCode: "CO", center: GeoPoint(latitude: 6.243534, longitude: -75.579226), bounds: GeoBounds(south: 6.18271, west: -75.61793, north: 6.29603, east: -75.54855), feeds: [ScooterCityFeed(id: "colombia:whoosh_co_mde")]))
         cities.append(ScooterCity(id: "by:Borisov", name: "Borisov", countryCode: "BY", center: GeoPoint(latitude: 54.221869, longitude: 28.504081), bounds: GeoBounds(south: 54.18871, west: 28.45654, north: 54.25148, east: 28.53523), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_bors")]))
         cities.append(ScooterCity(id: "by:Minsk", name: "Minsk", countryCode: "BY", center: GeoPoint(latitude: 53.902284, longitude: 27.561831), bounds: GeoBounds(south: 53.83261, west: 27.40681, north: 54.01826, east: 27.72876), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_msq")]))
@@ -9823,8 +9843,8 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1126
-    static let countryCount = 58
+    static let cityCount = 1136
+    static let countryCount = 59
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -10646,8 +10666,11 @@ enum ScooterCountryCatalog {
         "cl": (-33.45, -70.67),
         "mx": (23.6, -102.5),
         "kz": (43.3, 76.94),
+        // Between the reviewed JET cities, from Urgench to the Fergana Valley.
+        "uz": (40.3, 66.8),
         "az": (40.4, 49.87),
-        "ge": (41.65, 41.64),
+        // Between Batumi and Tbilisi, the two reviewed JET cities.
+        "ge": (41.7, 43.2),
         "co": (4.6, -74.1),
         "by": (53.9, 27.6),
         // Inland in the Northern Cape, near South Africa's geographic centre.
@@ -10720,6 +10743,7 @@ enum ScooterCountryCatalog {
         ("NZ: Flamingo · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),
         ("JP: LUUP map", "https://luup.sc/"),
         ("BR: IBGE boundaries", "https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer"),
+        ("UZ: JET app", "https://play.google.com/store/apps/details?id=com.jetscooters"),
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),

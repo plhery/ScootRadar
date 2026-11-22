@@ -62,6 +62,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   luupAppCities?: string[];
   /** Go Jet's signed-out scooter map, signed privately by the Node cache. */
   jetAppMap?: true;
+  /** JET's separate authenticated rider map; the reviewed city id is kept for provenance. */
+  jetRiderAppCity?: string;
   /** Whoosh rider-map region; the Node cache covers its enabled ride polygons with bounded views. */
   whooshAppRegion?: string;
   /** Publisher service-zone outlines, Google encoded polylines at precision 5. */
@@ -162,7 +164,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSyste
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
-    system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
+    system.jetAppMap || system.jetRiderAppCity || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
     system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea || system.rydeAppArea);
 }
 

@@ -34,6 +34,7 @@ import brazilianCatalog from '../../data/brazilian-scooter-feeds.json';
 import chileanCatalog from '../../data/chilean-scooter-feeds.json';
 import mexicanCatalog from '../../data/mexican-scooter-feeds.json';
 import kazakhCatalog from '../../data/kazakh-scooter-feeds.json';
+import uzbekCatalog from '../../data/uzbek-scooter-feeds.json';
 import azerbaijaniCatalog from '../../data/azerbaijani-scooter-feeds.json';
 import georgianCatalog from '../../data/georgian-scooter-feeds.json';
 import colombianCatalog from '../../data/colombian-scooter-feeds.json';
@@ -95,6 +96,7 @@ export const CATALOG_SYSTEMS = [
   ...chileanCatalog.systems.map(system => ({ ...system, country: 'CL' as const })),
   ...mexicanCatalog.systems.map(system => ({ ...system, country: 'MX' as const })),
   ...kazakhCatalog.systems.map(system => ({ ...system, country: 'KZ' as const })),
+  ...uzbekCatalog.systems.map(system => ({ ...system, country: 'UZ' as const })),
   ...azerbaijaniCatalog.systems.map(system => ({ ...system, country: 'AZ' as const })),
   ...georgianCatalog.systems.map(system => ({ ...system, country: 'GE' as const })),
   ...colombianCatalog.systems.map(system => ({ ...system, country: 'CO' as const })),

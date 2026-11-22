@@ -139,7 +139,7 @@ async function appCollector(provider) {
   return adapter[`collect${provider[0].toUpperCase() + provider.slice(1)}Region`];
 }
 const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount ||
-  system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity ||
+  system.luupAppCities || system.jetAppMap || system.jetRiderAppCity || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity ||
   system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.alpacaAppMap || system.dartAppMap ||
   system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea || system.rydeAppArea;
 

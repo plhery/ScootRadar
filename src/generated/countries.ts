@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "AT", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE", "MK", "BA", "XK", "BH", "DO"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "AT", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "UZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE", "MK", "BA", "XK", "BH", "DO"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog, data/<adjective>-scooter-feeds.json: all, Switzerland's only for its app maps. */
-export type CatalogCountry = 'CH' | 'FR' | 'DE' | 'AT' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'DK' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ' | 'JP' | 'BR' | 'CL' | 'MX' | 'KZ' | 'AZ' | 'GE' | 'CO' | 'BY' | 'ZA' | 'RO' | 'CZ' | 'QA' | 'AU' | 'TR' | 'MY' | 'KR' | 'EE' | 'LT' | 'SK' | 'BG' | 'MD' | 'SI' | 'IE' | 'MK' | 'BA' | 'XK' | 'BH' | 'DO';
+export type CatalogCountry = 'CH' | 'FR' | 'DE' | 'AT' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'DK' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ' | 'JP' | 'BR' | 'CL' | 'MX' | 'KZ' | 'UZ' | 'AZ' | 'GE' | 'CO' | 'BY' | 'ZA' | 'RO' | 'CZ' | 'QA' | 'AU' | 'TR' | 'MY' | 'KR' | 'EE' | 'LT' | 'SK' | 'BG' | 'MD' | 'SI' | 'IE' | 'MK' | 'BA' | 'XK' | 'BH' | 'DO';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -49,6 +49,7 @@ export const COUNTRY_SOURCES = {
   CL: 'chile',
   MX: 'mexico',
   KZ: 'kazakhstan',
+  UZ: 'uzbekistan',
   AZ: 'azerbaijan',
   GE: 'georgia',
   CO: 'colombia',
@@ -110,6 +111,7 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   CL: 'south-america',
   MX: 'north-america',
   KZ: 'asia',
+  UZ: 'asia',
   AZ: 'asia',
   GE: 'asia',
   CO: 'south-america',
@@ -179,6 +181,7 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   CL: { en: "Chile", de: "Chile", fr: "Chili", it: "Cile", nl: "Chili", nb: "Chile", pt: "Chile", es: "Chile", is: "Síle" },
   MX: { en: "Mexico", de: "Mexiko", fr: "Mexique", it: "Messico", nl: "Mexico", nb: "Mexico", pt: "México", es: "México", is: "Mexíkó" },
   KZ: { en: "Kazakhstan", de: "Kasachstan", fr: "Kazakhstan", it: "Kazakistan", nl: "Kazachstan", nb: "Kasakhstan", pt: "Cazaquistão", es: "Kazajistán", is: "Kasakstan" },
+  UZ: { en: "Uzbekistan", de: "Usbekistan", fr: "Ouzbékistan", it: "Uzbekistan", nl: "Oezbekistan", nb: "Usbekistan", pt: "Uzbequistão", es: "Uzbekistán", is: "Úsbekistan" },
   AZ: { en: "Azerbaijan", de: "Aserbaidschan", fr: "Azerbaïdjan", it: "Azerbaigian", nl: "Azerbeidzjan", nb: "Aserbajdsjan", pt: "Azerbaijão", es: "Azerbaiyán", is: "Aserbaídsjan" },
   GE: { en: "Georgia", de: "Georgien", fr: "Géorgie", it: "Georgia", nl: "Georgië", nb: "Georgia", pt: "Geórgia", es: "Georgia", is: "Georgía" },
   CO: { en: "Colombia", de: "Kolumbien", fr: "Colombie", it: "Colombia", nl: "Colombia", nb: "Colombia", pt: "Colômbia", es: "Colombia", is: "Kólumbía" },
@@ -241,6 +244,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   CL: ["chile", "chili", "cile", "sile", "cl"],
   MX: ["mexico", "mexiko", "mexique", "messico", "mx"],
   KZ: ["kazakhstan", "kasachstan", "kazakistan", "kazachstan", "kasakhstan", "cazaquistao", "kazajistan", "kasakstan", "казахстан", "казакстан", "kz"],
+  UZ: ["uzbekistan", "usbekistan", "ouzbekistan", "oezbekistan", "uzbequistao", "ozbekiston", "uzbekiston", "узбекистан", "узбекистон"],
   AZ: ["azerbaijan", "aserbaidschan", "azerbaidjan", "azerbaigian", "azerbeidzjan", "aserbajdsjan", "azerbaijao", "azerbaiyan", "aserbaidsjan", "азербаиджан"],
   GE: ["georgia", "georgien", "georgie", "грузия"],
   CO: ["colombia", "kolumbien", "colombie", "kolumbia", "co"],
@@ -330,8 +334,11 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   CL: [-33.45, -70.67],
   MX: [23.6, -102.5],
   KZ: [43.3, 76.94],
+  // Between the reviewed JET cities, from Urgench to the Fergana Valley.
+  UZ: [40.3, 66.8],
   AZ: [40.4, 49.87],
-  GE: [41.65, 41.64],
+  // Between Batumi and Tbilisi, the two reviewed JET cities.
+  GE: [41.7, 43.2],
   CO: [4.6, -74.1],
   BY: [53.9, 27.6],
   // Inland in the Northern Cape, near South Africa's geographic centre.
@@ -524,8 +531,9 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   CL: ["cl:Santiago", "cl:Temuco", "cl:Viña del Mar", "cl:La Serena", "cl:Rancagua", "cl:Puerto Montt"],
   MX: ["mx:Monterrey", "mx:Zapopan", "mx:Querétaro"],
   KZ: ["kz:Almaty", "kz:Astana"],
+  UZ: ["uz:Tashkent", "uz:Bukhara", "uz:Andijan", "uz:Fergana", "uz:Namangan", "uz:Urgench", "uz:Termez"],
   AZ: ["az:Baku"],
-  GE: ["ge:Batumi"],
+  GE: ["ge:Tbilisi", "ge:Batumi"],
   CO: ["co:Medellín"],
   BY: ["by:Minsk", "by:Borisov", "by:Soligorsk"],
   ZA: ["za:Langebaan"],
@@ -551,7 +559,7 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "AT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE", "MK", "BA", "XK", "BH", "DO"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "AT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "UZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE", "MK", "BA", "XK", "BH", "DO"];
 
 /**
  * Whose data the map shows, by country, which the X-Mobility-Data-Source header of an answer names for the
@@ -592,8 +600,9 @@ export const COUNTRY_ATTRIBUTIONS: Record<CountryCode, string> = {
   CL: "Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
   MX: "Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
   KZ: "Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map; Bolt authenticated rider map",
+  UZ: "Uzbekistan: JET authenticated rider map, individual available scooters",
   AZ: "Azerbaijan: JET signed-out Go Jet app map",
-  GE: "Georgia: JET signed-out Go Jet app map",
+  GE: "Georgia: JET signed-out Go Jet map in Batumi and authenticated rider map in Tbilisi",
   CO: "Colombia: Whoosh authenticated rider map",
   BY: "Belarus: Whoosh authenticated rider map",
   ZA: "South Africa: Zippy rider map",
@@ -644,6 +653,7 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "NZ: Flamingo · CC BY 4.0", href: "https://creativecommons.org/licenses/by/4.0/" },
   { label: "JP: LUUP map", href: "https://luup.sc/" },
   { label: "BR: IBGE boundaries", href: "https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer" },
+  { label: "UZ: JET app", href: "https://play.google.com/store/apps/details?id=com.jetscooters" },
   { label: "BR/CL/MX/KZ/AZ/GE: JET map", href: "https://jetshr.com/" },
   { label: "BR/CL/MX/KZ/CO/BY: Whoosh map", href: "https://whoosh.bike/" },
   { label: "ZA: Zippy rider map", href: "https://zippyride.app.link/" },
