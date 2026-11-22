@@ -496,7 +496,7 @@ An optional private `/data/lime-accounts.json` manifest (`LIME_ACCOUNTS_PATH`)
 assigns refresh groups to independent accounts:
 
 ```json
-{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"},{"id":"lime4","sessionPath":"lime4-session.json"},{"id":"lime5","sessionPath":"lime5-session.json"},{"id":"lime6","sessionPath":"lime6-session.json"},{"id":"lime7","sessionPath":"lime7-session.json"},{"id":"lime8","sessionPath":"lime8-session.json"},{"id":"lime9","sessionPath":"lime9-session.json"},{"id":"lime10","sessionPath":"lime10-session.json"},{"id":"lime11","sessionPath":"lime11-session.json"},{"id":"lime12","sessionPath":"lime12-session.json"},{"id":"lime13","sessionPath":"lime13-session.json"}]}
+{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"},{"id":"lime4","sessionPath":"lime4-session.json"},{"id":"lime5","sessionPath":"lime5-session.json"},{"id":"lime6","sessionPath":"lime6-session.json"},{"id":"lime7","sessionPath":"lime7-session.json"},{"id":"lime8","sessionPath":"lime8-session.json"},{"id":"lime9","sessionPath":"lime9-session.json"},{"id":"lime10","sessionPath":"lime10-session.json"},{"id":"lime11","sessionPath":"lime11-session.json"},{"id":"lime12","sessionPath":"lime12-session.json"},{"id":"lime13","sessionPath":"lime13-session.json"},{"id":"lime14","sessionPath":"lime14-session.json"},{"id":"lime15","sessionPath":"lime15-session.json"},{"id":"lime16","sessionPath":"lime16-session.json"},{"id":"lime17","sessionPath":"lime17-session.json"},{"id":"lime18","sessionPath":"lime18-session.json"}]}
 ```
 
 Paths resolve beside the manifest. Account ids and resolved session paths must
@@ -584,7 +584,7 @@ wherever they begin, and ten are left for calls that arrive late. The cache a
 deploy runs beside this one for a minute counts its own, so the two could pass
 60 together in that minute, the new one's accounts keeping their five seconds
 apart. Fifty in ten seconds is 300
-a minute, twenty-five accounts' worth at twelve each; thirteen accounts make 156.
+a minute, twenty-five accounts' worth at twelve each; eighteen accounts make 216.
 Five of the fifty are kept for the first views of groups opened with nothing
 shown (above): a town still shown has its first 45 calls start at once and its
 46th ten seconds after its first, and nothing waits longer. Idle sweeps wait on the same budget.
@@ -595,7 +595,7 @@ are counted from 14 November 2026 (`scootradar_lime_address_held_total` and
 Lime answered a view through two datacenter proxy exits on 12 November 2026
 (HTTP 200, the same 87 pins as directly; about one second through a new
 tunnel against 0.45 directly). Sending calls through other addresses is not
-built: one address is allowed nearly twice what thirteen accounts send.
+built: one address is allowed about 1.4 times what eighteen accounts send.
 It would matter past about 25 accounts.
 
 A failed collection's log line carries the `Retry-After` Lime sent with a 429
@@ -604,10 +604,11 @@ A failed collection's log line carries the `Retry-After` Lime sent with a 429
 The network host, vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
 cadence and the catalog's conservative single-account budget remain in place.
 
-The original account and `lime2` through `lime13` serve production.
+The original account and `lime2` through `lime18` serve production.
 `lime4` through `lime8` were email-verified and map-checked on 10 November 2026,
 raising the configured pool capacity from 36 to 96 requests a minute, `lime9`
-on 21 November, to 108, and `lime10` through `lime13` on 22 November, to 156.
+on 21 November, to 108, `lime10` through `lime13` on 22 November, to 156, and `lime14` through
+`lime18` the same day, to 216.
 `lime1` is reserved
 for research, whose session has a separate renewal owner. Never share a
 refresh-token file between the local research process and production. The
