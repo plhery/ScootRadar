@@ -1,12 +1,16 @@
-import { chmod, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { chmod, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import areas from '../data/ridemovi-areas.json';
 import { haversineM, boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
-import { collectRidemoviArea, parseRidemoviReply, RIDEMOVI_FORBIDDEN_RETRY_MS, RIDEMOVI_PAGE, RIDEMOVI_SHORT, RidemoviClient, withRidemoviAppCollectors } from './ridemoviApp';
+import type { Vehicle } from '../src/lib/types';
+import { collectRidemoviArea, parseRidemoviReply, RIDEMOVI_FORBIDDEN_RETRY_MS, RIDEMOVI_PAGE, RIDEMOVI_RADIUS_M, RIDEMOVI_SHORT, RidemoviClient,
+  RidemoviSweepCheckpoints, withRidemoviAppCollectors, type RidemoviScooter } from './ridemoviApp';
+import { CHECKPOINT_MAX_AGE_MS } from './sweepCheckpoints';
+import { withinCollection } from './sweeps';
 
 const lat = 51.0504, lng = 13.7373;
 const bike = (id = 1, offset = 0.01) => ({ id, lat: lat + offset, lon: lng, cityId: 86, bikeType: 'SN1',
@@ -251,4 +255,123 @@ describe('RideMovi collector registration', () => {
     expect(result.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(pile.map(scooter => `ridemovi:${scooter.id}`).sort());
     expect(nearest.mock.calls.length).toBeLessThan(200);
   });
+});
+
+describe('RideMovi sweeps resumed after a deploy', () => {
+  const WAIT = { timeout: 10_000, interval: 20 };
+  const rings = areas.areas.find(area => area.id === system.ridemoviAppArea)!.rings as [number, number][][];
+  // 400 scooters spread over Dresden's outline, the same each run.
+  const fleet: RidemoviScooter[] = [];
+  for (let seed = 7; fleet.length < 400;) {
+    const next = () => (seed = (seed * 48_271) % 2_147_483_647) / 2_147_483_647;
+    const point = { lat: system.bounds.south + next() * (system.bounds.north - system.bounds.south),
+      lng: system.bounds.west + next() * (system.bounds.east - system.bounds.west) };
+    if (rings.some(ring => polygonContainsPoint(ring, point.lat, point.lng))) fleet.push({ id: String(fleet.length + 1), ...point, battery: 60, range_m: 20_000 });
+  }
+  // RideMovi's map as parseRidemoviReply reads it: the 30 nearest within 2 km, vouching up to the last unless five or fewer.
+  const map = () => vi.fn(async (lat: number, lng: number) => {
+    const near = fleet.map(scooter => ({ scooter, d: haversineM(lat, lng, scooter.lat, scooter.lng) }))
+      .filter(({ d }) => d <= RIDEMOVI_RADIUS_M).sort((a, b) => a.d - b.d).slice(0, RIDEMOVI_PAGE);
+    const reach = near.length <= RIDEMOVI_SHORT ? RIDEMOVI_RADIUS_M : near.at(-1)!.d;
+    return { scooters: near.map(({ scooter }) => scooter), completeM: Math.max(0, reach * 0.99 - 5) };
+  });
+  let directory: string;
+  let path: string;
+  let logged: Record<string, unknown>[];
+  beforeEach(async () => {
+    directory = await mkdtemp(join(tmpdir(), 'ridemovi-sweeps-'));
+    path = new RidemoviSweepCheckpoints({ directory }).path(system.id);
+    logged = [];
+    vi.spyOn(console, 'log').mockImplementation(line => { logged.push(JSON.parse(String(line))); });
+  });
+  afterEach(async () => {
+    vi.restoreAllMocks();
+    await rm(directory, { recursive: true, force: true });
+  });
+  const saved = async () => JSON.parse(await readFile(path, 'utf8'));
+  const gone = () => expect(stat(path)).rejects.toThrow('ENOENT');
+  /** The map, answering `replies` times and then never again, as the cache a deploy stops. */
+  const stoppedAfter = (replies: number, nearest: ReturnType<typeof map>) => {
+    let calls = 0;
+    return { nearest: (lat: number, lng: number) => ++calls <= replies ? nearest(lat, lng) : new Promise<never>(() => undefined) };
+  };
+
+  it('saves where the sweep stands after each reply as ridemovi-sweep.<town>.tmp, and removes it once the sweep ends, done or failed', async () => {
+    expect(path).toBe(join(directory, 'ridemovi-sweep.ridemovi_de_dresden.tmp'));
+    const nearest = map();
+    void collectRidemoviArea(system, [], stoppedAfter(4, nearest), undefined, new RidemoviSweepCheckpoints({ directory }));
+    await vi.waitFor(async () => expect((await saved()).discs).toHaveLength(4), WAIT);
+    const checkpoint = await saved();
+    // Its requests count those still under way, up to three at once.
+    expect(checkpoint).toMatchObject({ system: system.id, startedAt: expect.any(Number), savedAt: expect.any(Number) });
+    expect(checkpoint.requests).toBeGreaterThanOrEqual(4);
+    expect(Object.keys(checkpoint.scooters[0]).sort()).toEqual(['battery', 'id', 'lat', 'lng', 'range_m']);
+    await rm(path);
+
+    await collectRidemoviArea(system, [], { nearest }, undefined, new RidemoviSweepCheckpoints({ directory }));
+    await gone();
+    let calls = 0;
+    const failing = { nearest: async (lat: number, lng: number) => {
+      if (++calls > 3) throw new Error('RideMovi map HTTP 500');
+      return nearest(lat, lng);
+    } };
+    await expect(collectRidemoviArea(system, [], failing, undefined, new RidemoviSweepCheckpoints({ directory }))).rejects.toThrow('HTTP 500');
+    await gone();
+  }, 30_000);
+
+  it('resumes a sweep a deploy stopped, from its start, for fewer requests, and starts again from a stale or broken one', async () => {
+    const nearest = map();
+    const whole = await collectRidemoviArea(system, [], { nearest }, undefined, new RidemoviSweepCheckpoints({ directory }));
+    const wholeRequests = nearest.mock.calls.length;
+    expect(whole.vehicles).toHaveLength(fleet.length);
+    expect(logged.at(-1)).not.toHaveProperty('resumed');
+
+    void collectRidemoviArea(system, [], stoppedAfter(6, nearest), undefined, new RidemoviSweepCheckpoints({ directory }));
+    await vi.waitFor(async () => expect((await saved()).discs).toHaveLength(6), WAIT);
+    const checkpoint = await saved();
+    const before = nearest.mock.calls.length;
+    const resumed = await collectRidemoviArea(system, [], { nearest }, undefined, new RidemoviSweepCheckpoints({ directory }));
+    const requests = nearest.mock.calls.length - before;
+    expect(requests).toBeLessThan(wholeRequests);
+    expect(resumed.observedAt).toBe(checkpoint.startedAt);
+    expect(resumed.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(whole.vehicles.map(vehicle => vehicle.vehicle_id).sort());
+    expect(logged.at(-1)).toMatchObject({ event: 'ridemovi_sweep', system: system.id, resumed: true, resumedRequests: checkpoint.requests,
+      requests: checkpoint.requests + requests });
+    await gone();
+
+    for (const left of [JSON.stringify({ ...checkpoint, savedAt: Date.now() - CHECKPOINT_MAX_AGE_MS - 1 }),
+      JSON.stringify({ ...checkpoint, startedAt: Date.now() - 2 * 60 * 60_000 }), JSON.stringify({ ...checkpoint, system: 'ridemovi_de_bonn' }),
+      JSON.stringify({ ...checkpoint, scooters: [{ id: 1, lat: 51, lng: 13 }] }), '{"system":']) {
+      await writeFile(path, left);
+      const from = nearest.mock.calls.length;
+      const fresh = await collectRidemoviArea(system, [], { nearest }, undefined, new RidemoviSweepCheckpoints({ directory }));
+      expect(nearest.mock.calls.length - from).toBe(wholeRequests);
+      expect(fresh.observedAt).toBeGreaterThan(checkpoint.startedAt);
+      expect(logged.at(-1)).not.toHaveProperty('resumed');
+      await gone();
+    }
+  }, 60_000);
+
+  it('shows what the stopped sweep had found at once, as old as that sweep', async () => {
+    const startedAt = Date.now() - 30 * 60_000;
+    await writeFile(path, JSON.stringify({ system: system.id, startedAt, requests: 3, discs: [{ lat, lng, r: 300 }],
+      scooters: [{ id: 'seen-before-deploy', lat, lng, battery: 50, range_m: 9_000 }], savedAt: Date.now() - 60_000 }));
+    const reports: Vehicle[][] = [];
+    const began: number[] = [];
+    const collection = { urgent: () => false, focus: () => undefined, progress: (found: Vehicle[]) => { reports.push(found); },
+      sweepStarted: (at: number) => { began.push(at); } };
+    const hanging = { nearest: () => new Promise<never>(() => undefined) };
+    void withinCollection(collection, () => collectRidemoviArea(system, [], hanging, undefined, new RidemoviSweepCheckpoints({ directory })));
+    await vi.waitFor(() => expect(reports).toHaveLength(1), WAIT);
+    expect(began).toEqual([startedAt]);
+    expect(reports[0].map(vehicle => vehicle.vehicle_id)).toEqual(['ridemovi:seen-before-deploy']);
+  });
+
+  it('gives the cache\'s collectors checkpoints read after the client\'s start hold', async () => {
+    const feed = withRidemoviAppCollectors(independentCollectableFeeds(), [system], () => [], { nearest: map() },
+      new RidemoviSweepCheckpoints({ directory })).find(feed => feed.id.endsWith(`:${system.id}`))!;
+    await feed.collect();
+    expect(logged.at(-1)).toMatchObject({ event: 'ridemovi_sweep', system: system.id });
+    await gone();
+  }, 30_000);
 });

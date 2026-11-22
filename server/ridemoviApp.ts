@@ -5,8 +5,9 @@ import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
-import { sweepNearestArea, type NearestMap, type Ring, type SweepLimits } from './nearestSweep';
-import { Pacer, SweepProgress } from './sweeps';
+import { heldSquare, sweepNearestArea, type NearestMap, type NearestSweep, type Ring, type SweepLimits } from './nearestSweep';
+import { SweepCheckpoints } from './sweepCheckpoints';
+import { currentCollection, Pacer, SweepProgress } from './sweeps';
 
 const ORIGIN = 'https://api.ridemoviapp.com';
 const PATH = '/bike/nearby?ridingStatus=0&vehicleType=escooter&areaLimit=1';
@@ -184,9 +185,30 @@ const AREAS = new Map(areaCatalog.areas.map(area => [area.id, area.rings as Ring
 // 2026, took 286 requests and 49 minutes, most of them beside München's 237; a failed sweep keeps none of its scooters.
 const LIMITS: SweepLimits = { requests: 600, milliseconds: 90 * 60_000, retryMs: 3_000 };
 type Position = { lat: number; lng: number };
+// A deploy's new cache waits two minutes before its first request, so that it does not double the pace.
+const RIDEMOVI_START_HOLD_MS = 120_000;
 
+/** A scooter as a checkpoint saved it, read back. */
+const savedScooter = (value: unknown): value is RidemoviScooter => {
+  const entry = object(value);
+  return typeof entry?.id === 'string' && finite(entry.lat) && finite(entry.lng) &&
+    (entry.battery === null || finite(entry.battery)) && (entry.range_m === null || finite(entry.range_m));
+};
+/**
+ * Each town's sweep under way, saved after each reply as `tmp/ridemovi-sweep.<town>.tmp`, from which the
+ * town's next sweep goes on after a deploy (SweepCheckpoints). On 22 November 2026 the first sweeps of
+ * Köln, München and Bergen took 49, 42 and 27 minutes, and the cache was deployed about every 40.
+ */
+export class RidemoviSweepCheckpoints extends SweepCheckpoints<RidemoviScooter> {
+  constructor(options: { directory?: string; startHoldMs?: number } = {}) { super({ ...options, map: 'ridemovi', scooter: savedScooter }); }
+}
+
+/**
+ * A complete sweep of the town's outline (sweepNearestArea), planned from where its scooters last stood.
+ * Given checkpoints, the cache's, a sweep a deploy stopped goes on where it stood, from its start.
+ */
 export async function collectRidemoviArea(system: RegionalScooterSystem, previous: readonly Position[],
-  api: Pick<RidemoviClient, 'nearest'>, limits = LIMITS): Promise<SourceVehicles> {
+  api: Pick<RidemoviClient, 'nearest'>, limits = LIMITS, checkpoints?: RidemoviSweepCheckpoints): Promise<SourceVehicles> {
   const rings = system.ridemoviAppArea ? AREAS.get(system.ridemoviAppArea) : undefined;
   if (!rings || system.provider !== 'ridemovi') throw new Error('Not a RideMovi app map area');
   const published = (scooters: Iterable<RidemoviScooter>): Vehicle[] => [...scooters]
@@ -196,26 +218,45 @@ export async function collectRidemoviArea(system: RegionalScooterSystem, previou
       battery: scooter.battery, range_m: scooter.range_m, deep_link: null, distance_m: null }));
   const found = new Map<string, RidemoviScooter>();
   const progress = new SweepProgress(() => published(found.values()));
-  const sweep = await sweepNearestArea(MAP, { nearest: (lat, lng) => api.nearest(lat, lng) },
-    rings, previous, limits, found, part => progress.done(part));
+  const resume = await checkpoints?.resumable(system.id, limits);
+  if (resume) {
+    // The map shows at once what the stopped sweep had found, and where, as old as that sweep.
+    currentCollection()?.sweepStarted?.(resume.startedAt);
+    for (const seen of resume.scooters) found.set(seen.id, seen);
+    progress.done(...resume.discs.map(({ lat, lng, r }) => heldSquare(lat, lng, r)));
+  }
+  const checkpoint = checkpoints?.track(system.id);
+  let sweep: NearestSweep<RidemoviScooter>;
+  try {
+    sweep = await sweepNearestArea(MAP, { nearest: (lat, lng) => api.nearest(lat, lng) }, rings, previous, limits, found,
+      (part, state) => {
+        progress.done(part);
+        checkpoint?.save(state, [...found.values()]);
+      }, resume);
+  } finally { await checkpoint?.end(); }
   // Empty replies cover their radius, so a map hidden everywhere would read as an empty city.
   if (!found.size) throw new Error('RideMovi sweep found no scooter anywhere');
   // A pile, scooters within metres of each other with nothing else listed, keeps the scooters seen there,
   // as Bird's and BinBin's do: more would take 30 scooters, rentable or not, within those metres.
   console.log(JSON.stringify({ event: 'ridemovi_sweep', system: system.id, scooters: sweep.scooters.length,
-    requests: sweep.requests, planned: sweep.planned, piles: sweep.piles, seconds: Math.round((Date.now() - sweep.startedAt) / 1000) }));
+    requests: sweep.requests, planned: sweep.planned, piles: sweep.piles,
+    ...resume ? { resumed: true, resumedRequests: resume.requests } : {}, seconds: Math.round((Date.now() - sweep.startedAt) / 1000) }));
   return { observedAt: sweep.startedAt, stale: false, vehicles: published(sweep.scooters) };
 }
 
 let scriptClient: RidemoviClient | undefined;
 export const collectRidemoviRegion = (system: RegionalScooterSystem) => collectRidemoviArea(system, [], scriptClient ??= new RidemoviClient());
-const client = new RidemoviClient({ startHoldMs: 120_000 });
+const client = new RidemoviClient({ startHoldMs: RIDEMOVI_START_HOLD_MS });
+/** The cache's sweeps' checkpoints, read once its client's start hold is over. Scripts' sweeps keep none. */
+const sweepCheckpoints = new RidemoviSweepCheckpoints({ startHoldMs: RIDEMOVI_START_HOLD_MS });
+/** Each town's sweep is planned from the positions the cache last published for it, and resumed after a deploy. */
 export function withRidemoviAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[],
-  previous: (feedId: string) => readonly Position[] | undefined, api: Pick<RidemoviClient, 'nearest'> = client) {
+  previous: (feedId: string) => readonly Position[] | undefined, api: Pick<RidemoviClient, 'nearest'> = client,
+  checkpoints = sweepCheckpoints) {
   const regions = new Map(systems.filter(system => system.ridemoviAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
     return system ? { ...feed, watchMs: 2 * 60_000, paced: true,
-      collect: () => collectRidemoviArea(system, previous(feed.id) ?? [], api) } : feed;
+      collect: () => collectRidemoviArea(system, previous(feed.id) ?? [], api, undefined, checkpoints) } : feed;
   });
 }

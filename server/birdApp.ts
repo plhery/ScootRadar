@@ -8,9 +8,10 @@ import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterF
 import type { PositionReads } from '../src/lib/scooterSnapshots';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { daytimeSweeps } from './appMapCadence';
-import { heldSquare, sweepNearestArea, type Disc, type NearestMap, type NearestProgress, type NearestSweep, type Ring,
+import { heldSquare, sweepNearestArea, type NearestMap, type NearestProgress, type NearestSweep, type Ring,
   type SweepLimits } from './nearestSweep';
 import { saveAtomically } from './snapshotFile';
+import { CHECKPOINT_MAX_AGE_MS, SweepCheckpoints, type SweepCheckpoint } from './sweepCheckpoints';
 import { currentCollection, Pacer, SweepProgress, withinCollection, type CollectionScope, type PaceOptions } from './sweeps';
 
 const ORIGIN = 'https://api-bird.prod.birdapp.com';
@@ -389,18 +390,10 @@ export const sweepBirdArea = (api: Pick<BirdClient, 'nearest'>, rings: readonly 
   limits = BIRD_LIMITS, found = new Map<string, BirdScooter>(), done?: (part: MapBounds, progress: NearestProgress) => void,
   resume?: NearestProgress): Promise<BirdSweep> => sweepNearestArea(BIRD_MAP, api, rings, previous, limits, found, done, resume);
 
-/**
- * How recently a sweep's checkpoint must have been saved for the next sweep of its area to resume it.
- * A deploy hands one over within about three minutes, the new cache's start hold and a reply's pace;
- * one older was left by a cache stopped long before, and the sweep starts again.
- */
-export const BIRD_CHECKPOINT_MAX_AGE_MS = 10 * 60_000;
+/** Bird's sweeps' checkpoints are kept as other maps' are (SweepCheckpoints): ten minutes. */
+export const BIRD_CHECKPOINT_MAX_AGE_MS = CHECKPOINT_MAX_AGE_MS;
 /** A Bird area's sweep under way, as saved after each of its replies: where it stood, and the scooters it had found. */
-export interface BirdSweepCheckpoint extends NearestProgress { system: string; scooters: BirdScooter[]; savedAt: number }
-const savedDisc = (value: unknown): value is Disc => {
-  const entry = object(value);
-  return finite(entry?.lat) && finite(entry.lng) && finite(entry.r) && entry.r >= 0;
-};
+export type BirdSweepCheckpoint = SweepCheckpoint<BirdScooter>;
 /** A scooter as a file the cache saved holds it, read back: a checkpoint's, or a supplement's (birdSupplement.ts). */
 export const savedScooter = (value: unknown): value is BirdScooter => {
   const entry = object(value);
@@ -409,69 +402,12 @@ export const savedScooter = (value: unknown): value is BirdScooter => {
 };
 
 /**
- * Each Bird area's sweep under way, saved after each reply, from which the area's next sweep goes on
- * (collectBirdArea). A deploy stops the sweeps under way, and they started again from nothing: on 9
- * November 2026 deploys at 23:43 and 23:57 UTC stopped Scottsdale's of 28 requests partway twice,
- * and it ended on the third try, 58 minutes late (SCOOTRADAR-CACHE-6B). Austin's takes up to 49
- * minutes, which deploys close together could stop every time.
- *
- * They are saved among the temporary files beside the snapshot, as `tmp/bird-sweep.<area>.tmp`, which
- * the host's backup skips (/etc/coolify-backup/excludes.txt on netcup: `*-scooter-snapshots/_data/tmp/*.tmp`,
- * whose star stops at a slash): each goes when its sweep ends, and one vanishing while restic read it
- * would fail the backup, as a temporary snapshot did on 19 October 2026 (scooter-cache.ts).
- *
- * A deploy's new cache reads an area's when it starts the area's sweep, not when it starts itself:
- * the old cache goes on sweeping, and saving, for about 90 seconds after. The reads wait out the
- * client's start hold (BIRD_START_HOLD_MS), as its first request does, by when the old cache has
- * stopped and saved its last.
+ * Each Bird area's sweep under way, saved after each reply as `tmp/bird-sweep.<area>.tmp`, from which
+ * the area's next sweep goes on (collectBirdArea, SweepCheckpoints). Austin's takes up to 49 minutes,
+ * which deploys close together could stop every time.
  */
-export class BirdSweepCheckpoints {
-  readonly directory: string;
-  private readonly readFrom: number;
-  constructor(options: { directory?: string; startHoldMs?: number } = {}) {
-    this.directory = options.directory ?? join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'tmp');
-    this.readFrom = Date.now() + (options.startHoldMs ?? 0);
-  }
-
-  /** Named .tmp in the folder itself, as the backup's exclusion matches (`_data/tmp/*.tmp`), not in a folder of its own. */
-  path(system: string) { return join(this.directory, `bird-sweep.${system}.tmp`); }
-
-  /** The area's sweep stopped partway, if saved recently and started within the limits: none if unreadable. */
-  async resumable(system: string, limits: SweepLimits): Promise<BirdSweepCheckpoint | undefined> {
-    const wait = this.readFrom - Date.now();
-    if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
-    let saved: Record<string, unknown> | undefined;
-    try { saved = object(JSON.parse(await readFile(this.path(system), 'utf8'))); } catch { return undefined; }
-    const { startedAt, requests, discs, scooters, savedAt } = saved ?? {}, now = Date.now();
-    if (saved?.system !== system || !finite(startedAt) || !finite(savedAt) || typeof requests !== 'number' || !Number.isInteger(requests) ||
-      requests < 0 || !Array.isArray(discs) || !discs.every(savedDisc) || !Array.isArray(scooters) || !scooters.every(savedScooter)) return undefined;
-    if (now - savedAt > BIRD_CHECKPOINT_MAX_AGE_MS || savedAt > now || startedAt > savedAt || now - startedAt >= limits.milliseconds) return undefined;
-    return { system, startedAt, requests, discs, scooters, savedAt };
-  }
-
-  /**
-   * Saves the area's sweep after each reply, each save once the one before is done, until it ends, and
-   * then removes it, whether the sweep succeeded or failed: a reply still under way then is not saved.
-   * A save that fails is told once and the sweep goes on.
-   */
-  track(system: string): { save(progress: NearestProgress, scooters: BirdScooter[]): void; end(): Promise<void> } {
-    let saving = Promise.resolve(), ended = false, told = false;
-    return {
-      save: ({ startedAt, requests, discs }, scooters) => {
-        if (ended) return;
-        const write = (path: string) => writeFile(path, JSON.stringify({ system, startedAt, requests, discs, scooters, savedAt: Date.now() }));
-        saving = saving.then(() => saveAtomically(this.path(system), this.directory, `bird-sweep.${system}`, write)).catch(error => {
-          if (!told) console.warn(JSON.stringify({ event: 'bird_checkpoint_failed', system, error: error instanceof Error ? error.message : String(error) }));
-          told = true;
-        });
-      },
-      end: async () => {
-        ended = true;
-        await saving;
-        await rm(this.path(system), { force: true }).catch(() => undefined);
-      },
-    };
-  }
+export class BirdSweepCheckpoints extends SweepCheckpoints<BirdScooter> {
+  constructor(options: { directory?: string; startHoldMs?: number } = {}) { super({ ...options, map: 'bird', scooter: savedScooter }); }
 }
 
 interface Area { id: string; title: string; rings: Ring[] }
@@ -492,11 +428,11 @@ export type PreviousPositions = (feedId: string) => readonly Published[] | undef
 
 /**
  * What a Bird area's sweep tells the cache beside its progress (sweeps.ts), so that its scooters are as old as
- * they are, not as the collection: when the sweep began, before a restart for one resumed (sweepStarted), and
- * when it read each scooter it ends with (sweepRead), as a sweep may take longer than a position may be shown.
+ * they are, not as the collection: when the sweep began, before a restart for one resumed (sweepStarted, as
+ * RideMovi's do too), and when it read each scooter it ends with (sweepRead), as a sweep may take longer than a
+ * position may be shown.
  */
 export interface BirdSweepScope extends CollectionScope {
-  sweepStarted?(startedAt: number): void;
   sweepRead?(reads: PositionReads): void;
 }
 

@@ -215,6 +215,18 @@ a map visit keeps the feed watched for two minutes. Sweeps reuse previous
 positions to plan fewer requests, report completed parts progressively, and
 timestamp the result at the sweep's start.
 
+A deploy stops the sweeps under way, and on 22 November 2026 the cache was
+deployed about every 40 minutes, while Köln's, München's and Bergen's first
+sweeps took 49, 42 and 27. Since 23 November each sweep is saved after every
+reply, with where it stood and the scooters it had found, as
+`tmp/ridemovi-sweep.<town>.tmp` beside the snapshot (the host's backup skips
+it, as it does Bird's), and removed when it ends, done or failed. The new
+cache, once its two minutes are over, goes on with a sweep the deploy stopped,
+from its start, if saved within ten minutes, rather than starting it again;
+the map shows at once what it had found, as old as its start. Its
+`ridemovi_sweep` line then says `resumed` and how many requests it had made
+before. Bird's sweeps are resumed the same way (`SweepCheckpoints`).
+
 ## App link
 
 The provider opens the download link published by

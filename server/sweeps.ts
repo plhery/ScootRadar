@@ -20,6 +20,11 @@ export interface CollectionScope {
    * for its first scooters (PaceOptions.opening).
    */
   cold?(): boolean;
+  /**
+   * The sweep resumed one a restart stopped (SweepCheckpoints), which began at `startedAt`: what it has
+   * found is as old as that sweep, not as the collection (sweepScope in birdApp.ts).
+   */
+  sweepStarted?(startedAt: number): void;
 }
 
 const scope = new AsyncLocalStorage<CollectionScope>();
