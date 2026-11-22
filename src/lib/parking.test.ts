@@ -53,6 +53,21 @@ describe('published scooter parking', () => {
     expect(normalize([station], { data: { global_rules: [{ vehicle_type_ids: ['bike'], station_parking: true }] } })[0].mandatory).toBe(false);
     expect(normalize([station], { data: { global_rules: [{ vehicle_type_ids: ['scooter'], station_parking: true }] } })[0].mandatory).toBe(true);
   });
+  it('gives the same answers when it tries long rings and holes by band of latitude', () => {
+    // A ring of 70 points whose west side zigzags, with a round hole of 73: both long enough to be tried by band.
+    const step = 0.0015, west = Array.from({ length: 67 }, (_, k) => [k % 2 ? 4.82 : 4.8, 45.7 + k * step]);
+    const ring = [...west, [4.9, 45.8], [4.9, 45.7], west[0]];
+    const hole = Array.from({ length: 73 }, (_, k) => [4.86 + 0.01 * Math.cos(k * Math.PI / 36), 45.75 + 0.01 * Math.sin(k * Math.PI / 36)]);
+    const fencing = { data: { geofencing_zones: { features: [{ ...zone, geometry: { type: 'Polygon', coordinates: [ring, hole] } }] } } };
+    const at = (id: string, lat: number, lon: number) => ({ ...station, station_id: id, lat, lon });
+    expect(normalize([
+      at('hole', 45.75, 4.86), at('ring', 45.75, 4.88),
+      at('tooth-in', 45.7 + 20 * step, 4.81), at('tooth-out', 45.7 + 21 * step, 4.81),
+      at('edge-in', 45.7 + 20.5 * step, 4.815), at('edge-out', 45.7 + 20.5 * step, 4.805),
+    ], fencing).map(location => [location.id.split(':')[1], location.mandatory])).toEqual([
+      ['hole', false], ['ring', true], ['tooth-in', true], ['tooth-out', false], ['edge-in', true], ['edge-out', false],
+    ]);
+  });
   it('keeps rule order between a zone spanning the region and the small ones near a station', () => {
     const wide = { geometry: { type: 'Polygon', coordinates: [[[4, 45], [5.5, 45], [5.5, 46.5], [4, 46.5], [4, 45]]] },
       properties: { rules: [{ vehicle_type_id: ['scooter'], station_parking: false }] } };

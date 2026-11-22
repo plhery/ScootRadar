@@ -31,6 +31,44 @@ function ringContains(ring: number[][], lng: number, lat: number): boolean {
   }
   return inside;
 }
+const BANDED_RING_POINTS = 64;
+const POINTS_PER_BAND = 8;
+const MAX_BANDS = 512;
+/**
+ * A ring with its bounds and, when long, its edges by band of latitude. Only an edge whose latitudes
+ * reach the point's can change ringContains' answer, and those are all in the point's band, tried in
+ * the same way, so the answer is the same; a point outside the ring's bounds is outside the ring.
+ * Voi's 3,061 stations in Oslo, tried against whole rings of up to 3,231 points and every hole of a
+ * zone, still held the cache's event loop for about 2 seconds every 20 minutes on 22 November 2026.
+ */
+interface IndexedRing { ring: number[][]; bounds: MapBounds | undefined; bands?: { south: number; height: number; edges: number[][] } }
+function indexRing(ring: number[][]): IndexedRing {
+  const bounds = polygonBounds([[ring]]);
+  if (!bounds || ring.length < BANDED_RING_POINTS || !(bounds.north > bounds.south)) return { ring, bounds };
+  const count = Math.min(MAX_BANDS, Math.ceil(ring.length / POINTS_PER_BAND));
+  const south = bounds.south, height = (bounds.north - bounds.south) / count;
+  const edges: number[][] = Array.from({ length: count }, () => []);
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const y = ring[i][1], py = ring[j][1];
+    for (let band = bandOf(Math.min(y, py), south, height, count), last = bandOf(Math.max(y, py), south, height, count); band <= last; band++) {
+      edges[band].push(i);
+    }
+  }
+  return { ring, bounds, bands: { south, height, edges } };
+}
+function bandOf(lat: number, south: number, height: number, count: number): number {
+  return Math.min(count - 1, Math.max(0, Math.floor((lat - south) / height)));
+}
+function indexedRingContains({ ring, bounds, bands }: IndexedRing, lng: number, lat: number): boolean {
+  if (bounds && !boundsContainPoint(bounds, lat, lng)) return false;
+  if (!bands) return ringContains(ring, lng, lat);
+  let inside = false;
+  for (const i of bands.edges[bandOf(lat, bands.south, bands.height, bands.edges.length)]) {
+    const [x, y] = ring[i], [px, py] = ring[i === 0 ? ring.length - 1 : i - 1];
+    if ((y > lat) !== (py > lat) && lng < (px - x) * (lat - y) / (py - y) + x) inside = !inside;
+  }
+  return inside;
+}
 function polygons(geometry: Geometry): number[][][][] {
   if (!Array.isArray(geometry?.coordinates)) return [];
   return geometry?.type === 'Polygon' ? [geometry.coordinates as number[][][]]
@@ -107,7 +145,8 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
     const parts = polygons(zone.geometry);
     const bounds = polygonBounds(parts);
     // Each part keeps its own bounds: Voi's no-parking zone in Oslo has 218.
-    return bounds ? [{ zone, bounds, parts: parts.map(rings => ({ rings, bounds: polygonBounds([rings]) ?? bounds })) }] : [];
+    return bounds ? [{ zone, bounds, parts: parts.map(rings => ({ rings, bounds: polygonBounds([rings]) ?? bounds,
+      outer: rings[0] ? indexRing(rings[0]) : undefined, holes: rings.slice(1).map(indexRing) })) }] : [];
   });
   const near = zonesNear(zones);
   const ruleFor = (rules: Rule[] | undefined, type: string) => rules?.find(rule => {
@@ -136,8 +175,8 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
     const contains = (index: number) => {
       let hit = inside.get(index);
       if (hit === undefined) {
-        hit = zones[index].parts.some(({ rings, bounds }) => rings[0] && boundsContainPoint(bounds, station.lat!, station.lon!) &&
-          ringContains(rings[0], station.lon!, station.lat!) && !rings.slice(1).some(hole => ringContains(hole, station.lon!, station.lat!)));
+        hit = zones[index].parts.some(({ outer, holes, bounds }) => outer !== undefined && boundsContainPoint(bounds, station.lat!, station.lon!) &&
+          indexedRingContains(outer, station.lon!, station.lat!) && !holes.some(hole => indexedRingContains(hole, station.lon!, station.lat!)));
         inside.set(index, hit);
       }
       return hit;
