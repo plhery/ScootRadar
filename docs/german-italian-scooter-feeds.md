@@ -577,7 +577,7 @@ burst like the roughly 900 quick requests after which it blocked a scanning
 address. With the twenty-minute cadence Hoppy's host stays near 130 requests
 an hour, so no interval was changed for ATOM.
 
-## RideMovi Dresden app map (1 November 2026)
+## RideMovi app map (1 and 22 November 2026)
 
 Dresden's RideMovi scooters are collected through its authenticated rider map,
 using the dedicated account's session obtained through an authorized companion
@@ -589,10 +589,18 @@ parking/restriction arrays. The collector covers the published `Dresden_OPS`
 polygon (area 1286, city 86) using overlapping nearest-neighbour reads. The
 first full audit found 682 scooters in 68 requests over 81 seconds. An audit
 of 599 stationary scooters found no missing neighbours inside certified views.
-An underfilled view is certified only up to its last scooter; an empty reply
-cannot establish coverage. Battery and range come from the app's fields.
+Battery and range come from the app's fields.
 
-See [RideMovi authentication, coverage and maintenance](ridemovi-app-map.md).
+On 22 November 2026 the same session read RideMovi's other scooter areas, and
+the cache reads those that held scooters: Aachen, Bochum, Bonn, Dortmund,
+Essen, Köln, München and Wuppertal, and Parma, Piacenza, Vicenza, Lecce,
+Alghero and Imperia, with Bergen in Norway. Brindisi's area held none and is left out. The
+same day's replies showed that RideMovi leaves out of its 30 nearest the
+scooters a rider cannot rent, so a reply of fewer than 30 now vouches only up
+to its last scooter, unless it lists five or fewer.
+
+See [RideMovi authentication, coverage and maintenance](ridemovi-app-map.md),
+whose [Towns](ridemovi-app-map.md#towns) lists each area.
 The token's long-term lifetime is unknown; rejected sessions require an
 operator login and replacement of the cache's private file. No login, ride
 or payment action runs in the collector.
@@ -625,8 +633,8 @@ or payment action runs in the collector.
 - Hopp Augsburg (`de-augsburg`) listed 42 scooters, all disabled, in each of
   22 polls from 18:26 to 19:50 on 13 October 2026, with the same ids and
   charge throughout. Hopp's site still lists the town; check it in spring.
-- RideMovi's feeds answer 401; its [Dresden app map](#ridemovi-dresden-app-map-1-november-2026)
-  also needs a usable rider session. BIT Mobility (Napoli, Bari and others)
+- RideMovi's feeds answer 401; its scooters come from its [app map](#ridemovi-app-map-1-and-22-november-2026)
+  since 1 November 2026 in Dresden and since 22 November in its other towns. BIT Mobility (Napoli, Bari and others)
   shows its scooters only after a login. Rimini renewed its permit, beside
   Lime's, from 24 March 2026 to 2029
   ([Comune di Rimini, 10 December 2025](https://www.comune.rimini.it/novita/notizie/monopattini-e-e-bike-sharing-fino-al-2029)),

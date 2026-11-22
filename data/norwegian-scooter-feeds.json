@@ -953,6 +953,25 @@
       "skyssAppZone": "BERGEN"
     },
     {
+      "id": "ridemovi_no_bergen",
+      "country": "NO",
+      "provider": "ridemovi",
+      "city": "Bergen",
+      "center": [
+        60.39299,
+        5.32415
+      ],
+      "bounds": {
+        "south": 60.27826,
+        "north": 60.49135,
+        "west": 5.17083,
+        "east": 5.38066
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1552"
+    },
+    {
       "id": "ryde_app_no_drammen",
       "provider": "ryde",
       "city": "Drammen",

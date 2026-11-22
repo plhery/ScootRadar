@@ -627,7 +627,9 @@ banned shared scooters, and feeds that were empty when checked.
       Its authenticated rider map was verified on 1 November 2026: a companion
       phone login produced a portable session, and a full-area sweep found
       682 scooters. The cache now reads that map
-      ([authentication and coverage](ridemovi-app-map.md)).
+      ([authentication and coverage](ridemovi-app-map.md)), and since 22
+      November 2026 RideMovi's other German towns from it too: Aachen,
+      Bochum, Bonn, Dortmund, Essen, Köln, München and Wuppertal.
     - Voi has no public Dresden feed either. Its rider map would carry
       Dresden's scooters from zone 384 of the app's zone list (read on 30
       October 2026, behind the session the cache keeps), but the zone held no
@@ -677,8 +679,10 @@ banned shared scooters, and feeds that were empty when checked.
     Vigliatore had no available scooter in the app sweep. Lime (Roma, Milano,
     Palermo) answers 404 everywhere; its scooters in ten Italian towns, from
     Roma and Milano to Rimini, come from its [rider map](lime-app-map.md) since
-    25 October 2026. BIT Mobility (Napoli, Bari, Rimini and others) is behind a login, and
-    RideMovi answers 401. Bolt and Lime, which hold Catania's other permits,
+    25 October 2026. BIT Mobility (Napoli, Bari, Rimini and others) is behind a login.
+    RideMovi's feeds answer 401; its scooters in Parma, Piacenza, Vicenza, Lecce,
+    Alghero and Imperia come from its [rider map](ridemovi-app-map.md#towns) since 22
+    November 2026, and its Brindisi area held none that day. Bolt and Lime, which hold Catania's other permits,
     publish no feed.
   - Elerent Bologna listed one scooter on 13 October 2026. Elerent's Ragusa
     and Siracusa fleets have no public feed.
@@ -718,9 +722,10 @@ banned shared scooters, and feeds that were empty when checked.
     scooters in Antwerpen come from its rider map since 25 October 2026; the
     map's Brussels market held no scooter that day.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
-  - RideMovi in Bergen still has no working source. RideMovi rechecked on 28 October 2026: it isn't in Entur's GBFS
+  - RideMovi's Bergen scooters come from its [rider map](ridemovi-app-map.md#towns)
+    since 22 November 2026. It publishes no feed: on 28 October 2026 it wasn't in Entur's GBFS
     manifest (81 systems) or MobilityData's list, and Entur's mobility API
-    holds no scooter within 8 km of central Bergen. Lime's Bergen scooters, about 2,100, come from its rider map
+    held no scooter within 8 km of central Bergen. Lime's Bergen scooters, about 2,100, come from its rider map
     since 27 October 2026, and Ryde's, about 4,700, from
     [Skyss's guest map](ryde-app-map.md#the-production-reader) since 28
     October.

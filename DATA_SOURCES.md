@@ -314,10 +314,14 @@ for the verified cities, sample counts, excluded feeds, and recheck command.
 
 Since 1 November 2026, RideMovi's Dresden scooters are read from its rider map,
 covering its published operating polygon with overlapping views of at most
-30 nearest scooters. The first full audit found 682 scooters. The cache keeps
-the dedicated rider session in a private file and publishes only scooter
-positions, battery and range. Empty or untrusted replies fail collection;
-the token may require an operator to sign in again when it expires. See
+30 nearest scooters. The first full audit found 682 scooters. Since 22
+November the same session reads every RideMovi scooter area that held
+scooters that day: Aachen, Bochum, Bonn, Dortmund, Essen, Köln, München and
+Wuppertal in Germany, Bergen in Norway, and Parma, Piacenza, Vicenza, Lecce,
+Alghero and Imperia in Italy. The cache keeps the dedicated rider session in a private
+file and publishes only scooter positions, battery and range. Untrusted
+replies, or a sweep that finds no scooter, fail collection; the token may
+require an operator to sign in again when it expires. See
 [RideMovi's API, session and coverage audit](docs/ridemovi-app-map.md).
 
 ## Dott anonymous app map

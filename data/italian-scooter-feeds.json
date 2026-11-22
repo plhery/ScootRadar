@@ -543,6 +543,114 @@
       ]
     },
     {
+      "id": "ridemovi_it_parma",
+      "country": "IT",
+      "provider": "ridemovi",
+      "city": "Parma",
+      "center": [
+        44.8015,
+        10.3279
+      ],
+      "bounds": {
+        "south": 44.76573,
+        "north": 44.83702,
+        "west": 10.28195,
+        "east": 10.38186
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1187"
+    },
+    {
+      "id": "ridemovi_it_piacenza",
+      "country": "IT",
+      "provider": "ridemovi",
+      "city": "Piacenza",
+      "center": [
+        45.0526,
+        9.693
+      ],
+      "bounds": {
+        "south": 45.01904,
+        "north": 45.05995,
+        "west": 9.63815,
+        "east": 9.76813
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1539"
+    },
+    {
+      "id": "ridemovi_it_vicenza",
+      "country": "IT",
+      "provider": "ridemovi",
+      "city": "Vicenza",
+      "center": [
+        45.5455,
+        11.5354
+      ],
+      "bounds": {
+        "south": 45.51696,
+        "north": 45.57974,
+        "west": 11.50643,
+        "east": 11.59968
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1181"
+    },
+    {
+      "id": "ridemovi_it_lecce",
+      "country": "IT",
+      "provider": "ridemovi",
+      "city": "Lecce",
+      "center": [
+        40.3515,
+        18.175
+      ],
+      "bounds": {
+        "south": 40.32602,
+        "north": 40.48187,
+        "west": 18.1,
+        "east": 18.31454
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1499"
+    },
+    {
+      "id": "ridemovi_it_alghero",
+      "country": "IT",
+      "provider": "ridemovi",
+      "city": "Alghero",
+      "center": [
+        40.5589,
+        8.3181
+      ],
+      "bounds": {
+        "south": 40.544,
+        "north": 40.59591,
+        "west": 8.2781,
+        "east": 8.35399
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1586"
+    },
+    {
+      "id": "ridemovi_it_imperia",
+      "country": "IT",
+      "provider": "ridemovi",
+      "city": "Imperia",
+      "center": [
+        43.8876,
+        8.0279
+      ],
+      "bounds": {
+        "south": 43.86029,
+        "north": 43.9066,
+        "west": 7.96861,
+        "east": 8.06319
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1414"
+    },
+    {
       "id": "lime_it_app_bari",
       "provider": "lime",
       "city": "Bari",

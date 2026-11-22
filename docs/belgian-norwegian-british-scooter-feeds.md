@@ -611,9 +611,10 @@ stays open at night.
     13 October 2026, and West-Vlaanderen 76 pedal bikes too. Hoppy's Genk
     system (1522) held 6 e-bikes.
 - **Norway:**
-  - RideMovi in Bergen and Drammen (Ryde, Gogo) still have scooters without
-    a working source. Skyss's map, which shows Ryde's Bergen scooters, lists
-    none in Drammen. Entur's GBFS manifest and checked GraphQL queries lack
+  - RideMovi's Bergen scooters come from its [rider map](ridemovi-app-map.md#towns)
+    since 22 November 2026.
+  - Drammen (Ryde, Gogo) still has scooters without a working source. Skyss's
+    map, which shows Ryde's Bergen scooters, lists none in Drammen. Entur's GBFS manifest and checked GraphQL queries lack
     them; guessed system ids answer 404. Ryde's Larvik feed reached Entur's
     manifest by 31 October 2026. Ryde's fleet in
     Kristiansand is missing too: of Ryde's towns that Entur lacked until

@@ -4292,6 +4292,150 @@
       "ridemoviAppArea": "1286"
     },
     {
+      "id": "ridemovi_de_aachen",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Aachen",
+      "center": [
+        50.7773,
+        6.0895
+      ],
+      "bounds": {
+        "south": 50.73983,
+        "north": 50.80484,
+        "west": 6.03494,
+        "east": 6.18149
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1191"
+    },
+    {
+      "id": "ridemovi_de_bochum",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Bochum",
+      "center": [
+        51.4695,
+        7.1963
+      ],
+      "bounds": {
+        "south": 51.4274,
+        "north": 51.52419,
+        "west": 7.11922,
+        "east": 7.34546
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1563"
+    },
+    {
+      "id": "ridemovi_de_bonn",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Bonn",
+      "center": [
+        50.7214,
+        7.1155
+      ],
+      "bounds": {
+        "south": 50.64852,
+        "north": 50.79396,
+        "west": 7.02395,
+        "east": 7.20714
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1585"
+    },
+    {
+      "id": "ridemovi_de_dortmund",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Dortmund",
+      "center": [
+        51.5129,
+        7.4649
+      ],
+      "bounds": {
+        "south": 51.44858,
+        "north": 51.5777,
+        "west": 7.3167,
+        "east": 7.62983
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1406"
+    },
+    {
+      "id": "ridemovi_de_essen",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Essen",
+      "center": [
+        51.4508,
+        7.0085
+      ],
+      "bounds": {
+        "south": 51.34139,
+        "north": 51.52969,
+        "west": 6.91794,
+        "east": 7.10962
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1532"
+    },
+    {
+      "id": "ridemovi_de_koeln",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Köln",
+      "center": [
+        50.9375,
+        6.9603
+      ],
+      "bounds": {
+        "south": 50.83503,
+        "north": 51.04505,
+        "west": 6.80953,
+        "east": 7.12144
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1533"
+    },
+    {
+      "id": "ridemovi_de_muenchen",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "München",
+      "center": [
+        48.1372,
+        11.5756
+      ],
+      "bounds": {
+        "south": 48.06162,
+        "north": 48.24812,
+        "west": 11.36077,
+        "east": 11.72291
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1534"
+    },
+    {
+      "id": "ridemovi_de_wuppertal",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Wuppertal",
+      "center": [
+        51.2669,
+        7.1769
+      ],
+      "bounds": {
+        "south": 51.21947,
+        "north": 51.30761,
+        "west": 7.04575,
+        "east": 7.27101
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1451"
+    },
+    {
       "id": "ryde_app_de_aachen",
       "provider": "ryde",
       "city": "Aachen",
