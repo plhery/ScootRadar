@@ -199,9 +199,17 @@ holds requests for at least 15 minutes, preserves the token and last snapshot,
 and does not request a new login. The new cache waits two minutes so a
 deployment does not double the pace. Two idle sweeps run at a time.
 
-A sweep may take **600 requests and an hour**. Under the rule of 22 November a
-reply vouches for less than before: Dresden's sweep, 53 to 66 requests until
-then, takes about 55 to 90 in replay, and a dense town more. Idle sweeps run
+A sweep may take **600 requests and 90 minutes**. Under the rule of 22
+November a reply vouches for less than before: Dresden's sweep, 53 to 66
+requests until then, took 52 and 60 that evening, in four to five minutes,
+planned from where its scooters stood. The other towns' first sweeps, from no
+earlier positions that evening, took 9 requests (Vicenza's 84 scooters,
+Alghero's 94) to 286 (Köln's 2,450, in 49 minutes, most of them beside
+München's 1,773 in 237); Bergen's 2,319 took 247, in 27 minutes. Most took
+one request for every seven to ten scooters, and Lecce's one for every four
+(223 in 51).
+Until that evening a sweep could take an hour, which Köln's came within 11
+minutes of; one that fails keeps none of its scooters. Idle sweeps run
 once a day, between 08:00 and 21:00 in the town (`APP_MAP_IDLE_INTERVAL_MS`);
 a map visit keeps the feed watched for two minutes. Sweeps reuse previous
 positions to plan fewer requests, report completed parts progressively, and

@@ -180,9 +180,9 @@ export class RidemoviClient {
 // A first cell's middle reaches its corners: half its 2.5 km diagonal is 1.77 km, within the 1.975 km a reply vouches for.
 const MAP: NearestMap = { name: 'RideMovi', page: RIDEMOVI_PAGE, reachM: RIDEMOVI_RADIUS_M, cellM: 2_500 };
 const AREAS = new Map(areaCatalog.areas.map(area => [area.id, area.rings as Ring[]]));
-// A reply vouches for less than it did before 22 November (RIDEMOVI_SHORT): Dresden's sweep, 53 to 66 requests
-// until then, takes about 55 to 90 in replay, and a dense town's more, at twelve a minute shared by two sweeps at a time.
-const LIMITS: SweepLimits = { requests: 600, milliseconds: 60 * 60_000, retryMs: 3_000 };
+// Twelve requests a minute are shared by two sweeps at a time. Köln's first, from no earlier positions on 22 November
+// 2026, took 286 requests and 49 minutes, most of them beside München's 237; a failed sweep keeps none of its scooters.
+const LIMITS: SweepLimits = { requests: 600, milliseconds: 90 * 60_000, retryMs: 3_000 };
 type Position = { lat: number; lng: number };
 
 export async function collectRidemoviArea(system: RegionalScooterSystem, previous: readonly Position[],
