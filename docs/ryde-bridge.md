@@ -754,6 +754,16 @@ the load fell. When `--status` says `BrokerError` or `LaunchFailed` while the ca
 `/health` answers from the Mac, read `uptime` and `sysctl vm.swapusage` before anything
 in the bridge.
 
+The maps came back unevenly. Ryde's quit kept overrunning until 18:15 (one forced quit at
+18:10), and the maps stopped for three to five minutes at a time until 18:33:49. Each Ryde
+group whose last sweep aged out during one of those stops expired on its own, so
+SCOOTRADAR-CACHE-66 fired 13 more times from 17:58 to 18:33 after it had first been
+resolved. SCOOTRADAR-CACHE-6M ("stopped asking for jobs: no word from the Mac", 17:42) was
+the same stop seen from the cache, which had not heard from the worker since 17:32. There
+was no second cause: the Mac did not sleep or restart, and the worker kept its process.
+After such a stop, resolve these issues once the bridge reads its usual 450 or so maps an
+hour again, not at its first map.
+
 The worker keeps results for a day and the Map Control helper's replies for an hour,
 deleting older ones hourly, and `lifecycle.jsonl` rotates at 8 MiB with one previous
 file (`lifecycle.previous.jsonl`). Nothing else reads a result once the cache has
