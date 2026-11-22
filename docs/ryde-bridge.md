@@ -743,6 +743,17 @@ quit". `lifecycle.jsonl` records it as `open-failed` or
 datacenter pool's hourly budget is said as `DatacenterBudget` and is not a hold
 either: neither one hides a refusal Ryde makes meanwhile.
 
+On 22 November 2026 from 17:31 CET the Mac itself ran out of room. Other work on it, four
+booted iOS simulators (about 620 processes, five CPUs' worth), an `xcodebuild test` run and
+a headless Android emulator, took the load average to about 600 and the swap to 20.3 of
+21.5 GB. The worker's calls to the cache failed (`BrokerError`, `URLError`) while the cache
+answered the Mac's other requests, Ryde's quit overran the helper's 12 seconds
+(`LaunchFailed`), and no map was read from 17:31:15 to 17:48:32 (SCOOTRADAR-CACHE-66).
+Nothing in the bridge was at fault and nothing in it was changed: it read maps again as
+the load fell. When `--status` says `BrokerError` or `LaunchFailed` while the cache's
+`/health` answers from the Mac, read `uptime` and `sysctl vm.swapusage` before anything
+in the bridge.
+
 The worker keeps results for a day and the Map Control helper's replies for an hour,
 deleting older ones hourly, and `lifecycle.jsonl` rotates at 8 MiB with one previous
 file (`lifecycle.previous.jsonl`). Nothing else reads a result once the cache has
