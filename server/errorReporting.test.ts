@@ -10,8 +10,8 @@ vi.mock('@sentry/node', () => ({
   withScope: (callback: (value: typeof scope) => void) => callback(scope),
 }));
 const Sentry = await import('@sentry/node');
-const { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportWorkerSilent,
-  restoreWorkerSilence } = await import('./errorReporting');
+const { initErrorReporting, reportDiscoveryFailing, reportedWorkerSilence, reportError, reportFeedExpired, reportLoginNeeded,
+  reportWorkerSilent, restoreWorkerSilence } = await import('./errorReporting');
 
 beforeEach(() => vi.clearAllMocks());
 
@@ -171,4 +171,20 @@ it('says why the worker stopped asking for jobs, as an issue of its own for each
   expect(scope.setContext).toHaveBeenLastCalledWith('worker', { silentSince: '2026-11-17T02:33:00.000Z', minutesSilent: 10,
     feeds: 1332, expiredFeeds: 0, reason: 'NoWord', until: null, detail: null, statusReceivedAt: null });
   expect(Sentry.captureMessage).toHaveBeenCalledTimes(2);
+});
+
+it('tells at once that a rider session needs an operator, as an issue for each map and cause, once an hour', () => {
+  const refused = { reason: 'TokenRefused', phrase: 'its token was refused (HTTP 401); log in again' };
+  reportLoginNeeded('RideMovi', refused, 1_000_000);
+  expect(scope.setLevel).toHaveBeenCalledWith('error');
+  expect(scope.setFingerprint).toHaveBeenCalledWith(['login-needed', 'RideMovi', 'TokenRefused']);
+  expect(scope.setTags).toHaveBeenCalledWith({ map: 'RideMovi', reason: 'TokenRefused' });
+  expect(Sentry.captureMessage).toHaveBeenCalledWith(
+    "RideMovi's rider session needs an operator: its token was refused (HTTP 401); log in again");
+  reportLoginNeeded('RideMovi', refused, 1_000_000 + 3_599_999);
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(1);
+  reportLoginNeeded('RideMovi', { reason: 'SessionUnreadable', phrase: 'its session file is missing' }, 1_000_000 + 60_000);
+  expect(scope.setFingerprint).toHaveBeenLastCalledWith(['login-needed', 'RideMovi', 'SessionUnreadable']);
+  reportLoginNeeded('RideMovi', refused, 1_000_000 + 3_600_000);
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(3);
 });

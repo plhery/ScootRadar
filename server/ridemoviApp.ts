@@ -5,6 +5,7 @@ import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
+import { reportLoginNeeded, type LoginCause } from './errorReporting';
 import { heldSquare, sweepNearestArea, type NearestMap, type NearestSweep, type Ring, type SweepLimits } from './nearestSweep';
 import { SweepCheckpoints } from './sweepCheckpoints';
 import { currentCollection, Pacer, SweepProgress } from './sweeps';
@@ -20,7 +21,9 @@ const RETRY_MS = 60_000;
 const QUERY_INTERVAL_MS = 5_000;
 export const RIDEMOVI_FORBIDDEN_RETRY_MS = 15 * 60_000;
 export const ridemoviMapRequests = { status: 0 };
-interface ClientOptions { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; startHoldMs?: number }
+interface ClientOptions { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; startHoldMs?: number;
+  /** Told once when the session needs an operator: by default, Sentry (reportLoginNeeded). */
+  onLoginNeeded?: (cause: LoginCause) => void }
 export interface RidemoviScooter { id: string; lat: number; lng: number; battery: number | null; range_m: number | null }
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
@@ -116,6 +119,9 @@ export class RidemoviClient {
   private readonly timeoutMs: number;
   private blockedUntil = 0;
   private rejectedToken?: string;
+  private readonly onLoginNeeded: (cause: LoginCause) => void;
+  /** Whether the session file was last found unreadable, told once until it is read again. */
+  private unreadable = false;
 
   constructor(options: ClientOptions = {}) {
     this.sessionPath = options.sessionPath ?? process.env.RIDEMOVI_SESSION_PATH ??
@@ -124,6 +130,7 @@ export class RidemoviClient {
     this.now = options.now ?? Date.now;
     this.pace = new Pacer(options.intervalMs ?? QUERY_INTERVAL_MS, this.now, this.now() + (options.startHoldMs ?? 0));
     this.timeoutMs = options.timeoutMs ?? 20_000;
+    this.onLoginNeeded = options.onLoginNeeded ?? (cause => reportLoginNeeded('RideMovi', cause));
   }
 
   private async token(): Promise<string> {
@@ -134,9 +141,28 @@ export class RidemoviClient {
         if (!stat.isFile() || stat.size > 4_096 || (stat.mode & 0o077)) throw new Error();
         const session = object(JSON.parse(await file.readFile('utf8')));
         if (session?.version !== 1 || typeof session.token !== 'string' || !/^[a-fA-F0-9]{32}$/.test(session.token)) throw new Error();
+        this.unreadable = false;
         return session.token;
       } finally { await file.close(); }
-    } catch { throw new Error('RideMovi session is missing, invalid or not private (0600)'); }
+    } catch {
+      if (!this.unreadable) {
+        this.unreadable = true;
+        console.warn(JSON.stringify({ event: 'ridemovi_session_unreadable' }));
+        this.onLoginNeeded({ reason: 'SessionUnreadable', phrase: 'its session file is missing, invalid or not private (0600)' });
+      }
+      throw new Error('RideMovi session is missing, invalid or not private (0600)');
+    }
+  }
+
+  /**
+   * RideMovi refused the token: it is not sent again, and the operator is told once (docs/ridemovi-app-map.md,
+   * Login). Every town is read with it, so all of them stop until a fresh login replaces the file.
+   */
+  private reject(token: string, answer: string) {
+    if (token === this.rejectedToken) return;
+    this.rejectedToken = token;
+    console.warn(JSON.stringify({ event: 'ridemovi_session_rejected', answer }));
+    this.onLoginNeeded({ reason: 'TokenRefused', phrase: `its token was refused (${answer}); log in again` });
   }
 
   async nearest(lat: number, lng: number) {
@@ -161,7 +187,7 @@ export class RidemoviClient {
     if (!response.ok) {
       await response.body?.cancel();
       // A generic 403 can come from an HTTP protection layer; it does not prove an expired login.
-      if (response.status === 401) this.rejectedToken = token;
+      if (response.status === 401) this.reject(token, 'HTTP 401');
       const retry = response.headers.get('retry-after');
       const minimum = response.status === 403 ? RIDEMOVI_FORBIDDEN_RETRY_MS : RETRY_MS;
       const delay = retry && /^\d+$/.test(retry) ? Number(retry) * 1000 : retry ? Date.parse(retry) - this.now() : minimum;
@@ -170,7 +196,7 @@ export class RidemoviClient {
     }
     const payload = await jsonBody(response);
     if (object(payload)?.code === 15000) {
-      this.rejectedToken = token;
+      this.reject(token, 'code 15000');
       throw new Error('RideMovi session needs a new operator login');
     }
     try { return parseRidemoviReply(payload, lat, lng); }

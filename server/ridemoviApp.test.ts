@@ -99,8 +99,9 @@ async function harness(fetcher = vi.fn<typeof fetch>().mockResolvedValue(Respons
   const token = 'a'.repeat(32);
   await writeFile(sessionPath, JSON.stringify({ version: 1, token }), { mode: 0o600 });
   let now = 10_000;
-  const client = new RidemoviClient({ sessionPath, fetch: fetcher, now: () => now, intervalMs: 0 });
-  return { client, fetcher, sessionPath, token, advance: (ms: number) => { now += ms; } };
+  const onLoginNeeded = vi.fn();
+  const client = new RidemoviClient({ sessionPath, fetch: fetcher, now: () => now, intervalMs: 0, onLoginNeeded });
+  return { client, fetcher, sessionPath, token, onLoginNeeded, advance: (ms: number) => { now += ms; } };
 }
 
 describe('RideMovi private session and transport', () => {
@@ -143,16 +144,48 @@ describe('RideMovi private session and transport', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
+  it('tells the operator once that the session file cannot be read, and again only after it was read', async () => {
+    const { client, sessionPath, onLoginNeeded } = await harness();
+    await chmod(sessionPath, 0o644);
+    await expect(client.nearest(lat, lng)).rejects.toThrow('not private');
+    await expect(client.nearest(lat, lng)).rejects.toThrow('not private');
+    expect(onLoginNeeded).toHaveBeenCalledTimes(1);
+    expect(onLoginNeeded).toHaveBeenCalledWith({ reason: 'SessionUnreadable', phrase: expect.stringContaining('session file') });
+    await chmod(sessionPath, 0o600);
+    await client.nearest(lat, lng);
+    await rm(sessionPath);
+    await expect(client.nearest(lat, lng)).rejects.toThrow('session is missing');
+    expect(onLoginNeeded).toHaveBeenCalledTimes(2);
+  });
+
   it('stops reusing a rejected token and reads a replacement without restarting', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(Response.json({ code: 15000, message: 'secret upstream text' }))
       .mockResolvedValueOnce(Response.json(reply()));
-    const { client, sessionPath } = await harness(fetcher);
+    const { client, sessionPath, onLoginNeeded } = await harness(fetcher);
     await expect(client.nearest(lat, lng)).rejects.toThrow('new operator login');
     await expect(client.nearest(lat, lng)).rejects.toThrow('new operator login');
     expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(onLoginNeeded).toHaveBeenCalledTimes(1);
+    expect(onLoginNeeded).toHaveBeenCalledWith({ reason: 'TokenRefused', phrase: 'its token was refused (code 15000); log in again' });
+    expect(JSON.stringify(onLoginNeeded.mock.calls)).not.toMatch(/a{32}|secret/);
     await writeFile(sessionPath, JSON.stringify({ version: 1, token: 'b'.repeat(32) }));
     expect((await client.nearest(lat, lng)).scooters).toHaveLength(1);
     expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(onLoginNeeded).toHaveBeenCalledTimes(1);
+  });
+
+  it('tells each refused token once, a replacement refused in its turn included', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(Response.json({ code: 15000 }))
+      .mockResolvedValueOnce(new Response('', { status: 401 }));
+    const { client, sessionPath, onLoginNeeded, advance } = await harness(fetcher);
+    await expect(client.nearest(lat, lng)).rejects.toThrow('new operator login');
+    await writeFile(sessionPath, JSON.stringify({ version: 1, token: 'b'.repeat(32) }));
+    await expect(client.nearest(lat, lng)).rejects.toThrow('HTTP 401');
+    advance(60_000);
+    await expect(client.nearest(lat, lng)).rejects.toThrow('new operator login');
+    expect(onLoginNeeded.mock.calls).toEqual([
+      [{ reason: 'TokenRefused', phrase: 'its token was refused (code 15000); log in again' }],
+      [{ reason: 'TokenRefused', phrase: 'its token was refused (HTTP 401); log in again' }]]);
   });
 
   it('honours Retry-After and holds queued requests after a failure', async () => {
@@ -179,7 +212,7 @@ describe('RideMovi private session and transport', () => {
   it('backs off a generic 403 without treating it as proof of an expired session', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('HTTP protection', { status: 403 }))
       .mockResolvedValueOnce(Response.json(reply()));
-    const { client, advance } = await harness(fetcher);
+    const { client, advance, onLoginNeeded } = await harness(fetcher);
     await expect(client.nearest(lat, lng)).rejects.toThrow('HTTP 403');
     await expect(client.nearest(lat, lng)).rejects.toThrow('held');
     advance(RIDEMOVI_FORBIDDEN_RETRY_MS - 1);
@@ -188,6 +221,7 @@ describe('RideMovi private session and transport', () => {
     advance(1);
     await expect(client.nearest(lat, lng)).resolves.toBeDefined();
     expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(onLoginNeeded).not.toHaveBeenCalled();
   });
 
   it('does not expose transport secrets or an oversized upstream body', async () => {

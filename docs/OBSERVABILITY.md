@@ -1037,6 +1037,18 @@ Tracing is off, and no trace headers go to the operators' feeds.
   national feed (DATA_SOURCES.md) that has failed for ten minutes, at most once an hour
   for each feed (`swiss-app-map:<feed>`). The national feed alone stands meanwhile, so
   the feed neither fails nor expires; each failure is logged as `swiss_app_map_failed`.
+- **A rider session that needs an operator**: an error as soon as RideMovi refuses its token
+  (HTTP 401 or API code 15000: "RideMovi's rider session needs an operator: its token was
+  refused (code 15000); log in again"), or the session file turns missing, malformed or
+  readable by others (`reportLoginNeeded`). Each cause is an issue of its own (tags `map`,
+  `reason`: TokenRefused, SessionUnreadable). The client tells each refused token once, and
+  each time the file turns unreadable, logged as `ridemovi_session_rejected` or
+  `ridemovi_session_unreadable`, and Sentry gets at most one event an hour for each cause; a
+  restart forgets what was told and tells it again. All 19 towns are read with the one session (docs/ridemovi-app-map.md, Login), and each
+  town's feed expires only a day and two hours after its last sweep: until 23 November 2026
+  that was the first Sentry heard of a dead login, as "Feeds stopped being served from
+  api.ridemoviapp.com", with the cause only in the event's `feed` context. Nothing of the
+  token is sent.
 
 Routine feed failures are not sent; the metrics and logs cover them.
 

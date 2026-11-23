@@ -162,6 +162,33 @@ export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, l
   });
 }
 
+/** Why a rider map's private session needs an operator, as reportLoginNeeded tells it. */
+export interface LoginCause {
+  /** A code, as TokenRefused or SessionUnreadable: each is an issue of its own. */
+  reason: string;
+  /** The same in a few plain words, for the title. */
+  phrase: string;
+}
+
+/**
+ * A rider map read with a private session that only an operator can renew (RideMovi's, signed in on a
+ * phone: docs/ridemovi-app-map.md): its token refused, or its session file missing, malformed or
+ * readable by others. One issue for each map and cause, sent at once and at most one event an hour for
+ * each; the client tells each refused token, and each time the file turns unreadable, once. Its towns'
+ * feeds expire only a day and two hours after their last sweep, and until 23 November 2026 that expiry
+ * was all Sentry heard of it: a day late, as "Feeds stopped being served from api.ridemoviapp.com",
+ * the login named only in the event's context. Nothing of the token is sent.
+ */
+export function reportLoginNeeded(map: string, cause: LoginCause, now = Date.now()) {
+  if (!due(`login:${map}:${cause.reason}`, now)) return;
+  Sentry.withScope(scope => {
+    scope.setLevel('error');
+    scope.setFingerprint(['login-needed', map, cause.reason]);
+    scope.setTags({ map, reason: cause.reason });
+    Sentry.captureMessage(`${map}'s rider session needs an operator: ${cause.phrase}`);
+  });
+}
+
 /** The worker's silence Sentry last heard of, saved with the feed states. */
 export function reportedWorkerSilence(worker: string): number | undefined { return reportedSilence.get(worker); }
 

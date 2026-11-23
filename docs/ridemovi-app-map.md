@@ -39,8 +39,12 @@ No expiration or refresh token was supplied, and no automatic renewal flow
 has been verified. Its long-term lifetime remains unknown. The collector
 only reads maps: it never requests codes or calls ride or payment endpoints.
 On HTTP 401 or API code 15000 it stops using that token until an operator
-replaces the file following a fresh login. Other errors fail the collection
-and retain the previous snapshot under the cache's usual aging rules.
+replaces the file following a fresh login, and tells Sentry at once, as
+"RideMovi's rider session needs an operator", as it does when the file goes
+missing, malformed or readable by others (docs/OBSERVABILITY.md, Sentry): the
+towns' feeds would otherwise tell of it only a day later, when they expire.
+Other errors fail the collection and retain the previous snapshot under the
+cache's usual aging rules.
 
 Keep the file owned by the cache user with mode `0600`; the client rejects
 group/world-readable files. Production was seeded through SSH stdin into the
