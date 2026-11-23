@@ -243,7 +243,9 @@ earlier positions that evening, took 9 requests (Vicenza's 84 scooters,
 Alghero's 94) to 286 (Köln's 2,450, in 49 minutes, most of them beside
 München's 1,773 in 237); Bergen's 2,319 took 247, in 27 minutes. Most took
 one request for every seven to ten scooters, and Lecce's one for every four
-(223 in 51).
+(223 in 51). Thessaloniki's, Playa de las Américas's and Volos's first
+sweeps, at night on 23 November, found 980 scooters in 106 requests and 18
+minutes, 1,006 in 120 and 20, and 171 in 17 and 3.
 Until that evening a sweep could take an hour, which Köln's came within 11
 minutes of; one that fails keeps none of its scooters. Idle sweeps run
 once a day, between 08:00 and 21:00 in the town (`APP_MAP_IDLE_INTERVAL_MS`);
