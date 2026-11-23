@@ -317,6 +317,49 @@
       ]
     },
     {
+      "id": "ridemovi_gr_thessaloniki",
+      "country": "GR",
+      "provider": "ridemovi",
+      "city": "Thessaloniki",
+      "center": [
+        40.627,
+        22.9512
+      ],
+      "bounds": {
+        "south": 40.5619,
+        "north": 40.69243,
+        "west": 22.88678,
+        "east": 22.99924
+      },
+      "aliases": [
+        "Salonica",
+        "Θεσσαλονίκη"
+      ],
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1215"
+    },
+    {
+      "id": "ridemovi_gr_volos",
+      "country": "GR",
+      "provider": "ridemovi",
+      "city": "Volos",
+      "center": [
+        39.3622,
+        22.9425
+      ],
+      "bounds": {
+        "south": 39.34945,
+        "north": 39.3902,
+        "west": 22.91787,
+        "east": 22.97741
+      },
+      "aliases": [
+        "Βόλος"
+      ],
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1441"
+    },
+    {
       "id": "lime_gr_app_athens",
       "provider": "lime",
       "city": "Athens",

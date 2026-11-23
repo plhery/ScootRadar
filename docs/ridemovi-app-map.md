@@ -137,10 +137,12 @@ battery hardware identifiers and account data are not published.
 
 Each town is one feed, `ridemovi_<country>_<town>`, whose outline is the
 area RideMovi's lookup returned at the town's centre on 22 November 2026
-(Dresden's on 1 November), and whose bounds are that outline's. The last
-column is the reply at the centre that day, from about 16:45 CET, and the
-type of its scooters: each listed a single type, and none an e-bike.
-Dresden's type was not recorded.
+(Dresden's on 1 November; Thessaloniki's, Volos's and Playa de las
+Américas's on 23 November), and whose bounds are that outline's. The last
+column is the reply at the centre that day, from about 16:45 CET (on 23
+November the Greek towns' at 01:08 CET and Playa de las Américas's at 01:15),
+and the type of its scooters: each listed a single type, and none an
+e-bike. Dresden's type was not recorded.
 
 | Town | Area | City | Area's name | Outline | Centre's reply |
 | --- | ---: | ---: | --- | ---: | --- |
@@ -160,6 +162,9 @@ Dresden's type was not recorded.
 | Lecce | 1499 | 97 | `OA_LE_High_Season` | 54 km² | 24 SO1 |
 | Alghero | 1586 | 85 | `Ao Alghero 2.1` | 5 km² | 26 SN1 |
 | Imperia | 1414 | 93 | `Operation area` | 9 km² | 27 SO1, at 17:24 |
+| Thessaloniki | 1215 | 37 | `OPERATION AREA - THESSALONIKI` | 46 km², 2 parts | 25 SN1 |
+| Volos | 1441 | 95 | `Operation area` | 13 km², 2 parts | 28 SN1 |
+| Playa de las Américas | 1019 | 54 | `Tenerife - Playa americas` | 15 km², 2 holes | 30 SO1 |
 
 Sizes are of the outer rings, holes included. Vicenza's area is 81 separate
 parts; a scooter between them is read but not shown.
@@ -175,12 +180,43 @@ vouches for, and a town shows those inside its outline.
 
 Brindisi's area (`Brindisi`, area 1270, city 82) held no scooter on 22
 November 2026: its centre's reply was empty, and a sweep that finds none
-fails, so the town is left out. RideMovi's areas were found by asking the
-lookup at 958 points 15 to 70 km apart over Germany, Italy and southern Norway
-the same day. It returned Brindisi's and the areas above, Imperia's first
-from a point at sea west of Corsica. An area that is never the nearest to any
-of those points, such as a small one beside a larger one, could still be
-missing.
+fails, so the town is left out. So is Lanzarote's (`Lanzarote`, area 816,
+city 56): 17 km² at Playa Blanca and Puerto del Carmen, and three specks on
+Fuerteventura. On 23 November the map listed no scooter at either town nor at
+any of the specks.
+
+RideMovi's areas were found by asking the lookup at 958 points 15 to 70 km
+apart over Germany, Italy and southern Norway on 22 November. It returned
+Brindisi's and the areas of the first sixteen towns, Imperia's first from a
+point at sea west of Corsica. From 00:09 to 01:00 CET on 23 November it was
+asked again at 3,909 points: about 5 km apart over North Rhine-Westphalia,
+10 km over northern Italy and around München, and a degree apart over Europe
+from 35° to 70° N and from 10° W to 30° E. That found no other area in
+Germany, Italy or Norway, and three elsewhere: Thessaloniki's, Volos's and
+Lanzarote's. The grid's southern edge, 35° N, left out the Canaries: Lanzarote's
+area was found only as the nearest to a point in the Atlantic west of
+Morocco, and Tenerife's, at Playa de las Américas, from RideMovi's list of
+towns below. An area that is never the nearest to any of those points, such
+as a small one beside a larger one, could still be missing.
+
+The lookup answered HTTP 500, three times each, at 50 of those points, all
+between 35° and 47° N and 6° W and 1° E, from the coasts of Morocco and
+Algeria through Andalucía and Valencia to Bordeaux, so it shows no area
+there. The map request the cache makes
+answered 500 too on 23 November at the centres of Valencia, Málaga, Zaragoza,
+Granada, Murcia, Alicante, Córdoba, Pamplona, Logroño, Huesca and Bordeaux,
+so a town there couldn't be swept. At Madrid, Sevilla, Bilbao, Valladolid,
+Barcelona, Palma, Las Palmas, Santa Cruz de Tenerife and Toulouse it listed
+no scooter.
+
+RideMovi's [city page](https://www.ridemovi.com/citta/lista) lists 36 towns
+in its data on 23 November 2026, without saying which have scooters: the
+towns above (Köln and München as Cologne and Munich, Playa de las Américas as
+Tenerife), Brindisi and Lanzarote, and fifteen more: Bologna, Faenza,
+Firenze, Genova, Imola, Milano, Pordenone, Reggio Emilia, Torino, Treviso,
+Udine and Venice in Italy, Dublin, Barcelona and Torrelavega. At each of the
+fifteen the lookup returned no scooter area that day, and the map listed no
+scooter at its centre, nor on Venice's Lido.
 
 ## Requests
 

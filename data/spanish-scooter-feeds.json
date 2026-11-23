@@ -537,6 +537,25 @@
       "dottAppRegion": "aLy7d2CbgL3Rz9Vkifwp"
     },
     {
+      "id": "ridemovi_es_playa_de_las_americas",
+      "country": "ES",
+      "provider": "ridemovi",
+      "city": "Playa de las Américas",
+      "center": [
+        28.0602,
+        -16.7311
+      ],
+      "bounds": {
+        "south": 28.04145,
+        "north": 28.12332,
+        "west": -16.75819,
+        "east": -16.69869
+      },
+      "timeZone": "Atlantic/Canary",
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1019"
+    },
+    {
       "id": "dott_es_santa_cruz_de_tenerife",
       "country": "ES",
       "provider": "dott",

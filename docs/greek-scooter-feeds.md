@@ -35,6 +35,13 @@ day.
 
 - Chania, `4EKS47F2OVFPF`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Chania_94_exclude_new_type.json)
 
+Update, 23 November 2026: RideMovi's authenticated
+[rider map](ridemovi-app-map.md#towns) supplies **Thessaloniki**, beside Dott
+and Lime, and **Volos**, which no other feed covers. Each is one RideMovi
+scooter area, 46 and 13 km², read at most 30 scooters at a time as in its
+German and Italian towns. At 02:08 Athens time the map listed 25 scooters
+near Thessaloniki's centre and 28 near Volos's, all of one model.
+
 
 Verified 13 October 2026. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)

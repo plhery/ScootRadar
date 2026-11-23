@@ -550,6 +550,7 @@ export const COVERED_CITY_ROWS: readonly CoveredCityRow[] = [
   ["gr:Afantou","Afantou","GR",36.2845,28.1735],
   ["gr:Kolymbia","Kolymbia","GR",36.2532,28.1611],
   ["gr:Thessaloniki","Thessaloniki","GR",40.627,22.9512],
+  ["gr:Volos","Volos","GR",39.3622,22.9425],
   ["gr:Athens","Athens","GR",37.98376,23.72784],
   ["gr:Heraklion","Heraklion","GR",35.33336,25.136665],
   ["gr:Kifisia","Kifisia","GR",38.07438,23.81106],

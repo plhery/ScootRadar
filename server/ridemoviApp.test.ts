@@ -207,6 +207,7 @@ describe('RideMovi collector registration', () => {
     ridemovi_de_dortmund: '1406', ridemovi_de_essen: '1532', ridemovi_de_koeln: '1533', ridemovi_de_muenchen: '1534',
     ridemovi_de_wuppertal: '1451', ridemovi_no_bergen: '1552', ridemovi_it_parma: '1187', ridemovi_it_piacenza: '1539',
     ridemovi_it_vicenza: '1181', ridemovi_it_lecce: '1499', ridemovi_it_alghero: '1586', ridemovi_it_imperia: '1414',
+    ridemovi_gr_thessaloniki: '1215', ridemovi_gr_volos: '1441', ridemovi_es_playa_de_las_americas: '1019',
   };
   const towns = REGIONAL_SCOOTER_SYSTEMS.filter(town => town.ridemoviAppArea);
 

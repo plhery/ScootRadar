@@ -23,6 +23,8 @@ rider map since 4 November 2026: Oviedo has no public feed, and Bird's
 public Getafe feed listed fewer than half of Getafe's. Bird's in Covilhã,
 about 180, come from it since 5 November, as Bird publishes no feed there;
 see [Bird's rider map](bird-app-map.md#europe-november-2026).
+RideMovi's at Playa de las Américas, on Tenerife, come from its authenticated
+rider map since 23 November 2026; see [RideMovi's towns](ridemovi-app-map.md#towns).
 The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
@@ -420,6 +422,13 @@ the dock and each scooter's card state the ban and when renting resumes.
     id isn't public, so no feed was found (18 October 2026).
   - Spain's access point (nap.transportes.gob.es) carries public transport
     only, with no shared-mobility data, as of 16 October 2026.
+  - RideMovi's other Canary area, on Lanzarote (area 816), is at Playa Blanca
+    and Puerto del Carmen, with three specks on Fuerteventura. Its rider map
+    listed no scooter in any part on 23 November 2026, so the island is left
+    out. Its area lookup and map answer HTTP 500 across eastern and inland
+    Spain, among them Valencia, Málaga, Zaragoza, Murcia and Alicante; at
+    Madrid, Sevilla, Bilbao, Barcelona, Palma and the Canaries' two capitals
+    the map listed none ([RideMovi's towns](ridemovi-app-map.md#towns)).
   - Hopp's Benidorm, Cartagena, Dénia, Fuengirola and Marbella feeds are empty.
   - Hoppy's other Spanish systems on ATOM Mobility list no scooters. Almería
     (id 2113, about 480 e-bikes on 13 October 2026), Cartagena (2206, about

@@ -790,6 +790,10 @@ banned shared scooters, and feeds that were empty when checked.
     Palmas's public Sítyneta scooters have no public feed. Neither has Islaride (Grupo Tambor, "more than 500"
     scooters on several Canary Islands): it runs on ATOM Mobility, whose
     system id for it isn't public (18 October 2026).
+  - RideMovi's Playa de las Américas scooters come from its
+    [rider map](ridemovi-app-map.md#towns) since 23 November 2026. Its
+    Lanzarote area held none that day, and its map answers HTTP 500 across
+    eastern and inland Spain, Valencia, Málaga and Zaragoza among them.
   - Hopp Benidorm, Cartagena, Dénia, Fuengirola and Marbella are empty.
     Hoppy's Almería, Cartagena and Mojácar & Vera systems list e-bikes only,
     and its Roquetas de Mar, Magic World Resort and Cabo de Gata - Níjar
@@ -946,6 +950,8 @@ banned shared scooters, and feeds that were empty when checked.
     and Thessaloniki, but its rider map covers Athens, Kifisia, Thessaloniki
     and Heraklion since 25 October 2026. Bolt has no scooter area in Athens
     or Thessaloniki (25 October 2026).
+  - RideMovi's Thessaloniki and Volos scooters come from its
+    [rider map](ridemovi-app-map.md#towns) since 23 November 2026.
   - Hopp Nafplio listed 17 or 18 available scooters, but none moved, left or
     came back in 35 polls from 12:03 to 16:47 Athens time on a Tuesday, while
     Faliraki, Piraeus, Argostoli and Ioannina had rides, nor in 22 polls from

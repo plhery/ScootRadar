@@ -318,7 +318,8 @@ covering its published operating polygon with overlapping views of at most
 November the same session reads every RideMovi scooter area that held
 scooters that day: Aachen, Bochum, Bonn, Dortmund, Essen, Köln, München and
 Wuppertal in Germany, Bergen in Norway, and Parma, Piacenza, Vicenza, Lecce,
-Alghero and Imperia in Italy. The cache keeps the dedicated rider session in a private
+Alghero and Imperia in Italy, and since 23 November Thessaloniki and Volos in
+Greece and Playa de las Américas on Tenerife. The cache keeps the dedicated rider session in a private
 file and publishes only scooter positions, battery and range. Untrusted
 replies, or a sweep that finds no scooter, fail collection; the token may
 require an operator to sign in again when it expires. See

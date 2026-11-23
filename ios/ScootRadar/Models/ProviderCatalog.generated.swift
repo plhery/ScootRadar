@@ -3813,6 +3813,7 @@ enum ScooterProviderCoverage {
         systems.append((.hoppy, GeoBounds(south: 37.9395, west: -0.7523, north: 38.0344, east: -0.6383)))
         systems.append((.dott, GeoBounds(south: 36.4076, west: -5.1754, north: 36.5448, east: -4.9937)))
         systems.append((.dott, GeoBounds(south: 28.0391, west: -16.7822, north: 28.1332, east: -16.6955)))
+        systems.append((.ridemovi, GeoBounds(south: 28.04145, west: -16.75819, north: 28.12332, east: -16.69869)))
         systems.append((.dott, GeoBounds(south: 28.4441, west: -16.2945, north: 28.5106, east: -16.1859)))
         systems.append((.hopp, GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)))
         systems.append((.hopp, GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)))
@@ -5537,6 +5538,8 @@ enum ScooterProviderCoverage {
         systems.append((.hoppy, GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787)))
         systems.append((.dott, GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412)))
         systems.append((.dott, GeoBounds(south: 37.904, west: 23.6145, north: 38.0306, east: 23.7848)))
+        systems.append((.ridemovi, GeoBounds(south: 40.5619, west: 22.88678, north: 40.69243, east: 22.99924)))
+        systems.append((.ridemovi, GeoBounds(south: 39.34945, west: 22.91787, north: 39.3902, east: 22.97741)))
         systems.append((.lime, GeoBounds(south: 37.80738, west: 23.76336919, north: 37.82085467, east: 23.78795)))
         systems.append((.lime, GeoBounds(south: 37.82085467, west: 23.76336919, north: 37.83432934, east: 23.78795)))
         systems.append((.lime, GeoBounds(south: 37.83432934, west: 23.74631429, north: 37.847804, east: 23.78042409)))
@@ -8701,7 +8704,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1136)
+        cities.reserveCapacity(1137)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -9074,7 +9077,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "es:Oviedo", name: "Oviedo", countryCode: "ES", center: GeoPoint(latitude: 43.3614, longitude: -5.8494), bounds: GeoBounds(south: 43.34644, west: -5.89141, north: 43.39243, east: -5.81202), feeds: [ScooterCityFeed(id: "spain:bird_es_app_oviedo")]))
         cities.append(ScooterCity(id: "es:Costa Calma", name: "Costa Calma", countryCode: "ES", center: GeoPoint(latitude: 28.1608, longitude: -14.2301), bounds: GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]))
         cities.append(ScooterCity(id: "es:Morro Jable", name: "Morro Jable", countryCode: "ES", center: GeoPoint(latitude: 28.0502, longitude: -14.3522), bounds: GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]))
-        cities.append(ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901), feeds: [ScooterCityFeed(id: "spain:bird_es_playa_de_las_americas"), ScooterCityFeed(id: "spain:hopp_es_tenerife"), ScooterCityFeed(id: "spain:hoppy_es_tenerife_sur"), ScooterCityFeed(id: "spain:dott_es_playa_de_las_americas")]))
+        cities.append(ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901), feeds: [ScooterCityFeed(id: "spain:bird_es_playa_de_las_americas"), ScooterCityFeed(id: "spain:hopp_es_tenerife"), ScooterCityFeed(id: "spain:hoppy_es_tenerife_sur"), ScooterCityFeed(id: "spain:dott_es_playa_de_las_americas"), ScooterCityFeed(id: "spain:ridemovi_es_playa_de_las_americas")]))
         cities.append(ScooterCity(id: "es:Torrevieja", name: "Torrevieja", countryCode: "ES", center: GeoPoint(latitude: 37.9775, longitude: -0.6828), bounds: GeoBounds(south: 37.9392, west: -0.7523, north: 38.0354, east: -0.6383), feeds: [ScooterCityFeed(id: "spain:hopp_es_costa_blanca"), ScooterCityFeed(id: "spain:hoppy_es_torrevieja")]))
         cities.append(ScooterCity(id: "es:Pilar de la Horadada", name: "Pilar de la Horadada", countryCode: "ES", center: GeoPoint(latitude: 37.8675, longitude: -0.7926), bounds: GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462), feeds: [ScooterCityFeed(id: "spain:hopp_es_costa_blanca")]))
         cities.append(ScooterCity(id: "es:Jávea", name: "Jávea", countryCode: "ES", center: GeoPoint(latitude: 38.7894, longitude: 0.1634), bounds: GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006), feeds: [ScooterCityFeed(id: "spain:hopp_es_javea")]))
@@ -9245,7 +9248,8 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "gr:Ialysos", name: "Ialysos", countryCode: "GR", center: GeoPoint(latitude: 36.4156, longitude: 28.1582), bounds: GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
         cities.append(ScooterCity(id: "gr:Afantou", name: "Afantou", countryCode: "GR", center: GeoPoint(latitude: 36.2845, longitude: 28.1735), bounds: GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
         cities.append(ScooterCity(id: "gr:Kolymbia", name: "Kolymbia", countryCode: "GR", center: GeoPoint(latitude: 36.2532, longitude: 28.1611), bounds: GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
-        cities.append(ScooterCity(id: "gr:Thessaloniki", name: "Thessaloniki", countryCode: "GR", center: GeoPoint(latitude: 40.627, longitude: 22.9512), bounds: GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412), feeds: [ScooterCityFeed(id: "greece:dott_gr_thessaloniki"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_000"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_001"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_002"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_003"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_004"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_005"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_006"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_007")]))
+        cities.append(ScooterCity(id: "gr:Thessaloniki", name: "Thessaloniki", countryCode: "GR", center: GeoPoint(latitude: 40.627, longitude: 22.9512), bounds: GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412), feeds: [ScooterCityFeed(id: "greece:dott_gr_thessaloniki"), ScooterCityFeed(id: "greece:ridemovi_gr_thessaloniki"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_000"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_001"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_002"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_003"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_004"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_005"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_006"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_007")]))
+        cities.append(ScooterCity(id: "gr:Volos", name: "Volos", countryCode: "GR", center: GeoPoint(latitude: 39.3622, longitude: 22.9425), bounds: GeoBounds(south: 39.34945, west: 22.91787, north: 39.3902, east: 22.97741), feeds: [ScooterCityFeed(id: "greece:ridemovi_gr_volos")]))
         cities.append(ScooterCity(id: "gr:Athens", name: "Athens", countryCode: "GR", center: GeoPoint(latitude: 37.98376, longitude: 23.72784), bounds: GeoBounds(south: 37.80738, west: 23.62693, north: 38.03335, east: 23.78795), feeds: [ScooterCityFeed(id: "greece:lime_gr_app_athens_000"), ScooterCityFeed(id: "greece:lime_gr_app_athens_001"), ScooterCityFeed(id: "greece:lime_gr_app_athens_002"), ScooterCityFeed(id: "greece:lime_gr_app_athens_003"), ScooterCityFeed(id: "greece:lime_gr_app_athens_004"), ScooterCityFeed(id: "greece:lime_gr_app_athens_005"), ScooterCityFeed(id: "greece:lime_gr_app_athens_006"), ScooterCityFeed(id: "greece:lime_gr_app_athens_007"), ScooterCityFeed(id: "greece:lime_gr_app_athens_008"), ScooterCityFeed(id: "greece:lime_gr_app_athens_009"), ScooterCityFeed(id: "greece:lime_gr_app_athens_010"), ScooterCityFeed(id: "greece:lime_gr_app_athens_011"), ScooterCityFeed(id: "greece:lime_gr_app_athens_012"), ScooterCityFeed(id: "greece:lime_gr_app_athens_013"), ScooterCityFeed(id: "greece:lime_gr_app_athens_014"), ScooterCityFeed(id: "greece:lime_gr_app_athens_015"), ScooterCityFeed(id: "greece:lime_gr_app_athens_016")]))
         cities.append(ScooterCity(id: "gr:Heraklion", name: "Heraklion", countryCode: "GR", center: GeoPoint(latitude: 35.33336, longitude: 25.136665), bounds: GeoBounds(south: 35.32062, west: 25.10845, north: 35.3461, east: 25.16488), feeds: [ScooterCityFeed(id: "greece:lime_gr_app_heraklion_000"), ScooterCityFeed(id: "greece:lime_gr_app_heraklion_001")]))
         cities.append(ScooterCity(id: "gr:Kifisia", name: "Kifisia", countryCode: "GR", center: GeoPoint(latitude: 38.07438, longitude: 23.81106), bounds: GeoBounds(south: 38.06383, west: 23.79246, north: 38.09859, east: 23.83423), feeds: [ScooterCityFeed(id: "greece:lime_gr_app_kifisia_000"), ScooterCityFeed(id: "greece:lime_gr_app_kifisia_001"), ScooterCityFeed(id: "greece:lime_gr_app_kifisia_002")]))
@@ -9843,7 +9847,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1136
+    static let cityCount = 1137
     static let countryCount = 59
 
     /// Cities by distance from the point to their centre, nearest first.
