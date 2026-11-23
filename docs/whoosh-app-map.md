@@ -134,6 +134,13 @@ expired at 22:20 UTC. At 00:50 UTC on 20 November a sweep of its coverage and
 median battery of 71%. The collector now sweeps such a region over its reviewed coverage, as
 above, in Campo Grande's case the 8 views its ride polygon took.
 
+Between 20:06 UTC on 22 November 2026 and 19:36 UTC the next day, Whoosh moved
+Viña del Mar's ride area 134 m further west, to -71.57083, 40 m past its
+reviewed coverage; its other sides had not moved. The region's once-a-day sweep
+failed on it from 19:36 UTC on 23 November, and the feed expired at 22:06 UTC
+(SCOOTRADAR-CACHE-65 again). Its west bound, and its Viña del Mar area's, went
+from -71.5704 to -71.57184.
+
 Positions are `state.position.point.{lat,lng}`. Battery is `battery.power`;
 `battery.distanceToCharge.amount` defaults to kilometres in the app's
 amount-unit mapper. The collector excludes known bike models and retains

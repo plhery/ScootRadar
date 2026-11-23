@@ -128,7 +128,7 @@
       "bounds": {
         "south": -33.0351,
         "north": -32.965,
-        "west": -71.5704,
+        "west": -71.57184,
         "east": -71.24916
       },
       "discoveryUrl": "https://api.whoosh.bike/",
@@ -147,7 +147,7 @@
           "bounds": {
             "south": -33.0351,
             "north": -32.99056,
-            "west": -71.5704,
+            "west": -71.57184,
             "east": -71.53132
           }
         },
