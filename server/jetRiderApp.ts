@@ -10,6 +10,20 @@ import { Pacer } from './sweeps';
 const ORIGIN = 'https://service.jetscooters.fun/gatewayclient';
 const MAX_RADIUS_M = 5000;
 const SPLIT_AT = 400; // Wide views stop at 500 individual vehicles; leave room below that ceiling.
+const PARKING_LIST_CAP = 149; // A map view lists 149 parkings at most.
+// A polygon's reply stops at 250 scooters, and before that leaves out some of a full box's: one in
+// Tbilisi listed 206 of the 319 its sixteenths did on 23 November 2026. Boxes the map counts at 150 or
+// fewer read Tashkent in 59 polygons and Tbilisi in 44 that day; at 250, more replies fell short and
+// were split, and it took 65 and 53.
+const POLYGON_TARGET = 150;
+const POLYGON_MARGIN_M = 60;
+const MIN_POLYGON_RADIUS_M = 100;
+const MAX_REQUESTS = 300;
+const MAX_PARKING_READS = 40;
+const COLLECTION_MS = 150_000;
+const SCOOTER_TYPES = new Set(['Scooter', 'EScooter']);
+const HIREABLE_STATES = new Set(['Available', 'AvailableWithoutGps']);
+const PARKING_ID = /^[A-Za-z0-9_-]{1,64}$/;
 export const jetRiderMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined => value !== null &&
   typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
@@ -137,17 +151,19 @@ export class JetRiderClient {
     finally { await rm(temporary, { force: true }).catch(() => undefined); }
   }
 
-  private async request(path: string, session: Session, deadline: number, body?: URLSearchParams): Promise<unknown> {
+  /** A map read (GET, or a JSON body) or the session's renewal (a form). */
+  private async request(path: string, session: Session, deadline: number, body?: URLSearchParams | { json: string }): Promise<unknown> {
     if (this.now() < this.blockedUntil) throw new Error('JET rider requests are temporarily held off');
     if (this.now() + this.pace.wait() >= deadline) throw new Error('JET rider collection timed out');
     await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('JET rider requests are temporarily held off');
     const remaining = deadline - this.now();
     if (remaining <= 0) throw new Error('JET rider collection timed out');
-    jetRiderMapRequests[body ? 'metadata' : 'status']++;
-    const encodedBody = body?.toString() ?? '';
+    const renewal = body instanceof URLSearchParams;
+    jetRiderMapRequests[renewal ? 'metadata' : 'status']++;
+    const encodedBody = body === undefined ? '' : renewal ? body.toString() : body.json;
     const headers: Record<string, string> = { ...session.headers, Authorization: `Bearer ${session.accessToken}`, accept: 'application/json',
-      ...body && { 'content-type': 'application/x-www-form-urlencoded' } };
+      ...body && { 'content-type': renewal ? 'application/x-www-form-urlencoded' : 'application/json' } };
     headers['UR-Request-Data'] = jetRiderRequestHash(headers, new URL(ORIGIN + path).searchParams, encodedBody, session.signingKey);
     let response: Response;
     try {
@@ -162,10 +178,10 @@ export class JetRiderClient {
     }
     if (!response.ok) {
       await response.body?.cancel();
-      if (response.status === 401 && !body) throw new JetRiderAuthError();
-      throw new Error(body ? `JET rider renewal HTTP ${response.status}` : `JET rider map HTTP ${response.status}`);
+      if (response.status === 401 && !renewal) throw new JetRiderAuthError();
+      throw new Error(renewal ? `JET rider renewal HTTP ${response.status}` : `JET rider map HTTP ${response.status}`);
     }
-    return jsonBody(response, body ? 65536 : 2 * 1024 * 1024);
+    return jsonBody(response, renewal ? 65536 : 2 * 1024 * 1024);
   }
 
   private async current(deadline: number, rejectedToken?: string): Promise<Session> {
@@ -193,13 +209,10 @@ export class JetRiderClient {
     return this.renewing;
   }
 
-  async vehicles(bounds: MapBounds, deadline = this.now() + 90_000): Promise<unknown> {
-    const circle = jetRiderCircle(bounds);
-    if (circle.radius > MAX_RADIUS_M) throw new Error('JET rider map view is too large');
-    const query = new URLSearchParams({ latitude: String(circle.latitude), longitude: String(circle.longitude),
-      radiusByMeters: String(circle.radius), zoom: '18', useBluetooth: 'false', includeEmptyParkings: 'false', withEBikes: 'true' });
+  /** One read with the current session, renewed and retried once if JET rejects its access token. */
+  private async read(path: string, deadline: number, json?: string): Promise<unknown> {
     let session = await this.current(deadline);
-    const read = () => this.request(`/api/v6/transports?${query}`, session, deadline);
+    const read = () => this.request(path, session, deadline, json === undefined ? undefined : { json });
     try { return await read(); }
     catch (error) {
       if (!(error instanceof JetRiderAuthError)) throw error;
@@ -207,35 +220,127 @@ export class JetRiderClient {
       return read();
     }
   }
+
+  /** The map: loose scooters one by one, and each parking with only a count of the scooters in it. */
+  async vehicles(bounds: MapBounds, deadline = this.now() + 90_000): Promise<unknown> {
+    const circle = jetRiderCircle(bounds);
+    if (circle.radius > MAX_RADIUS_M) throw new Error('JET rider map view is too large');
+    const query = new URLSearchParams({ latitude: String(circle.latitude), longitude: String(circle.longitude),
+      radiusByMeters: String(circle.radius), zoom: '18', useBluetooth: 'false', includeEmptyParkings: 'false', withEBikes: 'true' });
+    return this.read(`/api/v6/transports?${query}`, deadline);
+  }
+
+  /** Every scooter in a box, parked ones included, with its range; a full box's reply leaves some out (collectJetRiderRegion). */
+  async polygon(bounds: MapBounds, deadline = this.now() + 90_000): Promise<unknown> {
+    if (jetRiderCircle(bounds).radius > MAX_RADIUS_M) throw new Error('JET rider map view is too large');
+    const { south, north, west, east } = bounds;
+    const polygon = [[south, west], [south, east], [north, east], [north, west], [south, west]].map(([lat, long]) => ({ lat, long }));
+    return this.read('/api/v6/transports/polygon', deadline, JSON.stringify({ polygon, withEBikes: true }));
+  }
+
+  /** The scooters standing in one parking. */
+  async parking(id: string, deadline = this.now() + 90_000): Promise<unknown> {
+    if (!PARKING_ID.test(id)) throw new Error('Invalid JET rider parking');
+    return this.read(`/api/v1/parkings/${id}`, deadline);
+  }
 }
 
 type JetScooter = Vehicle & { vehicle_id: string };
-export function parseJetRiderVehicles(payload: unknown): { count: number; vehicles: JetScooter[] } {
-  const data = object(payload), entries = object(data?.entries);
-  if (data?.succeeded !== true || !Array.isArray(data.errors) || data.errors.length || !entries ||
-    !Array.isArray(entries.transports) || !Array.isArray(entries.parkings)) throw new Error('Invalid JET rider map');
+/** A parking on the map, with the number of scooters standing in it, which the map does not list. */
+export interface JetRiderParking { id: string; lat: number; lng: number; count: number }
+/** A scooter of a polygon or a parking, and the parking it stands in. */
+export interface JetRiderTransport { vehicle: JetScooter; parkingId?: string }
+
+const transportId = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z0-9._-]{1,128}$/.test(value);
+function position(value: unknown) {
+  const point = object(value);
+  if (typeof point?.lat !== 'number' || typeof point.long !== 'number' || !Number.isFinite(point.lat) || !Number.isFinite(point.long) ||
+    Math.abs(point.lat) > 85 || Math.abs(point.long) > 180) return undefined;
+  return { lat: point.lat, lng: point.long };
+}
+function reply(payload: unknown) {
+  const data = object(payload);
+  if (data?.succeeded !== true || !Array.isArray(data.errors) || data.errors.length) throw new Error('Invalid JET rider map');
+  return data;
+}
+
+/** The map's reply: its loose scooters, and its parkings, complete unless the list stops at its cap on one holding scooters. */
+export function parseJetRiderVehicles(payload: unknown): { count: number; vehicles: JetScooter[]; parkings: JetRiderParking[]; parkingsComplete: boolean } {
+  const entries = object(reply(payload).entries);
+  if (!entries || !Array.isArray(entries.transports) || !Array.isArray(entries.parkings)) throw new Error('Invalid JET rider map');
   const vehicles: JetScooter[] = [];
   for (const item of entries.transports) {
     const transport = object(item);
     if (!transport || typeof transport.type !== 'string') throw new Error('Invalid JET rider transport');
-    if (!['Scooter', 'EScooter'].includes(transport.type)) continue;
-    const point = object(transport.location);
-    if (typeof transport.identifier !== 'string' || !/^[A-Za-z0-9._-]{1,128}$/.test(transport.identifier) ||
-      typeof point?.lat !== 'number' || typeof point.long !== 'number' || !Number.isFinite(point.lat) || !Number.isFinite(point.long) ||
-      Math.abs(point.lat) > 85 || Math.abs(point.long) > 180 || transport.batteryPercent != null &&
+    if (!SCOOTER_TYPES.has(transport.type)) continue;
+    const point = position(transport.location);
+    if (!transportId(transport.identifier) || !point || transport.batteryPercent != null &&
       (typeof transport.batteryPercent !== 'number' || !Number.isFinite(transport.batteryPercent) ||
         transport.batteryPercent < 0 || transport.batteryPercent > 100)) throw new Error('Invalid JET rider scooter');
-    vehicles.push({ provider: 'jet', vehicle_id: `jet-rider:${transport.identifier}`, lat: point.lat, lng: point.long,
+    vehicles.push({ provider: 'jet', vehicle_id: `jet-rider:${transport.identifier}`, ...point,
       battery: typeof transport.batteryPercent === 'number' ? Math.round(transport.batteryPercent) : null,
       range_m: null, deep_link: null, distance_m: null });
   }
-  // Parking counts are not additional scooter identities: adding them could count a scooter twice.
-  return { count: entries.transports.length, vehicles };
+  const parkings: JetRiderParking[] = [];
+  let lastEmpty = true;
+  for (const item of entries.parkings) {
+    const parking = object(item), point = position(parking?.location), count = parking?.countScooters;
+    if (!parking || typeof parking.id !== 'string' || !PARKING_ID.test(parking.id) || !point ||
+      typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) throw new Error('Invalid JET rider parking');
+    parkings.push({ id: parking.id, ...point, count });
+    lastEmpty = count === 0 && !(typeof parking.countBikes === 'number' && parking.countBikes > 0);
+  }
+  // The map lists the parkings that hold anything first: a full list ending in an empty one has them all.
+  return { count: entries.transports.length, vehicles, parkings, parkingsComplete: parkings.length < PARKING_LIST_CAP || lastEmpty };
+}
+
+/** Scooters of a polygon's or a parking's reply that can be hired, with their range; bikes and other states are left out. */
+function transports(items: unknown[], parkingId?: string): JetRiderTransport[] {
+  if (items.length > 1000) throw new Error('Invalid JET rider map');
+  const result: JetRiderTransport[] = [];
+  for (const item of items) {
+    const transport = object(item);
+    if (!transport || typeof transport.type !== 'string' || typeof transport.state !== 'string') throw new Error('Invalid JET rider transport');
+    if (!SCOOTER_TYPES.has(transport.type) || !HIREABLE_STATES.has(transport.state)) continue;
+    const point = position(transport.location), charge = object(transport.charge);
+    const battery = charge?.batteryPercent, km = charge?.remainKm, parking = parkingId ?? transport.parkingId;
+    if (!transportId(transport.identifier) || !point || transport.charge != null && !charge ||
+      battery != null && (typeof battery !== 'number' || !Number.isFinite(battery) || battery < 0 || battery > 1) ||
+      km != null && (typeof km !== 'number' || !Number.isFinite(km) || km < 0 || km > 200) ||
+      parking != null && (typeof parking !== 'string' || !PARKING_ID.test(parking))) throw new Error('Invalid JET rider scooter');
+    result.push({ vehicle: { provider: 'jet', vehicle_id: `jet-rider:${transport.identifier}`, ...point,
+      battery: typeof battery === 'number' ? Math.round(battery * 100) : null, range_m: typeof km === 'number' ? Math.round(km * 1000) : null,
+      deep_link: null, distance_m: null }, ...parking != null && { parkingId: parking } });
+  }
+  return result;
+}
+
+export function parseJetRiderPolygon(payload: unknown): JetRiderTransport[] {
+  const data = reply(payload);
+  if (!Array.isArray(data.transports)) throw new Error('Invalid JET rider map');
+  return transports(data.transports);
+}
+
+export function parseJetRiderParking(payload: unknown, id: string): JetRiderTransport[] {
+  const parking = object(reply(payload).data);
+  if (parking?.id !== id || !Array.isArray(parking.transports)) throw new Error('Invalid JET rider parking');
+  return transports(parking.transports, id);
+}
+
+/** The four quarters of a box, split at its centre. */
+function quarters(bounds: MapBounds): MapBounds[] {
+  const { latitude: lat, longitude: lng } = jetRiderCircle(bounds);
+  return [{ ...bounds, north: lat, east: lng }, { ...bounds, south: lat, east: lng }, { ...bounds, north: lat, west: lng }, { ...bounds, south: lat, west: lng }];
+}
+
+function widened({ south, north, west, east }: MapBounds, meters: number): MapBounds {
+  const lat = meters / 111_320, lng = lat / Math.cos((south + north) / 2 * Math.PI / 180);
+  return { south: south - lat, north: north + lat, west: west - lng, east: east + lng };
 }
 
 let defaultClient: JetRiderClient | undefined;
 export async function collectJetRiderRegion(system: RegionalScooterSystem,
-  client: Pick<JetRiderClient, 'vehicles'> = defaultClient ??= new JetRiderClient()): Promise<SourceVehicles> {
+  client: Pick<JetRiderClient, 'vehicles' | 'polygon' | 'parking'> = defaultClient ??= new JetRiderClient()): Promise<SourceVehicles> {
   if (!system.jetRiderAppCity) throw new Error('Not a JET rider map region');
   jetRiderCircle(system.bounds);
   const areas = (system.areas ?? [system]).map(area => area.bounds);
@@ -245,33 +350,83 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
     if (area.south < system.bounds.south || area.north > system.bounds.north ||
       area.west < system.bounds.west || area.east > system.bounds.east) throw new Error('JET rider area exceeds reviewed bounds');
   }
-  const started = Date.now(), deadline = started + 90_000;
-  const vehicles = new Map<string, JetScooter>();
+  const inAreas = (lat: number, lng: number) => areas.some(area => boundsContainPoint(area, lat, lng));
+  const started = Date.now(), deadline = started + COLLECTION_MS;
   let requests = 0;
-  async function tile(bounds: MapBounds, depth = 0): Promise<void> {
-    const circle = jetRiderCircle(bounds);
+  const spend = () => { if (++requests > MAX_REQUESTS || Date.now() >= deadline) throw new Error('JET rider map exceeds the collection budget'); };
+
+  // The map lists each loose scooter, and only counts those standing in a parking.
+  const loose = new Map<string, JetScooter>(), parkings = new Map<string, JetRiderParking>();
+  async function mapTile(bounds: MapBounds, depth = 0): Promise<void> {
     let batch: ReturnType<typeof parseJetRiderVehicles> | undefined;
-    if (circle.radius <= MAX_RADIUS_M) {
-      if (++requests > 160 || Date.now() >= deadline) throw new Error('JET rider map exceeds the collection budget');
+    if (jetRiderCircle(bounds).radius <= MAX_RADIUS_M) {
+      spend();
       batch = parseJetRiderVehicles(await client.vehicles(bounds, deadline));
     }
-    if (!batch || batch.count >= SPLIT_AT) {
+    if (!batch || batch.count >= SPLIT_AT || !batch.parkingsComplete) {
       if (depth >= 8) throw new Error('JET rider map remains capped in a small view');
-      const lat = circle.latitude, lng = circle.longitude;
-      for (const part of [{ ...bounds, north: lat, east: lng }, { ...bounds, south: lat, east: lng },
-        { ...bounds, north: lat, west: lng }, { ...bounds, south: lat, west: lng }]) await tile(part, depth + 1);
-    } else {
-      for (const vehicle of batch.vehicles) if (areas.some(area => boundsContainPoint(area, vehicle.lat, vehicle.lng))) vehicles.set(vehicle.vehicle_id, vehicle);
+      for (const part of quarters(bounds)) await mapTile(part, depth + 1);
+      return;
     }
+    for (const vehicle of batch.vehicles) if (inAreas(vehicle.lat, vehicle.lng)) loose.set(vehicle.vehicle_id, vehicle);
+    for (const parking of batch.parkings) if (parking.count > 0 && inAreas(parking.lat, parking.lng)) parkings.set(parking.id, parking);
   }
-  for (const area of areas) await tile(area);
+  for (const area of areas) await mapTile(area);
+
+  // Polygons list the parked scooters too, and every scooter's range, but a full box's reply leaves some out with
+  // no sign of it: each box is sized by the map's counts, checked against them, and split while it falls short.
+  const read = new Map<string, JetScooter>(), parked = new Map<string, Set<string>>();
+  const keep = ({ vehicle, parkingId }: JetRiderTransport) => {
+    read.set(vehicle.vehicle_id, vehicle);
+    if (parkingId) parked.set(parkingId, (parked.get(parkingId) ?? new Set()).add(vehicle.vehicle_id));
+  };
+  async function polygonTile(bounds: MapBounds): Promise<void> {
+    const expectedLoose = [...loose.values()].filter(vehicle => boundsContainPoint(bounds, vehicle.lat, vehicle.lng));
+    const expectedParkings = [...parkings.values()].filter(parking => boundsContainPoint(bounds, parking.lat, parking.lng));
+    const expected = expectedLoose.length + expectedParkings.reduce((sum, parking) => sum + parking.count, 0);
+    if (!expected) return;
+    // A parking's scooters stand within its 50-metre radius, so the read reaches past the box's edge.
+    const view = widened(bounds, POLYGON_MARGIN_M), radius = jetRiderCircle(bounds).radius;
+    const divisible = radius > MIN_POLYGON_RADIUS_M;
+    if (jetRiderCircle(view).radius > MAX_RADIUS_M || divisible && expected > POLYGON_TARGET) {
+      for (const part of quarters(bounds)) await polygonTile(part);
+      return;
+    }
+    spend();
+    const batch = parseJetRiderPolygon(await client.polygon(view, deadline));
+    batch.forEach(keep);
+    const ids = new Set(batch.map(item => item.vehicle.vehicle_id));
+    const missing = expectedLoose.filter(vehicle => !ids.has(vehicle.vehicle_id)).length + expectedParkings.reduce((sum, parking) =>
+      sum + Math.max(0, parking.count - batch.filter(item => item.parkingId === parking.id).length), 0);
+    // A few may have been hired or moved since the map was read.
+    if (divisible && missing > Math.max(2, Math.ceil(expected * 0.03))) for (const part of quarters(bounds)) await polygonTile(part);
+  }
+  for (const area of areas) await polygonTile(area);
+
+  // A parking the polygons leave short, by a scooter hired since or one a reply dropped, is read on its own.
+  const short = [...parkings.values()].filter(parking => (parked.get(parking.id)?.size ?? 0) < parking.count);
+  if (short.length > MAX_PARKING_READS) throw new Error('JET rider parkings remain unread');
+  for (const parking of short) {
+    spend();
+    parseJetRiderParking(await client.parking(parking.id, deadline), parking.id).forEach(keep);
+  }
+
+  const vehicles = new Map(loose);
+  for (const vehicle of read.values()) if (inAreas(vehicle.lat, vehicle.lng)) vehicles.set(vehicle.vehicle_id, vehicle);
   return { observedAt: started, stale: false, vehicles: [...vehicles.values()] };
 }
+
+/**
+ * A watched region is collected again two minutes after its last collection started, not one: reading parked
+ * scooters made Tashkent's 105 requests and about a minute on 23 November 2026, where the map alone took 36.
+ */
+export const JET_RIDER_WATCHED_INTERVAL_MS = 2 * 60_000;
 
 export function withJetRiderAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.jetRiderAppCity).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, collect: () => collectJetRiderRegion(system) } : feed;
+    return system ? { ...feed, paced: true, activeIntervalMs: JET_RIDER_WATCHED_INTERVAL_MS,
+      collect: () => collectJetRiderRegion(system) } : feed;
   });
 }

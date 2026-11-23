@@ -328,12 +328,14 @@ require an operator to sign in again when it expires. See
 ## JET authenticated rider map
 
 Since 22 November 2026, JET's separate Central Asian rider map supplies
-individual available standing scooters in Tbilisi and nine Uzbek cities,
-through ten reviewed collection regions. Enclosing circles are subdivided
-before the map's 500-vehicle ceiling can truncate a sweep; bike entries and
-unidentified parking totals are excluded. The cache retains the private rider
-session, device configuration and request-hash key, renews the session, and
-publishes only positions and known charge. Go Jet's existing signed-out
+available scooters in Tbilisi and nine Uzbek cities, through ten reviewed
+collection regions. Enclosing circles are subdivided before the map's
+500-vehicle ceiling can truncate a sweep. Since 23 November the scooters
+standing in parkings, which the map only counts, are read too, with each
+scooter's range: 6,341 scooters that evening where the map listed 4,364.
+Bike entries are excluded. The cache retains the private rider session,
+device configuration and request-hash key, renews the session, and
+publishes only positions, battery and range. Go Jet's existing signed-out
 regions remain on their own collector, without duplicate JET coverage.
 See [coverage, authentication and live verification](docs/jet-rider-app-map.md).
 

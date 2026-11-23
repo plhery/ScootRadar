@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-11-22",
-  "source": "JET authenticated rider map; reviewed rental-zone envelopes with a 0.001-degree margin. Individual available scooters only; parking totals are not added.",
+  "source": "JET authenticated rider map; reviewed rental-zone envelopes with a 0.001-degree margin. Available scooters, loose and in parkings, with their range.",
   "systems": [
     {
       "id": "jet_uz_tashkent",

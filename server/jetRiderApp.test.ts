@@ -5,7 +5,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, serviceAreas } from '../src/lib/regionalScooterSystems';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { boundsContainPoint, haversineM } from '../src/lib/geo';
-import { collectJetRiderRegion, jetRiderCircle, jetRiderRequestHash, JetRiderClient, parseJetRiderVehicles, withJetRiderAppCollectors } from './jetRiderApp';
+import type { MapBounds } from '../src/lib/types';
+import { collectJetRiderRegion, JET_RIDER_WATCHED_INTERVAL_MS, jetRiderCircle, jetRiderRequestHash, JetRiderClient, parseJetRiderParking,
+  parseJetRiderPolygon, parseJetRiderVehicles, withJetRiderAppCollectors } from './jetRiderApp';
 
 const paths: string[] = [];
 afterEach(async () => { await Promise.all(paths.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
@@ -15,7 +17,17 @@ const session = () => ({ version: 1, accessToken: 'private-access-token', refres
   oauth: { clientId: 'test-client', clientSecret: 'private-client-secret', scope: 'bike.api offline_access' },
   headers: { 'UR-Brand': 'JET', 'UR-Device-Id': 'test-device', 'UR-Client-Id': 'test-client', Authorization: 'untrusted-file-header' } });
 const scooter = (identifier = 'S.123456', lat = 41.71, long = 44.77) => ({ identifier, type: 'Scooter', location: { lat, long }, batteryPercent: 47 });
-const map = (transports: unknown[] = []) => ({ succeeded: true, errors: [], entries: { transports, parkings: [] } });
+const map = (transports: unknown[] = [], parkings: unknown[] = []) => ({ succeeded: true, errors: [], entries: { transports, parkings } });
+const parkingAt = (id: string, countScooters: number, lat = 41.71, long = 44.77) =>
+  ({ id, isEmpty: countScooters === 0, countBikes: 0, countScooters, location: { lat, long }, radius: 50, polygon: null });
+const hired = (identifier: string, lat = 41.71, long = 44.77, extra: Record<string, unknown> = {}) => ({ identifier, displayedIdentifier: identifier,
+  type: 'Scooter', state: 'Available', location: { lat, long }, model: { name: 'Ninebot Max Plus' },
+  charge: { batteryPercent: 0.5, remainKm: 15.75, status: 'Ok' }, ...extra });
+const polygonReply = (transports: unknown[] = []) => ({ succeeded: true, errors: [], transports });
+const parkingReply = (id: string, transports: unknown[] = []) => ({ succeeded: true, errors: [], data: { id, transports } });
+/** A client whose polygons and parkings, unless given, list nothing. */
+const api = (vehicles: ReturnType<typeof vi.fn<(...args: never[]) => Promise<unknown>>>, polygon = vi.fn().mockResolvedValue(polygonReply()),
+  parking = vi.fn().mockImplementation(async (id: string) => parkingReply(id))) => ({ vehicles, polygon, parking });
 const json = (data: unknown, status = 200, headers?: HeadersInit) => new Response(JSON.stringify(data), { status, headers });
 const system: RegionalScooterSystem = { id: 'jet_ge_test', provider: 'jet', country: 'GE', city: 'Test',
   center: [41.71, 44.77], bounds: { south: 41.7, north: 41.72, west: 44.76, east: 44.78 },
@@ -50,6 +62,28 @@ describe('JET rider session', () => {
     expect(new Headers(options?.headers).get('authorization')).toBe('Bearer private-access-token');
     expect(String(input)).not.toContain('private');
     expect(options?.body).toBeUndefined();
+  });
+
+  it('posts a closed polygon as signed JSON and reads a parking only by a checked id', async () => {
+    const fetch = vi.fn<typeof globalThis.fetch>(async () => json(polygonReply()));
+    const { client } = await fixture(fetch);
+    await client.polygon(system.bounds, now + 10_000);
+    const [input, options] = fetch.mock.calls[0]; const headers = new Headers(options?.headers);
+    expect(String(input)).toBe('https://service.jetscooters.fun/gatewayclient/api/v6/transports/polygon');
+    expect(options?.method).toBe('POST'); expect(options?.redirect).toBe('error');
+    expect(headers.get('content-type')).toBe('application/json');
+    expect(headers.get('authorization')).toBe('Bearer private-access-token');
+    const body = JSON.parse(String(options?.body));
+    expect(body).toEqual({ polygon: [{ lat: 41.7, long: 44.76 }, { lat: 41.7, long: 44.78 }, { lat: 41.72, long: 44.78 },
+      { lat: 41.72, long: 44.76 }, { lat: 41.7, long: 44.76 }], withEBikes: true });
+    expect(headers.get('ur-request-data')).toBe(jetRiderRequestHash(Object.fromEntries(headers), new URLSearchParams(),
+      String(options?.body), session().signingKey));
+    await expect(client.parking('../connect/token', now + 10_000)).rejects.toThrow('Invalid JET rider parking');
+    await expect(client.polygon({ south: 0, north: 1, west: 0, east: 1 })).rejects.toThrow('view is too large');
+    await client.parking('abc_123', now + 10_000);
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(String(fetch.mock.calls[1][0])).toBe('https://service.jetscooters.fun/gatewayclient/api/v1/parkings/abc_123');
+    expect(fetch.mock.calls[1][1]?.method).toBe('GET'); expect(fetch.mock.calls[1][1]?.body).toBeUndefined();
   });
 
   it('renews once for concurrent readers, persists rotation privately and survives a restart', async () => {
@@ -128,18 +162,50 @@ describe('JET rider session', () => {
 });
 
 describe('JET rider collection', () => {
-  it('reads only individual standing scooters and never adds parking or bike totals', () => {
-    const payload = map([scooter(), { type: 'Bike' }, { type: 'EBike' }, { ...scooter('S.2'), batteryPercent: null }]);
-    payload.entries.parkings = [{ countScooters: 1000, countBikes: 1000 }] as never[];
+  it('lists loose scooters one by one, leaves bikes out, and keeps each parking with only its count', () => {
+    const payload = map([scooter(), { type: 'Bike' }, { type: 'EBike' }, { ...scooter('S.2'), batteryPercent: null }],
+      [parkingAt('p1', 3), { ...parkingAt('p2', 0), countBikes: 4 }]);
     const parsed = parseJetRiderVehicles(payload);
     expect(parsed.count).toBe(4); expect(parsed.vehicles).toHaveLength(2);
     expect(parsed.vehicles[0]).toMatchObject({ provider: 'jet', vehicle_id: 'jet-rider:S.123456', battery: 47, range_m: null });
     expect(parsed.vehicles[1].battery).toBeNull();
+    expect(parsed.parkings).toEqual([{ id: 'p1', lat: 41.71, lng: 44.77, count: 3 }, { id: 'p2', lat: 41.71, lng: 44.77, count: 0 }]);
+    expect(parsed.parkingsComplete).toBe(true);
+  });
+
+  it('takes a full parking list as complete only when it ends on an empty parking', () => {
+    const full = (last: unknown) => map([], [...Array.from({ length: 148 }, (_, i) => parkingAt(`p${i}`, 2)), last]);
+    expect(parseJetRiderVehicles(full(parkingAt('last', 1))).parkingsComplete).toBe(false);
+    expect(parseJetRiderVehicles(full({ ...parkingAt('last', 0), countBikes: 2 })).parkingsComplete).toBe(false);
+    expect(parseJetRiderVehicles(full(parkingAt('last', 0))).parkingsComplete).toBe(true);
   });
 
   it.each([map([{ ...scooter(), batteryPercent: 101 }]), map([{ ...scooter(), location: { lat: 41, long: NaN } }]),
+    map([], [{ countScooters: 1000, countBikes: 1000 }]), map([], [parkingAt('../connect', 1)]), map([], [parkingAt('p1', -1)]),
+    map([], [{ ...parkingAt('p1', 1), location: null }]),
     { ...map(), succeeded: false }, { ...map(), errors: [{ message: 'private-server-details' }] }, { succeeded: true, errors: [] }])(
     'rejects invalid or unsuccessful replies', payload => { expect(() => parseJetRiderVehicles(payload)).toThrow(); });
+
+  it('reads the hireable scooters of a polygon with their charge in percent, their range and their parking', () => {
+    const parsed = parseJetRiderPolygon(polygonReply([hired('A.1', 41.71, 44.77, { parkingId: 'p1' }), hired('A.2', 41.71, 44.77, { charge: null }),
+      hired('A.3', 41.71, 44.77, { state: 'Booked' }), hired('B.1', 41.71, 44.77, { type: 'EBike' })]));
+    expect(parsed).toEqual([{ vehicle: { provider: 'jet', vehicle_id: 'jet-rider:A.1', lat: 41.71, lng: 44.77, battery: 50, range_m: 15750,
+      deep_link: null, distance_m: null }, parkingId: 'p1' }, { vehicle: expect.objectContaining({ vehicle_id: 'jet-rider:A.2', battery: null, range_m: null }) }]);
+    expect(parsed[1]).not.toHaveProperty('parkingId');
+  });
+
+  it.each([{ charge: { batteryPercent: 47 } }, { charge: { remainKm: -1 } }, { charge: { remainKm: 201 } }, { charge: 'full' },
+    { parkingId: '../connect' }, { state: null }, { location: null }, { identifier: 'a b' }])(
+    'rejects an invalid polygon scooter (%o)', extra => {
+      expect(() => parseJetRiderPolygon(polygonReply([hired('A.1', 41.71, 44.77, extra)]))).toThrow();
+    });
+
+  it('reads a parking’s scooters as standing in it, and only the parking asked for', () => {
+    expect(parseJetRiderParking(parkingReply('p1', [hired('A.1')]), 'p1')).toEqual([expect.objectContaining({ parkingId: 'p1' })]);
+    expect(() => parseJetRiderParking(parkingReply('p2', [hired('A.1')]), 'p1')).toThrow('Invalid JET rider parking');
+    expect(() => parseJetRiderParking({ ...parkingReply('p1'), succeeded: false }, 'p1')).toThrow();
+    expect(() => parseJetRiderPolygon({ ...polygonReply(), transports: Array.from({ length: 1001 }, () => hired('A.1')) })).toThrow();
+  });
 
   it('covers every corner with a bounded circle, including at high latitudes', () => {
     const bounds = { south: 70, north: 70.02, west: 28, east: 28.04 };
@@ -152,7 +218,7 @@ describe('JET rider collection', () => {
   it('refines capped maps using the unfiltered item count, deduplicates overlaps and clips to the reviewed area', async () => {
     const vehicles = vi.fn().mockResolvedValue(map([scooter(), scooter('outside', 42, 45)]));
     vehicles.mockResolvedValueOnce(map(Array.from({ length: 400 }, () => ({ type: 'Bike' }))));
-    const result = await collectJetRiderRegion(system, { vehicles });
+    const result = await collectJetRiderRegion(system, api(vehicles));
     expect(vehicles).toHaveBeenCalledTimes(5);
     expect(result.vehicles).toHaveLength(1); expect(result.stale).toBe(false);
     expect(new Set(vehicles.mock.calls.map(call => call[1])).size).toBe(1);
@@ -161,18 +227,86 @@ describe('JET rider collection', () => {
   it('never returns a partial sweep after a child fails or a dense pile stays capped', async () => {
     const vehicles = vi.fn().mockResolvedValueOnce(map(Array.from({ length: 400 }, () => ({ type: 'Bike' }))))
       .mockResolvedValueOnce(map([scooter()])).mockRejectedValueOnce(new Error('upstream unavailable'));
-    await expect(collectJetRiderRegion(system, { vehicles })).rejects.toThrow('upstream unavailable');
+    await expect(collectJetRiderRegion(system, api(vehicles))).rejects.toThrow('upstream unavailable');
     vehicles.mockResolvedValue(map(Array.from({ length: 400 }, () => ({ type: 'Bike' }))));
-    await expect(collectJetRiderRegion(system, { vehicles })).rejects.toThrow('remains capped');
+    await expect(collectJetRiderRegion(system, api(vehicles))).rejects.toThrow('remains capped');
   });
 
   it('collects disjoint town areas and excludes the unreviewed gap', async () => {
     const left = { ...system, bounds: { ...system.bounds, east: 44.765 } };
     const right = { ...system, bounds: { ...system.bounds, west: 44.775 } };
     const vehicles = vi.fn().mockResolvedValue(map([scooter('left', 41.71, 44.762), scooter('gap'), scooter('right', 41.71, 44.778)]));
-    const result = await collectJetRiderRegion({ ...system, areas: [left, right] }, { vehicles });
+    const result = await collectJetRiderRegion({ ...system, areas: [left, right] }, api(vehicles));
     expect(vehicles).toHaveBeenCalledTimes(2);
     expect(result.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual(['jet-rider:left', 'jet-rider:right']);
+  });
+
+  it('adds the scooters standing in parkings, and every scooter’s range, from a polygon checked against the map', async () => {
+    const vehicles = vi.fn().mockResolvedValue(map([scooter('L.1'), scooter('L.2', 41.715, 44.775)], [parkingAt('p1', 2, 41.705, 44.765)]));
+    const polygon = vi.fn().mockResolvedValue(polygonReply([hired('L.1'), hired('P.1', 41.7051, 44.7651, { parkingId: 'p1' }),
+      hired('P.2', 41.7049, 44.7649, { parkingId: 'p1' }), hired('far', 41.69, 44.75)]));
+    const client = api(vehicles, polygon);
+    const result = await collectJetRiderRegion(system, client);
+    // L.2, hired or moved since the map was read, is one of four: too few to read the box again.
+    expect(polygon).toHaveBeenCalledTimes(1); expect(client.parking).not.toHaveBeenCalled();
+    const byId = Object.fromEntries(result.vehicles.map(vehicle => [vehicle.vehicle_id, vehicle]));
+    expect(Object.keys(byId).sort()).toEqual(['jet-rider:L.1', 'jet-rider:L.2', 'jet-rider:P.1', 'jet-rider:P.2']);
+    expect(byId['jet-rider:L.1']).toMatchObject({ battery: 50, range_m: 15750 });
+    expect(byId['jet-rider:L.2']).toMatchObject({ battery: 47, range_m: null });
+    // The read reaches past the area, for scooters at the edge of a parking on it, and keeps the sweep's deadline.
+    const [view, deadline] = polygon.mock.calls[0];
+    expect(view.south).toBeLessThan(system.bounds.south); expect(view.east).toBeGreaterThan(system.bounds.east);
+    expect(deadline).toBe(vehicles.mock.calls[0][1]);
+  });
+
+  /** A polygon that lists the scooters in its view, but only 80 of them when it holds more than 50. */
+  const truncating = (scooters: ReturnType<typeof scooter>[]) => vi.fn().mockImplementation(async (view: MapBounds) => {
+    const inside = scooters.filter(item => boundsContainPoint(view, item.location.lat, item.location.long));
+    return polygonReply((inside.length > 50 ? inside.slice(0, 80) : inside).map(item => hired(item.identifier, item.location.lat, item.location.long)));
+  });
+
+  it('splits a box the map counts above 150 scooters before reading it', async () => {
+    const all = [...Array.from({ length: 80 }, (_, i) => scooter(`SW.${i}`, 41.702, 44.762 + i * 0.00005)),
+      ...Array.from({ length: 80 }, (_, i) => scooter(`NE.${i}`, 41.718, 44.772 + i * 0.00005))];
+    const polygon = truncating(all);
+    const result = await collectJetRiderRegion(system, api(vi.fn().mockResolvedValue(map(all)), polygon));
+    expect(polygon).toHaveBeenCalledTimes(2);
+    expect(result.vehicles).toHaveLength(160); expect(result.vehicles.every(vehicle => vehicle.range_m === 15750)).toBe(true);
+  });
+
+  it('reads the quarters of a box whose reply falls short, then a parking the polygons still leave short', async () => {
+    const all = [41.705, 41.715].flatMap(lat => [44.765, 44.775].flatMap(lng =>
+      Array.from({ length: 25 }, (_, i) => scooter(`Q.${lat}.${lng}.${i}`, lat + i * 0.0001, lng))));
+    const polygon = truncating(all);
+    const parking = vi.fn().mockImplementation(async (id: string) => parkingReply(id,
+      Array.from({ length: 5 }, (_, i) => hired(`P.${i}`, 41.7031, 44.7637))));
+    const result = await collectJetRiderRegion(system, api(vi.fn().mockResolvedValue(map(all, [parkingAt('p1', 5, 41.7031, 44.7637)])),
+      polygon, parking));
+    expect(polygon.mock.calls.length).toBeGreaterThan(5);
+    expect(parking).toHaveBeenCalledTimes(1); expect(parking.mock.calls[0][0]).toBe('p1');
+    expect(result.vehicles).toHaveLength(105);
+    expect(result.vehicles.every(vehicle => vehicle.range_m === 15750)).toBe(true);
+  });
+
+  it('splits a map view whose parking list stops at its cap on a parking holding scooters', async () => {
+    const vehicles = vi.fn().mockResolvedValueOnce(map([], Array.from({ length: 149 }, (_, i) => parkingAt(`p${i}`, 1))))
+      .mockResolvedValue(map());
+    await collectJetRiderRegion(system, api(vehicles));
+    expect(vehicles).toHaveBeenCalledTimes(5);
+  });
+
+  it('fails rather than read more than 40 parkings one by one, or run past its time budget', async () => {
+    const parkings = Array.from({ length: 41 }, (_, i) => parkingAt(`p${i}`, 1, 41.701 + i * 0.0004, 44.761 + i * 0.0004));
+    const client = api(vi.fn().mockResolvedValue(map([], parkings)));
+    await expect(collectJetRiderRegion(system, client)).rejects.toThrow('parkings remain unread');
+    expect(client.parking).not.toHaveBeenCalled();
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(now);
+    try {
+      const vehicles = vi.fn().mockImplementation(async () => { clock.mockReturnValue(now + 150_000); return map([scooter()]); });
+      const late = api(vehicles);
+      await expect(collectJetRiderRegion(system, late)).rejects.toThrow('collection budget');
+      expect(late.polygon).not.toHaveBeenCalled();
+    } finally { clock.mockRestore(); }
   });
 
   it('wires reviewed catalogs as app maps without overlapping Go Jet regions', () => {
@@ -189,6 +323,9 @@ describe('JET rider collection', () => {
       }
     }
     const feeds = regions.map(region => ({ id: `test:${region.id}` }));
-    expect(withJetRiderAppCollectors(feeds as never, regions).every(feed => typeof feed.collect === 'function')).toBe(true);
+    const wired = withJetRiderAppCollectors(feeds as never, regions);
+    expect(wired.every(feed => typeof feed.collect === 'function' && feed.paced === true &&
+      feed.activeIntervalMs === JET_RIDER_WATCHED_INTERVAL_MS)).toBe(true);
+    expect(JET_RIDER_WATCHED_INTERVAL_MS).toBe(120_000);
   });
 });

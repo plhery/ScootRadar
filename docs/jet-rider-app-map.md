@@ -31,29 +31,66 @@ not enabled by this integration. Russian regions remain excluded.
 
 ## Map contract and collection
 
-The reader is `GET https://service.jetscooters.fun/gatewayclient/api/v6/transports`,
+The map is `GET https://service.jetscooters.fun/gatewayclient/api/v6/transports`,
 with `latitude`, `longitude`, `radiusByMeters`, `zoom=18`,
 `useBluetooth=false`, `includeEmptyParkings=false` and `withEBikes=true`.
 Successful replies have `succeeded: true`, an empty `errors` array, and
 `entries.transports` plus `entries.parkings`.
 
-Individual transports have `identifier`, `type`, `location.lat`,
-`location.long` and `batteryPercent`, a percentage from 0 to 100. Only
-standing `Scooter` and `EScooter` entries are retained. Battery may be
-unknown; range and rental links remain unknown. Parking totals do not
-identify additional scooters and are not added to the individual fleet.
-Consequently this source does not claim to include the additional inventory
-represented only by parking counts. It publishes no riding or parking rules.
+The map lists loose transports one by one, with `identifier`, `type`,
+`location.lat`, `location.long` and `batteryPercent`, a percentage from 0 to
+100. A parking is listed only as `id`, `location`, `countScooters` and
+`countBikes`: the scooters standing in it are not on the map. They are
+scooters like the others, hired from the app's parking card, and not a
+second count of the loose ones; in Tashkent on 23 November 2026 the map's
+parkings held 768 scooters beside 2,556 loose ones.
 
-A wide view stops at 500 individual transports. The cache covers each
-reviewed envelope with enclosing circles of at most five kilometres radius.
-A reply with 400 or more transports, before bike filtering or deduplication,
-is replaced by four smaller views. Overlaps are deduplicated by identifier;
-positions outside every reviewed service area are discarded. The entire
-region must finish within 160 map requests and 90 seconds, with at most
-eight subdivisions. A failed child or a pile that stays capped fails the
-whole collection, preserving the previous snapshot under the normal expiry
-policy. One shared client spaces all JET rider requests by 500 ms.
+Two further reads list every scooter, parked ones included:
+
+- `POST /api/v6/transports/polygon`, with the JSON body
+  `{"polygon":[{"lat":…,"long":…}, … 5 points, closed],"withEBikes":true}`,
+  replies `{transports, errors, succeeded}`. Each transport has `state`,
+  `parkingId` when it stands in a parking, and `charge.batteryPercent`, a
+  fraction from 0 to 1, and `charge.remainKm`, the app's estimated range.
+- `GET /api/v1/parkings/{id}` replies `{data: {id, transports, …}}`, the
+  scooters of one parking, the same number as its `countScooters`.
+
+Only `Scooter` and `EScooter` entries in state `Available` or
+`AvailableWithoutGps` are kept. The collector publishes battery and range;
+rental links remain unknown, and it publishes no riding or parking rules.
+
+A polygon's reply stops at 250 transports, and below that it leaves some of
+a full box's out, with no sign of it: on 23 November 2026 one Tbilisi box
+returned 206 scooters where its sixteen parts returned 319, the same each
+time it was read. So the map is read first, and its counts size and check
+the polygons:
+
+1. The map covers each reviewed area with circles of at most five kilometres
+   radius. A wide view stops at 500 loose transports, and lists 149 parkings
+   at most, those holding something first. A reply with 400 or more
+   transports, before bike filtering or deduplication, or with 149 parkings
+   of which the last still holds a scooter or bike, is replaced by four
+   smaller views, to a depth of eight.
+2. Each area is then cut into boxes holding at most 150 scooters by the
+   map's count, loose ones plus each parking's `countScooters`. A box is read
+   as a polygon 60 metres wider, for scooters at the edge of a parking on
+   its border. A reply missing more than 3% of the box's count, or more than
+   two scooters, is read again as four quarters, down to boxes of 100 metres
+   radius.
+3. A parking that still holds fewer scooters than its count, one a reply
+   left out or one hired since the map was read, is read on its own, at
+   most 40 of them per sweep.
+
+Overlaps are deduplicated by identifier, a polygon's record replacing the
+map's; positions outside every reviewed area are discarded. A loose scooter
+no polygon listed is kept from the map, with no range. The entire region
+must finish within 300 requests and 150 seconds. A failed read, a pile that
+stays capped, or more than 40 short parkings fails the whole collection,
+preserving the previous snapshot under the normal expiry policy. One shared
+client spaces all JET rider requests by 500 ms. A sweep waits on that pace,
+so it takes one of the host's collection slots but none of the cache's
+shared ones (`paced`). A watched region is collected again two minutes after
+its last collection started, not one.
 
 ## Authentication and renewal
 
@@ -124,12 +161,41 @@ Tbilisi reads succeeded; the first contained 132 individual scooters.
 
 Tests cover native hash ordering, credential containment, renewal and
 restart persistence, concurrent readers, rejected tokens, rate limits,
-bounded and malformed replies, vehicle types, parking-count exclusion,
-circle coverage, capped views, disjoint towns, deduplication, whole-sweep
-failure and collector wiring alongside Go Jet.
+bounded and malformed replies, vehicle types, circle coverage, capped views,
+disjoint towns, deduplication, whole-sweep failure and collector wiring
+alongside Go Jet.
 
 A full Netcup audit completed all enabled regions before deployment. The
 initial regional audit returned 2,603 individual scooters in Tashkent and
 1,156 in Tbilisi, with 36 and 24 map requests respectively. Smaller cities
 were read separately from their neighbours; the zero result inside Beruni's
 and Turtkul's own areas excluded that provisional region from the final catalog.
+
+## Parked scooters, 23 November 2026
+
+On Netcup, the compiled collector, reading parked scooters as above, swept
+every region in the evening, local time:
+
+| Region | Scooters | Loose on the map | Map, polygon and parking requests | Seconds |
+| --- | ---: | ---: | --- | ---: |
+| Tashkent | 3,340 | 2,556 | 36, 59, 10 | 70 |
+| Tbilisi | 1,936 | 1,121 | 20, 44, 2 | 43 |
+| Bukhara | 249 | 119 | 4, 4, 0 | 4 |
+| Fergana | 197 | 111 | 4, 3, 3 | 6 |
+| Namangan | 143 | 96 | 4, 3, 0 | 4 |
+| Urgench | 133 | 62 | 1, 1, 0 | 1 |
+| Termez | 108 | 108 | 1, 1, 0 | 1 |
+| Andijan | 86 | 61 | 1, 1, 0 | 1 |
+| Navoiy | 78 | 62 | 1, 1, 0 | 1 |
+| Chirchiq | 71 | 68 | 1, 1, 0 | 1 |
+
+That is 6,341 scooters where the map alone listed 4,364, and 6,318 of them
+with a range, from 0 to 36 km. Tashkent's map counted 768 scooters in its
+parkings and Tbilisi's 811. Sized at 200 and 250 scooters a box instead of
+150, the same sweeps took 55 and 65 polygons in Tashkent and 45 and 53 in
+Tbilisi, since more replies fell short and were read again as quarters.
+
+Karshi and Jizzakh, in the directory but not enabled, were read at 21:30
+local time, when Bukhara and Navoiy had 248 and 77 scooters: Karshi's 149
+parkings and Jizzakh's 22 held none, and neither had a loose one. They had
+been empty the night before too, as had Bishkek, Ganja and Minsk.
