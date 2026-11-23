@@ -50,14 +50,17 @@ Two further reads list every scooter, parked ones included:
 - `POST /api/v6/transports/polygon`, with the JSON body
   `{"polygon":[{"lat":…,"long":…}, … 5 points, closed],"withEBikes":true}`,
   replies `{transports, errors, succeeded}`. Each transport has `state`,
-  `parkingId` when it stands in a parking, and `charge.batteryPercent`, a
-  fraction from 0 to 1, and `charge.remainKm`, the app's estimated range.
+  `parkingId` when it stands in a parking, `charge.batteryPercent`, a
+  fraction from 0 to 1, `charge.remainKm`, the app's estimated range, and
+  `model.name`, such as `Ninebot Max Plus`.
 - `GET /api/v1/parkings/{id}` replies `{data: {id, transports, …}}`, the
   scooters of one parking, the same number as its `countScooters`.
 
 Only `Scooter` and `EScooter` entries in state `Available` or
-`AvailableWithoutGps` are kept. The collector publishes battery and range;
-rental links remain unknown, and it publishes no riding or parking rules.
+`AvailableWithoutGps` are kept. The collector publishes battery and range,
+each scooter's link and, where its card gives one, its price (see
+[links and prices](#links-and-prices)); it publishes no riding or parking
+rules.
 
 A polygon's reply stops at 250 transports, and below that it leaves some of
 a full box's out, with no sign of it: on 23 November 2026 one Tbilisi box
@@ -84,7 +87,7 @@ the polygons:
 Overlaps are deduplicated by identifier, a polygon's record replacing the
 map's; positions outside every reviewed area are discarded. A loose scooter
 no polygon listed is kept from the map, with no range. The entire region
-must finish within 300 requests and 150 seconds. A failed read, a pile that
+must finish within 300 requests and 150 seconds, its price reads included. A failed read, a pile that
 stays capped, or more than 40 short parkings fails the whole collection,
 preserving the previous snapshot under the normal expiry policy. One shared
 client spaces all JET rider requests by 500 ms. A sweep waits on that pace,
@@ -199,3 +202,45 @@ Karshi and Jizzakh, in the directory but not enabled, were read at 21:30
 local time, when Bukhara and Navoiy had 248 and 77 scooters: Karshi's 149
 parkings and Jizzakh's 22 held none, and neither had a loose one. They had
 been empty the night before too, as had Bishkek, Ganja and Minsk.
+
+## Links and prices
+
+Each scooter's QR code carries `https://ure.su/j/` and the scooter's
+identifier. JET's apps claim that link: on 23 November 2026 ure.su's
+`apple-app-site-association` gave `PT6Z25VDAN.com.jetscooters.jet` the
+paths `/j/*`, and its `assetlinks.json` named `com.jetscooters`. The app's
+deep-link mapper opens the scooter's card from the link's last segment, the
+read below. Without the app, the page sends an iPhone to the App Store, an
+Android phone to Google Play and anything else to jetshr.com. So every
+scooter of the rider map links there on iPhones and Android, and the website
+gives a computer no link, as it has no app to open. `ure.su` is the only host
+`data/providers.json` allows JET. Go Jet's signed-out map links no scooter.
+
+A scooter's card is `GET /api/v3/transports/{identifier}`, with `modelName`
+and `rate.entries`, one entry for each way the app bills a ride. The one
+billed by the minute has `periodMinute: 1`, its rate as `debit.value100`, in
+hundredths, its start as `activationCost.value100` unless
+`useActivationCost` is false, and the `culture` of each, such as `uz-UZ` or
+`ka-GE`. The price depends on the city and the model, not on where the
+scooter stands. On 23 November 2026, in Tashkent, a Ninebot Max Plus cost
+990 soʻm to start and 990 a minute and an SL 90 1,990 and 1,190, the same at
+four places across the city; in Tbilisi a Max Plus or Max Pro cost 1 ₾ to
+start and 0.32 a minute, an L 60L or Max S100 1 ₾ and 0.40.
+
+After its sweep, the collector reads the card of one scooter of each model in
+the region, and reads it again once the price is an hour old: at most six
+cards a sweep. A price is shown only where the card's model is the scooter's,
+the card has exactly one per-minute entry, and its cultures are of the
+region's country, which gives the currency: lari in Georgia, soʻm in
+Uzbekistan. A card that can't be read never fails the sweep, and the price
+read before is shown for six hours at most. A loose scooter that no polygon
+listed has no model, so it has no price. Prices are held in memory, so a
+restarted cache reads them again on its first sweeps.
+
+## Range of Go Jet's scooters
+
+Go Jet's signed-out map reports a battery and no range. Since 23 November
+2026 the range filter takes a full JET battery at 18 km
+(`data/battery-full-ranges.json`). That was the lowest median of range over
+battery among the rider map's regions that evening, Bukhara's and
+Termez's; Tashkent's was 31.6 km and Tbilisi's 35.9.

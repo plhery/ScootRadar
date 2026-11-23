@@ -335,7 +335,9 @@ standing in parkings, which the map only counts, are read too, with each
 scooter's range: 6,341 scooters that evening where the map listed 4,364.
 Bike entries are excluded. The cache retains the private rider session,
 device configuration and request-hash key, renews the session, and
-publishes only positions, battery and range. Go Jet's existing signed-out
+publishes positions, battery and range, each scooter's QR-code link, which
+JET's apps claim, and its price: one scooter's card for each model, read
+hourly, gives the price of all. Go Jet's existing signed-out
 regions remain on their own collector, without duplicate JET coverage.
 See [coverage, authentication and live verification](docs/jet-rider-app-map.md).
 

@@ -167,6 +167,10 @@ export const RENTAL_LINK_POLICIES: Record<string, RentalLinkPolicy> = {
   // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
   jolt: { schemes: [], httpsHosts: ["joltscooters.co.nz"] },
   qick: { schemes: [], httpsHosts: ["qickscooters.app.link","qickscooters.com"] },
+  // JET's rider map, in Tbilisi and Uzbekistan, links each scooter on its QR code's link, ure.su/j/ and the number it
+  // carries, which JET's apps claim (ure.su's apple-app-site-association and assetlinks.json, 23 November 2026);
+  // without the app the page sends a phone to its store. Go Jet's map links none.
+  jet: { schemes: [], httpsHosts: ["ure.su"] },
   // BinBin's map links no scooter; its app claims binbin.tech.
   binbin: { schemes: [], httpsHosts: ["binbin.tech"] },
   // Beam's map provides no reviewed rental link: every link it gives is refused.

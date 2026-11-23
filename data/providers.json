@@ -244,7 +244,8 @@
       "prefixes": [
         "jet_"
       ]
-    }
+    },
+    "rental": { "schemes": [], "hosts": ["ure.su"], "note": "JET's rider map, in Tbilisi and Uzbekistan, links each scooter on its QR code's link, ure.su/j/ and the number it carries, which JET's apps claim (ure.su's apple-app-site-association and assetlinks.json, 23 November 2026); without the app the page sends a phone to its store. Go Jet's map links none." }
   },
   {
     "key": "whoosh",

@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 import { boundsContainPoint, haversineM } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
-import type { MapBounds, Vehicle } from '../src/lib/types';
+import type { MapBounds, RidePricing, Vehicle } from '../src/lib/types';
 import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://service.jetscooters.fun/gatewayclient';
@@ -24,6 +24,15 @@ const COLLECTION_MS = 150_000;
 const SCOOTER_TYPES = new Set(['Scooter', 'EScooter']);
 const HIREABLE_STATES = new Set(['Available', 'AvailableWithoutGps']);
 const PARKING_ID = /^[A-Za-z0-9_-]{1,64}$/;
+const MODEL_NAME = /^[\p{L}\p{N} ._+()-]{1,64}$/u;
+// A scooter's price depends on its city and model: on 23 November 2026, in Tashkent, a Ninebot Max Plus cost
+// 990 soʻm to start and 990 a minute, an SL 90 1,990 and 1,190, the same at four places across the city; in
+// Tbilisi a Max Plus or Max Pro 1 ₾ and 0.32, an L 60L or Max S100 1 ₾ and 0.40. One scooter of each model is
+// read about hourly, and its price is shown for six hours at most when it can't be read again.
+const PRICE_REFRESH_MS = 60 * 60_000;
+const PRICE_KEPT_MS = 6 * 60 * 60_000;
+const MAX_PRICE_READS = 6;
+const CURRENCIES: Record<string, string> = { GE: 'GEL', UZ: 'UZS' };
 export const jetRiderMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined => value !== null &&
   typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
@@ -243,15 +252,30 @@ export class JetRiderClient {
     if (!PARKING_ID.test(id)) throw new Error('Invalid JET rider parking');
     return this.read(`/api/v1/parkings/${id}`, deadline);
   }
+
+  /** One scooter's card, with its price: the read the app makes for a scooter its link or QR code opens. */
+  async transport(identifier: string, deadline = this.now() + 90_000): Promise<unknown> {
+    if (!transportId(identifier)) throw new Error('Invalid JET rider scooter');
+    return this.read(`/api/v3/transports/${identifier}`, deadline);
+  }
 }
 
 type JetScooter = Vehicle & { vehicle_id: string };
 /** A parking on the map, with the number of scooters standing in it, which the map does not list. */
 export interface JetRiderParking { id: string; lat: number; lng: number; count: number }
-/** A scooter of a polygon or a parking, and the parking it stands in. */
-export interface JetRiderTransport { vehicle: JetScooter; parkingId?: string }
+/** A scooter of a polygon or a parking, the parking it stands in, and its model. */
+export interface JetRiderTransport { vehicle: JetScooter; parkingId?: string; model?: string }
 
 const transportId = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z0-9._-]{1,128}$/.test(value);
+/**
+ * The link on the scooter's QR code, which JET's app claims on iPhones and Android (ure.su's
+ * apple-app-site-association and assetlinks.json, 23 November 2026) and opens on that scooter; without the
+ * app, the page sends a phone to the app's store. It names the scooter by the number it carries, as Yoio's do.
+ */
+const rentalUris = (identifier: string) => {
+  const link = `https://ure.su/j/${encodeURIComponent(identifier)}`;
+  return { ios: link, android: link, web: null };
+};
 function position(value: unknown) {
   const point = object(value);
   if (typeof point?.lat !== 'number' || typeof point.long !== 'number' || !Number.isFinite(point.lat) || !Number.isFinite(point.long) ||
@@ -279,7 +303,7 @@ export function parseJetRiderVehicles(payload: unknown): { count: number; vehicl
         transport.batteryPercent < 0 || transport.batteryPercent > 100)) throw new Error('Invalid JET rider scooter');
     vehicles.push({ provider: 'jet', vehicle_id: `jet-rider:${transport.identifier}`, ...point,
       battery: typeof transport.batteryPercent === 'number' ? Math.round(transport.batteryPercent) : null,
-      range_m: null, deep_link: null, distance_m: null });
+      range_m: null, deep_link: null, rental_uris: rentalUris(transport.identifier), distance_m: null });
   }
   const parkings: JetRiderParking[] = [];
   let lastEmpty = true;
@@ -308,9 +332,11 @@ function transports(items: unknown[], parkingId?: string): JetRiderTransport[] {
       battery != null && (typeof battery !== 'number' || !Number.isFinite(battery) || battery < 0 || battery > 1) ||
       km != null && (typeof km !== 'number' || !Number.isFinite(km) || km < 0 || km > 200) ||
       parking != null && (typeof parking !== 'string' || !PARKING_ID.test(parking))) throw new Error('Invalid JET rider scooter');
+    const model = object(transport.model)?.name;
     result.push({ vehicle: { provider: 'jet', vehicle_id: `jet-rider:${transport.identifier}`, ...point,
       battery: typeof battery === 'number' ? Math.round(battery * 100) : null, range_m: typeof km === 'number' ? Math.round(km * 1000) : null,
-      deep_link: null, distance_m: null }, ...parking != null && { parkingId: parking } });
+      deep_link: null, rental_uris: rentalUris(transport.identifier), distance_m: null }, ...parking != null && { parkingId: parking },
+      ...typeof model === 'string' && MODEL_NAME.test(model) && { model } });
   }
   return result;
 }
@@ -327,6 +353,34 @@ export function parseJetRiderParking(payload: unknown, id: string): JetRiderTran
   return transports(parking.transports, id);
 }
 
+const minorUnits = (value: unknown, maximum: number) => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 &&
+  value <= maximum ? value : undefined;
+
+/**
+ * The price on a scooter's card, for a model in the country, or nothing when the card gives none that the map can
+ * show: its per-minute rate is the one entry billed by the minute, its start the activation fee when charged, both
+ * in hundredths (value100). Its culture ("uz-UZ", "ka-GE") must be the country's, which gives the currency.
+ */
+export function parseJetRiderRate(payload: unknown, country: string, model: string): RidePricing | undefined {
+  const data = reply(payload), rate = object(data.rate);
+  if (!rate || !Array.isArray(rate.entries)) throw new Error('Invalid JET rider scooter');
+  const currency = CURRENCIES[country];
+  const perMinute = rate.entries.map(object).filter(entry => entry?.periodMinute === 1);
+  if (!currency || data.modelName !== model || perMinute.length !== 1) return undefined;
+  const entry = perMinute[0]!, debit = object(entry.debit), activation = object(entry.activationCost);
+  const charged = entry.useActivationCost !== false && entry.activationCost != null;
+  const minute = minorUnits(debit?.value100, 1_000_000);
+  const start = charged ? minorUnits(activation?.value100, 10_000_000) : 0;
+  const cultures = [debit?.culture, ...charged ? [activation?.culture] : []];
+  if (minute === undefined || start === undefined ||
+    !cultures.every(culture => typeof culture === 'string' && culture.endsWith(`-${country}`))) return undefined;
+  return { currency, unlock_fee_minor_units: start, minute_fee_minor_units: minute };
+}
+
+/** The prices read, by region and model, and when. */
+export type JetRiderPrices = Map<string, { pricing?: RidePricing; readAt: number }>;
+const PRICES: JetRiderPrices = new Map();
+
 /** The four quarters of a box, split at its centre. */
 function quarters(bounds: MapBounds): MapBounds[] {
   const { latitude: lat, longitude: lng } = jetRiderCircle(bounds);
@@ -340,7 +394,8 @@ function widened({ south, north, west, east }: MapBounds, meters: number): MapBo
 
 let defaultClient: JetRiderClient | undefined;
 export async function collectJetRiderRegion(system: RegionalScooterSystem,
-  client: Pick<JetRiderClient, 'vehicles' | 'polygon' | 'parking'> = defaultClient ??= new JetRiderClient()): Promise<SourceVehicles> {
+  client: Pick<JetRiderClient, 'vehicles' | 'polygon' | 'parking' | 'transport'> = defaultClient ??= new JetRiderClient(),
+  prices: JetRiderPrices = PRICES): Promise<SourceVehicles> {
   if (!system.jetRiderAppCity) throw new Error('Not a JET rider map region');
   jetRiderCircle(system.bounds);
   const areas = (system.areas ?? [system]).map(area => area.bounds);
@@ -375,10 +430,11 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
 
   // Polygons list the parked scooters too, and every scooter's range, but a full box's reply leaves some out with
   // no sign of it: each box is sized by the map's counts, checked against them, and split while it falls short.
-  const read = new Map<string, JetScooter>(), parked = new Map<string, Set<string>>();
-  const keep = ({ vehicle, parkingId }: JetRiderTransport) => {
+  const read = new Map<string, JetScooter>(), parked = new Map<string, Set<string>>(), models = new Map<string, string>();
+  const keep = ({ vehicle, parkingId, model }: JetRiderTransport) => {
     read.set(vehicle.vehicle_id, vehicle);
     if (parkingId) parked.set(parkingId, (parked.get(parkingId) ?? new Set()).add(vehicle.vehicle_id));
+    if (model) models.set(vehicle.vehicle_id, model);
   };
   async function polygonTile(bounds: MapBounds): Promise<void> {
     const expectedLoose = [...loose.values()].filter(vehicle => boundsContainPoint(bounds, vehicle.lat, vehicle.lng));
@@ -413,7 +469,31 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
 
   const vehicles = new Map(loose);
   for (const vehicle of read.values()) if (inAreas(vehicle.lat, vehicle.lng)) vehicles.set(vehicle.vehicle_id, vehicle);
-  return { observedAt: started, stale: false, vehicles: [...vehicles.values()] };
+
+  // Each model's price, read again from one of its scooters once an hour old. A price that can't be read leaves
+  // the scooters without one, never the sweep without its scooters.
+  const byModel = new Map<string, string>();
+  for (const id of vehicles.keys()) {
+    const model = models.get(id);
+    if (model && !byModel.has(model)) byModel.set(model, id.slice(id.indexOf(':') + 1));
+  }
+  const key = (model: string) => `${system.id}|${model}`;
+  let priceReads = 0;
+  for (const [model, identifier] of byModel) {
+    const known = prices.get(key(model));
+    if (known && Date.now() - known.readAt < PRICE_REFRESH_MS) continue;
+    if (++priceReads > MAX_PRICE_READS) break;
+    try {
+      spend();
+      const pricing = parseJetRiderRate(await client.transport(identifier, deadline), system.country, model);
+      prices.set(key(model), { ...pricing && { pricing }, readAt: Date.now() });
+    } catch { /* The price read before, if any, stays until PRICE_KEPT_MS. */ }
+  }
+  const priced = [...vehicles.values()].map(vehicle => {
+    const model = models.get(vehicle.vehicle_id), known = model ? prices.get(key(model)) : undefined;
+    return known?.pricing && Date.now() - known.readAt < PRICE_KEPT_MS ? { ...vehicle, pricing: known.pricing } : vehicle;
+  });
+  return { observedAt: started, stale: false, vehicles: priced };
 }
 
 /**

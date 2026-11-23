@@ -115,7 +115,9 @@ keeps the previous successful snapshot. Stable `jet:<upstream id>` identities
 deduplicate tile overlaps, and the collector clips its results to the reviewed
 envelope. A dense São Paulo viewport and four subdivisions returned the same
 671 scooter ids after clipping, with no id missing in either direction. Other vehicle types and active rides are excluded. No fabricated
-range, price or per-scooter rental URL is added.
+range, price or per-scooter rental URL is added. The range filter takes their
+full battery at 18 km, the lowest of JET's rider map
+([JET's rider map](jet-rider-app-map.md#range-of-go-jets-scooters)).
 
 The shared client starts at most 120 requests a minute, honors `Retry-After`, holds
 off all regions after HTTP 401/403/429, caps replies at 8 MiB and bounds a

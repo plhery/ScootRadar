@@ -7,7 +7,8 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { boundsContainPoint, haversineM } from '../src/lib/geo';
 import type { MapBounds } from '../src/lib/types';
 import { collectJetRiderRegion, JET_RIDER_WATCHED_INTERVAL_MS, jetRiderCircle, jetRiderRequestHash, JetRiderClient, parseJetRiderParking,
-  parseJetRiderPolygon, parseJetRiderVehicles, withJetRiderAppCollectors } from './jetRiderApp';
+  parseJetRiderPolygon, parseJetRiderRate, parseJetRiderVehicles, withJetRiderAppCollectors } from './jetRiderApp';
+import type { JetRiderPrices } from './jetRiderApp';
 
 const paths: string[] = [];
 afterEach(async () => { await Promise.all(paths.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
@@ -25,9 +26,17 @@ const hired = (identifier: string, lat = 41.71, long = 44.77, extra: Record<stri
   charge: { batteryPercent: 0.5, remainKm: 15.75, status: 'Ok' }, ...extra });
 const polygonReply = (transports: unknown[] = []) => ({ succeeded: true, errors: [], transports });
 const parkingReply = (id: string, transports: unknown[] = []) => ({ succeeded: true, errors: [], data: { id, transports } });
-/** A client whose polygons and parkings, unless given, list nothing. */
+/** A scooter's card: a price by the minute, as JET's apps list it in Tbilisi, and one by the hour. */
+const card = (modelName = 'Ninebot Max Plus', minute: Record<string, unknown> = {}, culture = 'ka-GE') => ({ succeeded: true, errors: [], modelName,
+  identifier: 'S.123456', rate: { dailyPass: null, entries: [
+    { displayName: 'Per minute', periodMinute: 1, rateType: 'Period', useActivationCost: true,
+      debit: { value: 0.32, culture, value100: 32 }, activationCost: { value: 1, culture, value100: 100 }, ...minute },
+    { displayName: 'Per hour', periodMinute: 60, rateType: 'Period', useActivationCost: true,
+      debit: { value: 12, culture, value100: 1200 }, activationCost: { value: 0, culture, value100: 0 } }] } });
+/** A client whose polygons and parkings, unless given, list nothing, and whose scooter cards can't be read. */
 const api = (vehicles: ReturnType<typeof vi.fn<(...args: never[]) => Promise<unknown>>>, polygon = vi.fn().mockResolvedValue(polygonReply()),
-  parking = vi.fn().mockImplementation(async (id: string) => parkingReply(id))) => ({ vehicles, polygon, parking });
+  parking = vi.fn().mockImplementation(async (id: string) => parkingReply(id)),
+  transport = vi.fn().mockRejectedValue(new Error('no card'))) => ({ vehicles, polygon, parking, transport });
 const json = (data: unknown, status = 200, headers?: HeadersInit) => new Response(JSON.stringify(data), { status, headers });
 const system: RegionalScooterSystem = { id: 'jet_ge_test', provider: 'jet', country: 'GE', city: 'Test',
   center: [41.71, 44.77], bounds: { south: 41.7, north: 41.72, west: 44.76, east: 44.78 },
@@ -80,10 +89,13 @@ describe('JET rider session', () => {
       String(options?.body), session().signingKey));
     await expect(client.parking('../connect/token', now + 10_000)).rejects.toThrow('Invalid JET rider parking');
     await expect(client.polygon({ south: 0, north: 1, west: 0, east: 1 })).rejects.toThrow('view is too large');
+    await expect(client.transport('../connect/token', now + 10_000)).rejects.toThrow('Invalid JET rider scooter');
     await client.parking('abc_123', now + 10_000);
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(String(fetch.mock.calls[1][0])).toBe('https://service.jetscooters.fun/gatewayclient/api/v1/parkings/abc_123');
     expect(fetch.mock.calls[1][1]?.method).toBe('GET'); expect(fetch.mock.calls[1][1]?.body).toBeUndefined();
+    await client.transport('S.123456', now + 10_000);
+    expect(String(fetch.mock.calls[2][0])).toBe('https://service.jetscooters.fun/gatewayclient/api/v3/transports/S.123456');
   });
 
   it('renews once for concurrent readers, persists rotation privately and survives a restart', async () => {
@@ -167,7 +179,8 @@ describe('JET rider collection', () => {
       [parkingAt('p1', 3), { ...parkingAt('p2', 0), countBikes: 4 }]);
     const parsed = parseJetRiderVehicles(payload);
     expect(parsed.count).toBe(4); expect(parsed.vehicles).toHaveLength(2);
-    expect(parsed.vehicles[0]).toMatchObject({ provider: 'jet', vehicle_id: 'jet-rider:S.123456', battery: 47, range_m: null });
+    expect(parsed.vehicles[0]).toMatchObject({ provider: 'jet', vehicle_id: 'jet-rider:S.123456', battery: 47, range_m: null,
+      rental_uris: { ios: 'https://ure.su/j/S.123456', android: 'https://ure.su/j/S.123456', web: null } });
     expect(parsed.vehicles[1].battery).toBeNull();
     expect(parsed.parkings).toEqual([{ id: 'p1', lat: 41.71, lng: 44.77, count: 3 }, { id: 'p2', lat: 41.71, lng: 44.77, count: 0 }]);
     expect(parsed.parkingsComplete).toBe(true);
@@ -186,12 +199,40 @@ describe('JET rider collection', () => {
     { ...map(), succeeded: false }, { ...map(), errors: [{ message: 'private-server-details' }] }, { succeeded: true, errors: [] }])(
     'rejects invalid or unsuccessful replies', payload => { expect(() => parseJetRiderVehicles(payload)).toThrow(); });
 
-  it('reads the hireable scooters of a polygon with their charge in percent, their range and their parking', () => {
-    const parsed = parseJetRiderPolygon(polygonReply([hired('A.1', 41.71, 44.77, { parkingId: 'p1' }), hired('A.2', 41.71, 44.77, { charge: null }),
+  it('reads the hireable scooters of a polygon with their charge in percent, their range, their parking and their model', () => {
+    const parsed = parseJetRiderPolygon(polygonReply([hired('A.1', 41.71, 44.77, { parkingId: 'p1' }),
+      hired('A.2', 41.71, 44.77, { charge: null, model: { name: 'Ninebot <b>' } }),
       hired('A.3', 41.71, 44.77, { state: 'Booked' }), hired('B.1', 41.71, 44.77, { type: 'EBike' })]));
     expect(parsed).toEqual([{ vehicle: { provider: 'jet', vehicle_id: 'jet-rider:A.1', lat: 41.71, lng: 44.77, battery: 50, range_m: 15750,
-      deep_link: null, distance_m: null }, parkingId: 'p1' }, { vehicle: expect.objectContaining({ vehicle_id: 'jet-rider:A.2', battery: null, range_m: null }) }]);
-    expect(parsed[1]).not.toHaveProperty('parkingId');
+      deep_link: null, rental_uris: { ios: 'https://ure.su/j/A.1', android: 'https://ure.su/j/A.1', web: null }, distance_m: null },
+    parkingId: 'p1', model: 'Ninebot Max Plus' }, { vehicle: expect.objectContaining({ vehicle_id: 'jet-rider:A.2', battery: null, range_m: null }) }]);
+    // A model name the map could not show is no model.
+    expect(parsed[1]).not.toHaveProperty('parkingId'); expect(parsed[1]).not.toHaveProperty('model');
+  });
+
+  it('reads a scooter card’s price by the minute and its start fee, in the country’s currency', () => {
+    expect(parseJetRiderRate(card(), 'GE', 'Ninebot Max Plus')).toEqual({ currency: 'GEL', unlock_fee_minor_units: 100, minute_fee_minor_units: 32 });
+    expect(parseJetRiderRate(card('Ninebot SL 90', { debit: { culture: 'uz-UZ', value100: 119000 },
+      activationCost: { culture: 'uz-UZ', value100: 199000 } }, 'uz-UZ'), 'UZ', 'Ninebot SL 90'))
+      .toEqual({ currency: 'UZS', unlock_fee_minor_units: 199000, minute_fee_minor_units: 119000 });
+    expect(parseJetRiderRate(card(undefined, { useActivationCost: false, activationCost: null }), 'GE', 'Ninebot Max Plus'))
+      .toMatchObject({ unlock_fee_minor_units: 0, minute_fee_minor_units: 32 });
+  });
+
+  it.each([
+    ['another model', card('Ninebot L 60L'), 'GE'],
+    ['another country', card(), 'UZ'],
+    ['a country without a currency', card(undefined, {}, 'kk-KZ'), 'KZ'],
+    ['a fraction of a hundredth', card(undefined, { debit: { culture: 'ka-GE', value100: 32.5 } }), 'GE'],
+    ['a start fee in another currency', card(undefined, { activationCost: { culture: 'ru-RU', value100: 100 } }), 'GE'],
+    ['two rates by the minute', { ...card(), rate: { entries: [card().rate.entries[0], card().rate.entries[0]] } }, 'GE'],
+  ])('shows no price for a card with %s', (_name, payload, country) => {
+    expect(parseJetRiderRate(payload, country, 'Ninebot Max Plus')).toBeUndefined();
+  });
+
+  it('rejects an unsuccessful or shapeless card', () => {
+    expect(() => parseJetRiderRate({ ...card(), succeeded: false }, 'GE', 'Ninebot Max Plus')).toThrow();
+    expect(() => parseJetRiderRate({ ...card(), rate: null }, 'GE', 'Ninebot Max Plus')).toThrow();
   });
 
   it.each([{ charge: { batteryPercent: 47 } }, { charge: { remainKm: -1 } }, { charge: { remainKm: 201 } }, { charge: 'full' },
@@ -306,6 +347,34 @@ describe('JET rider collection', () => {
       const late = api(vehicles);
       await expect(collectJetRiderRegion(system, late)).rejects.toThrow('collection budget');
       expect(late.polygon).not.toHaveBeenCalled();
+    } finally { clock.mockRestore(); }
+  });
+
+  it('prices each model from one of its scooters’ cards, about hourly, and never fails a sweep for a price', async () => {
+    const reply = polygonReply([hired('A.1'), hired('A.2'), hired('B.1', 41.711, 44.771, { model: { name: 'Ninebot L 60L' } }),
+      hired('C.1', 41.712, 44.772, { model: null })]);
+    const vehicles = vi.fn().mockResolvedValue(map([scooter('A.1'), scooter('A.2'), scooter('B.1', 41.711, 44.771), scooter('C.1', 41.712, 44.772)]));
+    const transport = vi.fn().mockImplementation(async (identifier: string) => identifier === 'A.1' ? card()
+      : card('Ninebot L 60L', { debit: { culture: 'ka-GE', value100: 40 } }));
+    const prices: JetRiderPrices = new Map();
+    const sweep = () => collectJetRiderRegion(system, api(vehicles, vi.fn().mockResolvedValue(reply), undefined, transport), prices);
+    const price = (result: Awaited<ReturnType<typeof sweep>>) => Object.fromEntries(result.vehicles.map(vehicle =>
+      [vehicle.vehicle_id, vehicle.pricing && `${vehicle.pricing.currency} ${vehicle.pricing.unlock_fee_minor_units}+${vehicle.pricing.minute_fee_minor_units}`]));
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(now);
+    try {
+      expect(price(await sweep())).toEqual({ 'jet-rider:A.1': 'GEL 100+32', 'jet-rider:A.2': 'GEL 100+32', 'jet-rider:B.1': 'GEL 100+40',
+        'jet-rider:C.1': undefined });
+      expect(transport.mock.calls.map(call => call[0])).toEqual(['A.1', 'B.1']);
+      // Within the hour the prices are kept, without a read.
+      clock.mockReturnValue(now + 59 * 60_000);
+      expect(price(await sweep())['jet-rider:B.1']).toBe('GEL 100+40'); expect(transport).toHaveBeenCalledTimes(2);
+      // A card that can't be read keeps the price read before, for six hours.
+      transport.mockRejectedValue(new Error('JET rider map HTTP 500'));
+      clock.mockReturnValue(now + 61 * 60_000);
+      const kept = await sweep();
+      expect(transport).toHaveBeenCalledTimes(4); expect(price(kept)['jet-rider:A.1']).toBe('GEL 100+32'); expect(kept.vehicles).toHaveLength(4);
+      clock.mockReturnValue(now + 6 * 60 * 60_000);
+      expect(Object.values(price(await sweep())).every(value => value === undefined)).toBe(true);
     } finally { clock.mockRestore(); }
   });
 

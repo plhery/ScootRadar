@@ -103,7 +103,8 @@ describe('the cache’s full battery ranges', () => {
     expect(batteryFullRange('lime')).toBe(11_500);
     expect(batteryFullRange('bolt')).toBe(29_400);
     expect(batteryFullRange('voi')).toBe(72_800);
-    expect(batteryFullRange('jet')).toBe(table.defaultMeters);
+    expect(batteryFullRange('jet')).toBe(18_000);
+    expect(batteryFullRange('beam')).toBe(table.defaultMeters);
     expect(batteryFullRange('constructor')).toBe(table.defaultMeters);
     expect(table.defaultMeters).toBe(DEFAULT_BATTERY_RANGE_M);
     for (const meters of Object.values(table.providers)) expect(Number.isInteger(meters) && meters > 0).toBe(true);
@@ -116,8 +117,8 @@ describe('the cache’s full battery ranges', () => {
     const view = { south: 48.7, west: 9.1, north: 48.8, east: 9.2 };
     expect(addBatteryRanges({}, [
       at('lime', 60, null), at('voi', null, 30_000), at('bolt', 40, 12_000), at('dott', null, null),
-      at('jet', 80, null), at('beam', 80, null, 49.5),
-    ], view)).toEqual({ lime: 11_500, jet: 10_000 });
+      at('beam', 80, null), at('jet', 80, null, 49.5),
+    ], view)).toEqual({ lime: 11_500, beam: 10_000 });
     expect(addBatteryRanges({}, [at('voi', null, 30_000)], view)).toEqual({});
   });
 });
