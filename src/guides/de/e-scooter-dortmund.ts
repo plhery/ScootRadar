@@ -6,20 +6,20 @@ const guide: Guide = {
   topic: 'dortmund',
   name: 'E-Scooter Dortmund: Anbieter, Preise, Parken',
   title: 'E-Scooter Dortmund 2026: Anbieter, Preise, Parkzonen',
-  description: 'E-Scooter Dortmund: fünf Anbieter, was Voi pro Minute kostet, wo du in der Innenstadt-West parkst und warum Scooter nicht in Bus und Stadtbahn von DSW21 dürfen.',
+  description: 'E-Scooter Dortmund: sechs Anbieter, was Voi pro Minute kostet, wo du in der Innenstadt-West parkst, warum Scooter nicht in Bus und Stadtbahn von DSW21 dürfen.',
   headline: 'E-Scooter Dortmund: Anbieter, Preise, Parkzonen, Sperrzonen und was bei DSW21 gilt',
-  lede: 'Einen E-Scooter in Dortmund leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde: Scooter in der App suchen, QR-Code scannen, losfahren; Dott, Bolt und Ryde vermieten ab 18. Voi verlangt in Dortmund 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand November 2026); bei den anderen zeigt die App den Preis. In der Innenstadt-West leihst du seit dem 1. Oktober 2026 nur noch auf einer der 86 markierten Parkzonen aus und gibst dort auch zurück. In Bussen und Stadtbahnen von DSW21 sind E-Scooter seit dem 1. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Dortmund leihst du ohne Führerschein bei Voi, Dott, Bolt, Lime, Ryde oder RideMovi: Scooter in der App suchen, QR-Code scannen, losfahren; Dott, Bolt und Ryde vermieten ab 18. Voi verlangt in Dortmund 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand November 2026); bei den anderen zeigt die App den Preis. In der Innenstadt-West leihst du seit dem 1. Oktober 2026 nur noch auf einer der 86 markierten Parkzonen aus und gibst dort auch zurück. In Bussen und Stadtbahnen von DSW21 sind E-Scooter seit dem 1. März 2024 verboten.',
   published: '2026-10-24',
-  updated: '2026-10-26',
+  updated: '2026-11-24',
   city: 'de:Dortmund',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Dortmund?',
       blocks: [
-        'Fünf Anbieter vermieten E-Scooter in Dortmund: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde** aus Norwegen. Dott, Bolt und Ryde führen Dortmund auf ihren Websites (Stand November 2026); Ryde ist laut Radio Bochum spätestens seit Juni 2026 in der Stadt unterwegs. Lime führt NRW.Mobidrom, das Mobilitätsdatenportal des Landes, seit April 2026 als E-Scooter-Anbieter in Dortmund.',
+        'Sechs Anbieter haben laut Stadt eine Erlaubnis, in Dortmund E-Scooter zu verleihen: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime**, **Ryde** aus Norwegen und **RideMovi** aus Italien. Dott, Bolt und Ryde führen Dortmund auch auf ihren Websites (Stand November 2026); Ryde ist laut Radio Bochum spätestens seit Juni 2026 in der Stadt unterwegs. Lime führt NRW.Mobidrom, das Mobilitätsdatenportal des Landes, seit April 2026 als E-Scooter-Anbieter in Dortmund.',
         'Im Dezember 2023 zählte die Stadt bei Bolt, Voi, Lime und Tier zusammen 3650 Leih-Scooter; jeder wurde im Schnitt zwei- bis dreimal am Tag ausgeliehen.',
         'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Dortmund](map:de:Dortmund) rund 1400 Voi- und 360 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter nach der letzten Zählung.',
+        'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Dortmund](map:de:Dortmund) rund 1400 Voi- und 360 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter nach der letzten Zählung. Von RideMovi zeigte sie am 24. November 2026 um 13:12 Uhr rund 1100 Scooter nach der letzten Zählung.',
       ],
     },
     {
@@ -35,13 +35,13 @@ const guide: Guide = {
           },
         },
         'Bei Voi kostet eine Viertelstunde damit 2,70 €.',
-        'Teuer kann das Abstellen werden. Bolt berechnet laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 €, wenn dein Foto am Ende der Fahrt nicht deutlich zeigt, dass der Scooter nach seinen Regeln steht, und bis zu 100 € Abholgebühr, wenn du ausserhalb des erlaubten Parkbereichs abstellst. Dott verlangt laut seinen Bedingungen (September 2025) bis zu 300 € für das Zurückholen, wenn du seine Park- und Sperranweisungen nicht befolgst, und 50 € Verwaltungsgebühr, wenn er ein Bussgeld für dich zahlt.',
+        'Teuer kann das Abstellen werden. Bolt berechnet laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 €, wenn dein Foto am Ende der Fahrt nicht deutlich zeigt, dass der Scooter nach seinen Regeln steht, und bis zu 100 € Abholgebühr, wenn du ausserhalb des erlaubten Parkbereichs abstellst. Dott verlangt laut seinen Bedingungen (September 2025) bis zu 300 € für das Zurückholen, wenn du seine Park- und Sperranweisungen nicht befolgst, und 50 € Verwaltungsgebühr, wenn er ein Bussgeld für dich zahlt. RideMovi gibt laut seinen AGB Bussgelder der Behörden samt Kosten an dich weiter, plus 20 € Bearbeitungsgebühr.',
       ],
     },
     {
       heading: 'E-Scooter in Dortmund parken: Parkzonen in der Innenstadt-West',
       blocks: [
-        'Seit dem 1. Oktober 2026 ist der ganze Stadtbezirk Innenstadt-West ausser Dorstfeld eine Abstellverbotszone für Leih-Scooter. Ausleihen und zurückgeben kannst du dort nur noch auf einer der 86 markierten Parkzonen. Sie liegen meist höchstens 300 m auseinander und nahe an wichtigen Haltestellen von Bus und Bahn. Ausserhalb verweigern die Apps die Rückgabe, so die Stadt am 28. September 2026. Zum Bezirk gehören die City innerhalb des Wallrings, das Kreuzviertel, das Dortmunder U, die Westfalenhallen und der Signal Iduna Park.',
+        'Seit dem 1. Oktober 2026 ist der ganze Stadtbezirk Innenstadt-West ausser Dorstfeld eine Abstellverbotszone für Leih-Scooter. Ausleihen und zurückgeben kannst du dort nur noch auf einer der 86 markierten Parkzonen. Sie liegen meist höchstens 300 m auseinander und nahe an wichtigen Haltestellen von Bus und Bahn. Ausserhalb verweigern die Apps die Rückgabe, so die Stadt am 28. September 2026. Die Regel gilt laut Stadt für alle Leih-Scooter, auch die von RideMovi. Zum Bezirk gehören die City innerhalb des Wallrings, das Kreuzviertel, das Dortmunder U, die Westfalenhallen und der Signal Iduna Park.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in der Verbotszone, und die Miete läuft weiter. Fahr zur nächsten Parkzone; die App zeigt sie dir.',
         },
@@ -76,13 +76,13 @@ const guide: Guide = {
             '**Ausserhalb des Voi-Gebiets:** Rombergpark mit Zoo, Fredenbaumpark und Hauptfriedhof (Stand November 2026).',
           ],
         },
-        'Wo Dott, Bolt, Lime und Ryde das Fahren oder Parken sperren, zeigt dir ihre App.',
+        'Wo Dott, Bolt, Lime, Ryde und RideMovi das Fahren oder Parken sperren, zeigt dir ihre App.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Dortmund: Bussgelder und Alkohol',
       blocks: [
-        'In Dortmund gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott, Bolt und Ryde ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h. Ein eigener Scooter braucht eine Versicherungsplakette.',
+        'In Dortmund gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott, Bolt und Ryde ab 18, bei RideMovi ab 16, wenn ein Elternteil das Konto anlegt, keine Helmpflicht, bauartbedingt höchstens 20 km/h. Ein eigener Scooter braucht eine Versicherungsplakette.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -115,7 +115,7 @@ const guide: Guide = {
         '**Signal Iduna Park:** Mit Leih-Scootern kommst du nicht direkt ans Stadion: «Rund um den Signal Iduna Park ist eine Sperrzone eingerichtet», schreibt die Stadt (August 2026). Das Stadion liegt in der Innenstadt-West, zurückgeben kannst du also nur auf einer Parkzone; die nächste von Voi liegt rund 500 m entfernt (Stand November 2026). Den eigenen Scooter stellst du an einer der vier Fahrradwachen des ADFC ab, mit zusammen 1000 Plätzen: an der Strobelallee Ecke Rabenloh, gegenüber der Helmut-Körnig-Halle, neben den Rosenterrassen oder am Bolmker Weg Ecke Schwimmweg. Sie öffnen rund 100 Minuten vor Anpfiff und schliessen spätestens 60 Minuten nach Abpfiff.',
         '**Mit der Stadtbahn zum Spiel:** An Heimspieltagen fährt die U45 laut DSW21 ab rund 3 Stunden vor Anpfiff mindestens alle 5 Minuten vom Hauptbahnhof zum Stadion. Deine BVB-Eintrittskarte gilt am Spieltag als KombiTicket für Hin- und Rückfahrt mit Bus, Bahn und Nahverkehrszug in ganz NRW.',
         '**Westfalenhallen, Dortmunder U, Fussballmuseum:** Alle drei liegen in der Innenstadt-West; du gibst den Leih-Scooter also auf einer Parkzone zurück. Für das Fussballmuseum liegt die Zone am Königswall 42 direkt daneben.',
-        '**TU und Fachhochschule:** Campus Nord, Campus Süd, die Fachhochschule an der Emil-Figge-Strasse und die S-Bahn-Station Dortmund Universität liegen in Vois Gebiet (Stand November 2026). Auf dem Campus Nord sperrt Voi das Abstellen rund um die Gebäude der Elektrotechnik und des Bio- und Chemieingenieurwesens, und das Sportinstitut liegt ausserhalb des Gebiets. Sonst stellst du frei ab, solange 2 m Gehweg frei bleiben.',
+        '**TU und Fachhochschule:** Campus Nord, Campus Süd, die Fachhochschule an der Emil-Figge-Strasse und die S-Bahn-Station Dortmund Universität liegen in Vois Gebiet (Stand November 2026) und in RideMovis Gebiet in der App. Auf dem Campus Nord sperrt Voi das Abstellen rund um die Gebäude der Elektrotechnik und des Bio- und Chemieingenieurwesens, und das Sportinstitut liegt ausserhalb von Vois Gebiet. Sonst stellst du frei ab, solange 2 m Gehweg frei bleiben.',
         '**Nachbarstädte:** Wie es nebenan läuft, steht in [E-Scooter in Bochum](guide:bochum) und für den Westen des Ruhrgebiets in [E-Scooter in Essen](guide:essen).',
       ],
     },
@@ -141,7 +141,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Dortmund nutzen?',
-      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18. Freie Scooter zeigt auch die [Live-Karte von Dortmund](map:de:Dortmund).',
+      answer: 'Die von Voi, Dott, Bolt, Lime, Ryde und RideMovi: Diese sechs haben laut Stadt eine Erlaubnis. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18, RideMovi auch ab 16, wenn ein Elternteil das Konto anlegt. Freie Scooter zeigt auch die [Live-Karte von Dortmund](map:de:Dortmund).',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Dortmund?',
@@ -165,6 +165,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Stadt Dortmund: E-Scooter, Leihangebote und Regeln', url: 'https://www.dortmund.de/themen/mobilitaet-und-verkehr/e-scooter/' },
     { title: 'Stadt Dortmund: Abstellzonen für Leih-Scooter in der westlichen Innenstadt (28. September 2026)', url: 'https://www.dortmund.de/newsroom/presse-mitteilungen/was-sich-im-bahnhofsumfeld-bewaehrt-hat-wird-auf-die-westliche-innenstadt-ausgedehnt-abstellzonen-fuer-leih-scooter.html' },
     { title: 'Stadt Dortmund: Ausleihe und Abgabe nur hier, neue Zonen für E-Scooter (Oktober 2026)', url: 'https://www.dortmund.de/newsroom/nachrichten-dortmund.de/ausleihe-und-abgabe-nur-hier-neue-zonen-fuer-e-scooter.html' },
     { title: 'Stadt Dortmund: Gegen Leih-Scooter-Chaos, neue Parkzonen und Abstellverbote (Juli 2026)', url: 'https://www.dortmund.de/newsroom/nachrichten-dortmund.de/gegen-leih-scooter-chaos-neue-parkzonen-und-abstellverbote.html' },
@@ -193,6 +194,8 @@ const guide: Guide = {
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Ryde: Standorte', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Ryde: Nutzungsbedingungen Deutschland', url: 'https://www.ryde-technology.com/terms-conditions-germany' },
+    { title: 'RideMovi: Unter 18 Jahren', url: 'https://www.ridemovi.com/de/informative/unter-18-jahren' },
+    { title: 'RideMovi: Verbraucherinformationen und Allgemeine Geschäftsbedingungen (PDF)', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/DE_termsandcondition.pdf' },
   ],
 };
 
