@@ -6,28 +6,29 @@ const guide: Guide = {
   topic: 'tenerife',
   name: 'Alquiler de patinete eléctrico en Tenerife sur',
   title: 'Alquiler patinete eléctrico Tenerife sur: Hoppy, Dott y Bird',
-  description: 'Alquiler de patinete eléctrico en Tenerife sur: 10 min, 3,45 € con Hopp y 4,50-4,70 € con Hoppy; Dott y Bird, en su app. Casco obligatorio, paseos prohibidos.',
-  headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, precios, casco y paseos prohibidos',
-  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Descargas la app del operador, desbloqueas el patinete con ella y pagas por minuto. En noviembre de 2026, diez minutos cuestan 3,45 € con Hopp y de 4,50 a 4,70 € con Hoppy; Dott y Bird te muestran su precio en la app antes de desbloquear. Con Hoppy y Bird, el viaje solo termina en uno de sus puntos de aparcamiento. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
+  description: 'Alquiler patinete eléctrico Tenerife sur: 10 min, 3,45 € (Hopp), 4,50-4,70 € (Hoppy); Dott, Bird y RideMovi, en su app. Casco obligatorio, paseos prohibidos.',
+  headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird, Hopp y RideMovi, precios, casco y paseos prohibidos',
+  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird, Hopp y RideMovi, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Descargas la app del operador, desbloqueas el patinete con ella y pagas por minuto. En noviembre de 2026, diez minutos cuestan 3,45 € con Hopp y de 4,50 a 4,70 € con Hoppy; Dott, Bird y RideMovi te muestran su precio en la app antes de desbloquear. Con Hoppy y Bird, el viaje solo termina en uno de sus puntos de aparcamiento. Necesitas 18 años para alquilar (16 con RideMovi si un progenitor registra la cuenta) y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
   published: '2026-10-13',
-  updated: '2026-11-10',
+  updated: '2026-11-24',
   city: 'es:Playa de las Américas',
   sections: [
     {
       heading: '¿Qué patinetes de alquiler hay en el sur de Tenerife?',
       blocks: [
         'Esta guía va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos; no de los scooters de movilidad reducida ni de las motos, que es casi todo lo que sale al buscar «alquiler scooter Tenerife».',
-        'En el sur alquilan patinetes cuatro operadores:',
+        'En el sur alquilan patinetes cinco operadores:',
         {
           list: [
             '**Hoppy**, una marca belga, de Los Cristianos a Costa Adeje. En España contratas con Hoppylectrico S.L., de Elche.',
             '**Dott**, de Los Cristianos a Costa Adeje, con Tenerife Sur en su lista de ciudades.',
             '**Bird**, en una sola franja que va de Los Cristianos a La Caleta por Playa de las Américas y Costa Adeje.',
             '**Hopp**, una marca islandesa que aquí gestiona una franquicia local, en casi la misma franja y en una pequeña zona aparte en [Golf del Sur](map:es:Golf del Sur), en San Miguel de Abona.',
+            '**RideMovi**, un operador italiano, en la costa de Arona y Adeje, de Los Cristianos a La Caleta.',
           ],
         },
         'La nueva ordenanza de Adeje exigirá un título municipal a las empresas de alquiler (más abajo).',
-        'A las 8:27 del 30 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 980 patinetes de Hoppy, 530 de Dott, 470 de Bird y 30 de Hopp libres en ese momento.',
+        'A las 8:27 del 30 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 980 patinetes de Hoppy, 530 de Dott, 470 de Bird y 30 de Hopp libres en ese momento. De RideMovi había unos 1000 según el último recuento, a las 8:10 del 24 de noviembre de 2026.',
         'En Santa Cruz, la capital, también está Dott: mira el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife). Y la app de ISLA Ride, publicada en diciembre de 2025, anuncia patinetas eléctricas de alquiler en Tenerife.',
       ],
     },
@@ -44,6 +45,7 @@ const guide: Guide = {
               ['Hopp', '0,95 €', '0,25 €', '3,45 €', '5,95 €', 'Donde no estorbe, dentro de sus dos zonas, con foto'],
               ['Dott', 'En la app', 'En la app', 'En la app', 'En la app', 'Donde lo permita el mapa de su app'],
               ['Bird', 'En la app', 'En la app', 'En la app', 'En la app', 'Solo en uno de sus 205 puntos de aparcamiento'],
+              ['RideMovi', 'En la app', 'En la app', 'En la app', 'En la app', 'Donde lo permita el mapa de su app'],
             ],
           },
         },
@@ -75,6 +77,7 @@ const guide: Guide = {
               ['Bird', 'La primera vez, un aviso; la segunda, 5 €; la tercera, 20 €; a la cuarta puede rescindir tu contrato', 'Hasta 120 € si no puedes devolverlo a una zona válida y Bird tiene que recogerlo'],
               ['Hoppy', 'Hasta 50 € si lo usas en una zona prohibida, y 100 € por recogerlo si lo dejas en ella', 'Hasta 100 € si no pueden recogerlo; 150 € si lo abandonas sin avisar'],
               ['Hopp', '30 € si no haces la foto final', '50 € por recogerlo fuera de la zona, a menos de 20 km; hasta 500 € más lejos o en un terreno privado'],
+              ['RideMovi', 'Las penalizaciones, en la app', 'Cualquier multa de tráfico que reciba RideMovi por tu infracción, más 20 € de gestión'],
             ],
           },
         },
@@ -92,7 +95,7 @@ const guide: Guide = {
             head: ['Norma', 'Qué tienes que saber'],
             rows: [
               ['Casco', 'Obligatorio desde el 1 de octubre de 2026, también en los de alquiler: 200 €, y los agentes pueden inmovilizar el patinete'],
-              ['Edad', '18 años para alquilar; la ley permite conducir desde los 15'],
+              ['Edad', '18 años para alquilar, o 16 con RideMovi si un progenitor o tutor registra la cuenta; la ley permite conducir desde los 15'],
               ['De noche o con poca visibilidad', 'Un elemento reflectante o luminoso homologado, visible a 150 metros: 200 €'],
               ['Acera y zonas peatonales', 'Nunca por la acera, y por zonas peatonales solo si el ayuntamiento lo permite; si no, bájate y llévalo a pie. Ve por la calzada, por el centro del carril, o por el carril bici donde se permita. Multa según la ordenanza (por la acera, 200 € antes de la reforma)'],
               ['Carretera', 'Prohibidas las autopistas y autovías, como la TF-1, y las carreteras interurbanas'],
@@ -112,7 +115,7 @@ const guide: Guide = {
         {
           list: [
             '**Calor.** En el aeropuerto Tenerife Sur, la máxima media es de 28,4 °C en agosto y aún de 26,8 °C en octubre (AEMET, 1981-2010), y solo llueve unos 15 días al año. En enero, la máxima media aún es de 21,7 °C, y la poca lluvia cae sobre todo de noviembre a marzo. Lleva agua y, en verano, sal temprano o al atardecer.',
-            '**Aeropuerto y otras zonas.** Las zonas de Hoppy, Bird y Hopp no llegan al aeropuerto Tenerife Sur, y no puedes ir en patinete de Los Cristianos a Golf del Sur, a El Médano o al aeropuerto: la TF-1 es una autopista y las carreteras interurbanas están prohibidas. Coge la guagua: al aeropuerto va la 40 de TITSA, desde la estación de Costa Adeje y por Los Cristianos, en unos 40 minutos, más o menos cada media hora de 5:30 a 21:40, y de noche la 711.',
+            '**Aeropuerto y otras zonas.** Las zonas de Hoppy, Bird, Hopp y RideMovi no llegan al aeropuerto Tenerife Sur, y no puedes ir en patinete de Los Cristianos a Golf del Sur, a El Médano o al aeropuerto: la TF-1 es una autopista y las carreteras interurbanas están prohibidas. Coge la guagua: al aeropuerto va la 40 de TITSA, desde la estación de Costa Adeje y por Los Cristianos, en unos 40 minutos, más o menos cada media hora de 5:30 a 21:40, y de noche la 711.',
           ],
         },
       ],
@@ -135,11 +138,11 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete eléctrico en Tenerife sur?',
-      answer: 'En noviembre de 2026, con Hoppy pagas 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €; veinte, 5,95 €), el más barato de los dos. El de Dott y Bird lo ves en su app. Para un día entero de excursión, el bono de un día cuesta 10 € (más 2 € de la tarjeta ten+) por 24 horas de guaguas de TITSA y tranvía.',
+      answer: 'En noviembre de 2026, con Hoppy pagas 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €; veinte, 5,95 €), el más barato de los dos. El de Dott, Bird y RideMovi lo ves en su app. Para un día entero de excursión, el bono de un día cuesta 10 € (más 2 € de la tarjeta ten+) por 24 horas de guaguas de TITSA y tranvía.',
     },
     {
       question: '¿Qué app de patinetes eléctricos funciona en Tenerife?',
-      answer: 'En el sur, Hoppy, Dott, Bird y Hopp, cada uno con la suya: necesitas la del patinete que vas a coger. [Nuestro mapa](map:es:Playa de las Américas) muestra los cuatro y te lleva a la app de cada uno. En Santa Cruz, Dott.',
+      answer: 'En el sur, Hoppy, Dott, Bird, Hopp y RideMovi, cada uno con la suya: necesitas la del patinete que vas a coger. [Nuestro mapa](map:es:Playa de las Américas) muestra los cinco y te lleva a la app de cada uno. En Santa Cruz, Dott.',
     },
     {
       question: '¿Es obligatorio el casco en patinete en Tenerife?',
@@ -175,6 +178,8 @@ const guide: Guide = {
     { title: 'Hopp: quiénes somos (en inglés)', url: 'https://hopp.bike/about' },
     { title: 'Bird: datos abiertos del sur de Tenerife (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json' },
     { title: 'Bird: contrato de alquiler para España (actualizado el 25 de julio de 2023)', url: 'https://bird.co/rental-agreements/spain-es/' },
+    { title: 'RideMovi: menores de 18 años', url: 'https://www.ridemovi.com/es/informative/menores-de-18-anos' },
+    { title: 'RideMovi: términos y condiciones', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/ES_termsandcondition.pdf' },
     { title: 'Dott: nuestras sedes', url: 'https://ridedott.com/es/nuestras-sedes/' },
     { title: 'Dott: términos y condiciones para España (23 de septiembre de 2025)', url: 'https://ridedott.com/es/terminos-condiciones/espana/' },
     { title: 'TITSA: guaguas al aeropuerto Tenerife Sur', url: 'https://titsa.com/index.php/tenerife-en-guagua/lineas-de-aeropuertos/aeropuerto-tenerife-sur' },

@@ -6,35 +6,36 @@ const guide: Guide = {
   topic: 'tenerife',
   name: 'Renting an e-scooter in Tenerife',
   title: 'Tenerife e-scooters 2026: Hoppy and Hopp prices, Dott, Bird',
-  description: 'E-scooters in south Tenerife: 10 minutes cost €4.50–4.70 on Hoppy, €3.45 on Hopp; Dott and Bird show prices in-app. 18+, helmet compulsory, promenades banned.',
-  headline: 'E-scooters in Tenerife: Hoppy, Dott, Bird and Hopp in the south, what a ride costs, and the promenades you can’t ride',
-  lede: 'You can rent an e-scooter in Tenerife from Hoppy, Dott, Bird or Hopp in the south of the island: along the coast from Los Cristianos through Playa de las Américas to Costa Adeje and La Caleta, and with Hopp also in Golf del Sur. As of November 2026, ten minutes cost €4.50–4.70 on a Hoppy and €3.45 on a Hopp; Dott and Bird show their prices in the app before you unlock. You must be 18 to rent, and since 1 October 2026 a helmet is compulsory in Spain: bring your own. Stay off the seafront promenade between Los Cristianos and Las Américas, where scooters are banned and the police check.',
+  description: 'E-scooters in south Tenerife: 10 min cost €4.50–4.70 on Hoppy, €3.45 on Hopp; Dott, Bird and RideMovi show prices in-app. Helmet compulsory, promenades banned.',
+  headline: 'E-scooters in Tenerife: Hoppy, Dott, Bird, Hopp and RideMovi in the south, what a ride costs, and the promenades you can’t ride',
+  lede: 'You can rent an e-scooter in Tenerife from Hoppy, Dott, Bird, Hopp or RideMovi in the south of the island: along the coast from Los Cristianos through Playa de las Américas to Costa Adeje and La Caleta, and with Hopp also in Golf del Sur. As of November 2026, ten minutes cost €4.50–4.70 on a Hoppy and €3.45 on a Hopp; Dott, Bird and RideMovi show their prices in the app before you unlock. You must be 18 to rent (16 on RideMovi if a parent registers the account), and since 1 October 2026 a helmet is compulsory in Spain: bring your own. Stay off the seafront promenade between Los Cristianos and Las Américas, where scooters are banned and the police check.',
   published: '2026-10-13',
-  updated: '2026-11-10',
+  updated: '2026-11-24',
   city: 'es:Playa de las Américas',
   sections: [
     {
       heading: 'Which e-scooters can you rent in Tenerife?',
       blocks: [
         'This guide covers shared e-scooters: the stand-up kind you find on the street, unlock with an app and pay for by the minute. It doesn’t cover mobility scooters or mopeds, though most searches for “scooter hire” in Tenerife turn them up.',
-        'On 30 October 2026, our map showed four operators in the south:',
+        'Five operators rent e-scooters in the south:',
         {
           list: [
             '**Hoppy**, a Belgian brand, from Los Cristianos to Costa Adeje. In Spain your contract is with Hoppylectrico S.L. of Elche.',
             '**Dott**, which lists South Tenerife among its locations, between Los Cristianos and Costa Adeje.',
             '**Bird**, on one strip from Los Cristianos through Playa de las Américas to Costa Adeje and La Caleta.',
             '**Hopp**, an Icelandic brand run here by a local franchise, on almost the same strip, plus a small separate area in [Golf del Sur](map:es:Golf del Sur), further east in San Miguel de Abona.',
+            '**RideMovi**, an Italian operator, on the coast of Arona and Adeje from Los Cristianos to La Caleta.',
           ],
         },
         'Adeje’s new traffic ordinance will require rental firms to hold a municipal licence once it takes effect (see below).',
-        'At 08:27 local time on 30 October 2026 the [map of Playa de las Américas](map:es:Playa de las Américas) showed about 980 Hoppy, 530 Dott, 470 Bird and 30 Hopp scooters free to rent at that moment.',
+        'At 08:27 local time on 30 October 2026 the [map of Playa de las Américas](map:es:Playa de las Américas) showed about 980 Hoppy, 530 Dott, 470 Bird and 30 Hopp scooters free to rent at that moment. RideMovi had about 1,000 as last counted, at 08:10 local time on 24 November 2026.',
         'Dott also runs in Santa Cruz, the capital, free for registered residents, the city said in January 2025: see the [map of Santa Cruz](map:es:Santa Cruz de Tenerife). ISLA Ride, whose app came out in December 2025, also rents e-scooters in Tenerife, its App Store listing says.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Tenerife?',
       blocks: [
-        'Hoppy’s rate per minute depends on the scooter; Dott and Bird show their prices in the app before you unlock.',
+        'Hoppy’s rate per minute depends on the scooter; Dott, Bird and RideMovi show their prices in the app before you unlock.',
         {
           table: {
             caption: 'E-scooter prices in the south of Tenerife, as of November 2026 (published rates)',
@@ -44,6 +45,7 @@ const guide: Guide = {
               ['Hopp', '€0.95', '€0.25', '€3.45', '€5.95', 'Anywhere sensible inside its two areas, with a photo'],
               ['Dott', 'In the app', 'In the app', 'In the app', 'In the app', 'Where the app’s map allows'],
               ['Bird', 'In the app', 'In the app', 'In the app', 'In the app', 'Only at one of its 205 parking spots'],
+              ['RideMovi', 'In the app', 'In the app', 'In the app', 'In the app', 'Where the app’s map allows'],
             ],
           },
         },
@@ -73,6 +75,7 @@ const guide: Guide = {
             rows: [
               ['Bird', 'A warning the first time, then €5, then €20; at the fourth, Bird can end your contract', 'Up to €120 if you can’t bring the scooter back to a valid area and Bird has to collect it'],
               ['Hopp', '€30 if you skip the end-of-ride photo', '€50 to collect a scooter left outside the area within 20 km; up to €500 further away or on private land'],
+              ['RideMovi', 'Penalties shown in the app', 'Any traffic fine RideMovi receives for your offence, plus €20 handling'],
             ],
           },
         },
@@ -83,7 +86,7 @@ const guide: Guide = {
     {
       heading: 'Spain’s e-scooter rules for visitors',
       blocks: [
-        'Spain’s rules changed on 1 October 2026 and apply in Tenerife too. You need no licence, but you must be 18 to rent (the law’s minimum age is 15). The operator registers and insures the scooter; the rest is up to you.',
+        'Spain’s rules changed on 1 October 2026 and apply in Tenerife too. You need no licence, but you must be 18 to rent, or 16 on RideMovi if a parent or guardian registers the account (the law’s minimum age is 15). The operator registers and insures the scooter; the rest is up to you.',
         {
           table: {
             caption: 'E-scooter rules and fines in Spain, as of 13 October 2026',
@@ -110,7 +113,7 @@ const guide: Guide = {
           list: [
             '**Heat.** At Tenerife South airport the average daily high is 28.4 °C in August and still 26.8 °C in October (AEMET, 1981–2010), with only about 15 rainy days a year. In January the average high is still 21.7 °C, and what little rain falls comes mostly between November and March. Carry water and ride early or late in summer.',
             '**Between resorts.** You can’t ride from Los Cristianos to Golf del Sur, El Médano or the airport: the TF-1 is a motorway, and interurban roads are closed to e-scooters.',
-            '**The airport.** Hoppy’s, Bird’s and Hopp’s areas stop short of Tenerife South. Take TITSA bus 40, which runs from Costa Adeje bus station through Los Cristianos to the airport in about 40 minutes, roughly every half hour from 05:30 to 21:40, or night line 711.',
+            '**The airport.** Hoppy’s, Bird’s, Hopp’s and RideMovi’s areas stop short of Tenerife South. Take TITSA bus 40, which runs from Costa Adeje bus station through Los Cristianos to the airport in about 40 minutes, roughly every half hour from 05:30 to 21:40, or night line 711.',
             '**Buses and the tram.** The tram between Santa Cruz and La Laguna bans e-scooters on board, Metrotenerife says; bikes may board when there’s room. For the bus, check TITSA’s rules before you travel.',
           ],
         },
@@ -134,11 +137,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'What is the best e-scooter app in Tenerife?',
-      answer: 'There isn’t one app for all: Hoppy, Dott, Bird and Hopp each have their own. Hopp’s published price is the lowest, and it lets you park anywhere sensible in its areas; Hoppy’s and Bird’s rides end only at their parking spots. [Our map](map:es:Playa de las Américas) shows all four, and a button opens the right app. In Santa Cruz, it’s Dott.',
+      answer: 'There isn’t one app for all: Hoppy, Dott, Bird, Hopp and RideMovi each have their own. Hopp’s published price is the lowest, and it lets you park anywhere sensible in its areas; Hoppy’s and Bird’s rides end only at their parking spots. [Our map](map:es:Playa de las Américas) shows all five, and a button opens the right app. In Santa Cruz, it’s Dott.',
     },
     {
       question: 'How much does an e-scooter cost in Tenerife?',
-      answer: 'As of November 2026, Hoppy, a Belgian brand, charges €1 to unlock plus €0.35–0.37 a minute: 10 minutes cost €4.50–4.70. Hopp, a different company from Iceland, charges €0.95 plus €0.25 a minute: €3.45 for 10 minutes. Dott and Bird show their prices in the app. For a full day of sightseeing, a €10 one-day pass (plus €2 for the ten+ card) covers 24 hours of TITSA buses and trams.',
+      answer: 'As of November 2026, Hoppy, a Belgian brand, charges €1 to unlock plus €0.35–0.37 a minute: 10 minutes cost €4.50–4.70. Hopp, a different company from Iceland, charges €0.95 plus €0.25 a minute: €3.45 for 10 minutes. Dott, Bird and RideMovi show their prices in the app. For a full day of sightseeing, a €10 one-day pass (plus €2 for the ten+ card) covers 24 hours of TITSA buses and trams.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Tenerife?',
@@ -150,11 +153,11 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a licence to rent a scooter in Tenerife?',
-      answer: 'Not for a shared e-scooter: you need to be 18, with a phone and a payment card. A moped is different: you need a driving licence and a moped-hire firm.',
+      answer: 'Not for a shared e-scooter: you need to be 18 (16 on RideMovi if a parent registers the account), with a phone and a payment card. A moped is different: you need a driving licence and a moped-hire firm.',
     },
     {
       question: 'Can I ride an e-scooter to Tenerife South airport?',
-      answer: 'No. Hoppy’s, Bird’s and Hopp’s areas don’t reach the airport, and the direct road, the TF-1, is a motorway closed to e-scooters. Take TITSA bus 40 from Costa Adeje or Los Cristianos, or the 711 at night.',
+      answer: 'No. Hoppy’s, Bird’s, Hopp’s and RideMovi’s areas don’t reach the airport, and the direct road, the TF-1, is a motorway closed to e-scooters. Take TITSA bus 40 from Costa Adeje or Los Cristianos, or the 711 at night.',
     },
   ],
   sources: [
@@ -179,6 +182,8 @@ const guide: Guide = {
     { title: 'Hopp: about us', url: 'https://hopp.bike/about' },
     { title: 'Bird: open data for the south of Tenerife (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json' },
     { title: 'Bird: rental agreement for Spain, updated 25 July 2023 (Spanish)', url: 'https://bird.co/rental-agreements/spain-es/' },
+    { title: 'RideMovi: under-18s', url: 'https://www.ridemovi.com/en/informative/under-18s' },
+    { title: 'RideMovi: terms and conditions (Spanish)', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/ES_termsandcondition.pdf' },
     { title: 'Dott: locations', url: 'https://ridedott.com/locations/' },
     { title: 'Dott: terms and conditions for Spain, updated 23 September 2025', url: 'https://ridedott.com/terms-and-conditions/spain/' },
     { title: 'TITSA: buses to Tenerife South airport (Spanish)', url: 'https://titsa.com/index.php/tenerife-en-guagua/lineas-de-aeropuertos/aeropuerto-tenerife-sur' },
