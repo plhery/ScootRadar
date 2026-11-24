@@ -141,7 +141,7 @@ final class ScooterPassTests: XCTestCase {
         XCTAssertEqual(attested.map { $0.keyId }, ["key+id/1=", "key+id/2="])
     }
 
-    func testAKeyAttestedButNotTakenByTheServerIsForgottenAndOneNotAttestedIsKept() async throws {
+    func testAKeyAttestedButNotTakenByTheServerIsForgottenAndOneLeftUnattestedWhileAppleWasOutOfReachIsKept() async throws {
         let test = PassTest()
         // Apple's service out of reach: the key made is attested on the next ask, as Apple asks.
         await test.attest.setAttestationError(DCError(.serverUnavailable))
@@ -163,6 +163,46 @@ final class ScooterPassTests: XCTestCase {
         XCTAssertEqual(attested.map { $0.keyId }, ["key+id/1=", "key+id/1=", "key+id/2="])
         let asserted = await test.attest.asserted
         XCTAssertTrue(asserted.isEmpty)
+    }
+
+    func testAKeyAppleFailedToAttestIsKeptOnlyWhenItsServiceWasOutOfReach() async throws {
+        // Apple's App Attest guide: after serverUnavailable, attest the same key again later; after any other error,
+        // discard it and make a new one. Kept, it was attested again at every ask, and that install might never get
+        // a pass (week review of 24 November 2026, I1).
+        let cases: [(name: String, code: DCError.Code, kept: Bool)] = [
+            ("serverUnavailable", .serverUnavailable, true),
+            ("invalidKey", .invalidKey, false),
+            ("unknownSystemFailure", .unknownSystemFailure, false),
+            ("invalidInput", .invalidInput, false),
+            ("featureUnsupported", .featureUnsupported, false),
+        ]
+        for failure in cases {
+            // The key the second ask attests: the same, or a new one.
+            let next = failure.kept ? "key+id/1=" : "key+id/2="
+            let test = PassTest()
+            await test.attest.setAttestationError(DCError(failure.code))
+            _ = try await test.api.scooters(bounds: bounds, zoom: 16)
+            await test.pass.settled()
+            var held = await test.pass.current()
+            XCTAssertNil(held, failure.name)
+
+            await test.attest.setAttestationError(nil)
+            test.clock.advance(10 * 60)
+            _ = try await test.api.scooters(bounds: bounds, zoom: 16)
+            await test.pass.settled()
+            let generated = await test.attest.generated
+            XCTAssertEqual(generated, failure.kept ? ["key+id/1="] : ["key+id/1=", "key+id/2="], failure.name)
+            let attested = await test.attest.attested
+            XCTAssertEqual(attested.map { $0.keyId }, ["key+id/1=", next], failure.name)
+            // That key is the one sent, and the pass comes.
+            let posts = await test.session.requests(to: "/api/pass")
+            XCTAssertEqual(posts.count, 1, failure.name)
+            let post = try XCTUnwrap(posts.last, failure.name)
+            let body = try XCTUnwrap(JSONSerialization.jsonObject(with: try XCTUnwrap(post.httpBody)) as? [String: String])
+            XCTAssertEqual(body["keyId"], next, failure.name)
+            held = await test.pass.current()
+            XCTAssertEqual(held, "pass-1", failure.name)
+        }
     }
 
     func testAPassHeldIsSentWithRequestsForScootersOnlyUntilItExpiresAcrossLaunches() async throws {
@@ -272,7 +312,8 @@ final class ScooterPassTests: XCTestCase {
         challenges = await test.session.requests(to: "/api/pass/challenge").count
         XCTAssertEqual(challenges, 6)
         generated = await test.attest.generated
-        XCTAssertEqual(generated.count, 3, "A key not attested is kept for the next ask; one attested, not")
+        // unknownSystemFailure isn't serverUnavailable: that key is forgotten too, so each ask after makes its own.
+        XCTAssertEqual(generated.count, 4, "Neither a key Apple failed to attest nor one the server didn't take is kept")
     }
 
     func testAPassThatCannotBeAHeaderIsNotKept() async throws {

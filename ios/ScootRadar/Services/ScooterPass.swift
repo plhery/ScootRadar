@@ -107,7 +107,7 @@ actor ScooterPassProvider {
 
     /// The first ask: a key of this install's own, attested by Apple, which the server checks and signs a copy of.
     private func sendAttestation(challenge: String, clientDataHash: Data) async {
-        // A key made but not attested, as when Apple's service was out of reach, is attested on the next ask, as
+        // A key made but not attested because Apple's service was out of reach is attested on the next ask, as
         // Apple asks.
         let keyId: String
         if let made = defaults.string(forKey: Self.keyIdKey) {
@@ -120,11 +120,15 @@ actor ScooterPassProvider {
         let attestation: Data
         do {
             attestation = try await appAttest.attestKey(keyId, clientDataHash: clientDataHash)
-        } catch let error as DCError where error.code == .invalidKey {
-            // Attested already, or rejected: the next ask makes a new one.
-            forgetKey()
+        } catch let error as DCError where error.code == .serverUnavailable {
+            // Apple's service out of reach: the same key is attested again on the next ask.
             return
         } catch {
+            // Any other failure (attested already, rejected, unknownSystemFailure, invalidInput, featureUnsupported):
+            // Apple's App Attest guide says to discard the key and make a new one, so the next ask does. Kept, it
+            // was attested again at every ask, every 10 minutes and at each launch, and could fail for good (week
+            // review of 24 November 2026, I1).
+            forgetKey()
             return
         }
         switch await post(PassRequest(

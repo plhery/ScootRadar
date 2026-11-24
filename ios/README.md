@@ -303,11 +303,14 @@ scooters says the app holds no pass (`X-Scooter-Pass: none`), the app asks for
 one aside, never holding the scooters up, at most every 10 minutes and one ask
 at a time: it signs a challenge from `/api/pass/challenge` with App Attest, the
 first time by attesting a new key, then with an assertion of that key, and
-sends it to `/api/pass`. The pass goes with each request for scooters, not for
-zones or files, as `X-Scooter-Pass` until it expires a day later, and works
-only from the network it was given on. Nothing is enforced yet: where App
-Attest is not supported, as on the Simulator, or an ask fails, the app asks as
-before (`Services/ScooterPass.swift`).
+sends it to `/api/pass`. A key Apple fails to attest is attested again on the
+next ask only if Apple's service was out of reach (`serverUnavailable`); after
+any other error the next ask makes a new key, as Apple's guide asks. The pass
+goes with each request for scooters, not for zones or files, as
+`X-Scooter-Pass` until it expires a day later, and works only from the network
+it was given on. Nothing is enforced yet: where App Attest is not supported,
+as on the Simulator, or an ask fails, the app asks as before
+(`Services/ScooterPass.swift`).
 
 ## What stays on the phone
 
