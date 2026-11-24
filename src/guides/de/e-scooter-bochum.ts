@@ -6,19 +6,19 @@ const guide: Guide = {
   topic: 'bochum',
   name: 'E-Scooter Bochum: Anbieter, Preise, Parken',
   title: 'E-Scooter Bochum 2026: Anbieter, Preise, Parkverbote',
-  description: 'E-Scooter Bochum: Voi, Dott, Bolt, Lime und Ryde, was eine Fahrt kostet, wo du in City und Stadtpark nicht fährst oder parkst und was bei der BOGESTRA gilt.',
+  description: 'E-Scooter Bochum: Voi, Dott, Bolt, Lime, Ryde und RideMovi, was eine Fahrt kostet, wo du in City und Stadtpark nicht fährst oder parkst, was bei BOGESTRA gilt.',
   headline: 'E-Scooter Bochum: Anbieter, Preise, Parkverbote und was bei BOGESTRA und VRR gilt',
-  lede: 'Einen E-Scooter in Bochum leihst du in der App von Voi, Dott, Bolt, Lime oder Ryde: freien Scooter in der App suchen, per QR-Code entsperren und ohne Führerschein losfahren; Dott, Bolt und Ryde vermieten ab 18. Voi ist günstiger als Dott: Zehn Minuten kosten 1,80 € statt 3,90 € (Stand November 2026). Bei Bolt, Lime und Ryde zeigt die App den Preis, bevor du entsperrst. In der Fussgängerzone der City fährst du nicht, in Parks laut Stadt nur auf ausgeschilderten Radwegen, und im Kern der Innenstadt markiert Voi Parkverbotszonen. In Bussen und Bahnen der BOGESTRA sind E-Scooter laut ADAC seit dem 1. April 2024 verboten.',
+  lede: 'Einen E-Scooter in Bochum leihst du in der App von Voi, Dott, Bolt, Lime, Ryde oder RideMovi: freien Scooter in der App suchen, per QR-Code entsperren und ohne Führerschein losfahren; Dott, Bolt und Ryde vermieten ab 18. Voi ist günstiger als Dott: Zehn Minuten kosten 1,80 € statt 3,90 € (Stand November 2026). Bei Bolt, Lime und Ryde zeigt die App den Preis, bevor du entsperrst, bei RideMovi nach der Anmeldung. In der Fussgängerzone der City fährst du nicht, in Parks laut Stadt nur auf ausgeschilderten Radwegen, und im Kern der Innenstadt markiert Voi Parkverbotszonen. In Bussen und Bahnen der BOGESTRA sind E-Scooter laut ADAC seit dem 1. April 2024 verboten.',
   published: '2026-10-26',
-  updated: '2026-10-26',
+  updated: '2026-11-24',
   city: 'de:Bochum',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Bochum?',
       blocks: [
-        'Fünf Anbieter vermieten E-Scooter in Bochum: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde** aus Norwegen. Dott, Bolt und Ryde führen Bochum auf ihren Websites (Stand November 2026). Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern.',
+        'Sechs Anbieter vermieten E-Scooter in Bochum: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime**, **Ryde** aus Norwegen und **RideMovi** aus Italien. Dott, Bolt und Ryde führen Bochum auf ihren Websites (Stand November 2026). Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern.',
         'Wie das Mieten in der App geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'In der Nacht auf Montag, 26. Oktober 2026, zeigte die [Karte von Bochum](map:de:Bochum) um 4:24 Uhr rund 220 Dott-, 320 Voi- und 310 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 520 Lime-Scooter nach der letzten Zählung.',
+        'In der Nacht auf Montag, 26. Oktober 2026, zeigte die [Karte von Bochum](map:de:Bochum) um 4:24 Uhr rund 220 Dott-, 320 Voi- und 310 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 520 Lime-Scooter nach der letzten Zählung. Von RideMovi zeigte sie am 24. November 2026 um 13:12 Uhr rund 330 Scooter nach der letzten Zählung.',
         'Leihräder gibt es beim metropolradruhr, das laut Regionalverband Ruhr seit dem 1. April 2026 Donkey Republic betreibt.',
       ],
     },
@@ -36,7 +36,7 @@ const guide: Guide = {
           },
         },
         'Voi ist bei jeder Fahrtlänge günstiger als Dott.',
-        'Teuer wird Falschparken. Bolt verlangt laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs. Dott berechnet laut seinen Bedingungen vom September 2025 bis zu 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst, und 50 € Verwaltungsgebühr, wenn er ein Bussgeld für dich zahlt.',
+        'Teuer wird Falschparken. Bolt verlangt laut seinen Bedingungen (gültig ab 1. Dezember 2026) 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist, und bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs. Dott berechnet laut seinen Bedingungen vom September 2025 bis zu 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst, und 50 € Verwaltungsgebühr, wenn er ein Bussgeld für dich zahlt. RideMovi gibt laut seinen AGB Bussgelder der Behörden samt Kosten an dich weiter, plus 20 € Bearbeitungsgebühr.',
       ],
     },
     {
@@ -69,7 +69,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Bochum: Bussgelder und Alkohol',
       blocks: [
-        'In Bochum gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott, Bolt und Ryde ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h. Ein eigener Scooter braucht eine Versicherungsplakette.',
+        'In Bochum gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott, Bolt und Ryde ab 18, bei RideMovi ab 16, wenn ein Elternteil das Konto anlegt, keine Helmpflicht, bauartbedingt höchstens 20 km/h. Ein eigener Scooter braucht eine Versicherungsplakette.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -99,7 +99,8 @@ const guide: Guide = {
     {
       heading: 'Ruhrstadion, Ruhr-Uni, Bochum Total: Tipps für Bochum',
       blocks: [
-        '**VfL-Heimspiele im Ruhrstadion:** Rund ums Stadion an der Castroper Strasse 145 markiert Voi eine Parkverbotszone, und das Stadion liegt knapp ausserhalb von Dotts Gebiet; in der Nähe führt Dott die Station «Parking Zone Stadion». Bequemer ist die Strassenbahn: Die Linien 308 und 316 fahren laut VfL in drei Minuten vom Hauptbahnhof zur Haltestelle Ruhrstadion, und mit der Eintrittskarte fährst du im ganzen VRR kostenlos.',
+        '**VfL-Heimspiele im Ruhrstadion:** Rund ums Stadion an der Castroper Strasse 145 markiert Voi eine Parkverbotszone, und das Stadion liegt knapp ausserhalb von Dotts Gebiet, aber in RideMovis Gebiet in der App; in der Nähe führt Dott die Station «Parking Zone Stadion». Bequemer ist die Strassenbahn: Die Linien 308 und 316 fahren laut VfL in drei Minuten vom Hauptbahnhof zur Haltestelle Ruhrstadion, und mit der Eintrittskarte fährst du im ganzen VRR kostenlos.',
+        '**Ruhr-Universität:** RideMovis Gebiet in der App reicht bis zur U35-Haltestelle Ruhr-Universität; der Campus selbst liegt fast ganz ausserhalb.',
         '**Hochschule Bochum:** Ihre Hausordnung vom 18. September 2014 verbietet, Roller und Fahrräder «in den Hochschulgebäuden» zu benutzen.',
         '**Bochum Total:** Im Juli 2026 lief das Festival laut Stadt zum letzten Mal im Bermuda3Eck: «2027 steigt das Festival im Westpark, rund um die altehrwürdige Jahrhunderthalle». Dort markiert Voi schon heute eine Parkverbotszone, und im Park fährst du nur auf Wegen mit blauem Radwegschild.',
       ],
@@ -107,7 +108,7 @@ const guide: Guide = {
     {
       heading: 'Herne, Witten, Gelsenkirchen: E-Scooter in den Nachbarstädten',
       blocks: [
-        'Vois Bochumer Gebiet reicht bis nach Herne und Witten (Stand November 2026), und auch Ryde führt beide Städte auf seiner Website.',
+        'Vois Bochumer Gebiet reicht bis nach Herne und Witten (Stand November 2026), und auch Ryde führt beide Städte auf seiner Website. RideMovis Gebiet in der App reicht nicht nach Herne oder Witten.',
         {
           list: [
             '**Herne:** Am 26. Oktober 2026 um 4:24 Uhr zeigte die [Karte von Herne](map:de:Herne) rund 250 Voi- und 240 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und rund 170 Lime-Scooter nach der letzten Zählung. Dott führt Herne auch auf seiner Website.',
@@ -127,7 +128,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Bochum nutzen?',
-      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18. Freie Scooter zeigt auch die [Live-Karte von Bochum](map:de:Bochum).',
+      answer: 'Die von Voi, Dott, Bolt, Lime, Ryde und RideMovi. Einen Führerschein brauchst du nicht; Dott, Bolt und Ryde vermieten ab 18, RideMovi auch ab 16, wenn ein Elternteil das Konto anlegt. Freie Scooter zeigt auch die [Live-Karte von Bochum](map:de:Bochum).',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Bochum?',
@@ -179,6 +180,8 @@ const guide: Guide = {
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Ryde: Standorte', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Ryde: Nutzungsbedingungen Deutschland', url: 'https://www.ryde-technology.com/terms-conditions-germany' },
+    { title: 'RideMovi: Unter 18 Jahren', url: 'https://www.ridemovi.com/de/informative/unter-18-jahren' },
+    { title: 'RideMovi: Verbraucherinformationen und Allgemeine Geschäftsbedingungen (PDF)', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/DE_termsandcondition.pdf' },
   ],
 };
 
