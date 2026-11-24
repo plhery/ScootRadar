@@ -725,16 +725,27 @@ The day's counts live in memory, so a deploy gives everyone their 8 again.
 Also since 19 November 2026, a visitor that asks all day, pass or not, collects
 nothing more that day (`holdSustained`): from the request that makes 12 quarter hours
 with 20 requests or more, or from the one that makes the quarter hour after 8 in a
-row with 5 requests or more (`UNBROKEN_QUARTER_REQUESTS`). A map is looked at for a
-while and stops refreshing half an hour after the last touch; from 12 to 18 November
-no rider or app user came to either, while the North Rhine-Westphalia script came to
-both and a home server's script polling one town to the second. A kiosk or wall screen
-showing the map all day would look the same. Until 20 November a quarter hour with a
-single request counted in the run, and on 19 November a home with a few devices was
-held after 14 quarter hours in a row; from 13 to 19 November its longest run with 5
-requests or more was 3 (8 on a day the apps were tested there), while the scripts kept
-theirs (North Rhine-Westphalia's 32, at about 90 requests a quarter hour; the home
-server's 9, at about 6).
+row in its run. A quarter hour joins the run once it holds 5 requests over 10 minutes
+of it or more (`UNBROKEN_QUARTER_REQUESTS`, `UNBROKEN_QUARTER_SPAN_MS`), as a map left
+open makes asking once a minute, or 20 requests however close together. A map is
+looked at for a while and stops refreshing half an hour after the last touch; from 12
+to 18 November no rider or app user came to either, while the North Rhine-Westphalia
+script came to both and a home server's script polling one town to the second. A
+kiosk or wall screen showing the map all day would look the same. Until 20 November a
+quarter hour with a single request counted in the run, and on 19 November a home with
+a few devices was held after 14 quarter hours in a row; from 13 to 19 November its
+longest run with 5 requests or more was 3 (8 on a day the apps were tested there).
+Until 24 November 5 requests made a quarter hour count however close together, so a
+hotel's, an office's or a carrier's address whose guests each looked at the map for 5
+minutes, one in each of 9 quarter hours in a row, was held until midnight UTC,
+browsers and apps with a pass too (week review of 24 November 2026, W1). The scripts
+keep their runs, by Cloudflare's counts of their requests by the minute: North
+Rhine-Westphalia's asked about 7 times a minute (15 quarter hours in a row on 18
+November); the bare `Mozilla/5.0` read Mainz and Wiesbaden in bursts of 29 requests
+within a minute every 10 minutes, so that every other quarter hour held a single
+burst, kept in the run by its 20 requests (79 in a row on 20 November); the home
+server made 9 in a row on 14 November, each with 6 to 115 requests over 12 minutes
+or more.
 
 Each network, an IPv4 address or an IPv6 /64, browsers and apps, pass or not, may make
 1,500 requests for scooters a UTC day and 300 a UTC hour (`NETWORK_REQUESTS_PER_DAY`

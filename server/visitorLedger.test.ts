@@ -113,10 +113,10 @@ describe('visitor ledger', () => {
       }
     }
     expect(ledger.record('192.0.2.1', view(), 16, at(2 * BUSY_QUARTER_HOURS_PER_DAY + 1), 'verified', 'browser')).toBe(false);
-    // UNBROKEN_QUARTER_REQUESTS requests a quarter hour, in a row: held from the request that makes the quarter hour
-    // after its run; a break starts the run again.
+    // UNBROKEN_QUARTER_REQUESTS requests a quarter hour, three minutes apart, so over twelve minutes of it, in a row:
+    // held from the request that makes the quarter hour after its run; a break starts the run again.
     const quarter = (network: string, i: number, requests = UNBROKEN_QUARTER_REQUESTS, zoom = 16) =>
-      Array.from({ length: requests }, (_, r) => ledger.record(network, view(), zoom, at(i, r), 'map', 'app'));
+      Array.from({ length: requests }, (_, r) => ledger.record(network, view(), zoom, at(i, r * 180), 'map', 'app'));
     for (let i = 0; i < UNBROKEN_QUARTER_HOURS; i++) expect(quarter('192.0.2.2', i)).not.toContain(false);
     for (let i = UNBROKEN_QUARTER_HOURS + 1; i < 2 * UNBROKEN_QUARTER_HOURS + 1; i++) {
       expect(quarter('192.0.2.2', i)).not.toContain(false);
@@ -125,12 +125,36 @@ describe('visitor ledger', () => {
     // The city totals' requests count in the run too, though they collect nothing either way.
     for (let i = 0; i < UNBROKEN_QUARTER_HOURS; i++) quarter('192.0.2.3', i, UNBROKEN_QUARTER_REQUESTS, 8);
     expect(quarter('192.0.2.3', UNBROKEN_QUARTER_HOURS).at(-1)).toBe(false);
-    expect(Object.fromEntries(ledger.counts(at(2 * UNBROKEN_QUARTER_HOURS + 1, 59)).held)).toEqual({ allowance: 0, busy: 2, unbroken: 2, daily: 0, hourly: 0 });
+    expect(Object.fromEntries(ledger.counts(at(2 * UNBROKEN_QUARTER_HOURS + 1, 14 * 60)).held)).toEqual({ allowance: 0, busy: 2, unbroken: 2, daily: 0, hourly: 0 });
     expect(ledger.record('192.0.2.1', view(), 16, day + VISITOR_DAY_MS, 'verified', 'browser')).toBe(true);
     // Without holdSustained, the same run is only counted.
     const counted = createVisitorLedger();
     for (let i = 0; i <= UNBROKEN_QUARTER_HOURS; i++) {
-      for (let r = 0; r < UNBROKEN_QUARTER_REQUESTS; r++) expect(counted.record('192.0.2.2', view(), 16, at(i, r), 'map', 'app')).toBe(true);
+      for (let r = 0; r < UNBROKEN_QUARTER_REQUESTS; r++) expect(counted.record('192.0.2.2', view(), 16, at(i, r * 180), 'map', 'app')).toBe(true);
+    }
+  });
+
+  it('still holds from the ninth quarter hour in a row the scripts seen in November 2026, as Cloudflare timed them', () => {
+    const day = Math.ceil(start / VISITOR_DAY_MS) * VISITOR_DAY_MS;
+    const minutes = (...times: number[]) => times.map(minute => day + minute * 60_000);
+    const scripts: Record<string, number[]> = {
+      // North Rhine-Westphalia's, 18 November: about 7 requests a minute.
+      'north rhine-westphalia': minutes(...Array.from({ length: 7 * 150 }, (_, i) => i / 7)),
+      // The bare Mozilla/5.0 reading Mainz and Wiesbaden, 19 and 20 November: a burst of 29 within a minute every
+      // 10 minutes, so every other quarter hour holds one burst, at 3 minutes past.
+      'bare mozilla/5.0': minutes(...Array.from({ length: 15 }, (_, burst) =>
+        Array.from({ length: 29 }, (_, r) => 3 + 10 * burst + r / 30)).flat()),
+      // The home server polling one town, 14 November: at its slowest, 6 requests over 12 minutes of a quarter hour.
+      'home server': minutes(...Array.from({ length: 10 }, (_, quarter) =>
+        Array.from({ length: 6 }, (_, r) => 15 * quarter + 1 + 2.4 * r)).flat()),
+    };
+    for (const [script, times] of Object.entries(scripts)) {
+      const ledger = createVisitorLedger({ holdSustained: true });
+      const collected = times.map(at => ledger.record('192.0.2.6', view(), 16, at, 'verified', 'browser'));
+      const firstHeld = collected.indexOf(false);
+      expect(collected.slice(firstHeld), script).not.toContain(true);
+      expect(Math.floor((times[firstHeld] - day) / VISITOR_WINDOW_MS), script).toBe(UNBROKEN_QUARTER_HOURS);
+      expect(Object.fromEntries(ledger.counts(times.at(-1)).held), script).toMatchObject({ busy: 0, unbroken: times.length - firstHeld });
     }
   });
 
@@ -146,16 +170,23 @@ describe('visitor ledger', () => {
     expect(Object.fromEntries(ledger.counts(day + VISITOR_DAY_MS - 1).held)).toEqual({ allowance: 0, busy: 0, unbroken: 0, daily: 0, hourly: 0 });
   });
 
-  it('holds none of the guests of a hotel opening the map in nine quarter hours in a row, nor one after a long gap', () => {
+  it('holds none of the guests of a hotel each looking at the map a few minutes, in nine quarter hours in a row, nor one after a long gap', () => {
     const day = Math.ceil(start / VISITOR_DAY_MS) * VISITOR_DAY_MS;
-    const ledger = createVisitorLedger({ holdSustained: true });
-    // One request in each of nine quarter hours from one address, each a guest with a verified browser.
-    for (let i = 0; i < UNBROKEN_QUARTER_HOURS + 1; i++) {
-      expect(ledger.record('192.0.2.5', view(), 16, day + i * VISITOR_WINDOW_MS, 'verified', 'browser')).toBe(true);
+    // One guest a quarter hour on the hotel's address, each with a verified browser keeping the map open `minutes`
+    // minutes: it asks on opening, then once a minute (refreshAfterSeconds 60), `minutes` requests. Until 24
+    // November 2026 five made the quarter hour count in the run, and the ninth guest was held (week review, W1).
+    for (const minutes of [1, 4, 5, 9]) {
+      const ledger = createVisitorLedger({ holdSustained: true });
+      for (let guest = 0; guest < UNBROKEN_QUARTER_HOURS + 1; guest++) {
+        for (let minute = 0; minute < minutes; minute++) {
+          const at = day + guest * VISITOR_WINDOW_MS + (1 + minute) * 60_000;
+          expect(ledger.record('192.0.2.5', view(), 16, at, 'verified', 'browser'), `${minutes} minutes, guest ${guest + 1}`).toBe(true);
+        }
+      }
+      // And a guest nine hours later.
+      expect(ledger.record('192.0.2.5', view(), 16, day + (UNBROKEN_QUARTER_HOURS + 36) * VISITOR_WINDOW_MS, 'verified', 'browser')).toBe(true);
+      expect(Object.fromEntries(ledger.counts(day + VISITOR_DAY_MS - 1).held)).toEqual({ allowance: 0, busy: 0, unbroken: 0, daily: 0, hourly: 0 });
     }
-    // And a guest nine hours later.
-    expect(ledger.record('192.0.2.5', view(), 16, day + (UNBROKEN_QUARTER_HOURS + 36) * VISITOR_WINDOW_MS, 'verified', 'browser')).toBe(true);
-    expect(Object.fromEntries(ledger.counts(day + VISITOR_DAY_MS - 1).held)).toEqual({ allowance: 0, busy: 0, unbroken: 0, daily: 0, hourly: 0 });
   });
 
   const secret = 'a-test-secret-of-at-least-32-characters';

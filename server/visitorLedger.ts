@@ -31,21 +31,33 @@ export const UNVERIFIED_QUARTER_HOURS_PER_DAY = 8;
  * A visitor that asks all day, pass or not, is a script: a map is looked at for a while, and stops refreshing half
  * an hour after the last touch. With `holdSustained`, one collects nothing more that UTC day from the request
  * that makes BUSY_QUARTER_HOURS_PER_DAY quarter hours with BUSY_QUARTER_REQUESTS requests or more, or from the one
- * that makes the quarter hour after UNBROKEN_QUARTER_HOURS in a row with UNBROKEN_QUARTER_REQUESTS requests or more.
- * From 12 to 18 November 2026 no rider or app user came to either; the script polling North Rhine-Westphalia came to
- * both, and a home server's polling one town to the second (docs/OBSERVABILITY.md, "Scraping").
+ * that makes the quarter hour after UNBROKEN_QUARTER_HOURS in a row in its run. From 12 to 18 November 2026 no rider
+ * or app user came to either; the script polling North Rhine-Westphalia came to both, and a home server's polling
+ * one town to the second (docs/OBSERVABILITY.md, "Scraping").
  *
- * A quarter hour with a request or two does not count in a run: a home's few devices, a phone looked at now and
- * then beside a computer, ask in many quarter hours in a row with a few requests each. On 19 November 2026 such a
- * home asked in 14 quarter hours in a row and was held; from 13 to 19 November its longest run of quarter hours with
- * 5 requests or more was 3 (8 on a day of testing the apps there), while the scripts kept theirs: North
- * Rhine-Westphalia's 32 (about 90 requests a quarter hour), a bare `Mozilla/5.0`'s 12 (about 55), and the home
- * server's 9 (about 6). No outside browser or app made 9 in a row at all.
+ * A quarter hour joins the run once it holds UNBROKEN_QUARTER_REQUESTS requests over UNBROKEN_QUARTER_SPAN_MS of it
+ * or more, from its first, or BUSY_QUARTER_REQUESTS however close together: something kept asking through it, as a
+ * map left open does once a minute. A quarter hour with a request or two does not: a home's few devices, a phone
+ * looked at now and then beside a computer, ask in many quarter hours in a row with a few requests each. On 19
+ * November 2026 such a home asked in 14 quarter hours in a row and was held; from 13 to 19 November its longest run
+ * of quarter hours with 5 requests or more was 3 (8 on a day of testing the apps there). Nor does a short look:
+ * until 24 November 2026 five requests made a quarter hour count, so a hotel's, an office's or a carrier's address
+ * whose guests each looked at the map five minutes (five requests, one a minute), one in each of nine quarter hours
+ * in a row, was held until midnight UTC, verified browsers and apps included (week review of 24 November 2026, W1).
+ * The scripts keep their runs, by Cloudflare's counts of their requests by the minute: North Rhine-Westphalia's on
+ * 18 November asked about 7 times a minute (14 and 15 quarter hours in a row, though it slowed at times); the bare
+ * `Mozilla/5.0` of 19 and 20 November read Mainz and Wiesbaden in bursts of 29 requests within a minute every 10
+ * minutes, so that every other quarter hour held one burst, which only its 20 requests or more keep in the run (79
+ * quarter hours in a row on the 20th, where the ten minutes alone make none longer than 1); and the home server
+ * polling one town on 14 November made 9 in a row, each with 6 to 115 requests over 12 minutes or more of it. A
+ * volume alone would not do: the home server's quarter hours held as few as 6, and a guest's short look with a pan
+ * or two holds as many. No outside browser or app made 9 in a row at all, even at 5 requests a quarter hour.
  */
 export const BUSY_QUARTER_REQUESTS = 20;
 export const BUSY_QUARTER_HOURS_PER_DAY = 12;
 export const UNBROKEN_QUARTER_HOURS = 8;
 export const UNBROKEN_QUARTER_REQUESTS = 5;
+export const UNBROKEN_QUARTER_SPAN_MS = 10 * 60_000;
 /**
  * The requests for scooters a network (an IPv4 address or an IPv6 /64) may make in a UTC day, and in a UTC hour, before
  * the rest are answered from what the cache holds, collecting nothing, until the day or the hour ends: anyone's,
@@ -146,12 +158,12 @@ interface VisitorDay {
   verifiedWindow: number;
   enforcedWindow: number;
   /**
-   * Quarter hours with BUSY_QUARTER_REQUESTS requests or more, and the quarter hours in a row with
-   * UNBROKEN_QUARTER_REQUESTS or more up to the last.
+   * Quarter hours with BUSY_QUARTER_REQUESTS requests or more, and the quarter hours in a row that joined the run
+   * (sustained) up to the last.
    */
   busy: number;
   run: number;
-  /** The last quarter hour with UNBROKEN_QUARTER_REQUESTS requests. */
+  /** The last quarter hour that joined the run. */
   activeWindow: number;
   /** Why it collects nothing more today, once its busy quarter hours or its run have said it is a script. */
   sustained: 'busy' | 'unbroken' | null;
@@ -178,7 +190,8 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
   const idOf = (client: string) => createHash('sha256').update(salt).update(client).digest('base64url');
   let passRequired = 0;
   let window = 0;
-  const visitors = new Map<string, { requests: number; watched: Set<string>; areas: Set<string> }>();
+  // `first`: when the visitor's first request of the quarter hour came.
+  const visitors = new Map<string, { requests: number; first: number; watched: Set<string>; areas: Set<string> }>();
   const byRequests = new Map(REQUEST_BUCKETS.map(([bucket]) => [bucket, 0]));
   const byAreas = new Map(AREA_BUCKETS.map(([bucket]) => [bucket, 0]));
   const byClient = new Map(SCOOTER_CLIENTS.map(client => [client, 0]));
@@ -255,10 +268,15 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
     }
     return visitor;
   };
-  /** Counts the request's quarter hour, and its requests in it, against the visitor's day: whether it asks all day. */
-  const sustained = (visitor: VisitorDay, requests: number) => {
-    // The quarter hour joins the run at its UNBROKEN_QUARTER_REQUESTS-th request, once.
-    if (requests === UNBROKEN_QUARTER_REQUESTS) {
+  /**
+   * Counts the request's quarter hour, its requests in it and the time since its first (`spanned`), against the
+   * visitor's day: whether it asks all day.
+   */
+  const sustained = (visitor: VisitorDay, requests: number, spanned: number) => {
+    // The quarter hour joins the run once, at the request that has it ask through UNBROKEN_QUARTER_SPAN_MS of it or
+    // makes it busy.
+    if (visitor.activeWindow !== window && requests >= UNBROKEN_QUARTER_REQUESTS
+      && (spanned >= UNBROKEN_QUARTER_SPAN_MS || requests >= BUSY_QUARTER_REQUESTS)) {
       visitor.run = visitor.activeWindow === window - 1 ? visitor.run + 1 : 1;
       visitor.activeWindow = window;
     }
@@ -306,12 +324,12 @@ export function createVisitorLedger({ enforceAllowance = [], holdSustained = fal
       let visitor = visitors.get(id);
       if (!visitor) {
         if (visitors.size >= MAX_VISITORS) return asker !== 'other';
-        visitor = { requests: 0, watched: new Set(), areas: new Set() };
+        visitor = { requests: 0, first: now, watched: new Set(), areas: new Set() };
         visitors.set(id, visitor);
       }
       visitor.requests++;
       const visitorDay = asker === 'other' ? undefined : dayOf(id);
-      const script = visitorDay && sustained(visitorDay, visitor.requests);
+      const script = visitorDay && sustained(visitorDay, visitor.requests, now - visitor.first);
       if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return asker !== 'other';
       const area = areaOf(bounds);
       if (visitor.areas.size < AREAS_KEPT) visitor.areas.add(area);
