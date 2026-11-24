@@ -54,7 +54,7 @@ object RidePriceFormatter {
         )
     }
 
-    /** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272". */
+    /** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272", "UZS 990". */
     fun fractionDigits(currency: String): Int = if (currency.uppercase() in wholeUnitCurrencies) 0 else 2
 
     /**
@@ -62,14 +62,16 @@ object RidePriceFormatter {
      * ISO code on macOS 27 / iOS 26), as the iPhone asks it. Neither the JVM's ISO 4217 data nor Android's
      * CLDR data gives the same set (both give COP and IDR two decimals), so it is written out here.
      * Forints are among them, as the iPhone also lists them itself: the fillér left circulation in 1999, yet
-     * ISO 4217 still gives HUF two decimals, and some systems follow it ("HUF 272.00"). src/lib/ridePrice.ts
-     * lists the same.
+     * ISO 4217 still gives HUF two decimals, and some systems follow it ("HUF 272.00"). So are soʻm, which the
+     * iPhone lists too: Uzbek prices are whole (JET's 990 a minute in Tashkent), yet ISO 4217 gives UZS two
+     * decimals and the card read "UZS 990.00" (week review of 24 November 2026). src/lib/ridePrice.ts lists the
+     * same.
      */
     private val wholeUnitCurrencies = setOf(
         "ADP", "AFN", "ALL", "BIF", "BYR", "CLP", "COP", "DJF", "ESP", "GNF", "HUF", "IDR", "IQD", "IRR", "ISK",
         "ITL", "JPY", "KMF", "KPW", "KRW", "LAK", "LBP", "LUF", "MGA", "MGF", "MMK", "MRO", "PKR", "PYG", "RSD",
-        "RWF", "SLL", "SOS", "STD", "SYP", "TMM", "TRL", "UGX", "UYI", "VND", "VUV", "XAF", "XOF", "XPF", "YER",
-        "ZMK", "ZWD",
+        "RWF", "SLL", "SOS", "STD", "SYP", "TMM", "TRL", "UGX", "UYI", "UZS", "VND", "VUV", "XAF", "XOF", "XPF",
+        "YER", "ZMK", "ZWD",
     )
 }
 

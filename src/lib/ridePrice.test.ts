@@ -124,6 +124,17 @@ describe('formatRidePrice', () => {
     expect([currencyFractionDigits('ISK'), currencyFractionDigits('HUF'), currencyFractionDigits('huf')]).toEqual([0, 0, 0]);
   });
 
+  it('shows the soʻm without decimals, and the lari with theirs', () => {
+    // JET in Tashkent: 990 soʻm a minute, which read "UZS 990.00" (week review of 24 November 2026).
+    expect(plain(formatRidePrice(99000, 'UZS', 'en'))).toBe('UZS 990');
+    expect(plain(formatRidePrice(199000, 'uzs', 'de'))).toBe("UZS 1'990");
+    expect(plain(formatRidePrice(99000, 'UZS', 'fr'))).toBe('990 UZS');
+    expect([currencyFractionDigits('UZS'), currencyFractionDigits('uzs')]).toEqual([0, 0]);
+    // Tbilisi: 0.32 ₾ a minute.
+    expect(plain(formatRidePrice(32, 'GEL', 'en'))).toBe('GEL 0.32');
+    expect(currencyFractionDigits('GEL')).toBe(2);
+  });
+
   it('keeps the kopiyky of a price in hryvnias', () => {
     // 3electra in Kyiv: UAH 12 to start and UAH 5.60 a minute.
     expect(plain(formatRidePrice(1200, 'UAH', 'en'))).toBe('UAH 12.00');

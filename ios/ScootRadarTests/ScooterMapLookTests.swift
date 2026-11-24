@@ -777,6 +777,35 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertTrue(hryvnias.contains("5") && hryvnias.contains("60") && decimals(hryvnias), hryvnias)
     }
 
+    func testSomAreWrittenWithoutDecimalsAndLariWithThem() {
+        // JET in Tashkent: a Max Plus 990 soʻm to start and 990 a minute, an SL 90 1,990 and 1,190. ISO 4217 gives
+        // UZS two decimals, and the card read "UZS 990.00" (week review of 24 November 2026).
+        let pricing = ScooterRidePricing(currency: "UZS", unlockFeeMinorUnits: 199_000, minuteFeeMinorUnits: 119_000)
+        let content = ScooterCardContent(
+            scooter: scooter(provider: "jet", pricing: pricing),
+            metres: 60,
+            quote: RidePriceEstimator.quote(pricing: pricing, durationMinutes: 10)
+        )
+        let separator = ScooterLanguage.current.locale.decimalSeparator ?? "."
+        let decimals = { (text: String) in text.contains(separator) }
+
+        XCTAssertEqual(content.figures[2].value.filter(\.isNumber), "13890")
+        XCTAssertFalse(decimals(content.figures[2].value), content.figures[2].value)
+        XCTAssertEqual(content.figures[2].label, "UZS, 10 min")
+        let unlock = RidePriceFormatter.string(minorUnits: 199_000, currency: "UZS")
+        let minute = RidePriceFormatter.string(minorUnits: 99_000, currency: "uzs")
+        XCTAssertTrue(unlock.filter(\.isNumber) == "1990" && !decimals(unlock), unlock)
+        XCTAssertTrue(minute.filter(\.isNumber) == "990" && !decimals(minute), minute)
+        XCTAssertEqual(
+            [RidePriceFormatter.fractionDigits("UZS"), RidePriceFormatter.fractionDigits("uzs"),
+             RidePriceFormatter.fractionDigits("GEL")],
+            [0, 0, 2]
+        )
+        // JET's 0.32 ₾ a minute in Tbilisi keeps its tetri.
+        let lari = RidePriceFormatter.string(minorUnits: 32, currency: "GEL")
+        XCTAssertTrue(lari.contains("32") && decimals(lari), lari)
+    }
+
     // MARK: The lead of the dock
 
     func testTheLeadNamesTheNearestScooterItsDistanceAndTheWalk() {

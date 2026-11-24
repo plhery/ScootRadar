@@ -910,6 +910,38 @@ class ScooterMapLookTest {
         assertTrue(hryvnias, hryvnias.contains("5") && hryvnias.contains("60") && decimals(hryvnias))
     }
 
+    @Test
+    fun somAreWrittenWithoutDecimalsAndLariWithThem() {
+        // JET in Tashkent: a Max Plus 990 soʻm to start and 990 a minute, an SL 90 1,990 and 1,190. ISO 4217 gives
+        // UZS two decimals, and the card read "UZS 990.00" (week review of 24 November 2026).
+        val pricing = ScooterRidePricing(currency = "UZS", unlockFeeMinorUnits = 199_000, minuteFeeMinorUnits = 119_000)
+        val content = ScooterCardContent(
+            scooter = scooter(provider = "jet", pricing = pricing),
+            metres = 60.0,
+            quote = RidePriceEstimator.quote(pricing = pricing, durationMinutes = 10),
+        )
+        val separator = DecimalFormatSymbols.getInstance(ScooterLanguage.current.locale).decimalSeparator.toString()
+        val decimals = { text: String -> text.contains(separator) }
+
+        assertEquals("13890", content.figures[2].value.filter(Char::isDigit))
+        assertFalse(content.figures[2].value, decimals(content.figures[2].value))
+        assertEquals("UZS, 10 min", content.figures[2].label)
+        val unlock = RidePriceFormatter.string(minorUnits = 199_000, currency = "UZS")
+        val minute = RidePriceFormatter.string(minorUnits = 99_000, currency = "uzs")
+        assertTrue(unlock, unlock.filter(Char::isDigit) == "1990" && !decimals(unlock))
+        assertTrue(minute, minute.filter(Char::isDigit) == "990" && !decimals(minute))
+        assertEquals(
+            listOf(0, 0, 2),
+            listOf(
+                RidePriceFormatter.fractionDigits("UZS"), RidePriceFormatter.fractionDigits("uzs"),
+                RidePriceFormatter.fractionDigits("GEL"),
+            ),
+        )
+        // JET's 0.32 ₾ a minute in Tbilisi keeps its tetri.
+        val lari = RidePriceFormatter.string(minorUnits = 32, currency = "GEL")
+        assertTrue(lari, lari.contains("32") && decimals(lari))
+    }
+
     // The lead of the dock
 
     @Test

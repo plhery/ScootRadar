@@ -2115,7 +2115,7 @@ enum RidePriceFormatter {
         return date.formatted(style)
     }
 
-    /// Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272".
+    /// Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272", "UZS 990".
     static func fractionDigits(_ currency: String) -> Int {
         let code = currency.uppercased()
         if wholeUnitCurrencies.contains(code) { return 0 }
@@ -2127,8 +2127,11 @@ enum RidePriceFormatter {
 
     /// Forints are written whole: the fillér left circulation in 1999, yet ISO
     /// 4217 still gives HUF two decimals, and some systems follow it ("HUF 272.00").
-    /// src/lib/ridePrice.ts lists the same.
-    private static let wholeUnitCurrencies: Set<String> = ["HUF"]
+    /// So are soʻm: Uzbek prices are whole (JET's 990 a minute in Tashkent), yet
+    /// ISO 4217 gives UZS two decimals and the card read "UZS 990.00" (week review
+    /// of 24 November 2026). src/lib/ridePrice.ts and the Android app's
+    /// RidePriceFormatter list the same.
+    private static let wholeUnitCurrencies: Set<String> = ["HUF", "UZS"]
 }
 
 /// Filters: a minimum range and the providers to show. Choices apply at

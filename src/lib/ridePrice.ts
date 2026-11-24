@@ -49,12 +49,16 @@ export function ridePriceQuote(pricing: RidePricing, durationMinutes: number): R
   };
 }
 
-// Forints are written whole: the fillér left circulation in 1999, yet ISO 4217
-// still gives HUF two decimals, and Safari follows it ("HUF 272.00") where
-// Chrome doesn't. RidePriceFormatter in ScooterControls.swift lists the same.
-const WHOLE_UNIT_CURRENCIES = new Set(['HUF']);
+// Forints and soʻm are written whole. The fillér left circulation in 1999, yet
+// ISO 4217 still gives HUF two decimals, and Safari follows it ("HUF 272.00")
+// where Chrome doesn't. Uzbek prices are whole soʻm (JET's 990 a minute in
+// Tashkent), yet ISO 4217 gives UZS two decimals, which every browser follows:
+// the card read "UZS 990.00" (week review of 24 November 2026). Georgia's lari
+// keep their tetri (0.32 ₾ a minute in Tbilisi). RidePriceFormatter in
+// ScooterControls.swift lists the same.
+const WHOLE_UNIT_CURRENCIES = new Set(['HUF', 'UZS']);
 
-/** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272". */
+/** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272", "UZS 990". */
 export function currencyFractionDigits(currency: string): 0 | 2 {
   const code = currency.toUpperCase();
   if (WHOLE_UNIT_CURRENCIES.has(code)) return 0;
