@@ -614,7 +614,8 @@ server) or `scootradar`, such as
 `backAround`, the Worker sends it as `X-Scooter-Back-Around` and the notice
 says "back around" that time. `"mode":"hard"` stops the Worker asking the
 server from `since` on, giving what it keeps instead; `{"on":false}` ends it,
-and one left on ends three hours after `backAround` (or at `ends`). Each
+and one left on ends three hours after `backAround` (or at `ends`); one with
+neither stays on until switched off. Each
 isolate reads the namespace at most every 30 seconds, and only when the server
 is down or to check for `hard`. `GET /maintenance.json` answers
 `{"planned", "mode", "since", "backAround"}` from the Worker alone (no-store,

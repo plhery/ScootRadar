@@ -8,7 +8,9 @@
 //   {"since": "2026-11-18T22:00:00Z", "backAround": "2026-11-18T22:20:00Z", "mode": "soft"}
 //
 // `mode` "hard" turns the requests away from the server from `since`; "soft", the default, only words the
-// notice. `on: false` switches it off; one nobody switched off ends `ends`, or three hours after `backAround`.
+// notice. `on: false` switches it off; one nobody switched off ends `ends`, or three hours after `backAround`, and
+// one with neither stays until switched off, as the edge guard's does: it gives no time to count from, `since` being
+// when the work starts, not how long it lasts.
 // Without the binding, nothing is announced and the rest works (DEPLOY.md, "Maintenance").
 
 /** The KV namespace, as far as it is read here. */
@@ -39,7 +41,11 @@ export interface MaintenanceStatus {
 export const MAINTENANCE_KEY = 'scootradar';
 /** How long an isolate keeps the announcement it read. KV itself caches it for up to a minute. */
 const ANNOUNCEMENT_TTL_MS = 30_000;
-/** An announcement nobody switched off ends this long after the time it gave, so a forgotten one can't linger. */
+/**
+ * An announcement nobody switched off ends this long after the `backAround` it gave, so a forgotten one can't linger
+ * past it. One that gave neither `backAround` nor `ends` has no end but `on: false` (current), as the edge guard's: the
+ * comment said until 24 November 2026 that none could linger (week review of 24 November 2026).
+ */
 const ANNOUNCEMENT_GRACE_MS = 3 * 60 * 60_000;
 
 let announcement: { values: unknown[]; readAt: number } = { values: [], readAt: -Infinity };
