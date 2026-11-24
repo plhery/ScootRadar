@@ -92,6 +92,8 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
   alwaysFast: (feed: T) => boolean;
   /** When a restored feed last started a successful collection, so a restart does not collect everything at once. */
   lastCollectedAt?: (feed: T) => number | undefined;
+  /** When a restored feed's last collection was, if it failed: it is retried from then, as after any failure (restoredFrom). */
+  lastFailedAt?: (feed: T) => number | undefined;
   /** Where in the idle interval the feed's collections fall, in [0, 1): its idlePhase, or idPhase by default. */
   phase?: (feed: T) => number;
   /** If a night ban holds then where the feed's scooters are, when it ends (feedCurfewEnds). */
@@ -118,6 +120,34 @@ const LATE_MS = 5 * 60_000;
 // The collections due when a night ends fall over this long after it, each at its phase's share, as a
 // night's views of a town leave many of its groups due then.
 const NIGHT_END_SPREAD_MS = 15 * 60_000;
+
+/** What the cache saved of a feed's last collection (FeedSnapshot): when it ended, whether it failed, when the last success did. */
+export interface SavedCollection {
+  failed: boolean;
+  attemptedAt: number;
+  collectedAt?: number;
+}
+
+/**
+ * The scheduler's lastCollectedAt and lastFailedAt of the feeds a restart restores from their saved records
+ * (scooter-cache.ts): a feed's last success, failed since or not, and its failure, if its last collection failed.
+ * Until the week review of 24 November 2026 (C4), a failed record gave neither: the feed was taken for one never
+ * collected, read at once on a restart at any hour, its back-off and its night rule lost (nextDue). A record saved
+ * before collectedAt existed gives its last collection's time, if it succeeded.
+ */
+export function restoredFrom<T extends ScheduledFeed>(saved: (feed: T) => SavedCollection | undefined):
+  Pick<SchedulerOptions<T>, 'lastCollectedAt' | 'lastFailedAt'> {
+  return {
+    lastCollectedAt: feed => {
+      const record = saved(feed);
+      return record?.collectedAt ?? (record && !record.failed ? record.attemptedAt || undefined : undefined);
+    },
+    lastFailedAt: feed => {
+      const record = saved(feed);
+      return record?.failed ? record.attemptedAt || undefined : undefined;
+    },
+  };
+}
 
 /** A stable fraction in [0, 1) from the feed id (FNV-1a). */
 export function idPhase(id: string): number {
@@ -178,15 +208,22 @@ export class FeedScheduler<T extends ScheduledFeed> {
     for (const feed of definitions) {
       this.byId.set(feed.id, feed);
       if (this.due.has(feed.id) || this.running.has(feed.id)) continue;
-      const last = this.options.lastCollectedAt?.(feed);
+      const last = this.options.lastCollectedAt?.(feed), failedAt = this.options.lastFailedAt?.(feed);
       // A feed without a record waits behind the restored ones already overdue: it has no positions to lose.
-      if (!last) { added.push(feed); continue; }
-      this.startedAt.set(feed.id, last);
-      this.collectedAt.set(feed.id, last);
+      if (!last && !failedAt) { added.push(feed); continue; }
+      if (last) this.collectedAt.set(feed.id, last);
+      // One whose last collection failed is retried from then, as after any failure, by day at once as before, and
+      // expires from its last success (restoredFrom).
+      if (failedAt) this.failures.set(feed.id, 1);
+      const started = failedAt || last!;
+      this.startedAt.set(feed.id, started);
       // A restored feed keeps its turn, even one gone by, so a restart goes on with the longest overdue
       // rather than in the catalog's order. After the stall of 24 October 2026, feeds 29 minutes old
-      // waited behind ones of 21, and expired (30) on the restart at 19:59.
-      this.due.set(feed.id, this.nextDue(feed, last, last, false));
+      // waited behind ones of 21, and expired (30) on the restart at 19:59. One gone by at night in its
+      // town waits for the night's end, unless that would let the feed expire (byNight): a daily app map
+      // that failed at its turn at 20:30 was read at 02:00 when the cache restarted (week review of
+      // 24 November 2026, C4).
+      this.due.set(feed.id, this.byNight(feed, this.nextDue(feed, started, started, Boolean(failedAt)), now, this.expiresAt(feed)));
     }
     this.warmUp(added, now, added.length < definitions.length);
     this.pump();
@@ -337,11 +374,28 @@ export class FeedScheduler<T extends ScheduledFeed> {
       const feed = this.byId.get(id), started = this.startedAt.get(id);
       if (!feed || started === undefined || this.running.has(id) || this.woken.has(id) || this.failures.has(id) ||
         this.mode(feed, now) !== 'idle') continue;
-      const turn = this.nextDue(feed, started, now, false), night = feed.nightEnds?.(now);
-      const due = turn <= now && night !== undefined ? night + this.share(feed) * NIGHT_END_SPREAD_MS : turn;
+      const due = this.byNight(feed, this.nextDue(feed, started, now, false), now);
       if (due < (this.due.get(id) ?? Infinity)) { this.due.set(id, due); changed = true; }
     }
     if (changed) this.pump();
+  }
+
+  /**
+   * When a turn of the feed's is taken at `now`: a turn gone by at night in its town when the night ends, after its
+   * phase's share of a quarter of an hour, as a sweep by night's next is; but at once if the feed would expire before
+   * then and has not yet (`expires`), as a failed collection is retried by night while that may keep the feed from
+   * expiring (nextDue).
+   */
+  private byNight(feed: T, due: number, now: number, expires = -Infinity): number {
+    const night = due <= now ? feed.nightEnds?.(now) : undefined;
+    if (night === undefined) return due;
+    const end = night + this.share(feed) * NIGHT_END_SPREAD_MS;
+    return now <= expires && expires < end ? due : end;
+  }
+
+  /** When the feed's scooters expire without a successful collection: an idle interval and its grace after its last. */
+  private expiresAt(feed: T): number {
+    return (this.collectedAt.get(feed.id) ?? -Infinity) + (feed.idleIntervalMs ?? this.options.idleIntervalMs) + (feed.idleGraceMs ?? 0);
   }
 
   /** Where in its idle interval the feed is collected, in [0, 1). */
@@ -360,8 +414,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       // By night in its town, a retry is made only while it may keep the feed from expiring, then at the night's end, as
       // a sweep is: a map that failed at its turn at 20:59 there was retried at 23:06, 01:14 and 05:30.
       const night = feed.nightEnds?.(retry);
-      const expires = (this.collectedAt.get(feed.id) ?? -Infinity) + (feed.idleIntervalMs ?? this.options.idleIntervalMs) + (feed.idleGraceMs ?? 0);
-      return night !== undefined && retry > expires ? night + this.share(feed) * NIGHT_END_SPREAD_MS : retry;
+      return night !== undefined && retry > this.expiresAt(feed) ? night + this.share(feed) * NIGHT_END_SPREAD_MS : retry;
     }
     // The next time of the feed's phase at least an active interval away, or sooner the end of the night
     // or the night ban it was collected in, when its scooters show again.

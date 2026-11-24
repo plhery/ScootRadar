@@ -17,7 +17,7 @@ import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache, UpstreamHttpError } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { statusAge } from '../src/lib/feedValidation';
-import { FeedScheduler, type CollectionAttention } from './feedScheduler';
+import { FeedScheduler, restoredFrom, type CollectionAttention } from './feedScheduler';
 import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readFeedStates, readSnapshot, saveAtomically, writeFeedStates, writeSnapshot } from './snapshotFile';
@@ -166,11 +166,9 @@ const schedule = cadenceFromEnv();
 // The national feeds read from rider maps are collected as the app maps are (swissAppMaps.ts).
 const scheduler = new FeedScheduler(collect, { ...schedule,
   alwaysFast: feed => schedule.alwaysFastSources.has(feed.source) && !readsSwissAppMap(feed),
-  // After a restart, a feed collected recently waits for its turn rather than everyone at once.
-  lastCollectedAt: feed => {
-    const record = records.get(feed.id);
-    return record && !record.failed ? record.collectedAt ?? (record.attemptedAt || undefined) : undefined;
-  },
+  // After a restart, a feed collected recently waits for its turn rather than everyone at once, and one whose last
+  // collection failed is retried as after any failure: by day at once, by night only while that may keep it from expiring.
+  ...restoredFrom(feed => records.get(feed.id)),
   // A feed collected in a night ban, when its operator may hide its scooters, is collected again when it ends.
   curfewEnds: (feed, time) => feedCurfewEnds(feed.id, time),
   // What a wide view keeps shown is what the answers show (querySnapshot), not what the scheduler last started.

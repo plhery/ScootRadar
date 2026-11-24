@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
+import { FeedScheduler, idPhase, restoredFrom, type CollectionAttention, type CollectionReason, type SavedCollection, type SchedulerOptions } from './feedScheduler';
 
 interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idleGraceMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined; idleSooner?: () => { intervalMs: number; phase: number } | undefined }
 const MINUTE = 60_000;
@@ -445,6 +445,45 @@ it('goes on after a restart with the feeds longest overdue, then new ones, whate
     await vi.advanceTimersByTimeAsync(30_000);
     expect(calls.map(call => [call.id, call.at / 1000])).toEqual([['stale', 0], ['fresh', 0], ['fresh-2', 10], ['new', 10]]);
   } finally { scheduler.stop(); }
+});
+
+it("retries a restored feed whose last collection failed as after any failure: by day at once, by night only while it may keep it from expiring", async () => {
+  const HOUR = 60 * MINUTE, DAY = 24 * HOUR;
+  /**
+   * A daily app map restored by a restart at T0, `hour` o'clock in its town: its night runs from 21:00 to 08:00 there, and
+   * its turn is at 20:30, half an hour before the night. What it saved, as scooter-cache.ts restores it (restoredFrom).
+   */
+  const restart = (hour: number, saved: (turn: number) => SavedCollection) => {
+    vi.setSystemTime(T0);
+    const dusk = T0 - ((hour - 21 + 24) % 24) * HOUR, dawn = dusk + 11 * HOUR, turn = dusk - 0.5 * HOUR;
+    const map = { id: 'town', host: 'dott', idleIntervalMs: DAY, idleGraceMs: 2 * HOUR, idlePhase: (((turn % DAY) + DAY) % DAY) / DAY,
+      nightEnds: (time: number) => time >= dusk && time < dawn ? dawn : undefined };
+    const record = saved(turn);
+    const { scheduler, times } = schedule([map], { phase: undefined, ...restoredFrom<Feed>(() => record) }, async () => ({ failed: true }));
+    return { scheduler, times, dawn: (dawn - T0) / MINUTE + 15 * map.idlePhase };
+  };
+  // Failed at its turn and on until 21:33, last read the day before: expired since 22:30. A restart at 02:00 had it read
+  // then (week review of 24 November 2026, C4): it waits for the night's end, as its retries would have.
+  const failed = (turn: number) => ({ failed: true, collectedAt: turn - DAY, attemptedAt: turn + 63 * MINUTE });
+  const night = restart(2, failed);
+  try {
+    await vi.advanceTimersByTimeAsync(7 * HOUR);
+    expect(night.times('town')[0]).toBeCloseTo(night.dawn, 6);
+  } finally { night.scheduler.stop(); }
+  // Its turn succeeded: it waits for its next.
+  const succeeded = restart(2, turn => ({ failed: false, collectedAt: turn, attemptedAt: turn }));
+  try {
+    await vi.advanceTimersByTimeAsync(7 * HOUR);
+    expect(succeeded.times('town')).toEqual([]);
+  } finally { succeeded.scheduler.stop(); }
+  // At 22:00, still within its grace, it is retried at once, as a retry by night that may keep it from expiring is; by day too.
+  for (const hour of [22, 18]) {
+    const { scheduler, times } = restart(hour, failed);
+    try {
+      await vi.advanceTimersByTimeAsync(0);
+      expect(times('town')).toEqual([0]);
+    } finally { scheduler.stop(); }
+  }
 });
 
 it('counts a collection already under way as the one a request asked for', async () => {
