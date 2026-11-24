@@ -381,6 +381,8 @@ import rethymnoEn from './en/e-scooters-rethymno';
 import copenhagenEn from './en/e-scooters-copenhagen';
 import odenseEn from './en/e-scooters-odense';
 import sotraNb from './nb/elsparkesykkel-sotra';
+import parmaIt from './it/monopattini-sharing-parma';
+import parmaEn from './en/e-scooters-parma';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -762,4 +764,6 @@ export const GUIDES: readonly Guide[] = [
   copenhagenEn,
   odenseEn,
   sotraNb,
+  parmaIt,
+  parmaEn,
 ];
