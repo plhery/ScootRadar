@@ -57,7 +57,10 @@ Two further reads list every scooter, parked ones included:
   scooters of one parking, the same number as its `countScooters`.
 
 Only `Scooter` and `EScooter` entries in state `Available` or
-`AvailableWithoutGps` are kept. The collector publishes battery and range,
+`AvailableWithoutGps` are kept. The map's list gives no state, so a loose
+scooter it lists that a polygon or parking reply lists in another state, as
+`Booked`, is left out too; until 24 November 2026 it was published from the
+map, with no range or price. The collector publishes battery and range,
 each scooter's link and, where its card gives one, its price (see
 [links and prices](#links-and-prices)); it publishes no riding or parking
 rules.
@@ -86,14 +89,18 @@ the polygons:
 
 Overlaps are deduplicated by identifier, a polygon's record replacing the
 map's; positions outside every reviewed area are discarded. A loose scooter
-no polygon listed is kept from the map, with no range. The entire region
+no polygon listed is kept from the map, with no range; one a polygon lists
+in a state that can't be hired is not counted missing from it. The entire region
 must finish within 300 requests and 150 seconds, its price reads included. A failed read, a pile that
 stays capped, or more than 40 short parkings fails the whole collection,
 preserving the previous snapshot under the normal expiry policy. One shared
 client spaces all JET rider requests by 500 ms. A sweep waits on that pace,
 so it takes one of the host's collection slots but none of the cache's
 shared ones (`paced`). A watched region is collected again two minutes after
-its last collection started, not one.
+its last collection started, not one, and ten minutes after for a view too
+wide to show single scooters, from zoom 15 out, as other app maps are
+(`APP_MAP_WIDE_INTERVAL_MS`). From 23 to 24 November 2026 such a view had it
+collected every two minutes too.
 
 ## Authentication and renewal
 
@@ -232,8 +239,12 @@ the region, and reads it again once the price is an hour old: at most six
 cards a sweep. A price is shown only where the card's model is the scooter's,
 the card has exactly one per-minute entry, and its cultures are of the
 region's country, which gives the currency: lari in Georgia, soʻm in
-Uzbekistan. A card that can't be read never fails the sweep, and the price
-read before is shown for six hours at most. A loose scooter that no polygon
+Uzbekistan. A card that can't be read never fails the sweep: the price read
+before is shown for six hours at most from when it was read, and the card is
+read again on the next sweep. A card that is read but gives no price the map
+can show, as one listing two rates by the minute, keeps the price read
+before the same way, and is read again an hour later; until 24 November 2026
+it erased that price at once. A loose scooter that no polygon
 listed has no model, so it has no price. Prices are held in memory, so a
 restarted cache reads them again on its first sweeps.
 

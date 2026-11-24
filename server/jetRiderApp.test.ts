@@ -1,11 +1,14 @@
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, serviceAreas } from '../src/lib/regionalScooterSystems';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { REGIONAL_SCOOTER_SYSTEMS, isAppMapFeed, isAppMapSystem, serviceAreas } from '../src/lib/regionalScooterSystems';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { boundsContainPoint, haversineM } from '../src/lib/geo';
+import { independentCollectableFeeds, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
+import { APP_MAP_WIDE_INTERVAL_MS, withDailySweeps } from './appMapCadence';
+import { FeedScheduler } from './feedScheduler';
 import { collectJetRiderRegion, JET_RIDER_WATCHED_INTERVAL_MS, jetRiderCircle, jetRiderRequestHash, JetRiderClient, parseJetRiderParking,
   parseJetRiderPolygon, parseJetRiderRate, parseJetRiderVehicles, withJetRiderAppCollectors } from './jetRiderApp';
 import type { JetRiderPrices } from './jetRiderApp';
@@ -200,9 +203,12 @@ describe('JET rider collection', () => {
     'rejects invalid or unsuccessful replies', payload => { expect(() => parseJetRiderVehicles(payload)).toThrow(); });
 
   it('reads the hireable scooters of a polygon with their charge in percent, their range, their parking and their model', () => {
+    const unhireable = new Set<string>();
     const parsed = parseJetRiderPolygon(polygonReply([hired('A.1', 41.71, 44.77, { parkingId: 'p1' }),
       hired('A.2', 41.71, 44.77, { charge: null, model: { name: 'Ninebot <b>' } }),
-      hired('A.3', 41.71, 44.77, { state: 'Booked' }), hired('B.1', 41.71, 44.77, { type: 'EBike' })]));
+      hired('A.3', 41.71, 44.77, { state: 'Booked' }), hired('B.1', 41.71, 44.77, { type: 'EBike' })]), unhireable);
+    // A scooter in a state that can't be hired is told apart, for the map's loose scooters (collectJetRiderRegion); a bike is not.
+    expect([...unhireable]).toEqual(['jet-rider:A.3']);
     expect(parsed).toEqual([{ vehicle: { provider: 'jet', vehicle_id: 'jet-rider:A.1', lat: 41.71, lng: 44.77, battery: 50, range_m: 15750,
       deep_link: null, rental_uris: { ios: 'https://ure.su/j/A.1', android: 'https://ure.su/j/A.1', web: null }, distance_m: null },
     parkingId: 'p1', model: 'Ninebot Max Plus' }, { vehicle: expect.objectContaining({ vehicle_id: 'jet-rider:A.2', battery: null, range_m: null }) }]);
@@ -300,6 +306,23 @@ describe('JET rider collection', () => {
     expect(deadline).toBe(vehicles.mock.calls[0][1]);
   });
 
+  it('leaves out a loose scooter of the map that a polygon lists in a state that can’t be hired, and does not count it missing', async () => {
+    // The map lists A.1 and `booked` more loose scooters, with no state; the polygon lists them all, those in `state`.
+    const sweep = async (state: string, booked = 1) => {
+      const others = Array.from({ length: booked }, (_, i) => [`B.${i}`, 41.711, 44.771 + i * 0.001] as const);
+      const vehicles = vi.fn().mockResolvedValue(map([scooter('A.1'), ...others.map(([id, lat, lng]) => scooter(id, lat, lng))]));
+      const polygon = vi.fn().mockResolvedValue(polygonReply([hired('A.1'), ...others.map(([id, lat, lng]) => hired(id, lat, lng, { state }))]));
+      const result = await collectJetRiderRegion(system, api(vehicles, polygon), new Map());
+      return { polygons: polygon.mock.calls.length, ranges: Object.fromEntries(result.vehicles.map(vehicle => [vehicle.vehicle_id, vehicle.range_m])) };
+    };
+    expect(await sweep('Available')).toEqual({ polygons: 1, ranges: { 'jet-rider:A.1': 15750, 'jet-rider:B.0': 15750 } });
+    // Until 24 November 2026 B.0 was kept from the map, with no range or price, as `'jet-rider:B.0': null` (week review of
+    // 24 November 2026, C5), and three of them were three missing, more than a box may lack: it was read again, down to 100 m.
+    expect(await sweep('Booked')).toEqual({ polygons: 1, ranges: { 'jet-rider:A.1': 15750 } });
+    expect(await sweep('Booked', 3)).toEqual({ polygons: 1, ranges: { 'jet-rider:A.1': 15750 } });
+    expect(await sweep('Reserved', 3)).toEqual({ polygons: 1, ranges: { 'jet-rider:A.1': 15750 } });
+  });
+
   /** A polygon that lists the scooters in its view, but only 80 of them when it holds more than 50. */
   const truncating = (scooters: ReturnType<typeof scooter>[]) => vi.fn().mockImplementation(async (view: MapBounds) => {
     const inside = scooters.filter(item => boundsContainPoint(view, item.location.lat, item.location.long));
@@ -378,6 +401,39 @@ describe('JET rider collection', () => {
     } finally { clock.mockRestore(); }
   });
 
+  it('keeps the price read before when a card gives none the map can show, for six hours from that read, reading it again hourly', async () => {
+    const reply = polygonReply([hired('A.1'), hired('A.2')]);
+    const vehicles = vi.fn().mockResolvedValue(map([scooter('A.1'), scooter('A.2')]));
+    const transport = vi.fn().mockResolvedValue(card());
+    const prices: JetRiderPrices = new Map();
+    const sweep = async () => (await collectJetRiderRegion(system, api(vehicles, vi.fn().mockResolvedValue(reply), undefined, transport), prices))
+      .vehicles.map(vehicle => vehicle.pricing && `${vehicle.pricing.currency} ${vehicle.pricing.unlock_fee_minor_units}+${vehicle.pricing.minute_fee_minor_units}`);
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(now);
+    try {
+      expect(await sweep()).toEqual(['GEL 100+32', 'GEL 100+32']);
+      // An hour on, the card lists two rates by the minute: no price the map can show.
+      transport.mockResolvedValue({ ...card(), rate: { entries: [card().rate.entries[0], card().rate.entries[0]] } });
+      clock.mockReturnValue(now + 61 * 60_000);
+      // Until 24 November 2026 this erased the price at once, for an hour (week review of 24 November 2026, minor note).
+      expect(await sweep()).toEqual(['GEL 100+32', 'GEL 100+32']);
+      expect(transport).toHaveBeenCalledTimes(2);
+      // Within the hour of that read the card is not read again, and the price stays.
+      clock.mockReturnValue(now + 120 * 60_000);
+      expect(await sweep()).toEqual(['GEL 100+32', 'GEL 100+32']);
+      expect(transport).toHaveBeenCalledTimes(2);
+      // Six hours after the price was read it goes, though a card was read since.
+      clock.mockReturnValue(now + 5 * 60 * 60_000);
+      expect(await sweep()).toEqual(['GEL 100+32', 'GEL 100+32']);
+      expect(transport).toHaveBeenCalledTimes(3);
+      clock.mockReturnValue(now + 6 * 60 * 60_000);
+      expect(await sweep()).toEqual([undefined, undefined]);
+      // A card that gives a price again shows it at once.
+      transport.mockResolvedValue(card());
+      clock.mockReturnValue(now + 7 * 60 * 60_000);
+      expect(await sweep()).toEqual(['GEL 100+32', 'GEL 100+32']);
+    } finally { clock.mockRestore(); }
+  });
+
   it('wires reviewed catalogs as app maps without overlapping Go Jet regions', () => {
     const regions = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.jetRiderAppCity);
     expect(regions).toHaveLength(10);
@@ -394,7 +450,45 @@ describe('JET rider collection', () => {
     const feeds = regions.map(region => ({ id: `test:${region.id}` }));
     const wired = withJetRiderAppCollectors(feeds as never, regions);
     expect(wired.every(feed => typeof feed.collect === 'function' && feed.paced === true &&
-      feed.activeIntervalMs === JET_RIDER_WATCHED_INTERVAL_MS)).toBe(true);
+      feed.activeIntervalMs === JET_RIDER_WATCHED_INTERVAL_MS && feed.wideIntervalMs === APP_MAP_WIDE_INTERVAL_MS)).toBe(true);
     expect(JET_RIDER_WATCHED_INTERVAL_MS).toBe(120_000);
+  });
+});
+
+describe('JET rider collection cadence', () => {
+  const MINUTE = 60_000;
+  beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(now); });
+  afterEach(() => vi.useRealTimers());
+  // The definitions as scooter-cache.ts builds them: its setDefinitions leaves a feed with an interval of its own for
+  // when it is watched, as these, without the wide view's interval it gives other app maps.
+  const definitions = () => withDailySweeps(withJetRiderAppCollectors(independentCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS),
+    REGIONAL_SCOOTER_SYSTEMS, now);
+
+  /** The minutes at which Tashkent is collected while a view, wide or a street's, asks for it every minute from minute 20 to 50. */
+  async function viewed(wide: boolean) {
+    const feed = definitions().find(definition => definition.id.endsWith(':jet_uz_tashkent'))!;
+    expect(isAppMapFeed(feed)).toBe(true);
+    const times: number[] = [];
+    const scheduler = new FeedScheduler<CollectableScooterFeed>(async () => { times.push((Date.now() - now) / MINUTE); }, { phase: () => 0 });
+    scheduler.setFeeds([feed]);
+    scheduler.start();
+    let viewer: ReturnType<typeof setInterval> | undefined;
+    try {
+      await vi.advanceTimersByTimeAsync(20 * MINUTE);
+      scheduler.demand([feed.id], Date.now(), undefined, wide);
+      viewer = setInterval(() => scheduler.demand([feed.id], Date.now(), undefined, wide), MINUTE);
+      await vi.advanceTimersByTimeAsync(30 * MINUTE);
+    } finally { clearInterval(viewer); scheduler.stop(); }
+    return times.filter(at => at >= 20 && at < 50);
+  }
+
+  it('collects a region a street’s view asks for every two minutes', async () => {
+    expect(await viewed(false)).toEqual(Array.from({ length: 15 }, (_, i) => 20 + 2 * i));
+  });
+
+  it('collects a region a view too wide to show single scooters asks for every ten minutes, as other app maps', async () => {
+    // From 23 to 24 November 2026 every two minutes, as a street's: Tashkent's 105 requests five times as often (week review
+    // of 24 November 2026, C3).
+    expect(await viewed(true)).toEqual([20, 30, 40]);
   });
 });

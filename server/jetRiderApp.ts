@@ -5,6 +5,7 @@ import { boundsContainPoint, haversineM } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, RidePricing, Vehicle } from '../src/lib/types';
+import { APP_MAP_WIDE_INTERVAL_MS } from './appMapCadence';
 import { Pacer } from './sweeps';
 
 const ORIGIN = 'https://service.jetscooters.fun/gatewayclient';
@@ -28,7 +29,7 @@ const MODEL_NAME = /^[\p{L}\p{N} ._+()-]{1,64}$/u;
 // A scooter's price depends on its city and model: on 23 November 2026, in Tashkent, a Ninebot Max Plus cost
 // 990 soʻm to start and 990 a minute, an SL 90 1,990 and 1,190, the same at four places across the city; in
 // Tbilisi a Max Plus or Max Pro 1 ₾ and 0.32, an L 60L or Max S100 1 ₾ and 0.40. One scooter of each model is
-// read about hourly, and its price is shown for six hours at most when it can't be read again.
+// read about hourly, and its price is shown for six hours at most when it can't be read again, or its card gives none.
 const PRICE_REFRESH_MS = 60 * 60_000;
 const PRICE_KEPT_MS = 6 * 60 * 60_000;
 const MAX_PRICE_READS = 6;
@@ -318,14 +319,21 @@ export function parseJetRiderVehicles(payload: unknown): { count: number; vehicl
   return { count: entries.transports.length, vehicles, parkings, parkingsComplete: parkings.length < PARKING_LIST_CAP || lastEmpty };
 }
 
-/** Scooters of a polygon's or a parking's reply that can be hired, with their range; bikes and other states are left out. */
-function transports(items: unknown[], parkingId?: string): JetRiderTransport[] {
+/**
+ * Scooters of a polygon's or a parking's reply that can be hired, with their range; bikes and other states are left out,
+ * and the ids of scooters in another state, as booked, go to `unhireable` (collectJetRiderRegion).
+ */
+function transports(items: unknown[], parkingId?: string, unhireable?: Set<string>): JetRiderTransport[] {
   if (items.length > 1000) throw new Error('Invalid JET rider map');
   const result: JetRiderTransport[] = [];
   for (const item of items) {
     const transport = object(item);
     if (!transport || typeof transport.type !== 'string' || typeof transport.state !== 'string') throw new Error('Invalid JET rider transport');
-    if (!SCOOTER_TYPES.has(transport.type) || !HIREABLE_STATES.has(transport.state)) continue;
+    if (!SCOOTER_TYPES.has(transport.type)) continue;
+    if (!HIREABLE_STATES.has(transport.state)) {
+      if (transportId(transport.identifier)) unhireable?.add(`jet-rider:${transport.identifier}`);
+      continue;
+    }
     const point = position(transport.location), charge = object(transport.charge);
     const battery = charge?.batteryPercent, km = charge?.remainKm, parking = parkingId ?? transport.parkingId;
     if (!transportId(transport.identifier) || !point || transport.charge != null && !charge ||
@@ -341,16 +349,16 @@ function transports(items: unknown[], parkingId?: string): JetRiderTransport[] {
   return result;
 }
 
-export function parseJetRiderPolygon(payload: unknown): JetRiderTransport[] {
+export function parseJetRiderPolygon(payload: unknown, unhireable?: Set<string>): JetRiderTransport[] {
   const data = reply(payload);
   if (!Array.isArray(data.transports)) throw new Error('Invalid JET rider map');
-  return transports(data.transports);
+  return transports(data.transports, undefined, unhireable);
 }
 
-export function parseJetRiderParking(payload: unknown, id: string): JetRiderTransport[] {
+export function parseJetRiderParking(payload: unknown, id: string, unhireable?: Set<string>): JetRiderTransport[] {
   const parking = object(reply(payload).data);
   if (parking?.id !== id || !Array.isArray(parking.transports)) throw new Error('Invalid JET rider parking');
-  return transports(parking.transports, id);
+  return transports(parking.transports, id, unhireable);
 }
 
 const minorUnits = (value: unknown, maximum: number) => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 &&
@@ -377,8 +385,8 @@ export function parseJetRiderRate(payload: unknown, country: string, model: stri
   return { currency, unlock_fee_minor_units: start, minute_fee_minor_units: minute };
 }
 
-/** The prices read, by region and model, and when. */
-export type JetRiderPrices = Map<string, { pricing?: RidePricing; readAt: number }>;
+/** By region and model, when a card was last read, and the last price one gave, with when that card was read. */
+export type JetRiderPrices = Map<string, { readAt: number; price?: { pricing: RidePricing; readAt: number } }>;
 const PRICES: JetRiderPrices = new Map();
 
 /** The four quarters of a box, split at its centre. */
@@ -430,7 +438,12 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
 
   // Polygons list the parked scooters too, and every scooter's range, but a full box's reply leaves some out with
   // no sign of it: each box is sized by the map's counts, checked against them, and split while it falls short.
+  // They list a scooter's state, which the map does not: one they list as booked, or in any state that can't be
+  // hired, is neither missing from them nor kept from the map. Until 24 November 2026 it was both: published from
+  // the map with no range or price, and counted short, enough of them splitting a box down to 100 metres (week
+  // review of 24 November 2026, C5).
   const read = new Map<string, JetScooter>(), parked = new Map<string, Set<string>>(), models = new Map<string, string>();
+  const unhireable = new Set<string>();
   const keep = ({ vehicle, parkingId, model }: JetRiderTransport) => {
     read.set(vehicle.vehicle_id, vehicle);
     if (parkingId) parked.set(parkingId, (parked.get(parkingId) ?? new Set()).add(vehicle.vehicle_id));
@@ -449,11 +462,11 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
       return;
     }
     spend();
-    const batch = parseJetRiderPolygon(await client.polygon(view, deadline));
+    const batch = parseJetRiderPolygon(await client.polygon(view, deadline), unhireable);
     batch.forEach(keep);
     const ids = new Set(batch.map(item => item.vehicle.vehicle_id));
-    const missing = expectedLoose.filter(vehicle => !ids.has(vehicle.vehicle_id)).length + expectedParkings.reduce((sum, parking) =>
-      sum + Math.max(0, parking.count - batch.filter(item => item.parkingId === parking.id).length), 0);
+    const missing = expectedLoose.filter(vehicle => !ids.has(vehicle.vehicle_id) && !unhireable.has(vehicle.vehicle_id)).length +
+      expectedParkings.reduce((sum, parking) => sum + Math.max(0, parking.count - batch.filter(item => item.parkingId === parking.id).length), 0);
     // A few may have been hired or moved since the map was read.
     if (divisible && missing > Math.max(2, Math.ceil(expected * 0.03))) for (const part of quarters(bounds)) await polygonTile(part);
   }
@@ -464,14 +477,17 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
   if (short.length > MAX_PARKING_READS) throw new Error('JET rider parkings remain unread');
   for (const parking of short) {
     spend();
-    parseJetRiderParking(await client.parking(parking.id, deadline), parking.id).forEach(keep);
+    parseJetRiderParking(await client.parking(parking.id, deadline), parking.id, unhireable).forEach(keep);
   }
 
-  const vehicles = new Map(loose);
+  const vehicles = new Map([...loose].filter(([id]) => !unhireable.has(id)));
   for (const vehicle of read.values()) if (inAreas(vehicle.lat, vehicle.lng)) vehicles.set(vehicle.vehicle_id, vehicle);
 
   // Each model's price, read again from one of its scooters once an hour old. A price that can't be read leaves
-  // the scooters without one, never the sweep without its scooters.
+  // the scooters without one, never the sweep without its scooters. A card read with no price the map can show, as
+  // one listing two rates by the minute, keeps the price read before, as a card that can't be read does, until six
+  // hours after it was read (PRICE_KEPT_MS), and is read again in an hour. Until 24 November 2026 such a card erased
+  // the price at once (week review of 24 November 2026, minor note).
   const byModel = new Map<string, string>();
   for (const id of vehicles.keys()) {
     const model = models.get(id);
@@ -485,13 +501,14 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
     if (++priceReads > MAX_PRICE_READS) break;
     try {
       spend();
-      const pricing = parseJetRiderRate(await client.transport(identifier, deadline), system.country, model);
-      prices.set(key(model), { ...pricing && { pricing }, readAt: Date.now() });
-    } catch { /* The price read before, if any, stays until PRICE_KEPT_MS. */ }
+      const pricing = parseJetRiderRate(await client.transport(identifier, deadline), system.country, model), readAt = Date.now();
+      const price = pricing ? { pricing, readAt } : known?.price;
+      prices.set(key(model), { readAt, ...price && { price } });
+    } catch { /* The price read before, if any, stays until PRICE_KEPT_MS, and the card is read again next sweep. */ }
   }
   const priced = [...vehicles.values()].map(vehicle => {
-    const model = models.get(vehicle.vehicle_id), known = model ? prices.get(key(model)) : undefined;
-    return known?.pricing && Date.now() - known.readAt < PRICE_KEPT_MS ? { ...vehicle, pricing: known.pricing } : vehicle;
+    const model = models.get(vehicle.vehicle_id), price = model ? prices.get(key(model))?.price : undefined;
+    return price && Date.now() - price.readAt < PRICE_KEPT_MS ? { ...vehicle, pricing: price.pricing } : vehicle;
   });
   return { observedAt: started, stale: false, vehicles: priced };
 }
@@ -502,11 +519,18 @@ export async function collectJetRiderRegion(system: RegionalScooterSystem,
  */
 export const JET_RIDER_WATCHED_INTERVAL_MS = 2 * 60_000;
 
+/**
+ * A view too wide to show single scooters has a region collected every ten minutes, as other app maps
+ * (APP_MAP_WIDE_INTERVAL_MS), and a street's view every two. The cache gives that interval only to app maps
+ * without one of their own for when they are watched (scooter-cache.ts, setDefinitions), so the region names
+ * it: from 23 to 24 November 2026 a wide view had a region collected every two minutes, Tashkent's 105 requests
+ * five times as often (week review of 24 November 2026, C3).
+ */
 export function withJetRiderAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.jetRiderAppCity).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, paced: true, activeIntervalMs: JET_RIDER_WATCHED_INTERVAL_MS,
+    return system ? { ...feed, paced: true, activeIntervalMs: JET_RIDER_WATCHED_INTERVAL_MS, wideIntervalMs: APP_MAP_WIDE_INTERVAL_MS,
       collect: () => collectJetRiderRegion(system) } : feed;
   });
 }
