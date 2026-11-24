@@ -5,18 +5,18 @@ const guide: Guide = {
   slug: 'e-scooters-thessaloniki',
   topic: 'thessaloniki',
   name: 'Renting an e-scooter in Thessaloniki',
-  title: 'E-scooters Thessaloniki 2026: Dott, Lime and city rules',
-  description: 'E-scooters in Thessaloniki: Dott and Lime, Greece’s helmet law and minimum age of 17, where you may ride and park, the fines, and the city’s own scooter rules.',
-  headline: 'E-scooters in Thessaloniki: Dott and Lime, Greece’s helmet law, and the city’s own scooter regulation',
-  lede: 'Dott and Lime scooters are on our Thessaloniki map. No driving licence is needed, but Greek law sets the minimum age at 17, makes a fastened helmet compulsory for every rider and keeps you off pavements, squares, pedestrian streets and any road with a limit over 50 km/h, with fines of €30 to €350. On top of national law, the Municipality of Thessaloniki has its own regulation on how e-scooters circulate and park: first approved in December 2024, amended three times in 2025, and approved again unanimously in a decision issued on 13 October 2025, following the new Highway Code.',
+  title: 'E-scooters Thessaloniki 2026: Dott, Lime, RideMovi, rules',
+  description: 'E-scooters in Thessaloniki: Dott, Lime and RideMovi, Greece’s helmet law and minimum age of 17, where you may ride and park, the fines, and the city’s rules.',
+  headline: 'E-scooters in Thessaloniki: Dott, Lime and RideMovi, Greece’s helmet law, and the city’s own scooter regulation',
+  lede: 'Dott, Lime and RideMovi scooters are on our Thessaloniki map. No driving licence is needed, but Greek law sets the minimum age at 17, makes a fastened helmet compulsory for every rider and keeps you off pavements, squares, pedestrian streets and any road with a limit over 50 km/h, with fines of €30 to €350. On top of national law, the Municipality of Thessaloniki has its own regulation on how e-scooters circulate and park: first approved in December 2024, amended three times in 2025, and approved again unanimously in a decision issued on 13 October 2025, following the new Highway Code.',
   published: '2026-11-02',
-  updated: '2026-11-02',
+  updated: '2026-11-24',
   city: 'gr:Thessaloniki',
   sections: [
     {
       heading: 'Which e-scooter apps work in Thessaloniki?',
       blocks: [
-        'At 11:57 am on Monday 2 November 2026, Greek time, the [Thessaloniki map](map:gr:Thessaloniki) showed about 690 Dott scooters free to rent at that moment and about 330 Lime scooters as last counted. The map shows the nearest scooter and the walk to it, and a button opens the operator’s app.',
+        'At 11:57 am on Monday 2 November 2026, Greek time, the [Thessaloniki map](map:gr:Thessaloniki) showed about 690 Dott scooters free to rent at that moment and about 330 Lime scooters as last counted. At 5:43 pm on 24 November 2026 it showed about 980 scooters of RideMovi, an Italian operator, as last counted. The area RideMovi’s app shows covers the centre and the waterfront from the White Tower to the Concert Hall, and reaches beyond the city into Kalamaria and other neighbouring municipalities. The map shows the nearest scooter and the walk to it, and a button opens the operator’s app.',
         'Each operator has its own app: you unlock a scooter with your phone and pay in the app. Check the price before you unlock, and read where you may end the ride.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -47,7 +47,7 @@ const guide: Guide = {
         'Yes, and you need no driving licence. The rules below come from the Highway Code (KOK, law 5209/2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026.',
         {
           list: [
-            '**Age:** 17 or over. Riding younger is a €150 fine. The app may set a higher age.',
+            '**Age:** 17 or over. Riding younger is a €150 fine. The app may set a higher age: RideMovi lets a 17-year-old ride only if a parent or guardian registers the account.',
             '**Helmet:** compulsory at any age, adults included: an approved helmet, fastened, or €30. Bring your own.',
             '**ID:** carry a passport or ID card when you ride. The operator’s insurance certificate can stay in the app.',
             '**Passengers:** one rider only (€150).',
@@ -137,7 +137,7 @@ const guide: Guide = {
       heading: 'Stations, bus stops and the port',
       blocks: [
         'A shared e-scooter is for the street. End your ride outside the station or stop, in a spot the app allows, and walk in; at a bus stop, leave it at least 12 metres away, as the law asks.',
-        'Coming back out, open the [Thessaloniki map](map:gr:Thessaloniki) to find the nearest Dott or Lime to the exit. At the port, the same rule as for any boat applies: no parking where passengers board.',
+        'Coming back out, open the [Thessaloniki map](map:gr:Thessaloniki) to find the nearest Dott, Lime or RideMovi to the exit. At the port, the same rule as for any boat applies: no parking where passengers board. The port’s passenger terminal lies just outside the area RideMovi’s app shows, so end a RideMovi ride before you reach it.',
       ],
     },
     {
@@ -156,7 +156,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Thessaloniki?',
-      answer: 'Dott and Lime. At 11:57 am on 2 November 2026 [our map](map:gr:Thessaloniki) showed about 690 Dott scooters free to rent at that moment and about 330 Lime scooters as last counted, and a button opens each app.',
+      answer: 'Dott, Lime and RideMovi. At 11:57 am on 2 November 2026 [our map](map:gr:Thessaloniki) showed about 690 Dott scooters free to rent at that moment and about 330 Lime scooters as last counted; at 5:43 pm on 24 November it showed about 980 RideMovi scooters, also as last counted. A button opens each app.',
     },
     {
       question: 'Do you need a licence to ride an e-scooter in Thessaloniki?',
@@ -189,6 +189,7 @@ const guide: Guide = {
     { title: 'Municipality of Thessaloniki: decision 527/2025, its e-scooter regulation, 13 October 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%991%CE%A5%CE%A9%CE%A15-%CE%A1%CE%9D%CE%A1' },
     { title: 'Municipality of Kalamaria: decision 230/2026, approving the amendment of council decision 196/2025 on fees for e-scooter rental firms and fines for e-scooter use, 23 June 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/9%CE%A5%CE%A16%CE%A9%CE%95%CE%A1-%CE%A0%CE%95%CE%A0' },
     { title: 'Municipality of Athens: decision 717/2025, the e-scooter regulation, 20 November 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%948%CE%91%CE%A96%CE%9C-9%CE%92%CE%98' },
+    { title: 'RideMovi: under-18s', url: 'https://www.ridemovi.com/en/informative/under-18s' },
   ],
 };
 
