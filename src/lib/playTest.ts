@@ -113,8 +113,12 @@ export function readPlayTestMemory(): PlayTestMemory {
     const saved: unknown = JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY) ?? 'null');
     if (!saved || typeof saved !== 'object') return {};
     const { until, never, steps, step, thanked } = saved as Record<string, unknown>;
-    // The old highest-step value proves only that link was followed.
-    const followed = [1, 2, 3].filter(n => Array.isArray(steps) ? steps.includes(n) : step === n);
+    // Until 18 November 2026 (eb049011) only the highest step followed was kept, as `step`: on its own it proves only
+    // that this link was followed. With `thanked` it is step 3, saved for a tester the map thanked after the last
+    // step, who had finished as the invitation then counted it: all three are read as followed, so that they are not
+    // invited again (week review of 24 November 2026, S2). PLAY_TEST_SCRIPT reads it the same way.
+    const finished = !Array.isArray(steps) && step === 3 && thanked === true;
+    const followed = [1, 2, 3].filter(n => finished || (Array.isArray(steps) ? steps.includes(n) : step === n));
     return {
       ...(typeof until === 'number' && Number.isFinite(until) ? { until } : {}),
       ...(never === true ? { never } : {}),
@@ -158,8 +162,9 @@ export const OLDER_ANDROID_ATTRIBUTE = 'data-older-android';
 /**
  * Runs in the head of every page of the site, before the first paint: the guide's
  * card and the landing page's two app buttons are in the page as built, and this
- * shows each to whom it is for, so that nothing moves when the page has loaded. It follows seesPlayTest() and playTestInvitation() (the test keeps
- * them in step), and the client hints, which come later, can only take it back.
+ * shows each to whom it is for, so that nothing moves when the page has loaded. It follows seesPlayTest(), and
+ * readPlayTestMemory() and playTestInvitation() (the test keeps them in step), and the client hints, which come
+ * later, can only take it back.
  * Written as text because it is not part of any bundle; the Worker gives it the
  * nonce of the response like every other script of the page.
  */
@@ -173,8 +178,9 @@ export const PLAY_TEST_SCRIPT = `(function () {
     var memory = null;
     try { memory = JSON.parse(localStorage.getItem(${JSON.stringify(PLAY_TEST_STORAGE_KEY)}) || 'null'); } catch (error) {}
     if (!memory || typeof memory !== 'object') memory = {};
-    var quiet = memory.never === true || (Array.isArray(memory.steps) && [1, 2, 3].every(function (n) { return memory.steps.includes(n); })) ||
-      (typeof memory.until === 'number' && memory.until > Date.now());
+    var finished = Array.isArray(memory.steps) ? [1, 2, 3].every(function (n) { return memory.steps.includes(n); })
+      : memory.step === 3 && memory.thanked === true;
+    var quiet = memory.never === true || finished || (typeof memory.until === 'number' && memory.until > Date.now());
     var root = document.documentElement;
     root.setAttribute(${JSON.stringify(PLAY_TEST_ATTRIBUTE)}, quiet ? 'quiet' : 'offer');
     var hints = navigator.userAgentData;

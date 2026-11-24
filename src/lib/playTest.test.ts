@@ -108,6 +108,23 @@ describe('what this browser remembers', () => {
     expect(readPlayTestMemory()).toEqual({ until: 5, thanked: true });
   });
 
+  it('reads a tester thanked before 18 November 2026, when only the highest step was kept, as having followed all three', () => {
+    // Week review of 24 November 2026, S2: the old code saved { step: 3, thanked: true } once the map had thanked
+    // a tester back after the last step; read as step 3 alone, it offered them the invitation again.
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 3, thanked: true }));
+    expect(readPlayTestMemory()).toEqual({ steps: [1, 2, 3], thanked: true });
+    expect(playTestInvitation(readPlayTestMemory(), Date.now(), 'map')).toBe('quiet');
+    expect(playTestInvitation(readPlayTestMemory(), Date.now(), 'site')).toBe('quiet');
+    // Without the thanks, the old highest step proves only that its link was followed.
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 3 }));
+    expect(readPlayTestMemory()).toEqual({ steps: [3] });
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 2, thanked: true }));
+    expect(readPlayTestMemory()).toEqual({ steps: [2], thanked: true });
+    // Saved the new way, the same tester stays quiet too.
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ steps: [1, 2, 3], thanked: true }));
+    expect(playTestInvitation(readPlayTestMemory(), Date.now(), 'map')).toBe('quiet');
+  });
+
   it('adds to what it remembers', () => {
     expect(rememberPlayTest({ steps: [1] })).toEqual({ steps: [1] });
     expect(rememberPlayTest({ until: 10 })).toEqual({ steps: [1], until: 10 });
@@ -131,7 +148,8 @@ describe('what this browser remembers', () => {
 });
 
 describe('the script of the site, before the first paint', () => {
-  const run = (userAgent: string, options: { memory?: PlayTestMemory; referrer?: string; hints?: { platform: string; platformVersion: string } } = {}) => {
+  // What this browser may hold: the memory as saved now, or as saved before 18 November 2026 ({ step: 3 }).
+  const run = (userAgent: string, options: { memory?: PlayTestMemory | { step: number; thanked?: true }; referrer?: string; hints?: { platform: string; platformVersion: string } } = {}) => {
     document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE);
     document.documentElement.removeAttribute(IPHONE_ATTRIBUTE);
     document.documentElement.removeAttribute(OLDER_ANDROID_ATTRIBUTE);
@@ -149,18 +167,24 @@ describe('the script of the site, before the first paint', () => {
     document.documentElement.removeAttribute(OLDER_ANDROID_ATTRIBUTE);
   });
 
-  it('marks the page as playTestInvitation() and the user agent decide, for every browser and memory', () => {
+  it('marks the page as readPlayTestMemory(), playTestInvitation() and the user agent decide, for every browser and memory', () => {
     const now = Date.now();
-    const memories: PlayTestMemory[] = [
+    const memories = [
       {}, { steps: [3] }, { steps: [1] }, { steps: [2] }, { steps: [1, 2, 3] }, { steps: [1, 2, 3], thanked: true }, { never: true },
       { until: now + 60_000 }, { until: now - 60_000 }, { until: now + 60_000, steps: [2] },
+      // As saved before 18 November 2026: the highest step, and the map's thanks after the last.
+      { step: 1 }, { step: 3 }, { step: 3, thanked: true as const }, { step: 2, thanked: true as const },
     ];
     for (const userAgent of Object.values(AGENTS)) {
       for (const memory of memories) {
-        const expected = androidInUserAgent(userAgent) === 'no' ? null : playTestInvitation(memory, now, 'site');
+        localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(memory));
+        const expected = androidInUserAgent(userAgent) === 'no' ? null : playTestInvitation(readPlayTestMemory(), now, 'site');
         expect(run(userAgent, { memory }), `${userAgent} ${JSON.stringify(memory)}`).toBe(expected);
       }
     }
+    // A tester thanked before then is quiet on the site, as on the map.
+    expect(run(AGENTS.chrome, { memory: { step: 3, thanked: true } })).toBe('quiet');
+    expect(run(AGENTS.chrome, { memory: { step: 3 } })).toBe('offer');
   });
 
   it('marks an iPhone, as isIPhone() decides, where the landing page’s Android button gives way', () => {
