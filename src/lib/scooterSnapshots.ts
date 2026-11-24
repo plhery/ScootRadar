@@ -250,7 +250,8 @@ function seasonOverIn(snapshot: MobilitySnapshot, bounds: MapBounds): Pick<Scoot
  * `usable` decides which feeds count. `refreshing` lists feeds being collected
  * again for this request: one whose last collection succeeded and whose
  * positions are merely old, or one not collected yet, is on its way, not
- * failed, and makes its source stale.
+ * failed, and makes its source stale. So does a feed querySnapshot finds late,
+ * which it lists there too: idle and too old even to stand faded.
  */
 function healthFor(feeds: FeedSnapshot[], now: number, usable: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now),
   refreshing?: ReadonlySet<string>): ScooterFetchMetadata {
@@ -690,7 +691,9 @@ export interface SnapshotQueryOptions {
   awaitingView?: ReadonlySet<string>;
   /**
    * Feeds in view the request left idle (demandedFeeds). One whose positions are too old to show
-   * stands faded where its scooters were last seen, and counts neither as served nor as failed.
+   * stands faded where its scooters were last seen, and counts neither as served nor as failed; too
+   * old to stand faded, of an app the answer holds nothing else of, it makes the answer stale and its
+   * app named late (querySnapshot's `late`).
    */
   idleInView?: ReadonlySet<string>;
   /**
@@ -868,9 +871,27 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const staleApps = new Set(counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing) &&
     (showsPositions(feed, now) ? feed.stale || feed.failed : !failedAtOperator(feed) && options.refreshing?.has(feed.id) === true))
     .map(feed => feed.provider));
-  const staleProviders = byApp(oldestShownByProvider, staleApps);
-  const response = scooterResponse({ vehicles, meta, batteryRanges }, zoom, {
-    ...(meta.stale ? { staleProviders } : {}),
+  // An app the answer holds nothing of but idle feeds whose positions are too old to show, and too old to stand faded, is
+  // late, not absent: as a Ryde group a held visitor's view leaves to its sweeps, every 1 to 3 days, whose positions stand
+  // faded 3 hours at most (rydeApp.ts). Such a feed counted neither as served nor as failed, and the answer of Karlstad,
+  // where only Ryde runs, had no scooter, said its source skipped and was fresh: the map and the apps said "Live" over "No
+  // scooters here right now" (week review of 24 November 2026, C2). It now makes its source stale, as a feed on its way
+  // does, and the answer names its app late from its last read (staleProviders), which the map and the apps since
+  // 7 November 2026 say as "Ryde data delayed · showing 09:00"; one whose operator failed is named failed, as when asked
+  // for. An app with anything else in the answer, positions shown, faded or swept, a read of the view, a collection on
+  // its way or a feed counted, as the Lime groups a wide view collects beside those it leaves idle, is left as it was.
+  const heard = new Set([...counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing)).map(feed => feed.provider),
+    ...oldestShownByProvider.keys(), ...lastSeenProviders.keys()]);
+  const late = relevant.filter(feed => options.idleInView?.has(feed.id) === true && !feed.skipped && !heard.has(feed.provider) &&
+    (feed.observedAt > 0 || failedAtOperator(feed)) && !showsPositions(feed, now) && !quietInPause(feed, now, showing) &&
+    now - feed.observedAt > (options.lastSeenMaxAgeMs?.(feed.id) ?? LAST_SEEN_MAX_AGE_MS));
+  const health = late.length ? healthFor([...counted, ...late], now, undefined,
+    new Set([...options.refreshing ?? [], ...late.map(feed => feed.id)])) : meta;
+  const lateSince = new Map<string, number>();
+  for (const feed of late) if (!failedAtOperator(feed)) earliest(lateSince, feed.provider, feed.observedAt);
+  const staleProviders = { ...byApp(oldestShownByProvider, staleApps), ...byApp(lateSince) };
+  const response = scooterResponse({ vehicles, meta: health, batteryRanges }, zoom, {
+    ...(health.stale ? { staleProviders } : {}),
     ...(readByProvider.size ? { shownSince: shownSinceByApp, readThrough: byApp(readThroughByProvider) } : {}),
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),

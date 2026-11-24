@@ -315,7 +315,7 @@
           "minimum": 0
         },
         "staleProviders": {
-          "description": "With stale, in an answer of scooters: each app whose positions shown are being collected again or could not be renewed, by provider, with when the oldest of them were seen. The map names the one app delayed rather than saying the data is; an app with nothing shown yet is not among them.",
+          "description": "With stale, in an answer of scooters: each app whose positions shown are being collected again or could not be renewed, by provider, with when the oldest of them were seen; and an app the answer holds nothing else of but feeds in view it leaves uncollected whose positions are too old even to stand faded, with when they were read, as a Ryde town's groups to a visitor held from collecting. The map names the one app delayed rather than saying the data is; an app with nothing shown yet, its feeds on their way, is not among them.",
           "type": "object",
           "additionalProperties": { "type": "string", "format": "date-time" }
         },

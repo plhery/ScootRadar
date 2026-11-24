@@ -5,9 +5,13 @@ import type { Server } from 'node:http';
 import { createSnapshotServer } from './snapshotServer';
 import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
-import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger, PASS_GRACE_REQUESTS } from './visitorLedger';
+import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger, PASS_GRACE_REQUESTS, UNBROKEN_QUARTER_HOURS, VISITOR_DAY_MS,
+  VISITOR_WINDOW_MS } from './visitorLedger';
 import { createPublicVehicleIds } from './publicVehicleIds';
 import { boundsCenter } from '../src/lib/geo';
+import { clientNetwork } from '../src/lib/clientNetwork';
+import { LAST_SEEN_MAX_AGE_MS } from '../src/lib/dataFreshness';
+import { dockModel } from '../src/lib/dockModel';
 import { buildCityOverview, LIME_GROUPS_PER_REQUEST, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
@@ -843,5 +847,84 @@ describe('collection on demand', () => {
     pending = false;
     unavailable = true;
     expect((await fetch(url(`${view}&zoom=15`), { headers })).headers.get('X-Scooter-Public-Cache-Control')).toBe('private, no-store');
+  });
+});
+
+describe('a held visitor in a town where only Ryde runs', () => {
+  // Karlstad: Ryde's groups are swept every 1 to 3 days while nobody looks (c04b607e) and their last positions stand
+  // faded 3 hours at most (rydeApp.ts, lastSeenMaxAgeMs). A visitor the ledger holds collects nothing: every feed in
+  // view is idle (week review of 24 November 2026, C2).
+  const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => candidate.id.startsWith('ryde_app_se_karlstad_'))!;
+  const feedId = `${regionalSource(system)}:${system.id}`;
+  // The middle of the group's own box, and a street's view there.
+  const lat = (system.bounds.south + system.bounds.north) / 2, lng = (system.bounds.west + system.bounds.east) / 2;
+  const view = { south: lat - 0.003, west: lng - 0.006, north: lat + 0.003, east: lng + 0.006 };
+  const network = '198.51.100.7';
+  afterEach(() => vi.useRealTimers());
+
+  /** What a visitor sees of Karlstad at 14:00 UTC, the town's Ryde group last scanned `scannedHoursAgo` ago. */
+  async function karlstad(scannedHoursAgo: number, held: boolean) {
+    const now = Math.floor(Date.now() / VISITOR_DAY_MS) * VISITOR_DAY_MS + 14 * 60 * 60_000;
+    vi.useFakeTimers({ now, toFake: ['Date'] });
+    const at = now - scannedHoursAgo * 60 * 60_000;
+    const vehicles = Array.from({ length: 12 }, (_, index) => ({ provider: 'ryde', vehicle_id: `ryde-app:${index}`,
+      lat: lat + (index - 6) * 0.0001, lng: lng + (index - 6) * 0.0002, battery: null, range_m: null, distance_m: null, deep_link: null }));
+    const feeds: FeedSnapshot[] = [{ id: feedId, source: regionalSource(system), provider: 'ryde', coverage: [system.bounds], vehicles,
+      observedAt: at, attemptedAt: at, collectedAt: at, collectionMs: 600_000, stale: false, failed: false, skipped: false }];
+    const visitors = createVisitorLedger({ enforceAllowance: ['browser'], holdSustained: true, requirePass: true });
+    // A map left open on the network, asking every minute through the morning's nine quarter hours in a row: it asks
+    // all day, and collects nothing more today (visitorLedger.ts).
+    if (held) {
+      for (let quarter = 0; quarter <= UNBROKEN_QUARTER_HOURS; quarter++) {
+        for (let minute = 0; minute < VISITOR_WINDOW_MS / 60_000; minute++) {
+          visitors.record(clientNetwork(network), view, 16, now - (UNBROKEN_QUARTER_HOURS + 2 - quarter) * VISITOR_WINDOW_MS + minute * 60_000,
+            'verified', 'browser');
+        }
+      }
+    }
+    const demanded: string[] = [];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now, () => true) }, { visitors,
+      refresher: { demand: ids => { demanded.push(...ids); return ids; }, refreshing: id => demanded.includes(id), wait: async () => false },
+      // As scooter-cache.ts gives Ryde's feeds (withRydeAppCollectors' lastSeenMaxAgeMs).
+      lastSeenMaxAgeMs: () => LAST_SEEN_MAX_AGE_MS });
+    const response = await fetch(`http://127.0.0.1:${port}/api/scooters?south=${view.south}&west=${view.west}&north=${view.north}&east=${view.east}&zoom=16`,
+      { headers: { Authorization: `Bearer ${token}`, 'X-Scooter-Client-IP': network, 'X-Scooter-Client': 'verified', 'X-Scooter-Agent': 'browser' } });
+    const answer = await response.json() as ScooterResponse;
+    const lastSeenCount = answer.lastSeen?.vehicles.length ?? 0;
+    // What the web map's dock makes of it; the iPhone and Android apps read the same fields alike (ScooterDockSummary).
+    const dock = dockModel({ count: answer.vehicles.length, lastSeenCount, fadedCounts: lastSeenCount ? { ryde: lastSeenCount } : {},
+      lastSeenProviders: Object.fromEntries(Object.entries(answer.lastSeen?.providers ?? {}).map(([provider, status]) =>
+        [provider, { seenAt: Date.parse(status.seenAt), updating: status.updating }])),
+      originInViewport: false, nearest: null, loading: null, failure: null, outOfDate: false, hasData: true, meta: answer.meta,
+      lastUpdated: Math.min(Date.parse(answer.meta.generatedAt), now), now, representedCount: answer.vehicles.length,
+      viewportProviders: answer.meta.availableProviders ?? [], viewportCenter: [lat, lng], providerCounts: {},
+      providersInView: new Set(answer.vehicles.map(vehicle => vehicle.provider)), enabledProviders: new Set(['ryde']), unfilteredCount: answer.vehicles.length });
+    return { demanded, answer, at, status: response.headers.get('x-mobility-data-status'), lastSeenCount,
+      dock: dock.kind === 'summary' ? { status: dock.status?.text, hint: dock.hint?.text.key ?? null } : { kind: dock.kind } };
+  }
+
+  it('control: not held, the group is collected for the view and the answer says so', async () => {
+    const { demanded, answer } = await karlstad(5, false);
+    expect(demanded).toEqual([feedId]);
+    expect(answer.meta.refreshing).toBe(true);
+  });
+
+  it('control: held, a group scanned 2 hours ago stands faded, and the dock says when it was seen', async () => {
+    const { demanded, lastSeenCount, dock, at } = await karlstad(2, true);
+    expect(demanded).toEqual([]);
+    expect(lastSeenCount).toBe(12);
+    expect(dock).toEqual({ status: { key: 'dock.lastSeen.idle', values: { name: 'Ryde' }, time: at }, hint: null });
+  });
+
+  it('held, a group scanned 5 hours ago, too old to stand faded, is said to be delayed, not live', async () => {
+    const { demanded, answer, at, status, lastSeenCount, dock } = await karlstad(5, true);
+    expect(demanded).toEqual([]);
+    // Until then: no scooter, every source skipped, fresh, and the dock "Live" over "No scooters here right now".
+    expect({ vehicles: answer.vehicles.length, lastSeenCount, stale: answer.meta.stale, refreshing: answer.meta.refreshing ?? false,
+      failedSources: answer.meta.failedSources, sweden: answer.meta.sources?.[regionalSource(system) as keyof typeof answer.meta.sources],
+      staleProviders: answer.meta.staleProviders, status }).toEqual({ vehicles: 0, lastSeenCount: 0, stale: true, refreshing: false,
+      failedSources: [], sweden: 'stale', staleProviders: { ryde: new Date(at).toISOString() }, status: 'stale' });
+    // "Ryde data delayed · showing 09:00".
+    expect(dock).toEqual({ status: { key: 'dock.delayed.one', values: { name: 'Ryde' }, time: at }, hint: 'dock.empty' });
   });
 });

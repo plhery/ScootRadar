@@ -745,6 +745,53 @@ describe('feeds collected on demand', () => {
     expect(querySnapshot(snapshot([dott, voi]), query, 16, now).meta.staleProviders).toBeUndefined();
   });
 
+  it('names an app late whose only feeds in view are idle and too old even to stand faded, and leaves any other as it was', () => {
+    const at = (time: number) => new Date(time).toISOString();
+    // A Ryde group last scanned 5 hours ago, its positions faded 3 hours at most, which a request leaves idle: a held
+    // visitor's, whose requests collect nothing (week review of 24 November 2026, C2).
+    const ryde = feed({ id: 'france:ryde_app_test_000', provider: 'ryde', observedAt: now - minutes(300), collectionMs: 30_000,
+      vehicles: [{ ...vehicle('r1'), provider: 'ryde' }] });
+    const idle = { idleInView: new Set([ryde.id]) };
+    const alone = querySnapshot(snapshot([ryde]), query, 16, now, idle);
+    expect(alone.vehicles).toEqual([]);
+    expect(alone.lastSeen).toBeUndefined();
+    expect(alone.meta).toMatchObject({ stale: true, partial: false, failedSources: [], staleProviders: { ryde: at(now - minutes(300)) } });
+    expect(alone.meta.sources.france).toBe('stale');
+    expect(alone.meta.refreshing).toBeUndefined();
+    expect(scooterResponseHeaders(alone)['X-Mobility-Data-Status']).toBe('stale');
+    // Beside Voi's positions shown, it alone is late; the answer's time and each app's read are Voi's, as before, and
+    // Ryde has no read a walk could take for its scooter's.
+    const beside = querySnapshot(snapshot([ryde, voi]), query, 16, now, idle);
+    expect(beside.meta.staleProviders).toEqual({ ryde: at(now - minutes(300)) });
+    expect(beside.meta).toMatchObject({ generatedAt: at(now), shownSince: { voi: at(now) }, readThrough: { voi: at(now) } });
+    // Its operator failing, it is named failed, as when a request asks for it.
+    const failing = querySnapshot(snapshot([{ ...ryde, failed: true }]), query, 16, now, idle);
+    expect(failing.meta).toMatchObject({ failedSources: [ryde.id], partial: true, stale: false });
+    expect(failing.meta.staleProviders).toBeUndefined();
+    // Left as it was: an app whose idle feed stands faded, as within 3 hours, or as long as its own (Lime's three days)...
+    const faded = querySnapshot(snapshot([{ ...ryde, observedAt: now - minutes(120) }]), query, 16, now, idle);
+    expect(faded.lastSeen?.vehicles).toHaveLength(1);
+    expect(faded.meta).toMatchObject({ stale: false, failedSources: [] });
+    expect(faded.meta.sources.france).toBe('skipped');
+    expect(querySnapshot(snapshot([ryde]), query, 16, now, { ...idle, lastSeenMaxAgeMs: () => minutes(3 * 24 * 60) }).meta.stale).toBe(false);
+    // ...one with a read of the view, as Ryde's for a visitor not held, or on its way...
+    const read = feed({ id: `${ryde.id}_view`, provider: 'ryde', stale: true, observedAt: now - minutes(1),
+      vehicles: [{ ...vehicle('r2'), provider: 'ryde' }], collectionMs: 30_000 });
+    const viewed = querySnapshot(snapshot([ryde]), query, 16, now, { ...idle, observations: [read] });
+    expect(viewed.vehicles.map(item => item.vehicle_id)).toEqual(['r2']);
+    expect(viewed.meta.staleProviders).toEqual({ ryde: at(now - minutes(1)) });
+    const waiting = { ...read, observedAt: 0, attemptedAt: 0, vehicles: [] };
+    expect(querySnapshot(snapshot([ryde]), query, 16, now, { ...idle, observations: [waiting], refreshing: new Set([waiting.id]) }).meta)
+      .toMatchObject({ refreshing: true, staleProviders: {} });
+    // ...and one with a feed in view the request collects, as Lime's nearest groups beside those a wide view leaves idle.
+    const lime = (id: string, observedAt: number) => feed({ id: `germany:lime_app_${id}`, provider: 'lime', observedAt,
+      collectionMs: 30_000, vehicles: [{ ...vehicle(id), provider: 'lime', lat: 45.8 }] });
+    const groups = querySnapshot(snapshot([lime('near', now - 30_000), lime('far', now - minutes(300))]), { bounds: { ...lyon, north: 45.78 },
+      minBattery: 0 }, 16, now, { idleInView: new Set(['germany:lime_app_far']) });
+    expect(groups.meta).toMatchObject({ stale: false, failedSources: [] });
+    expect(groups.meta.staleProviders).toBeUndefined();
+  });
+
   it('says of each app with positions shown when the oldest of them were seen, stale or not, as its own collections move it', () => {
     const at = (time: number) => new Date(time).toISOString();
     // Dott's feed is collected every minute; Voi's was last collected 6 minutes ago and is late.

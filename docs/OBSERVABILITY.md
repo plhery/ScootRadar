@@ -396,7 +396,11 @@ everything.
 
 A stale answer of scooters carries `meta.staleProviders`: each app whose positions
 shown are being collected again or could not be renewed, with when the oldest of them
-were seen. From 5 minutes the dock names the one late app, "Ryde data delayed · showing
+were seen. An app the answer holds nothing else of but feeds the view leaves uncollected,
+too old even to stand faded, is named too, from their last read: a held visitor's
+Karlstad, its Ryde group scanned 5 hours before, says "Ryde data delayed · showing 09:00"
+rather than "Live" (week review of 24 November 2026, C2). From 5 minutes the dock names
+the one late app, "Ryde data delayed · showing
 16:44", says "Data delayed" with the oldest time when two or more are, and nothing of
 an app filtered out. City totals and the proxy's kept answer go by the answer's time.
 
