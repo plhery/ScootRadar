@@ -2137,6 +2137,12 @@ Bonaire had feeds to add. Survey files are in
   day, as the map says they are back in May even while they stand on it; if
   they are not back by 1 May, "feed empty" reports the feed about 4 May. In
   October 2027, move `from` to the day each feed empties, if it differs.
+- **When Bird's scooters are back in Calgary, by late April 2027:** the city
+  allows them year-round, but Bird took them in on 22 November 2026, and the
+  catalog pauses Bird Calgary from then until the streets are clear, its
+  alerts muted until 1 May. Once they are back, set `until` to that day; in
+  autumn 2027, move `from` to the day the feed empties, or drop the window if
+  Bird runs the winter.
 - **April 2027:** the season starts in Belarus, Georgia, Armenia, Azerbaijan and
   Kazakhstan too (Minsk's runs from about 15 March to 15 November): check
   Bolt's ids, Whoosh, the registry, ATOM Mobility and the national portals

@@ -19,7 +19,12 @@
         "west": -114.2441,
         "east": -113.9083
       },
-      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/calgary/gbfs.json"
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/calgary/gbfs.json",
+      "seasonal": {
+        "from": "11-22",
+        "until": "clear",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_edmonton",

@@ -130,8 +130,9 @@ describe('Canada', () => {
   });
 
   it('still fails a Bird feed with a time of 0 that lists scooters, or an empty one that is out of date', async () => {
-    const bird = system('bird_ca_calgary');
-    const scooter = { bike_id: 'a', lat: 51.03, lon: -114.03, is_disabled: false, is_reserved: false, vehicle_type_id: BIRD_SCOOTER };
+    // Edmonton's feed: Calgary's is paused while Bird's scooters are in (seasonalPauses.ts), so its failures do not count.
+    const bird = system('bird_ca_edmonton');
+    const scooter = { bike_id: 'a', lat: 53.54, lon: -113.49, is_disabled: false, is_reserved: false, vehicle_type_id: BIRD_SCOOTER };
     const statuses = [
       { version: '2.3', data: { bikes: [scooter] }, last_updated: 0 },
       { version: '2.3', data: { bikes: [] }, last_updated: Math.floor(Date.now() / 1000) - 3600 },
@@ -139,9 +140,9 @@ describe('Canada', () => {
     ];
     for (const status of statuses) {
       upstreamJsonCache.clear();
-      vi.stubGlobal('fetch', serveBird('bird_ca_calgary', () => status));
+      vi.stubGlobal('fetch', serveBird('bird_ca_edmonton', () => status));
       await expect(fetchScooters({ bounds: bird.bounds, minBattery: 0, providers: new Set(['bird']) }), JSON.stringify(status))
-        .rejects.toMatchObject({ failedSources: ['canada:bird_ca_calgary'] });
+        .rejects.toMatchObject({ failedSources: expect.arrayContaining(['canada:bird_ca_edmonton']) });
     }
     expect(isEmptyUndatedStatus({ last_updated: 0, data: { vehicles: [] } })).toBe(true);
     expect(isEmptyUndatedStatus({ last_updated: '0', data: { bikes: [] } })).toBe(false);

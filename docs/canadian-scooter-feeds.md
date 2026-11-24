@@ -262,6 +262,14 @@ evening of the 29th. So the catalog pauses it from 29 October until 1 May,
 Edmonton time, as Leduc, Bird's other town near Edmonton: check in late April
 2027 when the scooters come back.
 
+Calgary allows scooters year-round (below), but Bird took its in on 22
+November 2026: its feed froze on one scooter at 06:23 that morning, Calgary
+time, listed none from that evening, with `last_updated` 0, and froze on one
+again on the evening of the 23rd. So that neither reports it, the catalog
+pauses Bird's Calgary from 22 November until the streets are clear, Edmonton
+time, its alerts muted until 1 May at the latest. Check when Bird's scooters
+come back.
+
 Penticton publishes no season either, but the city's
 [notice of 23 October 2026](https://www.penticton.ca/city-hall/news-alerts/seasonal-shutdown-citys-e-scooter-and-e-bike-service)
 says its "shared e-scooter and e-bike service will conclude its first season
@@ -423,7 +431,8 @@ above):
   "Option for year-round operation"; **Spruce Grove** and **Stony Plain**
   publish no season (paused from 29 October 2026, above).
 - **Calgary** offers scooters "year-round"
-  ([info sheet](https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf));
+  ([info sheet](https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf)),
+  but Bird took its in on 22 November 2026 (paused, above);
   **Edmonton**, **Hamilton**, **St. Albert**, **Airdrie**, **Kelowna**,
   **Vancouver**, **Richmond**, **Coquitlam** and **Port Moody** publish no
   season.
