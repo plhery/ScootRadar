@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it } from 'vitest';
-import { PACE_WINDOW_MS, noteRequest, paceOpensAt, recentRequests, refusedForMs } from '@/lib/requestPace';
+import { PACE_WINDOW_MS, VIEW_PACE, heldUntil, noteRefusal, noteRequest, paceOpensAt, recentRequests, refusedForMs } from '@/lib/requestPace';
 
 const NOW = Date.parse('2026-11-17T12:00:00.000Z');
 const retryAfter = (value?: string) => ({ headers: new Headers(value === undefined ? {} : { 'Retry-After': value }) });
@@ -48,5 +48,27 @@ describe('the requests of the last minute', () => {
     expect(recentRequests(NOW)).toEqual([]);
     noteRequest(NOW);
     expect(recentRequests(NOW)).toEqual([NOW]);
+  });
+});
+
+describe('a refusal', () => {
+  it('holds every tab of this browser for its Retry-After', () => {
+    noteRefusal(retryAfter('60'), NOW);
+    expect(heldUntil(VIEW_PACE, NOW + 1_000)).toBe(NOW + 60_000);
+    expect(heldUntil(VIEW_PACE, NOW + 60_000)).toBe(NOW + 60_000);
+  });
+
+  it('holds no longer than the longest refusal, five minutes, after the clock is set back an hour, and then lets go', () => {
+    // Week review of 24 November 2026, S1: a time of the clock, the deadline stood an hour ahead of it.
+    noteRefusal(retryAfter('60'), NOW);
+    const setBack = NOW - 3_600_000;
+    expect(heldUntil(VIEW_PACE, setBack)).toBe(setBack + 300_000);
+    // The same end for every later look and every tab, not five minutes from each.
+    expect(heldUntil(VIEW_PACE, setBack + 299_000)).toBe(setBack + 300_000);
+    expect(Number(localStorage.getItem('scooters-refused-until'))).toBe(setBack + 300_000);
+    expect(heldUntil(VIEW_PACE, setBack + 300_000)).toBe(setBack + 300_000);
+    // A refusal given meanwhile keeps that end, or its own if later.
+    noteRefusal(retryAfter('60'), setBack + 280_000);
+    expect(heldUntil(VIEW_PACE, setBack + 300_000)).toBe(setBack + 340_000);
   });
 });

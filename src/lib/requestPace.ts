@@ -56,16 +56,30 @@ export function noteRequest(now: number): void {
 const REFUSAL_KEY = 'scooters-refused-until';
 let storageUnavailableDeadline = 0;
 
-function refusalDeadline(): number {
+/**
+ * Until when a 429 holds this browser's requests: never later than the longest refusal from `now`. The deadline is
+ * a time of the device's clock, so a clock set back after a 429 (an NTP correction, a time zone fixed by hand) left
+ * it as far ahead as the clock went back: a map opened then stayed on "Finding scooters" over an empty map, with no
+ * failure and no button, in every tab and reload, for as long as the jump (week review of 24 November 2026, S1).
+ * One further off than that is kept from now, for every tab, so that it ends: capped only as it was read, it would
+ * move on with the clock. The requests of the last minute already leave out the times after now.
+ */
+function refusalDeadline(now: number): number {
+  let deadline = storageUnavailableDeadline;
   try {
-    return Math.max(Number(localStorage.getItem(REFUSAL_KEY)) || 0, storageUnavailableDeadline);
-  } catch {
-    return storageUnavailableDeadline;
-  }
+    deadline = Math.max(Number(localStorage.getItem(REFUSAL_KEY)) || 0, deadline);
+  } catch {}
+  const latest = now + REFUSED_MAX_MS;
+  if (deadline <= latest) return deadline;
+  storageUnavailableDeadline = Math.min(storageUnavailableDeadline, latest);
+  try {
+    localStorage.setItem(REFUSAL_KEY, String(latest));
+  } catch {}
+  return latest;
 }
 
 export function noteRefusal(response: Pick<Response, 'headers'>, now: number): void {
-  const deadline = Math.max(refusalDeadline(), now + refusedForMs(response));
+  const deadline = Math.max(refusalDeadline(now), now + refusedForMs(response));
   try {
     localStorage.setItem(REFUSAL_KEY, String(deadline));
   } catch {
@@ -74,5 +88,5 @@ export function noteRefusal(response: Pick<Response, 'headers'>, now: number): v
 }
 
 export function heldUntil(pace: number, now: number): number {
-  return Math.max(refusalDeadline(), paceOpensAt(recentRequests(now), now, pace));
+  return Math.max(refusalDeadline(now), paceOpensAt(recentRequests(now), now, pace));
 }

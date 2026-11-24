@@ -144,6 +144,23 @@ describe('the first scooters, asked for as the page hydrates', () => {
     expect(result.current.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['after-the-refusal']);
   });
 
+  it('is held no longer than the longest refusal, five minutes, when the clock was set back an hour after a refusal', async () => {
+    // Week review of 24 November 2026, S1: the refusal's deadline, a time of the clock, stood an hour ahead of a clock
+    // corrected back, and every tab and reload showed "Finding scooters" on an empty map, with no failure, for the hour.
+    localStorage.setItem('scooters-refused-until', String(T0 + 60_000));
+    vi.setSystemTime(T0 - 3_600_000);
+    fetcher.mockImplementation(answer('after-the-refusal'));
+    askFirstScooters(ZURICH);
+    expect(fetcher).not.toHaveBeenCalled();
+    const { result } = mount(ZURICH);
+    await advance(5 * 60_000 - 1);
+    expect(fetcher).not.toHaveBeenCalled();
+    await advance(1);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(result.current).toMatchObject({ loading: null, hasData: true, failure: null });
+    expect(result.current.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['after-the-refusal']);
+  });
+
   it('is counted when it is sent, once', async () => {
     fetcher.mockImplementation(answer('asked-at-hydration'));
     askFirstScooters(ZURICH);

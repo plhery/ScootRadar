@@ -823,7 +823,10 @@ view that moved, or the first a page asks for, once they are 45. Zones wait once
 are 30, for a view that moved too (`src/lib/useZoneData.ts`). After a 429 it asks
 nothing by itself until the `Retry-After` has passed (60 seconds from when the 429
 came), neither a refresh, a moved view nor the request for the first scooters a page
-sends as it hydrates (`src/lib/useFirstScooters.ts`, counted when sent); "Try again" still asks at once. Before, each load counted from
+sends as it hydrates (`src/lib/useFirstScooters.ts`, counted when sent); "Try again" still asks at once. The
+refusal's end is a time of the device's clock: since 24 November 2026 a clock set back
+after a 429 holds the map 5 minutes at most, the longest refusal, where it held it for as
+long as the clock went back. Before, each load counted from
 nothing, and a refused map asked again every 10 seconds and at each pan, so the whole
 refused minute went on being asked for: on 16 and 17 November 2026 a home connection
 in Munich was refused 85 and 74 times in bursts of 80 to 100 requests a minute, a map
