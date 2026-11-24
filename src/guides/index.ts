@@ -391,6 +391,8 @@ import lecceIt from './it/monopattini-sharing-lecce';
 import lecceEn from './en/e-scooters-lecce';
 import algheroIt from './it/monopattini-sharing-alghero';
 import algheroEn from './en/e-scooters-alghero';
+import imperiaIt from './it/monopattini-sharing-imperia';
+import imperiaEn from './en/e-scooters-imperia';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -782,4 +784,6 @@ export const GUIDES: readonly Guide[] = [
   lecceEn,
   algheroIt,
   algheroEn,
+  imperiaIt,
+  imperiaEn,
 ];
