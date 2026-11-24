@@ -15,7 +15,7 @@ La app correcta, con un toque
 «Abrir en» te lleva a la app del propio operador, donde desbloqueas y pagas como siempre. ScootRadar no alquila ni reserva patinetes.
 
 Dónde funciona
-Los patinetes de 39 operadores, en más de 1000 ciudades y pueblos de 58 países: España, Francia, Suiza, Alemania, Italia, el Reino Unido, Bélgica, Polonia, Noruega, Suecia, Finlandia y otros países de Europa; Estados Unidos y Canadá; Brasil, Chile y México; Japón y Corea del Sur; Israel, Turquía, Nueva Zelanda y otros. Entre ellas están Berlín, Oslo, Tokio, Chicago, Santiago de Chile, Roma, São Paulo, Estocolmo, Seúl y Zúrich. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen.
+Los patinetes de 39 operadores, en más de 1000 ciudades y pueblos de 59 países: España, Francia, Suiza, Alemania, Italia, el Reino Unido, Bélgica, Polonia, Noruega, Suecia, Finlandia y otros países de Europa; Estados Unidos y Canadá; Brasil, Chile y México; Japón y Corea del Sur; Israel, Turquía, Nueva Zelanda y otros. Entre ellas están Berlín, Oslo, Tokio, Chicago, Santiago de Chile, Roma, São Paulo, Estocolmo, Seúl y Zúrich. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen.
 
 Privacidad de serie
 Sin registro y sin anuncios. Tu ubicación se usa en tu móvil, para centrar el mapa y calcular los tiempos a pie. Al consultar el mapa, el servidor recibe el área visible. Si pides una ruta a pie, la aplicación también envía al servidor las coordenadas de tu punto de partida y de tu destino. Las estadísticas de uso anónimas se pueden desactivar en Ajustes.

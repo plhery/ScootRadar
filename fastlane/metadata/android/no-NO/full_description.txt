@@ -15,7 +15,7 @@ Ett trykk til riktig app
 «Åpne i» tar deg til operatørens egen app, der du låser opp og betaler som vanlig. ScootRadar leier ikke ut og reserverer ikke elsparkesykler.
 
 Hvor det fungerer
-Sparkesyklene til 39 operatører, i over 1000 byer og tettsteder i 58 land: Norge, Sveits, Frankrike, Tyskland, Italia, Storbritannia, Belgia, Spania, Polen, Sverige, Finland og flere land i Europa; USA og Canada; Brasil, Chile og Mexico; Japan og Sør-Korea; Israel, Tyrkia, New Zealand og flere. Blant dem er Oslo, Berlin, Tokyo, Chicago, Santiago, Roma, São Paulo, Stockholm, Seoul og Zürich. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
+Sparkesyklene til 39 operatører, i over 1000 byer og tettsteder i 59 land: Norge, Sveits, Frankrike, Tyskland, Italia, Storbritannia, Belgia, Spania, Polen, Sverige, Finland og flere land i Europa; USA og Canada; Brasil, Chile og Mexico; Japan og Sør-Korea; Israel, Tyrkia, New Zealand og flere. Blant dem er Oslo, Berlin, Tokyo, Chicago, Santiago, Roma, São Paulo, Stockholm, Seoul og Zürich. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
 
 Innebygd personvern
 Ingen konto og ingen reklame. Posisjonen din brukes på telefonen din, for å sentrere kartet og regne ut gangtider. Når du ser på kartet, mottar serveren det synlige kartområdet. Ber du om en gangrute, sender appen også koordinatene til startpunktet og målet ditt til serveren. Anonym bruksstatistikk kan slås av i Innstillinger.

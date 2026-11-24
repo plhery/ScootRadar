@@ -15,7 +15,7 @@ L’app giusta, con un tocco
 «Apri in» ti porta all’app dell’operatore, dove sblocchi e paghi come sempre. ScootRadar non noleggia né prenota monopattini.
 
 Dove funziona
-I monopattini di 39 operatori, in oltre 1.000 città e comuni di 58 paesi: Svizzera, Italia, Francia, Germania, Regno Unito, Belgio, Spagna, Polonia, Norvegia, Svezia, Finlandia e altri paesi d’Europa; Stati Uniti e Canada; Brasile, Cile e Messico; Giappone e Corea del Sud; Israele, Turchia, Nuova Zelanda e altri ancora. Tra queste ci sono Berlino, Oslo, Tokyo, Chicago, Santiago del Cile, Roma, San Paolo, Stoccolma, Seul e Zurigo. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno.
+I monopattini di 39 operatori, in oltre 1.000 città e comuni di 59 paesi: Svizzera, Italia, Francia, Germania, Regno Unito, Belgio, Spagna, Polonia, Norvegia, Svezia, Finlandia e altri paesi d’Europa; Stati Uniti e Canada; Brasile, Cile e Messico; Giappone e Corea del Sud; Israele, Turchia, Nuova Zelanda e altri ancora. Tra queste ci sono Berlino, Oslo, Tokyo, Chicago, Santiago del Cile, Roma, San Paolo, Stoccolma, Seul e Zurigo. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno.
 
 Privacy fin dalla progettazione
 Niente account, niente pubblicità. La tua posizione viene usata sul tuo telefono, per centrare la mappa e calcolare i tempi a piedi. Quando consulti la mappa, il server riceve l’area visibile. Se richiedi un percorso a piedi, l’app invia al server anche le coordinate del punto di partenza e della destinazione. Le statistiche di utilizzo anonime si possono disattivare in Impostazioni.
