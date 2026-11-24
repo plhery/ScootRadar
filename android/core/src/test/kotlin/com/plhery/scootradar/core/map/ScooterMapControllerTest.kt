@@ -3288,6 +3288,69 @@ class ScooterMapControllerTest {
         assertEquals(zurichFix.coordinate, model.focusRequest.value?.point)
     }
 
+    /**
+     * A pan, a pinch or a turn while the position is found is the later wish, as a place chosen is: the fix shows the
+     * dot and leaves the map where the rider took it. Until 24 November 2026 it moved the map away, from the last fix
+     * the map opens on as from anywhere else (week review of 24 November 2026, choice 9). The control: the map coming
+     * to rest where its own move took it, which it reports as it reports a pan's end, counts as nothing.
+     */
+    @Test
+    fun aMoveOfTheMapByHandWhileTheFixWasOnItsWayKeepsTheMap() = runTest {
+        val lastFix = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 30.0, timestamp = Instant.now().addingTimeInterval(-240.0))
+        val fresh = GeoPoint(47.3600, 8.5300)
+        // Panned to Zürich's main station, a little north of where the map opened.
+        val panned = MapRegion(GeoPoint(47.3779, 8.5402), latitudeDelta = 0.003, longitudeDelta = 0.003)
+        for (byHand in listOf(false, true)) {
+            val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+            val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+            manager.cachedLocation = lastFix
+            val model = makeController(api, locationManager = manager)
+
+            model.start()
+            val opening = unwrap(model.focusRequest.value)
+            assertTrue(model.isLocating.value)
+            if (byHand) model.mapMovedByHand()
+            model.updateViewport(panned, zoom = 17)
+            val viewport = model.viewport.value
+
+            model.locationsUpdated(listOf(ScooterLocationFix(fresh, horizontalAccuracy = 20.0, timestamp = Instant.now())))
+
+            // The position is known from now on either way.
+            assertEquals("by hand: $byHand", fresh, model.userLocation.value)
+            assertFalse(model.isLocating.value)
+            assertTrue(model.hasLocatedOnce.value)
+            assertEquals(NearbyOrigin.UserLocation(fresh), model.activeOrigin)
+            if (byHand) {
+                assertEquals(opening, model.focusRequest.value)
+                assertEquals(viewport, model.viewport.value)
+            } else {
+                val located = unwrap(model.focusRequest.value)
+                assertNotEquals(opening.token, located.token)
+                assertEquals(fresh, located.point)
+            }
+
+            // Near me is a new wish and moves the map again.
+            model.focusOnUser()
+            assertEquals("by hand: $byHand", fresh, model.focusRequest.value?.point)
+        }
+    }
+
+    @Test
+    fun aMoveOfTheMapByHandBeforeLocatingIsNoWishAboutTheNextFix() = runTest {
+        // Moved around while the location was off, the rider then asks for Near me: the fix moves the map.
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = manager)
+        model.mapMovedByHand()
+        model.updateViewport(zurichRegion, zoom = 13)
+
+        model.focusOnUser()
+        assertTrue(model.isLocating.value)
+        model.locationsUpdated(listOf(zurichFix))
+
+        assertEquals(zurichFix.coordinate, model.focusRequest.value?.point)
+        assertEquals(zurichFix.coordinate, model.userLocation.value)
+    }
+
     @Test
     fun aFixThatArrivesAfterNotFoundLeavesAPlaceOrCityChosenMeanwhile() = runTest {
         for (choosesCity in listOf(false, true)) {

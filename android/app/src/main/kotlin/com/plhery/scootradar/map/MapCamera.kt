@@ -141,10 +141,14 @@ class MapCamera(
     /** The map tilts no more than MapKit's camera would at its zoom (MAP-322). */
     private val tiltCap = MapLibreMap.OnCameraMoveListener { holdTilt() }
     private val moveStarted = MapLibreMap.OnCameraMoveStartedListener { reason ->
-        // A hand on the map ends a move under way and the focus with it (MAP-047).
+        // A hand on the map ends a move under way and the focus with it (MAP-047). While the rider's position is being
+        // found, it also keeps the fix from moving the map away from where the hand took it (mapMovedByHand). A tap on
+        // a marker starts no move: MapLibre 13.7 sends this reason for a pan, a fling, a pinch, a turn, a tilt, a double
+        // tap and a two-finger tap.
         if (reason == MapLibreMap.OnCameraMoveStartedListener.REASON_API_GESTURE) {
             stopMotion()
             focusUnderWay = null
+            controller.mapMovedByHand()
         }
     }
     private val resized = View.OnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->

@@ -532,8 +532,8 @@ class ScooterMapController(
     private var keepsMapOnFirstFix = false
 
     /**
-     * Counts the places and cities the rider sent the map to, so that a fix can tell whether one was chosen
-     * while it was on its way.
+     * Counts the places and cities the rider sent the map to, and the moves of the map by hand before the rider's
+     * position is known (mapMovedByHand), so that a fix can tell whether one was made while it was on its way.
      */
     private var placeChoices = 0
     private var placeChoicesAtLocate = 0
@@ -917,8 +917,9 @@ class ScooterMapController(
      * The phone's last fix of a few minutes ago, at the start, while the fresh fix is found: the map opens there and
      * asks for its scooters at once, rather than show the start's city until the fix comes or the wait ends. It is
      * not taken as the rider's position: no dot and no walking times. The fresh fix then moves the map to itself and
-     * asks for scooters if its view isn't loaded yet; without one in time, the map stays here and says so. A link's
-     * place, or a place chosen meanwhile, keeps the map where it is, as for the fresh fix.
+     * asks for scooters if its view isn't loaded yet, unless the rider moved the map by hand meanwhile
+     * (mapMovedByHand); without one in time, the map stays here and says so. A link's place, or a place chosen
+     * meanwhile, keeps the map where it is, as for the fresh fix.
      */
     private fun showRecentLocation(location: ScooterLocationFix) {
         if (userLocation.value != null || !isLocating.value || keepsMapOnFirstFix || placeChoices != placeChoicesAtLocate) return
@@ -1343,6 +1344,17 @@ class ScooterMapController(
 
     fun clearAddressSearch() {
         setSearchedDestination(null)
+    }
+
+    /**
+     * A hand moved the map: a pan, a pinch, a turn, a tilt or a double tap, never a move the camera makes itself.
+     * Before the rider's position is known, it counts as a place chosen: the fix, when it comes, shows the rider's
+     * dot and measures walking times from it, but leaves the map where the rider took it. Until 24 November 2026 only
+     * a link or a chosen place did, and the fix moved the map away from where the rider had panned while it was being
+     * found, as from the last fix the map opens on since 20 November (week review of 24 November 2026, choice 9).
+     */
+    fun mapMovedByHand() {
+        if (userLocation.value == null) placeChoices += 1
     }
 
     fun selectScooter(id: String?) {
@@ -1835,7 +1847,8 @@ class ScooterMapController(
         }
 
         // A place chosen while the fix was on its way is the later wish, however late the fix is: the map stays
-        // there and the place stays the origin.
+        // there and the place stays the origin. So is a move of the map by hand (mapMovedByHand): the map stays
+        // where the rider took it.
         val keepsMap = keepsMapOnFirstFix || placeChoices != placeChoicesAtLocate
         keepsMapOnFirstFix = false
         if (!hadLocation && keepsMap) {
