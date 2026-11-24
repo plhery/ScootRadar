@@ -322,7 +322,10 @@ Alghero and Imperia in Italy, and since 23 November Thessaloniki and Volos in
 Greece and Playa de las Américas on Tenerife. The cache keeps the dedicated rider session in a private
 file and publishes only scooter positions, battery and range. Untrusted
 replies, or a sweep that finds no scooter, fail collection; the token may
-require an operator to sign in again when it expires. See
+require an operator to sign in again when it expires. Since 24 November 2026
+the five countries' credits name it, in the `X-Mobility-Data-Source` header,
+on the map and in the apps, with a link to RideMovi's site, as they name the
+other app maps; until then none did. See
 [RideMovi's API, session and coverage audit](docs/ridemovi-app-map.md).
 
 ## JET authenticated rider map

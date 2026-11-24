@@ -11,7 +11,9 @@ Santa Monica. Bird's in Canada:
 Brampton, Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat,
 Mississauga, Okotoks, Oshawa, Penticton, Pickering, Spruce Grove (with
 Stony Plain), St. Albert and Vernon. Bird's in Spain: Getafe and Oviedo.
-Bird's in Portugal: Covilhã. Bird's in Austria: Innsbruck.
+Bird's in Portugal: Covilhã. Bird's in Austria: Innsbruck. Each of these
+countries' credits names the map and links Bird's site; Austria's, Spain's
+and Portugal's did not until 24 November 2026.
 The user asked for it on 27
 October 2026, after [the research reader](../scripts/bird-app-map.mjs) had
 shown the map's decoys could be told from real replies. Everything Bird

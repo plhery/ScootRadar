@@ -5,6 +5,7 @@ import {
   swiftCountries, timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 import { limeGridGroups } from '../src/lib/limeGrid';
+import { isAppMapSystem } from '../src/lib/regionalScooterSystems';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
 // A catalog's Lime market is a system for each of its refresh groups, as the generator reads it.
@@ -95,7 +96,9 @@ describe('the countries of data/countries.json', () => {
       'DE: MobiData BW e-scooter data', 'DE: MobiData BW · dl-de/by-2-0, modified', 'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0', 'NO: Skyss map',
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
       // OpenStreetMap's boundaries, which several countries give, are credited once.
+      'AT/PT/ES: Bird map',
       'DE/SE: Qick map',
+      'DE/IT/NO/ES/GR: RideMovi map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
       'DE/NO/SE/FI: Ryde map',
@@ -445,6 +448,46 @@ describe('the countries of data/countries.json', () => {
   it('keeps each system in the country of its catalog', () => {
     const misplaced = { systems: [{ ...canadianCatalog.systems[0], country: 'US' }] };
     expect(() => catalogSystems([canada], () => misplaced)).toThrow('bird_toronto is in US, not CA');
+  });
+
+  it('credits each app map read in a country in its attribution, and links it there wherever its map is linked', () => {
+    // Week review of 24 November 2026, S3: RideMovi's rider map in Germany, Italy, Norway, Spain and Greece, and
+    // Bird's in Austria, Spain and Portugal, were read but credited nowhere: not in X-Mobility-Data-Source, nor in
+    // the map's or the apps' credits. A GBFS credit ("Spain: Bird, Hopp, Hoppy GBFS") does not name a map.
+    const names = new Map(readJson('data/providers.json').map(provider => [provider.key, provider.name.split(' ')[0]]));
+    const linksOf = country => country.credits.links ?? [];
+    const linkedMaps = new Set(countries.countries.flatMap(linksOf).map(link => link.label.replace(/^[A-Z]{2}: /, '').split(' ')[0]));
+    const read = new Set();
+    const uncredited = new Set();
+    for (const system of catalogSystems(countries.countries, readCatalog).filter(isAppMapSystem)) {
+      const country = countries.countries.find(entry => entry.code === system.country);
+      const code = country.credits.code ?? country.code;
+      // Spin's areas are read from Bird's map.
+      const name = system.birdAppArea ? 'Bird' : names.get(system.provider);
+      read.add(`${code}: ${name}`);
+      const maps = country.credits.attribution.split(';').filter(part => /\b(app|map)\b/.test(part));
+      if (!maps.some(part => part.includes(name))) uncredited.add(`${code}: ${name} (attribution)`);
+      if (linkedMaps.has(name) && !linksOf(country).some(link => link.label.startsWith(`${code}: ${name} `))) {
+        uncredited.add(`${code}: ${name} (link)`);
+      }
+    }
+    // Controls: Lime's rider map in Italy, JET's in Georgia.
+    expect([...read]).toEqual(expect.arrayContaining(['IT: Lime', 'GE: JET', 'DE: RideMovi', 'AT: Bird']));
+    expect([...uncredited].sort()).toEqual([]);
+    // Tbilisi is read from JET's rider app, as Uzbekistan's towns are; Batumi from Go Jet's map.
+    const labels = countryCreditLinks(countries.countries).map(link => link.label);
+    expect(labels).toContain('UZ/GE: JET app');
+    expect(labels.find(label => label.endsWith(': JET map'))).toMatch(/\/GE: JET map$/);
+  });
+
+  it('tells the day of the Canaries\' app maps in the islands\' time, an hour behind the mainland\'s', () => {
+    // Without one, Dott's Playa de las Américas and Santa Cruz de Tenerife swept by Madrid's day, 07:00 to 20:00 on
+    // the islands (week review of 24 November 2026, choice 8). Their GBFS feeds give their own.
+    const canaries = catalogSystems(countries.countries, readCatalog)
+      .filter(system => system.country === 'ES' && isAppMapSystem(system) && system.center[1] < -13);
+    expect(canaries.map(system => system.id)).toEqual(expect.arrayContaining(
+      ['dott_es_playa_de_las_americas', 'dott_es_santa_cruz_de_tenerife', 'ridemovi_es_playa_de_las_americas']));
+    expect(canaries.filter(system => system.timeZone !== 'Atlantic/Canary').map(system => system.id)).toEqual([]);
   });
 
   it('joins a Lime market\'s local views along each row for iOS, and keeps every other area as it is', () => {

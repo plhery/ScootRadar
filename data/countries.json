@@ -45,7 +45,7 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Ryde rider map",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Ryde rider map; RideMovi authenticated rider map",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
           { "label": "DE: MobiData BW e-scooter data", "href": "https://mobidata-bw.de/dataset/escootch" },
@@ -58,7 +58,8 @@
           { "label": "DE: Bolt map", "href": "https://bolt.eu/" },
           { "label": "DE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
           { "label": "DE: Lime map", "href": "https://www.li.me/" },
-          { "label": "DE: Ryde map", "href": "https://www.ryde-technology.com/" }
+          { "label": "DE: Ryde map", "href": "https://www.ryde-technology.com/" },
+          { "label": "DE: RideMovi map", "href": "https://www.ridemovi.com/" }
         ]
       }
     },
@@ -96,10 +97,11 @@
         "at:Klagenfurt"
       ],
       "credits": {
-        "attribution": "Austria: Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "Austria: Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; Bird authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [{ "label": "AT: Dott map", "href": "https://ridedott.com/" },
           { "label": "AT: Voi map", "href": "https://www.voi.com/" },
           { "label": "AT: Lime map", "href": "https://www.li.me/" },
+          { "label": "AT: Bird map", "href": "https://www.bird.co/" },
           { "label": "AT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
@@ -114,12 +116,13 @@
       "anchor": [43, 12.5],
       "featuredCities": ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],
       "credits": {
-        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; RideMovi authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bird", "Elerent"],
         "links": [{ "label": "IT: Dott map", "href": "https://ridedott.com/" },
           { "label": "IT: Voi map", "href": "https://www.voi.com/" },
           { "label": "IT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "IT: Lime map", "href": "https://www.li.me/" },
+          { "label": "IT: RideMovi map", "href": "https://www.ridemovi.com/" },
           { "label": "IT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
@@ -155,7 +158,7 @@
       "anchor": [61, 9.5],
       "featuredCities": ["no:Oslo", "no:Trondheim", "no:Stavanger", "no:Kristiansand", "no:Bærum", "no:Tromsø"],
       "credits": {
-        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS (https://data.norge.no/nlod/en/2.0); Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0; Ryde rider map",
+        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS (https://data.norge.no/nlod/en/2.0); Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0; Ryde rider map; RideMovi authenticated rider map",
         "links": [
           { "label": "NO: Entur AS · NLOD", "href": "https://data.norge.no/nlod/en/2.0" },
           { "label": "NO: Kartverket boundaries · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" },
@@ -163,7 +166,8 @@
           { "label": "NO: Lime map", "href": "https://www.li.me/" },
           { "label": "NO: Skyss map", "href": "https://www.skyss.no/" },
           { "label": "NO: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
-          { "label": "NO: Ryde map", "href": "https://www.ryde-technology.com/" }
+          { "label": "NO: Ryde map", "href": "https://www.ryde-technology.com/" },
+          { "label": "NO: RideMovi map", "href": "https://www.ridemovi.com/" }
         ]
       }
     },
@@ -210,14 +214,15 @@
       "anchor": [39.6, -8],
       "featuredCities": ["pt:Lisboa", "pt:Porto", "pt:Cascais", "pt:Almada", "pt:Matosinhos", "pt:Oeiras"],
       "credits": {
-        "attribution": "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
+        "attribution": "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Bird authenticated rider map",
         "gbfs": ["Bird", "Lime"],
         "links": [
           { "label": "PT: DGT boundaries · CC BY 4.0", "href": "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
           { "label": "PT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "PT: Bolt map", "href": "https://bolt.eu/" },
           { "label": "PT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
-          { "label": "PT: Lime map", "href": "https://www.li.me/" }
+          { "label": "PT: Lime map", "href": "https://www.li.me/" },
+          { "label": "PT: Bird map", "href": "https://www.bird.co/" }
         ]
       }
     },
@@ -231,11 +236,13 @@
       "anchor": [40.4, -2.5],
       "featuredCities": ["es:Gijón", "es:Getafe", "es:Torrevieja", "es:Playa de las Américas", "es:Jávea", "es:Pilar de la Horadada"],
       "credits": {
-        "attribution": "Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map",
+        "attribution": "Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map; Bird authenticated rider map; RideMovi authenticated rider map",
         "gbfs": ["Bird", "Hopp", "Hoppy"],
         "links": [
           { "label": "ES: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
-          { "label": "ES: Dott map", "href": "https://ridedott.com/" }
+          { "label": "ES: Dott map", "href": "https://ridedott.com/" },
+          { "label": "ES: Bird map", "href": "https://www.bird.co/" },
+          { "label": "ES: RideMovi map", "href": "https://www.ridemovi.com/" }
         ]
       }
     },
@@ -393,10 +400,11 @@
       "anchorNote": "Inland, about the middle of the mainland, west of Lamia.",
       "featuredCities": ["gr:Rhodes", "gr:Faliraki", "gr:Kos", "gr:Piraeus", "gr:Argostoli", "gr:Ioannina"],
       "credits": {
-        "attribution": "Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Lime authenticated rider map; RideMovi authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Hopp", "Hoppy"],
         "links": [{ "label": "GR: Dott map", "href": "https://ridedott.com/" },
           { "label": "GR: Lime map", "href": "https://www.li.me/" },
+          { "label": "GR: RideMovi map", "href": "https://www.ridemovi.com/" },
           { "label": "GR: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }]
       }
     },
@@ -1115,6 +1123,10 @@
           {
             "label": "GE: JET map",
             "href": "https://jetshr.com/"
+          },
+          {
+            "label": "GE: JET app",
+            "href": "https://play.google.com/store/apps/details?id=com.jetscooters"
           }
         ]
       },

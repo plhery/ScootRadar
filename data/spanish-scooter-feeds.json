@@ -533,6 +533,7 @@
         "west": -16.7822,
         "east": -16.6955
       },
+      "timeZone": "Atlantic/Canary",
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "aLy7d2CbgL3Rz9Vkifwp"
     },
@@ -570,6 +571,7 @@
         "west": -16.2945,
         "east": -16.1859
       },
+      "timeZone": "Atlantic/Canary",
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "KLs0sgkg1hNYHuFhSTjA"
     }
