@@ -923,10 +923,17 @@ address can be a school's or a company's), in one of two ways:
   ```text
   203.0.113.7 2026-12-21 bare Mozilla/5.0, Mainz and Wiesbaden
   2001:db8:1:2:: 2026-12-21T12:00:00Z
+  2001:db8:5:6::/64 2026-12-21T13:00:00+01:00
   ```
 
-  An IPv6 address names its /64, any of its addresses will do; a line that cannot be
-  read bans nothing. Addresses are personal data, never in this repository: the list
+  The network is an IPv4 address, or with `/32`, or an IPv6 address, which names its
+  /64 (any of its addresses will do), or with `/64`: the Worker tells visitors apart by
+  those, so no wider or narrower prefix is read. The end is a UTC date (its start) or
+  an ISO 8601 time with `Z` or an offset (`+01:00`). A line that cannot be read bans
+  nothing, and the daily check gives its number as a suspicion; it reads the list with
+  the Worker's own reader (`src/lib/scooterBanLines.ts`), so what it counts in force is
+  what is banned (until 24 November 2026 it counted lines with `/64` or an offset, which
+  the Worker skipped). Addresses are personal data, never in this repository: the list
   is kept on our machines in `~/.config/scootradar/scooter-bans` (mode 600), and put
   whole, as a secret cannot be read back: `npx wrangler secret put SCOOTER_BANS <
   ~/.config/scootradar/scooter-bans`, which takes effect within a minute, without a

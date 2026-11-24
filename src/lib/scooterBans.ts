@@ -1,4 +1,5 @@
 import { clientNetwork } from '@/lib/clientNetwork';
+import { readBanLine } from '@/lib/scooterBanLines';
 import { NOT_OURS_MESSAGE } from '@/lib/scooterClient';
 
 /**
@@ -8,26 +9,22 @@ import { NOT_OURS_MESSAGE } from '@/lib/scooterClient';
  *     203.0.113.7 2026-12-21 bare Mozilla/5.0, Mainz and Wiesbaden
  *     2001:db8:1:2:: 2026-12-21T12:00:00Z
  *
- * A network is an IPv4 address or an IPv6 /64, as clientNetwork makes them out; any address of the /64 names it. A
- * ban ends by itself; a line that cannot be read, or a blank one, or one starting with #, bans nothing. Addresses are
- * personal data: they are kept there, never in this repository.
+ * A network is an IPv4 address or an IPv6 /64, as clientNetwork makes them out; any address of the /64 names it, and
+ * `/32` and `/64` may be written. The forms read are in scooterBanLines.ts, which the day's check reads the list with
+ * too. A ban ends by itself; a line that cannot be read, or a blank one, or one starting with #, bans nothing.
+ * Addresses are personal data: they are kept there, never in this repository.
  */
 export interface ScooterBans {
   /** When the ban of this network ends, in milliseconds since the epoch, or null when it is not banned at `now`. */
   until(network: string, now?: number): number | null;
 }
 
-const DATE = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?(\.\d+)?Z)?$/;
-
 export function parseScooterBans(text: string | undefined): ScooterBans {
   const bans = new Map<string, number>();
   for (const line of (text ?? '').split(/\r?\n/)) {
-    const [address, end] = line.trim().split(/\s+/);
-    if (!address || address.startsWith('#') || !end || !DATE.test(end)) continue;
-    const ends = Date.parse(end.length === 10 ? `${end}T00:00:00Z` : end);
-    const network = clientNetwork(address);
-    if (!Number.isFinite(ends) || !/^[\d.]+$|:/.test(network)) continue;
-    bans.set(network, Math.max(ends, bans.get(network) ?? -Infinity));
+    const ban = readBanLine(line, clientNetwork);
+    if (!ban || 'unread' in ban) continue;
+    bans.set(ban.network, Math.max(ban.ends, bans.get(ban.network) ?? -Infinity));
   }
   return {
     until(network, now = Date.now()) {

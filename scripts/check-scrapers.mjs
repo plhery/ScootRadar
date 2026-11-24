@@ -2,6 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { clientNetwork } from '../src/lib/clientNetwork.ts';
+import { readBanLine } from '../src/lib/scooterBanLines.ts';
 
 const usage = `Usage: node scripts/check-scrapers.mjs [--date=YYYY-MM-DD] [--own=IP,IP] [--json]
 The day's scraping check (yesterday UTC unless --date= names another): the cache's visitor metrics from Prometheus
@@ -359,19 +360,27 @@ if (account?.requests >= WORKER_REQUESTS) {
 }
 
 // The networks banned for a while (the Worker secret SCOOTER_BANS, src/lib/scooterBans.ts), as this machine keeps the
-// list. A ban ends by itself, but its line stays until deleted, and the privacy policy keeps an address only while
-// its ban lasts: those ended are named, to be deleted and the list put again. Null without a list here.
+// list, read line by line as the Worker reads them (src/lib/scooterBanLines.ts). A ban ends by itself, but its line
+// stays until deleted, and the privacy policy keeps an address only while its ban lasts: those ended are named, to be
+// deleted and the list put again. A line the Worker cannot read bans nothing: it is not counted in force, and its
+// number is given, a suspicion, as the network it names is not banned (until 24 November 2026 a /64 written with
+// `/64`, or an end with an offset, was counted in force here and skipped by the Worker; week review of 24 November
+// 2026, W3). Null without a list here.
 const BANS_FILE = process.env.SCOOTRADAR_BANS_FILE ?? `${homedir()}/.config/scootradar/scooter-bans`;
 function bans() {
   let text;
   try { text = readFileSync(BANS_FILE, 'utf8'); } catch { return null; }
-  const lines = text.split(/\r?\n/).map(line => line.trim().split(/\s+/))
-    .filter(([address, end]) => address && !address.startsWith('#') && /^\d{4}-\d{2}-\d{2}/.test(end ?? ''))
-    .map(([address, end]) => ({ address, ends: Date.parse(end.length === 10 ? `${end}T00:00:00Z` : end) }));
-  const ended = lines.filter(ban => ban.ends <= Date.now());
-  return { inForce: lines.length - ended.length, ended: ended.map(ban => ban.address) };
+  const lines = text.split(/\r?\n/).map((line, index) => ({ written: line.trim().split(/\s+/)[0], number: index + 1,
+    ban: readBanLine(line, clientNetwork) })).filter(line => line.ban);
+  const read = lines.filter(line => !('unread' in line.ban));
+  const ended = read.filter(line => line.ban.ends <= Date.now());
+  return { inForce: read.length - ended.length, ended: ended.map(line => line.written),
+    unread: lines.filter(line => 'unread' in line.ban).map(line => line.number) };
 }
 const banned = bans();
+if (banned?.unread.length) {
+  suspicions.push(`Line(s) ${banned.unread.join(', ')} of ${BANS_FILE} ban nothing: the Worker cannot read them; write the network and its end as docs/OBSERVABILITY.md, "Scraping", shows, and put the list again`);
+}
 
 if (args.includes('--json')) {
   console.log(JSON.stringify({ date, thisMachine: mine, metrics, traffic, workers: account, bans: banned, suspicions, failures }, null, 2));
@@ -403,7 +412,7 @@ if (args.includes('--json')) {
     console.log(`Workers (Free plan: 100,000 requests a day for the account, 10 ms of CPU a request): ${account.requests} requests (sampled), by Worker ${counts(account.byWorker)}; not answered ${stopped}${cpu}`);
   }
   console.log(!banned ? `Bans (SCOOTER_BANS): no list at ${BANS_FILE}`
-    : `Bans (SCOOTER_BANS): ${banned.inForce} in force${banned.ended.length ? `; ended, to delete from ${BANS_FILE} and put the list again (docs/OBSERVABILITY.md, "Scraping"): ${banned.ended.join(', ')}` : ''}`);
+    : `Bans (SCOOTER_BANS): ${banned.inForce} in force${banned.ended.length ? `; ended, to delete from ${BANS_FILE} and put the list again (docs/OBSERVABILITY.md, "Scraping"): ${banned.ended.join(', ')}` : ''}${banned.unread.length ? `; not read, banning nothing: line(s) ${banned.unread.join(', ')}` : ''}`);
   for (const failure of failures) console.log(`Not read: ${failure}`);
   console.log(suspicions.length ? `Suspicions:\n${suspicions.map(line => `  - ${line}`).join('\n')}` : 'Nothing suspicious.');
 }

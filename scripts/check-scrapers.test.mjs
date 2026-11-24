@@ -196,7 +196,7 @@ globalThis.fetch = async (url, init) => {
     expect(report.metrics.passRequired).toBe(260);
     expect(report.traffic.refused.map(({ network, requests }) => [network, requests])).toEqual([['198.51.100.30', 150], ['198.51.100.31', 3]]);
     // A ban that has ended is named, to be deleted from the list; it is no suspicion.
-    expect(report.bans).toEqual({ inForce: 1, ended: ['198.51.100.40'] });
+    expect(report.bans).toEqual({ inForce: 1, ended: ['198.51.100.40'], unread: [] });
     // The Workers answered all they were asked, a client gone counting as answered, below half the Free plan's day.
     expect(report.workers).toEqual({ requests: 15340, byWorker: { 'swiss-scooters': 15300, 'other-worker': 40 }, stopped: [],
       cpuMs: { p50: 3.3, p90: 150.1, p99: 318.5 } });
@@ -230,5 +230,18 @@ globalThis.fetch = async (url, init) => {
       '10 requests to the Worker swiss-scooters ended scriptThrewException, not answered',
       "The account's Workers had 55820 requests (swiss-scooters 54620, other-worker 1200): past 100,000 in a UTC day, the Workers Free plan answers all of them with error 1027 until midnight UTC (DEPLOY.md)",
     ]);
+  });
+
+  // A /64 written with its prefix and an end with an offset, which the Worker reads; a /48 and a date it does not.
+  // Until 24 November 2026 this check counted all four in force, the Worker banning the first only (week review of 24
+  // November 2026, W3).
+  it('counts in force the bans the Worker reads, and names the lines it cannot read', () => {
+    const file = join(dir, 'scooter-bans-written');
+    writeFileSync(file, ['2001:db8:9:9::/64 2999-01-01', '# a note', '203.0.113.7 2999-01-01T12:00:00+01:00 a note',
+      '2001:db8:1::/48 2999-01-01', '198.51.100.41 01.01.2999', '198.51.100.40/32 2026-11-01T00:00Z'].join('\n'));
+    const { status, report } = check({ SCOOTRADAR_BANS_FILE: file });
+    expect(status).toBe(1);
+    expect(report.bans).toEqual({ inForce: 2, ended: ['198.51.100.40/32'], unread: [4, 5] });
+    expect(report.suspicions.at(-1)).toBe(`Line(s) 4, 5 of ${file} ban nothing: the Worker cannot read them; write the network and its end as docs/OBSERVABILITY.md, "Scraping", shows, and put the list again`);
   });
 });
