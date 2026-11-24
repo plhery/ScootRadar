@@ -383,6 +383,8 @@ import odenseEn from './en/e-scooters-odense';
 import sotraNb from './nb/elsparkesykkel-sotra';
 import parmaIt from './it/monopattini-sharing-parma';
 import parmaEn from './en/e-scooters-parma';
+import piacenzaIt from './it/monopattini-sharing-piacenza';
+import piacenzaEn from './en/e-scooters-piacenza';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -766,4 +768,6 @@ export const GUIDES: readonly Guide[] = [
   sotraNb,
   parmaIt,
   parmaEn,
+  piacenzaIt,
+  piacenzaEn,
 ];
