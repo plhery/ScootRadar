@@ -57,18 +57,44 @@ if ! git -C "$android" merge-base --is-ancestor "$target" FETCH_HEAD; then
   echo "$target is not on GitHub's main" >&2
   exit 1
 fi
-# Serialize writers sharing this signed repository and pin the remote snapshot used for the version check.
+# Serialize writers sharing this signed repository and pin the remote snapshot used for the version check. The lock
+# names the run that holds it, and goes when the run ends, with the folder the branch is made in: by an error, Ctrl-C,
+# kill or a closed terminal too. Only a run that can't end so, killed with -9 or by the Mac going down, leaves it, and the
+# next run says whether its run still runs, where it failed with a bare "mkdir: File exists" until 24 November 2026.
 lock="$dir/.publication-lock"
-mkdir "$lock"
-trap 'rmdir "$lock"' EXIT
+site=
+if ! mkdir "$lock" 2>/dev/null; then
+  # mkdir's own words when something else is in the way, as a folder that doesn't exist.
+  [ -d "$lock" ] || mkdir "$lock"
+  holder=$(cat "$lock/holder" 2>/dev/null) || holder=
+  running=$(ps -p "${holder%% *}" -o command= 2>/dev/null) || running=
+  case $running in
+    *publish-fdroid.sh*) echo "Another run of publish-fdroid.sh holds $lock (pid $holder): wait for it to end" >&2 ;;
+    *) echo "$lock is left by a run that no longer runs${holder:+ (pid $holder)}, cut off before it could remove it (kill -9, the Mac going down). Check $dir, remove the lock (rm -r '$lock') and run again" >&2 ;;
+  esac
+  exit 1
+fi
+unlock() {
+  if [ -n "$site" ]; then rm -rf "$site"; fi
+  rm -f "$lock/holder"
+  rmdir "$lock"
+}
+trap unlock EXIT
+echo "$$ since $(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$lock/holder"
+# A version code is published with one APK: the same APK again, as when a run cut off is run again, or a new version
+# code. Another APK under it stops here, before anything is pushed (check-fdroid-version.py).
+sha256=$(shasum -a 256 "$apk" | cut -d' ' -f1)
+check="$android/scripts/check-fdroid-version.py"
 remoteRef=$(git -C "$android" ls-remote origin refs/heads/fdroid)
 published=${remoteRef%%[[:space:]]*}
 if [ -n "$published" ]; then
   git -C "$android" fetch -q origin "$published"
-  git -C "$android" show "$published:repo/index-v2.json" | python3 "$android/scripts/check-fdroid-version.py" "$code"
+  git -C "$android" show "$published:repo/index-v2.json" | python3 "$check" "$code" "$sha256" ||
+    { echo "Stopped at the index on GitHub's fdroid branch ($published): nothing was pushed or published" >&2; exit 1; }
 fi
 if [ -f "$dir/repo/index-v2.json" ]; then
-  python3 "$android/scripts/check-fdroid-version.py" "$code" < "$dir/repo/index-v2.json"
+  python3 "$check" "$code" "$sha256" < "$dir/repo/index-v2.json" ||
+    { echo "Stopped at the index in $dir/repo, which a run cut off may have left unpushed: nothing was pushed or published" >&2; exit 1; }
 fi
 git -C "$android" push -q origin "$target:refs/tags/$tag"
 

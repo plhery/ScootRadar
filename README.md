@@ -166,7 +166,13 @@ SCOOTRADAR_FDROID_DIR=<path> android/scripts/publish-fdroid.sh android/app/build
 ```
 
 The script refuses an APK that the upload key alone did not sign, or that
-carries Google's libraries, and a commit that isn't on GitHub's `main`. It tags
+carries Google's libraries, and a commit that isn't on GitHub's `main`. Before
+anything is pushed, it refuses a version code older than the repository's, or
+one the repository lists already with another APK: a version code goes out with
+one APK, which a run after a failure may publish again
+(`android/scripts/check-fdroid-version.test.sh`). One run at a time holds the
+repository's folder; a run killed with `-9` leaves its lock, and the next run
+says so and how to remove it. It tags
 that commit `android-<versionName>-<versionCode>`, signs the repository's index
 with the repository's key, which stays outside the repository in
 `SCOOTRADAR_FDROID_DIR` with fdroid's `config.yml`, puts the repository alone
