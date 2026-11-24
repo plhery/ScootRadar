@@ -580,6 +580,12 @@ for its area (the zoom and the zoom's tile of its centre, the last one asked
 there), and given to a view of the same zoom and filters that it holds whole,
 from its tile or the eight around it, if it was not cut short (`meta.truncated`) and the cache would have
 answered both at that zoom; its age and limit are kept as for its own request.
+That view is given it cut down to its box, as the cache would have answered it:
+the scooters, faded ones and parking inside it, their counts, and the apps that
+run there (`cropToBox`; until 24 November 2026 it was given whole, with the
+wider view's scooters and counts). One with groups (`clusters`) is given only to
+its own view. A kept answer goes out with the licences' notice of its data
+(`X-Mobility-Data-Source`) that it came with, as a fresh one does.
 Without one, the map shows its "temporarily unavailable" banner. Either way the
 Worker logs `scooter_origin_failure` with the origin status or error name,
 `down` when the server did not answer, `lastGoodAge` when it gave a last good

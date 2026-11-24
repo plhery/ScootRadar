@@ -93,7 +93,7 @@ it('keeps the last good answer in the runtime\'s cache and gives it stale while 
   }
 }, 30_000);
 
-it("gives a neighbour's view the kept answer of one that holds it while the tunnel is gone, in the runtime's cache", async () => {
+it("gives a neighbour's view the kept answer of one that holds it, cut to its box, while the tunnel is gone, in the runtime's cache", async () => {
   const bundle = await build({
     stdin: {
       contents: `import { proxyScooterSnapshot } from './src/lib/scooterProxy';
@@ -112,7 +112,11 @@ it("gives a neighbour's view the kept answer of one that holds it while the tunn
     outboundService() {
       return down
         ? new RuntimeResponse('error code: 1033', { status: 530 })
-        : new RuntimeResponse('{"vehicles":[{"id":"a"}],"meta":{"stale":false,"truncated":false}}', { headers: {
+        // b stands in the wider view only: the neighbour's answer is cut to its box (week review of 24 November 2026, W4).
+        : new RuntimeResponse(JSON.stringify({
+          vehicles: [{ id: 'a', provider: 'lime', lat: 47.375, lng: 8.54 }, { id: 'b', provider: 'lime', lat: 47.385, lng: 8.565 }],
+          providers: { lime: 2 }, meta: { stale: false, truncated: false, totalVehicles: 2 },
+        }), { headers: {
           'Content-Type': 'application/json', 'Cache-Control': 'private, no-store',
           'X-Scooter-Public-Cache-Control': 'public, max-age=30',
         } });
@@ -130,7 +134,10 @@ it("gives a neighbour's view the kept answer of one that holds it while the tunn
     }
     expect(response.status).toBe(200);
     expect(response.headers.get('X-Scooter-Origin')).toBe('down');
-    expect(await response.json()).toEqual({ vehicles: [{ id: 'a' }], meta: { stale: true, truncated: false } });
+    const body = await response.json() as { vehicles: unknown; providers: unknown; meta: unknown };
+    expect(body.vehicles).toEqual([{ id: 'a', provider: 'lime', lat: 47.375, lng: 8.54 }]);
+    expect(body.providers).toEqual({ lime: 1 });
+    expect(body.meta).toMatchObject({ stale: true, truncated: false, totalVehicles: 1 });
     const outside = await runtime.dispatchFetch('https://map.example/api/scooters?south=47.37&west=8.56&north=47.38&east=8.58&zoom=15');
     expect(outside.status).toBe(503);
     expect(outside.headers.get('X-Scooter-Origin')).toBe('down');

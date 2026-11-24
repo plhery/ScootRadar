@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { providersForViewport } from './catalogCoverage';
 import { forgetAnnouncement } from './maintenance';
 import { issueMapPass, MAP_PASS_COOKIE } from './mapPass';
 import { proxyScooterSnapshot, type LastGoodStore } from './scooterProxy';
@@ -213,6 +214,35 @@ describe('last good answer', () => {
     // The cache's own 503, every feed of the view failing: the operators', not maintenance.
     expect(stale.headers.has('X-Scooter-Origin')).toBe(false);
     expect(logged.mock.calls.map(([line]) => JSON.parse(line))).toEqual([{ event: 'scooter_origin_failure', status: 503, lastGoodAge: 0 }]);
+  });
+
+  it("gives the licences' notice of the data it kept again with it", async () => {
+    const { store, settled } = memory();
+    // An Oslo street view: Entur's data, under NLOD, whose notice goes with it, fresh or kept (week review of 24
+    // November 2026, W2).
+    const oslo = () => new Request('https://map.example/api/scooters?south=59.91&west=10.73&north=59.92&east=10.76&zoom=16');
+    const notice = 'Contains data under the Norwegian licence for Open Government data (NLOD) made available by Entur; All sources and licences: https://github.com/plhery/ScootRadar/blob/main/DATA_SOURCES.md';
+    const fresh = answer({ truncated: false, mode: 'vehicles' });
+    fresh.headers.set('X-Mobility-Data-Source', notice);
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(fresh);
+    expect((await proxyScooterSnapshot(oslo(), env, store)).headers.get('X-Mobility-Data-Source')).toBe(notice);
+    await settled();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetcher.mockRejectedValue(new DOMException('The operation timed out.', 'TimeoutError'));
+    const kept = await proxyScooterSnapshot(oslo(), env, store);
+    expect(kept.status).toBe(200);
+    expect(kept.headers.get('X-Mobility-Data-Status')).toBe('stale');
+    expect(kept.headers.get('X-Mobility-Data-Source')).toBe(notice);
+    // A neighbour's view given it too.
+    const inside = await proxyScooterSnapshot(new Request('https://map.example/api/scooters?south=59.912&west=10.74&north=59.918&east=10.75&zoom=16'), env, store);
+    expect(inside.status).toBe(200);
+    expect(inside.headers.get('X-Mobility-Data-Source')).toBe(notice);
+    // One kept without a notice, as by a Worker before, or from a cache that sets none, is given without.
+    const { store: bare, settled: bareSettled } = memory();
+    fetcher.mockResolvedValueOnce(answer({ truncated: false }));
+    await proxyScooterSnapshot(oslo(), env, bare);
+    await bareSettled();
+    expect((await proxyScooterSnapshot(oslo(), env, bare)).headers.has('X-Mobility-Data-Source')).toBe(false);
   });
 
   it('forwards a range minimum to the cache and keeps its answer apart from that of the same view without one', async () => {
@@ -453,23 +483,76 @@ describe('the server down', () => {
     // A desktop's view of Zürich at zoom 15, and a phone's inside it.
     const wide = 'south=47.36&west=8.51&north=47.39&east=8.57&zoom=15';
     const inside = 'south=47.37&west=8.53&north=47.38&east=8.55&zoom=15';
+    const scooter = (provider: string, lat: number, lng: number) => ({ provider, lat, lng, battery: 80, range_m: null,
+      vehicle_id: null, deep_link: null, distance_m: null });
+    const parking = (name: string, lat: number, lng: number) => ({ id: name, provider: 'voi', name, lat, lng, mandatory: false });
+    // The desktop's answer, as the cache gives it: a Voi and a Tier in the phone's view and a Lime south-west of it,
+    // Bolt's faded north-east of it and a Voi's in it, a parking in it (Central) and one south of it (Bellevue).
+    const desktop = (meta: Record<string, unknown>) => Response.json({
+      vehicles: [scooter('voi', 47.3755, 8.5412), scooter('lime', 47.3643, 8.5183), scooter('tier', 47.3721, 8.5447)],
+      clusters: [], providers: { voi: 1, lime: 1, tier: 1 },
+      lastSeen: { vehicles: [scooter('bolt', 47.3852, 8.5611), scooter('voi', 47.3768, 8.5352)], clusters: [],
+        providers: { bolt: { seenAt: '2026-11-18T21:40:00.000Z', updating: false }, voi: { seenAt: '2026-11-18T21:50:00.000Z', updating: true } } },
+      parking: [parking('Bellevue', 47.3668, 8.5449), parking('Central', 47.3773, 8.5436)],
+      meta: { totalVehicles: 3, lastSeenAt: '2026-11-18T21:40:00.000Z', availableProviders: ['somewhere-else'], ...meta },
+    }, { headers: { 'Cache-Control': 'private, no-store', 'X-Scooter-Public-Cache-Control': 'public, max-age=30' } });
     const keep = async (search: string, meta: Record<string, unknown> = { truncated: false, generatedAt: '2026-11-18T22:00:00Z' }) => {
       const kept = memory();
-      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer(meta));
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(desktop(meta));
       await proxyScooterSnapshot(scooters(search), env, kept.store);
       await kept.settled();
       vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('error code: 1033', { status: 530 }));
       return kept;
     };
 
-    it('is given the answer of a view that holds it whole while the server is down', async () => {
+    it('is given the answer of a view that holds it whole while the server is down, cut down to its box', async () => {
       const { store } = await keep(wide);
       const response = await proxyScooterSnapshot(scooters(inside), env, store);
       expect(response.status).toBe(200);
       expect(response.headers.get('X-Scooter-Origin')).toBe('down');
-      expect(await response.json()).toEqual({ vehicles: [{ id: 'a' }], meta: { truncated: false, generatedAt: '2026-11-18T22:00:00Z', stale: true } });
-      // Its centre a tile or so away.
-      expect((await proxyScooterSnapshot(scooters('south=47.365&west=8.52&north=47.375&east=8.54&zoom=15'), env, store)).status).toBe(200);
+      // Not the Lime outside it, nor Bolt's faded one or Bellevue, and counted without them, as the cache would have
+      // answered the phone (week review of 24 November 2026, W4).
+      expect(await response.json()).toEqual({
+        vehicles: [scooter('voi', 47.3755, 8.5412), scooter('tier', 47.3721, 8.5447)],
+        clusters: [], providers: { voi: 1, tier: 1 },
+        lastSeen: { vehicles: [scooter('voi', 47.3768, 8.5352)], clusters: [],
+          providers: { voi: { seenAt: '2026-11-18T21:50:00.000Z', updating: true } } },
+        parking: [parking('Central', 47.3773, 8.5436)],
+        meta: { truncated: false, generatedAt: '2026-11-18T22:00:00Z', stale: true, totalVehicles: 2,
+          lastSeenAt: '2026-11-18T21:50:00.000Z', availableProviders: providersForViewport({ south: 47.37, west: 8.53, north: 47.38, east: 8.55 }) },
+      });
+      // Its centre a tile or so away, holding none of the scooters, faded or not: no lastSeen nor its time.
+      const near = await proxyScooterSnapshot(scooters('south=47.365&west=8.52&north=47.375&east=8.54&zoom=15'), env, store);
+      expect(near.status).toBe(200);
+      const body = await near.json() as { meta: Record<string, unknown> };
+      expect(body).toMatchObject({ vehicles: [], providers: {}, parking: [], meta: { totalVehicles: 0 } });
+      expect(body).not.toHaveProperty('lastSeen');
+      expect(body.meta).not.toHaveProperty('lastSeenAt');
+    });
+
+    it('gives its own view the answer kept for it whole', async () => {
+      const { store } = await keep(wide);
+      const own = await proxyScooterSnapshot(scooters(wide), env, store);
+      expect(own.status).toBe(200);
+      expect(await own.json()).toMatchObject({ providers: { voi: 1, lime: 1, tier: 1 },
+        lastSeen: { vehicles: [scooter('bolt', 47.3852, 8.5611), scooter('voi', 47.3768, 8.5352)] },
+        parking: [parking('Bellevue', 47.3668, 8.5449), parking('Central', 47.3773, 8.5436)],
+        meta: { totalVehicles: 3, lastSeenAt: '2026-11-18T21:40:00.000Z', availableProviders: ['somewhere-else'], stale: true } });
+    });
+
+    it('is not given one with groups, nor one not of the cache\'s shape', async () => {
+      for (const body of [{ vehicles: [], clusters: [{ id: 'c', lat: 47.375, lng: 8.54, count: 2, providers: { voi: 2 } }] },
+        { vehicles: [], clusters: [], lastSeen: { vehicles: [], clusters: [{ id: 'seen:c', lat: 47.375, lng: 8.54, count: 2, providers: { voi: 2 } }] } },
+        { vehicles: 'none' }]) {
+        const kept = memory();
+        vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ ...body, meta: { truncated: false, mode: 'vehicles' } },
+          { headers: { 'X-Scooter-Public-Cache-Control': 'public, max-age=30' } }));
+        await proxyScooterSnapshot(scooters(wide), env, kept.store);
+        await kept.settled();
+        vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('error code: 1033', { status: 530 }));
+        expect((await proxyScooterSnapshot(scooters(inside), env, kept.store)).status).toBe(503);
+        expect((await proxyScooterSnapshot(scooters(wide), env, kept.store)).status).toBe(200);
+      }
     });
 
     it('is not given one that misses part of it, of another zoom or filter, or cut short', async () => {

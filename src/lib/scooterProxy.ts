@@ -1,5 +1,7 @@
 import { sameBytes, utf8 } from '@/lib/bytes';
+import { providersForViewport } from '@/lib/catalogCoverage';
 import { clientNetwork } from '@/lib/clientNetwork';
+import { boundsContainPoint } from '@/lib/geo';
 import { holdsMapPass, MAP_PASS_HEADER, validMapPass } from '@/lib/mapPass';
 import { isAppUserAgent, isBrowserUserAgent, NOT_OURS_MESSAGE, SCOOTER_AGENT_HEADER, SCOOTER_AUDIT_HEADER, SCOOTER_CLIENT_HEADER,
   SCOOTER_PASS_CHECK_HEADER, SCOOTER_REFERRER_HEADER, scooterAgent, scooterClient, scooterReferrer } from '@/lib/scooterClient';
@@ -11,7 +13,7 @@ import { skippedSources } from '@/lib/scooterSources';
 import { maintenanceStatus, readAnnouncement, type Announcement, type MaintenanceEnvironment } from '@/lib/maintenance';
 import { parseScooterQuery, scooterAnswerZoom } from '@/lib/scooterQuery';
 import { serverTiming } from '@/lib/scooterResponse';
-import type { MapBounds } from '@/lib/types';
+import type { MapBounds, ScooterResponse } from '@/lib/types';
 
 interface SnapshotProxyEnvironment extends MaintenanceEnvironment {
   SCOOTER_SNAPSHOT_API_URL: string;
@@ -50,6 +52,10 @@ const STORED_AT = 'X-Scooter-Stored-At';
 const KEEP_SECONDS = 'X-Scooter-Keep-Seconds';
 // The box an answer kept for its area was asked for: "south,west,north,east".
 const STORED_BOUNDS = 'X-Scooter-Bounds';
+// The licences' notice of the data an answer holds (mobilitySource in scooterResponse.ts), kept with it and given
+// again with it: NLOD, dl-de/by-2-0, CDLA-Permissive-2.0 and opendata.swiss's BY ask for it with the data shared.
+// Until 24 November 2026 a kept answer went out without it (week review of 24 November 2026, W2).
+const DATA_SOURCE = 'X-Mobility-Data-Source';
 
 /**
  * Statuses that mean the server did not answer: Traefik's and Cloudflare's own (530: the tunnel is gone, as while
@@ -100,7 +106,8 @@ function keepSeconds(value: string | null, seconds: number) {
  * holds it while the origin is down: under the zoom and the tile of the zoom (256 pixels) of the box's centre, with
  * the box it was asked for, the last one asked there. It is given only for a box it holds whole, at the same zoom
  * and other parameters, answered at the same zoom, and not cut short (meta.truncated): then every scooter the box
- * would have been given is in it. Its age and its licence's limit are kept as for its own request.
+ * would have been given is in it. It is given cut down to that box (cropToBox). Its age and its licence's limit are
+ * kept as for its own request.
  */
 interface AreaQuery {
   bounds: MapBounds;
@@ -153,25 +160,81 @@ interface Kept {
   zones: boolean;
   /** Of an answer of scooters, its area (areaQuery). */
   area: AreaQuery | null;
+  /** The box the cache answers the request for (parseScooterQuery), to which a neighbour's answer is cut down. */
+  bounds: MapBounds;
 }
 
-type Stored = { age: number; body: { meta?: Record<string, unknown> } };
+/** A kept answer as read: of scooters, as the cache gives them (ScooterResponse), or of zones. */
+type StoredBody = { meta?: Record<string, unknown> } & Partial<Pick<ScooterResponse, 'vehicles' | 'clusters' | 'lastSeen' | 'parking' | 'providers'>>;
+type Stored = { age: number; body: StoredBody; source: string | null };
 
-/** The answer kept under the key, if still young enough to be given, with its age, read. */
-async function storedAnswer(store: LastGoodStore, key: string, seconds: number, area?: AreaQuery): Promise<Stored | null> {
+/**
+ * A neighbour's answer cut down to the box asked for, `bounds`, as the cache would have answered it: the scooters,
+ * the faded ones (lastSeen) and the parking inside it, the count of each app's scooters and of all (providers,
+ * totalVehicles) from those, the apps whose faded ones are left and the oldest time of theirs (lastSeenAt), and the
+ * apps that run in the box (availableProviders). Until 24 November 2026 it was given whole: during an outage a phone's view of Zürich was
+ * given the scooters of a desktop's wider one, and its counts (Codex's review of 14 to 20 November 2026; week review
+ * of 24 November 2026, W4). The feeds' statuses and times (sources, shownSince, generatedAt, seasonOver…) stay
+ * the wider box's, at most a tile around: what they say of the feeds there holds for the box, the answer being
+ * stale anyway. The answer is read and written again to be marked stale whether or not it is cut, so cutting adds
+ * only a pass over its scooters and one over the catalog's areas (providersForViewport): on a Mac on 24 November
+ * 2026, 0.2 ms for 300 scooters (170 KB) and 0.3 ms for 3,000 (1.6 MB), beside 0.2 and 2.3 ms to read and write
+ * them, which the smaller answer then makes up for; well within the Workers Free plan's 10 ms of CPU (DEPLOY.md).
+ * Null for an answer it cannot cut so, one with groups (clusters), which ad577403 already keeps to its own view, or
+ * not of the cache's shape: the box is then given only its own.
+ */
+function cropToBox(body: StoredBody, bounds: MapBounds): StoredBody | null {
+  const { meta, vehicles, clusters, lastSeen, parking } = body;
+  if (!meta || !Array.isArray(vehicles) || (clusters !== undefined && (!Array.isArray(clusters) || clusters.length > 0))
+    || (lastSeen !== undefined && (!Array.isArray(lastSeen?.vehicles) || (lastSeen.clusters?.length ?? 0) > 0))
+    || (parking !== undefined && !Array.isArray(parking))) return null;
+  const inside = (point: { lat: number; lng: number }) => boundsContainPoint(bounds, point.lat, point.lng);
+  const kept = vehicles.filter(inside);
+  const providers: Record<string, number> = {};
+  for (const { provider } of kept) providers[provider] = (providers[provider] ?? 0) + 1;
+  Object.assign(body, { vehicles: kept, providers });
+  meta.totalVehicles = kept.length;
+  if (lastSeen) {
+    const seen = lastSeen.vehicles.filter(inside);
+    const held = new Set(seen.map(vehicle => vehicle.provider));
+    const seenProviders = Object.entries(lastSeen.providers ?? {}).filter(([provider]) => held.has(provider));
+    // As the cache gives them: no faded scooters, no lastSeen nor its time; no app's left, no providers.
+    if (!seen.length) {
+      delete body.lastSeen;
+      delete meta.lastSeenAt;
+    } else {
+      body.lastSeen = { vehicles: seen, clusters: [], ...(seenProviders.length ? { providers: Object.fromEntries(seenProviders) } : {}) };
+      // The oldest of theirs left, as the cache takes the oldest of those in the box.
+      const times = seenProviders.map(([, { seenAt }]) => Date.parse(seenAt)).filter(Number.isFinite);
+      if (times.length) meta.lastSeenAt = new Date(Math.min(...times)).toISOString();
+    }
+  }
+  if (parking) body.parking = parking.filter(inside);
+  meta.availableProviders = providersForViewport(bounds);
+  return body;
+}
+
+/**
+ * The answer kept under the key, if still young enough to be given, with its age and its licences' notice, read; a
+ * neighbour's (`area`), cut down to `bounds`.
+ */
+async function storedAnswer(store: LastGoodStore, key: string, seconds: number, area?: AreaQuery, bounds?: MapBounds): Promise<Stored | null> {
   const stored = await store.cache.match(key);
   if (!stored) return null;
   const age = Math.max(0, Math.floor((Date.now() - Number(stored.headers.get(STORED_AT))) / 1000));
   if (!(age <= keepSeconds(stored.headers.get(KEEP_SECONDS), seconds))) return null;
   if (area) {
     const [south, west, north, east] = (stored.headers.get(STORED_BOUNDS) ?? '').split(',').map(Number);
-    const bounds = { south, west, north, east };
-    if (![south, west, north, east].every(Number.isFinite) || !holds(bounds, area.bounds)) return null;
-    if (scooterAnswerZoom(area.zoom, bounds) !== scooterAnswerZoom(area.zoom, area.bounds)) return null;
+    const kept = { south, west, north, east };
+    if (![south, west, north, east].every(Number.isFinite) || !holds(kept, area.bounds)) return null;
+    if (scooterAnswerZoom(area.zoom, kept) !== scooterAnswerZoom(area.zoom, area.bounds)) return null;
   }
-  const body = await stored.json() as Stored['body'];
-  if (area && (!body.meta || body.meta.truncated !== false || body.meta.mode === 'clusters')) return null;
-  return { age, body };
+  const source = stored.headers.get(DATA_SOURCE);
+  const body = await stored.json() as StoredBody;
+  if (!area) return { age, body, source };
+  if (!body.meta || body.meta.truncated !== false || body.meta.mode === 'clusters') return null;
+  const cut = cropToBox(body, bounds ?? area.bounds);
+  return cut && { age, body: cut, source };
 }
 
 async function lastGoodAnswer(store: LastGoodStore, kept: Kept, headers: Record<string, string>) {
@@ -180,7 +243,7 @@ async function lastGoodAnswer(store: LastGoodStore, kept: Kept, headers: Record<
     let fromArea = false;
     if (!found && kept.area) {
       for (const key of areaKeys(new URL(kept.key).origin, kept.area)) {
-        found = await storedAnswer(store, key, kept.seconds, kept.area);
+        found = await storedAnswer(store, key, kept.seconds, kept.area, kept.bounds);
         if (found) {
           fromArea = true;
           break;
@@ -188,7 +251,7 @@ async function lastGoodAnswer(store: LastGoodStore, kept: Kept, headers: Record<
       }
     }
     if (!found) return null;
-    const { age, body } = found;
+    const { age, body, source } = found;
     // The apps already show a stale answer as delayed (dockModel.ts, ScooterMapModel.swift): all of it,
     // not the apps it named late when it was kept.
     if (body.meta) {
@@ -199,7 +262,7 @@ async function lastGoodAnswer(store: LastGoodStore, kept: Kept, headers: Record<
     // the maps keep them drawn, say the area's zones are not known now and ask again, as for a feed the cache could
     // not read (useZoneData.ts, ScooterMapModel.swift, ScooterMapZones.kt). As complete, they were never asked again.
     if (kept.zones) body.meta = { ...body.meta, unavailable: true };
-    return { age, fromArea, response: Response.json(body, { headers: { ...headers,
+    return { age, fromArea, response: Response.json(body, { headers: { ...headers, ...(source !== null ? { [DATA_SOURCE]: source } : {}),
       'X-Mobility-Data-Status': 'stale', 'X-Scooter-Last-Good-Age': String(age) } }) };
   } catch {
     return null;
@@ -269,7 +332,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const search = new URLSearchParams(url.search);
     search.sort();
     kept = { key: `${url.origin}${url.pathname}?${search}`, seconds: LAST_GOOD_SECONDS[zones ? 'zones' : 'scooters'],
-      zones, area: zones ? null : areaQuery(url) };
+      zones, area: zones ? null : areaQuery(url), bounds: parsed.query.bounds };
     if (!env.SCOOTER_SNAPSHOT_API_TOKEN) throw new Error('Missing origin credential');
     // Maintenance announced `hard`: the server is left alone from its start, and the readers given what is kept.
     if ((await readAnnouncement(env))?.mode === 'hard') return await unavailable(null, true);
@@ -314,9 +377,11 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     }
     // Not an answer the cache is still collecting feeds or zones for: the one after it is kept.
     if (lastGood && response.status === 200 && publicPolicy?.startsWith('public') && seconds > 0) {
+      const source = response.headers.get(DATA_SOURCE);
       const keep = (key: string, extra: Record<string, string> = {}) => lastGood.waitUntil(lastGood.cache.put(key,
         new Response(result.clone().body, { headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${seconds}`,
-          [STORED_AT]: String(Date.now()), [KEEP_SECONDS]: String(seconds), ...extra } })).catch(() => {}));
+          [STORED_AT]: String(Date.now()), [KEEP_SECONDS]: String(seconds), ...(source !== null ? { [DATA_SOURCE]: source } : {}),
+          ...extra } })).catch(() => {}));
       keep(kept.key);
       const { area } = kept;
       if (area) {
