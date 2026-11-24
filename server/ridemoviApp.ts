@@ -5,6 +5,7 @@ import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { Vehicle } from '../src/lib/types';
+import type { BirdSweepScope } from './birdApp';
 import { reportLoginNeeded, type LoginCause } from './errorReporting';
 import { heldSquare, sweepNearestArea, type NearestMap, type NearestSweep, type Ring, type SweepLimits } from './nearestSweep';
 import { SweepCheckpoints } from './sweepCheckpoints';
@@ -24,7 +25,11 @@ export const ridemoviMapRequests = { status: 0 };
 interface ClientOptions { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; startHoldMs?: number;
   /** Told once when the session needs an operator: by default, Sentry (reportLoginNeeded). */
   onLoginNeeded?: (cause: LoginCause) => void }
-export interface RidemoviScooter { id: string; lat: number; lng: number; battery: number | null; range_m: number | null }
+export interface RidemoviScooter {
+  id: string; lat: number; lng: number; battery: number | null; range_m: number | null;
+  /** When a sweep read it (collectRidemoviArea): none in a reply, nor in a checkpoint saved before 24 November 2026. */
+  readAt?: number;
+}
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
@@ -214,16 +219,17 @@ type Position = { lat: number; lng: number };
 // A deploy's new cache waits two minutes before its first request, so that it does not double the pace.
 const RIDEMOVI_START_HOLD_MS = 120_000;
 
-/** A scooter as a checkpoint saved it, read back. */
+/** A scooter as a checkpoint saved it, read back, with when it was read: none in one saved before 24 November 2026. */
 const savedScooter = (value: unknown): value is RidemoviScooter => {
   const entry = object(value);
-  return typeof entry?.id === 'string' && finite(entry.lat) && finite(entry.lng) &&
+  return typeof entry?.id === 'string' && (entry.readAt === undefined || finite(entry.readAt)) && finite(entry.lat) && finite(entry.lng) &&
     (entry.battery === null || finite(entry.battery)) && (entry.range_m === null || finite(entry.range_m));
 };
 /**
  * Each town's sweep under way, saved after each reply as `tmp/ridemovi-sweep.<town>.tmp`, from which the
  * town's next sweep goes on after a deploy (SweepCheckpoints). On 22 November 2026 the first sweeps of
- * Köln, München and Bergen took 49, 42 and 27 minutes, and the cache was deployed about every 40.
+ * Köln, München and Bergen took 49, 42 and 27 minutes, and the cache was deployed about every 40. Each
+ * scooter keeps when it was read, so a sweep resumed shows it as old as it is.
  */
 export class RidemoviSweepCheckpoints extends SweepCheckpoints<RidemoviScooter> {
   constructor(options: { directory?: string; startHoldMs?: number } = {}) { super({ ...options, map: 'ridemovi', scooter: savedScooter }); }
@@ -232,29 +238,56 @@ export class RidemoviSweepCheckpoints extends SweepCheckpoints<RidemoviScooter> 
 /**
  * A complete sweep of the town's outline (sweepNearestArea), planned from where its scooters last stood.
  * Given checkpoints, the cache's, a sweep a deploy stopped goes on where it stood, from its start.
+ *
+ * Each scooter is as old as the reply that last listed it, not as the sweep's start (sweepRead, as Bird's):
+ * a sweep may take longer than the 15 minutes a position is shown. Until 24 November 2026 a whole sweep was
+ * as old as its start, and 27 of 106 in the 48 hours before took longer (Köln's all 12, up to 49 minutes):
+ * once one ended its every scooter stood faded, and a town watched through it would have read "expired" (week
+ * review of 24 November 2026, C1).
  */
 export async function collectRidemoviArea(system: RegionalScooterSystem, previous: readonly Position[],
   api: Pick<RidemoviClient, 'nearest'>, limits = LIMITS, checkpoints?: RidemoviSweepCheckpoints): Promise<SourceVehicles> {
   const rings = system.ridemoviAppArea ? AREAS.get(system.ridemoviAppArea) : undefined;
   if (!rings || system.provider !== 'ridemovi') throw new Error('Not a RideMovi app map area');
-  const published = (scooters: Iterable<RidemoviScooter>): Vehicle[] => [...scooters]
-    .filter(scooter => boundsContainPoint(system.bounds, scooter.lat, scooter.lng) &&
-      rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng)))
-    .map(scooter => ({ provider: 'ridemovi', vehicle_id: `ridemovi:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
-      battery: scooter.battery, range_m: scooter.range_m, deep_link: null, distance_m: null }));
+  const scope = currentCollection() as BirdSweepScope | undefined;
+  // When the last reply came, and each scooter's (readAt): when the sweep ends, those of its last 15 minutes show live,
+  // the others faded.
+  let lastReadAt: number | undefined;
+  const reading = { nearest: async (lat: number, lng: number) => {
+    const reply = await api.nearest(lat, lng);
+    const readAt = Date.now();
+    lastReadAt = readAt;
+    return { ...reply, scooters: reply.scooters.map(scooter => ({ ...scooter, readAt })) };
+  } };
+  const published = (scooters: Iterable<RidemoviScooter>): Vehicle[] => {
+    const vehicles: Vehicle[] = [], at: Record<string, number> = {};
+    for (const scooter of scooters) {
+      if (!boundsContainPoint(system.bounds, scooter.lat, scooter.lng) || !rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng))) continue;
+      const vehicle_id = `ridemovi:${scooter.id}`;
+      vehicles.push({ provider: 'ridemovi', vehicle_id, lat: scooter.lat, lng: scooter.lng,
+        battery: scooter.battery, range_m: scooter.range_m, deep_link: null, distance_m: null });
+      if (scooter.readAt !== undefined) at[vehicle_id] = scooter.readAt;
+    }
+    if (lastReadAt !== undefined) scope?.sweepRead?.({ lastAt: lastReadAt, at });
+    return vehicles;
+  };
   const found = new Map<string, RidemoviScooter>();
   const progress = new SweepProgress(() => published(found.values()));
   const resume = await checkpoints?.resumable(system.id, limits);
   if (resume) {
-    // The map shows at once what the stopped sweep had found, and where, as old as that sweep.
-    currentCollection()?.sweepStarted?.(resume.startedAt);
-    for (const seen of resume.scooters) found.set(seen.id, seen);
+    // The map shows at once what the stopped sweep had found, and where, each scooter as old as its read, or as that
+    // sweep's start in a checkpoint saved without read times.
+    scope?.sweepStarted?.(resume.startedAt);
+    for (const seen of resume.scooters) {
+      found.set(seen.id, seen);
+      if (seen.readAt !== undefined) lastReadAt = Math.max(lastReadAt ?? resume.startedAt, seen.readAt);
+    }
     progress.done(...resume.discs.map(({ lat, lng, r }) => heldSquare(lat, lng, r)));
   }
   const checkpoint = checkpoints?.track(system.id);
   let sweep: NearestSweep<RidemoviScooter>;
   try {
-    sweep = await sweepNearestArea(MAP, { nearest: (lat, lng) => api.nearest(lat, lng) }, rings, previous, limits, found,
+    sweep = await sweepNearestArea(MAP, reading, rings, previous, limits, found,
       (part, state) => {
         progress.done(part);
         checkpoint?.save(state, [...found.values()]);

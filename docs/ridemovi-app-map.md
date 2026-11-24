@@ -254,8 +254,15 @@ Until that evening a sweep could take an hour, which Köln's came within 11
 minutes of; one that fails keeps none of its scooters. Idle sweeps run
 once a day, between 08:00 and 21:00 in the town (`APP_MAP_IDLE_INTERVAL_MS`);
 a map visit keeps the feed watched for two minutes. Sweeps reuse previous
-positions to plan fewer requests, report completed parts progressively, and
-timestamp the result at the sweep's start.
+positions to plan fewer requests and report completed parts progressively.
+The map gives no position time, so a scooter's is that of the last reply
+that listed it, and the sweep's the start of it, as Bird's are: when a sweep
+ends, the scooters it read in its last 15 minutes show live and those it
+read before stand faded. Until 24 November 2026 every scooter took the
+sweep's start, and 27 of the 106 sweeps of the 48 hours before took longer
+than the 15 minutes a position is shown (Köln's all 12, up to 49 minutes):
+their every scooter stood faded once they ended, and a town watched through
+one would have read as expired.
 
 A deploy stops the sweeps under way, and on 22 November 2026 the cache was
 deployed about every 40 minutes, while Köln's, München's and Bergen's first
@@ -265,7 +272,9 @@ reply, with where it stood and the scooters it had found, as
 it, as it does Bird's), and removed when it ends, done or failed. The new
 cache, once its two minutes are over, goes on with a sweep the deploy stopped,
 from its start, if saved within ten minutes, rather than starting it again;
-the map shows at once what it had found, as old as its start. Its
+the map shows at once what it had found, each scooter as old as the reply
+that listed it (as old as the sweep's start in a checkpoint saved before 24
+November, without read times). Its
 `ridemovi_sweep` line then says `resumed` and how many requests it had made
 before. Bird's sweeps are resumed the same way (`SweepCheckpoints`).
 

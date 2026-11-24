@@ -4,9 +4,12 @@ import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import areas from '../data/ridemovi-areas.json';
 import { haversineM, boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
-import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem } from '../src/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
+import { showsPositions, type FeedSnapshot, type PositionReads } from '../src/lib/scooterSnapshots';
 import type { Vehicle } from '../src/lib/types';
+import { sweepScope } from './birdApp';
+import { feedState } from './feedStateLog';
 import { collectRidemoviArea, parseRidemoviReply, RIDEMOVI_FORBIDDEN_RETRY_MS, RIDEMOVI_PAGE, RIDEMOVI_RADIUS_M, RIDEMOVI_SHORT, RidemoviClient,
   RidemoviSweepCheckpoints, withRidemoviAppCollectors, type RidemoviScooter } from './ridemoviApp';
 import { CHECKPOINT_MAX_AGE_MS } from './sweepCheckpoints';
@@ -18,6 +21,22 @@ const bike = (id = 1, offset = 0.01) => ({ id, lat: lat + offset, lon: lng, city
   estimatedTravelDistanceInKM: 18.256, bikeNo: 'private-qr-id' });
 const reply = (bikes: unknown[] = [bike()]) => ({ code: 1000, data: { showNearbyBikes: true, nearbyBikes: bikes } });
 const system = REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === 'ridemovi_de_dresden')!;
+const rings = areas.areas.find(area => area.id === system.ridemoviAppArea)!.rings as [number, number][][];
+// 400 scooters spread over Dresden's outline, the same each run.
+const fleet: RidemoviScooter[] = [];
+for (let seed = 7; fleet.length < 400;) {
+  const next = () => (seed = (seed * 48_271) % 2_147_483_647) / 2_147_483_647;
+  const point = { lat: system.bounds.south + next() * (system.bounds.north - system.bounds.south),
+    lng: system.bounds.west + next() * (system.bounds.east - system.bounds.west) };
+  if (rings.some(ring => polygonContainsPoint(ring, point.lat, point.lng))) fleet.push({ id: String(fleet.length + 1), ...point, battery: 60, range_m: 20_000 });
+}
+/** The fleet as RideMovi's map lists it, as parseRidemoviReply reads it: the 30 nearest within 2 km, vouching up to the last unless five or fewer. */
+const fleetReply = (lat: number, lng: number) => {
+  const near = fleet.map(scooter => ({ scooter, d: haversineM(lat, lng, scooter.lat, scooter.lng) }))
+    .filter(({ d }) => d <= RIDEMOVI_RADIUS_M).sort((a, b) => a.d - b.d).slice(0, RIDEMOVI_PAGE);
+  const reach = near.length <= RIDEMOVI_SHORT ? RIDEMOVI_RADIUS_M : near.at(-1)!.d;
+  return { scooters: near.map(({ scooter }) => scooter), completeM: Math.max(0, reach * 0.99 - 5) };
+};
 const directories: string[] = [];
 afterEach(async () => { await Promise.all(directories.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
 
@@ -294,22 +313,7 @@ describe('RideMovi collector registration', () => {
 
 describe('RideMovi sweeps resumed after a deploy', () => {
   const WAIT = { timeout: 10_000, interval: 20 };
-  const rings = areas.areas.find(area => area.id === system.ridemoviAppArea)!.rings as [number, number][][];
-  // 400 scooters spread over Dresden's outline, the same each run.
-  const fleet: RidemoviScooter[] = [];
-  for (let seed = 7; fleet.length < 400;) {
-    const next = () => (seed = (seed * 48_271) % 2_147_483_647) / 2_147_483_647;
-    const point = { lat: system.bounds.south + next() * (system.bounds.north - system.bounds.south),
-      lng: system.bounds.west + next() * (system.bounds.east - system.bounds.west) };
-    if (rings.some(ring => polygonContainsPoint(ring, point.lat, point.lng))) fleet.push({ id: String(fleet.length + 1), ...point, battery: 60, range_m: 20_000 });
-  }
-  // RideMovi's map as parseRidemoviReply reads it: the 30 nearest within 2 km, vouching up to the last unless five or fewer.
-  const map = () => vi.fn(async (lat: number, lng: number) => {
-    const near = fleet.map(scooter => ({ scooter, d: haversineM(lat, lng, scooter.lat, scooter.lng) }))
-      .filter(({ d }) => d <= RIDEMOVI_RADIUS_M).sort((a, b) => a.d - b.d).slice(0, RIDEMOVI_PAGE);
-    const reach = near.length <= RIDEMOVI_SHORT ? RIDEMOVI_RADIUS_M : near.at(-1)!.d;
-    return { scooters: near.map(({ scooter }) => scooter), completeM: Math.max(0, reach * 0.99 - 5) };
-  });
+  const map = () => vi.fn(async (lat: number, lng: number) => fleetReply(lat, lng));
   let directory: string;
   let path: string;
   let logged: Record<string, unknown>[];
@@ -340,7 +344,9 @@ describe('RideMovi sweeps resumed after a deploy', () => {
     // Its requests count those still under way, up to three at once.
     expect(checkpoint).toMatchObject({ system: system.id, startedAt: expect.any(Number), savedAt: expect.any(Number) });
     expect(checkpoint.requests).toBeGreaterThanOrEqual(4);
-    expect(Object.keys(checkpoint.scooters[0]).sort()).toEqual(['battery', 'id', 'lat', 'lng', 'range_m']);
+    // Each scooter with when it was read, so that a sweep resumed shows those of its last 15 minutes live.
+    expect(Object.keys(checkpoint.scooters[0]).sort()).toEqual(['battery', 'id', 'lat', 'lng', 'range_m', 'readAt']);
+    expect(checkpoint.scooters.every((scooter: RidemoviScooter) => scooter.readAt! >= checkpoint.startedAt && scooter.readAt! <= checkpoint.savedAt)).toBe(true);
     await rm(path);
 
     await collectRidemoviArea(system, [], { nearest }, undefined, new RidemoviSweepCheckpoints({ directory }));
@@ -402,6 +408,22 @@ describe('RideMovi sweeps resumed after a deploy', () => {
     expect(reports[0].map(vehicle => vehicle.vehicle_id)).toEqual(['ridemovi:seen-before-deploy']);
   });
 
+  it('shows each scooter of the stopped sweep as old as its read, and one saved before read times were as old as that sweep', async () => {
+    const startedAt = Date.now() - 30 * 60_000, readAt = Date.now() - 3 * 60_000;
+    await writeFile(path, JSON.stringify({ system: system.id, startedAt, requests: 3, discs: [{ lat, lng, r: 300 }], savedAt: Date.now() - 60_000,
+      scooters: [{ id: 'read-lately', lat, lng, battery: 50, range_m: 9_000, readAt }, { id: 'saved-before', lat, lng, battery: 40, range_m: null }] }));
+    const reports: { found: Vehicle[]; since: number; reads?: PositionReads }[] = [];
+    const collection = sweepScope({ urgent: () => false, focus: () => undefined }, Date.now(),
+      (found, _swept, since, reads) => { reports.push({ found, since, reads }); });
+    const hanging = { nearest: () => new Promise<never>(() => undefined) };
+    void withinCollection(collection, () => collectRidemoviArea(system, [], hanging, undefined, new RidemoviSweepCheckpoints({ directory })));
+    await vi.waitFor(() => expect(reports).toHaveLength(1), WAIT);
+    expect(reports[0].found.map(vehicle => vehicle.vehicle_id).sort()).toEqual(['ridemovi:read-lately', 'ridemovi:saved-before']);
+    // The one without a read time takes the sweep's start (FeedSnapshot.sweep.startedAt).
+    expect(reports[0]).toMatchObject({ since: startedAt, reads: { lastAt: readAt, at: { 'ridemovi:read-lately': readAt } } });
+    expect(reports[0].reads!.at).not.toHaveProperty('ridemovi:saved-before');
+  });
+
   it('gives the cache\'s collectors checkpoints read after the client\'s start hold', async () => {
     const feed = withRidemoviAppCollectors(independentCollectableFeeds(), [system], () => [], { nearest: map() },
       new RidemoviSweepCheckpoints({ directory })).find(feed => feed.id.endsWith(`:${system.id}`))!;
@@ -409,4 +431,51 @@ describe('RideMovi sweeps resumed after a deploy', () => {
     expect(logged.at(-1)).toMatchObject({ event: 'ridemovi_sweep', system: system.id });
     await gone();
   }, 30_000);
+});
+
+describe('RideMovi sweeps longer than a position may be shown', () => {
+  afterEach(() => { vi.restoreAllMocks(); });
+
+  /** Sweeps Dresden, each reply taking `perRequestMs` of the clock, in the scope the cache collects in, and judges the record it ends with. */
+  async function sweepTaking(perRequestMs: number) {
+    let now = 1_800_000_000_000;
+    vi.spyOn(Date, 'now').mockImplementation(() => now);
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const nearest = async (lat: number, lng: number) => { now += perRequestMs; return fleetReply(lat, lng); };
+    const startedAt = now;
+    // The scope scooter-cache.ts's collect() gives every collection.
+    const scope = sweepScope({ urgent: () => false, focus: () => undefined, cold: () => false }, startedAt, () => undefined);
+    const result = await withinCollection(scope, () => collectRidemoviArea(system, [], { nearest }));
+    const end = now, reads = scope.reads();
+    // The record collectSnapshotFeed and collect() store: observedAt from the result, reads from the scope.
+    const record: FeedSnapshot = { id: `${regionalSource(system)}:${system.id}`, source: regionalSource(system), provider: 'ridemovi', coverage: [],
+      vehicles: result.vehicles, observedAt: result.observedAt!, ...reads && { reads }, attemptedAt: startedAt, collectedAt: end,
+      stale: false, failed: false, skipped: false };
+    // Someone has watched the town for 20 minutes; app maps expire after 26 hours idle (withDailySweeps).
+    const watched = { fastSince: () => end - 20 * 60_000, idleExpiryMs: 26 * 60 * 60_000 };
+    return { minutes: (end - startedAt) / 60_000, result, reads, end, judged: { shown: showsPositions(record, end), state: feedState(record, end, watched) } };
+  }
+
+  it('show a sweep of a few minutes fresh, its watched feed ok', async () => {
+    const { minutes, judged } = await sweepTaking(5_000);
+    expect(minutes).toBeLessThan(15);
+    expect(judged).toEqual({ shown: true, state: 'ok' });
+  }, 60_000);
+
+  it('show the scooters a sweep of over 15 minutes read last fresh the moment it ends, and those it read first faded', async () => {
+    // At 40 seconds a reply, about 24 minutes: Köln's took up to 49 in production, München's 4 of 16 or more (22–24 November 2026).
+    const { minutes, judged, result, reads, end } = await sweepTaking(40_000);
+    expect(minutes).toBeGreaterThan(15);
+    expect(minutes).toBeLessThan(90);
+    // Until 24 November 2026 { shown: false, state: 'expired' }: the sweep was as old as its start (week review of 24 November 2026, C1).
+    expect(judged).toEqual({ shown: true, state: 'ok' });
+    expect(result.observedAt).toBe(end - minutes * 60_000);
+    expect(reads?.lastAt).toBe(end);
+    // Each scooter by the last reply that listed it, all of them read by this sweep.
+    expect(Object.keys(reads!.at).sort()).toEqual(result.vehicles.map(vehicle => vehicle.vehicle_id).sort());
+    const times = Object.values(reads!.at);
+    expect(Math.min(...times)).toBeGreaterThan(result.observedAt!);
+    expect(times.some(at => end - at > 15 * 60_000)).toBe(true);
+    expect(times.some(at => end - at <= 15 * 60_000)).toBe(true);
+  }, 60_000);
 });
