@@ -5,27 +5,27 @@ const guide: Guide = {
   slug: 'e-scooters-munich',
   topic: 'munich',
   name: 'Renting an e-scooter in Munich',
-  title: 'E-scooter hire Munich 2026: Dott, Voi, Lime, Bolt prices',
-  description: 'Rent a Voi, Lime, Dott or Bolt e-scooter in Munich: 18+, no licence. Ten minutes cost €3.59 on Voi, €4.00 on Dott. Old-town bays, no English Garden or U-Bahn.',
+  title: 'E-scooter hire Munich 2026: Dott, Voi, Lime, Bolt, RideMovi',
+  description: 'Rent a Voi, Lime, Dott, Bolt or RideMovi e-scooter in Munich, no licence. Ten minutes cost €3.59 on Voi, €4 on Dott. Old-town bays, no English Garden or U-Bahn.',
   headline: 'E-scooters in Munich: apps, prices, parking and the Oktoberfest rules',
-  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €3.59 with Voi and €4.00 with Dott at their standard rates (as of November 2026); Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
+  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi, Bolt or RideMovi app: you need a payment card but no driving licence, and must usually be 18. Ten minutes cost €3.59 with Voi and €4.00 with Dott at their standard rates (as of November 2026); Lime, Bolt and RideMovi show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-11-24',
   city: 'de:München',
   sections: [
     {
       heading: 'Which e-scooter apps work in Munich?',
       blocks: [
-        'The city and MVV, Munich’s public transport network, list four e-scooter operators: **Dott**, **Lime**, **Voi** and **Bolt**. If an older guide mentions Tier, that’s Dott now: the two merged.',
-        'At 9:27 on Friday 30 October 2026 the [map around Munich](map:de:München) showed about 3,400 Dott, 6,700 Voi and 3,600 Bolt scooters free to rent at that moment, and about 9,400 Lime scooters as last counted.',
-        'You rent in the operator’s app; Dott and Voi also work in **MVGO**, the app of MVG, Munich’s transport company, with an M-Login account. MVV says all four rent only to riders of 18 or over, as Dott’s and Bolt’s terms confirm, although German law allows e-scooters from 14. Step by step: [how to rent an e-scooter](guide:how-to-rent).',
+        'The city and MVV, Munich’s public transport network, list four e-scooter operators: **Dott**, **Lime**, **Voi** and **Bolt**. **RideMovi**, from Italy, rents e-scooters too, and the area its app shows covers the whole city. If an older guide mentions Tier, that’s Dott now: the two merged.',
+        'At 9:27 on Friday 30 October 2026 the [map around Munich](map:de:München) showed about 3,400 Dott, 6,700 Voi and 3,600 Bolt scooters free to rent at that moment, and about 9,400 Lime scooters as last counted. It showed about 1,800 RideMovi scooters as last counted on the afternoon of 24 November 2026.',
+        'You rent in the operator’s app; Dott and Voi also work in **MVGO**, the app of MVG, Munich’s transport company, with an M-Login account. MVV says Dott, Lime, Voi and Bolt rent only to riders of 18 or over, as Dott’s and Bolt’s terms confirm, although German law allows e-scooters from 14. Only RideMovi also lets 16- and 17-year-olds ride, its terms say, if a parent sets up the account for them. Step by step: [how to rent an e-scooter](guide:how-to-rent).',
         'MVV also lists **emmy**, which rents e-mopeds, not e-scooters.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Munich?',
       blocks: [
-        'You pay to unlock, then by the minute. Dott and Voi publish their Munich standard rates as open data, Bolt gives a starting price for all of Germany, and Lime shows its price in the app.',
+        'You pay to unlock, then by the minute. Dott and Voi publish their Munich standard rates as open data, Bolt gives a starting price for all of Germany, and Lime and RideMovi show theirs in the app.',
         {
           table: {
             caption: 'E-scooter prices in Munich (standard rates from Voi, Dott and Bolt, as of November 2026)',
@@ -34,6 +34,7 @@ const guide: Guide = {
               ['Voi', '€0.99', '€0.26', '€3.59', '€6.19'],
               ['Dott', '€1.00', '€0.30', '€4.00', '€7.00'],
               ['Bolt', 'Small fee, shown in the app', 'From €0.15 (for all of Germany)', 'In the app', 'In the app'],
+              ['RideMovi', 'In the app', 'In the app', 'In the app', 'In the app'],
             ],
           },
         },
@@ -84,7 +85,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Voi’s and Lime’s charges are in their own terms.',
+        'RideMovi’s terms pass official fines and their costs on to you, plus a €20 handling fee. Voi’s and Lime’s charges are in their own terms.',
       ],
     },
     {
@@ -107,7 +108,7 @@ const guide: Guide = {
       blocks: [
         'Since April 2024, MVV says, e-scooters, folded or not, may not travel on MVG’s U-Bahn trains, trams and city buses, because of battery fires. Rental scooters can’t go on the S-Bahn or regional trains either: they don’t fold and are too big and heavy.',
         'Your own scooter may travel folded and free of charge on the S-Bahn, regional trains and regional buses, if it is no larger than 90 × 80 cm and no heavier than 25 kg. With a rental, end the ride outside the station and rent another at the other end.',
-        '**Airport:** the terminals lie outside Dott’s area (as of November 2026), so take the S-Bahn there and keep scooters for town.',
+        '**Airport:** the terminals lie outside Dott’s and RideMovi’s areas (as of November 2026), so take the S-Bahn there and keep scooters for town.',
       ],
     },
     {
@@ -121,7 +122,7 @@ const guide: Guide = {
             '**With an MVG subscription (not the €365 pupils’ ticket) or a Deutschlandticket bought in the MVV app:** the first 30 minutes are free on a bike, €1.50 on an e-bike.',
           ],
         },
-        'Book in the MVV app, the nextbike app or **MVGO**, where your M-Login also unlocks Dott and Voi scooters (Lime and Bolt you rent in their own apps). To see the nearest free scooter right now, open the [live map of Munich](map:de:München).',
+        'Book in the MVV app, the nextbike app or **MVGO**, where your M-Login also unlocks Dott and Voi scooters (Lime, Bolt and RideMovi you rent in their own apps). To see the nearest free scooter right now, open the [live map of Munich](map:de:München).',
       ],
     },
     {
@@ -133,7 +134,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in Germany, today and from 1 March 2027',
             head: ['Rule', 'Today', 'From 1 March 2027'],
             rows: [
-              ['Age, licence, helmet', '14 by law, no licence, no helmet required (one is still wise); 18 to rent', 'Unchanged'],
+              ['Age, licence, helmet', '14 by law, no licence, no helmet required (one is still wise); 18 to rent (RideMovi: 16 if a parent sets up the account)', 'Unchanged'],
               ['Where to ride', 'Bike lane or path (Radweg) where there is one, otherwise the road; at most 20 km/h by design', 'Bike lanes compulsory where a blue bike sign stands, as for cyclists'],
               ['Pavement (Gehweg) or pedestrian zone', 'Banned unless a sign allows it: €15', 'Banned unless a sign allows it: €25'],
               ['Passengers', 'Banned: €10', 'Banned: €25'],
@@ -152,11 +153,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent e-scooters in Munich?',
-      answer: 'Yes. Download the Dott, Lime, Voi or Bolt app, register and add a payment card: you must be 18 but need no driving licence.',
+      answer: 'Yes. Download the Dott, Lime, Voi, Bolt or RideMovi app, register and add a payment card: you need no driving licence and, as a rule, must be 18.',
     },
     {
       question: 'Is Lime available in Munich?',
-      answer: 'Yes, alongside Dott, Voi and Bolt; the city lists all four. Check the price in its app before you unlock; you can’t book Lime in MVGO. Its free scooters are on the [live map of Munich](map:de:München).',
+      answer: 'Yes, alongside Dott, Voi and Bolt, which the city lists with it, and RideMovi. Check the price in its app before you unlock; you can’t book Lime in MVGO. Its free scooters are on the [live map of Munich](map:de:München).',
     },
     {
       question: 'Can I take an e-scooter home from Oktoberfest?',
@@ -190,6 +191,8 @@ const guide: Guide = {
     { title: 'Bolt: e-scooters in Germany (German)', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Dott: terms and conditions for Germany (German)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Bolt: terms for e-vehicles in Germany, from 1 December 2026 (German)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'RideMovi: under-18s', url: 'https://www.ridemovi.com/en/informative/under-18s' },
+    { title: 'RideMovi: information notice and terms and conditions (PDF)', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/EN_termsandcondition.pdf' },
     { title: 'Federal Ministry for Transport: questions and answers on e-scooters (German)', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq.html' },
   ],
 };

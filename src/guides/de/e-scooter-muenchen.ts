@@ -6,25 +6,25 @@ const guide: Guide = {
   topic: 'munich',
   name: 'E-Scooter München: Anbieter, Preise, Parken',
   title: 'E-Scooter mieten in München 2026: Anbieter, Preise, Wiesn',
-  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, ab 18 ohne Führerschein. Zehn Minuten kosten bei Voi 3,59 €, bei Dott 4 €. Tabu: Englischer Garten, U-Bahn.',
+  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, RideMovi, ohne Führerschein. Zehn Minuten: Voi 3,59 €, Dott 4 €. Tabu: Englischer Garten, U-Bahn.',
   headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
-  lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten im Standardtarif bei Voi 3,59 € und bei Dott 4 € (Stand November 2026); bei Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
+  lede: 'Einen E-Scooter in München mietest du ohne Führerschein und in der Regel ab 18 bei Dott, Lime, Voi, Bolt oder RideMovi. Zehn Minuten kosten im Standardtarif bei Voi 3,59 € und bei Dott 4 € (Stand November 2026); bei Lime, Bolt und RideMovi zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-11-24',
   city: 'de:München',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in München?',
       blocks: [
-        'In München vermieten **Dott**, **Lime**, **Voi** und **Bolt** E-Scooter; diese vier Anbieter nennen die Stadt und der Verkehrsverbund MVV. TIER heisst heute Dott.',
-        'Am Freitag, 30. Oktober 2026, um 9:27 Uhr zeigte die [Karte rund um München](map:de:München) rund 3400 Dott-, 6700 Voi- und 3600 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 9400 Lime-Scooter nach der letzten Zählung.',
-        'Gemietet wird in der App des Anbieters, bei Dott und Voi auch in der MVGO-App der MVG mit deinem M-Login: registrieren, Zahlungsart hinterlegen, QR-Code scannen. Alle vier vermieten laut MVV nur ab 18, so steht es auch in den Bedingungen von Dott und Bolt, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In München vermieten **Dott**, **Lime**, **Voi** und **Bolt** E-Scooter; diese vier Anbieter nennen die Stadt und der Verkehrsverbund MVV. Dazu kommt **RideMovi** aus Italien, dessen Gebiet in der App das ganze Stadtgebiet umfasst. TIER heisst heute Dott.',
+        'Am Freitag, 30. Oktober 2026, um 9:27 Uhr zeigte die [Karte rund um München](map:de:München) rund 3400 Dott-, 6700 Voi- und 3600 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 9400 Lime-Scooter nach der letzten Zählung. Von RideMovi zeigte sie am Nachmittag des 24. November 2026 rund 1800 Scooter nach der letzten Zählung.',
+        'Gemietet wird in der App des Anbieters, bei Dott und Voi auch in der MVGO-App der MVG mit deinem M-Login: registrieren, Zahlungsart hinterlegen, QR-Code scannen. Dott, Lime, Voi und Bolt vermieten laut MVV nur ab 18, so steht es auch in den Bedingungen von Dott und Bolt, obwohl das Gesetz E-Scooter ab 14 erlaubt. Nur RideMovi lässt laut seinen AGB auch Jugendliche ab 16 fahren, wenn ein Elternteil das Konto für sie anlegt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in München?',
       blocks: [
-        'Du zahlst fürs Entsperren und pro Minute. Dott und Voi veröffentlichen ihren Münchner Standardtarif in offenen Daten, Bolt nennt einen Ab-Preis für ganz Deutschland, und Lime zeigt den Preis in der App.',
+        'Du zahlst fürs Entsperren und pro Minute. Dott und Voi veröffentlichen ihren Münchner Standardtarif in offenen Daten, Bolt nennt einen Ab-Preis für ganz Deutschland, Lime und RideMovi zeigen den Preis in der App.',
         {
           table: {
             caption: 'E-Scooter-Preise in München (Standardtarif laut Voi, Dott und Bolt, Stand November 2026)',
@@ -33,6 +33,7 @@ const guide: Guide = {
               ['Voi', '0,99 €', '0,26 €', '3,59 €', '6,19 €'],
               ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
               ['Bolt', 'kleine Gebühr, Betrag in der App', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
+              ['RideMovi', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
@@ -83,7 +84,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Was Voi und Lime berechnen, steht in ihren Bedingungen.',
+        'RideMovi gibt laut seinen AGB Bussgelder der Behörden samt Kosten an dich weiter, plus 20 € Bearbeitungsgebühr. Was Voi und Lime berechnen, steht in ihren Bedingungen.',
       ],
     },
     {
@@ -106,7 +107,7 @@ const guide: Guide = {
       blocks: [
         'In U-Bahn, Tram und Stadtbus der MVG darfst du laut MVV seit April 2024 keinen E-Scooter mitnehmen, auch zusammengeklappt nicht; Grund sind Akkubrände. Leih-Scooter dürfen auch nicht in S-Bahn und Regionalzug: Sie lassen sich nicht klappen und sind zu gross und zu schwer.',
         'Deinen eigenen E-Scooter darfst du zusammengeklappt kostenlos in S-Bahn, Regionalzug und Regionalbus mitnehmen, wenn er höchstens 90 × 80 cm misst und 25 kg wiegt. Mit dem Leih-Scooter heisst Umsteigen: Fahrt vor dem Bahnhof beenden und am Ziel einen neuen mieten.',
-        'Zum Flughafen: Die Terminals liegen ausserhalb von Dotts Geschäftsgebiet (Stand November 2026), rechne dort also nicht mit einem Dott. Nimm zum Flughafen die S-Bahn und den Scooter für die Stadt.',
+        'Zum Flughafen: Die Terminals liegen ausserhalb der Gebiete von Dott und RideMovi (Stand November 2026), rechne dort also mit keinem von beiden. Nimm zum Flughafen die S-Bahn und den Scooter für die Stadt.',
       ],
     },
     {
@@ -120,7 +121,7 @@ const guide: Guide = {
             '**Mit MVG-Abo (nicht dem 365-Euro-Ticket für Schüler) oder einem Deutschlandticket aus der MVV-App:** die ersten 30 Minuten auf dem Fahrrad gratis, auf dem E-Bike für 1,50 €.',
           ],
         },
-        'Gebucht wird in der MVV-App, der nextbike-App oder in **MVGO**, wo du mit deinem M-Login auch E-Scooter von Dott und Voi mietest; Lime und Bolt mietest du in ihren eigenen Apps. Wo Scooter von Dott, Voi, Lime und Bolt in deiner Nähe stehen, zeigt die [Live-Karte von München](map:de:München).',
+        'Gebucht wird in der MVV-App, der nextbike-App oder in **MVGO**, wo du mit deinem M-Login auch E-Scooter von Dott und Voi mietest; Lime, Bolt und RideMovi mietest du in ihren eigenen Apps. Wo Scooter von Dott, Voi, Lime, Bolt und RideMovi in deiner Nähe stehen, zeigt die [Live-Karte von München](map:de:München).',
       ],
     },
     {
@@ -145,7 +146,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Ab welchem Alter kann ich in München einen E-Scooter mieten?',
-      answer: 'Ab 18: So steht es laut MVV in den Bedingungen von Dott, Lime, Voi und Bolt. Das Gesetz erlaubt E-Scooter schon ab 14 und ohne Führerschein, mit 14 bis 17 fährst du aber nur einen eigenen.',
+      answer: 'Ab 18: So steht es laut MVV in den Bedingungen von Dott, Lime, Voi und Bolt. Nur RideMovi lässt laut seinen AGB auch Jugendliche ab 16 fahren, wenn ein Elternteil das Konto für sie anlegt. Das Gesetz erlaubt E-Scooter schon ab 14 und ohne Führerschein; mit 14 oder 15 fährst du nur einen eigenen.',
     },
     {
       question: 'Darf ich mit dem E-Scooter zur Wiesn fahren?',
@@ -188,6 +189,8 @@ const guide: Guide = {
     { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen für Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'RideMovi: Unter 18 Jahren', url: 'https://www.ridemovi.com/de/informative/unter-18-jahren' },
+    { title: 'RideMovi: Verbraucherinformationen und Allgemeine Geschäftsbedingungen (PDF)', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/DE_termsandcondition.pdf' },
   ],
 };
 
