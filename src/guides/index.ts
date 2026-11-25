@@ -408,6 +408,7 @@ import siegburgDe from './de/e-scooter-siegburg';
 import rheineDe from './de/e-scooter-rheine';
 import laatzenDe from './de/e-scooter-laatzen';
 import germeringDe from './de/e-scooter-germering';
+import ludwigsburgDe from './de/e-scooter-ludwigsburg';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -816,4 +817,5 @@ export const GUIDES: readonly Guide[] = [
   rheineDe,
   laatzenDe,
   germeringDe,
+  ludwigsburgDe,
 ];
