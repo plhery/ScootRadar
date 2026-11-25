@@ -265,8 +265,8 @@ regions sweeping together each had every other turn. At 13:00 in Tashkent on
 24 November, with Tashkent and Tbilisi both watched, three pairs of sweeps
 took 92 and 85 s, 133 and 121 s, and 91 and 94 s, against 70 and 43 s for
 each alone the evening before: the slowest was 17 seconds from the
-150-second limit, past which a sweep fails. At midnight on 25 November the
-pair still took 97 and 90 s.
+150-second limit, past which a sweep fails. At 19:00 UTC on 25 November,
+midnight in Tashkent, the pair still took 97 and 90 s.
 
 That night, from the cache's container and on its session, JET answered 20
 map and polygon reads 500 ms apart, then 120 at 250 ms and 120 at 150 ms,
@@ -275,3 +275,5 @@ the median, 195, 174 and 167 ms at the 90th percentile. No 429 from JET has
 been seen. Requests now start 250 ms apart: a sweep makes as many as
 before, so each region's load on the account is the same every cycle, only
 sooner, and a 403 or 429 still holds every request for a minute or more.
+Twenty minutes later, on the new pace, three pairs took 40 and 32 s, 42 and
+33 s, and 41 and 32 s, with no failure.
