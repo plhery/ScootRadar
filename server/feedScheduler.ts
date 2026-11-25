@@ -442,7 +442,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // for. While watched, or kept shown for a wide view, a feed's scooters expire 15 minutes after the later of
     // its watch's start and its last collection's; a late one's, which no one watches, an idle interval after its last collection. A
     // feed polled again thus goes behind the areas still waiting since before its last collection, and areas
-    // a visitor has moved on from wait as idle feeds once their watch lapses (lapse). On 6 November 2026 a
+    // a visitor has moved on from wait as idle feeds once their watch lapses, at their own turn (lapse). On 6 November 2026 a
     // visitor panning across Munich asked for some forty Lime groups within minutes; the six Berlin groups a
     // viewer had open, asked for again behind them, waited up to twelve minutes, and five expired.
     const wakeOrder = new Map([...this.woken].map((id, index) => [id, index]));
@@ -482,11 +482,18 @@ export class FeedScheduler<T extends ScheduledFeed> {
 
   /**
    * Forgets the collections requests asked for whose watch lapsed before they started: nobody waits for them
-   * any more. Each goes on as an idle feed due, with the turns and slots idle sweeps have, not those of the towns
+   * any more. Each goes on as an idle feed, with the turns and slots idle sweeps have, not those of the towns
    * people look at, and its wait is no visitor's (onLapse). Until 10 November 2026 a Lime group a visitor
    * panned past stayed asked for: it waited behind every group still on screen, took the account's turns as
    * if someone looked at it, and its whole wait, 23 minutes in a test with six groups open, counted as a
    * visitor's.
+   *
+   * One on a paced host whose last collection succeeded is due at its idle turn after that one, as it would be had
+   * nobody looked: at once if that has come, unless by night in its town (byNight). Until 25 November 2026 each was
+   * due at once, swept for nobody: from about 17:38 CET on 24 November one visitor asked for 17 RideMovi areas
+   * within a quarter of an hour, two towns were swept at once, and the 16 still waiting for the host's slots when
+   * their watch lapsed, all swept that day, were then swept one after another until 19:34: 1,045 requests, and
+   * 712 of the 720 the host's pace allowed from 18:00 to 19:00, which the towns people asked for shared.
    */
   private lapse(now: number): void {
     for (const id of this.glancing) {
@@ -495,7 +502,10 @@ export class FeedScheduler<T extends ScheduledFeed> {
     for (const id of [...this.woken]) {
       if (this.running.has(id) || this.late.has(id) || this.watched(id, now) || this.glanced(id, now)) continue;
       this.settle(id);
-      const feed = this.byId.get(id);
+      const feed = this.byId.get(id), started = this.startedAt.get(id);
+      if (feed?.paced && started !== undefined && !this.failures.has(id)) {
+        this.due.set(id, this.byNight(feed, this.nextDue(feed, started, now, false), now, this.expiresAt(feed)));
+      }
       if (feed) this.options.onLapse?.(feed);
     }
   }

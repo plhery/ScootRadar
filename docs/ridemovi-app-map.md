@@ -264,6 +264,22 @@ than the 15 minutes a position is shown (Köln's all 12, up to 49 minutes):
 their every scooter stood faded once they ended, and a town watched through
 one would have read as expired.
 
+On 24 November 2026, the first whole day of the 19 towns, the cache made 52
+sweeps and 4,308 requests from 07:46 to 21:21 CET, with no failure, refusal or
+timeout. The big towns' daily sweeps, planned from where their scooters stood,
+took a fifth to a third fewer requests than their first: Köln's 196 to 205, in
+16 minutes with the pace to itself, München's and Bergen's 191, in 16. The
+daily sweeps took some 1,400 requests together, the visitors' the rest. From
+about 17:38 one visitor asked for 17 areas within a quarter of an hour: two
+towns were swept at once, and the 16 still waiting for the host's slots when
+their watch lapsed, all swept that day, were then swept for nobody, one after
+another until 19:34: 1,045 requests, and 712 of the 720 the pace allowed from
+18:00 to 19:00, which the sweeps people asked for shared (München's took 22
+minutes, 16 alone; Bonn's lapsed one 38, 7 alone). Since 25 November a town
+whose watch lapses before its sweep starts waits for its daily turn, unless
+that has come, as on every rider map paced by its client (`FeedScheduler`'s
+lapse).
+
 A deploy stops the sweeps under way, and on 22 November 2026 the cache was
 deployed about every 40 minutes, while Köln's, München's and Bergen's first
 sweeps took 49, 42 and 27. Since 23 November each sweep is saved after every

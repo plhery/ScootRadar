@@ -407,7 +407,9 @@ cannot postpone an area waiting since before its last refresh. A group a visitor
 has panned past, not yet started when its watch lapses, is no longer asked for: it
 waits for the slot and turns of the account's idle sweeps, as their groups do (until
 10 November 2026 it waited behind the groups on screen, then took the turns of one
-someone looks at). On
+someone looks at), and for its own idle turn, unless that has come (until 25
+November 2026 it was collected as soon as an idle slot was free, for nobody:
+docs/ridemovi-app-map.md, Requests). On
 6 November 2026, served in arrival order, a visitor panning across Munich asked for
 some forty groups within minutes; the six Berlin groups a viewer had open, asked for
 again behind them, waited up to twelve minutes, and five expired. Viewed groups

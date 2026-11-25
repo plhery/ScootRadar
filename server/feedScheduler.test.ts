@@ -571,7 +571,9 @@ it('keeps the groups a viewer has open ahead of groups a panning visitor has mov
     watchMs: 3 * MINUTE, idleIntervalMs: 72 * 60 * MINUTE };
   const berlin = ['berlin-a', 'berlin-b', 'berlin-c'].map(id => ({ id, ...account }));
   const munich = Array.from({ length: 30 }, (_, i) => ({ id: `munich-${i}`, ...account }));
-  const { scheduler, times } = schedule([...berlin, ...munich], { lastCollectedAt: () => T0 - 2 * MINUTE },
+  const lapsed = new Map<string, number>();
+  const { scheduler, times } = schedule([...berlin, ...munich], { lastCollectedAt: () => T0 - 2 * MINUTE,
+    onLapse: feed => lapsed.set(feed.id, (Date.now() - T0) / MINUTE) },
     feed => new Promise(resolve => setTimeout(resolve, feed.id.startsWith('berlin') ? 150_000 : 60_000)));
   // Five minutes in, the visitor pans past three new groups every 20 seconds, then stays on the last six.
   let step = -1;
@@ -591,9 +593,14 @@ it('keeps the groups a viewer has open ahead of groups a panning visitor has mov
       // Each collection starts in time to end before the last one's scooters are 15 minutes old.
       expect(Math.max(...starts.slice(1).map((at, i) => at - starts[i]))).toBeLessThan(12.5);
     }
-    // The groups the visitor stays on from 7:40 are collected within ten minutes, the others once the slots are free.
+    // The groups the visitor stays on from 7:40 are collected within ten minutes. Those only panned past and not
+    // started by the time their watch lapsed, collected two minutes before it all began, wait for their turn.
     for (const feed of munich.slice(24)) expect(times(feed.id)[0]).toBeLessThan(17.5);
-    for (const feed of munich) expect(times(feed.id).length).toBeGreaterThan(0);
+    expect(lapsed.size).toBeGreaterThan(0);
+    for (const feed of munich) {
+      if (lapsed.has(feed.id)) expect(times(feed.id).filter(at => at >= lapsed.get(feed.id)!)).toEqual([]);
+      else expect(times(feed.id).length).toBeGreaterThan(0);
+    }
   } finally {
     clearInterval(viewer);
     clearInterval(visitor);
@@ -601,15 +608,19 @@ it('keeps the groups a viewer has open ahead of groups a panning visitor has mov
   }
 });
 
-it('no longer asks for a group whose watch lapsed before it started, which goes on as an idle sweep', async () => {
+it('no longer asks for a group whose watch lapsed before it started, which goes on as an idle sweep at its turn', async () => {
   // A Lime group a visitor panned past stayed asked for: it waited behind the groups a viewer had open,
   // then took the account's turns as one someone looks at, and its whole wait counted as a visitor's.
+  const idleIntervalMs = 72 * 60 * MINUTE;
   const account = { host: 'web-production.lime.bike', paced: true, concurrencyKey: 'lime-account:primary', keepsIdleTurns: true,
-    watchMs: 3 * MINUTE, idleIntervalMs: 72 * 60 * MINUTE };
+    watchMs: 3 * MINUTE, idleIntervalMs };
   const open = ['open-a', 'open-b'].map(id => ({ id, ...account }));
-  const passed = { id: 'passed', ...account };
+  // Its turn comes a minute in, while it waits for the account's slots; another's in 40 hours.
+  const passed = { id: 'passed', ...account, idlePhase: ((T0 + MINUTE) % idleIntervalMs) / idleIntervalMs };
+  const later = { id: 'later', ...account };
   const lapsed: Array<{ id: string; at: number }> = [];
-  const { scheduler, calls, attention } = schedule([...open, passed], {
+  const { scheduler, calls, attention } = schedule([...open, passed, later], {
+    phase: feed => feed.idlePhase ?? 0,
     lastCollectedAt: feed => feed.id === 'passed' ? T0 - 30 * 60 * MINUTE : T0 - 2 * MINUTE,
     onLapse: feed => lapsed.push({ id: feed.id, at: (Date.now() - T0) / MINUTE }),
   }, () => new Promise(resolve => setTimeout(resolve, 4 * MINUTE)));
@@ -617,24 +628,76 @@ it('no longer asks for a group whose watch lapsed before it started, which goes 
   try {
     scheduler.demand(open.map(feed => feed.id));
     await vi.advanceTimersByTimeAsync(10_000);
-    // The visitor's map shows the group for one request, then they pan on.
-    scheduler.demand(['passed']);
+    // The visitor's map shows the groups for one request, then they pan on.
+    scheduler.demand(['passed', 'later']);
     expect(scheduler.refreshing('passed')).toBe(true);
     expect(calls.filter(call => call.id === 'passed')).toEqual([]);
     await vi.advanceTimersByTimeAsync(3 * MINUTE);
     expect(lapsed).toEqual([]);
     // The open groups free a slot at 4:00, well after the watch lapsed at 3:10.
     await vi.advanceTimersByTimeAsync(MINUTE);
-    expect(lapsed).toEqual([{ id: 'passed', at: 4 }]);
+    expect(lapsed).toEqual([{ id: 'passed', at: 4 }, { id: 'later', at: 4 }]);
     expect(scheduler.refreshing('passed')).toBe(false);
     expect(calls.filter(call => call.id === 'passed')).toEqual([{ id: 'passed', at: 4 * MINUTE, reason: 'idle' }]);
     expect(attention.get('passed')?.urgent()).toBe(false);
     // The groups still on screen keep their place.
     expect(calls.filter(call => call.id === 'open-a').map(call => call.at / MINUTE)).toEqual([0, 4]);
+    // The other's turn is 40 hours on, and it waits for it.
+    await vi.advanceTimersByTimeAsync(39 * 60 * MINUTE);
+    expect(calls.filter(call => call.id === 'later')).toEqual([]);
+    await vi.advanceTimersByTimeAsync(2 * 60 * MINUTE);
+    expect(calls.filter(call => call.id === 'later')).toEqual([{ id: 'later', at: 40 * 60 * MINUTE, reason: 'idle' }]);
   } finally {
     clearInterval(viewer);
     scheduler.stop();
   }
+});
+
+it('gives a town on a paced host its own turn back when its watch lapses before its sweep starts', async () => {
+  // From about 17:38 CET on 24 November 2026 one visitor asked for 17 RideMovi areas within a quarter of an hour.
+  // Two towns were swept at once; 16 others, all swept that day, waited for the host's slots, and once their watch
+  // lapsed each was swept for nobody: 1,045 requests, one after another until 19:34.
+  const DAY = 24 * 60 * MINUTE;
+  const host = { host: 'api.ridemoviapp.com', paced: true, watchMs: 2 * MINUTE, idleIntervalMs: DAY };
+  const swept = ['koeln', 'bonn', 'essen'].map(id => ({ id, ...host }));
+  // Volos's turn comes a minute in, while the visitor's two sweeps hold the slots.
+  const volos = { id: 'volos', ...host, idlePhase: ((T0 + MINUTE) % DAY) / DAY };
+  const lapsed: string[] = [];
+  const { scheduler, calls } = schedule([...swept, volos], {
+    phase: feed => feed.idlePhase ?? 0,
+    lastCollectedAt: feed => feed.id === 'volos' ? T0 - 20 * 60 * MINUTE : T0 - 2 * 60 * MINUTE,
+    onLapse: feed => lapsed.push(feed.id),
+  }, feed => new Promise(resolve => setTimeout(resolve, feed.id === 'volos' ? MINUTE : 20 * MINUTE)));
+  const of = (id: string) => calls.filter(call => call.id === id).map(call => ({ at: call.at / MINUTE, reason: call.reason }));
+  try {
+    scheduler.demand(['koeln', 'bonn']);
+    await vi.advanceTimersByTimeAsync(10_000);
+    scheduler.demand(['essen', 'volos']);
+    await vi.advanceTimersByTimeAsync(60 * MINUTE);
+    expect(of('koeln')).toEqual([{ at: 0, reason: 'wake' }]);
+    expect(lapsed).toEqual(['essen', 'volos']);
+    // Volos's turn had come: it is swept as an idle town once a slot is free. Essen's is tomorrow's.
+    expect(of('volos')).toEqual([{ at: 20, reason: 'idle' }]);
+    expect(of('essen')).toEqual([]);
+    expect(scheduler.refreshing('essen')).toBe(false);
+    // Asked for again, it is swept at once, as before.
+    scheduler.demand(['essen']);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(of('essen')).toEqual([{ at: 60 + 1 / 6, reason: 'wake' }]);
+  } finally { scheduler.stop(); }
+});
+
+it('still sweeps a feed off a paced host at once when its watch lapses before it starts', async () => {
+  const { scheduler, calls } = schedule(['a', 'b', 'c'].map(id => ({ id, host: 'gbfs.example', watchMs: 2 * MINUTE })),
+    { lastCollectedAt: () => T0 - 2 * MINUTE }, feed => new Promise(resolve => setTimeout(resolve, feed.id === 'c' ? 0 : 10 * MINUTE)));
+  try {
+    scheduler.demand(['a', 'b']);
+    await vi.advanceTimersByTimeAsync(10_000);
+    scheduler.demand(['c']);
+    await vi.advanceTimersByTimeAsync(15 * MINUTE);
+    expect(calls.filter(call => call.id === 'c').map(call => ({ at: call.at / MINUTE, reason: call.reason })))
+      .toEqual([{ at: 10, reason: 'idle' }]);
+  } finally { scheduler.stop(); }
 });
 
 it('warms a deploy\'s new feeds up a stage at a time, so the feeds the cache holds keep their turns', async () => {
