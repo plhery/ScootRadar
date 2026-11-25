@@ -397,6 +397,7 @@ import eilatEn from './en/e-scooters-eilat';
 import holonEn from './en/e-scooters-holon';
 import batYamEn from './en/e-scooters-bat-yam';
 import ludwigshafenDe from './de/e-scooter-ludwigshafen';
+import herneDe from './de/e-scooter-herne';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -794,4 +795,5 @@ export const GUIDES: readonly Guide[] = [
   holonEn,
   batYamEn,
   ludwigshafenDe,
+  herneDe,
 ];
