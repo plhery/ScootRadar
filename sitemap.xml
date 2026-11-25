@@ -2924,6 +2924,24 @@
 <priority>0.7</priority>
 </url>
 <url>
+<loc>https://scootradar.com/it/guide/monopattini-sharing-modena</loc>
+<xhtml:link rel="alternate" hreflang="en" href="https://scootradar.com/guides/e-scooters-modena" />
+<xhtml:link rel="alternate" hreflang="it" href="https://scootradar.com/it/guide/monopattini-sharing-modena" />
+<xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides/e-scooters-modena" />
+<lastmod>2026-11-24T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/guides/e-scooters-modena</loc>
+<xhtml:link rel="alternate" hreflang="en" href="https://scootradar.com/guides/e-scooters-modena" />
+<xhtml:link rel="alternate" hreflang="it" href="https://scootradar.com/it/guide/monopattini-sharing-modena" />
+<xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides/e-scooters-modena" />
+<lastmod>2026-11-24T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
 <loc>https://scootradar.com/privacy</loc>
 <lastmod>2026-11-25T00:00:00.000Z</lastmod>
 <changefreq>yearly</changefreq>
