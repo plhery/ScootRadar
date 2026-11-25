@@ -168,8 +168,8 @@ describe('the count of covered cities and countries', () => {
   });
 
   it('counts each town of a feed shared by several, and a town with several operators once', () => {
-    // Dott runs one feed for Wołomin, Kobyłka and Radzymin; Voi and Bolt both run Reutlingen and Tübingen.
-    for (const id of ['pl:Wołomin', 'pl:Kobyłka', 'pl:Radzymin', 'de:Reutlingen', 'de:Tübingen', 'fr:Bordeaux']) {
+    // Beryl runs one feed for Bournemouth, Christchurch and Poole; Voi and Bolt both run Reutlingen and Tübingen.
+    for (const id of ['gb:Bournemouth', 'gb:Christchurch', 'gb:Poole', 'de:Reutlingen', 'de:Tübingen', 'fr:Bordeaux']) {
       expect(COVERED_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
   });

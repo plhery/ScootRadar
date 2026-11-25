@@ -5250,9 +5250,6 @@ enum ScooterProviderCoverage {
         systems.append((.bolt, GeoBounds(south: 56.7856, west: 24.4687, north: 56.8517, east: 24.6582)))
         systems.append((.bolt, GeoBounds(south: 57.0459, west: 24.307, north: 57.1099, east: 24.3802)))
         systems.append((.dott, GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)))
-        systems.append((.dott, GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883)))
-        systems.append((.dott, GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)))
-        systems.append((.dott, GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)))
         systems.append((.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)))
         systems.append((.hopp, GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078)))
         systems.append((.dott, GeoBounds(south: 50.8404, west: 17.4434, north: 50.8678, east: 17.4904)))
@@ -8708,7 +8705,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1137)
+        cities.reserveCapacity(1134)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -9159,9 +9156,6 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "lv:Ogre", name: "Ogre", countryCode: "LV", center: GeoPoint(latitude: 56.8162, longitude: 24.61401), bounds: GeoBounds(south: 56.7856, west: 24.4687, north: 56.8517, east: 24.6582), feeds: [ScooterCityFeed(id: "latvia:bolt_lv_app_804")]))
         cities.append(ScooterCity(id: "lv:Ādaži", name: "Ādaži", countryCode: "LV", center: GeoPoint(latitude: 57.0708, longitude: 24.33678), bounds: GeoBounds(south: 57.0459, west: 24.307, north: 57.1099, east: 24.3802), feeds: [ScooterCityFeed(id: "latvia:bolt_lv_app_1810")]))
         cities.append(ScooterCity(id: "pl:Oświęcim", name: "Oświęcim", countryCode: "PL", center: GeoPoint(latitude: 50.0382, longitude: 19.2214), bounds: GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617), feeds: [ScooterCityFeed(id: "poland:dott_pl_oswiecim")]))
-        cities.append(ScooterCity(id: "pl:Wołomin", name: "Wołomin", countryCode: "PL", center: GeoPoint(latitude: 52.3469, longitude: 21.242), bounds: GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]))
-        cities.append(ScooterCity(id: "pl:Kobyłka", name: "Kobyłka", countryCode: "PL", center: GeoPoint(latitude: 52.3387, longitude: 21.1965), bounds: GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]))
-        cities.append(ScooterCity(id: "pl:Radzymin", name: "Radzymin", countryCode: "PL", center: GeoPoint(latitude: 52.4176, longitude: 21.1808), bounds: GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]))
         cities.append(ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968), feeds: [ScooterCityFeed(id: "poland:hopp_pl_knurow")]))
         cities.append(ScooterCity(id: "pl:Września", name: "Września", countryCode: "PL", center: GeoPoint(latitude: 52.3251, longitude: 17.5652), bounds: GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078), feeds: [ScooterCityFeed(id: "poland:hopp_pl_wrzesnia")]))
         cities.append(ScooterCity(id: "pl:Brzeg", name: "Brzeg", countryCode: "PL", center: GeoPoint(latitude: 50.8551, longitude: 17.4722), bounds: GeoBounds(south: 50.8404, west: 17.4434, north: 50.8678, east: 17.4904), feeds: [ScooterCityFeed(id: "poland:dott_pl_brzeg")]))
@@ -9851,7 +9845,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1137
+    static let cityCount = 1134
     static let countryCount = 59
 
     /// Cities by distance from the point to their centre, nearest first.

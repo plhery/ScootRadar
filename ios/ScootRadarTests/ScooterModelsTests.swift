@@ -1565,8 +1565,8 @@ extension ScooterModelsTests {
         XCTAssertEqual(Set(cities.map(\.id)).count, cities.count)
         XCTAssertEqual(ScooterCityCatalog.countryCount, Set(cities.map(\.countryCode)).count)
         XCTAssertTrue(cities.contains { $0.countryCode == "CH" })
-        // Dott's one feed for Wołomin, Kobyłka and Radzymin counts three towns.
-        for id in ["pl:Wołomin", "pl:Kobyłka", "pl:Radzymin"] {
+        // Beryl's one feed for Bournemouth, Christchurch and Poole counts three towns.
+        for id in ["gb:Bournemouth", "gb:Christchurch", "gb:Poole"] {
             XCTAssertEqual(cities.filter { $0.id == id }.count, 1, id)
         }
 

@@ -887,9 +887,9 @@ banned shared scooters, and feeds that were empty when checked.
   - nextbike Latvia is empty, and the national access point
     (transportdata.gov.lv) has no shared-mobility data.
 - **Poland** ([guide](polish-scooter-feeds.md#known-gaps)): Dott in
-  Oświęcim, and Wołomin with Kobyłka and Radzymin, and Hopp in Knurów and
-  Września are covered. Dott left Sosnowiec on 27 October 2026: its region
-  answers 404, and the feed is retired. Hopp Złotów was retired on 21 November
+  Oświęcim and Hopp in Knurów and Września are covered. Dott left Sosnowiec
+  on 27 October 2026 and Wołomin, with Kobyłka and Radzymin, on 25 November
+  2026: their regions answer 404, and the feeds are retired. Hopp Złotów was retired on 21 November
   2026: its feed has listed only flat, disabled scooters since 3 November.
   - Dott's Polish site lists 85 places, but its public listing names those
     three regions only. Of its other 74 Polish entries in the registry, 73

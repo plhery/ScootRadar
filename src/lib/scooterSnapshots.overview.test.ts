@@ -74,7 +74,6 @@ describe('the town a scooter counts under', () => {
     ['Poole, not Bournemouth', 'beryl_gb_bournemouth_christchurch_poole', [50.7299, -1.90585], 'gb:Poole'],
     ['Almada, not Costa da Caparica', 'lime_pt_almada', [38.67084, -9.23683], 'pt:Almada'],
     ['La Nucía, not L’Alfàs del Pi', 'hoppy_es_marina_baixa', [38.57631, -0.12035], 'es:La Nucía'],
-    ['Kobyłka, not Wołomin', 'dott_pl_wolomin', [52.33258, 21.22527], 'pl:Kobyłka'],
     ['Los Angeles in Venice, not Santa Monica', 'veo_us_santa_monica', [34.02931, -118.44279], 'us:ca:Los Angeles'],
     ['Santa Monica, not Los Angeles, though Bird’s Los Angeles feed has it', 'bird_us_los_angeles', [34.02194, -118.44807], 'us:ca:Santa Monica'],
     ['College Park, not University Park', 'veo_us_college_park', [38.97843, -76.92885], 'us:md:College Park'],

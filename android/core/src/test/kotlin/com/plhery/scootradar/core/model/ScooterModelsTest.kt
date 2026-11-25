@@ -110,8 +110,8 @@ class ScooterModelsTest {
         assertEquals(cities.map { it.countryCode }.toSet().size, ScooterCityCatalog.countryCount)
         // Switzerland's open data, where ScootRadar began, is in the catalog for good.
         assertTrue(cities.any { it.countryCode == "CH" })
-        // A feed run over several towns counts each of them, as Dott's one for Wołomin, Kobyłka and Radzymin counts
-        // three. Which feeds do is data/'s to change (LOG-370); that some do is not, with 97 on 28 October 2026.
+        // A feed run over several towns counts each of them, as Beryl's one for Bournemouth, Christchurch and Poole
+        // counts three. Which feeds do is data/'s to change (LOG-370); that some do is not, with 97 on 28 October 2026.
         val towns = cities.flatMap { city -> city.feeds.map { it.id to city.id } }
             .groupBy({ it.first }, { it.second }).values.map { it.distinct() }.filter { it.size > 1 }
         assertTrue(towns.isNotEmpty())

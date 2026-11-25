@@ -21,8 +21,8 @@ describe('German and Italian scooter coverage', () => {
     ['Koln', 'Köln, Germany'], ['Rome', 'Roma, Italy'], ['Roma Italia', 'Roma, Italy'], ['Naples', 'Napoli, Italy'],
     ['Neapel', 'Napoli, Italy'], ['Palerme', 'Palermo, Italy'], ['Uppsala Sverige', 'Uppsala, Sweden'], ['Upsala', 'Uppsala, Sweden'],
     ['Kiiruna', 'Kiruna, Sweden'], ['Giron', 'Kiruna, Sweden'], ['Riga', 'Rīga, Latvia'], ['Riga Latvija', 'Rīga, Latvia'],
-    ['Rīga Lettland', 'Rīga, Latvia'], ['Wolomin', 'Wołomin, Poland'], ['Wołomin', 'Wołomin, Poland'], ['Kobylka Polska', 'Kobyłka, Poland'],
-    ['Oswiecim', 'Oświęcim, Poland'], ['Radzymin Polen', 'Radzymin, Poland'], ['Knurow', 'Knurów, Poland'],
+    ['Rīga Lettland', 'Rīga, Latvia'],
+    ['Oswiecim', 'Oświęcim, Poland'], ['Knurow', 'Knurów, Poland'],
     ['Wrzesnia', 'Września, Poland'], ['Września Polska', 'Września, Poland'],
     ['Egilsstadir', 'Egilsstaðir, Iceland'], ['Egilstadir Island', 'Egilsstaðir, Iceland'], ['Fellabaer', 'Egilsstaðir, Iceland'],
     ['Hveragerdi', 'Hveragerði, Iceland'], ['Hveragerði Ísland', 'Hveragerði, Iceland'], ['Pecs', 'Pécs, Hungary'], ['Pécs Magyarország', 'Pécs, Hungary'],
@@ -86,8 +86,6 @@ describe('German and Italian scooter coverage', () => {
     { id: 'hopp_se_kiruna', bounds: { south: 67.84, north: 67.86, west: 20.22, east: 20.3 }, country: 'sweden', v3: false },
     { id: 'bolt_de_karlsruhe', bounds: { south: 49, north: 49.02, west: 8.39, east: 8.42 }, country: 'germany', v3: true },
     { id: 'ride_mobility_lv_riga', bounds: { south: 56.94, north: 56.96, west: 24.1, east: 24.13 }, country: 'latvia', v3: true },
-    // Dott writes Wołomin's directory percent-encoded, wo%C5%82omin, in the discovery URL and in its feeds alike.
-    { id: 'dott_pl_wolomin', bounds: { south: 52.34, north: 52.35, west: 21.23, east: 21.25 }, country: 'poland', v3: false },
     // Zeus's own feeds call its standing scooters electric_assist.
     { id: 'zeus_de_regensburg', bounds: { south: 49.01, north: 49.02, west: 12.09, east: 12.11 }, country: 'germany', v3: false,
       propulsion: 'electric_assist' },
@@ -718,8 +716,10 @@ describe('German and Italian scooter coverage', () => {
       expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'ES' && entry.city === city)).toHaveLength(1);
     }
   });
-  it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {
-    const base = new URL('.', REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_pl_wolomin')!.discoveryUrl).toString();
+  // Dott wrote Wołomin's directory percent-encoded, wo%C5%82omin, in the discovery URL and in its feeds alike (retired
+  // on 25 November 2026, when Dott removed the region).
+  it('keeps a Dott region\'s feeds under its percent-encoded directory, however the letter is written', () => {
+    const base = new URL('.', 'https://gbfs.api.ridedott.com/public/v2/wo%C5%82omin/gbfs.json').toString();
     const feed = (url: string) => discoveredFeedUrl([{ name: 'free_bike_status', url }], 'free_bike_status', base);
     const encoded = 'https://gbfs.api.ridedott.com/public/v2/wo%C5%82omin/free_bike_status.json';
     expect(feed(encoded)).toBe(encoded);

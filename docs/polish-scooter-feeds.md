@@ -19,6 +19,18 @@ names Oświęcim and Wołomin only. No other feed covers the town. The weekly
 catalog check names a listed region the catalog lacks, so a return would be
 reported. The audit below records Sosnowiec as it stood in October.
 
+Update, 25 November 2026: Dott has left Wołomin, with Kobyłka and Radzymin,
+and its feed is retired. The cache counted 87 scooters there on 23 November,
+17 on the morning of the 24th and none from 23:00 UTC that day; from about
+09:50 UTC on the 25th the region's address answers 404
+(`ERR_REGION_NOT_FOUND`), as Sosnowiec's did, which Sentry reported as
+SCOOTRADAR-CACHE-5X. Dott's own map, read from Netcup that morning, held no
+scooter of any region in the three towns while central Warsaw held 709, so
+the town did not move to another region. Oświęcim, empty since 23 November,
+answers 403 (`ERR_REGION_OFFLINE`), a region Dott pauses, and stays; Dott's
+Polish listing named no region that day. No other feed covers the three
+towns. The audit below records Wołomin as it stood in October.
+
 Update, 21 November 2026: Hopp Złotów (`hopp_pl_zlotow`) is retired. Its
 daily high fell from 7 available scooters on 20 October to none on 3
 November, one at a time, with none charged again. Its feed still answered on
