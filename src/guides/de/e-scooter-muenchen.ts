@@ -6,11 +6,11 @@ const guide: Guide = {
   topic: 'munich',
   name: 'E-Scooter München: Anbieter, Preise, Parken',
   title: 'E-Scooter mieten in München 2026: Anbieter, Preise, Wiesn',
-  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, RideMovi, ohne Führerschein. Zehn Minuten: Voi 3,59 €, Dott 4 €. Tabu: Englischer Garten, U-Bahn.',
+  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, RideMovi, ohne Führerschein. Zehn Minuten: Voi 3,59 €, Dott 2,99 €. Tabu: Englischer Garten, U-Bahn.',
   headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
-  lede: 'Einen E-Scooter in München mietest du ohne Führerschein und in der Regel ab 18 bei Dott, Lime, Voi, Bolt oder RideMovi. Zehn Minuten kosten im Standardtarif bei Voi 3,59 € und bei Dott 4 € (Stand November 2026); bei Lime, Bolt und RideMovi zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
+  lede: 'Einen E-Scooter in München mietest du ohne Führerschein und in der Regel ab 18 bei Dott, Lime, Voi, Bolt oder RideMovi. Zehn Minuten kosten im Standardtarif bei Voi 3,59 € und bei Dott 2,99 € (Stand November 2026); bei Lime, Bolt und RideMovi zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
-  updated: '2026-11-24',
+  updated: '2026-11-25',
   city: 'de:München',
   sections: [
     {
@@ -31,7 +31,7 @@ const guide: Guide = {
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,99 €', '0,26 €', '3,59 €', '6,19 €'],
-              ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
+              ['Dott', '0,49 €', '0,25 €', '2,99 €', '5,49 €'],
               ['Bolt', 'kleine Gebühr, Betrag in der App', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
               ['RideMovi', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],

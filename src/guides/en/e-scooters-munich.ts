@@ -6,11 +6,11 @@ const guide: Guide = {
   topic: 'munich',
   name: 'Renting an e-scooter in Munich',
   title: 'E-scooter hire Munich 2026: Dott, Voi, Lime, Bolt, RideMovi',
-  description: 'Rent a Voi, Lime, Dott, Bolt or RideMovi e-scooter in Munich, no licence. Ten minutes cost €3.59 on Voi, €4 on Dott. Old-town bays, no English Garden or U-Bahn.',
+  description: 'Rent a Voi, Lime, Dott, Bolt or RideMovi e-scooter in Munich, no licence. Ten minutes: €3.59 on Voi, €2.99 on Dott. Old-town bays, no English Garden or U-Bahn.',
   headline: 'E-scooters in Munich: apps, prices, parking and the Oktoberfest rules',
-  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi, Bolt or RideMovi app: you need a payment card but no driving licence, and must usually be 18. Ten minutes cost €3.59 with Voi and €4.00 with Dott at their standard rates (as of November 2026); Lime, Bolt and RideMovi show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
+  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi, Bolt or RideMovi app: you need a payment card but no driving licence, and must usually be 18. Ten minutes cost €3.59 with Voi and €2.99 with Dott at their standard rates (as of November 2026); Lime, Bolt and RideMovi show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
   published: '2026-10-13',
-  updated: '2026-11-24',
+  updated: '2026-11-25',
   city: 'de:München',
   sections: [
     {
@@ -32,7 +32,7 @@ const guide: Guide = {
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi', '€0.99', '€0.26', '€3.59', '€6.19'],
-              ['Dott', '€1.00', '€0.30', '€4.00', '€7.00'],
+              ['Dott', '€0.49', '€0.25', '€2.99', '€5.49'],
               ['Bolt', 'Small fee, shown in the app', 'From €0.15 (for all of Germany)', 'In the app', 'In the app'],
               ['RideMovi', 'In the app', 'In the app', 'In the app', 'In the app'],
             ],
