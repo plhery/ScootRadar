@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Puts a beta's APK, the fdroid build signed with ScootRadar's upload key, in the F-Droid repository of the Android beta
+# Puts a release's APK, the fdroid build signed with ScootRadar's upload key, in ScootRadar's F-Droid repository
 # and on GitHub Releases. Play's own copy doesn't go there: Play protects the copies it signs, and they refuse to open on
 # a phone without the Play Store.
 #
@@ -8,7 +8,7 @@
 # <fdroid.apk> is `./gradlew :app:assembleFdroidRelease -Pscootradar.uploadKey=<upload.properties>` from a clean checkout
 # of <commit>, the commit on main the release was built from, which its GitHub release and tag,
 # android-<versionName>-<versionCode>, point at. SCOOTRADAR_FDROID_DIR names the repository's folder on this Mac, made by `fdroid init`, whose config.yml and key
-# stay outside every git tree. The repository keeps the newest beta alone; the older ones stay on GitHub Releases.
+# stay outside every git tree. The repository keeps the newest release alone; the older ones stay on GitHub Releases.
 set -euo pipefail
 
 apk=$1
@@ -114,7 +114,7 @@ address="https://raw.githubusercontent.com/$github/fdroid/repo?fingerprint=$fing
 # this Mac's paths, stay out.
 site=$(mktemp -d)
 cp -R "$dir/repo" "$site/repo"
-printf '# ScootRadar beta for F-Droid\n\nAdd this repository in F-Droid: %s\n' "$address" > "$site/README.md"
+printf '# ScootRadar for F-Droid\n\nAdd this repository in F-Droid: %s\n' "$address" > "$site/README.md"
 git -C "$site" init -q -b fdroid
 git -C "$site" add README.md repo ':!repo/status'
 git -C "$site" commit -q -m "ScootRadar $name ($code)"
@@ -125,12 +125,12 @@ git -C "$site" -c credential.helper= -c 'credential.helper=!gh auth git-credenti
 # stops (publish-github-release.sh).
 cp "$apk" "$site/scootradar-$name-$code.apk"
 {
-  printf 'ScootRadar for Android %s (%s), the beta, built from %s without Google'"'"'s libraries and signed with ScootRadar'"'"'s own key.\n\n' \
+  printf 'ScootRadar for Android %s (%s), built from %s without Google'"'"'s libraries and signed with ScootRadar'"'"'s own key.\n\n' \
     "$name" "$code" "$target"
   printf '%s\n\n' "$uninstall"
   printf 'In F-Droid, add the repository %s\n' "$address"
   if [ -n "$notes" ]; then printf '\n'; cat "$notes"; fi
 } > "$site/notes.md"
 "$android/scripts/publish-github-release.sh" "$github" "$tag" "$site/scootradar-$name-$code.apk" \
-  "ScootRadar for Android $name ($code), beta" "$site/notes.md"
+  "ScootRadar for Android $name ($code)" "$site/notes.md"
 echo "$address"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Puts a beta's APK on GitHub Releases, on its tag, and checks it is published there with that APK.
+# Puts a release's APK on GitHub Releases, on its tag, and checks it is published there with that APK.
 #
 #   scripts/publish-github-release.sh <repo> <tag> <apk> <title> <notes.md>
 #
@@ -39,12 +39,12 @@ if state=$(release 2>"$errors"); then
   fi
   if [ "$draft" = true ]; then
     echo "$tag is a draft on GitHub Releases, left by a run cut off: publishing it" >&2
-    gh release edit "$tag" --repo "$repo" --verify-tag --draft=false --prerelease --title "$title" --notes-file "$notes"
+    gh release edit "$tag" --repo "$repo" --verify-tag --draft=false --prerelease=false --title "$title" --notes-file "$notes"
   elif [ -n "$uploaded" ]; then
     echo "$tag is on GitHub Releases already" >&2
   fi
 elif grep -q 'release not found' "$errors"; then
-  gh release create "$tag" "$apk" --repo "$repo" --verify-tag --prerelease --title "$title" --notes-file "$notes"
+  gh release create "$tag" "$apk" --repo "$repo" --verify-tag --title "$title" --notes-file "$notes"
 else
   cat "$errors" >&2
   echo "$tag could not be read on GitHub Releases" >&2

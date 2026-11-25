@@ -1,4 +1,4 @@
-# The app's entry in the F-Droid repository of the Android beta, which scripts/publish-fdroid.sh copies there.
+# The app's entry in ScootRadar's F-Droid repository, which scripts/publish-fdroid.sh copies there.
 Categories:
   - Navigation
 License: AGPL-3.0-only
@@ -26,7 +26,7 @@ AntiFeatures:
 Name: ScootRadar
 Summary: Every shared e-scooter near you on one live map
 Description: |-
-  This is the beta of ScootRadar for Android, built without Google's libraries and signed with ScootRadar's own key. If your ScootRadar came from Google Play, or from GitHub or the ScootRadar beta F-Droid repository before 18 November 2026, uninstall it first: this copy is signed with a different key.
+  This is ScootRadar for Android, built without Google's libraries and signed with ScootRadar's own key. If your ScootRadar came from Google Play, or from GitHub or the ScootRadar beta F-Droid repository before 18 November 2026, uninstall it first: this copy is signed with a different key.
 
   ScootRadar puts every shared e-scooter around you on one map, whoever runs it, so the closest ride is the first thing you see.
 
