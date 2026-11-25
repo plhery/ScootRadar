@@ -46,7 +46,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur, wo es keinen gibt, auf der Fahrbahn. Auf Gehwegen und in Fussgängerzonen fährst du nicht, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es. Der Ordnungsdienst der Stadt achtet bei seinen täglichen Kontrollen in der Innenstadt auch auf E-Scooter.',
         '**Die Quadrate:** In der Innenstadt tragen die Blöcke statt Strassennamen Buchstabe und Zahl, etwa A 1, N 2 oder O 7.',
         '**Planken und Breite Strasse:** Die beiden Einkaufsstrassen gehören zur Fussgängerzone Innenstadt, durch die auch die Strassenbahn fährt. Dort ist das Fahren mit E-Scootern laut Stadt verboten: Steig ab und schieb. Fahrräder dürfen dort laut Satzung der Stadt von 20 bis 8 Uhr und an Sonn- und Feiertagen fahren. Ab 1. März 2027 gilt ein Schild «Radverkehr frei» auch für E-Scooter, im Schritttempo.',
-        '**Über den Rhein nach Ludwigshafen:** Bei Voi bilden Mannheim und Ludwigshafen ein Gebiet. In Ludwigshafen stellst du Leih-Scooter laut Wochenblatt seit 1. Januar 2024 nur auf festgelegten Abstellflächen ab, die die App anzeigt. Stehst du nicht auf oder direkt an einer, lässt sich die Fahrt nicht beenden, und die Miete läuft weiter. Voi führt dort rund 190 solcher Flächen (Stand November 2026).',
+        '**Über den Rhein nach Ludwigshafen:** Bei Voi bilden Mannheim und Ludwigshafen ein Gebiet. Auf Vois Gebietskarte liegen die Abschnitte beider Rheinbrücken über dem Fluss aber ausserhalb der Fläche, in der Voi-Scooter fahren dürfen (Stand November 2026): Schau vor der Fahrt in die App, ob Voi dich hinüberlässt. In Ludwigshafen stellst du Leih-Scooter laut Wochenblatt seit 1. Januar 2024 nur auf festgelegten Abstellflächen ab, die die App anzeigt. Stehst du nicht auf oder direkt an einer, lässt sich die Fahrt nicht beenden, und die Miete läuft weiter. Voi führt dort rund 190 solcher Flächen (Stand November 2026).',
       ],
     },
     {
@@ -163,7 +163,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem Leih-Scooter nach Ludwigshafen fahren?',
-      answer: 'Mit Voi ja: Mannheim und Ludwigshafen bilden bei Voi ein Gebiet. In Ludwigshafen beendest du die Fahrt aber nur an einer der festen Abstellflächen, die die App zeigt.',
+      answer: 'Mannheim und Ludwigshafen bilden bei Voi ein Gebiet, doch die Rheinbrücken liegen laut Vois Gebietskarte ausserhalb der Fahrfläche: Prüf in der App, ob du hinüberkommst. Dott und Bolt stellen ihre Scooter in beiden Städten auf. In Ludwigshafen beendest du die Fahrt nur an einer der festen Abstellflächen, die die App zeigt.',
     },
     {
       question: 'Wo melde ich einen falsch abgestellten E-Scooter?',
@@ -181,6 +181,7 @@ const guide: Guide = {
     { title: 'VRN: Beförderungsbedingungen, Anlage 3: Mitnahme von E-Tretrollern', url: 'https://www.vrn.de/tickets/tarifsystem/befoerderungsbedingungen/artikel/011912/index.html' },
     { title: 'VRN: E-Tretroller von Dott', url: 'https://www.vrn.de/mobilitaet/e-tretroller/dott/index.html' },
     { title: 'Voi: Tarif und Zonen für Mannheim (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/356/netex.xml' },
+    { title: 'MobiData BW: offene Daten von Voi (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Wochenblatt Ludwigshafen: Stadt markiert Abstellflächen für E-Roller (25. März 2024)', url: 'https://www.wochenblatt-reporter.de/ludwigshafen/c-lokales/stadt-beendet-abstellchaos-bei-e-rollern-und-markiert-abstellflaechen_a543395' },
