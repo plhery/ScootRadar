@@ -125,7 +125,8 @@ describe('the Sentry reporter', () => {
     expect(exception.stacktrace!.frames!.map(frame => frame.filename)).toEqual([`${scripts}/9f8e7d6c5b4a.js`, `${scripts}/0a1b2c3d4e5f.js`]);
     // The error that caused it, its coordinate filtered.
     expect(linked).toMatchObject({ type: 'RangeError', value: 'Invalid LatLng object: ([Filtered], NaN)' });
-    expect(JSON.stringify(event)).not.toMatch(/47\.37|8\.54|walk/);
+    // A coordinate, not the digits of a timestamp: 1795634558.578 holds "8.5".
+    expect(JSON.stringify(event)).not.toMatch(/(?<!\d)47\.37|(?<!\d)8\.54|walk/);
   });
 
   it('carries the pages opened and the site\'s requests since it started, by their path, and nothing else', async () => {
@@ -146,7 +147,7 @@ describe('the Sentry reporter', () => {
       { category: 'navigation', data: { from: '/privacy', to: '/map' } },
       { category: 'fetch', data: { method: 'GET', url: '/api/scooters', status_code: 503 } },
     ]);
-    expect(JSON.stringify(event)).not.toMatch(/47\.3|8\.5|Bahnhof|tiles/);
+    expect(JSON.stringify(event)).not.toMatch(/(?<!\d)47\.3|(?<!\d)8\.5|Bahnhof|tiles/);
   });
 
   it('sends neither noise, nor an extension\'s or another site\'s errors, nor one twice', async () => {
