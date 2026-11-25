@@ -1720,7 +1720,8 @@ Bonaire had feeds to add. Survey files are in
   peak was still about 160 to 180. Lime took Waterloo Region's scooters in
   on 1 November (about 470 that morning, 16 of its 17 groups empty by the
   evening), and it is paused from that day until 1 April. Regina still held
-  150 on the evening of 1 November.
+  150 on the evening of 1 November and listed its last scooters on 15
+  November; its alerts are silenced to 1 May 2027 (below).
 - **November 2026:** Bird's rider-map towns, from its map since 28 October
   2026. Only Penticton announced its end (below); Kamloops's agreement with
   Bird runs to 1 November, Cranbrook's last two seasons ended that day,
@@ -1844,6 +1845,22 @@ Bonaire had feeds to add. Survey files are in
   are still polled; their "feed empty" alerts are silenced in Grafana until
   1 December, 08:00 UTC. Then read them from Netcup and look for a notice,
   with Lubliniec's and Tarnowskie Góry's.
+- **1 December 2026:** Dott Kraków, Oświęcim and Chrzanów
+  (`dott_pl_krakow`, `dott_pl_oswiecim`, `dott_pl_chrzanow`), Skawina,
+  Świdnica and Oleśnica (`dott_pl_skawina`, `dott_pl_swidnica`,
+  `dott_pl_olesnica`), Międzyzdroje and Rewal (`dott_pl_miedzyzdroje`,
+  `dott_pl_rewal`), Zwickau (`dott_de_zwickau`) and Győr (`dott_hu_gyor`).
+  Kraków went from 437 scooters to none at one read about 16:00 UTC on 23
+  November 2026, Oświęcim's public feed the same afternoon, Chrzanów and Győr
+  on the morning of the 24th; Dott's own map, read from Netcup on 25 November,
+  held no scooter of any region in Kraków's bounds and 717 in central Warsaw,
+  so it isn't our region filter. Skawina, Świdnica, Oleśnica and Zwickau
+  emptied on 10 and 11 November, and the two seaside towns on the 17th. No
+  notice or season was found. The feeds stay ok and are still polled; their
+  "feed empty" alerts (Kraków's, Oświęcim's, Chrzanów's and Győr's before
+  they were due) are silenced in Grafana until 1 December, 08:00 UTC. Then
+  read them from Netcup with the other Polish towns and Győr with Dott's
+  other Hungarian towns.
 - **1 December 2026:** Dott Trondheim and Stjørdal (`dott_no_trondheim`,
   `dott_no_stjordal`), paused from 14 November to 15 March after Entur stopped
   serving both on 13 November 2026, with 840 and 61 scooters out; Dott's
@@ -2064,6 +2081,10 @@ Bonaire had feeds to add. Survey files are in
   August 2026), so the feed has no `seasonal` window: its "feed empty" alert
   is silenced until 1 April 2027 08:00 UTC. If it holds scooters by then,
   nothing needs doing; otherwise look for a notice and decide whether it stays.
+- **1 April 2027:** Lime Târgu Mureș (`lime_ro_app_targu_mures`), empty
+  since 13 November 2026 (29 scooters that day), as Târgoviște. No season
+  was published; its "feed empty" alerts are silenced in Grafana until 1
+  April 2027, 08:00 UTC.
 - **1 April 2027:** Hopp Bucharest (`ro-bucharest`), empty on 18 October
   2026, in case Hopp starts a season there.
 - **1 April 2027:** Lichtensteig, out of the map's towns since 18 October
@@ -2189,6 +2210,32 @@ Bonaire had feeds to add. Survey files are in
   town, so their five feeds stay in Grafana's "ScootRadar feed empty", which
   fired at 16:59 UTC on 31 October, three days after they emptied. If they list
   scooters again, add the dates of their season to the catalog.
+- **1 May 2027:** Lime Ajax, Regina and Montréal's Parc Jean-Drapeau
+  (`lime_ca_app_ajax`, `lime_ca_app_regina`, `lime_ca_app_montreal`), which
+  listed their last scooters on 14, 15 and 16 November 2026 (the park 151 on
+  the 16th), as Lacombe and Blackfalds before them. Ajax's by-law sets no
+  season and Regina's page says only "usually between May and October", so
+  none of the three is paused in the catalog; their "feed empty" alerts are silenced in Grafana until 1 May
+  2027, 08:00 UTC. If a town publishes its season by then, add it to the
+  catalog; if one lists scooters again, nothing needs doing.
+- **1 May 2027:** Ryde's rider-map feeds in Jyväskylä, Kuopio, Joensuu,
+  Vaasa and Seinäjoki and in Luleå, Umeå, Sundsvall, Östersund, Borlänge
+  and Varberg (`ryde_app_fi_*`, `ryde_app_se_*`). Their last scooters went
+  from 11 November 2026 (Kuopio, Östersund) to 21 November (Sundsvall, 194
+  that morning, then 59, then none); Luleå, Umeå and Varberg listed none in
+  Prometheus's 15 days. The bridge read their groups on time throughout.
+  `scripts/generate-ryde-app-feeds.mjs` passes no `seasonal` window, so
+  their 298 group alerts are silenced in Grafana until 1 May 2027, 08:00
+  UTC. If Ryde publishes its seasons, give the generator a window per area.
+- **1 May 2027:** Dott Hyvinkää, Kokkola, Vaasa, Nurmijärvi, Järvenpää,
+  Rauma, Tampere, Kirkkonummi, Lappeenranta, Kouvola, Riihimäki and Lahti.
+  Vaasa emptied on 11 November 2026, Hyvinkää and Kokkola (about 210 each)
+  at one read on 21 November, the other nine one by one by day on 23
+  November, while Helsinki, Espoo, Vantaa, Kerava, Porvoo, Nokia and Salo
+  ran on (745 in Helsinki on the 25th). No season was published; their
+  "feed empty" alerts are silenced in Grafana until 1 May 2027, 08:00 UTC,
+  the nine before they were due. Check them with Dott's six paused Finnish
+  towns below.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
   in Omiš, Hopp's Greek island towns (Chania, Kardamena, Kalymnos and others),
