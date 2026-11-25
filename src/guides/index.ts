@@ -398,6 +398,8 @@ import holonEn from './en/e-scooters-holon';
 import batYamEn from './en/e-scooters-bat-yam';
 import ludwigshafenDe from './de/e-scooter-ludwigshafen';
 import herneDe from './de/e-scooter-herne';
+import modenaIt from './it/monopattini-sharing-modena';
+import modenaEn from './en/e-scooters-modena';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -796,4 +798,6 @@ export const GUIDES: readonly Guide[] = [
   batYamEn,
   ludwigshafenDe,
   herneDe,
+  modenaIt,
+  modenaEn,
 ];
