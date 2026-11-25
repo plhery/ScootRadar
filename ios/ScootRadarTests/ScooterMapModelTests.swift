@@ -3332,6 +3332,80 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.focusRequest?.point, GeoPoint(zurichFix.coordinate))
     }
 
+    /// A pan, a pinch or a turn while the position is found is the later wish,
+    /// as a place chosen is: the fix shows the dot and leaves the map where the
+    /// rider took it. Until 25 November 2026 it moved the map away, from the
+    /// last fix the map opens on as from anywhere else (week review of 24
+    /// November 2026, choice 9; Android d76c2aa7). The control: the map coming
+    /// to rest where its own move took it, which it reports as it reports a
+    /// pan's end, counts as nothing.
+    func testAMoveOfTheMapByHandWhileTheFixWasOnItsWayKeepsTheMap() throws {
+        let fresh = GeoPoint(latitude: 47.3600, longitude: 8.5300)
+        // Panned to Zürich's main station, a little north of where the map opened.
+        let panned = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 47.3779, longitude: 8.5402),
+            span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
+        )
+        for byHand in [false, true] {
+            let manager = StubLocationManager(status: .authorizedWhenInUse)
+            manager.cachedLocation = lastFix(accuracy: 30, age: 240)
+            let model = ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: manager,
+                defaults: isolatedDefaults(),
+                builtInZones: []
+            )
+
+            model.start()
+            let opening = try XCTUnwrap(model.focusRequest)
+            XCTAssertTrue(model.isLocating)
+            if byHand { model.mapMovedByHand() }
+            model.updateViewport(panned, zoom: 17)
+            let viewport = model.viewport
+
+            model.locationManager(manager, didUpdateLocations: [CLLocation(
+                coordinate: fresh.coordinate, altitude: 0, horizontalAccuracy: 20, verticalAccuracy: 10, timestamp: Date()
+            )])
+
+            // The position is known from now on either way.
+            XCTAssertEqual(model.userLocation, fresh, "by hand: \(byHand)")
+            XCTAssertFalse(model.isLocating)
+            XCTAssertTrue(model.hasLocatedOnce)
+            XCTAssertEqual(model.activeOrigin, .userLocation(fresh))
+            if byHand {
+                XCTAssertEqual(model.focusRequest, opening)
+                XCTAssertEqual(model.viewport, viewport)
+            } else {
+                let located = try XCTUnwrap(model.focusRequest)
+                XCTAssertNotEqual(located.token, opening.token)
+                XCTAssertEqual(located.point, fresh)
+            }
+
+            // Near me is a new wish and moves the map again.
+            model.focusOnUser()
+            XCTAssertEqual(model.focusRequest?.point, fresh, "by hand: \(byHand)")
+        }
+    }
+
+    func testAMoveOfTheMapByHandBeforeLocatingIsNoWishAboutTheNextFix() {
+        // Moved around while the location was off, the rider then asks for Near me: the fix moves the map.
+        let manager = StubLocationManager(status: .authorizedWhenInUse)
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: manager,
+            defaults: isolatedDefaults()
+        )
+        model.mapMovedByHand()
+        model.updateViewport(zurichRegion, zoom: 13)
+
+        model.focusOnUser()
+        XCTAssertTrue(model.isLocating)
+        model.locationManager(manager, didUpdateLocations: [zurichFix])
+
+        XCTAssertEqual(model.focusRequest?.point, GeoPoint(zurichFix.coordinate))
+        XCTAssertEqual(model.userLocation, GeoPoint(zurichFix.coordinate))
+    }
+
     func testAFixThatArrivesAfterNotFoundLeavesAPlaceOrCityChosenMeanwhile() async throws {
         for choosesCity in [false, true] {
             let manager = StubLocationManager(status: .authorizedWhenInUse)

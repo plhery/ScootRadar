@@ -258,6 +258,8 @@ struct ScooterMapView: UIViewRepresentable {
     var foldFrame: CGRect = .null
     /// The region, the zoom asked of the server and the zoom as drawn.
     let onRegionChange: (MKCoordinateRegion, Int, Double) -> Void
+    /// A hand began to move the map (Coordinator.isMovedByHand).
+    var onMovedByHand: () -> Void = {}
     let onSelectionChange: (String?) -> Void
     var userHeading: ScooterUserHeading? = nil
     var showsMapCompass = true
@@ -1282,17 +1284,55 @@ struct ScooterMapView: UIViewRepresentable {
 
         func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
             // The person moving the map ends the move to a place asked for.
-            if focusUnderWay != nil, Self.isMovedByHand(mapView) { focusUnderWay = nil }
+            if focusUnderWay != nil, Self.isTouched(mapView) { focusUnderWay = nil }
+            // While the rider's position is found, the fix then leaves the map
+            // where the hand took it (ScooterMapModel.mapMovedByHand). Told at
+            // once, not in a task as the region is: a fix that came before the
+            // task ran would still move the map from the hand.
+            if Self.isMovedByHand(mapView) { parent.onMovedByHand() }
             // A faded scooter's tip stands where its dot was.
             hideFadedTip()
         }
 
-        /// Whether one of the map's gestures, a pan, a pinch, a turn, a tilt
-        /// or a double tap, is moving it.
-        private static func isMovedByHand(_ mapView: MKMapView) -> Bool {
-            func moving(_ view: UIView, depth: Int) -> Bool {
+        /// Whether any of the map's gesture recognizers has begun or just
+        /// ended: a hand is on the map, moving it or about to. It ends a move
+        /// to a place asked for, as it has since before 25 November 2026.
+        private static func isTouched(_ mapView: MKMapView) -> Bool {
+            func touched(_ view: UIView, depth: Int) -> Bool {
                 let recognizers = view.gestureRecognizers ?? []
                 if recognizers.contains(where: { [.began, .changed, .ended].contains($0.state) }) { return true }
+                return depth > 0 && view.subviews.contains { touched($0, depth: depth - 1) }
+            }
+            return touched(mapView, depth: 2)
+        }
+
+        /// Whether one of the map's gestures, a pan, a pinch, a turn, a tilt
+        /// or a double tap, is moving it: a pan, a pinch or a rotation under
+        /// way or just ended, or a tap of two taps or two fingers just made.
+        /// MapKit's own pans, its tilt and the drag of its one-handed zoom are
+        /// pans, its double tap a tap of two taps and its zoom out one of two
+        /// fingers (its recognizers as MapKit for Mac Catalyst lists them on
+        /// macOS 27.2). A tap of one finger is not a move by hand, nor is the
+        /// recognizer MapKit has for every touch: a tap on a group zooms in on
+        /// it and a tap on a scooter beside the panel brings it clear, moves of
+        /// the app's, as on Android, where MapLibre reports no gesture for a
+        /// tap on a marker. A move to a place asked for is still ended by any
+        /// touch (isTouched), as before 25 November 2026 (week review of 24
+        /// November 2026, choice 9).
+        private static func isMovedByHand(_ mapView: MKMapView) -> Bool {
+            func movesMap(_ recognizer: UIGestureRecognizer) -> Bool {
+                switch recognizer {
+                case let tap as UITapGestureRecognizer:
+                    return recognizer.state == .ended
+                        && (tap.numberOfTapsRequired > 1 || tap.numberOfTouchesRequired > 1)
+                case is UIPanGestureRecognizer, is UIPinchGestureRecognizer, is UIRotationGestureRecognizer:
+                    return [.began, .changed, .ended].contains(recognizer.state)
+                default:
+                    return false
+                }
+            }
+            func moving(_ view: UIView, depth: Int) -> Bool {
+                if (view.gestureRecognizers ?? []).contains(where: movesMap) { return true }
                 return depth > 0 && view.subviews.contains { moving($0, depth: depth - 1) }
             }
             return moving(mapView, depth: 2)

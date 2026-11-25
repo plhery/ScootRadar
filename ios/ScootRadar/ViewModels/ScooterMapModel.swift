@@ -481,8 +481,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var bestLocationCandidate: CLLocation?
     /// Set while a card asked for the location: the first fix leaves the map where it is.
     @ObservationIgnored private var keepsMapOnFirstFix = false
-    /// Counts the places and cities the rider sent the map to, so that a fix can
-    /// tell whether one was chosen while it was on its way.
+    /// Counts the places and cities the rider sent the map to, and the moves of
+    /// the map by hand before the rider's position is known (mapMovedByHand),
+    /// so that a fix can tell whether one was made while it was on its way.
     @ObservationIgnored private var placeChoices = 0
     @ObservationIgnored private var placeChoicesAtLocate = 0
     @ObservationIgnored private var focusToken = 0
@@ -1293,9 +1294,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// once, rather than show the start's city until the fix comes or the
     /// wait ends. It is not taken as the rider's position: no dot and no
     /// walking times. The fresh fix then moves the map to itself and asks
-    /// for scooters if its view isn't loaded yet; without one in time, the
-    /// map stays here and says so. A link's place, or a place chosen
-    /// meanwhile, keeps the map where it is, as for the fresh fix.
+    /// for scooters if its view isn't loaded yet, unless the rider moved the
+    /// map by hand meanwhile (mapMovedByHand); without one in time, the map
+    /// stays here and says so. A link's place, or a place chosen meanwhile,
+    /// keeps the map where it is, as for the fresh fix.
     private func showRecentLocation(_ location: CLLocation) {
         guard userLocation == nil, isLocating, !keepsMapOnFirstFix,
               placeChoices == placeChoicesAtLocate else { return }
@@ -1712,6 +1714,21 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     func clearAddressSearch() {
         searchedDestination = nil
+    }
+
+    /// A hand moved the map: a pan, a pinch, a turn, a tilt or a double tap,
+    /// never a move the camera makes itself nor a tap on a scooter or a group
+    /// that moves it (ScooterMapView's isMovedByHand). Before the rider's
+    /// position is known, it counts as a place chosen: the fix, when it comes,
+    /// shows the rider's dot and measures walking times from it, but leaves the
+    /// map where the rider took it. Until 25 November 2026 only a link or a
+    /// chosen place did, and the fix moved the map away from where the rider
+    /// had panned while it was being found, as from the last fix the map opens
+    /// on since 20 November (week review of 24 November 2026, choice 9; Android
+    /// d76c2aa7). A move before locating begins is no wish about the next fix:
+    /// locating counts from there.
+    func mapMovedByHand() {
+        if userLocation == nil { placeChoices += 1 }
     }
 
     func selectScooter(_ id: String?) {
@@ -2222,6 +2239,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         // A place chosen while the fix was on its way is the later wish, however
         // late the fix is: the map stays there and the place stays the origin.
+        // So is a move of the map by hand (mapMovedByHand): the map stays where
+        // the rider took it.
         let keepsMap = keepsMapOnFirstFix || placeChoices != placeChoicesAtLocate
         keepsMapOnFirstFix = false
         if !hadLocation, keepsMap {

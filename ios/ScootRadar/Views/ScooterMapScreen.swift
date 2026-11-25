@@ -77,6 +77,7 @@ struct ScooterMapScreen: View {
                     panelFrame: layout == .panel ? panelFrame : .null,
                     foldFrame: fold ?? .null,
                     onRegionChange: { model.updateViewport($0, zoom: $1, zoomLevel: $2) },
+                    onMovedByHand: model.mapMovedByHand,
                     onSelectionChange: model.selectScooter,
                     userHeading: model.userHeading,
                     // Beside the panel the compass is far from the search.
