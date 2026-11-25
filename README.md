@@ -325,16 +325,12 @@ ScootRadar by Paul-Louis Hery", with a link to
 as the website's footer or an app's About screen. Once, where a user can find
 it, is enough.
 
-Earlier versions, up to and including commit `4f066f99076c` of 22 November
-2026, were published under the MIT License and stay under it.
-
 ## Name, logo and guides
 
 The code's license doesn't cover the name "ScootRadar", its logo, its store
 assets or the texts of its guides:
 [TRADEMARKS.md](TRADEMARKS.md) says what that covers. A copy may not publish
-them or use the name, and a fork renames itself. Versions published before 21
-November 2026 stay under the terms they were published with.
+them or use the name, and a fork renames itself.
 
 ## More
 
