@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { RELEASE_META } from '@/lib/errorReportsConfig';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
 import { PLAY_TEST_ON, PLAY_TEST_SCRIPT } from '@/lib/playTest';
-import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { SITE_URL, SITE_NAME } from '@/lib/site';
 import { sitePageOf, sitePagePath, sitePaths, type SitePage } from '@/lib/sitePages';
 import { PlayTestSite } from '../playTest';
@@ -93,7 +92,7 @@ export default async function LandingLayout({
       <body>
         {children}
         {PLAY_TEST_ON && page.kind !== 'guides' && (
-          <PlayTestSite copy={PLAY_TEST_COPY[page.locale]} place={page.kind === 'landing' ? 'landing' : 'guide'} />
+          <PlayTestSite place={page.kind === 'landing' ? 'landing' : 'guide'} />
         )}
         <PageView path={sitePagePath(page)} title={countedTitle(page)} />
       </body>

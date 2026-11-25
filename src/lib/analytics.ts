@@ -15,10 +15,11 @@ export type AnalyticsEvent =
   | 'route_result' | 'route_arrived'
   | 'map_zoom' | 'compass_reset' | 'refresh' | 'refresh_result' | 'data_error' | 'data_expired' | 'zones_error'
   | 'app_install' | 'app_open' | 'map_open'
-  // The invitation to test the Android app (src/lib/playTest.ts): shown, opened, each step's link followed,
+  // The invitation to install the Android app (src/lib/playTest.ts): shown, its link to Google Play followed,
   // hidden for a week, never again. Each says where: the map's chip, a guide's card, the landing page's
-  // button, or the map's Settings.
-  | 'invite_view' | 'invite_open' | 'invite_group' | 'invite_optin' | 'invite_install' | 'invite_dismiss' | 'invite_never';
+  // button, or the map's Settings. Until 25 November 2026, the closed test's: also invite_open (its steps opened),
+  // invite_group and invite_optin (the first two steps' links followed).
+  | 'invite_view' | 'invite_install' | 'invite_dismiss' | 'invite_never';
 export interface AnalyticsData {
   provider?: string; enabled?: boolean; source?: 'quick' | 'filters';
   value?: number; count?: number; result?: string; style?: string;

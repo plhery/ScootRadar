@@ -7,7 +7,7 @@ describe('siteSettings', () => {
     expect(siteSettings({})).toEqual(SITE_DEFAULTS);
     expect(SITE_DEFAULTS).toMatchObject({
       SITE_URL: 'http://localhost:3000', SITE_GUIDES: 'off', SITE_MAKER: 'off', CONTACT_EMAIL: '', ANALYTICS_URL: '',
-      TURNSTILE_SITE_KEY: '', APP_STORE_ID: '', ANDROID_APP_ID: '', PLAY_TEST_GROUP: '',
+      TURNSTILE_SITE_KEY: '', APP_STORE_ID: '', ANDROID_APP_ID: '',
     });
     expect(SITE_DEFAULTS.SITE_NAME).not.toMatch(/scootradar/i);
   });
@@ -26,7 +26,6 @@ describe('siteSettings', () => {
       APP_STORE_ID: '6823614854',
       APP_STORE_PROVIDER_TOKEN: '129628155',
       ANDROID_APP_ID: 'com.plhery.scootradar',
-      PLAY_TEST_GROUP: 'https://groups.google.com/g/scootradar-android-testers',
     });
   });
 

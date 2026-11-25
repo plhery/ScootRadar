@@ -35,8 +35,8 @@ map, so the nearest one is simply the nearest one.
 
 It's free, with no account and no ads. Use it in the browser, install it as a
 web app, or get the app: on the [App Store](https://apps.apple.com/app/id6823614854)
-for the iPhone, and on Google Play for Android, where it is in a
-[test you can join](#android-app) before its release.
+for the iPhone, and on [Google Play](https://play.google.com/store/apps/details?id=com.plhery.scootradar)
+or [F-Droid](#android-app) for Android.
 
 ## What it tells you
 
@@ -122,21 +122,10 @@ iOS 26 or newer. To build it yourself, open `ios/ScootRadar.xcodeproj` in Xcode
 
 ## Android app
 
-The app is in a closed test on Google Play before its release, for Android 12
-or newer. Anyone can join it, in about a minute, with one Google account:
+The app is on [Google Play](https://play.google.com/store/apps/details?id=com.plhery.scootradar),
+for Android 12 or newer.
 
-1. Join the [ScootRadar Android testers](https://groups.google.com/g/scootradar-android-testers)
-   group.
-2. Open [the test's page on Google Play](https://play.google.com/apps/testing/com.plhery.scootradar)
-   and tap **Become a tester**.
-3. [Install the app from Google Play](https://play.google.com/store/apps/details?id=com.plhery.scootradar),
-   and keep it for two weeks: Google Play opens it to everyone once 12 testers
-   have stayed in the test for 14 days.
-
-You can leave the test at any time, on the same page of Google Play. The site
-offers the same steps under its *Android app* button.
-
-The same beta, built without Google's libraries and signed with ScootRadar's own key, is in [ScootRadar's F-Droid repository](https://raw.githubusercontent.com/plhery/ScootRadar/fdroid/repo?fingerprint=682DDF19FD7F9CD56882825B4ABCE3254ED5B528C6D1D95E06D54791B4F8CCA0)
+The same app, built without Google's libraries and signed with ScootRadar's own key, is in [ScootRadar's F-Droid repository](https://raw.githubusercontent.com/plhery/ScootRadar/fdroid/repo?fingerprint=682DDF19FD7F9CD56882825B4ABCE3254ED5B528C6D1D95E06D54791B4F8CCA0)
 and on [GitHub Releases](https://github.com/plhery/ScootRadar/releases).
 To add the repository, open the F-Droid app, go to Settings → Repositories → +,
 and paste the whole address, `?fingerprint=…` included:
@@ -155,7 +144,7 @@ configuration, or connect a phone and run `./gradlew :app:installPlayDebug` in
 The `fdroid` flavor (`:app:assembleFdroidRelease`) is the build for F-Droid's
 catalog, without Google Play's card to rate the app.
 
-Once a release reaches Google Play's closed test, the same commit's `fdroid`
+Once a release reaches Google Play, the same commit's `fdroid`
 build, signed with the upload key, goes to the F-Droid repository and GitHub
 Releases. Play's own copies don't: Play protects the copies it signs, and they
 refuse to open on a phone without the Play Store.
@@ -227,7 +216,7 @@ an address that isn't one or a switch that isn't `on` or `off`, stops the build.
 | `ANALYTICS_URL`, `ANALYTICS_WEBSITE_ID` | none | An Umami server's `…/api/send` and the site's ID there. Without both, nothing is counted. |
 | `TURNSTILE_SITE_KEY` | none | A Cloudflare Turnstile site key. With the Worker secrets `TURNSTILE_SECRET_KEY` and `MAP_PASS_SECRET`, the map proves it is a browser before it gets scooters ([DEPLOY.md](DEPLOY.md), "Map passes"). |
 | `APP_STORE_ID`, `APP_STORE_PROVIDER_TOKEN` | none | An iPhone app's Apple ID, and the provider token of its campaign links. Without an ID, the site shows no iPhone app. |
-| `ANDROID_APP_ID`, `PLAY_TEST_GROUP` | none | An Android app's ID on Google Play and the Google Group of its closed test. Without both, the site invites no one to a test. |
+| `ANDROID_APP_ID` | none | An Android app's ID on Google Play, for the links to it. Without one, the site shows no Android app. |
 
 Two other vars name services: `SCOOTER_SNAPSHOT_API_URL`, the scooter cache
 (below), and `WALK_ROUTE_API_URL`, the Valhalla server that routes walks.

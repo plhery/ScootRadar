@@ -20,7 +20,6 @@ export const SITE = siteSettings({
   APP_STORE_ID: process.env.APP_STORE_ID,
   APP_STORE_PROVIDER_TOKEN: process.env.APP_STORE_PROVIDER_TOKEN,
   ANDROID_APP_ID: process.env.ANDROID_APP_ID,
-  PLAY_TEST_GROUP: process.env.PLAY_TEST_GROUP,
 });
 
 export const SITE_URL = SITE.SITE_URL;

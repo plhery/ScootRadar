@@ -1,47 +1,36 @@
-// The Android app's closed test on Google Play, and the site's invitation to
-// join it (the user's choice on 3 November 2026: all Android visitors, in the
-// places of the product). A personal developer account may only apply for
-// production once 12 testers have stayed opted in for 14 days in a row, and
-// most of the site's Android visitors land on a guide, not on the map.
-//
-// A tester takes three steps, each a link here: join the Google Group that
-// Play's closed test admits, accept the test on Google Play with the same
-// Google account, and install. The site cannot see Play's side: Play Console
-// counts the testers, the site only the links followed (analytics.ts).
+// The Android app on Google Play, and the site's invitations to install it, in
+// the places the user chose on 3 November 2026 for all Android visitors. Until
+// 25 November 2026 the app was in a closed test, and each invitation led
+// through three steps (join the testers' Google Group, accept the test, install);
+// since it is out on Google Play, each is a link to the app's page there.
 //
 // The words are in playTestCopy.ts. The map shows a chip, after the visitor's
 // first touch, and a row in Settings › About; a guide shows a card under its
-// headline. The landing page names both apps to everyone, the Android one
-// opening the steps (the user's choice on 9 November 2026), and a phone only
-// its own: on Android the iPhone app's button gives way, on an iPhone the
-// Android app's.
+// headline. The landing page names both apps to everyone (the user's choice on
+// 9 November 2026), and a phone only its own: on Android the iPhone app's
+// button gives way, on an iPhone the Android app's.
 
 import { SITE } from '@/lib/site';
 
-/**
- * The switch: off, the site says nothing of the test anywhere. On where the deployment names the app
- * and the group (ANDROID_APP_ID and PLAY_TEST_GROUP, src/lib/siteSettings.ts), as scootradar.com has
- * since 3 November 2026, once the group and Play's opt-in page existed.
- */
-export const PLAY_TEST_ON = SITE.ANDROID_APP_ID !== '' && SITE.PLAY_TEST_GROUP !== '';
+/** The switch: off, the site names no Android app anywhere. On where the deployment names it (ANDROID_APP_ID, src/lib/siteSettings.ts). */
+export const PLAY_TEST_ON = SITE.ANDROID_APP_ID !== '';
 
-/** Where each step leads. */
-export const PLAY_TEST_LINKS = {
-  /** The group the test admits, "ScootRadar Android testers" for scootradar.com, which anyone may join. */
-  group: SITE.PLAY_TEST_GROUP,
-  /** Play's page that makes a member of the group a tester. */
-  optIn: `https://play.google.com/apps/testing/${SITE.ANDROID_APP_ID}`,
-  /** The app on Google Play, which shows a tester the test's build. */
-  install: `https://play.google.com/store/apps/details?id=${SITE.ANDROID_APP_ID}`,
-} as const;
+/** Where a link to Google Play sits, for Play Console's acquisition report (its UTM campaigns), as appStore.ts's campaigns. */
+export type PlayStoreCampaign = 'web-map' | 'web-guide' | 'web-landing' | 'web-map-settings';
 
-export const PLAY_TEST_STEPS = ['group', 'optIn', 'install'] as const;
-export type PlayTestStep = (typeof PLAY_TEST_STEPS)[number];
+/** The app's page on Google Play. */
+export const PLAY_STORE_PAGE = `https://play.google.com/store/apps/details?id=${SITE.ANDROID_APP_ID}`;
+
+/** The app's page on Google Play, from this place on the site. */
+export function playStoreUrl(campaign: PlayStoreCampaign): string {
+  const referrer = encodeURIComponent(`utm_source=website&utm_medium=link&utm_campaign=${campaign}`);
+  return `${PLAY_STORE_PAGE}&referrer=${referrer}`;
+}
 
 /** The oldest Android the app installs on: its minSdk, 31. */
 export const MIN_ANDROID = 12;
 
-/** The app opens its links in the browser with this referrer: who has the app is not asked to test it. */
+/** The app opens its links in the browser with this referrer: who has the app is not asked to install it. */
 const APP_REFERRER = `android-app://${SITE.ANDROID_APP_ID}`;
 
 /**
@@ -94,14 +83,12 @@ export async function seesPlayTest(nav: HintingNavigator, referrer: string, on =
 
 /** What this browser remembers of the invitation, in localStorage and nowhere else. */
 export interface PlayTestMemory {
-  /** Hidden until then (ms since 1970), after × or "Not now". */
+  /** Hidden until then (ms since 1970), after ×. */
   until?: number;
-  /** "Never show" or "Don't ask again": nothing more, in this browser. */
+  /** "Never show": nothing more, in this browser. */
   never?: boolean;
-  /** The individual links followed, numbered 1 to 3. */
-  steps?: number[];
-  /** The thanks after step 3 has been shown. */
-  thanked?: boolean;
+  /** Its link to Google Play was followed: not offered again. */
+  followed?: boolean;
 }
 
 export const PLAY_TEST_STORAGE_KEY = 'scooters-android-test';
@@ -112,18 +99,15 @@ export function readPlayTestMemory(): PlayTestMemory {
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY) ?? 'null');
     if (!saved || typeof saved !== 'object') return {};
-    const { until, never, steps, step, thanked } = saved as Record<string, unknown>;
-    // Until 18 November 2026 (eb049011) only the highest step followed was kept, as `step`: on its own it proves only
-    // that this link was followed. With `thanked` it is step 3, saved for a tester the map thanked after the last
-    // step, who had finished as the invitation then counted it: all three are read as followed, so that they are not
-    // invited again (week review of 24 November 2026, S2). PLAY_TEST_SCRIPT reads it the same way.
-    const finished = !Array.isArray(steps) && step === 3 && thanked === true;
-    const followed = [1, 2, 3].filter(n => finished || (Array.isArray(steps) ? steps.includes(n) : step === n));
+    const { until, never, followed, steps, step, thanked } = saved as Record<string, unknown>;
+    // A tester who took all three steps of the closed test has the app: `steps`, or until 18 November 2026 (eb049011)
+    // `step` 3 with `thanked`. Read as the link followed, so that they are not invited again. PLAY_TEST_SCRIPT reads
+    // it the same way.
+    const tested = Array.isArray(steps) ? [1, 2, 3].every(n => steps.includes(n)) : step === 3 && thanked === true;
     return {
       ...(typeof until === 'number' && Number.isFinite(until) ? { until } : {}),
       ...(never === true ? { never } : {}),
-      ...(followed.length ? { steps: followed } : {}),
-      ...(thanked === true ? { thanked } : {}),
+      ...(followed === true || tested ? { followed: true } : {}),
     };
   } catch {
     return {};
@@ -138,14 +122,11 @@ export function rememberPlayTest(change: PlayTestMemory, previous = readPlayTest
 }
 
 /**
- * What an invited visitor is shown where it would be offered: the offer, the
- * thanks of a tester back after step 3 (on the map, once), or nothing.
- * The landing page's button and the row in Settings stay whatever this says:
- * they replace or join what is already there, and ask nothing.
+ * Whether an invited visitor is offered the app by the map's chip and a guide's card. The landing page's button and
+ * the row in Settings stay whatever this says: they replace or join what is already there, and ask nothing.
  */
-export function playTestInvitation(memory: PlayTestMemory, now: number, place: 'map' | 'site'): 'offer' | 'thanks' | 'quiet' {
-  if (memory.never) return 'quiet';
-  if (memory.steps?.length === 3) return place === 'map' && !memory.thanked ? 'thanks' : 'quiet';
+export function playTestInvitation(memory: PlayTestMemory, now: number): 'offer' | 'quiet' {
+  if (memory.never || memory.followed) return 'quiet';
   if (memory.until !== undefined && memory.until > now) return 'quiet';
   return 'offer';
 }
@@ -178,9 +159,9 @@ export const PLAY_TEST_SCRIPT = `(function () {
     var memory = null;
     try { memory = JSON.parse(localStorage.getItem(${JSON.stringify(PLAY_TEST_STORAGE_KEY)}) || 'null'); } catch (error) {}
     if (!memory || typeof memory !== 'object') memory = {};
-    var finished = Array.isArray(memory.steps) ? [1, 2, 3].every(function (n) { return memory.steps.includes(n); })
-      : memory.step === 3 && memory.thanked === true;
-    var quiet = memory.never === true || finished || (typeof memory.until === 'number' && memory.until > Date.now());
+    var followed = memory.followed === true || (Array.isArray(memory.steps)
+      ? [1, 2, 3].every(function (n) { return memory.steps.includes(n); }) : memory.step === 3 && memory.thanked === true);
+    var quiet = memory.never === true || followed || (typeof memory.until === 'number' && memory.until > Date.now());
     var root = document.documentElement;
     root.setAttribute(${JSON.stringify(PLAY_TEST_ATTRIBUTE)}, quiet ? 'quiet' : 'offer');
     var hints = navigator.userAgentData;

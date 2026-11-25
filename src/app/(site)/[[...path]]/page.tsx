@@ -29,7 +29,7 @@ import {
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
-import { PLAY_TEST_ON } from '@/lib/playTest';
+import { MIN_ANDROID, PLAY_STORE_PAGE, PLAY_TEST_ON } from '@/lib/playTest';
 import { PLAY_TEST_COPY, type PlayTestCopy } from '@/lib/playTestCopy';
 import { inkOn } from '@/lib/providerColor';
 import { OPEN_GRAPH_ALTERNATE_LOCALES, OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
@@ -97,7 +97,7 @@ function landingMetadata(locale: LandingLocale): Metadata {
 
 /**
  * What the page tells a search engine in so many words: who publishes it, the
- * app it leads to, and the questions it answers.
+ * apps it leads to, and the questions it answers.
  */
 function structuredData(locale: LandingLocale, copy: LandingCopy) {
   const organization = `${SITE_URL}/#organization`;
@@ -137,6 +137,20 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
         image: `${SITE_URL}${shareImage(locale)}`,
         publisher: { '@id': organization },
       },
+      // The Android app on Google Play, where the site names it.
+      ...(PLAY_TEST_ON ? [{
+        '@type': 'MobileApplication',
+        '@id': `${SITE_URL}/#android-app`,
+        name: SITE_NAME,
+        url: PLAY_STORE_PAGE,
+        installUrl: PLAY_STORE_PAGE,
+        applicationCategory: 'TravelApplication',
+        operatingSystem: `Android ${MIN_ANDROID} or later`,
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0' },
+        image: `${SITE_URL}/icon-512.png`,
+        publisher: { '@id': organization },
+      }] : []),
       {
         '@type': 'FAQPage',
         '@id': `${new URL(landingPath(locale), SITE_URL).href}#faq`,
@@ -262,8 +276,8 @@ function AppStoreQr({ copy }: { copy: LandingCopy }) {
 
 /**
  * The ways in: the map, the iPhone app, each link to it counted where it is,
- * and under it the Android app, whose button opens the steps of its test on
- * Google Play (src/lib/playTest.ts). A phone is shown its own app's button only.
+ * and under it the Android app on Google Play (src/lib/playTest.ts). A phone is
+ * shown its own app's button only.
  */
 function Actions({ copy, android, campaign, qr = false }: {
   copy: LandingCopy;
@@ -275,7 +289,7 @@ function Actions({ copy, android, campaign, qr = false }: {
   return (
     <div className="cta-row">
       <AppLink className="btn btn--solid" href={MAP_PATH}>{copy.openMap}</AppLink>
-      {/* The two apps as one: the Android app's, still in its test, under the iPhone app's. */}
+      {/* The two apps as one: the Android app's under the iPhone app's. */}
       <div className="app-buttons">
         {APP_STORE_ON && <a className="btn btn--line play-ios" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>}
         {PLAY_TEST_ON && <PlayTestButton copy={android} />}

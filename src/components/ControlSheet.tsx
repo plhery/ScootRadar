@@ -15,12 +15,12 @@ import { providerSurfaceColor } from '@/lib/providerColor';
 import { selectionFeedback } from '@/lib/feedback';
 import { APP_STORE_ON, appStoreUrl } from '@/lib/appStore';
 import { useIPhone } from '@/lib/useIPhone';
+import { playStoreUrl } from '@/lib/playTest';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { playTest, usePlayTestAudience } from '@/lib/usePlayTest';
 import Icon from './Icon';
 import { CreditsList } from './MapCredits';
 import ModalSheet from './ModalSheet';
-import PlayTestSteps from './PlayTestSteps';
 
 const LOCALE_LABELS: Record<AppLocale, string> = {
   de: 'Deutsch',
@@ -37,9 +37,9 @@ const LOCALE_LABELS: Record<AppLocale, string> = {
 // In the same order whatever the language on screen, so that a row stays where it was tapped.
 const LANGUAGES = [...SUPPORTED_LOCALES].sort((a, b) => LOCALE_LABELS[a].localeCompare(LOCALE_LABELS[b], 'en'));
 
-/** The views the settings lead to, each from its row, by their headings; the Android app's is in its own copy. */
-type SettingsView = 'language' | 'credits' | 'android';
-const SETTINGS_VIEWS: Record<Exclude<SettingsView, 'android'>, TranslationKey> = { language: 'set.language', credits: 'set.credits' };
+/** The views the settings lead to, each from its row, by their headings. */
+type SettingsView = 'language' | 'credits';
+const SETTINGS_VIEWS: Record<SettingsView, TranslationKey> = { language: 'set.language', credits: 'set.credits' };
 
 const THEMES: { name: ThemeName; label: TranslationKey }[] = [
   { name: 'auto', label: 'set.auto' },
@@ -127,9 +127,8 @@ export default function ControlSheet({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const languageRowRef = useRef<HTMLButtonElement>(null);
   const creditsRowRef = useRef<HTMLButtonElement>(null);
-  const androidRowRef = useRef<HTMLButtonElement>(null);
   const iPhone = useIPhone();
-  // The Android app's test, for whom it is (src/lib/playTest.ts).
+  // The Android app on Google Play, for whom it is (src/lib/playTest.ts).
   const android = usePlayTestAudience() === true;
   const playCopy = PLAY_TEST_COPY[locale];
   const [viewShown, setViewShown] = useState<SettingsView | null>(null);
@@ -151,7 +150,7 @@ export default function ControlSheet({
   };
   // Back on the first view, the focus is on the row that led away from it.
   const hideView = () => {
-    const row = view === 'language' ? languageRowRef : view === 'android' ? androidRowRef : creditsRowRef;
+    const row = view === 'language' ? languageRowRef : creditsRowRef;
     selectionFeedback();
     flushSync(() => setViewShown(null));
     row.current?.focus();
@@ -192,7 +191,7 @@ export default function ControlSheet({
   return (
     <ModalSheet
       open={open}
-      title={view === 'android' ? playCopy.app : t(filters ? 'filter.title' : view ? SETTINGS_VIEWS[view] : 'set.title')}
+      title={t(filters ? 'filter.title' : view ? SETTINGS_VIEWS[view] : 'set.title')}
       titleRef={titleRef}
       back={view ? { label: t('set.title'), onClick: hideView } : undefined}
       action={filters ? (
@@ -291,15 +290,6 @@ export default function ControlSheet({
         </div>
       ) : view === 'language' ? (
         <LanguageList />
-      ) : view === 'android' ? (
-        <div className="settings-section">
-          <div className="play-intro">
-            {/* eslint-disable-next-line @next/next/no-img-element -- The app's own icon, kept offline with the map. */}
-            <img src="/icon-180.png" alt="" width={56} height={56} />
-            <p>{playCopy.sheetPitch}</p>
-          </div>
-          <PlayTestSteps copy={playCopy} place="settings" />
-        </div>
       ) : (
         <>
           <section className="settings-section">
@@ -428,11 +418,7 @@ export default function ControlSheet({
                 </a>
               )}
               {android && (
-                <button
-                  ref={androidRowRef}
-                  type="button"
-                  onClick={() => { playTest.opened('settings'); showView('android')(); }}
-                >
+                <a href={playStoreUrl('web-map-settings')} onClick={() => playTest.followed('settings')}>
                   <span className="app-row-name">
                     {/* eslint-disable-next-line @next/next/no-img-element -- The app's own icon, kept offline with the map. */}
                     <img className="app-row-icon" src="/icon-180.png" alt="" width={30} height={30} />
@@ -442,7 +428,7 @@ export default function ControlSheet({
                     Google Play
                     <Icon name="chevron" size={16} strokeWidth={2.2} />
                   </span>
-                </button>
+                </a>
               )}
               <button ref={creditsRowRef} type="button" onClick={showView('credits')}>
                 {t('set.credits')}

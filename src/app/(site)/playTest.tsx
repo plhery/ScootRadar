@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import Icon from '@/components/Icon';
-import PlayTestSteps, { PlayTestDismiss } from '@/components/PlayTestSteps';
 import { isIPhone } from '@/lib/appStore';
-import { PLAY_TEST_ATTRIBUTE, playTestInvitation } from '@/lib/playTest';
+import { PLAY_TEST_ATTRIBUTE, playStoreUrl, playTestInvitation } from '@/lib/playTest';
 import type { PlayTestCopy } from '@/lib/playTestCopy';
 import {
   OLDER_ANDROID_ATTRIBUTE,
@@ -14,18 +13,12 @@ import {
   usePlayTestMemory,
   type PlayTestPlace,
 } from '@/lib/usePlayTest';
+import '@/components/playTest.css';
 
-// The invitation to test the Android app on the pages of the site
+// The invitation to install the Android app on the pages of the site
 // (src/lib/playTest.ts): a guide's card, shown by the attribute the head's
-// script sets, the landing page's button, shown to all but an iPhone and an
-// Android the app does not install on, and the sheet of steps both open, once a
-// page.
-
-// The card and the button ask the page's sheet to open: nothing is kept, so a sheet mounted later does not open by itself.
-const openers = new Set<() => void>();
-function openSheet() {
-  openers.forEach(open => open());
-}
+// script sets, and the landing page's button, shown to all but an iPhone and an
+// Android the app does not install on. Both lead to the app on Google Play.
 
 /** A guide's card, under its headline: the offer, and × to hide it for a week. */
 export function PlayTestCard({ copy }: { copy: PlayTestCopy }) {
@@ -41,14 +34,9 @@ export function PlayTestCard({ copy }: { copy: PlayTestCopy }) {
             <h2 id={titleId}>{copy.title}</h2>
             <p>{copy.pitch}</p>
           </div>
-          <button
-            type="button"
-            className="play-card-open"
-            aria-haspopup="dialog"
-            onClick={() => { playTest.opened('guide'); openSheet(); }}
-          >
-            {copy.getEarly}
-          </button>
+          <a className="play-card-open" href={playStoreUrl('web-guide')} onClick={() => playTest.followed('guide')}>
+            {copy.install}
+          </a>
         </div>
         <button
           type="button"
@@ -76,38 +64,29 @@ export function PlayTestCard({ copy }: { copy: PlayTestCopy }) {
 export function PlayTestButton({ copy }: { copy: PlayTestCopy }) {
   return (
     <span className="play-android">
-      <button
-        type="button"
-        className="btn btn--line"
-        aria-haspopup="dialog"
-        onClick={() => { playTest.opened('landing'); openSheet(); }}
-      >
+      <a className="btn btn--line" href={playStoreUrl('web-landing')} onClick={() => playTest.followed('landing')}>
         <Icon name="phone" size={20} />
-        {copy.app}
-        <span className="play-badge">{copy.early}</span>
-      </button>
-      <small>{copy.landingNote}</small>
+        {copy.landing}
+      </a>
     </span>
   );
 }
 
 /**
- * The sheet of steps, once a page, and what decides whether the page's card or
- * button is shown: until the browser has answered, the head's script decides.
+ * What decides, once a page, whether the page's card or button is shown: until the browser has answered, the head's
+ * script decides.
  */
-export function PlayTestSite({ copy, place }: { copy: PlayTestCopy; place: Extract<PlayTestPlace, 'guide' | 'landing'> }) {
+export function PlayTestSite({ place }: { place: Extract<PlayTestPlace, 'guide' | 'landing'> }) {
   const audience = usePlayTestAudience();
   const older = useOlderAndroid();
   const memory = usePlayTestMemory();
-  const titleId = useId();
-  const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (audience === null || older === null) return;
     const root = document.documentElement;
     let offer = false;
     if (audience) {
-      offer = playTestInvitation(memory, Date.now(), 'site') === 'offer';
+      offer = playTestInvitation(memory, Date.now()) === 'offer';
       root.setAttribute(PLAY_TEST_ATTRIBUTE, offer ? 'offer' : 'quiet');
     } else {
       root.removeAttribute(PLAY_TEST_ATTRIBUTE);
@@ -118,39 +97,5 @@ export function PlayTestSite({ copy, place }: { copy: PlayTestCopy; place: Extra
     if (place === 'landing' ? !older && !isIPhone(navigator.userAgent) : offer) playTest.viewed(place);
   }, [audience, older, memory, place]);
 
-  useEffect(() => {
-    const open = () => {
-      const dialog = dialogRef.current;
-      if (dialog && !dialog.open) dialog.showModal();
-    };
-    openers.add(open);
-    return () => { openers.delete(open); };
-  }, []);
-
-  const close = () => dialogRef.current?.close();
-  return (
-    <dialog
-      ref={dialogRef}
-      className="play-sheet"
-      aria-labelledby={titleId}
-      // A tap beside the sheet, on the backdrop, closes it.
-      onClick={(event) => { if (event.target === event.currentTarget) close(); }}
-    >
-      <div className="play-sheet-inner">
-        <div className="play-sheet-head">
-          {/* eslint-disable-next-line @next/next/no-img-element -- The icon of the app, an SVG. */}
-          <img src="/icon.svg" alt="" width={56} height={56} />
-          <div>
-            <h2 id={titleId}>{copy.title}</h2>
-            <p>{copy.sheetPitch}</p>
-          </div>
-          <button type="button" className="play-sheet-close" aria-label={copy.close} onClick={close}>
-            <Icon name="close" size={16} strokeWidth={2.6} />
-          </button>
-        </div>
-        <PlayTestSteps copy={copy} place={place} />
-        <PlayTestDismiss copy={copy} place={place} onDone={close} />
-      </div>
-    </dialog>
-  );
+  return null;
 }

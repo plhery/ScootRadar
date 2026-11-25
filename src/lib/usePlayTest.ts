@@ -18,7 +18,7 @@ import {
 // The invitation's state in the page, src/lib/playTest.ts: what the browser
 // remembers, shared by every part of it on the page, and what each part does.
 
-/** Where the invitation is shown, or its steps were opened from. */
+/** Where the invitation is shown. */
 export type PlayTestPlace = 'map' | 'guide' | 'landing' | 'settings';
 
 const listeners = new Set<() => void>();
@@ -91,7 +91,6 @@ export function useOlderAndroid(): boolean | null {
   return older;
 }
 
-const STEP_EVENTS = ['invite_group', 'invite_optin', 'invite_install'] as const;
 const viewed = new Set<PlayTestPlace>();
 
 /** What the visitor does with the invitation: each is remembered, where it changes anything, and counted. */
@@ -102,27 +101,20 @@ export const playTest = {
     viewed.add(place);
     track('invite_view', { place });
   },
-  opened(place: PlayTestPlace) {
-    track('invite_open', { place });
+  /** Its link to Google Play was followed: not offered again. */
+  followed(place: PlayTestPlace) {
+    remember({ followed: true });
+    track('invite_install', { place });
   },
-  /** A step's link was followed: the next one is the one offered. */
-  stepped(step: 1 | 2 | 3, place: PlayTestPlace) {
-    remember({ steps: [...new Set([...(playTestSnapshot().steps ?? []), step])].sort() });
-    track(STEP_EVENTS[step - 1], { place });
-  },
-  /** × or "Not now": hidden for a week. */
+  /** ×: hidden for a week. */
   dismissed(place: PlayTestPlace) {
     remember({ until: Date.now() + PLAY_TEST_SNOOZE_MS });
     track('invite_dismiss', { place });
   },
-  /** "Never show" or "Don't ask again". */
+  /** "Never show". */
   never(place: PlayTestPlace) {
     remember({ never: true });
     track('invite_never', { place });
-  },
-  /** The thanks after step 3 has been shown: once. */
-  thanked() {
-    remember({ thanked: true });
   },
 };
 

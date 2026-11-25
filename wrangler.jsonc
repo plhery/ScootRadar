@@ -43,7 +43,6 @@
     "APP_STORE_ID": "6823614854",
     "APP_STORE_PROVIDER_TOKEN": "129628155",
     "ANDROID_APP_ID": "com.plhery.scootradar",
-    "PLAY_TEST_GROUP": "https://groups.google.com/g/scootradar-android-testers",
     // The scooter cache, without which the Worker collects the feeds itself (DEPLOY.md).
     "SCOOTER_SNAPSHOT_API_URL": "https://scooter-data.plhery.com",
     // Valhalla for walking routes: src/app/api/walk/route.ts. FOSSGIS asks

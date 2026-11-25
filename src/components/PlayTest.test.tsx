@@ -1,14 +1,12 @@
 // @vitest-environment jsdom
 
-import { renderToString } from 'react-dom/server';
-import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ControlSheet from '@/components/ControlSheet';
 import PlayTestChip from '@/components/PlayTestChip';
-import PlayTestSheet from '@/components/PlayTestSheet';
 import { track } from '@/lib/analytics';
 import { I18nProvider } from '@/lib/i18n';
-import { PLAY_TEST_LINKS, PLAY_TEST_SNOOZE_MS, PLAY_TEST_STORAGE_KEY } from '@/lib/playTest';
+import { PLAY_TEST_SNOOZE_MS, PLAY_TEST_STORAGE_KEY, playStoreUrl } from '@/lib/playTest';
 import { resetPlayTestViews } from '@/lib/usePlayTest';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
@@ -28,7 +26,7 @@ beforeEach(() => {
   localStorage.clear();
   localStorage.setItem('scooters-locale', 'en');
   resetPlayTestViews();
-  // jsdom has neither modal dialogs nor animations.
+  // jsdom has neither modal dialogs (Settings' sheet) nor animations.
   HTMLDialogElement.prototype.showModal = function showModal() { this.open = true; };
   HTMLDialogElement.prototype.close = function close() { this.open = false; };
   vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('prefers-reduced-motion') }));
@@ -38,14 +36,14 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-async function renderChip(onOpen = vi.fn()) {
-  const view = render(<I18nProvider><PlayTestChip onOpen={onOpen} /></I18nProvider>);
+async function renderChip() {
+  const view = render(<I18nProvider><PlayTestChip /></I18nProvider>);
   // The browser is asked whether it is invited.
   await act(async () => {});
-  return { ...view, onOpen };
+  return view;
 }
 const touch = () => act(() => { fireEvent.pointerDown(document.body); });
-const chip = () => screen.queryByRole('button', { name: /Try our Android app/ });
+const chip = () => screen.queryByRole('link', { name: /Get our Android app/ });
 
 describe('the map’s chip', () => {
   it('waits for the first touch of the page, then invites an Android visitor, counted once', async () => {
@@ -53,7 +51,7 @@ describe('the map’s chip', () => {
     await renderChip();
     expect(chip()).toBeNull();
     await touch();
-    expect(chip()).toHaveTextContent('Try our Android appEarly');
+    expect(chip()).toHaveTextContent(/^Get our Android app$/);
     await touch();
     expect(vi.mocked(track).mock.calls).toEqual([['invite_view', { place: 'map' }]]);
   });
@@ -75,13 +73,20 @@ describe('the map’s chip', () => {
     expect(track).not.toHaveBeenCalled();
   });
 
-  it('opens the steps', async () => {
+  it('leads to the app on Google Play, and is not offered again once followed', async () => {
     browser(ANDROID);
-    const { onOpen } = await renderChip();
+    const first = await renderChip();
     await touch();
+    expect(chip()).toHaveAttribute('href', playStoreUrl('web-map'));
+    expect(chip()).not.toHaveAttribute('target');
     fireEvent.click(chip()!);
-    expect(onOpen).toHaveBeenCalledTimes(1);
-    expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'map' });
+    expect(remembered().followed).toBe(true);
+    expect(track).toHaveBeenLastCalledWith('invite_install', { place: 'map' });
+    expect(chip()).toBeNull();
+    first.unmount();
+    await renderChip();
+    await touch();
+    expect(chip()).toBeNull();
   });
 
   it('is hidden for a week by ×, which then offers “Never show”', async () => {
@@ -117,80 +122,6 @@ describe('the map’s chip', () => {
     await touch();
     expect(chip()).toBeNull();
   });
-
-  it('thanks a tester back after the last step, once', async () => {
-    browser(ANDROID);
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ steps: [1, 2, 3] }));
-    const first = await renderChip();
-    await touch();
-    expect(chip()).toBeNull();
-    expect(screen.getByText('Thanks for testing')).toBeInTheDocument();
-    expect(remembered().thanked).toBe(true);
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
-    expect(screen.queryByText('Thanks for testing')).toBeNull();
-    first.unmount();
-    await renderChip();
-    await touch();
-    expect(screen.queryByText('Thanks for testing')).toBeNull();
-    expect(chip()).toBeNull();
-  });
-});
-
-describe('the steps, over the map', () => {
-  function renderSheet(onClose = vi.fn()) {
-    render(<I18nProvider><PlayTestSheet open onClose={onClose} /></I18nProvider>);
-    return { onClose, dialog: screen.getByRole('dialog', { name: 'Try our Android app' }) };
-  }
-  const steps = (dialog: HTMLElement) => within(dialog).getAllByRole('listitem');
-
-  it('has the page served with no preload of its icon, which would come ahead of the map\'s code', () => {
-    const page = renderToString(
-      <html><body><I18nProvider><PlayTestSheet open={false} onClose={vi.fn()} /></I18nProvider></body></html>
-    );
-    expect(page).toContain('src="/icon-180.png"');
-    expect(page).not.toMatch(/<link[^>]*rel="preload"[^>]*icon-180|<link[^>]*icon-180[^>]*rel="preload"/);
-  });
-
-  it('leads to the group, the opt-in and the app, each in a tab of its own, the next one in colour', () => {
-    const { dialog } = renderSheet();
-    const links = within(dialog).getAllByRole('link');
-    expect(links.map(link => [link.textContent, link.getAttribute('href'), link.getAttribute('target')])).toEqual([
-      ['Join', PLAY_TEST_LINKS.group, '_blank'],
-      ['Open', PLAY_TEST_LINKS.optIn, '_blank'],
-      ['Install', PLAY_TEST_LINKS.install, '_blank'],
-    ]);
-    expect(links[0]).toHaveAccessibleDescription('Join the testers’ group');
-    expect(steps(dialog).map(step => step.dataset.state)).toEqual(['next', 'later', 'later']);
-    expect(dialog).toHaveTextContent('Needs Android 12 or later.');
-  });
-
-  it('remembers each step taken, counts it, and offers the next', () => {
-    const { dialog } = renderSheet();
-    fireEvent.click(within(dialog).getByRole('link', { name: 'Join' }));
-    expect(remembered().steps).toEqual([1]);
-    expect(track).toHaveBeenLastCalledWith('invite_group', { place: 'map' });
-    expect(steps(dialog).map(step => step.dataset.state)).toEqual(['done', 'next', 'later']);
-    expect(within(dialog).getByText(/^Join the testers’ group/)).toHaveTextContent('Join the testers’ group, done');
-    fireEvent.click(within(dialog).getByRole('link', { name: 'Install' }));
-    expect(track).toHaveBeenLastCalledWith('invite_install', { place: 'map' });
-    expect(steps(dialog).map(step => step.dataset.state)).toEqual(['done', 'next', 'done']);
-    fireEvent.click(within(dialog).getByRole('link', { name: 'Open' }));
-    expect(track).toHaveBeenLastCalledWith('invite_optin', { place: 'map' });
-    expect(remembered().steps).toEqual([1, 2, 3]);
-    expect(steps(dialog).map(step => step.dataset.state)).toEqual(['done', 'done', 'done']);
-  });
-
-  it('closes with “Not now”, for a week, or “Don’t ask again”, for good', () => {
-    const { onClose } = renderSheet();
-    fireEvent.click(screen.getByRole('button', { name: 'Not now' }));
-    expect(onClose).toHaveBeenCalledTimes(1);
-    expect(remembered().until).toBeGreaterThan(Date.now());
-    expect(track).toHaveBeenLastCalledWith('invite_dismiss', { place: 'map' });
-    fireEvent.click(screen.getByRole('button', { name: 'Don’t ask again' }));
-    expect(onClose).toHaveBeenCalledTimes(2);
-    expect(remembered().never).toBe(true);
-    expect(track).toHaveBeenLastCalledWith('invite_never', { place: 'map' });
-  });
 });
 
 describe('Settings › About', () => {
@@ -225,21 +156,16 @@ describe('Settings › About', () => {
     return screen.getByRole('heading', { name: 'About' }).nextElementSibling as HTMLElement;
   }
 
-  it('leads first to the Android app on Android, even after “Never show”, and back', async () => {
+  it('leads first to the Android app on Google Play on Android, even after “Never show”', async () => {
     browser(ANDROID);
     localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ never: true }));
     const about = await renderSettings();
-    const row = within(about).getAllByRole('button')[0];
+    const row = within(about).getAllByRole('link')[0];
     expect(row).toHaveTextContent(/^Android appGoogle Play$/);
+    expect(row).toHaveAttribute('href', playStoreUrl('web-map-settings'));
     fireEvent.click(row);
-    expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'settings' });
-    expect(screen.getByRole('heading', { level: 2, name: 'Android app' })).toHaveFocus();
-    fireEvent.click(screen.getByRole('link', { name: 'Join' }));
-    expect(track).toHaveBeenLastCalledWith('invite_group', { place: 'settings' });
-    // The sheet's own ways out are enough here: nothing to dismiss.
-    expect(screen.queryByRole('button', { name: 'Don’t ask again' })).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-    await waitFor(() => expect(screen.getByRole('button', { name: /^Android app/ })).toHaveFocus());
+    expect(track).toHaveBeenLastCalledWith('invite_install', { place: 'settings' });
+    expect(remembered().followed).toBe(true);
   });
 
   it('has no Android row elsewhere', async () => {

@@ -47,11 +47,11 @@ it('says, where it says address searches are not kept, that the last place chose
   expect(overview).toMatch(/last place you chose in the search.* on your device/);
 });
 
-it('lists what the Android app keeps of a refused location, and the site of its invitation to test that app', () => {
+it('lists what the Android app keeps of a refused location, and the site of its invitation to install that app', () => {
   const stored = text().match(/ Local storage and service worker (.*?) Infrastructure logs /)?.[1];
   // android-location-refused (AndroidLocationManager.kt) and scooters-android-test (playTest.ts).
   expect(stored).toMatch(/in the Android app, the fact that you refused it your location/);
-  expect(stored).toMatch(/invitation to test the Android app/);
+  expect(stored).toMatch(/invitation to install the Android app: .* whether you followed its link to Google Play/);
 });
 
 it('says what the website\'s error reports hold and lose, and that they go to Umami only while analytics is on', () => {

@@ -240,7 +240,7 @@ test('the landing page leads to the map, and to the map of a city', async ({ pag
   await expect(page.locator('.app-shell')).toBeVisible();
 });
 
-test('the landing page leads to the iPhone app, with its code to scan beside the first button on a computer, and to the Android app’s test', async ({ page, isMobile }) => {
+test('the landing page leads to the iPhone app, with its code to scan beside the first button on a computer, and to the Android app on Google Play', async ({ page, isMobile }) => {
   await page.goto('/de');
   const store = (campaign: string) => `https://apps.apple.com/app/apple-store/id6823614854?pt=129628155&ct=${campaign}&mt=8`;
   const hero = page.locator('.hero').getByRole('link', { name: 'iPhone-App laden' });
@@ -252,8 +252,8 @@ test('the landing page leads to the iPhone app, with its code to scan beside the
   await expect(hero.locator('svg rect')).toHaveCount(1);
   await expect(hero.locator('svg')).toHaveAttribute('aria-hidden', 'true');
 
-  // The Android app's test under it, both times, but not on an iPhone (this project's phone).
-  const android = (section: string) => page.locator(section).getByRole('button', { name: /^Android-App/ });
+  // The Android app's under it, both times, but not on an iPhone (this project's phone).
+  const android = (section: string) => page.locator(section).getByRole('link', { name: 'Android-App laden' });
   if (isMobile) {
     await expect(page.locator('html')).toHaveAttribute('data-iphone', '');
     await expect(android('.hero')).toBeHidden();
@@ -266,11 +266,7 @@ test('the landing page leads to the iPhone app, with its code to scan beside the
     expect(androidBox.y).toBeGreaterThanOrEqual(iphoneBox.y + iphoneBox.height);
     expect(androidBox.x).toBeCloseTo(iphoneBox.x, 0);
     expect(androidBox.width).toBeCloseTo(iphoneBox.width, 0);
-    await android('.closing').click();
-    const sheet = page.getByRole('dialog', { name: 'Teste unsere Android-App' });
-    await expect(sheet.getByRole('link')).toHaveText(['Beitreten', 'Öffnen', 'Installieren']);
-    await page.keyboard.press('Escape');
-    await expect(sheet).toBeHidden();
+    await expect(android('.closing')).toHaveAttribute('href', 'https://play.google.com/store/apps/details?id=com.plhery.scootradar&referrer=utm_source%3Dwebsite%26utm_medium%3Dlink%26utm_campaign%3Dweb-landing');
   }
 
   // A phone opens the link itself; a computer has a code for the phone to scan, which says so.
@@ -305,18 +301,13 @@ test.describe('on Android', () => {
   // "Android 10; K" on every phone, would be read as Android 10, which the app does not run on.
   test.use({ userAgent: 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36' });
 
-  test('a guide and the landing page invite the visitor to test the Android app, from the first paint and under the page’s policy', async ({ page }) => {
+  test('a guide and the landing page lead the visitor to the Android app, from the first paint and under the page’s policy', async ({ page }) => {
     const heard = complaints(page);
     await page.goto('/guides/e-scooters-zurich');
     // Marked by the head's script, which the Worker gives the response's nonce.
     await expect(page.locator('html')).toHaveAttribute('data-android-test', 'offer');
-    const card = page.getByRole('complementary', { name: 'Try our Android app' });
-    await card.getByRole('button', { name: 'Get it early' }).click();
-    const sheet = page.getByRole('dialog', { name: 'Try our Android app' });
-    await expect(sheet.getByRole('link')).toHaveText(['Join', 'Open', 'Install']);
-    await expect(sheet.getByRole('link', { name: 'Join' })).toHaveAttribute('href', 'https://groups.google.com/g/scootradar-android-testers');
-    await page.keyboard.press('Escape');
-    await expect(sheet).toBeHidden();
+    const card = page.getByRole('complementary', { name: 'Get our Android app' });
+    await expect(card.getByRole('link', { name: 'Install' })).toHaveAttribute('href', 'https://play.google.com/store/apps/details?id=com.plhery.scootradar&referrer=utm_source%3Dwebsite%26utm_medium%3Dlink%26utm_campaign%3Dweb-guide');
     // × hides it for a week, and says so.
     await card.getByRole('button', { name: 'Not now' }).click();
     await expect(card).toBeHidden();
@@ -328,8 +319,7 @@ test.describe('on Android', () => {
     const hero = page.locator('.hero');
     await expect(hero.getByRole('link', { name: 'Get the iPhone app' })).toBeHidden();
     await expect(hero.locator('.app-qr')).toBeHidden();
-    await hero.getByRole('button', { name: /^Android app/ }).click();
-    await expect(page.getByRole('dialog', { name: 'Try our Android app' })).toBeVisible();
+    await expect(hero.getByRole('link', { name: 'Get the Android app' })).toHaveAttribute('href', 'https://play.google.com/store/apps/details?id=com.plhery.scootradar&referrer=utm_source%3Dwebsite%26utm_medium%3Dlink%26utm_campaign%3Dweb-landing');
     expect(heard).toEqual([]);
   });
 });
@@ -344,7 +334,7 @@ test.describe('on an Android the app does not install on', () => {
     await expect(page.locator('html')).toHaveAttribute('data-older-android', '');
     for (const section of ['.hero', '.closing']) {
       const actions = page.locator(section).locator('.cta-row');
-      await expect(actions.getByRole('button', { name: /^Android app/ }), section).toBeHidden();
+      await expect(actions.getByRole('link', { name: 'Get the Android app' }), section).toBeHidden();
       await expect(actions.getByRole('link', { name: 'Get the iPhone app' }), section).toBeHidden();
       await expect(actions.locator('.app-qr'), section).toBeHidden();
       await expect(actions.getByRole('link', { name: 'Open the map' }), section).toBeVisible();

@@ -107,14 +107,18 @@ What the events mean on the web:
   `search_open`, `+` and `−` send `map_zoom`, Esc sends `search_close` or, on a
   scooter card, `vehicle_dismiss`. A tap on the map that closes a scooter card
   sends `vehicle_dismiss` as well.
-- The `invite_*` events follow the invitation to test the Android app
+- The `invite_*` events follow the invitation to the Android app
   (`src/lib/playTest.ts`, sent from 3 November 2026): `invite_view` is the
   chip, a guide's card or the landing page's button shown, once a page for each
-  place; `invite_open` opens its three steps; `invite_group`, `invite_optin` and
-  `invite_install` are each step's link followed (join the testers' group,
-  become a tester on Google Play, install); `invite_dismiss` is × or "Not now",
-  which hides it for a week, and `invite_never` "Never show" or "Don't ask
-  again". They count links followed, not testers: Play Console counts those.
+  place; `invite_install` is its link to Google Play followed (from the chip,
+  the card, the button or Settings › About); `invite_dismiss` is ×, which hides
+  it for a week, and `invite_never` "Never show". They count links followed, not
+  installs: Play Console counts those, by the link's campaign (`web-map`,
+  `web-guide`, `web-landing`, `web-map-settings`). Until 25 November 2026 the app
+  was in a closed test: `invite_open` opened its three steps, `invite_group`,
+  `invite_optin` and `invite_install` were each step's link followed (join the
+  testers' group, become a tester on Google Play, install), and `invite_dismiss`
+  and `invite_never` were also its sheet's "Not now" and "Don't ask again".
   The chip and the card are shown on Android only. The landing page's button,
   on Android only until 9 November 2026, is from then on shown on every page but
   an iPhone's (5d537745), computers included, so `invite_view` with

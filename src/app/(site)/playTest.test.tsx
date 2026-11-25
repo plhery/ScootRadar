@@ -3,7 +3,7 @@
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { track } from '@/lib/analytics';
-import { PLAY_TEST_ATTRIBUTE, PLAY_TEST_STORAGE_KEY } from '@/lib/playTest';
+import { PLAY_TEST_ATTRIBUTE, PLAY_TEST_STORAGE_KEY, playStoreUrl } from '@/lib/playTest';
 import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { OLDER_ANDROID_ATTRIBUTE, resetPlayTestViews } from '@/lib/usePlayTest';
 import { PlayTestButton, PlayTestCard, PlayTestSite } from './playTest';
@@ -18,15 +18,11 @@ const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebK
 const de = PLAY_TEST_COPY.de;
 const shown = () => document.documentElement.getAttribute(PLAY_TEST_ATTRIBUTE);
 const remembered = () => JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY) ?? '{}');
-// jsdom names no closed dialog: the sheet is found by its heading, open or not.
 const card = () => screen.getByRole('complementary', { name: de.title });
-const sheet = (name = de.title) => screen.getAllByRole('heading', { name, hidden: true }).map(heading => heading.closest('dialog')).find(Boolean)!;
 
 beforeEach(() => {
   localStorage.clear();
   resetPlayTestViews();
-  HTMLDialogElement.prototype.showModal = function showModal() { this.open = true; };
-  HTMLDialogElement.prototype.close = function close() { this.open = false; };
 });
 afterEach(() => {
   cleanup();
@@ -35,7 +31,7 @@ afterEach(() => {
 
 async function renderGuide(userAgent = ANDROID) {
   vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent);
-  render(<main><PlayTestCard copy={de} /><PlayTestSite copy={de} place="guide" /></main>);
+  render(<main><PlayTestCard copy={de} /><PlayTestSite place="guide" /></main>);
   await act(async () => {});
 }
 
@@ -43,7 +39,7 @@ describe('a guide’s card', () => {
   it('is shown to an Android visitor, as the head’s script guessed, and counted', async () => {
     await renderGuide();
     expect(shown()).toBe('offer');
-    expect(card()).toHaveTextContent('Vor allen anderen.');
+    expect(card()).toHaveTextContent('Hol dir unsere Android-AppKostenlos auf Google Play, ab Android 12.Installieren');
     expect(track).toHaveBeenCalledWith('invite_view', { place: 'guide' });
   });
 
@@ -54,17 +50,13 @@ describe('a guide’s card', () => {
     expect(track).not.toHaveBeenCalled();
   });
 
-  it('opens the steps, in a sheet that closes with “Nicht jetzt” for a week', async () => {
+  it('leads to the app on Google Play, and is not offered again once followed', async () => {
     await renderGuide();
-    expect(sheet()).toHaveProperty('open', false);
-    fireEvent.click(within(card()).getByRole('button', { name: 'Vorab testen' }));
-    expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'guide' });
-    expect(sheet()).toHaveProperty('open', true);
-    fireEvent.click(within(sheet()).getByRole('link', { name: 'Beitreten' }));
-    expect(track).toHaveBeenLastCalledWith('invite_group', { place: 'guide' });
-    fireEvent.click(within(sheet()).getByRole('button', { name: 'Nicht jetzt' }));
-    expect(sheet()).toHaveProperty('open', false);
-    expect(remembered()).toMatchObject({ steps: [1], until: expect.any(Number) });
+    const link = within(card()).getByRole('link', { name: 'Installieren' });
+    expect(link).toHaveAttribute('href', playStoreUrl('web-guide'));
+    fireEvent.click(link);
+    expect(track).toHaveBeenLastCalledWith('invite_install', { place: 'guide' });
+    expect(remembered()).toEqual({ followed: true });
     expect(shown()).toBe('quiet');
   });
 
@@ -80,7 +72,7 @@ describe('a guide’s card', () => {
     expect(screen.queryByRole('status')).toBeNull();
   });
 
-  it('stays hidden after the last step, without thanks: those are the map’s', async () => {
+  it('stays hidden for a tester who took the closed test’s three steps', async () => {
     localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ steps: [1, 2, 3] }));
     await renderGuide();
     expect(shown()).toBe('quiet');
@@ -91,31 +83,26 @@ describe('a guide’s card', () => {
 describe('the landing page’s Android button', () => {
   async function renderLanding(userAgent: string) {
     vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent);
-    render(<main><PlayTestButton copy={PLAY_TEST_COPY.en} /><PlayTestSite copy={PLAY_TEST_COPY.en} place="landing" /></main>);
+    render(<main><PlayTestButton copy={PLAY_TEST_COPY.en} /><PlayTestSite place="landing" /></main>);
     await act(async () => {});
   }
 
-  it('stays for an Android visitor who asked for no more invitations, and opens the steps', async () => {
+  it('stays for an Android visitor who asked for no more invitations, and leads to the app on Google Play', async () => {
     localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ never: true }));
     await renderLanding(ANDROID);
     expect(shown()).toBe('quiet');
     expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
-    const button = screen.getByRole('button', { name: /^Android app\s*Early$/ });
-    expect(button.parentElement).toHaveTextContent('Before anyone else, on Google Play');
-    fireEvent.click(button);
-    expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'landing' });
-    expect(sheet(PLAY_TEST_COPY.en.title)).toHaveProperty('open', true);
+    const link = screen.getByRole('link', { name: 'Get the Android app' });
+    expect(link).toHaveAttribute('href', playStoreUrl('web-landing'));
+    fireEvent.click(link);
+    expect(track).toHaveBeenLastCalledWith('invite_install', { place: 'landing' });
   });
 
-  it('is beside the iPhone app’s on a computer, counted there, and opens the same steps', async () => {
+  it('is beside the iPhone app’s on a computer, and counted there', async () => {
     await renderLanding(DESKTOP);
     expect(shown()).toBeNull();
     expect(track).toHaveBeenCalledWith('invite_view', { place: 'landing' });
-    fireEvent.click(screen.getByRole('button', { name: /^Android app/ }));
-    expect(track).toHaveBeenLastCalledWith('invite_open', { place: 'landing' });
-    expect(sheet(PLAY_TEST_COPY.en.title)).toHaveProperty('open', true);
-    fireEvent.click(within(sheet(PLAY_TEST_COPY.en.title)).getByRole('link', { name: 'Open' }));
-    expect(track).toHaveBeenLastCalledWith('invite_optin', { place: 'landing' });
+    expect(screen.getByRole('link', { name: 'Get the Android app' })).toBeInTheDocument();
   });
 
   it('is not counted on an iPhone, where it gives way to the iPhone app’s', async () => {

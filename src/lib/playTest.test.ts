@@ -6,11 +6,12 @@ import {
   IPHONE_ATTRIBUTE,
   OLDER_ANDROID_ATTRIBUTE,
   PLAY_TEST_ATTRIBUTE,
-  PLAY_TEST_LINKS,
+  PLAY_STORE_PAGE,
   PLAY_TEST_SCRIPT,
   PLAY_TEST_STORAGE_KEY,
   androidInUserAgent,
   androidVersionFromHints,
+  playStoreUrl,
   playTestInvitation,
   readPlayTestMemory,
   rememberPlayTest,
@@ -89,13 +90,15 @@ describe('who is invited', () => {
     expect(await seesPlayTest(android14, 'android-app://com.google.android.googlequicksearchbox/', true)).toBe(true);
   });
 
-  it('leads to this app on Google Play, and to its group', () => {
+  it('leads to this app on Google Play, each link with its campaign for Play Console', () => {
     const gradle = readFileSync('android/app/build.gradle.kts', 'utf8');
     const app = /applicationId = "([^"]+)"/.exec(gradle)?.[1];
     expect(app).toBe('com.plhery.scootradar');
-    expect(PLAY_TEST_LINKS.optIn).toBe(`https://play.google.com/apps/testing/${app}`);
-    expect(PLAY_TEST_LINKS.install).toBe(`https://play.google.com/store/apps/details?id=${app}`);
-    expect(PLAY_TEST_LINKS.group).toMatch(/^https:\/\/groups\.google\.com\/g\/[a-z0-9-]+$/);
+    expect(PLAY_STORE_PAGE).toBe(`https://play.google.com/store/apps/details?id=${app}`);
+    const link = new URL(playStoreUrl('web-guide'));
+    expect(link.origin + link.pathname).toBe('https://play.google.com/store/apps/details');
+    expect(link.searchParams.get('id')).toBe(app);
+    expect(link.searchParams.get('referrer')).toBe('utm_source=website&utm_medium=link&utm_campaign=web-guide');
   });
 });
 
@@ -104,52 +107,44 @@ describe('what this browser remembers', () => {
     expect(readPlayTestMemory()).toEqual({});
     localStorage.setItem(PLAY_TEST_STORAGE_KEY, '{not json');
     expect(readPlayTestMemory()).toEqual({});
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ until: 5, never: 'yes', step: 7, thanked: true, email: 'a@b.c' }));
-    expect(readPlayTestMemory()).toEqual({ until: 5, thanked: true });
+    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ until: 5, never: 'yes', followed: 1, step: 7, thanked: true, email: 'a@b.c' }));
+    expect(readPlayTestMemory()).toEqual({ until: 5 });
   });
 
-  it('reads a tester thanked before 18 November 2026, when only the highest step was kept, as having followed all three', () => {
-    // Week review of 24 November 2026, S2: the old code saved { step: 3, thanked: true } once the map had thanked
-    // a tester back after the last step; read as step 3 alone, it offered them the invitation again.
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 3, thanked: true }));
-    expect(readPlayTestMemory()).toEqual({ steps: [1, 2, 3], thanked: true });
-    expect(playTestInvitation(readPlayTestMemory(), Date.now(), 'map')).toBe('quiet');
-    expect(playTestInvitation(readPlayTestMemory(), Date.now(), 'site')).toBe('quiet');
-    // Without the thanks, the old highest step proves only that its link was followed.
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 3 }));
-    expect(readPlayTestMemory()).toEqual({ steps: [3] });
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ step: 2, thanked: true }));
-    expect(readPlayTestMemory()).toEqual({ steps: [2], thanked: true });
-    // Saved the new way, the same tester stays quiet too.
-    localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify({ steps: [1, 2, 3], thanked: true }));
-    expect(playTestInvitation(readPlayTestMemory(), Date.now(), 'map')).toBe('quiet');
+  it('reads a tester who took the closed test\'s three steps as having followed the link: they have the app', () => {
+    for (const saved of [{ steps: [1, 2, 3] }, { steps: [3, 1, 2], thanked: true }, { step: 3, thanked: true }]) {
+      localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(saved));
+      expect(readPlayTestMemory(), JSON.stringify(saved)).toEqual({ followed: true });
+      expect(playTestInvitation(readPlayTestMemory(), Date.now())).toBe('quiet');
+    }
+    // One who stopped before the end is offered the app.
+    for (const saved of [{ steps: [1, 2] }, { steps: [3] }, { step: 3 }, { step: 2, thanked: true }]) {
+      localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(saved));
+      expect(readPlayTestMemory(), JSON.stringify(saved)).toEqual({});
+    }
   });
 
   it('adds to what it remembers', () => {
-    expect(rememberPlayTest({ steps: [1] })).toEqual({ steps: [1] });
-    expect(rememberPlayTest({ until: 10 })).toEqual({ steps: [1], until: 10 });
-    expect(JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY)!)).toEqual({ steps: [1], until: 10 });
+    expect(rememberPlayTest({ until: 10 })).toEqual({ until: 10 });
+    expect(rememberPlayTest({ followed: true })).toEqual({ until: 10, followed: true });
+    expect(JSON.parse(localStorage.getItem(PLAY_TEST_STORAGE_KEY)!)).toEqual({ until: 10, followed: true });
   });
 
-  it('offers until × or "Not now" for a week, never after "Never", and thanks a tester back on the map once', () => {
+  it('offers until × for a week, and never after "Never show" or once its link is followed', () => {
     const now = 1_000_000;
-    const shown = (memory: PlayTestMemory, place: 'map' | 'site' = 'map') => playTestInvitation(memory, now, place);
+    const shown = (memory: PlayTestMemory) => playTestInvitation(memory, now);
     expect(shown({})).toBe('offer');
-    expect(shown({ steps: [2] })).toBe('offer');
     expect(shown({ until: now + 1 })).toBe('quiet');
     expect(shown({ until: now })).toBe('offer');
-    expect(shown({ never: true, steps: [1, 2, 3] })).toBe('quiet');
-    expect(shown({ steps: [1, 2, 3] })).toBe('thanks');
-    expect(shown({ steps: [1, 2, 3], until: now + 1 })).toBe('thanks');
-    expect(shown({ steps: [1, 2, 3], thanked: true })).toBe('quiet');
-    expect(shown({ steps: [1, 2, 3] }, 'site')).toBe('quiet');
-    expect(shown({}, 'site')).toBe('offer');
+    expect(shown({ never: true })).toBe('quiet');
+    expect(shown({ followed: true })).toBe('quiet');
   });
 });
 
 describe('the script of the site, before the first paint', () => {
-  // What this browser may hold: the memory as saved now, or as saved before 18 November 2026 ({ step: 3 }).
-  const run = (userAgent: string, options: { memory?: PlayTestMemory | { step: number; thanked?: true }; referrer?: string; hints?: { platform: string; platformVersion: string } } = {}) => {
+  // What this browser may hold: the memory as saved now, or as the closed test saved it ({ steps }, and before
+  // 18 November 2026 { step }).
+  const run = (userAgent: string, options: { memory?: PlayTestMemory | { steps?: number[]; step?: number; thanked?: true }; referrer?: string; hints?: { platform: string; platformVersion: string } } = {}) => {
     document.documentElement.removeAttribute(PLAY_TEST_ATTRIBUTE);
     document.documentElement.removeAttribute(IPHONE_ATTRIBUTE);
     document.documentElement.removeAttribute(OLDER_ANDROID_ATTRIBUTE);
@@ -170,19 +165,19 @@ describe('the script of the site, before the first paint', () => {
   it('marks the page as readPlayTestMemory(), playTestInvitation() and the user agent decide, for every browser and memory', () => {
     const now = Date.now();
     const memories = [
-      {}, { steps: [3] }, { steps: [1] }, { steps: [2] }, { steps: [1, 2, 3] }, { steps: [1, 2, 3], thanked: true }, { never: true },
-      { until: now + 60_000 }, { until: now - 60_000 }, { until: now + 60_000, steps: [2] },
-      // As saved before 18 November 2026: the highest step, and the map's thanks after the last.
+      {}, { followed: true }, { never: true }, { until: now + 60_000 }, { until: now - 60_000 },
+      // As the closed test saved it: the steps followed, and before 18 November 2026 the highest step and the thanks.
+      { steps: [3] }, { steps: [1] }, { steps: [1, 2, 3] }, { steps: [1, 2, 3], thanked: true }, { until: now + 60_000, steps: [2] },
       { step: 1 }, { step: 3 }, { step: 3, thanked: true as const }, { step: 2, thanked: true as const },
     ];
     for (const userAgent of Object.values(AGENTS)) {
       for (const memory of memories) {
         localStorage.setItem(PLAY_TEST_STORAGE_KEY, JSON.stringify(memory));
-        const expected = androidInUserAgent(userAgent) === 'no' ? null : playTestInvitation(readPlayTestMemory(), now, 'site');
+        const expected = androidInUserAgent(userAgent) === 'no' ? null : playTestInvitation(readPlayTestMemory(), now);
         expect(run(userAgent, { memory }), `${userAgent} ${JSON.stringify(memory)}`).toBe(expected);
       }
     }
-    // A tester thanked before then is quiet on the site, as on the map.
+    // A tester who finished the closed test is quiet.
     expect(run(AGENTS.chrome, { memory: { step: 3, thanked: true } })).toBe('quiet');
     expect(run(AGENTS.chrome, { memory: { step: 3 } })).toBe('offer');
   });

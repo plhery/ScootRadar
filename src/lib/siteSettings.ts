@@ -26,9 +26,8 @@ export const SITE_DEFAULTS = {
   /** The iPhone app's Apple ID, and the token of the account publishing it, for the links to it. No ID: the site shows no iPhone app. */
   APP_STORE_ID: '',
   APP_STORE_PROVIDER_TOKEN: '',
-  /** The Android app's id on Google Play, and the Google Group its closed test admits. Without both, the site invites no one to the test. */
+  /** The Android app's id on Google Play, for the links to it. None: the site shows no Android app. */
   ANDROID_APP_ID: '',
-  PLAY_TEST_GROUP: '',
 };
 
 export type SiteSettingName = keyof typeof SITE_DEFAULTS;
@@ -36,7 +35,7 @@ export type SiteSettings = Record<SiteSettingName, string>;
 export const SITE_SETTING_NAMES = Object.keys(SITE_DEFAULTS) as SiteSettingName[];
 
 const SWITCHES: readonly SiteSettingName[] = ['SITE_GUIDES', 'SITE_MAKER'];
-const ADDRESSES: readonly SiteSettingName[] = ['SOURCE_URL', 'ANALYTICS_URL', 'PLAY_TEST_GROUP'];
+const ADDRESSES: readonly SiteSettingName[] = ['SOURCE_URL', 'ANALYTICS_URL'];
 
 /** The settings from a deployment's vars, each checked, and the defaults for those it leaves out. */
 export function siteSettings(vars: Readonly<Record<string, unknown>> = {}): SiteSettings {

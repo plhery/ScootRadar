@@ -99,11 +99,11 @@ describe('analytics privacy boundary', () => {
     const guide = { path: '/de/ratgeber/e-scooter-frankfurt', title: 'E-Scooter Frankfurt — ScootRadar' };
     track(undefined, {}, guide);
     track('invite_view', { place: 'guide' });
-    track('invite_group', { place: 'guide' });
+    track('invite_install', { place: 'guide' });
     await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(3));
-    const [, view, group] = fetcher.mock.calls.map(call => JSON.parse(call[1].body).payload);
+    const [, view, install] = fetcher.mock.calls.map(call => JSON.parse(call[1].body).payload);
     expect(view).toMatchObject({ url: guide.path, title: guide.title, name: 'invite_view', data: { place: 'guide', platform: 'web' } });
-    expect(group).toMatchObject({ url: guide.path, name: 'invite_group', data: { place: 'guide' } });
+    expect(install).toMatchObject({ url: guide.path, name: 'invite_install', data: { place: 'guide' } });
   });
   it('sends where a visit came from with its first page view only: the linking site by its origin, and the campaign tags', async () => {
     const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
