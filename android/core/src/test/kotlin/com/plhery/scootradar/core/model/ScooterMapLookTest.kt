@@ -911,6 +911,24 @@ class ScooterMapLookTest {
     }
 
     @Test
+    fun tengeAreWrittenWithoutDecimalsAndManatWithThem() {
+        // ISO 4217 gives KZT two decimals ("KZT 650.00"), yet Kazakh prices are whole; Azerbaijan's manat keep
+        // their qəpik (25 November 2026).
+        val separator = DecimalFormatSymbols.getInstance(ScooterLanguage.current.locale).decimalSeparator.toString()
+        val tenge = RidePriceFormatter.string(minorUnits = 65_000, currency = "KZT")
+        val manat = RidePriceFormatter.string(minorUnits = 15, currency = "AZN")
+        assertTrue(tenge, tenge.filter(Char::isDigit) == "650" && !tenge.contains(separator))
+        assertTrue(manat, manat.contains("15") && manat.contains(separator))
+        assertEquals(
+            listOf(0, 0, 2),
+            listOf(
+                RidePriceFormatter.fractionDigits("KZT"), RidePriceFormatter.fractionDigits("kzt"),
+                RidePriceFormatter.fractionDigits("AZN"),
+            ),
+        )
+    }
+
+    @Test
     fun somAreWrittenWithoutDecimalsAndLariWithThem() {
         // JET in Tashkent: a Max Plus 990 soʻm to start and 990 a minute, an SL 90 1,990 and 1,190. ISO 4217 gives
         // UZS two decimals, and the card read "UZS 990.00" (week review of 24 November 2026).

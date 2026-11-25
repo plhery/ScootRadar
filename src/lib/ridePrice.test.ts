@@ -124,15 +124,20 @@ describe('formatRidePrice', () => {
     expect([currencyFractionDigits('ISK'), currencyFractionDigits('HUF'), currencyFractionDigits('huf')]).toEqual([0, 0, 0]);
   });
 
-  it('shows the soʻm without decimals, and the lari with theirs', () => {
+  it('shows the soʻm and the tenge without decimals, and the lari and the manat with theirs', () => {
     // JET in Tashkent: 990 soʻm a minute, which read "UZS 990.00" (week review of 24 November 2026).
     expect(plain(formatRidePrice(99000, 'UZS', 'en'))).toBe('UZS 990');
     expect(plain(formatRidePrice(199000, 'uzs', 'de'))).toBe("UZS 1'990");
     expect(plain(formatRidePrice(99000, 'UZS', 'fr'))).toBe('990 UZS');
     expect([currencyFractionDigits('UZS'), currencyFractionDigits('uzs')]).toEqual([0, 0]);
-    // Tbilisi: 0.32 ₾ a minute.
+    // Tenge are whole too, where ISO 4217 gives them two decimals ("KZT 650.00").
+    expect(plain(formatRidePrice(65000, 'KZT', 'en'))).toBe('KZT 650');
+    expect(plain(formatRidePrice(65000, 'kzt', 'fr'))).toBe('650 KZT');
+    expect([currencyFractionDigits('KZT'), currencyFractionDigits('kzt')]).toEqual([0, 0]);
+    // Tbilisi: 0.32 ₾ a minute; manat keep their qəpik.
     expect(plain(formatRidePrice(32, 'GEL', 'en'))).toBe('GEL 0.32');
-    expect(currencyFractionDigits('GEL')).toBe(2);
+    expect(plain(formatRidePrice(15, 'AZN', 'en'))).toBe('AZN 0.15');
+    expect([currencyFractionDigits('GEL'), currencyFractionDigits('AZN')]).toEqual([2, 2]);
   });
 
   it('keeps the kopiyky of a price in hryvnias', () => {

@@ -2115,7 +2115,7 @@ enum RidePriceFormatter {
         return date.formatted(style)
     }
 
-    /// Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272", "UZS 990".
+    /// Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272", "UZS 990", "KZT 650".
     static func fractionDigits(_ currency: String) -> Int {
         let code = currency.uppercased()
         if wholeUnitCurrencies.contains(code) { return 0 }
@@ -2129,9 +2129,12 @@ enum RidePriceFormatter {
     /// 4217 still gives HUF two decimals, and some systems follow it ("HUF 272.00").
     /// So are soʻm: Uzbek prices are whole (JET's 990 a minute in Tashkent), yet
     /// ISO 4217 gives UZS two decimals and the card read "UZS 990.00" (week review
-    /// of 24 November 2026). src/lib/ridePrice.ts and the Android app's
-    /// RidePriceFormatter list the same.
-    private static let wholeUnitCurrencies: Set<String> = ["HUF", "UZS"]
+    /// of 24 November 2026). So are tenge: Kazakh prices are whole, yet ISO 4217
+    /// gives KZT two decimals ("KZT 650.00"); no app map in Kazakhstan gives a
+    /// price yet, so they are written whole before one does (25 November 2026).
+    /// Lari and manat keep their decimals. src/lib/ridePrice.ts and the Android
+    /// app's RidePriceFormatter list the same.
+    private static let wholeUnitCurrencies: Set<String> = ["HUF", "KZT", "UZS"]
 }
 
 /// Filters: a minimum range and the providers to show. Choices apply at
