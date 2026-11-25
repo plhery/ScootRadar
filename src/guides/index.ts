@@ -404,6 +404,7 @@ import herzliyaEn from './en/e-scooters-herzliya';
 import herfordDe from './de/e-scooter-herford';
 import langenfeldDe from './de/e-scooter-langenfeld';
 import ruesselsheimDe from './de/e-scooter-ruesselsheim';
+import siegburgDe from './de/e-scooter-siegburg';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -808,4 +809,5 @@ export const GUIDES: readonly Guide[] = [
   herfordDe,
   langenfeldDe,
   ruesselsheimDe,
+  siegburgDe,
 ];
