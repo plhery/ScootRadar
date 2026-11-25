@@ -48,6 +48,8 @@ export interface FeedRefresher {
  * The Worker gives the origin 5 seconds (src/lib/scooterProxy.ts).
  */
 export const COLD_WAIT_MS = 3_000;
+// Longer than Traefik's idle connection timeout (90 seconds).
+export const KEEP_ALIVE_MS = 100_000;
 /**
  * Once the first of them is in, how long the answer waits for the others to join it, rather than
  * each coming in on a request of its own.
@@ -361,5 +363,10 @@ export function createSnapshotServer(options: ServerOptions) {
   server.requestTimeout = 10_000;
   server.headersTimeout = 10_000;
   server.timeout = 10_000;
+  // Traefik keeps an idle connection for 90 seconds and ignores Keep-Alive's timeout, so the cache must not close one
+  // first. With Node's 5 seconds, a request Traefik sent as the cache closed it failed, and Traefik answered a POST,
+  // which it never resends, with a 502: about four a day in November 2026. An idle connection still closes after this,
+  // as the request timeouts above apply only once a request begins.
+  server.keepAliveTimeout = KEEP_ALIVE_MS;
   return server;
 }

@@ -456,7 +456,14 @@ answered 46 requests with a 502 in four days. The first deploy that drained,
 e7df8f69's that day, had none: Traefik stopped sending the old container
 requests 19.5 seconds after SIGTERM, and Coolify had removed it after 36. A
 slower health check needs a longer drain, and the stop grace period must cover
-the drain and the save.
+the drain and the save. The exit also waits for requests still running, up to
+their 10-second timeout.
+
+The cache keeps an idle connection for 100 seconds (`KEEP_ALIVE_MS` in
+`server/snapshotServer.ts`), longer than Traefik's 90. With Node's default 5
+seconds, it sometimes closed a connection just as Traefik sent a request on it,
+and Traefik answered a POST, which it does not resend, with a 502: about four a
+day in November 2026, none of them during a deploy.
 
 Workers Builds deploys the website from the same commit, at about the same time
 as the cache. When the website needs a cache change first, as the

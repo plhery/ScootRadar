@@ -625,9 +625,12 @@ function shutDown() {
   clearTimeout(discoveryTimer);
   clearInterval(persistenceTimer);
   stalls.stop();
-  server.close();
+  // Requests still running finish before the process exits, up to their own timeout. None should be: Traefik
+  // stopped sending this container requests once its health check failed, during the drain.
+  const answered = new Promise<void>(resolve => { server.close(() => resolve()); });
+  const answeredOrTimedOut = Promise.race([answered, new Promise<void>(resolve => { setTimeout(resolve, server.requestTimeout).unref(); })]);
   // A collection still running, as LUUP's 90-second reads, would hold the process until Docker kills it.
-  void (async () => { await persisting; await persist(true); process.exit(0); })();
+  void (async () => { await persisting; await persist(true); await answeredOrTimedOut; process.exit(0); })();
 }
 // A deploy stops this container with SIGTERM once the new one is healthy, but Traefik sends it requests
 // until Docker finds it unhealthy, after ten failed checks two seconds apart (DEPLOY.md). It goes on as

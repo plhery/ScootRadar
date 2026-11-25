@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { once } from 'node:events';
 import net, { type AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
-import { createSnapshotServer } from './snapshotServer';
+import { createSnapshotServer, KEEP_ALIVE_MS } from './snapshotServer';
 import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
 import { areaOf, AREAS_WATCHED_PER_WINDOW, createVisitorLedger, PASS_GRACE_REQUESTS, UNBROKEN_QUARTER_HOURS, VISITOR_DAY_MS,
@@ -43,6 +43,25 @@ describe('snapshot origin boundary', () => {
     });
     expect(response).toContain('400 Bad Request');
     expect((await fetch(`http://127.0.0.1:${port}/health`)).status).toBe(503);
+  });
+
+  it('keeps an idle connection longer than Traefik does, so Traefik never sends a request on one it is closing', async () => {
+    const { server, port } = await start();
+    expect(server.keepAliveTimeout).toBe(KEEP_ALIVE_MS);
+    expect(KEEP_ALIVE_MS).toBeGreaterThan(90_000);
+    const socket = net.connect(port, '127.0.0.1');
+    let data = '';
+    socket.on('data', chunk => data += chunk);
+    await once(socket, 'connect');
+    const answered = () => new Promise<void>(resolve => { const check = () => /\r\n\r\n[^]*\}/.test(data) ? resolve() : setTimeout(check, 10); check(); });
+    socket.write('GET /health HTTP/1.1\r\nHost: localhost\r\n\r\n');
+    await answered();
+    expect(data).toContain(`Keep-Alive: timeout=${KEEP_ALIVE_MS / 1000}`);
+    data = '';
+    socket.write('GET /health HTTP/1.1\r\nHost: localhost\r\n\r\n');
+    await answered();
+    expect(data).toContain('HTTP/1.1 503');
+    socket.destroy();
   });
 
   it('requires a production secret and rejects unauthenticated origin reads', async () => {
