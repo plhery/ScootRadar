@@ -22,6 +22,12 @@ const MIN_POLYGON_RADIUS_M = 100;
 const MAX_REQUESTS = 300;
 const MAX_PARKING_READS = 40;
 const COLLECTION_MS = 150_000;
+// The start of one request to the next, all regions together. At 500 ms, Tashkent and Tbilisi sweeping together each
+// had every other turn: at 13:00 in Tashkent on 24 November 2026 they took 92 and 85 s, then 133 and 121 s, against
+// 70 and 43 s alone. JET answered 120 requests at 250 ms and 120 at 150 ms on 25 November all with 200, no slower
+// than at 500 (under 150 ms at the median). A sweep makes as many requests either way, so the account's load each
+// cycle is the same, sooner.
+const REQUEST_SPACING_MS = 250;
 const SCOOTER_TYPES = new Set(['Scooter', 'EScooter']);
 const HIREABLE_STATES = new Set(['Available', 'AvailableWithoutGps']);
 const PARKING_ID = /^[A-Za-z0-9_-]{1,64}$/;
@@ -112,7 +118,7 @@ export class JetRiderClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'jet-rider-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? 500, this.now, 0, Infinity, { spaced: true });
+    this.pace = new Pacer(options.intervalMs ?? REQUEST_SPACING_MS, this.now, 0, Infinity, { spaced: true });
     this.timeoutMs = options.timeoutMs ?? 15_000;
   }
 

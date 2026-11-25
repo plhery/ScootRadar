@@ -94,7 +94,8 @@ in a state that can't be hired is not counted missing from it. The entire region
 must finish within 300 requests and 150 seconds, its price reads included. A failed read, a pile that
 stays capped, or more than 40 short parkings fails the whole collection,
 preserving the previous snapshot under the normal expiry policy. One shared
-client spaces all JET rider requests by 500 ms. A sweep waits on that pace,
+client starts JET rider requests 250 ms apart, all regions together (see
+[request pace](#request-pace-24-and-25-november-2026)). A sweep waits on that pace,
 so it takes one of the host's collection slots but none of the cache's
 shared ones (`paced`). A watched region is collected again two minutes after
 its last collection started, not one, and ten minutes after for a view too
@@ -255,3 +256,22 @@ Go Jet's signed-out map reports a battery and no range. Since 23 November
 (`data/battery-full-ranges.json`). That was the lowest median of range over
 battery among the rider map's regions that evening, Bukhara's and
 Termez's; Tashkent's was 31.6 km and Tbilisi's 35.9.
+
+## Request pace, 24 and 25 November 2026
+
+Until 25 November the shared client started requests 500 ms apart, the 120 a
+minute of Go Jet's signed-out client, not a limit JET was seen to set. The cache sweeps up to two JET rider regions at once, and two
+regions sweeping together each had every other turn. At 13:00 in Tashkent on
+24 November, with Tashkent and Tbilisi both watched, three pairs of sweeps
+took 92 and 85 s, 133 and 121 s, and 91 and 94 s, against 70 and 43 s for
+each alone the evening before: the slowest was 17 seconds from the
+150-second limit, past which a sweep fails. At midnight on 25 November the
+pair still took 97 and 90 s.
+
+That night, from the cache's container and on its session, JET answered 20
+map and polygon reads 500 ms apart, then 120 at 250 ms and 120 at 150 ms,
+just after the cache's own sweep of both regions, all with 200 and in 147, 132 and 131 ms at
+the median, 195, 174 and 167 ms at the 90th percentile. No 429 from JET has
+been seen. Requests now start 250 ms apart: a sweep makes as many as
+before, so each region's load on the account is the same every cycle, only
+sooner, and a 403 or 429 still holds every request for a minute or more.
