@@ -200,14 +200,21 @@ test('the landing page tells a search engine where each language is', async ({ p
   // What the page says in so many words, its questions as the page asks them.
   const described = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent() ?? '');
   const types = described['@graph'].map((entity: { '@type': string }) => entity['@type']);
-  expect(types).toEqual(['Organization', 'WebSite', 'WebApplication', 'MobileApplication', 'FAQPage']);
-  // The Android app, on Google Play.
+  expect(types).toEqual(['Organization', 'WebSite', 'WebApplication', 'MobileApplication', 'MobileApplication', 'FAQPage']);
+  // The iPhone app, on the App Store, and the Android app, on Google Play.
   expect(described['@graph'][3]).toMatchObject({
+    '@id': `${site}/#iphone-app`,
+    installUrl: 'https://apps.apple.com/app/id6823614854',
+    operatingSystem: 'iOS 26 or later',
+    offers: { '@type': 'Offer', price: '0' },
+  });
+  expect(described['@graph'][4]).toMatchObject({
+    '@id': `${site}/#android-app`,
     installUrl: 'https://play.google.com/store/apps/details?id=com.plhery.scootradar',
     operatingSystem: 'Android 12 or later',
     offers: { '@type': 'Offer', price: '0' },
   });
-  const asked = described['@graph'][4].mainEntity.map((question: { name: string }) => question.name);
+  const asked = described['@graph'][5].mainEntity.map((question: { name: string }) => question.name);
   await expect(page.locator('#faq dt')).toHaveText(asked);
   expect(asked[0]).toBe('Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?');
   // Free wherever it is used, so in no currency.

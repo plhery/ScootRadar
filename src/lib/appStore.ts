@@ -12,6 +12,9 @@ export const APP_STORE_ID = SITE.APP_STORE_ID;
 /** Whether the site shows an iPhone app at all. */
 export const APP_STORE_ON = APP_STORE_ID !== '';
 
+/** The app's page on the App Store, without a campaign. */
+export const APP_STORE_PAGE = `https://apps.apple.com/app/id${APP_STORE_ID}`;
+
 /** The token of the account that publishes the app, the same in every campaign link and public in each. */
 const PROVIDER_TOKEN = SITE.APP_STORE_PROVIDER_TOKEN;
 
@@ -32,7 +35,7 @@ export type AppStoreCampaign = (typeof APP_STORE_CAMPAIGNS)[number];
 
 /** The app's page on the App Store, from this place on the site. */
 export function appStoreUrl(campaign: AppStoreCampaign): string {
-  if (!PROVIDER_TOKEN) return `https://apps.apple.com/app/id${APP_STORE_ID}`;
+  if (!PROVIDER_TOKEN) return APP_STORE_PAGE;
   return `https://apps.apple.com/app/apple-store/id${APP_STORE_ID}?pt=${PROVIDER_TOKEN}&ct=${campaign}&mt=8`;
 }
 

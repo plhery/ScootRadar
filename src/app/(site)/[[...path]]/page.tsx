@@ -9,7 +9,7 @@ import StageDepth from '@/components/StageDepth';
 import { APP_STORE_QR } from '@/generated/appStoreQr';
 import { PROVIDERS } from '@/generated/providers';
 import SmartAppBanner from '@/components/SmartAppBanner';
-import { APP_STORE_ON, appStoreUrl } from '@/lib/appStore';
+import { APP_STORE_ON, APP_STORE_PAGE, appStoreUrl } from '@/lib/appStore';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
 import { landingCountries } from '@/lib/landingCities';
@@ -137,7 +137,21 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
         image: `${SITE_URL}${shareImage(locale)}`,
         publisher: { '@id': organization },
       },
-      // The Android app on Google Play, where the site names it.
+      // The iPhone app on the App Store, and the Android app on Google Play, where the site names them.
+      ...(APP_STORE_ON ? [{
+        '@type': 'MobileApplication',
+        '@id': `${SITE_URL}/#iphone-app`,
+        name: SITE_NAME,
+        url: APP_STORE_PAGE,
+        installUrl: APP_STORE_PAGE,
+        applicationCategory: 'TravelApplication',
+        // The app's deployment target (ios/ScootRadar.xcodeproj).
+        operatingSystem: 'iOS 26 or later',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0' },
+        image: `${SITE_URL}/icon-512.png`,
+        publisher: { '@id': organization },
+      }] : []),
       ...(PLAY_TEST_ON ? [{
         '@type': 'MobileApplication',
         '@id': `${SITE_URL}/#android-app`,
