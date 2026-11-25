@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 21 November 2026
+Last updated: 25 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches, except the last place chosen in the search, which stays on the device (see below).
@@ -79,8 +79,9 @@ searches, except the last place chosen in the search, which stays on the device 
   Play Integrity. The apps work without a pass.
 - To tell a map's requests from a script's, the server counts each visitor's requests for
   scooters under a hash of their IP address (or its first half for IPv6), salted afresh each time
-  the server starts: by quarter hour, and by UTC day the quarter hours in which they kept the
-  scooters up to date. A hash is kept for its quarter hour or its day, then only the counts; no IP
+  the server starts: by quarter hour, with the time of the first of them, so that a short look
+  is told from a steady stream, and by UTC day the quarter hours in which they kept the scooters
+  up to date. A hash is kept for its quarter hour or its day, then only the counts; no IP
   address is stored. It also counts each address's (or IPv6 first half's) requests for scooters of
   the UTC day and hour under a keyed hash of it and that day or hour, with a key only the server
   holds, kept across a restart until the day ends, so that an address making more than a map does
