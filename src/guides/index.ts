@@ -401,6 +401,7 @@ import herneDe from './de/e-scooter-herne';
 import modenaIt from './it/monopattini-sharing-modena';
 import modenaEn from './en/e-scooters-modena';
 import herzliyaEn from './en/e-scooters-herzliya';
+import herfordDe from './de/e-scooter-herford';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -802,4 +803,5 @@ export const GUIDES: readonly Guide[] = [
   modenaIt,
   modenaEn,
   herzliyaEn,
+  herfordDe,
 ];
