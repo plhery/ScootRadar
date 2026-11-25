@@ -6,19 +6,19 @@ const guide: Guide = {
   topic: 'wuppertal',
   name: 'E-Scooter Wuppertal: Anbieter, Preise, Parken',
   title: 'E-Scooter Wuppertal 2026: Lime, Voi, Ryde, Ridemovi, Parken',
-  description: 'E-Scooter in Wuppertal mieten: Lime, Voi, Ridemovi oder Ryde, ab 18 ohne Führerschein. Nie an Schwebebahnhöfen oder in Parks abstellen.',
+  description: 'E-Scooter in Wuppertal mieten: Lime, Voi, Ridemovi oder Ryde, meist ab 18, ohne Führerschein. Nie an Schwebebahnhöfen oder in Parks abstellen.',
   headline: 'E-Scooter Wuppertal: Anbieter, Preise, Parkzonen, Schwebebahn und Nordbahntrasse',
-  lede: 'Einen E-Scooter in Wuppertal leihst du ab 18 und ohne Führerschein bei Lime, Voi, Ridemovi oder Ryde. Zehn Minuten kosten bei Ryde laut Presse vom Juli 2026 1,80 €. In Fussgängerzonen, Parks, auf Brücken und rund um die Schwebebahnhöfe beendest du keine Fahrt. In Bussen und in der Schwebebahn der WSW sind E-Scooter seit dem 18. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Wuppertal leihst du ohne Führerschein bei Lime, Voi, Ridemovi oder Ryde, ab 18, bei Ridemovi ab 16, wenn ein Elternteil das Konto anlegt. Zehn Minuten kosten bei Ryde laut Presse vom Juli 2026 1,80 €. In Fussgängerzonen, Parks, auf Brücken und rund um die Schwebebahnhöfe beendest du keine Fahrt. In Bussen und in der Schwebebahn der WSW sind E-Scooter seit dem 18. März 2024 verboten.',
   published: '2026-10-16',
-  updated: '2026-10-26',
+  updated: '2026-11-25',
   city: 'de:Wuppertal',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Wuppertal?',
       blocks: [
         'Im Oktober 2026 vermieten vier Anbieter E-Scooter in Wuppertal: **Lime** seit Oktober 2023, **Voi** seit April 2024, **Ridemovi** aus Mailand seit dem 9. Juni 2026 und **Ryde** aus Oslo seit Juli 2026. Dott und Bolt haben laut Wuppertaler Rundschau 2025 aufgehört, Dott laut Presseamt der Stadt zum 31. August 2025; Dotts Standortliste führt Wuppertal aber noch (Stand 26. Oktober 2026).',
-        'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Wuppertal](map:de:Wuppertal) zeigt ScootRadar Lime und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 950 Lime- und 1000 Voi-Scooter, die zu diesem Zeitpunkt frei waren. Die Scooter von Ridemovi und Ryde findest du nur in deren Apps.',
+        'Gemietet wird in der App des Anbieters, ab 18 (bei Ridemovi ab 16, wenn ein Elternteil das Konto anlegt), obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Auf der [Karte von Wuppertal](map:de:Wuppertal) zeigt ScootRadar die Scooter aller vier Anbieter. Am Samstag, 24. Oktober 2026, waren es kurz nach 15 Uhr rund 950 Lime- und 1000 Voi-Scooter, die zu diesem Zeitpunkt frei waren; von Ridemovi zeigte die Karte am 24. November 2026 um 19:25 Uhr rund 990 Scooter nach der letzten Zählung.',
       ],
     },
     {
@@ -45,7 +45,7 @@ const guide: Guide = {
         '**«Radverkehr frei» gilt nicht für dich:** Unter dem Schild Gehweg oder Fussgängerzone erlaubt dieses Zusatzzeichen nur Fahrräder. Einen Bürgerantrag, solche Stellen stadtweit auch für E-Scooter freizugeben, lehnte der Verkehrsausschuss im Juni 2024 ab; die Stadt prüft nur im Einzelfall. Ab dem 1. März 2027 darfst du dort mit Schrittgeschwindigkeit fahren.',
         '**Elberfeld und Barmen:** Zur Fussgängerzone gehören laut Stadt in Elberfeld unter anderem Poststrasse, Alte Freiheit, Herzogstrasse, Kerstenplatz und Willy-Brandt-Platz, in Barmen Werth, Alter Markt, Rolingswerth und Johannes-Rau-Platz, dazu der Wupperfelder Markt. Dort steigst du ab und schiebst.',
         '**Nordbahntrasse:** Der Verein Wuppertalbewegung beschreibt sie als rund 23 km langen, autofreien und fast kreuzungsfreien Fuss-, Rad- und Skateweg von Vohwinkel bis zum Tunnel Schee, eröffnet am 19. Dezember 2014. Gewidmet ist sie für nichtmotorisierten Verkehr und Pedelecs; ein E-Scooter ist rechtlich ein Kraftfahrzeug. Halte dich an die Schilder an den Zugängen. Fährst du, dann langsam und auf dem Asphalt, nicht auf dem Pflaster für Fussgänger: Innerstädtisch ist die Trasse laut Wuppertalbewegung stark genutzt und eher zu eng.',
-        '**Steile Strassen:** Vom Tal auf die Höhen, etwa zur Uni auf dem Grifflenberg, geht es steil hinauf, und bergauf leert sich der Akku schneller. Die [Live-Karte](map:de:Wuppertal) zeigt die Reichweite jedes Lime- und Voi-Scooters, bevor du losgehst.',
+        '**Steile Strassen:** Vom Tal auf die Höhen, etwa zur Uni auf dem Grifflenberg, geht es steil hinauf, und bergauf leert sich der Akku schneller. Die [Live-Karte](map:de:Wuppertal) zeigt die Reichweite jedes Lime-, Voi- und Ridemovi-Scooters, bevor du losgehst.',
       ],
     },
     {
@@ -71,13 +71,13 @@ const guide: Guide = {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Sperrzone oder neben statt auf der Abstellfläche. Solange die Fahrt läuft, zahlst du weiter. Ein Foto am Ende jeder Fahrt ist laut Stadt Pflicht.',
         },
         'Sonst stellst du aufrecht ab und lässt mindestens 2 m Gehweg frei. Tabu sind laut Stadt Gehwege unter 2 m, gemeinsame Geh- und Radwege unter 2,5 m, Blindenleitstreifen samt 60 cm daneben, Einfahrten und Eingänge, 15 m vor und hinter Haltestellen von Bus und Bahn sowie 5 m vor und hinter Kreuzungen.',
-        'Falschparken kann teuer werden: Ryde kann bis zu 50 € verlangen, wenn der Scooter am Ende ausserhalb seines Gebiets steht. Das Ordnungsamt leitete 2025 wegen falsch abgestellter E-Scooter 1242 Bussgeldverfahren ein. Störende Scooter meldest du über scooter-melder.de oder die kostenlose Hotline, die laut Auflagen gut sichtbar auf jedem Scooter stehen muss.',
+        'Falschparken kann teuer werden: Ryde kann bis zu 50 € verlangen, wenn der Scooter am Ende ausserhalb seines Gebiets steht, und Ridemovi gibt laut seinen AGB Bussgelder der Behörden samt Kosten an dich weiter, plus 20 € Bearbeitungsgebühr. Das Ordnungsamt leitete 2025 wegen falsch abgestellter E-Scooter 1242 Bussgeldverfahren ein. Störende Scooter meldest du über scooter-melder.de oder die kostenlose Hotline, die laut Auflagen gut sichtbar auf jedem Scooter stehen muss.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Wuppertal: Bussgelder und Alkohol',
       blocks: [
-        'In Wuppertal gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Wuppertal gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, bei Ridemovi ab 16, wenn ein Elternteil das Konto anlegt, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -139,7 +139,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Wuppertal nutzen?',
-      answer: 'Die von Lime, Voi, Ridemovi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Lime- und Voi-Scooter zeigt auch die [Live-Karte von Wuppertal](map:de:Wuppertal), die von Ridemovi und Ryde nur deren Apps.',
+      answer: 'Die von Lime, Voi, Ridemovi und Ryde, Stand November 2026. Du musst 18 sein, bei Ridemovi 16, wenn ein Elternteil das Konto anlegt; einen Führerschein brauchst du nicht. Freie Scooter aller vier zeigt auch die [Live-Karte von Wuppertal](map:de:Wuppertal).',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Wuppertal?',
@@ -172,6 +172,8 @@ const guide: Guide = {
     { title: 'Dott: Unsere Standorte (Stand 26. Oktober 2026)', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Wuppertaler Rundschau: «Dott» verlässt Wuppertal (18. August 2025)', url: 'https://www.wuppertaler-rundschau.de/lokales/e-scooter-anbieter-dott-verlaesst-wuppertal_aid-133176211' },
     { title: 'Wuppertaler Rundschau: Ein neuer E-Scooter-Anbieter in Wuppertal (13. Juni 2026)', url: 'https://www.wuppertaler-rundschau.de/lokales/ein-neuer-e-scooter-anbieter-in-wuppertal_aid-149815559' },
+    { title: 'RideMovi: Unter 18 Jahren', url: 'https://www.ridemovi.com/de/informative/unter-18-jahren' },
+    { title: 'RideMovi: Verbraucherinformationen und Allgemeine Geschäftsbedingungen (PDF)', url: 'https://ops-cards-ridemovi.s3.eu-central-1.amazonaws.com/termsandcondition/DE_termsandcondition.pdf' },
     { title: 'WZ: «Ryde», weiterer E-Scooter-Anbieter in Wuppertal (11. Juli 2026)', url: 'https://www.wz.de/nrw/wuppertal/ryde-weiterer-e-scooter-anbieter-in-wuppertal_aid-151344003' },
     { title: 'Wuppertaler Rundschau: Weiterer E-Scooter-Anbieter in Wuppertal gestartet (18. Juli 2026)', url: 'https://www.wuppertaler-rundschau.de/lokales/weiterer-e-scooter-anbieter-in-wuppertal-gestartet_aid-151691979' },
   ],
