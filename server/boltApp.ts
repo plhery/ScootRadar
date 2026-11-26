@@ -62,6 +62,11 @@ export class BoltClient {
   private blockedUntil = 0;
   private retryAt = 0;
   private failure?: Error;
+  /**
+   * The login with a rotated refresh token that could not be written. Bolt no longer takes the file's: this one is
+   * kept in memory, renewed from, and saved before the next read.
+   */
+  private unsaved?: Credentials;
 
   constructor(options: ClientOptions = {}) {
     this.sessionPath = options.sessionPath ?? process.env.BOLT_SESSION_PATH ??
@@ -122,11 +127,20 @@ export class BoltClient {
   }
 
   private current(country: string): Promise<Lease> {
-    if (this.lease && this.now() < this.lease.expiresAt - 60_000) return Promise.resolve(this.lease);
+    if (!this.unsaved && this.lease && this.now() < this.lease.expiresAt - 60_000) return Promise.resolve(this.lease);
     if (this.renewing) return this.renewing;
     if (this.now() < this.retryAt) return Promise.reject(this.failure);
     this.renewing = (async () => {
       try {
+        const unsaved = this.unsaved;
+        if (unsaved) {
+          await this.save(unsaved);
+          if (this.unsaved === unsaved) this.unsaved = undefined;
+          if (this.lease && this.now() < this.lease.expiresAt - 60_000) {
+            this.failure = undefined;
+            return this.lease;
+          }
+        }
         // Reload the seed so an operator can replace a revoked login without a restart.
         const credentials = await this.credentials();
         const response = await this.request(`${AUTH_URL}?${this.params(credentials.deviceId, country)}`, { method: 'POST',
@@ -144,12 +158,18 @@ export class BoltClient {
           ? this.now() + data.next_update_in_seconds * 1000 : Infinity;
         const expiresAt = Math.min(data.expires_timestamp * 1000, update + 60_000);
         if (expiresAt <= this.now() + 90_000) throw new Error('Bolt returned an expired access token');
+        const lease = { value: data.access_token, expiresAt, deviceId: credentials.deviceId };
         if (data.refresh_token !== undefined) {
           if (!jwt(data.refresh_token)) throw new Error('Bolt session response is invalid');
-          if (data.refresh_token !== credentials.refreshToken) await this.save({ ...credentials, refreshToken: data.refresh_token });
+          if (data.refresh_token !== credentials.refreshToken) {
+            this.lease = lease;
+            this.unsaved = { ...credentials, refreshToken: data.refresh_token };
+            await this.save(this.unsaved);
+            this.unsaved = undefined;
+          }
         }
         this.failure = undefined;
-        return this.lease = { value: data.access_token, expiresAt, deviceId: credentials.deviceId };
+        return this.lease = lease;
       } catch (error) {
         this.failure = error instanceof Error ? error : new Error('Bolt authentication failed');
         this.retryAt = this.now() + RETRY_MS;

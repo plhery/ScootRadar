@@ -76,6 +76,21 @@ describe('Bolt rider session', () => {
     expect(new Headers(f.fetch.mock.calls[4][1]?.headers).get('Authorization')).toBe(`Bearer ${rotated}`);
   });
 
+  it('keeps a rotated refresh token it could not save, and saves it before the next read', async () => {
+    const f = await fixture();
+    const rotated = token('rotated');
+    f.fetch.mockImplementation(async url => renewal(url) ? f.session('access', { refresh_token: rotated }) : emptyMap());
+    const blocker = join(f.directory, 'tmp');
+    await writeFile(blocker, '');
+    await expect(f.client.vehicles(riga, 'lv')).rejects.toThrow('could not be saved');
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8')).refreshToken).toBe(refreshToken);
+    await rm(blocker); f.advance(60_000);
+    await f.client.vehicles(riga, 'lv');
+    expect(f.fetch.mock.calls.filter(([url]) => renewal(url))).toHaveLength(1);
+    expect(new Headers(f.fetch.mock.lastCall?.[1]?.headers).get('Authorization')).toBe(`Bearer ${token('access')}`);
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8'))).toEqual({ version: 1, refreshToken: rotated, deviceId });
+  });
+
   it('replaces a rejected access token once and retries the same map', async () => {
     const f = await fixture();
     let renewals = 0;

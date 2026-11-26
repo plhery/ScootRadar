@@ -85,6 +85,19 @@ describe('Lime portable rider session', () => {
     expect(f.transport.mock.lastCall?.[1].Authorization).toBe('Bearer new-access');
     expect(f.transport.mock.calls.filter(([p]) => p.endsWith('/token'))).toHaveLength(1);
   });
+  it('keeps a renewed session it could not save, and saves it before the next read', async () => {
+    const f = await fixture(); f.advance(10 * 3600_000 - 899_000 + 5000);
+    f.transport.mockImplementation(async path => path.endsWith('/token') ? f.renewed() : response(map()));
+    const blocker = join(f.directory, 'tmp');
+    await writeFile(blocker, '');
+    await expect(f.client.pins(system.bounds)).rejects.toThrow('could not be saved');
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8'))).toMatchObject({ refreshToken: 'refresh-private' });
+    await rm(blocker); f.advance(60_000);
+    await f.client.pins(system.bounds);
+    expect(f.transport.mock.calls.filter(([p]) => p.endsWith('/token'))).toHaveLength(1);
+    expect(f.transport.mock.lastCall?.[1].Authorization).toBe('Bearer new-access');
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8'))).toMatchObject({ accessToken: 'new-access', refreshToken: 'new-refresh' });
+  });
   it('tries one renewal after a rejected access token and backs off if the renewed map is rejected', async () => {
     const f = await fixture();
     f.transport.mockImplementation(async path => path.endsWith('/token') ? f.renewed() : response({}, 401));

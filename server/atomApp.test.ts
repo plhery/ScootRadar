@@ -216,6 +216,29 @@ describe('ATOM rider session transport', () => {
     expect(await readdir(join(f.directory, 'tmp'))).toEqual([]);
   });
 
+  it('keeps renewed credentials it could not save, and saves them before the account\'s next read', async () => {
+    const f = await fixture();
+    f.fetch.mockImplementation(async (url, init) => {
+      if (String(url).endsWith('/user/token/refresh')) return Response.json({ token: replacement });
+      return new Headers(init?.headers).get('Authorization') === `Basic ${Buffer.from(`${token}:`).toString('base64')}`
+        ? new Response('', { status: 401 }) : Response.json(map());
+    });
+    const blocker = join(f.directory, 'tmp');
+    await writeFile(blocker, '');
+    await expect(f.client.vehicles('qick-se', [59.27, 15.21])).rejects.toThrow('could not be saved');
+    expect(f.fetch).toHaveBeenCalledTimes(2);
+    // Still unwritable: the read waits for the save, and asks nothing of ATOM.
+    await expect(f.client.vehicles('qick-se', [59.27, 15.21])).rejects.toThrow('could not be saved');
+    expect(f.fetch).toHaveBeenCalledTimes(2);
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8')).accounts['qick-se'].token).toBe(token);
+    await rm(blocker);
+    await expect(f.client.vehicles('qick-se', [59.27, 15.21])).resolves.toMatchObject({ vehicles: [] });
+    expect(f.fetch.mock.calls.filter(([url]) => String(url).endsWith('/user/token/refresh'))).toHaveLength(1);
+    const saved = JSON.parse(await readFile(f.sessionPath, 'utf8'));
+    expect(saved.accounts['qick-se'].token).toBe(replacement);
+    expect(saved.accounts['qick-de'].token).toBe(token);
+  });
+
   it('backs off rejected logins and accepts an operator-provided replacement without a restart', async () => {
     const f = await fixture();
     f.fetch.mockResolvedValue(new Response('', { status: 401 }));

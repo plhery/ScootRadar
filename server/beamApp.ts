@@ -87,6 +87,11 @@ export class BeamClient {
   private session?: Session;
   private loading?: Promise<Session>;
   private renewing?: Promise<Session>;
+  /**
+   * A renewed session whose file could not be written. Beam rotates the refresh token on each renewal, so the file's
+   * no longer works: this one is kept in memory, and saved before the next read.
+   */
+  private unsaved?: Session;
   private blockedUntil = 0;
   private retryAt = 0;
 
@@ -169,6 +174,11 @@ export class BeamClient {
 
   private async current(center: readonly number[], deadline: number, rejectedToken?: string): Promise<Session> {
     if (this.now() < this.retryAt) throw new Error('Beam authentication is temporarily unavailable');
+    const unsaved = this.unsaved;
+    if (unsaved) {
+      try { await this.save(unsaved); } catch (error) { this.retryAt = this.now() + RETRY_MS; throw error; }
+      if (this.unsaved === unsaved) this.unsaved = undefined;
+    }
     const session = await this.credentials();
     // Another reader may already have replaced the rejected token.
     if (session.authToken !== rejectedToken && tokenExpiry(session.authToken, session.userId) > this.now() + 300_000) return session;
@@ -181,8 +191,10 @@ export class BeamClient {
         if (!credential(renewed?.authToken) || !credential(renewed.refreshToken) ||
           tokenExpiry(renewed.authToken, session.userId) <= this.now() + 300_000) throw new Error('Beam session renewal response is invalid');
         const next: Session = { version: 1, userId: session.userId, authToken: renewed.authToken, refreshToken: renewed.refreshToken };
+        this.session = this.unsaved = next;
         await this.save(next);
-        return this.session = next;
+        this.unsaved = undefined;
+        return next;
       } catch (error) { this.retryAt = this.now() + RETRY_MS; throw error; }
       finally { this.renewing = undefined; }
     })();

@@ -216,6 +216,11 @@ export class BirdClient {
   private failure?: Error;
   private session?: Session;
   private renewing?: Promise<Session>;
+  /**
+   * A renewed session whose file could not be written, and the refresh token it replaced. Bird may no longer take the
+   * file's: this one is kept in memory, and saved before the next read, unless a login saved meanwhile replaced it.
+   */
+  private unsaved?: { session: Session; replaces: string };
   private readonly startAt: number;
   private readonly pacePath?: string;
   private restored?: Promise<void>;
@@ -310,9 +315,16 @@ export class BirdClient {
   private current(rejected?: string): Promise<Session> {
     if (this.renewing) return this.renewing;
     if (this.now() < this.retryAt) return Promise.reject(this.failure ?? new Error('Bird authentication is awaiting retry'));
-    if (!rejected && this.session && this.now() < expiry(this.session.accessToken) - RENEW_BEFORE_MS) return Promise.resolve(this.session);
+    if (!rejected && !this.unsaved && this.session && this.now() < expiry(this.session.accessToken) - RENEW_BEFORE_MS) {
+      return Promise.resolve(this.session);
+    }
     this.renewing = (async () => {
       try {
+        const unsaved = this.unsaved;
+        if (unsaved) {
+          if ((await this.load()).refreshToken === unsaved.replaces) await this.save(unsaved.session);
+          if (this.unsaved === unsaved) this.unsaved = undefined;
+        }
         let session = await this.load();
         if (session.accessToken === rejected || this.now() >= expiry(session.accessToken) - RENEW_BEFORE_MS) {
           if (this.now() >= expiry(session.refreshToken)) throw new Error('Bird login has expired');
@@ -326,7 +338,12 @@ export class BirdClient {
           }
           const renewed: Session = { ...session, accessToken: access, refreshToken: refresh ?? session.refreshToken };
           // A replacement login saved meanwhile is kept, not overwritten.
-          if ((await this.load()).refreshToken === session.refreshToken) await this.save(renewed);
+          if ((await this.load()).refreshToken === session.refreshToken) {
+            this.session = renewed;
+            this.unsaved = { session: renewed, replaces: session.refreshToken };
+            await this.save(renewed);
+            this.unsaved = undefined;
+          }
           session = renewed;
         }
         this.failure = undefined;

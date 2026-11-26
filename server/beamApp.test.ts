@@ -153,6 +153,19 @@ describe('Beam private session and transport', () => {
     expect(renewed.variables.refreshToken).toBe('rotated-test-refresh');
   });
 
+  it('keeps a renewed session it could not save, and saves it before the next read', async () => {
+    const f = await fixture(now + 60_000);
+    f.fetch.mockImplementation(async (_url, init) => String(init?.body).includes('mutation(') ? f.renewed() : map());
+    const blocker = join(f.directory, 'tmp');
+    await writeFile(blocker, '');
+    await expect(f.client.vehicles(cells, region.center)).rejects.toThrow('could not be saved');
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8')).refreshToken).toBe('private-test-refresh');
+    await rm(blocker); f.advance(60_000);
+    await f.client.vehicles(cells, region.center);
+    expect(f.fetch.mock.calls.filter(([, init]) => String(init?.body).includes('mutation('))).toHaveLength(1);
+    expect(JSON.parse(await readFile(f.sessionPath, 'utf8')).refreshToken).toBe('rotated-test-refresh');
+  });
+
   it('retries a rejected token once, shares renewal and backs off after repeated refusals', async () => {
     const f = await fixture();
     f.fetch.mockImplementation(async (_url, init) => String(init?.body).includes('mutation(') ? f.renewed() : unauthorized());

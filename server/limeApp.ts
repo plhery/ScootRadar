@@ -132,6 +132,11 @@ export class LimeClient {
   private blockedUntil = 0;
   private retryAt = 0;
   private failure?: Error;
+  /**
+   * A renewed session whose file could not be written. Lime takes a refresh token once, so the file's no longer
+   * works: this one is kept in memory, and saved before the next read.
+   */
+  private unsaved?: Session;
   private readonly sessionPath: string;
   private readonly now: () => number;
   private readonly transport: Transport;
@@ -156,9 +161,9 @@ export class LimeClient {
   }
   private async save(session: Session) {
     const directory = join(dirname(this.sessionPath), 'tmp');
-    await mkdir(directory, { recursive: true, mode: 0o700 });
     const temporary = join(directory, `lime-session-${randomUUID()}.json`);
     try {
+      await mkdir(directory, { recursive: true, mode: 0o700 });
       await writeFile(temporary, JSON.stringify(session), { mode: 0o600, flag: 'wx' });
       await rename(temporary, this.sessionPath);
     } catch { throw new Error('Lime renewed credentials could not be saved'); }
@@ -190,7 +195,7 @@ export class LimeClient {
   }
   /** The session, while it needs no renewal and no failure holds the account back. */
   private fresh(): Session | undefined {
-    if (this.renewing || this.now() < this.retryAt) return undefined;
+    if (this.renewing || this.unsaved || this.now() < this.retryAt) return undefined;
     return this.session && this.now() < this.session.expiresAt - this.session.renewalWindow * 1000 + 5000 ? this.session : undefined;
   }
   private current(rejectedToken?: string): Promise<Session> {
@@ -200,6 +205,11 @@ export class LimeClient {
     if (fresh) return Promise.resolve(fresh);
     this.renewing = (async () => {
       try {
+        const unsaved = this.unsaved;
+        if (unsaved) {
+          await this.save(unsaved);
+          if (this.unsaved === unsaved) this.unsaved = undefined;
+        }
         let s = await this.load();
         if (s.accessToken === rejectedToken || this.now() >= s.expiresAt - s.renewalWindow * 1000 + 5000) {
           if (s.refreshExpiresAt <= this.now()) throw new Error('Lime login has expired');
@@ -224,7 +234,9 @@ export class LimeClient {
             d.expires_in <= d.renewal_window) throw new Error('Lime session response is invalid');
           s = { ...s, accessToken: d.access_token, refreshToken: d.refresh_token, expiresAt: this.now() + d.expires_in * 1000,
             refreshExpiresAt: this.now() + d.refresh_token_expires_in * 1000, renewalWindow: d.renewal_window };
+          this.session = this.unsaved = s;
           await this.save(s);
+          this.unsaved = undefined;
         }
         this.failure = undefined;
         return this.session = s;

@@ -146,6 +146,24 @@ describe('Bird map client', () => {
     expect(JSON.parse(await readFile(sessionPath, 'utf8'))).toEqual(replacement);
   });
 
+  it('keeps a renewed session it could not save, and saves it before the next read', async () => {
+    const seeded = session(now + 30 * 60_000);
+    await writeFile(sessionPath, JSON.stringify(seeded));
+    const renewed = token(now + 24 * HOUR), rotated = token(now + 180 * 24 * HOUR, 'next');
+    const fetcher = vi.fn<typeof fetch>(async url =>
+      String(url).includes('/auth/refresh/token') ? ok({ access: renewed, refresh: rotated }) : ok({ birds: [], cell_ids: [] }));
+    const bird = client(fetcher);
+    const blocker = join(directory, 'tmp');
+    await writeFile(blocker, '');
+    await expect(bird.nearest(at.lat, at.lng)).rejects.toThrow('could not be saved');
+    expect(JSON.parse(await readFile(sessionPath, 'utf8'))).toEqual(seeded);
+    await rm(blocker); now += 60_000;
+    await bird.nearest(at.lat, at.lng);
+    expect(fetcher.mock.calls.filter(([url]) => String(url).includes('/auth/refresh/token'))).toHaveLength(1);
+    expect(fetcher.mock.lastCall?.[1]?.headers).toMatchObject({ Authorization: `Bearer ${renewed}` });
+    expect(JSON.parse(await readFile(sessionPath, 'utf8'))).toEqual({ ...seeded, accessToken: renewed, refreshToken: rotated });
+  });
+
   it('holds every Bird request for a quarter of an hour after a made-up map or a refusal', async () => {
     await writeFile(sessionPath, JSON.stringify(session(now + 20 * HOUR)));
     vi.spyOn(console, 'warn').mockImplementation(() => undefined);

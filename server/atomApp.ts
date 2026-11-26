@@ -77,6 +77,11 @@ export class AtomClient {
   private readonly renewing = new Map<string, Promise<Credentials>>();
   private readonly rejected = new Map<string, { token: string; until: number }>();
   private saving: Promise<void> = Promise.resolve();
+  /**
+   * Each account's renewed credentials whose file could not be written, and the token they replaced: kept in memory,
+   * and saved before the account's next read, unless a login saved meanwhile replaced that token.
+   */
+  private readonly unsaved = new Map<string, { credentials: Credentials; replaces: string }>();
 
   constructor(options: ClientOptions = {}) {
     this.sessionPath = options.sessionPath ?? process.env.ATOM_SESSION_PATH ??
@@ -150,36 +155,51 @@ export class AtomClient {
       }
       const data = object(await jsonBody(response, 32_768));
       if (!jwt(data?.token)) throw new Error('ATOM session response is invalid');
-      const token = data.token;
-      let saved = { ...current, token };
-      this.saving = this.saving.catch(() => undefined).then(async () => {
-        const sessions = await this.sessions();
-        // Preserve a replacement login written by an operator or another account's refresh.
-        if (sessions.accounts[account]?.token !== previous.token) {
-          saved = await this.credentials(account);
-          return;
-        }
-        sessions.accounts[account] = saved;
-        const directory = join(dirname(this.sessionPath), 'tmp');
-        await mkdir(directory, { recursive: true, mode: 0o700 });
-        const temporary = join(directory, `atom-session-${randomUUID()}.json`);
-        try {
-          await writeFile(temporary, JSON.stringify(sessions), { mode: 0o600, flag: 'wx' });
-          await rename(temporary, this.sessionPath);
-        } catch { throw new Error('ATOM renewed credentials could not be saved'); }
-        finally { await rm(temporary, { force: true }).catch(() => undefined); }
-      });
-      await this.saving;
+      const renewed = { credentials: { ...current, token: data.token }, replaces: previous.token };
+      this.unsaved.set(account, renewed);
+      const saved = await this.save(account, renewed.credentials, renewed.replaces);
+      if (this.unsaved.get(account) === renewed) this.unsaved.delete(account);
       return saved;
     })().finally(() => this.renewing.delete(account));
     this.renewing.set(account, renewing);
     return renewing;
   }
 
+  /**
+   * Writes an account's renewed credentials, one write after another, and gives what the file then holds for it: those,
+   * or a replacement login written by an operator or another account's refresh, which is preserved.
+   */
+  private async save(account: string, credentials: Credentials, replaces: string): Promise<Credentials> {
+    let saved = credentials;
+    this.saving = this.saving.catch(() => undefined).then(async () => {
+      const sessions = await this.sessions();
+      if (sessions.accounts[account]?.token !== replaces) {
+        saved = await this.credentials(account);
+        return;
+      }
+      sessions.accounts[account] = credentials;
+      const directory = join(dirname(this.sessionPath), 'tmp');
+      const temporary = join(directory, `atom-session-${randomUUID()}.json`);
+      try {
+        await mkdir(directory, { recursive: true, mode: 0o700 });
+        await writeFile(temporary, JSON.stringify(sessions), { mode: 0o600, flag: 'wx' });
+        await rename(temporary, this.sessionPath);
+      } catch { throw new Error('ATOM renewed credentials could not be saved'); }
+      finally { await rm(temporary, { force: true }).catch(() => undefined); }
+    });
+    await this.saving;
+    return saved;
+  }
+
   async vehicles(account: string, center: readonly [number, number]): Promise<unknown> {
     const [lat, lng] = center;
     if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 85 || Math.abs(lng) > 180) {
       throw new Error('Invalid ATOM map center');
+    }
+    const unsaved = this.unsaved.get(account);
+    if (unsaved) {
+      await this.save(account, unsaved.credentials, unsaved.replaces);
+      if (this.unsaved.get(account) === unsaved) this.unsaved.delete(account);
     }
     let credentials = await this.credentials(account);
     const rejected = this.rejected.get(account);
