@@ -244,7 +244,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   CL: ["chile", "chili", "cile", "sile", "cl"],
   MX: ["mexico", "mexiko", "mexique", "messico", "mx"],
   KZ: ["kazakhstan", "kasachstan", "kazakistan", "kazachstan", "kasakhstan", "cazaquistao", "kazajistan", "kasakstan", "казахстан", "казакстан", "kz"],
-  UZ: ["uzbekistan", "usbekistan", "ouzbekistan", "oezbekistan", "uzbequistao", "ozbekiston", "uzbekiston", "узбекистан", "узбекистон"],
+  UZ: ["uzbekistan", "usbekistan", "ouzbekistan", "oezbekistan", "uzbequistao", "ozbekiston", "uzbekiston", "узбекистан", "узбекистон", "uz"],
   AZ: ["azerbaijan", "aserbaidschan", "azerbaidjan", "azerbaigian", "azerbeidzjan", "aserbajdsjan", "azerbaijao", "azerbaiyan", "aserbaidsjan", "азербаиджан"],
   GE: ["georgia", "georgien", "georgie", "грузия"],
   CO: ["colombia", "kolumbien", "colombie", "kolumbia", "co"],

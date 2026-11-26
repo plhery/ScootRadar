@@ -20,6 +20,10 @@
       "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
       "jetRiderAppCity": "62d9ad4a9b4cbe2f7d894653",
       "aliases": [
+        "Taschkent",
+        "Tachkent",
+        "Tasjkent",
+        "Taskent",
         "Toshkent",
         "Тошкент",
         "Ташкент"
@@ -43,6 +47,7 @@
       "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
       "jetRiderAppCity": "6644ce1f527ba141a2c3182a",
       "aliases": [
+        "Andischan",
         "Andijon",
         "Андижан"
       ]
@@ -65,6 +70,9 @@
       "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
       "jetRiderAppCity": "651c72bc9e2e5502a90bd782",
       "aliases": [
+        "Buchara",
+        "Boukhara",
+        "Bujará",
         "Buhara",
         "Buxoro",
         "Бухара"
@@ -88,6 +96,7 @@
       "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
       "jetRiderAppCity": "69ce8dd65d082ca403f80144",
       "aliases": [
+        "Tschirtschik",
         "Chirchik",
         "Чирчик"
       ]
@@ -110,6 +119,7 @@
       "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
       "jetRiderAppCity": "648c7e30910e4af6e4c557de",
       "aliases": [
+        "Ferghana",
         "Fargona",
         "Fargʻona",
         "Фергана"

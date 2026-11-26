@@ -20,6 +20,7 @@
       "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
       "jetAppMap": true,
       "aliases": [
+        "Batum",
         "Батуми"
       ]
     },
@@ -41,6 +42,7 @@
       "discoveryUrl": "https://service.jetscooters.fun/gatewayclient/api/v6/transports",
       "jetRiderAppCity": "63469a219a4e39acf9c696b2",
       "aliases": [
+        "Tiflis",
         "თბილისი",
         "Тбилиси"
       ]

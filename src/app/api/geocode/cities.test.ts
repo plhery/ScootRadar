@@ -136,6 +136,15 @@ describe('searchCoveredCities', () => {
     expect(searchCoveredCities('Ελλάδα')).toEqual([]);
   });
 
+  it('finds the Uzbek and Georgian towns by their names in the languages of the app, and Uzbekistan as "uz"', () => {
+    for (const [query, title] of [['Taschkent', 'Tashkent'], ['Tachkent', 'Tashkent'], ['Tasjkent', 'Tashkent'], ['Taskent', 'Tashkent'],
+      ['Toshkent', 'Tashkent'], ['Tashkent uz', 'Tashkent'], ['Buchara', 'Bukhara'], ['Boukhara', 'Bukhara'], ['Bujara', 'Bukhara'],
+      ['Andischan', 'Andijan'], ['Ferghana', 'Fergana'], ['Tschirtschik', 'Chirchiq'], ['Tiflis', 'Tbilisi'], ['Batum', 'Batumi']]) {
+      expect(searchCoveredCities(query)[0]?.title, query).toBe(title);
+    }
+    expect(searchCoveredCities('Taschkent', 'de')[0].subtitle).toBe('Usbekistan');
+  });
+
   it('finds a Cypriot town by its English, Greek or transliterated name, and Cyprus in Greek and Turkish', () => {
     for (const [query, title] of [['Paphos', 'Paphos'], ['Pafos', 'Paphos'], ['Πάφος', 'Paphos'], ['παφοσ', 'Paphos'],
       ['Paphos Κύπρος', 'Paphos'], ['Limassol', 'Limassol'], ['Lemesos', 'Limassol'], ['Λεμεσός', 'Limassol'], ['ΛΕΜΕΣΟΣ', 'Limassol'],
