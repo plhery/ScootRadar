@@ -48,6 +48,15 @@ if [ -z "$code" ] || [ -z "$name" ]; then
 fi
 target=$(git -C "$android" rev-parse --verify "$commit^{commit}")
 tag="android-$name-$code"
+# The APK is that commit's build: the version code and name its build.gradle.kts gives, or the tag would name a commit
+# that builds another version.
+gradle=$(git -C "$android" show "$target:android/app/build.gradle.kts" 2>/dev/null) || gradle=
+builtCode=$(sed -n 's/^[[:space:]]*versionCode = \([0-9]*\)[[:space:]]*$/\1/p' <<<"$gradle")
+builtName=$(sed -n 's/^[[:space:]]*versionName = "\([^"]*\)"[[:space:]]*$/\1/p' <<<"$gradle")
+if [ "$builtCode" != "$code" ] || [ "$builtName" != "$name" ]; then
+  echo "$apk is $name ($code), but $target builds ${builtName:-no version name} (${builtCode:-no version code}): build it from that commit" >&2
+  exit 1
+fi
 
 # The release's tag is the commit it was built from, which has to be on GitHub's main already. It goes up through this
 # checkout's own remote: a ref on a commit that carries .github/workflows needs a credential that may write workflows,
