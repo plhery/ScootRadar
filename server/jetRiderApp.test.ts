@@ -1,6 +1,6 @@
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapFeed, isAppMapSystem, serviceAreas } from '../src/lib/regionalScooterSystems';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
@@ -122,6 +122,28 @@ describe('JET rider session', () => {
     expect((await stat(sessionPath)).mode & 0o777).toBe(0o600);
     await new JetRiderClient({ sessionPath, fetch, now: () => now, intervalMs: 0 }).vehicles(system.bounds, now + 10_000);
     expect(fetch.mock.calls.filter(([, options]) => options?.method === 'POST')).toHaveLength(1);
+  });
+
+  it('keeps a renewed session it could not save, and saves it before the next read', async () => {
+    const fetch = vi.fn<typeof globalThis.fetch>(async (_url, options) => {
+      if (options?.method === 'POST') return json({ access_token: 'renewed-access-token', refresh_token: 'rotated-refresh-token', expires_in: 1800 });
+      expect(new Headers(options?.headers).get('authorization')).toBe('Bearer renewed-access-token');
+      return json(map());
+    });
+    const { client, sessionPath, advance } = await fixture(fetch, { expiresAt: now - 1 });
+    const original = await readFile(sessionPath, 'utf8');
+    // Its temporary folder is a file: the renewed session can't be written.
+    const blocker = join(dirname(sessionPath), 'tmp');
+    await writeFile(blocker, '');
+    await expect(client.vehicles(system.bounds, now + 10_000)).rejects.toThrow('JET rider renewed session could not be saved');
+    expect(await readFile(sessionPath, 'utf8')).toBe(original);
+    advance(60_000);
+    await expect(client.vehicles(system.bounds, now + 70_000)).rejects.toThrow('could not be saved');
+    await rm(blocker);
+    advance(60_000);
+    await expect(client.vehicles(system.bounds, now + 130_000)).resolves.toEqual(map());
+    expect(fetch.mock.calls.filter(([, options]) => options?.method === 'POST')).toHaveLength(1);
+    expect(JSON.parse(await readFile(sessionPath, 'utf8')).refreshToken).toBe('rotated-refresh-token');
   });
 
   it('recovers one rejected access token and stops after a second refusal', async () => {

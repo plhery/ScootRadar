@@ -110,6 +110,11 @@ export class JetRiderClient {
   private session?: Session;
   private loading?: Promise<Session>;
   private renewing?: Promise<Session>;
+  /**
+   * A renewed session whose file could not be written. JET rotates the refresh token on each renewal, so the file's
+   * no longer works: this one is kept in memory, and saved again before the next read.
+   */
+  private unsaved?: Session;
   private blockedUntil = 0;
   private retryAt = 0;
 
@@ -202,6 +207,11 @@ export class JetRiderClient {
 
   private async current(deadline: number, rejectedToken?: string): Promise<Session> {
     if (this.now() < this.retryAt) throw new Error('JET rider authentication is temporarily unavailable');
+    const unsaved = this.unsaved;
+    if (unsaved) {
+      try { await this.save(unsaved); } catch (error) { this.retryAt = this.now() + 60_000; throw error; }
+      if (this.unsaved === unsaved) this.unsaved = undefined;
+    }
     const session = await this.credentials();
     if (session.accessToken !== rejectedToken && session.expiresAt > this.now() + 60_000) return session;
     if (this.renewing) return this.renewing;
@@ -217,9 +227,16 @@ export class JetRiderClient {
         }
         const next: Session = { ...session, accessToken: data.access_token, refreshToken: data.refresh_token,
           expiresAt: this.now() + data.expires_in * 1000 };
+        this.session = this.unsaved = next;
         await this.save(next);
-        return this.session = next;
-      } catch (error) { this.retryAt = this.now() + 60_000; this.session = undefined; throw error; }
+        this.unsaved = undefined;
+        return next;
+      } catch (error) {
+        this.retryAt = this.now() + 60_000;
+        // A renewal JET refused leaves the file to be read again; one JET granted is the only session it now takes.
+        if (this.session !== this.unsaved) this.session = undefined;
+        throw error;
+      }
       finally { this.renewing = undefined; }
     })();
     return this.renewing;
