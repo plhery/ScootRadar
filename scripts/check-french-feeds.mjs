@@ -48,6 +48,11 @@ const catalog = { systems: requested.flatMap(country => JSON.parse(readFileSync(
   new URL(`../${catalogs[country]}`, import.meta.url), 'utf8')).systems.map(system => ({ ...system, country }))) };
 const results = [];
 const headers = { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' };
+// The app collectors bundled below (appCollector) name themselves from the deployment's SITE_URL and SITE_NAME
+// (src/lib/serviceIdentity.ts): as this check does, not as a neutral copy at localhost:3000, unless the
+// environment names another site.
+process.env.SITE_URL ??= 'https://scootradar.com';
+process.env.SITE_NAME ??= 'ScootRadar';
 // As HOST_HEADERS in src/lib/scooterFeeds.ts: Entur answers only clients that name themselves.
 const hostHeaders = { 'api.entur.io': { 'ET-Client-Name': 'scootradar-map' } };
 // Dott's listing of a country names only the regions it still serves publicly. Its CDN
