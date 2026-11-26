@@ -1374,6 +1374,15 @@ extension ScooterMapModelTests {
                    ScooterDockStatus.clockTime(shownAt)),
             String(format: String(localized: "Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround))
         ].joined(separator: " "))
+        // Once the announced time has passed, however long it lingers, it says it is running late and names no time gone.
+        for now in [backAround, backAround.addingTimeInterval(60), backAround.addingTimeInterval(3 * 3_600)] {
+            XCTAssertEqual(model.maintenanceNotice(at: now), [
+                String(format: String(localized: "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+                       ScooterDockStatus.clockTime(shownAt)),
+                String(localized: "Scheduled maintenance is taking longer than planned.")
+            ].joined(separator: " "))
+        }
+        XCTAssertEqual(model.maintenanceNotice(at: backAround.addingTimeInterval(-1)), model.maintenanceNotice)
         // Delayed, with no warning and no Try again.
         guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
         XCTAssertEqual(summary.status(at: clock.now), .delayed(showing: shownAt))

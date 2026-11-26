@@ -590,12 +590,15 @@ struct ScooterMapScreen: View {
             .transition(.move(edge: .top).combined(with: .opacity))
         } else if let maintenanceNotice = model.maintenanceNotice {
             // Calm: no warning, no button. The map asks again by itself, and the notice goes once the server answers.
-            MapStatusBanner(
-                message: maintenanceNotice,
-                systemImage: "clock",
-                tint: ScooterPalette.secondaryText,
-                cornerRadius: 22
-            )
+            // Told the time again as it passes, so it says when the announced time is gone by.
+            TimelineView(.periodic(from: .now, by: 30)) { context in
+                MapStatusBanner(
+                    message: model.maintenanceNotice(at: context.date) ?? maintenanceNotice,
+                    systemImage: "clock",
+                    tint: ScooterPalette.secondaryText,
+                    cornerRadius: 22
+                )
+            }
             .transition(.move(edge: .top).combined(with: .opacity))
         }
 

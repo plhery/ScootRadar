@@ -1017,8 +1017,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// While the server behind the scooter data is down: the calm notice under the search bar, as on the web.
     /// "Scooter data is paused for a few minutes of maintenance. Showing scooters from 22:02." over the scooters
     /// kept, "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." without any,
-    /// and "Scheduled maintenance, back around 22:20." after either when it was announced. Nil otherwise.
-    var maintenanceNotice: String? {
+    /// and "Scheduled maintenance, back around 22:20." after either when it was announced, or once that time has
+    /// passed on this device's clock, "Scheduled maintenance is taking longer than planned." Nil otherwise.
+    var maintenanceNotice: String? { maintenanceNotice(at: clock()) }
+
+    /// The maintenance notice as it reads at `now`, for a banner that is told the time again as it passes.
+    func maintenanceNotice(at now: Date) -> String? {
         guard let maintenance else { return nil }
         let showing: Date? = if case .outOfDate = loadIssue { nil } else { lastUpdated }
         var lines = [showing.map {
@@ -1028,7 +1032,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             )
         } ?? ScooterLoadFailure.maintenance.message]
         if let backAround = maintenance.backAround {
-            lines.append(String(format: String(localized: "Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround)))
+            lines.append(backAround > now
+                ? String(format: String(localized: "Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround))
+                : String(localized: "Scheduled maintenance is taking longer than planned."))
         }
         return lines.joined(separator: " ")
     }

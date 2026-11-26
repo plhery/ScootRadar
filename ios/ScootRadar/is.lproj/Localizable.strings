@@ -159,6 +159,7 @@
 "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "Gögn um rafskútur eru í hléi í nokkrar mínútur vegna viðhalds. Sýnir rafskútur eins og staðan var kl. %@.";
 "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar liggur niðri í nokkrar mínútur vegna viðhalds. Rafskúturnar koma fljótlega aftur.";
 "Scheduled maintenance, back around %@." = "Áætlað viðhald, aftur í gang um kl. %@.";
+"Scheduled maintenance is taking longer than planned." = "Áætlað viðhald tekur lengri tíma en ráð var fyrir gert.";
 "Couldn’t load scooters." = "Ekki tókst að sækja rafskúturnar.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

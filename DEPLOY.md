@@ -619,7 +619,9 @@ which the edge guards of the other sites share: a JSON value under `all` (the
 server) or `scootradar`, such as
 `{"since":"2026-11-18T22:00:00Z","backAround":"2026-11-18T22:20:00Z"}`. With a
 `backAround`, the Worker sends it as `X-Scooter-Back-Around` and the notice
-says "back around" that time. `"mode":"hard"` stops the Worker asking the
+says "back around" that time; once that time has passed on the device's clock,
+it says the maintenance is taking longer than planned instead, naming no time
+already gone. `"mode":"hard"` stops the Worker asking the
 server from `since` on, giving what it keeps instead; `{"on":false}` ends it,
 and one left on ends three hours after `backAround` (or at `ends`); one with
 neither stays on until switched off. Each

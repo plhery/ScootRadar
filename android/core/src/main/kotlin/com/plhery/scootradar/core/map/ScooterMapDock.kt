@@ -377,13 +377,14 @@ val ScooterMapController.cardStatus: ScooterDockStatus?
  * While the server behind the scooter data is down: the calm notice under the search bar, as on the web and the
  * iPhone. "Scooter data is paused for a few minutes of maintenance. Showing scooters from 22:02." over the scooters
  * kept, "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." without any, and
- * "Scheduled maintenance, back around 22:20." after either when it was announced. Null otherwise.
+ * "Scheduled maintenance, back around 22:20." after either when it was announced, or once that time has passed on
+ * this device's clock, "Scheduled maintenance is taking longer than planned." Null otherwise.
  */
 val ScooterMapController.maintenanceNotice: String?
-    get() = maintenanceNotice(maintenance.value, loadIssue.value, lastUpdated.value)
+    get() = maintenanceNotice(maintenance.value, loadIssue.value, lastUpdated.value, clock())
 
-/** The notice of [maintenanceNotice], from the states a screen collects. */
-fun maintenanceNotice(maintenance: ScooterMaintenance?, loadIssue: ScooterLoadIssue?, lastUpdated: Instant?): String? {
+/** The notice of [maintenanceNotice] as it reads at [now], from the states a screen collects. */
+fun maintenanceNotice(maintenance: ScooterMaintenance?, loadIssue: ScooterLoadIssue?, lastUpdated: Instant?, now: Instant): String? {
     maintenance ?: return null
     val showing = if (loadIssue is ScooterLoadIssue.OutOfDate) null else lastUpdated
     val lines = mutableListOf(
@@ -395,7 +396,11 @@ fun maintenanceNotice(maintenance: ScooterMaintenance?, loadIssue: ScooterLoadIs
         } ?: ScooterLoadFailure.Maintenance.message,
     )
     maintenance.backAround?.let {
-        lines += stringFormat(localized("Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(it))
+        lines += if (it > now) {
+            stringFormat(localized("Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(it))
+        } else {
+            localized("Scheduled maintenance is taking longer than planned.")
+        }
     }
     return lines.joinToString(" ")
 }

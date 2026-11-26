@@ -1177,7 +1177,7 @@ export default function Home() {
         loading={loading !== null}
         locationError={locating || locationNoticeDismissed ? null : locationError}
         paused={paused}
-        maintenance={maintenanceNotice({ maintenance, hasData, lastUpdated })}
+        maintenance={maintenanceNotice({ maintenance, hasData, lastUpdated, now })}
         hidden={searchExpanded}
         onRetryLoad={retryLoad}
         onRetryLocate={handleLocateMe}

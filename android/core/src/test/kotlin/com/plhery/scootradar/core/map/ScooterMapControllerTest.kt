@@ -1387,6 +1387,29 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun theMaintenanceNoticeSaysItIsRunningLateOnceTheAnnouncedTimeHasPassed() {
+        val shownAt = Instant.parse("2026-11-18T21:02:00Z")
+        val backAround = Instant.parse("2026-11-18T21:20:00Z")
+        val maintenance = ScooterMaintenance(backAround = backAround, retryAfter = 30.0)
+        val paused = stringFormat(
+            localized("Scooter data is paused for a few minutes of maintenance. Showing scooters from %@."),
+            ScooterDockStatus.clockTime(shownAt),
+        )
+        val late = localized("Scheduled maintenance is taking longer than planned.")
+        assertEquals(
+            "$paused " + stringFormat(localized("Scheduled maintenance, back around %@."), ScooterDockStatus.clockTime(backAround)),
+            maintenanceNotice(maintenance, null, shownAt, now = backAround.minusSeconds(1)),
+        )
+        // No time already gone: from the announced time on, however long it lingers.
+        for (now in listOf(backAround, backAround.plusSeconds(60), backAround.plusSeconds(3 * 3_600))) {
+            assertEquals("$paused $late", maintenanceNotice(maintenance, null, shownAt, now))
+            val nothingShown = ScooterLoadIssue.FirstLoadFailed(ScooterLoadFailure.Maintenance)
+            assertEquals("${ScooterLoadFailure.Maintenance.message} $late", maintenanceNotice(maintenance, nothingShown, null, now))
+        }
+        assertNull(maintenanceNotice(null, null, shownAt, backAround))
+    }
+
+    @Test
     fun aFirstLoadWhileTheServerIsDownWaitsCalmly() = runTest {
         val clock = TestClock()
         val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))

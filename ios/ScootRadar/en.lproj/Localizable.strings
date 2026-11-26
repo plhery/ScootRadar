@@ -159,6 +159,7 @@
 "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@.";
 "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly.";
 "Scheduled maintenance, back around %@." = "Scheduled maintenance, back around %@.";
+"Scheduled maintenance is taking longer than planned." = "Scheduled maintenance is taking longer than planned.";
 "Couldn’t load scooters." = "Couldn’t load scooters.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

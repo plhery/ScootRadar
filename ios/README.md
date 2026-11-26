@@ -293,7 +293,8 @@ this applies: a calm notice under the search bar, with a clock and no button,
 says "Scooter data is paused for a few minutes of maintenance. Showing scooters
 from 22:02." over the scooters the Worker kept, or "ScootRadar is down for a few
 minutes of maintenance. Scooters will be back shortly." without any, and adds
-"Scheduled maintenance, back around 22:20." when it was announced. The dock
+"Scheduled maintenance, back around 22:20." when it was announced, or, once that
+time has passed, "Scheduled maintenance is taking longer than planned." The dock
 reads "Data delayed" without **Try again**, the out-of-date card waits, and the
 map asks again when `Retry-After` says (ten seconds to five minutes), dropping
 the notice once the server answers.

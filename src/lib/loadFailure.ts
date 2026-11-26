@@ -86,15 +86,17 @@ export interface MapMaintenance {
 
 /**
  * The calm notice under the search bar while the server is down for maintenance: the scooters on screen and their
- * time, or none, and when it should be back, if that was announced. No warning and no button: the map asks again
- * by itself, and the notice goes once the data is back.
+ * time, or none, and when it should be back, if that was announced. Once that time has passed (`now`, on this
+ * device's clock), it says the maintenance is running late instead of naming a time already gone. No warning and no
+ * button: the map asks again by itself, and the notice goes once the data is back.
  */
-export function maintenanceNotice(state: { maintenance: MapMaintenance | null; hasData: boolean; lastUpdated: number | null }): UiText[] | null {
+export function maintenanceNotice(state: { maintenance: MapMaintenance | null; hasData: boolean; lastUpdated: number | null; now: number }): UiText[] | null {
   const { maintenance } = state;
   if (!maintenance) return null;
+  const { backAround } = maintenance;
   return [
     state.hasData && state.lastUpdated !== null ? { key: 'maint.paused', time: state.lastUpdated } : { key: 'maint.down' },
-    ...(maintenance.backAround !== null ? [{ key: 'maint.backAround', time: maintenance.backAround } satisfies UiText] : []),
+    ...(backAround === null ? [] : [backAround > state.now ? { key: 'maint.backAround', time: backAround } satisfies UiText : { key: 'maint.late' } satisfies UiText]),
   ];
 }
 

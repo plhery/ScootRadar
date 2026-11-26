@@ -510,7 +510,9 @@ private fun DockChrome(
     val pausedForIdle by controller.isPausedForIdle.collectAsStateWithLifecycle()
     val maintenance by controller.maintenance.collectAsStateWithLifecycle()
     val dataTime by controller.lastUpdated.collectAsStateWithLifecycle()
-    val banner = TopBanner.of(firstLoadFailure, pausedForIdle, maintenanceNotice(maintenance, loadIssue, dataTime))
+    // Told the time again as it passes, so the maintenance notice says when the announced time is gone by.
+    val bannerTime = rememberNow()
+    val banner = TopBanner.of(firstLoadFailure, pausedForIdle, maintenanceNotice(maintenance, loadIssue, dataTime, bannerTime))
     // A card that follows its scooter to a new id is no new choice.
     SelectionFeedback(scooterChoices)
     SelectionFeedback(selectedParking)
@@ -845,7 +847,9 @@ private fun PanelChrome(
     val pausedForIdle by controller.isPausedForIdle.collectAsStateWithLifecycle()
     val maintenance by controller.maintenance.collectAsStateWithLifecycle()
     val dataTime by controller.lastUpdated.collectAsStateWithLifecycle()
-    val banner = TopBanner.of(firstLoadFailure, pausedForIdle, maintenanceNotice(maintenance, loadIssue, dataTime))
+    // Told the time again as it passes, so the maintenance notice says when the announced time is gone by.
+    val bannerTime = rememberNow()
+    val banner = TopBanner.of(firstLoadFailure, pausedForIdle, maintenanceNotice(maintenance, loadIssue, dataTime, bannerTime))
     // A card that follows its scooter to a new id is no new choice.
     SelectionFeedback(scooterChoices)
     SelectionFeedback(selectedParking)

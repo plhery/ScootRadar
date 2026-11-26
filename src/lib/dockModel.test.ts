@@ -784,9 +784,9 @@ describe('the server down for maintenance', () => {
   it('has its sentences in every language, with the time where it goes', () => {
     for (const locale of SUPPORTED_LOCALES) {
       for (const key of ['maint.paused', 'maint.backAround'] as const) expect(translate(locale, key)).toContain('{time}');
-      expect(translate(locale, 'maint.down')).not.toContain('{');
+      for (const key of ['maint.down', 'maint.late'] as const) expect(translate(locale, key)).not.toContain('{');
       if (locale !== 'en') {
-        for (const key of ['maint.paused', 'maint.down', 'maint.backAround'] as const) expect(translate(locale, key)).not.toBe(translate('en', key));
+        for (const key of ['maint.paused', 'maint.down', 'maint.backAround', 'maint.late'] as const) expect(translate(locale, key)).not.toBe(translate('en', key));
       }
     }
   });

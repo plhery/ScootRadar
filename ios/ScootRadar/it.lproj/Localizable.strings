@@ -159,6 +159,7 @@
 "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "I dati dei monopattini sono in pausa per qualche minuto di manutenzione. I monopattini mostrati sono quelli delle %@.";
 "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar è in manutenzione per qualche minuto. I monopattini torneranno a breve.";
 "Scheduled maintenance, back around %@." = "Manutenzione programmata, di ritorno verso le %@.";
+"Scheduled maintenance is taking longer than planned." = "La manutenzione programmata sta richiedendo più tempo del previsto.";
 "Couldn’t load scooters." = "Impossibile caricare i monopattini.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

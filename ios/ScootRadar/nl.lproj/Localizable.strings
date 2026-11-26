@@ -159,6 +159,7 @@
 "Scooter data is paused for a few minutes of maintenance. Showing scooters from %@." = "De data van de deelsteps staan een paar minuten op pauze voor onderhoud. Je ziet de deelsteps van %@.";
 "ScootRadar is down for a few minutes of maintenance. Scooters will be back shortly." = "ScootRadar is een paar minuten offline voor onderhoud. De deelsteps zijn zo weer terug.";
 "Scheduled maintenance, back around %@." = "Gepland onderhoud, terug rond %@.";
+"Scheduled maintenance is taking longer than planned." = "Het geplande onderhoud duurt langer dan verwacht.";
 "Couldn’t load scooters." = "De deelsteps konden niet worden geladen.";
 
 /* UX alignment: outside coverage and filters with nothing to show */

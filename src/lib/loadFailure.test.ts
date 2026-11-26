@@ -75,11 +75,25 @@ describe('the server down for maintenance', () => {
   it('says what is shown, and when it should be back where that was announced', () => {
     const at = Date.parse('2026-11-18T22:02:00Z');
     const back = Date.parse('2026-11-18T22:20:00Z');
-    expect(maintenanceNotice({ maintenance: null, hasData: true, lastUpdated: at })).toBeNull();
-    expect(maintenanceNotice({ maintenance: { backAround: null }, hasData: true, lastUpdated: at }))
+    const now = at + 60_000;
+    expect(maintenanceNotice({ maintenance: null, hasData: true, lastUpdated: at, now })).toBeNull();
+    expect(maintenanceNotice({ maintenance: { backAround: null }, hasData: true, lastUpdated: at, now }))
       .toEqual([{ key: 'maint.paused', time: at }]);
-    expect(maintenanceNotice({ maintenance: { backAround: back }, hasData: false, lastUpdated: at }))
+    expect(maintenanceNotice({ maintenance: { backAround: back }, hasData: false, lastUpdated: at, now }))
       .toEqual([{ key: 'maint.down' }, { key: 'maint.backAround', time: back }]);
+  });
+
+  it('says it is running late once the announced time has passed, and names no time already gone', () => {
+    const at = Date.parse('2026-11-18T22:02:00Z');
+    const back = Date.parse('2026-11-18T22:20:00Z');
+    expect(maintenanceNotice({ maintenance: { backAround: back }, hasData: true, lastUpdated: at, now: back - 1 }))
+      .toEqual([{ key: 'maint.paused', time: at }, { key: 'maint.backAround', time: back }]);
+    for (const now of [back, back + 60_000, back + 3 * 3_600_000]) {
+      expect(maintenanceNotice({ maintenance: { backAround: back }, hasData: true, lastUpdated: at, now }))
+        .toEqual([{ key: 'maint.paused', time: at }, { key: 'maint.late' }]);
+      expect(maintenanceNotice({ maintenance: { backAround: back }, hasData: false, lastUpdated: null, now }))
+        .toEqual([{ key: 'maint.down' }, { key: 'maint.late' }]);
+    }
   });
 
   it('waits as long as Retry-After says, ten seconds at least and five minutes at most', () => {
