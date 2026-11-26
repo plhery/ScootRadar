@@ -210,7 +210,9 @@ revoking permission restores normal hidden restarts. No App Store update is need
 Opening the helper app pauses fast activation for five minutes, for example before
 screen sharing; normal collection continues by the restart path. The same pause is
 available with its executable's `pause` command, or set `pausedUntil` in the control
-file. `status` reports permission and idle eligibility. `show` is operator-only and
+file. `status` reports permission and idle eligibility; the worker asks it for the
+permission only every 10 minutes, and reads the screen lock, Ryde's processes and the idle
+time itself (WindowServer's port table, below). `show` is operator-only and
 unminimizes Ryde; pause collection first if inspecting its UI. A separate Space or
 monitor is unnecessary, and should not be relied on to isolate global app focus.
 
@@ -677,6 +679,11 @@ termination precedes egress selection, job arming and reopening. A missing or bu
 proxy acknowledgement leaves the process and routing untouched. Lifecycle records
 separate a stuck graceful quit from its guarded forced recovery. This handles the
 minimized native process observed ignoring all graceful quits on 9–10 November.
+A helper that hangs past its 12-second timeout is treated the same way: on 27 November
+at 00:40 Ryde showed its "The service is closed for the season" alert (Sundsvall's
+job), the helper's quit hung three times in a row, and the worker, which only forced
+a quit the helper had given up on, held itself off as LaunchFailed and read nothing
+from 00:40:37 until the fourth quit gave up in time and was forced at 00:45:15.
 
 The proxy counted a flow as in flight from its request hook until its response or error
 hook, and mitmproxy can end a flow with neither: once the client side of a stream has
@@ -780,10 +787,62 @@ It gives the worker's state and hold with its reason, the maps of the last hour,
 Ryde's process, any Ryde launchd job left with no process, the launches of the last
 hour and the last lifecycle event, the session, the proxy, the egress pool's
 rolling hour, refusal hold and cooling IPs, warm reads (on, paused or off, and why),
-and when the certificate expires and collection stops for its renewal.
+Map Control's launches of the last hour by answer, WindowServer's Mach ports as the
+worker last read them, and when the certificate expires and collection stops for its
+renewal.
 
 Start there when "ScootRadar Ryde bridge stopped" fires. `python3
 scripts/ryde-bridge/install.py --restart` restarts the proxy alone. A new Ryde sign-in,
 anything that would get past a refusal from Ryde (RydeRefused, a 403 or 429) and a
 faster read pace are the user's call. The rule also fires when collection stops for the
 certificate's renewal, until the attended renewal is done.
+
+## WindowServer's port table, 26 November
+
+At 16:54 CET on 26 November 2026 the kernel killed WindowServer, and loginwindow ended
+the user's session ("Window Server exited, closing down the session immediately"):
+every app and lane on the Mac stopped until the user logged in again at 23:45. launchd
+logged its exit reason as namespace 30, code `0xc40000000004aaaa`: an `EXC_RESOURCE`
+for Mach ports, flavor "port space full", at 0x4aaaa = 305,834 ports, after 7.8 days.
+WindowServer holds about 3,000 ports after a login.
+
+WindowServer keeps about one port for good for each process that connects to it and
+exits. Measured on the new WindowServer: 100 launches of Ryde Map Control left 110
+ports, and 500 runs of a `ryde-lifecycle status` that read the idle time through
+`CGEventSource` left 490, while the same number without that call, or of `ioreg`, left
+none. A Ryde cycle, with its WebKit and view-service processes, leaves 5 to 8. By day the
+worker launched Map Control about 1,500 times an hour (`status` before each read, then
+`refresh`, a `prepare` right after each cold open and another after each publish), and
+Ryde 200 to 320 times: about 39,000 ports a day, the 305,834 in 7.8 days.
+
+Nothing crashed. From 16:53:16 warm reads stopped succeeding and every read went cold,
+a quit and an open about every 6 seconds, until WindowServer went. Ryde exited 0 each
+time, on the worker's quit. The `kLSNotifyApplicationAbnormalDeath` lines in
+loginwindow's log are Map Control's exit 4, its routine refusal (a busy desktop, no
+map on screen), which LaunchServices counts as a crash: 239 of them from 16:00 to 16:20,
+26 in the last 52 seconds. Map Control's reply, which said which refusal, was deleted
+with the request; `producer/map-control.jsonl` now keeps each answer.
+
+Since then:
+
+- The worker reads whether a warm read could run (screen lock, one Ryde process, 15
+  seconds without keyboard or mouse input) from `ryde-lifecycle status` and IOKit's
+  `HIDIdleTime`, neither of which connects to WindowServer, and asks Map Control for its
+  permission only every 10 minutes. It no longer prepares Ryde right after a cold open,
+  nor after a warm read that left it minimized, nor while the desktop is busy. That is
+  one Map Control launch for a warm read and at most one for a cold one.
+- Every minute it reads WindowServer's port count (`top`, kept in
+  `producer/windowserver.json`). From 200,000 it launches nothing and holds itself off
+  as WindowServerPorts. The cache tells Sentry after 10 minutes ("the Mac's WindowServer
+  is close to its Mach port limit"). Logging out and back in, or restarting the Mac,
+  starts a new WindowServer, and the worker goes on by itself.
+- Three abnormal exits within 60 seconds of each other hold it off for 15 minutes as
+  AbnormalExits, which the cache reports the same way. These are a crash report of Ryde
+  or Map Control, a Map Control run that ended with no reply, and a quit or open of Ryde
+  that failed. Map Control's routine refusals are not counted.
+
+Ryde's own cold cycles, about 250 an hour by day, now leave most of the ports: some
+20,000 to 30,000 a day, enough to reach 200,000 within one to two weeks of a login.
+A Map Control kept running between reads would remove the remaining Map Control launches.
+Fewer cold reads would mean fewer maps, which is the user's call.
+

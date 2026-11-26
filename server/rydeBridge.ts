@@ -53,6 +53,10 @@ const HOLD_CAUSES = new Map([
   ['RydeRefused', 'Ryde refused it'],
   ['LaunchFailed', 'Ryde could not be opened on the Mac'],
   ['DatacenterBudget', 'the datacenter pool\'s hourly budget is spent'],
+  // On 26 November 2026 at 16:54 CET the kernel killed the Mac's WindowServer for a full Mach port table,
+  // which ended the user's session: it keeps a port for each process the bridge launched (worker.py).
+  ['WindowServerPorts', 'the Mac\'s WindowServer is close to its Mach port limit'],
+  ['AbnormalExits', 'Ryde or its map helper kept exiting abnormally on the Mac'],
 ]);
 // A person waiting on the map gets a short burst of turns, while routine scans
 // retain one in four contested turns. This changes order, never request pacing.

@@ -133,6 +133,11 @@ describe('worker HTTP boundary',()=>{
       now+=60_000;expect(await post({version:1,state:'held',reason:'DatacenterBudget',until:null,at:now/1000})).toBe(204);
       expect(b.silenceCause()).toEqual({reason:'DatacenterBudget',phrase:'the datacenter pool\'s hourly budget is spent',until:null,
         detail:null,receivedAt:now});
+      now+=60_000;expect(await post({version:1,state:'held',reason:'WindowServerPorts',until:now/1000+60,
+        detail:'WindowServer holds 200417 Mach ports',at:now/1000})).toBe(204);
+      expect(b.silenceCause().phrase).toBe('the Mac\'s WindowServer is close to its Mach port limit');
+      now+=60_000;expect(await post({version:1,state:'held',reason:'AbnormalExits',until:now/1000+900,at:now/1000})).toBe(204);
+      expect(b.silenceCause().phrase).toBe('Ryde or its map helper kept exiting abnormally on the Mac');
     } finally {await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
   });
 });

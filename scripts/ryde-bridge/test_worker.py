@@ -1,5 +1,6 @@
 """Regression for the quit/claim race, with all app control mocked."""
 import io
+import itertools
 import json
 import os
 from pathlib import Path
@@ -9,7 +10,8 @@ import unittest
 import uuid
 from unittest.mock import patch
 from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control,JobDeadline,LaunchFailed,\
-    note_warm_restoration,prune,journal,status_report
+    note_warm_restoration,prune,journal,status_report,desktop,windowserver_ports,new_crash_reports
+import worker
 import time
 import urllib.error
 
@@ -44,34 +46,102 @@ class WorkerTests(unittest.TestCase):
             with patch('worker.subprocess.run'):
                 with self.assertRaises(FileNotFoundError):run_map_control(root,'status')
 
+    READY={'locked':False,'singleInstance':True,'idleSeconds':60.0}
+
     def test_warm_admission_requires_opt_in_idle_permission_and_eligible_route(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,_=self.warm_root(name)
             helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
-            good={'trusted':True,'singleInstance':True,'idleEligible':True,'minimizedRefresh':True,'locked':False}
-            with patch('worker.egress.warm_ready',return_value=True) as route,patch('worker.run_map_control') as run:
+            with patch('worker.egress.warm_ready',return_value=True) as route,patch('worker.desktop',return_value=self.READY) as seen, \
+                 patch('worker.map_control_trusted',return_value=True) as trusted:
                 self.assertFalse(warm_available(root));route.assert_not_called()
                 save(base/'warm-control.json',{'enabled':True})
                 self.assertFalse(warm_available(root));route.assert_not_called()
                 save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle','pausedUntil':time.time()+300})
                 self.assertFalse(warm_available(root));route.assert_not_called()
                 save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
-                run.return_value=good
                 self.assertTrue(warm_available(root))
-                for key in good:
-                    run.return_value={**good,key:not good[key]}
+                for key,value in [('locked',True),('singleInstance',False),('idleSeconds',14.9)]:
+                    seen.return_value={**self.READY,key:value}
                     self.assertFalse(warm_available(root),key)
-                route.return_value=False;run.reset_mock()
-                self.assertFalse(warm_available(root));run.assert_not_called()
+                seen.return_value=self.READY;trusted.return_value=False
+                self.assertFalse(warm_available(root))
+                route.return_value=False;seen.reset_mock()
+                self.assertFalse(warm_available(root));seen.assert_not_called()
+
+    def test_a_busy_desktop_launches_no_map_control_and_permission_is_asked_every_ten_minutes(self):
+        # Each launch of Map Control left a Mach port in WindowServer, whose full port table ended the
+        # user's session on 26 November 2026; a read asked it first whether a warm read could run.
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name);clock=[1000.0]
+            helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
+            save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
+            def status(_root,action):
+                self.assertEqual(action,'status')
+                save(base/'map-control-trust.json',{'at':clock[0],'trusted':True});return {'trusted':True}
+            with patch('worker.egress.warm_ready',return_value=True),patch('worker.desktop',return_value={**self.READY,'idleSeconds':3.0}) as seen, \
+                 patch('worker.run_map_control',side_effect=status) as run,patch('worker.time.time',side_effect=lambda:clock[0]):
+                for _ in range(5):self.assertFalse(warm_available(root))
+                run.assert_not_called()
+                seen.return_value=self.READY
+                self.assertTrue(warm_available(root));self.assertTrue(warm_available(root));self.assertEqual(run.call_count,1)
+                clock[0]+=599;self.assertTrue(warm_available(root));self.assertEqual(run.call_count,1)
+                clock[0]+=1;self.assertTrue(warm_available(root));self.assertEqual(run.call_count,2)
+            admission=json.loads((base/'last-warm-admission.json').read_text())
+            self.assertEqual(admission['helper'],{'trusted':True,'singleInstance':True,'idleEligible':True,'minimizedRefresh':True,'locked':False})
+
+    def test_the_desktop_is_read_without_a_windowserver_connection(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name)
+            def run(command,**kwargs):
+                if command[0]==str(root/'ryde-lifecycle'):
+                    self.assertEqual(command[1:],['status'])
+                    return subprocess.CompletedProcess(command,0,stdout='{"hidden":[true],"locked":false,"pids":[812]}\n')
+                self.assertEqual(command[0],'/usr/sbin/ioreg')
+                return subprocess.CompletedProcess(command,0,stdout='+-o IOHIDSystem  <class IOHIDSystem>\n    "HIDIdleTime" = 16500000000\n')
+            with patch('worker.subprocess.run',side_effect=run):
+                self.assertEqual(desktop(root),{'locked':False,'singleInstance':True,'idleSeconds':16.5})
+
+    def test_map_control_answers_are_kept_and_a_missing_reply_is_abnormal(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name);worker.abnormal.clear()
+            replies=[{'trusted':True},{'error':'desktop-busy'},{'error':'permission-required'}]
+            def launch(command,**kwargs):
+                (base/'map-control-results').mkdir(exist_ok=True)
+                save(base/'map-control-results'/f'{command[7]}.json',replies.pop(0))
+            with patch('worker.subprocess.run',side_effect=launch):
+                run_map_control(root,'status')
+                self.assertTrue(json.loads((base/'map-control-trust.json').read_text())['trusted'])
+                for _ in range(2):
+                    with self.assertRaises(ValueError):run_map_control(root,'refresh')
+            self.assertFalse(json.loads((base/'map-control-trust.json').read_text())['trusted'])
+            with patch('worker.subprocess.run',side_effect=subprocess.TimeoutExpired('open',8)):
+                with self.assertRaises(subprocess.TimeoutExpired):run_map_control(root,'prepare')
+            answers=[json.loads(line)['answer'] for line in (base/'map-control.jsonl').read_text().splitlines()]
+            self.assertEqual(answers,['ok','desktop-busy','permission-required','no-reply'])
+            self.assertEqual([what for _,what in worker.abnormal],['Map Control gave no reply'])
 
     def test_prepare_failure_does_not_invalidate_an_already_published_map(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,_=self.warm_root(name)
             helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
             save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
-            with patch('worker.run_map_control',side_effect=subprocess.TimeoutExpired('prepare',3)) as run:
+            with patch('worker.run_map_control',side_effect=subprocess.TimeoutExpired('prepare',3)) as run, \
+                 patch('worker.desktop',return_value=self.READY) as seen:
                 prepare_warm(root)
-            self.assertEqual(run.call_args.args[1],'prepare')
+                self.assertEqual(run.call_args.args[1],'prepare')
+                # Only a desktop that would let the next read be warm is worth a Map Control launch.
+                run.reset_mock();seen.return_value={**self.READY,'idleSeconds':2.0}
+                prepare_warm(root);run.assert_not_called()
+
+    def test_a_cold_read_does_not_ask_map_control_before_ryde_has_a_window(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,job=self.warm_root(name);result={'id':job['id'],'scooters':[]}
+            def restart(_root,arm):arm();save(base/'results'/f"{job['id']}.json",result)
+            with patch('worker.warm_available',return_value=False),patch('worker.relaunch',side_effect=restart), \
+                 patch('worker.run_map_control') as run:
+                self.assertEqual(query(job,root),result)
+            run.assert_not_called()
 
     def test_warm_query_uses_a_fresh_job_without_quitting_or_changing_route(self):
         with tempfile.TemporaryDirectory() as name:
@@ -159,8 +229,10 @@ class WorkerTests(unittest.TestCase):
             cold.assert_not_called()
 
     def test_stuck_app_force_quit_requires_proxy_ack_and_confirmed_termination(self):
-        for safe,force_ok in [(True,True),(False,True),(True,False)]:
-            with self.subTest(safe=safe,force_ok=force_ok),tempfile.TemporaryDirectory() as name:
+        # The helper either gives up (exit 1) or hangs past its timeout, as behind Ryde's alert on 27 Nov.
+        stuck=[lambda command:subprocess.CalledProcessError(1,command),lambda command:subprocess.TimeoutExpired(command,12)]
+        for (safe,force_ok),quit_error in itertools.product([(True,True),(False,True),(True,False)],stuck):
+            with self.subTest(safe=safe,force_ok=force_ok,quit_error=quit_error),tempfile.TemporaryDirectory() as name:
                 root=Path(name);base=root/'producer';base.mkdir()
                 save(root/'config.json',{'appBinary':'/test/Ryde.app/Ryde'})
                 save(base/'proxy-ready.json',{'pid':os.getpid()});save(root/'transport-status.json',{'proxyPid':os.getpid()})
@@ -168,7 +240,7 @@ class WorkerTests(unittest.TestCase):
                 def run(command,**kwargs):
                     action=command[1]
                     if action=='quit':
-                        order.append('quit');raise subprocess.CalledProcessError(1,command)
+                        order.append('quit');raise quit_error(command)
                     if action=='force-quit':
                         self.assertTrue(safe);self.assertEqual(order,['quit','proxy-safe'])
                         order.append('force-quit')
@@ -327,6 +399,11 @@ def http_error(code):
 
 class ServeTests(unittest.TestCase):
     """The worker's loop against a scripted broker and app, on a fake clock."""
+    def setUp(self):
+        worker.abnormal.clear()
+        for target,value in [('worker.windowserver_ports',lambda:None),('worker.CRASH_REPORTS',Path('/nonexistent/reports'))]:
+            patcher=patch(target,value);patcher.start();self.addCleanup(patcher.stop)
+
     def run_serve(self, replies, queries, waits_before_stop, relaunches=(), status_every=10**6):
         with tempfile.TemporaryDirectory() as name:
             base=Path(name);(base/'results').mkdir();self.base=base
@@ -340,6 +417,8 @@ class ServeTests(unittest.TestCase):
                 return reply
             def run_query(job):
                 outcome=queries.pop(0)
+                if callable(outcome):return outcome()
+                save(base/'last-trigger.json',{'mode':'warm','stayedMinimized':True} if outcome=='warm' else {'mode':'restart'})
                 if outcome=='refused':
                     save(base/'upstream-refused.json',{'at':clock[0]+1,'httpStatus':403});raise TimeoutError('No fresh native map within job deadline')
                 if isinstance(outcome,Exception):raise outcome
@@ -354,8 +433,10 @@ class ServeTests(unittest.TestCase):
                 if len(waits)==waits_before_stop:stop.write_text('{}')
             with patch('worker.call',side_effect=call),patch('worker.query',side_effect=run_query),patch('worker.relaunch',side_effect=run_relaunch),\
                  patch('worker.wait_interval',side_effect=wait),patch('worker.time.time',side_effect=lambda:clock[0]),\
-                 patch('worker.STATUS_EVERY',status_every):
+                 patch('worker.STATUS_EVERY',status_every),patch('worker.prepare_warm') as prepare:
                 serve({'url':'https://cache.test','token':'t'*32},base)
+                self.files={path.name:path.read_text() for path in base.iterdir() if path.is_file()}
+            self.prepares=prepare.call_count
             self.assertEqual(replies,[]);self.assertEqual(queries,[]);self.assertEqual(relaunches,[])
             return waits
 
@@ -432,6 +513,55 @@ class ServeTests(unittest.TestCase):
         # Never an app failure: three of them would have held the worker off Ryde for 15 minutes.
         self.assertNotIn('AppFailing',self.held)
 
+    def test_only_a_cold_read_is_prepared_for_the_next_one(self):
+        self.run_serve(['job',None,'job',None],['warm','ok'],2)
+        self.assertEqual(self.prepares,1)
+
+    def test_a_windowserver_near_its_port_limit_stops_every_launch_until_a_new_one(self):
+        # 26 November 2026, 16:54 CET: the kernel killed WindowServer at 305,834 ports, and the session ended.
+        ports=[(175,250_000),(175,250_000),(34725,3_000)]
+        with patch('worker.windowserver_ports',side_effect=lambda:ports.pop(0)):
+            waits=self.run_serve(['job',None],['ok'],3)
+        self.assertEqual(waits,[60,60,0]);self.assertEqual(self.held,['WindowServerPorts']*2);self.assertEqual(ports,[])
+        self.assertEqual({reason for reason,_ in self.told},{'WindowServerPorts'})
+        self.assertIn('WindowServer holds 250000 Mach ports',self.told[0][1])
+        self.assertEqual(json.loads(self.files['windowserver.json'])['pid'],34725)
+
+    def test_three_abnormal_exits_within_a_minute_hold_the_worker_off_for_15_minutes(self):
+        def burst():
+            for what in ['Map Control gave no reply']*2+['Ryde did not open']:worker.note_abnormal(what)
+            raise TimeoutError('No fresh native map within worker timeout')
+        waits=self.run_serve(['job',None,'job',None],[burst,'ok'],3)
+        # The failed read's minute, then 15 minutes: longer than the cache's 10 minutes before Sentry.
+        self.assertEqual(waits,[60,900,0]);self.assertEqual(self.held,['AbnormalExits'])
+        self.assertIn('3 within 60 s: Map Control gave no reply; Map Control gave no reply; Ryde did not open',self.told[0][1])
+        self.assertEqual(worker.abnormal,[])
+
+    def test_two_abnormal_exits_are_no_hold(self):
+        def two():
+            for _ in range(2):worker.note_abnormal('Map Control gave no reply')
+            raise TimeoutError('No fresh native map within worker timeout')
+        self.assertEqual(self.run_serve(['job',None,'job',None],[two,'ok'],2),[60,0]);self.assertEqual(self.held,[])
+
+    def test_a_crash_report_of_ryde_counts_once(self):
+        with tempfile.TemporaryDirectory() as name:
+            reports=Path(name)
+            for report,at in [('Ryde-2026-11-27-001500.ips',1500),('RydeMapControl-2026-11-27-001501.ips',1500),
+                              ('Ryde-2026-11-24-122911.ips',500),('RydeWidget-2026-11-27-001500.ips',1500),('Other-1.ips',1500)]:
+                (reports/report).write_text('{}');os.utime(reports/report,(at,at))
+            seen=set()
+            with patch('worker.CRASH_REPORTS',reports):
+                self.assertEqual(sorted(new_crash_reports(seen,1000)),['Ryde-2026-11-27-001500.ips','RydeMapControl-2026-11-27-001501.ips'])
+                self.assertEqual(new_crash_reports(seen,1000),[])
+
+    def test_windowserver_ports_are_read_from_top(self):
+        def run(command,**kwargs):
+            if command[0]=='/usr/bin/pgrep':return subprocess.CompletedProcess(command,0,stdout='34725\n')
+            self.assertEqual(command,['/usr/bin/top','-l','1','-pid','34725','-stats','pid,ports'])
+            return subprocess.CompletedProcess(command,0,stdout='Processes: 812 total\n\nPID    #PORTS\n34725  305834+\n')
+        with patch('worker.subprocess.run',side_effect=run):self.assertEqual(windowserver_ports(),(34725,305834))
+        with patch('worker.subprocess.run',side_effect=subprocess.CalledProcessError(1,'pgrep')):self.assertIsNone(windowserver_ports())
+
 class HousekeepingTests(unittest.TestCase):
     def test_warm_reads_pause_an_hour_after_a_bad_restoration_and_stop_after_three(self):
         with tempfile.TemporaryDirectory() as name:
@@ -483,6 +613,8 @@ class HousekeepingTests(unittest.TestCase):
             save(base/'worker-status.json',{'state':'held','reason':'LaunchFailed','until':2000,'detail':'CalledProcessError: 37','at':1000})
             save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle','pausedUntil':1500})
             save(root/'config.json',{'certificateExpiresTimestamp':1000+16*86400})
+            save(base/'windowserver.json',{'at':990,'pid':34725,'ports':4658})
+            for at,answer in [(-2700,'ok'),(500,'ok'),(600,'desktop-busy'),(700,'ok')]:journal(base/'map-control.jsonl',{'at':at,'action':'refresh','answer':answer})
             listed='PID\tStatus\tLabel\n42\t0\tcom.scootradar.ryde-worker\n-\t0\tapplication.com.ryde.NewRyde.1.2\n'
             before=sorted(p.name for p in root.rglob('*'))
             with patch('worker.subprocess.run',return_value=subprocess.CompletedProcess([],0,stdout=listed)):
@@ -491,5 +623,7 @@ class HousekeepingTests(unittest.TestCase):
             self.assertIn('held: LaunchFailed until',report);self.assertIn('CalledProcessError: 37',report)
             self.assertIn('1 launchd job(s) left with no process',report);self.assertIn('paused until',report)
             self.assertIn('collection stops for its renewal',report)
+            self.assertIn('Map Control   3 launches in the last hour (2 ok, 1 desktop-busy)',report)
+            self.assertIn('WindowServer  4658 Mach ports',report);self.assertIn('launches nothing from 200000',report)
 
 if __name__=='__main__':unittest.main()

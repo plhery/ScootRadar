@@ -52,6 +52,30 @@ LAUNCH_RETRY=60
 # one on 14 November 2026 at 10:27 turned them off, and every read till 17 November relaunched Ryde.
 WARM_PAUSE=3600
 WARM_FAILURES_BEFORE_OFF=3
+# WindowServer keeps about one Mach port for good for each process that connects to it and exits: each
+# launch of Ryde Map Control (1.1 measured), and each Ryde cycle with its view services (5 to 8). On
+# 26 November 2026 at 16:54 CET, after 7.8 days and 305,834 ports, the kernel killed WindowServer for a
+# full port table and the user's session ended. The worker then launched Map Control 1,500 times an hour
+# by day, three or four times a read, and Ryde 200 to 320 times. It now reads WindowServer's count every
+# WINDOWSERVER_CHECK_EVERY and launches nothing at WINDOWSERVER_PORTS_STOP or more, until a logout or a
+# restart of the Mac starts a new WindowServer with a few thousand.
+WINDOWSERVER_PORTS_STOP=200_000
+WINDOWSERVER_CHECK_EVERY=60
+WINDOWSERVER_PORTS_LIMIT=305_834
+# Ryde's or Map Control's crash reports, Map Control runs that ended with no reply, and quits or opens of
+# Ryde that failed: ABNORMAL_EXITS of them within ABNORMAL_WINDOW hold the worker off for ABNORMAL_HOLD,
+# longer than the 10 minutes of silence after which the cache tells Sentry (RYDE_WORKER_SILENT_MS). Map
+# Control's routine answers (a busy desktop, no map on screen) exit 4 with a reply and are not counted:
+# 239 of them from 16:00 to 16:20 that day, which loginwindow logs as kLSNotifyApplicationAbnormalDeath.
+ABNORMAL_EXITS=3
+ABNORMAL_WINDOW=60
+ABNORMAL_HOLD=15*60
+CRASH_REPORTS=Path.home()/'Library/Logs/DiagnosticReports'
+# Whether a warm read could run is read without Map Control (desktop); its Accessibility permission is
+# asked again after TRUST_RECHECK. IDLE_THRESHOLD is RydeMapControl.swift's idleThreshold.
+TRUST_RECHECK=600
+IDLE_THRESHOLD=15
+abnormal=[] # (at, what): the abnormal exits serve's guard counts
 # While held, the worker tells the cache why once a minute, so its report of the silence says.
 STATUS_EVERY=60
 # Results the cache has had for a day are deleted, and the lifecycle journal is rotated at
@@ -124,11 +148,14 @@ def note_warm_restoration(base,details):
 def warm_helper(root):
     return root/'Ryde Map Control.app/Contents/MacOS/RydeMapControl'
 
+def note_abnormal(what):
+    abnormal.append((time.time(),what));del abnormal[:-20]
+
 def run_map_control(root,action):
     if action not in {'status','refresh','prepare'}:raise ValueError('Unsupported map control action')
     base=root/'producer';nonce=uuid.uuid4().hex
     save(base/'map-control-request.json',{'id':nonce,'action':action,'expiresAt':time.time()+12})
-    path=base/'map-control-results'/f'{nonce}.json'
+    path=base/'map-control-results'/f'{nonce}.json';answer='no-reply'
     try:
         # Running the executable as a CLI attributes TCC access to the worker.
         # Launch the signed app without activating it, using its own OS permission.
@@ -136,15 +163,45 @@ def run_map_control(root,action):
             check=True,capture_output=True,text=True,timeout=8)
         value=json.loads(path.read_text())
         if not isinstance(value,dict):raise ValueError('Invalid map control result')
+        answer=str(value.get('error','ok'))[:40]
+        if action=='status' and type(value.get('trusted')) is bool or answer=='permission-required':
+            save(base/'map-control-trust.json',{'at':time.time(),'trusted':value.get('trusted') is True})
         if 'error' in value:raise ValueError('Map control unavailable: '+str(value['error']))
         return value
-    finally:path.unlink(missing_ok=True)
+    finally:
+        path.unlink(missing_ok=True)
+        # Why it declined, which the reply deleted above no longer says (26 November 2026).
+        journal(base/'map-control.jsonl',{'at':time.time(),'action':action,'answer':answer})
+        if answer=='no-reply':note_abnormal('Map Control gave no reply')
 
 def warm_enabled(root):
     try:
         value=json.loads((root/'producer/warm-control.json').read_text())
         return value.get('enabled') is True and value.get('mode')=='minimized-idle'
     except (FileNotFoundError,ValueError,AttributeError):return False
+
+def desktop(root):
+    """Whether a warm read could run, read without launching Map Control: the screen lock and Ryde's
+    processes from ryde-lifecycle, and the seconds since the last keyboard or mouse input from IOKit.
+    Neither connects to WindowServer (WINDOWSERVER_PORTS_STOP): a ryde-lifecycle that read the idle time
+    as Map Control does, through CGEventSource, left a port in WindowServer each run."""
+    state=json.loads(subprocess.run([str(root/'ryde-lifecycle'),'status'],check=True,capture_output=True,text=True,timeout=5).stdout)
+    listed=subprocess.run(['/usr/sbin/ioreg','-c','IOHIDSystem','-r','-d','1','-k','HIDIdleTime'],
+        check=True,capture_output=True,text=True,timeout=5).stdout
+    idle=re.search(r'"HIDIdleTime" = (\d+)',listed)
+    if not idle:raise ValueError('IOHIDSystem gave no idle time')
+    return {'locked':state['locked'] is not False,'singleInstance':len(state['pids'])==1,'idleSeconds':int(idle[1])/1e9}
+
+def desktop_ready(state):
+    return not state['locked'] and state['singleInstance'] and state['idleSeconds']>=IDLE_THRESHOLD
+
+def map_control_trusted(root):
+    """Map Control's Accessibility permission as it last said, asked again after TRUST_RECHECK."""
+    try:
+        known=json.loads((root/'producer/map-control-trust.json').read_text())
+        if 0<=time.time()-known['at']<TRUST_RECHECK and type(known['trusted']) is bool:return known['trusted']
+    except (FileNotFoundError,ValueError,KeyError,TypeError):pass
+    return run_map_control(root,'status').get('trusted') is True
 
 def warm_available(root):
     base=root/'producer'
@@ -157,17 +214,43 @@ def warm_available(root):
         value=json.loads((base/'warm-control.json').read_text())
         if float(value.get('pausedUntil',0))>time.time():return observed(False,'operator-paused')
         if not egress.warm_ready(base):return observed(False,'route-lease-or-budget')
-        state=run_map_control(root,'status')
-        eligible=all(state.get(k) is True for k in ['trusted','singleInstance','idleEligible','minimizedRefresh']) and state.get('locked') is False
-        return observed(eligible,'ready' if eligible else 'desktop-or-permission',state)
-    except (subprocess.SubprocessError,ValueError,TypeError,OSError,AttributeError):return observed(False,'helper-unavailable')
+        seen=desktop(root)
+        state={'singleInstance':seen['singleInstance'],'idleEligible':seen['idleSeconds']>=IDLE_THRESHOLD,
+            'minimizedRefresh':True,'locked':seen['locked']}
+        if not desktop_ready(seen):return observed(False,'desktop-or-permission',state)
+        state['trusted']=map_control_trusted(root)
+        return observed(state['trusted'],'ready' if state['trusted'] else 'desktop-or-permission',state)
+    except (subprocess.SubprocessError,ValueError,TypeError,OSError,AttributeError,KeyError):return observed(False,'helper-unavailable')
 
 def prepare_warm(root):
-    """After publishing, minimize the home map for the next read, without activation."""
+    """After a cold read is published, minimize the home map for the next read, without activation. Only
+    while the desktop would let that read be warm: each Map Control launch costs WindowServer a port."""
     if not warm_enabled(root) or not warm_helper(root).exists():return
     try:
-        run_map_control(root,'prepare')
-    except (subprocess.SubprocessError,OSError,ValueError):pass # Never invalidate a submitted map.
+        if desktop_ready(desktop(root)):run_map_control(root,'prepare')
+    except (subprocess.SubprocessError,OSError,ValueError,KeyError,TypeError):pass # Never invalidate a submitted map.
+
+def windowserver_ports():
+    """WindowServer's pid and how many Mach ports it holds (top), or None if they cannot be read."""
+    try:
+        pid=subprocess.run(['/usr/bin/pgrep','-x','WindowServer'],check=True,capture_output=True,text=True,timeout=5).stdout.split()[0]
+        listed=subprocess.run(['/usr/bin/top','-l','1','-pid',pid,'-stats','pid,ports'],check=True,capture_output=True,text=True,timeout=15).stdout
+        for fields in (line.split() for line in listed.splitlines()):
+            if len(fields)==2 and fields[0]==pid:return int(pid),int(fields[1].rstrip('+-'))
+    except (subprocess.SubprocessError,OSError,ValueError,IndexError):pass
+    return None
+
+def new_crash_reports(seen,since):
+    """Ryde's and Map Control's crash reports written after `since` and not in `seen`, which takes them."""
+    found=[]
+    try:entries=list(os.scandir(CRASH_REPORTS))
+    except OSError:return found
+    for entry in entries:
+        if entry.name.startswith(('Ryde-','RydeMapControl-')) and entry.name not in seen:
+            try:
+                if entry.stat().st_mtime>since:seen.add(entry.name);found.append(entry.name)
+            except OSError:pass
+    return found
 
 def cold_fallback_ready(job,root,end):
     """The proxy acknowledges disarming on its native-hook event loop, never during a live job."""
@@ -228,9 +311,11 @@ def relaunch(root=ROOT, after_quit=None):
     try:
         try:
             run('quit',timeout=12)
-        except subprocess.CalledProcessError as error:
-            if error.returncode!=1:raise
-            lifecycle_event('graceful-quit-stuck')
+        except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
+            # A helper that hangs past its own 10 seconds is as stuck as one that gives up: on 27 Nov
+            # Ryde's "closed for the season" alert held quit itself, three times, and the feed stopped.
+            if isinstance(error,subprocess.CalledProcessError) and error.returncode!=1:raise
+            lifecycle_event('graceful-quit-stuck',**({'error':why(error)} if isinstance(error,subprocess.TimeoutExpired) else {}))
             # Never kill a live native map/rotation, even after its public job deadline.
             # A new control nonce is acknowledged on the proxy's native-hook loop.
             if not cold_fallback_ready({'id':uuid.uuid4().hex},root,time.time()+3):
@@ -239,7 +324,7 @@ def relaunch(root=ROOT, after_quit=None):
             run('force-quit',timeout=5)
             lifecycle_event('after-forced-quit')
     except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
-        lifecycle_event('quit-failed',error=why(error))
+        lifecycle_event('quit-failed',error=why(error));note_abnormal('Ryde did not quit')
         raise LaunchFailed(why(error)) from error
     lifecycle_event('after-quit')
     egress.begin_cycle(root/'producer')
@@ -262,7 +347,7 @@ def relaunch(root=ROOT, after_quit=None):
         lifecycle_event('open-callback-late')
         return
     except subprocess.CalledProcessError as error:
-        lifecycle_event('open-failed',error=why(error))
+        lifecycle_event('open-failed',error=why(error));note_abnormal('Ryde did not open')
         raise LaunchFailed(why(error)) from error
     lifecycle_event('after-open')
 
@@ -315,8 +400,9 @@ def query(job, root=ROOT, timeout=60):
     if not warm:
         # Arm after termination: a spontaneous request just before quit must not claim
         # the next job and be cancelled by that very quit.
+        # Not prepared here: Ryde has just been opened without its window yet, and Map Control declined
+        # (exit 4) after nearly every open, for a WindowServer port each. serve prepares it once published.
         relaunch(root,lambda:save(base/'job.json',job))
-        prepare_warm(root)
         save(base/'last-trigger.json',{'mode':'restart','at':time.time()})
     retry_at=time.time()+30;retried=False;fallback_checked=not warm
     while time.time()<end:
@@ -397,6 +483,29 @@ def serve(config, base):
     # Waits that are not about Ryde (LaunchFailed, DatacenterBudget) keep their own deadline: a refusal
     # counts only once later than hold_until.
     wait_until=0;wait_reason=None;wait_detail=None
+    # The guards against what the bridge's launches cost the Mac (WINDOWSERVER_PORTS_STOP, ABNORMAL_EXITS).
+    ports_checked=0;crash_reports=set()
+    def guard():
+        nonlocal ports_checked,wait_until,wait_reason,wait_detail
+        if time.time()-ports_checked>=WINDOWSERVER_CHECK_EVERY:
+            ports_checked=time.time();seen=windowserver_ports()
+            if seen:
+                save(base/'windowserver.json',{'at':ports_checked,'pid':seen[0],'ports':seen[1]})
+                if seen[1]>=WINDOWSERVER_PORTS_STOP:
+                    wait_until=ports_checked+WINDOWSERVER_CHECK_EVERY;wait_reason='WindowServerPorts'
+                    wait_detail=(f'WindowServer holds {seen[1]} Mach ports and macOS ends the session at about '
+                        f'{WINDOWSERVER_PORTS_LIMIT}: log out and back in, or restart the Mac, to reset it')
+                    return True
+        for name in new_crash_reports(crash_reports,started):note_abnormal('crash report '+name)
+        # Within ABNORMAL_WINDOW of each other, not of now: a failed read is followed by a minute's wait.
+        for first in range(len(abnormal)-ABNORMAL_EXITS+1):
+            burst=abnormal[first:first+ABNORMAL_EXITS]
+            if burst[-1][0]-burst[0][0]<=ABNORMAL_WINDOW:
+                abnormal.clear()
+                wait_until=time.time()+ABNORMAL_HOLD;wait_reason='AbnormalExits'
+                wait_detail=f'{ABNORMAL_EXITS} within {ABNORMAL_WINDOW} s: '+'; '.join(what for _,what in burst)
+                return True
+        return False
     def held(reason,until,detail=None,tell=True):
         value={'state':'held','reason':reason,'until':until,'at':time.time()}
         if detail:value['detail']=detail
@@ -415,6 +524,7 @@ def serve(config, base):
         if time.time()<wait_until:
             held(wait_reason,wait_until,wait_detail)
             wait_interval(min(STATUS_EVERY,wait_until-time.time()),stop);continue
+        if guard():continue
         try:
             if launch_failed:
                 # Ryde could not be opened: try again with no job, and take jobs once it opens.
@@ -435,7 +545,11 @@ def serve(config, base):
                     submit(config,{'version':1,'id':job['id'],'query':job,'error':'worker_failed'})
                     raise
                 submit(config,result)
-                prepare_warm(base.parent)
+                # A warm read leaves Ryde minimized on its map, ready for the next one.
+                try:trigger=json.loads((base/'last-trigger.json').read_text())
+                except (FileNotFoundError,ValueError):trigger={}
+                if not (isinstance(trigger,dict) and trigger.get('mode')=='warm' and trigger.get('stayedMinimized') is True):
+                    prepare_warm(base.parent)
                 last_trigger=time.time();failures=0;holds=0
             elif time.time()-last_trigger>90:
                 relaunch();last_trigger=time.time() # allow due native key renewals
@@ -478,7 +592,7 @@ def status_report(root=ROOT, now=None):
         moment=time.strftime('%d %b %H:%M:%S',time.localtime(at));seconds=int(at-now)
         span=abs(seconds);text=f'{span//86400}d {span%86400//3600}h' if span>=86400 else f'{span//3600}h {span%3600//60}m' if span>=3600 else f'{span//60}m {span%60}s'
         return f'{moment} (just now)' if span<5 else f'{moment} ({"in "+text if seconds>=0 else text+" ago"})'
-    def line(name,text):lines.append(f'{name:<12}{text}')
+    def line(name,text):lines.append(f'{name:<14}{text}')
     try:listed=subprocess.run(['/bin/launchctl','list'],capture_output=True,text=True,timeout=5).stdout
     except (subprocess.SubprocessError,OSError):listed=''
     jobs={fields[2]:fields[0] for fields in (l.split('\t') for l in listed.splitlines()) if len(fields)==3}
@@ -536,6 +650,20 @@ def status_report(root=ROOT, now=None):
     if control.get('restorationFailures'):text+=f'; {control["restorationFailures"]} restoration failure(s) in a row'
     trigger=read(base/'last-trigger.json') or {}
     line('Warm reads',text+(f'; last trigger {trigger.get("mode")} {when(trigger.get("at"))}' if trigger else ''))
+    answers={}
+    try:
+        with (base/'map-control.jsonl').open('rb') as handle:
+            if handle.seek(max(0,handle.seek(0,2)-1_000_000)):handle.readline()
+            for raw in handle:
+                try:event=json.loads(raw)
+                except ValueError:continue
+                if event.get('at',0)>now-3600:answers[event.get('answer')]=answers.get(event.get('answer'),0)+1
+    except FileNotFoundError:pass
+    if answers:line('Map Control',f'{sum(answers.values())} launches in the last hour ('+
+        ', '.join(f'{n} {answer}' for answer,n in sorted(answers.items(),key=lambda item:-item[1]))+')')
+    ports=read(base/'windowserver.json')
+    if ports:line('WindowServer',f'{ports.get("ports")} Mach ports {when(ports.get("at"))} (pid {ports.get("pid")}); the worker '
+        f'launches nothing from {WINDOWSERVER_PORTS_STOP}, and macOS ends the session at about {WINDOWSERVER_PORTS_LIMIT}')
     config=read(root/'config.json') or {}
     expires=config.get('certificateExpiresTimestamp')
     if expires:line('Certificate',f'expires {when(expires)}; collection stops for its renewal {when(expires-7*86400)}')

@@ -1051,7 +1051,10 @@ Tracing is off, and no trace headers go to the operators' feeds.
   was in (`POST /internal/ryde/status`), if the cache heard it in the 15 minutes before,
   as "Ryde opened but brought no map" (AppFailing), "Ryde refused it" (RydeRefused),
   "Ryde could not be opened on the Mac" (LaunchFailed), "the datacenter pool's hourly
-  budget is spent" (DatacenterBudget), or any other reason's code; otherwise "no word
+  budget is spent" (DatacenterBudget), "the Mac's WindowServer is close to its Mach port
+  limit" (WindowServerPorts: log out and back in on the Mac, docs/ryde-bridge.md), "Ryde
+  or its map helper kept exiting abnormally on the Mac" (AbnormalExits), or any other
+  reason's code; otherwise "no word
   from the Mac": the Mac off, asleep or offline, or the worker not running. Each cause is
   an issue of its own. Until 17 November 2026 all were SCOOTRADAR-CACHE-68, 14 events in
   6 days, and the AppFailing hold that day from 02:33 to 20:48 CET, while macOS refused
