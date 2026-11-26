@@ -273,10 +273,14 @@ struct ScooterMaintenance: Equatable, Sendable {
         self.retryAfter = retryAfter
     }
 
-    /// Nil unless the response says the server is down.
-    init?(_ response: HTTPURLResponse) {
+    /// Nil unless the response says the server is down. Its back-around time is on this device's clock, moved by
+    /// how far that is from the server's (the response's Date), as the web's: a phone a few minutes wrong neither
+    /// says the maintenance is late too soon nor names a time already gone.
+    init?(_ response: HTTPURLResponse, receivedAt: Date = Date()) {
         guard response.value(forHTTPHeaderField: "X-Scooter-Origin")?.lowercased() == "down" else { return nil }
-        backAround = response.value(forHTTPHeaderField: "X-Scooter-Back-Around").flatMap(ScooterServerTime.date)
+        let clockOffset = ScooterAPI.clockOffset(dateHeader: response.value(forHTTPHeaderField: "Date"), receivedAt: receivedAt)
+        backAround = response.value(forHTTPHeaderField: "X-Scooter-Back-Around")
+            .flatMap(ScooterServerTime.date)?.addingTimeInterval(clockOffset)
         // Seconds only: the Worker never sends a date.
         retryAfter = response.value(forHTTPHeaderField: "Retry-After")
             .flatMap { $0.allSatisfy(\.isASCII) && $0.allSatisfy(\.isNumber) ? TimeInterval($0) : nil }

@@ -564,6 +564,36 @@ class ScooterAPITest {
     }
 
     @Test
+    fun theBackAroundTimeIsOnThisDevicesClock() = runBlocking<Unit> {
+        // The server's clock says 22:00:00 as this phone, twenty minutes fast, reads 22:20:00: "back around 22:20"
+        // is 22:40 here, as on the web.
+        val headers = okhttp3.Headers.headersOf(
+            "X-Scooter-Origin", "down", "X-Scooter-Back-Around", "2026-11-18T22:20:00.000Z", "Date", "Wed, 18 Nov 2026 22:00:00 GMT",
+        )
+        assertEquals(
+            Instant.parse("2026-11-18T22:40:00Z"),
+            ScooterMaintenance.of(headers, receivedAt = Instant.parse("2026-11-18T22:20:00Z"))?.backAround,
+        )
+        assertEquals(
+            Instant.parse("2026-11-18T22:20:00Z"),
+            ScooterMaintenance.of(headers, receivedAt = Instant.parse("2026-11-18T22:00:00Z"))?.backAround,
+        )
+
+        // So from the answers too, kept scooters' and a 503's alike.
+        val formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US).withZone(ZoneOffset.UTC)
+        val backAround = Instant.parse("2026-11-18T22:20:00Z")
+        val down = mapOf(
+            "X-Scooter-Origin" to "down", "X-Scooter-Back-Around" to "2026-11-18T22:20:00.000Z",
+            "Date" to formatter.format(Instant.now().minusSeconds(1_200)),
+        )
+        val kept = makeAPI(responseStatus = 200, data = emptyResponseData, headers = down).scooters(bounds = bounds, zoom = 16)
+        assertEquals(1_200.0, (requireNotNull(kept.maintenance?.backAround).epochSecond - backAround.epochSecond).toDouble(), 5.0)
+        val error = failure { makeAPI(responseStatus = 503, headers = down).scooters(bounds = bounds, zoom = 16) }
+        val announced = requireNotNull((error as? ScooterAPIError)?.maintenance?.backAround)
+        assertEquals(1_200.0, (announced.epochSecond - backAround.epochSecond).toDouble(), 5.0)
+    }
+
+    @Test
     fun theClockOffsetComesFromTheDateHeaderOfTheResponse() = runBlocking<Unit> {
         val sentAt = Instant.parse("2026-10-12T10:00:00Z")
         val header = "Mon, 12 Oct 2026 10:00:00 GMT"

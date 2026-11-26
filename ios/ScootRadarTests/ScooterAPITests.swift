@@ -286,6 +286,37 @@ final class ScooterAPITests: XCTestCase {
         }
     }
 
+    func testTheBackAroundTimeIsOnThisDevicesClock() async throws {
+        // The server's clock says 22:00:00 as this phone, twenty minutes fast, reads 22:20:00: "back around 22:20"
+        // is 22:40 here, as on the web.
+        let url = try XCTUnwrap(URL(string: "https://scootradar.com/api/scooters"))
+        let headers = ["X-Scooter-Origin": "down", "X-Scooter-Back-Around": "2026-11-18T22:20:00.000Z", "Date": "Wed, 18 Nov 2026 22:00:00 GMT"]
+        let response = try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 503, httpVersion: "HTTP/1.1", headerFields: headers))
+        let fast = try XCTUnwrap(ScooterServerTime.date("2026-11-18T22:20:00Z"))
+        let right = try XCTUnwrap(ScooterServerTime.date("2026-11-18T22:00:00Z"))
+        XCTAssertEqual(ScooterMaintenance(response, receivedAt: fast)?.backAround, ScooterServerTime.date("2026-11-18T22:40:00Z"))
+        XCTAssertEqual(ScooterMaintenance(response, receivedAt: right)?.backAround, ScooterServerTime.date("2026-11-18T22:20:00Z"))
+
+        // So from the answers too, kept scooters' and a 503's alike.
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(identifier: "GMT")
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss 'GMT'"
+        let announced = try XCTUnwrap(ScooterServerTime.date("2026-11-18T22:20:00Z"))
+        let down = ["X-Scooter-Origin": "down", "X-Scooter-Back-Around": "2026-11-18T22:20:00.000Z",
+                    "Date": formatter.string(from: Date().addingTimeInterval(-1_200))]
+        let kept = try await ScooterAPI(session: StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData), headers: down))
+            .scooters(bounds: bounds, zoom: 16)
+        XCTAssertEqual(try XCTUnwrap(kept.maintenance?.backAround).timeIntervalSince(announced), 1_200, accuracy: 5)
+        do {
+            _ = try await ScooterAPI(session: StubNetworkSession(mode: .response(statusCode: 503, data: Data()), headers: down))
+                .scooters(bounds: bounds, zoom: 16)
+            XCTFail("Expected the server to be down")
+        } catch let error as ScooterAPIError {
+            XCTAssertEqual(try XCTUnwrap(error.maintenance?.backAround).timeIntervalSince(announced), 1_200, accuracy: 5)
+        }
+    }
+
     func testAConnectionLostOnTheWayIsAskedAgainOnceBeforeThePhoneIsTakenToBeOffline() async throws {
         // A kept-alive connection closed under a phone still online: the second request gets the answer.
         let recovering = StubNetworkSession(mode: .lostOnce(statusCode: 200, data: Data("zones".utf8)))

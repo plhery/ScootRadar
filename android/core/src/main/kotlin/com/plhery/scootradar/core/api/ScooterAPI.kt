@@ -450,13 +450,18 @@ data class ScooterMaintenance(
     companion object {
         private val seconds = Regex("[0-9]+")
 
-        /** Null unless the response says the server is down. */
-        fun of(headers: Headers): ScooterMaintenance? {
+        /**
+         * Null unless the response says the server is down. Its back-around time is on this device's clock, moved by
+         * how far that is from the server's (the response's Date), as the web's: a phone a few minutes wrong neither
+         * says the maintenance is late too soon nor names a time already gone.
+         */
+        fun of(headers: Headers, receivedAt: Instant = Instant.now()): ScooterMaintenance? {
             if (!headers["X-Scooter-Origin"].equals("down", ignoreCase = true)) return null
+            val clockOffset = ScooterAPI.clockOffset(dateHeader = headers["Date"], receivedAt = receivedAt)
             return ScooterMaintenance(
                 backAround = headers["X-Scooter-Back-Around"]?.let { text ->
                     try {
-                        Instant.parse(text)
+                        Instant.parse(text).plusMillis((clockOffset * 1_000).toLong())
                     } catch (_: DateTimeException) {
                         null
                     }
