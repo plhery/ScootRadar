@@ -601,6 +601,61 @@ class ServeTests(unittest.TestCase):
                 self.assertEqual(sorted(new_crash_reports(seen,1000)),['Ryde-2026-11-27-001500.ips','RydeMapControl-2026-11-27-001501.ips'])
                 self.assertEqual(new_crash_reports(seen,1000),[])
 
+    def test_with_no_job_ryde_is_opened_again_every_15_minutes(self):
+        # Desk 490: every 90 seconds until 27 November 2026, 35 to 40 cold cycles an hour on a quiet night,
+        # about 5 Mach ports each in WindowServer. An hour of polls 30 seconds apart now opens it three times.
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name);clock=[1000.0];opened=[];polls=[0]
+            def wait(seconds,stop):
+                clock[0]+=30;polls[0]+=1
+                if polls[0]==120:stop.write_text('{}')
+            with patch('worker.call',return_value=None),patch('worker.relaunch',side_effect=lambda *a,**k:opened.append(clock[0])),\
+                 patch('worker.wait_interval',side_effect=wait),patch('worker.time.time',side_effect=lambda:clock[0]):
+                serve({'url':'https://cache.test','token':'t'*32},base)
+            self.assertEqual([round(at-1000) for at in opened],[930,1860,2790])
+
+    def test_an_ended_session_opens_nothing_and_tells_the_cache_until_the_user_signs_in(self):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name);(base/'session').mkdir();status=base/'session/status.json'
+            clock=[1000.0];waits=[];told=[];asked=[]
+            save(status,{'bridgeStage':'bridge-active','paused':True,'pauseReason':'renewal'})
+            def call(config,method,path,value=None):
+                if path=='/internal/ryde/status':told.append((value['reason'],value.get('detail')));return None
+                asked.append(path);return None
+            def wait(seconds,stop):
+                waits.append(round(seconds));clock[0]+=seconds
+                # The user signs in again.
+                if len(waits)==3:save(status,{'bridgeStage':'bridge-active','paused':False,'pauseReason':None})
+                if len(waits)==4:stop.write_text('{}')
+            with patch('worker.call',side_effect=call),patch('worker.relaunch') as relaunch,\
+                 patch('worker.wait_interval',side_effect=wait),patch('worker.time.time',side_effect=lambda:clock[0]):
+                serve({'url':'https://cache.test','token':'t'*32},base)
+            relaunch.assert_not_called()
+            self.assertEqual(waits,[60,60,60,2])
+            self.assertEqual([reason for reason,_ in told],['SessionExpired']*3)
+            self.assertIn('Ryde rejected the renewal of its session key',told[0][1])
+            # No job is leased while the session is over, and one is once it is back.
+            self.assertEqual(asked,['/internal/ryde/job'])
+
+    def test_what_ends_the_session_and_what_does_not(self):
+        with tempfile.TemporaryDirectory() as name:
+            base=Path(name);(base/'session').mkdir();status=base/'session/status.json'
+            self.assertIsNone(worker.session_ended(base))
+            for state,said in [
+                ({'bridgeStage':'bridge-active','paused':False,'pauseReason':None},None),
+                ({'bridgeStage':'bridge-active','paused':True,'pauseReason':'transport'},None),
+                ({'bridgeStage':'awaiting-first-rotation','paused':False},None),
+                ({'bridgeStage':'bridge-active','paused':True,'pauseReason':'renewal'},'Ryde rejected the renewal of its session key'),
+                ({'bridgeStage':'needs-sign-in','paused':True,'pauseReason':'session'},'Ryde\'s session was renewed outside the bridge'),
+                ({'bridgeStage':'needs-sign-in','paused':True,'pauseReason':'sign-in'},'Ryde refused the bridge\'s key'),
+                ({'bridgeStage':'needs-sign-in','paused':False},'the bridge needs a new sign-in')]:
+                save(status,state)
+                ended=worker.session_ended(base)
+                if said is None:self.assertIsNone(ended,state)
+                else:self.assertEqual(ended,said+': Ryde\'s session needs the user\'s sign-in on the Mac (docs/ryde-bridge.md)')
+            status.write_text('{not json')
+            self.assertIsNone(worker.session_ended(base))
+
     def test_windowserver_ports_are_read_from_top(self):
         def run(command,**kwargs):
             if command[0]=='/usr/bin/pgrep':return subprocess.CompletedProcess(command,0,stdout='34725\n')

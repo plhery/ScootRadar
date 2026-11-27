@@ -894,11 +894,38 @@ What is left, about 3.4 to 5 ports for each cold cycle:
 
 - About 40 cold cycles an hour around the clock, most of the 200 ports an hour above.
   With jobs, the egress lease sends a read cold once fewer than 30 of its 150 seconds are
-  left; with none, the worker opens Ryde again every 90 seconds so that Ryde can renew
+  left; with none, the worker opened Ryde again every 90 seconds so that Ryde could renew
   its session key, which it does only as it launches, at most every two minutes (all
   eleven renewals from 02:50 to 03:50 came 1 to 12 seconds after an open). Fewer would
-  space the renewals out, which is a question for the sign-in, not for this leak.
+  space the renewals out, which is a question for the sign-in, not for this leak: the
+  user chose fewer that evening (below).
 - A refresh brings Ryde in front for a moment, so it waits for 15 seconds without input:
   while someone uses the Mac, each read is cold. 26 November had 3,328 opens (165 to
   320 an hour by day): 11,000 to 17,000 ports in a day like it, against 39,500.
 
+### 27 November, evening: Ryde opened every 15 minutes with no job (Desk 490)
+
+The user chose fewer opens for fewer ports, and renewals of Ryde's session key less
+often. With no job for 15 minutes (`IDLE_REOPEN` in worker.py), the worker opens Ryde
+again so that it renews its key; until then it did so every 90 seconds, 35 to 40 cold
+cycles an hour on a quiet night, about 120 to 200 of WindowServer's ports. Now that is 4
+an hour. With jobs nothing changed: a read goes cold when its egress lease runs short,
+27 to 37 opens an hour by day.
+
+Ryde's session has kept working through far longer gaps. In `egress-requests.jsonl` the
+renewals (`rotateSessionKey`) came a median 172 seconds apart, 241 at the 90th
+percentile, and 24,776 seconds, 6.9 hours, across the outage of 26 November; the
+renewals after it were still answered 200.
+
+If the session ends anyway, the worker says so. When the producer's
+`session/status.json` is paused for a renewal Ryde rejected (`renewal`), a session
+renewed outside the bridge (`session`) or a key Ryde refused (`sign-in`), or its stage is
+`needs-sign-in`, the worker opens nothing and asks for no job, and tells the cache once
+a minute that it is held as SessionExpired, the producer's reason in its detail. A
+`transport` pause is not one: the next read recovers it. The cache has the hold as
+`scootradar_ryde_bridge_worker_held{reason="SessionExpired"}`; Grafana's "ScootRadar Ryde
+session expired" fires after 5 minutes of it and stays in Grafana, with no Telegram; the
+cache's Sentry silence issue names it after 10 minutes; and "Ryde bridge stopped", which
+counts every hold, notifies on Telegram after 15, as before. The sign-in is the user's
+(see the recovery above); once the producer is no longer paused, the worker reads again
+at its next turn.

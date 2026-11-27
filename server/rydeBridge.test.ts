@@ -138,6 +138,9 @@ describe('worker HTTP boundary',()=>{
       expect(b.silenceCause().phrase).toBe('the Mac\'s WindowServer is close to its Mach port limit');
       now+=60_000;expect(await post({version:1,state:'held',reason:'AbnormalExits',until:now/1000+900,at:now/1000})).toBe(204);
       expect(b.silenceCause().phrase).toBe('Ryde or its map helper kept exiting abnormally on the Mac');
+      now+=60_000;expect(await post({version:1,state:'held',reason:'SessionExpired',until:now/1000+60,
+        detail:'Ryde rejected the renewal of its session key',at:now/1000})).toBe(204);
+      expect(b.silenceCause().phrase).toBe('Ryde\'s session on the Mac has ended and needs the user\'s sign-in');
     } finally {await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
   });
 });

@@ -82,6 +82,16 @@ map_control_unstoppable=0.0 # when a silent Map Control last could not be stoppe
 abnormal=[] # (at, what): the abnormal exits serve's guard counts
 # While held, the worker tells the cache why once a minute, so its report of the silence says.
 STATUS_EVERY=60
+# With no job for IDLE_REOPEN, Ryde is opened again so that it renews its session key, which it does only as it
+# launches (rotateAfterSeconds, producer_addon.py). Every 90 seconds until 27 November 2026, that was 35 to 40 cold
+# cycles an hour on a quiet night, about 5 Mach ports each in WindowServer. The user chose fewer renewals for fewer
+# ports (Desk 490): Ryde's session kept working through the 6.9 hours without one of the outage of 26 November.
+IDLE_REOPEN=15*60
+# The producer's word that Ryde's session is over (session/status.json), which only the user's sign-in on the Mac
+# brings back: the worker then opens nothing and tells the cache, once a minute, as SessionExpired, which
+# Prometheus keeps and Grafana shows (docs/OBSERVABILITY.md). A transport pause is not one: the next read recovers it.
+SESSION_ENDED={'renewal':'Ryde rejected the renewal of its session key',
+    'session':'Ryde\'s session was renewed outside the bridge','sign-in':'Ryde refused the bridge\'s key'}
 # Results the cache has had for a day are deleted, and the lifecycle journal is rotated at
 # JOURNAL_LIMIT with one previous file: on 17 November 2026 results/ held 90,934 files, 532 MB.
 RESULTS_KEPT=86400
@@ -98,6 +108,15 @@ def remove_stale_launch_jobs():
                 removed.append(fields[2])
     except (subprocess.SubprocessError,OSError):pass
     return removed
+
+def session_ended(base):
+    """Why Ryde's session needs the user's sign-in, from the producer's status, or None while it works."""
+    try: state=json.loads((base/'session/status.json').read_text())
+    except (FileNotFoundError,ValueError): return None
+    if not isinstance(state,dict): return None
+    why=SESSION_ENDED.get(state.get('pauseReason')) if state.get('paused') else None
+    if not why and state.get('bridgeStage')=='needs-sign-in': why='the bridge needs a new sign-in'
+    return why and why+': Ryde\'s session needs the user\'s sign-in on the Mac (docs/ryde-bridge.md)'
 
 class JobDeadline(Exception):
     """Queued work ran out of time; this is not evidence that Ryde failed."""
@@ -527,6 +546,10 @@ def serve(config, base):
     ports_checked=0;crash_reports=set()
     def guard():
         nonlocal ports_checked,wait_until,wait_reason,wait_detail
+        ended=session_ended(base)
+        if ended:
+            wait_until=time.time()+STATUS_EVERY;wait_reason='SessionExpired';wait_detail=ended
+            return True
         if time.time()-ports_checked>=WINDOWSERVER_CHECK_EVERY:
             ports_checked=time.time();seen=windowserver_ports()
             if seen:
@@ -591,8 +614,8 @@ def serve(config, base):
                 if not (isinstance(trigger,dict) and trigger.get('mode')=='warm' and trigger.get('stayedMinimized') is True):
                     prepare_warm(base.parent)
                 last_trigger=time.time();failures=0;holds=0
-            elif time.time()-last_trigger>90:
-                relaunch();last_trigger=time.time() # allow due native key renewals
+            elif time.time()-last_trigger>IDLE_REOPEN:
+                relaunch();last_trigger=time.time() # Ryde renews its session key as it opens
             save(base/'worker-status.json',{'state':'ready','at':time.time()})
             wait_interval(0 if job else 2,stop)
         except JobDeadline:

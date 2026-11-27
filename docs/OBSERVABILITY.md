@@ -456,6 +456,7 @@ The alert rules:
 | ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes (15 for Voi Switzerland, as Sentry), by its cadence's rule; one alert per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported; nor under a night ban at all its service areas, until 30 minutes after it, as Sentry (the ban holds the feed out for 20 minutes after it ends, then the rule waits its 10). The Ryde bridge's groups are among them, but each expires only 3 days and 10 minutes after its last sweep, so "Ryde bridge stopped" tells of the bridge first |
 | ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning |
 | ScootRadar Ryde bridge stopped | the Ryde bridge worker on the Mac has said it is held, for any reason, for 15 minutes; or has asked the cache for no job for 30 minutes; or jobs were queued and none was completed for 45 minutes. Sent to Telegram, and it keeps firing until the bridge reads a map again (see below) |
+| ScootRadar Ryde session expired | the Ryde bridge worker has said for 5 minutes that it is held as SessionExpired: Ryde's session on the Mac has ended and needs the user's sign-in (docs/ryde-bridge.md, Desk 490). A warning in Grafana only; "Ryde bridge stopped" counts the same hold and notifies after 15 minutes |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 2.7 GB, or a V8 heap over 1.5 GB, for 15 minutes (the container's limit is 3072 MiB, of which Node gives the heap 1632 MiB, and the heap runs out first) |
@@ -525,7 +526,9 @@ Since 26 October 2026 Grafana's default notification policy sends them to
 `grafana-only`, a contact point with no integration: they fire in Grafana and notify
 no one. Only a rule labelled `notify=user` reaches the `telegram-paul` contact point,
 grouped by alert name; here that is "ScootRadar down for 15 minutes" and, since
-21 November 2026, "ScootRadar Ryde bridge stopped". The route sets no repeat interval,
+21 November 2026, "ScootRadar Ryde bridge stopped". "ScootRadar Ryde session expired"
+(27 November 2026) has no label on purpose: the user asked for it in Grafana, not on
+Telegram. The route sets no repeat interval,
 so an alert still firing is sent again every 4 hours, Grafana's default. A rule
 takes the label from `"notify": "user"` in the source, and the sync puts it back if it
 goes missing live. "Feed stopped" went to Alerting 207 times in the 14 days before, once
@@ -1053,7 +1056,9 @@ Tracing is off, and no trace headers go to the operators' feeds.
   "Ryde could not be opened on the Mac" (LaunchFailed), "the datacenter pool's hourly
   budget is spent" (DatacenterBudget), "the Mac's WindowServer is close to its Mach port
   limit" (WindowServerPorts: log out and back in on the Mac, docs/ryde-bridge.md), "Ryde
-  or its map helper kept exiting abnormally on the Mac" (AbnormalExits), or any other
+  or its map helper kept exiting abnormally on the Mac" (AbnormalExits), "Ryde's session on
+  the Mac has ended and needs the user's sign-in" (SessionExpired: the sign-in is the
+  user's, docs/ryde-bridge.md), or any other
   reason's code; otherwise "no word
   from the Mac": the Mac off, asleep or offline, or the worker not running. Each cause is
   an issue of its own. Until 17 November 2026 all were SCOOTRADAR-CACHE-68, 14 events in
