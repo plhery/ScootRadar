@@ -15,10 +15,13 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -263,7 +266,11 @@ fun IosSheet(
             val floating = hasMedium && state.targetValue != SheetValue.Large
             val bottom = max(0f, WindowInsets.safeDrawing.getBottom(density) - if (floating) inset else 0f)
             CompositionLocalProvider(LocalScootColors provides sheetColors) {
-                content(with(density) { bottom.toDp() })
+                // Clear of a cutout or the navigation bar down a side, as the dock is (X-AD34), the sheet's colour
+                // under them: a phone on its side in split screen has its bar's 48 there, over Reset and Done.
+                Box(Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))) {
+                    content(with(density) { bottom.toDp() })
+                }
             }
             // The drag indicator. For VoiceOver UIKit's is a button that takes the sheet to its other height, or
             // away when it has one; TalkBack reads it the same.
