@@ -119,6 +119,16 @@ class ScooterAPI(
         http.connectionPool.evictAll()
     }
 
+    /**
+     * The phone's way to the internet has moved to another network, from a Wi-Fi that no longer reaches it to mobile
+     * data, which Android tells as no loss (the app's watchNetwork). The connections kept idle close: each goes over
+     * the network it was opened on, and the next request, handed one unchecked, would wait out its 20 seconds on a
+     * Wi-Fi with no internet. The requests under way go on, on a network that may still answer them.
+     */
+    fun networkChanged() {
+        http.connectionPool.evictAll()
+    }
+
     override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
         val query = mutableListOf(
             "south" to fiveDecimals(bounds.south),

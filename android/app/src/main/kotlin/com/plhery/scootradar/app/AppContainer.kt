@@ -111,13 +111,26 @@ class AppContainer(private val context: Context) {
      * Ends the server's requests under way as the phone goes offline, by [lost]: a socket of the network Android lost
      * may wait out its 20 seconds, where the iPhone's URLSession ends its requests as offline at once (X-M21). Android
      * tells a default network's callback of its loss only when no other network takes its place, and what it says of
-     * the networks within the callback may be out of date, so the loss is enough (review-app-ah 2). Called once, as
-     * the app starts.
+     * the networks within the callback may be out of date, so the loss is enough (review-app-ah 2). A network taking
+     * the place of another, as mobile data takes a Wi-Fi's that no longer reaches the internet, is [switched]: the
+     * server's connections kept on the one left close. Called once, as the app starts.
      */
-    fun watchNetwork(lost: () -> Unit = api::networkLost) {
+    fun watchNetwork(switched: () -> Unit = api::networkChanged, lost: () -> Unit = api::networkLost) {
         val connectivity = context.getSystemService(ConnectivityManager::class.java) ?: return
         connectivity.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
-            override fun onLost(network: Network) = lost()
+            // The network the phone's requests go out on: Android calls a callback on one thread, one call at a time.
+            private var current: Network? = null
+
+            override fun onAvailable(network: Network) {
+                val previous = current
+                current = network
+                if (previous != null && previous != network) switched()
+            }
+
+            override fun onLost(network: Network) {
+                current = null
+                lost()
+            }
         })
     }
 

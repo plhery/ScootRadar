@@ -318,6 +318,41 @@ class AppContainerTest {
     fun theAppsOwnWatchClosesTheServersConnections() {
         val connectivity = context.getSystemService(ConnectivityManager::class.java)
         val watch = shadowOf(connectivity).networkCallbacks.single()
+        withIdleConnection { closed ->
+            assertFalse("the connection kept", closed.await(300, TimeUnit.MILLISECONDS))
+
+            watch.onLost(checkNotNull(connectivity.activeNetwork))
+            assertTrue("the connection closed with the network", closed.await(5, TimeUnit.SECONDS))
+        }
+    }
+
+    /**
+     * Another network taking the place of the one the phone's requests went out on, which Android tells as no loss:
+     * mobile data taking a Wi-Fi's that no longer reaches the internet. The server's idle connections go over the
+     * Wi-Fi they were opened on, so they close, where the next request would have waited out its 20 seconds on one.
+     * The same network told again keeps them.
+     */
+    @Test
+    fun theAppsOwnWatchClosesTheServersConnectionsAsAnotherNetworkTakesOver() {
+        val connectivity = context.getSystemService(ConnectivityManager::class.java)
+        val watch = shadowOf(connectivity).networkCallbacks.single()
+        val wifi = checkNotNull(connectivity.activeNetwork)
+        val mobile = connectivity.allNetworks.first { it != wifi }
+        watch.onAvailable(wifi)
+        withIdleConnection { closed ->
+            watch.onAvailable(wifi)
+            assertFalse("the connection kept on the same network", closed.await(300, TimeUnit.MILLISECONDS))
+
+            watch.onAvailable(mobile)
+            assertTrue("the connection closed as mobile data took over", closed.await(5, TimeUnit.SECONDS))
+        }
+    }
+
+    /**
+     * An idle connection of the app's own client (ScooterAPI.privateClient), to the phone itself, which stands for
+     * the server's: [closed] counts down as the client closes it, which the server sees.
+     */
+    private fun withIdleConnection(test: (closed: CountDownLatch) -> Unit) {
         val api = (context as ScooterApplication).container.api
         val closed = CountDownLatch(1)
         ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->
@@ -333,10 +368,7 @@ class AppContainerTest {
             }
             val url = "http://${server.inetAddress.hostAddress}:${server.localPort}/"
             api.client.newCall(Request.Builder().url(url).build()).execute().close()
-            assertFalse("the connection kept", closed.await(300, TimeUnit.MILLISECONDS))
-
-            watch.onLost(checkNotNull(connectivity.activeNetwork))
-            assertTrue("the connection closed with the network", closed.await(5, TimeUnit.SECONDS))
+            test(closed)
         }
     }
 

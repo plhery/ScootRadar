@@ -401,6 +401,38 @@ class ScooterAPITest {
     }
 
     /**
+     * Another network taking over, mobile data from a Wi-Fi that no longer reaches the internet (networkChanged): the
+     * next request goes on a new connection, over the network now in use, and one under way goes on.
+     */
+    @Test
+    fun theRequestAfterAnotherNetworkTakesOverGoesOnANewConnection() = runBlocking<Unit> {
+        val h2 = MockWebServer().apply { protocols = listOf(Protocol.H2_PRIOR_KNOWLEDGE); start() }
+        try {
+            h2.enqueue(answer(200, emptyResponseData))
+            h2.enqueue(answer(200, emptyResponseData))
+            h2.enqueue(MockResponse.Builder().code(200).body(emptyResponseData).headersDelay(300, TimeUnit.MILLISECONDS).build())
+            val api = ScooterAPI(
+                baseURL = h2.url("/"),
+                client = OkHttpClient.Builder().protocols(listOf(Protocol.H2_PRIOR_KNOWLEDGE)).build(),
+                isOffline = { false },
+            )
+            api.scooters(bounds = bounds, zoom = 16)
+            assertEquals("the first request's connection", 0, h2.takeRequest().connectionIndex)
+
+            api.networkChanged()
+            api.scooters(bounds = bounds, zoom = 16)
+            assertEquals("the request after the change", 1, h2.takeRequest().connectionIndex)
+
+            val load = async(Dispatchers.Default) { api.scooters(bounds = bounds, zoom = 16) }
+            assertEquals("the held request, on the same connection", 1, checkNotNull(h2.takeRequest(5, TimeUnit.SECONDS)).connectionIndex)
+            api.networkChanged()
+            withTimeout(5_000) { load.await() }
+        } finally {
+            h2.close()
+        }
+    }
+
+    /**
      * A connection lost on the way is asked again before the phone is taken to be offline (9afd4b2a), as OkHttp's
      * retryOnConnectionFailure does, which the scooters' client keeps: a kept-alive connection found closed is asked
      * again on a new one. OkHttp asks again by connection and route, not by the error, so a server that ends every
