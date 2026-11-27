@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, restoredFrom, type CollectionAttention, type CollectionReason, type SavedCollection, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idleGraceMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined; idleSooner?: () => { intervalMs: number; phase: number } | undefined }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; activeIntervalMs?: number; wideIntervalMs?: number; idleIntervalMs?: number; idleGraceMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined; idleSooner?: () => { intervalMs: number; phase: number } | undefined; dueBy?: (time: number) => number | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -241,6 +241,25 @@ it('collects an idle feed when the night it was collected in ends, then at its p
     expect(night.calls.map(call => call.at)).toEqual([0, 4 * HOUR + 100_000, 48 * HOUR]);
     expect(day.times('durham')).toEqual([0, 48 * 60]);
   } finally { night.scheduler.stop(); day.scheduler.stop(); }
+});
+
+it('collects an idle feed by the time it asks for, when before its turn, but never within an active interval', async () => {
+  // A Lime standby group skipped while the national positions it stands by for still show looks again as they
+  // pass the age limit, not at its next half hour (withLimeStandby): Basel's, on 27 November 2026, 20 minutes on.
+  const lapse = T0 + 10 * MINUTE;
+  const { scheduler, times } = schedule([
+    { id: 'basel', host: 'lime', idleIntervalMs: 30 * MINUTE, dueBy: time => time < lapse ? lapse : undefined },
+    { id: 'uster', host: 'lime', idleIntervalMs: 30 * MINUTE, dueBy: time => time + 45 * MINUTE },
+    { id: 'zurich', host: 'lime', idleIntervalMs: 30 * MINUTE, dueBy: time => time - MINUTE }]);
+  try {
+    await vi.advanceTimersByTimeAsync(61 * MINUTE);
+    // Then at its own turns again, once it no longer asks.
+    expect(times('basel')).toEqual([0, 10, 30, 60]);
+    // A time past its turn does not hold it back.
+    expect(times('uster')).toEqual([0, 30, 60]);
+    // A time gone by is an active interval after the last collection started.
+    expect(times('zurich')).toEqual(Array.from({ length: 62 }, (_, minute) => minute));
+  } finally { scheduler.stop(); }
 });
 
 it('collects an idle feed at its shorter interval while that holds, and at its own once it no longer does', async () => {

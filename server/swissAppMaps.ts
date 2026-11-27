@@ -184,12 +184,20 @@ export const LIME_STANDBY_INTERVAL_MS = 30 * 60_000;
 const nationalServes = (record: FeedSnapshot | undefined, now: number) =>
   record !== undefined && !record.skipped && record.vehicles.length > 0 && now - record.observedAt <= VEHICLE_MAX_AGE_MS;
 
+/** Past the national positions' age limit, so that a standby group's next look finds them gone (nationalServes). */
+const STANDBY_LAPSE_MARGIN_MS = 1_000;
+
 /**
  * Lime's Zürich, Basel and Uster stand by for their national feeds, which give prices, ranges and
  * rental links where the rider map gives none: while one serves, its market's groups are skipped
  * without asking Lime, so they spend none of its accounts' 36 requests a minute. Once it has served
  * nothing for 15 minutes they are read as any Lime market, and a view wakes the groups it shows. The
  * 126 local views of the three, every 30 minutes, are about 4 requests a minute.
+ *
+ * A group that skipped looks again as the national positions pass that age (dueBy), not at its next half
+ * hour: on 27 November 2026 sharedmobility.ch's Lime Basel stopped at 14:23:40 UTC, and the groups, the last
+ * skipped at 14:37:40 while those positions still showed, read Basel from Lime only from 14:57 to 15:08 while
+ * nobody looked (SCOOTRADAR-CACHE-6D). A skip asks Lime nothing.
  */
 export function withLimeStandby(feeds: CollectableScooterFeed[], recordOf: (id: string) => FeedSnapshot | undefined,
   now = Date.now): CollectableScooterFeed[] {
@@ -197,6 +205,10 @@ export function withLimeStandby(feeds: CollectableScooterFeed[], recordOf: (id: 
     const national = standbyNationalFeed(feed.id);
     if (!national) return feed;
     return { ...feed, idleIntervalMs: LIME_STANDBY_INTERVAL_MS,
+      dueBy: () => {
+        const record = recordOf(national);
+        return record && nationalServes(record, now()) ? record.observedAt + VEHICLE_MAX_AGE_MS + STANDBY_LAPSE_MARGIN_MS : undefined;
+      },
       collect: async () => nationalServes(recordOf(national), now()) ? { vehicles: [], stale: false, skipped: true } : feed.collect() };
   });
 }

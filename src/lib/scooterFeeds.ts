@@ -296,6 +296,8 @@ export interface CollectableScooterFeed {
   nightEnds?: (time: number) => number | undefined;
   /** A shorter idle interval while it holds, and where in it the feed is collected (FeedScheduler). */
   idleSooner?: () => { intervalMs: number; phase: number } | undefined;
+  /** The latest its next idle collection may start, asked as one ends, when before its turn (FeedScheduler). */
+  dueBy?: (time: number) => number | undefined;
   /** Its GBFS documents, or GCOO's area file, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
   /**

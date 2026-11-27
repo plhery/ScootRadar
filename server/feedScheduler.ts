@@ -53,6 +53,12 @@ export interface ScheduledFeed {
    * it is late by it.
    */
   idleSooner?: () => { intervalMs: number; phase: number } | undefined;
+  /**
+   * The latest its next idle collection may start, asked as a collection ends, when that is before its turn:
+   * a Lime standby group's, when the national positions it stood by for pass the age the map shows them to
+   * (withLimeStandby). Never sooner than an active interval after the collection started.
+   */
+  dueBy?: (time: number) => number | undefined;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -423,7 +429,9 @@ export class FeedScheduler<T extends ScheduledFeed> {
     const earliest = startedAt + activeIntervalMs;
     const next = earliest + ((((phase - earliest) % idleIntervalMs) + idleIntervalMs) % idleIntervalMs);
     const ends = [feed.nightEnds?.(startedAt), this.options.curfewEnds?.(feed, startedAt)].filter(end => end !== undefined);
-    return ends.length ? Math.max(earliest, Math.min(next, Math.min(...ends) + share * NIGHT_END_SPREAD_MS)) : next;
+    const turn = ends.length ? Math.max(earliest, Math.min(next, Math.min(...ends) + share * NIGHT_END_SPREAD_MS)) : next;
+    const by = feed.dueBy?.(finishedAt);
+    return by === undefined ? turn : Math.max(earliest, Math.min(turn, by));
   }
 
   private pump(): void {

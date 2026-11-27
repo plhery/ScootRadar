@@ -141,6 +141,13 @@ describe('withLimeStandby', () => {
     expect(read).not.toHaveBeenCalled();
   });
 
+  it('looks again as the national positions pass the age limit, and at its own turn once they have', () => {
+    expect(standing(record({ observedAt: now - 60_000 })).feed.dueBy?.(now)).toBe(now - 60_000 + VEHICLE_MAX_AGE_MS + 1_000);
+    expect(standing(record({ observedAt: now - VEHICLE_MAX_AGE_MS - 1 })).feed.dueBy?.(now)).toBeUndefined();
+    expect(standing(undefined).feed.dueBy?.(now)).toBeUndefined();
+    expect(standing(record({ vehicles: [] })).feed.dueBy?.(now)).toBeUndefined();
+  });
+
   it('reads the market every half hour rather than every three days, and leaves other Lime markets alone', () => {
     expect(standing(undefined).feed.idleIntervalMs).toBe(LIME_STANDBY_INTERVAL_MS);
     const kloten = group('switzerland:lime_ch_app_kloten_000');
