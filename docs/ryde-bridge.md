@@ -191,6 +191,14 @@ failed the same way. The button minimizes it at once. `producer/map-control.json
 records how each read found or minimized the window (`minimizedBy`: `already`,
 `attribute` or `button`).
 
+About a minute after each open, macOS suspends Ryde a few seconds after a read gives
+focus back, and a suspended Ryde answers no accessibility call (`kAXErrorCannotComplete`,
+journaled as `windowsError` -25204 with `window-unavailable`). Then the helper activates
+Ryde, which resumes it with its window still minimized from the last read, looks for
+the window again and goes on with the refresh, restoring focus as for any other
+(`woke` in the journal). It does this only for a refresh, while the desktop is idle.
+Until 27 November 2026 such a read went cold, about one a minute.
+
 Fast activation requires 15 seconds without keyboard or mouse activity, no held
 modifier or mouse button, an unlocked session, a single Ryde instance and the
 expected home map with no sheet. The helper checks activity again before activation
@@ -864,8 +872,11 @@ read refused as `unsafe-window`. Two changes since 02:20:
   starts it again only if it stops, at most once every 10 minutes (warm reads, above). A
   helper that answers costs WindowServer nothing per command.
 - It presses Ryde's minimize button when the minimized attribute does not take (warm
-  reads, above), so after a cold open the next read is warm. A cold cycle now comes only
-  when a warm read is refused: the egress lease, which ends 150 seconds after each cold
-  launch and needs 30 seconds left; a busy desktop (input within 15 seconds), a locked
-  screen or a refused activation; or the eight-second fallback.
+  reads, above), so after a cold open the next read is warm, and it wakes a Ryde that
+  macOS has suspended rather than going cold. A cold cycle now comes only when a warm
+  read is refused: the egress lease (it ends 150 seconds after each cold launch and
+  needs 30 seconds left, and the route's hour must have room for a launch); a busy
+  desktop (input within 15 seconds), a locked screen or a refused activation; or the
+  eight-second fallback. A cold open that brings no map in 30 seconds is still tried
+  again, as before.
 

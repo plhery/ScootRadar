@@ -75,9 +75,38 @@ func execute(_ action: String) -> Reply {
     // Every other element (the window, its sheets, the map) waits this long, not the default 6 seconds, so a
     // busy Ryde cannot hold a command past the worker's wait for its answer (MAP_CONTROL_REPLY).
     AXUIElementSetMessagingTimeout(AXUIElementCreateSystemWide(), 1.0)
-    let windows = attribute(application, kAXWindowsAttribute) as? [AXUIElement] ?? []
-    guard let window = windows.first(where: { text($0, kAXIdentifierAttribute) == "SceneWindow" }) else {
-        return Reply(value: ["error": "window-unavailable"], code: 4)
+    let originalApp = NSWorkspace.shared.frontmostApplication
+    let originalPID = originalApp?.processIdentifier
+    let cursor = CGEvent(source: nil)?.location
+    var found: AXUIElement?, listed = AXError.success, count = 0
+    func lookUp(_ seconds: Double) -> Bool {
+        wait(seconds) {
+            var value: CFTypeRef?
+            listed = AXUIElementCopyAttributeValue(application, kAXWindowsAttribute as CFString, &value)
+            let windows = value as? [AXUIElement] ?? []
+            count = windows.count
+            found = windows.first(where: { text($0, kAXIdentifierAttribute) == "SceneWindow" })
+            return found != nil
+        }
+    }
+    // About a minute after each open macOS suspends Ryde a few seconds after a read gives focus back, and a
+    // suspended Ryde answers no accessibility call (kAXErrorCannotComplete): on 27 November 2026 that sent a
+    // warm read a minute back to a cold one. Activation, the refresh's own trigger, resumes it; its window is
+    // still minimized from the last read, and finish restores focus as for any refresh.
+    var woke = false
+    if !lookUp(1.0) && action == "refresh" && listed == .cannotComplete && idle() && originalPID != nil &&
+        originalPID != app.processIdentifier {
+        woke = app.activate(options: [])
+        if woke { _ = lookUp(1.5) }
+    }
+    func declined(_ value: [String: Any]) -> Reply {
+        if woke && NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier {
+            _ = originalApp?.activate(options: [])
+        }
+        return Reply(value: value.merging(woke ? ["woke": true] : [:], uniquingKeysWith: { old, _ in old }), code: 4)
+    }
+    guard let window = found else {
+        return declined(["error": "window-unavailable", "windowsError": Int(listed.rawValue), "windows": count])
     }
     if action == "show" {
         _ = AXUIElementSetAttributeValue(window, kAXMinimizedAttribute as CFString, kCFBooleanFalse)
@@ -86,20 +115,18 @@ func execute(_ action: String) -> Reply {
         return Reply(value: ["shown": true])
     }
     guard (attribute(window, "AXSheets") as? [AXUIElement] ?? []).isEmpty, findMap(window) else {
-        return Reply(value: ["error": "home-map-or-minimize-unavailable"], code: 4)
+        return declined(["error": "home-map-or-minimize-unavailable"])
     }
     // How the window came to be minimized, for the worker's journal.
     var minimizing: [String: Any] = ["minimizedBy": "already"]
+    if woke { minimizing["woke"] = true }
     if !minimized(window) {
         let set = AXUIElementSetAttributeValue(window, kAXMinimizedAttribute as CFString, kCFBooleanTrue)
         guard set == .success else {
-            return Reply(value: ["error": "home-map-or-minimize-unavailable", "minimizeSet": Int(set.rawValue)], code: 4)
+            return declined(["error": "home-map-or-minimize-unavailable", "minimizeSet": Int(set.rawValue)])
         }
         minimizing["minimizedBy"] = "attribute"
     }
-    let originalApp = NSWorkspace.shared.frontmostApplication
-    let originalPID = originalApp?.processIdentifier
-    let cursor = CGEvent(source: nil)?.location
     func finish(_ value: [String: Any], code: Int32 = 0) -> Reply {
         // A user-selected new app wins over restoring our original app.
         if NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier && originalPID != app.processIdentifier {

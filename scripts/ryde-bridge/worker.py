@@ -211,7 +211,7 @@ def run_map_control(root,action):
     global map_control_unstoppable
     if action not in {'status','refresh','prepare'}:raise ValueError('Unsupported map control action')
     base=root/'producer';nonce=uuid.uuid4().hex
-    path=base/'map-control-results'/f'{nonce}.json';answer='no-reply';minimizing={}
+    path=base/'map-control-results'/f'{nonce}.json';answer='no-reply';detail={}
     try:
         if 0<=time.time()-map_control_unstoppable<MAP_CONTROL_RESTART:
             answer='unstoppable';raise ValueError('Map Control gave no reply and could not be stopped')
@@ -230,7 +230,9 @@ def run_map_control(root,action):
                 time.sleep(.02)
         if not isinstance(value,dict):raise ValueError('Invalid map control result')
         answer=str(value.get('error','ok'))[:40]
-        minimizing={k:value[k] for k in ['minimizedBy','minimizeSet','minimizePress','minimized','hidden'] if type(value.get(k)) in (str,int,bool)}
+        # How Ryde's window was found and minimized, or why not.
+        detail={k:value[k] for k in ['minimizedBy','minimizeSet','minimizePress','minimized','hidden','windowsError','windows','woke']
+            if type(value.get(k)) in (str,int,bool)}
         if 'error' in value:raise ValueError('Map control unavailable: '+str(value['error']))
         return value
     finally:
@@ -238,7 +240,7 @@ def run_map_control(root,action):
         # A resident started later must not answer this request again.
         (base/'map-control-request.json').unlink(missing_ok=True)
         # Why it declined, which the reply deleted above no longer says (26 November 2026).
-        journal(base/'map-control.jsonl',{'at':time.time(),'action':action,'answer':answer,**minimizing})
+        journal(base/'map-control.jsonl',{'at':time.time(),'action':action,'answer':answer,**detail})
 
 def warm_enabled(root):
     try:
