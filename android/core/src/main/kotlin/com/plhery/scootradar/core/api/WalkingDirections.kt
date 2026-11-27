@@ -37,7 +37,7 @@ interface WalkingDirectionsClient {
     suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint>
 }
 
-/** Why no way was found: too far to ask for, none on foot, the server busy, or any other trouble. */
+/** Why no way was found: too far to ask for, none on foot, the server busy, no answer, or any other trouble. */
 class WalkingDirectionsError(val reason: Reason) : Exception("Walking route failed: ${reason.rawValue}") {
     enum class Reason(val rawValue: String) {
         TooFar("too_far"),
@@ -45,6 +45,9 @@ class WalkingDirectionsError(val reason: Reason) : Exception("Walking route fail
         /** The server answered without a route. */
         NoRoute("no_route"),
         Busy("busy"),
+
+        /** No answer came: the phone offline, the server out of reach, or the wait over. */
+        Unanswered("unanswered"),
         Failed("failed"),
     }
 
@@ -89,7 +92,7 @@ class ScootRadarWalkingDirections(
         val response = try {
             http.fetch(request)
         } catch (error: IOException) {
-            throw WalkingDirectionsError(WalkingDirectionsError.Reason.Failed)
+            throw WalkingDirectionsError(WalkingDirectionsError.Reason.Unanswered)
         }
         // A long walk has thousands of points: they are read off the caller's thread, as the other clients read
         // their answers.

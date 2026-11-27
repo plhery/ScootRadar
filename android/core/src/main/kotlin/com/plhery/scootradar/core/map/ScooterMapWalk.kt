@@ -122,12 +122,14 @@ private fun ScooterMapController.requestRoute(origin: GeoPoint, reveals: Boolean
     val directions = directions
     routeTask = scope.launch {
         var tooFar = false
+        var unanswered = false
         val path = try {
             directions.walkingPath(from = origin, to = target.point)
         } catch (_: CancellationException) {
             null
         } catch (error: WalkingDirectionsError) {
             tooFar = error.reason == WalkingDirectionsError.Reason.TooFar
+            unanswered = error.reason == WalkingDirectionsError.Reason.Unanswered
             null
         } catch (_: Exception) {
             null
@@ -135,6 +137,12 @@ private fun ScooterMapController.requestRoute(origin: GeoPoint, reveals: Boolean
         // A request that was replaced or cancelled answers nothing.
         if (!isActive || request != routeRequests) return@launch
         routeTask = null
+        if (unanswered && !reveals) {
+            // A route asked for again on the way that nothing answered, the phone offline, is not one of the
+            // walk's ten: a rider who left the route without signal gets a new one once back online, every 15 s
+            // as before, rather than none for the rest of the walk.
+            this@requestRoute.walk.value?.let { setWalk(it.copy(reroutes = maxOf(0, it.reroutes - 1))) }
+        }
         if (tooFar) {
             routeTooFar(target, reports = reports)
         } else {

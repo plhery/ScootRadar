@@ -118,7 +118,7 @@ class WalkingDirectionsTest {
 
         val error = failure { ScootRadarWalkingDirections(baseURL = server.url("/"), client = offline).walkingPath(from = from, to = to) }
 
-        assertEquals(WalkingDirectionsError(WalkingDirectionsError.Reason.Failed), error)
+        assertEquals(WalkingDirectionsError(WalkingDirectionsError.Reason.Unanswered), error)
     }
 
     @Test
@@ -142,7 +142,7 @@ class WalkingDirectionsTest {
     }
 
     @Test
-    fun givesUpAsFailedAfterTwelveSeconds() = runBlocking<Unit> {
+    fun givesUpUnansweredAfterTwelveSeconds() = runBlocking<Unit> {
         assertEquals(12.seconds, ScootRadarWalkingDirections().timeout)
         // The same with a shorter wait.
         server.enqueue(MockResponse.Builder().headersDelay(10, TimeUnit.SECONDS).body("{}").build())
@@ -154,7 +154,7 @@ class WalkingDirectionsTest {
         }
 
         val waited = (System.nanoTime() - started) / 1_000_000
-        assertEquals(WalkingDirectionsError(WalkingDirectionsError.Reason.Failed), error)
+        assertEquals(WalkingDirectionsError(WalkingDirectionsError.Reason.Unanswered), error)
         assertTrue("$waited ms", waited in 300..5_000)
     }
 

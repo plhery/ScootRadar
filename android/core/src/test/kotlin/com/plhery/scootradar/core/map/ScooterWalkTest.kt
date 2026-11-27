@@ -421,6 +421,49 @@ class ScooterWalkTest {
         assertEquals(1, h.analytics.events.count { it.name == "route_result" })
     }
 
+    /**
+     * Off the route without signal for longer than ten tries take, in a tunnel or a basement: the tries nothing
+     * answered are not the walk's ten, and back online the rider gets a new route. One the server answered, busy,
+     * still counts.
+     */
+    @Test
+    fun leavingTheRouteOfflineKeepsTheWalksTenForWhenItIsBack() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val h = shownWalk(to = target)
+        val revision = unwrap(h.model.walkTrail?.revision)
+
+        h.directions.result = Result.failure(WalkingDirectionsError(WalkingDirectionsError.Reason.Unanswered))
+        val tries = 2 * WalkRoute.maximumReroutes
+        for (index in 0 until tries) {
+            h.clock.advance(16.0)
+            h.model.setUserLocation(point(east = -100, north = if (index % 2 == 0) 200 else -200))
+            val asked = waitUntil { h.directions.requests.size == 2 + index }
+            assertTrue("Try ${index + 1}", asked)
+            settle()
+            assertEquals("Try ${index + 1}", 0, h.model.walk.value?.reroutes)
+        }
+        // The old route stays on the map meanwhile.
+        assertEquals(ScooterWalkPhase.Shown, h.model.walk.value?.phase)
+        assertEquals(revision, h.model.walkTrail?.revision)
+
+        h.directions.result = null
+        h.clock.advance(16.0)
+        val back = point(east = -100, north = 200)
+        h.model.setUserLocation(back)
+        val found = waitUntil { h.model.walkTrail?.points?.firstOrNull() == back }
+        assertTrue(found)
+        assertEquals(2 + tries, h.directions.requests.size)
+        assertEquals(1, h.model.walk.value?.reroutes)
+
+        h.directions.result = Result.failure(WalkingDirectionsError(WalkingDirectionsError.Reason.Busy))
+        h.clock.advance(16.0)
+        h.model.setUserLocation(point(east = -100, north = -200))
+        val asked = waitUntil { h.directions.requests.size == 3 + tries }
+        assertTrue(asked)
+        settle()
+        assertEquals(2, h.model.walk.value?.reroutes)
+    }
+
     @Test
     fun aScooterThatMovedGetsANewRoute() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
