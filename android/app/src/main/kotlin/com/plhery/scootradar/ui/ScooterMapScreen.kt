@@ -1426,7 +1426,7 @@ private fun NoticeStack(
                 val issue = lastIssue ?: return@AppearingContent
                 LocationIssueCard(
                     issue = issue,
-                    onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
+                    onOpenSettings = { LocationSettings.open(context, locationSettings.settingsIntent(context)) },
                     onSearchPlace = {
                         // Searching is the answer to the card, so it goes away.
                         controller.dismissLocationIssue()

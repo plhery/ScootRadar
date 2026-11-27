@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui.chrome
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -36,5 +37,21 @@ interface LocationSettings {
         /** The phone's location switch, for a phone with location turned off. */
         fun locationSwitch(): Intent =
             Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        /**
+         * Opens [page], else the app's own page where the phone has none for it, else nothing: some builds have no
+         * page for the location switch, and starting a page that nothing answers would stop the app. The app's other
+         * links out are guarded the same way.
+         */
+        fun open(context: Context, page: Intent) {
+            for (intent in listOf(page, appSettings(context.packageName)).distinctBy { it.action }) {
+                try {
+                    context.startActivity(intent)
+                    return
+                } catch (_: ActivityNotFoundException) {
+                    // The next, if any.
+                }
+            }
+        }
     }
 }
