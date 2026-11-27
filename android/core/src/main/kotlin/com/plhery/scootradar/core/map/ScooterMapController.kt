@@ -1612,7 +1612,14 @@ class ScooterMapController(
                     ?: refreshPolicy.askedFollowUp(response.meta)
                     ?: if (refreshing && (filling || followedUpQuery != query)) refreshPolicy.followUpGap else null
                 followedUpQuery = if (refreshing) query else null
+                // Back after loads that failed, each of which asked again for zones lost with them: those come back
+                // with these scooters, however long the phone was offline (askAgainForFailedZones).
+                val recovered = loadIssue.value != null
                 _loadIssue.value = null
+                if (recovered) {
+                    failedZoneAsksMade = 0
+                    askAgainForFailedZones()
+                }
                 scheduleDataExpiry(response.meta, receivedAt = receivedAt, clockOffset = response.clockOffset)
                 expireParkingIfNeeded()
                 clearSelectionIfHidden()

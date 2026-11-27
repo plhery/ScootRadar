@@ -31,6 +31,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -180,6 +181,39 @@ class ScooterMapZonesTest {
         advanceTimeBy(400)
         runCurrent()
         assertEquals(2, api.zoneAreas.size)
+    }
+
+    /**
+     * Offline a while, the scooters asked for every 10 seconds (ScooterRefresh's minimumAttemptGap) and the zones with
+     * them each time, more than the three times a failed answer is asked for again: once the network is back, the
+     * zones still come back with the scooters, not only when the map leaves the area (bug hunt, 27 November 2026).
+     */
+    @Test
+    fun zonesLostOfflineLongerThanThreeRefreshesComeBackWithTheScooters() = runTest {
+        val api = ZoneStubAPI()
+        api.setFailure(ScooterAPIError.Offline())
+        api.scooterFailure = ScooterAPIError.Offline()
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val failed = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Failed }
+        assertTrue(failed)
+        repeat(5) {
+            model.refresh()
+            advanceTimeBy(400)
+            runCurrent()
+            assertEquals(ScooterZoneState.Failed, model.zoneState.value)
+        }
+        assertEquals("Three times more while offline", 4, api.zoneAreas.size)
+        assertNotNull("the scooters failed too", model.loadIssue.value)
+
+        api.setFailure(null)
+        api.scooterFailure = null
+        model.refresh()
+        val shown = waitUntil { api.zoneAreas.size == 5 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue("Back online, the zones come with the scooters", shown)
+        assertNull(model.loadIssue.value)
+        assertEquals(2, model.mapZones.value.filter { it.provider != "city" }.size)
     }
 
     @Test
@@ -914,8 +948,12 @@ private class ZoneStubAPI(
 
     val zoneAreas: List<ScooterZoneArea> get() = areas.toList()
 
+    /** What the scooters fail with, as the zones with [setFailure]: offline, both. */
+    var scooterFailure: ScooterAPIError? = null
+
     override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumRange: Int): ScooterResponse {
         scootersAsked += 1
+        scooterFailure?.let { throw it }
         return ScooterResponse(vehicles = emptyList())
     }
 
