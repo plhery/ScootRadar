@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
@@ -64,10 +65,23 @@ fun MapCredits(
                 modifier = Modifier
                     // Out of sight, not even disabled: a disabled clickable is still hit, and the map under them would
                     // lose a pan or a tap begun there.
-                    .then(if (seen) Modifier.clickable(interaction, FocusRing(), role = Role.Button) { uri.openUri(page) } else Modifier)
+                    .then(if (seen) Modifier.clickable(interaction, FocusRing(), role = Role.Button) { open(uri, page) } else Modifier)
                     .padding(horizontal = TEXT_INSET.dp, vertical = 3.dp),
             )
         }
+    }
+}
+
+/**
+ * Opens a credit's [page], or does nothing on a phone where nothing opens a web address (browsers blocked on a work
+ * profile, or turned off): Compose's handler throws IllegalArgumentException there, which would stop the app. The
+ * Settings' links catch it the same way, and Compose's own links (the zones' credits) catch it themselves.
+ */
+private fun open(uri: UriHandler, page: String) {
+    try {
+        uri.openUri(page)
+    } catch (_: IllegalArgumentException) {
+        // Nothing on the phone opens a web address.
     }
 }
 
