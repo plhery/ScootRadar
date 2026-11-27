@@ -26,11 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScootRadar"
         tools:targetApi="tiramisu">
-        <!-- iOS never recreates the screen: rotation, a resized window, dark mode and a language chosen for the
-             app reach the screen as they are (X-AD17, PLAN §10). -->
+        <!-- iOS never recreates the screen: rotation, a resized window, dark mode, a language chosen for the app
+             and a keyboard plugged in reach the screen as they are (X-AD17, PLAN §10). -->
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|uiMode|locale|layoutDirection"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|locale|layoutDirection"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
