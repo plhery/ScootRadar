@@ -880,3 +880,25 @@ read refused as `unsafe-window`. Two changes since 02:20:
   eight-second fallback. A cold open that brings no map in 30 seconds is still tried
   again, as before.
 
+From 02:50 to 03:50 CET (no input on the Mac): WindowServer gained about 200 ports an
+hour (147 end to end, 197 fitted), about 4,700 a day against 39,500, for 38 opens of
+Ryde and no launch of Map Control; 551 warm refreshes were answered `ok` (20 of them
+after waking Ryde) and 4 refused as `home-map-or-minimize-unavailable`. The cache
+queued 594 reads and the worker completed 592 (2 failed, none expired), against 238 of
+268 in the hour to 02:15 (10 expired, 8 failed, 12 cancelled). The pace is the cache's
+as before, at most one read every five seconds: these were the groups left due by the
+outage of 26 November, and a working bridge read 540 to 566 an hour on 12, 18 and 21–22
+November.
+
+What is left, about 3.4 to 5 ports for each cold cycle:
+
+- About 40 cold cycles an hour around the clock, most of the 200 ports an hour above.
+  With jobs, the egress lease sends a read cold once fewer than 30 of its 150 seconds are
+  left; with none, the worker opens Ryde again every 90 seconds so that Ryde can renew
+  its session key, which it does only as it launches, at most every two minutes (all
+  eleven renewals from 02:50 to 03:50 came 1 to 12 seconds after an open). Fewer would
+  space the renewals out, which is a question for the sign-in, not for this leak.
+- A refresh brings Ryde in front for a moment, so it waits for 15 seconds without input:
+  while someone uses the Mac, each read is cold. 26 November had 3,328 opens (165 to
+  320 an hour by day): 11,000 to 17,000 ports in a day like it, against 39,500.
+
