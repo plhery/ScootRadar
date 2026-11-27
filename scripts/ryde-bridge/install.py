@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import re
 
 FILES=['producer_addon.py','producer_runner.py','native_protocol.py','bridge_crypto.py','worker.py','shadow.py','egress.py','egress_addon.py']
@@ -26,9 +27,20 @@ def install_map_control(root):
         subprocess.run(['swiftc',str(Path(__file__).parent/'RydeMapControl.swift'),'-o',str(binary)],check=True)
         subprocess.run(['codesign','--force','--sign',match[1],str(app)],check=True,capture_output=True)
         subprocess.run(['codesign','--verify','--strict',str(app)],check=True,capture_output=True)
+        # The worker's resident Map Control runs the app being replaced: it is stopped, and the worker kept from
+        # starting it again until the new app is in place; it then starts the new one at its next command.
+        from worker import map_control_running,save,stop_map_control
+        base=root/'producer';started=base/'map-control-started.json'
+        save(started,{'at':time.time()})
+        # Not in the middle of a command (the worker deletes each request once answered), which may have Ryde in front.
+        until=time.time()+20
+        while (base/'map-control-request.json').exists() and time.time()<until:time.sleep(.05)
+        stop_map_control(base)
+        if map_control_running(base):raise SystemExit('Ryde Map Control is still running; stop it, then install again')
         target=root/app.name
         if target.exists():shutil.rmtree(target)
         app.replace(target)
+        started.unlink(missing_ok=True)
     print('Installed signed Ryde Map Control; no permission was requested or granted.')
 
 def main():
@@ -51,7 +63,6 @@ def main():
     temp=agent.with_suffix('.tmp');temp.write_bytes(plistlib.dumps(value));temp.replace(agent)
     if args.restart:
         uid=str(os.getuid()); subprocess.run(['launchctl','bootout','gui/'+uid+'/com.scootradar.ryde-bridge'],check=True)
-        import time
         for attempt in range(20):
             result=subprocess.run(['launchctl','bootstrap','gui/'+uid,str(agent)],capture_output=True)
             if result.returncode==0: break

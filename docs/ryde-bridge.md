@@ -181,7 +181,15 @@ activating the existing Ryde process **with its window minimized**. Activation
 triggers the app's own fresh map request. No map pan, scooter selection, synthetic
 mouse/keyboard event or private API is needed. After publishing each result, the
 worker prepares the next read by minimizing and unhiding the home map without
-activation. Keeping this window unhidden but minimized avoids hard suspension.
+activation. Keeping this window unhidden but minimized avoids hard suspension. The
+helper sets the window's minimized attribute and, if the window has not minimized
+within a second, presses its minimize button, then waits up to three seconds for the
+window to report itself minimized. Until 27 November 2026 it only set the attribute and
+looked 0.1 seconds later: after a cold open Ryde's window stayed on screen, every warm
+read failed as `unsafe-window` and went cold, and the failure hid Ryde, so the next one
+failed the same way. The button minimizes it at once. `producer/map-control.jsonl`
+records how each read found or minimized the window (`minimizedBy`: `already`,
+`attribute` or `button`).
 
 Fast activation requires 15 seconds without keyboard or mouse activity, no held
 modifier or mouse button, an unlocked session, a single Ryde instance and the
@@ -197,22 +205,28 @@ Until 17 November 2026 the first failure disabled it: warm reads were off from
 14 November 10:27 CET, for one failed restoration, until they were turned on by hand.
 This is a desktop helper, not a promise of entirely background execution.
 
-Install it with `python3 scripts/ryde-bridge/install.py --map-control`. Its bundle is
+Install it with `python3 scripts/ryde-bridge/install.py --map-control`, which stops the
+running helper first. Its bundle is
 `~/.local/share/scootradar/ryde-bridge/Ryde Map Control.app`. The operator must grant
 macOS **Device Control and Data Access** (called Accessibility on older macOS)
 to this app. The OS permission is broader than its fixed Ryde-only commands;
-the worker never requests or grants permissions. It launches the signed bundle
-through LaunchServices, without activation of the helper itself, and exchanges
-nonce-bound, short-lived commands and replies in private files. A command-line
-child can otherwise be attributed to the worker rather than the approved app. Removing the enable flag or
+the worker never requests or grants permissions. The worker starts the signed bundle
+through LaunchServices (`serve`), without activation of the helper itself, and the
+helper stays running: it holds `producer/map-control.lock` for its life, which is how
+the worker knows it is up, and answers nonce-bound, short-lived commands in private
+files, checking its permission for each. A command-line child can otherwise be
+attributed to the worker rather than the approved app. A helper that gives no answer
+within 15 seconds is stopped, and the worker starts it at most once every 10 minutes;
+one it cannot stop is not asked again for 10 minutes. Reads are cold in the meantime.
+A refresh stopped before its answer may have left Ryde in front, so it pauses fast
+activation as a failed restoration does. Removing the enable flag or
 revoking permission restores normal hidden restarts. No App Store update is needed.
 
 Opening the helper app pauses fast activation for five minutes, for example before
 screen sharing; normal collection continues by the restart path. The same pause is
 available with its executable's `pause` command, or set `pausedUntil` in the control
-file. `status` reports permission and idle eligibility; the worker asks it for the
-permission only every 10 minutes, and reads the screen lock, Ryde's processes and the idle
-time itself (WindowServer's port table, below). `show` is operator-only and
+file. `status` reports permission and idle eligibility, and the worker asks it before
+each warm read. `show` is operator-only and
 unminimizes Ryde; pause collection first if inspecting its UI. A separate Space or
 monitor is unnecessary, and should not be relied on to isolate global app focus.
 
@@ -787,7 +801,8 @@ It gives the worker's state and hold with its reason, the maps of the last hour,
 Ryde's process, any Ryde launchd job left with no process, the launches of the last
 hour and the last lifecycle event, the session, the proxy, the egress pool's
 rolling hour, refusal hold and cooling IPs, warm reads (on, paused or off, and why),
-Map Control's launches of the last hour by answer, WindowServer's Mach ports as the
+whether Map Control is serving and since when, its answers and starts of the last hour,
+WindowServer's Mach ports as the
 worker last read them, and when the certificate expires and collection stops for its
 renewal.
 
@@ -825,12 +840,9 @@ with the request; `producer/map-control.jsonl` now keeps each answer.
 
 Since then:
 
-- The worker reads whether a warm read could run (screen lock, one Ryde process, 15
-  seconds without keyboard or mouse input) from `ryde-lifecycle status` and IOKit's
-  `HIDIdleTime`, neither of which connects to WindowServer, and asks Map Control for its
-  permission only every 10 minutes. It no longer prepares Ryde right after a cold open,
-  nor after a warm read that left it minimized, nor while the desktop is busy. That is
-  one Map Control launch for a warm read and at most one for a cold one.
+- Map Control is no longer launched for each command: it stays running and answers
+  the worker (27 November, below). The worker no longer prepares Ryde right after a cold
+  open, nor after a warm read that left it minimized.
 - Every minute it reads WindowServer's port count (`top`, kept in
   `producer/windowserver.json`). From 200,000 it launches nothing and holds itself off
   as WindowServerPorts. The cache tells Sentry after 10 minutes ("the Mac's WindowServer
@@ -838,11 +850,22 @@ Since then:
   starts a new WindowServer, and the worker goes on by itself.
 - Three abnormal exits within 60 seconds of each other hold it off for 15 minutes as
   AbnormalExits, which the cache reports the same way. These are a crash report of Ryde
-  or Map Control, a Map Control run that ended with no reply, and a quit or open of Ryde
-  that failed. Map Control's routine refusals are not counted.
+  or Map Control, and a quit or open of Ryde that failed. Map Control's routine refusals
+  are not counted.
 
-Ryde's own cold cycles, about 250 an hour by day, now leave most of the ports: some
-20,000 to 30,000 a day, enough to reach 200,000 within one to two weeks of a login.
-A Map Control kept running between reads would remove the remaining Map Control launches.
-Fewer cold reads would mean fewer maps, which is the user's call.
+### 27 November: one Map Control, and warm reads that work
+
+That still left Ryde's cold cycles, 200 to 300 an hour, day and night, and a Map Control
+launch for nearly every one: at 01:52–02:15 CET WindowServer gained 1,650 ports an hour
+for 292 opens of Ryde and 595 launches of Map Control an hour, with almost every warm
+read refused as `unsafe-window`. Two changes since 02:20:
+
+- Map Control runs once and stays up (`serve`), answering every command; the worker
+  starts it again only if it stops, at most once every 10 minutes (warm reads, above). A
+  helper that answers costs WindowServer nothing per command.
+- It presses Ryde's minimize button when the minimized attribute does not take (warm
+  reads, above), so after a cold open the next read is warm. A cold cycle now comes only
+  when a warm read is refused: the egress lease, which ends 150 seconds after each cold
+  launch and needs 30 seconds left; a busy desktop (input within 15 seconds), a locked
+  screen or a refused activation; or the eight-second fallback.
 

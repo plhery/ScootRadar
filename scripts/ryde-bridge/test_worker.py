@@ -1,16 +1,19 @@
 """Regression for the quit/claim race, with all app control mocked."""
+import fcntl
 import io
 import itertools
 import json
 import os
 from pathlib import Path
+import signal
 import subprocess
 import tempfile
+import threading
 import unittest
 import uuid
 from unittest.mock import patch
 from worker import relaunch,save,wait_interval,query,serve,warm_available,warm_helper,prepare_warm,run_map_control,JobDeadline,LaunchFailed,\
-    note_warm_restoration,prune,journal,status_report,desktop,windowserver_ports,new_crash_reports
+    note_warm_restoration,prune,journal,status_report,windowserver_ports,new_crash_reports
 import worker
 import time
 import urllib.error
@@ -22,117 +25,161 @@ class WorkerTests(unittest.TestCase):
         job={'version':1,'id':'a'*32,'cityId':43,'latitude':59.744,'longitude':10.205,'radius':1,'expiresAt':time.time()+120}
         return root,base,job
 
-    def test_map_control_uses_launchservices_and_accepts_only_its_nonce_reply(self):
+    class Resident:
+        """Map Control's serve mode, in a thread: holds the lock and answers each new request with the next reply."""
+        def __init__(self,base,replies):
+            self.base=base;self.replies=list(replies);self.requests=[];self.lock=None;self.done=threading.Event()
+            self.thread=threading.Thread(target=self.serve,daemon=True)
+        def start(self,*_args,**_kwargs):
+            self.lock=os.open(self.base/'map-control.lock',os.O_RDWR|os.O_CREAT,0o600);fcntl.flock(self.lock,fcntl.LOCK_EX)
+            save(self.base/'map-control-ready.json',{'pid':4242,'startedAt':time.time()})
+            self.thread.start()
+        def stop(self):
+            self.done.set()
+            if self.lock is not None:os.close(self.lock);self.lock=None
+        def serve(self):
+            handled=None
+            while not self.done.wait(.01):
+                try:request=json.loads((self.base/'map-control-request.json').read_text())
+                except (FileNotFoundError,ValueError):continue
+                if request['id']==handled:continue
+                handled=request['id'];self.requests.append(request)
+                if self.replies:
+                    (self.base/'map-control-results').mkdir(exist_ok=True)
+                    save(self.base/'map-control-results'/f"{request['id']}.json",self.replies.pop(0))
+
+    def test_map_control_is_started_once_through_launchservices_and_then_asked(self):
+        # Until 27 November 2026 the worker launched Map Control for each command, and WindowServer kept a
+        # Mach port for each launch; on 26 November its full port table ended the user's session.
         with tempfile.TemporaryDirectory() as name:
-            root,base,_=self.warm_root(name)
-            def launch(command,**kwargs):
-                self.assertEqual(command[:4],['/usr/bin/open','-n','-g','-W'])
-                self.assertEqual(command[4],str(root/'Ryde Map Control.app'))
-                self.assertEqual(command[5:7],['--args','run'])
-                request=json.loads((base/'map-control-request.json').read_text())
-                self.assertEqual(request['id'],command[7]);self.assertEqual(request['action'],'status')
-                self.assertLessEqual(request['expiresAt'],time.time()+12)
-                (base/'map-control-results').mkdir()
-                save(base/'map-control-results'/f"{request['id']}.json",{'trusted':True})
-            with patch('worker.subprocess.run',side_effect=launch):
-                self.assertEqual(run_map_control(root,'status'),{'trusted':True})
+            root,base,_=self.warm_root(name);opened=[]
+            resident=self.Resident(base,[{'trusted':True},{'prepared':True,'minimizedBy':'button','minimizePress':0},
+                {'error':'unsafe-window','minimizedBy':'attribute','minimized':False,'hidden':False,'focusRestored':True},{'error':'permission-required'}])
+            def run(command,**kwargs):
+                opened.append(command);resident.start()
+                return subprocess.CompletedProcess(command,0,stdout='')
+            try:
+                with patch('worker.subprocess.run',side_effect=run):
+                    self.assertEqual(run_map_control(root,'status'),{'trusted':True})
+                    self.assertEqual(run_map_control(root,'prepare'),{'prepared':True,'minimizedBy':'button','minimizePress':0})
+                    for _ in range(2):
+                        with self.assertRaises(ValueError):run_map_control(root,'refresh')
+            finally:resident.stop()
+            self.assertEqual(opened,[['/usr/bin/open','-n','-g',str(root/'Ryde Map Control.app'),'--args','serve']])
+            self.assertEqual([r['action'] for r in resident.requests],['status','prepare','refresh','refresh'])
+            for request in resident.requests:self.assertLessEqual(request['expiresAt'],time.time()+12)
+            self.assertEqual(len({r['id'] for r in resident.requests}),4)
             self.assertEqual(list((base/'map-control-results').iterdir()),[])
+            self.assertFalse((base/'map-control-request.json').exists())
+            events=[json.loads(line) for line in (base/'map-control.jsonl').read_text().splitlines()]
+            self.assertEqual([(e['action'],e['answer']) for e in events],[('start','serving'),('status','ok'),('prepare','ok'),
+                ('refresh','unsafe-window'),('refresh','permission-required')])
+            # How Ryde's window was minimized, or why it was not.
+            self.assertEqual(events[2]['minimizedBy'],'button');self.assertEqual(events[2]['minimizePress'],0)
+            self.assertEqual({k:events[3].get(k) for k in ['minimizedBy','minimized','hidden','focusRestored']},
+                {'minimizedBy':'attribute','minimized':False,'hidden':False,'focusRestored':None})
             with self.assertRaises(ValueError):run_map_control(root,'show')
 
-    def test_map_control_does_not_reuse_a_stale_permission_reply(self):
+    def test_a_map_control_that_cannot_be_stopped_is_not_waited_on_for_ten_minutes(self):
         with tempfile.TemporaryDirectory() as name:
-            root,base,_=self.warm_root(name);(base/'map-control-results').mkdir()
-            save(base/'map-control-results'/('a'*32+'.json'),{'trusted':True})
-            with patch('worker.subprocess.run'):
-                with self.assertRaises(FileNotFoundError):run_map_control(root,'status')
+            root,base,_=self.warm_root(name);self.addCleanup(setattr,worker,'map_control_unstoppable',0.0)
+            resident=self.Resident(base,[]);resident.start();(base/'map-control-ready.json').unlink()
+            try:
+                with patch('worker.MAP_CONTROL_REPLY',.3),patch('worker.os.kill') as kill:
+                    with self.assertRaisesRegex(ValueError,'no reply'):run_map_control(root,'status')
+                    kill.assert_not_called()
+                    began=time.time()
+                    with self.assertRaisesRegex(ValueError,'could not be stopped'):run_map_control(root,'status')
+                    self.assertLess(time.time()-began,.2)
+                    worker.map_control_unstoppable-=600
+                    with self.assertRaisesRegex(ValueError,'no reply'):run_map_control(root,'status')
+            finally:resident.stop()
+            answers=[e['answer'] for e in map(json.loads,(base/'map-control.jsonl').read_text().splitlines())]
+            self.assertEqual(answers,['no-reply','unstoppable','no-reply'])
 
-    READY={'locked':False,'singleInstance':True,'idleSeconds':60.0}
+    def test_a_refresh_stopped_before_its_answer_pauses_warm_reads(self):
+        # It may have left Ryde in front of the user's app.
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name)
+            save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
+            resident=self.Resident(base,[]);resident.start()
+            try:
+                with patch('worker.MAP_CONTROL_REPLY',.3),patch('worker.stop_map_control',side_effect=lambda _base:resident.stop()):
+                    with self.assertRaisesRegex(ValueError,'no reply'):run_map_control(root,'refresh')
+            finally:resident.stop()
+            control=json.loads((base/'warm-control.json').read_text())
+            self.assertEqual(control['restorationFailures'],1);self.assertGreater(control['pausedUntil'],time.time()+3500)
+
+    def test_a_silent_map_control_is_stopped_and_started_again_at_most_every_ten_minutes(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name);worker.abnormal.clear()
+            resident=self.Resident(base,[]);resident.start();killed=[];opened=[]
+            def run(command,**kwargs):
+                if command[0]=='/bin/ps':
+                    self.assertEqual(command,['/bin/ps','-p','4242','-o','comm='])
+                    return subprocess.CompletedProcess(command,0,stdout=str(root/'Ryde Map Control.app/Contents/MacOS/RydeMapControl')+'\n')
+                opened.append(command);return subprocess.CompletedProcess(command,0,stdout='')
+            def kill(pid,number):killed.append((pid,number));resident.stop()
+            try:
+                with patch('worker.MAP_CONTROL_REPLY',.3),patch('worker.subprocess.run',side_effect=run),patch('worker.os.kill',side_effect=kill):
+                    with self.assertRaisesRegex(ValueError,'no reply'):run_map_control(root,'status')
+                    self.assertEqual(killed,[(4242,signal.SIGTERM)])
+                    save(base/'map-control-started.json',{'at':time.time()-590})
+                    with self.assertRaisesRegex(ValueError,'not running'):run_map_control(root,'refresh')
+                    self.assertEqual(opened,[])
+                    save(base/'map-control-started.json',{'at':time.time()-610})
+                    resident=self.Resident(base,[{'dispatched':True}]);opens=lambda command,**kwargs:(opened.append(command),resident.start())
+                    with patch('worker.subprocess.run',side_effect=opens):
+                        self.assertEqual(run_map_control(root,'refresh'),{'dispatched':True})
+                    self.assertEqual(len(opened),1);resident.stop()
+                    # Not started again until ten minutes after that start.
+                    with self.assertRaisesRegex(ValueError,'not running'):run_map_control(root,'refresh')
+                    self.assertEqual(len(opened),1)
+            finally:resident.stop()
+            answers=[(e['action'],e['answer']) for e in map(json.loads,(base/'map-control.jsonl').read_text().splitlines())]
+            self.assertEqual(answers,[('status','no-reply'),('refresh','not-running'),('start','serving'),('refresh','ok'),('refresh','not-running')])
+            self.assertEqual(worker.abnormal,[])
+
+    def test_only_map_control_is_stopped(self):
+        with tempfile.TemporaryDirectory() as name:
+            root,base,_=self.warm_root(name)
+            save(base/'map-control-ready.json',{'pid':4242,'startedAt':time.time()})
+            with patch('worker.subprocess.run',return_value=subprocess.CompletedProcess([],0,stdout='/usr/bin/caffeinate\n')), \
+                 patch('worker.os.kill') as kill:
+                worker.stop_map_control(base)
+            kill.assert_not_called()
 
     def test_warm_admission_requires_opt_in_idle_permission_and_eligible_route(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,_=self.warm_root(name)
             helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
-            with patch('worker.egress.warm_ready',return_value=True) as route,patch('worker.desktop',return_value=self.READY) as seen, \
-                 patch('worker.map_control_trusted',return_value=True) as trusted:
+            good={'trusted':True,'singleInstance':True,'idleEligible':True,'minimizedRefresh':True,'locked':False}
+            with patch('worker.egress.warm_ready',return_value=True) as route,patch('worker.run_map_control') as run:
                 self.assertFalse(warm_available(root));route.assert_not_called()
                 save(base/'warm-control.json',{'enabled':True})
                 self.assertFalse(warm_available(root));route.assert_not_called()
                 save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle','pausedUntil':time.time()+300})
                 self.assertFalse(warm_available(root));route.assert_not_called()
                 save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
+                run.return_value=good
                 self.assertTrue(warm_available(root))
-                for key,value in [('locked',True),('singleInstance',False),('idleSeconds',14.9)]:
-                    seen.return_value={**self.READY,key:value}
+                for key in good:
+                    run.return_value={**good,key:not good[key]}
                     self.assertFalse(warm_available(root),key)
-                seen.return_value=self.READY;trusted.return_value=False
+                run.side_effect=ValueError('Map Control is not running')
                 self.assertFalse(warm_available(root))
-                route.return_value=False;seen.reset_mock()
-                self.assertFalse(warm_available(root));seen.assert_not_called()
-
-    def test_a_busy_desktop_launches_no_map_control_and_permission_is_asked_every_ten_minutes(self):
-        # Each launch of Map Control left a Mach port in WindowServer, whose full port table ended the
-        # user's session on 26 November 2026; a read asked it first whether a warm read could run.
-        with tempfile.TemporaryDirectory() as name:
-            root,base,_=self.warm_root(name);clock=[1000.0]
-            helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
-            save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
-            def status(_root,action):
-                self.assertEqual(action,'status')
-                save(base/'map-control-trust.json',{'at':clock[0],'trusted':True});return {'trusted':True}
-            with patch('worker.egress.warm_ready',return_value=True),patch('worker.desktop',return_value={**self.READY,'idleSeconds':3.0}) as seen, \
-                 patch('worker.run_map_control',side_effect=status) as run,patch('worker.time.time',side_effect=lambda:clock[0]):
-                for _ in range(5):self.assertFalse(warm_available(root))
-                run.assert_not_called()
-                seen.return_value=self.READY
-                self.assertTrue(warm_available(root));self.assertTrue(warm_available(root));self.assertEqual(run.call_count,1)
-                clock[0]+=599;self.assertTrue(warm_available(root));self.assertEqual(run.call_count,1)
-                clock[0]+=1;self.assertTrue(warm_available(root));self.assertEqual(run.call_count,2)
-            admission=json.loads((base/'last-warm-admission.json').read_text())
-            self.assertEqual(admission['helper'],{'trusted':True,'singleInstance':True,'idleEligible':True,'minimizedRefresh':True,'locked':False})
-
-    def test_the_desktop_is_read_without_a_windowserver_connection(self):
-        with tempfile.TemporaryDirectory() as name:
-            root=Path(name)
-            def run(command,**kwargs):
-                if command[0]==str(root/'ryde-lifecycle'):
-                    self.assertEqual(command[1:],['status'])
-                    return subprocess.CompletedProcess(command,0,stdout='{"hidden":[true],"locked":false,"pids":[812]}\n')
-                self.assertEqual(command[0],'/usr/sbin/ioreg')
-                return subprocess.CompletedProcess(command,0,stdout='+-o IOHIDSystem  <class IOHIDSystem>\n    "HIDIdleTime" = 16500000000\n')
-            with patch('worker.subprocess.run',side_effect=run):
-                self.assertEqual(desktop(root),{'locked':False,'singleInstance':True,'idleSeconds':16.5})
-
-    def test_map_control_answers_are_kept_and_a_missing_reply_is_abnormal(self):
-        with tempfile.TemporaryDirectory() as name:
-            root,base,_=self.warm_root(name);worker.abnormal.clear()
-            replies=[{'trusted':True},{'error':'desktop-busy'},{'error':'permission-required'}]
-            def launch(command,**kwargs):
-                (base/'map-control-results').mkdir(exist_ok=True)
-                save(base/'map-control-results'/f'{command[7]}.json',replies.pop(0))
-            with patch('worker.subprocess.run',side_effect=launch):
-                run_map_control(root,'status')
-                self.assertTrue(json.loads((base/'map-control-trust.json').read_text())['trusted'])
-                for _ in range(2):
-                    with self.assertRaises(ValueError):run_map_control(root,'refresh')
-            self.assertFalse(json.loads((base/'map-control-trust.json').read_text())['trusted'])
-            with patch('worker.subprocess.run',side_effect=subprocess.TimeoutExpired('open',8)):
-                with self.assertRaises(subprocess.TimeoutExpired):run_map_control(root,'prepare')
-            answers=[json.loads(line)['answer'] for line in (base/'map-control.jsonl').read_text().splitlines()]
-            self.assertEqual(answers,['ok','desktop-busy','permission-required','no-reply'])
-            self.assertEqual([what for _,what in worker.abnormal],['Map Control gave no reply'])
+                self.assertEqual(json.loads((base/'last-warm-admission.json').read_text())['reason'],'helper-unavailable')
+                route.return_value=False;run.reset_mock()
+                self.assertFalse(warm_available(root));run.assert_not_called()
 
     def test_prepare_failure_does_not_invalidate_an_already_published_map(self):
         with tempfile.TemporaryDirectory() as name:
             root,base,_=self.warm_root(name)
             helper=warm_helper(root);helper.parent.mkdir(parents=True);helper.touch()
             save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle'})
-            with patch('worker.run_map_control',side_effect=subprocess.TimeoutExpired('prepare',3)) as run, \
-                 patch('worker.desktop',return_value=self.READY) as seen:
+            with patch('worker.run_map_control',side_effect=ValueError('Map Control gave no reply')) as run:
                 prepare_warm(root)
-                self.assertEqual(run.call_args.args[1],'prepare')
-                # Only a desktop that would let the next read be warm is worth a Map Control launch.
-                run.reset_mock();seen.return_value={**self.READY,'idleSeconds':2.0}
-                prepare_warm(root);run.assert_not_called()
+            self.assertEqual(run.call_args.args[1],'prepare')
 
     def test_a_cold_read_does_not_ask_map_control_before_ryde_has_a_window(self):
         with tempfile.TemporaryDirectory() as name:
@@ -529,17 +576,17 @@ class ServeTests(unittest.TestCase):
 
     def test_three_abnormal_exits_within_a_minute_hold_the_worker_off_for_15_minutes(self):
         def burst():
-            for what in ['Map Control gave no reply']*2+['Ryde did not open']:worker.note_abnormal(what)
+            for what in ['Ryde did not quit']*2+['Ryde did not open']:worker.note_abnormal(what)
             raise TimeoutError('No fresh native map within worker timeout')
         waits=self.run_serve(['job',None,'job',None],[burst,'ok'],3)
         # The failed read's minute, then 15 minutes: longer than the cache's 10 minutes before Sentry.
         self.assertEqual(waits,[60,900,0]);self.assertEqual(self.held,['AbnormalExits'])
-        self.assertIn('3 within 60 s: Map Control gave no reply; Map Control gave no reply; Ryde did not open',self.told[0][1])
+        self.assertIn('3 within 60 s: Ryde did not quit; Ryde did not quit; Ryde did not open',self.told[0][1])
         self.assertEqual(worker.abnormal,[])
 
     def test_two_abnormal_exits_are_no_hold(self):
         def two():
-            for _ in range(2):worker.note_abnormal('Map Control gave no reply')
+            for _ in range(2):worker.note_abnormal('Ryde did not quit')
             raise TimeoutError('No fresh native map within worker timeout')
         self.assertEqual(self.run_serve(['job',None,'job',None],[two,'ok'],2),[60,0]);self.assertEqual(self.held,[])
 
@@ -614,7 +661,10 @@ class HousekeepingTests(unittest.TestCase):
             save(base/'warm-control.json',{'enabled':True,'mode':'minimized-idle','pausedUntil':1500})
             save(root/'config.json',{'certificateExpiresTimestamp':1000+16*86400})
             save(base/'windowserver.json',{'at':990,'pid':34725,'ports':4658})
+            journal(base/'map-control.jsonl',{'at':400,'action':'start','answer':'serving'})
             for at,answer in [(-2700,'ok'),(500,'ok'),(600,'desktop-busy'),(700,'ok')]:journal(base/'map-control.jsonl',{'at':at,'action':'refresh','answer':answer})
+            save(base/'map-control-ready.json',{'pid':4242,'startedAt':400})
+            lock=os.open(base/'map-control.lock',os.O_RDWR|os.O_CREAT,0o600);fcntl.flock(lock,fcntl.LOCK_EX);self.addCleanup(os.close,lock)
             listed='PID\tStatus\tLabel\n42\t0\tcom.scootradar.ryde-worker\n-\t0\tapplication.com.ryde.NewRyde.1.2\n'
             before=sorted(p.name for p in root.rglob('*'))
             with patch('worker.subprocess.run',return_value=subprocess.CompletedProcess([],0,stdout=listed)):
@@ -623,7 +673,8 @@ class HousekeepingTests(unittest.TestCase):
             self.assertIn('held: LaunchFailed until',report);self.assertIn('CalledProcessError: 37',report)
             self.assertIn('1 launchd job(s) left with no process',report);self.assertIn('paused until',report)
             self.assertIn('collection stops for its renewal',report)
-            self.assertIn('Map Control   3 launches in the last hour (2 ok, 1 desktop-busy)',report)
+            self.assertIn('Map Control   serving since',report)
+            self.assertIn('(pid 4242); 3 answers in the last hour (2 ok, 1 desktop-busy); started 1 time(s) in the last hour',report)
             self.assertIn('WindowServer  4658 Mach ports',report);self.assertIn('launches nothing from 200000',report)
 
 if __name__=='__main__':unittest.main()

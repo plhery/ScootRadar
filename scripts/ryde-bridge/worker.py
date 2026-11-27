@@ -12,6 +12,7 @@ import http.client
 import uuid
 import math
 import re
+import signal
 import sqlite3
 import egress
 
@@ -62,19 +63,22 @@ WARM_FAILURES_BEFORE_OFF=3
 WINDOWSERVER_PORTS_STOP=200_000
 WINDOWSERVER_CHECK_EVERY=60
 WINDOWSERVER_PORTS_LIMIT=305_834
-# Ryde's or Map Control's crash reports, Map Control runs that ended with no reply, and quits or opens of
-# Ryde that failed: ABNORMAL_EXITS of them within ABNORMAL_WINDOW hold the worker off for ABNORMAL_HOLD,
-# longer than the 10 minutes of silence after which the cache tells Sentry (RYDE_WORKER_SILENT_MS). Map
-# Control's routine answers (a busy desktop, no map on screen) exit 4 with a reply and are not counted:
-# 239 of them from 16:00 to 16:20 that day, which loginwindow logs as kLSNotifyApplicationAbnormalDeath.
+# Ryde's or Map Control's crash reports, and quits or opens of Ryde that failed: ABNORMAL_EXITS of them
+# within ABNORMAL_WINDOW hold the worker off for ABNORMAL_HOLD, longer than the 10 minutes of silence after
+# which the cache tells Sentry (RYDE_WORKER_SILENT_MS).
 ABNORMAL_EXITS=3
 ABNORMAL_WINDOW=60
 ABNORMAL_HOLD=15*60
 CRASH_REPORTS=Path.home()/'Library/Logs/DiagnosticReports'
-# Whether a warm read could run is read without Map Control (desktop); its Accessibility permission is
-# asked again after TRUST_RECHECK. IDLE_THRESHOLD is RydeMapControl.swift's idleThreshold.
-TRUST_RECHECK=600
-IDLE_THRESHOLD=15
+# Map Control stays running (serve) and answers each command within MAP_CONTROL_REPLY seconds; one that does
+# not is stopped, and it is started at most once every MAP_CONTROL_RESTART, so a helper that keeps dying costs
+# WindowServer a port every 10 minutes, not one a read. One that cannot be stopped is not asked again for
+# MAP_CONTROL_RESTART, rather than waited on for each command. In the meantime reads are cold. A refresh takes
+# up to about 7 seconds (RydeMapControl.swift), and one stopped before its answer may have left Ryde in front:
+# it pauses warm reads as a bad restoration does.
+MAP_CONTROL_REPLY=15
+MAP_CONTROL_RESTART=600
+map_control_unstoppable=0.0 # when a silent Map Control last could not be stopped
 abnormal=[] # (at, what): the abnormal exits serve's guard counts
 # While held, the worker tells the cache why once a minute, so its report of the silence says.
 STATUS_EVERY=60
@@ -151,57 +155,96 @@ def warm_helper(root):
 def note_abnormal(what):
     abnormal.append((time.time(),what));del abnormal[:-20]
 
+def map_control_running(base):
+    """Whether the resident Map Control holds its lock (RydeMapControl.swift's holdServeLock), read
+    without a process: a probe that takes the lock shared gives it back at once."""
+    try:descriptor=os.open(base/'map-control.lock',os.O_RDONLY)
+    except FileNotFoundError:return False
+    try:
+        fcntl.flock(descriptor,fcntl.LOCK_SH|fcntl.LOCK_NB)
+        fcntl.flock(descriptor,fcntl.LOCK_UN)
+        return False
+    except BlockingIOError:return True
+    finally:os.close(descriptor)
+
+def map_control_pid(base):
+    """The resident Map Control's pid, if that process is Map Control's, else None."""
+    try:
+        pid=json.loads((base/'map-control-ready.json').read_text())['pid']
+        if type(pid) is not int or pid<=1:return None
+        name=subprocess.run(['/bin/ps','-p',str(pid),'-o','comm='],capture_output=True,text=True,timeout=5).stdout.strip()
+        return pid if name.endswith('/RydeMapControl') else None
+    except (FileNotFoundError,ValueError,KeyError,TypeError,subprocess.SubprocessError,OSError):return None
+
+def stop_map_control(base):
+    """Stops a resident Map Control that did not answer: asked to quit, then killed after 2 seconds."""
+    pid=map_control_pid(base)
+    if pid is None:return
+    for signal_number in [signal.SIGTERM,signal.SIGKILL]:
+        try:os.kill(pid,signal_number)
+        except ProcessLookupError:return
+        until=time.time()+2
+        while time.time()<until:
+            if not map_control_running(base):return
+            time.sleep(.05)
+
+def start_map_control(root):
+    """Starts the resident Map Control (serve) through LaunchServices, so it runs under its own Accessibility
+    permission (run as the worker's child, it would be the worker's), at most once every MAP_CONTROL_RESTART."""
+    base=root/'producer'
+    try:last=float(json.loads((base/'map-control-started.json').read_text())['at'])
+    except (FileNotFoundError,ValueError,KeyError,TypeError):last=0
+    if 0<=time.time()-last<MAP_CONTROL_RESTART:return False
+    save(base/'map-control-started.json',{'at':time.time()})
+    serving=False
+    try:
+        subprocess.run(['/usr/bin/open','-n','-g',str(root/'Ryde Map Control.app'),'--args','serve'],
+            check=True,capture_output=True,text=True,timeout=10)
+        until=time.time()+5
+        while not (serving:=map_control_running(base)) and time.time()<until:time.sleep(.1)
+    except (subprocess.SubprocessError,OSError):pass
+    journal(base/'map-control.jsonl',{'at':time.time(),'action':'start','answer':'serving' if serving else 'not-serving'})
+    return serving
+
 def run_map_control(root,action):
+    """One command for the resident Map Control, started if it is not running: its reply, or ValueError."""
+    global map_control_unstoppable
     if action not in {'status','refresh','prepare'}:raise ValueError('Unsupported map control action')
     base=root/'producer';nonce=uuid.uuid4().hex
-    save(base/'map-control-request.json',{'id':nonce,'action':action,'expiresAt':time.time()+12})
-    path=base/'map-control-results'/f'{nonce}.json';answer='no-reply'
+    path=base/'map-control-results'/f'{nonce}.json';answer='no-reply';minimizing={}
     try:
-        # Running the executable as a CLI attributes TCC access to the worker.
-        # Launch the signed app without activating it, using its own OS permission.
-        subprocess.run(['/usr/bin/open','-n','-g','-W',str(root/'Ryde Map Control.app'),'--args','run',nonce],
-            check=True,capture_output=True,text=True,timeout=8)
-        value=json.loads(path.read_text())
+        if 0<=time.time()-map_control_unstoppable<MAP_CONTROL_RESTART:
+            answer='unstoppable';raise ValueError('Map Control gave no reply and could not be stopped')
+        if not map_control_running(base) and not start_map_control(root):
+            answer='not-running';raise ValueError('Map Control is not running')
+        save(base/'map-control-request.json',{'id':nonce,'action':action,'expiresAt':time.time()+12})
+        until=time.time()+MAP_CONTROL_REPLY
+        while True:
+            try:value=json.loads(path.read_text());break
+            except (FileNotFoundError,ValueError):
+                if time.time()>=until:
+                    stop_map_control(base)
+                    if map_control_running(base):map_control_unstoppable=time.time()
+                    if action=='refresh':note_warm_restoration(base,{})
+                    raise ValueError('Map Control gave no reply') from None
+                time.sleep(.02)
         if not isinstance(value,dict):raise ValueError('Invalid map control result')
         answer=str(value.get('error','ok'))[:40]
-        if action=='status' and type(value.get('trusted')) is bool or answer=='permission-required':
-            save(base/'map-control-trust.json',{'at':time.time(),'trusted':value.get('trusted') is True})
+        minimizing={k:value[k] for k in ['minimizedBy','minimizeSet','minimizePress','minimized','hidden'] if type(value.get(k)) in (str,int,bool)}
         if 'error' in value:raise ValueError('Map control unavailable: '+str(value['error']))
         return value
     finally:
         path.unlink(missing_ok=True)
+        # A resident started later must not answer this request again.
+        (base/'map-control-request.json').unlink(missing_ok=True)
         # Why it declined, which the reply deleted above no longer says (26 November 2026).
-        journal(base/'map-control.jsonl',{'at':time.time(),'action':action,'answer':answer})
-        if answer=='no-reply':note_abnormal('Map Control gave no reply')
+        journal(base/'map-control.jsonl',{'at':time.time(),'action':action,'answer':answer,**minimizing})
 
 def warm_enabled(root):
     try:
         value=json.loads((root/'producer/warm-control.json').read_text())
         return value.get('enabled') is True and value.get('mode')=='minimized-idle'
     except (FileNotFoundError,ValueError,AttributeError):return False
-
-def desktop(root):
-    """Whether a warm read could run, read without launching Map Control: the screen lock and Ryde's
-    processes from ryde-lifecycle, and the seconds since the last keyboard or mouse input from IOKit.
-    Neither connects to WindowServer (WINDOWSERVER_PORTS_STOP): a ryde-lifecycle that read the idle time
-    as Map Control does, through CGEventSource, left a port in WindowServer each run."""
-    state=json.loads(subprocess.run([str(root/'ryde-lifecycle'),'status'],check=True,capture_output=True,text=True,timeout=5).stdout)
-    listed=subprocess.run(['/usr/sbin/ioreg','-c','IOHIDSystem','-r','-d','1','-k','HIDIdleTime'],
-        check=True,capture_output=True,text=True,timeout=5).stdout
-    idle=re.search(r'"HIDIdleTime" = (\d+)',listed)
-    if not idle:raise ValueError('IOHIDSystem gave no idle time')
-    return {'locked':state['locked'] is not False,'singleInstance':len(state['pids'])==1,'idleSeconds':int(idle[1])/1e9}
-
-def desktop_ready(state):
-    return not state['locked'] and state['singleInstance'] and state['idleSeconds']>=IDLE_THRESHOLD
-
-def map_control_trusted(root):
-    """Map Control's Accessibility permission as it last said, asked again after TRUST_RECHECK."""
-    try:
-        known=json.loads((root/'producer/map-control-trust.json').read_text())
-        if 0<=time.time()-known['at']<TRUST_RECHECK and type(known['trusted']) is bool:return known['trusted']
-    except (FileNotFoundError,ValueError,KeyError,TypeError):pass
-    return run_map_control(root,'status').get('trusted') is True
 
 def warm_available(root):
     base=root/'producer'
@@ -214,21 +257,16 @@ def warm_available(root):
         value=json.loads((base/'warm-control.json').read_text())
         if float(value.get('pausedUntil',0))>time.time():return observed(False,'operator-paused')
         if not egress.warm_ready(base):return observed(False,'route-lease-or-budget')
-        seen=desktop(root)
-        state={'singleInstance':seen['singleInstance'],'idleEligible':seen['idleSeconds']>=IDLE_THRESHOLD,
-            'minimizedRefresh':True,'locked':seen['locked']}
-        if not desktop_ready(seen):return observed(False,'desktop-or-permission',state)
-        state['trusted']=map_control_trusted(root)
-        return observed(state['trusted'],'ready' if state['trusted'] else 'desktop-or-permission',state)
-    except (subprocess.SubprocessError,ValueError,TypeError,OSError,AttributeError,KeyError):return observed(False,'helper-unavailable')
+        state=run_map_control(root,'status')
+        eligible=all(state.get(k) is True for k in ['trusted','singleInstance','idleEligible','minimizedRefresh']) and state.get('locked') is False
+        return observed(eligible,'ready' if eligible else 'desktop-or-permission',state)
+    except (subprocess.SubprocessError,ValueError,TypeError,OSError,AttributeError):return observed(False,'helper-unavailable')
 
 def prepare_warm(root):
-    """After a cold read is published, minimize the home map for the next read, without activation. Only
-    while the desktop would let that read be warm: each Map Control launch costs WindowServer a port."""
+    """After a cold read is published, minimize the home map for the next read, without activation."""
     if not warm_enabled(root) or not warm_helper(root).exists():return
-    try:
-        if desktop_ready(desktop(root)):run_map_control(root,'prepare')
-    except (subprocess.SubprocessError,OSError,ValueError,KeyError,TypeError):pass # Never invalidate a submitted map.
+    try:run_map_control(root,'prepare')
+    except (subprocess.SubprocessError,OSError,ValueError):pass # Never invalidate a submitted map.
 
 def windowserver_ports():
     """WindowServer's pid and how many Mach ports it holds (top), or None if they cannot be read."""
@@ -401,7 +439,7 @@ def query(job, root=ROOT, timeout=60):
         # Arm after termination: a spontaneous request just before quit must not claim
         # the next job and be cancelled by that very quit.
         # Not prepared here: Ryde has just been opened without its window yet, and Map Control declined
-        # (exit 4) after nearly every open, for a WindowServer port each. serve prepares it once published.
+        # (exit 4) after nearly every open. serve prepares it once the map is published.
         relaunch(root,lambda:save(base/'job.json',job))
         save(base/'last-trigger.json',{'mode':'restart','at':time.time()})
     retry_at=time.time()+30;retried=False;fallback_checked=not warm
@@ -650,17 +688,24 @@ def status_report(root=ROOT, now=None):
     if control.get('restorationFailures'):text+=f'; {control["restorationFailures"]} restoration failure(s) in a row'
     trigger=read(base/'last-trigger.json') or {}
     line('Warm reads',text+(f'; last trigger {trigger.get("mode")} {when(trigger.get("at"))}' if trigger else ''))
-    answers={}
+    answers={};starts=0
     try:
         with (base/'map-control.jsonl').open('rb') as handle:
             if handle.seek(max(0,handle.seek(0,2)-1_000_000)):handle.readline()
             for raw in handle:
                 try:event=json.loads(raw)
                 except ValueError:continue
-                if event.get('at',0)>now-3600:answers[event.get('answer')]=answers.get(event.get('answer'),0)+1
+                if not isinstance(event,dict) or not isinstance(event.get('at'),(int,float)) or event['at']<=now-3600:continue
+                if event.get('action')=='start':starts+=1
+                else:answers[event.get('answer')]=answers.get(event.get('answer'),0)+1
     except FileNotFoundError:pass
-    if answers:line('Map Control',f'{sum(answers.values())} launches in the last hour ('+
-        ', '.join(f'{n} {answer}' for answer,n in sorted(answers.items(),key=lambda item:-item[1]))+')')
+    ready=read(base/'map-control-ready.json')
+    if not isinstance(ready,dict):ready={}
+    text=(f'serving since {when(ready.get("startedAt"))} (pid {ready.get("pid")})' if map_control_running(base) else 'not running')
+    if answers:text+=f'; {sum(answers.values())} answers in the last hour ('+', '.join(
+        f'{n} {answer}' for answer,n in sorted(answers.items(),key=lambda item:-item[1]))+')'
+    if starts:text+=f'; started {starts} time(s) in the last hour'
+    if answers or starts or ready:line('Map Control',text)
     ports=read(base/'windowserver.json')
     if ports:line('WindowServer',f'{ports.get("ports")} Mach ports {when(ports.get("at"))} (pid {ports.get("pid")}); the worker '
         f'launches nothing from {WINDOWSERVER_PORTS_STOP}, and macOS ends the session at about {WINDOWSERVER_PORTS_LIMIT}')
