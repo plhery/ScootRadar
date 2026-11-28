@@ -1,6 +1,9 @@
 import { describe,expect,it } from 'vitest';
 import { checkRydeReference,scanRydeArea,withRydeAppCollectors,collectRydeArea,type RydeArea } from './rydeApp';
 import type { RydeQuery } from './rydeBridge';
+// Imported here, not in the test that reads every feed, so they compile as the file is collected and not on its clock.
+import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
+import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
 const area:RydeArea={id:'test',city:'Test',cityId:43,country:'NO',bounds:{south:59.74,north:59.741,west:10.2,east:10.201},
   rings:[[[59.74,10.2],[59.74,10.201],[59.741,10.201],[59.741,10.2]]],geometryEvidence:'fixture',coverageEvidence:'fixture',coverageValidated:false,uptimeEvidence:'',uptimeValidated:false,saturationCount:2,cellM:1000};
 const api=(scooters:{id:string;lat:number;lng:number}[])=>({query:async(q:RydeQuery)=>({version:1 as const,id:'a'.repeat(32),query:{...q,version:1 as const,id:'a'.repeat(32),expiresAt:200},observedAt:100,coverage:'unknown' as const,scooters})});
@@ -73,9 +76,7 @@ it('distinguishes intentionally filtered reference points from missing in-area s
   expect(checkRydeReference(area,[inside,outside],[inside,outside],[]).stationaryMissingEligible).toBe(1);
 });
 
-it('enables only catalogued groups through an explicit production pilot and leaves public feeds alone',async()=>{
-  const {independentCollectableFeeds}=await import('../src/lib/scooterFeeds');
-  const {REGIONAL_SCOOTER_SYSTEMS}=await import('../src/lib/regionalScooterSystems');
+it('enables only catalogued groups through an explicit production pilot and leaves public feeds alone',()=>{
   const feeds=independentCollectableFeeds();
   const groups=REGIONAL_SCOOTER_SYSTEMS.filter(s=>s.rydeAppArea);
   // A visitor has opened the first group's city within the week: its groups are swept every day, the others every three.
@@ -84,10 +85,14 @@ it('enables only catalogued groups through an explicit production pilot and leav
   expect(wrapped).toHaveLength(feeds.length);
   const DAY=24*60*60_000,midnight=Date.now()-Date.now()%DAY;
   const zones={NO:'Europe/Oslo',SE:'Europe/Stockholm',FI:'Europe/Helsinki',DE:'Europe/Berlin'} as Record<string,string>;
-  const hour=(at:number,timeZone:string)=>Number(new Intl.DateTimeFormat('en-GB',{timeZone,hour:'2-digit',hourCycle:'h23'}).format(at));
+  // One clock and one lookup a town and a feed, not one made for each of the 2,356 groups or a search of the 7,500 feeds:
+  // with the feeds compiled here, the test took 1.8 s in a full run and 3.9 s with two at once (28 November).
+  const clocks=new Map(Object.values(zones).map(timeZone=>[timeZone,new Intl.DateTimeFormat('en-GB',{timeZone,hour:'2-digit',hourCycle:'h23'})]));
+  const hour=(at:number,timeZone:string)=>Number(clocks.get(timeZone)!.format(at));
+  const byId=new Map(wrapped.map(f=>[f.id.slice(f.id.lastIndexOf(':')+1),f]));
   expect(new Set(groups.map(s=>s.rydeAppArea)).size).toBe(64);
   for(const system of groups){
-    const feed=wrapped.find(f=>f.id.endsWith(':'+system.id))!;
+    const feed=byId.get(system.id)!;
     expect(feed.paced).toBe(true);expect(feed.keepsIdleTurns).toBe(true);expect(feed.worker).toBeDefined();
     expect(feed.idleIntervalMs).toBe(3*DAY);
     const daily=feed.idleSooner!();

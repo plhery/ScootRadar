@@ -134,8 +134,10 @@ describe('Dott collection', () => {
   it('wires app collectors without replacing public feeds or treating gRPC as GBFS zones', () => {
     const definitions = independentCollectableFeeds();
     const withApp = withDottAppCollectors(definitions, REGIONAL_SCOOTER_SYSTEMS);
+    // By id, not a search of the 7,500 systems for each of the 7,500 feeds: that took 0.6 s alone and 2.3 s in a full run.
+    const systems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [system.id, system]));
     for (const [index, feed] of withApp.entries()) {
-      const app = REGIONAL_SCOOTER_SYSTEMS.find(system => feed.id.endsWith(`:${system.id}`))?.dottAppRegion;
+      const app = systems.get(feed.id.slice(feed.id.lastIndexOf(':') + 1))?.dottAppRegion;
       if (app) {
         expect(feed.collect).not.toBe(definitions[index].collect);
         expect(feed.host).toBe('rider.api.ridedott.com');

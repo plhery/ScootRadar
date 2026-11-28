@@ -71,11 +71,19 @@ describe('German and Italian scooter coverage', () => {
   it('keeps reviewed IDs, coordinates and country membership consistent', () => {
     expect(new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => system.id)).size).toBe(REGIONAL_SCOOTER_SYSTEMS.length);
     const areas = REGIONAL_SCOOTER_SYSTEMS.flatMap(system => serviceAreas(system).map(area => ({ system, area, town: regionalCityId(system, area) })));
+    // The areas of each town by centre: most of the 21,800 do not hold their own, and searching all of them for each
+    // took 0.6 s alone and past 5 s with two full runs at once (28 November).
+    const sharing = new Map<string, typeof areas>();
+    for (const entry of areas) {
+      const key = `${entry.town} ${entry.area.center.join()}`;
+      const list = sharing.get(key);
+      if (list) list.push(entry); else sharing.set(key, [entry]);
+    }
     for (const { system, area, town } of areas) {
       // An area at the edge of a town, as Ryde Stavanger's in Sandnes, at Forus, gives the
       // centre that the town's main area gives and holds.
-      const centred = boundsContainPoint(area.bounds, ...area.center) || areas.some(other => other.town === town &&
-        other.area.center.join() === area.center.join() && boundsContainPoint(other.area.bounds, ...area.center));
+      const centred = boundsContainPoint(area.bounds, ...area.center) || sharing.get(`${town} ${area.center.join()}`)!
+        .some(other => boundsContainPoint(other.area.bounds, ...area.center));
       expect(centred, `${system.id}: ${area.city}`).toBe(true);
       expect(system.id).toContain(`_${system.country.toLowerCase()}_`);
     }

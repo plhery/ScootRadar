@@ -21,7 +21,9 @@ describe('the cache deploy after CI', () => {
   });
 });
 
-describe('the branches CI moves', () => {
+// Each test runs git and node for real, some 45 processes: 2.3 s in a full run, past the default 5 s with two full
+// runs at once (28 November). Their time is the machine's to spawn them, as for the scraping check's (60 s).
+describe('the branches CI moves', { timeout: 30_000 }, () => {
   // A remote with main, production and production-cache at a first commit, and a clone of it.
   function repository() {
     const root = mkdtempSync(path.join(tmpdir(), 'deploy-after-ci-'));
