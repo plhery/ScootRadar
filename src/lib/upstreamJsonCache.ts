@@ -15,15 +15,31 @@ export function upstreamCacheEntriesFor(feeds: number): number {
   return Math.ceil(feeds * UPSTREAM_DOCUMENTS_PER_FEED * 1.2);
 }
 const DEFAULT_ERROR_RETRY_SECONDS = 15;
+// The longest a host's Retry-After keeps the cache from asking it again: a feed it holds back longer expires as usual.
+const MAX_RETRY_AFTER_MS = 60 * 60_000;
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 export class UpstreamHttpError extends Error {
-  /** `code`: the error an operator names in the body, as Dott's {"error":"Forbidden: ERR_REGION_OFFLINE"}. */
-  constructor(readonly status: number, readonly host: string, readonly code?: string) {
+  /**
+   * `code`: the error an operator names in the body, as Dott's {"error":"Forbidden: ERR_REGION_OFFLINE"}.
+   * `retryAt`: when a 429 or 503's Retry-After lets the host be asked again (retryAfterAt).
+   */
+  constructor(readonly status: number, readonly host: string, readonly code?: string, readonly retryAt?: number) {
     super(`GBFS request failed with HTTP ${status}${code ? ` (${code})` : ''}`);
     this.name = 'UpstreamHttpError';
   }
+}
+
+/**
+ * When a Retry-After header lets the host be asked again: in seconds or an HTTP date, at most an hour on
+ * (MAX_RETRY_AFTER_MS); nothing when it is missing, unreadable or not ahead of `now`.
+ */
+export function retryAfterAt(value: string | null | undefined, now: number): number | undefined {
+  const text = value?.trim();
+  if (!text) return undefined;
+  const at = /^\d{1,9}$/.test(text) ? now + Number(text) * 1000 : /[A-Za-z]/.test(text) ? Date.parse(text) : NaN;
+  return Number.isFinite(at) && at > now ? Math.min(at, now + MAX_RETRY_AFTER_MS) : undefined;
 }
 
 function safeUpstreamTarget(value: string): { host: string; path: string } {
@@ -116,6 +132,12 @@ export class UpstreamJsonCache {
   private readonly hostIntervals = new Map<string, number>();
   private readonly hostCaps = new Map<string, number>();
   private readonly nextRequests = new Map<string, number>();
+  /**
+   * A host that answered 429 or 503 with a Retry-After, until then, and that answer: its documents are not asked
+   * for meanwhile, and fail with it, or are served stale. Yoio's GBFS host refused Göttingen with 429 from 03:37
+   * UTC on 28 November 2026 for 7 to 15 minutes, until the feed expired (SCOOTRADAR-CACHE-6N).
+   */
+  private readonly hostHolds = new Map<string, UpstreamHttpError>();
   private readonly fetcher: Fetcher;
   private maxEntries: number;
   private readonly errorRetryMs: number;
@@ -200,6 +222,15 @@ export class UpstreamJsonCache {
   clear(): void {
     this.entries.clear();
     this.nextRequests.clear();
+    this.hostHolds.clear();
+  }
+
+  /** The answer holding `host` back, while its Retry-After lasts. */
+  private heldBy(host: string, now: number): UpstreamHttpError | undefined {
+    const held = this.hostHolds.get(host);
+    if (held && held.retryAt! > now) return held;
+    this.hostHolds.delete(host);
+    return undefined;
   }
 
   private async waitForHost(url: string): Promise<void> {
@@ -227,6 +258,8 @@ export class UpstreamJsonCache {
       let renewed = false;
       for (;;) {
         if (this.hostIntervals.size) await this.waitForHost(url);
+        const held = this.heldBy(new URL(url).hostname, this.now());
+        if (held) throw held;
         answered = false;
         const authorization = options.auth ? await options.auth.authorization() : undefined;
         this.requests[documentKind(options)]++;
@@ -245,7 +278,19 @@ export class UpstreamJsonCache {
         }
         if (!response.ok) {
           const body = await response.text().catch(() => '');
-          throw new UpstreamHttpError(response.status, new URL(url).hostname, /\bERR_[A-Z_]+\b/.exec(body)?.[0]);
+          const host = new URL(url).hostname;
+          const limited = response.status === 429 || response.status === 503;
+          const header = limited ? response.headers.get('retry-after') : null;
+          const error = new UpstreamHttpError(response.status, host, /\bERR_[A-Z_]+\b/.exec(body)?.[0],
+            limited ? retryAfterAt(header, this.now()) : undefined);
+          // A 429, and a 503 that says when to come back: whether the host says, which Yoio's 200s don't hint at
+          // (no rate-limit headers). A 503 alone, an outage's, is not logged here.
+          if (response.status === 429 || header !== null) {
+            console.warn(JSON.stringify({ event: 'upstream_rate_limited', ...safeUpstreamTarget(url), httpStatus: response.status,
+              retryAfter: header?.slice(0, 40) ?? null }));
+          }
+          if (error.retryAt !== undefined && error.retryAt > (this.heldBy(host, this.now())?.retryAt ?? 0)) this.hostHolds.set(host, error);
+          throw error;
         }
         try {
           data = await response.json() as T;
@@ -271,7 +316,7 @@ export class UpstreamJsonCache {
     } catch (error) {
       const failedAt = this.now();
       if (entry.hasValue && entry.staleUntil > failedAt) {
-        entry.retryAfter = failedAt + this.errorRetryMs;
+        entry.retryAfter = Math.max(failedAt + this.errorRetryMs, error instanceof UpstreamHttpError ? error.retryAt ?? 0 : 0);
         entry.failure = error;
         console.warn(JSON.stringify({
           event: 'upstream_stale_fallback',

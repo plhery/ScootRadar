@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { UpstreamJsonCache, upstreamCacheEntriesFor, type UpstreamJsonOptions } from '@/lib/upstreamJsonCache';
+import { retryAfterAt, UpstreamHttpError, UpstreamJsonCache, upstreamCacheEntriesFor, type UpstreamJsonOptions } from '@/lib/upstreamJsonCache';
 import { fetchedStatusObservedAt, statusObservedAt } from '@/lib/feedValidation';
 
 const options: UpstreamJsonOptions = {
@@ -390,4 +390,89 @@ describe('a host whose data may be kept 15 minutes', () => {
     fail!(new Error('upstream unavailable'));
     await expect(pending).rejects.toThrow('upstream unavailable');
   });
+});
+
+// SCOOTRADAR-CACHE-6N: Yoio's GBFS host answers 429 now and then, and its 200s carry no rate-limit headers.
+describe('a host that answers 429 or 503 with a Retry-After', () => {
+  const limited = (status: number, retryAfter?: string) => new Response('{}', { status,
+    headers: retryAfter === undefined ? {} : { 'Retry-After': retryAfter } });
+
+  it('is not asked again until then, by any of its documents, while other hosts are', async () => {
+    let now = 1_795_850_000_000;
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const asked: string[] = [];
+    let refuse = true;
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      asked.push(String(input));
+      return refuse && String(input).includes('yoio') ? limited(429, '120') : jsonResponse({ version: 1 });
+    });
+    const cache = new UpstreamJsonCache({ fetcher, now: () => now });
+    const goettingen = 'https://yoio.rideatom.com/gbfs/9/v3.0/vehicle_status';
+    const erfurt = 'https://yoio.rideatom.com/gbfs/159/v3.0/vehicle_status';
+    try {
+      const refused = await cache.fetch(goettingen, options).catch(error => error);
+      expect(refused).toBeInstanceOf(UpstreamHttpError);
+      expect(refused).toMatchObject({ status: 429, host: 'yoio.rideatom.com', retryAt: now + 120_000 });
+      expect(JSON.parse(String(warning.mock.calls[0][0]))).toEqual({ event: 'upstream_rate_limited', host: 'yoio.rideatom.com',
+        path: '/gbfs/9/v3.0/vehicle_status', httpStatus: 429, retryAfter: '120' });
+
+      now += 119_000;
+      refuse = false;
+      await expect(cache.fetch(erfurt, options)).rejects.toBe(refused);
+      await expect(cache.fetch(goettingen, options)).rejects.toBe(refused);
+      await expect(cache.fetch('https://hoppy.rideatom.com/gbfs/1/v3.0/vehicle_status', options)).resolves.toMatchObject({ stale: false });
+      expect(asked).toEqual([goettingen, 'https://hoppy.rideatom.com/gbfs/1/v3.0/vehicle_status']);
+
+      now += 1_000;
+      await expect(cache.fetch(erfurt, options)).resolves.toMatchObject({ data: { version: 1 }, stale: false });
+      expect(asked.at(-1)).toBe(erfurt);
+    } finally { warning.mockRestore(); }
+  });
+
+  it('keeps serving a document it holds, without asking, until an HTTP date it names', async () => {
+    let now = Date.parse('2026-11-28T03:37:44Z');
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    let answer = () => jsonResponse({ version: 1 });
+    const fetcher = vi.fn(async () => answer());
+    const cache = new UpstreamJsonCache({ fetcher, now: () => now });
+    const url = 'https://yoio.rideatom.com/gbfs/9/v3.0/vehicle_status';
+    try {
+      await cache.fetch(url, options);
+      now += 31_000;
+      answer = () => limited(503, 'Sat, 28 Nov 2026 03:41:00 GMT');
+      await expect(cache.fetch(url, options)).resolves.toMatchObject({ data: { version: 1 }, stale: true });
+      // Past the 15 seconds an error otherwise waits, and up to the date.
+      now = Date.parse('2026-11-28T03:40:59Z');
+      await expect(cache.fetch(url, options)).resolves.toMatchObject({ stale: true });
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      answer = () => jsonResponse({ version: 2 });
+      now += 1_000;
+      await expect(cache.fetch(url, options)).resolves.toMatchObject({ data: { version: 2 }, stale: false });
+    } finally { warning.mockRestore(); }
+  });
+
+  it('holds nothing back without a Retry-After, or with one it cannot read', async () => {
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const headers = [undefined, 'soon', '-5'];
+    const fetcher = vi.fn(async () => limited(429, headers.shift()));
+    const cache = new UpstreamJsonCache({ fetcher });
+    try {
+      for (let i = 0; i < 3; i++) {
+        await expect(cache.fetch('https://yoio.rideatom.com/gbfs/9/v3.0/vehicle_status', options)).rejects.toMatchObject({ retryAt: undefined });
+      }
+      expect(fetcher).toHaveBeenCalledTimes(3);
+      expect(warning.mock.calls.map(call => JSON.parse(String(call[0])).retryAfter)).toEqual([null, 'soon', '-5']);
+    } finally { warning.mockRestore(); }
+  });
+});
+
+it('reads a Retry-After in seconds or as an HTTP date, at most an hour on', () => {
+  const now = Date.parse('2026-11-28T03:37:44Z');
+  expect(retryAfterAt('120', now)).toBe(now + 120_000);
+  expect(retryAfterAt(' 30 ', now)).toBe(now + 30_000);
+  expect(retryAfterAt('Sat, 28 Nov 2026 03:40:00 GMT', now)).toBe(Date.parse('2026-11-28T03:40:00Z'));
+  expect(retryAfterAt('86400', now)).toBe(now + 3_600_000);
+  for (const unread of [null, undefined, '', '0', '-5', '1.5', 'soon', 'Sat, 28 Nov 2026 03:00:00 GMT']) {
+    expect(retryAfterAt(unread, now)).toBeUndefined();
+  }
 });

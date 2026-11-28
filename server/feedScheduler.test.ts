@@ -410,6 +410,33 @@ it('retries a failed idle feed after a minute, backing off to half the idle inte
   } finally { scheduler.stop(); }
 });
 
+// SCOOTRADAR-CACHE-6N: on 28 November 2026 Yoio refused Göttingen from its turn at 03:37:44 UTC, and the retries at
+// 03:38:44, 03:40:45 and 03:44:45; the next, at 03:52:45, came after the feed expired at 03:47:44, 30 minutes after
+// its last collection.
+it('makes a failed feed\'s last try a minute before it would expire, where the doubling would wait past it', async () => {
+  const { scheduler, times } = schedule([{ id: 'goettingen', host: 'yoio' }], { expiresAfter: () => 30 * MINUTE },
+    async () => ({ failed: Date.now() - T0 >= 20 * MINUTE }));
+  try {
+    await vi.advanceTimersByTimeAsync(40 * MINUTE);
+    // Expires at 30: tried at 29, not 35; then the doubling goes on from there.
+    expect(times('goettingen')).toEqual([0, 20, 21, 23, 27, 29, 39]);
+  } finally { scheduler.stop(); }
+});
+
+it('retries a failed feed when its source\'s Retry-After says, but never sooner than a minute', async () => {
+  const retryAfter = [5 * MINUTE, 10_000];
+  const { scheduler, times } = schedule([{ id: 'goettingen', host: 'yoio' }], { expiresAfter: () => 30 * MINUTE },
+    async () => {
+      const wait = retryAfter.shift();
+      return wait === undefined ? { failed: false } : { failed: true, retryAt: Date.now() + wait };
+    });
+  try {
+    await vi.advanceTimersByTimeAsync(21 * MINUTE);
+    // Not at 1, as the first retry is, but at 5; then a minute on, not 10 seconds; then its idle phase.
+    expect(times('goettingen')).toEqual([0, 5, 6, 20]);
+  } finally { scheduler.stop(); }
+});
+
 it("retries a failed idle feed by night in its town only within its grace, then at the night's end, and still at once when asked for", async () => {
   const HOUR = 60 * MINUTE;
   // T0 is 20:59:30 in the towns: their night runs from 30 seconds on to 08:00, 11 hours later.

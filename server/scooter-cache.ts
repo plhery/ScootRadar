@@ -166,6 +166,8 @@ const schedule = cadenceFromEnv();
 // The national feeds read from rider maps are collected as the app maps are (swissAppMaps.ts).
 const scheduler = new FeedScheduler(collect, { ...schedule,
   alwaysFast: feed => schedule.alwaysFastSources.has(feed.source) && !readsSwissAppMap(feed),
+  // When a feed expires, as the answers and Sentry tell it (cadence.ts), for a failed one's last try before.
+  expiresAfter: feed => ownIdleExpiry(feed.id) ?? schedule.idleExpiryMs,
   // After a restart, a feed collected recently waits for its turn rather than everyone at once, and one whose last
   // collection failed is retried as after any failure: by day at once, by night only while that may keep it from expiring.
   ...restoredFrom(feed => records.get(feed.id)),
@@ -394,6 +396,8 @@ function dropExpiredData(now: number) {
 async function collect(definition: CollectableScooterFeed, attention: CollectionAttention) {
   const system = regionalSystems.get(definition.id);
   let failed = false;
+  // When the feed's host lets itself be asked again, if it answered a Retry-After (upstreamJsonCache.ts).
+  let retryAt: number | undefined;
   let running = true;
   const startedAt = Date.now();
   metrics.recordRefreshStarted(definition.id, startedAt);
@@ -420,6 +424,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
       return holdStrays(definition.id, { ...result, vehicles: priced(result.vehicles) }, records.get(definition.id), Date.now());
     } catch (error) {
       failed = true;
+      if (error instanceof UpstreamHttpError) retryAt = error.retryAt;
       metrics.recordCollection(definition, true, (performance.now() - started) / 1000);
       lastErrors.set(definition.id, { message: (error instanceof Error ? error.message : String(error)).slice(0, 300),
         ...statusAge(error), ...(error instanceof UpstreamHttpError ? { httpStatus: error.status } : {}) });
@@ -436,7 +441,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   }, system && !isAppMapSystem(system) ? () => fetchRegionalParking(system) : undefined)
     .catch(error => { failed = true; throw error; })
     .finally(() => { stalls.ended(definition.id); metrics.recordRefreshEnded(definition.id, failed); });
-  return { failed };
+  return { failed, retryAt };
 }
 
 function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (feed: FeedSnapshot) => boolean) {

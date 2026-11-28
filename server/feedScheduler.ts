@@ -64,6 +64,8 @@ export interface ScheduledFeed {
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
 export interface CollectionOutcome {
   failed: boolean;
+  /** When the source lets itself be asked again, if it said (a Retry-After): a failed feed is not retried before. */
+  retryAt?: number;
 }
 
 /**
@@ -92,8 +94,16 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
   idleIntervalMs: number;
   /** How long a request keeps a feed watched. */
   watchMs: number;
-  /** The first retry of a failed idle feed; it doubles, up to half the idle interval. */
+  /**
+   * The first retry of a failed idle feed; it doubles, up to half the idle interval, but for one last try a minute
+   * before the feed would expire (expiresAfter) where the next would come after.
+   */
   retryMs: number;
+  /**
+   * How long after its last successful collection a feed's scooters expire, which the cache decides (cadence.ts):
+   * its idle interval and ten minutes, for most. Without it, no last try is made before.
+   */
+  expiresAfter?: (feed: T) => number;
   /** Feeds collected every active interval whether or not anyone looks. */
   alwaysFast: (feed: T) => boolean;
   /** When a restored feed last started a successful collection, so a restart does not collect everything at once. */
@@ -120,6 +130,10 @@ const MAX_RUNNING_PER_HOST = 2;
 // New feeds joining a catalog the cache holds come due this many at a time, a stage this far apart.
 const WARM_UP_STAGE_SIZE = MAX_RUNNING;
 const WARM_UP_STAGE_MS = 15_000;
+// A failed feed's last try before it would expire, where its retries' doubling would wait past that: on 28 November
+// 2026 Yoio refused Göttingen from 03:37:44 UTC, retried at 03:38:44, 03:40:45 and 03:44:45, and the next, at 03:52:45,
+// came after it expired at 03:47:44 (SCOOTRADAR-CACHE-6N).
+const LAST_TRY_MS = 60_000;
 // An idle feed on a paced host this long past its interval is woken: five minutes later, its interval
 // plus ten, it would expire (cadence.ts).
 const LATE_MS = 5 * 60_000;
@@ -409,14 +423,19 @@ export class FeedScheduler<T extends ScheduledFeed> {
     return feed.idleSooner?.()?.phase ?? (this.options.phase ?? (candidate => candidate.idlePhase ?? idPhase(candidate.id)))(feed);
   }
 
-  private nextDue(feed: T, startedAt: number, finishedAt: number, failed: boolean): number {
+  private nextDue(feed: T, startedAt: number, finishedAt: number, failed: boolean, retryAt?: number): number {
     const { retryMs } = this.options;
     const activeIntervalMs = this.activeInterval(feed);
     const idleIntervalMs = feed.idleSooner?.()?.intervalMs ?? feed.idleIntervalMs ?? this.options.idleIntervalMs;
     if (this.mode(feed, finishedAt) !== 'idle') return startedAt + activeIntervalMs;
     if (failed) {
       const failures = this.failures.get(feed.id) ?? 1;
-      const retry = finishedAt + Math.min(retryMs * 2 ** (failures - 1), Math.max(retryMs, idleIntervalMs / 2));
+      const doubled = finishedAt + Math.min(retryMs * 2 ** (failures - 1), Math.max(retryMs, idleIntervalMs / 2));
+      const expires = this.collectedAt.get(feed.id);
+      const last = expires === undefined || !this.options.expiresAfter ? Infinity : expires + this.options.expiresAfter(feed) - LAST_TRY_MS;
+      // Never before the source's Retry-After, nor sooner than a first retry.
+      const retry = retryAt !== undefined ? Math.max(retryAt, finishedAt + retryMs)
+        : doubled > last && finishedAt + retryMs <= last ? last : doubled;
       // By night in its town, a retry is made only while it may keep the feed from expiring, then at the night's end, as
       // a sweep is: a map that failed at its turn at 20:59 there was retried at 23:06, 01:14 and 05:30.
       const night = feed.nightEnds?.(retry);
@@ -570,10 +589,11 @@ export class FeedScheduler<T extends ScheduledFeed> {
     this.startedAt.set(feed.id, now);
     this.options.onStart?.(feed, reason);
     let failed = true;
+    let retryAt: number | undefined;
     void this.collect(feed, {
       urgent: () => this.woken.has(feed.id) || this.watched(feed.id, Date.now()) || this.glanced(feed.id, Date.now()),
       focus: () => this.watched(feed.id, Date.now()) || this.glanced(feed.id, Date.now()) ? this.focusOf.get(feed.id) : undefined,
-    }).then(outcome => { failed = outcome?.failed ?? false; }, error => {
+    }).then(outcome => { failed = outcome?.failed ?? false; retryAt = outcome?.retryAt; }, error => {
       console.error('Feed collection failed', feed.id, error instanceof Error ? error.name : 'UnknownError');
       reportError(`collect:${feed.id}`, error);
     }).finally(() => {
@@ -583,7 +603,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       if (current) {
         if (failed) this.failures.set(feed.id, (this.failures.get(feed.id) ?? 0) + 1);
         else { this.failures.delete(feed.id); this.collectedAt.set(feed.id, now); }
-        this.due.set(feed.id, this.nextDue(current, now, Date.now(), failed));
+        this.due.set(feed.id, this.nextDue(current, now, Date.now(), failed, failed ? retryAt : undefined));
       }
       this.settle(feed.id);
       this.pump();

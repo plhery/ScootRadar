@@ -1166,7 +1166,16 @@ off (`UND_ERR_SOCKET` or `ECONNRESET` while reading it) is asked for once more a
 logged as `upstream_body_retry` with its host, path and `errorCode`; only a second cut
 falls back. sharedmobility.ch cuts Voi's Swiss vehicles off on some weekday mornings: about
 three requests in four from 06:40 to 10:00 on 22 October 2026, and more than half from
-07:00 to 10:00 on the 17th, with the others going through in between. In Grafana's Loki data source:
+07:00 to 10:00 on the 17th, with the others going through in between. An operator's
+HTTP 429, and a 503 that carries a `Retry-After`, is logged as `upstream_rate_limited` with
+its host, path, status and the `retryAfter` it sent (`null` without one). A `Retry-After`
+the cache can read, in seconds or as a date and at most an hour on, holds the whole host
+until then: none of its documents is asked for, each fails with that answer or is served
+from an earlier one, and the feed's next try is then. Without one, a failed feed is retried
+after 1, 2, 4 and 8 minutes, up to half its interval, but once a minute before it would
+expire where the next would come after: Yoio's GBFS host refused Göttingen with 429 from
+03:37:44 UTC on 28 November 2026, and the retry after the one at 03:44:45 came at 03:52:45,
+five minutes after the feed expired (SCOOTRADAR-CACHE-6N). In Grafana's Loki data source:
 
 ```logql
 {app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"
