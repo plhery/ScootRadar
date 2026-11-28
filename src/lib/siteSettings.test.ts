@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SITE_DEFAULTS, SITE_SETTING_NAMES, siteSettings } from '@/lib/siteSettings';
 import { parseJsonc, wranglerVars } from '@/lib/wranglerVars';
+// The tests "without the settings" read the site's modules again (vi.resetModules), and the first read of a module also
+// compiles it: the written guides (7 MB) and the feeds took about a second inside the test, which a loaded machine
+// stretched past the 5 s limit (28 November). Read here first, they are compiled while the file is collected, which no
+// limit counts, and read again they only run, in some tens of milliseconds.
+import '@/app/sitemap';
+import '@/lib/scooterFeeds';
 
 describe('siteSettings', () => {
   it('gives a neutral site of its own where nothing is set', () => {
