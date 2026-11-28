@@ -650,9 +650,9 @@ def status_report(root=ROOT, now=None):
     def read(path):
         try:return json.loads(path.read_text())
         except (FileNotFoundError,ValueError):return None
-    def when(at):
+    def when(at,year=False):
         if not at:return 'never'
-        moment=time.strftime('%d %b %H:%M:%S',time.localtime(at));seconds=int(at-now)
+        moment=time.strftime('%d %b %Y %H:%M:%S' if year else '%d %b %H:%M:%S',time.localtime(at));seconds=int(at-now)
         span=abs(seconds);text=f'{span//86400}d {span%86400//3600}h' if span>=86400 else f'{span//3600}h {span%3600//60}m' if span>=3600 else f'{span//60}m {span%60}s'
         return f'{moment} (just now)' if span<5 else f'{moment} ({"in "+text if seconds>=0 else text+" ago"})'
     def line(name,text):lines.append(f'{name:<14}{text}')
@@ -736,7 +736,8 @@ def status_report(root=ROOT, now=None):
         f'launches nothing from {WINDOWSERVER_PORTS_STOP}, and macOS ends the session at about {WINDOWSERVER_PORTS_LIMIT}')
     config=read(root/'config.json') or {}
     expires=config.get('certificateExpiresTimestamp')
-    if expires:line('Certificate',f'expires {when(expires)}; collection stops for its renewal {when(expires-7*86400)}')
+    # Its dates name their year: a certificate lasts over a year (expires 23 Dec, in 390 days, read as this December).
+    if expires:line('Certificate',f'expires {when(expires,year=True)}; collection stops for its renewal {when(expires-7*86400,year=True)}')
     if (base/'stop.json').exists():line('Stop','requested: the worker takes no jobs')
     return '\n'.join(lines)
 

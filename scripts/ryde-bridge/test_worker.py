@@ -727,7 +727,9 @@ class HousekeepingTests(unittest.TestCase):
             self.assertEqual(sorted(p.name for p in root.rglob('*')),before)
             self.assertIn('held: LaunchFailed until',report);self.assertIn('CalledProcessError: 37',report)
             self.assertIn('1 launchd job(s) left with no process',report);self.assertIn('paused until',report)
-            self.assertIn('collection stops for its renewal',report)
+            self.assertRegex(report,r'Certificate +expires \d\d [A-Z][a-z]{2} 1970 \d\d:\d\d:\d\d \(in 16d 0h\); '
+                r'collection stops for its renewal \d\d [A-Z][a-z]{2} 1970 \d\d:\d\d:\d\d \(in 9d 0h\)')
+            self.assertRegex(report,r'Mach ports \d\d [A-Z][a-z]{2} \d\d:')
             self.assertIn('Map Control   serving since',report)
             self.assertIn('(pid 4242); 3 answers in the last hour (2 ok, 1 desktop-busy); started 1 time(s) in the last hour',report)
             self.assertIn('WindowServer  4658 Mach ports',report);self.assertIn('launches nothing from 200000',report)
